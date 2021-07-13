@@ -170,6 +170,7 @@ export default {
         if (response.data) {
           this.wells = data.data;
           this.fullWells = data.data;
+          
         }
         else {
           console.log("No data");
@@ -195,6 +196,7 @@ export default {
           this.wellTypeFilterData = data.well_type;
           this.blockFilterData = data.block;
           this.expMethFilterData = data.exp_meth;
+          
         }
         else {
           console.log("No data");
@@ -282,6 +284,7 @@ export default {
       currentYear: null,
       searchParam: null,
       postApiUrl: process.env.MIX_POST_API_URL,
+  
     };
   },
   methods: {
@@ -592,6 +595,11 @@ export default {
       this.wellFilter = undefined;
       this.fieldFilter = undefined;
     },
+    onChangePage(value) {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      this.$store.commit("tr/SET_PAGENUMBER", parseInt(value));
+      this.chooseAxios();
+    },
     showWells() {
       if(this.lonelywell.length === 1){
         this.isShowAdd = !this.isShowAdd;
@@ -838,6 +846,8 @@ export default {
         this.axiosPage();        
       }
     },
+
+
     // API поиска простого ТР
     axiosSearch() {
       this.axios
@@ -856,7 +866,14 @@ export default {
           } else {
             this.wells = [];
             this.fullWells = [];
-            console.log("No data");
+            this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+              title: this.trans('app.error'),
+              toaster: "b-toaster-top-center",
+              solid: true,
+              appendToast: false,
+              variant: 'danger',
+            });
+            
           }
         })
         .catch((error) => {
@@ -864,7 +881,13 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
-          console.log("search error = ", error);
+          this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
         });
     },
     // API поиска редактирования ТР
@@ -885,7 +908,13 @@ export default {
           } else {
             this.wells = [];
             this.fullWells = [];
-            console.log("No data");
+            this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+              title: this.trans('app.error'),
+              toaster: "b-toaster-top-center",
+              solid: true,
+              appendToast: false,
+              variant: 'danger',
+            });
           }
         })
         .catch((error) => {
@@ -893,7 +922,13 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
-          console.log("search error = ", error);
+          this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
         });
     },
   },

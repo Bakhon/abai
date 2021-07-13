@@ -764,7 +764,7 @@ export default {
           'data': ''
         },
         {
-          'description': this.well.gtm.dbeg,
+          'description': this.getFormatedDate(this.well.gtm.dbeg),
           'method': null,
           'name': 'Дата проведения ГРП',
           'data': ''
