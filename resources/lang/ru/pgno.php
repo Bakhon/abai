@@ -221,10 +221,7 @@ return array (
   'no_incl_data' => 'Нет данных инклинометрии',
   'primenit_default' => 'Применить по умолчанию',
   'check_nkt_notify' => 'Уточнить параметры НКТ',
-<<<<<<< HEAD
-=======
   'pgno_module' => 'Модуль "Подбор ГНО"',
->>>>>>> 70cb6c70a389560cc3fdcbba141fca120e269fb5
   'sk' => 'СК',
   'p_max' => 'Рмакс',
   'mkr' => 'Мкр',
@@ -233,12 +230,9 @@ return array (
   'p_min' => 'Рмин',
   'k_pod' => 'Кпод',
   'gas_in_pump' => 'газа в нас.',
-<<<<<<< HEAD
   'calc_min_value' => 'Расчет мин. значение',
   'use_value' => 'Использовать значение',
-=======
   'daily_consumption' => 'Сут. энергопот.',
   'ure' => 'УРЭ',
   'power_consumption_short' => 'Потр. мощ.',
->>>>>>> 70cb6c70a389560cc3fdcbba141fca120e269fb5
 );

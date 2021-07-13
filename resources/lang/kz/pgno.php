@@ -226,12 +226,9 @@ return array (
   'p_min' => 'Рмин',
   'k_pod' => 'Кпод',
   'gas_in_pump' => 'газа в нас.',
-<<<<<<< HEAD
   'calc_min_value' => 'Расчет мин. значение',
   'use_value' => 'Использовать значение',
-=======
   'daily_consumption' => 'Сут. энергопот.',
   'ure' => 'УРЭ',
   'power_consumption_short' => 'Потр. мощ.',
->>>>>>> 70cb6c70a389560cc3fdcbba141fca120e269fb5
 );
