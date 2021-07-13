@@ -49,9 +49,6 @@ class OmgNGDUController extends CrudController
                 trans('monitoring.omgngdu.fields.fact_data') => 10,
             ],
             'fields' => [
-
-
-
                 'gu' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',

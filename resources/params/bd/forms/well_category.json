@@ -1,0 +1,100 @@
+{
+  "table": "prod.well_category",
+  "table_fields": [
+    "dbeg",
+    "category"
+  ],
+  "tabs": [
+    {
+      "title": "well_cat",
+      "blocks": [
+        [
+          {
+            "title": "main",
+            "items": [
+              {
+                "code": "dbeg",
+                "type": "date",
+                "title": "data",
+                "table": "prod.well_category",
+                "validation": "required",
+                "is_editable": true,
+                "callbacks": {
+                  "fillCalculatedFields": "",
+                  "updateFields": ""
+                }
+              },
+              {
+                "code": "old_category",
+                "type": "calc",
+                "title": "categ"
+              },
+              {
+                "code": "category",
+                "type": "dict",
+                "table": "prod.well_category",
+                "dict": "well_categories",
+                "title": "well_cat",
+                "is_editable": true,
+                "validation": "required|exists:tbd.dict.well_category_type,id",
+                "callbacks": {
+                  "updateFields": ""
+                }
+              },
+              {
+                "code": "org",
+                "table": "dict.org",
+                "type": "dict_tree",
+                "dict": "orgs",
+                "title": "org",
+                "is_editable": true,
+                "validation": "required|exists:tbd.dict.org,id"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "reag_well",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "connected_wells",
+                "type": "checkbox_table",
+                "title": "",
+                "columns": [
+                  {
+                    "code": "well",
+                    "title": "uwi_number"
+                  },
+                  {
+                    "code": "status",
+                    "title": "status"
+                  },
+                  {
+                    "code": "liquid_debit",
+                    "title": "water_l"
+                  },
+                  {
+                    "code": "oil_debit",
+                    "title": "water_v"
+                  },
+                  {
+                    "code": "category",
+                    "title": "well_cat"
+                  }
+                ],
+                "rows": [
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

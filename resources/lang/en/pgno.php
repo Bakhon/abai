@@ -106,7 +106,6 @@ return array (
   'temp_nabora_krivizni' => 'Dog leg severity',
   'zagruzka' => 'Loading',
   'no_data' => 'No data',
-  'no_incl_data' => 'Нет данных инклинометрии',
   'md' => 'MD',
   'tvd' => 'TVD',
   'udl' => 'Elong',
@@ -216,6 +215,7 @@ return array (
   'edit' => 'Edit',
   'near_dist' => 'Distance for wells',
   'notify_error_sk' => 'Уточните тип СК',
+  'no_incl_data' => 'Нет данных инклинометрии',
   'primenit_default' => 'Применить по умолчанию',
   'check_nkt_notify' => 'Уточнить параметры НКТ',
   'sk' => 'СК',
@@ -226,6 +226,12 @@ return array (
   'p_min' => 'Pmin',
   'k_pod' => 'Кпод',
   'gas_in_pump' => 'gas in pump',
+<<<<<<< HEAD
   'calc_min_value' => 'Calc min value',
   'use_value' => 'Use value',
+=======
+  'daily_consumption' => 'Daily consumption',
+  'ure' => 'УРЭ',
+  'power_consumption_short' => 'Потр. мощ.',
+>>>>>>> 70cb6c70a389560cc3fdcbba141fca120e269fb5
 );

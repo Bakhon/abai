@@ -8,7 +8,7 @@ Route::group(
             function () {
                 Route::get('/', 'bd\DBController@bigdata')->name('bigdata');
                 Route::get('/las', 'bd\DBController@las')->name('las');
-                Route::get('/well_cart', 'bd\DBController@well_cart')->name('well_cart');
+                Route::get('/well-cart', 'bd\DBController@well_cart')->name('bigdata.well_cart');
                 Route::get('/report-constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
 
@@ -43,8 +43,8 @@ Route::group(
 
                 Route::get('/protoform', 'bd\DBController@form')->name('bigdata.protoform');
                 Route::get('/mobileform', 'bd\DBController@mobileForm')->name('bigdata.form.mobile');
-                Route::post('/mobileform', 'Api\DB\FormsController@saveMobileForm');
-                Route::get('/mobileform/values', 'Api\DB\FormsController@getMobileFormValues');
+                Route::post('/mobileform', 'Api\DB\MobileFormsController@saveMobileForm');
+                Route::get('/mobileform/values', 'Api\DB\MobileFormsController@getMobileFormValues');
 
                 Route::resource('wells', 'bd\WellsController', ['as' => 'bigdata']);
             }
@@ -61,6 +61,8 @@ Route::group(
                 Route::get('dict/geos/{org}', 'bd\DictionariesController@getGeoByOrg');
                 Route::get('dict/{dict}', 'bd\DictionariesController@get')->name('bigdata.dictionary');
 
+                Route::get('forms', 'Api\DB\FormsController@getForms')->name('bigdata.form.list');
+                Route::get('forms/tree', 'Api\DB\FormsController@getFormsStructure')->name('bigdata.form.list');
                 Route::get('forms/{form}', 'Api\DB\FormsController@getParams')->name('bigdata.form.params');
                 Route::post('forms/{form}', 'Api\DB\FormsController@submit')->name('bigdata.form.send');
                 Route::get('forms/{form}/history', 'Api\DB\FormsController@getHistory');
@@ -78,6 +80,7 @@ Route::group(
                 );
 
                 Route::post('forms/{form}/calc-fields', 'Api\DB\FormsController@calcFields');
+                Route::post('forms/{form}/update-fields', 'Api\DB\FormsController@updateFields');
 
                 Route::get('forms/{form}/results', 'Api\DB\FormsController@getResults');
                 Route::delete('forms/{form}/{row}', 'Api\DB\FormsController@delete');

@@ -1026,6 +1026,8 @@ a.dropdown-link-vc3 {
 
 .button1-vc-inner {
     display: inline-block;
+    width: 90%;
+    text-align: center;
 }
 
 ul.dropdown-menu-vc {
@@ -1072,4 +1074,8 @@ ul.dropdown-menu-vc {
         max-height: 76%
     }
 
+}
+
+.button2.no-hover:hover {
+    background: #333975;
 }

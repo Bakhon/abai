@@ -24,6 +24,7 @@ use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use Carbon\Carbon;
 use App\Models\VisCenter\ExcelForm\DzoImportOtm;
 use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
+use App\Models\VisCenter\EmergencyHistory;
 
 class VisualCenterController extends Controller
 {
@@ -175,11 +176,6 @@ class VisualCenterController extends Controller
     public function visualcenter3GetDataStaff(Request $request)
     {
         return response()->json(DZOstaff::all());
-    }
-
-    public function visualcenter3GetDataAccident(Request $request)
-    {
-        return response()->json(ImportFormsDZOyear::all('date','tb_accident_total')->where('date', '=', $request->year)->where('tb_accident_total', '>', '0'));
     }
 
     public function visualcenter3GetData(Request $request)
@@ -426,6 +422,32 @@ class VisualCenterController extends Controller
             ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
             ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
             ->with('importDowntimeReason')
+            ->get()
+            ->toArray();
+    }
+
+    public function dailyReport()
+    {
+        return view('visualcenter.dailyreport');
+    }
+
+    public function getProductionDetailsForYear()
+    {
+        $startPeriod = Carbon::now()->startOfYear();
+        $endPeriod = Carbon::now()->endOfDay();
+        return DzoImportData::query()
+            ->select()
+            ->whereDate('date', '>=', $startPeriod)
+            ->whereDate('date', '<=', $endPeriod)
+            ->get()
+            ->toArray();
+    }
+    public function getEmergencyHistory(Request $request)
+    {
+        return EmergencyHistory::query()
+            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description')
+            ->whereMonth('date', $request->currentMonth)
+            ->where('type',1)
             ->get()
             ->toArray();
     }

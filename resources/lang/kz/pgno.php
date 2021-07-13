@@ -107,7 +107,6 @@ return array (
   'temp_nabora_krivizni' => 'Қисықтық жиынтығының қарқыны',
   'zagruzka' => 'Жүктеу',
   'no_data' => 'Деректер жоқ',
-  'no_incl_data' => 'Нет данных инклинометрии',
   'tvd' => 'TVD',
   'md' => 'MD',
   'udl' => 'Удл',
@@ -216,6 +215,7 @@ return array (
   'edit' => 'Редактировать',
   'near_dist' => 'Расстояние до скважин',
   'notify_error_sk' => 'Уточните тип СК',
+  'no_incl_data' => 'Нет данных инклинометрии',
   'primenit_default' => 'Применить по умолчанию',
   'check_nkt_notify' => 'Уточнить параметры НКТ',
   'sk' => 'СК',
@@ -226,6 +226,12 @@ return array (
   'p_min' => 'Рмин',
   'k_pod' => 'Кпод',
   'gas_in_pump' => 'газа в нас.',
+<<<<<<< HEAD
   'calc_min_value' => 'Расчет мин. значение',
   'use_value' => 'Использовать значение',
+=======
+  'daily_consumption' => 'Сут. энергопот.',
+  'ure' => 'УРЭ',
+  'power_consumption_short' => 'Потр. мощ.',
+>>>>>>> 70cb6c70a389560cc3fdcbba141fca120e269fb5
 );
