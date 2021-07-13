@@ -17,10 +17,10 @@ class BottomHoleArtificial extends PlainForm
             ->get('drill_end_date')
             ->first();            
             
-        if(empty($endDate->drill_end_date)){
+        if(empty($endDate) || $endDate->drill_end_date == null){
             return true;
         }
-        else return $date >= $endDate;    
+        return $date >= $endDate->drill_end_date;    
     }
     function isCorrectSummofDailyDrill($dailyDrill, $depth) : bool {
                 
@@ -33,7 +33,7 @@ class BottomHoleArtificial extends PlainForm
     protected function isValidDepth($wellId, $depth):bool
     {
         $dailyDrill =  DB::connection('tbd')
-        >table('drill.well_daily_drill')
+            ->table('drill.well_daily_drill')
             ->where('well', $wellId)
             ->get('daily_drill_progress')
             ->sum('daily_drill_progress');
@@ -50,8 +50,8 @@ class BottomHoleArtificial extends PlainForm
             $errors['depth'][] = trans('bd.validation.depth');
         }
 
-        if (!$this->isValidLandingDate($this->request->get('well'), $this->request->get('landing_date'))) {
-            $errors['end_date'][] = trans('bd.validation.end_date');
+        if (!$this->isValidDate($this->request->get('well'), $this->request->get('data'))) {
+            $errors[$this->request->get('data')][] = trans('bd.validation.end_date');
         }
 
         return $errors;
