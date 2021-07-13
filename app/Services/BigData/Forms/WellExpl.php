@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
+use App\Models\BigData\Well;
 use Illuminate\Support\Facades\DB;
 
 class WellExpl extends PlainForm
@@ -12,16 +13,15 @@ class WellExpl extends PlainForm
 
     private function isValidDate($wellId, $dbeg):bool
     {
-            $dend = DB::connection('tbd')
+        $dend = DB::connection('tbd')
             ->table('prod.well_expl')
             ->where('well', $wellId)
-            ->where('dend' ,'<' , '3333-12-31 00:00:00+06')
+            ->where('dend', '<', Well::DEFAULT_END_DATE)
             ->orderBy('dend', 'desc')
             ->get('dend')
             ->first();
 
         return $dbeg >= $dend->dend;
-
     }
 
     protected function getCustomValidationErrors(): array
