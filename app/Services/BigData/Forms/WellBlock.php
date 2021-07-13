@@ -40,16 +40,16 @@ class WellBlock extends PlainForm
     private function isValidDate($wellId, $dbeg):bool
     {
            
-        $dbeg_well_block = DB::connection('tbd')
+        $dbegWellBlock = DB::connection('tbd')
                     ->table('prod.well_block')
                     ->where('well', $wellId)
                     ->orderBy('dbeg', 'desc')
                     ->get('dbeg')
                     ->first();
                     
-        if(!empty($dbeg_well_block)){
+        if(!empty($dbegWellBlock)){
            
-            return $dbeg >= $dbeg_well_block->dbeg;
+            return $dbeg >= $dbegWellBlock->dbeg;
         }   
         return true;
     }
