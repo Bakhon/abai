@@ -9,7 +9,7 @@ class BottomHole extends PlainForm
 {
     protected $configurationFileName = 'bottom_hole';
 
-    function isCorrectDailyDrill($dailyDrill, $depth) : bool {        
+    function isCorrectSumOfDailyDrill($dailyDrill, $depth) : bool {        
         
         if($dailyDrill != 0){
             return $depth < $summ;
@@ -25,7 +25,7 @@ class BottomHole extends PlainForm
             ->get('daily_drill_progress')
             ->sum('daily_drill_progress');
 
-        return ($this->isCorrectDailyDrill($dailyDrill, $depth)) ? true : false ;
+        return ($this->isCorrectSumOfDailyDrill($dailyDrill, $depth)) ? true : false ;
     }
 
     protected function isValidDate($wellId, $date): bool
