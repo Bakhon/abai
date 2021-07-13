@@ -5,27 +5,14 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Traits\DepthValidationTrait;
+use App\Http\Controllers\Traits\DateValidationTrait;
 
 class BottomHoleArtificial extends PlainForm
 {
     protected $configurationFileName = 'bottom_hole_artificial';
 
     use DepthValidationTrait;
-
-    protected function isValidDate($wellId, $date): bool
-    {
-        $endDate =  DB::connection('tbd')
-            ->table('dict.well')
-            ->where('id', $wellId)
-            ->get('drill_end_date')
-            ->first();            
-            
-        if(empty($endDate) || $endDate->drill_end_date == null){
-            return true;
-        }
-        return $date >= $endDate->drill_end_date;    
-    }   
-
+    use DateValidationTrait;
         
     protected function getCustomValidationErrors(): array
     {
@@ -35,7 +22,7 @@ class BottomHoleArtificial extends PlainForm
             $errors['depth'][] = trans('bd.validation.depth');
         }
 
-        if (!$this->isValidDate($this->request->get('well'), $this->request->get('data'))) {
+        if (!$this->isValidDate($this->request->get('well'), $this->request->get('data'), 'dict.well' , 'drill_end_date')) {
             $errors[$this->request->get('data')][] = trans('bd.validation.end_date');
         }
 
