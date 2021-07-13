@@ -22,7 +22,7 @@
     </div>
     <div class="dropdown-menu">
         <div class="move-menu">
-            <li class="left-menu-li"><a href="{{route('bigdata')}}">Модуль "Прототип БД ABAI"</a>
+            <li class="left-menu-li"><a href="{{route('bigdata')}}">{{ trans('bd.bigdata_module') }}</a>
                 <ul class="dropdown-child">
                     <li class="left-menu-li">
                         <a href="{{route('report_constructor')}}">
