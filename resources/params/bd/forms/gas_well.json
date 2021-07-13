@@ -19,7 +19,7 @@
                 "code": "dend",
                 "type": "date",
                 "title": "date_end",
-                "validation": "required|date"
+                "validation": "required|date|after:dbeg"
               }
             ]
           },
@@ -30,7 +30,8 @@
                 "code":"gas",
                 "type":"numeric",
                 "title":"gas_flow_rate",
-                "validation":"required|numeric"
+                "validation":"required|numeric|gt:0",
+                "validate_deviation": true
               }
             ]
           },
