@@ -9,7 +9,7 @@
 export default {
   props:{
       description:String,
-      inform_data:Number
+      inform_data:[Number, String]
   }
 };
 </script>

@@ -10,7 +10,7 @@
         <el-divider direction="vertical"></el-divider>
         <el-divider direction="vertical"></el-divider>
       </div>
-      <button type="button" class="btn-button btn-button--thm-green ol-w-100 mb-10px">
+      <button type="button" class="btn-button btn-button--thm-green w-100 mb-10px">
         {{ trans('digital_rating.buildMap') }}
       </button>
     </div>
@@ -105,10 +105,10 @@
           </div>
         </transition-expand>
       </div>
-      <button type="button" class="btn-button btn-button--thm-blue ol-w-100 mb-10px">
+      <button type="button" class="btn-button btn-button--thm-blue w-100 mb-10px">
         {{ trans('digital_rating.acceptSettings') }}
       </button>
-      <button type="button" class="btn-button btn-button--thm-blue ol-w-100 mb-10px">
+      <button type="button" class="btn-button btn-button--thm-blue w-100 mb-10px">
         {{ trans('digital_rating.saveSettings') }}
       </button>
     </div>
@@ -161,7 +161,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .rating-settings {
   color: #fff;
   display: flex;
@@ -171,7 +171,6 @@ export default {
   width: 100%;
   max-width: 24.4%;
 }
-
 .expand-enter-active, .expand-leave-active {
   -webkit-transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
   transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
