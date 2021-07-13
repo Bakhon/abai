@@ -226,6 +226,11 @@ export default {
           short_name: "JET",
           full_name: "Жетыбай",
           id: 2
+        },
+        {
+          short_name: "ASA",
+          full_name: "Асар",
+          id: 3
         }],
       omg_fields: [
         {
@@ -240,6 +245,10 @@ export default {
         {
           short_name: "JET",
           full_name: "Жетыбай",
+        },
+        {
+          short_name: "ASA",
+          full_name: "Асар",
         }],
       shgnTubOD: null,
       menu: "MainMenu",
@@ -595,6 +604,7 @@ export default {
         this.qlPot = this.curvePointsData[1]["q_l"].toFixed(0)
         this.pinPot = this.curvePointsData[1]["pin"].toFixed(0)
       } else {
+        this.fgCelValue = data["Well Data"]["fg_cel"].toFixed(1)
         this.hPerfRangeInfo = data["Well Data"]["h_perf_range"]
         this.ngdu = data["Well Data"]["ngdu"]
         this.sk = data["Well Data"]["sk_type"]
@@ -1060,19 +1070,19 @@ export default {
     },
 
     setDefaultStoreValues() {
-      this.$store.commit("UPDATE_SPM_MIN", 4)
+      this.$store.commit("UPDATE_SPM_MIN", 3)
       this.$store.commit("UPDATE_SPM_MAX", 8)
       this.$store.commit("UPDATE_LEN_MIN", 2.5)
       this.$store.commit("UPDATE_LEN_MAX", 3)
       this.$store.commit("UPDATE_KPOD", 0.6)
       this.$store.commit("UPDATE_KOMPONOVKA", ["hvostovik"])
       this.$store.commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
-      this.$store.commit("UPDATE_DMRODS", ["19", "22", "25"])
+      this.$store.commit("UPDATE_DMRODS", ["19", "22"])
       this.$store.commit("UPDATE_H2S", false)
       this.$store.commit("UPDATE_PINTAKE_MIN", 30)
       this.$store.commit("UPDATE_GAS_MAX", 10)
       this.$store.commit("UPDATE_INCL_STEP", 10)
-      this.$store.commit("UPDATE_CORROSION", "mediumCorrosion")
+      this.$store.commit("UPDATE_CORROSION", "antiCorrosion")
       this.$store.commit("UPDATE_GROUP_POSAD", "2")
       this.$store.commit("UPDATE_HEAVYDOWN", true)
       this.$store.commit("UPDATE_STUP_COLUMNS", 2)
@@ -1289,7 +1299,7 @@ export default {
         } else if (data["Age"] === false) {
           this.setData(data)
           this.nktExist("get")
-          
+
           if (data["error_len"] == "error_len") {
             this.$notify({
               message: this.trans('pgno.notify_no_sk_for_length'),
@@ -1628,7 +1638,7 @@ export default {
             let uri = "http://172.20.103.187:7575/api/pgno/shgn";
             this.prepareData()
             this.axios.post(uri, this.postdata).then((response) => {
-              let data = JSON.parse(response.data);
+              let data = response.data;
               if (!this.isYoungAge) {
                 this.fetchBlockCentrators()
               } else {
@@ -1645,6 +1655,13 @@ export default {
                 } else if (data["error"] == "KpodError") {
                   this.$notify({
                     message: "Расчетный Кпод < Установленного в Настройках",
+                    type: 'warning',
+                    size: 'sm',
+                    timeout: 8000
+                  })
+                } else if (data["error"] == "ConstructionError") {
+                  this.$notify({
+                    message: "Не удалось посчитать конструкцию",
                     type: 'warning',
                     size: 'sm',
                     timeout: 8000
@@ -1685,14 +1702,38 @@ export default {
                       timeout: 8000
                     })
                     this.qoilShgnTable = this.welldata['qo_cel'].toFixed(1)
+                    this.construction = data["construction"]
                     this.shgnSPM = data["spm"].toFixed(1)
                     this.shgnLen = data["stroke_len"].toFixed(1)
-                    this.shgnS1D = data["s1d"].toFixed(0)
-                    this.shgnS2D = data["s2d"].toFixed(0)
-                    this.shgnS1L = data["s1l"].toFixed(0)
-                    this.shgnS2L = data["s2l"].toFixed(0)
-                    this.shgnTN = data["tn"]
-                    this.shgnTNL = data["tn_l"]
+                    this.kPod = data['k_pod'].toFixed(2)
+                    this.skPmax = data['sk_pmax']
+                    this.skMn2 = data['sk_mn2']
+                    this.pElectricity = (data['p_electricity'] / 1000).toFixed(0)
+                    this.wDay = data['w_day'].toFixed(0)
+                    this.ure = data['ure'].toFixed(1)
+                    if (data['load_check'] === "error") {
+                      this.$notify({
+                        message: "Нагрузка на головку балансира > 100%",
+                        type: 'error',
+                        size: 'sm',
+                        timeout: 8000
+                      })
+                    } else if (data['load_check'] === "warning") {
+                      this.$notify({
+                        message: "Нагрузка на головку балансира > 80%",
+                        type: 'warning',
+                        size: 'sm',
+                        timeout: 8000
+                      })
+                    } if (data['load_reduct_check'] === "error") {
+                      this.$notify({
+                        message: "Максимальный крутящий момент на кривошипном валу редкутора выше допустимого",
+                        type: 'error',
+                        size: 'sm',
+                        timeout: 8000
+                      })
+                    }
+
                     this.isVisibleChart = !this.isVisibleChart
                   }
 
