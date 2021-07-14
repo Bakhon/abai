@@ -139,7 +139,7 @@
               </div>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
-                {{ trans('vs_choice') }}
+                {{ trans('economic_reference.vs_choice') }}
               </div>
             </div>
           </div>
@@ -147,7 +147,7 @@
           <div class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column">
             <div class="text-nowrap font-weight-bold"
                  style="font-size: 52px; line-height: 64px;">
-              <span>{{ dollarRates[1].label }}</span>
+              <span>{{ res.dollarRate }}</span>
 
               <span class="font-size-16px line-height-20px text-blue">kzt / $</span>
             </div>
@@ -162,15 +162,15 @@
 
             <div class="d-flex align-items-center">
               <div class="font-size-24px line-height-28px font-weight-bold text-nowrap">
-                <percent-badge-icon :percent="-19" reverse/>
+                <percent-badge-icon :percent="dollarRatePercent" reverse/>
 
-                <span>19</span>
+                <span>{{ dollarRatePercent }}</span>
 
                 <span class="font-size-16px">kzt / $</span>
               </div>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
-                {{ trans('vs_choice') }}
+                {{ trans('economic_reference.vs_choice') }}
               </div>
             </div>
           </div>
@@ -374,18 +374,21 @@ const optimizedColumns = [
   "well_count_profitless_cat_2",
 ];
 
-let economicRes = [{
-  scenario_id: null,
-  percent_stop_cat_1: 0,
-  percent_stop_cat_2: 0,
-  coef_Fixed_nopayroll: 0,
-  coef_cost_WR_payroll: 0,
-  dollar_rate: 0,
-  oil_price: 0,
-}]
+let economicRes = {
+  scenarios: [{
+    scenario_id: null,
+    percent_stop_cat_1: 0,
+    percent_stop_cat_2: 0,
+    coef_Fixed_nopayroll: 0,
+    coef_cost_WR_payroll: 0,
+    dollar_rate: 0,
+    oil_price: 0,
+  }],
+  dollarRate: ''
+}
 
 optimizedColumns.forEach(column => {
-  economicRes[0][column] = {
+  economicRes.scenarios[0][column] = {
     value: [0, ''],
     value_optimized: [0, ''],
     percent: 0,
@@ -599,7 +602,7 @@ export default {
         value: null,
       }]
 
-      this.res.forEach((item, index) => {
+      this.res.scenarios.forEach((item, index) => {
         items.push({
           label: `Отключения категории 1: ${item.percent_stop_cat_1 * 100}%, категории 2: ${item.percent_stop_cat_2 * 100}%`,
           value: index,
@@ -610,7 +613,11 @@ export default {
     },
 
     scenario() {
-      return this.res[this.scenarioIndex]
+      return this.res.scenarios[this.scenarioIndex]
+    },
+
+    dollarRatePercent(){
+      return (+this.res.dollarRate - (+this.scenario.dollar_rate)).toFixed(2)
     },
 
     oilPercent() {

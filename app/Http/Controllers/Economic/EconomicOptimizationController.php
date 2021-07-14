@@ -31,6 +31,11 @@ class EconomicOptimizationController extends Controller
 
     const OPTIMIZED_COLUMN_SUFFIX = '_optimize';
 
+    const DOLLAR_RATE_URL = 'https://www.nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut';
+
+    const DOLLAR_RATE_KEY = 'USD / KZT';
+
+
     public function __construct(DruidClient $druidClient)
     {
         $this
@@ -99,7 +104,10 @@ class EconomicOptimizationController extends Controller
 
         }
 
-        return $result;
+        return [
+            'scenarios' => $result,
+            'dollarRate' => self::getDollarRate()
+        ];
     }
 
     static function moneyFormat(?float $digit): array
@@ -126,6 +134,33 @@ class EconomicOptimizationController extends Controller
             number_format($digit / 1000000000, 2),
             trans('economic_reference.billion')
         ];
+    }
+
+    static function getDollarRate(): string
+    {
+        libxml_use_internal_errors(TRUE);
+
+        $dom = new \DOMDocument();
+
+        $dom->loadHTMLFile(self::DOLLAR_RATE_URL);
+
+        $xpath = new \DOMXpath($dom);
+
+        $elements = $xpath->query("//table//tbody//tr");
+
+        /** @var \DOMElement $element */
+        foreach ($elements as $element) {
+            $tds = $element->getElementsByTagName('td');
+
+            /** @var \DOMElement $td */
+            foreach ($tds as $index => $td) {
+                if ($td->nodeValue === self::DOLLAR_RATE_KEY) {
+                    return $tds[$index + 1]->nodeValue;
+                }
+            }
+        }
+
+        return "";
     }
 
 }
