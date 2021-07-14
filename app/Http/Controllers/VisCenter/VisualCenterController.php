@@ -371,11 +371,12 @@ class VisualCenterController extends Controller
 
     public function getOtmDetails(Request $request)
     {
-        return DzoImportOtm::query()
+        $otm = DzoImportOtm::query()
             ->whereMonth('date', '>=', $request->startPeriod)
             ->whereMonth('date', '<=', $request->endPeriod)
             ->get()
             ->toArray();
+        return $otm;
     }
 
     public function getChemistryDetails(Request $request)
