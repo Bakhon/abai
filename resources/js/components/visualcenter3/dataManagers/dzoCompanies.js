@@ -174,10 +174,10 @@ export default {
             });
             summary = this.getFormatted(summary);
             let yesterdayFilteredSummary = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
-            this.updateProductionTotalFact(yesterdayFilteredSummary,actualFilteredSummary,this.selectedView);
 
             this.dzoCompaniesSummary = summary;
             if (this.isConsolidatedCategoryActive()) {
+                this.updateProductionTotalFact(yesterdayFilteredSummary,actualFilteredSummary,this.selectedView);
                 this.isOpecFilterActive = true;
             }
         },
@@ -202,7 +202,7 @@ export default {
         },
 
         selectAllDzoCompanies() {
-            if (!isOneDzoSelected) {
+            if (!this.isOneDzoSelected) {
                 this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
                 _.forEach(this.dzoCompanies, function (dzo) {
                     _.set(dzo, 'selected', true);

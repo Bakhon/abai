@@ -297,6 +297,7 @@ return array (
   'buy' => 'Покупка',
   'chemVolume' => 'Объём хим. реагента, тонны',
   'nrs' => 'Нерентабельные скважины',
+  'visualcenter_module' => 'Модуль "Центр визуализации"',
   'chartOptions' => 
   array (
     'monthNames' => 
@@ -374,5 +375,7 @@ return array (
   'fondMiddleInMonth' => 'ср. взвешенное',
   'oilCondensateDeliveryChartName' => 'Динамика сдачи нефти и конденсата',
   'oilCondensateDelivery' => 'Сдача нефти и конденсата',
-  'stockOfGoodsDynamic'=> 'Динамика товарного остатка'
+  'stockOfGoodsDynamic' => 'Динамика товарного остатка',
+  'emergencyHistory' => 'История инцидентов',
+  'gasRestriction' => 'Ограничение по газу',
 );

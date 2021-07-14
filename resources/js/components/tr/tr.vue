@@ -6381,6 +6381,7 @@
             </table>
           </div>
           <div class="overflow-auto">
+            
             <paginate
                 v-model="this.$store.state.tr.pageNumber"
                 :page-count="this.pageCount"
@@ -6392,6 +6393,10 @@
                 :container-class="'pagination'"
                 :page-class="'page-item'">
             </paginate>
+            <div>
+                    <input @change="onChangePage($event.target.value)" class="pgn_input">
+              
+            </div>
           </div>
         </div>
       </div>
@@ -6402,6 +6407,14 @@
 <script src="./tr.js"></script>
 
 <style lang="scss" scoped>
+.overflow-auto {
+  justify-content: center;
+  display: flex;
+}
+.select_pages {
+  color: white;
+}
+
 .form-controll-from {
   background-color: #333975;
   border-color: #333975;
@@ -6710,6 +6723,16 @@ table::-webkit-scrollbar-corner {
   cursor: pointer;
   background: #272953;
   border: none;
+}
+.pgn_input {
+  height: 40px;
+  margin-top: 8px;
+  margin-left: 30px;
+  width: 39px;
+  background: #272953;
+  border: 1px solid #ccc;
+  color: #fff;
+  text-align: center;
 }
     .table-outer{
       &::v-deep{

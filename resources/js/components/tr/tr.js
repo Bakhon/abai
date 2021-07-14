@@ -170,6 +170,7 @@ export default {
         if (response.data) {
           this.wells = data.data;
           this.fullWells = data.data;
+          
         }
         else {
           console.log("No data");
@@ -195,7 +196,11 @@ export default {
           this.wellTypeFilterData = data.well_type;
           this.blockFilterData = data.block;
           this.expMethFilterData = data.exp_meth;
+<<<<<<< HEAD
           this.wellNameFilterData = data.rus_wellname;
+=======
+          
+>>>>>>> c6a89971dee71119d81b37c0a833da4d193bb73d
         }
         else {
           console.log("No data");
@@ -271,10 +276,14 @@ export default {
       currentYear: null,
       searchParam: null,
       postApiUrl: process.env.MIX_POST_API_URL,
+<<<<<<< HEAD
       pageNumberLink: "techregime_page_numbers/",
       editPageNumberLink: "techregime_edit_page_numbers/",
       searchLink: "techregime_totals_test_3/",
       editSearchLink: "techregime_edit_page/",
+=======
+  
+>>>>>>> c6a89971dee71119d81b37c0a833da4d193bb73d
     };
   },
   methods: {
@@ -568,6 +577,11 @@ export default {
       this.wellFilter = undefined;
       this.fieldFilter = undefined;
     },
+    onChangePage(value) {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      this.$store.commit("tr/SET_PAGENUMBER", parseInt(value));
+      this.chooseAxios();
+    },
     showWells() {
       if(this.lonelywell.length === 1){
         this.isShowAdd = !this.isShowAdd;
@@ -815,6 +829,8 @@ export default {
         this.axiosPage(this.pageNumberLink);        
       }
     },
+
+
     // API поиска простого ТР
     axiosSearch(link) {
       this.axios
@@ -833,7 +849,14 @@ export default {
           } else {
             this.wells = [];
             this.fullWells = [];
-            console.log("No data");
+            this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+              title: this.trans('app.error'),
+              toaster: "b-toaster-top-center",
+              solid: true,
+              appendToast: false,
+              variant: 'danger',
+            });
+            
           }
         })
         .catch((error) => {
@@ -841,8 +864,58 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
-          console.log("search error = ", error);
+          this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
         });
     },
+<<<<<<< HEAD
+=======
+    // API поиска редактирования ТР
+    axiosEditSearch() {
+      this.axios
+        .post(
+          this.postApiUrl + "techregime_edit_page/",
+            this.getPageData(),
+        )
+        .then((response) => {
+          this.$store.commit("globalloading/SET_LOADING", false);
+          this.isSearched = searchParam ? true : false;
+          this.$store.commit("tr/SET_SEARCH", this.searchString);
+          let data = response.data;
+          if (data) {
+            this.wells = data.data;
+            this.fullWells = data.data;
+          } else {
+            this.wells = [];
+            this.fullWells = [];
+            this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+              title: this.trans('app.error'),
+              toaster: "b-toaster-top-center",
+              solid: true,
+              appendToast: false,
+              variant: 'danger',
+            });
+          }
+        })
+        .catch((error) => {
+          this.isSearched = searchParam ? true : false;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          this.wells = [];
+          this.fullWells = [];
+          this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
+        });
+    },
+>>>>>>> c6a89971dee71119d81b37c0a833da4d193bb73d
   },
 };
