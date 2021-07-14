@@ -54,7 +54,6 @@ export default {
   name: "node",
   props: {
     node: Object,
-    checkedObjects: Object,
     level: Number,
     handleClick: Function,
     getWells: Function,
