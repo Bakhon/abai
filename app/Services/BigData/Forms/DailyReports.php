@@ -5,6 +5,8 @@ namespace App\Services\BigData\Forms;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\ReportOrgDailyCits;
+use App\Services\BigData\FieldLimitsService;
+use Carbon\Carbon;
 
 abstract class DailyReports extends TableForm
 {
@@ -71,13 +73,15 @@ abstract class DailyReports extends TableForm
             ->distinct()
             ->first();
         if (!$item) {
-            ReportOrgDailyCits::insert([
+            ReportOrgDailyCits::insert(
+                [
                     'org' => $params['wellId'],
                     'metric' => $metric->id,
                     'report_date' => $params['date']->toDateTimeString(),
                     'plan' => 0,
                     $column['code'] => $params['value'],
-                ]);
+                ]
+            );
         } else {
             $field = $column['code'];
             $item->$field = $params['value'];
@@ -85,7 +89,8 @@ abstract class DailyReports extends TableForm
         }
     }
 
-    protected function getData($filter) {
+    protected function getData($filter)
+    {
         $dateTimeObj = new \DateTime($filter->date);
         if ($filter->period == self::MONTH) {
             $dateTimeObj->modify('first day of this month');
@@ -99,9 +104,55 @@ abstract class DailyReports extends TableForm
             ->whereDate('report_date', '>=', $startDate)
             ->whereDate('report_date', '<=', $endDate)
             ->distinct()
-            ->whereHas('metric', function ($query) {
-                return $query->where('code', $this->metricCode);
-            })
+            ->whereHas(
+                'metric',
+                function ($query) {
+                    return $query->where('code', $this->metricCode);
+                }
+            )
             ->get();
+    }
+
+    protected function getCustomValidationErrors(): array
+    {
+        $errors = [];
+
+        if ($this->request->get('fact')) {
+            $limits = $this->calculateLimits();
+            if (!$this->isValidFactLimits($limits)) {
+                $errors['fact'][] = trans('bd.value_outside') . " ({$limits['min']}, {$limits['max']})";
+            }
+        }
+
+        return $errors;
+    }
+
+    private function isValidFactLimits(array $limits)
+    {
+        if (empty($limits)) {
+            return true;
+        }
+
+        if ($limits['min'] <= $this->request->get('fact') && $limits['max'] >= $this->request->get('fact')) {
+            return true;
+        }
+        return false;
+    }
+
+    private function calculateLimits()
+    {
+        $reports = ReportOrgDailyCits::where('org', $this->request->get('well_id'))
+            ->whereDate('report_date', '<', $this->request->get('date'))
+            ->whereDate('report_date', '>=', Carbon::parse($this->request->get('date'))->subMonth())
+            ->whereHas(
+                'metric',
+                function ($query) {
+                    return $query->where('code', $this->metricCode);
+                }
+            )
+            ->get();
+
+        $fieldLimitsService = app()->make(FieldLimitsService::class);
+        return $fieldLimitsService->calculateColumnLimits('fact', $reports);
     }
 }
