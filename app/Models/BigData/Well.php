@@ -29,6 +29,8 @@ class Well extends TBDModel
     const WELL_CATEGORY_INJECTION = 'INJ';
     const WELL_CATEGORY_OIL = 'OIL';
 
+    const DEFAULT_END_DATE = '3333-12-31 00:00:00+06';
+
     protected $table = 'dict.well';
     protected $guarded = ['id'];
 
