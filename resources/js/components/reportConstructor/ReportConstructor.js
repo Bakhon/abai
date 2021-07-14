@@ -16,7 +16,7 @@ export default {
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
-            showOptions: true,
+            isShowOptions: true,
             structureTypes: {
                 org: null,
                 tech: null,
@@ -52,31 +52,31 @@ export default {
     methods: {
         onYearClick() {
             document.querySelector('.start-year-date .vdatetime-input').click();
-            document.querySelector('.end-year-date .vdatetime-input').click();
         },
         onMonthClick() {
             document.querySelector('.start-month-date .vdatetime-input').click();
-            document.querySelector('.end-month-date .vdatetime-input').click();
         },
         setStartOfMonth(date) {
-            this.startDate = formatDate.getFirstDayOfMonth(date);
+            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
+            document.querySelector('.end-month-date .vdatetime-input').click();
         },
         setEndOfMonth(date) {
-            this.endDate = formatDate.getLastDayOfMonth(date);
+            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
         },
         setStartOfYear(date) {
-            this.startDate = formatDate.getStartOfYear(date);
+            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
+            document.querySelector('.end-year-date .vdatetime-input').click();
         },
         setEndOfYear(date) {
-            this.endDate = formatDate.getEndOfYear(date);
+            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
         },
         onMenuClick(currentStructureType, btnId) {
-            this.showOptions = true;
+            this.isShowOptions = true;
             this.currentStructureType = currentStructureType;
             this.activeButtonId = btnId;
         },
         onClickOption(structureType) {
-            this.showOptions = false;
+            this.isShowOptions = false;
             this.currentOption = structureType
             this.currentItemType = structureType.id
         },

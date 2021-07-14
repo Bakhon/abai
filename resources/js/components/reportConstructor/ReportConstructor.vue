@@ -52,7 +52,7 @@
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="dropdown-inner-text">
-                  {{ showOptions ? 'Выбор объекта' : currentOption.name }}
+                  {{ isShowOptions ? 'Выбор объекта' : currentOption.name }}
                 </div>
                 <div class="icon-pointer"></div>
               </button>
@@ -943,7 +943,6 @@ body {
 
       .calendar {
         display: flex;
-        justify-content: center;
         align-items: center;
         margin-right: 10px;
         background: url(/img/bd/date-time.svg) 1% no-repeat;
