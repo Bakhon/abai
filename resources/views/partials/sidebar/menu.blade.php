@@ -30,7 +30,7 @@
                         </a>
                     </li>
                     <li class="left-menu-li">
-                        <a href="{{route('well_cart')}}">
+                        <a href="{{route('bigdata.well_cart')}}">
                             {{ trans('bd.forms.well_cart.menu') }}
                         </a>
                     </li>
