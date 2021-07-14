@@ -1188,15 +1188,6 @@ position: relative;
 left: 22px;
 }
 
-/* .block__2__input {
-width: 80px;
-height: 22px;
-position: relative;
-right: -130px;
-top: -52px;
-border: 1px solid rgba(34, 36, 82, 1);
-background-color: #323370;
-} */
 
 .block__3__input {
 width: 80px;
