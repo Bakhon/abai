@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\WellCategory as WellCategoryDictionary;
 use App\Models\BigData\Well;
@@ -30,6 +31,75 @@ class WellCategory extends PlainForm
     ];
 
     protected $configurationFileName = 'well_category';
+
+    public function submit(): array
+    {
+        DB::connection('tbd')->beginTransaction();
+
+        try {
+            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+
+            $oldCategory = $dbQuery->where('well', $this->request->get('well'))
+                ->where('dend', Well::DEFAULT_END_DATE)
+                ->first();
+            if ($oldCategory !== null) {
+                $dbQuery->where('id', $oldCategory->id)->update(
+                    [
+                        'dend' => $this->request->get('dbeg')
+                    ]
+                );
+            }
+
+            $data = $this->request->except('org');
+            $data['dend'] = Well::DEFAULT_END_DATE;
+
+            if (!empty($data['id'])) {
+                $id = $dbQuery->where('id', $data['id'])->update($data);
+            } else {
+                $id = $dbQuery->insertGetId($data);
+            }
+
+            $this->saveOrganization();
+
+            DB::connection('tbd')->commit();
+            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
+        } catch (\Exception $e) {
+            DB::connection('tbd')->rollBack();
+            throw new SubmitFormException($e->getMessage());
+        }
+    }
+
+    public function saveOrganization()
+    {
+        $dbQuery = DB::connection('tbd')->table('prod.well_org');
+
+        $oldOrg = $dbQuery
+            ->where('well', $this->request->get('well'))
+            ->where('dend', '<', Well::DEFAULT_END_DATE)
+            ->orderByDesc('dend')
+            ->first();
+
+        if ($oldOrg && $oldOrg->org === $this->request->get('org')) {
+            return;
+        }
+
+        $dbQuery->insert(
+            [
+                'org' => $this->request->get('org'),
+                'well' => $this->request->get('well'),
+                'dbeg' => $this->request->get('dbeg'),
+                'dend' => Well::DEFAULT_END_DATE
+            ]
+        );
+
+        if ($oldOrg !== null) {
+            $dbQuery->where('id', $oldOrg->id)->update(
+                [
+                    'dend' => $this->request->get('dbeg')
+                ]
+            );
+        }
+    }
 
     public function getCalculatedFields(int $wellId, array $values): array
     {
@@ -223,25 +293,24 @@ class WellCategory extends PlainForm
             ->whereIn('c.code', [Well::WELL_CATEGORY_OIL]);
     }
 
-    private function isValidDate($wellId, $dbeg):bool
+    private function isValidDate($wellId, $dbeg): bool
     {
-            $dend = DB::connection('tbd')
+        $dend = DB::connection('tbd')
             ->table('prod.well_category')
             ->where('well', $wellId)
-            ->where('dend' ,'<' , '3333-12-31 00:00:00+06')
+            ->where('dend', '<', Well::DEFAULT_END_DATE)
             ->orderBy('dend', 'desc')
             ->get('dend')
             ->first();
-        
-        return $dbeg >= $dend->dend;
 
+        return $dbeg >= $dend->dend;
     }
 
     protected function getCustomValidationErrors(): array
     {
         $errors = [];
 
-        if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'))){
+        if (!$this->isValidDate($this->request->get('well'), $this->request->get('dbeg'))) {
             $errors['dbeg'] = trans('bd.validation.dbeg');
         }
 

@@ -293,7 +293,7 @@ export default {
         },
         updateProduction() {
             this.summary.productionByDzo = this.getSummaryByDzo(this.typeMapping.production);
-            this.summary.productionByKMG = this.getSummaryByKMG(this.summary.productionByDzo,'production');
+            this.summary.productionByKMG = this.getSummaryByKMG(this.summary.productionByDzo,'production',false);
             let oilSummary = this.summary.productionByKMG[0];
             let condensateSummary = this.summary.productionByKMG[1];
             oilSummary.number = 2;
@@ -301,12 +301,12 @@ export default {
             oilSummary.monthlyPlan += condensateSummary.monthlyPlan;
             oilSummary.monthlyPlanOpec += condensateSummary.monthlyPlanOpec;
             this.summary.productionByDzoWithParticipation = this.getSummaryWithParticipationByDzo(this.summary.productionByDzo);
-            this.summary.productionByKMGWithParticipation = this.getSummaryByKMG(this.summary.productionByDzoWithParticipation,'production');
+            this.summary.productionByKMGWithParticipation = this.getSummaryByKMG(this.summary.productionByDzoWithParticipation,'production',true);
             this.summary.productionByKMGWithParticipation[0].number = 1;
         },
         updateDelivery() {
             this.summary.deliveryByDzo = this.getSummaryByDzo(this.typeMapping.delivery);
-            this.summary.deliveryByKMG = this.getSummaryByKMG(this.summary.deliveryByDzo,'delivery');
+            this.summary.deliveryByKMG = this.getSummaryByKMG(this.summary.deliveryByDzo,'delivery',false);
             let oilSummary = this.summary.deliveryByKMG[0];
             let condensateSummary = this.summary.deliveryByKMG[1];
             oilSummary.number = 2;
@@ -314,16 +314,19 @@ export default {
             oilSummary.monthlyPlan += condensateSummary.monthlyPlan;
             oilSummary.monthlyPlanOpec += condensateSummary.monthlyPlanOpec;
             this.summary.deliveryByDzoWithParticipation = this.getSummaryWithParticipationByDzo(this.summary.deliveryByDzo);
-            this.summary.deliveryByKMGWithParticipation = this.getSummaryByKMG(this.summary.deliveryByDzoWithParticipation,'delivery');
+            this.summary.deliveryByKMGWithParticipation = this.getSummaryByKMG(this.summary.deliveryByDzoWithParticipation,'delivery',true);
             this.summary.deliveryByKMGWithParticipation[0].number = 1;
         },
-        getSummaryByKMG(productionByDzo,type) {
+        getSummaryByKMG(productionByDzo,type,isKMGParticipation) {
             let summary = [];
             let oilName = 'productionByKMG';
             if (type === 'delivery') {
                 oilName = 'deliveryByKMG';
             }
-            let oilSummary = this.getSummaryByType(oilName,'oilCompanies',productionByDzo,);
+            let oilSummary = this.getSummaryByType(oilName,'oilCompanies',productionByDzo);
+            if (!isKMGParticipation) {
+                oilSummary.dzo = this.names.productionByDzo;
+            }
             let condensateSummary = this.getSummaryByType('condensate','condensateCompanies',productionByDzo);
             return [oilSummary,condensateSummary];
         },
@@ -451,10 +454,12 @@ export default {
             });
         },
         getColorBy(number) {
-            if (number > 0) {
+            if (Math.round(number) > 0) {
                 return 'color_green';
-            } else {
+            } else if (Math.round(number) < 0) {
                 return 'color_red';
+            } else {
+                return '';
             }
         },
         getSummaryWithParticipationByDzo(summary) {
@@ -568,7 +573,7 @@ export default {
             link.click();
         },
         exportToExcel() {
-            let fileName = 'Суточная информация по добыче нефти и конденсата НК КМГ_' + moment().subtract(1, 'days').format('D M YY') + ' г. .xls';
+            let fileName = 'Суточная информация по добыче нефти и конденсата НК КМГ_' + moment().subtract(1, 'days').format('DD.MM.YYYY') + ' г. .xls';
             this.tableToExcel('exportReport','name',fileName);
         },
         updateSummaryForExcel() {
@@ -637,6 +642,21 @@ export default {
                 return mapped;
             }
         },
+        getDarkColorClass(rowIndex) {
+            if (rowIndex % 2 === 0) {
+                return 'tdStyle'
+            } else {
+                return 'tdNone'
+            }
+        },
+
+        getLightColorClass(rowIndex) {
+            if (rowIndex % 2 === 0) {
+                return 'tdStyleLight'
+            } else {
+                return 'tdStyleLight2'
+            }
+        },
     },
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
@@ -648,13 +668,13 @@ export default {
         this.$store.commit('globalloading/SET_LOADING', false);
         setTimeout(() => {
             this.isOpecActive = !this.isOpecActive;
-        }, 5000);
+        }, 15000);
         setInterval(() => {
            this.isProduction = !this.isProduction;
             setTimeout(() => {
                 this.isOpecActive = !this.isOpecActive;
-            }, 5000);
-        }, 10000);
+            }, 15000);
+        }, 30000);
     },
     watch: {
         isProduction: function() {
