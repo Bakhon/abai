@@ -60,6 +60,10 @@ export default {
                     'class': 'hide-company-list',
                     'hover': '',
                 },
+                'emergencyInfo': {
+                    'class': 'hide-company-list',
+                    'hover': '',
+                },
             }
         };
     },
@@ -70,23 +74,11 @@ export default {
                 _.set(item, 'hover', '');
             });
 
-            this.selectedSecondaryOption = '';
-            this.selectedDzo = 'all';
             this.isFilterTargetPlanActive = false;
             this.buttonTargetPlan = "";
-            this.company = "all";
             this.changeMenu2('daily');
             this.tableMapping[tableName]['class'] = 'show-company-list';
             this.tableMapping[tableName]['hover'] = 'button_hover';
-
-            if (tableName == "otmDrilling") {
-                this.otmSelectedRow = 'otm_iz_burenia_skv_fact';
-            } else if (tableName == "otmWorkover") {
-                this.otmSelectedRow = 'otm_krs_skv_fact';
-            } else if (["chemistry","otmWorkover"].includes(tableName)) {
-                this.changeMenu2('monthly');
-            }
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
         changeMenu2(change) {
