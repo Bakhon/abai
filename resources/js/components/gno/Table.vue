@@ -436,7 +436,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <tabs @onPushParams="onSubmitParams()" @closeTabModal="closeTabModal"></tabs>
+                    <tabs @onPushParams="onSubmitParams()" @closeTabModal="closeTabModal" :qLInput="qLforKpod" :strokeLenDev="strokeLenDev" :spm="spm" :pumpType="pumpTypeforKpod"></tabs>
                   </div>
                 </div>
               </modal>

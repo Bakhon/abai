@@ -28,6 +28,7 @@ export default {
   ],
   data: function () {
     return {
+      posturl: null,
       404: require('./images/404.svg'),
       isSkError: false,
       nearDist: 1000,
@@ -35,7 +36,7 @@ export default {
       isPermission: false,
       isEditing: false,
       permissionName: 'podborGno edit main',
-      url: "http://172.20.103.187:7575/api/pgno/",
+      url: this.posturl + "pgno/",
       isLoading: false,
       activeRightTabName: 'technological-mode',
       layout: {
@@ -362,6 +363,9 @@ export default {
       skTypes: null,
       horizons: null,
       isNktError: null,
+      spm: null,
+      qLforKpod: null,
+      pumpTypeforKpod: null,
     };
 
   },
@@ -381,6 +385,7 @@ export default {
     },
   },
   beforeCreate: function () {
+    this.posturl = process.env.MIX_PGNO_API_URL
     this.axios.get('/ru/organizations').then(({ data }) => {
       if (data.organizations.length == 0) {
         this.organization = "НК КазМунайГаз"
@@ -396,16 +401,16 @@ export default {
       }
     })
 
-    this.axios.get("http://172.20.103.187:7575/api/status/").then(res => {
+    this.axios.get(this.posturl + "status/").then(res => {
       if (res.status !== 200) {
         this.serviceOffline = true;
       }
     })
 
-    this.axios.get("http://172.20.103.187:7575/api/pgno/sk_types").then(response => {
+    this.axios.get(this.posturl + "pgno/sk_types").then(response => {
       this.skTypes = response.data
     })
-    this.axios.get("http://172.20.103.187:7575/api/pgno/horizons").then(response => {
+    this.axios.get(this.posturl + "pgno/horizons").then(response => {
       this.horizons = response.data
     })
   },
@@ -524,7 +529,7 @@ export default {
         this.CelValue = this.piCelValue
       }
       this.prepareData()
-      let uri = "http://172.20.103.187:7575/api/pgno/" + this.field + "/" + this.wellNumber + "/download";
+      let uri = this.posturl + "pgno/" + this.field + "/" + this.wellNumber + "/download";
       this.axios.post(uri, this.postdata, { responseType: "blob" }).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
       }).catch(function (error) {
@@ -537,7 +542,7 @@ export default {
     downloadEconomicExcel() {
       this.isLoading = true;
       let req = [this.expAnalysisData.npvTable1, this.expAnalysisData.npvTable2]
-      let uri = "http://172.20.103.187:7575/api/pgno/economic/download";
+      let uri = this.posturl + "pgno/economic/download";
       this.axios.post(uri, req, { responseType: "blob" }).then((response) => {
         fileDownload(response.data, "ЭКОНОМИКА_" + this.field + "_" + this.wellNumber + ".xlsx")
       }).catch(function (error) {
@@ -574,6 +579,10 @@ export default {
     },
 
     onChangeParams() {
+      if (this.qLInput) {
+        this.qLforKpod = this.qLInput.split(' ')[0]
+        this.pumpTypeforKpod = this.pumpType.split(' ')[0]
+      }
       this.$modal.show('modalTabs')
     },
 
@@ -648,6 +657,7 @@ export default {
         this.wellIncl = data["Well Data"]["well"]
         this.hPerfND = data["Well Data"]["h_perf"]
         this.strokeLenDev = data["Well Data"]["stroke_len"]
+        this.spm = data["Well Data"]["spm"]
         this.sep_value = (data["Well Data"]["es"] * 100).toFixed(0)
         this.nkt = this.tubID
         let langUrl = `${window.location.pathname}`.slice(1, 3);
@@ -662,7 +672,7 @@ export default {
             this.dNasosa = "Pump diameter"
             this.freq = "Pump rate"
           }
-          this.spmDev = data["Well Data"]["spm"] + " " + this.trans('measurements.1/min')
+          this.spmDev = this.spm + " " + this.trans('measurements.1/min')
           this.pumpType = this.pumpType + " " + this.trans('measurements.mm')
         } else {
           if (langUrl === 'ru') {
@@ -981,7 +991,7 @@ export default {
       }
     },
     async NnoCalc() {
-      let uri = "http://172.20.103.187:7575/api/nno/";
+      let uri = this.posturl + "nno/";
 
       this.eco_param = null;
 
@@ -1353,7 +1363,7 @@ export default {
 
     fetchBlockCentrators() {
       let fieldInfo = this.wellIncl.split('_');
-      let urlForIncl = "http://172.20.103.187:7575/api/pgno/incl";
+      let urlForIncl = this.posturl + "pgno/incl";
       if (this.expChoose == 'ЭЦН') {
         (this.liftValue = 'ЭЦН') && (this.stepValue = 20);
       } else {
@@ -1635,7 +1645,7 @@ export default {
           }
           if (this.isVisibleChart) {
             this.isLoading = true;
-            let uri = "http://172.20.103.187:7575/api/pgno/shgn";
+            let uri = this.posturl + "pgno/shgn";
             this.prepareData()
             this.axios.post(uri, this.postdata).then((response) => {
               let data = response.data;

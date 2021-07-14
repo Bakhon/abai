@@ -20,8 +20,13 @@ const pgno = {
         komponovka: ["hvostovik"],
         stupColumns: "2",
         markShtang: ["15Х2ГМФ (НВО)"],
+        kPodMode: "default",
+
     },
     mutations: {
+      UPDATE_KPOD_MODE(state, val) {
+        state.kPodMode = val
+      },
       UPDATE_HEAVYDOWN(state, val) {
         state.heavyDown = val
       },

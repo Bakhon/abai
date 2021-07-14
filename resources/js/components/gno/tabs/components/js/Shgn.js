@@ -6,6 +6,7 @@ export default {
 	components: {
 		Multiselect,
 	  },
+	props: ["qLInput", "strokeLenDev", "spm","pumpType"],
 	data: function()  {
 		return {
 			svgTableN1: require('../../../images/tableN1.svg'),
@@ -23,71 +24,47 @@ export default {
 			spmMax: 8,
 			kpodMin: 0.6,
 			isModal: false,
-			diameterShgn: 1,
+			kpodCalced: null,
 			value: [],
 			diametersShgn: [
 				{
-					id: 1,
+					pumpType: 27,
 					value: 27
 				},
 				{
-					id: 2,
+					pumpType: 32,
 					value: 32
 				},
 				{
-					id: 3,
+					pumpType: 38,
 					value: 38
 				},
 				{
-					id: 4,
+					pumpType: 44,
 					value: 44
 				},
 				{
-					id: 5,
+					pumpType: 50,
 					value: 50
 				},
 				{
-					id: 6,
+					pumpType:57,
 					value: 57
 				},
 				{
-					id: 7,
+					pumpType: 60,
 					value: 60
 				},
 				{
-					id: 6,
+					pumpType: 70,
 					value: 70
 				},
 				{
-					id: 6,
+					pumpType: 95,
 					value: 95
 				},
 
 			],
-			pumpCheckboxes: [
-				{
-					id: 1,
-					value: 27
-				},
-				{
-					id: 2,
-					value: 32
-				},
-				{
-					id: 3,
-					value: 38
-				},
-				{
-					id: 4,
-					value: 44
-				},
-				{
-					id: 5,
-					value: 50
-				},
-
-				],
-			testWatch: 3,
 			markShtang: [],
 			markShtangsTypes: {
 				"mediumCorrosion": [
@@ -116,7 +93,8 @@ export default {
 					"15НЗМА (Н)",
 					"АЦ28ХГНЗФТ (О)"
 				]
-				}
+			},
+			kPodMode: true,
 		}
 	},
 	computed: {
@@ -202,8 +180,6 @@ export default {
 		onChangeStupColumns(event) {
 			this.$store.commit("UPDATE_STUP_COLUMNS", event.target.value)
 		},
-		
-
 		onClick() {
 			this.$modal.show('modalTable')
 			this.isModal = true;
@@ -224,13 +200,18 @@ export default {
 			this.$emit('on-submit-params');
 			this.$modal.show('tabs');
 		},
+		calKpod(){
+			if (this.qLInput) {
+				this.kpodCalced = this.qLInput / (1440 * 3.14 * this.pumpType ** 2 * this.strokeLenDev * (this.spm / 4000000))
+			}
+		}
 	},
 	created: function() {
 		this.spmMin = this.$store.getters.spmMin
-    	this.spmMax = this.$store.getters.spmMax
-    	this.strokeLenMin = this.$store.getters.strokeLenMin
-    	this.strokeLenMax = this.$store.getters.strokeLenMax
-    	this.kpodMin = this.$store.getters.kpodMin
+    this.spmMax = this.$store.getters.spmMax
+    this.strokeLenMin = this.$store.getters.strokeLenMin
+    this.strokeLenMax = this.$store.getters.strokeLenMax
+    this.kpodMin = this.$store.getters.kpodMin
 		this.groupPosad = this.$store.getters.groupPosad
 		this.komponovka = this.$store.getters.komponovka
 		this.dmRods = this.$store.getters.dmRods
@@ -243,5 +224,6 @@ export default {
 		this.inclStep = this.$store.getters.inclStep
 		this.markShtang = this.$store.getters.markShtang
 		this.markShtangs = this.markShtangsTypes[this.corrosion]
+		this.calKpod()
 	}
 }

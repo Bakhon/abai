@@ -30,17 +30,17 @@
 			<div class="title__block__max" style="display: flex; flex-direction: column;">
 				<div class="block1">
 					<div class="title__block__kpod">
-						<input class="checkbox__block__1" v-model="dmPumps" value="27" type="radio" />
+						<input class="checkbox__block__1" v-model="kPodMode" type="radio" v-bind:value="true"/>
 						<label class="label-kpod">{{trans('pgno.calc_min_value')}}</label>
-						<input type="text" class="input-box-gno podbor-kpod-block-3">
+						<input type="text" class="input-box-gno podbor-kpod-block-3" v-model="kpodMin" :disabled="!kPodMode">
 					</div>			
 				</div>
 
 				<div class="block2">
 					<div class="title__block__kpod">
-						<input class="checkbox__block__1" v-model="dmPumps" value="27" type="radio" />
+						<input class="checkbox__block__1" v-model="kPodMode" type="radio" v-bind:value="false"/>
 						<label class="label-kpod">{{trans('pgno.use_value')}}</label>
-						<input type="text" class="input-box-gno podbor-kpod-block-3">
+						<input type="text" class="input-box-gno podbor-kpod-block-3" v-model="kpodCalced" :disabled="kPodMode">
 					</div>	
 				</div>
 				
@@ -55,57 +55,17 @@
 				<div class="block4">
 					<div class="title__block__pump__1__flex">
 
-					<select class="input-box-gno k-pod" v-model="diameterShgn">
-						<option selected v-for="dm in diametersShgn" :key="dm.value" :value="dm.id">
+					<select class="input-box-gno k-pod" v-model="pumpType" @change="calKpod()">
+						<option v-for="dm in diametersShgn" :key="dm.value" :value="dm.pumpType">
 							{{dm.value}}
 						</option>
 					</select>
-					<input type="text" class="input-box-gno podbor-kpod-block-1">
-					<input type="text" class="input-box-gno podbor-kpod-block-2">
-					<input type="text" class="input-box-gno podbor-kpod-block-3">
+					<input type="text" class="input-box-gno podbor-kpod-block-1" v-model="strokeLenDev" @change="calKpod()">
+					<input type="text" class="input-box-gno podbor-kpod-block-2" v-model="spm" @change="calKpod()">
+					<input type="text" class="input-box-gno podbor-kpod-block-3" v-model="qLInput" @change="calKpod()">
 
 				</div>
 				</div>
-				<!-- <div class="title__block__pump__1">
-					<input class="checkbox__block__1" v-model="dmPumps" value="27" type="radio" />
-					<label class="label-kpod">{{ trans('pgno.calc_min_value')}}</label>
-				</div>
-
-				<div style="display: flex; width: 300px; height: 30px;">
-
-					<div class="title__block__pump__1">
-						<div>
-							<input class="checkbox__block__1" v-model="dmPumps" value="32" type="radio" />
-							<label class="label-kpod">123</label>
-						</div>
-					</div>
-					<div style="display: flex; font-size: 11px;">
-						<div class="kpod-input-text">
-							Длина хода
-						</div>
-						<div class="kpod-input-text">
-							Число качаний
-						</div>
-						<div class="kpod-input-text">
-							Qж
-						</div>
-
-					</div>
-
-				</div>
-
-				<div class="title__block__pump__1__flex">
-
-					<select class="input-box-gno k-pod" v-model="diameterShgn">
-						<option selected v-for="dm in diametersShgn" :key="dm.value" :value="dm.id">
-							{{dm.value}}
-						</option>
-					</select>
-					<input type="text" class="input-box-gno podbor-kpod-block-1">
-					<input type="text" class="input-box-gno podbor-kpod-block-2">
-					<input type="text" class="input-box-gno podbor-kpod-block-3">
-
-				</div> -->
 
 			</div>
 		</div>
