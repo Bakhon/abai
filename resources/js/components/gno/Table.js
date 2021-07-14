@@ -458,6 +458,8 @@ export default {
       this.stupColumns = this.$store.getters.stupColumns
       this.corrosion = this.$store.getters.corrosion
       this.markShtang = this.$store.getters.markShtang
+      this.markShtang = this.$store.getters.markShtang
+      this.kPodCalced = this.$store.getters.markShtang
       this.postdata = JSON.stringify(
         {
           "pgno_setings": {
@@ -1097,7 +1099,8 @@ export default {
       this.$store.commit("UPDATE_GROUP_POSAD", "2")
       this.$store.commit("UPDATE_HEAVYDOWN", true)
       this.$store.commit("UPDATE_STUP_COLUMNS", 2)
-      this.$store.commit("UPDATE_MARKSHTANG", ["15Х2ГМФ (НВО)"])
+      this.$store.commit("UPDATE_KPOD_MODE", true)
+      this.$store.commit("UPDATE_KPOD_CALCED", null)
     },
 
     nktExist(val) {

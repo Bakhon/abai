@@ -64,6 +64,7 @@ export default {
   },
   data: function () {
     return {
+      posturl: process.env.MIX_PGNO_API_URL,
       krsTable: null,
       numberRepairs: null,
       numberNNO: null,
@@ -87,7 +88,7 @@ export default {
     }
   },
   mounted() {
-    let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/" + this.field + "/" + this.wellNumber + "/";
+    let uriPrsKrs = this.posturl + "nno/history/" + this.field + "/" + this.wellNumber + "/";
     this.axios.get(uriPrsKrs).then((response) => {
       let krs = response['data']['krs']
       let nno = JSON.parse(response['data']['prs']['nno'])
@@ -98,7 +99,7 @@ export default {
     })
 
     var wi = this.wellIncl.split('_');
-    let uri = "http://172.20.103.187:7575/api/nno/history/" + wi[0] + "/" + wi[1] + "/";
+    let uri = this.posturl + "nno/history/" + wi[0] + "/" + wi[1] + "/";
     this.$emit('update:isLoading', true);
     this.axios.get(uri).then((response) => {
       this.prs = response['data']['prs']['data']

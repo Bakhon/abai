@@ -55,14 +55,14 @@
 				<div class="block4">
 					<div class="title__block__pump__1__flex">
 
-					<select class="input-box-gno k-pod" v-model="pumpType" @change="calKpod()">
+					<select class="input-box-gno k-pod" v-model="pumpTypeKpod" @change="calKpod()">
 						<option v-for="dm in diametersShgn" :key="dm.value" :value="dm.pumpType">
 							{{dm.value}}
 						</option>
 					</select>
-					<input type="text" class="input-box-gno podbor-kpod-block-1" v-model="strokeLenDev" @change="calKpod()">
-					<input type="text" class="input-box-gno podbor-kpod-block-2" v-model="spm" @change="calKpod()">
-					<input type="text" class="input-box-gno podbor-kpod-block-3" v-model="qLInput" @change="calKpod()">
+					<input type="text" class="input-box-gno podbor-kpod-block-1" v-model="strokeLenDevKpod" @change="calKpod()">
+					<input type="text" class="input-box-gno podbor-kpod-block-2" v-model="spmKpod" @change="calKpod()">
+					<input type="text" class="input-box-gno podbor-kpod-block-3" v-model="qLInputKpod" @change="calKpod()">
 
 				</div>
 				</div>

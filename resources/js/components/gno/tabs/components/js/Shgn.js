@@ -26,6 +26,11 @@ export default {
 			isModal: false,
 			kpodCalced: null,
 			value: [],
+			pumpTypeKpod: this.pumpType,
+			qLInputKpod: this.qLInput,
+			strokeLenDevKpod: this.strokeLenDev,
+			spmKpod: this.spm,
+			markShtangs: null,
 			diametersShgn: [
 				{
 					pumpType: 27,
@@ -176,6 +181,11 @@ export default {
 		onChangeCorrosion(event) {
 			this.$store.commit("UPDATE_CORROSION", event.target.value)
 			this.markShtangs = this.markShtangsTypes[this.corrosion]
+			if (this.corrosion === "highCorrosion") {
+				this.markShtang = []
+			} else {
+				this.markShtang = this.$store.getters.markShtang
+			}
 		},
 		onChangeStupColumns(event) {
 			this.$store.commit("UPDATE_STUP_COLUMNS", event.target.value)
@@ -202,7 +212,8 @@ export default {
 		},
 		calKpod(){
 			if (this.qLInput) {
-				this.kpodCalced = this.qLInput / (1440 * 3.14 * this.pumpType ** 2 * this.strokeLenDev * (this.spm / 4000000))
+				this.kpodCalcedKpod = this.qLInputKpod / (1440 * 3.14 * this.pumpTypeKpod ** 2 * this.strokeLenDevKpod * (this.spmKpod / 4000000))
+				this.$store.commit('UPDATE_KPOD_CALCED', this.kpodCalcedKpod) 
 			}
 		}
 	},
@@ -224,6 +235,8 @@ export default {
 		this.inclStep = this.$store.getters.inclStep
 		this.markShtang = this.$store.getters.markShtang
 		this.markShtangs = this.markShtangsTypes[this.corrosion]
+		this.kPodMode = this.$store.getters.kPodMode
+		this.kPodCalced = this.$store.getters.kPodCalced
 		this.calKpod()
 	}
 }
