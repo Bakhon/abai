@@ -176,16 +176,7 @@
           </div>
         </div>
 
-        <div class="row p-3 mt-3 bg-main1">
-          <chart-button
-              v-for="(tab, index) in tabs"
-              :key="index"
-              :text="tab"
-              :active="activeTab === index"
-              :class="index ? 'ml-2' : ''"
-              class="col"
-              @click.native="activeTab = index"/>
-        </div>
+        <tables v-if="!loading"/>
       </div>
 
       <div class="col-3">
@@ -367,8 +358,8 @@ import Subtitle from "./components/Subtitle";
 import PercentBadge from "./components/PercentBadge";
 import PercentBadgeIcon from "./components/PercentBadgeIcon";
 import PercentProgress from "./components/PercentProgress";
-import ChartButton from "./components/ChartButton";
 import SelectOrganization from "./components/SelectOrganization";
+import Tables from "./components/Tables";
 
 const optimizedColumns = [
   "Revenue_total",
@@ -415,10 +406,9 @@ export default {
     PercentBadgeIcon,
     PercentProgress,
     SelectOrganization,
-    ChartButton,
+    Tables,
   },
   data: () => ({
-    activeTab: 0,
     form: {
       org_id: null,
     },
