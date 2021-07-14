@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\DB;
 trait DepthValidationTrait
 {
     function isCorrectSummofDailyDrill($dailyDrill, $depth) : bool {
-        echo $depth ;
-        
+
         if($dailyDrill != 0){
             return $depth < $dailyDrill;
         }
