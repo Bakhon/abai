@@ -37,10 +37,6 @@ export default {
             selectedObjects: [],
             startDate: null,
             endDate: null,
-            startMonthDate: null,
-            endMonthDate: null,
-            startYearDate: null,
-            endYearDate: null,
             maxDepthOfSelectedAttributes: null,
         }
     },
@@ -62,17 +58,17 @@ export default {
             document.querySelector('.start-month-date .vdatetime-input').click();
             document.querySelector('.end-month-date .vdatetime-input').click();
         },
-        setStartMonth() {
-            this.startDate = formatDate.getFirstDayOfMonth(this.startMonthDate);
+        setStartMonth(date) {
+            this.startDate = formatDate.getFirstDayOfMonth(date);
         },
-        setEndMonth() {
-            this.endDate = formatDate.getLastDayOfMonth(this.endMonthDate);
+        setEndMonth(date) {
+            this.endDate = formatDate.getLastDayOfMonth(date);
         },
-        setStartYear() {
-            this.startDate = formatDate.getStartOfYear(this.startYearDate);
+        setStartYear(date) {
+            this.startDate = formatDate.getStartOfYear(date);
         },
-        setEndYear() {
-            this.endDate = formatDate.getEndOfYear(this.endYearDate);
+        setEndYear(date) {
+            this.endDate = formatDate.getEndOfYear(date);
         },
         onMenuClick(currentStructureType, btnId) {
             this.showOptions = true;

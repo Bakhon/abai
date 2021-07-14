@@ -175,65 +175,49 @@
                     <span @click="onMonthClick()" class="calendar">Месяц</span>
                     <template>
                       <datetime
-                        type="date"
-                        v-model="endMonthDate"
                         class="end-month-date"
                         value-zone="Asia/Almaty"
                         zone="Asia/Almaty"
                         :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                        :min-datetime="startDate"
-                        use24-hour
                         auto
                         :flow="['month']"
-                        :change="setEndMonth()"
+                        v-on:input="setEndMonth($event)"
                       >
                       </datetime>
                       <datetime
-                          type="date"
-                          v-model="startMonthDate"
                           class="start-month-date"
                           value-zone="Asia/Almaty"
                           zone="Asia/Almaty"
                           :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                          :max-datetime="endDate"
                           auto
                           :flow="['month']"
-                          :change="setStartMonth()"
+                          v-on:input="setStartMonth($event)"
                       >
                       </datetime>
                     </template>
-                    <div class="row date-picker inline-flex mb-1">
-                    <label @click="onYearClick()" class="calendar">Год</label>
+                    <span @click="onYearClick()" class="calendar">Год</span>
                     <template>
                       <datetime
-                        type="date"
-                        v-model="endYearDate"
                         class="end-year-date"
                         value-zone="Asia/Almaty"
                         zone="Asia/Almaty"
                         :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                        :min-datetime="startDate"
-                        use24-hour
-                        auto
                         :flow="['year']"
-                        :change="setEndYear()"
+                        auto
+                        v-on:input="setEndYear($event)"
                       >
                       </datetime>
                       <datetime
-                          type="date"
-                          v-model="startYearDate"
                           class="start-year-date"
                           value-zone="Asia/Almaty"
                           zone="Asia/Almaty"
                           :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                          :max-datetime="endDate"
-                          auto
                           :flow="['year']"
-                          :change="setStartYear()"
+                          auto
+                          v-on:input="setStartYear($event)"
                       >
                       </datetime>
                     </template>
-                    </div>
                   </div>
 
                   <div class="btn-container">
