@@ -178,6 +178,7 @@
                         class="end-month-date"
                         value-zone="Asia/Almaty"
                         zone="Asia/Almaty"
+                        :title="trans('bd.choose_end_month')"
                         :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                         auto
                         :flow="['month']"
@@ -189,6 +190,7 @@
                           class="start-month-date"
                           value-zone="Asia/Almaty"
                           zone="Asia/Almaty"
+                          :title="trans('bd.choose_start_month')"
                           :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                           auto
                           :flow="['month']"
@@ -202,6 +204,7 @@
                         class="end-year-date"
                         value-zone="Asia/Almaty"
                         zone="Asia/Almaty"
+                        :title="trans('bd.choose_end_year')"
                         :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                         :flow="['year']"
                         auto
@@ -213,6 +216,7 @@
                           class="start-year-date"
                           value-zone="Asia/Almaty"
                           zone="Asia/Almaty"
+                          :title="trans('bd.choose_start_year')"
                           :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                           :flow="['year']"
                           auto
@@ -937,7 +941,8 @@ body {
         display: none;
       } 
 
-      .vdatetime::v-deep .vdatetime-popup__header {
+      .vdatetime::v-deep .vdatetime-popup__year,
+      .vdatetime::v-deep .vdatetime-popup__date {
         display: none;
       }
 
