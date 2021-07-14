@@ -8,13 +8,14 @@
           <div class="p-3 bg-blue-dark">
             <economic-title font-size="58" line-height="72" class="text-nowrap">
               <span>{{ scenario.Revenue_total.value_optimized[0] }}</span>
+
               <span class="font-size-16px line-height-20px text-blue">
                {{ scenario.Revenue_total.value_optimized[1] }}
               </span>
             </economic-title>
 
             <subtitle font-size="18">
-              Выручка
+              {{ trans('economic_reference.Revenue') }}
             </subtitle>
 
             <percent-progress :percent="scenario.Revenue_total.percent"/>
@@ -34,7 +35,7 @@
                   reverse/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
-                vs Базовый вариант
+                {{ trans('economic_reference.vs_base_case') }}
               </div>
             </div>
           </div>
@@ -44,13 +45,14 @@
 
             <economic-title font-size="58" line-height="72" class="text-nowrap">
               <span>{{ scenario.Overall_expenditures.value_optimized[0] }}</span>
+
               <span class="font-size-16px line-height-20px text-blue">
                 {{ scenario.Overall_expenditures.value_optimized[1] }}
               </span>
             </economic-title>
 
             <subtitle font-size="18">
-              Расходы
+              {{ trans('economic_reference.costs') }}
             </subtitle>
 
             <percent-progress :percent="scenario.Overall_expenditures.percent"/>
@@ -69,7 +71,7 @@
                   class="text-nowrap mr-2"/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
-                vs Базовый вариант
+                {{ trans('economic_reference.vs_base_case') }}
               </div>
             </div>
           </div>
@@ -79,13 +81,14 @@
 
             <economic-title font-size="58" line-height="72" class="text-nowrap">
               <span>{{ scenario.operating_profit_12m.value_optimized[0] }}</span>
+
               <span class="font-size-16px line-height-20px text-blue">
                 {{ scenario.operating_profit_12m.value_optimized[1] }}
               </span>
             </economic-title>
 
             <subtitle font-size="18">
-              Операционная прибыль
+              {{ trans('economic_reference.operating_profit') }}
             </subtitle>
 
             <percent-progress :percent="scenario.operating_profit_12m.percent"/>
@@ -103,10 +106,9 @@
                   :percent="scenario.operating_profit_12m.percent"
                   reverse
                   class="text-nowrap mr-2"/>
-              <!--              если растет - зеленым вверх-->
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
-                vs Базовый вариант
+                {{ trans('economic_reference.vs_base_case') }}
               </div>
             </div>
           </div>
@@ -115,17 +117,16 @@
             <div class="text-nowrap font-weight-bold"
                  style="font-size: 52px; line-height: 64px;">
               <span>{{ oilPrices[1].label }}</span>
-              <span class="font-size-16px line-height-20px text-blue">
-                  $ / bbl
-              </span>
+
+              <span class="font-size-16px line-height-20px text-blue">$ / bbl</span>
             </div>
 
             <subtitle font-size="18">
-              Цена на нефть
+              {{ trans('economic_reference.oil_price') }}
             </subtitle>
 
             <span class="text-grey font-size-12px line-height-14px flex-grow-1">
-              текущий
+              {{ trans('economic_reference.current') }}
             </span>
 
             <div class="d-flex align-items-center">
@@ -138,7 +139,7 @@
               </div>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
-                vs выбор
+                {{ trans('vs_choice') }}
               </div>
             </div>
           </div>
@@ -147,17 +148,16 @@
             <div class="text-nowrap font-weight-bold"
                  style="font-size: 52px; line-height: 64px;">
               <span>{{ dollarRates[1].label }}</span>
-              <span class="font-size-16px line-height-20px text-blue">
-                   kzt / $
-              </span>
+
+              <span class="font-size-16px line-height-20px text-blue">kzt / $</span>
             </div>
 
             <subtitle font-size="18">
-              Курс доллара
+              {{ trans('economic_reference.course_prices') }}
             </subtitle>
 
             <span class="text-grey font-size-12px line-height-14px flex-grow-1">
-              текущий
+              {{ trans('economic_reference.current') }}
             </span>
 
             <div class="d-flex align-items-center">
@@ -170,7 +170,7 @@
               </div>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
-                vs выбор
+                {{ trans('vs_choice') }}
               </div>
             </div>
           </div>
@@ -191,7 +191,7 @@
       <div class="col-3">
         <div class="bg-main1 text-white text-wrap p-3 mb-3">
           <subtitle>
-            Фонд добывающих скважин
+            {{ trans('economic_reference.production_wells_fund') }}
           </subtitle>
 
           <div class="mt-4 position-relative">
@@ -249,7 +249,7 @@
             </div>
 
             <div class="text-grey font-size-14px line-height-14px font-weight-bold mb-3">
-              Оптимизированный
+              {{ trans('economic_reference.optimized') }}
             </div>
 
             <div class="d-flex align-items-center font-size-12px line-height-14px text-nowrap">
@@ -271,7 +271,7 @@
               </span>
 
               <span class="ml-1 font-size-12px line-height-14px text-blue">
-                vs базовый
+                {{ trans('economic_reference.vs_base') }}
               </span>
             </div>
 
@@ -283,7 +283,7 @@
 
         <div class="bg-main1 p-3 mt-3 text-white text-wrap">
           <div class="font-size-16px line-height-22px font-weight-bold mb-3">
-            Выберите сценарии оптимизации
+            {{ trans('economic_reference.select_optimization_scenarios') }}
           </div>
 
           <select-organization
@@ -380,13 +380,13 @@ const optimizedColumns = [
   "well_count",
   "well_count_profitable",
   "well_count_profitless_cat_1",
-  "well_count_profitless_cat2",
+  "well_count_profitless_cat_2",
 ];
 
 let economicRes = [{
   scenario_id: null,
-  percent_stop_cat1: 0,
-  percent_stop_cat2: 0,
+  percent_stop_cat_1: 0,
+  percent_stop_cat_2: 0,
   coef_Fixed_nopayroll: 0,
   coef_cost_WR_payroll: 0,
   dollar_rate: 0,
@@ -432,7 +432,7 @@ export default {
         [
           {
             // если растет -> то зеленая вверх
-            title: 'Добыча нефти',
+            title: this.trans('economic_reference.oil_production'),
             icon: 'oil_production.svg',
             value: this.scenario.oil.value_optimized[0],
             valueWord: this.scenario.oil.value_optimized[1],
@@ -445,7 +445,7 @@ export default {
           },
           {
             // если растет -> то красная вверх
-            title: 'Обводненность',
+            title: this.trans('economic_reference.water_cut'),
             icon: 'liquid.svg',
             value: this.liquidValue(true),
             valueWord: '%',
@@ -457,7 +457,7 @@ export default {
         [
           {
             // если растет -> то красная вверх
-            title: 'Общее количество ПРС',
+            title: this.trans('economic_reference.total_prs'),
             icon: 'total_prs.svg',
             value: this.scenario.prs.value_optimized[0] * 1000,
             valueWord: 'ед',
@@ -467,7 +467,7 @@ export default {
           },
           {
             // если растет -> то красная вверх
-            title: 'Удельный ПРС на скв',
+            title: this.trans('economic_reference.specific_prs'),
             icon: 'specific_prs.svg',
             value: this.avgPrsValue(),
             valueWord: 'ед/скв',
@@ -479,7 +479,7 @@ export default {
         [
           {
             // если растет -> то зеленая вверх
-            title: 'Средний дебит нефти',
+            title: this.trans('economic_reference.avg_oil_rate'),
             icon: 'total_prs.svg',
             value: this.avgOilValue(),
             valueWord: 'тонн/сут',
@@ -489,7 +489,7 @@ export default {
           },
           {
             // если растет -> то красная вверх
-            title: 'Средний дебит жидкости',
+            title: this.trans('economic_reference.avg_liquid_rate'),
             icon: 'specific_prs.svg',
             value: this.avgLiquidValue(),
             valueWord: 'м³/сут',
@@ -520,31 +520,31 @@ export default {
       return [
         {
           name: '',
-          value: 'Базовый',
-          value_optimized: 'Оптимизированный'
+          value: this.trans('economic_reference.basic'),
+          value_optimized: this.trans('economic_reference.optimized')
         },
         {
-          name: 'Рентабельные',
+          name: this.trans('economic_reference.profitable'),
           value: this.scenario.well_count_profitable.original_value,
           value_optimized: this.scenario.well_count_profitable.original_value_optimized,
         },
         {
-          name: 'Нерентабельные, в т.ч.',
-          value: (+this.scenario.well_count_profitless_cat_1.original_value) + (+this.scenario.well_count_profitless_cat2.original_value),
-          value_optimized: (+this.scenario.well_count_profitless_cat_1.original_value_optimized) + (+this.scenario.well_count_profitless_cat2.original_value_optimized)
+          name: this.trans('economic_reference.profitless_all'),
+          value: (+this.scenario.well_count_profitless_cat_1.original_value) + (+this.scenario.well_count_profitless_cat_2.original_value),
+          value_optimized: (+this.scenario.well_count_profitless_cat_1.original_value_optimized) + (+this.scenario.well_count_profitless_cat_2.original_value_optimized)
         },
         {
-          name: 'Категория 1',
+          name: this.trans('economic_reference.profitless_cat_1'),
           value: this.scenario.well_count_profitless_cat_1.original_value,
           value_optimized: this.scenario.well_count_profitless_cat_1.original_value_optimized
         },
         {
-          name: 'Категория 2',
-          value: this.scenario.well_count_profitless_cat2.original_value,
-          value_optimized: this.scenario.well_count_profitless_cat2.original_value_optimized,
+          name: this.trans('economic_reference.profitless_cat_2'),
+          value: this.scenario.well_count_profitless_cat_2.original_value,
+          value_optimized: this.scenario.well_count_profitless_cat_2.original_value_optimized,
         },
         {
-          name: 'Новые скважины',
+          name: this.trans('economic_reference.new_wells'),
           value: 0,
           value_optimized: 0
         }
@@ -554,7 +554,7 @@ export default {
     oilPrices() {
       return [
         {
-          label: 'Цена на нефть',
+          label: this.trans('economic_reference.oil_price'),
           value: null,
         },
         {
@@ -567,7 +567,7 @@ export default {
     dollarRates() {
       return [
         {
-          label: 'Курс доллара',
+          label: this.trans('economic_reference.course_prices'),
           value: null,
         },
         {
@@ -611,7 +611,7 @@ export default {
 
       this.res.forEach((item, index) => {
         items.push({
-          label: `Отключения категории 1: ${item.percent_stop_cat1 * 100}%, категории 2: ${item.percent_stop_cat2 * 100}%`,
+          label: `Отключения категории 1: ${item.percent_stop_cat_1 * 100}%, категории 2: ${item.percent_stop_cat_2 * 100}%`,
           value: index,
         })
       })
@@ -640,7 +640,7 @@ export default {
     },
 
     avgLiquidPercent() {
-      return (this.avgLiquidValue(true, 4) - this.avgLiquidValue(false, 4)).toFixed(2)
+      return (this.avgLiquidValue(true, 4) - this.avgLiquidValue(false, 4)).toFixed(3)
     },
 
     avgPrsPercent() {

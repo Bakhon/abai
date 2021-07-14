@@ -12,7 +12,7 @@ class EconomicOptimizationController extends Controller
 {
     protected $druidClient;
 
-    const DATA_SOURCE = 'economic_scenario_test_v1';
+    const DATA_SOURCE = 'economic_scenario_test_v2';
 
     const DATA_SOURCE_DATE = '2021/07/13';
 
@@ -26,7 +26,7 @@ class EconomicOptimizationController extends Controller
         "well_count",
         "well_count_profitable",
         "well_count_profitless_cat_1",
-        "well_count_profitless_cat2",
+        "well_count_profitless_cat_2",
     ];
 
     const OPTIMIZED_COLUMN_SUFFIX = '_optimize';
@@ -59,8 +59,8 @@ class EconomicOptimizationController extends Controller
 
         $columns = [
             "scenario_id",
-            "percent_stop_cat1",
-            "percent_stop_cat2",
+            "percent_stop_cat_1",
+            "percent_stop_cat_2",
             "coef_Fixed_nopayroll",
             "coef_cost_WR_payroll",
             "dollar_rate",
