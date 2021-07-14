@@ -64,7 +64,6 @@ export default {
   },
   data: function () {
     return {
-      posturl: process.env.MIX_PGNO_API_URL,
       krsTable: null,
       numberRepairs: null,
       numberNNO: null,
