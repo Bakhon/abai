@@ -58,16 +58,16 @@ export default {
             document.querySelector('.start-month-date .vdatetime-input').click();
             document.querySelector('.end-month-date .vdatetime-input').click();
         },
-        setStartMonth(date) {
+        setStartOfMonth(date) {
             this.startDate = formatDate.getFirstDayOfMonth(date);
         },
-        setEndMonth(date) {
+        setEndOfMonth(date) {
             this.endDate = formatDate.getLastDayOfMonth(date);
         },
-        setStartYear(date) {
+        setStartOfYear(date) {
             this.startDate = formatDate.getStartOfYear(date);
         },
-        setEndYear(date) {
+        setEndOfYear(date) {
             this.endDate = formatDate.getEndOfYear(date);
         },
         onMenuClick(currentStructureType, btnId) {
