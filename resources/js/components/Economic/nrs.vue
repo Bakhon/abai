@@ -295,8 +295,8 @@ export default {
     form: {
       org_id: null,
       field_id: null,
-      interval_start: '2020-06-01T00:00:00.000Z',
-      interval_end: '2020-09-01T00:00:00.000Z',
+      interval_start: '2020-01-01T00:00:00.000Z',
+      interval_end: '2021-01-01T00:00:00.000Z',
       granularity: GRANULARITY_DAY,
       profitability: PROFITABILITY_FULL,
     },

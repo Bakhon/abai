@@ -30,7 +30,8 @@
             <div class="d-flex align-items-center">
               <percent-badge
                   :percent="scenario.Revenue_total.percent"
-                  class="text-nowrap mr-2"/>
+                  class="text-nowrap mr-2"
+                  reverse/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
                 vs Базовый вариант
@@ -42,9 +43,9 @@
             <divider/>
 
             <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>{{ scenario.Overall_expenditures.value[0] }}</span>
+              <span>{{ scenario.Overall_expenditures.value_optimized[0] }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-                {{ scenario.Overall_expenditures.value[1] }}
+                {{ scenario.Overall_expenditures.value_optimized[1] }}
               </span>
             </economic-title>
 
@@ -64,7 +65,7 @@
 
             <div class="d-flex align-items-center">
               <percent-badge
-                  :percent="scenario.Overall_expenditures.percent"
+                  :percent="-scenario.Overall_expenditures.percent"
                   class="text-nowrap mr-2"/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
@@ -77,9 +78,9 @@
             <divider/>
 
             <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>{{ scenario.operating_profit_12m.value[0] }}</span>
+              <span>{{ scenario.operating_profit_12m.value_optimized[0] }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-                {{ scenario.operating_profit_12m.value[1] }}
+                {{ scenario.operating_profit_12m.value_optimized[1] }}
               </span>
             </economic-title>
 
@@ -100,7 +101,9 @@
             <div class="d-flex align-items-center">
               <percent-badge
                   :percent="scenario.operating_profit_12m.percent"
+                  reverse
                   class="text-nowrap mr-2"/>
+              <!--              если растет - зеленым вверх-->
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
                 vs Базовый вариант
@@ -230,13 +233,17 @@
             <div class="d-flex align-items-center font-size-32px line-height-38px text-nowrap">
               <img :src="`/img/economic/${subBlock.icon}`" alt="">
 
-              <div class="ml-2">
+              <div class="ml-2 d-flex align-items-center">
                 <span class="font-weight-bold">
                   {{ subBlock.value.toLocaleString() }}
                 </span>
 
-                <span class="text-blue font-size-14px line-height-16px">
-                  {{ subBlock.valueWord }}
+                <span class="ml-2 d-flex flex-column text-blue font-size-14px line-height-16px">
+                  <div>{{ subBlock.valueWord }}</div>
+
+                  <div v-if="subBlock.valueWordSuffix">
+                    {{ subBlock.valueWordSuffix }}
+                  </div>
                 </span>
               </div>
             </div>
@@ -245,7 +252,7 @@
               Оптимизированный
             </div>
 
-            <div class="font-size-12px line-height-14px text-nowrap">
+            <div class="d-flex align-items-center font-size-12px line-height-14px text-nowrap">
               <percent-badge-icon
                   :percent="subBlock.reversePercent ? -subBlock.percent : subBlock.percent"
                   :reverse="subBlock.reverse"
@@ -255,11 +262,15 @@
                 {{ Math.abs(subBlock.percent) }}
               </span>
 
-              <span class="font-size-12px line-height-14px">
-                {{ subBlock.percentWord }}
+              <span class="ml-2 d-flex flex-column font-size-12px line-height-12px">
+                 <div>{{ subBlock.percentWord }}</div>
+
+                  <div v-if="subBlock.percentWordSuffix">
+                    {{ subBlock.percentWordSuffix }}
+                  </div>
               </span>
 
-              <span class="font-size-12px line-height-14px text-blue">
+              <span class="ml-1 font-size-12px line-height-14px text-blue">
                 vs базовый
               </span>
             </div>
@@ -307,6 +318,17 @@
               style="background-color: #333975;">
             <option
                 v-for="item in salaryPercents"
+                :key="item.value"
+                :value="item.value">
+              {{ item.label }}
+            </option>
+          </select>
+
+          <select
+              class="mb-3 form-control text-white border-0"
+              style="background-color: #333975;">
+            <option
+                v-for="item in retentionPercents"
                 :key="item.value"
                 :value="item.value">
               {{ item.label }}
@@ -409,67 +431,71 @@ export default {
       return [
         [
           {
+            // если растет -> то зеленая вверх
             title: 'Добыча нефти',
-            // sum "oil"
             icon: 'oil_production.svg',
             value: this.scenario.oil.value_optimized[0],
             valueWord: this.scenario.oil.value_optimized[1],
+            valueWordSuffix: 'тонн',
             percent: this.oilPercent,
-            percentWord: 'тыс. тонн',
+            percentWord: this.scenario.oil.value_optimized[1],
+            percentWordSuffix: 'тонн',
             reverse: true,
             reversePercent: true
           },
           {
+            // если растет -> то красная вверх
             title: 'Обводненность',
-            // (liquid - oil) /  liquid
             icon: 'liquid.svg',
-            value: this.liquidValue(),
+            value: this.liquidValue(true),
             valueWord: '%',
             percent: this.liquidPercent,
-            percentWord: 'тыс. тонн',
+            percentWord: '%',
+            reversePercent: true
           }
         ],
         [
           {
+            // если растет -> то красная вверх
             title: 'Общее количество ПРС',
-            // sum "prs"
             icon: 'total_prs.svg',
-            value: this.scenario.prs.value_optimized[0],
+            value: this.scenario.prs.value_optimized[0] * 1000,
             valueWord: 'ед',
             percent: this.prsPercent,
             percentWord: 'ед',
+            reversePercent: true
           },
           {
+            // если растет -> то красная вверх
             title: 'Удельный ПРС на скв',
-            // sum prs / well count
             icon: 'specific_prs.svg',
             value: this.avgPrsValue(),
             valueWord: 'ед/скв',
             percent: this.avgPrsPercent,
             percentWord: 'ед/скв',
+            reversePercent: true
           }
         ],
         [
           {
+            // если растет -> то зеленая вверх
             title: 'Средний дебит нефти',
-            // sum "oil" / (365 * well count)
             icon: 'total_prs.svg',
             value: this.avgOilValue(),
             valueWord: 'тонн/сут',
             percent: this.avgOilPercent,
             percentWord: 'тонн/сут',
-            reverse: true,
+            reverse: true
           },
           {
+            // если растет -> то красная вверх
             title: 'Средний дебит жидкости',
-            // sum "liquid" / (365 * well count)
             icon: 'specific_prs.svg',
             value: this.avgLiquidValue(),
             valueWord: 'м³/сут',
             percent: this.avgLiquidPercent,
             percentWord: 'м³/сут',
             reverse: true,
-            reversePercent: true
           },
         ],
       ]
@@ -554,12 +580,25 @@ export default {
     salaryPercents() {
       return [
         {
-          label: 'Процент оптимизации заработной платы',
+          label: 'Оптимизации заработной платы',
           value: null,
         },
         {
-          label: `${this.scenario.coef_cost_WR_payroll}, ${this.scenario.coef_Fixed_nopayroll}`,
-          value: `${this.scenario.coef_cost_WR_payroll}, ${this.scenario.coef_Fixed_nopayroll}`,
+          label: `${this.scenario.coef_cost_WR_payroll * 100}%`,
+          value: this.scenario.coef_cost_WR_payroll,
+        },
+      ]
+    },
+
+    retentionPercents() {
+      return [
+        {
+          label: 'Сохранение условно-постоянных затрат отключаемых скважин',
+          value: null,
+        },
+        {
+          label: `${this.scenario.coef_Fixed_nopayroll * 100}%`,
+          value: this.scenario.coef_Fixed_nopayroll,
         },
       ]
     },
@@ -572,7 +611,7 @@ export default {
 
       this.res.forEach((item, index) => {
         items.push({
-          label: `cat1: ${item.percent_stop_cat1}, cat2: ${item.percent_stop_cat2}`,
+          label: `Отключения категории 1: ${item.percent_stop_cat1 * 100}%, категории 2: ${item.percent_stop_cat2 * 100}%`,
           value: index,
         })
       })
@@ -585,7 +624,7 @@ export default {
     },
 
     oilPercent() {
-      return Math.floor(this.scenario.oil.original_value_optimized - this.scenario.oil.original_value)
+      return ((this.scenario.oil.original_value - this.scenario.oil.original_value_optimized) / 1000).toFixed(2)
     },
 
     prsPercent() {
@@ -593,7 +632,7 @@ export default {
     },
 
     liquidPercent() {
-      return (this.avgLiquidValue() - this.avgLiquidValue(false)).toFixed(2)
+      return (this.liquidValue() - this.liquidValue(false)).toFixed(4)
     },
 
     avgOilPercent() {
@@ -601,11 +640,11 @@ export default {
     },
 
     avgLiquidPercent() {
-      return (this.avgLiquidValue() - this.avgLiquidValue(false)).toFixed(2)
+      return (this.avgLiquidValue(true, 4) - this.avgLiquidValue(false, 4)).toFixed(2)
     },
 
     avgPrsPercent() {
-      return (this.avgPrsValue() - this.avgPrsValue(false)).toFixed(2)
+      return (this.avgPrsValue(true, 4) - this.avgPrsValue(false, 4)).toFixed(2)
     }
   },
   methods: {
@@ -641,7 +680,7 @@ export default {
           : this.scenario.oil.original_value
 
       return liquid
-          ? (liquid - oil) / liquid
+          ? ((liquid - oil) / liquid).toFixed(4)
           : 0
     },
 
@@ -655,11 +694,11 @@ export default {
           : this.scenario.oil.original_value
 
       return well_count
-          ? oil / (365 * well_count)
+          ? (oil * 1000 / (365 * well_count)).toFixed(2)
           : 0
     },
 
-    avgLiquidValue(optimized = true) {
+    avgLiquidValue(optimized = true, fractionDigits = 2) {
       let well_count = optimized
           ? this.scenario.well_count.original_value_optimized
           : this.scenario.well_count.original_value
@@ -669,11 +708,11 @@ export default {
           : this.scenario.liquid.original_value
 
       return well_count
-          ? liquid / (365 * well_count)
+          ? (liquid / (365 * well_count)).toFixed(fractionDigits)
           : 0
     },
 
-    avgPrsValue(optimized = true) {
+    avgPrsValue(optimized = true, fractionDigits = 2) {
       let well_count = optimized
           ? this.scenario.well_count.original_value_optimized
           : this.scenario.well_count.original_value
@@ -683,7 +722,7 @@ export default {
           : this.scenario.prs.original_value
 
       return well_count
-          ? prs / well_count
+          ? (prs * 1000 / well_count).toFixed(fractionDigits)
           : 0
     }
   }
@@ -716,6 +755,10 @@ export default {
 
 .font-size-32px {
   font-size: 32px;
+}
+
+.line-height-12px {
+  line-height: 12px;
 }
 
 .line-height-14px {

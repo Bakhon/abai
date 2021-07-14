@@ -89,9 +89,9 @@ class EconomicOptimizationController extends Controller
                 $columnOptimized = $column . self::OPTIMIZED_COLUMN_SUFFIX;
 
                 $result[$index][$column] = [
-                    'value' => EconomicNrsController::moneyFormat($item[$column]),
-                    'value_optimized' => EconomicNrsController::moneyFormat($item[$columnOptimized]),
-                    'percent' => EconomicNrsController::percentFormat($item[$column], $item[$columnOptimized]),
+                    'value' => self::moneyFormat($item[$column]),
+                    'value_optimized' => self::moneyFormat($item[$columnOptimized]),
+                    'percent' => EconomicNrsController::percentFormat($item[$columnOptimized], $item[$column], 2),
                     'original_value' => $item[$column],
                     'original_value_optimized' => $item[$columnOptimized],
                 ];
@@ -101,4 +101,31 @@ class EconomicOptimizationController extends Controller
 
         return $result;
     }
+
+    static function moneyFormat(?float $digit): array
+    {
+        $digit = $digit ?? 0;
+
+        $digitAbs = abs($digit);
+
+        if ($digitAbs < 1000000) {
+            return [
+                number_format($digit / 1000, 2),
+                trans('economic_reference.thousand')
+            ];
+        }
+
+        if ($digitAbs < 1000000000) {
+            return [
+                number_format($digit / 1000000, 2),
+                trans('economic_reference.million')
+            ];
+        }
+
+        return [
+            number_format($digit / 1000000000, 2),
+            trans('economic_reference.billion')
+        ];
+    }
+
 }

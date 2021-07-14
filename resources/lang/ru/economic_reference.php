@@ -105,4 +105,5 @@ return array (
   'wells_profitless' => 'Нерентабельные скважины',
   'nrs' => 'НРС',
   'optimization_of_development' => 'Оптимизация разработки',
+  'thousand' => 'тыс',
 );

@@ -389,14 +389,14 @@ class EconomicNrsController extends Controller
         }
     }
 
-    static function percentFormat(?float $last, ?float $prev): float
+    static function percentFormat(?float $last, ?float $prev, int $precision = 0): float
     {
         $last = $last ?? 0;
 
         $prev = $prev ?? 0;
 
         if ($prev) {
-            return round(($last - $prev) * 100 / $prev);
+            return round(($last - $prev) * 100 / $prev, $precision);
         }
 
         return $last ? 100 : 0;
