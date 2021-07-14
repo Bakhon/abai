@@ -157,7 +157,8 @@ export default {
         q_oil2.push(q_oil);
       });
 
-      this.data = [ {
+      this.data = [ 
+        {
           name: this.nameKP,
           legendgroup: "group1",
           x: qo_points2,
@@ -311,7 +312,7 @@ export default {
       this.hovertemplatePR = "<b>Потенциалдық  режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" +
-                          "Pзаб = %{y:.1f} атм<extra></extra>"             
+                          "Pзаб = %{y:.1f} атм<extra></extra>"
     } else {
       this.layout.xaxis.title = this.titleXEn
       this.layout.yaxis.title = this.titleYEn

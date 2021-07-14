@@ -2,80 +2,21 @@
   {
     "code": "well_file",
     "name": "Дело скважины",
-    "icon_name": "dir.svg",
-    "type": "dir",
-    "isVisible": true,
     "children": [
       {
         "code": "fund",
         "name": "Фонд",
-        "icon_name": "dir.svg",
-        "type": "dir",
-        "isVisible": true,
-        "children": [
-          {
-            "code": "geo_struct",
-            "name": "Геологическая структура",
-            "icon_name": "page.svg",
-            "type": "plain",
-            "isVisible": true
-          },
-          {
-            "code": "org_struct",
-            "name": "Организационная структура",
-            "icon_name": "page.svg",
-            "type": "plain",
-            "isVisible": true
-          },
-          {
-            "code": "well_status",
-            "name": "Состояние",
-            "icon_name": "page.svg",
-            "type": "plain",
-            "isVisible": true
-          },
-          {
-            "code": "well_expl",
-            "name": "Способ эксплуатации",
-            "icon_name": "page.svg",
-            "type": "plain",
-            "isVisible": true
-          },
-          {
-            "code": "well_category",
-            "name": "Категория",
-            "icon_name": "page.svg",
-            "type": "plain",
-            "isVisible": true
-          },
-          {
-            "code": "well_zone",
-            "name": "Зона скважины",
-            "icon_name": "page.svg",
-            "type": "plain",
-            "isVisible": true
-          },
-          {
-            "code": "well_tech",
-            "name": "Технологическая структура",
-            "icon_name": "page.svg",
-            "type": "plain",
-            "isVisible": true
-          },
-          {
-            "code": "distribution_substation",
-            "name": "Распределительная подстанция",
-            "icon_name": "page.svg",
-            "type": "plain",
-            "isVisible": true
-          },
-          {
-            "code": "joint_wells",
-            "name": "Совместные скважины",
-            "icon_name": "page.svg",
-            "type": "plain",
-            "isVisible": true
-          }
+        "forms": [
+          "production_well",
+          "geo_struct",
+          "org_struct",
+          "well_status",
+          "well_expl",
+          "well_category",
+          "well_zone",
+          "well_tech",
+          "distribution_substation",
+          "joint_wells"
         ]
       }
     ]

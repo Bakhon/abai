@@ -30,7 +30,7 @@
             <div class="directory text-white pt-0 mt-0">
               <ul id="myUL">
                 <well-cart-tree
-                    v-for="(item, index) in [...forms_structure, ...visibleForms]"
+                    v-for="(item, index) in formsStructure"
                     :key="index"
                     :active-form-code="activeFormCode"
                     :data="item"
@@ -205,8 +205,6 @@
 
 <script>
 import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
-import forms from '../../json/bd/forms.json'
-import forms_structure from '../../json/bd/forms_structure.json'
 import vSelect from 'vue-select'
 import axios from 'axios'
 import moment from 'moment'
@@ -228,7 +226,6 @@ export default {
       isRightColumnFolded: false,
       isBothColumnFolded: false,
       popup: false,
-      forms: forms,
       wellGeo: {name_ru: null},
       wellGeoFields: {name_ru: null},
       wellUwi: null,
@@ -333,10 +330,15 @@ export default {
         'gu': 'gu',
         'agms': 'agms',
       },
-      forms_structure: forms_structure,
+      formsStructure: {},
     }
   },
   mounted() {
+
+    this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
+      this.formsStructure = data.tree
+    })
+
   },
   methods: {
     onColumnFoldingEvent(method) {
@@ -874,9 +876,6 @@ export default {
           'data': ''
         },
       ]
-    },
-    visibleForms() {
-      return this.forms.filter(form => form.isVisible)
     }
   }
 }
