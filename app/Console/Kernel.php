@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\OilParse::class,
         \App\Console\Commands\HiveDataFromAvocet::class,
         \App\Console\Commands\ReceiveNonOperatingAssets::class,
-        \App\Console\Commands\ComplicationMonitoringEconomicCalculate::class
+        \App\Console\Commands\ComplicationMonitoringEconomicCalculate::class,
+        \App\Console\Commands\createEmergencySituations::class
     ];
 
     /**
@@ -35,6 +36,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('form:calc_field_limits')->dailyAt('02:00')->timezone('Asia/Almaty');
         $schedule->command('receive-non-operating-email:cron')->dailyAt('07:40')->timezone('Asia/Almaty');
         $schedule->command('monitoring-economic-calc:cron')->dailyAt('03:00')->timezone('Asia/Almaty');
+        $schedule->command('create-emergency:cron')->dailyAt('08:50')->timezone('Asia/Almaty');
     }
 
     /**
