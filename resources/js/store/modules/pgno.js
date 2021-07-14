@@ -132,7 +132,9 @@ const pgno = {
       corrosion: (state) => state.corrosion,
       stupColumns: (state) => state.stupColumns,
       h2s: (state) => state.h2s,
-      heavyDown: (state) => state.heavyDown
+      heavyDown: (state) => state.heavyDown,
+      kPodMode: (state) => state.kPodMode,
+      kPodCalced: (state) => state.kPodCalced
     },
 }
 

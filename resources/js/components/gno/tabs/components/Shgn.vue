@@ -38,7 +38,7 @@
 
 				<div class="block2">
 					<div class="title__block__kpod">
-						<input class="checkbox__block__1" v-model="kPodMode" type="radio" v-bind:value="false"/>
+						<input class="checkbox__block__1" v-model="kPodMode" type="radio" v-bind:value="false" :disabled="true"/>
 						<label class="label-kpod">{{trans('pgno.use_value')}}</label>
 						<input type="text" class="input-box-gno podbor-kpod-block-3" v-model="kpodCalced" :disabled="kPodMode">
 					</div>	
@@ -220,7 +220,7 @@
 							</div>
 
 							<div class="title__block__pump__1">
-								<input value="3" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stupColumns" name="stup" type="radio" />
+								<input value="3" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stupColumns" name="stup" type="radio" :disabled="true"/>
 								<label class="checkbox__block__label__1">3 {{trans('pgno.stup')}}</label>
 							</div>
 
@@ -283,7 +283,7 @@
 				</div>
 				<div class="title__block__pump kpod-multiselect" style="display: flex;">
 
-					<div  v-if="markShtang.length > 0" class="title-multi-select">Выбрано {{ markShtang.length }} опции</div>
+					<div v-if="markShtang.length > 0" class="title-multi-select">Выбрано {{ markShtang.length }} опции</div>
 					<div v-else class="title-multi-select">Выберите опции</div>
 					
 					<b-dropdown ref="dropdown" toggle-class="drop-filter-custom">

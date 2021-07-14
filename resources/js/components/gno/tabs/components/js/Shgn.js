@@ -11,18 +11,18 @@ export default {
 		return {
 			svgTableN1: require('../../../images/tableN1.svg'),
 			svgTableN2: require('../../../images/tableN2.svg'),
-			pintakeMin: 30,
-			groupPosad: 2,
+			pintakeMin: null,
+			groupPosad: null,
 			stup: "2",
-			inclStep: 10,
-			gasMax: 10,
+			inclStep: null,
+			gasMax: null,
 			hvostovik: true,
-			corrosion: 'mediumCorrosion',
-			strokeLenMin: 2,
-			strokeLenMax: 3,
-			spmMin: 3,
-			spmMax: 8,
-			kpodMin: 0.6,
+			corrosion: null,
+			strokeLenMin: null,
+			strokeLenMax: null,
+			spmMin: null,
+			spmMax: null,
+			kpodMin: null,
 			isModal: false,
 			kpodCalced: null,
 			value: [],
@@ -212,8 +212,8 @@ export default {
 		},
 		calKpod(){
 			if (this.qLInput) {
-				this.kpodCalcedKpod = this.qLInputKpod / (1440 * 3.14 * this.pumpTypeKpod ** 2 * this.strokeLenDevKpod * (this.spmKpod / 4000000))
-				this.$store.commit('UPDATE_KPOD_CALCED', this.kpodCalcedKpod) 
+				this.kpodCalced = this.qLInputKpod / (1440 * 3.14 * this.pumpTypeKpod ** 2 * this.strokeLenDevKpod * (this.spmKpod / 4000000))
+				this.$store.commit('UPDATE_KPOD_CALCED', this.kpodCalced) 
 			}
 		}
 	},
@@ -236,7 +236,7 @@ export default {
 		this.markShtang = this.$store.getters.markShtang
 		this.markShtangs = this.markShtangsTypes[this.corrosion]
 		this.kPodMode = this.$store.getters.kPodMode
-		this.kPodCalced = this.$store.getters.kPodCalced
+		this.kpodCalced = this.$store.getters.kPodCalced
 		this.calKpod()
 	}
 }

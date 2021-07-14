@@ -28,7 +28,7 @@ export default {
   ],
   data: function () {
     return {
-      posturl: null,
+      steel: null,
       404: require('./images/404.svg'),
       isSkError: false,
       nearDist: 1000,
@@ -36,7 +36,7 @@ export default {
       isPermission: false,
       isEditing: false,
       permissionName: 'podborGno edit main',
-      url: this.posturl + "pgno/",
+      url: "http://127.0.0.1:7575/api/pgno/",
       isLoading: false,
       activeRightTabName: 'technological-mode',
       layout: {
@@ -401,16 +401,16 @@ export default {
       }
     })
 
-    this.axios.get(this.posturl + "status/").then(res => {
+    this.axios.get("http://127.0.0.1:7575/api/status/").then(res => {
       if (res.status !== 200) {
         this.serviceOffline = true;
       }
     })
 
-    this.axios.get(this.posturl + "pgno/sk_types").then(response => {
+    this.axios.get("http://127.0.0.1:7575/api/pgno/sk_types").then(response => {
       this.skTypes = response.data
     })
-    this.axios.get(this.posturl + "pgno/horizons").then(response => {
+    this.axios.get("http://127.0.0.1:7575/api/pgno/horizons").then(response => {
       this.horizons = response.data
     })
   },
@@ -458,8 +458,6 @@ export default {
       this.stupColumns = this.$store.getters.stupColumns
       this.corrosion = this.$store.getters.corrosion
       this.markShtang = this.$store.getters.markShtang
-      this.markShtang = this.$store.getters.markShtang
-      this.kPodCalced = this.$store.getters.markShtang
       this.postdata = JSON.stringify(
         {
           "pgno_setings": {
@@ -479,8 +477,7 @@ export default {
             "heavy_down": this.heavyDown,
             "stups": this.stupColumns,
             "corrosion": this.corrosion,
-            "steel_mark": '15Х2ГМФ (НВО)',
-            // steel_mark - hardcode!!!
+            "steel_mark": this.markShtang,
           },
           "welldata": this.welldata,
           "settings": {
@@ -532,7 +529,7 @@ export default {
         this.CelValue = this.piCelValue
       }
       this.prepareData()
-      let uri = this.posturl + "pgno/" + this.field + "/" + this.wellNumber + "/download";
+      let uri = "http://127.0.0.1:7575/api/pgno/" + this.field + "/" + this.wellNumber + "/download";
       this.axios.post(uri, this.postdata, { responseType: "blob" }).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
       }).catch(function (error) {
@@ -545,7 +542,7 @@ export default {
     downloadEconomicExcel() {
       this.isLoading = true;
       let req = [this.expAnalysisData.npvTable1, this.expAnalysisData.npvTable2]
-      let uri = this.posturl + "pgno/economic/download";
+      let uri = "http://127.0.0.1:7575/api/pgno/economic/download";
       this.axios.post(uri, req, { responseType: "blob" }).then((response) => {
         fileDownload(response.data, "ЭКОНОМИКА_" + this.field + "_" + this.wellNumber + ".xlsx")
       }).catch(function (error) {
@@ -994,7 +991,7 @@ export default {
       }
     },
     async NnoCalc() {
-      let uri = this.posturl + "nno/";
+      let uri = "http://127.0.0.1:7575/api/nno/";
 
       this.eco_param = null;
 
@@ -1099,6 +1096,7 @@ export default {
       this.$store.commit("UPDATE_GROUP_POSAD", "2")
       this.$store.commit("UPDATE_HEAVYDOWN", true)
       this.$store.commit("UPDATE_STUP_COLUMNS", 2)
+      this.$store.commit("UPDATE_MARKSHTANG", ["15Х2ГМФ (НВО)"])
       this.$store.commit("UPDATE_KPOD_MODE", true)
       this.$store.commit("UPDATE_KPOD_CALCED", null)
     },
@@ -1367,7 +1365,7 @@ export default {
 
     fetchBlockCentrators() {
       let fieldInfo = this.wellIncl.split('_');
-      let urlForIncl = this.posturl + "pgno/incl";
+      let urlForIncl = "http://127.0.0.1:7575/api/pgno/incl";
       if (this.expChoose == 'ЭЦН') {
         (this.liftValue = 'ЭЦН') && (this.stepValue = 20);
       } else {
@@ -1649,9 +1647,8 @@ export default {
           }
           if (this.isVisibleChart) {
             this.isLoading = true;
-            let uri = this.posturl + "pgno/shgn";
             this.prepareData()
-            this.axios.post(uri, this.postdata).then((response) => {
+            this.axios.post("http://127.0.0.1:7575/api/pgno/shgn", this.postdata).then((response) => {
               let data = response.data;
               if (!this.isYoungAge) {
                 this.fetchBlockCentrators()
@@ -1722,6 +1719,7 @@ export default {
                     this.kPod = data['k_pod'].toFixed(2)
                     this.skPmax = data['sk_pmax']
                     this.skMn2 = data['sk_mn2']
+                    this.steel = data['steel']
                     this.pElectricity = (data['p_electricity'] / 1000).toFixed(0)
                     this.wDay = data['w_day'].toFixed(0)
                     this.ure = data['ure'].toFixed(1)

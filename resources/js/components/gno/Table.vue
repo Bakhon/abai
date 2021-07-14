@@ -1335,7 +1335,7 @@
                             </tr>
                             <tr v-for="(row_index, row) in construction">
                               <td class="shgn-table-td fixed-table-cells">{{row}}</td>
-                              <td class="shgn-table-td large__th">15Х2ГМФ (НВО)</td>
+                              <td class="shgn-table-td large__th">{{steel}}</td>
                               <td class="shgn-table-td fixed-table-cells">{{row_index[0]}}</td>
                               <td class="shgn-table-td fixed-table-cells">{{row_index[1]}}</td>
                               <td class="shgn-table-td fixed-table-cells">{{row_index[2]}}</td>
