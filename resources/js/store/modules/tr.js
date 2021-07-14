@@ -22,6 +22,7 @@ const tr = {
     object: [],
     block: [],
     expMeth: [],
+    wellName: [],
     pageNumber: 1,
   },
 
@@ -89,6 +90,9 @@ const tr = {
     SET_PAGENUMBER: (state, val) => {
       state.pageNumber = val;
     }, 
+    SET_WELLNAME: (state, val) => {
+      state.wellName = val;
+    }, 
   },
 
   actions: {
@@ -116,6 +120,7 @@ const tr = {
     block: (state) => state.block,
     expMeth: (state) => state.expMeth,
     pageNumber: (state) => state.pageNumber,
+    wellName: (state) => state.wellName,
   },
 };
 

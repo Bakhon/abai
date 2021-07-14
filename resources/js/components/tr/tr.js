@@ -195,25 +195,13 @@ export default {
           this.wellTypeFilterData = data.well_type;
           this.blockFilterData = data.block;
           this.expMethFilterData = data.exp_meth;
+          this.wellNameFilterData = data.rus_wellname;
         }
         else {
           console.log("No data");
         }
       });
-    this.axios
-      .post(
-        this.postApiUrl + "techregime_page_numbers/",
-        this.getPageData(),
-      )
-      .then((response) => {
-        let data = response.data;
-        if (response.data) {
-          this.pageCount = data;
-        }
-        else {
-          console.log("No data");
-        }
-    });
+    this.axiosPage(this.pageNumberLink);
   },
   data: function () {
     return {
@@ -267,6 +255,7 @@ export default {
       wellTypeFilterData: [],
       blockFilterData: [],
       expMethFilterData: [],
+      wellNameFilterData: [],
       selectedObject: [],
       selectedHorizon: [],
       selectedField: [],
@@ -282,6 +271,10 @@ export default {
       currentYear: null,
       searchParam: null,
       postApiUrl: process.env.MIX_POST_API_URL,
+      pageNumberLink: "techregime_page_numbers/",
+      editPageNumberLink: "techregime_edit_page_numbers/",
+      searchLink: "techregime_totals_test_3/",
+      editSearchLink: "techregime_edit_page/",
     };
   },
   methods: {
@@ -432,7 +425,7 @@ export default {
           }
       });
       // Пагинация редактирования
-      this.axiosEditPage();
+      this.axiosPage(this.editPageNumberLink);
     },
     // Режим динамического формирования
     axiosDynamicFilterRequest() {
@@ -453,30 +446,13 @@ export default {
           }
       });
       // Пагинация таблицы
-      this.axiosPage();
+      this.axiosPage(this.pageNumberLink);
     },
     // Пагинация таблицы
-    axiosPage() {
+    axiosPage(link) {
       this.axios
       .post(
-        this.postApiUrl + "techregime_page_numbers/",
-        this.getPageData(),
-      )
-      .then((response) => {
-        let data = response.data;
-        if (response.data) {
-          this.pageCount = data;
-        }
-        else {
-          console.log("No data");
-        }
-      });
-    },
-    // Пагинация редактирования
-    axiosEditPage() {
-      this.axios
-      .post(
-        this.postApiUrl + "techregime_edit_page_numbers/",
+        this.postApiUrl + link,
         this.getPageData(),
       )
       .then((response) => {
@@ -507,7 +483,7 @@ export default {
             console.log("No data");
           }
       });
-      this.axiosPage();
+      this.axiosPage(this.pageNumberLink);
     },
     editrow(row, rowId) {
       this.$store.commit("globalloading/SET_LOADING", false);
@@ -831,53 +807,24 @@ export default {
         : "";
       this.$store.commit("tr/SET_SEARCH", this.searchString);
       if (this.isEdit) {
-        this.axiosEditSearch();
-        this.axiosEditPage();
+        this.axiosSearch(this.editSearchLink);
+        this.axiosPage(this.editPageNumberLink);
       }
       else {
-        this.axiosSearch();
-        this.axiosPage();        
+        this.axiosSearch(this.searchLink);
+        this.axiosPage(this.pageNumberLink);        
       }
     },
     // API поиска простого ТР
-    axiosSearch() {
+    axiosSearch(link) {
       this.axios
         .post(
-          this.postApiUrl + "techregime_totals_test_3/",
+          this.postApiUrl + link,
             this.getPageData(),
         )
         .then((response) => {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.isSearched = this.searchParam ? true : false;
-          this.$store.commit("tr/SET_SEARCH", this.searchString);
-          let data = response.data;
-          if (data) {
-            this.wells = data.data;
-            this.fullWells = data.data;
-          } else {
-            this.wells = [];
-            this.fullWells = [];
-            console.log("No data");
-          }
-        })
-        .catch((error) => {
-          this.isSearched = searchParam ? true : false;
-          this.$store.commit("globalloading/SET_LOADING", false);
-          this.wells = [];
-          this.fullWells = [];
-          console.log("search error = ", error);
-        });
-    },
-    // API поиска редактирования ТР
-    axiosEditSearch() {
-      this.axios
-        .post(
-          this.postApiUrl + "techregime_edit_page/",
-            this.getPageData(),
-        )
-        .then((response) => {
-          this.$store.commit("globalloading/SET_LOADING", false);
-          this.isSearched = searchParam ? true : false;
           this.$store.commit("tr/SET_SEARCH", this.searchString);
           let data = response.data;
           if (data) {
