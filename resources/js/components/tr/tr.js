@@ -678,17 +678,11 @@ export default {
         this.$store.commit("tr/SET_SORTTYPE", true);
         this.$store.commit("tr/SET_SORTPARAM", "");
         this.$store.commit("tr/SET_IS_DYNAMIC", true);
-<<<<<<< HEAD
-        this.axiosDynamicFilterRequest();
-        this.searched = false;
-        this.date_fix = false;
-=======
         this.isDynamic = true;
         this.axiosDynamicFilterRequest();
         this.isSearched = false;
         this.isDateFix = false;
         this.$store.commit("tr/SET_IS_DYNAMIC", "true");
->>>>>>> 0d40596fadc3846eada219313b73d9c2be8a1b29
         this.$store.commit("tr/SET_SORTPARAM", "");
         this.$store.commit("tr/SET_SEARCH", "");
         this.sortParam = "";
