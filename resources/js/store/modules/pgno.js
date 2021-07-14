@@ -19,7 +19,7 @@ const pgno = {
         dmRods: ["19", "22"],
         komponovka: ["hvostovik"],
         stupColumns: "2",
-        markShtang: ["15Х2ГМФ (НВО)"],
+        markShtang: [],
     },
     mutations: {
       UPDATE_HEAVYDOWN(state, val) {

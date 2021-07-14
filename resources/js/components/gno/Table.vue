@@ -424,7 +424,7 @@
                 </div>
               </modal>
 
-               <modal class="modal-bign-wrapper" name="modalTabs" :draggable="true" :width="925" :height="830"
+               <modal class="modal-bign-wrapper" name="modalTabs" :draggable="true" :width="1000" :height="830"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -1225,7 +1225,7 @@
 
                       
 
-                  <div class="table-pgno-button gno-shgn-table-section col-10" >
+                  <div class="table-pgno-button gno-shgn-table-section col-9" >
                     
                     <div class="shgn-tables-wrapper">
                       <div class="shgn-table-pgno-one shgn-table-item">
@@ -1301,7 +1301,7 @@
 
                         <div class="shgn-table-pgno-four shgn-table-item">
 
-                        <table class="shgn-table">
+                        <table class="shgn-table-small">
                           <tr style="color: white;">
                             <td class="shgn-table-td bg-td" >{{trans('pgno.sk')}}</td>
                             <td class="shgn-table-td bg-td" >{{trans('pgno.p_max')}}, {{trans('measurements.kN')}}</td>
@@ -1335,7 +1335,7 @@
                             </tr>
                             <tr v-for="(row_index, row) in construction">
                               <td class="shgn-table-td fixed-table-cells">{{row}}</td>
-                              <td class="shgn-table-td large__th">{{markShtang}}</td>
+                              <td class="shgn-table-td large__th">15Х2ГМФ (НВО)</td>
                               <td class="shgn-table-td fixed-table-cells">{{row_index[0]}}</td>
                               <td class="shgn-table-td fixed-table-cells">{{row_index[1]}}</td>
                               <td class="shgn-table-td fixed-table-cells">{{row_index[2]}}</td>

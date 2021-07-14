@@ -226,8 +226,6 @@ return array (
   'p_min' => 'Pmin',
   'k_pod' => 'Кпод',
   'gas_in_pump' => 'gas in pump',
-  'calc_min_value' => 'Calc min value',
-  'use_value' => 'Use value',
   'daily_consumption' => 'Daily consumption',
   'ure' => 'УРЭ',
   'power_consumption_short' => 'Потр. мощ.',
