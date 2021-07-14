@@ -323,7 +323,7 @@
 				</div>
 				<div class="title__block__pump kpod-multiselect" style="display: flex;">
 
-					<div  v-if="selected.length > 0" class="test-2">Выбрано {{ selected.length }} опции</div>
+					<div  v-if="markShtang.length > 0" class="test-2">Выбрано {{ markShtang.length }} опции</div>
 					<div v-else class="test-2">Выберите опции</div>
 					
 					<b-dropdown ref="dropdown" toggle-class="drop-filter-custom">
@@ -335,8 +335,8 @@
 										<b-form-checkbox-group
 											style="color: black;"
 											id="checkbox-group-1"
-											v-model="selected"
-											:options="options"
+											v-model="markShtang"
+											:options="markShtangs"
 											:aria-describedby="ariaDescribedby"
 											name="flavour-1"
 										></b-form-checkbox-group>
@@ -344,7 +344,7 @@
 									</div>
 								</template>
 
-								<div class="mt-3" style="background: #333975; color: white;">Selected: {{ selected }}</div>
+								<div class="mt-3" style="background: #333975; color: white;">Selected: {{ markShtang }}</div>
 
 						</b-dropdown-form>
 					</b-dropdown>
