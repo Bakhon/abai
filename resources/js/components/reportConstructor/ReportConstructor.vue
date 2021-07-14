@@ -181,6 +181,7 @@
                         :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                         auto
                         :flow="['month']"
+                        :min-datetime="startDate"
                         v-on:input="setEndMonth($event)"
                       >
                       </datetime>
@@ -204,6 +205,7 @@
                         :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                         :flow="['year']"
                         auto
+                        :min-datetime="startDate"
                         v-on:input="setEndYear($event)"
                       >
                       </datetime>
