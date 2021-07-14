@@ -22,17 +22,30 @@
     </div>
     <div class="dropdown-menu">
         <div class="move-menu">
-            <li class="left-menu-li"><a href="{{route('bigdata')}}">Модуль "Прототип БД ABAI"</a></li>
+            <li class="left-menu-li"><a href="{{route('bigdata')}}">{{ trans('bd.bigdata_module') }}</a>
+                <ul class="dropdown-child">
+                    <li class="left-menu-li">
+                        <a href="{{route('report_constructor')}}">
+                            {{ trans('bd.forms.report_constructor.menu') }}
+                        </a>
+                    </li>
+                    <li class="left-menu-li">
+                        <a href="{{route('bigdata.well_cart')}}">
+                            {{ trans('bd.forms.well_cart.menu') }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
             @if(auth()->user()->can('visualcenter view main'))
-                <li class="left-menu-li"><a href="{{route('visualcenter3')}}">Модуль "Центр визуализации"</a></li>
+                <li class="left-menu-li"><a href="{{route('visualcenter3')}}">{{ trans('visualcenter.visualcenter_module') }}</a></li>
             @endif
             @if(auth()->user()->can('tr view main'))
-                <li class="left-menu-li"><a href="{{route('tr')}}">Модуль "Технологический режим"</a></li>
+                <li class="left-menu-li"><a href="{{route('tr')}}">{{ trans('tr.tr_module') }}</a></li>
             @endif
             @if(auth()->user()->can('podborGno view main'))
-                <li class="left-menu-li"><a href="{{route('gno')}}">Модуль "Подбор ГНО"</a></li>
+                <li class="left-menu-li"><a href="{{route('gno')}}">{{ trans('pgno.pgno_module') }}</a></li>
             @endif
-            <li class="left-menu-li"><a href="{{route('monitor')}}">Модуль "Мониторинг осложнений"</a>
+            <li class="left-menu-li"><a href="{{route('monitor')}}">{{ trans('monitoring.monitoring_module') }}</a>
                 <ul class="dropdown-child">
                     <li class="left-menu-li">
                         <ul>

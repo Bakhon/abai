@@ -9,59 +9,30 @@ use App\Models\BigData\Dictionaries\Geo;
 use App\Services\BigData\Forms\BaseForm;
 use App\Services\BigData\Forms\RowHistory\RowHistory;
 use App\Services\BigData\Forms\TableForm;
+use App\Services\BigData\FormService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\File;
 
 class FormsController extends Controller
 {
 
-    protected $file;
-
-    public function __construct()
+    public function getForms(FormService $formService): JsonResponse
     {
-        $this->file = storage_path() . '/mobile_form.json';
-    }
-
-    public function getMobileFormValues(): array
-    {
-        if (!File::exists($this->file)) {
-            $values = [
-                'casing_pressure' => 1.12,
-                'wellhead_pressure' => 1,
-                'casing_pressure1' => 1.12,
-                'wellhead_pressure1' => 1.12,
-                'casing_pressure2' => 1.12,
-                'wellhead_pressure2' => 1.12,
-            ];
-            File::put($this->file, json_encode($values));
-        }
-
-        return json_decode(File::get($this->file), 1);
-    }
-
-    public function saveMobileForm(Request $request): void
-    {
-        $values = $this->getMobileFormValues();
-        $values[$request->get('code')] = $request->get('value');
-        File::put($this->file, json_encode($values));
-    }
-
-    public function getForms(): JsonResponse
-    {
-        $forms = json_decode(File::get(resource_path('js/json/bd/forms.json')));
-        $forms = array_filter(
-            $forms,
-            function ($form) {
-                return auth()->user()->can('bigdata list ' . $form->code);
-            }
-        );
-
         return response()->json(
             [
-                'forms' => array_values($forms)
+                'forms' => $formService->getForms()->values()
+            ]
+        );
+    }
+
+
+    public function getFormsStructure(FormService $formService): JsonResponse
+    {
+        return response()->json(
+            [
+                'tree' => $formService->getFormsStructure()
             ]
         );
     }
