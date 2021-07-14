@@ -15,6 +15,29 @@ class StructureService
 
     const FULL_TREE_KEY = 'bd_org_tech_tree_full';
 
+    public function getTreeWithPermissions()
+    {
+        $userSelectedTreeItems = auth()->user()->org_structure;
+        $fullTree = $this->getTree(Carbon::now());
+        $tree = [];
+        $this->fillTree($fullTree, $tree, $userSelectedTreeItems);
+        return $tree;
+    }
+
+    public function fillTree($branch, &$tree, $userSelectedTreeItems)
+    {
+        foreach ($branch as $item) {
+            $key = implode(':', [$item['type'], $item['id']]);
+            if (in_array($key, $userSelectedTreeItems)) {
+                $tree[] = $item;
+                continue;
+            }
+            if (!empty($item['children'])) {
+                $this->fillTree($item['children'], $tree, $userSelectedTreeItems);
+            }
+        }
+    }
+
     public function getTree(Carbon $date, bool $showWells = false, $isCacheResults = true)
     {
         if ($isCacheResults) {
@@ -86,7 +109,6 @@ class StructureService
             ->get();
 
         foreach ($orgs as $org) {
-
             $orgData[$org->id] = [
                 'id' => $org->id,
                 'name' => $org->name_ru,

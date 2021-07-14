@@ -16,7 +16,7 @@ class WellsController extends Controller
 {
     public function getStructureTree(StructureService $service, Request $request)
     {
-        return $service->getTree(Carbon::parse($request->get('date')));
+        return $service->getTreeWithPermissions();
     }
 
     public function wellInfo(well $well)
