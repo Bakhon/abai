@@ -283,15 +283,15 @@
 				</div>
 				<div class="title__block__pump kpod-multiselect" style="display: flex;">
 
-					<div  v-if="markShtang.length > 0" class="test-2">Выбрано {{ markShtang.length }} опции</div>
-					<div v-else class="test-2">Выберите опции</div>
+					<div  v-if="markShtang.length > 0" class="title-multi-select">Выбрано {{ markShtang.length }} опции</div>
+					<div v-else class="title-multi-select">Выберите опции</div>
 					
 					<b-dropdown ref="dropdown" toggle-class="drop-filter-custom">
-						<b-dropdown-form class="test7">
+						<b-dropdown-form class="li-multiselect">
 							
-								<template class="test7">
+								<template class="li-multiselect">
 									<div style="color: black;">
-										<b-form-group v-slot="{ ariaDescribedby }" class="test7">
+										<b-form-group v-slot="{ ariaDescribedby }" class="li-multiselect">
 										<b-form-checkbox-group
 											style="color: black;"
 											id="checkbox-group-1"
@@ -303,8 +303,6 @@
 										</b-form-group>
 									</div>
 								</template>
-
-								<div class="mt-3" style="background: #333975; color: white;">Selected: {{ markShtang }}</div>
 
 						</b-dropdown-form>
 					</b-dropdown>
@@ -473,45 +471,33 @@
 </template>
 <script src="./js/Shgn"></script>
 <style>
-.dropdown-menu.show {
-	background: #333975 !important;
-	border: 0.3px solid black;
-}
-
-.drop-filter-custom{
-	background: #333975 !important;
-	border-color: #333975 !important;
-}
-.b-dropdown-form {
-	background: #333975!important;
-	width: 135px;
-}
-.dropdown-menu.show {
-	display: flex;
-	flex-direction: column;
-	background: #333975!important;
-}
-
+  @import './css/multi-select.css';
 </style>
 <style scoped>
-.test-2 {
+.title-multi-select {
 	width: auto;
-	padding-block: 5px;
+	position: relative;
+    right: 5px;
+}
+
+.dropdown-menu.show {
+    width: 176px;
+    display: flex;
+    flex-direction: column;
 }
 
 .kpod-multiselect {
 	display: flex;
 	flex-direction: row;
-    justify-content: center;
-	padding-block: 10px;
+    justify-content: left;
+	padding-block: 30px;
 }
 
-.test2 {
-	background: #494aa5;
-}
-
-.test7 {
+.li-multiselect {
 	background: #333975;
+	width: 150px;
+	height: 215px;
+	margin: 0;
 }
 
 .nno-modal-buttons-container {
@@ -536,7 +522,7 @@
   display: -webkit-flex;
   display: flex;
   flex-wrap: wrap;
-  justify-content: left;
+  justify-content: center;
 }
 
 .flex__item__block__1 {

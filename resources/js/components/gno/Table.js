@@ -477,7 +477,8 @@ export default {
             "heavy_down": this.heavyDown,
             "stups": this.stupColumns,
             "corrosion": this.corrosion,
-            "steel_mark": this.markShtang,
+            "steel_mark": '15Х2ГМФ (НВО)',
+            // steel_mark - hardcode!!!
           },
           "welldata": this.welldata,
           "settings": {
