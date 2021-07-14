@@ -35,7 +35,6 @@ class LasDictionariesController extends CrudController
     public function index()
     {
         $modelName = $this->modelName;
-        $view = $this->view;
 
         $params = [
             'success' => Session::get('success'),
@@ -58,7 +57,7 @@ class LasDictionariesController extends CrudController
         $params['model_name'] = 'las_dictionaries';
         $params['filter'] = session('las_dictionaries_filter');
         
-        return view($view.'.index', compact('params'));
+        return view($this->view.'.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
@@ -79,10 +78,9 @@ class LasDictionariesController extends CrudController
     public function create(): \Illuminate\View\View
     {
         $link = $this->link;
-        $view = $this->view;
         $modelName = $this->modelName;
         $validationParams = $this->getValidationParams('data');
-        return view($view.'.create', compact('link', 'modelName', 'validationParams'));
+        return view($this->view.'.create', compact('link', 'modelName', 'validationParams'));
     }
 
     /**
@@ -109,10 +107,9 @@ class LasDictionariesController extends CrudController
     public function show(int $id): \Illuminate\View\View
     {
         $link = $this->link;
-        $view = $this->view;
         $modelName = $this->modelName;
         $data = $this->model::find($id);
-        return view($view.'.show', compact('link', 'modelName', 'data'));
+        return view($this->view.'.show', compact('link', 'modelName', 'data'));
     }
 
     /**
@@ -121,11 +118,10 @@ class LasDictionariesController extends CrudController
     public function edit(int $id): \Illuminate\View\View
     {
         $link = $this->link;
-        $view = $this->view;
         $modelName = $this->modelName;
         $data = $this->model::find($id);
         $validationParams = $this->getValidationParams('data');
-        return view($view.'.edit', compact('link', 'modelName', 'data', 'validationParams'));
+        return view($this->view.'.edit', compact('link', 'modelName', 'data', 'validationParams'));
     }
 
     /**

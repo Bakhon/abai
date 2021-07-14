@@ -11,7 +11,7 @@
             placeholder=""
         >
       </div>
-      <label>{{ trans("bd.geo") }}</label>
+      <label>{{ trans("bd.geo_in_abai_system") }}</label>
       <div class="form-label-group">
         <select class="form-control" name="geo_id" v-model="formFields.geo_id">
             <option v-for="row in geoList" v-bind:value="row.id">{{ row.name_ru }}</option>

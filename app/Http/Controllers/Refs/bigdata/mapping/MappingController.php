@@ -37,7 +37,6 @@ class MappingController extends CrudController
     public function index()
     {
         $modelName = $this->modelName;
-        $view = $this->view;
         $params = [
             'success' => Session::get('success'),
             'links' => [
@@ -60,7 +59,7 @@ class MappingController extends CrudController
             $params['links']['create'] = route($this->link.'.create');
         }
 
-        return view($view.'.index', compact('params'));
+        return view($this->view.'.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
@@ -81,9 +80,8 @@ class MappingController extends CrudController
         $modelName = $this->modelName;
         $link = $this -> link;
         $validationParams = $this->getValidationParams('data');
-        $view = $this->view;
         $geoList = Geo::where('geo_type', 3)->orderBy('name_ru')->get();
-        return view($view.'.create', compact('link', 'modelName', 'validationParams', 'geoList'));
+        return view($this->view.'.create', compact('link', 'modelName', 'validationParams', 'geoList'));
     }
 
     /**
@@ -112,8 +110,7 @@ class MappingController extends CrudController
         $modelName = $this->modelName;
         $data = $this->model::find($id);
         $link = $this -> link;
-        $view = $this->view;
-        return view($view.'.show', compact('link', 'modelName', 'data'));
+        return view($this->view.'.show', compact('link', 'modelName', 'data'));
     }
 
     /**
@@ -125,9 +122,8 @@ class MappingController extends CrudController
         $validationParams = $this->getValidationParams('data');
         $modelName = $this->modelName;
         $link = $this -> link;
-        $view = $this->view;
         $geoList = Geo::where('geo_type', 3)->orderBy('name_ru')->get();
-        return view($view.'.edit', compact('link', 'modelName', 'data', 'validationParams', 'geoList'));
+        return view($this->view.'.edit', compact('link', 'modelName', 'data', 'validationParams', 'geoList'));
     }
 
     /**
