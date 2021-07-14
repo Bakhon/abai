@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Traits;
+namespace App\Traits\BigData\Forms;
 use Illuminate\Support\Facades\DB;
 
-trait DateValidationTrait
+trait DateMoreThanValidationTrait
 {
     protected function isValidDate($wellId, $date , $table , $dateType): bool
     {

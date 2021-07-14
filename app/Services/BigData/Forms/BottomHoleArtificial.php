@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Traits\DepthValidationTrait;
-use App\Http\Controllers\Traits\DateValidationTrait;
+use App\Traits\BigData\Forms\DepthValidationTrait;
+use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 
 class BottomHoleArtificial extends PlainForm
 {
     protected $configurationFileName = 'bottom_hole_artificial';
 
     use DepthValidationTrait;
-    use DateValidationTrait;
+    use DateMoreThanValidationTrait;
         
     protected function getCustomValidationErrors(): array
     {
