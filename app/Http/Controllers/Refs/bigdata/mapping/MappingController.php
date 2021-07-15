@@ -68,7 +68,6 @@ class MappingController extends CrudController
         $data = $this
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
-
         return response()->json(json_decode($this->resource::collection($data)->toJson()));
     }
 
@@ -90,11 +89,8 @@ class MappingController extends CrudController
     public function store(GeoMappingRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'data');
-
         $this->model::create($request->validated());
-
         Session::flash('message', __('app.created'));
-
         return response()->json(
             [
                 'status' => config('response.status.success')
@@ -133,11 +129,8 @@ class MappingController extends CrudController
     public function update(GeoMappingRequest $request, int $id): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'data');
-
         $this->model::find($id)->update($request->validated());
-
         Session::flash('success', __('app.updated'));
-
         return response()->json(
             [
                 'status' => config('response.status.success')
@@ -152,7 +145,6 @@ class MappingController extends CrudController
     public function destroy(Request $request, int $id)
     {
         $this->model::find($id)->delete();
-
         if($request->ajax()) {
             return response()->json([], Response::HTTP_NO_CONTENT);
         }
