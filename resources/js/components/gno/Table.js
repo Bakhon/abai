@@ -28,6 +28,7 @@ export default {
   ],
   data: function () {
     return {
+      steel: null,
       404: require('./images/404.svg'),
       isSkError: false,
       nearDist: 1000,
@@ -362,6 +363,9 @@ export default {
       skTypes: null,
       horizons: null,
       isNktError: null,
+      spm: null,
+      qLforKpod: null,
+      pumpTypeforKpod: null,
     };
 
   },
@@ -574,6 +578,10 @@ export default {
     },
 
     onChangeParams() {
+      if (this.qLInput) {
+        this.qLforKpod = this.qLInput.split(' ')[0]
+        this.pumpTypeforKpod = this.pumpType.split(' ')[0]
+      }
       this.$modal.show('modalTabs')
     },
 
@@ -648,6 +656,7 @@ export default {
         this.wellIncl = data["Well Data"]["well"]
         this.hPerfND = data["Well Data"]["h_perf"]
         this.strokeLenDev = data["Well Data"]["stroke_len"]
+        this.spm = data["Well Data"]["spm"]
         this.sep_value = (data["Well Data"]["es"] * 100).toFixed(0)
         this.nkt = this.tubID
         let langUrl = `${window.location.pathname}`.slice(1, 3);
@@ -662,7 +671,7 @@ export default {
             this.dNasosa = "Pump diameter"
             this.freq = "Pump rate"
           }
-          this.spmDev = data["Well Data"]["spm"] + " " + this.trans('measurements.1/min')
+          this.spmDev = this.spm + " " + this.trans('measurements.1/min')
           this.pumpType = this.pumpType + " " + this.trans('measurements.mm')
         } else {
           if (langUrl === 'ru') {
@@ -1086,7 +1095,9 @@ export default {
       this.$store.commit("UPDATE_GROUP_POSAD", "2")
       this.$store.commit("UPDATE_HEAVYDOWN", true)
       this.$store.commit("UPDATE_STUP_COLUMNS", 2)
-      this.$store.commit("UPDATE_MARKSHTANG", "15Х2ГМФ (НВО)")
+      this.$store.commit("UPDATE_MARKSHTANG", ["15Х2ГМФ (НВО)"])
+      this.$store.commit("UPDATE_KPOD_MODE", true)
+      this.$store.commit("UPDATE_KPOD_CALCED", null)
     },
 
     nktExist(val) {
@@ -1708,6 +1719,7 @@ export default {
                     this.kPod = data['k_pod'].toFixed(2)
                     this.skPmax = data['sk_pmax']
                     this.skMn2 = data['sk_mn2']
+                    this.steel = data['steel']
                     this.pElectricity = (data['p_electricity'] / 1000).toFixed(0)
                     this.wDay = data['w_day'].toFixed(0)
                     this.ure = data['ure'].toFixed(1)
