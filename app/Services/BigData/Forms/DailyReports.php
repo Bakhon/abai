@@ -5,6 +5,7 @@ namespace App\Services\BigData\Forms;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\ReportOrgDailyCits;
+use Carbon\Carbon;
 
 abstract class DailyReports extends TableForm
 {
@@ -27,29 +28,12 @@ abstract class DailyReports extends TableForm
             }
             $result['org_name'] = ['value' => $org->name_ru];
         }
-        $filter->period = self::DAY;
         $filter->optionId = $filter->optionId ?? 0;
-        $dateRows = $this->getData($filter);
-        if ($dateRows) {
-            $result['plan'] = ['value' => $dateRows['plan']];
-            $result['fact'] = ['value' => $dateRows['fact']];
-            $result['daily_deviation'] = ['value' => $dateRows['fact'] - $dateRows['plan']];
-        }
 
-        $filter->period = self::MONTH;
-        $monthRows = $this->getData($filter);
-        if ($monthRows) {
-            $result['month_plan'] = ['value' => $dateRows['plan']];
-            $result['month_fact'] = ['value' => $dateRows['fact']];
-            $result['month_deviation'] = ['value' => $dateRows['fact'] - $dateRows['plan']];
-        }
-
-        $filter->period = self::YEAR;
-        $yearRows = $this->getData($filter);
-        if ($yearRows) {
-            $result['year_plan'] = ['value' => $dateRows['plan']];
-            $result['year_fact'] = ['value' => $dateRows['fact']];
-            $result['year_deviation'] = ['value' => $dateRows['fact'] - $dateRows['plan']];
+        foreach ([self::DAY, self::MONTH, self::YEAR] as $period) {
+            $filter->period = $period;
+            $data = $this->getData($filter);
+            $result += $data;
         }
         return ['rows' => [$result]];
     }
@@ -86,14 +70,8 @@ abstract class DailyReports extends TableForm
     }
 
     protected function getData($filter) {
-        $dateTimeObj = new \DateTime($filter->date);
-        if ($filter->period == self::MONTH) {
-            $dateTimeObj->modify('first day of this month');
-        } elseif ($filter->period == self::YEAR) {
-            $dateTimeObj->modify('first day of january ' . $dateTimeObj->format('Y'));
-        }
-        $startDate = $dateTimeObj->format('Y-m-d\TH:i:s');
-        $endDate = $filter->date;
+        $startDate = self::getStartDate($filter->date, $filter->period);
+        $endDate = Carbon::parse($filter->date);
 
         return ReportOrgDailyCits::where('org', $this->request->get('id'))
             ->whereDate('report_date', '>=', $startDate)
@@ -103,5 +81,17 @@ abstract class DailyReports extends TableForm
                 return $query->where('code', $this->metricCode);
             })
             ->get();
+    }
+
+    protected static function getStartDate($date, $period): Carbon
+    {
+        $startDate = Carbon::parse($date);
+        if ($period == self::MONTH) {
+            $startDate = $startDate->firstOfMonth();
+        } elseif ($period == self::YEAR) {
+            $startDate = $startDate->firstOfYear();
+        }
+
+        return $startDate;
     }
 }
