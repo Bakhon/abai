@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\HiveDataFromAvocet::class,
         \App\Console\Commands\ReceiveNonOperatingAssets::class,
         \App\Console\Commands\ComplicationMonitoringEconomicCalculate::class,
-        \App\Console\Commands\createEmergencySituations::class
+        \App\Console\Commands\EmergencySituations::class
     ];
 
     /**

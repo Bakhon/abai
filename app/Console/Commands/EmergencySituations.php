@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\VisCenter\EmergencyHistory;
 
-class createEmergencySituations extends Command
+class EmergencySituations extends Command
 {
     /**
      * The name and signature of the console command.
@@ -60,6 +60,8 @@ class createEmergencySituations extends Command
         $companyDifference = $this->getDifference($existingCompanies);
         foreach($companyDifference as $company) {
             $key = $this->getKey($company,$this->typeMapping);
+            var_dump('--key');
+            var_dump($key);
             $this->store($company,$key);
         }
     }
@@ -74,7 +76,10 @@ class createEmergencySituations extends Command
     private function getKey($id, $array) {
         foreach ($array as $key => $val) {
             $elementKey = array_search($id, $val);
-            if ($elementKey) {
+            var_dump($elementKey);
+            var_dump($key);
+            if (is_numeric($elementKey)) {
+                var_dump('return key');
                 return $key;
             }
         }
