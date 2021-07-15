@@ -221,7 +221,6 @@ return array (
   'no_incl_data' => 'Нет данных инклинометрии',
   'primenit_default' => 'Применить по умолчанию',
   'check_nkt_notify' => 'Уточнить параметры НКТ',
-  'pgno_module' => 'Модуль "Подбор ГНО"',
   'sk' => 'СК',
   'p_max' => 'Рмакс',
   'mkr' => 'Мкр',
@@ -233,4 +232,7 @@ return array (
   'daily_consumption' => 'Сут. энергопот.',
   'ure' => 'УРЭ',
   'power_consumption_short' => 'Потр. мощ.',
+  'pgno_module' => 'Модуль "Подбор ГНО"',
+  'calc_min_value' => 'Расчет мин. значение',
+  'use_value' => 'Использовать значение',
 );
