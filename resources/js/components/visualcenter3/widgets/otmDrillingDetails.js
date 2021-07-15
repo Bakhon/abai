@@ -66,8 +66,6 @@ export default {
             if (response.data && response.data.length === 0) {
                 this.drillingPeriodStart = moment(this.drillingPeriodStart).subtract(1,'days');
                 this.drillingPeriodEnd = moment(this.drillingPeriodEnd).subtract(1,'days');
-                console.log(this.chemistryPeriodStartMonth)
-                console.log(this.chemistryPeriodEndMonth)
                 return await this.getDrillingByMonth();
             }
             if (response.status === 200) {
