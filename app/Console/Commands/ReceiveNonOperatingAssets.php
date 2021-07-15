@@ -46,6 +46,7 @@ class receiveNonOperatingAssets extends Command
     protected $server = "mail.kmg.kz";
     protected $isDataAvailable = true;
     protected $ews;
+    protected $filePath = 'public/test2.xls';
     protected $messageOptions = array(
           'id' => '',
           'changeKey' => ''
@@ -224,7 +225,7 @@ class receiveNonOperatingAssets extends Command
     {
         foreach ($attachments as $attachment) {
             file_put_contents(
-                'public/test2.xls',
+                $this->filePath,
                 $attachment->Content
             );
         }
@@ -232,19 +233,22 @@ class receiveNonOperatingAssets extends Command
 
     public function deleteExistingFile()
     {
-        if(file_exists('public/test2.xls')) {
-            unlink('public/test2.xls');
+        if(file_exists($this->filePath)) {
+            unlink($this->filePath);
         }
     }
 
     public function scrapDocument($fileType)
     {
+        $xls = false;
         if ($fileType === 'gdu') {
-            if ( $xls = SimpleXLSX::parseFile('public/test2.xls') ) {
+            $xls = SimpleXLSX::parseFile($this->filePath);
+            if ($xls) {
                 $this->processExcelDocument($xls->rows(1),$fileType);
             }
         } else if ($fileType === 'nonOperating') {
-            if ( $xls = SimpleXLS::parseFile('public/test2.xls') ) {
+            $xls = SimpleXLS::parseFile($this->filePath);
+            if ($xls) {
                 $this->processExcelDocument($xls->rows(),$fileType);
             }
         }
@@ -254,8 +258,8 @@ class receiveNonOperatingAssets extends Command
 
     public function processExcelDocument($sheet,$fileType)
     {
-      foreach( $sheet as $r => $row) {
-          $this->processColumns($row,$sheet,$r,$fileType);
+      foreach( $sheet as $rowIndex => $row) {
+          $this->processColumns($row,$sheet,$rowIndex,$fileType);
       }
     }
 
@@ -269,19 +273,19 @@ class receiveNonOperatingAssets extends Command
         }
     }
 
-    public function processColumns($row,$sheet,$r,$fileType)
+    public function processColumns($row,$sheet,$rowIndex,$fileType)
     {
-        foreach($row as $k => $col) {
+        foreach($row as $columnIndex => $col) {
             $trimmedColumn = trim($col);
             if ($fileType === 'nonOperating') {
                 $this->processCompanies($trimmedColumn,$row);
                 if ($trimmedColumn === '"Қарашығанақ Петролеум Опер.Б.В." / "Карачаганак Петролеум Опер. Б.В."') {
-                    $data = $this->getKPOData($row,'КПО',$sheet,$r);
+                    $data = $this->getKPOData($row,'КПО',$sheet,$rowIndex);
                     $this->insertDataToDB($data);
                 }
             } else if ($fileType === 'gdu') {
                 if ($trimmedColumn === 'SC "PetroKazakhstan Kumkol Resources"') {
-                    $data = $this->getPKK($row,'ПКК',$sheet,$r,$k+2);
+                    $data = $this->getPKK($row,'ПКК',$sheet,$rowIndex,$columnIndex+2);
                     $this->insertDataToDB($data);
                 }
 
