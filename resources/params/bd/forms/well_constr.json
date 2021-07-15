@@ -16,7 +16,7 @@
                 "code": "casing_type",
                 "type": "dict",
                 "title": "column_type",
-                "dict": "equips",
+                "dict": "equip_type_casc",
                 "validation": "required|exists:tbd.dict.equip_type,id"
               },
               {
