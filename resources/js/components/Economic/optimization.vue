@@ -104,8 +104,8 @@
             <div class="d-flex align-items-center">
               <percent-badge
                   :percent="scenario.operating_profit_12m.percent"
-                  reverse
-                  class="text-nowrap mr-2"/>
+                  class="text-nowrap mr-2"
+                  reverse/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
                 {{ trans('economic_reference.vs_base_case') }}
@@ -116,7 +116,7 @@
           <div class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column">
             <div class="text-nowrap font-weight-bold"
                  style="font-size: 52px; line-height: 64px;">
-              <span>{{ oilPrices[1].label }}</span>
+              <span>{{ res.oilPrice }}</span>
 
               <span class="font-size-16px line-height-20px text-blue">$ / bbl</span>
             </div>
@@ -131,9 +131,9 @@
 
             <div class="d-flex align-items-center">
               <div class="font-size-24px line-height-28px font-weight-bold text-nowrap">
-                <percent-badge-icon :percent="-5" reverse/>
+                <percent-badge-icon :percent="oilPricePercent" reverse/>
 
-                <span>5</span>
+                <span>{{ oilPricePercent }}</span>
 
                 <span class="font-size-16px">$/bbl</span>
               </div>
@@ -282,61 +282,91 @@
               class="mb-3"
               @change="getData"/>
 
-          <select
-              class="mb-3 form-control text-white border-0"
-              style="background-color: #333975;">
-            <option
-                v-for="item in oilPrices"
-                :key="item.value"
-                :value="item.value">
-              {{ item.label }}
-            </option>
-          </select>
+          <div>
+            <label for="oil_price">
+              {{ trans('economic_reference.oil_price') }}
+            </label>
 
-          <select
-              class="mb-3 form-control text-white border-0"
-              style="background-color: #333975;">
-            <option
-                v-for="item in dollarRates"
-                :key="item.value"
-                :value="item.value">
-              {{ item.label }}
-            </option>
-          </select>
+            <select
+                id="oil_price"
+                class="mb-3 form-control text-white border-0 bg-dark-blue">
+              <option
+                  v-for="item in oilPrices"
+                  :key="item.value"
+                  :value="item.value">
+                {{ item.label }}
+              </option>
+            </select>
+          </div>
 
-          <select
-              class="mb-3 form-control text-white border-0"
-              style="background-color: #333975;">
-            <option
-                v-for="item in salaryPercents"
-                :key="item.value"
-                :value="item.value">
-              {{ item.label }}
-            </option>
-          </select>
+          <div>
+            <label for="dollar_rate">
+              {{ trans('economic_reference.course_prices') }}
+            </label>
 
-          <select
-              class="mb-3 form-control text-white border-0"
-              style="background-color: #333975;">
-            <option
-                v-for="item in retentionPercents"
-                :key="item.value"
-                :value="item.value">
-              {{ item.label }}
-            </option>
-          </select>
+            <select
+                id="dollar_rate"
+                class="mb-3 form-control text-white border-0 bg-dark-blue">
+              <option
+                  v-for="item in dollarRates"
+                  :key="item.value"
+                  :value="item.value">
+                {{ item.label }}
+              </option>
+            </select>
+          </div>
 
-          <select
-              v-model="scenarioIndex"
-              class="mb-3 form-control text-white border-0"
-              style="background-color: #333975;">
-            <option
-                v-for="item in optimizationPercents"
-                :key="item.value"
-                :value="item.value">
-              {{ item.label }}
-            </option>
-          </select>
+          <div>
+            <label for="salary_percent">
+              {{ trans('economic_reference.salary_optimization') }}
+            </label>
+
+            <select
+                id="salary_percent"
+                class="mb-3 form-control text-white border-0 bg-dark-blue">
+              <option
+                  v-for="item in salaryPercents"
+                  :key="item.value"
+                  :value="item.value">
+                {{ item.label }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label for="retention_percent">
+              {{ trans('economic_reference.retention_percents') }}
+            </label>
+
+            <select
+                id="retention_percent"
+                class="mb-3 form-control text-white border-0 bg-dark-blue">
+              <option
+                  v-for="item in retentionPercents"
+                  :key="item.value"
+                  :value="item.value">
+                {{ item.label }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label for="optimization_percent">
+              {{ trans('economic_reference.stop_unprofitable_fund') }}
+            </label>
+
+            <select
+                v-model="scenarioIndex"
+                id="optimization_percent"
+                class="mb-3 form-control text-white border-0 bg-dark-blue">
+              <option
+                  v-for="item in optimizationPercents"
+                  :key="item.value"
+                  :value="item.value">
+                {{ item.label }}
+              </option>
+            </select>
+          </div>
 
           <button class="btn btn-primary mt-4 py-2 w-100 border-0 bg-export">
             {{ trans('economic_reference.export_excel') }}
@@ -384,7 +414,8 @@ let economicRes = {
     dollar_rate: 0,
     oil_price: 0,
   }],
-  dollarRate: ''
+  dollarRate: 0,
+  oilPrice: 0,
 }
 
 optimizedColumns.forEach(column => {
@@ -517,6 +548,15 @@ export default {
           value_optimized: this.trans('economic_reference.optimized')
         },
         {
+          name: 'Всего',
+          value: (+this.scenario.well_count_profitable.original_value)
+              + (+this.scenario.well_count_profitless_cat_1.original_value)
+              + (+this.scenario.well_count_profitless_cat_2.original_value),
+          value_optimized: (+this.scenario.well_count_profitable.original_value_optimized)
+              + (+this.scenario.well_count_profitless_cat_1.original_value_optimized)
+              + (+this.scenario.well_count_profitless_cat_2.original_value_optimized),
+        },
+        {
           name: this.trans('economic_reference.profitable'),
           value: this.scenario.well_count_profitable.original_value,
           value_optimized: this.scenario.well_count_profitable.original_value_optimized,
@@ -547,10 +587,6 @@ export default {
     oilPrices() {
       return [
         {
-          label: this.trans('economic_reference.oil_price'),
-          value: null,
-        },
-        {
           label: this.scenario.oil_price,
           value: this.scenario.oil_price,
         }
@@ -559,10 +595,6 @@ export default {
 
     dollarRates() {
       return [
-        {
-          label: this.trans('economic_reference.course_prices'),
-          value: null,
-        },
         {
           label: this.scenario.dollar_rate,
           value: this.scenario.dollar_rate,
@@ -573,10 +605,6 @@ export default {
     salaryPercents() {
       return [
         {
-          label: 'Оптимизации заработной платы',
-          value: null,
-        },
-        {
           label: `${this.scenario.coef_cost_WR_payroll * 100}%`,
           value: this.scenario.coef_cost_WR_payroll,
         },
@@ -586,10 +614,6 @@ export default {
     retentionPercents() {
       return [
         {
-          label: 'Сохранение условно-постоянных затрат отключаемых скважин',
-          value: null,
-        },
-        {
           label: `${this.scenario.coef_Fixed_nopayroll * 100}%`,
           value: this.scenario.coef_Fixed_nopayroll,
         },
@@ -597,10 +621,7 @@ export default {
     },
 
     optimizationPercents() {
-      let items = [{
-        label: 'Процент остановки нерентабельного фонда',
-        value: null,
-      }]
+      let items = []
 
       this.res.scenarios.forEach((item, index) => {
         items.push({
@@ -616,8 +637,12 @@ export default {
       return this.res.scenarios[this.scenarioIndex]
     },
 
-    dollarRatePercent(){
+    dollarRatePercent() {
       return (+this.res.dollarRate - (+this.scenario.dollar_rate)).toFixed(2)
+    },
+
+    oilPricePercent() {
+      return (+this.res.oilPrice - (+this.scenario.oil_price)).toFixed(2)
     },
 
     oilPercent() {
@@ -629,7 +654,7 @@ export default {
     },
 
     liquidPercent() {
-      return (this.liquidValue() - this.liquidValue(false)).toFixed(4)
+      return (this.liquidValue() - this.liquidValue(false)).toFixed(2)
     },
 
     avgOilPercent() {
@@ -676,8 +701,9 @@ export default {
           ? this.scenario.oil.original_value_optimized
           : this.scenario.oil.original_value
 
+      // TODO: посмотреть более точную формулу
       return liquid
-          ? ((liquid - oil) / liquid).toFixed(4)
+          ? (100 * (liquid - oil) / liquid).toFixed(2)
           : 0
     },
 
@@ -691,7 +717,7 @@ export default {
           : this.scenario.oil.original_value
 
       return well_count
-          ? (oil * 1000 / (365 * well_count)).toFixed(2)
+          ? (oil / (365 * well_count)).toFixed(2)
           : 0
     },
 
@@ -780,6 +806,10 @@ export default {
 
 .bg-blue-dark {
   background: #2B2E5E;
+}
+
+.bg-dark-blue {
+  background: #333975;
 }
 
 .bg-export {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
@@ -35,6 +36,9 @@ class EconomicOptimizationController extends Controller
 
     const DOLLAR_RATE_KEY = 'USD / KZT';
 
+    const OIL_PRICE_URL = 'https://ru.investing.com/commodities/brent-oil-historical-data';
+
+    const OIL_KEY = '_last_8833';
 
     public function __construct(DruidClient $druidClient)
     {
@@ -106,7 +110,8 @@ class EconomicOptimizationController extends Controller
 
         return [
             'scenarios' => $result,
-            'dollarRate' => self::getDollarRate()
+            'dollarRate' => self::getDollarRate(),
+            'oilPrice' => self::getOilPrice(),
         ];
     }
 
@@ -160,7 +165,24 @@ class EconomicOptimizationController extends Controller
             }
         }
 
-        return "";
+        return "0";
+    }
+
+    static function getOilPrice(): string
+    {
+        libxml_use_internal_errors(TRUE);
+
+        $res = (new Client())->get(self::OIL_PRICE_URL)->getBody()->getContents();
+
+        $dom = new \DOMDocument();
+
+        $dom->loadHTML($res);
+
+        $element = $dom->getElementById(self::OIL_KEY);
+
+        return $element
+            ? str_replace(',', '.', $element->nodeValue)
+            : "0";
     }
 
 }
