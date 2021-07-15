@@ -664,6 +664,7 @@ export default {
         message = result.message;
       }
 
+      let variant = result.status == 'success' ? 'success' : 'danger';
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addZu() {
@@ -682,6 +683,7 @@ export default {
         message = result.message;
       }
 
+      let variant = result.status == 'success' ? 'success' : 'danger';
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addWell() {
@@ -700,6 +702,7 @@ export default {
         message = result.message;
       }
 
+      let variant = result.status == 'success' ? 'success' : 'danger';
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addPipe() {
