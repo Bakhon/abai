@@ -385,7 +385,6 @@ export default {
     },
   },
   beforeCreate: function () {
-    this.posturl = process.env.MIX_PGNO_API_URL
     this.axios.get('/ru/organizations').then(({ data }) => {
       if (data.organizations.length == 0) {
         this.organization = "НК КазМунайГаз"
@@ -1647,8 +1646,9 @@ export default {
           }
           if (this.isVisibleChart) {
             this.isLoading = true;
+            let uri = "http://172.20.103.187:7575/api/pgno/shgn";
             this.prepareData()
-            this.axios.post("http://172.20.103.187:7575/api/pgno/shgn", this.postdata).then((response) => {
+            this.axios.post(uri, this.postdata).then((response) => {
               let data = response.data;
               if (!this.isYoungAge) {
                 this.fetchBlockCentrators()
