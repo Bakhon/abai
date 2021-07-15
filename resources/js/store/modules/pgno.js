@@ -19,9 +19,18 @@ const pgno = {
         dmRods: ["19", "22"],
         komponovka: ["hvostovik"],
         stupColumns: "2",
-        markShtang: "15Х2ГМФ (НВО)",
+        markShtang: ["15Х2ГМФ (НВО)"],
+        kPodMode: true,
+        kPodCalced: null,
+
     },
     mutations: {
+      UPDATE_KPOD_MODE(state, val) {
+        state.kPodMode = val
+      },
+      UPDATE_KPOD_CALCED(state, val) {
+        state.kPodCalced = val
+      },
       UPDATE_HEAVYDOWN(state, val) {
         state.heavyDown = val
       },
@@ -79,6 +88,12 @@ const pgno = {
     },
     
     actions: {
+      setKpodMode({commit}, value) {
+        commit('UPDATE_KPOD_MODE', value)
+      },
+      setKpodCalced({commit}, value) {
+        commit('UPDATE_KPOD_CALCED', value)
+      },
       setDmPumps({commit}, value) {
         commit('UPDATE_DMPUMPS', value)
       },
@@ -117,7 +132,9 @@ const pgno = {
       corrosion: (state) => state.corrosion,
       stupColumns: (state) => state.stupColumns,
       h2s: (state) => state.h2s,
-      heavyDown: (state) => state.heavyDown
+      heavyDown: (state) => state.heavyDown,
+      kPodMode: (state) => state.kPodMode,
+      kPodCalced: (state) => state.kPodCalced
     },
 }
 

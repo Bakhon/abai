@@ -712,4 +712,8 @@ return [
     'choose_end_date' => 'Выберите конечную дату',
     'load_las' => 'Загрузка las',
     'view' => 'Просмотр главной',
+    'choose_start_month' => 'Выберите начальный месяц',
+    'choose_end_month' => 'Выберите конечный месяц',
+    'choose_start_year' => 'Выберите начальный год',
+    'choose_end_year' => 'Выберите конечный год',
 ];
