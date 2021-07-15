@@ -6,6 +6,14 @@
   width: 120px !important;
 }
 
+.shgn-table-small {
+  text-align: left;
+  border-collapse: separate;
+  width: 100%;
+  height: auto;
+  font-size: 13px;
+}
+
 .shgn-table-large {
   text-align: left;
   border-collapse: separate;
@@ -24,7 +32,6 @@
 
 .shgn-table-th {
   font-size: 14px;
-  width: 100%;
   vertical-align: middle;
   border-top: 0px;
   padding-inline: 3px;

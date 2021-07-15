@@ -13,7 +13,7 @@
                 "code": "dbeg",
                 "type": "datetime",
                 "title": "date_gtm_start",
-                "validation": "required|date"
+                "validation": "required|date|before:dend"
               },
               {
                 "code": "gtm_type",
@@ -57,7 +57,7 @@
                 "code": "dend",
                 "type": "date",
                 "title": "date_gtm_end",
-                "validation": "nullable|date",
+                "validation": "nullable|date|after:dbeg",
                 "callbacks": {
                   "fillCalculatedFields": ""
                 }

@@ -451,4 +451,23 @@ class VisualCenterController extends Controller
             ->get()
             ->toArray();
     }
+    public function getHistoricalProductionByDzo(Request $request)
+    {
+        $factByDzo = DzoImportData::query()
+            ->where('dzo_name', $request->dzoName)
+            ->orderBy('date', 'desc')
+            ->with('importDowntimeReason')
+            ->with('importDecreaseReason')
+            ->first()
+            ->toArray();
+        $factDate = Carbon::parse($factByDzo['date'])->firstOfMonth();
+        $planByDzo = DzoPlan::query()
+            ->whereDate('date', $factDate)
+            ->where('dzo', $request->dzoName)
+            ->first()
+            ->toArray();
+        $planByDzo = $this->deleteDuplicateFields($planByDzo);
+        $comparedData[] = array_merge($factByDzo,$planByDzo);
+        return response()->json($comparedData);
+    }
 }
