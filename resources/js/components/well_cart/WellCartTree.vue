@@ -22,7 +22,7 @@
               :key="`form_${index}`"
               :class="{'selected': activeFormCode === form.code}"
           >
-            <p @click.stop="switchFormByCode(form.code)">
+            <p @click.stop="switchFormByCode(form)">
               <span class="file cursor-pointer" v-html="form.name"></span>
             </p>
           </li>

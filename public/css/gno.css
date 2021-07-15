@@ -1711,7 +1711,7 @@ input.checkbox-q-liquid {
 
 .shgn-table-pgno-one, .shgn-table-pgno-two {
     width: auto;
-    height: 230px;
+    height: 200px;
 }
 
 .table-pgno-four {
@@ -1772,12 +1772,13 @@ input.checkbox-q-liquid {
 @media (max-width: 1500px) {
     .shgn-table-pgno-one, .shgn-table-pgno-two {
         width: auto;
-        height: 230px;
+        height: 200px;
     }
 
     .shgn-table-pgno-four {
         width: auto;
-        height: 50px;
+        font-size: 11px;
+        
     }
 
 
@@ -1822,6 +1823,14 @@ input.checkbox-q-liquid {
         word-spacing: 0px;
         max-height: 77px;
     };
+
+    .table-pgno-three {
+        order: 4;
+    }
+
+    .table-pgno-four {
+        order: 3;
+    }
 }
 
 @media (max-width: 1200px) {
@@ -1861,11 +1870,7 @@ input.checkbox-q-liquid {
     };
 
     .shgn-table-pgno-one, .shgn-table-pgno-two {
-        margin-bottom: 150px !important;
-    }
-
-    .shgn-tables-wrapper {
-        justify-content: space-evenly;
+        margin-bottom: 200px !important;
     }
 }
 
@@ -1972,6 +1977,11 @@ input.checkbox-q-liquid {
     .shgn-tables-wrapper {
         margin-bottom: 10px;
         height: initial;
+        align-items: center;
+    }
+
+    .shgn-table-pgno-one, .shgn-table-pgno-two {
+        height: 185px;
     }
 
     .shgn-table {
