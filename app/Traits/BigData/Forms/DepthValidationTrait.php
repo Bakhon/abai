@@ -21,7 +21,7 @@ trait DepthValidationTrait
             ->get('daily_drill_progress')
             ->sum('daily_drill_progress');
 
-        return ($this->isCorrectSummofDailyDrill($dailyDrill, $depth)) ? true : false ;
+        return $this->isCorrectSummofDailyDrill($dailyDrill, $depth);
     }
        
 }
