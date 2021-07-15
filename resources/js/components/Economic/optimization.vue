@@ -5,32 +5,40 @@
     <div class="row">
       <div class="col-9 pr-2">
         <div class="row text-white text-wrap flex-nowrap">
-          <div class="p-3 bg-blue-dark">
-            <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>{{ scenario.Revenue_total.value_optimized[0] }}</span>
+          <div
+              v-for="(header, index) in calculatedHeaders"
+              :key="index"
+              class="p-3 bg-blue-dark position-relative">
+            <divider v-if="index"/>
+
+            <economic-title
+                font-size="58"
+                line-height="72"
+                class="text-nowrap">
+              <span> {{ header.value }} </span>
 
               <span class="font-size-16px line-height-20px text-blue">
-               {{ scenario.Revenue_total.value_optimized[1] }}
+               {{ header.valueWord }}
               </span>
             </economic-title>
 
-            <subtitle font-size="18">
-              {{ trans('economic_reference.Revenue') }}
-            </subtitle>
+            <subtitle font-size="18"> {{ header.name }}</subtitle>
 
-            <percent-progress :percent="scenario.Revenue_total.percent"/>
+            <percent-progress v-if="scenarioId" :percent="header.percent"/>
 
-            <div class="d-flex font-size-12px line-height-14px mb-2">
+            <div v-if="scenarioId"
+                 class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
-                {{ 100 + scenario.Revenue_total.percent }} %
+                {{ 100 + header.percent }} %
               </div>
 
-              <div>{{ scenario.Revenue_total.value[0] }}</div>
+              <div>{{ header.baseValue }}</div>
             </div>
 
-            <div class="d-flex align-items-center">
+            <div v-if="scenarioId"
+                 class="d-flex align-items-center">
               <percent-badge
-                  :percent="scenario.Revenue_total.percent"
+                  :percent="header.percent"
                   class="text-nowrap mr-2"
                   reverse/>
 
@@ -40,136 +48,37 @@
             </div>
           </div>
 
-          <div class="p-3 bg-blue-dark position-relative">
-            <divider/>
-
-            <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>{{ scenario.Overall_expenditures.value_optimized[0] }}</span>
-
-              <span class="font-size-16px line-height-20px text-blue">
-                {{ scenario.Overall_expenditures.value_optimized[1] }}
-              </span>
-            </economic-title>
-
-            <subtitle font-size="18">
-              {{ trans('economic_reference.costs') }}
-            </subtitle>
-
-            <percent-progress :percent="scenario.Overall_expenditures.percent"/>
-
-            <div class="d-flex font-size-12px line-height-14px mb-2">
-              <div class="flex-grow-1 text-blue">
-                {{ 100 + scenario.Overall_expenditures.percent }} %
-              </div>
-
-              <div>{{ scenario.Overall_expenditures.value[0] }}</div>
-            </div>
-
-            <div class="d-flex align-items-center">
-              <percent-badge
-                  :percent="-scenario.Overall_expenditures.percent"
-                  class="text-nowrap mr-2"/>
-
-              <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
-                {{ trans('economic_reference.vs_base_case') }}
-              </div>
-            </div>
-          </div>
-
-          <div class="p-3 bg-blue-dark position-relative">
-            <divider/>
-
-            <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>{{ scenario.operating_profit_12m.value_optimized[0] }}</span>
-
-              <span class="font-size-16px line-height-20px text-blue">
-                {{ scenario.operating_profit_12m.value_optimized[1] }}
-              </span>
-            </economic-title>
-
-            <subtitle font-size="18">
-              {{ trans('economic_reference.operating_profit') }}
-            </subtitle>
-
-            <percent-progress :percent="scenario.operating_profit_12m.percent"/>
-
-            <div class="d-flex font-size-12px line-height-14px mb-2">
-              <div class="flex-grow-1 text-blue">
-                {{ 100 + scenario.operating_profit_12m.percent }} %
-              </div>
-
-              <div>{{ scenario.operating_profit_12m.value[0] }}</div>
-            </div>
-
-            <div class="d-flex align-items-center">
-              <percent-badge
-                  :percent="scenario.operating_profit_12m.percent"
-                  class="text-nowrap mr-2"
-                  reverse/>
-
-              <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
-                {{ trans('economic_reference.vs_base_case') }}
-              </div>
-            </div>
-          </div>
-
-          <div class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column">
+          <div
+              v-for="(header, index) in remoteHeaders"
+              :key="index"
+              class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column">
             <div class="text-nowrap font-weight-bold"
                  style="font-size: 52px; line-height: 64px;">
-              <span>{{ res.oilPrice }}</span>
+              <span>{{ header.value }}</span>
 
-              <span class="font-size-16px line-height-20px text-blue">$ / bbl</span>
+              <span class="font-size-16px line-height-20px text-blue">
+                {{ header.valueWord }}
+              </span>
             </div>
 
             <subtitle font-size="18">
-              {{ trans('economic_reference.oil_price') }}
+              {{ header.name }}
             </subtitle>
 
             <span class="text-grey font-size-12px line-height-14px flex-grow-1">
               {{ trans('economic_reference.current') }}
             </span>
 
-            <div class="d-flex align-items-center">
+            <div v-if="scenarioId" class="d-flex align-items-center">
               <div class="font-size-24px line-height-28px font-weight-bold text-nowrap">
-                <percent-badge-icon :percent="oilPricePercent" reverse/>
+                <percent-badge-icon :percent="header.percent" reverse/>
 
-                <span>{{ oilPricePercent }}</span>
+                <span>{{ header.percent }}</span>
 
-                <span class="font-size-16px">$/bbl</span>
+                <span class="font-size-16px">{{ header.valueWord }}</span>
               </div>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
-                {{ trans('economic_reference.vs_choice') }}
-              </div>
-            </div>
-          </div>
-
-          <div class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column">
-            <div class="text-nowrap font-weight-bold"
-                 style="font-size: 52px; line-height: 64px;">
-              <span>{{ res.dollarRate }}</span>
-
-              <span class="font-size-16px line-height-20px text-blue">kzt / $</span>
-            </div>
-
-            <subtitle font-size="18">
-              {{ trans('economic_reference.course_prices') }}
-            </subtitle>
-
-            <span class="text-grey font-size-12px line-height-14px flex-grow-1">
-              {{ trans('economic_reference.current') }}
-            </span>
-
-            <div class="d-flex align-items-center">
-              <div class="font-size-24px line-height-28px font-weight-bold text-nowrap">
-                <percent-badge-icon :percent="dollarRatePercent" reverse/>
-
-                <span>{{ dollarRatePercent }}</span>
-
-                <span class="font-size-16px">kzt / $</span>
-              </div>
-
-              <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
                 {{ trans('economic_reference.vs_choice') }}
               </div>
             </div>
@@ -188,7 +97,9 @@
           <div class="mt-4 position-relative">
             <divider style="left: 150px; height: 100%; top: 0;"/>
 
-            <divider style="left: 230px; height: 100%; top: 0;"/>
+            <divider
+                v-if="scenarioId"
+                style="left: 230px; height: 100%; top: 0;"/>
 
             <div v-for="(wellCount, index) in wellsCount"
                  :key="index"
@@ -199,11 +110,11 @@
               </div>
 
               <div class="ml-2" style="width: 80px">
-                <span> {{ wellCount.value }}</span>
+                {{ wellCount.value }}
               </div>
 
-              <div>
-                <span> {{ wellCount.value_optimized }}</span>
+              <div v-if="scenarioId">
+                {{ wellCount.value_optimized }}
               </div>
             </div>
           </div>
@@ -212,8 +123,8 @@
         <div
             v-for="(block, index) in blocks"
             :key="index"
-            class="d-flex bg-main1 text-white text-wrap p-3 mb-3"
-            style="min-height: 175px">
+            :style="scenarioId ? 'min-height: 175px' : 'min-height: 100px'"
+            class="d-flex bg-main1 text-white text-wrap p-3 mb-3"            >
           <div
               v-for="(subBlock, subBlockIndex) in block"
               :key="subBlock.title"
@@ -239,11 +150,13 @@
               </div>
             </div>
 
-            <div class="text-grey font-size-14px line-height-14px font-weight-bold mb-3">
+            <div v-if="scenarioId"
+                 class="text-grey font-size-14px line-height-14px font-weight-bold mb-3">
               {{ trans('economic_reference.optimized') }}
             </div>
 
-            <div class="d-flex align-items-center font-size-12px line-height-14px text-nowrap">
+            <div v-if="scenarioId"
+                 class="d-flex align-items-center font-size-12px line-height-14px text-nowrap">
               <percent-badge-icon
                   :percent="subBlock.reversePercent ? -subBlock.percent : subBlock.percent"
                   :reverse="subBlock.reverse"
@@ -282,90 +195,104 @@
               class="mb-3"
               @change="getData"/>
 
-          <div>
-            <label for="oil_price">
-              {{ trans('economic_reference.oil_price') }}
-            </label>
+          <select
+              v-model="scenarioId"
+              id="scenarios"
+              class="mb-3 form-control text-white border-0 bg-dark-blue">
+            <option
+                v-for="item in scenarios"
+                :key="item.value"
+                :value="item.value">
+              {{ item.label }}
+            </option>
+          </select>
 
-            <select
-                id="oil_price"
-                class="mb-3 form-control text-white border-0 bg-dark-blue">
-              <option
-                  v-for="item in oilPrices"
-                  :key="item.value"
-                  :value="item.value">
-                {{ item.label }}
-              </option>
-            </select>
-          </div>
+          <div v-if="scenarioId">
+            <div>
+              <label for="oil_price">
+                {{ trans('economic_reference.oil_price') }}
+              </label>
 
-          <div>
-            <label for="dollar_rate">
-              {{ trans('economic_reference.course_prices') }}
-            </label>
+              <select
+                  id="oil_price"
+                  class="mb-3 form-control text-white border-0 bg-dark-blue">
+                <option
+                    v-for="item in oilPrices"
+                    :key="item.value"
+                    :value="item.value">
+                  {{ item.label }}
+                </option>
+              </select>
+            </div>
 
-            <select
-                id="dollar_rate"
-                class="mb-3 form-control text-white border-0 bg-dark-blue">
-              <option
-                  v-for="item in dollarRates"
-                  :key="item.value"
-                  :value="item.value">
-                {{ item.label }}
-              </option>
-            </select>
-          </div>
+            <div>
+              <label for="dollar_rate">
+                {{ trans('economic_reference.course_prices') }}
+              </label>
 
-          <div>
-            <label for="salary_percent">
-              {{ trans('economic_reference.salary_optimization') }}
-            </label>
+              <select
+                  id="dollar_rate"
+                  class="mb-3 form-control text-white border-0 bg-dark-blue">
+                <option
+                    v-for="item in dollarRates"
+                    :key="item.value"
+                    :value="item.value">
+                  {{ item.label }}
+                </option>
+              </select>
+            </div>
 
-            <select
-                id="salary_percent"
-                class="mb-3 form-control text-white border-0 bg-dark-blue">
-              <option
-                  v-for="item in salaryPercents"
-                  :key="item.value"
-                  :value="item.value">
-                {{ item.label }}
-              </option>
-            </select>
-          </div>
+            <div>
+              <label for="salary_percent">
+                {{ trans('economic_reference.salary_optimization') }}
+              </label>
 
-          <div>
-            <label for="retention_percent">
-              {{ trans('economic_reference.retention_percents') }}
-            </label>
+              <select
+                  id="salary_percent"
+                  class="mb-3 form-control text-white border-0 bg-dark-blue">
+                <option
+                    v-for="item in salaryPercents"
+                    :key="item.value"
+                    :value="item.value">
+                  {{ item.label }}
+                </option>
+              </select>
+            </div>
 
-            <select
-                id="retention_percent"
-                class="mb-3 form-control text-white border-0 bg-dark-blue">
-              <option
-                  v-for="item in retentionPercents"
-                  :key="item.value"
-                  :value="item.value">
-                {{ item.label }}
-              </option>
-            </select>
-          </div>
+            <div>
+              <label for="retention_percent">
+                {{ trans('economic_reference.retention_percents') }}
+              </label>
 
-          <div>
-            <label for="optimization_percent">
-              {{ trans('economic_reference.stop_unprofitable_fund') }}
-            </label>
+              <select
+                  id="retention_percent"
+                  class="mb-3 form-control text-white border-0 bg-dark-blue">
+                <option
+                    v-for="item in retentionPercents"
+                    :key="item.value"
+                    :value="item.value">
+                  {{ item.label }}
+                </option>
+              </select>
+            </div>
 
-            <select
-                v-model="scenarioIndex"
-                id="optimization_percent"
-                class="mb-3 form-control text-white border-0 bg-dark-blue">
-              <option
-                  v-for="item in optimizationPercents"
-                  :key="item.value"
-                  :value="item.value">
-                {{ item.label }}
-              </option>
-            </select>
+            <div>
+              <label for="optimization_percent">
+                {{ trans('economic_reference.stop_unprofitable_fund') }}
+              </label>
+
+              <select
+                  v-model="scenarioIndex"
+                  id="optimization_percent"
+                  class="mb-3 form-control text-white border-0 bg-dark-blue">
+                <option
+                    v-for="item in optimizationPercents"
+                    :key="item.value"
+                    :value="item.value">
+                  {{ item.label }}
+                </option>
+              </select>
+            </div>
           </div>
 
           <button class="btn btn-primary mt-4 py-2 w-100 border-0 bg-export">
@@ -448,9 +375,53 @@ export default {
     },
     res: economicRes,
     loading: true,
+    scenarioId: null,
     scenarioIndex: 0
   }),
   computed: {
+    calculatedHeaders() {
+      return [
+        {
+          name: this.trans('economic_reference.Revenue'),
+          baseValue: this.scenario.Revenue_total.value[0],
+          value: this.scenario.Revenue_total[this.scenarioValueKey][0],
+          valueWord: this.scenario.Revenue_total[this.scenarioValueKey][1],
+          percent: this.scenario.Revenue_total.percent
+        },
+        {
+          name: this.trans('economic_reference.costs'),
+          baseValue: this.scenario.Overall_expenditures.value[0],
+          value: this.scenario.Overall_expenditures[this.scenarioValueKey][0],
+          valueWord: this.scenario.Overall_expenditures[this.scenarioValueKey][1],
+          percent: this.scenario.Overall_expenditures.percent
+        },
+        {
+          name: this.trans('economic_reference.operating_profit'),
+          baseValue: this.scenario.operating_profit_12m.value[0],
+          value: this.scenario.operating_profit_12m[this.scenarioValueKey][0],
+          valueWord: this.scenario.operating_profit_12m[this.scenarioValueKey][1],
+          percent: this.scenario.operating_profit_12m.percent
+        }
+      ]
+    },
+
+    remoteHeaders() {
+      return [
+        {
+          name: this.trans('economic_reference.oil_price'),
+          value: this.res.oilPrice,
+          valueWord: '$ / bbl',
+          percent: this.oilPricePercent,
+        },
+        {
+          name: this.trans('economic_reference.course_prices'),
+          value: this.res.dollarRate,
+          valueWord: 'kzt / $',
+          percent: this.dollarRatePercent,
+        }
+      ]
+    },
+
     blocks() {
       return [
         [
@@ -458,11 +429,11 @@ export default {
             // если растет -> то зеленая вверх
             title: this.trans('economic_reference.oil_production'),
             icon: 'oil_production.svg',
-            value: this.scenario.oil.value_optimized[0],
-            valueWord: this.scenario.oil.value_optimized[1],
+            value: this.scenario.oil[this.scenarioValueKey][0],
+            valueWord: this.scenario.oil[this.scenarioValueKey][1],
             valueWordSuffix: 'тонн',
             percent: this.oilPercent,
-            percentWord: this.scenario.oil.value_optimized[1],
+            percentWord: this.scenario.oil[this.scenarioValueKey][1],
             percentWordSuffix: 'тонн',
             reverse: true,
             reversePercent: true
@@ -483,7 +454,7 @@ export default {
             // если растет -> то красная вверх
             title: this.trans('economic_reference.total_prs'),
             icon: 'total_prs.svg',
-            value: this.scenario.prs.value_optimized[0] * 1000,
+            value: this.scenario.prs[this.scenarioValueKey][0] * 1000,
             valueWord: 'ед',
             percent: this.prsPercent,
             percentWord: 'ед',
@@ -563,8 +534,10 @@ export default {
         },
         {
           name: this.trans('economic_reference.profitless_all'),
-          value: (+this.scenario.well_count_profitless_cat_1.original_value) + (+this.scenario.well_count_profitless_cat_2.original_value),
-          value_optimized: (+this.scenario.well_count_profitless_cat_1.original_value_optimized) + (+this.scenario.well_count_profitless_cat_2.original_value_optimized)
+          value: (+this.scenario.well_count_profitless_cat_1.original_value)
+              + (+this.scenario.well_count_profitless_cat_2.original_value),
+          value_optimized: (+this.scenario.well_count_profitless_cat_1.original_value_optimized)
+              + (+this.scenario.well_count_profitless_cat_2.original_value_optimized)
         },
         {
           name: this.trans('economic_reference.profitless_cat_1'),
@@ -580,6 +553,19 @@ export default {
           name: this.trans('economic_reference.new_wells'),
           value: 0,
           value_optimized: 0
+        }
+      ]
+    },
+
+    scenarios() {
+      return [
+        {
+          label: 'Базовый вариант',
+          value: null,
+        },
+        {
+          label: 'Сценарий 1',
+          value: 'test_v1',
         }
       ]
     },
@@ -635,6 +621,10 @@ export default {
 
     scenario() {
       return this.res.scenarios[this.scenarioIndex]
+    },
+
+    scenarioValueKey() {
+      return this.scenarioId ? 'value_optimized' : 'value'
     },
 
     dollarRatePercent() {

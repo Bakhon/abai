@@ -54,7 +54,7 @@ class EconomicOptimizationController extends Controller
         return view('economic.optimization');
     }
 
-    public function getData(Request $request)
+    public function getData(Request $request): array
     {
         EconomicNrsController::validateAccess($request->org_id);
 
@@ -105,13 +105,12 @@ class EconomicOptimizationController extends Controller
                     'original_value_optimized' => $item[$columnOptimized],
                 ];
             }
-
         }
 
         return [
             'scenarios' => $result,
-            'dollarRate' => self::getDollarRate(),
-            'oilPrice' => self::getOilPrice(),
+            'dollarRate' => self::getDollarRate() ?? '0',
+            'oilPrice' => self::getOilPrice() ?? '0',
         ];
     }
 
@@ -141,48 +140,51 @@ class EconomicOptimizationController extends Controller
         ];
     }
 
-    static function getDollarRate(): string
+    static function getDollarRate(): ?string
     {
-        libxml_use_internal_errors(TRUE);
+        try {
+            libxml_use_internal_errors(TRUE);
 
-        $dom = new \DOMDocument();
+            $dom = new \DOMDocument();
 
-        $dom->loadHTMLFile(self::DOLLAR_RATE_URL);
+            $dom->loadHTMLFile(self::DOLLAR_RATE_URL);
 
-        $xpath = new \DOMXpath($dom);
+            $xpath = new \DOMXpath($dom);
 
-        $elements = $xpath->query("//table//tbody//tr");
+            $elements = $xpath->query("//table//tbody//tr");
 
-        /** @var \DOMElement $element */
-        foreach ($elements as $element) {
-            $tds = $element->getElementsByTagName('td');
+            /** @var \DOMElement $element */
+            foreach ($elements as $element) {
+                $tds = $element->getElementsByTagName('td');
 
-            /** @var \DOMElement $td */
-            foreach ($tds as $index => $td) {
-                if ($td->nodeValue === self::DOLLAR_RATE_KEY) {
-                    return $tds[$index + 1]->nodeValue;
+                /** @var \DOMElement $td */
+                foreach ($tds as $index => $td) {
+                    if ($td->nodeValue === self::DOLLAR_RATE_KEY) {
+                        return $tds[$index + 1]->nodeValue;
+                    }
                 }
             }
+        } catch (\Throwable $e) {
+            return null;
         }
-
-        return "0";
     }
 
-    static function getOilPrice(): string
+    static function getOilPrice(): ?string
     {
-        libxml_use_internal_errors(TRUE);
+        try {
+            libxml_use_internal_errors(TRUE);
 
-        $res = (new Client())->get(self::OIL_PRICE_URL)->getBody()->getContents();
+            $res = (new Client())->get(self::OIL_PRICE_URL)->getBody()->getContents();
 
-        $dom = new \DOMDocument();
+            $dom = new \DOMDocument();
 
-        $dom->loadHTML($res);
+            $dom->loadHTML($res);
 
-        $element = $dom->getElementById(self::OIL_KEY);
+            $element = $dom->getElementById(self::OIL_KEY);
 
-        return $element
-            ? str_replace(',', '.', $element->nodeValue)
-            : "0";
+            return str_replace(',', '.', $element->nodeValue);
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
-
 }
