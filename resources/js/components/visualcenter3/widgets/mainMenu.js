@@ -40,6 +40,8 @@ export default {
     methods: {
         switchCategory(buttonName, planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
             this.lastSelectedCategory = '';
+            this.oilCondensateProductionButton = '';
+            this.oilCondensateDeliveryButton = '';
             this.$store.commit('globalloading/SET_LOADING', true);
             this.isOpecFilterActive = false;
             this.oilCondensateFilters.isWithoutKMGFilterActive = true;
@@ -48,6 +50,9 @@ export default {
                 this.changeDzoCompaniesList(dzoCompaniesInitial);
             } else {
                 this.changeDzoCompaniesList(companiesListWithKMG);
+            }
+            if (!this.isOneDzoSelected){
+                this.selectAllDzoCompanies();
             }
             this.setDzoCompaniesToInitial();
             this.disableTargetCompanyFilter();
@@ -182,6 +187,17 @@ export default {
             } else {
                 return this.trans("visualcenter.tonWithSpace");
             }
+        },
+
+        assignOneCompanyToSelectedDzo(oneDzoNameSelected) {
+            this.isOneDzoSelected = true;
+            if (oneDzoNameSelected == 'ОМГ') {
+                oneDzoNameSelected = [oneDzoNameSelected, 'ОМГК'];
+            }
+            this.selectedDzoCompanies = oneDzoNameSelected;
+            this.updateDzoMenu();         
+            this.updateProductionFondWidget();
+            this.updateInjectionFondWidget();          
         },
     },
 }

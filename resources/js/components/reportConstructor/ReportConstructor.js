@@ -1,7 +1,9 @@
 import {Datetime} from 'vue-datetime';
-import 'vue-datetime/dist/vue-datetime.css';
 import {bTreeView} from "bootstrap-vue-treeview";
 import Vue from "vue";
+import 'vue-datetime/dist/vue-datetime.css';
+import {formatDate} from "../common/FormatDate";
+import download from "downloadjs";
 
 Vue.use(Datetime)
 Vue.use(bTreeView)
@@ -14,7 +16,7 @@ export default {
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
-            showOptions: true,
+            isShowOptions: true,
             structureTypes: {
                 org: null,
                 tech: null,
@@ -22,7 +24,8 @@ export default {
             },
             attributeDescriptions: null,
             attributesForObject: null,
-            currentStructureType: 'geo',
+            activeButtonId: 1,
+            currentStructureType: 'org',
             currentStructureId: null,
             currentItemType: null,
             currentOption: null,
@@ -31,8 +34,10 @@ export default {
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
+            selectedObjects: [],
             startDate: null,
             endDate: null,
+            maxDepthOfSelectedAttributes: null,
         }
     },
     mounted: function () {
@@ -45,8 +50,33 @@ export default {
         this.loadAttributeDescriptions()
     },
     methods: {
+        onYearClick() {
+            document.querySelector('.start-year-date .vdatetime-input').click();
+            document.querySelector('.end-year-date .vdatetime-input').click();
+        },
+        onMonthClick() {
+            document.querySelector('.start-month-date .vdatetime-input').click();
+            document.querySelector('.end-month-date .vdatetime-input').click();
+        },
+        setStartOfMonth(date) {
+            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        setEndOfMonth(date) {
+            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        setStartOfYear(date) {
+            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        setEndOfYear(date) {
+            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        onMenuClick(currentStructureType, btnId) {
+            this.isShowOptions = true;
+            this.currentStructureType = currentStructureType;
+            this.activeButtonId = btnId;
+        },
         onClickOption(structureType) {
-            this.showOptions = false;
+            this.isShowOptions = false;
             this.currentOption = structureType
             this.currentItemType = structureType.id
         },
@@ -93,8 +123,7 @@ export default {
             this.isLoading = true
             this.axios.get(this.baseUrl + "get_object_attributes", {
                 params: {
-                    structure_type: this.currentStructureType,
-                    structure_id: this.currentStructureId
+                    structure_subtype: this.currentStructureSubType
                 },
                 responseType: 'json',
                 headers: {
@@ -132,34 +161,46 @@ export default {
             });
 
         },
-        setCurrentStructureId(structureId) {
+        setCurrentStructure(structureId, structureSubType) {
             this.currentStructureId = structureId.toString()
+            this.currentStructureSubType = structureSubType
+            this.isDisplayParameterBuilder = false
             this.loadAttributesForSelectedObject();
         },
         getAttributeDescription(descriptionField) {
-            let fieldParts = descriptionField.split(".")
-            if (fieldParts.length !== 3) {
+            if (!this.isActualAttribute(descriptionField)) {
                 return descriptionField
             }
+            let fieldParts = descriptionField.split(".")
             let table = fieldParts[0] + "." + fieldParts[1]
             if (!(table in this.attributeDescriptions)) {
                 return descriptionField
             }
             let fieldName = fieldParts[2]
+            if (!(fieldName in this.attributeDescriptions[table])) {
+                return fieldName
+            }
             return this.attributeDescriptions[table][fieldName]
+        },
+        isActualAttribute(field) {
+            let fieldParts = field.split(".")
+            return fieldParts.length === 3
         },
         updateStatistics() {
             this.loadStatistics()
-            this.statisticsColumns = this.getStatisticsColumnNames(this.attributesForObject)
+            let selectedAttributes = this.getSelectedAttributes()
+            this.statisticsColumns = this.getStatisticsColumnNames(selectedAttributes)
         },
         loadStatistics() {
             this.statistics = null;
-            let jsonData = JSON.stringify({
-                "fields": this.attributesForObject,
-                "joins": [["dict.well_type.id", "dict.well.well_type"]],
-                // TODO when dates will work:
-                //  "dates" : [""]
-            })
+
+            try {
+                this.validateStatisticsParams()
+            } catch (e) {
+                this.showToast(e.name, e.message, 'danger', 10000)
+                return
+            }
+            let jsonData = this._getStatisticsRequestParams()
             this.axios.post(this.baseUrl + "get_statistics", jsonData, {
                 responseType: 'json',
                 headers: {
@@ -174,9 +215,79 @@ export default {
             });
 
         },
-        getStatisticsColumnNames(attributes){
+        validateStatisticsParams() {
+            if (this.selectedObjects.length === 0) {
+                throw new Error("Не выбраны объекты для отображения")
+            }
+            if (this.getSelectedAttributes().length === 0) {
+                throw new Error("Не выбраны поля для отображения")
+            }
+        },
+        getSelectedAttributes() {
+            let allSelectedAttributes = this._getAllSelectedAttributes(this.attributesForObject)
+            allSelectedAttributes = this._cleanEmptyHeadersOfAttributes(allSelectedAttributes)
+            return allSelectedAttributes
+        },
+        _getAllSelectedAttributes(attributes) {
+            let selectedAttributes = []
+            for (let attribute of attributes) {
+                if ('isChecked' in attribute && attribute.isChecked) {
+                    let newAttribute = {
+                        label: attribute['label']
+                    }
+                    if (this._hasChildren(attribute)) {
+                        newAttribute.children = this._getAllSelectedAttributes(attribute.children)
+                    }
+                    selectedAttributes.push(newAttribute)
+                }
+            }
+            return selectedAttributes
+        },
+        _hasChildren(node) {
+            return 'children' in node && node.children.length > 0
+        },
+        _cleanEmptyHeadersOfAttributes(attributes) {
+            let cleanAttributes = []
+            for (let attribute of attributes) {
+                if (this.isActualAttribute(attribute.label)) {
+                    cleanAttributes.push({'label': attribute.label})
+                }
+                if (!this._hasChildren(attribute)) {
+                    continue
+                }
+                let cleanChildren = this._cleanEmptyHeadersOfAttributes(attribute.children)
+                if (cleanChildren.length > 0) {
+                    attribute.children = cleanChildren
+                    cleanAttributes.push(attribute)
+                }
+            }
+            return cleanAttributes
+        },
+        _getStatisticsRequestParams() {
+            return JSON.stringify({
+                "fields": this.getSelectedAttributes(),
+                "selectedObjects": this.selectedObjects,
+                "structureType": this.currentStructureType,
+                "dates": this.getDates()
+            })
+        },
+        getDates() {
+            let dates = []
+            if (this.startDate) {
+                dates.push(formatDate.getMinOfDayFormatted(this.startDate))
+            } else {
+                dates.push(null)
+            }
+            if (this.endDate) {
+                dates.push(formatDate.getMaxOfDayFormatted(this.endDate))
+            } else {
+                dates.push(null)
+            }
+            return dates
+        },
+        getStatisticsColumnNames(attributes) {
             let columns = []
-            for ( let attribute of attributes){
+            for (let attribute of attributes) {
                 if ('children' in attribute) {
                     columns = columns.concat(this.getStatisticsColumnNames(attribute['children']))
                 } else {
@@ -185,5 +296,120 @@ export default {
             }
             return columns
         },
+        updateSelectedNodes(node, level) {
+            let index = this._findNodeInSelectedNodes(node)
+            if (typeof index === 'undefined') {
+                node.level = level
+                this.selectedObjects.push(node)
+            } else {
+                this.selectedObjects.splice(index)
+            }
+        },
+        _findNodeInSelectedNodes(node) {
+            for (let i = 0; i < this.selectedObjects.length; i++) {
+                let n = this.selectedObjects[i]
+                if (n['id'] === node['id'] && n['structureId'] === node['structureId']) {
+                    return i
+                }
+            }
+            return undefined;
+        },
+
+        getStatisticsFile() {
+            try {
+                this.validateStatisticsParams()
+            } catch (e) {
+                this.showToast(e.name, e.message, 'danger', 10000)
+                return
+            }
+            let jsonData = this._getStatisticsRequestParams()
+            this.axios.post(
+                this.baseUrl + 'get_excel/',
+                jsonData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    responseType: 'arraybuffer',
+                }
+            ).then((response) => {
+                if (response.data) {
+                    download(response.data, "Отчет.xlsx", response.headers['content-type'])
+                }
+            }).catch((error) => console.log(error)
+            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+        },
+        getHeaders() {
+            let attributes = this.getSelectedAttributes()
+            this.maxDepthOfSelectedAttributes = this._getMaxDepthOfTree(attributes)
+            return this._convertTreeToLayersOfAttributes(attributes, this.maxDepthOfSelectedAttributes)
+
+        },
+        _getMaxDepthOfTree(attributes) {
+            let maxChildrenDepth = 0
+            for (let attribute of attributes) {
+                if (!this._hasChildren(attribute)) {
+                    continue
+                }
+                let childrenDepth = this._getMaxDepthOfTree(attribute.children)
+                if (maxChildrenDepth < childrenDepth) {
+                    maxChildrenDepth = childrenDepth
+                }
+            }
+            return maxChildrenDepth + 1
+        },
+        _convertTreeToLayersOfAttributes(attributes, layerDepth)
+        {
+            let layers = []
+            for (let i = 0; i < layerDepth; i++) {
+                layers.push(this._getAttributesOnDepth(attributes, i))
+            }
+            return layers
+        },
+        _getAttributesOnDepth(attributes, targetDepth, startingDepth = 0) {
+            let attributesOnTargetDepth = []
+            for (let attribute of attributes) {
+                if (startingDepth === targetDepth) {
+                    attributesOnTargetDepth.push({
+                        'label': attribute.label,
+                        'maxChildrenNumber': this._getMaxChildrenNumber(attribute)
+                    })
+                    continue
+                }
+                if (!this._hasChildren(attribute)) {
+                    continue
+                }
+                let attributesOnDepth = this._getAttributesOnDepth(
+                    attribute.children, targetDepth, startingDepth + 1
+                )
+                attributesOnTargetDepth = attributesOnTargetDepth.concat(attributesOnDepth)
+            }
+            return attributesOnTargetDepth
+        },
+        _getMaxChildrenNumber(originalAttribute) {
+            let maxChildrenNumber = 0;
+            if (!this._hasChildren(originalAttribute)) {
+                return maxChildrenNumber
+            }
+            for (let attribute of originalAttribute.children) {
+                if (!this._hasChildren(attribute)) {
+                    maxChildrenNumber += 1
+                }
+                maxChildrenNumber += this._getMaxChildrenNumber(attribute)
+            }
+            return maxChildrenNumber
+        },
+        getRowHeightSpan(attribute, currentDepth){
+            if (currentDepth !== this.maxDepthOfSelectedAttributes) {
+                return 1
+            }
+            return this.maxDepthOfSelectedAttributes - currentDepth
+        },
+        getRowWidthSpan(attribute) {
+            if (attribute.maxChildrenNumber === 0) {
+                return 1
+            }
+            return attribute.maxChildrenNumber
+        }
     }
 }

@@ -99,4 +99,8 @@ return array (
   'eco_refs_proc_dob' => 'Процент от добычи на реализацию',
   'eco_refs_avg_prs' => 'Средняя продолжительность 1 ПРС, сут',
   'compare_to_prev_month' => 'В сравнении с предыдущим месяцем',
+  'download_example' => 'Скачать пример',
+  'in_pause' => 'В простое',
+  'in_work' => 'В работе',
+  'wells_profitless' => 'Нерентабельные скважины',
 );

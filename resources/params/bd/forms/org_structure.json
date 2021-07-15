@@ -20,7 +20,7 @@
               "code": "dbeg",
               "type": "date",
               "title": "dbeg",
-              "validation": "required|date"
+              "validation": "required|date|before:dend"
               },
               {
               "code": "dend",

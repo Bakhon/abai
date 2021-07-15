@@ -35,4 +35,9 @@ return array (
   't' => 't',
   'day' => 'day',
   'kvh' => 'kV/h',
+  'kv' => 'kV',
+  'kvh/m3' => 'kV*h/m3',
+  'unit' => 'unit',
+  'kN' => 'kN',
+  'kNm' => 'kN*m',
 );

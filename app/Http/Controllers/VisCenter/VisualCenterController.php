@@ -24,6 +24,7 @@ use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use Carbon\Carbon;
 use App\Models\VisCenter\ExcelForm\DzoImportOtm;
 use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
+use App\Models\VisCenter\EmergencyHistory;
 
 class VisualCenterController extends Controller
 {
@@ -423,5 +424,50 @@ class VisualCenterController extends Controller
             ->with('importDowntimeReason')
             ->get()
             ->toArray();
+    }
+
+    public function dailyReport()
+    {
+        return view('visualcenter.dailyreport');
+    }
+
+    public function getProductionDetailsForYear()
+    {
+        $startPeriod = Carbon::now()->startOfYear();
+        $endPeriod = Carbon::now()->endOfDay();
+        return DzoImportData::query()
+            ->select()
+            ->whereDate('date', '>=', $startPeriod)
+            ->whereDate('date', '<=', $endPeriod)
+            ->get()
+            ->toArray();
+    }
+    public function getEmergencyHistory(Request $request)
+    {
+        return EmergencyHistory::query()
+            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description')
+            ->whereMonth('date', $request->currentMonth)
+            ->where('type',1)
+            ->get()
+            ->toArray();
+    }
+    public function getHistoricalProductionByDzo(Request $request)
+    {
+        $factByDzo = DzoImportData::query()
+            ->where('dzo_name', $request->dzoName)
+            ->orderBy('date', 'desc')
+            ->with('importDowntimeReason')
+            ->with('importDecreaseReason')
+            ->first()
+            ->toArray();
+        $factDate = Carbon::parse($factByDzo['date'])->firstOfMonth();
+        $planByDzo = DzoPlan::query()
+            ->whereDate('date', $factDate)
+            ->where('dzo', $request->dzoName)
+            ->first()
+            ->toArray();
+        $planByDzo = $this->deleteDuplicateFields($planByDzo);
+        $comparedData[] = array_merge($factByDzo,$planByDzo);
+        return response()->json($comparedData);
     }
 }

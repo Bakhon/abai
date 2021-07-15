@@ -6,6 +6,7 @@
       "title": "id",
       "code": "id",
       "type": "integer",
+      "visible": false,
       "is_editable": false
     },
     {
@@ -18,20 +19,45 @@
       "title": "plan",
       "code": "plan",
       "type": "float",
-      "is_editable": false
+      "is_editable": true,
+      "validation": "numeric",
+      "validate_deviation": true
     },
     {
       "title": "fact",
       "code": "fact",
       "type": "float",
       "is_editable": true,
-      "validation": "numeric|gt:0",
+      "validation": "numeric",
       "validate_deviation": true
+    },
+    {
+      "title": "daily_fact_cits",
+      "code": "daily_fact_cits",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "daily_fact_gs",
+      "code": "daily_fact_gs",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
     },
     {
       "title": "daily_deviation",
       "code": "daily_deviation",
-      "type": "float",
+      "type": "calc",
+      "formula": "$fact$ - $plan$",
+      "is_editable": false
+    },
+    {
+      "title": "cits_gs_daily_deviation",
+      "code": "cits_gs_daily_deviation",
+      "type": "calc",
+      "formula": "$daily_fact_cits$ - $daily_fact_gs$",
+      "visible": false,
       "is_editable": false
     },
     {
@@ -47,9 +73,32 @@
       "is_editable": false
     },
     {
+      "title": "month_fact_cits",
+      "code": "month_fact_cits",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "month_fact_gs",
+      "code": "month_fact_gs",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
       "title": "month_deviation",
       "code": "month_deviation",
-      "type": "float",
+      "type": "calc",
+      "formula": "$month_fact$ - $month_plan$",
+      "is_editable": false
+    },
+    {
+      "title": "cits_gs_month_deviation",
+      "code": "cits_gs_month_deviation",
+      "type": "calc",
+      "formula": "$month_fact_cits$ - $month_fact_gs$",
+      "visible": false,
       "is_editable": false
     },
     {
@@ -65,9 +114,32 @@
       "is_editable": false
     },
     {
+      "title": "year_fact_cits",
+      "code": "year_fact_cits",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "year_fact_gs",
+      "code": "year_fact_gs",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
       "title": "year_deviation",
       "code": "year_deviation",
-      "type": "float",
+      "type": "calc",
+      "formula": "$year_fact$ - $year_plan$",
+      "is_editable": false
+    },
+    {
+      "title": "cits_gs_year_deviation",
+      "code": "cits_gs_year_deviation",
+      "type": "calc",
+      "formula": "$year_fact_cits$ - $year_fact_gs$",
+      "visible": false,
       "is_editable": false
     }
   ],

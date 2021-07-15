@@ -39,4 +39,33 @@ class ProductionWell extends PlainForm
             }
         }
     }
+
+    private function isValidDate($wellId, $dbeg):bool
+    {
+            $dend = DB::connection('tbd')
+                    ->table('prod.tech_mode_prod_oil')
+                    ->where('well', $wellId)
+                    ->where('dend' ,'<' , '3333-12-31 00:00:00+06')
+                    ->orderBy('dend', 'desc')
+                    ->get('dend')
+                    ->first();
+        if(!empty($dend)){
+            return $dbeg >= $dend->dend;
+        }
+        return true;
+
+    }
+
+    protected function getCustomValidationErrors(): array
+    {
+        $errors = [];
+
+        if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'))){
+            $errors[$this->request->get('dbeg')][] = trans('bd.validation.dbeg');
+        }
+
+        return $errors;
+    }
+
+
 }
