@@ -6,101 +6,89 @@
 
     <div class="mt-3 text-center border-grey">
       <div class="d-flex bg-blue">
-        <div class="border-grey p-3 flex-25">
+        <div class="flex-50 p-3 border-grey ">
           Удельные показатели
         </div>
 
-        <div class="border-grey p-3 flex-25"></div>
-
-        <div class="border-grey p-3 flex-25">
+        <div class="flex-25 p-3 border-grey">
           Единица измерения
         </div>
 
-        <div class="border-grey p-3 flex-25">
-          ОМГ
+        <div class="flex-25 p-3 border-grey">
+          {{ org.name }}
         </div>
       </div>
 
       <div class="d-flex bg-blue">
-        <div class="border-grey p-3 flex-25 border-bottom-0">
+        <div class="flex-50 p-3 border-grey border-bottom-0">
           Курс доллара
         </div>
 
-        <div class="border-grey p-3 flex-25 border-bottom-0"></div>
-
-        <div class="border-grey p-3 flex-25 border-bottom-0">
+        <div class="flex-25 p-3 border-grey">
           тенге
         </div>
 
-        <div class="border-grey p-3 flex-25 border-bottom-0">
-          450
+        <div class="flex-25 p-3 border-grey bg-blue">
+          {{ scenario.dollar_rate }}
         </div>
       </div>
 
       <div class="d-flex bg-dark-blue">
-        <div
-            class="border-grey p-3 flex-25 d-flex justify-content-center align-items-center border-top-0 border-bottom-0">
+        <div class="flex-50 p-3 d-flex align-items-center justify-content-center">
           Средняя цена на нефть при BRENT
         </div>
 
-        <div class="border-grey flex-25 d-flex flex-column border-top-0 border-bottom-0">
-          <div v-for="(price, index) in prices"
-               :key="index"
-               :class="index % 2 === 0 ? 'bg-light-blue' : ''"
-               class="px-2 py-3">
-            {{ price.oil }} $/bbl
-          </div>
+        <div class="flex-25 p-3 border-grey d-flex align-items-center justify-content-center">
+          $ / bbl
         </div>
 
-        <div
-            class="border-grey p-3 flex-25 d-flex justify-content-center align-items-center border-top-0 border-bottom-0">
-          тенге/тонну нефти
-        </div>
-
-        <div class="border-grey flex-25 d-flex flex-column border-top-0 border-bottom-0">
-          <div v-for="(price, index) in prices"
+        <div class="flex-25 bg-blue d-flex flex-column">
+          <div v-for="(item, index) in oilPrices"
                :key="index"
-               :class="index % 2 === 0 ? 'bg-light-blue' : ''"
+               :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
                class="px-2 py-3 ">
-            {{ price.omg }} $/bbl
+            {{ item }}
           </div>
         </div>
       </div>
 
       <div class="d-flex bg-dark-blue">
-        <div class="p-3 flex-50">
+        <div class="flex-50 p-3 border-grey border-bottom-0"
+             style="white-space: normal">
           Условно-переменные расходы (сырье, материалы, энергия, за искл. расходов на ПРС)
         </div>
 
-        <div class="border-grey p-3 flex-25">
+        <div
+            class="flex-25 p-3 border-grey border-bottom-0 border-top-0 d-flex align-items-center justify-content-center">
           тенге/тонну жидкости
         </div>
 
-        <div class="p-3 flex-25">
-          348
+        <div
+            class="flex-25 border-grey p-3 border-bottom-0 border-top-0 d-flex align-items-center justify-content-center">
+          {{ data.sum_variable }}
         </div>
       </div>
 
       <div class="d-flex bg-dark-blue">
-        <div class="flex-50 d-flex flex-column">
-          <div v-for="(price,index) in wellPrices"
+        <div class="flex-50">
+          <div v-for="(item, index) in sumData"
                :key="index"
-               :class="index % 2 === 0 ? 'bg-light-blue' : ''"
+               :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
                class="p-3">
-            {{ price.label }}
+            {{ item.label }}
           </div>
         </div>
 
-        <div class="flex-25 d-flex border-grey border-bottom-0 justify-content-center align-items-center">
+        <div class="flex-25 p-3 border-grey border-bottom-0 d-flex align-items-center justify-content-center">
           тыс. тенге/скв
         </div>
 
-        <div class="flex-25 d-flex flex-column">
-          <div v-for="(price,index) in wellPrices"
+        <div class="flex-25">
+          <div v-for="(item, index) in sumData"
                :key="index"
-               :class="index % 2 === 0 ? 'bg-light-blue' : ''"
+               :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
                class="p-3">
-            {{ price.value }}
+            {{ Math.floor(item.value / 1000) }}
           </div>
         </div>
       </div>
@@ -110,14 +98,15 @@
           Средняя стоимость ПРС (с ФОТ)
         </div>
 
-        <div class="flex-25 p-3 border-grey border-top-0 border-bottom-0">
+        <div class="flex-25 p-3 border-grey border-bottom-0 border-top-0">
           тыс.тенге на операцию
         </div>
 
         <div class="flex-25 p-3">
-          3,950
+          {{ Math.floor((data.sum_wr_nopayroll + data.sum_wr_payroll) / 1000) }}
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -130,57 +119,42 @@ export default {
   components: {
     Subtitle
   },
-  computed: {
-    prices() {
-      return [
-        {
-          oil: 20,
-          omg: 59.356
-        },
-        {
-          oil: 20,
-          omg: 59.356
-        },
-        {
-          oil: 20,
-          omg: 59.356
-        },
-        {
-          oil: 20,
-          omg: 59.356
-        },
-        {
-          oil: 20,
-          omg: 59.356
-        },
-        {
-          oil: 20,
-          omg: 59.356
-        },
-        {
-          oil: 20,
-          omg: 59.356
-        },
-      ]
+  props: {
+    org: {
+      required: true,
+      type: String
     },
-
-    wellPrices() {
+    scenario: {
+      required: true,
+      type: Object
+    },
+    oilPrices: {
+      required: true,
+      type: Array
+    },
+    data: {
+      required: true,
+      type: Object
+    }
+  },
+  computed: {
+    sumData() {
       return [
         {
           label: 'Затраты на персонал',
-          value: 100,
+          value: this.data.sum_fix_payroll,
         },
         {
           label: 'КРС',
-          value: 100,
+          value: this.data.sum_wo,
         },
         {
           label: 'Условно-постоянные расходы',
-          value: 100,
+          value: this.data.sum_fix,
         },
         {
           label: 'ОАР',
-          value: 100,
+          value: this.data.sum_gaoverheads,
         }
       ]
     }

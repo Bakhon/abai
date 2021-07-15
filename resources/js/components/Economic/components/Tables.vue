@@ -18,6 +18,10 @@
         class="mt-3 w-100">
       <table-specific-indicators
           v-if="index === 0"
+          :org="res.org"
+          :scenario="scenario"
+          :oil-prices="oilPrices"
+          :data="res.specificIndicator"
           class="text-white"/>
     </div>
   </div>
@@ -32,6 +36,20 @@ export default {
   components: {
     TableSpecificIndicators,
     ChartButton
+  },
+  props: {
+    scenario: {
+      required: true,
+      type: Object
+    },
+    oilPrices: {
+      required: true,
+      type: Array
+    },
+    res: {
+      required: true,
+      type: Object
+    }
   },
   data: () => ({
     activeTab: 0

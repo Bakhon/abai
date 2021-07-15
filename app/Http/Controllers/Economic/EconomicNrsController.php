@@ -61,10 +61,7 @@ class EconomicNrsController extends Controller
 
     public function getData(EconomicNrsDataRequest $request): array
     {
-        self::validateAccess($request->org_id);
-
-        /** @var Org $org */
-        $org = Org::findOrFail($request->org_id);
+        $org = self::getOrg($request->org_id);
 
         $dpz = $request->field_id
             ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
@@ -382,11 +379,13 @@ class EconomicNrsController extends Controller
         ]);
     }
 
-    static function validateAccess(int $orgId)
+    static function getOrg(int $orgId): Org
     {
         if (!in_array($orgId, auth()->user()->getOrganizationIds())) {
             abort(403);
         }
+
+        return Org::findOrFail($orgId);
     }
 
     static function percentFormat(?float $last, ?float $prev, int $precision = 0): float

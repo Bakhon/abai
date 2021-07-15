@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
+use App\Models\EcoRefsCost;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
 
@@ -56,8 +58,19 @@ class EconomicOptimizationController extends Controller
 
     public function getData(Request $request): array
     {
-        EconomicNrsController::validateAccess($request->org_id);
+        $org = EconomicNrsController::getOrg($request->org_id);
 
+        return [
+            'scenarios' => $this->getScenarios(),
+            'dollarRate' => $this->getDollarRate() ?? '0',
+            'oilPrice' => $this->getOilPrice() ?? '0',
+            'org' => $org,
+            'specificIndicator' => $this->getSpecificIndicatorData()
+        ];
+    }
+
+    private function getScenarios(): array
+    {
         $builder = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
@@ -87,17 +100,17 @@ class EconomicOptimizationController extends Controller
             ->groupBy()
             ->data();
 
-        $result = [];
+        $scenarios = [];
 
         foreach ($data as $index => $item) {
             foreach ($columns as $column) {
-                $result[$index][$column] = $item[$column];
+                $scenarios[$index][$column] = $item[$column];
             }
 
             foreach (self::OPTIMIZED_COLUMNS as $column) {
                 $columnOptimized = $column . self::OPTIMIZED_COLUMN_SUFFIX;
 
-                $result[$index][$column] = [
+                $scenarios[$index][$column] = [
                     'value' => self::moneyFormat($item[$column]),
                     'value_optimized' => self::moneyFormat($item[$columnOptimized]),
                     'percent' => EconomicNrsController::percentFormat($item[$columnOptimized], $item[$column], 2),
@@ -107,40 +120,28 @@ class EconomicOptimizationController extends Controller
             }
         }
 
-        return [
-            'scenarios' => $result,
-            'dollarRate' => self::getDollarRate() ?? '0',
-            'oilPrice' => self::getOilPrice() ?? '0',
-        ];
+        return $scenarios;
     }
 
-    static function moneyFormat(?float $digit): array
+    private function getSpecificIndicatorData(): array
     {
-        $digit = $digit ?? 0;
-
-        $digitAbs = abs($digit);
-
-        if ($digitAbs < 1000000) {
-            return [
-                number_format($digit / 1000, 2),
-                trans('economic_reference.thousand')
-            ];
-        }
-
-        if ($digitAbs < 1000000000) {
-            return [
-                number_format($digit / 1000000, 2),
-                trans('economic_reference.million')
-            ];
-        }
-
-        return [
-            number_format($digit / 1000000000, 2),
-            trans('economic_reference.billion')
-        ];
+        return EcoRefsCost::query()
+            ->select(
+                DB::raw('SUM(variable) as sum_variable'),
+                DB::raw('SUM(fix_payroll) as sum_fix_payroll'),
+                DB::raw('SUM(wo) as sum_wo'),
+                DB::raw('SUM(fix) as sum_fix'),
+                DB::raw('SUM(gaoverheads) as sum_gaoverheads'),
+                DB::raw('SUM(wr_nopayroll) as sum_wr_nopayroll'),
+                DB::raw('SUM(wr_payroll) as sum_wr_payroll'),
+            )
+            ->whereScFa(6)
+            ->get()
+            ->first()
+            ->toArray();
     }
 
-    static function getDollarRate(): ?string
+    private function getDollarRate(): ?string
     {
         try {
             libxml_use_internal_errors(TRUE);
@@ -169,7 +170,7 @@ class EconomicOptimizationController extends Controller
         }
     }
 
-    static function getOilPrice(): ?string
+    private function getOilPrice(): ?string
     {
         try {
             libxml_use_internal_errors(TRUE);
@@ -186,5 +187,31 @@ class EconomicOptimizationController extends Controller
         } catch (\Throwable $e) {
             return null;
         }
+    }
+
+    static function moneyFormat(?float $digit): array
+    {
+        $digit = $digit ?? 0;
+
+        $digitAbs = abs($digit);
+
+        if ($digitAbs < 1000000) {
+            return [
+                number_format($digit / 1000, 2),
+                trans('economic_reference.thousand')
+            ];
+        }
+
+        if ($digitAbs < 1000000000) {
+            return [
+                number_format($digit / 1000000, 2),
+                trans('economic_reference.million')
+            ];
+        }
+
+        return [
+            number_format($digit / 1000000000, 2),
+            trans('economic_reference.billion')
+        ];
     }
 }

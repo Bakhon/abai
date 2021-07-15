@@ -85,7 +85,11 @@
           </div>
         </div>
 
-        <tables v-if="!loading"/>
+        <tables
+            v-if="!loading"
+            :scenario="scenario"
+            :oil-prices="oilPrices"
+            :res="res"/>
       </div>
 
       <div class="col-3">
@@ -124,7 +128,7 @@
             v-for="(block, index) in blocks"
             :key="index"
             :style="scenarioId ? 'min-height: 175px' : 'min-height: 100px'"
-            class="d-flex bg-main1 text-white text-wrap p-3 mb-3"            >
+            class="d-flex bg-main1 text-white text-wrap p-3 mb-3">
           <div
               v-for="(subBlock, subBlockIndex) in block"
               :key="subBlock.title"
@@ -218,9 +222,9 @@
                   class="mb-3 form-control text-white border-0 bg-dark-blue">
                 <option
                     v-for="item in oilPrices"
-                    :key="item.value"
-                    :value="item.value">
-                  {{ item.label }}
+                    :key="item"
+                    :value="item">
+                  {{ item }}
                 </option>
               </select>
             </div>
@@ -235,9 +239,9 @@
                   class="mb-3 form-control text-white border-0 bg-dark-blue">
                 <option
                     v-for="item in dollarRates"
-                    :key="item.value"
-                    :value="item.value">
-                  {{ item.label }}
+                    :key="item"
+                    :value="item">
+                  {{ item }}
                 </option>
               </select>
             </div>
@@ -343,6 +347,10 @@ let economicRes = {
   }],
   dollarRate: 0,
   oilPrice: 0,
+  org: {
+    id: '',
+    name: ''
+  }
 }
 
 optimizedColumns.forEach(column => {
@@ -571,21 +579,23 @@ export default {
     },
 
     oilPrices() {
-      return [
-        {
-          label: this.scenario.oil_price,
-          value: this.scenario.oil_price,
-        }
-      ]
+      let data = {}
+
+      this.res.scenarios.forEach(scenario => {
+        data[scenario.oil_price] = 1
+      })
+
+      return Object.keys(data)
     },
 
     dollarRates() {
-      return [
-        {
-          label: this.scenario.dollar_rate,
-          value: this.scenario.dollar_rate,
-        }
-      ]
+      let data = {}
+
+      this.res.scenarios.forEach(scenario => {
+        data[scenario.dollar_rate] = 1
+      })
+
+      return Object.keys(data)
     },
 
     salaryPercents() {
