@@ -1,20 +1,29 @@
 import moment from 'moment';
 
-let dateFormat = 'YYYY-MM-DD HH:mm:ss';
+let dateFormats = {
+    'reportFormat': 'YYYY-MM-DD HH:mm:ss',
+    'datetimePickerFormat': 'YYYY-MM-DDTHH:mm:ss.SSSSZ',
+};
 let minOfDay = {hour: 0, minute: 0, second: 0};
 let maxOfDay = {hour: 23, minute: 59, second: 59};
 
 export const formatDate = {
-    getFirstDayOfMonthFormatted: function (date) {
-        return moment.parseZone(date).set(minOfDay).set('date', 1).format(dateFormat);
+    getStartOfYearFormatted: function(date, formatType='reportFormat') {
+        return moment.parseZone(date).set(minOfDay).startOf('year').format(dateFormats[formatType]);
     },
-    getLastDayOfMonthFormatted: function (date) {
-        return moment.parseZone(date).set(minOfDay).endOf('month').format(dateFormat);
+    getEndOfYearFormatted: function(date, formatType='reportFormat') {
+        return moment.parseZone(date).set(maxOfDay).endOf('year').format(dateFormats[formatType]);
     },
-    getMinOfDayFormatted: function (date) {
-        return moment.parseZone(date).set(minOfDay).format(dateFormat);
+    getFirstDayOfMonthFormatted: function (date, formatType='reportFormat') {
+        return moment.parseZone(date).set(minOfDay).set('date', 1).format(dateFormats[formatType]);
     },
-    getMaxOfDayFormatted: function (date) {
-        return moment.parseZone(date).set(maxOfDay).format(dateFormat);
+    getLastDayOfMonthFormatted: function (date, formatType='reportFormat') {
+        return moment.parseZone(date).set(maxOfDay).endOf('month').format(dateFormats[formatType]);
+    },
+    getMinOfDayFormatted: function (date, formatType='reportFormat') {
+        return moment.parseZone(date).set(minOfDay).format(dateFormats[formatType]);
+    },
+    getMaxOfDayFormatted: function (date, formatType='reportFormat') {
+        return moment.parseZone(date).set(maxOfDay).format(dateFormats[formatType]);
     }
 }

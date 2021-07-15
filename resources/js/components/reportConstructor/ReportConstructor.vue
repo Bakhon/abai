@@ -3,34 +3,34 @@
     <div class="left-section bg-dark">
       <div class="col">
         <div class="row menu">
-          <div class="left-section-title" @click="currentStructureType = 'org'">
+          <div class="left-section-title" v-bind:class="{active: activeButtonId == 1}" @click="onMenuClick('org', 1)">
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M6.05078 0.00301123H11.098V5.0498H6.05078V0.00301123Z"
-                    fill="#868BB2"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M0 10.0743H5.0472V15.1211H0V10.0743Z" fill="#868BB2"/>
+                    fill="#fff"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M0 10.0743H5.0472V15.1211H0V10.0743Z" fill="#fff"/>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M6.05078 10.0743H11.098V15.1211H6.05078V10.0743Z"
-                    fill="#868BB2"/>
+                    fill="#fff"/>
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M3.02602 8.06429H8.07322V9.06934H9.07775V8.06429H14.1249V9.06934H15.1296V7.05973H9.07775V6.05469H8.07322V7.05973H2.02148V9.06934H3.02602V8.06429Z"
-                    fill="#868BB2"/>
+                    fill="#fff"/>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M12.1035 10.0743H17.1506V15.1211H12.1035V10.0743Z"
-                    fill="#868BB2"/>
+                    fill="#fff"/>
             </svg>
             Оргструктура
           </div>
-          <div class="left-section-title" @click="currentStructureType = 'geo'">
+          <div class="left-section-title" v-bind:class="{active: activeButtonId == 2}" @click="onMenuClick('geo', 2)">
             <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
-                    fill="#868BB2"/>
+                    fill="#fff"/>
             </svg>
             Геоструктура
           </div>
-          <div class="left-section-title" @click="currentStructureType = 'tech'">
+          <div class="left-section-title" v-bind:class="{active: activeButtonId == 3}" @click="onMenuClick('tech', 3)">
             <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
-                    fill="#868BB2"/>
+                    fill="#fff"/>
             </svg>
             Техструктура
           </div>
@@ -52,7 +52,7 @@
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="dropdown-inner-text">
-                  {{ showOptions ? 'Выбор скважины' : currentOption.name }}
+                  {{ isShowOptions ? 'Выбор объекта' : currentOption.name }}
                 </div>
                 <div class="icon-pointer"></div>
               </button>
@@ -136,6 +136,7 @@
                       <datetime
                           type="date"
                           v-model="startDate"
+                          class="start-date"
                           value-zone="Asia/Almaty"
                           zone="Asia/Almaty"
                           :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
@@ -144,6 +145,7 @@
                           :week-start="1"
                           :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
                           auto
+                          :flow="['year', 'month', 'date']"
                       >
                       </datetime>
                     </template>
@@ -152,26 +154,76 @@
                     <label>{{ trans('bd.choose_end_date') }}</label>
                     <template>
                       <datetime
-                          type="date"
-                          v-model="endDate"
-                          value-zone="Asia/Almaty"
-                          zone="Asia/Almaty"
-                          :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                          :min-datetime="startDate"
-                          :week-start="1"
-                          :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
-                          auto
+                        type="date"
+                        v-model="endDate"
+                        class="end-date"
+                        value-zone="Asia/Almaty"
+                        zone="Asia/Almaty"
+                        :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                        :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                        :min-datetime="startDate"
+                        :week-start="1"
+                        :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
+                        use24-hour
+                        auto
+                        :flow="['year', 'month', 'date']"
                       >
                       </datetime>
                     </template>
                   </div>
-                  <div class="inline-flex">
-                    <span class="calendar">Сегодня</span>
-                    <span class="calendar">Сутки</span>
-                    <span class="calendar">Неделя</span>
-                    <span class="calendar">Месяц</span>
-                    <span class="calendar">Год</span>
+                  <div class="row date-picker inline-flex mb-1">
+                    <span @click="onMonthClick()" class="calendar">Месяц</span>
+                    <template>
+                      <datetime
+                        class="end-month-date"
+                        value-zone="Asia/Almaty"
+                        zone="Asia/Almaty"
+                        :title="trans('bd.choose_end_month')"
+                        :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                        auto
+                        :flow="['month']"
+                        :min-datetime="startDate"
+                        v-on:input="setEndOfMonth($event)"
+                      >
+                      </datetime>
+                      <datetime
+                          class="start-month-date"
+                          value-zone="Asia/Almaty"
+                          zone="Asia/Almaty"
+                          :title="trans('bd.choose_start_month')"
+                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                          auto
+                          :flow="['month']"
+                          v-on:input="setStartOfMonth($event)"
+                      >
+                      </datetime>
+                    </template>
+                    <span @click="onYearClick()" class="calendar">Год</span>
+                    <template>
+                      <datetime
+                        class="end-year-date"
+                        value-zone="Asia/Almaty"
+                        zone="Asia/Almaty"
+                        :title="trans('bd.choose_end_year')"
+                        :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                        :flow="['year']"
+                        auto
+                        :min-datetime="startDate"
+                        v-on:input="setEndOfYear($event)"
+                      >
+                      </datetime>
+                      <datetime
+                          class="start-year-date"
+                          value-zone="Asia/Almaty"
+                          zone="Asia/Almaty"
+                          :title="trans('bd.choose_start_year')"
+                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                          :flow="['year']"
+                          auto
+                          v-on:input="setStartOfYear($event)"
+                      >
+                      </datetime>
+                    </template>
                   </div>
 
                   <div class="btn-container">
@@ -257,12 +309,16 @@
                   <div class="table-container" v-if="statistics">
                     <table>
                       <thead>
-                      <tr>
-                        <th rowspan="2" class="heading" v-for="column in statisticsColumns">
-                          <div class="centered">
-                            {{ getAttributeDescription(column) }}
-                          </div>
-                        </th>
+                      <tr v-for="(attributesOnDepth, index) in getHeaders()">
+                            <th
+                                v-for="attribute in attributesOnDepth"
+                                :rowspan="getRowHeightSpan(attribute, index)"
+                                :colspan="getRowWidthSpan(attribute)"
+                            >
+                              <div class="centered">
+                                {{ getAttributeDescription(attribute.label) }}
+                              </div>
+                            </th>
                       </tr>
 
                       </thead>
@@ -597,23 +653,35 @@ body {
   }
 
   .left-section-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     font-family: $HarmoniaSansProCyr;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 13.5px;
+    width: 140px;
+    height: 35px;
     line-height: 19px;
-    padding: 17px 45px 15px 45px;
+    letter-spacing: 1px;
+    border-radius: 2px;
+    cursor: pointer;
 
     svg {
       margin-right: 10px;
     }
   }
 
-  .left-section-title:hover {
+  .active {
+    background-color: #3366FF;
+  }
+
+  .left-section-title:not(.active):hover {
     background-color: #323370;
   }
 
   .left-section-title:active {
-    background-color: #323370;
+    background-color: #3366FF;
   }
 
   .dropdown-item {
@@ -645,6 +713,9 @@ body {
 
   .menu {
     flex-wrap: wrap-reverse;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 50px;
   }
 
   .dropdown-menu.show {
@@ -680,7 +751,7 @@ body {
   }
 
   .btn-secondary {
-    border: 1px solid #454FA1;
+    border: 1.3px solid #3366FF;
     border-radius: 5px;
     width: 350px;
     height: 30px;
@@ -845,7 +916,6 @@ body {
 
       .vdatetime::v-deep .vdatetime-input {
         width: 142px;
-        margin-right: 35px;
         background: #1F2142;
         color: #B6BAD9;
         border-radius: 4px;
@@ -853,7 +923,42 @@ body {
         font-size: 16px;
         font-weight: 400;
         font-family: $HarmoniaSansProCyr;
-        text-align: center;
+        padding: 0 0 0 19px;
+        background-image: url(/img/bd/webkit-calendar.svg);
+        background-Position : 102% center;
+        background-Repeat :no-repeat;
+      } 
+
+      .start-date {
+        margin-right: 35px;
+      }
+    }
+
+    .date-picker {
+      justify-content: center;
+
+      .vdatetime::v-deep .vdatetime-input {
+        display: none;
+      } 
+
+      .vdatetime::v-deep .vdatetime-popup__year,
+      .vdatetime::v-deep .vdatetime-popup__date {
+        display: none;
+      }
+
+      .calendar {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+        background: url(/img/bd/date-time.svg) 1% no-repeat;
+        padding: 0px 35px;
+        width: 100px;
+        height: 25px;
+      }
+
+      .calendar:hover {
+        background-color: #323370;
+        cursor: pointer;
       }
     }
   }
@@ -1101,11 +1206,6 @@ body {
     position: inherit;
     margin: auto;
   }
-}
-
-.calendar {
-  background: url(/img/bd/date-time.svg) 1% no-repeat;
-  padding: 0px 35px;
 }
 
 .vertical-centered {

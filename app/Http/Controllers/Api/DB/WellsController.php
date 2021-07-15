@@ -16,7 +16,7 @@ class WellsController extends Controller
 {
     public function getStructureTree(StructureService $service, Request $request)
     {
-        return $service->getTree($request->get('date'));
+        return $service->getTree(Carbon::parse($request->get('date')));
     }
 
     public function wellInfo(well $well)
@@ -43,8 +43,8 @@ class WellsController extends Controller
             'tech_mode_inj' => $this->techModeInj($well),
             'meas_liq' => $this->measLiq($well),
             'meas_water_cut' => $this->measWaterCut($well),
-            'krs_well_workover' => $this->krsWellWorkover($well),
-            'prs_well_workover' => $this->prsWellWorkover($well),
+            'krs_well_workover' => $this->getKrsPrs($well, 1),
+            'prs_well_workover' => $this->getKrsPrs($well, 3),
             'well_treatment' => $this->wellTreatment($well),
             'well_treatment_sko' => $this->wellTreatmentSko($well),
             'gdis_current' => $this->gdisCurrent($well),
@@ -62,6 +62,8 @@ class WellsController extends Controller
             'gtm' => $this->gtm($well),
             'rzatr_atm' => $this->gdisCurrentValueRzatr($well, 'FLVL'),
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
+            'gu' => $this->getTechsByCode($well, 'GU'),
+            'agms' => $this->getTechsByCode($well, 'AGMS'),
         );
     }
 
@@ -152,7 +154,7 @@ class WellsController extends Controller
     {
         return $well->wellExpl()
             ->withPivot('dend as dend', 'dbeg as dbeg')
-            ->orderBy('dbeg')
+            ->orderBy('dbeg', 'desc')
             ->first(['name_ru', 'dend', 'dbeg']);
     }
 
@@ -294,17 +296,9 @@ class WellsController extends Controller
             ->first(['water_cut']);
     }
 
-    private function prsWellWorkover(Well $well)
+    private function getKrsPrs(Well $well, $code)
     {
-        return $well->wellWorkover()
-            ->where('repair_type', '=', '3')
-            ->orderBy('dbeg', 'desc')
-            ->first(['dbeg', 'dend']);
-    }
-
-    private function krsWellWorkover(Well $well)
-    {
-        $wellWorkover = $well->wellWorkover()->where('repair_type', '=', '1')->orderBy('dbeg', 'desc')->first(['dbeg', 'dend']);
+        $wellWorkover = $well->wellWorkover()->where('repair_type', $code)->orderBy('dbeg', 'desc')->first(['dbeg', 'dend']);
         if (isset($wellWorkover)) {
             return $wellWorkover;
         }
@@ -445,11 +439,23 @@ class WellsController extends Controller
 
     private function gtm(Well $well)
     {
-        return $well->gtm()->join('dict.gtm_type', 'prod.gtm.gtm_type', '=', 'dict.gtm_type.id')
+        $gtm = $well->gtm()->join('dict.gtm_type', 'prod.gtm.gtm_type', '=', 'dict.gtm_type.id')
             ->where('dict.gtm_type.gtm_kind', '=', '10')
             ->first(['dbeg']);
+        if (isset($gtm)) {
+            return $gtm;
+        }
+        return ['dend' => ''];
     }
 
+    private function getTechsByCode(Well $well, $code)
+    {
+        return $well->techs()
+            ->join('dict.tech_type', 'dict.tech_type.id', '=', 'dict.tech.tech_type')
+            ->where('dict.tech_type.code', '=', $code)
+            ->where('dict.tech.dend', '>=', $this->getToday())
+            ->first(['dict.tech.name_ru']);
+    }
 
     public function search(Request $request): array
     {

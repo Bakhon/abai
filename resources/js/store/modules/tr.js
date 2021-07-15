@@ -7,7 +7,7 @@ const tr = {
     chart: 0,
     searchString: "",
     filter: "Все месторождения",
-    sortType: "asc",
+    isSortType: "true",
     sortParam: "",
     year_dyn_start: false,
     year_dyn_end: false,
@@ -15,13 +15,14 @@ const tr = {
     month_dyn_end: false,
     day_dyn_start: false,
     day_dyn_end: false,
-    is_dynamic: "false",
+    isDynamic: "false",
     field: [],
     horizon: [],
     wellType: [],
     object: [],
     block: [],
     expMeth: [],
+    wellName: [],
     pageNumber: 1,
   },
 
@@ -42,7 +43,7 @@ const tr = {
       state.filter = val;
     },
     SET_SORTTYPE: (state, val) => {
-      state.sortType = val;
+      state.isSortType = val;
     },
     SET_SORTPARAM: (state, val) => {
       state.sortParam = val;
@@ -66,7 +67,7 @@ const tr = {
       state.day_dyn_end = val;
     },
     SET_IS_DYNAMIC: (state, val) => {
-      state.is_dynamic = val;
+      state.isDynamic = val;
     },
     SET_FIELD: (state, val) => {
       state.field = val;
@@ -89,18 +90,21 @@ const tr = {
     SET_PAGENUMBER: (state, val) => {
       state.pageNumber = val;
     }, 
+    SET_WELLNAME: (state, val) => {
+      state.wellName = val;
+    }, 
   },
 
   actions: {
   },
 
-  getters: {
+  state: {
     month: (state) => state.month,
     year: (state) => state.year,
     chart: (state) => state.chart,
     searchString: (state) => state.searchString,
     filter: (state) => state.filter,
-    sortType: (state) => state.sortType,
+    isSortType: (state) => state.isSortType,
     sortParam: (state) => state.sortParam,
     year_dyn_start: (state) => state.year_dyn_start,
     year_dyn_end: (state) => state.year_dyn_end,
@@ -108,7 +112,7 @@ const tr = {
     month_dyn_end: (state) => state.month_dyn_end,
     day_dyn_start: (state) => state.day_dyn_start,
     day_dyn_end: (state) => state.day_dyn_end,
-    is_dynamic: (state) => state.is_dynamic,
+    isDynamic: (state) => state.isDynamic,
     field: (state) => state.field,
     horizon: (state) => state.horizon,
     wellType: (state) => state.wellType,
@@ -116,6 +120,7 @@ const tr = {
     block: (state) => state.block,
     expMeth: (state) => state.expMeth,
     pageNumber: (state) => state.pageNumber,
+    wellName: (state) => state.wellName,
   },
 };
 

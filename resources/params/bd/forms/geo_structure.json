@@ -14,20 +14,19 @@
                 "type": "dict_tree",
                 "dict": "geos",
                 "title": "geo",
-                "validation": "",
                 "is_editable": "false"
               },
               {
                 "code": "dbeg",
                 "type": "date",
                 "title": "dbeg",
-                "validation": "required|date"
+                "validation": "required|date|before:dend"
               },
               {
                 "code": "dend",
                 "type": "date",
                 "title": "dend",
-                "validation": "required|date"
+                "validation": "required|date|after:dbeg"
               }
             ]
           }

@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Exports\PipeLineCalcExport;
 use App\Imports\HydroCalcResultImport;
+use App\Models\ComplicationMonitoring\HydroCalcLong;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
@@ -56,23 +57,60 @@ class CalculateHydroDynamics implements ShouldQueue
     ];
 
     const ID = 0;
-    const LENGTH = 3;
-    const QLIQ = 4;
-    const BSW = 5;
-    const GAZF = 6;
-    const PRESS_START = 7;
-    const PRESS_END = 8;
-    const TEMPERATURE_START = 9;
-    const TEMPERATURE_END = 10;
-    const START_POINT = 11;
-    const END_POINT = 12;
-    const MIX_SPEED_AVERAGE = 14;
-    const FLUID_SPEED = 15;
-    const GAS_SPEED = 16;
-    const FLOW_TYPE = 17;
-    const PRESS_CHANGE = 18;
-    const BREAK_QTY = 19;
-    const HEIGHT_DROP = 20;
+    const POINTS_OR_SEGMENT = 0;
+
+    protected $hydroCalcLongSchema = [
+        'distance' => 1,
+        'dout' => 2,
+        'wt' => 3,
+        'liq_rate' => 4,
+        'gor' => 5,
+        'wc' => 6,
+        'pin' => 7,
+        'pout' => 8,
+        'tin' => 9,
+        'tout' => 10,
+        'flow_pattern' => 11,
+        'vliq' => 12,
+        'vgas' => 13,
+        'vm' => 14,
+        'pressure_gradient' => 15,
+        'ohtc' => 16,
+        'nre' => 17,
+        'holdup' => 18,
+        'lambda' => 19,
+        'h_soil' => 20,
+        'h_f' => 21,
+        'npr' => 22,
+        'nnu' => 23,
+        'f_f_ratio' => 24,
+        'rs' => 25,
+        'rsw' => 26,
+        'ev' => 27,
+        'comment' => 28
+    ];
+
+    protected $hydroCalcShortSchema = [
+        'length' => 3,
+        'qliq' => 4,
+        'bsw' => 5,
+        'gazf' => 6,
+        'press_start' => 7,
+        'press_end' => 8,
+        'temperature_start' => 9,
+        'temperature_end' => 10,
+        'start_point' => 11,
+        'end_point' => 12,
+        'mix_speed_avg' => 14,
+        'fluid_speed' => 15,
+        'gaz_speed' => 16,
+        'flow_type' => 17,
+        'press_change' => 18,
+        'break_qty' => 19,
+        'height_drop' => 20
+    ];
+
+
 
     /**
      * Create a new job instance.
@@ -170,10 +208,17 @@ class CalculateHydroDynamics implements ShouldQueue
                 );
             }
 
-            $data = json_decode($request->getBody()->getContents())[0]->data;
+            $data = json_decode($request->getBody()->getContents());
+            $short = $data->short->data;
+            $long = $data->long;
 
-            if ($data) {
-                $this->storeResult($data);
+            if ($short) {
+                $this->storeShortResult($short);
+            }
+
+            if ($long) {
+                array_unshift($long->data, $long->columns);
+                $this->storeLongResult($long->data);
             }
         }
 
@@ -186,7 +231,7 @@ class CalculateHydroDynamics implements ShouldQueue
         }
     }
 
-    protected function storeResult (array $data)
+    protected function storeShortResult (array $data): void
     {
         foreach ($data as $row) {
             $trunkline_point = TrunklinePoint::find($row[self::ID]);
@@ -198,25 +243,41 @@ class CalculateHydroDynamics implements ShouldQueue
                 ]
             );
 
-            $hydroCalcResult->length = $row[self::LENGTH];
-            $hydroCalcResult->qliq = $row[self::QLIQ];
-            $hydroCalcResult->bsw = $row[self::BSW];
-            $hydroCalcResult->gazf = $row[self::GAZF];
-            $hydroCalcResult->press_start = $row[self::PRESS_START];
-            $hydroCalcResult->press_end = $row[self::PRESS_END];
-            $hydroCalcResult->temperature_start = $row[self::TEMPERATURE_START];
-            $hydroCalcResult->temperature_end = $row[self::TEMPERATURE_END];
-            $hydroCalcResult->start_point = $row[self::START_POINT];
-            $hydroCalcResult->end_point = $row[self::END_POINT];
-            $hydroCalcResult->oil_pipe_id = $trunkline_point->oil_pipe_id;
-            $hydroCalcResult->mix_speed_avg = $row[self::MIX_SPEED_AVERAGE];
-            $hydroCalcResult->fluid_speed = $row[self::FLUID_SPEED];
-            $hydroCalcResult->gaz_speed = $row[self::GAS_SPEED];
-            $hydroCalcResult->flow_type = $row[self::FLOW_TYPE];
-            $hydroCalcResult->press_change = $row[self::PRESS_CHANGE];
-            $hydroCalcResult->break_qty = $row[self::BREAK_QTY];
-            $hydroCalcResult->height_drop = $row[self::HEIGHT_DROP];
+            foreach ($this->hydroCalcShortSchema as  $param => $index) {
+                $hydroCalcResult->$param = $row[$index];
+            }
+
             $hydroCalcResult->save();
+        }
+    }
+
+    protected function storeLongResult (array $data): void
+    {
+        foreach ($data as $row) {
+            if (!ctype_digit($row[self::POINTS_OR_SEGMENT])) {
+                $pointsNames = explode(' - ', $row[self::POINTS_OR_SEGMENT]);
+
+                $trunkline_point = TrunklinePoint::where('name', $pointsNames[0])
+                    ->whereHas('trunkline_end_point', function ($query) use ($pointsNames) {
+                        return $query->where('name', $pointsNames[1]);
+                    })->first();
+
+                continue;
+            }
+
+            $hydroCalcLong = HydroCalcLong::firstOrCreate(
+                [
+                    'date' => Carbon::parse($this->input['date'])->format('Y-m-d'),
+                    'oil_pipe_id' => $trunkline_point->oil_pipe_id,
+                    'segment' => $row[self::POINTS_OR_SEGMENT]
+                ]
+            );
+
+            foreach ($this->hydroCalcLongSchema as  $param => $index) {
+                $hydroCalcLong->$param = $row[$index];
+            }
+
+            $hydroCalcLong->save();
         }
     }
 }
