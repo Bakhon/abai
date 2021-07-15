@@ -21,98 +21,98 @@ export default {
       viewBox: `-100 0 800 50`,
     });
 
-    map.createMap('/kz.json', "kz", true, {
+    map.createMap('/coords/kz.json', "kz", true, {
       kz: [
         ['fill', 'none'],
         ['stroke', 'white'],
-        ['stroke-width','3px']
+        ['stroke-width','1px']
       ]
     });
-    map.createMap('/balkhash.json', false, true, {
+    map.createMap('/coords/balkhash.json', false, true, {
       balkhash: [
-        ['fill', 'none'],
+        ['fill', 'transparent'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/torgai.json', false, true, {
+    map.createMap('/coords/torgai.json', false, true, {
       torgai: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/ustyrt.json', false, true, {
+    map.createMap('/coords/ustyrt.json', false, true, {
       ustyrt: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/alakol.json', false, true, {
+    map.createMap('/coords/alakol.json', false, true, {
       alakol: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/aral.json', false, true, {
+    map.createMap('/coords/aral.json', false, true, {
       aral: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/mangyshlak.json', false, true, {
+    map.createMap('/coords/mangyshlak.json', false, true, {
       mangyshlak: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/precaspian.json', false, true, {
+    map.createMap('/coords/precaspian.json', false, true, {
       precaspian: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/preertis.json', false, true, {
+    map.createMap('/coords/preertis.json', false, true, {
       preertis: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/storgay.json', false, true, {
+    map.createMap('/coords/storgay.json', false, true, {
       storgay: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/zaisan.json', false, true, {
+    map.createMap('/coords/zaisan.json', false, true, {
       zaisan: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/Ili.json', false, true, {
+    /*map.createMap('/coords/Ili.json', false, true, {
       Ili: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
-    });
-    map.createMap('/norkz.json', false, true, {
+    });*/
+    map.createMap('/coords/norkz.json', false, true, {
       norkz: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/syrdaria.json', false, true, {
+    map.createMap('/coords/syrdaria.json', false, true, {
       syrdaria: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/teniz.json', false, true, {
+    map.createMap('/coords/teniz.json', false, true, {
       teniz: [
         ['fill', 'none'],
         ['stroke', 'yellow']
       ]
     });
-    map.createMap('/borderbasin.json', false, true, {
+    map.createMap('/coords/borderbasin.json', false, true, {
       borderbasin: [
         ['fill', 'none'],
         ['stroke', 'yellow']

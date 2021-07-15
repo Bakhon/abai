@@ -24,8 +24,7 @@ export default class MapTool {
             .attr("height", this.svgParams.height)
             .attr("viewBox", this.svgParams.viewBox ? this.svgParams.viewBox : "0 0 " + this.svgParams.width + " " + this.svgParams.height)
             .style("background", this.svgParams.background)
-            .classed("svg-content", true)
-            .on("click", this.clicked);
+            .classed("svg-content", true);
         this.projection();
         return this.svg;
     }
@@ -68,28 +67,37 @@ export default class MapTool {
     drawTopo(name, topoJson, attrs) {
         this.svg.append("path")
             .datum(topoJson).attr("d", this.path).attr('id', name)
+            .on("click", this.click.bind(this))
         if (Array.isArray(attrs) && attrs.length) {
             attrs.forEach((attr) => {
-                this.svg.select(`path#${name}`).attr(attr[0], attr[1]);
+                this.svg.select(`path#${name}`).attr(attr[0], attr[1])
+                    .on('click', this.click.bind(this));
             });
         }
     }
 
-     clicked(d) {
+     click(ev,d) {
          let x, y, k;
          let centered;
 
-         if (d && centered !== d) {
-             let centroid = path.centroid(d);
+         if (d && this.centered !== d) {
+             let centroid = this.path.centroid(d);
              x = centroid[0];
              y = centroid[1];
              k = 4;
              centered = d;
          } else {
-             x = width / 2;
-             y = height / 2;
+             x = this.svgParams.width / 2;
+             y = this.svgParams.height / 2;
              k = 1;
-             centered = null;
+             this.centered = null;
          }
+         this.svg.selectAll("path")
+             .classed("active", this.centered && function(d) { return d === this.centered; });
+
+         this.svg.transition()
+             .duration(600)
+             .attr("transform", "translate(" + this.svgParams.width / 2 + "," + this.svgParams.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+             .style("stroke-width", 1.5 / k + "px");
      }
 }

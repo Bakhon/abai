@@ -9,7 +9,39 @@
         <info-table inform_data="9" :description="well_head_samples"></info-table>
       </div>
     </div>
-    <div class="filter"></div>
+    <p class="filter-header">Недропользователь</p>
+    <div class="filter">
+      <div class="user-checkbox">
+        <b-form-checkbox-group
+            v-model="selected"
+            :options="options"
+            class="mb-3 checkbox-user"
+            value-field="item"
+            text-field="name"
+            stacked
+        ></b-form-checkbox-group>
+      </div>
+      <div class="field-checkbox">
+        <div>
+          <b-input-group class="mt-3 input">
+            <b-form-input class="input-bg"></b-form-input>
+            <b-input-group-append>
+              <b-button variant="info">Button</b-button>
+            </b-input-group-append>
+          </b-input-group>
+          <div class="user-checkbox">
+            <b-form-checkbox-group
+                v-model="selected"
+                :options="options"
+                class="mb-3 checkbox-user"
+                value-field="item"
+                text-field="name"
+                stacked
+            ></b-form-checkbox-group>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="buttons-wrapper">
       <button>{{ trans("plast_fluids.data_download") }}</button>
       <button>{{ trans("plast_fluids.data_analysis") }}</button>
@@ -27,6 +59,12 @@ export default {
       deep_samples: this.trans("plast_fluids.deep_samples"),
       recombined: this.trans("plast_fluids.recombined"),
       well_head_samples: this.trans("plast_fluids.well_head_samples"),
+
+      options: [
+        { item: 'A', name: 'Недропользователь 1' },
+        { item: 'B', name: 'Недропользователь 2' },
+        { item: 'D', name: 'Недропользователь 3' }
+      ]
     };
   },
   components: {
@@ -36,6 +74,26 @@ export default {
 </script>
 
 <style scoped>
+.user-checkbox{
+  background: #1C1F4C;
+  padding: 5px;
+}
+.filter-header{
+  color: #fff;
+  font-size: 20px;
+}
+.checkbox-user{
+  margin: 15px;
+}
+.field-checkbox{
+  margin-bottom: 10px;
+}
+.input{
+  margin-top: 15px;
+}
+.input-bg{
+  background-color: #1F2142;
+}
 .wrapper-info {
   display : flex;
   flex-direction: column;
