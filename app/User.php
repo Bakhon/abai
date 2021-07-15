@@ -5,9 +5,8 @@ namespace App;
 use App\Models\Refs\Org;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
-use App\Module;
 use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -19,7 +18,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'password', 'org_id'
+        'name',
+        'username',
+        'password',
+        'org_structure'
     ];
 
     /**
@@ -39,6 +41,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_authorized_at' => 'datetime',
+        'org_structure' => 'array'
     ];
 
 

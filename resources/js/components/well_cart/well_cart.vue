@@ -30,7 +30,7 @@
             <div class="directory text-white pt-0 mt-0">
               <ul id="myUL">
                 <well-cart-tree
-                    v-for="(item, index) in forms_structure"
+                    v-for="(item, index) in formsStructure"
                     :key="index"
                     :active-form-code="activeFormCode"
                     :data="item"
@@ -150,7 +150,8 @@
                   <div class="icon-all"
                        @click="onColumnFoldingEvent('right')">
                     <svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-linecap="round"
+                            stroke-linejoin="round"
                             stroke-width="1.2"/>
                       <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
                             stroke-width="1.2"/>
@@ -208,8 +209,6 @@
 <script>
 import Vue from "vue";
 import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
-import forms from '../../json/bd/forms.json'
-import forms_structure from '../../json/bd/forms_structure.json'
 import vSelect from 'vue-select'
 import axios from 'axios'
 import moment from 'moment'
@@ -248,7 +247,6 @@ export default {
       isRightColumnFolded: false,
       isBothColumnFolded: false,
       popup: false,
-      forms: forms,
       wellGeo: {name_ru: null},
       wellGeoFields: {name_ru: null},
       wellUwi: null,
@@ -295,6 +293,8 @@ export default {
         'gtm': {'dbeg': null},
         'rzatrStat': {'value_double': null},
         'rzatrAtm': {'value_double': null},
+        'gu': {'name_ru': null},
+        'agms': {'name_ru': null},
       },
       wellParent: null,
       tubeNomOd: null,
@@ -348,11 +348,18 @@ export default {
         'gtm': 'gtm',
         'rzatrAtm': 'rzatr_atm',
         'rzatrStat': 'rzatr_stat',
+        'gu': 'gu',
+        'agms': 'agms',
       },
-      forms_structure: forms_structure,
+      formsStructure: {},
     }
   },
   mounted() {
+
+    this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
+      this.formsStructure = data.tree
+    })
+
   },
   methods: {
     onColumnFoldingEvent(method) {
@@ -475,8 +482,8 @@ export default {
     setForm(formCode) {
       this.activeFormCode = formCode
     },
-    getFormatedDate(data){
-      if(data != null && data != ''){
+    getFormatedDate(data) {
+      if (data != null && data != '') {
         return moment(data).format('DD/MM/YYYY')
       }
     },
@@ -535,8 +542,10 @@ export default {
         },
         {
           'description': this.wellTechsName,
-          'method': null,
-          'name': 'ГУ/Ряд',
+          'method': 'neighbors',
+          'neigbor_1': this.well.gu.name_ru,
+          'neigbor_2': this.well.agms.name_ru,
+          'name': 'ГУ/АГЗУ',
           'data': ''
         },
         {
@@ -784,7 +793,7 @@ export default {
           'data': ''
         },
         {
-          'description': this.well.gtm.dbeg,
+          'description': this.getFormatedDate(this.well.gtm.dbeg),
           'method': null,
           'name': 'Дата проведения ГРП',
           'data': ''
@@ -894,9 +903,6 @@ export default {
           'data': ''
         },
       ]
-    },
-    visibleForms() {
-      return this.forms.filter(form => form.isVisible)
     }
   }
 }

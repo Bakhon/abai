@@ -28,6 +28,9 @@ import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 import Paginate from 'vuejs-paginate';
+//Mixins
+import showToast from '~/mixins/showToast';
+import {currentUrlPage, urlLink} from "./components/geology/js/utils";
 
 require('./bootstrap');
 window.Vue = require('vue');
@@ -45,9 +48,6 @@ Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
 Vue.component('paginate', Paginate);
 
-//Mixins
-import showToast from '~/mixins/showToast';
-import {currentUrlPage, urlLink} from "./components/geology/js/utils";
 Vue.mixin(showToast);
 
 
@@ -167,7 +167,9 @@ Vue.component('well_cart', require('./components/well_cart/well_cart.vue').defau
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
+Vue.component('pf-upload_monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
 Vue.component('pf-template_pvt_plast_oil', require('./components/PlastFluids/views/SuperTemplatePvtPlastOil.vue').default);
+Vue.component('pf-oil-map', require('./components/PlastFluids/components/OilMapKz.vue').default);
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);
@@ -183,6 +185,7 @@ Vue.component('report-header-builder', require('./components/reportConstructor/R
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
+Vue.component('bigdata-plain-form', require('./components/bigdata/forms/PlainForm.vue').default);
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
 Vue.component('main-page', require('./components/mainpage.vue').default);
@@ -215,11 +218,16 @@ Vue.component('GeophysicsLeftSide', require('./components/geology/geophysics/Lef
 
 Vue.component('digital-rating', require('./components/DigitalRating/index.vue').default);
 
+Vue.component('admin-user-settings', require('./components/admin/user/Settings.vue').default);
+Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);
+
+
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
 Vue.prototype.$urlLink = url => urlLink(url);
 Vue.prototype.$currentPageUrl = currentUrlPage;
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Exceptions\BigData\SubmitFormException;
+use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -98,7 +99,7 @@ class WellRegister extends PlainForm
                     'well' => $wellId,
                     'geo' => $this->request->get('geo'),
                     'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
-                    'dend' => '3333-12-31 00:00:00+06'
+                    'dend' => Well::DEFAULT_END_DATE
                 ]
             );
 
@@ -130,7 +131,7 @@ class WellRegister extends PlainForm
                     'well' => $wellId,
                     'category' => $this->request->get($type),
                     'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
-                    'dend' => '3333-12-31 00:00:00+06'
+                    'dend' => Well::DEFAULT_END_DATE
                 ]
             );
     }

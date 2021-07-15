@@ -57,7 +57,6 @@
 </template>
 
 <script>
-import forms from '../../json/bd/forms.json'
 import BigDataPlainFormWrapper from './forms/PlainFormWrapper'
 import BigDataTableFormWrapper from './forms/TableFormWrapper'
 
@@ -74,7 +73,7 @@ export default {
   },
   data() {
     return {
-      forms: forms,
+      forms: [],
       activeForm: null,
       formNameQuery: null,
       formsListExpanded: false
@@ -95,7 +94,11 @@ export default {
   },
   mounted() {
 
-    this.activeForm = this.forms[Object.keys(this.forms)[0]]
+    this.axios.get(this.localeUrl('api/bigdata/forms')).then(({data}) => {
+      this.forms = data.forms
+      this.activeForm = this.forms[Object.keys(this.forms)[0]]
+    })
+
 
   },
   methods: {

@@ -3,7 +3,7 @@ import axios from 'axios'
 const pgno = {
     state: {
         hPump: null,
-        spmMin: 4,
+        spmMin: 3,
         spmMax: 8,
         strokeLenMin: 2.5,
         strokeLenMax: 3,
@@ -14,9 +14,9 @@ const pgno = {
         groupPosad: 2,
         h2s: false,
         heavyDown: true,
-        corrosion: "mediumCorrosion",
+        corrosion: "antiCorrosion",
         dmPumps: ["32", "38", "44", "57", "70"],
-        dmRods: ["19", "22", "25"],
+        dmRods: ["19", "22"],
         komponovka: ["hvostovik"],
         stupColumns: "2",
         markShtang: "15Х2ГМФ (НВО)",

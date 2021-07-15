@@ -35,4 +35,34 @@ class WellBlock extends PlainForm
             'current_block' => $result->block
         ];
     }
+
+    
+    private function isValidDate($wellId, $dbeg):bool
+    {
+           
+        $dbegWellBlock = DB::connection('tbd')
+                    ->table('prod.well_block')
+                    ->where('well', $wellId)
+                    ->orderBy('dbeg', 'desc')
+                    ->get('dbeg')
+                    ->first();
+                    
+        if(!empty($dbegWellBlock)){
+           
+            return $dbeg >= $dbegWellBlock->dbeg;
+        }   
+        return true;
+    }
+
+
+    protected function getCustomValidationErrors(): array
+    {
+        $errors = [];
+
+        if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'))){
+            $errors[$this->request->get('dbeg')][] = trans('bd.validation.dbeg_well_block');
+        }
+
+        return $errors;
+    }
 }
