@@ -677,6 +677,18 @@ return [
         'well_cart' => [
           'menu' => 'Карточка скважины',
         ],
+        'production_wells_schedule' => [
+          'title' => 'График замеров - Добывающие скважины',
+        ],
+        'injection_wells_schedule' => [
+          'title' => 'График замеров - Нагнетательные скважины',
+        ],
+        'distribution_substation' => [
+          'title' => 'Распределительная подстанция',
+        ],
+        'joint_wells' => [
+          'title' => 'Совместные скважины',
+        ],
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',
     'list' => 'Просмотр списка',
