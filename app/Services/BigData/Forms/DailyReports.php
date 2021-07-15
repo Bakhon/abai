@@ -7,6 +7,7 @@ use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\ReportOrgDailyCits;
 use App\Services\BigData\FieldLimitsService;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 abstract class DailyReports extends TableForm
 {
@@ -56,13 +57,15 @@ abstract class DailyReports extends TableForm
             ->distinct()
             ->first();
         if (!$item) {
-            ReportOrgDailyCits::insert([
+            ReportOrgDailyCits::insert(
+                [
                     'org' => $params['wellId'],
                     'metric' => $metric->id,
                     'report_date' => $params['date']->toDateTimeString(),
                     'plan' => 0,
                     $column['code'] => $params['value'],
-                ]);
+                ]
+            );
         } else {
             $field = $column['code'];
             $item->$field = $params['value'];
@@ -70,7 +73,8 @@ abstract class DailyReports extends TableForm
         }
     }
 
-    protected function getData($filter) {
+    protected function getData($filter): Collection
+    {
         $startDate = self::getStartDate($filter->date, $filter->period);
         $endDate = Carbon::parse($filter->date);
 
@@ -78,9 +82,12 @@ abstract class DailyReports extends TableForm
             ->whereDate('report_date', '>=', $startDate)
             ->whereDate('report_date', '<=', $endDate)
             ->distinct()
-            ->whereHas('metric', function ($query) {
-                return $query->where('code', $this->metricCode);
-            })
+            ->whereHas(
+                'metric',
+                function ($query) {
+                    return $query->where('code', $this->metricCode);
+                }
+            )
             ->get();
     }
 
@@ -110,7 +117,7 @@ abstract class DailyReports extends TableForm
         return $errors;
     }
 
-    private function isValidFactLimits(array $limits)
+    private function isValidFactLimits(array $limits): bool
     {
         if (empty($limits)) {
             return true;
@@ -122,7 +129,7 @@ abstract class DailyReports extends TableForm
         return false;
     }
 
-    private function calculateLimits()
+    private function calculateLimits(): array
     {
         $reports = ReportOrgDailyCits::where('org', $this->request->get('well_id'))
             ->whereDate('report_date', '<', $this->request->get('date'))
