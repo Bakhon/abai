@@ -62,6 +62,12 @@ export default {
 
             let uri = this.localeUrl("/get-drilling-details");
             const response = await axios.get(uri,{params:queryOptions});
+
+            if (response.data && response.data.length === 0) {
+                this.drillingPeriodStart = moment(this.drillingPeriodStart).subtract(1,'days');
+                this.drillingPeriodEnd = moment(this.drillingPeriodEnd).subtract(1,'days');
+                return await this.getDrillingByMonth();
+            }
             if (response.status === 200) {
                 return response.data;
             }

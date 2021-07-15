@@ -132,7 +132,7 @@
                         <td :class="[1,13,14,15].includes(index) ? 'troubled-companies-padding' : ''">
                             {{companiesNameMapping.withParticipation[item.dzo]}}
                         </td>
-                        <td >{{getFormattedNumber(item.yearlyPlan)}}</td>
+                        <td>{{getFormattedNumber(item.yearlyPlan)}}</td>
 
                         <td v-if="!isOpecActive">{{getFormattedNumber(item.monthlyPlan)}}</td>
                         <td v-else>{{getFormattedNumber(item.monthlyPlanOpec)}}</td>
@@ -632,7 +632,7 @@
        background: #4C537E;
    }
    .color_green {
-       color: #009846;
+       color: #00b353;
    }
    .color_red {
        color: #E31E24;
@@ -668,12 +668,19 @@
                background: #333975;
            }
        }
+       tr:hover {
+           background: #2d3486;
+           td:not(:nth-child(2)) {
+               font-size: 20px;
+           }
+       }
        th {
            font-style: normal;
            font-weight: bold;
            font-size: 13px;
            background: #353EA1;
            width: 10%;
+           border: 1px solid #272953;
            &:first-child {
                width: 2%;
            }
@@ -686,6 +693,8 @@
            font-size: 13px;
            font-family: Bold;
            width: 10%;
+           border-right: 1px solid #696e96;
+           padding-right: 5px;
            &:first-child {
                width: 2%;
                text-align: center;
@@ -693,6 +702,7 @@
            &:nth-child(2) {
                font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
                text-align: left;
+               padding-left: 5px;
            }
            &:nth-child(3), &:nth-child(4), &:nth-child(5) {
                width: 5%;

@@ -14,6 +14,7 @@
             :isWell="isWell"
             :onCheckboxClick="onCheckboxClick"
             :level="level+1"
+            :nodeClickOnArrow="true"
         ></tree-view>
       </div>
     </div>

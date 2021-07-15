@@ -174,10 +174,10 @@ export default {
             });
             summary = this.getFormatted(summary);
             let yesterdayFilteredSummary = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
-            this.updateProductionTotalFact(yesterdayFilteredSummary,actualFilteredSummary,this.selectedView);
 
             this.dzoCompaniesSummary = summary;
             if (this.isConsolidatedCategoryActive()) {
+                this.updateProductionTotalFact(yesterdayFilteredSummary,actualFilteredSummary,this.selectedView);
                 this.isOpecFilterActive = true;
             }
         },

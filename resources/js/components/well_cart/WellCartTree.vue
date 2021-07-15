@@ -1,23 +1,31 @@
 <template>
-  <li :class="{'selected': activeFormCode === data.code}">
-    <p @click.stop="isDirOpened = !isDirOpened; switchFormByCode(data.code)">
+  <li>
+    <p @click.stop="isDirOpened = !isDirOpened">
       <img
           src="/img/bd/arrow.svg"
-          v-if="data.type === 'dir'"
           :class="{'arrow-right': !isDirOpened}"
       >
-      <span :class="data.type === 'dir' ? 'dir' : 'file cursor-pointer'" v-html="data.name"></span>
+      <span class="dir" v-html="data.name"></span>
     </p>
-    <div class="directory" v-if="data.type === 'dir'">
+    <div v-if="data.children || data.forms" class="directory">
       <div class="custom-directory">
         <ul id="myUL" v-if="isDirOpened">
           <well-cart-tree
               v-for="(child, index) in data.children"
               :data="child"
-              :key="index"
+              :key="`dir_${index}`"
               :activeFormCode="activeFormCode"
               :switch-form-by-code="switchFormByCode">
           </well-cart-tree>
+          <li
+              v-for="(form, index) in data.forms"
+              :key="`form_${index}`"
+              :class="{'selected': activeFormCode === form.code}"
+          >
+            <p @click.stop="switchFormByCode(form)">
+              <span class="file cursor-pointer" v-html="form.name"></span>
+            </p>
+          </li>
         </ul>
       </div>
     </div>
