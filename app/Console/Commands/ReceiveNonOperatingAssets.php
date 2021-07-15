@@ -98,7 +98,6 @@ class receiveNonOperatingAssets extends Command
 
     public function assignMessageOptions($email,$password)
     {
-        var_dump($email . ' ' . $password);
         $ews = new Client($this->server, $email, $password);
         $ews->setCurlOptions(array(CURLOPT_SSL_VERIFYPEER => false));
         $this->ews = $ews;
