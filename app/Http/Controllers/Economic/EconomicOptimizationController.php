@@ -123,7 +123,7 @@ class EconomicOptimizationController extends Controller
         return $scenarios;
     }
 
-    private function getSpecificIndicatorData(): array
+    private function getSpecificIndicatorData(int $scenarioId = 6): array
     {
         return EcoRefsCost::query()
             ->select(
@@ -135,7 +135,7 @@ class EconomicOptimizationController extends Controller
                 DB::raw('SUM(wr_nopayroll) as sum_wr_nopayroll'),
                 DB::raw('SUM(wr_payroll) as sum_wr_payroll'),
             )
-            ->whereScFa(6)
+            ->whereScFa($scenarioId)
             ->get()
             ->first()
             ->toArray();

@@ -662,7 +662,7 @@ export default {
     },
 
     avgLiquidPercent() {
-      return (this.avgLiquidValue(true, 4) - this.avgLiquidValue(false, 4)).toFixed(3)
+      return (this.avgLiquidValue(true, 4) - this.avgLiquidValue(false, 4)).toFixed(2)
     },
 
     avgPrsPercent() {
