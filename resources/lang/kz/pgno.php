@@ -229,4 +229,6 @@ return array (
   'daily_consumption' => 'Сут. энергопот.',
   'ure' => 'УРЭ',
   'power_consumption_short' => 'Потр. мощ.',
+  'calc_min_value' => 'Расчет мин. значение',
+  'use_value' => 'Использовать значение',
 );
