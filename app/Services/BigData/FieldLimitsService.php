@@ -51,7 +51,7 @@ class FieldLimitsService
         return $result->toArray();
     }
 
-    private function calculateColumnLimits(string $column, Collection $columnValues): array
+    public function calculateColumnLimits(string $column, Collection $columnValues): array
     {
         if ($columnValues->count() <= 1) {
             return [];

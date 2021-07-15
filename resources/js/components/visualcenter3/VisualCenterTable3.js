@@ -246,9 +246,46 @@ export default {
 
             const response = await axios.get(uri,{params:queryOptions});
             if (response.status === 200) {
+                let todayProduction = _.filter(response.data, function (item) {
+                    return _.every([
+                        _.inRange(
+                            moment(item.date),
+                            moment().subtract(1,'days').startOf('day'),
+                            moment().subtract(1,'days').endOf('day')
+                        ),
+                    ]);
+                });
+                let companies = _.map(todayProduction, 'dzo_name');
+                let difference = _.differenceWith(this.companies, companies, _.isEqual);
+                if (difference.length > 0) {
+                    this.$store.commit('globalloading/SET_LOADING', true);
+                    let missingCompanies = await this.getMissedCompanies(difference);
+                    this.$store.commit('globalloading/SET_LOADING', false);
+                    let merged = response.data.concat(missingCompanies);
+                    return merged;
+                }
                 return response.data;
             }
             return {};
+        },
+
+        async getMissedCompanies(difference) {
+            let missingCompanies = [];
+            for (let i in difference) {
+                let historicalProduction = await this.getHistoricalProduction(difference[i]);
+                historicalProduction.date = moment().subtract(1,'days').format();
+                missingCompanies.push(historicalProduction);
+            }
+            return missingCompanies;
+        },
+
+        async getHistoricalProduction(dzoName) {
+            let queryOptions = {'dzoName': dzoName};
+            let uri = this.localeUrl("/get-historical-production");
+            const response = await axios.get(uri,{params:queryOptions});
+            if (response.status === 200) {
+                return response.data[0];
+            }
         },
 
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {
