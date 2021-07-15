@@ -1,9 +1,9 @@
 <template>
-  <div class="row m-0 p-0">
+  <div class="row m-0 p-0 bd-forms__wrapper">
     <div class="col col-9 p-0">
       <proto-form :id="id" :type="type"></proto-form>
     </div>
-    <div class="col col-3 p-0 org-select-tree-block">
+    <div class="col col-3 p-0 org-select-tree-block scrollable">
       <proto-org-select-tree
           :currentWellId="id"
           @idChange="idChange">
@@ -32,6 +32,10 @@ export default {
 
 <style lang="scss">
 .bd-forms {
+
+  &__wrapper {
+    align-items: stretch;
+  }
 
   .blueblock {
     background-color: #272953 !important;
@@ -194,30 +198,6 @@ export default {
     }
   }
 
-
-  .scrollable {
-    &::-webkit-scrollbar {
-      height: 10px;
-      width: 4px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: #40467E;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #656A8A;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-      background: #656A8A;
-    }
-
-    &::-webkit-scrollbar-corner {
-      background: #20274F;
-    }
-  }
-
   .forms-list {
     &.expand {
       bottom: 0;
@@ -293,7 +273,30 @@ export default {
 }
 
 .org-select-tree-block {
-  height: 85vh;
-  overflow-y: scroll;
+  min-height: calc(100vh - 90px);
+  overflow-y: auto;
+}
+
+.scrollable {
+  &::-webkit-scrollbar {
+    height: 10px;
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #40467E;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #656A8A;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #656A8A;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: #20274F;
+  }
 }
 </style>
