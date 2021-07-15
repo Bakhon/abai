@@ -545,7 +545,7 @@ export default {
         });
     },
     savetable() {
-      this.isEdit = false;
+      this.isEdit = true;
       this.$store.commit("globalloading/SET_LOADING", true);
       const searchParam = this.searchString ? `${this.searchString}/` : "";
       this.axios
@@ -562,8 +562,8 @@ export default {
           this.isSearched = searchParam ? true : false;
           this.month = this.currentMonth;
           this.selectYear = this.currentYear;
-          this.isShowFirst = true;
-          this.isShowSecond = false;
+          this.isShowFirst = false;
+          this.isShowSecond = true;
           this.$store.commit("tr/SET_MONTH", this.currentMonth);
           this.$store.commit("tr/SET_YEAR", this.currentYear);
           this.chooseDt();
@@ -577,11 +577,11 @@ export default {
     },
     cancelEdit() {
       this.$store.commit("globalloading/SET_LOADING", true);
-      this.isEdit = false;
+      this.isEdit = true;
       this.editedWells = [];
       this.month = this.currentMonth;
       this.selectYear = this.currentYear;
-      this.isShowFirst = true;
+      this.isShowFirst = false;
       this.isShowSecond = false;
       this.$store.commit("tr/SET_MONTH", this.currentMonth);
       this.$store.commit("tr/SET_YEAR", this.currentYear);
