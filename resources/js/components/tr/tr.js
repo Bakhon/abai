@@ -23,6 +23,62 @@ export default {
     TrMultiselect,
   },
   computed: {
+    selectHorizon: {
+      get(){
+        return this.$store.state.tr.horizon;
+      }, 
+      set(newVal){
+        this.$store.commit("tr/SET_HORIZON", newVal);
+      }, 
+    },
+    selectObject: {
+      get(){
+        return this.$store.state.tr.object;
+      }, 
+      set(newVal){
+        this.$store.commit("tr/SET_OBJECT", newVal);
+      }, 
+    },
+    selectField: {
+      get(){
+        return this.$store.state.tr.field;
+      }, 
+      set(newVal){
+        this.$store.commit("tr/SET_FIELD", newVal);
+      }, 
+    },
+    selectExpMeth: {
+      get(){
+        return this.$store.state.tr.expMeth;
+      }, 
+      set(newVal){
+        this.$store.commit("tr/SET_EXPMETH", newVal);
+      }, 
+    },
+    selectWellType: {
+      get(){
+        return this.$store.state.tr.wellType;
+      }, 
+      set(newVal){
+        this.$store.commit("tr/SET_WELLTYPE", newVal);
+      }, 
+    },
+    selectWellName: {
+      get(){
+        return this.$store.state.tr.wellName;
+      }, 
+      set(newVal){
+        this.$store.commit("tr/SET_WELLNAME", newVal);
+      }, 
+    },
+    selectBlock: {
+      get(){
+        return this.$store.state.tr.block;
+      }, 
+      set(newVal){
+        this.$store.commit("tr/SET_BLOCK", newVal);
+      }, 
+    },
     addWellData() {
       try {
         let filteredResult = this.allWells.filter(
@@ -147,15 +203,16 @@ export default {
     this.$store.commit("tr/SET_YEAR", yyyy);
     this.isDynamic = false;
     this.$store.commit("tr/SET_IS_DYNAMIC", "false");
-    this.$store.commit("tr/SET_FIELD", this.selectedField);
-    this.$store.commit("tr/SET_OBJECT", this.selectedObject);
-    this.$store.commit("tr/SET_HORIZON", this.selectedHorizon);
-    this.$store.commit("tr/SET_WELLTYPE", this.selectedWellType);
-    this.$store.commit("tr/SET_BLOCK", this.selectedBlock);
-    this.$store.commit("tr/SET_EXPMETH", this.selectedExpMeth);
+    this.$store.commit("tr/SET_FIELD", []);
+    this.$store.commit("tr/SET_OBJECT", []);
+    this.$store.commit("tr/SET_HORIZON", []);
+    this.$store.commit("tr/SET_WELLTYPE", []);
+    this.$store.commit("tr/SET_BLOCK", []);
+    this.$store.commit("tr/SET_EXPMETH", []);
+    this.$store.commit("tr/SET_WELLNAME", []);
     this.axios
       .post(
-        this.postApiUrl + "techregime_totals_test_3/",
+        this.postApiUrl + this.searchLink,
         this.getPageData(),
       )
       .then((response) => {
@@ -170,7 +227,6 @@ export default {
         if (response.data) {
           this.wells = data.data;
           this.fullWells = data.data;
-          
         }
         else {
           console.log("No data");
@@ -196,11 +252,7 @@ export default {
           this.wellTypeFilterData = data.well_type;
           this.blockFilterData = data.block;
           this.expMethFilterData = data.exp_meth;
-<<<<<<< HEAD
           this.wellNameFilterData = data.rus_wellname;
-=======
-          
->>>>>>> c6a89971dee71119d81b37c0a833da4d193bb73d
         }
         else {
           console.log("No data");
@@ -261,12 +313,6 @@ export default {
       blockFilterData: [],
       expMethFilterData: [],
       wellNameFilterData: [],
-      selectedObject: [],
-      selectedHorizon: [],
-      selectedField: [],
-      selectedWellType: [],
-      selectedBlock: [],
-      selectedExpMeth: [],
       perPage: 3,
       currentPage: 1,
       isAscSort: "",
@@ -276,14 +322,10 @@ export default {
       currentYear: null,
       searchParam: null,
       postApiUrl: process.env.MIX_POST_API_URL,
-<<<<<<< HEAD
       pageNumberLink: "techregime_page_numbers/",
       editPageNumberLink: "techregime_edit_page_numbers/",
       searchLink: "techregime_totals_test_3/",
       editSearchLink: "techregime_edit_page/",
-=======
-  
->>>>>>> c6a89971dee71119d81b37c0a833da4d193bb73d
     };
   },
   methods: {
@@ -307,6 +349,7 @@ export default {
           year_2:  this.$store.state.tr.year_dyn_end,
           month_2:  this.$store.state.tr.month_dyn_end,
           day_2:  this.$store.state.tr.day_dyn_end,
+          wellName: this.$store.state.tr.wellName,
           };
       }
       else {
@@ -323,7 +366,8 @@ export default {
           expMeth: this.$store.state.tr.expMeth,
           searchString: this.$store.state.tr.searchString,
           is_dynamic:  this.$store.state.tr.isDynamic,
-          pageNum: this.$store.state.tr.pageNumber
+          pageNum: this.$store.state.tr.pageNumber,
+          wellName: this.$store.state.tr.wellName,
         }
       };
     },
@@ -332,77 +376,41 @@ export default {
       this.$store.commit("tr/SET_PAGENUMBER", pageNum);
       this.chooseAxios();
     },
-    dropWellTypeFilter() {
+    dropFilter(x) {
       this.$store.commit("globalloading/SET_LOADING", true),
-      this.selectedWellType = [];
-      this.$store.commit("tr/SET_WELLTYPE", this.selectedWellType);
+      console.log(x);
+      if (x === 'tr/SET_HORIZON') {
+        this.$store.commit(x, []);
+      }
+      else if (x === 'tr/SET_FIELD') {
+        this.$store.commit(x, []);
+      }
+      else if (x === 'tr/SET_OBJECT'){
+        this.$store.commit(x, []);
+      }
+      else if (x === 'tr/SET_BLOCK') {
+        this.$store.commit(x, []);
+      }
+      else if (x === 'tr/SET_EXPMETH') {
+        this.$store.commit(x, []);
+      }
+      else if (x === 'tr/SET_WELLTYPE') {
+        this.$store.commit(x, []);
+      }
+      else {
+        this.$store.commit("tr/SET_WELLNAME", []);
+      };
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.chooseAxios();
-    },
-    dropFieldFilter() {
-      this.$store.commit("globalloading/SET_LOADING", true),
-      this.selectedField = [];
-      this.$store.commit("tr/SET_FIELD", this.selectedField);
-      this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.chooseAxios();
-    },
-    dropHorizonFilter() {
-      this.$store.commit("globalloading/SET_LOADING", true),
-      this.selectedHorizon = [];
-      this.$store.commit("tr/SET_HORIZON", this.selectedHorizon);
-      this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.chooseAxios();
-    },
-    dropObjectFilter() {
-      this.$store.commit("globalloading/SET_LOADING", true),
-      this.selectedObject = [];
-      this.$store.commit("tr/SET_OBJECT", this.selectedObject);
-      this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.chooseAxios();
-    },
-    dropBlockFilter() {
-      this.$store.commit("globalloading/SET_LOADING", true),
-      this.selectedBlock = [];
-      this.$store.commit("tr/SET_BLOCK", this.selectedBlock);
-      this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.chooseAxios();
-    },
-    dropExpMethFilter() {
-      this.$store.commit("globalloading/SET_LOADING", true),
-      this.selectedExpMeth = [];
-      this.$store.commit("tr/SET_EXPMETH", this.selectedExpMeth);
-      this.$store.commit("tr/SET_PAGENUMBER", 1);
+      this.pageNumber = 1;
       this.chooseAxios();
     },
     chooseFilter() {
       this.$store.commit("globalloading/SET_LOADING", true),
       this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
       this.$store.commit("tr/SET_SEARCH", this.searchString);
-      this.$store.commit("tr/SET_FIELD", this.selectedField);
-      this.$store.commit("tr/SET_OBJECT", this.selectedObject);
-      this.$store.commit("tr/SET_HORIZON", this.selectedHorizon);
-      this.$store.commit("tr/SET_WELLTYPE", this.selectedWellType);
-      this.$store.commit("tr/SET_BLOCK", this.selectedBlock);
-      this.$store.commit("tr/SET_EXPMETH", this.selectedExpMeth);
       this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
       this.$store.commit("tr/SET_PAGENUMBER", 1);
       this.chooseAxios();
-    },
-    chooseChildFilter(){
-      this.selectedField = this.$store.state.tr.field;
-      this.selectedHorizon = this.$store.state.tr.horizon;
-      this.selectedWellType = this.$store.state.tr.wellType;
-      this.selectedObject = this.$store.state.tr.object;
-      this.selectedBlock = this.$store.state.tr.block;
-      this.selectedExpMeth = this.$store.state.tr.expMeth;
-      this.$store.commit("globalloading/SET_LOADING", true);
-      this.$store.commit("tr/SET_PAGENUMBER", 1);
-      if (this.isDynamic) {
-        this.axiosDynamicFilterRequest();
-      }
-      else{
-        this.axiosFilterRequest();
-      }
     },
     chooseAxios() {
       if (this.isDynamic) {
@@ -419,7 +427,7 @@ export default {
     axiosEdit() {
       this.axios
         .post(
-          this.postApiUrl + "techregime_edit_page/",
+          this.postApiUrl + this.editSearchLink,
           this.getPageData(),
         )
         .then((response) => {
@@ -478,7 +486,7 @@ export default {
     axiosFilterRequest() {
       this.axios
         .post(
-          this.postApiUrl + "techregime_totals_test_3/",
+          this.postApiUrl + this.searchLink,
           this.getPageData(),
         )
         .then((response) => {
@@ -527,7 +535,7 @@ export default {
         });
     },
     savetable() {
-      this.isEdit = false;
+      this.isEdit = true;
       this.$store.commit("globalloading/SET_LOADING", true);
       const searchParam = this.searchString ? `${this.searchString}/` : "";
       this.axios
@@ -544,8 +552,8 @@ export default {
           this.isSearched = searchParam ? true : false;
           this.month = this.currentMonth;
           this.selectYear = this.currentYear;
-          this.isShowFirst = true;
-          this.isShowSecond = false;
+          this.isShowFirst = false;
+          this.isShowSecond = true;
           this.$store.commit("tr/SET_MONTH", this.currentMonth);
           this.$store.commit("tr/SET_YEAR", this.currentYear);
           this.chooseDt();
@@ -563,8 +571,8 @@ export default {
       this.editedWells = [];
       this.month = this.currentMonth;
       this.selectYear = this.currentYear;
-      this.isShowFirst = true;
-      this.isShowSecond = false;
+      this.isShowFirst = false;
+      this.isShowSecond = true;
       this.$store.commit("tr/SET_MONTH", this.currentMonth);
       this.$store.commit("tr/SET_YEAR", this.currentYear);
       this.chooseDt();
@@ -829,8 +837,6 @@ export default {
         this.axiosPage(this.pageNumberLink);        
       }
     },
-
-
     // API поиска простого ТР
     axiosSearch(link) {
       this.axios
@@ -849,14 +855,7 @@ export default {
           } else {
             this.wells = [];
             this.fullWells = [];
-            this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
-              title: this.trans('app.error'),
-              toaster: "b-toaster-top-center",
-              solid: true,
-              appendToast: false,
-              variant: 'danger',
-            });
-            
+            console.log("No data");
           }
         })
         .catch((error) => {
@@ -864,58 +863,8 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
-          this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
-            title: this.trans('app.error'),
-            toaster: "b-toaster-top-center",
-            solid: true,
-            appendToast: false,
-            variant: 'danger',
-          });
+          console.log("search error = ", error);
         });
     },
-<<<<<<< HEAD
-=======
-    // API поиска редактирования ТР
-    axiosEditSearch() {
-      this.axios
-        .post(
-          this.postApiUrl + "techregime_edit_page/",
-            this.getPageData(),
-        )
-        .then((response) => {
-          this.$store.commit("globalloading/SET_LOADING", false);
-          this.isSearched = searchParam ? true : false;
-          this.$store.commit("tr/SET_SEARCH", this.searchString);
-          let data = response.data;
-          if (data) {
-            this.wells = data.data;
-            this.fullWells = data.data;
-          } else {
-            this.wells = [];
-            this.fullWells = [];
-            this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
-              title: this.trans('app.error'),
-              toaster: "b-toaster-top-center",
-              solid: true,
-              appendToast: false,
-              variant: 'danger',
-            });
-          }
-        })
-        .catch((error) => {
-          this.isSearched = searchParam ? true : false;
-          this.$store.commit("globalloading/SET_LOADING", false);
-          this.wells = [];
-          this.fullWells = [];
-          this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
-            title: this.trans('app.error'),
-            toaster: "b-toaster-top-center",
-            solid: true,
-            appendToast: false,
-            variant: 'danger',
-          });
-        });
-    },
->>>>>>> c6a89971dee71119d81b37c0a833da4d193bb73d
   },
 };
