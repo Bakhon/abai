@@ -60,8 +60,6 @@ class EmergencySituations extends Command
         $companyDifference = $this->getDifference($existingCompanies);
         foreach($companyDifference as $company) {
             $key = $this->getKey($company,$this->typeMapping);
-            var_dump('--key');
-            var_dump($key);
             $this->store($company,$key);
         }
     }
@@ -76,10 +74,7 @@ class EmergencySituations extends Command
     private function getKey($id, $array) {
         foreach ($array as $key => $val) {
             $elementKey = array_search($id, $val);
-            var_dump($elementKey);
-            var_dump($key);
             if (is_numeric($elementKey)) {
-                var_dump('return key');
                 return $key;
             }
         }
