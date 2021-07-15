@@ -30,7 +30,7 @@
             <div class="directory text-white pt-0 mt-0">
               <ul id="myUL">
                 <well-cart-tree
-                    v-for="(item, index) in [...forms_structure, ...visibleForms]"
+                    v-for="(item, index) in formsStructure"
                     :key="index"
                     :active-form-code="activeFormCode"
                     :data="item"
@@ -79,7 +79,10 @@
               </div>
             </div>
             <div v-if="wellUwi" class="mid-col__main_row">
-              <div v-if="activeFormCode" class="col table-wrapper">
+              <div v-if="activeFormComponentName">
+                  <div :is="activeFormComponentName" :changeColumnsVisible="(value) => changeColumnsVisible(value)"></div>
+              </div>
+              <div v-else-if="activeFormCode" class="col table-wrapper">
                 <BigDataPlainFormResult :code="activeFormCode" :well-id="this.well.id"></BigDataPlainFormResult>
               </div>
               <div v-else class="col graphics">
@@ -204,13 +207,28 @@
 </template>
 
 <script>
+import Vue from "vue";
 import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
-import forms from '../../json/bd/forms.json'
-import forms_structure from '../../json/bd/forms_structure.json'
 import vSelect from 'vue-select'
 import axios from 'axios'
 import moment from 'moment'
 import WellCartTree from "./WellCartTree";
+import upperFirst from "lodash/upperFirst";
+import camelCase from "lodash/camelCase";
+
+const requireComponent = require.context('../bigdata/forms/CustomPlainForms', true, /\.vue$/i);
+requireComponent.keys().forEach(fileName => {
+    const componentConfig = requireComponent(fileName)
+    const componentName = upperFirst(
+        camelCase(
+            fileName
+                .split('/')
+                .pop()
+                .replace(/\.\w+$/, '')
+        )
+    );
+    Vue.component(componentName, componentConfig.default || componentConfig);
+});
 
 export default {
   components: {
@@ -223,12 +241,12 @@ export default {
       options: [],
       graph: null,
       activeFormCode: null,
+      activeFormComponentName: null,
       loading: false,
       isLeftColumnFolded: false,
       isRightColumnFolded: false,
       isBothColumnFolded: false,
       popup: false,
-      forms: forms,
       wellGeo: {name_ru: null},
       wellGeoFields: {name_ru: null},
       wellUwi: null,
@@ -333,10 +351,15 @@ export default {
         'gu': 'gu',
         'agms': 'agms',
       },
-      forms_structure: forms_structure,
+      formsStructure: {},
     }
   },
   mounted() {
+
+    this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
+      this.formsStructure = data.tree
+    })
+
   },
   methods: {
     onColumnFoldingEvent(method) {
@@ -452,8 +475,9 @@ export default {
       } catch (e) {
       }
     },
-    switchFormByCode(formCode) {
-      this.activeFormCode = formCode
+    switchFormByCode(data) {
+      this.activeFormCode = data.code;
+      this.activeFormComponentName = data.component_name;
     },
     setForm(formCode) {
       this.activeFormCode = formCode
@@ -462,6 +486,11 @@ export default {
       if (data != null && data != '') {
         return moment(data).format('DD/MM/YYYY')
       }
+    },
+    changeColumnsVisible(value) {
+        this.isLeftColumnFolded = !value;
+        this.isRightColumnFolded = !value;
+        this.isBothColumnFolded = !value;
     }
   },
   computed: {
@@ -764,7 +793,7 @@ export default {
           'data': ''
         },
         {
-          'description': this.well.gtm.dbeg,
+          'description': this.getFormatedDate(this.well.gtm.dbeg),
           'method': null,
           'name': 'Дата проведения ГРП',
           'data': ''
@@ -874,9 +903,6 @@ export default {
           'data': ''
         },
       ]
-    },
-    visibleForms() {
-      return this.forms.filter(form => form.isVisible)
     }
   }
 }

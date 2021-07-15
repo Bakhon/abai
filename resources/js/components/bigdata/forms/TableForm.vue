@@ -169,7 +169,7 @@ import RowHistoryGraph from './RowHistoryGraph'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 
-const requireComponent = require.context('./customColumns', true, /\.vue$/i);
+const requireComponent = require.context('./CustomColumns', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
   const componentConfig = requireComponent(fileName)
   const componentName = upperFirst(

@@ -24,6 +24,7 @@ use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use Carbon\Carbon;
 use App\Models\VisCenter\ExcelForm\DzoImportOtm;
 use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
+use App\Models\VisCenter\EmergencyHistory;
 
 class VisualCenterController extends Controller
 {
@@ -438,6 +439,15 @@ class VisualCenterController extends Controller
             ->select()
             ->whereDate('date', '>=', $startPeriod)
             ->whereDate('date', '<=', $endPeriod)
+            ->get()
+            ->toArray();
+    }
+    public function getEmergencyHistory(Request $request)
+    {
+        return EmergencyHistory::query()
+            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description')
+            ->whereMonth('date', $request->currentMonth)
+            ->where('type',1)
             ->get()
             ->toArray();
     }
