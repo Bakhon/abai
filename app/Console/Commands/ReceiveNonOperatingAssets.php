@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use SimpleXLS;
+use SimpleXLSX;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use Carbon\Carbon;
 use \jamesiarmes\PhpEws\Client;
@@ -51,7 +52,6 @@ class receiveNonOperatingAssets extends Command
     );
     private $dzoMapping = array (
         'ТШО' => '"Теңізшевройл" ЖШС / ТОО "Тенгизшевройл"',
-        'ПКК' => '"Петро Қазақстан Құмкөл Ресорсиз" АҚ / АО "Петро Казахстан Кумколь Ресорсиз"',
         'ТП' => '"Торғай Петролеум" АҚ / АО "Тургай Петролеум"',
         'ПКИ' => '"Петро Казахстан Венчерс Инк."',
         'НКО' => '"Норт Каспиан Оперейтинг Компани Б.В."',
@@ -77,18 +77,29 @@ class receiveNonOperatingAssets extends Command
 
     public function processInboundEmail()
     {
-        $this->assignMessageOptions();
+        $this->assignMessageOptions(env('VISCENTER_EMAIL_ADDRESS', ''),env('VISCENTER_EMAIL_PASSWORD', ''));
         if (!$this->isDataAvailable) {
             return;
         }
         $this->markAsRead();
         $this->processMessages();
-        $this->scrapDocument();
+        $this->scrapDocument('nonOperating');
+    }
+    public function processGDUEmail()
+    {
+        $this->assignMessageOptions(env('VISCENTER_GDU_EMAIL_ADDRESS', ''),env('VISCENTER_GDU_EMAIL_PASSWORD', ''));
+        if (!$this->isDataAvailable) {
+            return;
+        }
+        $this->markAsRead();
+        $this->processMessages();
+        $this->scrapDocument('gdu');
     }
 
-    public function assignMessageOptions()
+    public function assignMessageOptions($email,$password)
     {
-        $ews = new Client($this->server, env('VISCENTER_EMAIL_ADDRESS', ''), env('VISCENTER_EMAIL_PASSWORD', ''));
+        var_dump($email . ' ' . $password);
+        $ews = new Client($this->server, $email, $password);
         $ews->setCurlOptions(array(CURLOPT_SSL_VERIFYPEER => false));
         $this->ews = $ews;
         $request = $this->getRequestParams();
@@ -227,18 +238,25 @@ class receiveNonOperatingAssets extends Command
         }
     }
 
-    public function scrapDocument()
+    public function scrapDocument($fileType)
     {
-        if ( $xls = SimpleXLS::parseFile('public/test2.xls') ) {
-            $this->processExcelDocument($xls);
+        if ($fileType === 'gdu') {
+            if ( $xls = SimpleXLSX::parseFile('public/test2.xls') ) {
+                $this->processExcelDocument($xls->rows(1),$fileType);
+            }
+        } else if ($fileType === 'nonOperating') {
+            if ( $xls = SimpleXLS::parseFile('public/test2.xls') ) {
+                $this->processExcelDocument($xls->rows(),$fileType);
+            }
         }
+
         $this->deleteExistingFile();
     }
 
-    public function processExcelDocument($sheet)
+    public function processExcelDocument($sheet,$fileType)
     {
-      foreach( $sheet->rows() as $r => $row) {
-          $this->processColumns($row,$sheet,$r);
+      foreach( $sheet as $r => $row) {
+          $this->processColumns($row,$sheet,$r,$fileType);
       }
     }
 
@@ -252,14 +270,22 @@ class receiveNonOperatingAssets extends Command
         }
     }
 
-    public function processColumns($row,$sheet,$r)
+    public function processColumns($row,$sheet,$r,$fileType)
     {
         foreach($row as $k => $col) {
             $trimmedColumn = trim($col);
-            $this->processCompanies($trimmedColumn,$row);
-            if ($trimmedColumn === '"Қарашығанақ Петролеум Опер.Б.В." / "Карачаганак Петролеум Опер. Б.В."') {
-                $data = $this->getKPOData($row,'КПО',$sheet,$r);
-                $this->insertDataToDB($data);
+            if ($fileType === 'nonOperating') {
+                $this->processCompanies($trimmedColumn,$row);
+                if ($trimmedColumn === '"Қарашығанақ Петролеум Опер.Б.В." / "Карачаганак Петролеум Опер. Б.В."') {
+                    $data = $this->getKPOData($row,'КПО',$sheet,$r);
+                    $this->insertDataToDB($data);
+                }
+            } else if ($fileType === 'gdu') {
+                if ($trimmedColumn === 'SC "PetroKazakhstan Kumkol Resources"') {
+                    $data = $this->getPKK($row,'ПКК',$sheet,$r,$k+2);
+                    $this->insertDataToDB($data);
+                }
+
             }
         }
     }
@@ -296,12 +322,27 @@ class receiveNonOperatingAssets extends Command
         return array (
             'oil_production_fact' => $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilProduction']],$yesterdayFact,'oilProduction'),
             'oil_delivery_fact' => $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilDelivery']],$yesterdayFact,'oilDelivery'),
-            'condensate_production_fact' => $sheet->rows()[$rowIndex + 2][$columnMapping['condensateProduction']],
-            'condensate_delivery_fact' => $sheet->rows()[$rowIndex + 2][$columnMapping['condensateDelivery']],
+            'condensate_production_fact' => $sheet[$rowIndex + 2][$columnMapping['condensateProduction']],
+            'condensate_delivery_fact' => $sheet[$rowIndex + 2][$columnMapping['condensateDelivery']],
             'dzo_name' => $dzoName,
             'date' => Carbon::yesterday('Asia/Almaty'),
             'oil_production_fact_absolute' => $row[$columnMapping['KPOoilProduction']],
             'oil_delivery_fact_absolute' => $row[$columnMapping['KPOoilDelivery']]
+        );
+    }
+    public function getPKK($row, $dzoName, $sheet, $rowIndex, $columnIndex)
+    {
+        $columnMapping = array(
+            'oil_production_fact' => 5,
+            'oil_delivery_fact' => 7
+        );
+        $kuzilkiaField = $sheet[$rowIndex + 1][$columnMapping['oil_production_fact']];
+        $tuzkolField = $sheet[$rowIndex + 2][$columnMapping['oil_production_fact']] * 0.5;
+        return array (
+            'oil_production_fact' => ($row[$columnMapping['oil_production_fact']] + $kuzilkiaField + $tuzkolField) * 0.33,
+            'oil_delivery_fact' => $row[$columnMapping['oil_delivery_fact']],
+            'dzo_name' => $dzoName,
+            'date' => Carbon::yesterday('Asia/Almaty'),
         );
     }
 
@@ -339,5 +380,6 @@ class receiveNonOperatingAssets extends Command
     public function handle()
     {
         $this->processInboundEmail();
+        //$this->processGDUEmail(); waiting when sysadmin will do email-redirect
     }
 }
