@@ -34,7 +34,8 @@
         </div>
       </div>
       <div class="rating-content__wrapper">
-        <img src="/img/digital-rating/map.svg" alt="">
+        <div id="map"></div>
+<!--        <img src="/img/digital-rating/map.svg" alt="">-->
       </div>
     </div>
     <div class="rating-panel">
@@ -115,6 +116,7 @@
 </template>
 
 <script>
+import mapboxgl from "mapbox-gl";
 import { TransitionExpand } from 'vue-transition-expand';
 
 export default {
@@ -135,7 +137,7 @@ export default {
     };
   },
 
-  mounted() {
+  created() {
     document.addEventListener('click', this.close);
   },
 
@@ -155,6 +157,14 @@ export default {
         this.show = false;
       }
     },
+    init() {
+      const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v10',
+        zoom: 12,
+
+      })
+    }
   }
 }
 </script>
@@ -262,5 +272,16 @@ export default {
       }
     }
   }
+}
+
+svg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.country {
+  fill: #ccc;
+  stroke: #999;
 }
 </style>
