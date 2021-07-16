@@ -43,7 +43,7 @@ class ExportEconomicDataToExcel implements ShouldQueue
             $this->params['interval_end'] ?? null
         );
 
-        $interval = EconomicNrsController::intervalFormat($intervalStart, $intervalEnd);
+        $interval = EconomicNrsController::formatInterval($intervalStart, $intervalEnd);
 
         $druid = new DruidClient(config('druid'));
 
