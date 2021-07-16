@@ -108,7 +108,12 @@
         modal-class="pipe-calc-long-modal"
         title="SomeTitle"
     >
-      <pipe-long-info :pipe="selectedPipe"></pipe-long-info>
+      <pipe-long-info
+          :pipe="selectedPipe"
+          :referentValue="referentValue"
+          :activeFilter="activeFilter"
+
+      />
     </b-modal>
 
     <div v-show="false">
@@ -1154,14 +1159,17 @@ export default {
   }
 }
 </script>
+
+<style>
+.pipe-calc-long-modal .modal-dialog {
+  max-width: calc(100vw - 114px);
+  left: 28.5px;
+}
+</style>
+
 <style lang="scss" scoped>
 h1 {
   color: #fff;
-}
-
-.pipe-calc-long-modal >>> .modal-dialog {
-  max-width: calc(100vw - 114px);
-  left: 28.5px;
 }
 
 .gu-map {
