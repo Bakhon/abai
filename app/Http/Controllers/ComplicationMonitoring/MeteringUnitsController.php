@@ -20,7 +20,7 @@ class MeteringUnitsController extends CrudController
 {
     use WithFieldsValidation;
 
-    protected $modelName = 'corrosion';
+    protected $modelName = 'metering_units';
 
     public function index()
     {
@@ -115,23 +115,12 @@ class MeteringUnitsController extends CrudController
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $validationParams = $this->getValidationParams('metering_units');
         return view('complicationMonitoring.metering_units.create', compact('validationParams'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(MeteringUnitsCreateRequest $request)
     {
         $this->validateFields($request, 'metering_units');
@@ -140,35 +129,17 @@ class MeteringUnitsController extends CrudController
         return redirect()->route('metering_units.store')->with('success', __('app.created'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(MeteringUnits $meteringunits)
     {
         return view('complicationMonitoring.metering_units.show', ['sib' => $meteringunits]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function history(Sib $meteringunits)
     {
         $meteringunits->load('history');
         return view('complicationMonitoring.metering_units.history', compact('metering_units'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(MeteringUnits $meteringunits)
     {
         $validationParams = $this->getValidationParams('metering_units');
@@ -178,13 +149,6 @@ class MeteringUnitsController extends CrudController
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(MeteringUnitsUpdateRequest $request, MeteringUnits $meteringunits)
     {
         $this->validateFields($request, 'metering_units');
@@ -193,12 +157,6 @@ class MeteringUnitsController extends CrudController
         return redirect()->route('metering_units.index')->with('success', __('app.updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request, MeteringUnits $meteringunits)
     {
         $meteringunits->delete();

@@ -109,7 +109,60 @@
                             </ul>
                         </li>
                     @endif
-
+                    @if(
+                        auth()->user()->can('monitoring list pipes')
+                        || auth()->user()->can('monitoring list inhibitors')
+                    )
+                        <li class="left-menu-li">
+                            <a>
+                                {{ trans('monitoring.gu_equipment') }}
+                            </a>
+                            <ul>
+                                @if(auth()->user()->can('monitoring list buffer_tank'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('buffer_tank.index')}}">
+                                            {{ trans('monitoring.buffer_tank.title') }}
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring list pumps'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('pumps.index')}}">
+                                            {{ trans('monitoring.pumps.title') }}
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring list ovens'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('ovens.index')}}">
+                                            {{ trans('monitoring.ovens.title') }}
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring list agzu'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('agzu.index')}}">
+                                            {{ trans('monitoring.agzu.title') }}
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring list sib'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('sib.index')}}">
+                                            {{ trans('monitoring.sib.title') }}
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring list metering_units'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('metering_units.index')}}">
+                                            {{ trans('monitoring.meteringunits.title') }}
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </li>
+                    @endif
                     @if(
                         auth()->user()->can('monitoring list pipes')
                         || auth()->user()->can('monitoring list inhibitors')

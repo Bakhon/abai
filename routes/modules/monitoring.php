@@ -205,17 +205,17 @@ Route::group(
 
                 Route::get('agzu/list', 'ComplicationMonitoring\AgzuController@list')->name('agzu.list');
                 Route::get('agzu/export', 'ComplicationMonitoring\AgzuController@export')->name('agzu.export');
-                Route::get('agzu/history/{pumps}', 'ComplicationMonitoring\AgzuController@history')->name('agzu.history');
+                Route::get('agzu/history/{agzu}', 'ComplicationMonitoring\AgzuController@history')->name('agzu.history');
                 Route::resource('agzu', 'ComplicationMonitoring\AgzuController');
 
                 Route::get('sib/list', 'ComplicationMonitoring\SibController@list')->name('sib.list');
                 Route::get('sib/export', 'ComplicationMonitoring\SibController@export')->name('sib.export');
-                Route::get('sib/history/{pumps}', 'ComplicationMonitoring\SibController@history')->name('sib.history');
+                Route::get('sib/history/{sib}', 'ComplicationMonitoring\SibController@history')->name('sib.history');
                 Route::resource('sib', 'ComplicationMonitoring\SibController');
 
                 Route::get('metering_units/list', 'ComplicationMonitoring\MeteringUnitsController@list')->name('metering_units.list');
                 Route::get('metering_units/export', 'ComplicationMonitoring\MeteringUnitsController@export')->name('metering_units.export');
-                Route::get('metering_units/history/{pumps}', 'ComplicationMonitoring\MeteringUnitsController@history')->name('metering_units.history');
+                Route::get('metering_units/history/{metering_units}', 'ComplicationMonitoring\MeteringUnitsController@history')->name('metering_units.history');
                 Route::resource('metering_units', 'ComplicationMonitoring\MeteringUnitsController');
             }
         );

@@ -18,11 +18,10 @@ class SibFilter extends BaseFilter
     protected function sort(string $field, bool $isDescending)
     {
         switch($field) {
-            case 'gu':
+            case 'gu_id':
                 $this->query
                 ->select('sib.*')
                 ->leftJoin('gus', 'gus.id', 'sib.gu_id')
-                //dirty hack for alphanumeric sort but other solutions doesn't work
                 ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gus_name'))
                 ->orderBy('gus_name', $isDescending ? 'desc' : 'asc');
                 break;

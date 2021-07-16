@@ -19,9 +19,6 @@ class BufferTankListResource extends CrudListResource
         $result = [
             'id' => $this->id,
             'fields' => [
-                'field' => $this->field->name,
-                'ngdu_id' => $this->ngdu->name,
-                'cdng_id' => $this->cdng->name,
                 'gu_id' => $this->gu->name,
                 'model' => $this->model,
                 'name' => $this->name,

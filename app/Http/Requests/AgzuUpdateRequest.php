@@ -22,6 +22,7 @@ class AgzuUpdateRequest extends FormRequest
             'current_state' => 'nullable|string',
             'date_of_repair' => 'nullable|date',
             'type_of_repair' => 'nullable|date',
+            'passport_pdf' => 'nullable|string',
         ];
     }
 }

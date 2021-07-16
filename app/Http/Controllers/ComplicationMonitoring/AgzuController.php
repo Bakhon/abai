@@ -15,12 +15,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 use App\Http\Resources\AgzuListResource;
+use Illuminate\Support\Facades\Storage;
 
 class AgzuController extends CrudController
 {
     use WithFieldsValidation;
 
-    protected $modelName = 'corrosion';
+    protected $modelName = 'agzu';
 
     public function index()
     {
@@ -35,7 +36,7 @@ class AgzuController extends CrudController
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => Gu::whereHas('ovens')
+                        'values' => Gu::whereHas('agzu')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -77,6 +78,10 @@ class AgzuController extends CrudController
                     'title' => trans('monitoring.buffer_tank.type_of_repair'),
                     'type' => 'string',
                 ],
+                'passport_pdf' => [
+                    'title' => trans('monitoring.buffer_tank.type_of_repair'),
+                    'type' => 'string',
+                ],
                 
             ]
         ];
@@ -86,6 +91,9 @@ class AgzuController extends CrudController
         }
         if(auth()->user()->can('monitoring export '.$this->modelName)) {
             $params['links']['export'] = route('agzu.export');
+        }
+        if(auth()->user()->can('monitoring download '.$this->modelName)) {
+            $params['links']['download'] = route('agzu.download');
         }
 
         return view('complicationMonitoring.agzu.index', compact('params'));
@@ -115,23 +123,12 @@ class AgzuController extends CrudController
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $validationParams = $this->getValidationParams('agzu');
         return view('complicationMonitoring.agzu.create', compact('validationParams'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(AgzuCreateRequest $request)
     {
         $this->validateFields($request, 'agzu');
@@ -140,35 +137,17 @@ class AgzuController extends CrudController
         return redirect()->route('agzu.store')->with('success', __('app.created'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Agzu $agzu)
     {
         return view('complicationMonitoring.agzu.show', ['agzu' => $agzu]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function history(Agzu $agzu)
     {
         $agzu->load('history');
         return view('complicationMonitoring.agzu.history', compact('agzu'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Agzu $agzu)
     {
         $validationParams = $this->getValidationParams('agzu');
@@ -178,13 +157,6 @@ class AgzuController extends CrudController
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(AgzuUpdateRequest $request, Agzu $agzu)
     {
         $this->validateFields($request, 'agzu');
@@ -193,12 +165,6 @@ class AgzuController extends CrudController
         return redirect()->route('agzu.index')->with('success', __('app.updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request, Agzu $agzu)
     {
         $agzu->delete();
@@ -213,5 +179,11 @@ class AgzuController extends CrudController
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new AgzuFilter($query, $filter))->filter();
+    }
+
+    public function getFile($filename)
+    {
+        $file = Storage::disk('public/passports/');
+
     }
 }

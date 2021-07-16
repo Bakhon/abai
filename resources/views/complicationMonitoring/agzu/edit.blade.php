@@ -13,7 +13,7 @@
                 <h1>{{ trans('monitoring.agzu.edit_title') }}</h1>
                 <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i
                         class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('agzu.update', $buffer_tank->id) }}" method="POST">
+                <form action="{{ route('agzu.update', $agzu->id) }}" method="POST">
                     @method('patch')
                     @csrf
                     <div class="row">

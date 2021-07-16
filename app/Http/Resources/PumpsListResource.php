@@ -19,7 +19,6 @@ class PumpsListResource extends CrudListResource
         $result = [
             'id' => $this->id,
             'fields' => [
-                'ngdu_id' => $this->ngdu->name,
                 'gu_id' => $this->gu->name,
                 'number' => $this->number,
                 'model' => $this->model,

@@ -18,11 +18,10 @@ class MeteringUnitsFilter extends BaseFilter
     protected function sort(string $field, bool $isDescending)
     {
         switch($field) {
-            case 'gu':
+            case 'gu_id':
                 $this->query
                 ->select('metering_units.*')
                 ->leftJoin('gus', 'gus.id', 'metering_units.gu_id')
-                //dirty hack for alphanumeric sort but other solutions doesn't work
                 ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gus_name'))
                 ->orderBy('gus_name', $isDescending ? 'desc' : 'asc');
                 break;

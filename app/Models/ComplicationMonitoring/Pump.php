@@ -4,8 +4,6 @@ namespace App\Models\ComplicationMonitoring;
 
 use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Refs\Field;
-use App\Models\Refs\OtherObjects;
 
 class Pump extends Model
 {
@@ -17,7 +15,7 @@ class Pump extends Model
 
     public function gu()
     {
-        return $this->hasOne(Gu::class)->withDefault();
+        return $this->hasOne(Gu::class, 'id', 'gu_id')->withDefault();
     }
 
     

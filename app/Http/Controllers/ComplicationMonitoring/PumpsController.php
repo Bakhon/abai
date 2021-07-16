@@ -20,7 +20,7 @@ class PumpsController extends CrudController
 {
     use WithFieldsValidation;
 
-    protected $modelName = 'corrosion';
+    protected $modelName = 'pumps';
 
     public function index()
     {
@@ -102,10 +102,6 @@ class PumpsController extends CrudController
     public function list(IndexTableRequest $request)
     {
         $query = Pump::query()
-            ->with('field')
-            ->with('other_objects')
-            ->with('ngdu')
-            ->with('cdng')
             ->with('gu');
 
         $pumps = $this
@@ -127,23 +123,12 @@ class PumpsController extends CrudController
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $validationParams = $this->getValidationParams('pumps');
         return view('complicationMonitoring.pumps.create', compact('validationParams'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(PumpsCreateRequest $request)
     {
         $this->validateFields($request, 'pumps');
@@ -152,35 +137,17 @@ class PumpsController extends CrudController
         return redirect()->route('pumps.store')->with('success', __('app.created'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Pump $pumps)
     {
         return view('complicationMonitoring.pumps.show', ['pumps' => $pumps]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function history(Pump $pumps)
     {
         $pumps->load('history');
         return view('complicationMonitoring.pumps.history', compact('pumps'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Pump $pumps)
     {
         $validationParams = $this->getValidationParams('pumps');
@@ -190,13 +157,6 @@ class PumpsController extends CrudController
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(PumpsUpdateRequest $request, Pump $pumps)
     {
         $this->validateFields($request, 'pumps');
@@ -205,12 +165,6 @@ class PumpsController extends CrudController
         return redirect()->route('pumps.index')->with('success', __('app.updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request, Pump $pumps)
     {
         $pumps->delete();

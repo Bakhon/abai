@@ -63,18 +63,12 @@ class MaterialsController extends CrudController
         return response()->json(json_decode(MaterialListResources::collection($material)->toJson()));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('materials');
         return view('materials.create', compact('validationParams'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(MaterialsRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'materials');
@@ -90,27 +84,17 @@ class MaterialsController extends CrudController
         );
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Material $material): \Illuminate\View\View
     {
         return view('materials.show', compact('material'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Material $material): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('materials');
         return view('materials.edit', compact('material', 'validationParams'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     */
     public function update(MaterialsRequest $request, Material $material): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'materials');
@@ -126,10 +110,6 @@ class MaterialsController extends CrudController
         );
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
-     */
     public function destroy(Request $request, Material $material)
     {
         $material->delete();

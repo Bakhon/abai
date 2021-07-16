@@ -20,7 +20,7 @@ class SibController extends CrudController
 {
     use WithFieldsValidation;
 
-    protected $modelName = 'corrosion';
+    protected $modelName = 'sib';
 
     public function index()
     {
@@ -115,23 +115,12 @@ class SibController extends CrudController
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $validationParams = $this->getValidationParams('sib');
         return view('complicationMonitoring.sib.create', compact('validationParams'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(SibCreateRequest $request)
     {
         $this->validateFields($request, 'sib');
@@ -140,35 +129,17 @@ class SibController extends CrudController
         return redirect()->route('sib.store')->with('success', __('app.created'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Sib $sib)
     {
         return view('complicationMonitoring.sib.show', ['sib' => $sib]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function history(Sib $sib)
     {
         $sib->load('history');
         return view('complicationMonitoring.sib.history', compact('sib'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Sib $sib)
     {
         $validationParams = $this->getValidationParams('sib');
@@ -178,13 +149,6 @@ class SibController extends CrudController
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(SibUpdateRequest $request, Sib $sib)
     {
         $this->validateFields($request, 'sib');
@@ -193,12 +157,6 @@ class SibController extends CrudController
         return redirect()->route('sib.index')->with('success', __('app.updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request, Sib $sib)
     {
         $sib->delete();

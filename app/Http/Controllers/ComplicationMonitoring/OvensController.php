@@ -20,7 +20,7 @@ class OvensController extends CrudController
 {
     use WithFieldsValidation;
 
-    protected $modelName = 'corrosion';
+    protected $modelName = 'ovens';
 
     public function index()
     {
@@ -115,23 +115,12 @@ class OvensController extends CrudController
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $validationParams = $this->getValidationParams('ovens');
         return view('complicationMonitoring.ovens.create', compact('validationParams'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(OvensCreateRequest $request)
     {
         $this->validateFields($request, 'ovens');
@@ -140,35 +129,17 @@ class OvensController extends CrudController
         return redirect()->route('ovens.store')->with('success', __('app.created'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Oven $ovens)
     {
         return view('complicationMonitoring.ovens.show', ['ovens' => $ovens]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function history(Oven $ovens)
     {
         $ovens->load('history');
         return view('complicationMonitoring.ovens.history', compact('ovens'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Oven $ovens)
     {
         $validationParams = $this->getValidationParams('ovens');
@@ -178,13 +149,6 @@ class OvensController extends CrudController
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(OvensUpdateRequest $request, Oven $ovens)
     {
         $this->validateFields($request, 'ovens');
@@ -193,12 +157,6 @@ class OvensController extends CrudController
         return redirect()->route('ovens.index')->with('success', __('app.updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request, Oven $ovens)
     {
         $ovens->delete();

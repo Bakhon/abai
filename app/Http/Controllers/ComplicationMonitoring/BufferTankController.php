@@ -107,10 +107,6 @@ class BufferTankController extends CrudController
     public function list(IndexTableRequest $request)
     {
             $query = BufferTank::query()
-            ->with('field')
-            ->with('other_objects')
-            ->with('ngdu')
-            ->with('cdng')
             ->with('gu');
 
         $buffer_tank = $this
@@ -132,23 +128,12 @@ class BufferTankController extends CrudController
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $validationParams = $this->getValidationParams('buffer_tank');
         return view('complicationMonitoring.buffer_tank.create', compact('validationParams'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(BufferTankCreateRequest $request)
     {
         $this->validateFields($request, 'buffer_tank');
@@ -157,35 +142,17 @@ class BufferTankController extends CrudController
         return redirect()->route('buffer_tank.index')->with('success', __('app.created'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(BufferTank $buffer_tank)
     {
         return view('complicationMonitoring.buffer_tank.show', ['buffer_tank' => $buffer_tank]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function history(BufferTank $buffer_tank)
     {
         $buffer_tank->load('history');
         return view('complicationMonitoring.buffer_tank.history', compact('buffer_tank'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(BufferTank $buffer_tank)
     {
         $validationParams = $this->getValidationParams('buffer_tank');
@@ -195,13 +162,6 @@ class BufferTankController extends CrudController
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(BufferTankUpdateRequest $request, BufferTank $buffer_tank)
     {
         $this->validateFields($request, 'buffer_tank');
@@ -210,12 +170,6 @@ class BufferTankController extends CrudController
         return redirect()->route('buffer_tank.index')->with('success', __('app.updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request, BufferTank $buffer_tank)
     {
         $buffer_tank->delete();
