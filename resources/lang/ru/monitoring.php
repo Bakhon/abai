@@ -248,6 +248,7 @@ return array (
     'referent_value' => 'Референтное значение',
   ),
   'module_name' => 'Мониторинг осложнений',
+  'monitoring_module' => 'Модуль "Мониторинг осложнений"',
   'tech_map_prototype' => 'Техкарта прототип',
   'gus' => 
   array (
