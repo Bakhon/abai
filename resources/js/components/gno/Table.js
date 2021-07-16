@@ -1612,7 +1612,7 @@ export default {
 
     onPgnoClick() {
       this.nktExist("pgno")
-      if (this.isSkError || !this.sk || this.sk===0) {
+      if (this.isSkError || !this.sk || this.sk=="0") {
         this.$notify({
           message: this.trans('pgno.notify_error_sk'),
           type: 'error',
