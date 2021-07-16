@@ -17,7 +17,7 @@
       {{ trans('economic_reference.scenario') }}
     </h5>
 
-    <select-sc-fa :form="form" forecast/>
+    <select-sc-fa :form="form" is-forecast/>
 
     <div v-if="form.sc_fa_id">
       <h5 class="text-secondary mt-3">

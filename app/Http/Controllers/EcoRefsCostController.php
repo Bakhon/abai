@@ -18,7 +18,9 @@ class EcoRefsCostController extends Controller
 {
     public function index(): View
     {
-        return view('eco_refs_cost.index');
+        $isForecast = request()->has('is_forecast');
+
+        return view('eco_refs_cost.index', compact('isForecast'));
     }
 
     public function edit(int $id): View

@@ -13,8 +13,8 @@
     <div class="container my-4">
         <div class="row justify-content-center">
             <div class="col-md-4">
-                <div class="list-group">
-                    <a href="{{ route('economic_data_upload') }}"
+                <div class="list-group text-center">
+                    <a href="{{ route('economic_data_upload', ['is_forecast'=> $isForecast]) }}"
                        class="list-group-item list-group-item-action">
                         {{ __('economic_reference.upload_excel') }}
                     </a>
@@ -23,13 +23,24 @@
                        class="list-group-item list-group-item-action">
                         {{ __('economic_reference.delete_wrong_uploaded_data') }}
                     </a>
+
+                    @if ($isForecast)
+                        <a href="{{ route('eco_refs_scenario.index') }}"
+                           class="list-group-item list-group-item-action">
+                            Сценарии
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 
     <div class="col p-4 bg-light" id="app">
-        <economic-data-component></economic-data-component>
+        @if($isForecast)
+            <economic-data-component is-forecast></economic-data-component>
+        @else
+            <economic-data-component></economic-data-component>
+        @endif
     </div>
 @endsection
 

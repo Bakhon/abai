@@ -6,6 +6,7 @@
       <select-sc-fa
           :loading="loading"
           :form="form"
+          :is-forecast="isForecast"
           form-key="sc_fa"
           @loading="loading = true"
           @loaded="loading = false"
@@ -37,6 +38,12 @@ export default {
     VueTableDynamic,
     CatLoader,
     SelectScFa
+  },
+  props: {
+    isForecast: {
+      required: false,
+      type: Boolean
+    }
   },
   data: () => ({
     form: {
