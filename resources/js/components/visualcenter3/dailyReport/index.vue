@@ -12,7 +12,8 @@
                 </transition>
                 <div class="img-download" @click="exportToExcel()"></div>
             </div>
-            <div class="col-12 mt-3">
+            <div class="col-12 mt-3" @click="switchTimers()">
+                <div class="reason-box" id="decreaseReason">{{decreaseReason}}</div>
                 <table class="main-table col-12">
                     <tr>
                         <th rowspan="2">№ п/п</th>
@@ -143,6 +144,8 @@
                         <td
                                 v-if="!isOpecActive"
                                 :class="getColorBy(item.differenceByDay)"
+                                @mouseover="mouseOver($event,item.reason)"
+                                @mouseleave="mouseLeave"
                         >
                             {{getFormattedNumber(item.differenceByDay)}}
                         </td>
@@ -579,6 +582,15 @@
 <script src="./index.js"></script>
 
 <style scoped lang="scss">
+    .reason-box {
+        position: absolute;
+        width: 400px;
+        background: white;
+        color: black;
+        padding: 5px;
+        border-radius: 10px;
+        display: none;
+    }
     .slide-fade-enter-active {
         transition: all .5s ease;
     }
@@ -658,6 +670,7 @@
    .main-table {
        table-layout: fixed;
        border-collapse: collapse;
+       position: static;
        tr {
            &:nth-child(2) {
                th {

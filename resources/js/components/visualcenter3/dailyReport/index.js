@@ -174,7 +174,30 @@ export default {
                         'planOpecByDay': 'plan_kondensat_dlv',
                     }
                 },
-            }
+            },
+            timeouts: {
+                'firstLoading': 0,
+                'type': 0,
+                'opek': 0
+            },
+            timers: {
+                'type': 30000,
+                'opek': 15000
+            },
+            isTypeTimerActive: true,
+            timeStart: new Date().getTime(),
+            typeRemainingTime: 0,
+            decreaseReasonMapping: [
+                'accident_explanation_reasons',
+                'gas_restriction_explanation_reasons',
+                'impulse_explanation_reasons',
+                'opec_explanation_reasons',
+                'other_explanation_reasons',
+                'restriction_kto_explanation_reasons',
+                'shutdown_explanation_reasons'
+            ],
+            isModalActive: false,
+            decreaseReason: ''
         }
     },
     methods: {
@@ -288,8 +311,10 @@ export default {
             this.updateSummaryForExcel();
             this.tableOutput.participationByKMG = this.summary.productionByKMGWithParticipation;
             this.tableOutput.participationByDzo = this.summary.productionByDzoWithParticipation;
+            console.log(this.tableOutput.participationByDzo);
             this.tableOutput.byKMG = this.summary.productionByKMG;
             this.tableOutput.byDzo = this.summary.productionByDzo;
+            console.log(this.tableOutput.byDzo);
         },
         updateProduction() {
             this.summary.productionByDzo = this.getSummaryByDzo(this.typeMapping.production);
@@ -404,6 +429,7 @@ export default {
                 template.yearlyPlan = yearlyPlanMapping[dzoName];
                 template.monthlyPlan = dzoRecord[typeMapping.oil.planByDay] * moment().daysInMonth();
                 template.monthlyPlanOpec = dzoRecord[typeMapping.oil.planOpecByDay] * moment().daysInMonth();
+                template.reason = this.getReason(dzoRecord);
             } else {
                 let dzoRecord = this.getDzoRecord(this.productionByDay,mapping[dzoName]);
                 template.planByDay = dzoRecord[typeMapping.condensate.planByDay];
@@ -412,8 +438,20 @@ export default {
                 template.yearlyPlan = yearlyPlanMapping[dzoName];
                 template.monthlyPlan = dzoRecord[typeMapping.condensate.planByDay] * moment().daysInMonth();
                 template.monthlyPlanOpec = dzoRecord[typeMapping.condensate.planByDay] * moment().daysInMonth();
+                template.reason = this.getReason(dzoRecord);
             }
             return template;
+        },
+        getReason(dzo) {
+            let reasons = [];
+            if (dzo.import_decrease_reason) {
+                _.forEach(this.decreaseReasonMapping, (key) => {
+                    if (dzo.import_decrease_reason[key] !== null) {
+                        reasons.push(dzo.import_decrease_reason[key]);
+                    }
+                });
+            }
+            return reasons;
         },
         getByPeriod(dzoName,template,input,periodName,typeMapping) {
             let mapping = {
@@ -657,6 +695,40 @@ export default {
                 return 'tdStyleLight2'
             }
         },
+        switchTimers() {
+            if (this.isTypeTimerActive) {
+                this.isTypeTimerActive = false;
+                this.remainingTime = new Date().getTime() - this.timeStart;
+                clearTimeout(this.timeouts.firstLoading);
+                clearTimeout(this.timeouts.type);
+                clearTimeout(this.timeouts.opek);
+            } else {
+                this.isTypeTimerActive = true;
+                this.timeouts.type = setTimeout(function changeType() {
+                    this.isProduction = !this.isProduction;
+                    this.timeStart = new Date().getTime();
+                    this.timeouts.type = setTimeout(changeType,this.timers.type);
+                    this.timeouts.opek = setTimeout(() => {
+                        this.isOpecActive = !this.isOpecActive;
+                    }, this.timers.opek);
+                }.bind(this), this.remainingTime);
+            }
+        },
+        mouseOver(event, reason) {
+            if (Array.isArray(reason) && reason.length) {
+                this.isModalActive = true;
+                this.decreaseReason = reason.join(",\n");
+                $('#decreaseReason').css('display', 'block');
+            } else {
+                this.decreaseReason = '';
+                $('#decreaseReason').css('display', 'none');
+            }
+            $('#decreaseReason').css('top', event.screenY - 225);
+            $('#decreaseReason').css('left', event.screenX - 20);
+        },
+        mouseLeave() {
+           this.isModalActive = false;
+        }
     },
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
@@ -666,15 +738,18 @@ export default {
         this.updateProductionByPeriod();
         this.fillTable();
         this.$store.commit('globalloading/SET_LOADING', false);
-        setTimeout(() => {
+        this.timeouts.firstLoading = setTimeout(() => {
             this.isOpecActive = !this.isOpecActive;
-        }, 15000);
-        setInterval(() => {
-           this.isProduction = !this.isProduction;
-            setTimeout(() => {
+        }, this.timers.opek);
+        this.timeStart = new Date().getTime();
+        this.timeouts.type = setTimeout(function changeType() {
+            this.isProduction = !this.isProduction;
+            this.timeStart = new Date().getTime();
+            this.timeouts.type = setTimeout(changeType,this.timers.type);
+            this.timeouts.opek = setTimeout(() => {
                 this.isOpecActive = !this.isOpecActive;
-            }, 15000);
-        }, 30000);
+            }, this.timers.opek);
+        }.bind(this), this.timers.type);
     },
     watch: {
         isProduction: function() {
