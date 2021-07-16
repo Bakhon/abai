@@ -1157,6 +1157,7 @@ export default {
           this.curveLineData = JSON.parse(data.LineData)["data"]
           this.curvePointsData = JSON.parse(data.PointsData)["data"]
           this.ngdu = 0
+          this.sk = null
 
           //Выбор скважины
           this.horizon = 0;
@@ -1253,6 +1254,7 @@ export default {
           })
 
           this.ngdu = 0
+          this.sk = null
 
           //Выбор скважины
           this.expMeth = 0;
