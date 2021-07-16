@@ -1,6 +1,6 @@
 <template>
-  <div :style="`font-size: ${fontSize}px; line-height:${lineHeight}px`"
-       class="flex-grow-1 font-weight-bold">
+  <div :style="`flex-grow: ${flexGrow}; font-size: ${fontSize}px; line-height:${lineHeight}px`"
+       class="font-weight-bold">
     <slot></slot>
   </div>
 </template>
@@ -18,6 +18,11 @@ export default {
       required: false,
       type: Number,
       default: 82
+    },
+    flexGrow: {
+      required: false,
+      type: Number,
+      default: 1
     }
   }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
 use App\Models\EcoRefsCost;
+use App\Models\Refs\Org;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -15,21 +16,22 @@ class EconomicOptimizationController extends Controller
 {
     protected $druidClient;
 
-    const DATA_SOURCE = 'economic_scenario_test_v2';
+    const DATA_SOURCE = 'economic_scenario_test_v4';
 
     const DATA_SOURCE_DATE = '2021/07/13';
 
     const OPTIMIZED_COLUMNS = [
-        "Revenue_total",
-        "Overall_expenditures",
-        "operating_profit_12m",
-        "oil",
-        "liquid",
-        "prs",
-        "well_count",
-        "well_count_profitable",
-        "well_count_profitless_cat_1",
-        "well_count_profitless_cat_2",
+        'Revenue_total',
+        'Overall_expenditures',
+        'operating_profit_12m',
+        'oil',
+        'liquid',
+        'prs',
+        'well_count',
+        'well_count_profitable',
+        'well_count_profitless_cat_1',
+        'well_count_profitless_cat_2',
+        'avg_days_worked'
     ];
 
     const OPTIMIZED_COLUMN_SUFFIX = '_optimize';
@@ -41,6 +43,18 @@ class EconomicOptimizationController extends Controller
     const OIL_PRICE_URL = 'https://ru.investing.com/commodities/brent-oil-historical-data';
 
     const OIL_KEY = '_last_8833';
+
+    const ORG_OZEN = 3;
+    const ORG_KARAZANBAS = 4;
+    const ORG_KAZ_GER = 5;
+    const ORG_EMBA = 6;
+    const ORG_MANGISTAU = 7;
+
+    const COMPANY_OZEN = 5;
+    const  COMPANY_EMBA = 6;
+    const COMPANY_MANGISTAU = 7;
+    const COMPANY_KARAZANBAS = 8;
+    const COMPANY_KAZ_GER = 9;
 
     public function __construct(DruidClient $druidClient)
     {
@@ -61,11 +75,17 @@ class EconomicOptimizationController extends Controller
         $org = EconomicNrsController::getOrg($request->org_id);
 
         return [
-            'scenarios' => $this->getScenarios(),
-            'dollarRate' => $this->getDollarRate() ?? '0',
-            'oilPrice' => $this->getOilPrice() ?? '0',
             'org' => $org,
-            'specificIndicator' => $this->getSpecificIndicatorData()
+            'scenarios' => $this->getScenarios(),
+            'specificIndicator' => $this->getSpecificIndicatorData($org),
+            'dollarRate' => [
+                'value' => $this->getDollarRate() ?? '0',
+                'url' => self::DOLLAR_RATE_URL
+            ],
+            'oilPrice' => [
+                'value' => $this->getOilPrice() ?? '0',
+                'url' => self::OIL_PRICE_URL
+            ],
         ];
     }
 
@@ -123,22 +143,27 @@ class EconomicOptimizationController extends Controller
         return $scenarios;
     }
 
-    private function getSpecificIndicatorData(int $scenarioId = 6): array
+    private function getSpecificIndicatorData(Org $org, int $scenarioId = 6): array
     {
-        return EcoRefsCost::query()
+        $query = EcoRefsCost::query()
             ->select(
-                DB::raw('SUM(variable) as sum_variable'),
-                DB::raw('SUM(fix_payroll) as sum_fix_payroll'),
-                DB::raw('SUM(wo) as sum_wo'),
-                DB::raw('SUM(fix) as sum_fix'),
-                DB::raw('SUM(gaoverheads) as sum_gaoverheads'),
-                DB::raw('SUM(wr_nopayroll) as sum_wr_nopayroll'),
-                DB::raw('SUM(wr_payroll) as sum_wr_payroll'),
+                DB::raw('AVG(variable) as avg_variable'),
+                DB::raw('AVG(fix_payroll) as avg_fix_payroll'),
+                DB::raw('AVG(wo) as avg_wo'),
+                DB::raw('AVG(fix) as avg_fix'),
+                DB::raw('AVG(gaoverheads) as avg_gaoverheads'),
+                DB::raw('AVG(wr_nopayroll) as avg_wr_nopayroll'),
+                DB::raw('AVG(wr_payroll) as avg_wr_payroll'),
             )
-            ->whereScFa($scenarioId)
-            ->get()
-            ->first()
-            ->toArray();
+            ->whereScFa($scenarioId);
+
+        if ($org->druid_id) {
+            $companyId = self::orgCompanyMap()[$org->id];
+
+            $query->whereCompanyId($companyId);
+        }
+
+        return $query->get()->first()->toArray();
     }
 
     private function getDollarRate(): ?string
@@ -187,6 +212,17 @@ class EconomicOptimizationController extends Controller
         } catch (\Throwable $e) {
             return null;
         }
+    }
+
+    static function orgCompanyMap(): array
+    {
+        return [
+            self::ORG_OZEN => self::COMPANY_OZEN,
+            self::ORG_KARAZANBAS => self::COMPANY_KARAZANBAS,
+            self::ORG_KAZ_GER => self::COMPANY_KAZ_GER,
+            self::ORG_EMBA => self::COMPANY_EMBA,
+            self::ORG_MANGISTAU => self::COMPANY_MANGISTAU,
+        ];
     }
 
     static function moneyFormat(?float $digit): array

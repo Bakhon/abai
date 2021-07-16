@@ -29,12 +29,12 @@
         </div>
 
         <div class="flex-25 p-3 border-grey bg-blue">
-          {{ scenario.dollar_rate }}
+          {{ (+scenario.dollar_rate).toLocaleString() }}
         </div>
       </div>
 
       <div class="d-flex bg-dark-blue">
-        <div class="flex-50 p-3 d-flex align-items-center justify-content-center">
+        <div class="flex-50 p-3 border-grey d-flex align-items-center justify-content-center">
           Средняя цена на нефть при BRENT
         </div>
 
@@ -42,71 +42,34 @@
           $ / bbl
         </div>
 
-        <div class="flex-25 bg-blue d-flex flex-column">
+        <div class="flex-25 border-grey d-flex flex-column">
           <div v-for="(item, index) in oilPrices"
                :key="index"
                :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
                class="px-2 py-3 ">
-            {{ item }}
+            {{ (+item).toLocaleString() }}
           </div>
         </div>
       </div>
 
-      <div class="d-flex bg-dark-blue">
-        <div class="flex-50 p-3 border-grey border-bottom-0"
-             style="white-space: normal">
-          Условно-переменные расходы (сырье, материалы, энергия, за искл. расходов на ПРС)
+      <div v-for="(item, index) in sumData"
+           :key="index"
+           :class="index % 2 === 0 ? 'bg-dark-blue' : 'bg-light-blue'"
+           class="d-flex"
+           style="white-space: normal">
+        <div class="flex-50 p-3">
+          {{ item.label }}
         </div>
 
         <div
             class="flex-25 p-3 border-grey border-bottom-0 border-top-0 d-flex align-items-center justify-content-center">
-          тенге/тонну жидкости
-        </div>
-
-        <div
-            class="flex-25 border-grey p-3 border-bottom-0 border-top-0 d-flex align-items-center justify-content-center">
-          {{ data.sum_variable }}
-        </div>
-      </div>
-
-      <div class="d-flex bg-dark-blue">
-        <div class="flex-50">
-          <div v-for="(item, index) in sumData"
-               :key="index"
-               :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
-               class="p-3">
-            {{ item.label }}
-          </div>
-        </div>
-
-        <div class="flex-25 p-3 border-grey border-bottom-0 d-flex align-items-center justify-content-center">
-          тыс. тенге/скв
-        </div>
-
-        <div class="flex-25">
-          <div v-for="(item, index) in sumData"
-               :key="index"
-               :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
-               class="p-3">
-            {{ Math.floor(item.value / 1000) }}
-          </div>
-        </div>
-      </div>
-
-      <div class="d-flex bg-light-blue">
-        <div class="flex-50 p-3">
-          Средняя стоимость ПРС (с ФОТ)
-        </div>
-
-        <div class="flex-25 p-3 border-grey border-bottom-0 border-top-0">
-          тыс.тенге на операцию
+          {{ item.valueWord }}
         </div>
 
         <div class="flex-25 p-3">
-          {{ Math.floor((data.sum_wr_nopayroll + data.sum_wr_payroll) / 1000) }}
+          {{ (+item.value.toFixed(2)).toLocaleString() }}
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -141,20 +104,34 @@ export default {
     sumData() {
       return [
         {
+          label: 'Условно-переменные расходы (сырье, материалы, энергия, за искл. расходов на ПРС)',
+          value: this.data.avg_variable,
+          valueWord: 'тенге / тонну жидкости'
+        },
+        {
           label: 'Затраты на персонал',
-          value: this.data.sum_fix_payroll,
+          value: this.data.avg_fix_payroll * 12 / 1000000,
+          valueWord: 'млн тенге / год'
         },
         {
           label: 'КРС',
-          value: this.data.sum_wo,
+          value: this.data.avg_wo,
+          valueWord: 'млн тенге / год'
         },
         {
           label: 'Условно-постоянные расходы',
-          value: this.data.sum_fix,
+          value: this.data.avg_fix * 12 / 1000000,
+          valueWord: 'млн тенге / год'
         },
         {
           label: 'ОАР',
-          value: this.data.sum_gaoverheads,
+          value: this.data.avg_gaoverheads * 12 / 1000000,
+          valueWord: 'млн тенге / год'
+        },
+        {
+          label: 'Средняя стоимость ПРС (с ФОТ)',
+          value: this.data.avg_wr_nopayroll + this.data.avg_wr_payroll,
+          valueWord: 'млн тенге на операцию'
         }
       ]
     }

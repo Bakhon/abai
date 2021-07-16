@@ -24,9 +24,9 @@
 
             <subtitle font-size="18"> {{ header.name }}</subtitle>
 
-            <percent-progress v-if="scenarioId" :percent="header.percent"/>
+            <percent-progress v-if="form.scenario_id" :percent="header.percent"/>
 
-            <div v-if="scenarioId"
+            <div v-if="form.scenario_id"
                  class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
                 {{ 100 + header.percent }} %
@@ -35,7 +35,7 @@
               <div>{{ header.baseValue }}</div>
             </div>
 
-            <div v-if="scenarioId"
+            <div v-if="form.scenario_id"
                  class="d-flex align-items-center">
               <percent-badge
                   :percent="header.percent"
@@ -51,15 +51,18 @@
           <div
               v-for="(header, index) in remoteHeaders"
               :key="index"
-              class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column">
-            <div class="text-nowrap font-weight-bold"
-                 style="font-size: 52px; line-height: 64px;">
-              <span>{{ header.value }}</span>
+              class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column position-relative">
+            <economic-title
+                font-size="58"
+                line-height="72"
+                flex-grow="0"
+                class="text-nowrap">
+              <span> {{ header.value }} </span>
 
               <span class="font-size-16px line-height-20px text-blue">
                 {{ header.valueWord }}
               </span>
-            </div>
+            </economic-title>
 
             <subtitle font-size="18">
               {{ header.name }}
@@ -69,7 +72,7 @@
               {{ trans('economic_reference.current') }}
             </span>
 
-            <div v-if="scenarioId" class="d-flex align-items-center">
+            <div v-if="form.scenario_id" class="d-flex align-items-center">
               <div class="font-size-24px line-height-28px font-weight-bold text-nowrap">
                 <percent-badge-icon :percent="header.percent" reverse/>
 
@@ -81,6 +84,13 @@
               <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
                 {{ trans('economic_reference.vs_choice') }}
               </div>
+            </div>
+
+            <div style="position: absolute; top: 5px; right: 5px;">
+              <a :href="header.url" target="_blank">
+                <i class="fas fa-external-link-alt text-blue">
+                </i>
+              </a>
             </div>
           </div>
         </div>
@@ -102,7 +112,7 @@
             <divider style="left: 150px; height: 100%; top: 0;"/>
 
             <divider
-                v-if="scenarioId"
+                v-if="form.scenario_id"
                 style="left: 230px; height: 100%; top: 0;"/>
 
             <div v-for="(wellCount, index) in wellsCount"
@@ -117,7 +127,7 @@
                 {{ wellCount.value }}
               </div>
 
-              <div v-if="scenarioId">
+              <div v-if="form.scenario_id">
                 {{ wellCount.value_optimized }}
               </div>
             </div>
@@ -127,7 +137,7 @@
         <div
             v-for="(block, index) in blocks"
             :key="index"
-            :style="scenarioId ? 'min-height: 175px' : 'min-height: 100px'"
+            :style="form.scenario_id ? 'min-height: 175px' : 'min-height: 100px'"
             class="d-flex bg-main1 text-white text-wrap p-3 mb-3">
           <div
               v-for="(subBlock, subBlockIndex) in block"
@@ -154,12 +164,12 @@
               </div>
             </div>
 
-            <div v-if="scenarioId"
+            <div v-if="form.scenario_id"
                  class="text-grey font-size-14px line-height-14px font-weight-bold mb-3">
               {{ trans('economic_reference.optimized') }}
             </div>
 
-            <div v-if="scenarioId"
+            <div v-if="form.scenario_id"
                  class="d-flex align-items-center font-size-12px line-height-14px text-nowrap">
               <percent-badge-icon
                   :percent="subBlock.reversePercent ? -subBlock.percent : subBlock.percent"
@@ -200,7 +210,7 @@
               @change="getData"/>
 
           <select
-              v-model="scenarioId"
+              v-model="form.scenario_id"
               id="scenarios"
               class="mb-3 form-control text-white border-0 bg-dark-blue">
             <option
@@ -211,7 +221,7 @@
             </option>
           </select>
 
-          <div v-if="scenarioId">
+          <div v-if="form.scenario_id">
             <div>
               <label for="oil_price">
                 {{ trans('economic_reference.oil_price') }}
@@ -333,6 +343,7 @@ const optimizedColumns = [
   "well_count_profitable",
   "well_count_profitless_cat_1",
   "well_count_profitless_cat_2",
+  "avg_days_worked"
 ];
 
 let economicRes = {
@@ -345,8 +356,14 @@ let economicRes = {
     dollar_rate: 0,
     oil_price: 0,
   }],
-  dollarRate: 0,
-  oilPrice: 0,
+  dollarRate: {
+    value: 0,
+    url: ''
+  },
+  oilPrice: {
+    value: 0,
+    url: ''
+  },
   org: {
     id: '',
     name: ''
@@ -380,10 +397,10 @@ export default {
   data: () => ({
     form: {
       org_id: null,
+      scenario_id: null
     },
     res: economicRes,
     loading: true,
-    scenarioId: null,
     scenarioIndex: 0
   }),
   computed: {
@@ -417,13 +434,15 @@ export default {
       return [
         {
           name: this.trans('economic_reference.oil_price'),
-          value: this.res.oilPrice,
+          url: this.res.oilPrice.url,
+          value: this.res.oilPrice.value,
           valueWord: '$ / bbl',
           percent: this.oilPricePercent,
         },
         {
           name: this.trans('economic_reference.course_prices'),
-          value: this.res.dollarRate,
+          url: this.res.dollarRate.url,
+          value: this.res.dollarRate.value,
           valueWord: 'kzt / $',
           percent: this.dollarRatePercent,
         }
@@ -573,7 +592,7 @@ export default {
         },
         {
           label: 'Сценарий 1',
-          value: 'test_v1',
+          value: 6,
         }
       ]
     },
@@ -634,15 +653,15 @@ export default {
     },
 
     scenarioValueKey() {
-      return this.scenarioId ? 'value_optimized' : 'value'
+      return this.form.scenario_id ? 'value_optimized' : 'value'
     },
 
     dollarRatePercent() {
-      return (+this.res.dollarRate - (+this.scenario.dollar_rate)).toFixed(2)
+      return (+this.res.dollarRate.value - (+this.scenario.dollar_rate)).toFixed(2)
     },
 
     oilPricePercent() {
-      return (+this.res.oilPrice - (+this.scenario.oil_price)).toFixed(2)
+      return (+this.res.oilPrice.value - (+this.scenario.oil_price)).toFixed(2)
     },
 
     oilPercent() {
@@ -693,6 +712,10 @@ export default {
     },
 
     liquidValue(optimized = true) {
+      if (!this.form.scenario_id) {
+        optimized = false
+      }
+
       let liquid = optimized
           ? this.scenario.liquid.original_value_optimized
           : this.scenario.liquid.original_value
@@ -708,34 +731,54 @@ export default {
     },
 
     avgOilValue(optimized = true) {
+      if (!this.form.scenario_id) {
+        optimized = false
+      }
+
       let well_count = optimized
           ? this.scenario.well_count.original_value_optimized
           : this.scenario.well_count.original_value
+
+      let days_worked = optimized
+          ? this.scenario.avg_days_worked.original_value_optimized
+          : this.scenario.avg_days_worked.original_value
 
       let oil = optimized
           ? this.scenario.oil.original_value_optimized
           : this.scenario.oil.original_value
 
-      return well_count
-          ? (oil / (365 * well_count)).toFixed(2)
+      return days_worked
+          ? (oil / days_worked).toFixed(2)
           : 0
     },
 
     avgLiquidValue(optimized = true, fractionDigits = 2) {
+      if (!this.form.scenario_id) {
+        optimized = false
+      }
+
       let well_count = optimized
           ? this.scenario.well_count.original_value_optimized
           : this.scenario.well_count.original_value
+
+      let days_worked = optimized
+          ? this.scenario.avg_days_worked.original_value_optimized
+          : this.scenario.avg_days_worked.original_value
 
       let liquid = optimized
           ? this.scenario.liquid.original_value_optimized
           : this.scenario.liquid.original_value
 
-      return well_count
-          ? (liquid / (365 * well_count)).toFixed(fractionDigits)
+      return days_worked
+          ? (liquid / days_worked).toFixed(fractionDigits)
           : 0
     },
 
     avgPrsValue(optimized = true, fractionDigits = 2) {
+      if (!this.form.scenario_id) {
+        optimized = false
+      }
+
       let well_count = optimized
           ? this.scenario.well_count.original_value_optimized
           : this.scenario.well_count.original_value
@@ -772,10 +815,6 @@ export default {
   font-size: 24px;
 }
 
-.line-height-28px {
-  line-height: 28px;
-}
-
 .font-size-32px {
   font-size: 32px;
 }
@@ -802,6 +841,10 @@ export default {
 
 .line-height-26px {
   line-height: 26px;
+}
+
+.line-height-28px {
+  line-height: 28px;
 }
 
 .bg-blue-dark {
