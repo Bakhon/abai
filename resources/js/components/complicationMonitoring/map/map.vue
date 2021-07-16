@@ -620,7 +620,6 @@ export default {
     onShowDetailInfo(option) {
       this.selectedPipe = option.mapObject.object;
       this.$bvModal.show('pipe-calc-long-modal');
-      console.log(option, option);
     },
     optionClicked(option) {
       this.editMode = option.editMode;
