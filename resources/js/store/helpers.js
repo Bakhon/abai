@@ -89,3 +89,15 @@ export const pgnoMapActions = arrNames => ({
         ...arrNames,
     ]),
 });
+
+export const globalloadingState = arrNames => ({
+    ...mapState('globalloading', [
+        ...arrNames,
+    ]),
+});
+
+export const globalloadingMutations = arrNames => ({
+    ...mapMutations('globalloading', [
+        ...arrNames,
+    ]),
+});
