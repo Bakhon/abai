@@ -285,7 +285,7 @@
                   <div class="col">
                     <div class="row" style="width: 100%; padding-right: 0px;">
                       <div class="content-top-element" style="width: 100%; padding-right: 0px; margin-right:0px;">
-                        Отчет: <span class="width-400">Оргструктура - АО “ЭмбаМунайГаз” > НГДУ “Жылыоймунайгаз” > Цех добычи 1 > ГУ-16</span>
+                        Отчет:
                         <div class="share">
                           <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
                                xmlns="http://www.w3.org/2000/svg">
@@ -298,7 +298,7 @@
                     </div>
                     <div class="row">
                       <div class="content-top-element">
-                        Геоструктура <span class="width-400">- АО “ЭмбаМунайГаз” > Макат Восточный</span>
+                        Геоструктура:
                       </div>
                     </div>
                   </div>

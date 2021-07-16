@@ -400,7 +400,7 @@ export default {
             return maxChildrenNumber
         },
         getRowHeightSpan(attribute, currentDepth){
-            if (currentDepth !== this.maxDepthOfSelectedAttributes) {
+            if (attribute.maxChildrenNumber > 0) {
                 return 1
             }
             return this.maxDepthOfSelectedAttributes - currentDepth
