@@ -98,6 +98,7 @@
     </b-modal>
 
     <b-modal
+        v-if="selectedPipe"
         size="xl"
         header-bg-variant="main4"
         body-bg-variant="main1"
@@ -106,11 +107,12 @@
         centered
         id="pipe-calc-long-modal"
         modal-class="pipe-calc-long-modal"
-        title="SomeTitle"
+        :title="trans('monitoring.pipe.detail-data') + ' ' + selectedPipe.name"
+        :cancel-disabled="true"
     >
       <pipe-long-info
           :pipe="selectedPipe"
-          :referentValue="referentValue"
+          :referentValue="parseInt(referentValue)"
           :activeFilter="activeFilter"
 
       />
@@ -194,7 +196,7 @@ export default {
       layers: [],
       pipes: [],
       mapColorsMode: 'default',
-      selectedDate: null,
+      selectedDate: moment().format('YYYY-MM-DD'),
       activeFilter: null,
       mapFilters: [
         {
@@ -236,7 +238,7 @@ export default {
     },
     okBtntext() {
       return this.formType == 'create' ? this.trans('app.create') : this.trans('app.update')
-    }
+    },
   },
   methods: {
     ...guMapActions([
@@ -1126,7 +1128,6 @@ export default {
         isNeedUpdateData = false;
       }
 
-      this.selectedDate = moment().format('YYYY-MM-DD');
       this.mapColorsMode = this.activeFilter;
 
       switch (this.activeFilter) {

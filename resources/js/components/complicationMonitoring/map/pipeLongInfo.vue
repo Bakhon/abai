@@ -1,15 +1,14 @@
 <template>
   <div class="table-page">
-<!--    <b-table :items="pipeSegments" thead-class="hidden_header"/>-->
     <table class="table table-bordered table-dark">
       <tbody v-if="pipeSegments">
-        <tr v-for="segment in pipeSegments">
-          <template v-for="(column, index) in segment">
-            <th v-if="index == 0" scope="row" >{{column}}</th>
-            <td v-else>{{column}}</td>
-          </template>
-
-        </tr>
+      <tr v-for="(segment, sIndex) in pipeSegments">
+        <template v-for="(column, index) in segment">
+          <th v-if="index == 0" scope="row">{{ column }}</th>
+          <td v-else-if="sIndex == 0" :style="{backgroundColor: arrayToColor(column)}"></td>
+          <td v-else>{{ column }}</td>
+        </template>
+      </tr>
       </tbody>
     </table>
   </div>
@@ -68,7 +67,7 @@ export default {
     }
   },
   computed: {
-    pipeSegments () {
+    pipeSegments() {
       let segments = [];
 
       this.fields.forEach((field, fIndex) => {
@@ -157,6 +156,9 @@ export default {
           return pipeColors[this.activeFilter].good;
       }
     },
+    arrayToColor(arrColor) {
+      return `rgb(${arrColor[0]}, ${arrColor[1]}, ${arrColor[2]})`;
+    }
   }
 }
 </script>
