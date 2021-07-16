@@ -270,6 +270,7 @@ class HydroCalculation extends Controller
     {
         return HydroCalcResult::with('oilPipe.pipeType')
             ->where('date', $date)
+            ->orderBy('id')
             ->paginate(25);
     }
 

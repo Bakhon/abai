@@ -436,7 +436,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <tabs @onPushParams="onSubmitParams()" @closeTabModal="closeTabModal"></tabs>
+                    <tabs @onPushParams="onSubmitParams()" @closeTabModal="closeTabModal" :qLInput="qLforKpod" :strokeLenDev="strokeLenDev" :spm="spm" :pumpType="pumpTypeforKpod"></tabs>
                   </div>
                 </div>
               </modal>
@@ -1228,120 +1228,124 @@
                   <div class="table-pgno-button gno-shgn-table-section col-9" >
                     
                     <div class="shgn-tables-wrapper">
-                      <div class="table-pgno-one">
-                        <table class="table-pgno shgn-table">
-                          <thead>
-                            <tr class="tr-pgno" height="10" style="height: 30pt;">
-                              <td class="td-pgno" rowspan="1" no-gutter colspan="2">
-                                {{trans('pgno.raschetnii_rezhim')}}
-                              </td>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('pgno.q_liq')}}</td>
-                              <td class="td-pgno" rowspan="1">
-                                {{ qlCelValue }}
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('pgno.q_nefti')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ qoilShgnTable }} {{trans('measurements.t/d')}}</td>
-                            </tr>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('pgno.obvodnenost')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ wctInput }}</td>
-                            </tr>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('pgno.p_zab')}}</td>
-                              <td class="td-pgno" rowspan="1">
-                                {{ bhpCelValue }}
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('pgno.p_pr')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ piCelValue }}</td>
-                            </tr>
-                          </tbody>
+                      <div class="shgn-table-pgno-one shgn-table-item">
+                        <table class="shgn-table">
+                          <tr style="color: white;">
+                            <th class="shgn-table-th" rowspan="1" colspan="2">{{trans('pgno.raschetnii_rezhim')}}</th>
+                          </tr>
+                          <tr>
+                            <td class="shgn-table-td">{{trans('pgno.q_liq')}}</td>
+                            <td class="shgn-table-td">{{ qlCelValue }}</td>
+                          </tr>
+                          <tr class="highlight-tr">
+                            <td class="shgn-table-td">{{trans('pgno.q_nefti')}}</td>
+                            <td class="shgn-table-td">{{ qoilShgnTable }} {{trans('measurements.t/d')}}</td>
+                          </tr>
+                          <tr>
+                            <td class="shgn-table-td">{{trans('pgno.obvodnenost')}}</td>
+                            <td class="shgn-table-td">{{ wctInput }}</td>
+                          </tr>
+                          <tr class="highlight-tr">
+                            <td class="shgn-table-td">{{trans('pgno.p_zab')}}</td>
+                            <td class="shgn-table-td">{{ bhpCelValue }}</td>
+                          </tr>
+                          <tr>
+                            <td class="shgn-table-td">{{trans('pgno.p_pr')}}</td>
+                            <td class="shgn-table-td">{{ piCelValue }}</td>
+                          </tr>
+                          <tr class="highlight-tr">
+                            <td class="shgn-table-td">{{trans('measurements.percent')}} {{trans('pgno.gas_in_pump')}}</td>
+                            <td class="shgn-table-td">{{ fgCelValue }}</td>
+                          </tr>
+                        </table>
+
+
+                      </div>
+
+                      <div class="shgn-table-pgno-two shgn-table-item">
+                        <table class="shgn-table">
+                          <tr style="color: white;">
+                            <th class="shgn-table-th" rowspan="1" colspan="2">{{trans('pgno.komponovka')}}</th>
+                          </tr>
+                          <tr>
+                            <td class="shgn-table-td">Ø {{trans('pgno.nasosa')}}</td>
+                            <td class="shgn-table-td">{{ shgnPumpType }} {{trans('measurements.mm')}}</td>
+                          </tr>
+                          <tr class="highlight-tr">
+                            <td class="shgn-table-td">{{trans('pgno.chislo_kachanii')}}</td>
+                            <td class="shgn-table-td">{{ shgnSPM }} {{trans('measurements.min-1')}}</td>
+                          </tr>
+                          <tr>
+                            <td class="shgn-table-td">{{trans('pgno.dlina_hoda')}}</td>
+                            <td class="shgn-table-td">{{ shgnLen }} {{trans('measurements.m')}}</td>
+                          </tr>
+                          <tr class="highlight-tr">
+                            <td class="shgn-table-td">Ø {{trans('pgno.nkt')}}</td>
+                            <td class="shgn-table-td">{{ shgnTubOD }} {{trans('measurements.mm')}}</td>
+                          </tr>
+                          <tr>
+                            <td class="shgn-table-td">{{trans('pgno.h_spuska')}}</td>
+                            <td class="shgn-table-td">{{ hPumpValue }}</td>
+                          </tr>
+                          <tr class="highlight-tr">
+                            <td class="shgn-table-td">{{trans('pgno.k_pod')}}</td>
+                            <td class="shgn-table-td">{{ kPod }}</td>
+                          </tr>
+
+
                         </table>
                       </div>
 
-                      <div class="table-pgno-two">
-                        <table class="table-pgno shgn-table">
-                          <thead>
-                            <tr class="tr-pgno" height="5px" style="height: 30pt;">
-                              <td class="td-pgno" rowspan="1" no-gutter colspan="2">
-                                {{trans('pgno.komponovka')}}
-                              </td>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">Ø {{trans('pgno.nasosa')}}</td>
-                              <td class="td-pgno" rowspan="1">
-                                {{ shgnPumpType }} {{trans('measurements.mm')}}
-                              </td>
-                            </tr>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('pgno.chislo_kachanii')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnSPM }} {{trans('measurements.min-1')}}</td>
-                            </tr>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('pgno.dlina_hoda')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnLen }} {{trans('measurements.m')}}</td>
-                            </tr>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('pgno.typ_sk')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ sk }}</td>
-                            </tr>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">Ø {{trans('pgno.nkt')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnTubOD }} {{trans('measurements.mm')}}</td>
-                            </tr>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('pgno.h_spuska')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ hPumpValue }}</td>
-                            </tr>
-                          </tbody>
+
+                      
+
+                        <div class="shgn-table-pgno-four shgn-table-item">
+
+                        <table class="shgn-table-small">
+                          <tr style="color: white;">
+                            <td class="shgn-table-td bg-td" >{{trans('pgno.sk')}}</td>
+                            <td class="shgn-table-td bg-td" >{{trans('pgno.p_max')}}, {{trans('measurements.kN')}}</td>
+                            <td class="shgn-table-td bg-td" >{{trans('pgno.mkr')}}, {{trans('measurements.kN')}}</td>
+                            <td class="shgn-table-td bg-td" >{{trans('pgno.power_consumption_short')}}, {{trans('measurements.kv')}}</td>
+                            <td class="shgn-table-td bg-td" >{{trans('pgno.daily_consumption')}}, {{trans('measurements.kvh')}}</td>
+                            <td class="shgn-table-td bg-td" >{{trans('pgno.ure')}}, {{trans('measurements.kvh/m3')}}</td>
+                          </tr>
+                          <tr>
+                            <td class="shgn-table-td">{{sk}}</td>
+                            <td class="shgn-table-td">{{skPmax}}</td>
+                            <td class="shgn-table-td">{{skMn2}}</td>
+                            <td class="shgn-table-td">{{pElectricity}}</td>
+                            <td class="shgn-table-td">{{wDay}}</td>
+                            <td class="shgn-table-td">{{ure}}</td>
+                          </tr>
                         </table>
                       </div>
 
-                      <div class="table-pgno-four">
-                        <table class="table-pgno shgn-table">
-                          <thead>
-                            <tr class="tr-pgno" height="5px" style="height: 30pt;">
-                              <td class="td-pgno" rowspan="1">
-                                {{trans('pgno.shtangi')}}
-                              </td>
-                              <td class="td-pgno" rowspan="1">
-                                Ø, {{trans('measurements.mm')}}
-                              </td>
-
-                              <td class="td-pgno" rowspan="1">
-                                {{trans('pgno.dlina')}}, {{trans('measurements.m')}}
-                              </td>
+                        <div class="shgn-table-pgno-three shgn-table-item">
+                          <table class="shgn-table-large">
+                            <tr style="color: white;">
+                              <th class="shgn-table-th fixed-table-cells">{{trans('pgno.kolonna_shtang')}}</th>
+                              <th class="shgn-table-th large-th">{{trans('pgno.mark_steel')}}</th>
+                              <th class="shgn-table-th fixed-table-cells">Ø, {{trans('measurements.mm')}}</th>
+                              <th class="shgn-table-th fixed-table-cells">{{trans('pgno.dlina')}}, {{trans('measurements.m')}}</th>
+                              <th class="shgn-table-th fixed-table-cells">{{trans('pgno.stem')}}, {{trans('measurements.unit')}}</th>
+                              <th class="shgn-table-th fixed-table-cells">{{trans('pgno.zagruzka')}},{{trans('measurements.percent')}}</th>
+                              <th class="shgn-table-th fixed-table-cells">{{trans('pgno.p_max')}}, {{trans('measurements.kN')}}</th>
+                              <th class="shgn-table-th fixed-table-cells">{{trans('pgno.p_min')}},{{trans('measurements.kN')}}</th>
                             </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('pgno.sekcia')}} 1</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnS1D }}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnS1L }}</td>
+                            <tr v-for="(row_index, row) in construction">
+                              <td class="shgn-table-td fixed-table-cells">{{row}}</td>
+                              <td class="shgn-table-td large__th">{{steel}}</td>
+                              <td class="shgn-table-td fixed-table-cells">{{row_index[0]}}</td>
+                              <td class="shgn-table-td fixed-table-cells">{{row_index[1]}}</td>
+                              <td class="shgn-table-td fixed-table-cells">{{row_index[2]}}</td>
+                              <td class="shgn-table-td fixed-table-cells">{{row_index[3]}}</td>
+                              <td class="shgn-table-td fixed-table-cells">{{row_index[4]}}</td>
+                              <td class="shgn-table-td fixed-table-cells">{{row_index[5]}}</td>
                             </tr>
-                            <tr class="tr-pgno">
-                              <td class="td-pgno" rowspan="1">{{trans('pgno.sekcia')}} 2</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnS2D }}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnS2L }}</td>
-                            </tr>
-                            <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('pgno.tn')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnS1D }}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnTNL }}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-       
+                          </table>
+                        </div>
+         
                     </div>
 
                       <div class="block__centrators">
@@ -2066,274 +2070,6 @@
     <full-page-loader v-show="isLoading" />
   </div>
 </template>
-
 <script src="./Table.js"></script>
-
-<style scoped>
-.modal-bign {
-  max-height: 830px;
-}
-
-.descr{
-    font-size: 12px;
-    display: none;
-    position:absolute;
-    top: -85px;
-    left: 140px;
-    width: 190px;
-    padding-left: 3px;
-    background:#494aa5;
-    border-radius: 4px;
-    height: auto;
-    top: -85px;
-    z-index:9999;
-    box-shadow: 0 0 5px black ;
-}
-
-.hperf:hover .descr{
-    font-size: 12px;
-    display: block;
-    position:absolute;
-    top: -85px;
-    left: 140px;
-    width: 190px;
-    padding-left: 3px;
-    background:#494aa5;
-    border-radius: 4px;
-    height: auto;
-    top: -85px;
-    z-index:9999;
-    box-shadow: 0 0 5px black ;
-}
-
-.gear-icon {
-  right: 12px;
-  top: 35px;
-  position: absolute;
-}
-
-.gear-icon-svg:hover {
-    content: '';
-    opacity: 100;
-    -webkit-animation: gear-icon-svg 3s infinite both;
-	        animation: gear-icon-svg 3s infinite both;
-}
-
-
-.gear-icon-svg:hover {
- 
-    content: '';
-    opacity: 100;
-    -webkit-animation: gear-icon-svg 3s infinite both;
-	        animation: gear-icon-svg 3s infinite both;
-}
-
-@-webkit-keyframes gear-icon-svg {
-  0% {
-    -webkit-transform: scale(1) rotateZ(0);
-            transform: scale(1) rotateZ(0);
-  }
-  50% {
-    -webkit-transform: scale(1) rotateZ(180deg);
-            transform: scale(1) rotateZ(180deg);
-  }
-  100% {
-    -webkit-transform: scale(1) rotateZ(360deg);
-            transform: scale(1) rotateZ(360deg);
-  }
-}
-@keyframes gear-icon-svg {
-  0% {
-    -webkit-transform: scale(1) rotateZ(0);
-            transform: scale(1) rotateZ(0);
-  }
-  50% {
-    -webkit-transform: scale(1) rotateZ(180deg);
-            transform: scale(1) rotateZ(180deg);
-  }
-  100% {
-    -webkit-transform: scale(1) rotateZ(360deg);
-            transform: scale(1) rotateZ(360deg);
-  }
-}
-
-.checkbox-devices {
-  width: 845px;
-  height: 45px;
-}
-
-.download-button-excel {
-  position: absolute;
-  margin-left: 175px;
-  margin-top: 0px;
-}
-
-.download-button-excel-1 {
-  position: absolute;
-  margin-left: 175px;
-  margin-top: 5px;
-}
-
-.block__centrators {
-  background-color:#272953;
-  align-items: center;
-  border-radius:6px;
-  border:2px solid #454d7d;
-  display:inline-block;
-  cursor:pointer;
-  color:#ffffff;
-  font-family:Arial;
-  font-size:14px;
-  padding:1px 15px;
-  text-decoration:none;
-  text-shadow:0px 1px 0px #144079;
-  width: 100%;
-  word-spacing: 4px;
-}
-
-.long__box {
-  width: 80px !important;
-  padding-left: 0px !important;
-}
-
-.select-download-button {
-outline: none;
-text-align: center;
-width: 114px;
-height: 24px;
-font-size: 14px;
-color: white;
-border: 0.4px solid #222452;
-box-sizing: border-box;
-border-radius: 4px;
--moz-appearance: none;
--webkit-appearance: none;
-appearance: none;
-background: #323370 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>") no-repeat;
-background-position: right 5px top 50%;
-}
-
-.download-curve-button {
-position: relative;
-text-align: center;
-width: 114px;
-height: 24px;
-font-size: 14px;
-color: white;
-border: 0.4px solid #222452;
-box-sizing: border-box;
-border-radius: 4px;
-background: #323370;
-outline: none;
-left: 20px;
-top: 8px;
-}
-
-.economic-table {
-  left: 0px;
-  top: 0px;
-}
-
-.select-gno2 {
-outline: none;
-width: 95px;
-height: 24px;
-color: white;
-border: 0.4px solid #222452;
-box-sizing: border-box;
--moz-appearance: none;
--webkit-appearance: none;
-margin-top: -2px;
-margin-right: 1px;
-appearance: none;
-background: #494aa5 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>") no-repeat;
-background-position: right 5px top 50%;
-}
-
-.select_editing {
-color: white;
-appearance: none;
-background: #494aa5 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>") no-repeat;
-background-position: right 5px top 50%;
-}
-
-.title__block__centrators {
-  margin-bottom: 2px; 
-}
-
-.main__title__block_centrators {
-  text-align: center;
-  margin-bottom: 0;
-}
-
-
-.input-box-gno {
-    background: #494AA5;
-    border: 1px solid #272953;
-    outline: none;
-    width: 100%;
-    height: 22px;
-    color: white;
-    box-sizing: border-box;
-    border-radius: 2px;
-    line-height: 25px !important;
-    padding-right: 5px;
-    padding-left: 5px;
-}
-
-.input-box-gno:focus {
-    background: #5657c7;
-}
-
-.input-box-gno:disabled {
-    color: #928f8f;
-    background: #353e70;
-}
-
-.input-box-gno.podbor {
-    width: 57px;
-    margin-bottom: 10px;
-}
-
-.button-podbor-gno {
-    float: left;
-    font-size: 16px;
-    font-weight: bold;
-    position: relative;
-    padding: 15px 15px;
-    height: 44px;
-    background: rgba(19, 176, 98, 0.8);
-    border-radius: 8px;
-    text-align: center;
-    margin-bottom: 0;
-    line-height: 18px;
-    cursor: pointer;
-}
-
-.button-podbor-gno:active {
-    background-color: #144079;
-    box-shadow: 0 2px #666;
-    transform: translateY(0.02px);
-    filter: blur(0.3px);
-}
-
-.button-podbor-gno:hover {
-    background-color: #484749;
-}
-
-.table-pgno-four {
-  height: 100px;
-}
-
-.table-pgno-two {
-  height: 200px;
-}
-
-.table-pgno-one {
-  height: 200px;
-}
-
-.square-dist {
-  width: 25%
-}
+<style scoped src="./styles/gno-table-component.css">
 </style>

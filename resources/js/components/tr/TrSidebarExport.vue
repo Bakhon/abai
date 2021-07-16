@@ -45,31 +45,30 @@ export default {
           filter: this.$store.getters["fa/filter"],
           sortType: this.$store.getters["fa/sortType"],
           sortParam: this.$store.getters["fa/sortParam"],
-          isDynamic:  this.$store.getters["fa/isDynamic"],
+          is_dynamic:  this.$store.getters["fa/isDynamic"],
         },
         {
-          field: this.$store.getters["tr/field"],
-          horizon: this.$store.getters["tr/horizon"],
-          is_dynamic:  this.$store.getters["tr/is_dynamic"],
-          month: this.$store.getters["tr/month"],
-          object: this.$store.getters["tr/object"],
-          searchString: this.$store.getters["tr/searchString"],
-          sortType: this.$store.getters["tr/sortType"],
-          sortParam: this.$store.getters["tr/sortParam"],
-          wellType: this.$store.getters["tr/wellType"],
-          pageNum: this.$store.getters["tr/pageNumber"],
-          year: this.$store.getters["tr/year_dyn_start"],
-          block: this.$store.getters["tr/block"],
-          expMeth: this.$store.getters["tr/expMeth"],
-          year_1: this.$store.getters["tr/year_dyn_start"],
-          month_1: this.$store.getters["tr/month_dyn_start"],
-          day_1: this.$store.getters["tr/day_dyn_start"],
-          year_2:  this.$store.getters["tr/year_dyn_end"],
-          month_2:  this.$store.getters["tr/month_dyn_end"],
-          day_2:  this.$store.getters["tr/day_dyn_end"],
+          field: this.$store.state.tr.field,
+          is_dynamic:  this.$store.state.tr.isDynamic,
+          object: this.$store.state.tr.object,
+          searchString: this.$store.state.tr.searchString,
+          sortType: this.$store.state.tr.isSortType,
+          sortParam: this.$store.state.tr.sortParam,
+          wellType: this.$store.state.tr.wellType,
+          pageNum: this.$store.state.tr.pageNumber,
+          block: this.$store.state.tr.block,
+          expMeth: this.$store.state.tr.expMeth,
+          horizon: this.$store.state.tr.horizon,
+          year_1: this.$store.state.tr.year_dyn_start,
+          month_1: this.$store.state.tr.month_dyn_start,
+          day_1: this.$store.state.tr.day_dyn_start,
+          year_2:  this.$store.state.tr.year_dyn_end,
+          month_2:  this.$store.state.tr.month_dyn_end,
+          day_2:  this.$store.state.tr.day_dyn_end,
+          wellName: this.$store.state.tr.wellName,
 
-          month: this.$store.getters["tr/month"],
-          year: this.$store.getters["tr/year"],
+          month: this.$store.state.tr.month,
+          year: this.$store.state.tr.year,
 
         }
       );
@@ -77,7 +76,7 @@ export default {
     filename() {
       const filename = this.ifFaTr(
         `FA_${this.$store.getters["fa/month"]}_${this.$store.getters["fa/year"]}_${this.$store.getters["fa/prmonth"]}_${this.$store.getters["fa/pryear"]}`,
-        `TR_${this.$store.getters["tr/month"]}_${this.$store.getters["tr/year"]}`
+        `TR_${this.$store.state.tr.month}_${this.$store.state.tr.year}`
       );
       return `${filename}.xlsx`;
   },

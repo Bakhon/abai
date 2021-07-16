@@ -248,6 +248,7 @@ return array (
     'referent_value' => 'Референтное значение',
   ),
   'module_name' => 'Мониторинг осложнений',
+  'monitoring_module' => 'Модуль "Мониторинг осложнений"',
   'tech_map_prototype' => 'Техкарта прототип',
   'gus' => 
   array (
@@ -298,6 +299,7 @@ return array (
     'menu' => 'Трубопроводы',
     'title' => 'База данных по трубопроводам',
     'create_title' => 'Ввод данных по трубопроводу',
+    'show-detail-data' => 'Показать подробную информацию',
   ),
   'gu' => 
   array (
@@ -479,5 +481,6 @@ return array (
       'title' => 'Сводный отчет',
     ),
   ),
+  'economical_effect_title' => 'Мониторинг потерянной выгоды',
   'no_data' => 'Нет данных',
 );

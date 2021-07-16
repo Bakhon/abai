@@ -186,6 +186,7 @@ Vue.component('report-header-builder', require('./components/reportConstructor/R
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
+Vue.component('bigdata-plain-form', require('./components/bigdata/forms/PlainForm.vue').default);
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
 Vue.component('main-page', require('./components/mainpage.vue').default);

@@ -43,6 +43,7 @@
               },
               {
                 "code": "org",
+                "table": "dict.org",
                 "type": "dict_tree",
                 "dict": "orgs",
                 "title": "org",

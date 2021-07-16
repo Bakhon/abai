@@ -115,7 +115,7 @@ class DictionaryService
             'class' => DrillColumnType::class,
             'name_field' => 'name_ru'
         ],
-        'zone' =>[
+        'zone' => [
             'class' => Zone::class,
             'name_field' => 'name_ru'
         ],
@@ -218,6 +218,9 @@ class DictionaryService
                 case 'geos':
                     $dict = $this->getGeoDict();
                     break;
+                case 'equip_type_casc':
+                    $dict = $this->getEquipTypeCascDict();
+                    break;
                 default:
                     throw new DictionaryNotFound();
             }
@@ -301,5 +304,27 @@ class DictionaryService
             ->toArray();
 
         return $this->generateTree((array)$items);
+    }
+
+    private function getEquipTypeCascDict()
+    {
+        $dictClass = self::DICTIONARIES['equip_type']['class'];
+        $nameField = self::DICTIONARIES['equip_type']['name_field'] ?? 'name';
+
+        return $dictClass::query()
+            ->select('id')
+            ->selectRaw("$nameField as name")
+            ->where(
+                'parent',
+                function ($query) {
+                    return $query->select('id')
+                        ->from('dict.equip_type')
+                        ->where('code', 'CASC')
+                        ->limit(1);
+                }
+            )
+            ->orderBy('name', 'asc')
+            ->get()
+            ->toArray();
     }
 }
