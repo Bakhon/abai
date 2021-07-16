@@ -15,7 +15,7 @@ class WellTech extends PlainForm
         $errors = [];
 
         if (!$this->isValidDate($this->request->get('well'), $this->request->get('dbeg'), 'prod.well_tech' , 'dend')) {
-            $errors[$this->request->get('dbeg')][] = trans('bd.validation.dbeg');
+            $errors['dbeg'][] = trans('bd.validation.dbeg');
         }
 
         return $errors;
