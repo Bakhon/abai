@@ -1,17 +1,17 @@
 <template>
   <div>
     <subtitle font-size="18" style="line-height: 26px">
-      Зависимость экономической эффективности от остановки нерентабельных скважин и доли оплаты простаивающего персонала
+      {{ trans('economic_reference.table_specific_indicators_title') }}
     </subtitle>
 
     <div class="mt-3 text-center border-grey">
       <div class="d-flex bg-blue">
         <div class="flex-50 p-3 border-grey ">
-          Удельные показатели
+          {{ trans('economic_reference.specific_indicators') }}
         </div>
 
         <div class="flex-25 p-3 border-grey">
-          Единица измерения
+          {{ trans('economic_reference.unit_of_measurement') }}
         </div>
 
         <div class="flex-25 p-3 border-grey">
@@ -21,11 +21,11 @@
 
       <div class="d-flex bg-blue">
         <div class="flex-50 p-3 border-grey border-bottom-0">
-          Курс доллара
+          {{ trans('economic_reference.course_prices') }}
         </div>
 
         <div class="flex-25 p-3 border-grey">
-          тенге
+          {{ trans('economic_reference.tenge') }}
         </div>
 
         <div class="flex-25 p-3 border-grey bg-blue">
@@ -35,7 +35,7 @@
 
       <div class="d-flex bg-dark-blue">
         <div class="flex-50 p-3 border-grey d-flex align-items-center justify-content-center">
-          Средняя цена на нефть при BRENT
+          {{ trans('economic_reference.avg_oil_price_brent') }}
         </div>
 
         <div class="flex-25 p-3 border-grey d-flex align-items-center justify-content-center">
@@ -55,8 +55,7 @@
       <div v-for="(item, index) in sumData"
            :key="index"
            :class="index % 2 === 0 ? 'bg-dark-blue' : 'bg-light-blue'"
-           class="d-flex"
-           style="white-space: normal">
+           class="d-flex white-space-normal">
         <div class="flex-50 p-3">
           {{ item.label }}
         </div>
@@ -104,34 +103,34 @@ export default {
     sumData() {
       return [
         {
-          label: 'Условно-переменные расходы (сырье, материалы, энергия, за искл. расходов на ПРС)',
+          label: this.trans('economic_reference.nominally_variable_costs'),
           value: this.data.avg_variable,
-          valueWord: 'тенге / тонну жидкости'
+          valueWord: this.trans('economic_reference.tenge_per_ton_liquid')
         },
         {
-          label: 'Затраты на персонал',
+          label: this.trans('economic_reference.personnel_costs'),
           value: this.data.avg_fix_payroll * 12 / 1000000,
-          valueWord: 'млн тенге / год'
+          valueWord: this.trans('economic_reference.million_tenge_per_year')
         },
         {
-          label: 'КРС',
+          label: this.trans('economic_reference.krs'),
           value: this.data.avg_wo,
-          valueWord: 'млн тенге / год'
+          valueWord: this.trans('economic_reference.million_tenge_per_operation'),
         },
         {
-          label: 'Условно-постоянные расходы',
+          label: this.trans('economic_reference.conditional_fixed_costs'),
           value: this.data.avg_fix * 12 / 1000000,
-          valueWord: 'млн тенге / год'
+          valueWord: this.trans('economic_reference.million_tenge_per_year')
         },
         {
-          label: 'ОАР',
+          label: this.trans('economic_reference.oar'),
           value: this.data.avg_gaoverheads * 12 / 1000000,
-          valueWord: 'млн тенге / год'
+          valueWord: this.trans('economic_reference.million_tenge_per_year')
         },
         {
-          label: 'Средняя стоимость ПРС (с ФОТ)',
+          label: this.trans('economic_reference.avg_cost_prs_with_payroll'),
           value: this.data.avg_wr_nopayroll + this.data.avg_wr_payroll,
-          valueWord: 'млн тенге на операцию'
+          valueWord: this.trans('economic_reference.million_tenge_for_operation')
         }
       ]
     }
@@ -170,6 +169,10 @@ export default {
 
 .flex-25 {
   flex: 1 0 25%;
+}
+
+.white-space-normal {
+  white-space: normal;
 }
 
 </style>

@@ -7,7 +7,7 @@
           :text="tab"
           :active="activeTab === index"
           :class="index ? 'ml-2' : ''"
-          class="col"
+          class="px-2 d-flex align-items-center"
           @click.native="activeTab = index"/>
     </div>
 
@@ -57,16 +57,7 @@ export default {
   computed: {
     tabs() {
       return [
-        'Удельные показатели',
-        'Технологические показатели',
-        'Технико-экономические показатели',
-        'Обзорная карта скважин',
-        'Таблица изменений скважины «Светофор»',
-        'Зависимость прибыли скважин “Дикобраз”',
-        'Варианты при цене на нефть в Х $/баррель',
-        'Денежный поток НДО “Шахматка”',
-        'Экономическая эффективность',
-        'Палетка'
+        this.trans('economic_reference.specific_indicators'),
       ]
     }
   }

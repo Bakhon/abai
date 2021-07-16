@@ -18,7 +18,7 @@
               <span> {{ header.value }} </span>
 
               <span class="font-size-16px line-height-20px text-blue">
-               {{ header.valueWord }}
+               {{ header.dimension }}
               </span>
             </economic-title>
 
@@ -60,7 +60,7 @@
               <span> {{ header.value }} </span>
 
               <span class="font-size-16px line-height-20px text-blue">
-                {{ header.valueWord }}
+                {{ header.dimension }}
               </span>
             </economic-title>
 
@@ -78,7 +78,7 @@
 
                 <span>{{ header.percent }}</span>
 
-                <span class="font-size-16px">{{ header.valueWord }}</span>
+                <span class="font-size-16px">{{ header.dimension }}</span>
               </div>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
@@ -86,12 +86,9 @@
               </div>
             </div>
 
-            <div style="position: absolute; top: 5px; right: 5px;">
-              <a :href="header.url" target="_blank">
-                <i class="fas fa-external-link-alt text-blue">
-                </i>
-              </a>
-            </div>
+            <a :href="header.url" target="_blank" class="remote-link">
+              <i class="fas fa-external-link-alt text-blue"> </i>
+            </a>
           </div>
         </div>
 
@@ -155,10 +152,10 @@
                 </span>
 
                 <span class="ml-2 d-flex flex-column text-blue font-size-14px line-height-16px">
-                  <div>{{ subBlock.valueWord }}</div>
+                  <div>{{ subBlock.dimension }}</div>
 
-                  <div v-if="subBlock.valueWordSuffix">
-                    {{ subBlock.valueWordSuffix }}
+                  <div v-if="subBlock.dimensionSuffix">
+                    {{ subBlock.dimensionSuffix }}
                   </div>
                 </span>
               </div>
@@ -181,10 +178,10 @@
               </span>
 
               <span class="ml-2 d-flex flex-column font-size-12px line-height-12px">
-                 <div>{{ subBlock.percentWord }}</div>
+                 <div>{{ subBlock.dimension }}</div>
 
-                  <div v-if="subBlock.percentWordSuffix">
-                    {{ subBlock.percentWordSuffix }}
+                  <div v-if="subBlock.dimensionSuffix">
+                    {{ subBlock.dimensionSuffix }}
                   </div>
               </span>
 
@@ -410,21 +407,21 @@ export default {
           name: this.trans('economic_reference.Revenue'),
           baseValue: this.scenario.Revenue_total.value[0],
           value: this.scenario.Revenue_total[this.scenarioValueKey][0],
-          valueWord: this.scenario.Revenue_total[this.scenarioValueKey][1],
+          dimension: this.scenario.Revenue_total[this.scenarioValueKey][1],
           percent: this.scenario.Revenue_total.percent
         },
         {
           name: this.trans('economic_reference.costs'),
           baseValue: this.scenario.Overall_expenditures.value[0],
           value: this.scenario.Overall_expenditures[this.scenarioValueKey][0],
-          valueWord: this.scenario.Overall_expenditures[this.scenarioValueKey][1],
+          dimension: this.scenario.Overall_expenditures[this.scenarioValueKey][1],
           percent: this.scenario.Overall_expenditures.percent
         },
         {
           name: this.trans('economic_reference.operating_profit'),
           baseValue: this.scenario.operating_profit_12m.value[0],
           value: this.scenario.operating_profit_12m[this.scenarioValueKey][0],
-          valueWord: this.scenario.operating_profit_12m[this.scenarioValueKey][1],
+          dimension: this.scenario.operating_profit_12m[this.scenarioValueKey][1],
           percent: this.scenario.operating_profit_12m.percent
         }
       ]
@@ -436,14 +433,14 @@ export default {
           name: this.trans('economic_reference.oil_price'),
           url: this.res.oilPrice.url,
           value: this.res.oilPrice.value,
-          valueWord: '$ / bbl',
+          dimension: '$ / bbl',
           percent: this.oilPricePercent,
         },
         {
           name: this.trans('economic_reference.course_prices'),
           url: this.res.dollarRate.url,
           value: this.res.dollarRate.value,
-          valueWord: 'kzt / $',
+          dimension: 'kzt / $',
           percent: this.dollarRatePercent,
         }
       ]
@@ -453,88 +450,60 @@ export default {
       return [
         [
           {
-            // если растет -> то зеленая вверх
             title: this.trans('economic_reference.oil_production'),
             icon: 'oil_production.svg',
             value: this.scenario.oil[this.scenarioValueKey][0],
-            valueWord: this.scenario.oil[this.scenarioValueKey][1],
-            valueWordSuffix: 'тонн',
+            dimension: this.scenario.oil[this.scenarioValueKey][1],
+            dimensionSuffix: this.trans('economic_reference.tons'),
             percent: this.oilPercent,
-            percentWord: this.scenario.oil[this.scenarioValueKey][1],
-            percentWordSuffix: 'тонн',
             reverse: true,
             reversePercent: true
           },
           {
-            // если растет -> то красная вверх
             title: this.trans('economic_reference.water_cut'),
             icon: 'liquid.svg',
             value: this.liquidValue(true),
-            valueWord: '%',
+            dimension: '%',
             percent: this.liquidPercent,
-            percentWord: '%',
             reversePercent: true
           }
         ],
         [
           {
-            // если растет -> то красная вверх
             title: this.trans('economic_reference.total_prs'),
             icon: 'total_prs.svg',
             value: this.scenario.prs[this.scenarioValueKey][0] * 1000,
-            valueWord: 'ед',
+            dimension: this.trans('economic_reference.units'),
             percent: this.prsPercent,
-            percentWord: 'ед',
             reversePercent: true
           },
           {
-            // если растет -> то красная вверх
             title: this.trans('economic_reference.specific_prs'),
             icon: 'specific_prs.svg',
             value: this.avgPrsValue(),
-            valueWord: 'ед/скв',
+            dimension: this.trans('economic_reference.units_per_well'),
             percent: this.avgPrsPercent,
-            percentWord: 'ед/скв',
             reversePercent: true
           }
         ],
         [
           {
-            // если растет -> то зеленая вверх
             title: this.trans('economic_reference.avg_oil_rate'),
             icon: 'total_prs.svg',
             value: this.avgOilValue(),
-            valueWord: 'тонн/сут',
+            dimension: this.trans('economic_reference.tons_per_day'),
             percent: this.avgOilPercent,
-            percentWord: 'тонн/сут',
             reverse: true
           },
           {
-            // если растет -> то красная вверх
             title: this.trans('economic_reference.avg_liquid_rate'),
             icon: 'specific_prs.svg',
             value: this.avgLiquidValue(),
-            valueWord: 'м³/сут',
+            dimension: this.trans('economic_reference.cubic_meter_per_day'),
             percent: this.avgLiquidPercent,
-            percentWord: 'м³/сут',
             reverse: true,
           },
         ],
-      ]
-    },
-
-    tabs() {
-      return [
-        'Удельные показатели',
-        'Технологические показатели',
-        'Технико-экономические показатели',
-        'Обзорная карта скважин',
-        'Таблица изменений скважины «Светофор»',
-        'Зависимость прибыли скважин “Дикобраз”',
-        'Варианты при цене на нефть в Х $/баррель',
-        'Денежный поток НДО “Шахматка”',
-        'Экономическая эффективность',
-        'Палетка'
       ]
     },
 
@@ -546,7 +515,7 @@ export default {
           value_optimized: this.trans('economic_reference.optimized')
         },
         {
-          name: 'Всего',
+          name: this.trans('economic_reference.total'),
           value: (+this.scenario.well_count_profitable.original_value)
               + (+this.scenario.well_count_profitless_cat_1.original_value)
               + (+this.scenario.well_count_profitless_cat_2.original_value),
@@ -587,11 +556,11 @@ export default {
     scenarios() {
       return [
         {
-          label: 'Базовый вариант',
+          label: this.trans('economic_reference.basic_variant'),
           value: null,
         },
         {
-          label: 'Сценарий 1',
+          label: this.trans('economic_reference.test_scenario'),
           value: 6,
         }
       ]
@@ -640,7 +609,8 @@ export default {
 
       this.res.scenarios.forEach((item, index) => {
         items.push({
-          label: `Отключения категории 1: ${item.percent_stop_cat_1 * 100}%, категории 2: ${item.percent_stop_cat_2 * 100}%`,
+          label: `${this.trans('economic_reference.cat_1_trips')}: ${item.percent_stop_cat_1 * 100}%, ` +
+              `${this.trans('economic_reference.cat_2_trips')}: ${item.percent_stop_cat_2 * 100}%`,
           value: index,
         })
       })
@@ -735,10 +705,6 @@ export default {
         optimized = false
       }
 
-      let well_count = optimized
-          ? this.scenario.well_count.original_value_optimized
-          : this.scenario.well_count.original_value
-
       let days_worked = optimized
           ? this.scenario.avg_days_worked.original_value_optimized
           : this.scenario.avg_days_worked.original_value
@@ -756,10 +722,6 @@ export default {
       if (!this.form.scenario_id) {
         optimized = false
       }
-
-      let well_count = optimized
-          ? this.scenario.well_count.original_value_optimized
-          : this.scenario.well_count.original_value
 
       let days_worked = optimized
           ? this.scenario.avg_days_worked.original_value_optimized
@@ -865,5 +827,11 @@ export default {
 
 .text-grey {
   color: #656A8A
+}
+
+.remote-link {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
 </style>
