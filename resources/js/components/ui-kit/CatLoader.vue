@@ -10,12 +10,15 @@
 </template>
 
 <script>
+import {globalloadingState} from '@store/helpers';
+
+
 export default {
   name: "CatLoader",
   computed: {
-    loading() {
-      return this.$store.getters["globalloading/loading"];
-    },
+    ...globalloadingState([
+      'loading'
+    ]),
   },
 };
 </script>
