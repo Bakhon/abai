@@ -62,7 +62,7 @@
 
         <div
             class="flex-25 p-3 border-grey border-bottom-0 border-top-0 d-flex align-items-center justify-content-center">
-          {{ item.valueWord }}
+          {{ item.dimension }}
         </div>
 
         <div class="flex-25 p-3">
@@ -105,32 +105,32 @@ export default {
         {
           label: this.trans('economic_reference.nominally_variable_costs'),
           value: this.data.avg_variable,
-          valueWord: this.trans('economic_reference.tenge_per_ton_liquid')
+          dimension: this.trans('economic_reference.tenge_per_ton_liquid')
         },
         {
           label: this.trans('economic_reference.personnel_costs'),
           value: this.data.avg_fix_payroll * 12 / 1000000,
-          valueWord: this.trans('economic_reference.million_tenge_per_year')
+          dimension: this.trans('economic_reference.million_tenge_per_year')
         },
         {
           label: this.trans('economic_reference.krs'),
           value: this.data.avg_wo,
-          valueWord: this.trans('economic_reference.million_tenge_per_operation'),
+          dimension: this.trans('economic_reference.million_tenge_per_operation'),
         },
         {
           label: this.trans('economic_reference.conditional_fixed_costs'),
           value: this.data.avg_fix * 12 / 1000000,
-          valueWord: this.trans('economic_reference.million_tenge_per_year')
+          dimension: this.trans('economic_reference.million_tenge_per_year')
         },
         {
           label: this.trans('economic_reference.oar'),
           value: this.data.avg_gaoverheads * 12 / 1000000,
-          valueWord: this.trans('economic_reference.million_tenge_per_year')
+          dimension: this.trans('economic_reference.million_tenge_per_year')
         },
         {
           label: this.trans('economic_reference.avg_cost_prs_with_payroll'),
           value: this.data.avg_wr_nopayroll + this.data.avg_wr_payroll,
-          valueWord: this.trans('economic_reference.million_tenge_for_operation')
+          dimension: this.trans('economic_reference.million_tenge_for_operation')
         }
       ]
     }
