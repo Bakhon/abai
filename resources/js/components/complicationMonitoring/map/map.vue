@@ -1122,11 +1122,6 @@ export default {
       }
     },
     async filterChanged() {
-      let isNeedUpdateData = true;
-      if (!this.selectedDate || this.selectedDate == moment().format('YYYY-MM-DD')) {
-        isNeedUpdateData = false;
-      }
-
       this.mapColorsMode = this.activeFilter;
 
       switch (this.activeFilter) {
@@ -1140,14 +1135,6 @@ export default {
 
         case null:
           this.mapColorsMode = 'default';
-          this.selectedDate = null;
-
-          if (isNeedUpdateData) {
-            this.SET_LOADING(true);
-            this.pipes = await this.getMapData(this.gu);
-            this.SET_LOADING(false);
-          }
-
           break;
       }
 
