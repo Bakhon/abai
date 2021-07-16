@@ -210,9 +210,9 @@ class CalculateHydroDynamics implements ShouldQueue
             $short = $data->short->data;
             $long = $data->long;
 
-//            if ($short) {
-//                $this->storeShortResult($short);
-//            }
+            if ($short) {
+                $this->storeShortResult($short);
+            }
 
             if ($long) {
                 array_unshift($long->data, $long->columns);
