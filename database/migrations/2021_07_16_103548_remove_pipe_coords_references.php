@@ -26,9 +26,6 @@ class RemovePipeCoordsReferences extends Migration
      */
     public function down()
     {
-        Schema::table('pipe_coords', function (Blueprint $table) {
-            $table->bigInteger('oil_pipe_id')->unsigned()->change();
-            $table->foreign('oil_pipe_id')->references('id')->on('oil_pipes')->onDelete('cascade');
-        });
+        
     }
 }
