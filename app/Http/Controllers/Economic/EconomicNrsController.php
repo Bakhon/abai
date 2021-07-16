@@ -76,7 +76,7 @@ class EconomicNrsController extends Controller
             $request->interval_end
         );
 
-        $intervalMonths = self::intervalFormat($intervalMonthsStart->copy(), $intervalMonthsEnd->copy());
+        $intervalMonths = self::formatInterval($intervalMonthsStart->copy(), $intervalMonthsEnd->copy());
 
         $granularity = $request->granularity;
         $granularityFormat = self::granularityFormat($granularity);
@@ -255,7 +255,7 @@ class EconomicNrsController extends Controller
 
             $dataWithOilProduction[$item[$profitabilityType]][] = $item['oil'] / 1000;
 
-            $dataWithLiquidProduction[$item[$profitabilityType]][] = self::profitabilityFormat($item);
+            $dataWithLiquidProduction[$item[$profitabilityType]][] = self::formatProfitability($item);
         }
 
         $dataWithOilProduction['dt'] = array_keys($dataWithOilProduction['dt']);
@@ -295,16 +295,16 @@ class EconomicNrsController extends Controller
         $resLastMonth = [
             'Operating_profit' => [
                 'sum' => [
-                    'value_prev' => self::moneyFormat($prevMonth["Operating_profit"]),
-                    'value' => self::moneyFormat($lastMonth["Operating_profit"]),
-                    'percent' => self::percentFormat($lastMonth["Operating_profit"], $prevMonth["Operating_profit"]),
+                    'value_prev' => self::formatMoney($prevMonth["Operating_profit"]),
+                    'value' => self::formatMoney($lastMonth["Operating_profit"]),
+                    'percent' => self::calcPercent($lastMonth["Operating_profit"], $prevMonth["Operating_profit"]),
                 ],
             ],
             'cat1' => [
                 'count' => [
                     'value_prev' => (int)$prevMonth['uwi'],
                     'value' => (int)$lastMonth['uwi'],
-                    'percent' => self::percentFormat((int)$lastMonth['uwi'], (int)$prevMonth['uwi'])
+                    'percent' => self::calcPercent((int)$lastMonth['uwi'], (int)$prevMonth['uwi'])
                 ],
             ]
         ];
@@ -318,9 +318,9 @@ class EconomicNrsController extends Controller
 
             $resLastMonth[$sumKey] = [
                 'sum' => [
-                    'value' => self::moneyFormat($lastMonth),
-                    'value_prev' => self::moneyFormat($prevMonth),
-                    'percent' => self::percentFormat($lastMonth, $prevMonth)
+                    'value' => self::formatMoney($lastMonth),
+                    'value_prev' => self::formatMoney($prevMonth),
+                    'percent' => self::calcPercent($lastMonth, $prevMonth)
                 ]
             ];
         }
@@ -329,7 +329,7 @@ class EconomicNrsController extends Controller
             'lastYear' => [
                 'Operating_profit' => [
                     'sum' => [
-                        'value' => self::moneyFormat($result[self::BUILDER_SUM_OPERATING_PROFIT_AND_PRS1_LAST_YEAR][0]["Operating_profit"])
+                        'value' => self::formatMoney($result[self::BUILDER_SUM_OPERATING_PROFIT_AND_PRS1_LAST_YEAR][0]["Operating_profit"])
                     ],
                 ],
                 'prs1' => [
@@ -388,7 +388,7 @@ class EconomicNrsController extends Controller
         return Org::findOrFail($orgId);
     }
 
-    static function percentFormat(?float $last, ?float $prev, int $precision = 0): float
+    static function calcPercent(?float $last, ?float $prev, int $precision = 0): float
     {
         $last = $last ?? 0;
 
@@ -430,7 +430,7 @@ class EconomicNrsController extends Controller
             : self::GRANULARITY_DAILY_FORMAT;
     }
 
-    static function intervalFormat(Carbon $start, Carbon $end): string
+    static function formatInterval(Carbon $start, Carbon $end): string
     {
         return $start->format('Y-m-d')
             . "T00:00:00+00:00/"
@@ -446,7 +446,7 @@ class EconomicNrsController extends Controller
 
         $start->subYears($count)->setDay(1)->setMonth(1);
 
-        return self::intervalFormat($start, $end);
+        return self::formatInterval($start, $end);
     }
 
     static function calcIntervalMonthsStartEnd(string $start = null, string $end = null, int $count = 6): array
@@ -498,7 +498,7 @@ class EconomicNrsController extends Controller
         return round($count / $date->daysInMonth);
     }
 
-    static function profitabilityFormat(array $item): string
+    static function formatProfitability(array $item): string
     {
         $bsw = round(($item['bsw'] / 1000) / ($item['uwi'] / 1000));
 
@@ -507,7 +507,7 @@ class EconomicNrsController extends Controller
         return "$liquid.$bsw";
     }
 
-    static function moneyFormat(?float $digit): array
+    static function formatMoney(?float $digit): array
     {
         $digit = $digit ?? 0;
 

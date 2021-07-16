@@ -94,7 +94,7 @@ class EconomicOptimizationController extends Controller
         $builder = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval(EconomicNrsController::intervalFormat(
+            ->interval(EconomicNrsController::formatInterval(
                 Carbon::parse(self::DATA_SOURCE_DATE),
                 Carbon::parse(self::DATA_SOURCE_DATE)->addDay(),
             ));
@@ -131,9 +131,9 @@ class EconomicOptimizationController extends Controller
                 $columnOptimized = $column . self::OPTIMIZED_COLUMN_SUFFIX;
 
                 $scenarios[$index][$column] = [
-                    'value' => self::moneyFormat($item[$column]),
-                    'value_optimized' => self::moneyFormat($item[$columnOptimized]),
-                    'percent' => EconomicNrsController::percentFormat($item[$columnOptimized], $item[$column], 2),
+                    'value' => self::formatMoney($item[$column]),
+                    'value_optimized' => self::formatMoney($item[$columnOptimized]),
+                    'percent' => EconomicNrsController::calcPercent($item[$columnOptimized], $item[$column], 2),
                     'original_value' => $item[$column],
                     'original_value_optimized' => $item[$columnOptimized],
                 ];
@@ -225,7 +225,7 @@ class EconomicOptimizationController extends Controller
         ];
     }
 
-    static function moneyFormat(?float $digit): array
+    static function formatMoney(?float $digit): array
     {
         $digit = $digit ?? 0;
 
