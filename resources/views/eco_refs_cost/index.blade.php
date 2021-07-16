@@ -27,7 +27,7 @@
                     @if ($isForecast)
                         <a href="{{ route('eco_refs_scenario.index') }}"
                            class="list-group-item list-group-item-action">
-                            Сценарии
+                            {{ __('economic_reference.scenarios') }}
                         </a>
                     @endif
                 </div>

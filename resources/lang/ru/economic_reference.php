@@ -162,4 +162,5 @@ return array (
   'tenge_per_month' => 'тенге/месяц',
   'thousand_tenge' => 'тыс. тенге',
   'million_tenge' => 'млн тенге',
+  'scenarios' => 'Сценарии',
 );
