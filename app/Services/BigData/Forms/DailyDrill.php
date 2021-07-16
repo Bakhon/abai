@@ -17,11 +17,11 @@ class DailyDrill extends PlainForm
         $errors = [];
 
         if (!$this->isValidDepth($this->request->get('well'),$this->request->get('kern_sole'))) {
-            $errors[$this->request->get('kern_sole')][] = trans('bd.validation.depth');
+            $errors['kern_sole'][] = trans('bd.validation.depth');
         }
 
         if (!$this->isValidDate($this->request->get('well'), $this->request->get('date_drill'), 'dict.well' , 'drill_start_date')) {
-            $errors[$this->request->get('data')][] = trans('bd.validation.drill_date');
+            $errors['date_drill'][] = trans('bd.validation.drill_date');
         }
 
         return $errors;
