@@ -79,11 +79,16 @@ class LostProfitsController extends CrudController
             ]
         ];
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('complicationMonitoring.lost_profits.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = LostProfits::query()
             ->with('gu');
 

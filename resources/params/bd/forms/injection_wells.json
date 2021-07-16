@@ -13,13 +13,13 @@
                 "code": "dbeg",
                 "type": "date",
                 "title": "date_start",
-                "validation": "required|date"
+                "validation": "required|date|before:dend"
               },
               {
                 "code": "dend",
                 "type": "date",
                 "title": "date_end",
-                "validation": "required|date"
+                "validation": "required|date|after:dbeg"
               }
             ]
           },
@@ -30,7 +30,8 @@
                 "code": "agent_vol",
                 "type": "numeric",
                 "title": "agent_volume",
-                "validation": "required|numeric",
+                "validation": "required|numeric| gt:0",
+                "validate_deviation": true,
                 "prefix": ""
               },
               {
@@ -46,21 +47,23 @@
                 "code": "agent_temp",
                 "type": "numeric",
                 "title": "agent_temperature",
-                "validation": "required|numeric",
-                "prefix": ""
+                "validation": "required|numeric|gt:0",
+                "prefix": "",
+                "validate_deviation": true
               },
               {
                 "code": "inj_pressure",
                 "type": "numeric",
                 "title": "injection_pressure",
-                "validation": "required|numeric",
-                "prefix": ""
+                "validation": "required|numeric|gt:0",
+                "prefix": "",
+                "validate_deviation": true
               },
               {
                 "code": "q_max_intake",
                 "type": "numeric",
                 "title": "qmax_reception",
-                "validation": "required|numeric",
+                "validation": "required|numeric|gt:0|gte:agent_vol",
                 "prefix": ""
               }
             ]
@@ -69,21 +72,21 @@
             "title":"Planned_events_tech_modes",
             "items":[
               {
-                "code":"field4",
-                "type":"table",
-                "title":"",
-                "table":"",
-                "parent_column":"",
-                "columns":[
+                "code": "field4",
+                "type": "table",
+                "title": "",
+                "table": "prod.tech_mode_event",
+                "parent_column": "well",
+                "columns": [
                   {
-                    "code":"well_activity",
-                    "type":"dict",
-                    "title":"event",
-                    "dict":"well_activity",
-                    "validation":"required|exists:tbd.dict.well_activity,id"
+                    "code": "event_type",
+                    "type": "dict",
+                    "title": "event",
+                    "dict": "well_activity",
+                    "validation": "required|exists:tbd.dict.well_activity,id"
                   },
                   {
-                    "code":"plan_month",
+                    "code": "plan_month",
                     "type":"date",
                     "title":"planned_month",
                     "validation":"required|date"

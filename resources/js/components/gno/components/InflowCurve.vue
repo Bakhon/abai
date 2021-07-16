@@ -157,7 +157,8 @@ export default {
         q_oil2.push(q_oil);
       });
 
-      this.data = [ {
+      this.data = [ 
+        {
           name: this.nameKP,
           legendgroup: "group1",
           x: qo_points2,
@@ -245,17 +246,17 @@ export default {
       };
     },
     setPoints: function (value) {
-      this.data[3]['x'][0] = value[0]["q_l"]
-      this.data[3]['y'][0] = value[0]["p"]
-      this.data[3]['text'][0] = value[0]["q_oil"]
+      this.data[3]['x'][0] = value[2]["q_l"]
+      this.data[3]['y'][0] = value[2]["p"]
+      this.data[3]['text'][0] = value[2]["q_oil"]
       this.data[5]['x'][0] = value[1]["q_l"]
       this.data[5]['y'][0] = value[1]["p"]
       this.data[5]['text'][0] = value[1]["q_oil"]
       this.layout['shapes'][0]['x0'] = value[1]['q_l']
       this.layout['shapes'][0]['x1'] = value[1]['q_l']
-      this.data[4]['x'][0] = value[2]["q_l"]
-      this.data[4]['y'][0] = value[2]["p"]
-      this.data[4]['text'][0] = value[2]["q_oil"]
+      this.data[4]['x'][0] = value[0]["q_l"]
+      this.data[4]['y'][0] = value[0]["p"]
+      this.data[4]['text'][0] = value[0]["q_oil"]
     },
   },
   mounted() {},
@@ -311,7 +312,7 @@ export default {
       this.hovertemplatePR = "<b>Потенциалдық  режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" +
-                          "Pзаб = %{y:.1f} атм<extra></extra>"             
+                          "Pзаб = %{y:.1f} атм<extra></extra>"
     } else {
       this.layout.xaxis.title = this.titleXEn
       this.layout.yaxis.title = this.titleYEn

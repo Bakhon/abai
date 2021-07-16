@@ -4,17 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Filters\UserFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
+use App\Http\Resources\Admin\UserEditResource;
 use App\Http\Resources\Admin\UserListResource;
-use App\Models\Refs\Org;
 use App\User;
-use App\Module;
 use Illuminate\Support\Facades\Session;
-use \Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
+    protected $modelName = 'users';
 
     const LOGS_PER_PAGE = 20;
 
@@ -50,11 +48,18 @@ class UsersController extends Controller
             ],
         ];
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('admin.users.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        $input = $request->validated();
+        $model_name_filter = $input['model_name'].'_filter';
+        session([$model_name_filter => $input]);
+
         $query = \App\User::query();
 
         $users = $this
@@ -83,29 +88,12 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = Role::all();
-        $orgs = Org::all();
-        $modules = Module::all();
-
-        return view('admin.users.edit', compact('user', 'roles', 'orgs','modules'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(UserUpdateRequest $request, User $user)
-    {
-        $user->update([
-            'org_id' => $request->org_id
-        ]);
-
-        $user->syncRoles($request->roles);
-        $user->modules()->sync($request->modules);
-        return redirect()->route('admin.users.index')->with('success', __('app.updated'));
+        return view(
+            'admin.users.edit',
+            [
+                'user' => new UserEditResource($user)
+            ]
+        );
     }
 
     public function pageViewLogs(User $user)

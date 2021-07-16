@@ -139,11 +139,15 @@
                     pointRadius: 0,
                 };
 
-                let datasets = [planChartOptions, factChartOptions];
-                if (chartSummary.isOpecFilterActive) {
+                let datasets = [factChartOptions];
+                if (!chartSummary.isOilResidueActive) {
+                    datasets.push(planChartOptions);
+                }
+
+                if (chartSummary.isOpecFilterActive && !chartSummary.isOilResidueActive) {
                     datasets.push(planOpecChartOptions);
                 }
-                if (chartSummary.isFilterTargetPlanActive) {
+                if (chartSummary.isFilterTargetPlanActive && !chartSummary.isOilResidueActive) {
                     datasets.push(monthlyPlan);
                 }
 
@@ -160,25 +164,8 @@
                             labels: {
                                 fontColor: "#fff",
                                 generateLabels: (chart) => {
-                                    let data = chart.data;
-                                    if (data.labels.length && data.datasets.length) {
-                                        let returnData = data.datasets.map(function (item, i) {
-                                            let meta = chart.getDatasetMeta(i);
-                                            let style = meta.controller.getStyle(i);
-                                            return {
-                                                text: item.label,
-                                                fillStyle: style.borderColor,
-                                            };
-                                        });
-                                        returnData.push({
-                                            text: this.trans("visualcenter.deviation"),
-                                            fillStyle: fillPattern,
-                                        });
-
-                                        return returnData;
-                                    }
-                                    return [];
-                                },
+                                    return this.getLabelsByDatasets(chart,chartSummary, fillPattern)
+                                }
                             },
                         },
                         scales: {
@@ -211,9 +198,35 @@
                                 },
                             ],
                         },
+                        tooltips: {
+                            intersect: false,
+                        }
                     }
                 );
             },
+
+            getLabelsByDatasets(chart,chartSummary,fillPattern) {
+                let chartOptions = chart.data;
+                if (!chartOptions.labels.length && !chartOptions.datasets.length) {
+                    return [];
+                }
+                let labels = chartOptions.datasets.map(function (dataset, index) {
+                    let meta = chart.getDatasetMeta(index);
+                    let style = meta.controller.getStyle(index);
+                    return {
+                        text: dataset.label,
+                        fillStyle: style.borderColor,
+                    };
+                });
+                if (!chartSummary.isOilResidueActive) {
+                    labels.push({
+                        text: this.trans("visualcenter.deviation"),
+                        fillStyle: fillPattern,
+                    });
+                }
+                return labels;
+            },
+
             getFormattedDate(timestamp) {
                 let date = new Date(Number(timestamp));
                 return date.getDate() + " / " + this.monthMapping[date.getMonth()] + " / " + date.getFullYear();

@@ -49,9 +49,6 @@ class OmgNGDUController extends CrudController
                 trans('monitoring.omgngdu.fields.fact_data') => 10,
             ],
             'fields' => [
-
-
-
                 'gu' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
@@ -122,11 +119,16 @@ class OmgNGDUController extends CrudController
             $params['links']['export'] = route($this->modelName.'.export');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('omgngdu.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+        
         $query = OmgNGDU::query()
             ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well');
 

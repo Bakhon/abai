@@ -158,6 +158,7 @@ table {
     transition: opacity 2s;
     border-radius: 6px;
     background-color: #555;
+    font-size: 12px;
     padding:3px;
     bottom: 31px;
     /* top:-80px; */
@@ -188,3 +189,80 @@ table {
     padding: 0;
     margin: 0;
 }  
+.drop-filter-custom{
+    background: #333975 !important;
+    border-color: #333975 !important;
+  }
+  .b-dropdown-form {
+    background: #333975!important;
+    width: 135px;
+  }
+  .dropdown-menu.show {
+      display: flex;
+      flex-direction: column;
+      background: #333975!important;
+  }
+  .icons_filt_sort{
+    display: flex;
+    justify-content: center;
+  }
+  .field_filter_text {
+    display: flex;
+    justify-content: center;
+    margin-left: -36px;
+  }
+  .well_type_filter_text {
+    display: flex;
+    justify-content: center;
+    margin-left: 90px;
+  }
+  .field_form_fil.field_form_fil {
+    background: #333975!important;
+    width: 213px!important;
+  }
+  .horizon_form_fil.horizon_form_fil {
+    background: #333975!important;
+    width: 123px!important;
+  }
+  .obj_form_fil {
+    background: #333975!important;
+    width: 85px!important;
+  }
+  .block_form_fil {
+    background: #333975!important;
+    width: 168px!important;
+  }
+  .exp_meth_form_fil {
+    background: #333975!important;
+    width: 108px!important;
+  } 
+  
+  .well_type_form_fil.well_type_form_fil {
+    background: #333975!important;
+    width: 213px!important;
+  }
+  .external_field_filter {
+    width: 251px;
+  }
+  .external_well_type_filter  {
+    width: 251px;
+  }
+  .icon_filter {
+    font-size: 7px;
+  }
+  .icon_sort {
+    margin-top: 6px;
+  }
+  .form_text {
+    color:white; 
+    font-size:13px; 
+    margin-left: 12px;
+  }
+  .discard_text {
+   color:white; 
+   font-size:13px; 
+   margin-left: 9px;
+  }
+  body {
+    overflow-y: hidden !important;
+  }

@@ -1,98 +1,100 @@
 <template>
     <div>
         <div class="row m-0 p-0 pl-1 pr-1">
-            <div class="col-8 gtm-dark p-1">
+            <div class="col-8 gtm-dark p-1 mt-1">
                 <gtm-main-indicator
                     v-bind:data="[
                         {
-                            number: 356,
-                            units: 'мероприятий',
-                            title: 'Количество ГТМ и ВНС',
-                            progressValue: 356,
-                            progressMax: 394,
-                            progressPercents: 356 / 394 * 100,
+                            number: 1458,
+                            units: this.trans('paegtm.activities'),
+                            title: this.trans('paegtm.number_of_gtm_and_vns'),
+                            progressValue: 1458,
+                            progressMax: 1441,
+                            progressPercents: 1458 / 1441 * 100,
                         },
                         {
-                            number: 263000,
-                            units: 'тонн',
-                            title: 'Дополнительная добыча нефти от ВНС',
-                            progressValue: 263000,
-                            progressMax: 300000,
-                            progressPercents: 263000 / 300000 * 100,
+                            number: 695,
+                            units: this.trans('paegtm.tons'),
+                            title: this.trans('paegtm.additional_oil_production_from_vns'),
+                            progressValue: 695,
+                            progressMax: 713,
+                            progressPercents: 695 / 713 * 100,
                         },
                         {
-                            number: 293000,
-                            units: 'тонн',
-                            title: 'Дополнительная добыча нефти от ГТМ',
-                            progressValue: 293000,
-                            progressMax: 438000,
-                            progressPercents: 293000 / 438000 * 100,
+                            number: 766,
+                            units: this.trans('paegtm.tons'),
+                            title: this.trans('paegtm.additional_oil_production_from_gtm'),
+                            progressValue: 766,
+                            progressMax: 867,
+                            progressPercents: 766 / 867 * 100,
                         },
                         {
-                            number: 2054300,
-                            units: 'тонн',
-                            title: 'Базовая добыча нефти',
-                            progressValue: 2054300,
-                            progressMax: 2100000,
-                            progressPercents: 2054300 / 2100000 * 100,
+                            number: 16998,
+                            units: this.trans('paegtm.tons'),
+                            title: this.trans('paegtm.basic_oil_production'),
+                            progressValue: 16998,
+                            progressMax: 16973,
+                            progressPercents: 16998 / 16973 * 100,
                         },
                     ]"
                 ></gtm-main-indicator>
             </div>
-            <div class="col-4 p-0 pl-2">
+            <div class="col-4 p-0 pl-2 mt-1">
                 <div class="gtm-dark h-100 pl-2 p-1">
                     <gtm-main-indicator
                         v-bind:data="[
                         {
-                            number: 2610300,
-                            units: 'тонн',
-                            title: 'Добыча нефти',
-                            progressValue: 2610300,
-                            progressMax: 2623500,
-                            progressPercents: 2610300 / 2623500 * 100,
+                            number: 18475,
+                            units: this.trans('paegtm.tons'),
+                            title: this.trans('paegtm.oil_production'),
+                            progressValue: 18475,
+                            progressMax: 18568,
+                            progressPercents: 18475 / 18568 * 100,
                         },
                     ]"
                     ></gtm-main-indicator>
                 </div>
             </div>
         </div>
-        <div class="row m-0 p-1">
-            <div class="gtm-dark col-8 p-0 gtm-main-table">
+        <div class="row m-0 p-1 pt-2">
+            <div class="gtm-dark col-9 p-0 gtm-main-table">
                 <div class="position-absolute p-0 pr-2 pt-2 w-100 d-flex justify-content-end">
                     <div @click="showMainMap = !showMainMap" class="d-flex cursor-pointer switch-map-button dr-fw-700">
                         <img class="align-middle mr-1" :src="mainBlockButtonIcon" alt="" width="18">
                         <div class="align-middle">{{ mainBlockButtonText }}</div>
                     </div>
                 </div>
-                <div v-if="!showMainMap">
-                    <div class="p-0">
-                        <table class="table table-striped text-center text-white podbor-middle-table h-100">
-                            <thead>
-                            <tr>
-                                <th class="align-middle" rowspan="2">ДЗО</th>
-                                <th colspan="3">Дополнительная добыча ВНС, тонн</th>
-                                <th colspan="3">Дополнительная добыча ГТМ, тонн</th>
-                                <th colspan="3">Базовая добыча</th>
-                            </tr>
-                            <tr>
-                                <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
-                                <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
-                                <th>+/-</th>
-                                <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
-                                <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
-                                <th>+/-</th>
-                                <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
-                                <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
-                                <th>+/-</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="mainTableItem in mainTableData">
-                                <td v-for="value in mainTableItem" class="align-middle">{{ value }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div v-if="!showMainMap" class="h-100">
+                      <table class="table table-striped text-center text-white podbor-middle-table h-100">
+                          <thead>
+                          <tr>
+                            <th class="align-middle" rowspan="2">{{ trans('paegtm.dzo') }}</th>
+                            <th class="align-middle" colspan="3">{{ trans('paegtm.additional_production_of_vns') }}</th>
+                            <th class="align-middle" colspan="3">{{ trans('paegtm.additional_production_of_gtm') }}</th>
+                            <th class="align-middle" colspan="3">{{ trans('paegtm.basic_loot') }}</th>
+                            <th class="align-middle" colspan="3">{{ trans('paegtm.total_production') }}</th>
+                          </tr>
+                          <tr>
+                              <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                              <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
+                              <th>+/-</th>
+                              <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                              <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
+                              <th>+/-</th>
+                              <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                              <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
+                              <th>+/-</th>
+                              <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                              <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
+                              <th>+/-</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr v-for="mainTableItem in mainTableData">
+                              <td v-for="value in mainTableItem" class="align-middle">{{ value }}</td>
+                          </tr>
+                          </tbody>
+                      </table>
                 </div>
                 <div v-if="showMainMap">
                     <div class="text-center">
@@ -100,13 +102,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4 p-0 pl-2">
+            <div class="col-3 p-0 pl-2">
                 <div class="gtm-dark h-100">
                     <div class="p-0">
-                        <table class="table text-center text-white podbor-middle-table h-100">
+                        <table class="table text-center text-white podbor-middle-table h-100 mb-0">
                             <thead>
                             <tr>
-                                <th class="align-middle" rowspan="2">{{ trans('paegtm.gtmType') }}</th>
+                                <th class="align-middle" rowspan="2" style="width: 250px;">{{ trans('paegtm.gtmType') }}</th>
                                 <th colspan="2">{{ trans('paegtm.countThLong') }}</th>
                                 <th class="align-middle" rowspan="2">{{ trans('paegtm.headway.tech') }}</th>
                                 <th class="align-middle" rowspan="2">{{ trans('paegtm.headway.econom') }}</th>
@@ -126,6 +128,17 @@
                 </div>
             </div>
         </div>
+
+        <div class="row p-1">
+            <div class="col-6 pr-0">
+                <img src="/img/GTM/demo_chart_1.png" alt="" class="img-fluid">
+            </div>
+            <div class="col-6 p-0 pl-2">
+                <img src="/img/GTM/demo_chart_2.png" alt="" class="img-fluid">
+            </div>
+        </div>
+
+        <!--
         <div class="row m-0 p-1">
             <div class="col-6 gtm-dark">
                 <div class="w-100 d-flex justify-content-end cursor-pointer">
@@ -165,6 +178,7 @@
                 </div>
             </transition>
         </script>
+        -->
     </div>
 </template>
 
@@ -180,21 +194,30 @@ export default {
     data: function () {
         return {
             mainTableData: [
-                ['АО "Озенмунайгаз"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
-                ['АО "ЭмбаМунайГаз"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
-                ['АО "Мангистаумунайгаз"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
-                ['АО "Каражанбасмунайгаз"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
-                ['АО "Казгермунай"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
-                ['АО "Казахтуркмунай"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
-                ['АО "Казахойл Актобе"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
+              ['АО "Озенмунайгаз"', 231, 284, +53, 384, 368, -16, 4724, 4687, -37, 5341, 5341, 0],
+              ['АО "ЭмбаМунайГаз"', 61, 74, +13, 87, 120, +33, 2453, 2407, -46, 2600, 2601, 0],
+              ['АО "Мангистаумунайгаз"', 348, 274, -74, 283, 184, -100, 5273, 5496, +223, 5922, 5954, +32],
+              ['АО "Каражанбасмунай"', 50, 46, -3, 26, 24, -2, 2077, 1930, -147, 2153, 2002, -150],
+              ['ТОО "СП "Казгермунай"', 15, 10, -5, 58, 45, -13, 1465, 1482, +17, 1538, 1555, +17],
+              ['ТОО "Казтуркмунай"', 9, 8, -1, 26, 24, -2, 396, 409, +13, 425, 432, +7],
+              ['ТОО "Казахойл Актобе"', 0, 0, 0, 3, 1, -2, 586, 588, +2, 588, 589, +1],
             ],
             comparisonIndicators: [
-                ['Бурение', 15, 17, 78, 81],
-                ['ГРП', 15, 17, 78, 81],
-                ['ПВЛГ', 15, 17, 78, 81],
-                ['Скин ГРП', 15, 17, 78, 81],
-                ['ПВР', 15, 17, 78, 81],
-                ['РИР', 15, 17, 78, 81],
+                ['Бурение', 414, 417, 58, 65],
+                ['ОПЛ', 0, 1, 0, 100],
+                ['Ввод оценочных скважин из бурения', 2, 9, '-', '-'],
+                ['Углубление', 1, 1, 100, 100],
+                ['Бурение нагнет. скв.', 10, 10, '-', '-'],
+                ['ГРП', 235, 221, 56, 78],
+                ['Прочие КРС', 138, 151,54, 65],
+                ['Ввод скважин из БД', 13, 11, 50, 60],
+                ['Скин-ГРП', 100,100,56, 79],
+                ['ПВР', 342, 343, 48,	75],
+                ['ПВЛГ', 144, 130, 34, 47],
+                ['РИР', 4, 3, 100, 100],
+                ['НДГ', 2, 2, 0,50],
+                ['ИДН', 0, 1, 100, 6],
+                ['Прочие ГТМ', 36, 58, 54, 73],
             ],
             lineChartOptions: {
                 responsive: true,

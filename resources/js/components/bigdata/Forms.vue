@@ -47,30 +47,33 @@
     </div>
     <div class="row">
       <div v-if="activeForm" class="col-12 blueblock three m-0">
-        <BigDataPlainFormWrapper v-if="activeForm.type === 'plain' && wellId" :params="activeForm"
-                                 :well-id="wellId"></BigDataPlainFormWrapper>
+        <BigDataPlainFormWrapper v-if="activeForm.type === 'plain' && type === 'well' && id" :params="activeForm"
+                                 :well-id="id"></BigDataPlainFormWrapper>
         <BigDataTableFormWrapper v-else-if="activeForm.type === 'table'"
-                                 :params="activeForm"></BigDataTableFormWrapper>
+                                 :id="id" :params="activeForm" :type="type"></BigDataTableFormWrapper>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import forms from '../../json/bd/forms.json'
 import BigDataPlainFormWrapper from './forms/PlainFormWrapper'
 import BigDataTableFormWrapper from './forms/TableFormWrapper'
 
 export default {
   props: {
-    wellId: {
+    id: {
       type: Number,
+      required: true
+    },
+    type: {
+      type: String,
       required: true
     },
   },
   data() {
     return {
-      forms: forms,
+      forms: [],
       activeForm: null,
       formNameQuery: null,
       formsListExpanded: false
@@ -91,7 +94,11 @@ export default {
   },
   mounted() {
 
-    this.activeForm = this.forms[Object.keys(this.forms)[0]]
+    this.axios.get(this.localeUrl('api/bigdata/forms')).then(({data}) => {
+      this.forms = data.forms
+      this.activeForm = this.forms[Object.keys(this.forms)[0]]
+    })
+
 
   },
   methods: {

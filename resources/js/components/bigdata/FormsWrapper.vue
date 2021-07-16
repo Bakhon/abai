@@ -1,12 +1,12 @@
 <template>
-  <div class="row m-0 p-0">
+  <div class="row m-0 p-0 bd-forms__wrapper">
     <div class="col col-9 p-0">
-      <proto-form :wellId="wellId"></proto-form>
+      <proto-form :id="id" :type="type"></proto-form>
     </div>
-    <div class="col col-3 p-0 org-select-tree-block">
+    <div class="col col-3 p-0 org-select-tree-block scrollable">
       <proto-org-select-tree
-          :currentWellId="wellId"
-          @wellIdChange="wellIdChange">
+          :currentWellId="id"
+          @idChange="idChange">
       </proto-org-select-tree>
     </div>
   </div>
@@ -17,12 +17,14 @@
 export default {
   data() {
     return {
-      wellId: 0,
+      id: 0,
+      type: ''
     }
   },
   methods: {
-    wellIdChange(wellId) {
-      this.wellId = wellId;
+    idChange(node) {
+      this.id = node.id
+      this.type = node.type
     },
   }
 }
@@ -30,6 +32,10 @@ export default {
 
 <style lang="scss">
 .bd-forms {
+
+  &__wrapper {
+    align-items: stretch;
+  }
 
   .blueblock {
     background-color: #272953 !important;
@@ -107,7 +113,6 @@ export default {
   .block-one-title {
     font-size: 14px;
     color: #fff;
-    white-space: nowrap;
   }
 
   .block-two-header {
@@ -193,30 +198,6 @@ export default {
     }
   }
 
-
-  .scrollable {
-    &::-webkit-scrollbar {
-      height: 10px;
-      width: 4px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: #40467E;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #656A8A;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-      background: #656A8A;
-    }
-
-    &::-webkit-scrollbar-corner {
-      background: #20274F;
-    }
-  }
-
   .forms-list {
     &.expand {
       bottom: 0;
@@ -292,7 +273,32 @@ export default {
 }
 
 .org-select-tree-block {
-  height: 85vh;
-  overflow-y: scroll;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+  position: sticky;
+  top: 10px;
+}
+
+.scrollable {
+  &::-webkit-scrollbar {
+    height: 10px;
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #40467E;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #656A8A;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #656A8A;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: #20274F;
+  }
 }
 </style>

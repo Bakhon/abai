@@ -32,4 +32,12 @@ return array (
   'm3/d/at' => 'm³/d/at',
   'diameter' => 'диаметр',
   'dlina' => 'длина',
+  't' => 't',
+  'day' => 'day',
+  'kvh' => 'kV/h',
+  'kv' => 'kV',
+  'kvh/m3' => 'kV*h/m3',
+  'unit' => 'unit',
+  'kN' => 'kN',
+  'kNm' => 'kN*m',
 );

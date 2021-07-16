@@ -22,7 +22,7 @@ class OvensController extends CrudController
 
     protected $modelName = 'ovens';
 
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         $params = [
             'success' => Session::get('success'),

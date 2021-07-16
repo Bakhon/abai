@@ -113,7 +113,7 @@ export default {
       let values = {}
       for (let key in this.formValues) {
         let field = this.formFields.find(field => field.code === key)
-        if (field && field.type === 'calc') continue
+        if (field && field.type === 'calc' && field.submit_value !== true) continue
         values[key] = this.formValues[key]
       }
       return values
@@ -231,7 +231,25 @@ export default {
       }).finally(() => {
         this.$store.commit('globalloading/SET_LOADING', false);
       })
-
+    },
+    updateFields() {
+      this.$store.commit('globalloading/SET_LOADING', true);
+      axios.post(
+          this.localeUrl(`/api/bigdata/forms/${this.params.code}/update-fields`),
+          {
+            values: this.formValues,
+            well_id: this.wellId
+          }
+      ).then(({data}) => {
+        for (let fieldCode in data) {
+          let field = this.formFields.find(field => field.code === fieldCode)
+          for (let key in data[fieldCode]) {
+            field[key] = data[fieldCode][key]
+          }
+        }
+      }).finally(() => {
+        this.$store.commit('globalloading/SET_LOADING', false);
+      })
     },
     setWellPrefix(triggerFieldCode, changeFieldCode) {
       this.getWellPrefix({code: this.params.code, geo: this.formValues[triggerFieldCode]})

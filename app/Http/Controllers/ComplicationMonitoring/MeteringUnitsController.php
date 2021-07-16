@@ -22,7 +22,7 @@ class MeteringUnitsController extends CrudController
 
     protected $modelName = 'metering_units';
 
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         $params = [
             'success' => Session::get('success'),

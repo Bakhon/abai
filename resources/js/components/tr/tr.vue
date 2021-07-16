@@ -56,7 +56,7 @@
             </i>
             {{trans('tr.choose_month')}}
           </button>
-          <div v-if="datepicker1"
+          <div v-if="isDateNormal"
             class="dropdown-menu fadropmenu"
             style="
               background: #40467e;
@@ -72,14 +72,7 @@
             <div>
               <select
                 v-model="month"
-                style="
-                  background-color: #40467e;
-                  border-color: #40467e;
-                  color: white;
-                  width: 100%;
-                  padding: 8px;
-                "
-                class="form-controll"
+                class="form-controll-from"
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
@@ -100,17 +93,7 @@
             <div>
               <select
                 v-model="selectYear"
-                style="
-                  background-color: #40467E ;
-                  border-color: #40467E;
-                  color: white;
-                  width: 100%;
-                  padding: 8px;
-                  border: none
-                  height: 35px !important;
-                  color: white !important;
-                "
-                class="form-controll"
+                class="form-controll-to"
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
@@ -137,7 +120,7 @@
               </a>
             </div>
         </div>
-          <div v-if="datepicker2"
+          <div v-if="isDateDynamic"
             class="dropdown-menu fadropmenu"
             style="
               background: #40467e;
@@ -178,7 +161,7 @@
           <search-form-refresh
             @input="handlerSearch"
             @start-search="searchWell()"
-            :clear="searched"
+            :clear="isSearched"
           />
         </div>
       </div>
@@ -192,425 +175,429 @@
           <div class="tech" style="margin-left: 14px; color: white">
             <h5>{{trans('tr.tr_to')}} {{ dt }}</h5>
             
-          </div>
+          </div>          
+          <a v-show="false" v-if="isEdit"></a>
 
-          <tr-multiselect
-            :filter="filter"
-            :selectedAllTag="true"
-            :fieldFilterOptions="fieldFilterOptions"
-            @change-filter="handlerFilter"
-            filterName="месторождения"
-          />
-          
-          <a v-show="false" v-if="edit"></a>
+            <div class="tr_icons_block">
+              <modal name="add_well" :width="1600" :height="220"  :adaptive="true" style="z-index:9900000; ">
+                <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
+                  <notifications position="top"></notifications>
+                  <div>
+                        <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
+                            <h5>{{trans('tr.well_add')}}</h5>
+                            <button type="button" class="modal-bign-button" @click="closeModal('add_well')">{{trans('tr.close')}}</button>
+                        </div>
+                        
+                        <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
+                                <div style="margin-left: 7px;">
+                                  <select
+                                    class="form-control select_mod"
+                                    style="background: #334296 !important"
+                                    v-model="statusFilter"
+                                    value="Статус"
+                                  >
+                                    <option v-for="(f, k) in statusFilters" :key="k" :value="f">
+                                      {{ f === undefined ? trans('tr.choose_status') : f }}
+                                    </option>
+                                  </select>
+                                </div>
+                                <div style="margin-left: 7px; cursor: pointer;">
+                                  <select
+                                    class="select_mod form-control"
+                                    style="background: #334296 !important"
+                                    v-model="fieldFilter"
+                                    value="Месторождение"
+                                  >
+                                    <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
+                                      {{ f === undefined ? trans('tr.choose_field') : f }}
+                                    </option>
+                                  </select>
+                                </div>
 
+                                <div style="margin-left: 7px; cursor: pointer;">
+                                  <select
+                                    class="form-control select_mod"
+                                    style="background: #334296 !important"
+                                    v-model="typeWellFilter"
+                                    value="Тип скв"
+                                  >
+                                    <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
+                                      {{ f === undefined ? trans('tr.choose_well_type') : f }}
+                                    </option>
+                                  </select>
+                                </div>
 
-          <modal name="add_well" :width="1600" :height="220"  :adaptive="true" style="z-index:9900000; ">
-            <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
-              <notifications position="top"></notifications>
-              <div>
-                    <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
-                        <h5>{{trans('tr.well_add')}}</h5>
-                        <button type="button" class="modal-bign-button" @click="closeModal('add_well')">{{trans('tr.close')}}</button>
+                                <div style="margin-left: 7px; cursor: pointer;">
+                                  <select
+                                    class="form-control select_mod"
+                                    style="background: #334296 !important"
+                                    v-model="wellStatusFilter"
+                                    value="Состояние"
+                                  >
+                                    <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
+                                      {{ f === undefined ? trans('tr.choose_state') : f }}
+                                    </option>
+                                  </select>
+                                </div>
+
+                                <div style="margin-left: 7px; cursor: pointer;">
+                                  <select
+                                    class="select_mod form-control"
+                                    style="background: #334296 !important"
+                                    v-model="wellFilter"
+                                    value="Скважина"
+                                  >
+                                    <option v-for="(f, k) in wellFilters" :key="k" :value="f">
+                                      {{ f === undefined ? trans('tr.choose_well') : f }}
+                                    </option>
+                                  </select>
+                                </div>
+                                
+                                  <a
+                                    
+                                    style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                    v-if="!isShowAdd"
+                                    @click="addWellData"
+                                    @click.prevent="showWells"
+                                    ><svg 
+                                    width="16" 
+                                    height="16" 
+                                    viewBox="0 0 16 16" 
+                                    fill="none" 
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                  {{trans('tr.add')}}</a>
+
+                                  <a
+                                    
+                                    style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                    v-if="isShowAdd"
+                                    @click="showWells"
+                                    ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M17.6567 17.6575L6.34294 6.34383" 
+                                        stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                      <path d="M17.6556 6.34383L6.34188 17.6575" 
+                                        stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                      </svg>
+                                  {{trans('tr.cancel')}}</a> 
+
+                                <a
+                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                                  @click="saveadd()"
+                                  @click.prevent="reRender"
+                                  v-show = isDeleted
+                                  ><svg width="24" 
+                                  height="24" 
+                                  viewBox="0 0 24 24" 
+                                  fill="none" 
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
+                                  stroke-width="1.5" stroke-linecap="round"/>
+                                  </svg> {{trans('tr.save')}}</a>
+
+                                <a
+                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                                  @click="deleteWell"
+                                  @click.prevent="reRender"
+                                  v-show = isSaved
+
+                                  ><svg width="24"
+                                  height="24" 
+                                  viewBox="0 0 24 24" 
+                                  fill="none" 
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  </svg> {{trans('tr.delete')}}</a>
+                                
                     </div>
-                    
-                    <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
-                            <div style="margin-left: 7px;">
-                              <select
-                                class="form-control select_mod"
-                                style="background: #334296 !important"
-                                v-model="Filter_status"
-                                value="Статус"
-                              >
-                                <option v-for="(f, k) in statusFilters" :key="k" :value="f">
-                                  {{ f === undefined ? trans('tr.choose_status') : f }}
-                                </option>
-                              </select>
-                            </div>
-                            <div style="margin-left: 7px; cursor: pointer;">
-                              <select
-                                class="select_mod form-control"
-                                style="background: #334296 !important"
-                                v-model="Filter_field"
-                                value="Месторождение"
-                              >
-                                <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
-                                  {{ f === undefined ? trans('tr.choose_field') : f }}
-                                </option>
-                              </select>
-                            </div>
+                  </div>
+                  <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
 
-                            <div style="margin-left: 7px; cursor: pointer;">
-                              <select
-                                class="form-control select_mod"
-                                style="background: #334296 !important"
-                                v-model="Filter_well_type"
-                                value="Тип скв"
-                              >
-                                <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
-                                  {{ f === undefined ? trans('tr.choose_well_type') : f }}
-                                </option>
-                              </select>
-                            </div>
+                        <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="isShowAdd" :key="render">
+                        <thead>
+                          <tr >
+                            <td scope="col">{{trans('tr.field')}}</td>
+                            <td scope="col">{{trans('tr.well_state')}}</td>
+                            <td scope="col">{{trans('tr.well_number_short')}}</td>
+                            <td scope="col">{{trans('tr.u_horizon')}}</td>
+                            <td scope="col">{{trans('tr.u_object')}}</td>
+                            <td scope="col">{{trans('tr.operation_method_short')}}</td>
+                            <td scope="col">{{trans('tr.well_type_short')}}</td>
+                            <td scope="col">{{trans('tr.u_block')}}</td>
+                            <td scope="col">{{trans('tr.outer_diameter_producing_casing')}}</td>
+                            <td scope="col">{{trans('tr.inner_diameter_producing_casing_short')}}</td>
+                            <td scope="col">{{trans('tr.h_water_permeability_short')}}</td>
+                            <td scope="col">{{trans('tr.pump_type')}}</td>
+                            <td scope="col">{{trans('tr.sk_type')}}</td>
+                            <td scope="col">{{trans('tr.p_buffer')}}</td>
+                            <td scope="col">{{trans('tr.p_linear')}}</td>
+                            <td scope="col">{{trans('tr.p_layer')}}</td>
+                            <td scope="col">{{trans('tr.h_dynamic')}}</td>
+                            <td scope="col">{{trans('tr.p_annular')}}</td>
+                            <td scope="col">{{trans('tr.oil_density_short')}}</td>
+                            <td scope="col">{{trans('tr.water_density_short')}}</td>
+                            <td scope="col">{{trans('tr.h_up_perf_md')}}</td>
+                            <td scope="col">{{trans('tr.bhp_meter')}}</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(row, row_index) in lonelywell" 
+                            :key="row_index"
+                            ref="editTable">
+                            <td><input data-key="field" :value="row.field" class="input_edit"></td>
+                            <td><input data-key="well_status_last_day" :value="row.well_status_last_day" class="input_edit"></td>
+                            <td><input data-key="rus_wellname" :value="row.rus_wellname" class="input_edit"></td>
+                            <td><input data-key="horizon" :value="row.horizon" class="input_edit"></td>
+                            <td><input data-key="object" :value="row.object" class="input_edit"></td>
+                            <td><input data-key="exp_meth" :value="row.exp_meth" class="input_edit"></td>
+                            <td><input data-key="type_text" :value="row.type_text" class="input_edit"></td>
+                            <td><input data-key="block" :value="row.block" class="input_edit"></td>
+                            <td><input data-key="cas_OD" :value="row.cas_OD" class="input_edit"></td>
+                            <td><input data-key="cas_ID" :value="row.cas_ID" class="input_edit"></td>
+                            <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md" class="input_edit"></td>
+                            <td><input data-key="pump_type" :value="row.pump_type" class="input_edit"></td>
+                            <td><input data-key="type_sr" :value="row.type_sr" class="input_edit"></td>
+                            <td><input data-key="whp" :value="row.whp" class="input_edit"></td>
+                            <td><input data-key="line_p" :value="row.line_p" class="input_edit"></td>
+                            <td><input data-key="p_res" :value="row.p_res" class="input_edit"></td>
+                            <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit"></td>
+                            <td><input data-key="p_annular" :value="row.p_annular" class="input_edit"></td>
+                            <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit"></td>
+                            <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit"></td>
+                            <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
+                            <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
+                            <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
 
-                            <div style="margin-left: 7px; cursor: pointer;">
-                              <select
-                                class="form-control select_mod"
-                                style="background: #334296 !important"
-                                v-model="Filter_well_status"
-                                value="Состояние"
-                              >
-                                <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
-                                  {{ f === undefined ? trans('tr.choose_state') : f }}
-                                </option>
-                              </select>
-                            </div>
-
-                            <div style="margin-left: 7px; cursor: pointer;">
-                              <select
-                                class="select_mod form-control"
-                                style="background: #334296 !important"
-                                v-model="Filter_well"
-                                value="Скважина"
-                              >
-                                <option v-for="(f, k) in wellFilters" :key="k" :value="f">
-                                  {{ f === undefined ? trans('tr.choose_well') : f }}
-                                </option>
-                              </select>
-                            </div>
-                            
-                              <a
-                                
-                                style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                                v-if="!show_add"
-                                @click="addWellData"
-                                @click.prevent="showWells"
-                                ><svg 
-                                width="16" 
-                                height="16" 
-                                viewBox="0 0 16 16" 
-                                fill="none" 
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
-                              {{trans('tr.add')}}</a>
-
-                              <a
-                                
-                                style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                                v-if="show_add"
-                                @click="showWells"
-                                ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M17.6567 17.6575L6.34294 6.34383" 
-                                    stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                                  <path d="M17.6556 6.34383L6.34188 17.6575" 
-                                    stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                                  </svg>
-                              {{trans('tr.cancel')}}</a> 
-
-                            <a
-                              style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="saveadd()"
-                              @click.prevent="reRender"
-                              v-show = checkers
-                              ><svg width="24" 
-                              height="24" 
-                              viewBox="0 0 24 24" 
-                              fill="none" 
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
-                              stroke-width="1.5" stroke-linecap="round"/>
-                              </svg> {{trans('tr.save')}}</a>
-
-                             <a
-                              style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="deleteWell"
-                              @click.prevent="reRender"
-                              v-show = checkersec
-
-                              ><svg width="24"
-                               height="24" 
-                               viewBox="0 0 24 24" 
-                               fill="none" 
-                               xmlns="http://www.w3.org/2000/svg">
-                              <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                              <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                              </svg> {{trans('tr.delete')}}</a>
-                            
+                          </tr>
+                        </tbody>
+                      </table>
+                  </div>
                 </div>
-              </div>
-              <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
+              </modal>
 
-                    <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add" :key="render">
-                    <thead>
-                      <tr >
-                        <td scope="col">{{trans('tr.field')}}</td>
-                        <td scope="col">{{trans('tr.well_state')}}</td>
-                        <td scope="col">{{trans('tr.well_number_short')}}</td>
-                        <td scope="col">{{trans('tr.u_horizon')}}</td>
-                        <td scope="col">{{trans('tr.u_object')}}</td>
-                        <td scope="col">{{trans('tr.operation_method_short')}}</td>
-                        <td scope="col">{{trans('tr.well_type_short')}}</td>
-                        <td scope="col">{{trans('tr.u_block')}}</td>
-                        <td scope="col">{{trans('tr.outer_diameter_producing_casing')}}</td>
-                        <td scope="col">{{trans('tr.inner_diameter_producing_casing_short')}}</td>
-                        <td scope="col">{{trans('tr.h_water_permeability_short')}}</td>
-                        <td scope="col">{{trans('tr.pump_type')}}</td>
-                        <td scope="col">{{trans('tr.sk_type')}}</td>
-                        <td scope="col">{{trans('tr.p_buffer')}}</td>
-                        <td scope="col">{{trans('tr.p_linear')}}</td>
-                        <td scope="col">{{trans('tr.p_layer')}}</td>
-                        <td scope="col">{{trans('tr.h_dynamic')}}</td>
-                        <td scope="col">{{trans('tr.p_annular')}}</td>
-                        <td scope="col">{{trans('tr.oil_density_short')}}</td>
-                        <td scope="col">{{trans('tr.water_density_short')}}</td>
-                        <td scope="col">{{trans('tr.h_up_perf_md')}}</td>
-                        <td scope="col">{{trans('tr.bhp_meter')}}</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(row, row_index) in lonelywell" 
-                        :key="row_index"
-                        ref="editTable">
-                        <td><input data-key="field" :value="row.field" class="input_edit"></td>
-                        <td><input data-key="well_status_last_day" :value="row.well_status_last_day" class="input_edit"></td>
-                        <td><input data-key="rus_wellname" :value="row.rus_wellname" class="input_edit"></td>
-                        <td><input data-key="horizon" :value="row.horizon" class="input_edit"></td>
-                        <td><input data-key="object" :value="row.object" class="input_edit"></td>
-                        <td><input data-key="exp_meth" :value="row.exp_meth" class="input_edit"></td>
-                        <td><input data-key="type_text" :value="row.type_text" class="input_edit"></td>
-                        <td><input data-key="block" :value="row.block" class="input_edit"></td>
-                        <td><input data-key="cas_OD" :value="row.cas_OD" class="input_edit"></td>
-                        <td><input data-key="cas_ID" :value="row.cas_ID" class="input_edit"></td>
-                        <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md" class="input_edit"></td>
-                        <td><input data-key="pump_type" :value="row.pump_type" class="input_edit"></td>
-                        <td><input data-key="type_sr" :value="row.type_sr" class="input_edit"></td>
-                        <td><input data-key="whp" :value="row.whp" class="input_edit"></td>
-                        <td><input data-key="line_p" :value="row.line_p" class="input_edit"></td>
-                        <td><input data-key="p_res" :value="row.p_res" class="input_edit"></td>
-                        <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit"></td>
-                        <td><input data-key="p_annular" :value="row.p_annular" class="input_edit"></td>
-                        <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit"></td>
-                        <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit"></td>
-                        <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
-                        <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
-                        <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
+              <button
+                v-if="isPermission"
+                type="button" 
+                data-toggle="modal" 
+                data-target="#exampleModalCenter" 
+                @click="addpush()"
+                @click.prevent="wellAdd"
+                style="background: #272953; border: none; margin-left: 10px;"
+                v-bind:title="trans('tr.add_well')"
+                >
+                <svg 
+                    width="24" 
+                    height="24" 
+                    viewBox="0 0 24 24"
+                    fill="none" 
+                    xmlns="http://www.w3.org/2000/svg">
+                  <path 
+                    d="M18.5 12L5.5 12" 
+                    stroke="white" 
+                    stroke-width="1.5" 
+                    stroke-linecap="round"/>
+                  <path 
+                    d="M12 5.5V18.5" 
+                    stroke="white" 
+                    stroke-width="1.5" 
+                    stroke-linecap="round"/>
+                </svg>
+              </button>
+                
 
-                      </tr>
-                    </tbody>
-                  </table>
-              </div>
+              <button
+                v-if="isEdit"
+                v-bind:title="trans('tr.save')"
+                class="icon_save"
+                @click="savetable()"
+                ><svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M15.4735 5C15.7387 5 15.9931 5.10536 16.1806 5.29289L18.9985 8.11077L18.9985 17.9985C18.9985 18.5508 18.5508 18.9985 17.9985 18.9985L6 18.9985C5.44772 18.9985 5 18.5508 5 17.9985L5 6C5 5.44772 5.44771 5 6 5L15.4735 5Z"
+                    stroke="white"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <rect
+                    x="8.109"
+                    y="12.778"
+                    width="7.77693"
+                    height="6.22155"
+                    stroke="white"
+                    stroke-width="1.2"
+                    stroke-linejoin="round"
+                  />
+                  <rect
+                    x="8.88917"
+                    y="5"
+                    width="6.22155"
+                    height="3.88847"
+                    stroke="white"
+                    stroke-width="1.2"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+
+              <a
+                v-if="isEdit"
+                class="trgraph"
+                v-bind:title="trans('tr.cancel')"
+                style="cursor: pointer;"
+                data-toggle="tooltip"
+                data-placement="top"
+                @click="cancelEdit"
+                ><svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M17.6574 17.6575L6.34367 6.34383"
+                    stroke="white"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M17.6563 6.34383L6.34262 17.6575"
+                    stroke="white"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </a>
+
+              <a
+                v-if="!isEdit"
+                class="trgraph"
+                v-bind:title="trans('tr.show_graph')"
+                data-toggle="tooltip"
+                data-placement="top"
+                href="tr_charts"
+              
+                ><svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15 5H5C4.44771 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H17C17.5523 19 18 18.5523 18 18V11.6923M18 5V7M18 7H20M18 7V9M18 7H16M7.5 16V12.7692M11 16V8.46154M14.5 16V11.6923"
+                    stroke="white"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </a>
+
+              <a
+                v-if="!isEdit && isPermission"
+                v-bind:title="trans('tr.edit')"
+                style="cursor: pointer;"
+                data-toggle="tooltip"
+                data-placement="top"
+                @click="editable()"
+                ><svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 11.5L1.55336 16.3221C1.53048 16.3984 1.6016 16.4695 1.67788 16.4466L6.5 15M3 11.5C3 11.5 11.0603 3.43942 12.7227 1.7772C12.8789 1.62104 13.1257 1.62572 13.2819 1.78189C13.8372 2.33714 15.1144 3.61434 16.2171 4.71709C16.3733 4.87334 16.3788 5.12115 16.2226 5.27738C14.5597 6.94002 6.5 15 6.5 15M3 11.5L3.64727 10.8527L7.14727 14.3527L6.5 15"
+                    stroke="white"
+                    stroke-width="1.4"
+                  />
+                </svg>
+              </a>
+
+              <button
+                v-if="!isEdit"
+                class="trgraph"
+                id="bt1"
+                @click="swap"
+                style="
+                  background: #272953;
+                  color: white;
+                  border: none;
+                "
+                :title="isFullTable ? trans('tr.short_version') : trans('tr.full_version')"
+                data-toggle="tooltip"
+                data-placement="top"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  v-if="isFullTable"
+                >
+                  <path
+                    d="M9.23235 6H6.18359C5.63131 6 5.18359 6.44772 5.18359 7V18C5.18359 18.5523 5.63131 19 6.18359 19H17.342C17.8943 19 18.342 18.5523 18.342 18V15"
+                    stroke="white"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M18 6L12 12M12 12V7.6M12 12H16.4"
+                    stroke="white"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                </svg>
+
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  v-if="!isFullTable"
+                >
+                  <path
+                    d="M9 6H6C5.44772 6 5 6.44772 5 7V18C5 18.5523 5.44772 19 6 19H17C17.5523 19 18 18.5523 18 18V15M11.5 12.5L19 5M19 5V10.5M19 5H13.5"
+                    stroke="white"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
             </div>
-          </modal>
-
-          <button
-            v-if="isPermission"
-            type="button" 
-            data-toggle="modal" 
-            data-target="#exampleModalCenter" 
-            @click="addpush()"
-            @click.prevent="wellAdd"
-            style="background: #272953; border: none; margin-left: 10px;"
-            v-bind:title="trans('tr.add_well')"
-            >
-            <svg 
-                width="24" 
-                height="24" 
-                viewBox="0 0 24 24"
-                fill="none" 
-                xmlns="http://www.w3.org/2000/svg">
-              <path 
-                d="M18.5 12L5.5 12" 
-                stroke="white" 
-                stroke-width="1.5" 
-                stroke-linecap="round"/>
-              <path 
-                d="M12 5.5V18.5" 
-                stroke="white" 
-                stroke-width="1.5" 
-                stroke-linecap="round"/>
-            </svg>
-          </button>
-            
-
-          <a
-            v-if="edit"
-            v-bind:title="trans('tr.save')"
-            style="margin-left: 10px; cursor: pointer;"
-            @click="savetable()"
-            ><svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M15.4735 5C15.7387 5 15.9931 5.10536 16.1806 5.29289L18.9985 8.11077L18.9985 17.9985C18.9985 18.5508 18.5508 18.9985 17.9985 18.9985L6 18.9985C5.44772 18.9985 5 18.5508 5 17.9985L5 6C5 5.44772 5.44771 5 6 5L15.4735 5Z"
-                stroke="white"
-                stroke-width="1.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <rect
-                x="8.109"
-                y="12.778"
-                width="7.77693"
-                height="6.22155"
-                stroke="white"
-                stroke-width="1.2"
-                stroke-linejoin="round"
-              />
-              <rect
-                x="8.88917"
-                y="5"
-                width="6.22155"
-                height="3.88847"
-                stroke="white"
-                stroke-width="1.2"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>
-
-          <a
-            v-if="edit"
-            class="trgraph"
-            v-bind:title="trans('tr.cancel')"
-            style="cursor: pointer;"
-            data-toggle="tooltip"
-            data-placement="top"
-            @click="cancelEdit"
-            ><svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M17.6574 17.6575L6.34367 6.34383"
-                stroke="white"
-                stroke-width="1.4"
-                stroke-linecap="round"
-              />
-              <path
-                d="M17.6563 6.34383L6.34262 17.6575"
-                stroke="white"
-                stroke-width="1.4"
-                stroke-linecap="round"
-              />
-            </svg>
-          </a>
-
-          <a
-            v-if="!edit"
-            class="trgraph"
-            v-bind:title="trans('tr.show_graph')"
-            data-toggle="tooltip"
-            data-placement="top"
-            href="tr_charts"
-           
-            ><svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M15 5H5C4.44771 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H17C17.5523 19 18 18.5523 18 18V11.6923M18 5V7M18 7H20M18 7V9M18 7H16M7.5 16V12.7692M11 16V8.46154M14.5 16V11.6923"
-                stroke="white"
-                stroke-width="1.4"
-                stroke-linecap="round"
-              />
-            </svg>
-          </a>
-
-          <a
-            v-if="!edit && isPermission"
-            v-bind:title="trans('tr.edit')"
-            style="cursor: pointer;"
-            data-toggle="tooltip"
-            data-placement="top"
-            @click="editable()"
-            ><svg
-              width="18"
-              height="18"
-              viewBox="0 0 18 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3 11.5L1.55336 16.3221C1.53048 16.3984 1.6016 16.4695 1.67788 16.4466L6.5 15M3 11.5C3 11.5 11.0603 3.43942 12.7227 1.7772C12.8789 1.62104 13.1257 1.62572 13.2819 1.78189C13.8372 2.33714 15.1144 3.61434 16.2171 4.71709C16.3733 4.87334 16.3788 5.12115 16.2226 5.27738C14.5597 6.94002 6.5 15 6.5 15M3 11.5L3.64727 10.8527L7.14727 14.3527L6.5 15"
-                stroke="white"
-                stroke-width="1.4"
-              />
-            </svg>
-          </a>
-
-          <button
-            v-if="!edit"
-            class="trgraph"
-            id="bt1"
-            @click="swap"
-            style="
-              background: #272953;
-              color: white;
-              border: none;
-            "
-            :title="isfulltable ? trans('tr.short_version') : trans('tr.full_version')"
-            data-toggle="tooltip"
-            data-placement="top"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              v-if="isfulltable"
-            >
-              <path
-                d="M9.23235 6H6.18359C5.63131 6 5.18359 6.44772 5.18359 7V18C5.18359 18.5523 5.63131 19 6.18359 19H17.342C17.8943 19 18.342 18.5523 18.342 18V15"
-                stroke="white"
-                stroke-width="1.4"
-                stroke-linecap="round"
-              />
-              <path
-                d="M18 6L12 12M12 12V7.6M12 12H16.4"
-                stroke="white"
-                stroke-width="1.4"
-                stroke-linecap="round"
-              />
-            </svg>
-
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              v-if="!isfulltable"
-            >
-              <path
-                d="M9 6H6C5.44772 6 5 6.44772 5 7V18C5 18.5523 5.44772 19 6 19H17C17.5523 19 18 18.5523 18 18V15M11.5 12.5L19 5M19 5V10.5M19 5H13.5"
-                stroke="white"
-                stroke-width="1.4"
-                stroke-linecap="round"
-              />
-            </svg>
-          </button>
         </div>
 
         <div class="table-outer">
           <div class="table-inner">
-            <TrTable :wells="wells" @onSort="sortBy" v-if="show_first" />
+            <TrTable v-if="isShowFirst"
+            :wells="wells" 
+            :blockFilterData="blockFilterData" 
+            :horizonFilterData="horizonFilterData" 
+            :objectFilterData="objectFilterData" 
+            :fieldFilterData="fieldFilterData" 
+            :wellTypeFilterData="wellTypeFilterData" 
+            :expMethFilterData="expMethFilterData"
+            :wellNameFilterData="wellNameFilterData"
+            @onSort="sortBy" 
+            @filter="chooseFilter"
+            @dropFilters="dropFilter"
+            />
             <table
-              v-if="show_second"
+              v-if="isShowSecond"
               class="table table-bordered table-dark table-responsive trtable"
               style="margin-bottom: 0; background: #0d1e63"
 
@@ -834,24 +821,213 @@
                   <td @click="sortBy('rus_wellname')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
-                  <td @click="sortBy('field')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
-                  <td @click="sortBy('well')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
-                  <td @click="sortBy('well_type')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
-                  <td @click="sortBy('horizon')" class="th" >
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
-                  <td @click="sortBy('object')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
-                  <td @click="sortBy('block')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('field')"></i>
+                      <div>
+                        <b-dropdown id="dropdownFilterCustom" no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="field_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                  v-model="selectField"
+                                  :options="fieldFilterData"
+                                  :aria-describedby="ariaDescribedby"                                  
+                                >
+                                </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.choose_t')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_FIELD')"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
+                    <td @click="sortBy('rus_wellname')" class="th">
+                     <i class="fa fa-fw fa-sort"></i>
+                    </td>
+                  <!-- <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('rus_wellname')"></i>
+                      <div>
+                        <b-dropdown id="dropdownFilterCustom" no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                          <b-dropdown-form class="external_field_filter">
+                            <b-form-group
+                              label=""
+                              v-slot="{ ariaDescribedby }"
+                              @submit.stop.prevent
+                              class="field_form_fil"
+                            >
+                              <b-form-checkbox-group
+                                v-model="selectWellName"
+                                :options="wellNameFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                            </b-form-group>
+                            <div class="field_filter_text">
+                              <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                >{{trans('tr.choose_t')}}
+                                </a>
+                                <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_WELLNAME')"
+                                >{{trans('tr.reset')}}
+                                </a>
+                            </div>
+                          </b-dropdown-form>
+                        </b-dropdown>
+                      </div>
+                    </div>
+                  </td> -->
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('well_type')"></i>
+                      <div class="outer_button_filter" >
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content >        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="field_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                v-model="selectWellType"
+                                :options="wellTypeFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.choose_t')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_WELLTYPE')"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>                  
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('horizon')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="horizon_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                v-model="selectHorizon"
+                                :options="horizonFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.choose_t')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_HORIZON')"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>   
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('object')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="obj_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectObject"
+                                :options="objectFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.choose_t')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_OBJECT')"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>  
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('block')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="block_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectBlock"
+                                :options="blockFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.choose_t')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_BLOCK')"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>  
                   <td @click="sortBy('r_con')" class="th">
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
@@ -876,9 +1052,40 @@
                   <td @click="sortBy('h_up_perf_ext')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
-                  <td @click="sortBy('exp_meth')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('exp_meth')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="exp_meth_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectExpMeth"
+                                :options="expMethFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.choose_t')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_EXPMETH')"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>                    
                   <td @click="sortBy('pump_type')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
@@ -1230,18 +1437,37 @@
               </thead>
               <tbody>
                 <tr v-for="(row, row_index) in wells" :key="row_index">
-                  <td v-if="!edit">{{ row_index + 1 }}</td>
-                  <td v-if="edit">{{ row_index + 1 }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row_index + 1 }}</td>
+                  <td v-if="isEdit">{{ row_index + 1 }}</td>
 
-                  <td v-if="!edit">{{ row.field }}</td>
-                  <td v-if="edit">{{ row.field }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.field }}</td>
+                  <td v-if="isEdit">{{ row.field }}</td>
 
-                  <td v-if="!edit">{{ row.rus_wellname }}</td>
-                  <td v-if="edit">{{ row.rus_wellname }}</td>
-                  <!-- <td>{{row.well_type}}</td> -->
-
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.rus_wellname }}</td>
+                  <td v-if="isEdit">{{ row.rus_wellname }}</td>
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`well_type`), 'activ': isActiveClass(row)}"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].well_type[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].well_type[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <span>{{ row.well_type[0] }}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].well_type[1][1] }}
+                    </span>
+                  </td>
+                  <td
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1266,41 +1492,10 @@
                       {{ wells[row_index].well_type[1][1] }}
                     </span>
                   </td>
-                  <td
-                    v-if="edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].well_type[1][0] !== '0',
-                    }"
-                  >
-                    <span
-                      :class="{
-                        'circle-err':
-                          wells &&
-                          wells[row_index] &&
-                          wells[row_index].well_type[1][0] !== '0',
-                      }"
-                      :style="`background :${getColor(
-                        wells[row_index].well_type[1][0]
-                      )}`"
-                    >
-                    </span>
-                    <span>{{ row.well_type[0] }}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].well_type[1][1] }}
-                    </span>
-                  </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].horizon[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`horizon`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -1320,7 +1515,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1346,17 +1541,12 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">{{ row.object }}</td>
-                  <td v-if="edit">{{ row.object }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.object }}</td>
+                  <td v-if="isEdit">{{ row.object }}</td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].block[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`block`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -1376,7 +1566,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1403,13 +1593,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].r_con[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`r_con`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -1431,7 +1616,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1455,7 +1640,7 @@
                       @change="editrow(row, row_index)"
                       class="input_edit"
                       v-model="row.r_con[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <!-- <span>{{Math.round(row.r_con[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
@@ -1464,13 +1649,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].cas_OD[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`cas_OD`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -1492,7 +1672,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1518,21 +1698,16 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.cas_ID != null">{{
                       Math.round(row.cas_ID * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ Math.round(row.cas_ID * 10) / 10 }}</td>
+                  <td v-if="isEdit">{{ Math.round(row.cas_ID * 10) / 10 }}</td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tub_OD[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tub_OD`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -1554,7 +1729,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1580,21 +1755,16 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.tub_ID != null">{{
                       Math.round(row.tub_ID * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ Math.round(row.tub_ID * 10) / 10 }}</td>
+                  <td v-if="isEdit">{{ Math.round(row.tub_ID * 10) / 10 }}</td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].choke_d[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`choke_d`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -1616,7 +1786,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1642,23 +1812,18 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.h_up_perf_md[0] != null">
                       {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
                     </span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].h_up_perf_ext[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`h_up_perf_ext`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -1680,7 +1845,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1709,7 +1874,28 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`exp_meth`), 'activ': isActiveClass(row)}"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].exp_meth[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].exp_meth[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <span>{{ row.exp_meth[0] }}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].exp_meth[1][1] }}
+                    </span>
+                  </td>
+                  <td
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1734,41 +1920,10 @@
                       {{ wells[row_index].exp_meth[1][1] }}
                     </span>
                   </td>
-                  <td
-                    v-if="edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].exp_meth[1][0] !== '0',
-                    }"
-                  >
-                    <span
-                      :class="{
-                        'circle-err':
-                          wells &&
-                          wells[row_index] &&
-                          wells[row_index].exp_meth[1][0] !== '0',
-                      }"
-                      :style="`background :${getColor(
-                        wells[row_index].exp_meth[1][0]
-                      )}`"
-                    >
-                    </span>
-                    <span>{{ row.exp_meth[0] }}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].exp_meth[1][1] }}
-                    </span>
-                  </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].pump_type[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`pump_type`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -1788,7 +1943,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1814,17 +1969,12 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">{{ row.type_sr }}</td>
-                  <td v-if="edit">{{ row.type_sr }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.type_sr }}</td>
+                  <td v-if="isEdit">{{ row.type_sr }}</td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].spm[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`spm`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -1846,7 +1996,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1873,13 +2023,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].stroke_len[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`stroke_len`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -1901,7 +2046,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1928,13 +2073,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].q_theor[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`q_theor`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -1956,7 +2096,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -1985,13 +2125,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].freq[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`freq`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2013,7 +2148,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     contenteditable="true"
                     :class="{
                       'cell-with-comment':
@@ -2041,13 +2176,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].h_pump_set[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`h_pump_set`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2069,7 +2199,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2093,7 +2223,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.h_pump_set[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].h_pump_set[1][1] }}
@@ -2101,13 +2231,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].whp[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`whp`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2129,7 +2254,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2153,7 +2278,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.whp[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].whp[1][1] }}
@@ -2161,13 +2286,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].line_p[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`line_p`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2189,7 +2309,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2213,7 +2333,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.line_p[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].line_p[1][1] }}
@@ -2221,13 +2341,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].p_res[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`p_res`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2249,7 +2364,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2273,7 +2388,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.p_res[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].p_res[1][1] }}
@@ -2281,13 +2396,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].h_dyn[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`h_dyn`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2309,7 +2419,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2333,7 +2443,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.h_dyn[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].h_dyn[1][1] }}
@@ -2341,13 +2451,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].p_annular[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`p_annular`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2369,7 +2474,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2393,7 +2498,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.p_annular[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].p_annular[1][1] }}
@@ -2401,13 +2506,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].p_intake[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`p_intake`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2429,7 +2529,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2453,64 +2553,59 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.p_intake[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].p_intake[1][1] }}
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.bhp_prev_m != null">{{
                       Math.round(row.bhp_prev_m * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.bhp_prev_m * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.q_l_prev_m != null">{{
                       Math.round(row.q_l_prev_m * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.q_l_prev_m * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.wct_prev_m != null">{{
                       Math.round(row.wct_prev_m * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.wct_prev_m * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.h_dyn_prev_m != null">{{
                       Math.round(row.h_dyn_prev_m * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.h_dyn_prev_m * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.pi_prev_m != null">{{
                       Math.round(row.pi_prev_m * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ Math.round(row.pi_prev_m * 10) / 10 }}</td>
+                  <td v-if="isEdit">{{ Math.round(row.pi_prev_m * 10) / 10 }}</td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].bhp[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`bhp`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2532,7 +2627,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2559,13 +2654,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].q_o[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`q_o`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2587,7 +2677,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2614,13 +2704,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].q_l[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`q_l`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2642,7 +2727,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2666,7 +2751,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.q_l[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].q_l[1][1] }}
@@ -2674,13 +2759,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].wct[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                   :class="{'cell-with-comment': isCommentClass(row_index,`wct`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2702,7 +2782,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2726,7 +2806,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.wct[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].wct[1][1] }}
@@ -2734,13 +2814,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gor[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`gor`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2762,7 +2837,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2786,7 +2861,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.gor[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].gor[1][1] }}
@@ -2795,13 +2870,8 @@
 
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].well_status_last_day[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`well_status_last_day`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2821,7 +2891,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2848,13 +2918,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].P_bubble_point[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`P_bubble_point`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2876,7 +2941,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2905,13 +2970,8 @@
                   </td>
                  
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].t_res[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`t_res`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2933,7 +2993,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -2959,21 +3019,16 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.wht != null">{{
                       Math.round(row.wht * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ Math.round(row.wht * 10) / 10 }}</td>
+                  <td v-if="isEdit">{{ Math.round(row.wht * 10) / 10 }}</td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].grp_skin[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`grp_skin`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -2995,7 +3050,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3019,21 +3074,42 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.grp_skin[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].grp_skin[1][1] }}
                     </span>
                   </td>
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.grp_jd != null">{{
                       Math.round(row.grp_jd * 100) / 100
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ Math.round(row.grp_jd * 10) / 10 }}</td>
+                  <td v-if="isEdit">{{ Math.round(row.grp_jd * 10) / 10 }}</td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`grp_date`), 'activ': isActiveClass(row)}"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].grp_date[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].grp_date[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <span>{{ row.grp_date[0] }}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].grp_date[1][1] }}
+                    </span>
+                  </td>
+                  <td
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3058,41 +3134,10 @@
                       {{ wells[row_index].grp_date[1][1] }}
                     </span>
                   </td>
-                  <td
-                    v-if="edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].grp_date[1][0] !== '0',
-                    }"
-                  >
-                    <span
-                      :class="{
-                        'circle-err':
-                          wells &&
-                          wells[row_index] &&
-                          wells[row_index].grp_date[1][0] !== '0',
-                      }"
-                      :style="`background :${getColor(
-                        wells[row_index].grp_date[1][0]
-                      )}`"
-                    >
-                    </span>
-                    <span>{{ row.grp_date[0] }}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].grp_date[1][1] }}
-                    </span>
-                  </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].grp_contractor[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`grp_contractor`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3112,7 +3157,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3139,13 +3184,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].visc_oil_rc[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`visc_oil_rc`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3167,7 +3207,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3194,13 +3234,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].visc_wat_rc[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`visc_wat_rc`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3222,7 +3257,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3249,13 +3284,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].visc_liq_rc[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`visc_liq_rc`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3277,7 +3307,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3306,13 +3336,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].bo[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`bo`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3334,7 +3359,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3361,13 +3386,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].dens_oil[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`dens_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3389,7 +3409,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3416,13 +3436,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].dens_liq[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`dens_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3444,7 +3459,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3471,13 +3486,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].h_perf[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`h_perf`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3499,7 +3509,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3526,13 +3536,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].k[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`k`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3554,7 +3559,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3581,13 +3586,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].kh[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`kh`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3609,7 +3609,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3636,13 +3636,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].pi[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`pi`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3664,7 +3659,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3691,13 +3686,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tp_idn_bhp[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_bhp`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3719,7 +3709,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3746,13 +3736,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tp_idn_liq[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3774,7 +3759,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3801,13 +3786,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tp_idn_liq_cas_d_corr[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_liq_cas_d_corr`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3829,7 +3809,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3858,13 +3838,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tp_idn_oil[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3886,7 +3861,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3913,13 +3888,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tp_idn_oil_inc[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_oil_inc`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3941,7 +3911,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3970,13 +3940,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tp_idn_jd[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_jd`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -3998,7 +3963,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4025,13 +3990,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tp_idn_skin[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_skin`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4053,7 +4013,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4080,13 +4040,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tp_idn_pi_after[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_pi_after`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4108,7 +4063,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4137,13 +4092,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tp_idn_grp_q_liq[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_grp_q_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4165,7 +4115,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4194,14 +4144,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tp_idn_grp_q_liq_cas_d_corr[1][0] !==
-                          '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_grp_q_liq_cas_d_corr`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4224,7 +4168,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4255,13 +4199,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tp_idn_grp_q_oil[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_grp_q_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4283,7 +4222,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4312,13 +4251,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tp_idn_grp_q_oil_inc[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_grp_q_oil_inc`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4340,7 +4274,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4368,32 +4302,27 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.tp_idn_q_oil_inc_perc != null">
                       {{ Math.round(row.tp_idn_q_oil_inc_perc * 10) / 10 }}
                     </span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.tp_idn_q_oil_inc_perc * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.gt_total_inc != null">{{
                       Math.round(row.gt_total_inc * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.gt_total_inc * 10) / 10 }}
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gp_idn_bhp[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`gp_idn_bhp`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4415,7 +4344,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4442,13 +4371,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gp_idn_q_liq[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`gp_idn_q_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4470,7 +4394,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4497,13 +4421,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gp_idn_q_liq_cas_d_corr[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`gp_idn_q_liq_cas_d_corr`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4526,7 +4445,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4556,13 +4475,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gp_idn_q_oil[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`gp_idn_q_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4584,7 +4498,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4611,13 +4525,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gp_idn_q_oil_inc[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`gp_idn_q_oil_inc`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4639,7 +4548,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4668,13 +4577,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gp_grp_q_liq[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`gp_grp_q_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4696,7 +4600,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4723,13 +4627,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gp_grp_q_liq_cas_d_corr[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`gp_grp_q_liq_cas_d_corr`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4752,7 +4651,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4782,13 +4681,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gp_grp_q_oil[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`gp_grp_q_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4810,7 +4704,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4837,13 +4731,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gp_grp_q_oil_inc[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`gp_grp_q_oil_inc`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4865,7 +4754,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4893,52 +4782,47 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.gp_total_inc_perc != null">{{
                       Math.round(row.gp_total_inc_perc * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.gp_total_inc_perc * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.gp_total_inc != null">{{
                       Math.round(row.gp_total_inc * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.gp_total_inc * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.error_count != null">{{
                       row.error_count
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ row.error_count }}</td>
+                  <td v-if="isEdit">{{ row.error_count }}</td>
 
-                  <td v-if="!edit">{{ row.error_first }}</td>
-                  <td v-if="edit">{{ row.error_first }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.error_first }}</td>
+                  <td v-if="isEdit">{{ row.error_first }}</td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.error_warning != null">{{
                       row.error_warning
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ row.error_warning }}</td>
+                  <td v-if="isEdit">{{ row.error_warning }}</td>
 
-                  <td v-if="!edit">{{ row.error_first_warning }}</td>
-                  <td v-if="edit">{{ row.error_first_warning }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.error_first_warning }}</td>
+                  <td v-if="isEdit">{{ row.error_first_warning }}</td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].idn_pump_depth_max[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`idn_pump_depth_max`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -4960,7 +4844,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4984,7 +4868,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.idn_pump_depth_max[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].idn_pump_depth_max[1][1] }}
@@ -4992,13 +4876,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].stop_date[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                   :class="{'cell-with-comment': isCommentClass(row_index,`stop_date`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5020,7 +4899,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5047,13 +4926,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].layers_count[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`layers_count`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5075,7 +4949,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5102,13 +4976,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].zone[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`zone`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5128,7 +4997,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5155,13 +5024,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tseh[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`tseh`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5181,7 +5045,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5207,21 +5071,16 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.semi_free_flow[0] != null">{{
                       row.semi_free_flow[0]
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ row.semi_free_flow[0] }}</td>
+                  <td v-if="isEdit">{{ row.semi_free_flow[0] }}</td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].non_profit[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`non_profit`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5243,7 +5102,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5270,13 +5129,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].unsteady_state[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`unsteady_state`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5298,7 +5152,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5325,13 +5179,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].start_up_date[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`start_up_date`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5353,7 +5202,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5380,13 +5229,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].well_project_purpose[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`well_project_purpose`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5408,7 +5252,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5435,13 +5279,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].bhp_meter[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`bhp_meter`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5463,7 +5302,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5487,23 +5326,17 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.bhp_meter[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
-                    <!-- <span>{{Math.round(row.bhp_meter[0]*10)/10}}</span> -->
+
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].bhp_meter[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.oil_net_pay*10)/10}}</td> -->
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].oil_net_pay[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`oil_net_pay`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5525,7 +5358,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5552,13 +5385,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].oil_cumulative[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`oil_cumulative`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5580,7 +5408,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5600,7 +5428,7 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.oil_cumulative[0]" :disabled="!edit"> -->
+
                     <span>{{
                       Math.round(row.oil_cumulative[0] * 10) / 10
                     }}</span>
@@ -5610,13 +5438,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].max_q_liq_hist[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`max_q_liq_hist`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5638,7 +5461,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5666,30 +5489,25 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     {{ Math.round(row.dist_to_inj_well * 10) / 10 }}
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.dist_to_inj_well * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.dist_to_woc != null">{{
                       Math.round(row.dist_to_woc * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.dist_to_woc * 10) / 10 }}
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].curr_bh[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`curr_bh`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5711,7 +5529,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5738,13 +5556,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].pump_fillage[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`pump_fillage`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5766,7 +5579,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5792,34 +5605,29 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">{{ row.gzu_type }}</td>
-                  <td v-if="edit">{{ row.gzu_type }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.gzu_type }}</td>
+                  <td v-if="isEdit">{{ row.gzu_type }}</td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.p_res_init != null">{{
                       Math.round(row.p_res_init * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.p_res_init * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.q_liq_charac != null">{{
                       Math.round(row.q_liq_charac * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.q_liq_charac * 10) / 10 }}
                   </td>
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].APV_t_rab[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`APV_t_rab`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5841,7 +5649,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5868,13 +5676,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].APV_t_nak[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`APV_t_nak`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5896,7 +5699,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5922,54 +5725,49 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.plan_izo_work != null">{{
                       row.plan_izo_work
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ row.plan_izo_work }}</td>
+                  <td v-if="isEdit">{{ row.plan_izo_work }}</td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.plan_act_q_l != null">{{
                       Math.round(row.plan_act_q_l * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.plan_act_q_l * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.plan_act_wct != null">{{
                       Math.round(row.plan_act_wct * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.plan_act_wct * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">{{ row.plan_activities }}</td>
-                  <td v-if="edit">{{ row.plan_activities }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.plan_activities }}</td>
+                  <td v-if="isEdit">{{ row.plan_activities }}</td>
 
-                  <td v-if="!edit">{{ row.plan_casing_info }}</td>
-                  <td v-if="edit">{{ row.plan_casing_info }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.plan_casing_info }}</td>
+                  <td v-if="isEdit">{{ row.plan_casing_info }}</td>
 
-                  <td v-if="!edit">{{ row.plan_comment }}</td>
-                  <td v-if="edit">{{ row.plan_comment }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.plan_comment }}</td>
+                  <td v-if="isEdit">{{ row.plan_comment }}</td>
 
-                  <td v-if="!edit">{{ row.last_gtm_date }}</td>
-                  <td v-if="edit">{{ row.last_gtm_date }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.last_gtm_date }}</td>
+                  <td v-if="isEdit">{{ row.last_gtm_date }}</td>
 
-                  <td v-if="!edit">{{ row.last_gtm_type }}</td>
-                  <td v-if="edit">{{ row.last_gtm_type }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.last_gtm_type }}</td>
+                  <td v-if="isEdit" :class="{'activ': isActiveClass(row)}">{{ row.last_gtm_type }}</td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].planned_choke[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`planned_choke`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -5991,7 +5789,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6015,7 +5813,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_choke[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_choke[1][1] }}
@@ -6023,13 +5821,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].planned_oil[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`planned_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -6051,7 +5844,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6078,13 +5871,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].planned_liq[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`planned_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -6106,7 +5894,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6130,24 +5918,19 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_liq[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_liq[1][1] }}
                     </span>
                   </td>
 
-                  <td v-if="!edit">{{ Math.round(row.planned_gas*10)/10 }}</td>
-                  <td v-if="edit">{{ Math.round(row.planned_gas*10)/10 }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ Math.round(row.planned_gas*10)/10 }}</td>
+                  <td v-if="isEdit">{{ Math.round(row.planned_gas*10)/10 }}</td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].planned_wct[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`planned_wct`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -6169,7 +5952,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6193,24 +5976,19 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_wct[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_wct[1][1] }}
                     </span>
                   </td>
 
-                  <td v-if="!edit">{{Math.round(row.planned_gor*10)/10}}</td>
-                  <td v-if="edit"><input v-model="row.planned_gor" @change="editrow(row, row_index)" :disabled="!edit" class="input_edit"></td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{Math.round(row.planned_gor*10)/10}}</td>
+                  <td v-if="isEdit"><input v-model="row.planned_gor" @change="editrow(row, row_index)" :disabled="!isEdit" class="input_edit"></td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].planned_month_days[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`planned_month_days`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -6230,7 +6008,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6254,7 +6032,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_month_days[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_month_days[1][1] }}
@@ -6262,13 +6040,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].planned_monthly_oil[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`planned_monthly_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -6290,7 +6063,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6319,13 +6092,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].planned_monthly_gas[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`planned_monthly_gas`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -6347,7 +6115,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6376,13 +6144,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].planned_monthly_liq[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`planned_monthly_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -6404,7 +6167,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6433,13 +6196,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].planned_monthly_water[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`planned_monthly_water`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -6461,7 +6219,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6490,13 +6248,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].planned_diff_oil[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`planned_diff_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -6518,7 +6271,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6547,13 +6300,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].planned_diff_liq[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`planned_diff_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -6575,7 +6323,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6604,13 +6352,8 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].planned_events[1][0] !== '0',
-                    }"
+                    v-if="!isEdit"
+                    :class="{'cell-with-comment': isCommentClass(row_index,`planned_events`), 'activ': isActiveClass(row)}"
                   >
                     <span
                       :class="{
@@ -6632,7 +6375,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6656,7 +6399,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_events[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_events[1][1] }}
@@ -6666,717 +6409,111 @@
               </tbody>
             </table>
           </div>
+          <div class="overflow-auto">
+            
+            <paginate
+                v-model="this.$store.state.tr.pageNumber"
+                :page-count="this.pageCount"
+                :page-range="3"
+                :margin-pages="2"
+                :click-handler="clickCallback"
+                :prev-text="'«'"
+                :next-text="'»'"
+                :container-class="'pagination'"
+                :page-class="'page-item'">
+            </paginate>
+            <div>
+                    <input @change="onChangePage($event.target.value)" class="pgn_input">
+              
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <notifications position="top"></notifications>
   </div>
 </template>
-<script>
-import Vue from 'vue';
-import NotifyPlugin from "vue-easy-notify";
-import "vue-easy-notify/dist/vue-easy-notify.css";
-import TrTable from "./table";
-import TrFullTable from "./tablefull";
-import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
-// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
-import { fields } from "./constants.js";
-import TrMultiselect from "./TrMultiselect.vue";
+<script src="./tr.js"></script>
 
-Vue.use(NotifyPlugin);
-export default {
-  name: "TrPage",
-  props: [
-    'params'
-  ],
-  components: {
-    TrTable,
-    TrFullTable,
-    SearchFormRefresh,
-    TrMultiselect,
-    // FadeLoader,
-  },
-  computed: {
-    // Добавление выбранных данных в таблицу
-    addWellData() {
-      if (this.allWells && this.allWells.length > 0) {
-        let is_saved = this.Filter_status;
-        let field = this.Filter_field;
-        let rus_wellname = this.Filter_well;
-        let type_text = this.Filter_well_type;
-        let well_status_last_day = this.Filter_well_status;
-        try {
-          let filteredResult = this.allWells.filter(
-            (row) =>
-              (!is_saved || row.is_saved === is_saved) &&
-              (!field || row.field === field) &&
-              (!rus_wellname || row.rus_wellname === rus_wellname) &&
-              (!type_text || row.type_text === type_text) &&
-              (!well_status_last_day || row.well_status_last_day === well_status_last_day)
-          );
-          this.filteredWellData = filteredResult;
-          console.log("filteredResult bat = ", filteredResult);
-        } catch (err) {
-          console.error(err);
-          return false;
-        }
-        if(this.filteredWellData.length === 1){
-          this.lonelywell = this.filteredWellData;
-        }
-        else return false;
-      } else return false;
-      this.render++;
-    },
-    // фильтр месторожд.
-    fieldFilters() {
-      if (this.allWells && this.allWells.length > 0) {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.field) === -1 &&
-            (!this.Filter_well || el.rus_wellname === this.Filter_well) &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status) &&
-            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
-          ) {
-            filters = [...filters, el.field];
-          }
-        });
-        return [undefined, ...filters];
-      } else return [];
-    },
-    // фильтр по скважинам
-    wellFilters() {
-      if (this.allWells && this.allWells.length > 0) {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.rus_wellname) === -1 &&
-            (!this.Filter_field || el.field === this.Filter_field) &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status) &&
-            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
-          ) {
-            filters = [...filters, el.rus_wellname];
-          }
-        });
-        return [undefined, ...filters];
-      } else return [];
-    },
-    // фильтр по сост.скв
-    wellStatusFilters() {
-      if (this.allWells && this.allWells.length > 0) {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.well_status_last_day) === -1 &&
-            (!this.Filter_field || el.field === this.Filter_field) &&
-            (!this.Filter_well || el.rus_wellname === this.Filter_well) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status) &&
-            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
-          ) {
-            filters = [...filters, el.well_status_last_day];
-          }
-        });
-        return [undefined, ...filters];
-      } else return [];
-    },
-    // фильтр по статусам (сохраненные или не сохраненные)
-    statusFilters() {
-      if (this.allWells && this.allWells.length > 0) {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.is_saved) === -1 &&
-            (!this.Filter_field || el.field === this.Filter_field) &&
-            (!this.Filter_well || el.rus_wellname === this.Filter_well)  &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
-          ) {
-            filters = [...filters, el.is_saved];
-          }
-        });
-        return [undefined, ...filters];
-      } else return [];
-    },
-    typeWellFilters() {
-      if (this.allWells && this.allWells.length > 0) {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.type_text) === -1 &&
-            (!this.Filter_field || el.field === this.Filter_field) &&
-            (!this.Filter_well || el.rus_wellname === this.Filter_well)  &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status)
-          ) {
-            filters = [...filters, el.type_text];
-          }
-        });
-        return [undefined, ...filters];
-      } else return [];
-    },          
-  },
-  beforeCreate: function () {},
-  created() {
-    this.$store.commit("globalloading/SET_LOADING", true);
-    this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
-    this.$store.commit("tr/SET_SEARCH", this.searchString);
-    this.$store.commit("tr/SET_FILTER", this.filter);
-    var today = new Date();
-    var mm = today.getMonth() + 1;
-    var yyyy = today.getFullYear();
-    var day = today.getDate();
-    if(day > 25 && mm < 12) {
-      var mm1 = today.getMonth() + 2;
-      var yyyy1 = today.getFullYear();
-    }
-    else if(day > 25 && mm === 12){
-      var mm1 = 1;
-      var yyyy1 = today.getFullYear() + 1;
-    }
-    else{
-      var mm1 = today.getMonth() + 1;
-      var yyyy1 = today.getFullYear();
-    }
-    this.$store.commit("tr/SET_MONTH", mm);
-    this.$store.commit("tr/SET_YEAR", yyyy);
-    this.is_dynamic = false;
-    this.$store.commit("tr/SET_IS_DYNAMIC", "false");
-    this.axios
-      .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
-      .then((response) => {
-        let data = response.data;
-        this.year = yyyy;
-        this.selectYear = yyyy;
-        this.month = mm;
-        this.$store.commit("globalloading/SET_LOADING", false);
-        if (data) {
-          console.log(data);
-          this.wells = data.data;
-          this.fullWells = data.data;
-        } else {
-          console.log("No data");
-          
-        }
-        if (mm1 < 10) {
-          this.dt = "01" + ".0" + mm1 + "." + yyyy1;
-        } else {
-          this.dt = "01" + "." + mm1 + "." + yyyy1;
-        }
-        this.isPermission = this.params.includes(this.permissionName);
-      });
-  },
-  data: function () {
-    return {
-      wells: [],
-      searchString: "",
-      searched: false,
-      sortParam: "",
-      sortType: "asc",
-      filter: [...fields],
-      fieldFilterOptions: [
-        {
-          group: this.trans('tr.all_wells'),
-          fields: [...fields],
-        },
-      ],
-      dt: null,
-      fullWells: [],
-      editedWells: [],
-      show_first: true,
-      show_second: false,
-      show_add: false,
-      edit: false,
-      editdtm: null,
-      editdty: null,
-      year: null,
-      selectYear: null,
-      month: null,
-      isfulltable: false,
-      Filter_field: undefined,
-      allWells: [],
-      awells: [],
-      Filter_well_status: undefined,
-      Filter_status: undefined,
-      Filter_well_type: undefined,
-      filteredWellData: [],
-      lonelywell: [],
-      render: 0,
-      searchStringModel: "",
-      Filter_well: undefined,
-      checkers: false,
-      checkersec: false,
-      datepicker1: true,
-      datepicker2: false,
-      date_fix: true,
-      is_dynamic: false,
-      permissionName: 'tr edit',
-      isPermission: false,
-    };
-  },
-  watch: {
-    fullWells() {
-      this.chooseField();
-    },
-    filter() {
-      this.chooseField();
-    },
-  },
-  methods: {
-    editrow(row, rowId) {
-      this.$store.commit("globalloading/SET_LOADING", false);
-      console.log("row = ", row);
-      console.log("rowId = ", rowId);
-      row["index"] = 0;
-      this.axios
-        .post(
-          "http://172.20.103.187:7576/api/techregime/edit/" +
-            this.year +
-            "/" +
-            this.month +
-            "/",
-          {
-            row: row,
-          }
-        )
-        .then((response) => {
-          if (response.data) {
-            this.wells = [
-              ...this.wells.slice(0, rowId),
-              response.data.data[0],
-              ...this.wells.slice(rowId + 1),
-            ];
-            this.editedWells = this.editedWells.filter(
-              (item) => item.well !== response.data.data[0].well
-            );
-            this.editedWells = [...this.editedWells, response.data.data[0]];
-          } else {
-            console.log("No data");
-          }
-        });
-    },
-    savetable() {
-      this.edit = false;
-      this.$store.commit("globalloading/SET_LOADING", true);
-      const searchParam = this.searchString ? `${this.searchString}/` : "";
-      this.axios
-        .post(
-          "http://172.20.103.187:7576/api/techregime/save/" +
-            this.year +
-            "/" +
-            this.month +
-            "/" +
-            searchParam,
-          {
-            well: this.editedWells,
-          }
-        )
-        .then((response) => {
-          console.log(response.data);
-          this.fullWells = response.data;
-          this.editedWells = [];
-          this.$store.commit("globalloading/SET_LOADING", false);
-          this.searched = searchParam ? true : false;
-        })
-        .catch((error) => {
-          console.log(error.data);
-          this.editedWells = [];
-          this.searchWell();
-          this.searched = searchParam ? true : false;
-        });
-    },
-    cancelEdit() {
-      this.edit = false;
-      this.editedWells = [];
-      this.searchWell();
-    },
-    cancelPP() {
-      this.edit = false;
+<style lang="scss" scoped>
 
-    },
-    reRender() {
-      this.filteredWellData = [];
-      this.Filter_well_status = undefined;
-      this.Filter_status = undefined;
-      this.Filter_well_type = undefined;
-      this.Filter_well = undefined;
-      this.Filter_field = undefined;
-      
-    },
-    reRenderAll() {
-      this.$store.commit("globalloading/SET_LOADING", true);
-      var today = new Date();
-      var mm = today.getMonth() + 1;
-      var yyyy = today.getFullYear();
-      var day = today.getDate();
-      if(day > 25 && mm < 12) {
-        var mm1 = today.getMonth() + 2;
-        var yyyy1 = today.getFullYear();
-      }
-      else if(day > 25 && mm === 12){
-        var mm1 = 1;
-        var yyyy1 = today.getFullYear() + 1;
-      }
-      else{
-        var mm1 = today.getMonth() + 1;
-        var yyyy1 = today.getFullYear();
-      }
+.overflow-auto {
+  justify-content: center;
+  display: flex;
+}
+.select_pages {
+  color: white;
+}
 
-      this.axios
-        .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
-        .then((response) => {
-          let data = response.data;
+.form-controll-from {
+  background-color: #333975;
+  border-color: #333975;
+  color: white;
+  width: 100%;
+  padding: 8px;
+}
+.form-controll-to {
+  background-color: #333975 ;
+  border-color: #333975;
+  color: white;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  height: 35px !important;
+  color: white !important;
+}
+.tr-field-filter.tr-field-filter {
+  margin: 0 0 0 auto;
+  flex-grow: 0;
+  width: 230px;
+}
+.tr-table-header {
+  justify-content: space-between;
+  height: 48px;
+  align-items: center;
+}
+.trheadhight {
+  height: 40px;
+}
+.fadropmenu.fadropmenu {
+  background: #333975;
+  z-index: 4001 !important;
+}
+.faheadhight {
+  height: 40px;
+}
 
-          this.$store.commit("globalloading/SET_LOADING", false);
-          if (data) {
-            console.log(data);
-            this.wells = data.data;
-            this.fullWells = data.data;
-          } else {
-            console.log("No data");
-            
-          }
+.button_form.button_form {
+  background: #333975;
+  border: 0px;
+  color: #fff;
+  align-self: center;
+  width: 150px;
+  margin-top: 5px;
+}
+.dropdown-menu.show {
+  display: flex;
+  flex-direction: column;
+}
 
-        });
-    },
-    showWells() {
-      if(this.lonelywell.length === 1){
-        this.show_add = !this.show_add;
-        if(this.lonelywell[0].is_saved === "Сохранено"){
-          this.checkers = false;
-          this.checkersec = true;
-        }
-        else{
-          this.checkers = true;
-          this.checkersec = false;
-        }
-      }
-      else{
-        this.show_add = this.show_add;
-      }
-    },
-    editable() {
-      this.edit = true;
-      this.show_second = true;
-      this.show_first = false;
-    },
-    searchadd() {
-      this.$emit();
-    },
-    clearClickadd() {
-      this.searchStringModel= "";
-      this.$emit();
-      this.searchadd();
-    },
-    closeModal(modalName) {
-      this.$modal.hide(modalName)
-    },
-    sortBy(type) {
-      this.sortParam = type;
-      this.$store.commit("tr/SET_SORTTYPE", this.sortType);
-      this.$store.commit("tr/SET_SORTPARAM", type);
-      let { wells, sortType } = this;
-      console.log(type, sortType);
-      if (sortType === "asc") {
-        this.wells = wells.sort((a, b) => {
-          let aVal = a[type];
-          let bVal = b[type];
-          if (Array.isArray(aVal)) {
-            if (typeof aVal[0] === "string") {
-              return aVal[0].localeCompare(bVal[0]);
-            } else {
-              if (Number(aVal[0]) > Number(bVal[0])) return 1;
-              else if (Number(aVal[0]) < Number(bVal[0])) return -1;
-              else return 0;
-            }
-          } else {
-            if (typeof aVal === "string") {
-              return aVal.localeCompare(bVal);
-            } else {
-              if (Number(aVal) > Number(bVal)) return 1;
-              else if (Number(aVal) < Number(bVal)) return -1;
-              else return 0;
-            }
-          }
-        });
-        this.sortType = "desc";
-      } else {
-        this.wells = wells.sort((a, b) => {
-          let aVal = a[type];
-          let bVal = b[type];
-          if (Array.isArray(aVal)) {
-            if (typeof aVal[0] === "string" && isNaN(Number(aVal[0]))) {
-              return bVal[0].localeCompare(aVal[0]);
-            } else {
-              if (Number(aVal[0]) > Number(bVal[0])) return -1;
-              else if (Number(aVal[0]) < Number(bVal[0])) return 1;
-              else return 0;
-            }
-          } else {
-            if (typeof aVal === "string" && isNaN(Number(aVal))) {
-              return aVal.localeCompare(bVal);
-            } else {
-              if (Number(aVal) > Number(bVal)) return -1;
-              else if (Number(aVal) < Number(bVal)) return 1;
-              else return 0;
-            }
-          }
-        });
-        this.sortType = "asc";
-      }
-    },
-    onChangeMonth(event) {
-      this.$store.commit("tr/SET_MONTH", event.target.value);
-    },
-    onChangeYear(event) {
-      this.year = event.target.value;
-      this.$store.commit("tr/SET_YEAR", event.target.value);
-    },
-    chooseDt1() {
-      const { date1, date2 } = this;
-      console.log("dt1-", date1, " dt2-", date2);
-      var choosenDt = date1.split("-");
-      var choosenSecDt = date2.split("-");
-      const dd = choosenDt[2];
-      const prdd = choosenSecDt[2];
-      const mm = choosenDt[1];
-      const prMm = choosenSecDt[1];
-      const yyyy = choosenDt[0];
-      const pryyyy = choosenSecDt[0];
-      if (choosenSecDt[2] >= choosenDt[2] && choosenSecDt[1] >= choosenDt[1] && choosenSecDt[0] >= choosenDt[0] || choosenSecDt[0] > choosenDt[0]) {
-        Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
-      } else {
-        this.$store.commit("globalloading/SET_LOADING", true);
-        this.$store.commit("tr/SET_DYN_MONTH_END", mm);
-        this.$store.commit("tr/SET_DYN_YEAR_END", yyyy);
-        this.$store.commit("tr/SET_DYN_DAY_END", dd);
-        this.$store.commit("tr/SET_DYN_MONTH_START", prMm);
-        this.$store.commit("tr/SET_DYN_YEAR_START", pryyyy);
-        this.$store.commit("tr/SET_DYN_MONTH_START", prMm);
-        this.$store.commit("tr/SET_DYN_DAY_START", prdd);
-        this.axios
-          .get(
-            "http://172.20.103.187:7576/api/techregime/dynamic/" +
-              pryyyy + "/" + prMm + "/" + prdd + "/" + yyyy + "/" + mm + "/" + dd + "/"
-          )
-          .then((response) => {
-            this.$store.commit("globalloading/SET_LOADING", false);
-            let data = response.data;
-            if (data) {
-              this.searched = false;
-              this.date_fix = false;
-              this.is_dynamic = true;
-              this.$store.commit("tr/SET_IS_DYNAMIC", "true");
-              this.$store.commit("tr/SET_SORTPARAM", "");
-              this.$store.commit("tr/SET_SEARCH", "");
-              this.sortParam = "";
-              this.searchString = "";
-              console.log(data);
-              this.fullWells = data.data;
-            } else {
-              console.log("No data");
-            }
-            if (this.month < 10) {
-              this.dt = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
-            } else {
-              this.dt = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
-            }
-          });
-        }
-    },
-
-    chooseDt() {
-      this.$store.commit("globalloading/SET_LOADING", true);
-      this.axios
-        .get(
-          "http://172.20.103.187:7576/api/techregime/" +
-            this.selectYear +
-            "/" +
-            this.month +
-            "/"
-        )
-        .then((response) => {
-          this.$store.commit("globalloading/SET_LOADING", false);
-          let data = response.data;
-          if (data) {
-            this.searched = false;
-            this.is_dynamic = false;
-            this.$store.commit("tr/SET_IS_DYNAMIC", "false");
-            this.$store.commit("tr/SET_SORTPARAM", "");
-            this.$store.commit("tr/SET_SEARCH", "");
-            this.sortParam = "";
-            this.searchString = "";
-            console.log(data);
-            this.fullWells = data.data;
-          } else {
-            console.log("No data");
-          }
-          if (this.month < 10) {
-            this.dt = "01" + ".0" + this.month + "." + this.selectYear;
-          } else {
-            this.dt = "01" + "." + this.month + "." + this.selectYear;
-          }
-        });
-    },
-
-    wellAdd() {
-      this.$store.commit("globalloading/SET_LOADING", true);
-      this.axios
-        .get(
-          "http://172.20.103.187:7576/api/techregime/new_wells/" 
-        )
-        .then((response) => {
-          this.$store.commit("globalloading/SET_LOADING", false);
-          let data = response.data;
-          if (data) {
-            this.searched = false;
-            this.$store.commit("tr/SET_SORTPARAM", "");
-            this.$store.commit("tr/SET_SEARCH", "");
-            this.sortParam = "";
-            this.searchString = "";
-            console.log(data);
-            this.allWells = data.data;
-            
-          } else {
-            console.log("No data");
-          }
-          
-        });
-    },
-    chooseField() {
-      const { filter, fullWells } = this;
-      console.log("filter = ", filter);
-      console.log(fullWells);
-
-      this.$store.commit("tr/SET_FILTER", filter);
-      if (!filter) {
-        this.wells = fullWells;
-      } else {
-        this.wells = fullWells.filter((e) => filter.indexOf(e.field) !== -1);
-      }
-    },
-    swap() {
-      this.show_first = !this.show_first;
-      this.show_second = !this.show_second;
-      this.isfulltable = !this.isfulltable;
-
-    },
-    calendarDynamic() {
-      this.is_dynamic_calendar = !this.is_dynamic_calendar
-      this.datepicker1 = !this.datepicker1
-      this.datepicker2 = !this.datepicker2
-    },
-
-    getColor(status) {
-      if (status === "1") return "#ffff00";
-      return "#ff0000";
-    },
-    closeModal(modalName) {
-      this.$modal.hide(modalName)
-      this.show_add=false;
-      this.checkers=false;
-      this.checkersec=false;
-      this.reRender();
-    },
-    addpush(){     
-        this.$modal.show('add_well')
-    },
-
-    handlerSearch(search) {
-      this.searchString = search;
-    },
-    handlerFilter(filter) {
-      this.filter = filter;
-    },
-
-    saveadd() {
-      console.log(this.$refs.editTable);
-      Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
-      let output = {}
-      console.log(this.$refs.editTable[0].children);
-      console.log(this.$refs.editTable[0].children[0].children[0].dataset.key);
-      console.log(this.$refs.editTable[0].children[0].children[0].value);
-      this.$refs.editTable[0].children.forEach((el) => {
-        output[el.children[0].dataset.key] = el.children[0].value;
-      });
-      console.log(output)
-      this.axios
-        .post(
-          "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
-          output).then((res) => {
-            console.log(res.data)
-            this.wellAdd();
-            this.reRenderAll();
-            this.show_add=false;
-            this.checkers=false;
-            
-          })
-    },
-    // Удаление с модалки
-    deleteWell() {
-      Vue.prototype.$notifyError (`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
-      this.$store.commit("globalloading/SET_LOADING", true);
-      if(this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено"){
-        this.axios
-          .get(
-            "http://172.20.103.187:7576/api/techregime/new_wells/delete_well/" + 
-            this.lonelywell[0].well).then((res) => {
-              console.log(res.data)
-              this.wellAdd();
-              this.reRenderAll();
-              this.show_add=false;
-              this.checkersec=false;
-              
-            })
-      }
-      else{
-        return console.log("error")
-      }
-    },
-
-    searchWell() {
-      console.log("search = ", this.searchString);
-      this.$store.commit("tr/SET_SORTPARAM", "");
-      this.sortParam = "";
-      this.$store.commit("globalloading/SET_LOADING", true);
-      const searchParam = this.searchString
-        ? `search/${this.searchString}/`
-        : "";
-      this.axios
-        .get(
-          "http://172.20.103.187:7576/api/techregime/" +
-            this.selectYear +
-            "/" +
-            this.month +
-            "/" +
-            searchParam
-        )
-        .then((response) => {
-          this.$store.commit("globalloading/SET_LOADING", false);
-
-          this.searched = searchParam ? true : false;
-          this.$store.commit("tr/SET_SEARCH", this.searchString);
-          let data = response.data;
-          if (data) {
-            console.log(data);
-            this.fullWells = data.data;
-          } else {
-            this.fullWells = [];
-            console.log("No data");
-          }
-        })
-        .catch((error) => {
-          this.searched = searchParam ? true : false;
-          this.$store.commit("globalloading/SET_LOADING", false);
-          this.fullWells = [];
-          console.log("search error = ", error);
-        });
-    },
-  },
-};
-</script>
-<style scoped>
+.header_mod {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 15px;
+}
+.select_mod.select_mod.select_mod.select_mod {
+     background: #334296; 
+}
 
 body {
   color: white !important;
@@ -7404,7 +6541,6 @@ body {
 }
 .input-group-prepend {
   padding-top: 3px !important;
-
 }
 a:hover {
   color: white !important;
@@ -7486,15 +6622,16 @@ tr:nth-child(even) {
   background: #272953;
 }
 
+
 .sticky {
-  position: sticky;
+  /* position: sticky; */
   top: 0;
   min-height: 2em;
   background: lightpink;
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 205px);
+  height: calc(100vh - 245px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;
@@ -7511,27 +6648,26 @@ tr:nth-child(even) {
 }
 .table tr:first-child .th {
   top: -1px;
-  z-index: 3000;
+  z-index: 4000;
 }
 .table tr:nth-child(2) .th {
   top: 24px;
-  z-index: 3000;
+  z-index: 4000;
 }
 .table tr:nth-child(3) .th {
   top: 49px;
-  z-index: 3000;
+  z-index: 4000;
 }
 .table tr:nth-child(4) .th {
   top: 80px;
-  z-index: 3000;
+  z-index: 4000;
 }
 .table tr:nth-child(5) .th {
   top: 97px;
-  z-index: 3000;
+  z-index: 4000;
 }
 tr td:first-child {
   color: #fff;
-  position: sticky;
   left: 0;
   width: 100px;
 }
@@ -7542,18 +6678,20 @@ tr td:first-child {
   overflow-y: visible;
 }
 tr:not(.notsticky) td:nth-child(-n + 3) {
-  position: sticky;
   left: -1px;
   width: 27px;
-  z-index: 3009;
+  z-index: 3000;
+  position: sticky;
 }
 tr:not(.notsticky) td:nth-child(2) {
   left: 23px;
   width: 100px;
+  z-index: 3000;
 }
 tr:not(.notsticky) td:nth-child(3) {
   left: 121px;
   width: 55;
+  z-index: 3000;
 }
 
 tr:nth-child(odd) td {
@@ -7564,11 +6702,12 @@ tr:nth-child(even) td {
 }
 
 .table.table tr:not(.notsticky) .th:nth-child(-n + 3) {
-  z-index: 3010;
+  z-index: 4010;
 }
-
 .input_edit {
   background: #7879a6;
+  color: white;
+  font-size: 12px;
 }
 
 /* width */
@@ -7584,13 +6723,11 @@ table::-webkit-scrollbar-track {
 /* Handle */
 table::-webkit-scrollbar-thumb {
   background: #656A8A;
-  
 }
 
 /* Handle on hover */
 table::-webkit-scrollbar-thumb:hover {
-  background: #656A8A;
-  
+  background: #656A8A;  
 }
 
 table::-webkit-scrollbar-corner {
@@ -7604,58 +6741,80 @@ table::-webkit-scrollbar-corner {
   color: #fff;
 }
 
-</style>
-<style>
-.tr-field-filter.tr-field-filter {
-  margin: 0 0 0 auto;
-  flex-grow: 0;
-  width: 230px;
+.tr_icons_block {
+    justify-content: right;
 }
-.tr-table-header {
-  justify-content: space-between;
-  height: 48px;
-  align-items: center;
+.activ.activ {
+  border-bottom: 2px solid rgb(145, 145, 145) ;
+  border-top: 2px solid rgb(145, 145, 145);
+  font-size: 11px;
 }
-.trheadhight {
+.icon_save {
+  margin-left: 10px; 
+  cursor: pointer;
+  background: #272953;
+  border: none;
+}
+.pgn_input {
   height: 40px;
-}
-.fadropmenu.fadropmenu {
-  background: #333975;
-  z-index: 4001 !important;
-}
-.faheadhight {
-  height: 40px;
-}
-
-.button_form.button_form {
-  background: #333975;
-  border: 0px;
+  margin-top: 8px;
+  margin-left: 30px;
+  width: 39px;
+  background: #272953;
+  border: 1px solid #ccc;
   color: #fff;
-  align-self: center;
-  width: 150px;
-  margin-top: 5px;
+  text-align: center;
 }
-.dropdown-menu.show {
-  display: flex;
-  flex-direction: column;
-}
+    .table-outer{
+      &::v-deep{
+        .pagination {
+        display: flex;
+        color: #636A99;
+        margin-top: 8px;
+        justify-content: center;
+        background: #272953 !important;
+        > li > a {
+            --md-theme-default-primary-on-background: #005db8;
+            min-height: 40px;
+            min-width: 40px;
+            background: #272953;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid #ccc;
+            color: #ffffff;
+            margin-left: -1px;
+            font-size: 14px;
+            &:hover {
+                color: #ffffff;
+                --md-theme-default-primary-on-background: #fff;
+            }
+            &:first-of-type {
+                border-radius: 2px 0 0 2px;
+            }
+            &:last-of-type {
+                border-radius: 0 2px 2px 0;
+            }
 
-.header_mod {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    padding: 15px;
-}
-.select_mod.select_mod.select_mod.select_mod {
-     background: #334296; 
-}
-</style>
+        }
+        > li {
+            &.active {
+                a {
+                    background: #3366FF;
+                    --md-theme-default-primary-on-background: #272953;
+                    color: #FFFFFF;
+                }
+            }
+            &.disabled {
+                a {
+                    background: #272953;
+                }
+            }
+        }
+    }
+      }
+    }
+
+    
+</style>  

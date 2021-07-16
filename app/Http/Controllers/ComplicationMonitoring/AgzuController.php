@@ -23,7 +23,7 @@ class AgzuController extends CrudController
 
     protected $modelName = 'agzu';
 
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         $params = [
             'success' => Session::get('success'),
@@ -75,10 +75,6 @@ class AgzuController extends CrudController
                     'type' => 'date',
                 ],
                 'type_of_repair' => [
-                    'title' => trans('monitoring.buffer_tank.type_of_repair'),
-                    'type' => 'string',
-                ],
-                'passport_pdf' => [
                     'title' => trans('monitoring.buffer_tank.type_of_repair'),
                     'type' => 'string',
                 ],
@@ -181,9 +177,4 @@ class AgzuController extends CrudController
         return (new AgzuFilter($query, $filter))->filter();
     }
 
-    public function getFile($filename)
-    {
-        $file = Storage::disk('public/passports/');
-
-    }
 }

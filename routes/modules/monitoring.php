@@ -130,7 +130,9 @@ Route::group(
 
                 Route::get('/gu-map', 'ComplicationMonitoring\MapsController@guMap')->name('maps.gu');
                 Route::get('/gu-map/mapdata', 'ComplicationMonitoring\MapsController@mapData')->name('maps.gu_pipes');
-                Route::get('/gu-map/speed-flow', 'ComplicationMonitoring\MapsController@getSpeedFlow')->name('maps.speed_flow');
+                Route::get('/gu-map/hydro-reverse-calc', 'ComplicationMonitoring\MapsController@getHydroReverseCalc')->name('maps.hydro-reverse-calc');
+                Route::get('/gu-map/pressure', 'ComplicationMonitoring\MapsController@getPressure')->name('maps.pressure');
+                Route::get('/gu-map/temperature', 'ComplicationMonitoring\MapsController@getTemperature')->name('maps.temperature');
 
                 Route::post('/gu-map/gu', 'ComplicationMonitoring\MapsController@storeGu')->name('maps.store_gu');
                 Route::post('/gu-map/zu', 'ComplicationMonitoring\MapsController@storeZu')->name('maps.store_zu');
@@ -176,12 +178,15 @@ Route::group(
                     ]
                 ]);
 
+                Route::get('/reverse-calc/list', 'ComplicationMonitoring\ReverseCalculationController@list')->name('reverse_calculation.list');
+                Route::get('/reverse-calc', 'ComplicationMonitoring\ReverseCalculationController@index')->name('reverse_calculation.index');
+                Route::get('/reverse-calc/calculate', 'ComplicationMonitoring\ReverseCalculationController@calculate')->name('reverse_calculation.calculate');
+
                 Route::get('economical-effect/list', 'ComplicationMonitoring\EconomicalEffectController@list')->name(
                     'economical_effect.list'
                 );
                 Route::resource('economical-effect', 'ComplicationMonitoring\EconomicalEffectController');
-                Route::get('/reverse-calc/list', 'ComplicationMonitoring\ReverseCalculationController@list')->name('reverse_calculation.list');
-                Route::get('/reverse-calc', 'ComplicationMonitoring\ReverseCalculationController@index')->name('reverse_calculation.index');
+
                 Route::get('lost-profits/list', 'ComplicationMonitoring\LostProfitsController@list')->name(
                     'lost_profits.list'
                 );
@@ -217,6 +222,14 @@ Route::group(
                 Route::get('metering_units/export', 'ComplicationMonitoring\MeteringUnitsController@export')->name('metering_units.export');
                 Route::get('metering_units/history/{metering_units}', 'ComplicationMonitoring\MeteringUnitsController@history')->name('metering_units.history');
                 Route::resource('metering_units', 'ComplicationMonitoring\MeteringUnitsController');
+                Route::get('map-history/list', 'ComplicationMonitoring\MapHistory@list')->name('map-history.list');
+                Route::get('map-history/show/{activity}', 'ComplicationMonitoring\MapHistory@show')->name('map-history.show');
+                Route::get('map-history/restore/{activity}', 'ComplicationMonitoring\MapHistory@restore')->name('map-history.restore');
+                Route::get('map-history', 'ComplicationMonitoring\MapHistory@index')->name('map-history.index');
+
+                Route::get('pipe-passport/list', 'ComplicationMonitoring\PipePassportController@list')->name('pipe-passport.list');
+                Route::get('pipe-passport/history/{pipe}', 'ComplicationMonitoring\PipePassportController@history')->name('pipe-passport.history');
+                Route::resource('pipe-passport', 'ComplicationMonitoring\PipePassportController');
             }
         );
     }

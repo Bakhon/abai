@@ -1,4 +1,7 @@
 import mainMenuConfiguration from "../main_menu_configuration.json";
+import companiesListWithKMG from "../dzo_companies_initial_consolidated_withkmg.json";
+import dzoCompaniesInitial from "../dzo_companies_initial.json";
+import companiesListWithoutKMG from "../dzo_companies_initial_consolidated_withoutkmg.json";
 
 export default {
     data: function () {
@@ -8,23 +11,57 @@ export default {
             categoryMenuPreviousParent: '',
             mainMenuButtonHighlighted: "color: #fff;background: #237deb;font-weight:bold;",
             isOpecFilterActive: false,
-            isKmgParticipationFilterActive: false,
             flagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +
                 '</svg>',
             flagOff: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"> \n' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
                 '</svg>',
-            selectedButtonName: 'oilCondensateProductionButton'
+            selectedButtonName: 'oilCondensateDeliveryButton',
+            chartTranslateMapping: {
+                'oilProductionButton': this.trans('visualcenter.getoildynamic'),
+                'oilDeliveryButton': this.trans('visualcenter.dlvoildynamic'),
+                'gasProductionButton': this.trans('visualcenter.getgasdynamic'),
+                'oilCondensate': this.trans('visualcenter.liqDynamic'),
+                'oilCondensateProductionButton': this.trans('visualcenter.oilCondensateProductionChartName'),
+                'oilCondensateDeliveryButton': this.trans('visualcenter.oilCondensateDeliveryChartName'),
+                'oilResidue': this.trans('visualcenter.stockOfGoodsDynamic')
+            },
+            isOilResidueActive: false,
+            oilDeliveryFilters: {
+                'oilResidue': 'isOilResidueActive'
+            },
+            condolidatedButtons: ['oilCondensateProductionButton','oilCondensateDeliveryButton'],
+            isFirstLoading: true,
+            lastSelectedCategory: 'oilCondensateProductionButton',
+            oilResidueChartName: this.trans('visualcenter.ostatokNefti')
         };
     },
     methods: {
         switchCategory(buttonName, planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
+            this.lastSelectedCategory = '';
+            this.oilCondensateProductionButton = '';
+            this.oilCondensateDeliveryButton = '';
+            this.$store.commit('globalloading/SET_LOADING', true);
+            this.isOpecFilterActive = false;
+            this.oilCondensateFilters.isWithoutKMGFilterActive = true;
+            this.isOilResidueActive = false;
+            if (!this.condolidatedButtons.includes(buttonName)) {
+                this.changeDzoCompaniesList(dzoCompaniesInitial);
+            } else {
+                this.changeDzoCompaniesList(companiesListWithKMG);
+            }
+            if (!this.isOneDzoSelected){
+                this.selectAllDzoCompanies();
+            }
+            this.setDzoCompaniesToInitial();
             this.disableTargetCompanyFilter();
             if (!childButton) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
                 this.disableOilFilters();
             }
+            this.selectedView = buttonName;
+            this.chartHeadName = this.chartTranslateMapping[buttonName];
             this.chartSecondaryName = categoryName;
             this.selectedButtonName = buttonName;
             this.dzoCompaniesAssets['assetTitle'] = this.trans("visualcenter.summaryAssets");
@@ -40,7 +77,19 @@ export default {
             this.changeDate();
         },
 
-        switchMainMenu(parentButton, childButton) {
+        changeDzoCompaniesList(companyList) {
+            this.dzoCompanies = _.cloneDeep(companyList);
+            this.dzoCompaniesTemplate = _.cloneDeep(companyList);
+        },
+
+        switchMainMenu(parentButton, childButton,chartName) {
+            this.chartHeadName = this.chartTranslateMapping[parentButton];
+            this.isOilResidueActive = false;
+            if (this.oilDeliveryFilters[childButton]) {
+                this[this.oilDeliveryFilters[childButton]] = true;
+                this.chartHeadName = this.chartTranslateMapping[childButton];
+            }
+            this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();
             let self = this;
             this.isMainMenuItemChanged = false;
@@ -86,15 +135,14 @@ export default {
 
         changeAssets(type,category,regionName) {
             this.dzoCompaniesAssets[type] = true;
-            this.dzoCompaniesAssets['isAllAssets'] = false;
+            if (!this.dzoCompaniesAssets[type]) {
+                this.dzoCompaniesAssets['isAllAssets'] = true;
+            }
             this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
 
             if (type === "opecRestriction") {
                 this.isOpecFilterActive = !this.isOpecFilterActive;
-            } else if (type === 'kmgParticipation') {
-                this.chartSecondaryName = this.trans("visualcenter.dolyaUchast");
-                this.isKmgParticipationFilterActive = !this.isKmgParticipationFilterActive;
-            } else {
+            }  else {
                 this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
                 this.dzoCompaniesAssets[type] = !this.dzoCompaniesAssets[type];
                 this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
@@ -139,6 +187,17 @@ export default {
             } else {
                 return this.trans("visualcenter.tonWithSpace");
             }
+        },
+
+        assignOneCompanyToSelectedDzo(oneDzoNameSelected) {
+            this.isOneDzoSelected = true;
+            if (oneDzoNameSelected == 'ОМГ') {
+                oneDzoNameSelected = [oneDzoNameSelected, 'ОМГК'];
+            }
+            this.selectedDzoCompanies = oneDzoNameSelected;
+            this.updateDzoMenu();         
+            this.updateProductionFondWidget();
+            this.updateInjectionFondWidget();          
         },
     },
 }

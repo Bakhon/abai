@@ -1,0 +1,40 @@
+import {
+    List,
+    ListItemDown,
+    ListItemUp,
+    arrowDown,
+    rectArrow,
+    success,
+    plusAndBrackets,
+    plusAndBrackets2,
+    remove,
+    reload,
+    arrowLeft,
+    tripleDots,
+    rulerToArrow,
+    moleqq,
+    kern,
+    d3,
+    geoPh,
+    oilTower,
+    settPhone,
+    lupa, locPC, gisto, i3d, i2d, interpret, cog, cubeArrow, eq, ruler
+} from "./iconsPack.js";
+
+export default {
+    ListItemDown,
+    List,
+    ListItemUp,
+    arrowDown,
+    rectArrow,
+    success,
+    plusAndBrackets,
+    plusAndBrackets2,
+    remove,
+    reload,
+    arrowLeft,
+    tripleDots,
+    rulerToArrow,
+    moleqq,
+    kern, d3, geoPh, oilTower, settPhone, lupa, locPC, gisto, i3d, i2d, interpret,cog,cubeArrow, eq,ruler
+}

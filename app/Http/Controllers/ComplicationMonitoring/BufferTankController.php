@@ -23,7 +23,7 @@ class BufferTankController extends CrudController
 
     protected $modelName = 'buffer_tank';
 
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         $params = [
             'success' => Session::get('success'),

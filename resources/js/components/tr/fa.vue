@@ -363,11 +363,11 @@
           </td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row.well">
-          <td style="background: #12135c">{{ row.rus_wellname }}</td>
-          <td style="background: #12135c; min-width: 120px;">{{ row.field }}</td>
-          <td style="background: #12135c">{{ row.horizon }}</td>
-          <td style="background: #12135c">{{ row.object }}</td>
-          <td style="background: #12135c">{{ row.exp_meth }}</td>
+          <td style="background: #12135c; min-width: 102px;">{{ row.rus_wellname }}</td>
+          <td style="background: #12135c; min-width: 182px;">{{ row.field }}</td>
+          <td style="background: #12135c; min-width: 102px;">{{ row.horizon }}</td>
+          <td style="background: #12135c; min-width: 102px;">{{ row.object }}</td>
+          <td style="background: #12135c; min-width: 102px;">{{ row.exp_meth }}</td>
 
           <td v-show= isHide
             style="background: #2c3379;"
@@ -917,7 +917,7 @@
           </td>
 
           <td
-            style="background: #12135C; min-width:248px;"
+            style="background: #12135C; min-width:270px;"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -945,7 +945,7 @@
 
 
           <td v-if= isGenHide
-            style="background: #12135C; min-width:248px;"
+            style="background: #12135C; min-width:270px;"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -972,7 +972,7 @@
           </td>
 
           <td v-if= isGenHide
-            style="background: #12135C; min-width:248px;"
+            style="background: #12135C; min-width:270px"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -1565,7 +1565,7 @@ body {
 .table tr:nth-child(-n + 4) td {
   position: sticky;
   background: rgb(51, 57, 117);
-  top: 75px;
+  top: 62px;
   z-index: 3000;
 }
 .table tr:first-child td {

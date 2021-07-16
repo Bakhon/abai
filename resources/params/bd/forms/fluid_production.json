@@ -1,4 +1,6 @@
 {
+  "type": "table",
+  "table_type": "wells",
   "columns": [
     {
       "title": "uwi_number",
@@ -101,7 +103,12 @@
       "table": "prod.well_telemetry",
       "column": "copied",
       "additional_filter": {
-        "metric": "1"
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "FLR"
+          }
+        }
       },
       "is_editable": false
     },
@@ -112,7 +119,12 @@
       "table": "prod.well_telemetry",
       "column": "value_double",
       "additional_filter": {
-        "metric": "1"
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "FLR"
+          }
+        }
       },
       "fields": [
         {
@@ -135,6 +147,20 @@
       "code": "bsw",
       "table": "prod.meas_water_cut",
       "column": "water_cut",
+      "additional_filter": {
+        "activity": {
+          "table": "dict.well_activity",
+          "fields": {
+            "code": "PMSR"
+          }
+        },
+        "value_type": {
+          "table": "dict.value_type",
+          "fields": {
+            "code": "MNT"
+          }
+        }
+      },
       "type": "float",
       "is_editable": true,
       "validation": "numeric|gte:0|lte:100",
@@ -153,7 +179,12 @@
       "table": "prod.lab_research_value",
       "column": "value_text",
       "additional_filter": {
-        "param": 258
+        "param": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "MIMP"
+          }
+        }
       },
       "type": "float",
       "is_editable": false,
@@ -165,8 +196,18 @@
       "table": "prod.well_equip",
       "column": "value_double",
       "additional_filter": {
-        "dict.equip.equip_type": "1",
-        "dict.equip_factory_param.prm": 313
+        "equip": {
+          "table": "dict.equip_type",
+          "fields": {
+            "code": "CHK"
+          }
+        },
+        "prm": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "BND"
+          }
+        }
       },
       "type": "float",
       "is_editable": false
@@ -177,9 +218,24 @@
       "table": "prod.meas_well",
       "column": "value_double",
       "additional_filter": {
-        "metric": "314",
-        "activity": "1",
-        "value_type": "1"
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "BP"
+          }
+        },
+        "activity": {
+          "table": "dict.well_activity",
+          "fields": {
+            "code": "PMSR"
+          }
+        },
+        "value_type": {
+          "table": "dict.value_type",
+          "fields": {
+            "code": "MNT"
+          }
+        }
       },
       "type": "float",
       "is_editable": true,
@@ -192,9 +248,24 @@
       "table": "prod.meas_well",
       "column": "value_double",
       "additional_filter": {
-        "metric": "315",
-        "activity": "1",
-        "value_type": "1"
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "OTP"
+          }
+        },
+        "activity": {
+          "table": "dict.well_activity",
+          "fields": {
+            "code": "PMSR"
+          }
+        },
+        "value_type": {
+          "table": "dict.value_type",
+          "fields": {
+            "code": "MNT"
+          }
+        }
       },
       "type": "float",
       "is_editable": true,
@@ -207,9 +278,24 @@
       "table": "prod.meas_well",
       "column": "value_double",
       "additional_filter": {
-        "metric": "316",
-        "activity": "1",
-        "value_type": "1"
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "BPBC"
+          }
+        },
+        "activity": {
+          "table": "dict.well_activity",
+          "fields": {
+            "code": "PMSR"
+          }
+        },
+        "value_type": {
+          "table": "dict.value_type",
+          "fields": {
+            "code": "MNT"
+          }
+        }
       },
       "type": "float",
       "is_editable": true,
@@ -222,9 +308,24 @@
       "table": "prod.meas_well",
       "column": "value_double",
       "additional_filter": {
-        "metric": "317",
-        "activity": "1",
-        "value_type": "1"
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "BPAC"
+          }
+        },
+        "activity": {
+          "table": "dict.well_activity",
+          "fields": {
+            "code": "PMSR"
+          }
+        },
+        "value_type": {
+          "table": "dict.value_type",
+          "fields": {
+            "code": "MNT"
+          }
+        }
       },
       "type": "float",
       "is_editable": true,
@@ -237,9 +338,12 @@
       "table": "prod.gdis_current_value",
       "column": "value_double",
       "additional_filter": {
-        "metric": "318",
-        "activity": "1",
-        "value_type": "1"
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "RPM"
+          }
+        }
       },
       "type": "float",
       "is_editable": false
@@ -250,9 +354,12 @@
       "table": "prod.gdis_current_value",
       "column": "value_double",
       "additional_filter": {
-        "metric": "319",
-        "activity": "1",
-        "value_type": "1"
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PLST"
+          }
+        }
       },
       "type": "float",
       "is_editable": false
@@ -263,9 +370,12 @@
       "table": "prod.gdis_current_value",
       "column": "value_double",
       "additional_filter": {
-        "metric": "320",
-        "activity": "1",
-        "value_type": "1"
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "PMPR"
+          }
+        }
       },
       "type": "float",
       "is_editable": false
@@ -276,7 +386,12 @@
       "table": "prod.well_status",
       "column": "reason",
       "additional_filter": {
-        "status": "4"
+        "status": {
+          "table": "dict.well_status_type",
+          "fields": {
+            "code": "DWN"
+          }
+        }
       },
       "type": "text",
       "is_editable": false
@@ -287,9 +402,24 @@
       "table": "prod.meas_well",
       "column": "value_double",
       "additional_filter": {
-        "metric": "321",
-        "activity": "1",
-        "value_type": "1"
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "GASR"
+          }
+        },
+        "activity": {
+          "table": "dict.well_activity",
+          "fields": {
+            "code": "PMSR"
+          }
+        },
+        "value_type": {
+          "table": "dict.value_type",
+          "fields": {
+            "code": "MNT"
+          }
+        }
       },
       "type": "float",
       "is_editable": true,
@@ -346,7 +476,12 @@
       "table": "prod.well_telemetry",
       "column": "value_double",
       "additional_filter": {
-        "metric": "1"
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "FLR"
+          }
+        }
       },
       "is_editable": false
     },
@@ -357,7 +492,12 @@
       "table": "prod.well_telemetry",
       "column": "source",
       "additional_filter": {
-        "metric": "1"
+        "metric": {
+          "table": "dict.metric",
+          "fields": {
+            "code": "FLR"
+          }
+        }
       },
       "is_editable": false
     }

@@ -22,17 +22,30 @@
     </div>
     <div class="dropdown-menu">
         <div class="move-menu">
-            <li class="left-menu-li"><a href="{{route('bigdata')}}">Модуль "Прототип БД ABAI"</a></li>
+            <li class="left-menu-li"><a href="{{route('bigdata')}}">{{ trans('bd.bigdata_module') }}</a>
+                <ul class="dropdown-child">
+                    <li class="left-menu-li">
+                        <a href="{{route('report_constructor')}}">
+                            {{ trans('bd.forms.report_constructor.menu') }}
+                        </a>
+                    </li>
+                    <li class="left-menu-li">
+                        <a href="{{route('bigdata.well_cart')}}">
+                            {{ trans('bd.forms.well_cart.menu') }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
             @if(auth()->user()->can('visualcenter view main'))
-                <li class="left-menu-li"><a href="{{route('visualcenter3')}}">Модуль "Центр визуализации"</a></li>
+                <li class="left-menu-li"><a href="{{route('visualcenter3')}}">{{ trans('visualcenter.visualcenter_module') }}</a></li>
             @endif
             @if(auth()->user()->can('tr view main'))
-                <li class="left-menu-li"><a href="{{route('tr')}}">Модуль "Технологический режим"</a></li>
+                <li class="left-menu-li"><a href="{{route('tr')}}">{{ trans('tr.tr_module') }}</a></li>
             @endif
             @if(auth()->user()->can('podborGno view main'))
-                <li class="left-menu-li"><a href="{{route('gno')}}">Модуль "Подбор ГНО"</a></li>
+                <li class="left-menu-li"><a href="{{route('gno')}}">{{ trans('pgno.pgno_module') }}</a></li>
             @endif
-            <li class="left-menu-li"><a href="{{route('monitor')}}">Модуль "Мониторинг осложнений"</a>
+            <li class="left-menu-li"><a href="{{route('monitor')}}">{{ trans('monitoring.monitoring_module') }}</a>
                 <ul class="dropdown-child">
                     <li class="left-menu-li">
                         <ul>
@@ -57,6 +70,13 @@
                                         {{ trans('monitoring.omgngdu_well.menu') }}
                                     </a>
                                 </li>
+                                @if(auth()->user()->can('monitoring list pipe-passport'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('pipe-passport.index')}}">
+                                            {{ trans('monitoring.pipe_passport.title') }}
+                                        </a>
+                                    </li>
+                                @endif
                             @endif
 
                         </ul>
@@ -65,6 +85,8 @@
                         auth()->user()->can('monitoring list watermeasurement')
                         || auth()->user()->can('monitoring list oilgas')
                         || auth()->user()->can('monitoring list corrosion')
+                        || auth()->user()->can('monitoring list hydro_calculation')
+                        || auth()->user()->can('monitoring list reverse_calculation')
                     )
                         <li class="left-menu-li">
                             <a>
@@ -196,13 +218,23 @@
                             </ul>
                         </li>
                     @endif
-                    <li class="left-menu-li">
-                        @if(auth()->user()->can('monitoring view pipes map'))
+
+                    @if(auth()->user()->can('monitoring view pipes map'))
+                        <li class="left-menu-li">
                             <a href="{{route('maps.gu')}}">
                                 {{ trans('monitoring.tech_map') }}
                             </a>
-                        @endif
-                    </li>
+                        </li>
+                    @endif
+
+                    @if(auth()->user()->can('monitoring view pipes map'))
+                        <li class="left-menu-li">
+                            <a href="{{route('map-history.index')}}">
+                                {{ trans('monitoring.map-history.menu') }}
+                            </a>
+                        </li>
+                    @endif
+
                     <li class="left-menu-li">
                         <a href="{{route('facilities')}}">
                             {{ trans('monitoring.tech_map_prototype') }}
@@ -212,6 +244,13 @@
                     <li class="left-menu-li">
                         <a href="{{route('lost-profits.index')}}">
                             {{ trans('monitoring.lost_profits_title') }}
+                        </a>
+                    </li>
+                    @endif
+                    @if(auth()->user()->can('monitoring list economical_effect'))
+                    <li class="left-menu-li">
+                        <a href="{{route('economical-effect.index')}}">
+                            {{ trans('monitoring.economical_effect_title') }}
                         </a>
                     </li>
                     @endif

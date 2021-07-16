@@ -1,0 +1,142 @@
+[
+  {
+    "code": "project",
+    "name": "Проект (план)",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "well_design"
+    ]
+  },
+  {
+    "code": "drilling",
+    "name": "Бурение",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "well_incl",
+      "daily_drill",
+      "well_constr"
+    ]
+  },
+  {
+    "code": "well_exploitation",
+    "name": "Освоение, обустройство",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "well_exploitation"
+    ]
+  },
+  {
+    "code": "well_file",
+    "name": "Дело скважины",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "children": [
+      {
+        "code": "fund",
+        "name": "Фонд",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "forms": [
+          "geo_structure",
+          "org_structure",
+          "well_status",
+          "well_expl",
+          "well_category",
+          "well_zone",
+          "well_tech",
+          "distribution_substation",
+          "joint_wells"
+        ]
+      },{
+        "code": "measurement_schedule",
+        "name": "График замеров",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "forms": [
+          "production_wells_schedule",
+          "injection_wells_schedule"
+        ]
+      },
+      {
+        "code": "performance_indicators",
+        "name": "Эксплуатационные показатели",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "forms": [
+          "bsw_lab"
+        ]
+      },
+      {
+        "code": "tech_mode",
+        "name": "Технологический режим",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "forms": [
+          "production_well",
+          "injection_wells",
+          "gas_well"
+        ]
+      },
+      {
+        "code": "research",
+        "name": "Исследования",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "forms": [
+          "gis",
+          "bottom_hole",
+          "bottom_hole_artificial"
+        ]
+      },
+      {
+        "code": "repair",
+        "name": "Ремонт",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "forms": [
+          "kpc",
+          "prs"
+        ]
+      }
+    ],
+    "forms": [
+      "well_perf",
+      "gtm_register",
+      "well_block",
+      "fluid_production",
+      "gas_production",
+      "water_production",
+      "tech_state",
+      "production_program",
+      "water_inj"
+    ]
+  },
+  {
+    "code": "daily_reports",
+    "name": "Суточные сводки",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "daily_reports_oil_prod",
+      "daily_reports_fluid_prod",
+      "daily_reports_water_prod",
+      "daily_reports_oil_sale",
+      "daily_reports_gas_prod",
+      "daily_reports_water_upload"
+    ]
+  }
+]

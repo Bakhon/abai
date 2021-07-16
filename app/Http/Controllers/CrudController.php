@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexTableRequest;
+
 class CrudController extends Controller
 {
 
@@ -16,6 +18,12 @@ class CrudController extends Controller
         $this->middleware('can:monitoring delete '.$this->modelName, ['only' => ['destroy']]);
         $this->middleware('can:monitoring export '.$this->modelName, ['only' => ['export']]);
         $this->middleware('can:monitoring view history '.$this->modelName, ['only' => ['history']]);
+    }
+
+    public function list (IndexTableRequest $request) {
+        $input = $request->validated();
+        $model_name_filter = $input['model_name'].'_filter';
+        session([$model_name_filter => $input]);
     }
 
 }

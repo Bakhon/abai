@@ -47,7 +47,10 @@ class MapsController extends Controller
 
     public function mapData(Request $request, DruidService $druidService): array
     {
-        $pipes = OilPipe::with('coords', 'pipeType')->get();
+        $pipes = OilPipe::with('coords', 'pipeType')
+            ->WithLastHydroCalc()
+            ->WithLastReverseCalc()
+            ->get();
 
         $center = [52.854602599069, 43.426262258809];
 
@@ -129,7 +132,7 @@ class MapsController extends Controller
 
     public function storeGu(Request $request): \Symfony\Component\HttpFoundation\Response
     {
-        if (!auth()->user()->hasPermissionTo('monitoring create gu', 'map-admin')) {
+        if (!auth()->user()->hasPermissionTo('monitoring create gu', 'web')) {
             return response()->json(
                 [
                     'status' => config('response.status.error'),
@@ -173,7 +176,7 @@ class MapsController extends Controller
 
     public function storeZu(Request $request): \Symfony\Component\HttpFoundation\Response
     {
-        if (!auth()->user()->hasPermissionTo('monitoring create zu', 'map-admin')) {
+        if (!auth()->user()->hasPermissionTo('monitoring create zu', 'web')) {
             return response()->json(
                 [
                     'status' => config('response.status.error'),
@@ -198,7 +201,7 @@ class MapsController extends Controller
 
     public function storeWell(Request $request, DruidService $druidService): \Symfony\Component\HttpFoundation\Response
     {
-        if (!auth()->user()->hasPermissionTo('monitoring create well', 'map-admin')) {
+        if (!auth()->user()->hasPermissionTo('monitoring create well', 'web')) {
             return response()->json(
                 [
                     'status' => config('response.status.error'),
@@ -223,7 +226,7 @@ class MapsController extends Controller
 
     public function storePipe(Request $request): \Symfony\Component\HttpFoundation\Response
     {
-        if (!auth()->user()->hasPermissionTo('monitoring create pipe', 'map-admin')) {
+        if (!auth()->user()->hasPermissionTo('monitoring create pipe', 'web')) {
             return response()->json(
                 [
                     'status' => config('response.status.error'),
@@ -256,7 +259,7 @@ class MapsController extends Controller
 
     public function updateGu(Request $request, Gu $gu): \Symfony\Component\HttpFoundation\Response
     {
-        if (!auth()->user()->hasPermissionTo('monitoring update gu', 'map-admin')) {
+        if (!auth()->user()->hasPermissionTo('monitoring update gu', 'web')) {
             return response()->json(
                 [
                     'status' => config('response.status.error'),
@@ -299,7 +302,7 @@ class MapsController extends Controller
 
     public function updateZu(Request $request, Zu $zu): \Symfony\Component\HttpFoundation\Response
     {
-        if (!auth()->user()->hasPermissionTo('monitoring update zu', 'map-admin')) {
+        if (!auth()->user()->hasPermissionTo('monitoring update zu', 'web')) {
             return response()->json(
                 [
                     'status' => config('response.status.error'),
@@ -323,7 +326,7 @@ class MapsController extends Controller
 
     public function updateWell(Request $request, Well $well): \Symfony\Component\HttpFoundation\Response
     {
-        if (!auth()->user()->hasPermissionTo('monitoring update well', 'map-admin')) {
+        if (!auth()->user()->hasPermissionTo('monitoring update well', 'web')) {
             return response()->json(
                 [
                     'status' => config('response.status.error'),
@@ -347,7 +350,7 @@ class MapsController extends Controller
 
     public function updatePipe(Request $request, OilPipe $pipe): \Symfony\Component\HttpFoundation\Response
     {
-        if (!auth()->user()->hasPermissionTo('monitoring update pipe', 'map-admin')) {
+        if (!auth()->user()->hasPermissionTo('monitoring update pipe', 'web')) {
             return response()->json(
                 [
                     'status' => config('response.status.error'),
@@ -378,7 +381,7 @@ class MapsController extends Controller
 
     public function deleteGu(Gu $gu): \Symfony\Component\HttpFoundation\Response
     {
-        if (!auth()->user()->hasPermissionTo('monitoring delete gu', 'map-admin')) {
+        if (!auth()->user()->hasPermissionTo('monitoring delete gu', 'web')) {
             return response()->json(
                 [
                     'status' => config('response.status.error'),
@@ -398,7 +401,7 @@ class MapsController extends Controller
 
     public function deleteZu(Zu $zu): \Symfony\Component\HttpFoundation\Response
     {
-        if (!auth()->user()->hasPermissionTo('monitoring delete zu', 'map-admin')) {
+        if (!auth()->user()->hasPermissionTo('monitoring delete zu', 'web')) {
             return response()->json(
                 [
                     'status' => config('response.status.error'),
@@ -418,7 +421,7 @@ class MapsController extends Controller
 
     public function deleteWell(Well $well): \Symfony\Component\HttpFoundation\Response
     {
-        if (!auth()->user()->hasPermissionTo('monitoring delete well', 'map-admin')) {
+        if (!auth()->user()->hasPermissionTo('monitoring delete well', 'web')) {
             return response()->json(
                 [
                     'status' => config('response.status.error'),
@@ -438,7 +441,7 @@ class MapsController extends Controller
 
     public function deletePipe(OilPipe $pipe): \Symfony\Component\HttpFoundation\Response
     {
-        if (!auth()->user()->hasPermissionTo('monitoring delete pipe', 'map-admin')) {
+        if (!auth()->user()->hasPermissionTo('monitoring delete pipe', 'web')) {
             return response()->json(
                 [
                     'status' => config('response.status.error'),
@@ -457,17 +460,17 @@ class MapsController extends Controller
         );
     }
 
-    public function getSpeedFlow(Request $request)
+    public function getHydroReverseCalc(Request $request)
     {
         $date = $request->input('date');
         $pipes = OilPipe::with(
             [
                 'coords',
                 'pipeType',
-                'speedFlowGuUpsv' => function ($query) use ($date) {
+                'hydroCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
                 },
-                'speedFlowWellGu' => function ($query) use ($date) {
+                'reverseCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
                 }
             ]

@@ -1,0 +1,51 @@
+{
+  "type": "table",
+  "columns": [
+    {
+      "title": "uwi_number",
+      "code": "uwi",
+      "type": "link",
+      "is_editable": false
+    },
+    {
+      "title": "worktime",
+      "code": "worktime",
+      "table": "prod.well_status",
+      "column": "well_status_type_id",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "gas_prod",
+      "code": "gas_prod_val",
+      "table": "prod.meas_gas_prod",
+      "type": "float",
+      "column": "gas_prod_val",
+      "validation": "numeric|gte:0",
+      "validate_deviation": true,
+      "is_editable": true    
+    },
+    {
+      "title": "gas_prod_v",
+      "code": "gas_prod_v",
+      "type": "calc",
+      "formula": "$gas_prod_val$ * $worktime$",
+      "column": "gas_prod_v",
+      "is_editable": false    
+    },
+    {
+      "title": "measure_last_month",
+      "code": "measure_last_month",
+      "table": "prod.meas_gas_prod",
+      "type": "history",
+      "column": "gas_prod",
+      "is_editable": false,
+      "fields": [
+        {
+          "worktime": {},
+          "gas_prod_val" :{}
+        }
+      ]
+    }
+  ]
+}

@@ -53,7 +53,7 @@ class EconomicalEffectController extends CrudController
                     'type' => 'numeric',
                 ],
                 'actual_inhibitor_injection' => [
-                    'title' => trans('monitoring.actual_inhibitor_level'),
+                    'title' => trans('monitoring.plan_dosage'),
                     'type' => 'numeric',
                 ],
                 'recommended_inhibitor_injection' => [
@@ -79,11 +79,16 @@ class EconomicalEffectController extends CrudController
             ]
         ];
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('complicationMonitoring.economical_effect.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = EconomicalEffect::query()
             ->with('gu');
 

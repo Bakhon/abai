@@ -1,95 +1,106 @@
 import NotifyPlugin from "vue-easy-notify";
+import Multiselect from "vue-multiselect";
 
 Vue.use(NotifyPlugin);
 export default {
+	components: {
+		Multiselect,
+	  },
+	props: ["qLInput", "strokeLenDev", "spm","pumpType"],
 	data: function()  {
 		return {
 			svgTableN1: require('../../../images/tableN1.svg'),
 			svgTableN2: require('../../../images/tableN2.svg'),
-			davMin: 30,
-			groupPosad: 2,
-			stup: '2',
-			dlinaPolki: 10,
-			gasMax: 10,
+			pintakeMin: null,
+			groupPosad: null,
+			stup: "2",
+			inclStep: null,
+			gasMax: null,
 			hvostovik: true,
-			koroz: 'srednekor',
-			lenMin: 2,
-			lenMax: 3,
-			spmMin: 3,
-			spmMax: 8,
-			kpodMin: 0.6,
+			corrosion: null,
+			strokeLenMin: null,
+			strokeLenMax: null,
+			spmMin: null,
+			spmMax: null,
+			kpodMin: null,
 			isModal: false,
-			pumpCheckboxes: [
+			kpodCalced: null,
+			value: [],
+			pumpTypeKpod: this.pumpType,
+			qLInputKpod: this.qLInput,
+			strokeLenDevKpod: this.strokeLenDev,
+			spmKpod: this.spm,
+			markShtangs: null,
+			diametersShgn: [
 				{
-					id: 1,
+					pumpType: 27,
 					value: 27
 				},
 				{
-					id: 2,
+					pumpType: 32,
 					value: 32
 				},
 				{
-					id: 3,
+					pumpType: 38,
 					value: 38
 				},
 				{
-					id: 4,
+					pumpType: 44,
 					value: 44
 				},
 				{
-					id: 5,
+					pumpType: 50,
 					value: 50
 				},
+				{
+					pumpType:57,
+					value: 57
+				},
+				{
+					pumpType: 60,
+					value: 60
+				},
+				{
+					pumpType: 70,
+					value: 70
+				},
+				{
+					pumpType: 95,
+					value: 95
+				},
 
-				],
+			],
 			markShtang: [],
-			markShtangs: [
-        		{
-          		mValue: 1,
-          		tempValue: "40 (Н)",
-        		},
-        		{
-          		mValue: 2,
-          		tempValue: "40 (НсУ)",
-        		},
-        		{
-          		mValue: 3,
-          		tempValue: "14Х3ГМЮ (НВО)",
-        		},
-        		{
-          		mValue: 4,
-          		tempValue: "15НЗМА (Н)",
-        		},
-        		{
-          		mValue: 5,
-          		tempValue: "15НЗМА (НсУ)",
-        		},
-        		{
-          		mValue: 6,
-          		tempValue: "15Х2ГМФ (НВО)",
-        		},
-				{
-          		mValue: 7,
-          		tempValue: "15Х2НМФ (НВО)",
-        		},
-				{
-          		mValue: 8,
-          		tempValue: "20Н2М (Н)",
-        		},
-				{
-          		mValue: 9,
-          		tempValue: "20Н2М (НсУ)",
-        		},
-				{
-          		mValue: 10,
-          		tempValue: "30ХМ(А) (НсУ)",
-        		},
-				{
-          		mValue: 11,
-          		tempValue: "АЦ28ХГНЗФТ (О)",
-        		},
+			markShtangsTypes: {
+				"mediumCorrosion": [
+					"20Н2М (Н)",
+					"20Н2М (НсУ)", 
+					"30ХМ(А) (НсУ)",
+					"15НЗМА (НсУ)",
+					"15Х2НМФ (НВО)",
+					"15Х2ГМФ (НВО)",
+					"14Х3ГМЮ (НВО)",
+					"АЦ28ХГНЗФТ (О)",
 				],
-				}
+				"antiCorrosion": [
+					"40 (Н)",
+					"40 (НсУ)",
+					"20Н2М (Н)",
+					"20Н2М (НсУ)",
+					"30ХМ(А) (НсУ)",
+					"15НЗМА (НсУ)",
+					"15Х2НМФ (НВО)",
+					"15Х2ГМФ (НВО)",
+					"14Х3ГМЮ (НВО)",
+					"АЦ28ХГНЗФТ (О)"
+				],
+				"highCorrosion": [
+					"15НЗМА (Н)",
+					"АЦ28ХГНЗФТ (О)"
+				]
+			},
+			kPodMode: true,
+		}
 	},
 	computed: {
 		dmPumps: {
@@ -152,14 +163,14 @@ export default {
 		onChangeLenMax(event) {
 			this.$store.commit("UPDATE_LEN_MAX", event.target.value)
 		},
-		onChangeDavMin(event) {
-			this.$store.commit("UPDATE_DAV_MIN", event.target.value)
+		onChangePintakeMin(event) {
+			this.$store.commit("UPDATE_PINTAKE_MIN", event.target.value)
 		},
 		onChangeGasMax(event) {
 			this.$store.commit("UPDATE_GAS_MAX", event.target.value)
 		},
-		onChangeDlinaPolki(event) {
-			this.$store.commit("UPDATE_DLINA_POLKI", event.target.value)
+		onChangeInclStep(event) {
+			this.$store.commit("UPDATE_INCL_STEP", event.target.value)
 		},
 		onChangeKpod(event) {
 			this.$store.commit("UPDATE_KPOD", event.target.value)
@@ -167,14 +178,18 @@ export default {
 		onChangeGroupPosad(event) {
 			this.$store.commit("UPDATE_GROUP_POSAD", event.target.value)
 		},
-		onChangeKoroz(event) {
-			this.$store.commit("UPDATE_KOROZ", event.target.value)
+		onChangeCorrosion(event) {
+			this.$store.commit("UPDATE_CORROSION", event.target.value)
+			this.markShtangs = this.markShtangsTypes[this.corrosion]
+			if (this.corrosion === "highCorrosion") {
+				this.markShtang = []
+			} else {
+				this.markShtang = this.$store.getters.markShtang
+			}
 		},
 		onChangeStupColumns(event) {
 			this.$store.commit("UPDATE_STUP_COLUMNS", event.target.value)
 		},
-		
-
 		onClick() {
 			this.$modal.show('modalTable')
 			this.isModal = true;
@@ -191,25 +206,37 @@ export default {
 			this.$modal.show('modalTable3')
 		},
 		onSubmitParams() {
+			this.$store.commit('UPDATE_MARKSHTANG', this.markShtang) 
 			this.$emit('on-submit-params');
 			this.$modal.show('tabs');
 		},
+		calKpod(){
+			if (this.qLInput) {
+				this.kpodCalced = this.qLInputKpod / (1440 * 3.14 * this.pumpTypeKpod ** 2 * this.strokeLenDevKpod * (this.spmKpod / 4000000))
+				this.$store.commit('UPDATE_KPOD_CALCED', this.kpodCalced) 
+			}
+		}
 	},
 	created: function() {
 		this.spmMin = this.$store.getters.spmMin
-    	this.spmMax = this.$store.getters.spmMax
-    	this.strokeLenMin = this.$store.getters.strokeLenMin
-    	this.strokeLenMax = this.$store.getters.strokeLenMax
-    	this.kpodMin = this.$store.getters.kpodMin
+    this.spmMax = this.$store.getters.spmMax
+    this.strokeLenMin = this.$store.getters.strokeLenMin
+    this.strokeLenMax = this.$store.getters.strokeLenMax
+    this.kpodMin = this.$store.getters.kpodMin
 		this.groupPosad = this.$store.getters.groupPosad
 		this.komponovka = this.$store.getters.komponovka
 		this.dmRods = this.$store.getters.dmRods
 		this.stupColumns = this.$store.getters.stupColumns
 		this.h2s = this.$store.getters.h2s
 		this.heavyDown = this.$store.getters.heavyDown
-		this.koroz = this.$store.getters.koroz
-		this.davMin = this.$store.getters.davMin
+		this.corrosion = this.$store.getters.corrosion
+		this.pintakeMin = this.$store.getters.pintakeMin
 		this.gasMax = this.$store.getters.gasMax
-		this.dlinaPolki = this.$store.getters.dlinaPolki
+		this.inclStep = this.$store.getters.inclStep
+		this.markShtang = this.$store.getters.markShtang
+		this.markShtangs = this.markShtangsTypes[this.corrosion]
+		this.kPodMode = this.$store.getters.kPodMode
+		this.kpodCalced = this.$store.getters.kPodCalced
+		this.calKpod()
 	}
 }

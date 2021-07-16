@@ -22,7 +22,7 @@ class SibController extends CrudController
 
     protected $modelName = 'sib';
 
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         $params = [
             'success' => Session::get('success'),

@@ -25,7 +25,6 @@ class AgzuImport implements ToModel
     const CURRENT_STATE = 5;
     const DATE_OF_REPAIR = 6;
     const TYPE_OF_REPAIR = 7;
-    const PASSPORT_PDF = 8;
 
 
     public function transformDate($value, $format = 'd.m.Y')
@@ -55,7 +54,6 @@ class AgzuImport implements ToModel
             'current_state' => $row[self::CURRENT_STATE],
             'date_of_repair' => $this->transformDate($row[self::DATE_OF_REPAIR]),
             'type_of_repair' => $row[self::TYPE_OF_REPAIR],
-            'passport_pdf' => $row[self::PASSPORT_PDF],
         ]);
 
     }

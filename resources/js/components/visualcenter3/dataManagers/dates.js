@@ -89,6 +89,8 @@ export default {
         setPreviousPeriod() {
             this.previousPeriodStart = moment(new Date(this.timestampToday)).subtract(this.quantityRange, 'days').format('DD.MM.YYYY');
             this.previousPeriodEnd = moment(new Date(this.timestampToday)).subtract(1, 'days').format('DD.MM.YYYY');
+            this.currentMonthDateStart = moment(new Date(this.timestampToday)).subtract(1, 'months').format('MMMM YYYY');
+            this.currentMonthDateEnd = moment(new Date(this.timestampEnd)).subtract(1, 'months').format('MMMM YYYY');
         },
 
         isOneDatePeriodSelected() {
@@ -125,14 +127,11 @@ export default {
             this.timestampEnd = new Date(this.range.end).getTime();
             let differenceBetweenDates = this.timestampEnd - this.timestampToday;
             this.quantityRange = Math.trunc((Math.abs(differenceBetweenDates) / 86400000) + 1);
-            let nowDate = new Date(this.range.start).toLocaleDateString();
-            let oldDate = new Date(this.range.end).toLocaleDateString();
-            this.timeSelect = nowDate;
+            this.timeSelect = new Date(this.range.start).toLocaleDateString();
             this.chemistrySelectedDate = moment(new Date(this.range.start).toString()).format("MMM yyyy");
-            this.timeSelectOld = oldDate;
+            this.timeSelectOld = new Date(this.range.end).toLocaleDateString();
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
             this.getCurrencyNow(new Date().toLocaleDateString());
-            this.getAccidentTotal();
             this.updatePrices(this.period);
         },
 

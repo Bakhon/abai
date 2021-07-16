@@ -1,0 +1,41 @@
+[ class*='btn-button--thm-' ] {
+  transition: all 0.2s ease-in;
+
+  &:hover {
+    transition: all 0.2s ease-in;
+  }
+}
+
+.btn-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border: 0;
+  margin: 0;
+  background: none;
+
+  &--thm-green {
+    background: $greenBtn;
+    color: #fff;
+
+    &:hover {
+      background-color: darken($greenBtn, 10%);
+      border-color: darken($greenBtn, 10%);
+    }
+  }
+
+  &--thm-blue {
+    background: $blue;
+    color: #fff;
+
+    &:hover {
+      background-color: darken($blue, 10%);
+      border-color: darken($blue, 10%);
+    }
+  }
+}
