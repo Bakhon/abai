@@ -567,7 +567,7 @@ export default {
     },
     cancelEdit() {
       this.$store.commit("globalloading/SET_LOADING", true);
-      this.isEdit = false;
+      this.isEdit = true;
       this.editedWells = [];
       this.month = this.currentMonth;
       this.selectYear = this.currentYear;
