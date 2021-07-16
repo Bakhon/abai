@@ -273,8 +273,10 @@ export default {
 }
 
 .org-select-tree-block {
-  min-height: calc(100vh - 90px);
+  height: calc(100vh - 100px);
   overflow-y: auto;
+  position: sticky;
+  top: 10px;
 }
 
 .scrollable {

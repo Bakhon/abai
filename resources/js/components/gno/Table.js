@@ -578,9 +578,9 @@ export default {
     },
 
     onChangeParams() {
-      if (this.qLInput) {
-        this.qLforKpod = this.qLInput.split(' ')[0]
-        this.pumpTypeforKpod = this.pumpType.split(' ')[0]
+      if (this.qLInput && this.qLInput.split(' ')[0]*1!==0) {
+        this.qLforKpod = this.qLInput.split(' ')[0] * 1
+        this.pumpTypeforKpod = this.pumpType.split(' ')[0] * 1
       }
       this.$modal.show('modalTabs')
     },
@@ -1157,7 +1157,7 @@ export default {
           this.curveLineData = JSON.parse(data.LineData)["data"]
           this.curvePointsData = JSON.parse(data.PointsData)["data"]
           this.ngdu = 0
-          this.sk = 0
+          this.sk = null
 
           //Выбор скважины
           this.horizon = 0;
@@ -1254,7 +1254,7 @@ export default {
           })
 
           this.ngdu = 0
-          this.sk = 0
+          this.sk = null
 
           //Выбор скважины
           this.expMeth = 0;
@@ -1504,7 +1504,6 @@ export default {
         if (data) {
           this.newData = data["Well Data"]
           this.method = "CurveSetting"
-          this.newData = data["Well Data"]
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
           this.newPointsData = JSON.parse(data.PointsData)["data"]
           this.updateLine(this.newCurveLineData)
@@ -1558,6 +1557,7 @@ export default {
       });
     },
     setGraphOld() {
+      this.welldata = this.newData
       this.updateLine(this.newCurveLineData)
       this.setPoints(this.newPointsData)
       this.$modal.hide('modalOldWell');
@@ -1579,6 +1579,7 @@ export default {
     },
 
     setGraphNew() {
+      this.welldata = this.newData
       this.updateLine(this.newCurveLineData)
       this.setPoints(this.newPointsData)
       this.$modal.hide('modalNewWell');
@@ -1588,6 +1589,10 @@ export default {
       this.piInput = this.newData["pi"].toFixed(2) + " " + this.trans('measurements.m3/d/at');
       this.wctInput = this.newData["wct"].toFixed(0) + " " + this.trans('measurements.percent');
       this.hPumpValue = this.newData["h_pump_set"].toFixed(0) + " " + this.trans('measurements.m');
+      console.log(this.newPointsData)
+      this.bhpPot = this.newPointsData[1]["p"].toFixed(0)*1 - 1
+      this.qlPot = this.newPointsData[1]["q_l"].toFixed(0)*1 + 1
+      this.pinPot = this.newPointsData[1]["pin"].toFixed(0)*1 - 1
     },
 
     onCompareNpv() {
@@ -1607,28 +1612,28 @@ export default {
 
     onPgnoClick() {
       this.nktExist("pgno")
-      if (this.isSkError) {
+      if (this.isSkError || !this.sk || this.sk=="0") {
         this.$notify({
           message: this.trans('pgno.notify_error_sk'),
           type: 'error',
           size: 'sm',
           timeout: 8000
         })
-      } else if (this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql') {
+      } else if (this.qlPot < this.qlCelValue.split(' ')[0] && this.CelButton == 'ql' && this.qlPot) {
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
           size: 'sm',
           timeout: 8000
         })
-      } else if (this.bhpPot * 1 > this.bhpCelValue.split(' ')[0] * 1 && this.CelButton == 'bhp') {
+      } else if (this.bhpPot > this.bhpCelValue.split(' ')[0] && this.CelButton == 'bhp' && this.bhpPot) {
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
           size: 'sm',
           timeout: 8000
         })
-      } else if (this.pinPot * 1 > this.piCelValue.split(' ')[0] * 1 && this.CelButton == 'pin') {
+      } else if (this.pinPot > this.piCelValue.split(' ')[0] && this.CelButton == 'pin' && this.pinPot) {
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
