@@ -51,7 +51,7 @@ class EconomicOptimizationController extends Controller
     const ORG_MANGISTAU = 7;
 
     const COMPANY_OZEN = 5;
-    const  COMPANY_EMBA = 6;
+    const COMPANY_EMBA = 6;
     const COMPANY_MANGISTAU = 7;
     const COMPANY_KARAZANBAS = 8;
     const COMPANY_KAZ_GER = 9;

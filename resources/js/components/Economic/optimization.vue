@@ -675,12 +675,6 @@ export default {
       this.loading = false
     },
 
-    calcSubBlockWidth(percent) {
-      return percent <= 0
-          ? percent + 100
-          : +Math.floor(100 * percent / (100 + percent))
-    },
-
     liquidValue(optimized = true) {
       if (!this.form.scenario_id) {
         optimized = false
