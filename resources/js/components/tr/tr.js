@@ -856,7 +856,14 @@ export default {
           } else {
             this.wells = [];
             this.fullWells = [];
-            console.log("No data");
+            this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+              title: this.trans('app.error'),
+              toaster: "b-toaster-top-center",
+              solid: true,
+              appendToast: false,
+              variant: 'danger',
+            });
+
           }
         })
         .catch((error) => {
@@ -864,7 +871,14 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
-          console.log("search error = ", error);
+          this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
+
         });
     },
   },
