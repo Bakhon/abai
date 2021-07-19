@@ -588,6 +588,9 @@
 <script src="./index.js"></script>
 
 <style scoped lang="scss">
+    .troubled-companies-padding {
+        padding-left: 2% !important;
+    }
     .bounce-enter-active {
         animation: bounce-in .5s;
     }
@@ -651,9 +654,6 @@
     }
     .summary-header_text-align {
         text-align: right !important;
-    }
-    .troubled-companies-padding {
-        padding-left: 2%;
     }
     .empty-row {
         border-bottom: 21px solid #272953;
