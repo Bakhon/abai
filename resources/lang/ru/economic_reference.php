@@ -164,4 +164,5 @@ return array (
   'million_tenge' => 'млн тенге',
   'scenarios' => 'Сценарии',
   'select_scenario_data' => 'Выбор входных удельных экономических данных для расчетов',
+  'technical_economic_indicators' => 'Технико-экономические показатели',
 );

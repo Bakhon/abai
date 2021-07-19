@@ -16,7 +16,7 @@ class EconomicOptimizationController extends Controller
 {
     protected $druidClient;
 
-    const DATA_SOURCE = 'economic_scenario_test_v4';
+    const DATA_SOURCE = 'economic_scenario_test_v5';
 
     const DATA_SOURCE_DATE = '2021/07/13';
 
@@ -31,7 +31,9 @@ class EconomicOptimizationController extends Controller
         'well_count_profitable',
         'well_count_profitless_cat_1',
         'well_count_profitless_cat_2',
-        'avg_days_worked'
+        'avg_days_worked',
+        'production_export',
+        'production_local',
     ];
 
     const OPTIMIZED_COLUMN_SUFFIX = '_optimize';
@@ -78,6 +80,7 @@ class EconomicOptimizationController extends Controller
             'org' => $org,
             'scenarios' => $this->getScenarios(),
             'specificIndicator' => $this->getSpecificIndicatorData($org),
+            'technicalEconomicIndicator' => $this->getTechnicalEconomicIndicatorData($org),
             'dollarRate' => [
                 'value' => $this->getDollarRate() ?? '0',
                 'url' => self::DOLLAR_RATE_URL
@@ -144,6 +147,29 @@ class EconomicOptimizationController extends Controller
     }
 
     private function getSpecificIndicatorData(Org $org, int $scenarioId = 6): array
+    {
+        $query = EcoRefsCost::query()
+            ->select(
+                DB::raw('AVG(variable) as avg_variable'),
+                DB::raw('AVG(fix_payroll) as avg_fix_payroll'),
+                DB::raw('AVG(wo) as avg_wo'),
+                DB::raw('AVG(fix) as avg_fix'),
+                DB::raw('AVG(gaoverheads) as avg_gaoverheads'),
+                DB::raw('AVG(wr_nopayroll) as avg_wr_nopayroll'),
+                DB::raw('AVG(wr_payroll) as avg_wr_payroll'),
+            )
+            ->whereScFa($scenarioId);
+
+        if ($org->druid_id) {
+            $companyId = self::orgCompanyMap()[$org->id];
+
+            $query->whereCompanyId($companyId);
+        }
+
+        return $query->get()->first()->toArray();
+    }
+
+    private function getTechnicalEconomicIndicatorData(Org $org, int $scenarioId = 6): array
     {
         $query = EcoRefsCost::query()
             ->select(
