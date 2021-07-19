@@ -122,7 +122,7 @@ export default {
         8: "в консервации ликвидированный нагнетательный фонд",
         9: "наблюдательный фонд"
       };
-      let uri = "http://172.20.103.187:8082/generic/";
+      let uri = process.env.MIX_MICROSERVICE_PREDEFINED_REPORTS + "/generic/";
       let data = {
         type: 'rev_fund_' + this.fondType,
         period: 'days',
