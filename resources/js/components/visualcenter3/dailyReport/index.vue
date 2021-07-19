@@ -2,10 +2,16 @@
     <div class="page-wrapper">
         <div class="page-container row">
             <div class="col-12 mt-3 header">
+                <transition name="bounce">
+                    <div v-if="isTypeTimerActive" class="img-play"></div>
+                </transition>
+                <transition name="bounce">
+                    <div v-if="!isTypeTimerActive" class="img-pause"></div>
+                </transition>
                 <div class="header-title">
                     {{headerTitle}}
                 </div>
-                <transition name="slide-fade" mode="out-in">
+                <transition name="fade" mode="out-in">
                     <div v-if="isOpecActive" class="title-opec ml-2">
                         ОПЕК+
                     </div>
@@ -582,6 +588,37 @@
 <script src="./index.js"></script>
 
 <style scoped lang="scss">
+    .bounce-enter-active {
+        animation: bounce-in .5s;
+    }
+    .bounce-leave-active {
+        animation: bounce-in .5s reverse;
+    }
+    @keyframes bounce-in {
+        0% {
+            transform: scale(0);
+        }
+        50% {
+            transform: scale(1.5);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    .img-play {
+        background: url(/img/visualcenter3/play.png) no-repeat;
+        height: 25px;
+        width: 25px;
+        position: absolute;
+        left: 60px;
+    }
+    .img-pause {
+        background: url(/img/visualcenter3/pause.png) no-repeat;
+        height: 25px;
+        width: 25px;
+        position: absolute;
+        left: 90px;
+    }
     .reason-box {
         position: absolute;
         width: 400px;
@@ -629,7 +666,7 @@
         height: 25px;
         width: 25px;
         position: absolute;
-        right: 15px;
+        right: 60px;
     }
     .header-title {
         font-style: normal;

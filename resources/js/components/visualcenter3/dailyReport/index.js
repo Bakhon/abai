@@ -311,10 +311,8 @@ export default {
             this.updateSummaryForExcel();
             this.tableOutput.participationByKMG = this.summary.productionByKMGWithParticipation;
             this.tableOutput.participationByDzo = this.summary.productionByDzoWithParticipation;
-            console.log(this.tableOutput.participationByDzo);
             this.tableOutput.byKMG = this.summary.productionByKMG;
             this.tableOutput.byDzo = this.summary.productionByDzo;
-            console.log(this.tableOutput.byDzo);
         },
         updateProduction() {
             this.summary.productionByDzo = this.getSummaryByDzo(this.typeMapping.production);
