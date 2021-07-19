@@ -278,6 +278,16 @@ export default {
 
         isConsolidatedCategoryActive() {
             return this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0;
+        },
+
+        getNumberByDzo(dzoName){
+            if (this.oilCondensateProductionButton) {
+                return this.dzoNumbers['productionConsolidated'][dzoName];
+            } else if (this.oilCondensateDeliveryButton) {
+                return this.dzoNumbers['deliveryConsolidated'][dzoName];
+            } else if (this.gasProductionButton || this.waterInjectionButton) {
+                return this.dzoNumbers['gas'][dzoName];
+            }
         }
     },
     computed: {

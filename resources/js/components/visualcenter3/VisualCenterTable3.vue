@@ -858,6 +858,7 @@
                 >
                   <thead>
                   <tr>
+                    <th>№</th>
                     <th>{{ trans("visualcenter.dzo") }}</th>
                     <th v-if="buttonMonthlyTab && !isOilResidueActive" >
                       {{ trans("visualcenter.dzoMonthlyPlan") }}
@@ -971,10 +972,12 @@
                   </thead>
                   <tbody>
                   <tr v-for="(item, index) in dzoSummaryForTable">
+                    <td :class="`${getDzoColumnsClass(index,'plan')}`">
+                      {{getNumberByDzo(item.dzoMonth)}}
+                    </td>
                     <td
                             @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
-                            :class="index % 2 === 0 ? 'tdStyle' : ''"
-                            style="cursor: pointer"
+                            :class="[index % 2 === 0 ? 'tdStyle' : '','cursor-pointer']"
                     >
                       <span v-if="!isConsolidatedCategoryActive() || isOilResidueActive">
                         {{ getNameDzoFull(item.dzoMonth) }}
@@ -984,7 +987,7 @@
                         {{ getDzoName(item.dzoMonth,dzoNameMappingWithoutKMG) }}
                         <img src="/img/icons/link.svg" />
                       </span>
-                      <span v-else>
+                      <span :class="troubledCompanies.includes(item.dzoMonth) ? 'troubled-companies' : ''" v-else>
                         {{ getDzoName(item.dzoMonth,dzoNameMapping) }}
                         <img src="/img/icons/link.svg" />
                       </span>
@@ -1166,6 +1169,7 @@
                     </td>
                   </tr>
                   <tr v-if="isMultipleDzoCompaniesSelected">
+                    <td :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"></td>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
                       <div class="">{{ dzoCompaniesAssets['assetTitle'] }}</div>
                     </td>
@@ -2570,6 +2574,9 @@
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
   @import './el-datepicker-custom.css';
+  .troubled-companies {
+    padding-left: 10%;
+  }
   .dzocompanies-dropdown__divider {
     border-bottom: 2px solid #656a8a;
   }
@@ -2630,8 +2637,10 @@
           padding: 5px 5px 5px 10px;
           position: relative;
           vertical-align: middle;
-          min-width: 71px;
-          &:first-child {
+          &:not(:first-child) {
+            min-width: 71px;
+          }
+          &:nth-child(2) {
             white-space: normal;
             min-width: 290px;
             font-weight: bold;
@@ -2674,6 +2683,10 @@
             width: 100%;
           }
         }
+        td:first-child {
+          width: 4%;
+          text-align: center;
+        }
       }
       tr:after {
         content: " ";
@@ -2685,6 +2698,7 @@
         background: inherit;
         top: -1px;
         z-index: 3000;
+        width: 4%;
       }
       th {
         position: sticky;
@@ -2697,8 +2711,8 @@
         font-size: 12px;
         background: #353ea1;
         text-align: center;
-        &:first-child {
-          width: 322px;
+        &:nth-child(2) {
+          width: 352px;
           padding-top: 5px;
           font-size: 15px;
         }
@@ -2968,7 +2982,7 @@
   }
   @media (max-width: 2000px) {
     .table4 {
-      tr td {
+      tr td:not(:first-child) {
         min-width: 5.3em !important;
       }
     }
