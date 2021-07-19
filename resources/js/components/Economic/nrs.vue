@@ -350,7 +350,7 @@ export default {
       this.loading = true
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get_data'), {params: this.form})
+        const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-data'), {params: this.form})
 
         this.res = data
       } catch (e) {
@@ -366,7 +366,7 @@ export default {
       try {
         this.loading = true
 
-        const {data} = await this.axios.post(this.localeUrl('/economic/nrs/export_data'), this.form)
+        const {data} = await this.axios.post(this.localeUrl('/economic/nrs/export-data'), this.form)
 
         this.exportFromExcelJob(data)
       } catch (e) {

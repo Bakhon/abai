@@ -663,7 +663,7 @@ export default {
       this.loading = true
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/optimization/get_data'), {params: this.form})
+        const {data} = await this.axios.get(this.localeUrl('/economic/optimization/get-data'), {params: this.form})
 
         this.res = data
       } catch (e) {

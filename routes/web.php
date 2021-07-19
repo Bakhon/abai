@@ -37,10 +37,10 @@ Route::group(
                 )->name('mainpage');
 
                 Route::get('/economic/nrs', 'Economic\EconomicNrsController@index')->name('economic_nrs');
-                Route::get('/economic/nrs/get_data', "Economic\EconomicNrsController@getData");
-                Route::post('/economic/nrs/export_data', "Economic\EconomicNrsController@exportData");
+                Route::get('/economic/nrs/get-data', "Economic\EconomicNrsController@getData");
+                Route::post('/economic/nrs/export-data', "Economic\EconomicNrsController@exportData");
                 Route::get('/economic/optimization', 'Economic\EconomicOptimizationController@index')->name('economic_optimization');
-                Route::get('/economic/optimization/get_data', 'Economic\EconomicOptimizationController@getData');
+                Route::get('/economic/optimization/get-data', 'Economic\EconomicOptimizationController@getData');
 
                 Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
                 Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
