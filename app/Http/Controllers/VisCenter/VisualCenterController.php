@@ -24,7 +24,8 @@ use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use Carbon\Carbon;
 use App\Models\VisCenter\ExcelForm\DzoImportOtm;
 use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
-use App\Models\BigData\ChemistryForKGM;
+use App\Models\VisCenter\ChemistryForKGM;
+use App\Models\VisCenter\EmergencyHistory;
 
 class VisualCenterController extends Controller
 {
@@ -91,24 +92,27 @@ class VisualCenterController extends Controller
         return response()->json($data);
     }
 
-    public function getOilRates() {
-      $oilRatesData = OilRate::query()
-          ->get()
-          ->toArray();
-      return response()->json($oilRatesData);
+    public function getOilRates()
+    {
+        $oilRatesData = OilRate::query()
+            ->get()
+            ->toArray();
+        return response()->json($oilRatesData);
     }
 
-    public function getDzoMonthlyPlans() {
-          $dzoMonthlyPlans = dzoPlan::query()
-              ->get()
-              ->toArray();
-          return response()->json($dzoMonthlyPlans);
-        }
+    public function getDzoMonthlyPlans()
+    {
+        $dzoMonthlyPlans = dzoPlan::query()
+            ->get()
+            ->toArray();
+        return response()->json($dzoMonthlyPlans);
+    }
 
-    public function getDzoYearlyPlan() {
+    public function getDzoYearlyPlan()
+    {
         $dzoYearlyPlan = DZOyear::query()
-            ->where('date',date("Y"))
-            ->select('dzo','oil_plan','oil_opek_plan')
+            ->where('date', date("Y"))
+            ->select('dzo', 'oil_plan', 'oil_opek_plan')
             ->get()
             ->toArray();
         return response()->json($dzoYearlyPlan);
@@ -328,15 +332,15 @@ class VisualCenterController extends Controller
         $startPeriod->subDays($diff);
 
         $factDataByPeriod = DzoImportData::query()
-            ->whereDate('date','>', $startPeriod)
-            ->whereDate('date','<=', $endPeriod)
+            ->whereDate('date', '>', $startPeriod)
+            ->whereDate('date', '<=', $endPeriod)
             ->with('importDowntimeReason')
             ->with('importDecreaseReason')
             ->get()
             ->toArray();
 
         $planData = $this->getPlanDetails();
-        $comparedData = $this->getComparedPlanFactData($planData,$factDataByPeriod);
+        $comparedData = $this->getComparedPlanFactData($planData, $factDataByPeriod);
         return response()->json($comparedData);
     }
 
@@ -352,21 +356,20 @@ class VisualCenterController extends Controller
         $comparedData = [];
         foreach ($factData as $item) {
             $parsedDate = Carbon::parse($item['date'])->startOfDay()->day(01)->toDateTimeString();
-            $planRecord = $this->getPlanForRecord($item['dzo_name'],$parsedDate,$planData);
+            $planRecord = $this->getPlanForRecord($item['dzo_name'], $parsedDate, $planData);
             $planRecord = $this->deleteDuplicateFields($planRecord);
-            $comparedData[] = array_merge($item,$planRecord);
+            $comparedData[] = array_merge($item, $planRecord);
         }
         return $comparedData;
     }
 
     private function getPlanForRecord($dzoName, $date, $planData)
     {
-        $searchedRecord = $planData->where('dzo',$dzoName)->where('date',$date);
+        $searchedRecord = $planData->where('dzo', $dzoName)->where('date', $date);
         if ($searchedRecord->count() > 0) {
             return array_values($searchedRecord->toArray())[0];
         }
         return array();
-
     }
 
     public function getOtmDetails(Request $request)
@@ -397,7 +400,7 @@ class VisualCenterController extends Controller
             4 => 'id',
             5 => 'dzo_name'
         ];
-        foreach($fields as $item) {
+        foreach ($fields as $item) {
             unset($planRecord[$item]);
         }
         return $planRecord;
@@ -406,7 +409,7 @@ class VisualCenterController extends Controller
     public function getDrillingDetails(Request $request)
     {
         return DzoImportData::query()
-            ->select('date','dzo_name','otm_drilling_fact','otm_wells_commissioning_from_drilling_fact')
+            ->select('date', 'dzo_name', 'otm_drilling_fact', 'otm_wells_commissioning_from_drilling_fact')
             ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
             ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
             ->get()
@@ -426,7 +429,54 @@ class VisualCenterController extends Controller
             ->toArray();
     }
 
-    public function storeKGMChemistryByMonth(Request $request)    {      
+    public function dailyReport()
+    {
+        return view('visualcenter.dailyreport');
+    }
+
+    public function getProductionDetailsForYear()
+    {
+        $startPeriod = Carbon::now()->startOfYear();
+        $endPeriod = Carbon::now()->endOfDay();
+        return DzoImportData::query()
+            ->select()
+            ->whereDate('date', '>=', $startPeriod)
+            ->whereDate('date', '<=', $endPeriod)
+            ->with('importDecreaseReason')
+            ->get()
+            ->toArray();
+    }
+    public function getEmergencyHistory(Request $request)
+    {
+        return EmergencyHistory::query()
+            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'), 'title', 'description')
+            ->whereMonth('date', $request->currentMonth)
+            ->where('type', 1)
+            ->get()
+            ->toArray();
+    }
+    public function getHistoricalProductionByDzo(Request $request)
+    {
+        $factByDzo = DzoImportData::query()
+            ->where('dzo_name', $request->dzoName)
+            ->orderBy('date', 'desc')
+            ->with('importDowntimeReason')
+            ->with('importDecreaseReason')
+            ->first()
+            ->toArray();
+        $factDate = Carbon::parse($factByDzo['date'])->firstOfMonth();
+        $planByDzo = DzoPlan::query()
+            ->whereDate('date', $factDate)
+            ->where('dzo', $request->dzoName)
+            ->first()
+            ->toArray();
+        $planByDzo = $this->deleteDuplicateFields($planByDzo);
+        $comparedData[] = array_merge($factByDzo, $planByDzo);
+        return response()->json($comparedData);
+    }
+
+    public function storeKGMChemistryByMonth(Request $request)
+    {
         $date = $request->date;
         $DzoImportChemistry = new DzoImportChemistry();
         $DzoImportChemistry->dzo_name = 'КГМ';
@@ -435,15 +485,18 @@ class VisualCenterController extends Controller
         $DzoImportChemistry->bactericide = $this->getKGMChemistry('BACTERICIDE', $date);
         $DzoImportChemistry->corrosion_inhibitor = $this->getKGMChemistry('COR_ING', $date);
         $DzoImportChemistry->scale_inhibitor = $this->getKGMChemistry('SALT_INHIB', $date);
-        $DzoImportChemistry->save(); 
+        $DzoImportChemistry->save();
         return 'Сохранено';
     }
 
     public function getKGMChemistry($nameOfChemistryValue, $date)
     {
-        return ChemistryForKGM::query()->select('*')
+        $chemistry = ChemistryForKGM::query()->select('*')
             ->where('start_datetime', $date)
             ->where('legacy_id', $nameOfChemistryValue)
-            ->get()->toArray()['0']['inj_fact_mass'];
+            ->get()->toArray();
+        if (!is_null($chemistry)) {
+            return $chemistry['0']['inj_fact_mass'];
+        }
     }
 }

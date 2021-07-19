@@ -1,6 +1,6 @@
 <template>
   <div class="gu-map">
-    <cat-loader v-show="loading"/>
+    <cat-loader />
     <div class="gu-map__controls">
       <h1>{{ trans('monitoring.map.title') }}</h1>
       <div v-if="guPoints" class="d-flex">
@@ -96,6 +96,32 @@
         </div>
       </template>
     </b-modal>
+
+    <b-modal
+        v-if="selectedPipe"
+        size="xl"
+        header-bg-variant="main4"
+        body-bg-variant="main1"
+        header-text-variant="light"
+        footer-bg-variant="main4"
+        centered
+        id="pipe-calc-long-modal"
+        modal-class="pipe-calc-long-modal"
+        :title="trans('monitoring.pipe.detail-data') + ' ' + selectedPipe.name"
+        :cancel-disabled="true"
+    >
+      <pipe-long-info
+          :pipe="selectedPipe"
+          :referentValue="parseInt(referentValue)"
+          :activeFilter="activeFilter"
+
+      />
+    </b-modal>
+
+    <div v-show="false">
+      <gu-tool-tip ref="guToolTip" :gu="guHovered" />
+      <pipe-tool-tip ref="pipeToolTip"  :pipe="pipeHovered" :paramKey="pipeHoveredParameter" />
+    </div>
   </div>
 </template>
 
@@ -110,13 +136,15 @@ import mapGuForm from "./mapGuForm";
 import mapZuForm from "./mapZuForm";
 import mapWellForm from "./mapWellForm";
 import mapPipeForm from "./mapPipeForm";
-import {guMapState, guMapMutations, guMapActions} from '@store/helpers';
+import {guMapState, guMapMutations, guMapActions, globalloadingMutations} from '@store/helpers';
 import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
-import CatLoader from '../../ui-kit/CatLoader'
-
+import CatLoader from '../../ui-kit/CatLoader';
+import guToolTip from "./guToolTip";
+import pipeToolTip from "./pipeToolTip";
+import pipeLongInfo from "./pipeLongInfo";
 
 export default {
   name: "gu-map",
@@ -127,8 +155,11 @@ export default {
     'map-well-form': mapWellForm,
     'map-pipe-form': mapPipeForm,
     'map-context-menu': mapContextMenu,
+    guToolTip,
+    pipeToolTip,
     CatLoader,
-    mapLegend
+    mapLegend,
+    pipeLongInfo
   },
   data() {
     return {
@@ -165,7 +196,7 @@ export default {
       layers: [],
       pipes: [],
       mapColorsMode: 'default',
-      selectedDate: null,
+      selectedDate: moment().format('YYYY-MM-DD'),
       activeFilter: null,
       mapFilters: [
         {
@@ -181,8 +212,11 @@ export default {
           key: 'temperature'
         },
       ],
-      loading: false,
-      referentValue: 10
+      referentValue: 10,
+      guHovered: null,
+      pipeHovered: null,
+      pipeHoveredParameter: null,
+      selectedPipe: null,
     };
   },
   created() {
@@ -204,10 +238,9 @@ export default {
     },
     okBtntext() {
       return this.formType == 'create' ? this.trans('app.create') : this.trans('app.update')
-    }
+    },
   },
   methods: {
-    ...guMapMutations([]),
     ...guMapActions([
       'getMapData',
       'storeGu',
@@ -222,8 +255,11 @@ export default {
       'getElevationByCoords',
       'getHydroReverseCalc'
     ]),
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     async initMap() {
-      this.loading = true;
+      this.SET_LOADING(true);
       this.pipes = await this.getMapData(this.gu);
 
       this.viewState = {
@@ -269,14 +305,18 @@ export default {
         },
         onHover: ({object}) => (this.isHovering = Boolean(object)),
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
-        getTooltip: ({object}) => {
+        getTooltip:  ({object}) => {
           if (object) {
             if (object.cdng_id && object.last_omgngdu) {
-              let guParams = object.last_omgngdu;
-              guParams.name = object.name;
-
               return {
-                html: this.getGuTooltipHtml(guParams)
+                html: this.getGuTooltipHtml(object)
+              }
+            }
+
+            let paramKey = this.getPipeCalcKey(object);
+            if (paramKey) {
+              return {
+                html: this.getPipeTooltipHtml(object, paramKey)
               }
             }
 
@@ -299,23 +339,35 @@ export default {
           layers: this.layers
         });
 
-        this.loading = false;
+        this.SET_LOADING(false);
       });
     },
-    getGuTooltipHtml(guParams) {
-      return '<div class="params_block">' +
-          '<p>' + guParams.name + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.date') + ': ' + guParams.date + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_fluid_production') + ': ' + guParams.daily_fluid_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_oil_production') + ': ' + guParams.daily_oil_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_water_production') + ': ' + guParams.daily_water_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.bsw') + ': ' + guParams.bsw + this.trans('measurements.percent') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.pump_discharge_pressure') + ': ' + guParams.pump_discharge_pressure + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.heater_output_temperature') + ': ' + guParams.heater_output_temperature + ' ' + this.trans('measurements.celsius') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_gas_production_in_sib') + ': ' + guParams.daily_gas_production_in_sib + ' ' + this.trans('measurements.st.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.surge_tank_pressure') + ': ' + guParams.surge_tank_pressure + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
+    getPipeCalcKey (pipe) {
+      let keys = [
+          'last_hydro_calc',
+          'last_reverse_calc',
+          'hydro_calc',
+          'reverse_calc'
+      ];
 
-          '</div>';
+      for (let key of keys) {
+        if (pipe[key]) {
+          return key;
+        }
+      }
+
+      return null;
+    },
+    getGuTooltipHtml(gu) {
+      this.guHovered = gu;
+
+      return this.$refs.guToolTip.$el.outerHTML;
+    },
+    getPipeTooltipHtml(pipe, paramKey) {
+      this.pipeHovered = pipe;
+      this.pipeHoveredParameter = paramKey;
+
+      return this.$refs.pipeToolTip.$el.outerHTML;
     },
     prepareLayers() {
       let pipesLayer = this.createPipeLayer('path-layer', this.pipes);
@@ -565,6 +617,10 @@ export default {
       let title = this.trans('app.delete_confirm') + ' ' + this.getObjectName(this.editMode) + '?';
       this.confirmDelete(title);
     },
+    onShowDetailInfo(option) {
+      this.selectedPipe = option.mapObject.object;
+      this.$bvModal.show('pipe-calc-long-modal');
+    },
     optionClicked(option) {
       this.editMode = option.editMode;
       this.formType = option.type;
@@ -637,6 +693,7 @@ export default {
         message = result.message;
       }
 
+      let variant = result.status == 'success' ? 'success' : 'danger';
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addZu() {
@@ -655,6 +712,7 @@ export default {
         message = result.message;
       }
 
+      let variant = result.status == 'success' ? 'success' : 'danger';
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addWell() {
@@ -673,6 +731,7 @@ export default {
         message = result.message;
       }
 
+      let variant = result.status == 'success' ? 'success' : 'danger';
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addPipe() {
@@ -1047,15 +1106,14 @@ export default {
       return moment.parseZone(date).format('YYYY-MM-DD')
     },
     async applyFilter() {
-      this.mapColorsMode = this.activeFilter;
       switch (this.activeFilter) {
         case 'speedFlow':
         case 'pressure':
         case 'temperature':
-          this.loading = true;
+          this.SET_LOADING(true);
           this.pipes = await this.getHydroReverseCalc(this.formatDate(this.selectedDate));
           this.mapRedraw();
-          this.loading = false;
+          this.SET_LOADING(false);
           break;
 
         default:
@@ -1063,8 +1121,8 @@ export default {
           return false;
       }
     },
-    filterChanged() {
-      this.selectedDate = null;
+    async filterChanged() {
+      this.mapColorsMode = this.activeFilter;
 
       switch (this.activeFilter) {
         case 'pressure':
@@ -1077,9 +1135,10 @@ export default {
 
         case null:
           this.mapColorsMode = 'default';
-          this.mapRedraw();
           break;
       }
+
+      this.mapRedraw();
     },
     mapRedraw() {
       this.layerRedraw('path-layer', 'pipe', this.pipes);
@@ -1090,7 +1149,15 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+
+<style>
+.pipe-calc-long-modal .modal-dialog {
+  max-width: calc(100vw - 114px);
+  left: 28.5px;
+}
+</style>
+
+<style lang="scss" scoped>
 h1 {
   color: #fff;
 }
@@ -1170,4 +1237,5 @@ h1 {
     background-size: contain;
   }
 }
+
 </style>

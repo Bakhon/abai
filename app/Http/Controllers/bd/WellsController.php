@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BigData\WellCreateRequest;
 use App\Models\BigData\Well;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 
 class WellsController extends Controller
 {
@@ -22,7 +23,10 @@ class WellsController extends Controller
 
     public function create()
     {
-        return view('bigdata.wells.create');
+        $forms = collect(json_decode(File::get(resource_path("/js/json/bd/forms.json"))));
+        $params = $forms->where('code', 'well_register')->first();
+
+        return view('bigdata.wells.create', compact('params'));
     }
 
     public function store(WellCreateRequest $request): WellResource

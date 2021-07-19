@@ -33,7 +33,6 @@
                         @if($section->title_trans)
                             <h5>{{trans($section->title_trans)}}</h5>
                         @endif
-
                         @foreach($fieldCodes as $fieldCode => $fieldName)
                             @php
                                 if ($fieldCode == 'load_las') {
@@ -41,7 +40,6 @@
                                 } else {
                                     $permission_name = $module['name'].' '.$fieldCode.' '.$section->code;
                                 }
-
                                 $permission = $permissions->get($permission_name);
                             @endphp
 

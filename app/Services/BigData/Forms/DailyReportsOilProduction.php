@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Services\BigData\Forms;
-use Carbon\Carbon;
 
 class DailyReportsOilProduction extends DailyReports
 {
@@ -12,26 +11,34 @@ class DailyReportsOilProduction extends DailyReports
     protected $metricCode = 'OIL';
     protected $configurationFileName = 'daily_reports_oil_prod';
 
-    protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
-    {
-        /** TODO метод для сохранения значения поля */
-    }
-
-    protected function saveHistory(string $field, $value): void
-    {
-        /** TODO метод для сохранения истории изменений */
-    }
-
-    protected function getData($filter) {
+    protected function getData($filter): array {
         $data = parent::getData($filter);
-        $result = [
-            'id' => 0,
-            'plan' => $data->sum('plan'),
-        ];
-        $result['fact'] = $data->sum('fact');
-        if (in_array($filter->optionId, [self::ALL, self::GS])) {
-            $result['fact'] = 0;
+        $result = [];
+        $plan = $data->sum('plan');
+        $fact = $data->sum('fact');
+        switch ($filter->period) {
+            case self::DAY:
+                $result['plan'] = ['value' => $plan];
+                $result['fact'] = $result['daily_fact_cits'] = ['value' => $fact];
+                break;
+            case self::MONTH:
+                $result['month_plan'] = ['value' => $plan];
+                $result['month_fact'] = $result['month_fact_cits'] = ['value' => $fact];
+                break;
+            case self::YEAR:
+                $result['year_plan'] = ['value' => $plan];
+                $result['year_fact'] = $result['year_fact_cits'] = ['value' => $fact];
+                break;
         }
+
+        if ($filter->optionId === self::GS) {
+            $result['fact'] = ['value' => 0];
+            $result['month_fact'] = ['value' => 0];
+            $result['year_fact'] = ['value' => 0];
+        }
+        $result['daily_fact_gs'] = ['value' => 0];
+        $result['month_fact_gs'] = ['value' => 0];
+        $result['year_fact_gs'] = ['value' => 0];
 
         return $result;
     }

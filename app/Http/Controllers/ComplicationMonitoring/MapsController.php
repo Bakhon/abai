@@ -7,6 +7,7 @@ use App\Models\ComplicationMonitoring\OilPipe;
 use App\Http\Controllers\Controller;
 use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\Ngdu;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\MapService;
 use App\Models\ComplicationMonitoring\Gu;
@@ -47,7 +48,21 @@ class MapsController extends Controller
 
     public function mapData(Request $request, DruidService $druidService): array
     {
-        $pipes = OilPipe::with('coords', 'pipeType')->get();
+        $pipes = OilPipe::with('coords', 'pipeType')
+            ->with([
+                'hydroCalcLong' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                },
+                'hydroCalc' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                },
+                'reverseCalc' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                }
+            ])
+            ->WithLastHydroCalc()
+            ->WithLastReverseCalc()
+            ->get();
 
         $center = [52.854602599069, 43.426262258809];
 
@@ -469,7 +484,10 @@ class MapsController extends Controller
                 },
                 'reverseCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
-                }
+                },
+                'hydroCalcLong' => function($query) use ($date) {
+                    $query->where('date', $date);
+                },
             ]
         )->get();
 

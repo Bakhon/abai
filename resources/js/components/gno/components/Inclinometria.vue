@@ -157,6 +157,7 @@ export default {
   props: ["wellNumber", "wellIncl", "isLoading","expChoose"],
   data: function () {
     return {
+      apiUrl: process.env.MIX_PGNO_API_URL,
       data() {},
       dls1: "-",
       dls2: "-",
@@ -260,7 +261,7 @@ export default {
       buildModel(){
         this.hPumpFromIncl = this.$store.getters.hPump
         var wi = this.wellIncl.split('_');
-        let uri = "http://172.20.103.187:7575/api/pgno/incl";
+        let uri = this.apiUrl + "pgno/incl";
         this.$emit('update:isLoading', true);
         if (this.expChoose == 'ШГН'){
           this.lift_method="ШГН"

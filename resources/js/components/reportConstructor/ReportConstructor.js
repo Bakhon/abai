@@ -16,7 +16,7 @@ export default {
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
-            showOptions: true,
+            isShowOptions: true,
             structureTypes: {
                 org: null,
                 tech: null,
@@ -24,7 +24,8 @@ export default {
             },
             attributeDescriptions: null,
             attributesForObject: null,
-            currentStructureType: 'geo',
+            activeButtonId: 1,
+            currentStructureType: 'org',
             currentStructureId: null,
             currentItemType: null,
             currentOption: null,
@@ -36,6 +37,7 @@ export default {
             selectedObjects: [],
             startDate: null,
             endDate: null,
+            maxDepthOfSelectedAttributes: null,
         }
     },
     mounted: function () {
@@ -48,8 +50,33 @@ export default {
         this.loadAttributeDescriptions()
     },
     methods: {
+        onYearClick() {
+            document.querySelector('.start-year-date .vdatetime-input').click();
+            document.querySelector('.end-year-date .vdatetime-input').click();
+        },
+        onMonthClick() {
+            document.querySelector('.start-month-date .vdatetime-input').click();
+            document.querySelector('.end-month-date .vdatetime-input').click();
+        },
+        setStartOfMonth(date) {
+            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        setEndOfMonth(date) {
+            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        setStartOfYear(date) {
+            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        setEndOfYear(date) {
+            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        onMenuClick(currentStructureType, btnId) {
+            this.isShowOptions = true;
+            this.currentStructureType = currentStructureType;
+            this.activeButtonId = btnId;
+        },
         onClickOption(structureType) {
-            this.showOptions = false;
+            this.isShowOptions = false;
             this.currentOption = structureType
             this.currentItemType = structureType.id
         },
@@ -208,7 +235,7 @@ export default {
                     let newAttribute = {
                         label: attribute['label']
                     }
-                    if ('children' in attribute && attribute.children.length > 0) {
+                    if (this._hasChildren(attribute)) {
                         newAttribute.children = this._getAllSelectedAttributes(attribute.children)
                     }
                     selectedAttributes.push(newAttribute)
@@ -216,13 +243,16 @@ export default {
             }
             return selectedAttributes
         },
+        _hasChildren(node) {
+            return 'children' in node && node.children.length > 0
+        },
         _cleanEmptyHeadersOfAttributes(attributes) {
             let cleanAttributes = []
             for (let attribute of attributes) {
                 if (this.isActualAttribute(attribute.label)) {
                     cleanAttributes.push({'label': attribute.label})
                 }
-                if (!('children' in attribute) || attribute.children.length === 0) {
+                if (!this._hasChildren(attribute)) {
                     continue
                 }
                 let cleanChildren = this._cleanEmptyHeadersOfAttributes(attribute.children)
@@ -309,5 +339,77 @@ export default {
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
         },
+        getHeaders() {
+            let attributes = this.getSelectedAttributes()
+            this.maxDepthOfSelectedAttributes = this._getMaxDepthOfTree(attributes)
+            return this._convertTreeToLayersOfAttributes(attributes, this.maxDepthOfSelectedAttributes)
+
+        },
+        _getMaxDepthOfTree(attributes) {
+            let maxChildrenDepth = 0
+            for (let attribute of attributes) {
+                if (!this._hasChildren(attribute)) {
+                    continue
+                }
+                let childrenDepth = this._getMaxDepthOfTree(attribute.children)
+                if (maxChildrenDepth < childrenDepth) {
+                    maxChildrenDepth = childrenDepth
+                }
+            }
+            return maxChildrenDepth + 1
+        },
+        _convertTreeToLayersOfAttributes(attributes, layerDepth)
+        {
+            let layers = []
+            for (let i = 0; i < layerDepth; i++) {
+                layers.push(this._getAttributesOnDepth(attributes, i))
+            }
+            return layers
+        },
+        _getAttributesOnDepth(attributes, targetDepth, startingDepth = 0) {
+            let attributesOnTargetDepth = []
+            for (let attribute of attributes) {
+                if (startingDepth === targetDepth) {
+                    attributesOnTargetDepth.push({
+                        'label': attribute.label,
+                        'maxChildrenNumber': this._getMaxChildrenNumber(attribute)
+                    })
+                    continue
+                }
+                if (!this._hasChildren(attribute)) {
+                    continue
+                }
+                let attributesOnDepth = this._getAttributesOnDepth(
+                    attribute.children, targetDepth, startingDepth + 1
+                )
+                attributesOnTargetDepth = attributesOnTargetDepth.concat(attributesOnDepth)
+            }
+            return attributesOnTargetDepth
+        },
+        _getMaxChildrenNumber(originalAttribute) {
+            let maxChildrenNumber = 0;
+            if (!this._hasChildren(originalAttribute)) {
+                return maxChildrenNumber
+            }
+            for (let attribute of originalAttribute.children) {
+                if (!this._hasChildren(attribute)) {
+                    maxChildrenNumber += 1
+                }
+                maxChildrenNumber += this._getMaxChildrenNumber(attribute)
+            }
+            return maxChildrenNumber
+        },
+        getRowHeightSpan(attribute, currentDepth){
+            if (attribute.maxChildrenNumber > 0) {
+                return 1
+            }
+            return this.maxDepthOfSelectedAttributes - currentDepth
+        },
+        getRowWidthSpan(attribute) {
+            if (attribute.maxChildrenNumber === 0) {
+                return 1
+            }
+            return attribute.maxChildrenNumber
+        }
     }
 }
