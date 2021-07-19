@@ -6,5 +6,5 @@ use App\Models\TBDModel;
 
 class ChemistryForKGM extends TBDModel
 {
-    protected $table = 'avaseti.kmg_i_chem_mth_view';
+    protected $table = 'avoceti.kmg_i_chem_mth_view';
 }
