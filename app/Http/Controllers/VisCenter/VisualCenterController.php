@@ -439,6 +439,7 @@ class VisualCenterController extends Controller
             ->select()
             ->whereDate('date', '>=', $startPeriod)
             ->whereDate('date', '<=', $endPeriod)
+            ->with('importDecreaseReason')
             ->get()
             ->toArray();
     }
