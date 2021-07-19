@@ -216,7 +216,8 @@ class OmgNGDUController extends CrudController
     public function edit(Request $request, OmgNGDU $omgngdu)
     {
         $validationParams = $this->getValidationParams('omgngdu');
-        $omgngdu->editable = 0;
+        $omgngdu->editable = $request->session()->get('from_hydro_calc') ? 1 : 0;
+
         return view('omgngdu.edit', compact('omgngdu', 'validationParams'));
     }
 
