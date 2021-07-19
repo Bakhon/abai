@@ -2,17 +2,24 @@
     <div class="page-wrapper">
         <div class="page-container row">
             <div class="col-12 mt-3 header">
+                <transition name="bounce">
+                    <div v-if="isTypeTimerActive" class="img-play"></div>
+                </transition>
+                <transition name="bounce">
+                    <div v-if="!isTypeTimerActive" class="img-pause"></div>
+                </transition>
                 <div class="header-title">
                     {{headerTitle}}
                 </div>
-                <transition name="slide-fade" mode="out-in">
+                <transition name="fade" mode="out-in">
                     <div v-if="isOpecActive" class="title-opec ml-2">
                         ОПЕК+
                     </div>
                 </transition>
                 <div class="img-download" @click="exportToExcel()"></div>
             </div>
-            <div class="col-12 mt-3">
+            <div class="col-12 mt-3" @click="switchTimers()">
+                <div class="reason-box" id="decreaseReason">{{decreaseReason}}</div>
                 <table class="main-table col-12">
                     <tr>
                         <th rowspan="2">№ п/п</th>
@@ -143,6 +150,8 @@
                         <td
                                 v-if="!isOpecActive"
                                 :class="getColorBy(item.differenceByDay)"
+                                @mouseover="mouseOver($event,item.reason)"
+                                @mouseleave="mouseLeave"
                         >
                             {{getFormattedNumber(item.differenceByDay)}}
                         </td>
@@ -579,6 +588,46 @@
 <script src="./index.js"></script>
 
 <style scoped lang="scss">
+    .bounce-enter-active {
+        animation: bounce-in .5s;
+    }
+    .bounce-leave-active {
+        animation: bounce-in .5s reverse;
+    }
+    @keyframes bounce-in {
+        0% {
+            transform: scale(0);
+        }
+        50% {
+            transform: scale(1.5);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    .img-play {
+        background: url(/img/visualcenter3/play.png) no-repeat;
+        height: 25px;
+        width: 25px;
+        position: absolute;
+        left: 60px;
+    }
+    .img-pause {
+        background: url(/img/visualcenter3/pause.png) no-repeat;
+        height: 25px;
+        width: 25px;
+        position: absolute;
+        left: 90px;
+    }
+    .reason-box {
+        position: absolute;
+        width: 400px;
+        background: white;
+        color: black;
+        padding: 5px;
+        border-radius: 10px;
+        display: none;
+    }
     .slide-fade-enter-active {
         transition: all .5s ease;
     }
@@ -617,7 +666,7 @@
         height: 25px;
         width: 25px;
         position: absolute;
-        right: 15px;
+        right: 60px;
     }
     .header-title {
         font-style: normal;
@@ -658,6 +707,7 @@
    .main-table {
        table-layout: fixed;
        border-collapse: collapse;
+       position: static;
        tr {
            &:nth-child(2) {
                th {
@@ -707,6 +757,14 @@
            &:nth-child(3), &:nth-child(4), &:nth-child(5) {
                width: 5%;
            }
+       }
+   }
+   @media (min-width: 1950px) {
+       .page-wrapper {
+           height: 920px;
+       }
+       .main-table {
+           font-size: 15px;
        }
    }
 </style>
