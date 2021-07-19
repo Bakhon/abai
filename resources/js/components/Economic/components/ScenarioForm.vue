@@ -14,7 +14,7 @@
     </div>
 
     <h5 class="text-secondary mt-3">
-      {{ trans('economic_reference.scenario') }}
+      {{ trans('economic_reference.select_scenario_data') }}
     </h5>
 
     <select-sc-fa :form="form" is-forecast/>

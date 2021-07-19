@@ -131,7 +131,7 @@ return array (
   'salary_optimization' => 'Оптимизации заработной платы',
   'retention_percents' => 'Сохранение условно-постоянных затрат отключаемых скважин',
   'stop_unprofitable_fund' => 'Остановка нерентабельного фонда',
-  'economic_module' => 'Модуль "Оптимизация разработки"',
+  'economic_module' => 'Модуль "ТЭАиОРС"',
   'total' => 'Всего',
   'tons' => 'тонн',
   'units' => 'ед',
@@ -163,4 +163,5 @@ return array (
   'thousand_tenge' => 'тыс. тенге',
   'million_tenge' => 'млн тенге',
   'scenarios' => 'Сценарии',
+  'select_scenario_data' => 'Выбор входных удельных экономических данных для расчетов',
 );

@@ -3,9 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <a href="{{ request()->query('is_forecast')
-                     ? route('eco_refs_scenario.index')
-                     : route('eco_refs_cost.index') }}"
+            <a href="{{ route('eco_refs_cost.index', ['is_forecast'=> $isForecast])}}"
                class="btn btn-info">
                 {{ __('economic_reference.return_menu') }}
             </a>
@@ -46,7 +44,7 @@
             <div class="form-group">
                 <input type="checkbox"
                        name="is_forecast"
-                       {{request()->query('is_forecast') ? 'checked' : ''}}
+                       {{$isForecast ? 'checked' : ''}}
                        hidden>
 
                 <input type="file"
@@ -54,9 +52,17 @@
                        accept="{{\App\Http\Requests\EcoRefs\Cost\ImportExcelEcoRefsCostRequest::MIME_TYPES}}"
                        class="form-control-file"/>
 
-                <button type="submit" class="mt-3 btn btn-primary">
-                    {{ __('economic_reference.upload')}}
-                </button>
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        {{ __('economic_reference.upload')}}
+                    </button>
+
+                    <a href="/{{$isForecast ? 'eco_refs_cost_forecast' : 'eco_refs_cost'}}.xlsx"
+                       class="btn btn-primary float-right"
+                       download>
+                        {{ __('economic_reference.download_example')}}
+                    </a>
+                </div>
             </div>
         </form>
     </div>
