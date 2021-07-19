@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\BigData;
+namespace App\Models\VisCenter;
 
 use App\Models\TBDModel;
 
