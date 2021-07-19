@@ -1,12 +1,12 @@
 <template>
   <div class="table-page">
     <table class="table table-bordered table-dark">
-      <tbody v-if="pipeSegments">
-      <tr v-for="(segment, sIndex) in pipeSegments">
-        <template v-for="(column, index) in segment">
-          <th v-if="index == 0" scope="row">{{ column }}</th>
-          <td v-else-if="sIndex == 0" :style="{backgroundColor: arrayToColor(column)}"></td>
-          <td v-else>{{ column }}</td>
+      <tbody v-if="longInfoRows">
+      <tr v-for="(row, rIndex) in longInfoRows">
+        <template v-for="(column, cIndex) in row">
+          <th v-if="cIndex == 0" scope="row">{{ column.name }}</th>
+          <td v-else-if="rIndex == 0" :style="{backgroundColor: arrayToColor(column)}"></td>
+          <td v-else :style="{color: paramColor(rIndex, cIndex)}">{{ column }}</td>
         </template>
       </tr>
       </tbody>
@@ -27,6 +27,14 @@ export default {
   data() {
     return {
       fields: [
+        {
+          name: '',
+          field: 'color'
+        },
+        {
+          name: 'Distance',
+          field: 'distance'
+        },
         {
           name: 'Pin (atm)',
           field: 'pin'
@@ -63,36 +71,42 @@ export default {
           name: 'Comment',
           field: 'comment'
         }
-      ]
+      ],
+      filterFields: {
+        speedFlow: 'vm',
+        pressure: 'pin',
+        temperature: 'tout'
+      }
     }
   },
   computed: {
-    pipeSegments() {
-      let segments = [];
+    longInfoRows() {
+      let longInfoRows = [];
 
       this.fields.forEach((field, fIndex) => {
-        segments[fIndex] = [field.name];
-        this.pipe.hydro_calc_long.forEach((segment) => {
-          segments[fIndex].push(segment[field.field]);
+        longInfoRows[fIndex] = [field];
+
+        this.pipe.hydro_calc_long.forEach((segment, sIndex) => {
+          switch (field.field) {
+            case "color":
+              longInfoRows[fIndex].push(this.getPipeColor(segment));
+              break;
+
+            case "distance":
+              if (sIndex == 0) {
+                longInfoRows[fIndex].push('0 - ' + segment.distance + ' м');
+              } else {
+                longInfoRows[fIndex].push(this.pipe.hydro_calc_long[sIndex - 1].distance + ' - ' + segment.distance + ' м');
+              }
+              break;
+
+            default:
+              longInfoRows[fIndex].push(segment[field.field]);
+          }
         })
       });
 
-      let distances = ['Distance'];
-      let colors = [''];
-      this.pipe.hydro_calc_long.forEach((segment, index) => {
-        if (index == 0) {
-          distances.push('0 - ' + segment.distance + ' м');
-        } else {
-          distances.push(this.pipe.hydro_calc_long[index - 1].distance + ' - ' + segment.distance + ' м');
-        }
-
-        colors.push(this.getPipeColor(segment));
-      })
-
-      segments.unshift(distances);
-      segments.unshift(colors);
-
-      return segments;
+      return longInfoRows;
     }
   },
   methods: {
@@ -111,27 +125,29 @@ export default {
       return pipeColors[this.activeFilter].good
     },
     getColorByFlowSpeed(segment) {
-      let speed_flow = segment.vm ? segment.vm : null;
+      let speed_flow = segment.vm ? parseFloat(segment.vm) : null;
+
       switch (true) {
         case speed_flow == null:
           return pipeColors[this.activeFilter].no_data;
           break;
 
-        case speed_flow.fluid_speed < 0.5:
+        case speed_flow < 0.5:
           return pipeColors[this.activeFilter].danger;
           break;
 
-        case speed_flow.fluid_speed >= 0.5 && speed_flow.fluid_speed < 0.9:
+        case speed_flow >= 0.5 && speed_flow < 0.9:
           return pipeColors[this.activeFilter].warning;
           break;
 
-        case speed_flow.fluid_speed > 0.9:
+        case speed_flow > 0.9:
           return pipeColors[this.activeFilter].good;
           break;
       }
     },
     getColorByPressure(segment) {
-      let pressure = segment.pin ? segment.pin : null;
+      let pressure = segment.pin ? parseFloat(segment.pin) : null;
+
       switch (true) {
         case pressure == null:
           return pipeColors[this.activeFilter].no_data;
@@ -144,7 +160,8 @@ export default {
       }
     },
     getColorByTemperature(segment) {
-      let temperature = segment.tout ? segment.tout : null;
+      let temperature = segment.tout ? parseFloat(segment.tout) : null;
+
       switch (true) {
         case temperature == null:
           return pipeColors[this.activeFilter].no_data;
@@ -158,7 +175,14 @@ export default {
     },
     arrayToColor(arrColor) {
       return `rgb(${arrColor[0]}, ${arrColor[1]}, ${arrColor[2]})`;
-    }
+    },
+    paramColor(rIndex, cIndex) {
+      if (this.longInfoRows[rIndex][0].field == this.filterFields[this.activeFilter]) {
+        return this.arrayToColor(this.longInfoRows[0][cIndex])
+      }
+
+      return 'rgb(255,255,255)';
+    },
   }
 }
 </script>
