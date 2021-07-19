@@ -498,7 +498,7 @@ class VisualCenterController extends Controller
         return 'Save';
     }
 
-    public function getKGMChemistry($nameOfChemistryValue, $date)
+    private function getKGMChemistry($nameOfChemistryValue, $date)
     {
         $chemistry = ChemistryForKGM::query()->select('*')
             ->where('start_datetime', $date)
@@ -511,7 +511,7 @@ class VisualCenterController extends Controller
         }
     }
 
-    public function getKGMRepairs($nameOfRepairsValue, $date)
+    private function getKGMRepairs($nameOfRepairsValue, $date)
     {
         $month = date('m', strtotime($date));
         $repairs = RepairsForKGM::query()->select('*')          
