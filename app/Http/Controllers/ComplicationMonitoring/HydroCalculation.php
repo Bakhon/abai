@@ -13,7 +13,6 @@ use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Session;
@@ -24,7 +23,7 @@ class HydroCalculation extends Controller
 
     protected $modelName = 'hydro_calculation';
 
-    public function index(Request $request)
+    public function index()
     {
         $params = [
             'success' => Session::get('success'),
