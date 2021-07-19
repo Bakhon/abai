@@ -37,7 +37,7 @@ Route::group(
                     function () {
                         return view('welcome');
                     }
-                )->name('mainpage');                           
+                )->name('mainpage');
                 Route::get('/economic/nrs', 'EconomicController@index')->name('economic');
                 Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
                 Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
@@ -125,7 +125,9 @@ Route::group(
 
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
                 Route::get('/paegtm/accum_oil_prod_data', 'GTM\GTMController@getAccumOilProd')->name('gtm');
-                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');                  
+                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');
+
+                Route::get('/map-constructor', 'MapConstructor\MapConstructorController@index')->name('map_constructor_index');
             }
         );
         Auth::routes(

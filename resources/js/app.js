@@ -28,6 +28,8 @@ import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 import Paginate from 'vuejs-paginate';
+import VueLayers from 'vuelayers'
+import 'vuelayers/lib/style.css'
 
 require('./bootstrap');
 window.Vue = require('vue');
@@ -43,6 +45,8 @@ Vue.use(PerfectScrollbar);
 Vue.use(columnSortable);
 Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
+Vue.use(VueLayers)
+
 Vue.component('paginate', Paginate);
 
 //Mixins
@@ -208,6 +212,8 @@ Vue.component('GeologyCoreLeftSide', require('./components/geology/core/GeologyC
 Vue.component('GeologyCoreRightSide', require('./components/geology/core/GeologyCoreRightSide.vue').default);
 
 Vue.component('digital-rating', require('./components/DigitalRating/index.vue').default);
+
+Vue.component('map-constructor-main', require('./components/mapConstructor/Main.vue').default);
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
