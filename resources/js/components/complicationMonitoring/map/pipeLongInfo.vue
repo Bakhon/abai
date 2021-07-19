@@ -71,7 +71,12 @@ export default {
           name: 'Comment',
           field: 'comment'
         }
-      ]
+      ],
+      filterFields: {
+        speedFlow: 'vm',
+        pressure: 'pin',
+        temperature: 'tout'
+      }
     }
   },
   computed: {
@@ -171,20 +176,13 @@ export default {
     arrayToColor(arrColor) {
       return `rgb(${arrColor[0]}, ${arrColor[1]}, ${arrColor[2]})`;
     },
-    paramColor (rIndex, cIndex) {
-      if (this.activeFilter) {
-        switch (this.activeFilter) {
-          case "speedFlow":
-            return this.longInfoRows[rIndex][0].field == 'vm' ? this.arrayToColor(this.longInfoRows[0][cIndex]) : 'rgb(255,255,255)';
-          case "pressure":
-            return this.longInfoRows[rIndex][0].field == 'pin' ? this.arrayToColor(this.longInfoRows[0][cIndex]) : 'rgb(255,255,255)';
-          case "temperature":
-            return this.longInfoRows[rIndex][0].field == 'tout' ? this.arrayToColor(this.longInfoRows[0][cIndex]) : 'rgb(255,255,255)';
-        }
+    paramColor(rIndex, cIndex) {
+      if (this.longInfoRows[rIndex][0].field == this.filterFields[this.activeFilter]) {
+        return this.arrayToColor(this.longInfoRows[0][cIndex])
       }
 
       return 'rgb(255,255,255)';
-    }
+    },
   }
 }
 </script>
