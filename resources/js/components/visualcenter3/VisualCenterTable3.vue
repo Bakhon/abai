@@ -972,7 +972,7 @@
                   </thead>
                   <tbody>
                   <tr v-for="(item, index) in dzoSummaryForTable">
-                    <td :class="`${getDzoColumnsClass(index,'plan')}`">
+                    <td :class="`${getDzoColumnsClass(index,'difference')}`">
                       {{getNumberByDzo(item.dzoMonth)}}
                     </td>
                     <td

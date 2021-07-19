@@ -90,6 +90,7 @@ export default {
                 'ТП': this.trans("visualcenter.tp"),
                 'УО': this.trans("visualcenter.uo"),
                 'ПКК': this.trans("visualcenter.pkk"),
+                'КГМКМГ': this.trans("visualcenter.kgm"),
             },
             bigTable: [],
             starts: [""],

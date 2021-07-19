@@ -378,4 +378,5 @@ return array (
   'emergencyHistory' => 'История инцидентов',
   'gasRestriction' => 'Ограничение по газу',
   'visualcenter_module' => 'Модуль "Центр визуализации"',
+  'injectionWaterChartName' => 'Динамика закачки воды'
 );
