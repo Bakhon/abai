@@ -52,22 +52,26 @@ export default {
     methods: {
         onYearClick() {
             document.querySelector('.start-year-date .vdatetime-input').click();
-            document.querySelector('.end-year-date .vdatetime-input').click();
         },
         onMonthClick() {
             document.querySelector('.start-month-date .vdatetime-input').click();
-            document.querySelector('.end-month-date .vdatetime-input').click();
         },
         setStartOfMonth(date) {
+            if(!date) return;
             this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
+            document.querySelector('.end-month-date .vdatetime-input').click();
         },
         setEndOfMonth(date) {
+            if(!date) return;
             this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
         },
         setStartOfYear(date) {
+            if(!date) return;
             this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
+            document.querySelector('.end-year-date .vdatetime-input').click();
         },
         setEndOfYear(date) {
+            if(!date) return;
             this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
         },
         onMenuClick(currentStructureType, btnId) {

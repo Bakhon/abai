@@ -130,46 +130,48 @@
             <section class="section-top  bg-dark">
               <div class="vertical-centered">
                 <div class="row">
-                  <div class="col date-container">
-                    <label>{{ trans('bd.choose_start_date') }}</label>
-                    <template>
-                      <datetime
+                  <div class="row date-container">
+                    <div class="col start-date-container mb-2">
+                      <label>{{ trans('bd.choose_start_date') }}</label>
+                      <template>
+                        <datetime
+                            type="date"
+                            v-model="startDate"
+                            class="start-date"
+                            value-zone="Asia/Almaty"
+                            zone="Asia/Almaty"
+                            :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                            :max-datetime="endDate"
+                            :week-start="1"
+                            :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
+                            auto
+                            :flow="['year', 'month', 'date']"
+                        >
+                        </datetime>
+                      </template>
+                    </div>
+                    <div class="col end-date-container mb-2">
+                      <label>{{ trans('bd.choose_end_date') }}</label>
+                      <template>
+                        <datetime
                           type="date"
-                          v-model="startDate"
-                          class="start-date"
+                          v-model="endDate"
+                          class="end-date"
                           value-zone="Asia/Almaty"
                           zone="Asia/Almaty"
                           :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                           :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                          :max-datetime="endDate"
+                          :min-datetime="startDate"
                           :week-start="1"
                           :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
+                          use24-hour
                           auto
                           :flow="['year', 'month', 'date']"
-                      >
-                      </datetime>
-                    </template>
-                  </div>
-                  <div class="col date-container">
-                    <label>{{ trans('bd.choose_end_date') }}</label>
-                    <template>
-                      <datetime
-                        type="date"
-                        v-model="endDate"
-                        class="end-date"
-                        value-zone="Asia/Almaty"
-                        zone="Asia/Almaty"
-                        :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-                        :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                        :min-datetime="startDate"
-                        :week-start="1"
-                        :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
-                        use24-hour
-                        auto
-                        :flow="['year', 'month', 'date']"
-                      >
-                      </datetime>
-                    </template>
+                        >
+                        </datetime>
+                      </template>
+                    </div>
                   </div>
                   <div class="row date-picker inline-flex mb-1">
                     <span @click="onMonthClick()" class="calendar">Месяц</span>
@@ -178,10 +180,10 @@
                         class="end-month-date"
                         value-zone="Asia/Almaty"
                         zone="Asia/Almaty"
-                        :title="trans('bd.choose_end_month')"
+                        :title="trans('bd.choose_end_date')"
                         :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                         auto
-                        :flow="['month']"
+                        :flow="['year', 'month']"
                         :min-datetime="startDate"
                         v-on:input="setEndOfMonth($event)"
                       >
@@ -190,15 +192,15 @@
                           class="start-month-date"
                           value-zone="Asia/Almaty"
                           zone="Asia/Almaty"
-                          :title="trans('bd.choose_start_month')"
+                          :title="trans('bd.choose_start_date')"
                           :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                           auto
-                          :flow="['month']"
+                          :flow="['year', 'month']"
                           v-on:input="setStartOfMonth($event)"
                       >
                       </datetime>
                     </template>
-                    <span @click="onYearClick()" class="calendar">Год</span>
+                    <span @click="onYearClick()" class="calendar year-label">Год</span>
                     <template>
                       <datetime
                         class="end-year-date"
@@ -227,7 +229,7 @@
                   </div>
 
                   <div class="btn-container">
-                    <button class="btn-disabled" @click="updateStatistics()">Создать отчет</button>
+                    <button class="" :disabled="!startDate || !endDate" @click="updateStatistics()">Создать отчет</button>
                     <button class="">Выбрать шаблон</button>
                   </div>
                 </div>
@@ -872,7 +874,7 @@ body {
     min-height: 52px;
     width: 100%;
     margin-bottom: 10px;
-    padding: 11px 0px 11px 14px;
+    padding: 11px 7px 11px 7px;
 
     .col {
       margin: 0px;
@@ -929,8 +931,25 @@ body {
         background-Repeat :no-repeat;
       } 
 
-      .start-date {
-        margin-right: 35px;
+      @media(max-width: 1035px) {
+        .start-date-container {
+          display: flex;
+          justify-content: flex-start;
+          margin-right: 30px;
+        }
+      }
+
+      @media(min-width: 1035px) {
+        .start-date-container {
+          display: flex;
+          justify-content: flex-end;
+          margin-right: 30px;
+        }
+      }
+
+      .end-date-container {
+        display: flex;
+        justify-content: flex-start;
       }
     }
 
@@ -959,6 +978,10 @@ body {
       .calendar:hover {
         background-color: #323370;
         cursor: pointer;
+      }
+
+      .year-label {
+        justify-content: center;
       }
     }
   }
