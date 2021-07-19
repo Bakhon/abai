@@ -26,6 +26,7 @@ use App\Models\VisCenter\ExcelForm\DzoImportOtm;
 use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
 use App\Models\VisCenter\EmergencyHistory;
 use App\Models\VisCenter\ChemistryForKGM;
+use App\Models\VisCenter\RepairsForKGM;
 
 class VisualCenterController extends Controller
 {
@@ -473,18 +474,28 @@ class VisualCenterController extends Controller
         return response()->json($comparedData);
     }
 
-    public function storeKGMChemistryByMonth(Request $request)
+    public function storeKGMChemistryAndRepairsByMonth(Request $request)
     {
         $date = $request->date;
-        $DzoImportChemistry = new DzoImportChemistry();
-        $DzoImportChemistry->dzo_name = 'КГМ';
+        $dzoName='КГМ';
+
+        $DzoImportChemistry = new DzoImportChemistry();        
+        $DzoImportChemistry->dzo_name = $dzoName;
         $DzoImportChemistry->date = $date;
         $DzoImportChemistry->demulsifier = $this->getKGMChemistry('DEMULSIFICATOR', $date);
         $DzoImportChemistry->bactericide = $this->getKGMChemistry('BACTERICIDE', $date);
         $DzoImportChemistry->corrosion_inhibitor = $this->getKGMChemistry('COR_ING', $date);
-        $DzoImportChemistry->scale_inhibitor = $this->getKGMChemistry('SALT_INHIB', $date);
+        $DzoImportChemistry->scale_inhibitor = $this->getKGMChemistry('SALT_INHIB', $date);        
+
+        $DzoImportRepairs = new DzoImportOtm();
+        $DzoImportRepairs->dzo_name = $dzoName;
+        $DzoImportRepairs->date = $date;
+        $DzoImportRepairs->otm_underground_workover = $this->getKGMRepairs('ПРС%', $date);
+        $DzoImportRepairs->otm_well_workover_fact = $this->getKGMRepairs('КРС%', $date);    
+        
         $DzoImportChemistry->save();
-        return 'Сохранено';
+        $DzoImportRepairs->save();
+        return 'Save';
     }
 
     public function getKGMChemistry($nameOfChemistryValue, $date)
@@ -495,6 +506,22 @@ class VisualCenterController extends Controller
             ->get()->toArray();
         if (!is_null($chemistry)) {
             return $chemistry['0']['inj_fact_mass'];
+        } else {
+            echo 'No data '.$nameOfChemistryValue;
+        }
+    }
+
+    public function getKGMRepairs($nameOfRepairsValue, $date)
+    {
+        $month = date('m', strtotime($date));
+        $repairs = RepairsForKGM::query()->select('*')          
+            ->where('end_datetime','LIKE','2021-'.$month.'%')
+            ->where('workover','LIKE', $nameOfRepairsValue)
+            ->get()->toArray();      
+        if (!is_null($repairs)) {
+           return count($repairs);
+        } else {
+            echo 'No data '.$nameOfRepairsValue;
         }
     }
 }

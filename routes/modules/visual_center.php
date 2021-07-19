@@ -72,7 +72,7 @@ Route::group(
                 Route::get('/get-chemistry-details', 'VisCenter\VisualCenterController@getChemistryDetails');
                 Route::get('/get-drilling-details', 'VisCenter\VisualCenterController@getDrillingDetails');
                 Route::get('/get-fond-details', 'VisCenter\VisualCenterController@getFondDetails');
-                Route::get('/import-kgm-chemistry', 'VisCenter\VisualCenterController@storeKGMChemistryByMonth');
+                Route::get('/import-kgm-chemistry-and-repairs', 'VisCenter\VisualCenterController@storeKGMChemistryAndRepairsByMonth');
 
                 Route::get('/daily-report', 'VisCenter\VisualCenterController@dailyReport')->name('daily-report');
                 Route::get('/get-production-for-year', 'VisCenter\VisualCenterController@getProductionDetailsForYear');
