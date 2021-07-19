@@ -105,20 +105,22 @@ export default {
     },
 
     columns() {
+      let dimensionPerPeriod = this.isForecast ? 'tenge_per_month' : 'tenge_per_day'
+
       return [
         {value: this.isForecast ? 'scenario' : 'source_data'},
         {value: 'company'},
         {value: 'month-year'},
         {value: 'variable', dimension: 'tenge_per_ton'},
-        {value: 'fix_noWRpayroll', dimension: this.isForecast ? 'tenge_per_month' : 'tenge_per_day'},
-        {value: 'fix_payroll', dimension: this.isForecast ? 'tenge_per_month' : 'tenge_per_day'},
-        {value: 'fix_nopayroll', dimension: this.isForecast ? 'tenge_per_month' : 'tenge_per_day'},
-        {value: 'fix', dimension: this.isForecast ? 'tenge_per_month' : 'tenge_per_day'},
-        {value: 'gaoverheads', dimension: this.isForecast ? 'tenge_per_month' : 'tenge_per_day'},
-        {value: 'wr_nopayroll', dimension: this.isForecast ? 'million_tenge' : 'thousand_tenge'},
-        {value: 'wr_payroll', dimension: this.isForecast ? 'million_tenge' : 'thousand_tenge'},
-        {value: 'wo', dimension: this.isForecast ? 'million_tenge' : 'thousand_tenge'},
-        {value: 'net_back', dimension: this.isForecast ? 'tenge_per_month' : 'tenge_per_day'},
+        {value: 'fix_noWRpayroll', dimension: dimensionPerPeriod},
+        {value: 'fix_payroll', dimension: dimensionPerPeriod},
+        {value: 'fix_nopayroll', dimension: dimensionPerPeriod},
+        {value: 'fix', dimension: dimensionPerPeriod},
+        {value: 'gaoverheads', dimension: dimensionPerPeriod},
+        {value: 'wr_nopayroll', dimension: 'thousand_tenge'},
+        {value: 'wr_payroll', dimension: 'thousand_tenge'},
+        {value: 'wo', dimension: 'thousand_tenge'},
+        {value: 'net_back', dimension: 'tenge_per_day'},
         {value: 'amort', dimension: 'tenge_per_ton'},
         {value: 'comment'},
         {value: 'added_date_author'},
