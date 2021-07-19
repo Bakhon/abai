@@ -759,4 +759,12 @@
            }
        }
    }
+   @media (min-width: 1950px) {
+       .page-wrapper {
+           height: 920px;
+       }
+       .main-table {
+           font-size: 15px;
+       }
+   }
 </style>
