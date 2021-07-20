@@ -136,17 +136,19 @@
                       <template>
                         <datetime
                             type="date"
-                            v-model="startDate"
+                            v-bind:value="startDate"
+                            v-on:input="onStartDatePickerClick($event)"
                             class="start-date"
                             value-zone="Asia/Almaty"
                             zone="Asia/Almaty"
+                            :title="trans('bd.choose_start_date')"
                             :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                             :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                             :max-datetime="endDate"
                             :week-start="1"
                             :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
                             auto
-                            :flow="['year', 'month', 'date']"
+                            :flow="dateFlow"
                         >
                         </datetime>
                       </template>
@@ -156,10 +158,12 @@
                       <template>
                         <datetime
                           type="date"
-                          v-model="endDate"
+                          v-bind:value="endDate"
+                          v-on:input="onEndDatePickerClick($event)"
                           class="end-date"
                           value-zone="Asia/Almaty"
                           zone="Asia/Almaty"
+                          :title="trans('bd.choose_end_date')"
                           :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                           :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                           :min-datetime="startDate"
@@ -167,65 +171,24 @@
                           :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
                           use24-hour
                           auto
-                          :flow="['year', 'month', 'date']"
+                          :flow="dateFlow"
                         >
                         </datetime>
                       </template>
                     </div>
                   </div>
-                  <div class="row date-picker inline-flex mb-1">
-                    <span @click="onMonthClick()" class="calendar">Месяц</span>
-                    <template>
-                      <datetime
-                        class="end-month-date"
-                        value-zone="Asia/Almaty"
-                        zone="Asia/Almaty"
-                        :title="trans('bd.choose_end_date')"
-                        :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                        auto
-                        :flow="['year', 'month']"
-                        :min-datetime="startDate"
-                        v-on:input="setEndOfMonth($event)"
-                      >
-                      </datetime>
-                      <datetime
-                          class="start-month-date"
-                          value-zone="Asia/Almaty"
-                          zone="Asia/Almaty"
-                          :title="trans('bd.choose_start_date')"
-                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                          auto
-                          :flow="['year', 'month']"
-                          v-on:input="setStartOfMonth($event)"
-                      >
-                      </datetime>
-                    </template>
-                    <span @click="onYearClick()" class="calendar year-label">Год</span>
-                    <template>
-                      <datetime
-                        class="end-year-date"
-                        value-zone="Asia/Almaty"
-                        zone="Asia/Almaty"
-                        :title="trans('bd.choose_end_year')"
-                        :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                        :flow="['year']"
-                        auto
-                        :min-datetime="startDate"
-                        v-on:input="setEndOfYear($event)"
-                      >
-                      </datetime>
-                      <datetime
-                          class="start-year-date"
-                          value-zone="Asia/Almaty"
-                          zone="Asia/Almaty"
-                          :title="trans('bd.choose_start_year')"
-                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                          :flow="['year']"
-                          auto
-                          v-on:input="setStartOfYear($event)"
-                      >
-                      </datetime>
-                    </template>
+                  <div class="row date-picker inline-flex mb-2">
+                    <span 
+                      @click="onMonthClick()" 
+                      class="calendar month-label" 
+                      v-bind:class="{active: currentDatePickerFilter === 'month'}"
+                    >Месяц</span>
+
+                    <span 
+                      @click="onYearClick()" 
+                      class="calendar year-label"
+                      v-bind:class="{active: currentDatePickerFilter === 'year'}"
+                    >Год</span>
                   </div>
 
                   <div class="btn-container">
@@ -931,6 +894,11 @@ body {
         background-Repeat :no-repeat;
       } 
 
+      .vdatetime::v-deep .vdatetime-popup__year,
+      .vdatetime::v-deep .vdatetime-popup__date {
+        display: none;
+      }
+
       @media(max-width: 1035px) {
         .start-date-container {
           display: flex;
@@ -956,15 +924,6 @@ body {
     .date-picker {
       justify-content: center;
 
-      .vdatetime::v-deep .vdatetime-input {
-        display: none;
-      } 
-
-      .vdatetime::v-deep .vdatetime-popup__year,
-      .vdatetime::v-deep .vdatetime-popup__date {
-        display: none;
-      }
-
       .calendar {
         display: flex;
         align-items: center;
@@ -976,13 +935,23 @@ body {
       }
 
       .calendar:hover {
-        background-color: #323370;
         cursor: pointer;
+      }
+      
+      .calendar:not(.active):hover {
+        background-color: #323370;
       }
 
       .year-label {
         justify-content: center;
       }
+
+      .active {
+        color: #fff;
+        background-color: #3366FF;
+        border-radius: 2px;
+      }
+
     }
   }
 

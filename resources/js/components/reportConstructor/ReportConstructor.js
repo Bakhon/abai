@@ -28,6 +28,7 @@ export default {
             currentStructureType: 'org',
             currentStructureId: null,
             currentItemType: null,
+            currentDatePickerFilter: 'date',
             currentOption: null,
             statistics: null,
             statisticsColumns: null,
@@ -37,6 +38,7 @@ export default {
             selectedObjects: [],
             startDate: null,
             endDate: null,
+            dateFlow: ['year', 'month', 'date'],
             maxDepthOfSelectedAttributes: null,
         }
     },
@@ -51,28 +53,38 @@ export default {
     },
     methods: {
         onYearClick() {
-            document.querySelector('.start-year-date .vdatetime-input').click();
+            if(this.currentDatePickerFilter === 'year') {
+                this.setDefaultDateFilter();
+                return;
+            }
+            this.currentDatePickerFilter = 'year';
+            this.dateFlow = ['year'];
         },
         onMonthClick() {
-            document.querySelector('.start-month-date .vdatetime-input').click();
+            if(this.currentDatePickerFilter === 'month') {
+                this.setDefaultDateFilter();
+                return;
+            }
+            this.currentDatePickerFilter = 'month';
+            this.dateFlow = ['year', 'month'];
         },
-        setStartOfMonth(date) {
-            if(!date) return;
-            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
-            document.querySelector('.end-month-date .vdatetime-input').click();
+        onStartDatePickerClick(date) {
+            if(this.currentDatePickerFilter === 'year') {
+                this.setStartOfYear(date);
+            }else if(this.currentDatePickerFilter === 'month') {
+                this.setStartOfMonth(date);
+            }else {
+                this.startDate = date;
+            }
         },
-        setEndOfMonth(date) {
-            if(!date) return;
-            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
-        },
-        setStartOfYear(date) {
-            if(!date) return;
-            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
-            document.querySelector('.end-year-date .vdatetime-input').click();
-        },
-        setEndOfYear(date) {
-            if(!date) return;
-            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
+        onEndDatePickerClick(date) {
+            if(this.currentDatePickerFilter === 'year') {
+                this.setEndOfYear(date);
+            }else if(this.currentDatePickerFilter === 'month') {
+                this.setEndOfMonth(date);
+            }else {
+                this.endDate = date;
+            }
         },
         onMenuClick(currentStructureType, btnId) {
             this.isShowOptions = true;
@@ -83,6 +95,26 @@ export default {
             this.isShowOptions = false;
             this.currentOption = structureType
             this.currentItemType = structureType.id
+        },
+        setDefaultDateFilter() {
+            this.currentDatePickerFilter = 'date';
+            this.dateFlow = ['year', 'month', 'date'];
+        },
+        setStartOfMonth(date) {
+            if(!date) return;
+            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        setEndOfMonth(date) {
+            if(!date) return;
+            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        setStartOfYear(date) {
+            if(!date) return;
+            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        setEndOfYear(date) {
+            if(!date) return;
+            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
         },
         loadStructureTypes(type) {
             this.isLoading = true
