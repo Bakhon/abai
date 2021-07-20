@@ -32,7 +32,7 @@ class HydroCalcPrepareListResource extends CrudListResource
             ],
         ];
 
-        $result['links'] = [];
+        $result['links'] = $this->omgngdu ? ['edit' => route('omgngdu.edit', $this->omgngdu->id)] : [];
 
         return $result;
     }

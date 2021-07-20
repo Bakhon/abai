@@ -604,7 +604,7 @@ class EcoRefsScFaController extends Controller
     {
         $query = EcoRefsScFa::query();
 
-        if ($request->is_forecast) {
+        if ($request->has('is_forecast')) {
             $query->whereIsForecast($request->is_forecast);
         }
 

@@ -110,19 +110,7 @@
               {{ subBlock.title }}
             </div>
 
-            <div :class="subBlock.sum.percent > 0 ? 'progress-reverse' : ''"
-                 class="progress my-2 bg-progress"
-                 style="height: 5px">
-              <div
-                  :class="calcSubBlockBg(subBlock.sum.percent, subBlock.reversePercent)"
-                  :style="{width: calcSubBlockWidth(subBlock.sum.percent) + '%'}"
-                  :aria-valuenow="subBlock.sum.percent"
-                  :aria-valuemin="0"
-                  :aria-valuemax="100"
-                  class="progress-bar"
-                  role="progressbar"
-              ></div>
-            </div>
+            <percent-progress :percent="subBlock.sum.percent"/>
 
             <div class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
@@ -147,32 +135,32 @@
           <select-interval
               :form="form"
               class="mb-3"
-              @change="getEconomicData"/>
+              @change="getData"/>
 
           <select-granularity
               :form="form"
               class="mb-3"
-              @change="getEconomicData"/>
+              @change="getData"/>
 
           <select-profitability
               :form="form"
               class="mb-3"
-              @change="getEconomicData"/>
+              @change="getData"/>
 
           <select-organization
               :form="form"
               class="mb-3"
-              @change="getEconomicData"/>
+              @change="getData"/>
 
           <select-field
               v-if="form.org_id"
               :org_id="form.org_id"
               :form="form"
-              @change="getEconomicData"/>
+              @change="getData"/>
 
           <button
               class="btn btn-primary mt-4 py-2 w-100 border-0 bg-export"
-              @click="exportEconomicData">
+              @click="exportData">
             {{ trans('economic_reference.export_excel') }}
           </button>
         </div>
@@ -191,6 +179,7 @@ import Charts from "./components/Charts";
 import EconomicTitle from "./components/EconomicTitle";
 import Subtitle from "./components/Subtitle";
 import PercentBadge from "./components/PercentBadge";
+import PercentProgress from "./components/PercentProgress";
 import SelectInterval from "./components/SelectInterval";
 import SelectGranularity, {GRANULARITY_DAY} from "./components/SelectGranularity";
 import SelectOrganization from "./components/SelectOrganization";
@@ -286,7 +275,7 @@ const economicRes = {
 }
 
 export default {
-  name: "economic-component",
+  name: "economic-nrs",
   components: {
     CatLoader,
     Divider,
@@ -295,6 +284,7 @@ export default {
     EconomicTitle,
     Subtitle,
     PercentBadge,
+    PercentProgress,
     SelectInterval,
     SelectGranularity,
     SelectOrganization,
@@ -302,27 +292,15 @@ export default {
     SelectProfitability,
   },
   data: () => ({
-    activeTab: 0,
     form: {
       org_id: null,
       field_id: null,
-      interval_start: '2020-06-01T00:00:00.000Z',
-      interval_end: '2020-09-01T00:00:00.000Z',
+      interval_start: '2020-01-01T00:00:00.000Z',
+      interval_end: '2021-01-01T00:00:00.000Z',
       granularity: GRANULARITY_DAY,
       profitability: PROFITABILITY_FULL,
     },
     res: economicRes,
-    params: {
-      data: [],
-      enableSearch: true,
-      header: 'row',
-      border: true,
-      stripe: true,
-      pagination: true,
-      pageSize: 10,
-      pageSizes: [10, 20, 50],
-      height: 300
-    },
     loading: true
   }),
   computed: {
@@ -368,23 +346,11 @@ export default {
     },
   },
   methods: {
-    calcSubBlockBg(percent, reversePercent) {
-      return (percent > 0 && !reversePercent) || (percent < 0 && reversePercent)
-          ? 'bg-green'
-          : 'bg-red'
-    },
-
-    calcSubBlockWidth(percent) {
-      return percent <= 0
-          ? percent + 100
-          : +Math.floor(100 * percent / (100 + percent))
-    },
-
-    async getEconomicData() {
+    async getData() {
       this.loading = true
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/geteconimicdata'), {params: this.form})
+        const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-data'), {params: this.form})
 
         this.res = data
       } catch (e) {
@@ -396,11 +362,11 @@ export default {
       this.loading = false
     },
 
-    async exportEconomicData() {
+    async exportData() {
       try {
         this.loading = true
 
-        const {data} = await this.axios.post(this.localeUrl('/export-economic-data'), this.form)
+        const {data} = await this.axios.post(this.localeUrl('/economic/nrs/export-data'), this.form)
 
         this.exportFromExcelJob(data)
       } catch (e) {
@@ -466,10 +432,6 @@ export default {
   line-height: 26px;
 }
 
-.progress-reverse {
-  transform: rotateY(180deg);
-}
-
 .bg-blue-dark {
   background: #2B2E5E;
 }
@@ -488,10 +450,6 @@ export default {
 
 .bg-green {
   background: rgb(19, 176, 98);
-}
-
-.bg-progress {
-  background: #323370;
 }
 
 .text-blue {
