@@ -169,7 +169,7 @@
           <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 1 }">
             <div class="gtm-dark mt-2 row m-0 p-2">
               <div class="col-1 text-right mt-1 mb-1 p-0">
-                <img src="/img/GTM/lens.svg">
+                <img src="/img/lens.svg">
               </div>
               <div class="col-11 m-0 mt-1 mb-1 row p-0">
                 <input class="search-input w-75" type="text" placeholder="Поиск по скважине">
