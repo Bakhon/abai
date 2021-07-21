@@ -116,7 +116,7 @@ export default {
         });
       }
 
-      if (this.clickedObject.type == 'pipe' && this.clickedObject.object.hydro_calc_long) {
+      if (this.clickedObject.type == 'pipe' && this.clickedObject.object.hydro_calc_long.length) {
         options.push({
           name: this.trans('monitoring.pipe.show-detail-data') + ' ' + this.clickedObject.object.name,
           mapObject: this.clickedObject,

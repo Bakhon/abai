@@ -213,10 +213,11 @@ class OmgNGDUController extends CrudController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(OmgNGDU $omgngdu)
+    public function edit(Request $request, OmgNGDU $omgngdu)
     {
         $validationParams = $this->getValidationParams('omgngdu');
-        $omgngdu->editable = 0;
+        $omgngdu->editable = $request->session()->get('from_hydro_calc') ? 1 : 0;
+
         return view('omgngdu.edit', compact('omgngdu', 'validationParams'));
     }
 
@@ -232,6 +233,13 @@ class OmgNGDUController extends CrudController
         $this->validateFields($request, 'omgngdu');
 
         $omgngdu->update($request->validated());
+
+        if ($request->session()->get('from_hydro_calc')) {
+            $request->session()->forget('from_hydro_calc');
+            $request->session()->flash('hydro_calc_date', $omgngdu->date);
+            return redirect()->route('hydro_calculation.index')->with('success', __('app.updated'));
+        }
+
         return redirect()->route('omgngdu.index')->with('success', __('app.updated'));
     }
 

@@ -16,8 +16,8 @@ export default {
                 'ПККР','КГМКМГ','ТП','АГ'
             ],
             sortingOrderWithoutParticipation: [
-                'ОМГ','ОМГК','ЭМГ','АГ','ТШО','ММГ','КОА','КТМ',
-                'КГМ','ПКК','ТП','КБМ','КПО','НКО','УО'
+                'ОМГ','ОМГК','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА',
+                'УО','ТШО','ПКК','ТП','КПО','НКО','АГ'
             ],
             consolidatedData: {
                 'withParticipation': [],
@@ -358,6 +358,9 @@ export default {
                 actualUpdatedByOpek[pkiIndex].factMonth = pkiSummary.factMonth;
                 actualUpdatedByOpek[pkiIndex].planMonth = pkiSummary.planMonth;
                 actualUpdatedByOpek[pkiIndex].opekPlan = pkiSummary.opekPlan;
+            } else {
+                pkiSummary.dzoMonth = 'ПКИ';
+                actualUpdatedByOpek.push(pkiSummary);
             }
 
             actualUpdatedByOpek = this.getSorted(actualUpdatedByOpek,this.sortingOrder);

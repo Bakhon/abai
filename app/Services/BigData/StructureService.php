@@ -15,7 +15,30 @@ class StructureService
 
     const FULL_TREE_KEY = 'bd_org_tech_tree_full';
 
-    public function getTree(Carbon $date, bool $showWells = false, $isCacheResults = true)
+    public function getTreeWithPermissions(): array
+    {
+        $userSelectedTreeItems = auth()->user()->org_structure;
+        $fullTree = $this->getTree(Carbon::now());
+        $tree = [];
+        $this->fillTree($fullTree, $tree, $userSelectedTreeItems);
+        return $tree;
+    }
+
+    public function fillTree($branch, &$tree, $userSelectedTreeItems): void
+    {
+        foreach ($branch as $item) {
+            $key = implode(':', [$item['type'], $item['id']]);
+            if (in_array($key, $userSelectedTreeItems)) {
+                $tree[] = $item;
+                continue;
+            }
+            if (!empty($item['children'])) {
+                $this->fillTree($item['children'], $tree, $userSelectedTreeItems);
+            }
+        }
+    }
+
+    public function getTree(Carbon $date, bool $showWells = false, $isCacheResults = true): array
     {
         if ($isCacheResults) {
             $cacheKey = 'bd_org_tech_' . $date->format('d.m.Y');
@@ -58,7 +81,7 @@ class StructureService
         return $result;
     }
 
-    public function getFullTree()
+    public function getFullTree(): array
     {
         if (Cache::has(self::FULL_TREE_KEY)) {
             return Cache::get(self::FULL_TREE_KEY);
@@ -67,14 +90,14 @@ class StructureService
         return $this->generateFullTree();
     }
 
-    public function generateFullTree()
+    public function generateFullTree(): array
     {
         $tree = $this->getTree(Carbon::now()->timezone('Asia/Almaty'), true, false);
         Cache::put(self::FULL_TREE_KEY, $tree, now()->addDay());
         return $tree;
     }
 
-    private function getOrgStructure()
+    private function getOrgStructure(): array
     {
         $orgData = [];
         if (Cache::has('bd_org_with_wells')) {
@@ -86,7 +109,6 @@ class StructureService
             ->get();
 
         foreach ($orgs as $org) {
-
             $orgData[$org->id] = [
                 'id' => $org->id,
                 'name' => $org->name_ru,
@@ -108,7 +130,7 @@ class StructureService
         return $orgData;
     }
 
-    private function getTechStructure(Carbon $date, bool $showWells)
+    private function getTechStructure(Carbon $date, bool $showWells): array
     {
         $cacheKey = 'bd_tech_with_wells_' . $date->format('d.m.Y');
         $techData = [];
@@ -117,7 +139,26 @@ class StructureService
         }
 
         $techs = Tech::query()
-            ->whereIn('tech_type', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU, Tech::TYPE_AGZU, Tech::TYPE_SPGU])
+            ->whereIn(
+                'tech_type',
+                function ($query) {
+                    return $query
+                        ->from('dict.tech_type')
+                        ->select('id')
+                        ->whereIn(
+                            'code',
+                            [
+                                Tech::TYPE_GZU,
+                                Tech::TYPE_GU,
+                                Tech::TYPE_ZU,
+                                Tech::TYPE_AGZU,
+                                Tech::TYPE_SPGU,
+                                Tech::TYPE_KNS,
+                                Tech::TYPE_BKNS
+                            ]
+                        );
+                }
+            )
             ->where('dbeg', '<=', $date)
             ->where('dend', '>=', $date)
             ->with(
@@ -167,7 +208,7 @@ class StructureService
         return $this->createTree($new, $new[null]);
     }
 
-    private function createTree(&$list, $parent)
+    private function createTree(&$list, $parent): array
     {
         $tree = array();
         foreach ($parent as $k => $l) {
@@ -183,7 +224,7 @@ class StructureService
         return $tree;
     }
 
-    private function clearTechStructure(array $result, bool $showWells)
+    private function clearTechStructure(array $result, bool $showWells): array
     {
         foreach ($result as $key => $tech) {
             if (!empty($tech['children'])) {

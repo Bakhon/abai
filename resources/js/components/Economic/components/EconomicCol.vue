@@ -1,12 +1,21 @@
 <template>
-  <div class="d-flex flex-column p-3 col-md-3 col-sm-12 position-relative">
+  <div
+      :class="`col-md-${md}`"
+      class="d-flex flex-column p-3 col-sm-12 position-relative">
     <slot></slot>
   </div>
 </template>
 
 <script>
 export default {
-  name: "EconomicCol"
+  name: "EconomicCol",
+  props: {
+    md: {
+      required: false,
+      type: Number,
+      default: 3
+    }
+  }
 }
 </script>
 

@@ -203,24 +203,28 @@
                     @endif
                 </ul>
             </li>
-        </div>
-    </div>
-</div>
+            @if(auth()->user()->can('economic view main'))
+                <li class="left-menu-li">
+                    <div>{{ trans('economic_reference.economic_module') }}</div>
+                    <ul class="dropdown-child">
+                        <li class="left-menu-li">
+                            <ul>
+                                <li class="left-menu-li">
+                                    <a href="{{route('economic_nrs')}}">
+                                        {{ trans('economic_reference.nrs') }}
+                                    </a>
+                                </li>
 
-<div class="dropright">
-    <div data-toggle="dropdown">
-        <a href="#" class="bg-dark-new list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-start align-items-center">
-                <img src="/img/economic/stat.svg" width="25" height="25" class="companyLogo">
-                <span class="menu-collapsed companyName d-none"></span>
-            </div>
-        </a>
-    </div>
-    <div class="dropdown-menu">
-        <div class="move-menu">
-            <li class="left-menu-li">
-                <a href="{{route('economic')}}">HPC</a>
-            </li>
+                                <li class="left-menu-li">
+                                    <a href="{{route('economic_optimization')}}">
+                                        {{ trans('economic_reference.optimization_of_development') }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            @endif
         </div>
     </div>
 </div>

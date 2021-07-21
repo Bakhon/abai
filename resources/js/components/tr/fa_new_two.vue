@@ -489,7 +489,7 @@ export default {
         console.log("date1", mm, yyyy, "date2", prMm, pryyyy);
         this.axios
           .get(
-            "http://172.20.103.187:7576/api/techregime/factor/" +
+            process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
               yyyy +
               "/" +
               mm +
@@ -594,7 +594,7 @@ export default {
         : "";
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/factor/" +
+          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
             yyyy +
             "/" +
             mm +
@@ -662,7 +662,7 @@ export default {
     this.$store.commit("fa/SET_PR_YEAR", pryyyy);
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/factor/" +
+        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
           yyyy +
           "/" +
           mm +

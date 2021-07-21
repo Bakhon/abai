@@ -19,7 +19,7 @@ class EmergencySituations extends Command
     protected $typeMapping = array(
         'Форма ввода' => array('КБМ','ОМГ','КТМ','ММГ','КОА','ЭМГ','УО'),
         'Парсинг неоперационных активов' => array('НКО','ПКИ','КПО','ТП','ПКК','ТШО','АГ'),
-        'Интеграция Avoset' => array('КГМ')
+        'Интеграция Avoсet' => array('КГМ')
     );
     /**
      * The console command description.
@@ -82,6 +82,9 @@ class EmergencySituations extends Command
     }
     private function store($company,$type)
     {
+        if ($company === 'ПКК') {
+            $company = 'ПККР';
+        }
         $incident = array (
             'date' => Carbon::now(),
             'type' => 1,
