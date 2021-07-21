@@ -470,9 +470,7 @@
 
 </template>
 <script src="./js/Shgn"></script>
-<style>
-  @import './css/multi-select.css';
-</style>
+
 <style scoped>
 .title-multi-select {
 	width: auto;
@@ -495,7 +493,7 @@
 
 .li-multiselect {
 	background: #333975;
-	width: 150px;
+	width: 131px;
 	height: 215px;
 	margin: 0;
 }

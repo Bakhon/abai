@@ -111,7 +111,7 @@ export default {
       this.resultLink = response.data.report_link
     },
     updateData() {
-      let uri = "http://172.20.103.187:8082/generic/";
+      let uri = process.env.MIX_MICROSERVICE_PREDEFINED_REPORTS + "/generic/";
       let data = {
         type: 'well_fund_field',
         period: 'days',

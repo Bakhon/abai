@@ -111,7 +111,7 @@ export default {
     updateData() {
       this.isLoading = true;
 
-      let uri = "http://172.20.103.187:8082/monthly/production/";
+      let uri = process.env.MIX_MICROSERVICE_PREDEFINED_REPORTS + "/monthly/production/";
       let data = {
         dzo: this.org,
         period: 'monthly',

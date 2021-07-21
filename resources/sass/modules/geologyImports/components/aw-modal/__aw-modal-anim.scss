@@ -1,0 +1,16 @@
+.aw-fade {
+  &__background, &__modal {
+    &-enter-active {
+      opacity: 1;
+    }
+    &-enter, &-leave-active {
+      opacity: 0;
+    }
+  }
+  &__background {
+    &-leave-active {
+      transition-delay: 200ms;
+      overflow: hidden;
+    }
+  }
+}

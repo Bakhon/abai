@@ -144,7 +144,7 @@
       <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
         <div class="bg-dark-transparent">
           <template>
-            <div class="row">
+            <div>
               <div class="col">
                 <div class="heading">
                   <div class="icon-all"

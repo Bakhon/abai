@@ -4086,7 +4086,7 @@ export default {
     this.$store.commit("tr/SET_MONTH", mm);
     this.$store.commit("tr/SET_YEAR", yyyy);
     this.axios
-      .get("http://172.20.103.187:7576/api/techregime_totals_test_2/" + yyyy + "/" + mm + "/")
+      .get(process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime_totals_test_2/" + yyyy + "/" + mm + "/")
       .then((response) => {
         let data = response.data;
         this.year = yyyy;
@@ -4106,7 +4106,7 @@ export default {
       });
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/tr_parameter_filters/"
+        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/tr_parameter_filters/"
       )
       .then((response) => {
         let data = response.data;
@@ -4180,7 +4180,7 @@ export default {
       "el-table_1_column_339", "el-table_1_column_343", "el-table_1_column_347", "el-table_1_column_351", "el-table_1_column_355", "el-table_1_column_359", "el-table_1_column_363",
        "el-table_1_column_377", "el-table_1_column_381", "el-table_1_column_385", "el-table_1_column_389", "el-table_1_column_393"], 
       filter_column: [],
-      baseUrl: 'http://172.20.103.187:7576/api/',
+      baseUrl: process.env.MIX_MICROSERVICE_TECH_REGIME + '/api/',
       
     };
 
@@ -4227,7 +4227,7 @@ export default {
       row["index"] = 0;
       this.axios
         .post(
-          "http://172.20.103.187:7576/api/techregime/edit/" +
+          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/edit/" +
             this.year +
             "/" +
             this.month +
@@ -4265,7 +4265,7 @@ export default {
       const searchParam = this.searchString ? `${this.searchString}/` : "";
       this.axios
         .post(
-          "http://172.20.103.187:7576/api/techregime/save/" +
+          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/save/" +
             this.year +
             "/" +
             this.month +
@@ -4326,7 +4326,7 @@ export default {
         var yyyy1 = today.getFullYear();
       }
       this.axios
-        .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
+        .get(process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/" + yyyy + "/" + mm + "/")
         .then((response) => {
           let data = response.data;
 
@@ -4403,7 +4403,7 @@ export default {
       this.$store.commit("globalloading/SET_LOADING", true);
       this.axios
         .post(
-          "http://172.20.103.187:7576/api/techregime_test/",
+          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime_test/",
           this.postData,
           
         )
@@ -4422,7 +4422,7 @@ export default {
       // this.isloading = true;
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/" +
+          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/" +
             this.selectYear +
             "/" +
             this.month +
@@ -4456,7 +4456,7 @@ export default {
       // this.isloading = true;
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/new_wells/" 
+          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/new_wells/"
         )
         .then((response) => {
           this.$store.commit("globalloading/SET_LOADING", false);
@@ -4531,7 +4531,7 @@ export default {
       console.log(output)
       this.axios
         .post(
-          "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
+          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/new_wells/add_well/",
           output).then((res) => {
             console.log(res.data)
             this.wellAdd();
@@ -4548,7 +4548,7 @@ export default {
       if(this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено"){
         this.axios
           .get(
-            "http://172.20.103.187:7576/api/techregime/new_wells/delete_well/" + 
+            process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/new_wells/delete_well/" +
             this.lonelywell[0].well).then((res) => {
               console.log(res.data)
               this.wellAdd();
@@ -4594,7 +4594,7 @@ export default {
         : "";
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/" +
+          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/" +
             this.selectYear +
             "/" +
             this.month +

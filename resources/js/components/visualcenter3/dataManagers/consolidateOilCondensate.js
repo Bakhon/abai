@@ -358,6 +358,9 @@ export default {
                 actualUpdatedByOpek[pkiIndex].factMonth = pkiSummary.factMonth;
                 actualUpdatedByOpek[pkiIndex].planMonth = pkiSummary.planMonth;
                 actualUpdatedByOpek[pkiIndex].opekPlan = pkiSummary.opekPlan;
+            } else {
+                pkiSummary.dzoMonth = 'ПКИ';
+                actualUpdatedByOpek.push(pkiSummary);
             }
 
             actualUpdatedByOpek = this.getSorted(actualUpdatedByOpek,this.sortingOrder);

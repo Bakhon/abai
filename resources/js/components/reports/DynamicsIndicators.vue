@@ -90,7 +90,7 @@ export default {
       this.resultLink = response.data.report_link
     },
     updateData() {
-      let uri = "http://172.20.103.187:8082/dynamics/indicators/";
+      let uri = process.env.MIX_MICROSERVICE_PREDEFINED_REPORTS + "/dynamics/indicators/";
       let data = {
         type: 'daily_dynamic_well_injection',
         period: 'days',

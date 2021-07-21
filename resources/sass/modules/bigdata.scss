@@ -1,8 +1,10 @@
-.body_bigdata{
-  .container-main {
-    max-width: calc(100% - 86px);
-    @media (max-width: 450px) {
-      max-width: calc(100% - 36px);
+.body_bigdata {
+  #app {
+    .container-main {
+      max-width: calc(100% - 85px) !important;
+      @media (max-width: 450px) {
+        max-width: calc(100% - 36px) !important;
+      }
     }
   }
 }
