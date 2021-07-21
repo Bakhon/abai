@@ -7,15 +7,18 @@
 
     <div class="mt-3 text-center border-grey">
       <div class="d-flex bg-header">
-        <div class="p-3 border-grey d-flex align-items-center" style="flex: 0 0 80px">
+        <div class="p-3 border-grey d-flex align-items-center"
+             style="flex: 0 0 80px">
           № П/П
         </div>
 
-        <div class="p-3 border-grey d-flex align-items-center justify-content-center" style="flex: 0 0 300px">
+        <div class="p-3 border-grey d-flex align-items-center justify-content-center"
+             style="flex: 0 0 300px">
           Наименование
         </div>
 
-        <div class="p-3 border-grey d-flex align-items-center justify-content-center" style="flex: 0 0 100px">
+        <div class="p-3 border-grey d-flex align-items-center justify-content-center"
+             style="flex: 0 0 150px">
           Ед. изм
         </div>
 
@@ -26,7 +29,7 @@
 
           <div class="d-flex">
             <div v-for="(budget, index) in budget2020"
-                 :key="budget"
+                 :key="index"
                  :class="index % 2 === 1 ? 'border-grey-left' : ''"
                  class="p-2 flex-grow-1">
               {{ budget }}$/бар
@@ -54,15 +57,18 @@
            :key="item.title"
            :style="`background: ${item.color}`"
            class="d-flex">
-        <div class="py-2 px-3 border-grey border-top-0" style="flex: 0 0 80px">
+        <div class="py-2 px-3 border-grey border-top-0"
+             style="flex: 0 0 80px">
           {{ item.index }}
         </div>
 
-        <div class="py-2 px-3 border-grey border-top-0 border-left-0" style="flex: 0 0 300px">
+        <div class="py-2 px-3 border-grey border-top-0 border-left-0"
+             style="flex: 0 0 300px">
           {{ item.title }}
         </div>
 
-        <div class="py-2 px-3 border-grey border-top-0 border-left-0" style="flex: 0 0 100px">
+        <div class="py-2 px-3 border-grey border-top-0 border-left-0"
+             style="flex: 0 0 150px">
           {{ item.dimension }}
         </div>
 
@@ -79,7 +85,7 @@
                :key="index"
                class="py-2 px-3 border-grey border-top-0 border-left-0"
                style="flex: 1 0 100px">
-            {{ subItem.value }}
+            {{ subItem.value === null ? '' : (+(+subItem.value).toFixed(2)).toLocaleString() }}
           </div>
         </div>
       </div>
@@ -137,14 +143,10 @@ export default {
         {
           index: '1',
           title: 'Добыча нефти',
-          dimension: 'тыс. тонн',
-          values: this.oilPrices.map(oilPrice => ({
+          dimension: 'тыс тонн',
+          values: this.oilPrices.map((oilPrice, index) => ({
             oilPrice: oilPrice,
-            value:
-                this.scenarios
-                    .filter(x => x.oil_price === oilPrice)
-                    .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
-                    .oil.value_optimized[0]
+            value: this.oilPriceScenarios[index].oil.value_optimized[0]
           })),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
@@ -155,18 +157,11 @@ export default {
         {
           index: '2',
           title: 'Реализация нефти - всего, в т.ч.:',
-          dimension: 'тыс. тонн',
-          values: this.oilPrices.map(oilPrice => ({
+          dimension: 'тыс тонн',
+          values: this.oilPrices.map((oilPrice, index) => ({
             oilPrice: oilPrice,
-            value:
-                ((+this.scenarios
-                        .filter(x => x.oil_price === oilPrice)
-                        .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
-                        .production_export.value_optimized[0])
-                    + (+this.scenarios
-                        .filter(x => x.oil_price === oilPrice)
-                        .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
-                        .production_local.value_optimized[0])).toFixed(2)
+            value: +this.oilPriceScenarios[index].production_export.value_optimized[0]
+                + (+this.oilPriceScenarios[index].production_local.value_optimized[0])
           })),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
@@ -177,14 +172,10 @@ export default {
         {
           index: '',
           title: 'Экспорт',
-          dimension: 'тыс. тонн',
-          values: this.oilPrices.map(oilPrice => ({
+          dimension: 'тыс тонн',
+          values: this.oilPrices.map((oilPrice, index) => ({
             oilPrice: oilPrice,
-            value:
-                (+this.scenarios
-                    .filter(x => x.oil_price === oilPrice)
-                    .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
-                    .production_export.value_optimized[0]).toFixed(2)
+            value: +this.oilPriceScenarios[index].production_export.value_optimized[0]
           })),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
@@ -195,14 +186,10 @@ export default {
         {
           index: '',
           title: 'Внутренний рынок',
-          dimension: 'тыс. тонн',
-          values: this.oilPrices.map(oilPrice => ({
+          dimension: 'тыс тонн',
+          values: this.oilPrices.map((oilPrice, index) => ({
             oilPrice: oilPrice,
-            value:
-                (+this.scenarios
-                    .filter(x => x.oil_price === oilPrice)
-                    .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
-                    .production_local.value_optimized[0]).toFixed(2)
+            value: this.oilPriceScenarios[index].production_local.value_optimized[0]
           })),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
@@ -216,7 +203,7 @@ export default {
           dimension: '',
           values: this.oilPrices.map(oilPrice => ({
             oilPrice: oilPrice,
-            value: ''
+            value: null
           })),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
@@ -227,10 +214,11 @@ export default {
         {
           index: '',
           title: 'Экспорт',
-          dimension: '',
-          values: this.oilPrices.map(oilPrice => ({
+          dimension: '$ / bbl',
+          values: this.oilPrices.map((oilPrice, index) => ({
             oilPrice: oilPrice,
-            value: ''
+            value: (+this.oilPriceScenarios[index].Revenue_export.value_optimized[0]
+                / (+this.oilPriceScenarios[index].production_export.value_optimized[0]))
           })),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
@@ -241,10 +229,11 @@ export default {
         {
           index: '',
           title: 'Внутренний рынок',
-          dimension: '',
-          values: this.oilPrices.map(oilPrice => ({
+          dimension: 'тыс тенге / тонну',
+          values: this.oilPrices.map((oilPrice, index) => ({
             oilPrice: oilPrice,
-            value: ''
+            value: (+this.oilPriceScenarios[index].Revenue_local.value_optimized[0]
+                / (+this.oilPriceScenarios[index].production_local.value_optimized[0]))
           })),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
@@ -256,13 +245,9 @@ export default {
           index: '4',
           title: 'Фонд скважин',
           dimension: '',
-          values: this.oilPrices.map(oilPrice => ({
+          values: this.oilPrices.map((oilPrice, index) => ({
             oilPrice: oilPrice,
-            value:
-            this.scenarios
-                .filter(x => x.oil_price === oilPrice)
-                .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
-                .well_count_optimize
+            value: this.oilPriceScenarios[index].well_count_optimize
           })),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
@@ -273,10 +258,10 @@ export default {
         {
           index: '5',
           title: 'Численность ПП',
-          dimension: '$/bbl',
+          dimension: '$ / bbl',
           values: this.oilPrices.map(oilPrice => ({
             oilPrice: oilPrice,
-            value: ''
+            value: null
           })),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
@@ -287,14 +272,10 @@ export default {
         {
           index: '6',
           title: 'Доходы',
-          dimension: '$/bbl',
-          values: this.oilPrices.map(oilPrice => ({
+          dimension: '$ / bbl',
+          values: this.oilPrices.map((oilPrice, index) => ({
             oilPrice: oilPrice,
-            value: this.scenarios
-                .filter(x => x.oil_price === oilPrice)
-                .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
-                .Revenue_total
-                .value_optimized[0]
+            value: this.oilPriceScenarios[index].Revenue_total.value_optimized[0]
           })),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
@@ -305,14 +286,10 @@ export default {
         {
           index: '7',
           title: 'Расходы - всего, в т.ч.:',
-          dimension: '$/bbl',
-          values: this.oilPrices.map(oilPrice => ({
+          dimension: '$ / bbl',
+          values: this.oilPrices.map((oilPrice, index) => ({
             oilPrice: oilPrice,
-            value: this.scenarios
-                .filter(x => x.oil_price === oilPrice)
-                .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
-                .Overall_expenditures
-                .value_optimized[0]
+            value: this.oilPriceScenarios[index].Overall_expenditures.value_optimized[0]
           })),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
@@ -322,11 +299,13 @@ export default {
         },
         {
           index: '7.1',
-          title: 'Себе стоимость, в т.ч.:',
-          dimension: 'чел',
-          values: this.oilPrices.map(oilPrice => ({
+          title: 'Себестоимость, в т.ч.:',
+          dimension: 'тыс тенге / тонну',
+          values: this.oilPrices.map((oilPrice, index) => ({
             oilPrice: oilPrice,
-            value: ''
+            value: +this.oilPriceScenarios[index].Overall_expenditures.value_optimized[0]
+                / (+this.oilPriceScenarios[index].production_local.value_optimized[0]
+                    + (+this.oilPriceScenarios[index].production_export.value_optimized[0]))
           })),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
@@ -342,8 +321,15 @@ export default {
         50,
         60
       ]
-    }
+    },
 
+    oilPriceScenarios() {
+      return this.oilPrices.map(oilPrice =>
+          this.scenarios
+              .filter(scenario => scenario.oil_price === oilPrice)
+              .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
+      )
+    },
   },
 }
 </script>
