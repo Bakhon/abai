@@ -145,6 +145,10 @@ export default {
         calculateDzoCompaniesSummary() {
             let emptyDzo = [];
             this.dzoSummaryForTable = this.dzoCompanySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+            let chartOutput = this.getFilteredForChartBySelectedCompanies();
+
+            let summaryForChart = this.getSumForChart(chartOutput);
+            this.exportDzoCompaniesSummaryForChart(summaryForChart);
             if (this.gasProductionButton || this.waterInjectionButton) {
                 this.dzoSummaryForTable = this.getSorted(this.dzoSummaryForTable,this.gasSortingOrder)
             }
