@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\BigData\StructureService;
-use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 
 class OrganizationsController extends Controller
 {
@@ -19,7 +19,7 @@ class OrganizationsController extends Controller
 
     }
 
-    public function getUserOrganizations(StructureService $structureService)
+    public function getUserOrganizations(StructureService $structureService): JsonResponse
     {
 
         return response()->json([
@@ -38,7 +38,7 @@ class OrganizationsController extends Controller
         return self::$childrenIds;
     }
 
-    private static function getChildsRecursive(array $child)
+    private static function getChildsRecursive(array $child): void
     {
         if (isset($child['children'])) {
             if (in_array($child['id'], self::$childrenIds)) {

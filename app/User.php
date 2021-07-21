@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Models\BigData\Dictionaries\OrgType;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -84,7 +83,7 @@ class User extends Authenticatable
         }
     }
 
-    public function getUserOrganizations(StructureService $structureService)
+    public function getUserOrganizations(StructureService $structureService): array
     {
         if($this->org_structure) {
             $orgIds = array_map(function ($item) {
@@ -97,7 +96,7 @@ class User extends Authenticatable
         return $this->userOrgs;
     }
 
-    public function getOrganizationIds()
+    public function getOrganizationIds(): array
     {
         return $this->getOrganizations()->pluck('id')->toArray();
     }
