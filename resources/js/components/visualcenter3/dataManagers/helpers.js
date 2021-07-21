@@ -278,6 +278,22 @@ export default {
 
         isConsolidatedCategoryActive() {
             return this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0;
+        },
+
+        getNumberByDzo(dzoName){
+            if (this.oilCondensateProductionButton && this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                return this.dzoNumbers['productionConsolidated'][dzoName];
+            } else if (this.oilCondensateProductionButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                return this.dzoNumbers['productionKMG'][dzoName];
+            } else if (this.oilCondensateDeliveryButton && !this.isOilResidueActive && this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                return this.dzoNumbers['deliveryConsolidated'][dzoName];
+            } else if (this.oilCondensateDeliveryButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                return this.dzoNumbers['deliveryKMG'][dzoName];
+            } else if (this.oilCondensateDeliveryButton && this.isOilResidueActive) {
+                return this.dzoNumbers['oilResidue'][dzoName];
+            } else if (this.gasProductionButton || this.waterInjectionButton) {
+                return this.dzoNumbers['gas'][dzoName];
+            }
         }
     },
     computed: {

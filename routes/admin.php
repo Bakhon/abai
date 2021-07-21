@@ -31,7 +31,7 @@ Route::group(
     ],
     function () {
         Route::group(
-            ['middleware' => 'auth', 'prefix' => 'api'],
+            ['middleware' => 'auth:admin', 'prefix' => 'api'],
             function () {
                 Route::get('roles', 'RolesController@index');
                 Route::get('orgs', 'OrgsController@index');

@@ -237,6 +237,7 @@ class CalculateHydroDynamics implements ShouldQueue
             $hydroCalcResult = HydroCalcResult::firstOrCreate(
                 [
                     'date' => Carbon::parse($this->input['date'])->format('Y-m-d'),
+                    'oil_pipe_id' => $trunkline_point->oil_pipe_id,
                     'trunkline_point_id' => $trunkline_point->id,
                 ]
             );
