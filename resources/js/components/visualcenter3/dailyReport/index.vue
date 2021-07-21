@@ -75,7 +75,7 @@
                     </tr>
                     <tr
                             v-for="(item,index) in tableOutput.participationByKMG"
-                            class="background-dark"
+                            class="background-dark special"
                     >
                         <td>{{item.number}}</td>
                         <td :class="index === 1 ? 'summary-header_text-align' : ''">{{item.dzo}}</td>
@@ -199,7 +199,7 @@
                     </tr>
                     <tr
                             v-for="(item,index) in tableOutput.byKMG"
-                            :class="index > 0 ? 'background-dark hide-block' :'background-dark'"
+                            :class="index > 0 ? 'background-dark hide-block' :'background-dark special'"
                     >
                         <td>{{item.number}}</td>
                         <td>{{item.dzo}}</td>
@@ -588,6 +588,14 @@
 <script src="./index.js"></script>
 
 <style scoped lang="scss">
+    .background-dark {
+        background: #e6e6e6;
+        color: black;
+    }
+    .background-light {
+        background: white;
+        color: black;
+    }
     .troubled-companies-padding {
         padding-left: 2% !important;
     }
@@ -677,17 +685,11 @@
     .hide-block {
         display:none;
     }
-   .background-light {
-       background: #4C537E;
-   }
    .color_green {
        color: #00b353;
    }
    .color_red {
        color: #E31E24;
-   }
-   .background-dark {
-       background: #272953;
    }
    .background-delimeters {
        background: #3D4473;
@@ -712,15 +714,16 @@
            &:nth-child(2) {
                th {
                    height: 40px;
+                   width: 14%;
                }
            }
            &:nth-child(3), &:nth-child(4), &:nth-child(23) {
                background: #333975;
            }
        }
-       tr:hover {
-           background: #2d3486;
-           td:not(:nth-child(2)) {
+       tr:not(.special):hover {
+           background: #D5E5F7;
+           td {
                font-size: 20px;
            }
        }
@@ -734,8 +737,11 @@
            &:first-child {
                width: 2%;
            }
+           &:nth-child(2) {
+               width: 14%;
+           }
            &:nth-child(3), &:nth-child(4), &:nth-child(5) {
-               width: 5%;
+               width: 3%;
            }
        }
        td {
