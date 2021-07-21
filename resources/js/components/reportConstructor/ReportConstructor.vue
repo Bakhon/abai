@@ -182,18 +182,18 @@
                       @click="onMonthClick()" 
                       class="calendar" 
                       v-bind:class="{active: currentDatePickerFilter === 'month'}"
-                    >Месяц</button>
+                    >{{ trans('bd.month_3') }}</button>
 
                     <button 
                       @click="onYearClick()" 
                       class="calendar justify-content-center"
                       v-bind:class="{active: currentDatePickerFilter === 'year'}"
-                    >Год</button>
+                    >{{ trans('bd.year_1') }}</button>
                   </div>
 
                   <div class="btn-container">
-                    <button class="" :disabled="!startDate || !endDate" @click="updateStatistics()">Создать отчет</button>
-                    <button class="">Выбрать шаблон</button>
+                    <button class="" :disabled="!startDate || !endDate" @click="updateStatistics()">{{ trans('bd.create_report') }}</button>
+                    <button class="">{{ trans('bd.choose_template') }}</button>
                   </div>
                 </div>
 
