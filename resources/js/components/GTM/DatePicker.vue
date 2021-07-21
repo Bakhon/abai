@@ -33,8 +33,8 @@ export default {
         return {
             isDatePickerShow: false,
             dateRange: {
-                start: new Date(this.$store.state.dateStart),
-                end: new Date(this.$store.state.dateEnd),
+                start: new Date('2020-01-01T00:00:00+00:00'),
+                end: new Date('2020-12-31T23:59:59+00:00'),
             },
         }
     },

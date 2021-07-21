@@ -40,4 +40,5 @@ return array (
   'kNm' => 'кН*м',
   'kN' => 'кН',
   'unit' => 'ед.',
+  'thousand_tons' => 'тыс. тонн',
 );

@@ -1,29 +1,33 @@
 <template>
-    <li class="text-white list-style-none mt-2 pl-3">
-        <div
-            v-if="node.name"
-            v-bind:class="{ 'cursor-pointer': pointerClass }"
-            @click.stop="handleClick(node)">
-            <span v-if="this.checkable !== undefined">
-                <span>
-                    <img width="20" height="20" :src="this.checkState ? '/img/GTM/flag_active.svg' : '/img/GTM/flag.svg'" >
-                </span>
+  <li class="text-white list-style-none mt-2 pl-3">
+    <div
+        v-if="node.name"
+        v-bind:class="{ 'cursor-pointer': pointerClass }"
+        @click.stop="handleClick(node)">
+            <span v-if="nodeHasChildren" @click="toggleUl()">
+
+              <img width="20" height="20" :src="showChildren ? '/img/GTM/arrow_down.svg' : '/img/GTM/arrow_right.svg'">
+              <img width="20" height="20" src='./img/folder.svg'>
             </span>
-            <span @click="toggleCheckState()">{{ node.name }}</span>
-            <span v-if="node.value" class="text-right">{{ node.value }}</span>
-            <span v-if="nodeHasChildren" @click.stop="toggleUl()">
-                <img width="20" height="20" :src="showChildren ? '/img/GTM/arrow_down.svg' : '/img/GTM/arrow_right.svg'">
-            </span>
-        </div>
-        <ul class="treeUl" v-if="nodeHasChildren && showChildren">
-            <node
-                v-for="child in node.children"
-                :node="child"
-                :key="child.name"
-                :handle-click="handleClick"
-            ></node>
-        </ul>
-    </li>
+      <span v-if="!nodeHasChildren && !node.value">
+        <template>
+          <input v-if="this.checkable === true" type="checkbox">
+          <img v-else width="20" height="20" src='./img/file.svg'>
+        </template>
+      </span>
+      <span v-if="this.checkable !== undefined"></span>
+      <span class="margin-input" @click="toggleCheckState()">{{ node.name }} </span>
+      <input class="input-tree" v-if="node.value" type="text" v-model="node.value">
+    </div>
+    <ul class="treeUl" v-if="nodeHasChildren && showChildren">
+      <node
+          v-for="child in node.children"
+          :node="child"
+          :key="child.name"
+          :handle-click="handleClick"
+      ></node>
+    </ul>
+  </li>
 </template>
 <script>
 export default {

@@ -40,4 +40,5 @@ return array (
   'unit' => 'unit',
   'kN' => 'kN',
   'kNm' => 'kN*m',
+  'thousand_tons' => 't. tons',
 );
