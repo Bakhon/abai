@@ -114,6 +114,7 @@ Route::group(
                 Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
 
                 Route::get('organizations', 'OrganizationsController@index')->name('organizations');
+                Route::get('user_organizations', 'OrganizationsController@getUserOrganizations')->name('user_organizations');
                 Route::get('fields', 'FieldController@index')->name('fields');
 
                 Route::get('profile', 'UserController@profile')->name('profile');

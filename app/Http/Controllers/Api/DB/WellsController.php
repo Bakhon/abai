@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\DB;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\OrganizationsController;
 use App\Http\Resources\BigData\WellSearchResource;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Org;
@@ -457,15 +458,26 @@ class WellsController extends Controller
             ->first(['dict.tech.name_ru']);
     }
 
-    public function search(Request $request): array
+    public function search(StructureService $service, Request $request): array
     {
         if (empty($request->get('query'))) {
             return [];
         }
+        $selectedUserDzo = $request->get('selectedUserDzo');
+        $childrenIds = [];
+        if ($selectedUserDzo) {
+            $orgsTree = $service->getTree(Carbon::now());
+            $childrenIds = OrganizationsController::getChildIds($orgsTree, $selectedUserDzo);
 
+        }
         $wells = Well::query()
-            ->whereRaw("LOWER(uwi) LIKE '%" . strtolower($request->get('query')) . "%'")
-            ->paginate(30);
+            ->whereRaw("LOWER(uwi) LIKE '%" . strtolower($request->get('query')) . "%'");
+        if ($childrenIds) {
+            $wells->whereHas('orgs', function ($query) use ($childrenIds) {
+                    $query->whereIn('org.id', $childrenIds);
+                });
+        }
+        $wells = $wells->paginate(30);
 
         return [
             'items' => WellSearchResource::collection($wells)
