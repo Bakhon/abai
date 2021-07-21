@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Api\DB;
 
 use App\Models\BigData\Dictionaries\Org;
 use App\Services\BigData\StructureService;
-use Carbon\Carbon;
 
 class StructureController
 {
 
     public function getDzo(StructureService $structureService)
     {
-        $tree = $structureService->getTree(Carbon::now());
+        $tree = $structureService->getTreeWithPermissions();
         $orgIds = $this->fillOrgIds($tree, []);
 
         $orgs = [];
