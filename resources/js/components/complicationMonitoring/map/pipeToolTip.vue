@@ -27,10 +27,10 @@
     </p>
     <p>
       {{ trans('monitoring.hydro_calculation.fields.temperature_start') }} :
-      {{ getValueOrNoData(pipe[paramKey].temp_start) }}
+      {{ getValueOrNoData(pipe[paramKey].temperature_start) }}
     </p>
     <p>
-      {{ trans('monitoring.hydro_calculation.fields.temperature_end') }} : {{ getValueOrNoData(pipe[paramKey].temp_end) }}
+      {{ trans('monitoring.hydro_calculation.fields.temperature_end') }} : {{ getValueOrNoData(pipe[paramKey].temperature_end) }}
     </p>
     <p>
       {{ trans('monitoring.hydro_calculation.fields.mix_speed_avg') }} :

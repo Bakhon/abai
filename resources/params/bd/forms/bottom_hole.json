@@ -22,7 +22,7 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "bottom_h_m",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gt:0"
               },
               {
                 "code": "comment",

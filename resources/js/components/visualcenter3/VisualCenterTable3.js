@@ -5,6 +5,7 @@ import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import {isString} from "lodash";
 
 import mainMenuConfiguration from './main_menu_configuration.json';
+import dzoNumberMapping from './dzo_number_mapping.json';
 import {dzoMapState, dzoMapActions} from '@store/helpers';
 
 import mainMenu from './widgets/mainMenu';
@@ -89,6 +90,7 @@ export default {
                 'ТП': this.trans("visualcenter.tp"),
                 'УО': this.trans("visualcenter.uo"),
                 'ПКК': this.trans("visualcenter.pkk"),
+                'КГМКМГ': this.trans("visualcenter.kgm"),
             },
             bigTable: [],
             starts: [""],
@@ -142,6 +144,14 @@ export default {
                 {ticker: 'КТМ', name: this.trans("visualcenter.ktm")},
                 {ticker: 'КБМ', name: this.trans("visualcenter.kbm")},
                 {ticker: 'ЭМГ', name: this.trans("visualcenter.emg")},
+            ],
+            dzoNumbers: dzoNumberMapping,
+            troubledCompanies: ['ОМГК','ТП','ПККР','КГМКМГ'],
+            gasSortingOrder: [
+                'ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО',
+            ],
+            waterSortingOrder: [
+                'ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА'
             ],
         };
     },
@@ -246,9 +256,46 @@ export default {
 
             const response = await axios.get(uri,{params:queryOptions});
             if (response.status === 200) {
+                let todayProduction = _.filter(response.data, function (item) {
+                    return _.every([
+                        _.inRange(
+                            moment(item.date),
+                            moment().subtract(1,'days').startOf('day'),
+                            moment().subtract(1,'days').endOf('day')
+                        ),
+                    ]);
+                });
+                let companies = _.map(todayProduction, 'dzo_name');
+                let difference = _.differenceWith(this.companies, companies, _.isEqual);
+                if (difference.length > 0) {
+                    this.$store.commit('globalloading/SET_LOADING', true);
+                    let missingCompanies = await this.getMissedCompanies(difference);
+                    this.$store.commit('globalloading/SET_LOADING', false);
+                    let merged = response.data.concat(missingCompanies);
+                    return merged;
+                }
                 return response.data;
             }
             return {};
+        },
+
+        async getMissedCompanies(difference) {
+            let missingCompanies = [];
+            for (let i in difference) {
+                let historicalProduction = await this.getHistoricalProduction(difference[i]);
+                historicalProduction.date = moment().subtract(1,'days').format();
+                missingCompanies.push(historicalProduction);
+            }
+            return missingCompanies;
+        },
+
+        async getHistoricalProduction(dzoName) {
+            let queryOptions = {'dzoName': dzoName};
+            let uri = this.localeUrl("/get-historical-production");
+            const response = await axios.get(uri,{params:queryOptions});
+            if (response.status === 200) {
+                return response.data[0];
+            }
         },
 
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {

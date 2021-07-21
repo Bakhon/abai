@@ -363,11 +363,11 @@
           </td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row.well">
-          <td style="background: #12135c">{{ row.rus_wellname }}</td>
-          <td style="background: #12135c; min-width: 120px;">{{ row.field }}</td>
-          <td style="background: #12135c">{{ row.horizon }}</td>
-          <td style="background: #12135c">{{ row.object }}</td>
-          <td style="background: #12135c">{{ row.exp_meth }}</td>
+          <td style="background: #12135c; min-width: 102px;">{{ row.rus_wellname }}</td>
+          <td style="background: #12135c; min-width: 182px;">{{ row.field }}</td>
+          <td style="background: #12135c; min-width: 102px;">{{ row.horizon }}</td>
+          <td style="background: #12135c; min-width: 102px;">{{ row.object }}</td>
+          <td style="background: #12135c; min-width: 102px;">{{ row.exp_meth }}</td>
 
           <td v-show= isHide
             style="background: #2c3379;"
@@ -917,7 +917,7 @@
           </td>
 
           <td
-            style="background: #12135C; min-width:248px;"
+            style="background: #12135C; min-width:270px;"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -945,7 +945,7 @@
 
 
           <td v-if= isGenHide
-            style="background: #12135C; min-width:248px;"
+            style="background: #12135C; min-width:270px;"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -972,7 +972,7 @@
           </td>
 
           <td v-if= isGenHide
-            style="background: #12135C; min-width:248px;"
+            style="background: #12135C; min-width:270px"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -1168,7 +1168,7 @@ export default {
       this.$store.commit("fa/SET_GEN_HIDE", true);
       this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/factor_weekly/" +
+        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor_weekly/" +
           yyyy +
           "/" +
           mm +
@@ -1241,7 +1241,7 @@ export default {
         this.$store.commit("fa/SET_HIDE", false);
         this.axios
           .get(
-            "http://172.20.103.187:7576/api/techregime/factor/" +
+            process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
               yyyy +
               "/" +
               mm +
@@ -1346,7 +1346,7 @@ export default {
         : "";
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/factor/" +
+          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
             yyyy +
             "/" +
             mm +
@@ -1442,7 +1442,7 @@ export default {
     this.$store.commit("fa/SET_PR_DAY", prdd);
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/factor_weekly/" +
+        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor_weekly/" +
           yyyy +
           "/" +
           mm +

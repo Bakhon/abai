@@ -12,6 +12,7 @@ class EmergencyHistory extends Model
         'date',
         'title',
         'description',
-        'approved'
+        'approved',
+        'type'
     ];
 }

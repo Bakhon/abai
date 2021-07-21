@@ -16,7 +16,7 @@ export default {
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
-            showOptions: true,
+            isShowOptions: true,
             structureTypes: {
                 org: null,
                 tech: null,
@@ -24,7 +24,8 @@ export default {
             },
             attributeDescriptions: null,
             attributesForObject: null,
-            currentStructureType: 'geo',
+            activeButtonId: 1,
+            currentStructureType: 'org',
             currentStructureId: null,
             currentItemType: null,
             currentOption: null,
@@ -49,8 +50,33 @@ export default {
         this.loadAttributeDescriptions()
     },
     methods: {
+        onYearClick() {
+            document.querySelector('.start-year-date .vdatetime-input').click();
+            document.querySelector('.end-year-date .vdatetime-input').click();
+        },
+        onMonthClick() {
+            document.querySelector('.start-month-date .vdatetime-input').click();
+            document.querySelector('.end-month-date .vdatetime-input').click();
+        },
+        setStartOfMonth(date) {
+            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        setEndOfMonth(date) {
+            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        setStartOfYear(date) {
+            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        setEndOfYear(date) {
+            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        onMenuClick(currentStructureType, btnId) {
+            this.isShowOptions = true;
+            this.currentStructureType = currentStructureType;
+            this.activeButtonId = btnId;
+        },
         onClickOption(structureType) {
-            this.showOptions = false;
+            this.isShowOptions = false;
             this.currentOption = structureType
             this.currentItemType = structureType.id
         },
@@ -142,19 +168,22 @@ export default {
             this.loadAttributesForSelectedObject();
         },
         getAttributeDescription(descriptionField) {
+            if (descriptionField in this.attributeDescriptions["formulas"]) {
+                return this.attributeDescriptions["formulas"][descriptionField]["description"]
+            }
             if (!this.isActualAttribute(descriptionField)) {
                 return descriptionField
             }
             let fieldParts = descriptionField.split(".")
             let table = fieldParts[0] + "." + fieldParts[1]
-            if (!(table in this.attributeDescriptions)) {
+            if (!(table in this.attributeDescriptions["tables"])) {
                 return descriptionField
             }
             let fieldName = fieldParts[2]
-            if (!(fieldName in this.attributeDescriptions[table])) {
+            if (!(fieldName in this.attributeDescriptions["tables"][table])) {
                 return fieldName
             }
-            return this.attributeDescriptions[table][fieldName]
+            return this.attributeDescriptions["tables"][table][fieldName]
         },
         isActualAttribute(field) {
             let fieldParts = field.split(".")
@@ -223,7 +252,7 @@ export default {
         _cleanEmptyHeadersOfAttributes(attributes) {
             let cleanAttributes = []
             for (let attribute of attributes) {
-                if (this.isActualAttribute(attribute.label)) {
+                if (this.isActualAttributeOrFormula(attribute.label)) {
                     cleanAttributes.push({'label': attribute.label})
                 }
                 if (!this._hasChildren(attribute)) {
@@ -236,6 +265,12 @@ export default {
                 }
             }
             return cleanAttributes
+        },
+        isActualAttributeOrFormula(field) {
+            if (this.isActualAttribute(field)) {
+                return true
+            }
+            return field in this.attributeDescriptions["formulas"]
         },
         _getStatisticsRequestParams() {
             return JSON.stringify({
@@ -374,7 +409,7 @@ export default {
             return maxChildrenNumber
         },
         getRowHeightSpan(attribute, currentDepth){
-            if (currentDepth !== this.maxDepthOfSelectedAttributes) {
+            if (attribute.maxChildrenNumber > 0) {
                 return 1
             }
             return this.maxDepthOfSelectedAttributes - currentDepth

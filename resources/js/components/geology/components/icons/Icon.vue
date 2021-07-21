@@ -1,7 +1,7 @@
 <template>
   <div class="a-svg-icons">
     <svg :width="width" :height="height" :viewBox="icons[0]" :fill="fill" xmlns="http://www.w3.org/2000/svg">
-      <g :icon-name="name" v-html="icons[1]" />
+      <g :icon-name="name" v-html="fillColor(icons[1])" />
     </svg>
   </div>
 </template>
@@ -35,6 +35,11 @@ export default {
         return iconsImport[this.name];
       console.error(`Пикчи ${this.name} не существует`)
       return [];
+    }
+  },
+  methods: {
+    fillColor(str){
+      return str.replace(/%fillPlace%/g, this.fill)
     }
   }
 }

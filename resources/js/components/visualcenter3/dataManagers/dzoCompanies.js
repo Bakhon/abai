@@ -145,6 +145,9 @@ export default {
         calculateDzoCompaniesSummary() {
             let emptyDzo = [];
             this.dzoSummaryForTable = this.dzoCompanySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+            if (this.gasProductionButton || this.waterInjectionButton) {
+                this.dzoSummaryForTable = this.getSorted(this.dzoSummaryForTable,this.gasSortingOrder)
+            }
             if (this.isOilResidueActive) {
                 this.dzoSummaryForTable = this.dzoSummaryForTable.filter(item => item.factMonth > 0);
             }

@@ -436,7 +436,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <tabs @onPushParams="onSubmitParams()" @closeTabModal="closeTabModal"></tabs>
+                    <tabs @onPushParams="onSubmitParams()" @closeTabModal="closeTabModal" :qLInput="qLforKpod" :strokeLenDev="strokeLenDev" :spm="spm" :pumpType="pumpTypeforKpod"></tabs>
                   </div>
                 </div>
               </modal>
@@ -1225,7 +1225,7 @@
 
                       
 
-                  <div class="table-pgno-button gno-shgn-table-section col-10" >
+                  <div class="table-pgno-button gno-shgn-table-section col-9" >
                     
                     <div class="shgn-tables-wrapper">
                       <div class="shgn-table-pgno-one shgn-table-item">
@@ -1301,7 +1301,7 @@
 
                         <div class="shgn-table-pgno-four shgn-table-item">
 
-                        <table class="shgn-table">
+                        <table class="shgn-table-small">
                           <tr style="color: white;">
                             <td class="shgn-table-td bg-td" >{{trans('pgno.sk')}}</td>
                             <td class="shgn-table-td bg-td" >{{trans('pgno.p_max')}}, {{trans('measurements.kN')}}</td>
@@ -1335,7 +1335,7 @@
                             </tr>
                             <tr v-for="(row_index, row) in construction">
                               <td class="shgn-table-td fixed-table-cells">{{row}}</td>
-                              <td class="shgn-table-td large__th">{{markShtang}}</td>
+                              <td class="shgn-table-td large__th">{{steel}}</td>
                               <td class="shgn-table-td fixed-table-cells">{{row_index[0]}}</td>
                               <td class="shgn-table-td fixed-table-cells">{{row_index[1]}}</td>
                               <td class="shgn-table-td fixed-table-cells">{{row_index[2]}}</td>

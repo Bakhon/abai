@@ -28,6 +28,8 @@ export default {
   ],
   data: function () {
     return {
+      apiUrl: process.env.MIX_PGNO_API_URL,
+      steel: null,
       404: require('./images/404.svg'),
       isSkError: false,
       nearDist: 1000,
@@ -35,7 +37,6 @@ export default {
       isPermission: false,
       isEditing: false,
       permissionName: 'podborGno edit main',
-      url: "http://172.20.103.187:7575/api/pgno/",
       isLoading: false,
       activeRightTabName: 'technological-mode',
       layout: {
@@ -362,6 +363,9 @@ export default {
       skTypes: null,
       horizons: null,
       isNktError: null,
+      spm: null,
+      qLforKpod: null,
+      pumpTypeforKpod: null,
     };
 
   },
@@ -381,6 +385,7 @@ export default {
     },
   },
   beforeCreate: function () {
+    this.apiUrl = process.env.MIX_PGNO_API_URL
     this.axios.get('/ru/organizations').then(({ data }) => {
       if (data.organizations.length == 0) {
         this.organization = "НК КазМунайГаз"
@@ -396,16 +401,16 @@ export default {
       }
     })
 
-    this.axios.get("http://172.20.103.187:7575/api/status/").then(res => {
+    this.axios.get(this.apiUrl + "status/").then(res => {
       if (res.status !== 200) {
         this.serviceOffline = true;
       }
     })
 
-    this.axios.get("http://172.20.103.187:7575/api/pgno/sk_types").then(response => {
+    this.axios.get(this.apiUrl + "pgno/sk_types").then(response => {
       this.skTypes = response.data
     })
-    this.axios.get("http://172.20.103.187:7575/api/pgno/horizons").then(response => {
+    this.axios.get(this.apiUrl + "pgno/horizons").then(response => {
       this.horizons = response.data
     })
   },
@@ -524,8 +529,7 @@ export default {
         this.CelValue = this.piCelValue
       }
       this.prepareData()
-      let uri = "http://172.20.103.187:7575/api/pgno/" + this.field + "/" + this.wellNumber + "/download";
-      this.axios.post(uri, this.postdata, { responseType: "blob" }).then((response) => {
+      this.axios.post(this.apiUrl + "pgno/" + this.field + "/" + this.wellNumber + "/download", this.postdata, { responseType: "blob" }).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
       }).catch(function (error) {
         console.error('oops, something went wrong!', error);
@@ -537,8 +541,7 @@ export default {
     downloadEconomicExcel() {
       this.isLoading = true;
       let req = [this.expAnalysisData.npvTable1, this.expAnalysisData.npvTable2]
-      let uri = "http://172.20.103.187:7575/api/pgno/economic/download";
-      this.axios.post(uri, req, { responseType: "blob" }).then((response) => {
+      this.axios.post(this.apiUrl + "pgno/economic/download", req, { responseType: "blob" }).then((response) => {
         fileDownload(response.data, "ЭКОНОМИКА_" + this.field + "_" + this.wellNumber + ".xlsx")
       }).catch(function (error) {
         console.error('oops, something went wrong!', error);
@@ -574,6 +577,10 @@ export default {
     },
 
     onChangeParams() {
+      if (this.qLInput && this.qLInput.split(' ')[0]*1!==0) {
+        this.qLforKpod = this.qLInput.split(' ')[0] * 1
+        this.pumpTypeforKpod = this.pumpType.split(' ')[0] * 1
+      }
       this.$modal.show('modalTabs')
     },
 
@@ -648,6 +655,7 @@ export default {
         this.wellIncl = data["Well Data"]["well"]
         this.hPerfND = data["Well Data"]["h_perf"]
         this.strokeLenDev = data["Well Data"]["stroke_len"]
+        this.spm = data["Well Data"]["spm"]
         this.sep_value = (data["Well Data"]["es"] * 100).toFixed(0)
         this.nkt = this.tubID
         let langUrl = `${window.location.pathname}`.slice(1, 3);
@@ -662,7 +670,7 @@ export default {
             this.dNasosa = "Pump diameter"
             this.freq = "Pump rate"
           }
-          this.spmDev = data["Well Data"]["spm"] + " " + this.trans('measurements.1/min')
+          this.spmDev = this.spm + " " + this.trans('measurements.1/min')
           this.pumpType = this.pumpType + " " + this.trans('measurements.mm')
         } else {
           if (langUrl === 'ru') {
@@ -981,7 +989,6 @@ export default {
       }
     },
     async NnoCalc() {
-      let uri = "http://172.20.103.187:7575/api/nno/";
 
       this.eco_param = null;
 
@@ -1016,7 +1023,7 @@ export default {
 
         this.isLoading = true;
 
-        const responses = await Promise.all([this.axios.post(uri, jsonData), this.axios.post(uri, jsonData2)])
+        const responses = await Promise.all([this.axios.post(this.apiUrl + "nno/", jsonData), this.axios.post(this.apiUrl + "nno/", jsonData2)])
           .finally(() => {
             this.isLoading = false;
           });
@@ -1086,7 +1093,9 @@ export default {
       this.$store.commit("UPDATE_GROUP_POSAD", "2")
       this.$store.commit("UPDATE_HEAVYDOWN", true)
       this.$store.commit("UPDATE_STUP_COLUMNS", 2)
-      this.$store.commit("UPDATE_MARKSHTANG", "15Х2ГМФ (НВО)")
+      this.$store.commit("UPDATE_MARKSHTANG", ["15Х2ГМФ (НВО)"])
+      this.$store.commit("UPDATE_KPOD_MODE", true)
+      this.$store.commit("UPDATE_KPOD_CALCED", null)
     },
 
     nktExist(val) {
@@ -1117,11 +1126,10 @@ export default {
         this.ao = 'АО "ОМГ"'
       }
       this.isVisibleChart = true;
-      let uri = this.url + this.field + "/" + wellnumber + "/";
       this.isLoading = true;
       this.sep_meth = 'input_value';
 
-      this.axios.get(uri).then((response) => {
+      this.axios.get(this.apiUrl + "pgno/" + this.field + "/" + wellnumber + "/").then((response) => {
         let data = response.data;
         this.welldata = data["Well Data"]
         this.method = 'MainMenu'
@@ -1146,7 +1154,7 @@ export default {
           this.curveLineData = JSON.parse(data.LineData)["data"]
           this.curvePointsData = JSON.parse(data.PointsData)["data"]
           this.ngdu = 0
-          this.sk = 0
+          this.sk = null
 
           //Выбор скважины
           this.horizon = 0;
@@ -1243,7 +1251,7 @@ export default {
           })
 
           this.ngdu = 0
-          this.sk = 0
+          this.sk = null
 
           //Выбор скважины
           this.expMeth = 0;
@@ -1353,7 +1361,6 @@ export default {
 
     fetchBlockCentrators() {
       let fieldInfo = this.wellIncl.split('_');
-      let urlForIncl = "http://172.20.103.187:7575/api/pgno/incl";
       if (this.expChoose == 'ЭЦН') {
         (this.liftValue = 'ЭЦН') && (this.stepValue = 20);
       } else {
@@ -1370,7 +1377,7 @@ export default {
         }
       )
 
-      this.axios.post(urlForIncl, centratorsData).then((response) => {
+      this.axios.post(this.apiUrl + "pgno/incl", centratorsData).then((response) => {
         this.centratorsInfo = response.data
         this.centratorsRequiredValue = this.centratorsInfo["CenterRange"]["red"]
       })
@@ -1378,7 +1385,6 @@ export default {
 
     postCurveData() {
       this.isVisibleChart = true;
-      let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -1416,7 +1422,7 @@ export default {
         })
       }
 
-      this.axios.post(uri, this.postdata).then((response) => {
+      this.axios.post(this.apiUrl + "pgno/" + this.field + "/" + this.wellNumber + "/", this.postdata).then((response) => {
         let data = response.data;
         if (data) {
           this.welldata = data["Well Data"]
@@ -1474,7 +1480,6 @@ export default {
 
     postAnalysisOld() {
       this.isVisibleChart = true;
-      let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -1488,12 +1493,11 @@ export default {
 
       this.isLoading = true;
 
-      this.axios.post(uri, this.postdata).then((response) => {
+      this.axios.post(this.apiUrl + "pgno/" + this.field + "/" + this.wellNumber + "/", this.postdata).then((response) => {
         let data = response.data;
         if (data) {
           this.newData = data["Well Data"]
           this.method = "CurveSetting"
-          this.newData = data["Well Data"]
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
           this.newPointsData = JSON.parse(data.PointsData)["data"]
           this.updateLine(this.newCurveLineData)
@@ -1507,7 +1511,6 @@ export default {
 
     postAnalysisNew() {
       this.isVisibleChart = true;
-      let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -1521,7 +1524,7 @@ export default {
 
       this.isLoading = true;
 
-      this.axios.post(uri, this.postdata).then((response) => {
+      this.axios.post(this.apiUrl + "pgno/" + this.field + "/" + this.wellNumber + "/", this.postdata).then((response) => {
         let data = response.data;
         if (data) {
           this.newData = data["Well Data"]
@@ -1547,6 +1550,7 @@ export default {
       });
     },
     setGraphOld() {
+      this.welldata = this.newData
       this.updateLine(this.newCurveLineData)
       this.setPoints(this.newPointsData)
       this.$modal.hide('modalOldWell');
@@ -1568,6 +1572,7 @@ export default {
     },
 
     setGraphNew() {
+      this.welldata = this.newData
       this.updateLine(this.newCurveLineData)
       this.setPoints(this.newPointsData)
       this.$modal.hide('modalNewWell');
@@ -1577,6 +1582,10 @@ export default {
       this.piInput = this.newData["pi"].toFixed(2) + " " + this.trans('measurements.m3/d/at');
       this.wctInput = this.newData["wct"].toFixed(0) + " " + this.trans('measurements.percent');
       this.hPumpValue = this.newData["h_pump_set"].toFixed(0) + " " + this.trans('measurements.m');
+      console.log(this.newPointsData)
+      this.bhpPot = this.newPointsData[1]["p"].toFixed(0)*1 - 1
+      this.qlPot = this.newPointsData[1]["q_l"].toFixed(0)*1 + 1
+      this.pinPot = this.newPointsData[1]["pin"].toFixed(0)*1 - 1
     },
 
     onCompareNpv() {
@@ -1596,28 +1605,28 @@ export default {
 
     onPgnoClick() {
       this.nktExist("pgno")
-      if (this.isSkError) {
+      if (this.isSkError || !this.sk || this.sk=="0") {
         this.$notify({
           message: this.trans('pgno.notify_error_sk'),
           type: 'error',
           size: 'sm',
           timeout: 8000
         })
-      } else if (this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql') {
+      } else if (this.qlPot < this.qlCelValue.split(' ')[0] && this.CelButton == 'ql' && this.qlPot) {
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
           size: 'sm',
           timeout: 8000
         })
-      } else if (this.bhpPot * 1 > this.bhpCelValue.split(' ')[0] * 1 && this.CelButton == 'bhp') {
+      } else if (this.bhpPot > this.bhpCelValue.split(' ')[0] && this.CelButton == 'bhp' && this.bhpPot) {
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
           size: 'sm',
           timeout: 8000
         })
-      } else if (this.pinPot * 1 > this.piCelValue.split(' ')[0] * 1 && this.CelButton == 'pin') {
+      } else if (this.pinPot > this.piCelValue.split(' ')[0] && this.CelButton == 'pin' && this.pinPot) {
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
@@ -1635,9 +1644,8 @@ export default {
           }
           if (this.isVisibleChart) {
             this.isLoading = true;
-            let uri = "http://172.20.103.187:7575/api/pgno/shgn";
             this.prepareData()
-            this.axios.post(uri, this.postdata).then((response) => {
+            this.axios.post(this.apiUrl + "pgno/shgn", this.postdata).then((response) => {
               let data = response.data;
               if (!this.isYoungAge) {
                 this.fetchBlockCentrators()
@@ -1708,6 +1716,7 @@ export default {
                     this.kPod = data['k_pod'].toFixed(2)
                     this.skPmax = data['sk_pmax']
                     this.skMn2 = data['sk_mn2']
+                    this.steel = data['steel']
                     this.pElectricity = (data['p_electricity'] / 1000).toFixed(0)
                     this.wDay = data['w_day'].toFixed(0)
                     this.ure = data['ure'].toFixed(1)

@@ -335,6 +335,18 @@ abstract class TableForm extends BaseForm
             $wellsQuery->where('id', $id);
         }
 
+        if ($params['filter']['well_category']) {
+            $wellsQuery->whereHas(
+                'category',
+                function ($query) use ($params) {
+                    return $query
+                        ->select('dict.well_category_type.id')
+                        ->from('dict.well_category_type')
+                        ->whereIn('code', $params['filter']['well_category']);
+                }
+            );
+        }
+
         if (isset($params['filter']['row_id'])) {
             $wellsQuery->where('id', $params['filter']['row_id']);
         }

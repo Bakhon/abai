@@ -79,7 +79,10 @@
               </div>
             </div>
             <div v-if="wellUwi" class="mid-col__main_row">
-              <div v-if="activeFormCode" class="col table-wrapper">
+              <div v-if="activeFormComponentName">
+                  <div :is="activeFormComponentName" :changeColumnsVisible="(value) => changeColumnsVisible(value)"></div>
+              </div>
+              <div v-else-if="activeFormCode" class="col table-wrapper">
                 <BigDataPlainFormResult :code="activeFormCode" :well-id="this.well.id"></BigDataPlainFormResult>
               </div>
               <div v-else class="col graphics">
@@ -141,7 +144,7 @@
       <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
         <div class="bg-dark-transparent">
           <template>
-            <div class="row">
+            <div>
               <div class="col">
                 <div class="heading">
                   <div class="icon-all"
@@ -204,11 +207,28 @@
 </template>
 
 <script>
+import Vue from "vue";
 import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
 import vSelect from 'vue-select'
 import axios from 'axios'
 import moment from 'moment'
 import WellCartTree from "./WellCartTree";
+import upperFirst from "lodash/upperFirst";
+import camelCase from "lodash/camelCase";
+
+const requireComponent = require.context('../bigdata/forms/CustomPlainForms', true, /\.vue$/i);
+requireComponent.keys().forEach(fileName => {
+    const componentConfig = requireComponent(fileName)
+    const componentName = upperFirst(
+        camelCase(
+            fileName
+                .split('/')
+                .pop()
+                .replace(/\.\w+$/, '')
+        )
+    );
+    Vue.component(componentName, componentConfig.default || componentConfig);
+});
 
 export default {
   components: {
@@ -221,6 +241,7 @@ export default {
       options: [],
       graph: null,
       activeFormCode: null,
+      activeFormComponentName: null,
       loading: false,
       isLeftColumnFolded: false,
       isRightColumnFolded: false,
@@ -454,8 +475,9 @@ export default {
       } catch (e) {
       }
     },
-    switchFormByCode(formCode) {
-      this.activeFormCode = formCode
+    switchFormByCode(data) {
+      this.activeFormCode = data.code;
+      this.activeFormComponentName = data.component_name;
     },
     setForm(formCode) {
       this.activeFormCode = formCode
@@ -464,6 +486,11 @@ export default {
       if (data != null && data != '') {
         return moment(data).format('DD/MM/YYYY')
       }
+    },
+    changeColumnsVisible(value) {
+        this.isLeftColumnFolded = !value;
+        this.isRightColumnFolded = !value;
+        this.isBothColumnFolded = !value;
     }
   },
   computed: {

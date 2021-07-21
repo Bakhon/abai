@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "",
+  "table": "prod.well_perf",
   "tabs": [
     {
       "title": "main",
