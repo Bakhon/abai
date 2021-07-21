@@ -192,14 +192,6 @@ export default {
 
       L.latLng([ mapsData[0]['x'], mapsData[0]['y'] ]);
 
-      const colorPoints = [
-        [43, 85],
-        [29, 99],
-        [45, 81]
-      ];
-
-      // L.polygon(colorPoints).addTo(map);
-
       for(let i = 0; i < mapsData.length; i++) {
         const coordinate = xy(mapsData[i]['x'], mapsData[i]['y']);
         L.circleMarker(coordinate, {
