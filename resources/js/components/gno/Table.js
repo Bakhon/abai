@@ -1612,21 +1612,21 @@ export default {
           size: 'sm',
           timeout: 8000
         })
-      } else if (Number(this.qlPot) < Number(this.qlCelValue.split(' ')[0]) && this.CelButton === 'ql' && this.qlPot) {
+      } else if (Number(this.qlPot) < Number(this.qlCelValue.split(' ')[0]) && this.CelButton == 'ql' && this.qlPot) {
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
           size: 'sm',
           timeout: 8000
         })
-      } else if (this.bhpPot > this.bhpCelValue.split(' ')[0] && this.CelButton === 'bhp' && this.bhpPot) {
+      } else if (Number(this.bhpPot) > Number(this.bhpCelValue.split(' ')[0]) && this.CelButton == 'bhp' && this.bhpPot) {
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
           size: 'sm',
           timeout: 8000
         })
-      } else if (this.pinPot > this.piCelValue.split(' ')[0] && this.CelButton === 'pin' && this.pinPot) {
+      } else if ((Number(this.pinPot)) > Number(this.piCelValue.split(' ')[0]) && this.CelButton == 'pin' && this.pinPot) {
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
@@ -1662,14 +1662,14 @@ export default {
                   })
                 } else if (data["error"] == "KpodError") {
                   this.$notify({
-                    message: "Расчетный Кпод < Установленного в Настройках",
+                    message: this.trans('pgno.kpod_more_params'),
                     type: 'warning',
                     size: 'sm',
                     timeout: 8000
                   })
                 } else if (data["error"] == "ConstructionError") {
                   this.$notify({
-                    message: "Не удалось посчитать конструкцию",
+                    message: this.trans('pgno.cant_calc_construction'),
                     type: 'warning',
                     size: 'sm',
                     timeout: 8000
@@ -1722,21 +1722,28 @@ export default {
                     this.ure = data['ure'].toFixed(1)
                     if (data['load_check'] === "error") {
                       this.$notify({
-                        message: "Нагрузка на головку балансира > 100%",
+                        message: this.trans('balance_more_100'),
                         type: 'error',
                         size: 'sm',
                         timeout: 8000
                       })
                     } else if (data['load_check'] === "warning") {
                       this.$notify({
-                        message: "Нагрузка на головку балансира > 80%",
+                        message: this.trans('pgno.balance_more_80'),
+                        type: 'warning',
+                        size: 'sm',
+                        timeout: 8000
+                      })
+                    } else if (data['max_load_error'] === "max_load_error") {
+                      this.$notify({
+                        message: this.trans('pgno.shtang_not_recommended'),
                         type: 'warning',
                         size: 'sm',
                         timeout: 8000
                       })
                     } if (data['load_reduct_check'] === "error") {
                       this.$notify({
-                        message: "Максимальный крутящий момент на кривошипном валу редкутора выше допустимого",
+                        message: this.trans('pgno.max_reductor'),
                         type: 'error',
                         size: 'sm',
                         timeout: 8000
