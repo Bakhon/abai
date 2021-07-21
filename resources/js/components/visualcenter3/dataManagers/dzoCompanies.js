@@ -134,10 +134,6 @@ export default {
                 }
                 let actual = this.consolidatedData[categories[i]].current.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
                 let yesterday = this.consolidatedData[categories[i]].yesterday.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
-                if (this.isConsolidatedCategoryActive()) {
-                    actual = this.deleteTroubleCompanies(actual);
-                    yesterday = this.deleteTroubleCompanies(yesterday);
-                }
                 this.updateProductionTotalFact(yesterday,actual,categories[i]);
             }
         },
@@ -159,8 +155,6 @@ export default {
             let actualFilteredSummary = _.cloneDeep(this.dzoSummaryForTable);
             if (!this.isConsolidatedCategoryActive()) {
                 filteredByCompaniesYesterday = this.yesterdayProductionDetails.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
-            } else {
-                actualFilteredSummary = this.deleteTroubleCompanies(_.cloneDeep(this.dzoSummaryForTable));
             }
             this.isMultipleDzoCompaniesSelected = this.dzoSummaryForTable.length > 1;
             let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
@@ -180,11 +174,10 @@ export default {
                 }
             });
             summary = this.getFormatted(summary);
-            let yesterdayFilteredSummary = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
 
             this.dzoCompaniesSummary = summary;
             if (this.isConsolidatedCategoryActive()) {
-                this.updateProductionTotalFact(yesterdayFilteredSummary,actualFilteredSummary,this.selectedView);
+                this.updateProductionTotalFact(filteredByCompaniesYesterday,actualFilteredSummary,this.selectedView);
                 this.isOpecFilterActive = true;
             }
         },
