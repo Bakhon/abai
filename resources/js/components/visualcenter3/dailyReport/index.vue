@@ -588,11 +588,11 @@
 <script src="./index.js"></script>
 
 <style scoped lang="scss">
-    .background-dark {
+    .dzo-row_dark {
         background: #e6e6e6;
         color: black;
     }
-    .background-light {
+    .dzo-row_light {
         background: white;
         color: black;
     }
@@ -690,6 +690,9 @@
    }
    .color_red {
        color: #E31E24;
+   }
+   .background-dark {
+       background: #272953;
    }
    .background-delimeters {
        background: #3D4473;
