@@ -1612,21 +1612,21 @@ export default {
           size: 'sm',
           timeout: 8000
         })
-      } else if (this.qlPot < this.qlCelValue.split(' ')[0] && this.CelButton == 'ql' && this.qlPot) {
+      } else if (Number(this.qlPot) < Number(this.qlCelValue.split(' ')[0]) && this.CelButton === 'ql' && this.qlPot) {
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
           size: 'sm',
           timeout: 8000
         })
-      } else if (this.bhpPot > this.bhpCelValue.split(' ')[0] && this.CelButton == 'bhp' && this.bhpPot) {
+      } else if (this.bhpPot > this.bhpCelValue.split(' ')[0] && this.CelButton === 'bhp' && this.bhpPot) {
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
           size: 'sm',
           timeout: 8000
         })
-      } else if (this.pinPot > this.piCelValue.split(' ')[0] && this.CelButton == 'pin' && this.pinPot) {
+      } else if (this.pinPot > this.piCelValue.split(' ')[0] && this.CelButton === 'pin' && this.pinPot) {
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
