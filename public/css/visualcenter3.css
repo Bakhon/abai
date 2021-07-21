@@ -159,16 +159,8 @@ body {
     padding: 1rem 1.5rem !important;
 }
 
-.table4 td {
-    overflow: hidden;
-    /* line-height: 44px; */
-    min-width: 5.3em;
-    padding: 0px 0px 10px 10px;
-}
-
 .table7 td {
     overflow: hidden;
-    /* line-height: 44px; */
     min-width: 5.3em;
     padding: 0px 0px 10px 10px;
 
@@ -191,13 +183,6 @@ body {
     min-width: 5.3em;
     padding: 0px 0px 10px 10px;
     line-height: 33.4em;
-}
-
-.table4 {
-    max-width: 1510px!important;
-    overflow: hidden;
-    overflow-x: auto;
-    border-spacing: 0px!important;
 }
 
 .table5 td {
