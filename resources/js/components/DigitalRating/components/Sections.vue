@@ -35,6 +35,22 @@
       </div>
       <div class="rating-content__wrapper">
         <div id="map"></div>
+<!--        <l-map-->
+<!--            :zoom="zoom"-->
+<!--            :center="center"-->
+<!--            style="height: 500px; width: 100%"-->
+<!--        >-->
+<!--          <l-control-layers />-->
+<!--          <l-wms-tile-layer-->
+<!--              v-for="layer in layers"-->
+<!--              :key="layer.name"-->
+<!--              :base-url="baseUrl"-->
+<!--              :layers="layer.layers"-->
+<!--              :visible="layer.visible"-->
+<!--              :name="layer.name"-->
+<!--              layer-type="base"-->
+<!--          />-->
+<!--        </l-map>-->
 <!--        <img src="/img/digital-rating/map.svg" alt="">-->
       </div>
     </div>
@@ -116,14 +132,20 @@
 </template>
 
 <script>
-import mapboxgl from "mapbox-gl";
 import { TransitionExpand } from 'vue-transition-expand';
-
+import L from 'leaflet';
+import { LMap, LTileLayer, LMarker, LWMSTileLayer, LControlLayers } from 'vue2-leaflet';
+import mapsData from '../dataMap.json';
 export default {
   name: "Sections",
 
   components: {
-    TransitionExpand
+    TransitionExpand,
+    LMap,
+    LTileLayer,
+    LMarker,
+    "l-wms-tile-layer": LWMSTileLayer,
+    LControlLayers
   },
 
   data() {
@@ -137,7 +159,9 @@ export default {
     };
   },
 
-  created() {
+  async mounted() {
+    await this.initMap();
+    // console.log('mapsData', mapsData);
     document.addEventListener('click', this.close);
   },
 
@@ -157,13 +181,62 @@ export default {
         this.show = false;
       }
     },
-    init() {
-      const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/light-v10',
-        zoom: 12,
+    initMap() {
+      const map = L.map('map', {
+        crs: L.CRS.Simple,
+        minZoom: 1
+      });
+      const bounds = [[0, 1500], [0,1500]];
+      map.fitBounds(bounds);
 
-      })
+      let yx = L.latLng;
+      const xy = function (x, y) {
+        if (L.Util.isArray(x)) {
+          return yx(x[1], x[0]);
+        }
+        return yx(y, x);
+      };
+
+      map.setView( [750, 750], 1);
+      const markerIcon = L.divIcon({
+        iconSize: new L.Point(10, 10),
+        color: 'red',
+      });
+
+      mapsData.forEach((el) => {
+        el.x = el.x / 100;
+        el.y = el.y / 100;
+      });
+
+      L.latLng([ mapsData[0]['x'], mapsData[0]['y'] ]);
+
+      const colorPoints = [
+        [43, 85],
+        [29, 99],
+        [45, 81]
+      ];
+
+      // L.polygon(colorPoints).addTo(map);
+
+      for(let i = 0; i < mapsData.length; i++) {
+        const coordinate = xy(mapsData[i]['x'], mapsData[i]['y']);
+        L.circleMarker(coordinate, {
+          fillColor: mapsData[i]['color'],
+          fillOpacity: 1,
+          color: mapsData[i]['color'],
+        }).addTo(map);
+        // L.marker(coordinate, {
+        //   icon: markerIcon,
+        //   fillColor: mapsData[i]['color'],
+        //   fillOpacity: 1,
+        //   color: mapsData[i]['color'],
+        // }).addTo(map);
+      }
+
+      map.on('click', this.onMapClick);
+    },
+    onMapClick(e) {
+      console.log('event', e);
     }
   }
 }
@@ -274,14 +347,10 @@ export default {
   }
 }
 
-svg {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+#map {
+  width: 100%;
 }
-.country {
-  fill: #ccc;
-  stroke: #999;
+.leaflet-container {
+  background: transparent;
 }
 </style>
