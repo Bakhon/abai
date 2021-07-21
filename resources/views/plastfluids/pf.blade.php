@@ -57,6 +57,9 @@
         grid-column: 2; 
         grid-row: 2;
         background:#2c3064;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
     }
     .pf-index-menu {
         grid-column: 4; 
