@@ -7,8 +7,10 @@
             <form>
               <label class="container">
                 <span class="bottom-border"></span>
-                <input type="checkbox" :id="node.id" name="tech_structure" value="tech_structure"
-                       class="dropdown-item" @change="onCheckboxClick(node, level)">
+                <input type="checkbox" :id="node.id" name="tech_structure"
+                      :checked="isMarked"
+                      v-model="isMarked"
+                      class="dropdown-item" v-on:input="onCheckboxClick(node, level)">
                 <span class="checkmark"></span>
               </label>
             </form>
@@ -32,6 +34,7 @@
             v-for="(child, index) in node.children"
             :node="child"
             :key="index+child.id"
+            :isMarked="isMarked"
             :handle-click="handleClick"
             :get-wells="getWells"
             :get-initial-items="getInitialItems"
@@ -57,6 +60,7 @@ export default {
     node: Object,
     level: Number,
     handleClick: Function,
+    isMarked: Boolean,
     getWells: Function,
     getInitialItems: Function,
     isNodeOnBottomLevelOfHierarchy: Function,

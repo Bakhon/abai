@@ -15,6 +15,7 @@
             :onCheckboxClick="onCheckboxClick"
             :level="level+1"
             :nodeClickOnArrow="true"
+            :isMarked="isMarked"
         ></tree-view>
       </div>
     </div>
@@ -30,7 +31,8 @@ export default {
     return {
       baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
       items: null,
-      level: 0
+      level: 0,
+      isMarked: false,
     }
   },
   props: {

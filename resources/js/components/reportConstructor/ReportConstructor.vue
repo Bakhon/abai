@@ -178,17 +178,17 @@
                     </div>
                   </div>
                   <div class="row date-picker inline-flex mb-2">
-                    <span 
+                    <button 
                       @click="onMonthClick()" 
-                      class="calendar month-label" 
+                      class="calendar" 
                       v-bind:class="{active: currentDatePickerFilter === 'month'}"
-                    >Месяц</span>
+                    >Месяц</button>
 
-                    <span 
+                    <button 
                       @click="onYearClick()" 
-                      class="calendar year-label"
+                      class="calendar justify-content-center"
                       v-bind:class="{active: currentDatePickerFilter === 'year'}"
-                    >Год</span>
+                    >Год</button>
                   </div>
 
                   <div class="btn-container">
@@ -928,10 +928,16 @@ body {
         display: flex;
         align-items: center;
         margin-right: 10px;
+        font-family: $HarmoniaSansProCyr;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 19px;
         background: url(/img/bd/date-time.svg) 1% no-repeat;
         padding: 0px 35px;
         width: 100px;
         height: 25px;
+        border: none;
+        color: #fff;
       }
 
       .calendar:hover {
@@ -939,11 +945,8 @@ body {
       }
       
       .calendar:not(.active):hover {
+        border-radius: 2px;
         background-color: #323370;
-      }
-
-      .year-label {
-        justify-content: center;
       }
 
       .active {
