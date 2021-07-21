@@ -44,7 +44,7 @@
 
           <div class="d-flex">
             <div v-for="(price, index) in oilPrices"
-                 :key="price"
+                 :key="index"
                  :class="index % 2 === 1 ? 'border-grey-left' : ''"
                  class="p-2 flex-grow-1">
               {{ (+price).toLocaleString() }}$/бар
@@ -53,39 +53,39 @@
         </div>
       </div>
 
-      <div v-for="item in tableData"
-           :key="item.title"
+      <div v-for="(item, itemIndex) in tableData"
+           :key="itemIndex"
            :style="`background: ${item.color}`"
            class="d-flex">
-        <div class="py-2 px-3 border-grey border-top-0"
+        <div class="py-2 px-3 border-grey border-top-0 d-flex align-items-center justify-content-center"
              style="flex: 0 0 80px">
           {{ item.index }}
         </div>
 
-        <div class="py-2 px-3 border-grey border-top-0 border-left-0"
+        <div class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-center"
              style="flex: 0 0 300px">
           {{ item.title }}
         </div>
 
-        <div class="py-2 px-3 border-grey border-top-0 border-left-0"
+        <div class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-center"
              style="flex: 0 0 150px">
           {{ item.dimension }}
         </div>
 
         <div class="d-flex" style="flex: 0 0 300px;">
-          <div v-for="budget in item.budget2020"
-               :key="budget"
+          <div v-for="(budget, index) in item.budget2020"
+               :key="index"
                class="py-2 px-3 border-grey border-top-0 border-left-0 flex-grow-1">
             {{ budget.value }}
           </div>
         </div>
 
         <div class="d-flex flex-grow-1">
-          <div v-for="(subItem, index) in item.values"
+          <div v-for="(value, index) in item.values"
                :key="index"
                class="py-2 px-3 border-grey border-top-0 border-left-0"
-               style="flex: 1 0 100px">
-            {{ subItem.value === null ? '' : (+(+subItem.value).toFixed(2)).toLocaleString() }}
+               style="flex: 1 0 100px; white-space: pre-line"
+          >{{ typeof value === 'string' ? value : (+(value).toFixed(2)).toLocaleString() }}
           </div>
         </div>
       </div>
@@ -130,10 +130,7 @@ export default {
           index: '',
           title: 'Курс KZT/USD',
           dimension: 'тенге',
-          values: this.oilPrices.map(oilPrice => ({
-            oilPrice: oilPrice,
-            value: this.scenario.dollar_rate
-          })),
+          values: this.oilPrices.map(() => this.scenario.dollar_rate),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -144,10 +141,9 @@ export default {
           index: '1',
           title: 'Добыча нефти',
           dimension: 'тыс тонн',
-          values: this.oilPrices.map((oilPrice, index) => ({
-            oilPrice: oilPrice,
-            value: this.oilPriceScenarios[index].oil.value_optimized[0]
-          })),
+          values: this.oilPrices.map((oilPrice, index) =>
+              +this.oilPriceScenarios[index].oil.value_optimized[0]
+          ),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -158,11 +154,10 @@ export default {
           index: '2',
           title: 'Реализация нефти - всего, в т.ч.:',
           dimension: 'тыс тонн',
-          values: this.oilPrices.map((oilPrice, index) => ({
-            oilPrice: oilPrice,
-            value: +this.oilPriceScenarios[index].production_export.value_optimized[0]
-                + (+this.oilPriceScenarios[index].production_local.value_optimized[0])
-          })),
+          values: this.oilPrices.map((oilPrice, index) =>
+              +this.oilPriceScenarios[index].production_export.value_optimized[0]
+              + (+this.oilPriceScenarios[index].production_local.value_optimized[0])
+          ),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -173,10 +168,9 @@ export default {
           index: '',
           title: 'Экспорт',
           dimension: 'тыс тонн',
-          values: this.oilPrices.map((oilPrice, index) => ({
-            oilPrice: oilPrice,
-            value: +this.oilPriceScenarios[index].production_export.value_optimized[0]
-          })),
+          values: this.oilPrices.map((oilPrice, index) =>
+              +this.oilPriceScenarios[index].production_export.value_optimized[0]
+          ),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -187,10 +181,9 @@ export default {
           index: '',
           title: 'Внутренний рынок',
           dimension: 'тыс тонн',
-          values: this.oilPrices.map((oilPrice, index) => ({
-            oilPrice: oilPrice,
-            value: this.oilPriceScenarios[index].production_local.value_optimized[0]
-          })),
+          values: this.oilPrices.map((oilPrice, index) =>
+              +this.oilPriceScenarios[index].production_local.value_optimized[0]
+          ),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -201,10 +194,7 @@ export default {
           index: '3',
           title: 'Цены реализации нефти',
           dimension: '',
-          values: this.oilPrices.map(oilPrice => ({
-            oilPrice: oilPrice,
-            value: null
-          })),
+          values: this.oilPrices.map(() => ''),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -214,12 +204,11 @@ export default {
         {
           index: '',
           title: 'Экспорт',
-          dimension: '$ / bbl',
-          values: this.oilPrices.map((oilPrice, index) => ({
-            oilPrice: oilPrice,
-            value: (+this.oilPriceScenarios[index].Revenue_export.value_optimized[0]
-                / (+this.oilPriceScenarios[index].production_export.value_optimized[0]))
-          })),
+          dimension: 'тыс тенге / тонну',
+          values: this.oilPrices.map((oilPrice, index) =>
+              (+this.oilPriceScenarios[index].Revenue_export.value_optimized[0]
+                  / (+this.oilPriceScenarios[index].production_export.value_optimized[0]))
+          ),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -229,12 +218,11 @@ export default {
         {
           index: '',
           title: 'Внутренний рынок',
-          dimension: 'тыс тенге / тонну',
-          values: this.oilPrices.map((oilPrice, index) => ({
-            oilPrice: oilPrice,
-            value: (+this.oilPriceScenarios[index].Revenue_local.value_optimized[0]
-                / (+this.oilPriceScenarios[index].production_local.value_optimized[0]))
-          })),
+          dimension: `тыс тенге / тонну`,
+          values: this.oilPrices.map((oilPrice, index) =>
+              (+this.oilPriceScenarios[index].Revenue_local.value_optimized[0]
+                  / (+this.oilPriceScenarios[index].production_local.value_optimized[0]))
+          ),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -245,10 +233,9 @@ export default {
           index: '4',
           title: 'Фонд скважин',
           dimension: '',
-          values: this.oilPrices.map((oilPrice, index) => ({
-            oilPrice: oilPrice,
-            value: this.oilPriceScenarios[index].well_count_optimize
-          })),
+          values: this.oilPrices.map((oilPrice, index) =>
+              +this.oilPriceScenarios[index].well_count_optimize
+          ),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -256,13 +243,24 @@ export default {
           color: '#AC7550',
         },
         {
+          index: '4.1',
+          title: 'Процент отключения',
+          dimension: '',
+          values: this.oilPrices.map((oilPrice, index) =>
+              `Кат 1: ${this.oilPriceScenarios[index].percent_stop_cat_1 * 100}%\n` +
+              `Кат 2: ${this.oilPriceScenarios[index].percent_stop_cat_2 * 100}%`,
+          ),
+          budget2020: this.budget2020.map(budget => ({
+            budget: budget,
+            value: ''
+          })),
+          color: '#313560',
+        },
+        {
           index: '5',
           title: 'Численность ПП',
           dimension: '$ / bbl',
-          values: this.oilPrices.map(oilPrice => ({
-            oilPrice: oilPrice,
-            value: null
-          })),
+          values: this.oilPrices.map(() => ''),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -273,10 +271,9 @@ export default {
           index: '6',
           title: 'Доходы',
           dimension: '$ / bbl',
-          values: this.oilPrices.map((oilPrice, index) => ({
-            oilPrice: oilPrice,
-            value: this.oilPriceScenarios[index].Revenue_total.value_optimized[0]
-          })),
+          values: this.oilPrices.map((oilPrice, index) =>
+              +this.oilPriceScenarios[index].Revenue_total.value_optimized[0]
+          ),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -287,10 +284,9 @@ export default {
           index: '7',
           title: 'Расходы - всего, в т.ч.:',
           dimension: '$ / bbl',
-          values: this.oilPrices.map((oilPrice, index) => ({
-            oilPrice: oilPrice,
-            value: this.oilPriceScenarios[index].Overall_expenditures.value_optimized[0]
-          })),
+          values: this.oilPrices.map((oilPrice, index) =>
+              +this.oilPriceScenarios[index].Overall_expenditures.value_optimized[0]
+          ),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -301,12 +297,11 @@ export default {
           index: '7.1',
           title: 'Себестоимость, в т.ч.:',
           dimension: 'тыс тенге / тонну',
-          values: this.oilPrices.map((oilPrice, index) => ({
-            oilPrice: oilPrice,
-            value: +this.oilPriceScenarios[index].Overall_expenditures.value_optimized[0]
-                / (+this.oilPriceScenarios[index].production_local.value_optimized[0]
-                    + (+this.oilPriceScenarios[index].production_export.value_optimized[0]))
-          })),
+          values: this.oilPrices.map((oilPrice, index) =>
+              +this.oilPriceScenarios[index].Overall_expenditures.value_optimized[0]
+              / (+this.oilPriceScenarios[index].production_local.value_optimized[0]
+              + (+this.oilPriceScenarios[index].production_export.value_optimized[0]))
+          ),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,
             value: ''
@@ -347,27 +342,11 @@ export default {
   border-left: unset;
 }
 
-.border-bottom-0 {
-  border-bottom: unset;
-}
-
 .border-top-0 {
   border-top: unset;
 }
 
 .bg-header {
   background: #333975;
-}
-
-.flex-5 {
-  flex: 1 0 5%;
-}
-
-.flex-10 {
-  flex: 1 0 10%;
-}
-
-.flex-20 {
-  flex: 1 0 20%;
 }
 </style>
