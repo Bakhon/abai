@@ -69,7 +69,7 @@ class OilPipe extends Model
 
     public function hydroCalcLong()
     {
-        return $this->hasMany(HydroCalcLong::class);
+        return $this->hasMany(HydroCalcLong::class)->orderby('segment');
     }
 
     public static function boot() {
