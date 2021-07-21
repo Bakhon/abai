@@ -12,9 +12,9 @@ class StructureController
     public function getDzo(StructureService $structureService)
     {
         $tree = $structureService->getTree(Carbon::now());
-        $orgs = $orgIds = [];
-        $this->fillOrgIds($tree, $orgIds);
+        $orgIds = $this->fillOrgIds($tree, []);
 
+        $orgs = [];
         if (!empty($orgIds)) {
             $orgs = Org::query()
                 ->select('id', 'name_ru', 'name_short_ru')
@@ -27,16 +27,17 @@ class StructureController
         ];
     }
 
-    private function fillOrgIds(array $tree, array &$orgIds)
+    private function fillOrgIds(array $tree, array $orgIds)
     {
         foreach ($tree as $item) {
             if ($item['type'] === 'org' && $item['sub_type'] === 'SUBC') {
                 $orgIds[] = $item['id'];
             }
             if (!empty($item['children'])) {
-                $this->fillOrgIds($item['children'], $orgIds);
+                $orgIds = $this->fillOrgIds($item['children'], $orgIds);
             }
         }
+        return $orgIds;
     }
 
 }
