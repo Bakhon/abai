@@ -40,7 +40,6 @@ class CalculateHydroDinamicGuUpsvYesterday extends Command
     public function handle()
     {
         $input = ['date' => Carbon::yesterday()->format('Y-m-d')];
-        $job = new CalculateHydroDynamics($input);
-        $this->dispatch($job);
+        CalculateHydroDynamics::dispatch($input);
     }
 }
