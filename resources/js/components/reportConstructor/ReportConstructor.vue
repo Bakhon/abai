@@ -80,7 +80,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="left-section-select-area">
+          <div class="col left-section-select-area">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
                  xmlns="http://www.w3.org/2000/svg">
               <path d="M0 0.000249982L4.66665 5.3335V10.6667L7.33335 12V5.33325L12 0H6.00012L0 0.000249982Z"
@@ -90,6 +90,10 @@
               <input type="text" placeholder="Выбор параметров" id="parameter-search">
               </input>
             </form>
+          </div>
+          <div class="col right-section-select-area">
+            <input type="checkbox"/>
+            {{ trans('bd.wells') }}
           </div>
         </div>
         <div class="row">
@@ -798,6 +802,28 @@ body {
     }
   }
 
+  .right-section-select-area {
+    margin: 20px 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+
+    input[type="checkbox"] {
+      height: 15px;
+      width: 15px;
+      background-color: white;
+      border-radius: 3.5px;
+      margin-bottom: auto;
+      margin-top: auto;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+  }
+
   .table-wrapper {
     padding: 0px 10px;
   }
@@ -937,24 +963,19 @@ body {
         width: 100px;
         height: 25px;
         border: none;
+        border-radius: 2px;
         color: #fff;
-      }
-
-      .calendar:hover {
         cursor: pointer;
       }
-      
+
       .calendar:not(.active):hover {
-        border-radius: 2px;
         background-color: #323370;
       }
 
       .active {
         color: #fff;
         background-color: #3366FF;
-        border-radius: 2px;
       }
-
     }
   }
 
