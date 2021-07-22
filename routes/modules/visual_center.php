@@ -65,6 +65,9 @@ Route::group(
                 Route::get('hive-data-from-avocet', function() {
                     Artisan::call('hive-data-from-avocet:cron');
                 });
+                Route::get('store-kgm-reports-from-avocet', function() {
+                    Artisan::call('store-kgm-reports-from-avocet:cron');
+                });
                 Route::post('dzo-excel-form', 'VisCenter\ExcelForm\ExcelFormController@store');
                 Route::post('dzo-chemistry-excel-form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
                 Route::get('/get-production-details', 'VisCenter\VisualCenterController@getProductionDetails');
