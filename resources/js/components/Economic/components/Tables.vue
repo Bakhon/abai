@@ -17,7 +17,7 @@
         :key="tab"
         class="mt-3 w-100">
       <table-specific-indicators
-          v-if="index === 2"
+          v-if="index === 0"
           :org="res.org"
           :scenario="scenario"
           :oil-prices="oilPrices"
@@ -34,7 +34,7 @@
           class="text-white"/>
 
       <table-oil-price-options
-          v-if="index === 0"
+          v-if="index === 2"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
@@ -79,9 +79,9 @@ export default {
   computed: {
     tabs() {
       return [
-        this.trans('economic_reference.oil_price_options'),
-        this.trans('economic_reference.technical_economic_indicators'),
         this.trans('economic_reference.specific_indicators'),
+        this.trans('economic_reference.technical_economic_indicators'),
+        this.trans('economic_reference.oil_price_options'),
       ]
     }
   }

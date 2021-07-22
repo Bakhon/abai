@@ -5,33 +5,59 @@
       <div>“{{ org.name }}”</div>
     </subtitle>
 
-    <div class="mt-3 text-center border-grey">
-      <div class="d-flex bg-header">
-        <div
-            v-for="item in tableKeys"
-            :key="item.value"
-            :style="`flex: ${item.flexGrow} 0 ${item.flexWidth}`"
-            class="px-3 border-grey d-flex align-items-center justify-content-center"
-            style="white-space: normal">
-          {{ item.title }}
+    <div class="mt-3">
+      <div class="text-center border-grey">
+        <div class="d-flex bg-header">
+          <div
+              v-for="item in tableKeys"
+              :key="item.value"
+              :style="`flex: ${item.flexGrow} 0 ${item.flexWidth}`"
+              class="px-3 border-grey d-flex align-items-center justify-content-center"
+              style="white-space: normal">
+            {{ item.title }}
+          </div>
+        </div>
+      </div>
+
+      <div v-for="(item, index) in tableData"
+           :key="index"
+           :style="`background: ${item.color}`"
+           class="d-flex">
+        <div v-for="key in tableKeys"
+             :key="key.value"
+             :class="index ? 'p-3' : 'px-3 py-1'"
+             :style="`flex: ${key.flexGrow} 0 ${key.flexWidth}`"
+             class="border-grey text-center">
+          {{
+            typeof item[key.value] === 'string'
+                ? item[key.value]
+                : (+(item[key.value]).toFixed(2)).toLocaleString()
+          }}
         </div>
       </div>
     </div>
 
-    <div v-for="(item, index) in tableData"
-         :key="index"
-         :style="`background: ${item.color}`"
-         class="d-flex">
-      <div v-for="key in tableKeys"
-           :key="key.value"
-           :class="index ? 'p-3' : 'px-3 py-1'"
-           :style="`flex: ${key.flexGrow} 0 ${key.flexWidth}`"
-           class="border-grey text-center">
-        {{
-          typeof item[key.value] === 'string'
-              ? item[key.value]
-              : (+(item[key.value]).toFixed(2)).toLocaleString()
-        }}
+    <subtitle font-size="18" style="line-height: 26px" class="mt-3">
+      Оптимизация категории 1: {{ scenario.percent_stop_cat_1 * 100 }}%,
+      категории 2: {{ scenario.percent_stop_cat_2 * 100 }}%
+    </subtitle>
+
+    <div class="mt-3">
+      <div v-for="(item, index) in tableDataOptimized"
+           :key="index"
+           :style="`background: ${item.color}`"
+           class="d-flex">
+        <div v-for="key in tableKeys"
+             :key="key.value"
+             :class="index ? 'p-3' : 'px-3 py-1'"
+             :style="`flex: ${key.flexGrow} 0 ${key.flexWidth}`"
+             class="border-grey text-center">
+          {{
+            typeof item[key.value] === 'string'
+                ? item[key.value]
+                : (+(item[key.value]).toFixed(2)).toLocaleString()
+          }}
+        </div>
       </div>
     </div>
   </div>
@@ -48,7 +74,7 @@ export default {
   props: {
     org: {
       required: true,
-      type: String
+      type: Object
     },
     scenarios: {
       required: true,
@@ -72,37 +98,108 @@ export default {
       return [
         {
           title: `при цене на экспорт - ${this.scenario.oil_price}$/bbl`,
-          wellCount: 'ед',
+          uwiCount: 'ед',
           prsCount: 'ед',
-          prsPerWellCount: 'ед',
+          prsPerUwi: 'ед',
           liquid: '%',
           avgQn: 'тн/сут',
-          oil: `${this.scenario.oil.value[1]} тонн`,
-          number: 'чел.',
-          revenueTotal: `${this.scenario.Revenue_total.value[1]} тенге`,
+          oil: `тыс тонн`,
+          number: 'чел',
+          revenueTotal: 'млрд тенге',
           color: '#151E70',
         },
         {
           title: 'Всего скважин, в т.ч.:',
-          wellCount: +this.scenario.well_count.original_value,
+          uwiCount: +this.scenario.uwi_count.original_value,
           prsCount: +this.scenario.prs.original_value,
-          prsPerWellCount: +this.scenario.prs.original_value / (+this.scenario.well_count.original_value),
+          prsPerUwi: +this.scenario.prs.original_value / (+this.scenario.uwi_count.original_value),
           liquid: (100 * (+this.scenario.liquid.original_value - (+this.scenario.oil.original_value)) / +this.scenario.liquid.original_value),
-          avgQn: +this.scenario.oil.original_value / +this.scenario.avg_days_worked.original_value,
-          oil: +this.scenario.oil.value[0],
+          avgQn: +this.scenario.oil.original_value / +this.scenario.days_worked.original_value,
+          oil: +this.scenario.oil.original_value / 1000,
           number: '',
-          revenueTotal: +this.scenario.Revenue_total.value[0]
+          revenueTotal: +this.scenario.Revenue_total.original_value / 1000000000
         },
         {
           title: 'Рентабельные',
-          wellCount: +this.scenario.well_count.original_value,
-          prsCount: +this.scenario.prs.original_value,
-          prsPerWellCount: +this.scenario.prs.original_value / (+this.scenario.well_count.original_value),
-          liquid: (100 * (+this.scenario.liquid.original_value - (+this.scenario.oil.original_value)) / +this.scenario.liquid.original_value),
-          avgQn: +this.scenario.oil.original_value / +this.scenario.avg_days_worked.original_value,
-          oil: +this.scenario.oil.value[0],
+          uwiCount: +this.scenario.uwi_count_profitable.original_value,
+          prsCount: +this.scenario.prs_profitable.original_value,
+          prsPerUwi: +this.scenario.prs_profitable.original_value / (+this.scenario.uwi_count_profitable.original_value),
+          liquid: (100 * (+this.scenario.liquid_profitable.original_value - (+this.scenario.oil_profitable.original_value)) / +this.scenario.liquid_profitable.original_value),
+          avgQn: +this.scenario.oil_profitable.original_value / +this.scenario.days_worked_profitable.original_value,
+          oil: +this.scenario.oil_profitable.original_value / 1000,
           number: '',
-          revenueTotal: +this.scenario.Revenue_total.value[0]
+          revenueTotal: +this.scenario.Revenue_total_profitable.original_value / 1000000000
+        },
+        {
+          title: 'Категория 2',
+          uwiCount: +this.scenario.uwi_count_profitless_cat_2.original_value,
+          prsCount: +this.scenario.prs_profitless_cat_2.original_value,
+          prsPerUwi: +this.scenario.prs_profitless_cat_2.original_value / (+this.scenario.uwi_count_profitless_cat_2.original_value),
+          liquid: (100 * (+this.scenario.liquid_profitless_cat_2.original_value - (+this.scenario.oil_profitless_cat_2.original_value)) / +this.scenario.liquid_profitless_cat_2.original_value),
+          avgQn: +this.scenario.oil_profitless_cat_2.original_value / +this.scenario.days_worked_profitless_cat_2.original_value,
+          oil: +this.scenario.oil_profitless_cat_2.original_value / 1000,
+          number: '',
+          revenueTotal: +this.scenario.Revenue_total_profitless_cat_2.original_value / 1000000000
+        },
+        {
+          title: 'Категория 1',
+          uwiCount: +this.scenario.uwi_count_profitless_cat_1.original_value,
+          prsCount: +this.scenario.prs_profitless_cat_1.original_value,
+          prsPerUwi: +this.scenario.prs_profitless_cat_1.original_value / (+this.scenario.uwi_count_profitless_cat_1.original_value),
+          liquid: (100 * (+this.scenario.liquid_profitless_cat_1.original_value - (+this.scenario.oil_profitless_cat_1.original_value)) / +this.scenario.liquid_profitless_cat_1.original_value),
+          avgQn: +this.scenario.oil_profitless_cat_1.original_value / +this.scenario.days_worked_profitless_cat_1.original_value,
+          oil: +this.scenario.oil_profitless_cat_1.original_value / 1000,
+          number: '',
+          revenueTotal: +this.scenario.Revenue_total_profitless_cat_1.original_value / 1000000000
+        },
+      ]
+    },
+
+    tableDataOptimized() {
+      return [
+        {
+          title: 'Всего скважин, в т.ч.:',
+          uwiCount: +this.scenario.uwi_count.original_value_optimized,
+          prsCount: +this.scenario.prs.original_value_optimized,
+          prsPerUwi: +this.scenario.prs.original_value_optimized / (+this.scenario.uwi_count.original_value_optimized),
+          liquid: (100 * (+this.scenario.liquid.original_value_optimized - (+this.scenario.oil.original_value_optimized)) / +this.scenario.liquid.original_value_optimized),
+          avgQn: +this.scenario.oil.original_value_optimized / +this.scenario.days_worked.original_value_optimized,
+          oil: +this.scenario.oil.original_value_optimized / 1000,
+          number: '',
+          revenueTotal: +this.scenario.Revenue_total.original_value_optimized / 1000000000
+        },
+        {
+          title: 'Рентабельные',
+          uwiCount: +this.scenario.uwi_count_profitable.original_value_optimized,
+          prsCount: +this.scenario.prs_profitable.original_value_optimized,
+          prsPerUwi: +this.scenario.prs_profitable.original_value_optimized / (+this.scenario.uwi_count_profitable.original_value_optimized),
+          liquid: (100 * (+this.scenario.liquid_profitable.original_value_optimized - (+this.scenario.oil_profitable.original_value_optimized)) / +this.scenario.liquid_profitable.original_value_optimized),
+          avgQn: +this.scenario.oil_profitable.original_value_optimized / +this.scenario.days_worked_profitable.original_value_optimized,
+          oil: +this.scenario.oil_profitable.original_value_optimized / 1000,
+          number: '',
+          revenueTotal: +this.scenario.Revenue_total_profitable.original_value_optimized / 1000000000
+        },
+        {
+          title: 'Категория 2',
+          uwiCount: +this.scenario.uwi_count_profitless_cat_2.original_value_optimized,
+          prsCount: +this.scenario.prs_profitless_cat_2.original_value_optimized,
+          prsPerUwi: +this.scenario.prs_profitless_cat_2.original_value_optimized / (+this.scenario.uwi_count_profitless_cat_2.original_value_optimized),
+          liquid: (100 * (+this.scenario.liquid_profitless_cat_2.original_value_optimized - (+this.scenario.oil_profitless_cat_2.original_value_optimized)) / +this.scenario.liquid_profitless_cat_2.original_value_optimized),
+          avgQn: +this.scenario.oil_profitless_cat_2.original_value_optimized / +this.scenario.days_worked_profitless_cat_2.original_value_optimized,
+          oil: +this.scenario.oil_profitless_cat_2.original_value_optimized / 1000,
+          number: '',
+          revenueTotal: +this.scenario.Revenue_total_profitless_cat_2.original_value_optimized / 1000000000
+        },
+        {
+          title: 'Категория 1',
+          uwiCount: +this.scenario.uwi_count_profitless_cat_1.original_value_optimized,
+          prsCount: +this.scenario.prs_profitless_cat_1.original_value_optimized,
+          prsPerUwi: +this.scenario.prs_profitless_cat_1.original_value_optimized / (+this.scenario.uwi_count_profitless_cat_1.original_value_optimized),
+          liquid: (100 * (+this.scenario.liquid_profitless_cat_1.original_value_optimized - (+this.scenario.oil_profitless_cat_1.original_value_optimized)) / +this.scenario.liquid_profitless_cat_1.original_value_optimized),
+          avgQn: +this.scenario.oil_profitless_cat_1.original_value_optimized / +this.scenario.days_worked_profitless_cat_1.original_value_optimized,
+          oil: +this.scenario.oil_profitless_cat_1.original_value_optimized / 1000,
+          number: '',
+          revenueTotal: +this.scenario.Revenue_total_profitless_cat_1.original_value_optimized / 1000000000
         },
       ]
     },
@@ -117,7 +214,7 @@ export default {
         },
         {
           title: 'Скважин',
-          value: 'wellCount',
+          value: 'uwiCount',
           flexWidth: '120px',
           flexGrow: 0,
         },
@@ -129,7 +226,7 @@ export default {
         },
         {
           title: 'Кол-во ПРС на 1 скв',
-          value: 'prsPerWellCount',
+          value: 'prsPerUwi',
           flexWidth: '120px',
           flexGrow: 0,
         },

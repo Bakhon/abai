@@ -16,9 +16,9 @@ class EconomicOptimizationController extends Controller
 {
     protected $druidClient;
 
-    const DATA_SOURCE = 'economic_scenario_test_v6';
+    const DATA_SOURCE = 'economic_scenario_test_v8';
 
-    const DATA_SOURCE_DATE = '2021/07/13';
+    const DATA_SOURCE_DATE = '2021/01/01';
 
     const OPTIMIZED_COLUMNS = [
         'Revenue_total',
@@ -29,16 +29,21 @@ class EconomicOptimizationController extends Controller
         'oil',
         'liquid',
         'prs',
-        'well_count',
-        'well_count_profitable',
-        'well_count_profitless_cat_1',
-        'well_count_profitless_cat_2',
-        'avg_days_worked',
+        'uwi_count',
+        'days_worked',
         'production_export',
         'production_local',
     ];
 
-    const OPTIMIZED_COLUMN_SUFFIX = '_optimize';
+    const OPTIMIZED_OTHER_COLUMNS = [
+        'Overall_expenditures',
+        'operating_profit_12m',
+    ];
+
+    const SUFFIX_OPTIMIZE = '_optimize';
+    const SUFFIX_PROFITABLE = '_profitable';
+    const SUFFIX_PROFITLESS_CAT_1 = '_profitless_cat_1';
+    const SUFFIX_PROFITLESS_CAT_2 = '_profitless_cat_2';
 
     const DOLLAR_RATE_URL = 'https://www.nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut';
 
@@ -114,10 +119,16 @@ class EconomicOptimizationController extends Controller
             "oil_price",
         ];
 
-        foreach (self::OPTIMIZED_COLUMNS as $column) {
-            $columns[] = $column;
+        $columnsVariations = [];
 
-            $columns[] = $column . self::OPTIMIZED_COLUMN_SUFFIX;
+        foreach (self::OPTIMIZED_COLUMNS as $column) {
+            foreach (self::columnVariations($column) as $columnVariation) {
+                $columnsVariations[] = $columnVariation;
+
+                $columns[] = $columnVariation;
+
+                $columns[] = $columnVariation . self::SUFFIX_OPTIMIZE;
+            }
         }
 
         $data = $builder
@@ -132,14 +143,14 @@ class EconomicOptimizationController extends Controller
                 $scenarios[$index][$column] = $item[$column];
             }
 
-            foreach (self::OPTIMIZED_COLUMNS as $column) {
-                $columnOptimized = $column . self::OPTIMIZED_COLUMN_SUFFIX;
+            foreach ($columnsVariations as $columnVariation) {
+                $columnOptimized = $columnVariation . self::SUFFIX_OPTIMIZE;
 
-                $scenarios[$index][$column] = [
-                    'value' => self::formatMoney($item[$column]),
+                $scenarios[$index][$columnVariation] = [
+                    'value' => self::formatMoney($item[$columnVariation]),
                     'value_optimized' => self::formatMoney($item[$columnOptimized]),
-                    'percent' => EconomicNrsController::calcPercent($item[$columnOptimized], $item[$column], 2),
-                    'original_value' => $item[$column],
+                    'percent' => EconomicNrsController::calcPercent($item[$columnOptimized], $item[$columnVariation], 2),
+                    'original_value' => $item[$columnVariation],
                     'original_value_optimized' => $item[$columnOptimized],
                 ];
             }
@@ -276,6 +287,20 @@ class EconomicOptimizationController extends Controller
         return [
             number_format($digit / 1000000000, 2),
             trans('economic_reference.billion')
+        ];
+    }
+
+    static function columnVariations(string $column): array
+    {
+        if (in_array($column, self::OPTIMIZED_OTHER_COLUMNS)) {
+            return [$column];
+        }
+
+        return [
+            $column,
+            $column . self::SUFFIX_PROFITABLE,
+            $column . self::SUFFIX_PROFITLESS_CAT_1,
+            $column . self::SUFFIX_PROFITLESS_CAT_2,
         ];
     }
 }

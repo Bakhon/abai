@@ -234,7 +234,7 @@ export default {
           title: 'Фонд скважин',
           dimension: '',
           values: this.oilPrices.map((oilPrice, index) =>
-              +this.oilPriceScenarios[index].well_count_optimize
+              +this.oilPriceScenarios[index].uwi_count_optimize
           ),
           budget2020: this.budget2020.map(budget => ({
             budget: budget,

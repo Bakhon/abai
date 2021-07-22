@@ -330,17 +330,23 @@ import SelectOrganization from "./components/SelectOrganization";
 import Tables from "./components/Tables";
 
 const optimizedColumns = [
-  "Revenue_total",
-  "Overall_expenditures",
-  "operating_profit_12m",
-  "oil",
-  "liquid",
-  "prs",
-  "well_count",
-  "well_count_profitable",
-  "well_count_profitless_cat_1",
-  "well_count_profitless_cat_2",
-  "avg_days_worked"
+  'Revenue_total',
+  'Revenue_local',
+  'Revenue_export',
+  'Overall_expenditures',
+  'operating_profit_12m',
+  'oil',
+  'liquid',
+  'prs',
+  'uwi_count',
+  'days_worked',
+  'production_export',
+  'production_local',
+];
+
+const optimizedOtherColumns = [
+  'Overall_expenditures',
+  'operating_profit_12m',
 ];
 
 let economicRes = {
@@ -367,14 +373,29 @@ let economicRes = {
   }
 }
 
-optimizedColumns.forEach(column => {
-  economicRes.scenarios[0][column] = {
-    value: [0, ''],
-    value_optimized: [0, ''],
-    percent: 0,
-    original_value: 0,
-    original_value_optimized: 0,
+let columnVariations = (column) => {
+  if (optimizedOtherColumns.includes(column)) {
+    return [column]
   }
+
+  return [
+    column,
+    column + '_profitable',
+    column + '_profitless_cat_1',
+    column + '_profitless_cat_2',
+  ];
+}
+
+optimizedColumns.forEach(column => {
+  columnVariations(column).forEach(columnVariation => {
+    economicRes.scenarios[0][columnVariation] = {
+      value: [0, ''],
+      value_optimized: [0, ''],
+      percent: 0,
+      original_value: 0,
+      original_value_optimized: 0,
+    }
+  })
 })
 
 export default {
@@ -516,34 +537,34 @@ export default {
         },
         {
           name: this.trans('economic_reference.total'),
-          value: (+this.scenario.well_count_profitable.original_value)
-              + (+this.scenario.well_count_profitless_cat_1.original_value)
-              + (+this.scenario.well_count_profitless_cat_2.original_value),
-          value_optimized: (+this.scenario.well_count_profitable.original_value_optimized)
-              + (+this.scenario.well_count_profitless_cat_1.original_value_optimized)
-              + (+this.scenario.well_count_profitless_cat_2.original_value_optimized),
+          value: (+this.scenario.uwi_count_profitable.original_value)
+              + (+this.scenario.uwi_count_profitless_cat_1.original_value)
+              + (+this.scenario.uwi_count_profitless_cat_2.original_value),
+          value_optimized: (+this.scenario.uwi_count_profitable.original_value_optimized)
+              + (+this.scenario.uwi_count_profitless_cat_1.original_value_optimized)
+              + (+this.scenario.uwi_count_profitless_cat_2.original_value_optimized),
         },
         {
           name: this.trans('economic_reference.profitable'),
-          value: this.scenario.well_count_profitable.original_value,
-          value_optimized: this.scenario.well_count_profitable.original_value_optimized,
+          value: this.scenario.uwi_count_profitable.original_value,
+          value_optimized: this.scenario.uwi_count_profitable.original_value_optimized,
         },
         {
           name: this.trans('economic_reference.profitless_all'),
-          value: (+this.scenario.well_count_profitless_cat_1.original_value)
-              + (+this.scenario.well_count_profitless_cat_2.original_value),
-          value_optimized: (+this.scenario.well_count_profitless_cat_1.original_value_optimized)
-              + (+this.scenario.well_count_profitless_cat_2.original_value_optimized)
+          value: (+this.scenario.uwi_count_profitless_cat_1.original_value)
+              + (+this.scenario.uwi_count_profitless_cat_2.original_value),
+          value_optimized: (+this.scenario.uwi_count_profitless_cat_1.original_value_optimized)
+              + (+this.scenario.uwi_count_profitless_cat_2.original_value_optimized)
         },
         {
           name: this.trans('economic_reference.profitless_cat_1'),
-          value: this.scenario.well_count_profitless_cat_1.original_value,
-          value_optimized: this.scenario.well_count_profitless_cat_1.original_value_optimized
+          value: this.scenario.uwi_count_profitless_cat_1.original_value,
+          value_optimized: this.scenario.uwi_count_profitless_cat_1.original_value_optimized
         },
         {
           name: this.trans('economic_reference.profitless_cat_2'),
-          value: this.scenario.well_count_profitless_cat_2.original_value,
-          value_optimized: this.scenario.well_count_profitless_cat_2.original_value_optimized,
+          value: this.scenario.uwi_count_profitless_cat_2.original_value,
+          value_optimized: this.scenario.uwi_count_profitless_cat_2.original_value_optimized,
         },
         {
           name: this.trans('economic_reference.new_wells'),
@@ -700,8 +721,8 @@ export default {
       }
 
       let days_worked = optimized
-          ? this.scenario.avg_days_worked.original_value_optimized
-          : this.scenario.avg_days_worked.original_value
+          ? this.scenario.days_worked.original_value_optimized
+          : this.scenario.days_worked.original_value
 
       let oil = optimized
           ? this.scenario.oil.original_value_optimized
@@ -718,8 +739,8 @@ export default {
       }
 
       let days_worked = optimized
-          ? this.scenario.avg_days_worked.original_value_optimized
-          : this.scenario.avg_days_worked.original_value
+          ? this.scenario.days_worked.original_value_optimized
+          : this.scenario.days_worked.original_value
 
       let liquid = optimized
           ? this.scenario.liquid.original_value_optimized
@@ -735,16 +756,16 @@ export default {
         optimized = false
       }
 
-      let well_count = optimized
-          ? this.scenario.well_count.original_value_optimized
-          : this.scenario.well_count.original_value
+      let uwi_count = optimized
+          ? this.scenario.uwi_count.original_value_optimized
+          : this.scenario.uwi_count.original_value
 
       let prs = optimized
           ? this.scenario.prs.original_value_optimized
           : this.scenario.prs.original_value
 
-      return well_count
-          ? (prs * 1000 / well_count).toFixed(fractionDigits)
+      return uwi_count
+          ? (prs * 1000 / uwi_count).toFixed(fractionDigits)
           : 0
     }
   }
