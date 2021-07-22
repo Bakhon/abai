@@ -468,15 +468,16 @@ export default {
 
         getFilteredForChartBySelectedCompanies() {
             let result = this.chartOutput.filter(item => this.selectedDzoCompanies.includes(item.dzo));
-            if (this.selectedDzoCompanies.includes('ОМГК')) {
-                result = result.concat(this.getConsolidatedByTroubledCompanies('ОМГ'));
-            }
-            if (this.selectedDzoCompanies.includes('ПККР')) {
-                result = result.concat(this.getConsolidatedByTroubledCompanies('ПКК'));
-            }
-            if (this.selectedDzoCompanies.includes('КГМКМГ')) {
-                result = result.concat(this.getConsolidatedByTroubledCompanies('КГМ'));
-            }
+            let troubledCompanies = {
+                'ОМГК':'ОМГ',
+                'ПККР':'ПКК',
+                'КГМКМГ':'КГМ',
+            };
+            _.forEach(Object.keys(troubledCompanies), (key) => {
+                if (this.selectedDzoCompanies.includes(key)) {
+                    result = result.concat(this.getConsolidatedByTroubledCompanies(troubledCompanies[key]));
+                }
+            });
             if (this.selectedDzoCompanies.includes('ПКИ')) {
                 let childCompanies = this.getConsolidatedByTroubledCompanies('ОМГ');
                 childCompanies = childCompanies.concat(this.getConsolidatedByTroubledCompanies('ПКК'));
@@ -503,7 +504,9 @@ export default {
         getConsolidatedByPKI(input, parentDzo) {
             let filtered = input.filter(item => ['КГМКМГ','ОМГК','ПККР'].includes(item.dzo));
             let result = [];
-            if (filtered.length) {
+            if (!filtered.length) {
+                return result;
+            } else {
                 filtered = _.groupBy(filtered, 'date');
                 _.forEach(filtered, (items) => {
                     let template = _.cloneDeep(items[0]);
@@ -515,8 +518,8 @@ export default {
                     });
                     result.push(template);
                 });
+                return result;
             }
-            return result;
         },
     }
 }
