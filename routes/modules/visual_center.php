@@ -79,8 +79,7 @@ Route::group(
                 Route::get('/daily-report', 'VisCenter\VisualCenterController@dailyReport')->name('daily-report');
                 Route::get('/get-production-for-year', 'VisCenter\VisualCenterController@getProductionDetailsForYear');
                 Route::get('/get-emergency-history', 'VisCenter\VisualCenterController@getEmergencyHistory');
-                Route::get('/get-historical-production', 'VisCenter\VisualCenterController@getHistoricalProductionByDzo');
-                Route::get('/import-kgm-reports-from-avocet', 'VisCenter\VisualCenterController@storeKGMReportsFromAvocetByDay');
+                Route::get('/get-historical-production', 'VisCenter\VisualCenterController@getHistoricalProductionByDzo');               
             }
         );
     }
