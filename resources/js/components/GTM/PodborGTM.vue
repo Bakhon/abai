@@ -327,7 +327,6 @@ export default {
         },
         $_setTreeChildrenComponent(data) {
             let node = data.node;
-            console.log(node)
             if (node.ioi_finder_model === undefined) {
                 if (data.hideIoiMenu) {
                     this.treeChildrenComponent = null;
@@ -351,15 +350,11 @@ export default {
                                 '</gtm-tree></div>',
                 methods: {
                     handleClick (data) {
-                      console.log(data.node.children)
                         this.$emit('node-click', {node: data.node, hideIoiMenu: false});
                     }
                 }
             };
         },
-        getData: function () {
-
-        }
     },
 }
 </script>
