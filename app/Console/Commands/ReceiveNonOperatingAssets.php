@@ -19,6 +19,7 @@ use \jamesiarmes\PhpEws\Enumeration\ResponseClassType;
 
 use \jamesiarmes\PhpEws\Type\ConstantValueType;
 use \jamesiarmes\PhpEws\Type\DistinguishedFolderIdType;
+use \jamesiarmes\PhpEws\Type\FolderIdType;
 use \jamesiarmes\PhpEws\Type\FieldURIOrConstantType;
 use \jamesiarmes\PhpEws\Type\ItemResponseShapeType;
 use \jamesiarmes\PhpEws\Type\PathToUnindexedFieldType;
@@ -78,7 +79,7 @@ class receiveNonOperatingAssets extends Command
 
     public function processInboundEmail()
     {
-        $this->assignMessageOptions(env('VISCENTER_EMAIL_ADDRESS', ''),env('VISCENTER_EMAIL_PASSWORD', ''));
+        $this->assignMessageOptions(env('VISCENTER_EMAIL_ADDRESS', ''),env('VISCENTER_EMAIL_PASSWORD', ''),'nonOperating');
         if (!$this->isDataAvailable) {
             return;
         }
@@ -88,7 +89,7 @@ class receiveNonOperatingAssets extends Command
     }
     public function processGDUEmail()
     {
-        $this->assignMessageOptions(env('VISCENTER_GDU_EMAIL_ADDRESS', ''),env('VISCENTER_GDU_EMAIL_PASSWORD', ''));
+        $this->assignMessageOptions(env('VISCENTER_GDU_EMAIL_ADDRESS', ''),env('VISCENTER_GDU_EMAIL_PASSWORD', ''),'gdu');
         if (!$this->isDataAvailable) {
             return;
         }
@@ -97,12 +98,12 @@ class receiveNonOperatingAssets extends Command
         $this->scrapDocument('gdu');
     }
 
-    public function assignMessageOptions($email,$password)
+    public function assignMessageOptions($email,$password,$emailType)
     {
         $ews = new Client($this->server, $email, $password);
         $ews->setCurlOptions(array(CURLOPT_SSL_VERIFYPEER => false));
         $this->ews = $ews;
-        $request = $this->getRequestParams();
+        $request = $this->getRequestParams($emailType);
         $response = $this->ews->FindItem($request);
         $response_messages = $response->ResponseMessages->FindItemResponseMessage;
 
@@ -120,7 +121,7 @@ class receiveNonOperatingAssets extends Command
         }
     }
 
-    public function getRequestParams()
+    public function getRequestParams($emailType)
     {
         $request = new FindItemType();
         $request->ParentFolderIds = new NonEmptyArrayOfBaseFolderIdsType();
@@ -133,9 +134,15 @@ class receiveNonOperatingAssets extends Command
         $request->Restriction->IsEqualTo->FieldURIOrConstant->Constant->Value = "false";
         $request->ItemShape = new ItemResponseShapeType();
         $request->ItemShape->BaseShape = DefaultShapeNamesType::ALL_PROPERTIES;
-        $folder_id = new DistinguishedFolderIdType();
-        $folder_id->Id = DistinguishedFolderIdNameType::INBOX;
-        $request->ParentFolderIds->DistinguishedFolderId[] = $folder_id;
+        if ($emailType === 'gdu') {
+            $folder_id = 'AAMkADRkNzVhNzFkLTVkMWYtNDRiMy05YWNhLWYwZTEzOWUwYmNjMQAuAAAAAAAReNYLTqfcSLDeg0mDUbrDAQAimyQ8p+VSTYHimU05mkoHAAABprqCAAA=';
+            $request->ParentFolderIds->FolderId = new FolderIdType();
+            $request->ParentFolderIds->FolderId->Id = $folder_id;
+        } else {
+            $folder_id = new DistinguishedFolderIdType();
+            $folder_id->Id = DistinguishedFolderIdNameType::INBOX;
+            $request->ParentFolderIds->DistinguishedFolderId[] = $folder_id;
+        }
         return $request;
     }
 
@@ -382,7 +389,7 @@ class receiveNonOperatingAssets extends Command
      */
     public function handle()
     {
+        $this->processGDUEmail();
         $this->processInboundEmail();
-        //$this->processGDUEmail(); waiting when sysadmin will do email-redirect
     }
 }
