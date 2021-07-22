@@ -201,7 +201,7 @@ export default {
           fillColor: mapsData[i]['color'],
           fillOpacity: 1,
           color: mapsData[i]['color'],
-        }).addTo(map);
+        }).addTo(map).bindPopup('Сектор: ' + mapsData[i]['sector'].toString());
       }
 
       map.on('click', this.onMapClick);
