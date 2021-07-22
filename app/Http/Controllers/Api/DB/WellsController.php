@@ -467,7 +467,7 @@ class WellsController extends Controller
         $childrenIds = [];
         if ($selectedUserDzo) {
             $orgsTree = $service->getTree(Carbon::now());
-            $childrenIds = OrganizationsController::getChildIds($orgsTree, $selectedUserDzo);
+            $childrenIds = $service::getChildIds($orgsTree, $selectedUserDzo);
 
         }
         $wells = Well::query()
