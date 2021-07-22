@@ -504,22 +504,21 @@ export default {
         getConsolidatedByPKI(input, parentDzo) {
             let filtered = input.filter(item => ['КГМКМГ','ОМГК','ПККР'].includes(item.dzo));
             let result = [];
-            if (!filtered.length) {
-                return result;
-            } else {
-                filtered = _.groupBy(filtered, 'date');
-                _.forEach(filtered, (items) => {
-                    let template = _.cloneDeep(items[0]);
-                    template.dzo = parentDzo;
-                    _.forEach(items, (item) => {
-                        template.oil_fact += item.oil_fact;
-                        template.oil_opek_plan += item.oil_opek_plan;
-                        template.oil_plan += item.oil_plan;
-                    });
-                    result.push(template);
-                });
+            if (filtered.length === 0) {
                 return result;
             }
+            filtered = _.groupBy(filtered, 'date');
+            _.forEach(filtered, (items) => {
+                let template = _.cloneDeep(items[0]);
+                template.dzo = parentDzo;
+                _.forEach(items, (item) => {
+                    template.oil_fact += item.oil_fact;
+                    template.oil_opek_plan += item.oil_opek_plan;
+                    template.oil_plan += item.oil_plan;
+                });
+                result.push(template);
+            });
+            return result;
         },
     }
 }
