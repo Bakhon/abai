@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="rating-content__wrapper">
-        <div id="map"></div>
+        <img src="/img/digital-rating/map.svg" alt="">
       </div>
     </div>
     <div class="rating-panel">
@@ -116,21 +116,12 @@
 
 <script>
 import { TransitionExpand } from 'vue-transition-expand';
-import L from 'leaflet';
-import { LMap, LTileLayer, LMarker, LWMSTileLayer, LControlLayers } from 'vue2-leaflet';
-import mapsData from '../dataMap.json';
-import 'leaflet/dist/leaflet.css';
 
 export default {
   name: "Sections",
 
   components: {
-    TransitionExpand,
-    LMap,
-    LTileLayer,
-    LMarker,
-    "l-wms-tile-layer": LWMSTileLayer,
-    LControlLayers
+    TransitionExpand
   },
 
   data() {
@@ -144,8 +135,7 @@ export default {
     };
   },
 
-  async mounted() {
-    await this.initMap();
+  mounted() {
     document.addEventListener('click', this.close);
   },
 
@@ -165,49 +155,6 @@ export default {
         this.show = false;
       }
     },
-    initMap() {
-      const map = L.map('map', {
-        crs: L.CRS.Simple,
-        minZoom: 1
-      });
-      const bounds = [[0, 1500], [0,1500]];
-      map.fitBounds(bounds);
-
-      let yx = L.latLng;
-      const xy = function (x, y) {
-        if (L.Util.isArray(x)) {
-          return yx(x[1], x[0]);
-        }
-        return yx(y, x);
-      };
-
-      map.setView( [750, 750], 1);
-
-      const markerIcon = L.divIcon({
-        iconSize: new L.Point(10, 10),
-        color: 'red',
-      });
-
-      mapsData.forEach((el) => {
-        el.x = el.x / 100;
-        el.y = el.y / 100;
-      });
-
-      L.latLng([ mapsData[0]['x'], mapsData[0]['y'] ]);
-
-      for(let i = 0; i < mapsData.length; i++) {
-        const coordinate = xy(mapsData[i]['x'], mapsData[i]['y']);
-        L.circleMarker(coordinate, {
-          fillColor: mapsData[i]['color'],
-          fillOpacity: 1,
-          color: mapsData[i]['color'],
-        }).addTo(map);
-      }
-
-      map.on('click', this.onMapClick);
-    },
-    onMapClick(e) {
-    }
   }
 }
 </script>
@@ -315,12 +262,5 @@ export default {
       }
     }
   }
-}
-
-#map {
-  width: 100%;
-}
-.leaflet-container {
-  background: transparent;
 }
 </style>
