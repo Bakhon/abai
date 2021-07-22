@@ -189,7 +189,7 @@ export default {
         const coordinateEnd = xy(mapsData[i]['x'] + 1, mapsData[i]['y'] + 1);
         L.rectangle([[coordinateStart], [coordinateEnd]], {
           color: mapsData[i]['color'],
-          weight: 1,
+          weight: 3,
           fillColor: mapsData[i]['color'],
           fillOpacity: 1,
         }).addTo(map).bindPopup('Сектор: ' + mapsData[i]['sector'].toString());
