@@ -904,7 +904,7 @@ export default {
       let variant = result.status == 'success' ? 'success' : 'danger';
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
-    async removePipe() {
+    async removePipshowToaste() {
       let result = await this.deletePipe();
       let message = '';
 
