@@ -175,12 +175,7 @@ export default {
         return yx(y, x);
       };
 
-      map.setView( [750, 750], 1);
-
-      const markerIcon = L.divIcon({
-        iconSize: new L.Point(10, 10),
-        color: 'red',
-      });
+      map.setView( [850, 520], 1);
 
       mapsData.forEach((el) => {
         el.x = el.x / 100;
@@ -190,13 +185,17 @@ export default {
       L.latLng([ mapsData[0]['x'], mapsData[0]['y'] ]);
 
       for(let i = 0; i < mapsData.length; i++) {
-        const coordinate = xy(mapsData[i]['x'], mapsData[i]['y']);
-        L.circleMarker(coordinate, {
+        const coordinateStart = xy(mapsData[i]['x'], mapsData[i]['y']);
+        const coordinateEnd = xy(mapsData[i]['x'] + 1, mapsData[i]['y'] + 1);
+        L.rectangle([[coordinateStart], [coordinateEnd]], {
+          color: mapsData[i]['color'],
+          weight: 1,
           fillColor: mapsData[i]['color'],
           fillOpacity: 1,
-          color: mapsData[i]['color'],
         }).addTo(map).bindPopup('Сектор: ' + mapsData[i]['sector'].toString());
       }
+
+      map.getBounds().pad(-1);
 
       map.on('click', this.onMapClick);
     },
