@@ -29,7 +29,7 @@ class MeteringUnitsController extends CrudController
             'links' => [
                 'list' => route('metering_units.list'),
             ],
-            'title' => trans('monitoring.meteringunits.title'),
+            'title' => trans('monitoring.metering_units.title'),
             'fields' => [               
                 'gu_id' => [
                     'title' => trans('monitoring.gu.gu'),
@@ -58,7 +58,7 @@ class MeteringUnitsController extends CrudController
                     'type' => 'string',
                 ],
                 'diameter' => [
-                    'title' => trans('monitoring.meteringunits.diameter'),
+                    'title' => trans('monitoring.metering_units.diameter'),
                     'type' => 'numeric',
                 ],
                 'date_of_exploitation' => [
