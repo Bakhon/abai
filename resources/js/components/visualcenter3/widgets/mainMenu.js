@@ -25,7 +25,8 @@ export default {
                 'oilCondensate': this.trans('visualcenter.liqDynamic'),
                 'oilCondensateProductionButton': this.trans('visualcenter.oilCondensateProductionChartName'),
                 'oilCondensateDeliveryButton': this.trans('visualcenter.oilCondensateDeliveryChartName'),
-                'oilResidue': this.trans('visualcenter.stockOfGoodsDynamic')
+                'oilResidue': this.trans('visualcenter.stockOfGoodsDynamic'),
+                'waterInjectionButton': this.trans('injectionWaterChartName')
             },
             isOilResidueActive: false,
             oilDeliveryFilters: {
@@ -94,17 +95,13 @@ export default {
             let self = this;
             this.isMainMenuItemChanged = false;
             let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
-            if (this.categoryMenuPreviousParent !== parentButton || !this.isOilProductionMenu(parentButton,childButton)) {
+            if (this.categoryMenuPreviousParent !== parentButton) {
                 _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
                     self.disableMainMenuFlags(self.mainMenuButtonElementOptions[button]);
                 });
             }
             this.categoryMenuPreviousParent = parentButton;
             this.switchButtonOptions(currentFilterOptions);
-        },
-        isOilProductionMenu(parentButton,childButton) {
-            let oilProductionSubMenuButtons = ['kmgParticipation','opecRestriction'];
-            return parentButton === 'oilProductionButton' && oilProductionSubMenuButtons.includes(childButton);
         },
         switchButtonOptions(elementOptions) {
             let enabledFlag = 'flagOn';

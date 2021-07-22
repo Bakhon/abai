@@ -155,6 +155,11 @@ class CalculateHydroDynamics implements ShouldQueue
             $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
             $points[$key]->omgngdu->heater_output_temperature = $temperature;
 
+            if (!$points[$key]->omgngdu->pump_discharge_pressure) {
+                unset($points[$key]);
+                continue;
+            }
+
             if (!$points[$key]->omgngdu->pump_discharge_pressure ||
                 !$points[$key]->omgngdu->daily_fluid_production ||
                 !$points[$key]->omgngdu->bsw) {
@@ -237,6 +242,7 @@ class CalculateHydroDynamics implements ShouldQueue
             $hydroCalcResult = HydroCalcResult::firstOrCreate(
                 [
                     'date' => Carbon::parse($this->input['date'])->format('Y-m-d'),
+                    'oil_pipe_id' => $trunkline_point->oil_pipe_id,
                     'trunkline_point_id' => $trunkline_point->id,
                 ]
             );

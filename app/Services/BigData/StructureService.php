@@ -139,7 +139,26 @@ class StructureService
         }
 
         $techs = Tech::query()
-            ->whereIn('tech_type', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU, Tech::TYPE_AGZU, Tech::TYPE_SPGU])
+            ->whereIn(
+                'tech_type',
+                function ($query) {
+                    return $query
+                        ->from('dict.tech_type')
+                        ->select('id')
+                        ->whereIn(
+                            'code',
+                            [
+                                Tech::TYPE_GZU,
+                                Tech::TYPE_GU,
+                                Tech::TYPE_ZU,
+                                Tech::TYPE_AGZU,
+                                Tech::TYPE_SPGU,
+                                Tech::TYPE_KNS,
+                                Tech::TYPE_BKNS
+                            ]
+                        );
+                }
+            )
             ->where('dbeg', '<=', $date)
             ->where('dend', '>=', $date)
             ->with(

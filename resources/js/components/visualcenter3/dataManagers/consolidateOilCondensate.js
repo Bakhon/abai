@@ -16,8 +16,8 @@ export default {
                 'ПККР','КГМКМГ','ТП','АГ'
             ],
             sortingOrderWithoutParticipation: [
-                'ОМГ','ОМГК','ЭМГ','АГ','ТШО','ММГ','КОА','КТМ',
-                'КГМ','ПКК','ТП','КБМ','КПО','НКО','УО'
+                'ОМГ','ОМГК','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА',
+                'УО','ТШО','ПКК','ТП','КПО','НКО','АГ'
             ],
             consolidatedData: {
                 'withParticipation': [],
@@ -178,11 +178,10 @@ export default {
 
         switchFilterConsolidatedOilCondensate(parentButton,childButton,filterName) {
             this.oilCondensateFilters[filterName] = !this.oilCondensateFilters[filterName];
-            let chartOutput = this.consolidatedData.chartWithParticipation;
+            this.chartOutput = this.consolidatedData.chartWithParticipation;
             if (!this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                chartOutput = this.consolidatedData.chartWithoutParticipation;
+                this.chartOutput = this.consolidatedData.chartWithoutParticipation;
             }
-            this.exportDzoCompaniesSummaryForChart(chartOutput);
             if (this.oilCondensateFilters[filterName]) {
                 this.dzoCompanySummary = this.consolidatedData.withParticipation;
                 this.yesterdaySummary = this.consolidatedData.yesterdayWithParticipation;
@@ -210,14 +209,12 @@ export default {
 
             this.updateConsolidatedData(dataWithKMGParticipation,dataWithoutKMGParticipation,periodStart,periodEnd,periodName);
             let output = this.consolidatedData.withParticipation;
-            let chartOutput = this.consolidatedData.chartWithParticipation;
+            this.chartOutput = this.consolidatedData.chartWithParticipation;
             this.isOpecFilterActive = true;
             if (!this.oilCondensateFilters.isWithoutKMGFilterActive) {
                 output = this.consolidatedData.withoutParticipation;
-                chartOutput = this.consolidatedData.chartWithoutParticipation;
+                this.chartOutput = this.consolidatedData.chartWithoutParticipation;
             }
-
-            this.exportDzoCompaniesSummaryForChart(chartOutput);
             return output;
         },
 
@@ -258,6 +255,7 @@ export default {
                 this.consolidatedData.yesterdayWithParticipation = sortedWithKMGParticipation;
                 this.consolidatedData.yesterdayWithoutParticipation = sortedWithoutKMGParticipation;
             }
+
             this.updateChart(periodStart,periodEnd);
         },
 
@@ -280,8 +278,8 @@ export default {
                 }
             });
 
-            this.consolidatedData.chartWithParticipation = this.getSumForChart(withKMG);
-            this.consolidatedData.chartWithoutParticipation = this.getSumForChart(withoutKMG);
+            this.consolidatedData.chartWithParticipation = withKMG;
+            this.consolidatedData.chartWithoutParticipation = withoutKMG;
         },
 
         getSumForChart(data) {
@@ -466,6 +464,61 @@ export default {
 
         getProductionProgress(viewName) {
             return (this.productionSummary[viewName].actual.oilFact / this.productionSummary[viewName].actual.oilPlan) * 100;
+        },
+
+        getFilteredForChartBySelectedCompanies() {
+            let result = this.chartOutput.filter(item => this.selectedDzoCompanies.includes(item.dzo));
+            let troubledCompanies = {
+                'ОМГК':'ОМГ',
+                'ПККР':'ПКК',
+                'КГМКМГ':'КГМ',
+            };
+            _.forEach(Object.keys(troubledCompanies), (key) => {
+                if (this.selectedDzoCompanies.includes(key)) {
+                    result = result.concat(this.getConsolidatedByTroubledCompanies(troubledCompanies[key]));
+                }
+            });
+            if (this.selectedDzoCompanies.includes('ПКИ')) {
+                let childCompanies = this.getConsolidatedByTroubledCompanies('ОМГ');
+                childCompanies = childCompanies.concat(this.getConsolidatedByTroubledCompanies('ПКК'));
+                childCompanies = childCompanies.concat(this.getConsolidatedByTroubledCompanies('КГМ'));
+                let consolidated = this.getConsolidatedByPKI(childCompanies,'ПКИ');
+                result = result.concat(consolidated);
+            }
+            return result;
+        },
+        getConsolidatedByTroubledCompanies(parentCompany) {
+            let result = [];
+            let filtered = this.chartOutput.filter(item => item.dzo === parentCompany);
+            let multiplier = this.consolidatedOptions[parentCompany];
+            _.forEach(filtered, (item) => {
+                let parent = _.cloneDeep(item);
+                parent.dzo = multiplier.dzo,
+                parent.oil_fact = multiplier.formula(multiplier.fact,item),
+                parent.oil_opek_plan = multiplier.formula(multiplier.opek,item),
+                parent.oil_plan = multiplier.formula(multiplier.plan,item),
+                result.push(parent);
+            });
+            return result;
+        },
+        getConsolidatedByPKI(input, parentDzo) {
+            let filtered = input.filter(item => ['КГМКМГ','ОМГК','ПККР'].includes(item.dzo));
+            let result = [];
+            if (filtered.length === 0) {
+                return result;
+            }
+            filtered = _.groupBy(filtered, 'date');
+            _.forEach(filtered, (items) => {
+                let template = _.cloneDeep(items[0]);
+                template.dzo = parentDzo;
+                _.forEach(items, (item) => {
+                    template.oil_fact += item.oil_fact;
+                    template.oil_opek_plan += item.oil_opek_plan;
+                    template.oil_plan += item.oil_plan;
+                });
+                result.push(template);
+            });
+            return result;
         },
     }
 }

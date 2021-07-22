@@ -180,14 +180,6 @@ class Well extends TBDModel
                     ->whereIn('prod.well_status.status', self::WELL_ACTIVE_STATUSES);
             }
         );
-        $query->whereHas(
-            'category',
-            function ($query) use ($date) {
-                $query->where('dbeg', '<=', $date)
-                    ->where('dend', '>=', $date)
-                    ->where('dict.well_category_type.code', self::WELL_CATEGORY_OIL);
-            }
-        );
 
         return $query;
     }

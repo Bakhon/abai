@@ -17,7 +17,7 @@
 </template>
 
 <script>
-const basePath = "http://172.20.103.187:7576/api/";
+const basePath = process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/";
 const fileDownload = require("js-file-download");
 
 export default {

@@ -779,4 +779,5 @@ return [
     'choose_end_month' => 'Выберите конечный месяц',
     'choose_start_year' => 'Выберите начальный год',
     'choose_end_year' => 'Выберите конечный год',
+    'select_company' => 'Выберите компанию'
 ];

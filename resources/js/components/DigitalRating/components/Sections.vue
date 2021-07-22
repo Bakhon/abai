@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="rating-content__wrapper">
-        <img src="/img/digital-rating/map.svg" alt="">
+        <div id="map"></div>
       </div>
     </div>
     <div class="rating-panel">
@@ -116,12 +116,15 @@
 
 <script>
 import { TransitionExpand } from 'vue-transition-expand';
+import L from 'leaflet';
+import mapsData from '../dataMap.json';
+import 'leaflet/dist/leaflet.css';
 
 export default {
   name: "Sections",
 
   components: {
-    TransitionExpand
+    TransitionExpand,
   },
 
   data() {
@@ -135,7 +138,8 @@ export default {
     };
   },
 
-  mounted() {
+  async mounted() {
+    await this.initMap();
     document.addEventListener('click', this.close);
   },
 
@@ -155,6 +159,49 @@ export default {
         this.show = false;
       }
     },
+    initMap() {
+      const map = L.map('map', {
+        crs: L.CRS.Simple,
+        minZoom: 1
+      });
+      const bounds = [[0, 1500], [0,1500]];
+      map.fitBounds(bounds);
+
+      let yx = L.latLng;
+      const xy = function (x, y) {
+        if (L.Util.isArray(x)) {
+          return yx(x[1], x[0]);
+        }
+        return yx(y, x);
+      };
+
+      map.setView( [750, 750], 1);
+
+      const markerIcon = L.divIcon({
+        iconSize: new L.Point(10, 10),
+        color: 'red',
+      });
+
+      mapsData.forEach((el) => {
+        el.x = el.x / 100;
+        el.y = el.y / 100;
+      });
+
+      L.latLng([ mapsData[0]['x'], mapsData[0]['y'] ]);
+
+      for(let i = 0; i < mapsData.length; i++) {
+        const coordinate = xy(mapsData[i]['x'], mapsData[i]['y']);
+        L.circleMarker(coordinate, {
+          fillColor: mapsData[i]['color'],
+          fillOpacity: 1,
+          color: mapsData[i]['color'],
+        }).addTo(map).bindPopup('Сектор: ' + mapsData[i]['sector'].toString());
+      }
+
+      map.on('click', this.onMapClick);
+    },
+    onMapClick(e) {
+    }
   }
 }
 </script>
@@ -262,5 +309,12 @@ export default {
       }
     }
   }
+}
+
+#map {
+  width: 100%;
+}
+.leaflet-container {
+  background: transparent;
 }
 </style>

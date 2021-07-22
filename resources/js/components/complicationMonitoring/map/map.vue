@@ -98,7 +98,6 @@
     </b-modal>
 
     <b-modal
-        v-if="selectedPipe"
         size="xl"
         header-bg-variant="main4"
         body-bg-variant="main1"
@@ -107,7 +106,7 @@
         centered
         id="pipe-calc-long-modal"
         modal-class="pipe-calc-long-modal"
-        :title="trans('monitoring.pipe.detail-data') + ' ' + selectedPipe.name"
+        :title="trans('monitoring.pipe.detail-data') + ' ' + (selectedPipe ? selectedPipe.name : '')"
         :cancel-disabled="true"
     >
       <pipe-long-info
