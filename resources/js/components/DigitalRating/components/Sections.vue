@@ -117,7 +117,6 @@
 <script>
 import { TransitionExpand } from 'vue-transition-expand';
 import L from 'leaflet';
-import { LMap, LTileLayer, LMarker, LWMSTileLayer, LControlLayers } from 'vue2-leaflet';
 import mapsData from '../dataMap.json';
 import 'leaflet/dist/leaflet.css';
 
@@ -126,11 +125,6 @@ export default {
 
   components: {
     TransitionExpand,
-    LMap,
-    LTileLayer,
-    LMarker,
-    "l-wms-tile-layer": LWMSTileLayer,
-    LControlLayers
   },
 
   data() {
