@@ -52,6 +52,7 @@ class receiveNonOperatingAssets extends Command
           'id' => '',
           'changeKey' => ''
     );
+    protected $gduFolderId = 'AAMkADRkNzVhNzFkLTVkMWYtNDRiMy05YWNhLWYwZTEzOWUwYmNjMQAuAAAAAAAReNYLTqfcSLDeg0mDUbrDAQAimyQ8p+VSTYHimU05mkoHAAABprqCAAA=';
     private $dzoMapping = array (
         'ТШО' => '"Теңізшевройл" ЖШС / ТОО "Тенгизшевройл"',
         'ТП' => '"Торғай Петролеум" АҚ / АО "Тургай Петролеум"',
@@ -59,6 +60,7 @@ class receiveNonOperatingAssets extends Command
         'НКО' => '"Норт Каспиан Оперейтинг Компани Б.В."',
         'АГ' => '"Амангелді Газ" ЖШС/ ТОО "Амангельды Газ"'
     );
+
 
     /**
      * The console command description.
@@ -135,9 +137,8 @@ class receiveNonOperatingAssets extends Command
         $request->ItemShape = new ItemResponseShapeType();
         $request->ItemShape->BaseShape = DefaultShapeNamesType::ALL_PROPERTIES;
         if ($emailType === 'gdu') {
-            $folder_id = 'AAMkADRkNzVhNzFkLTVkMWYtNDRiMy05YWNhLWYwZTEzOWUwYmNjMQAuAAAAAAAReNYLTqfcSLDeg0mDUbrDAQAimyQ8p+VSTYHimU05mkoHAAABprqCAAA=';
             $request->ParentFolderIds->FolderId = new FolderIdType();
-            $request->ParentFolderIds->FolderId->Id = $folder_id;
+            $request->ParentFolderIds->FolderId->Id = $this->gduFolderId;
         } else {
             $folder_id = new DistinguishedFolderIdType();
             $folder_id->Id = DistinguishedFolderIdNameType::INBOX;
