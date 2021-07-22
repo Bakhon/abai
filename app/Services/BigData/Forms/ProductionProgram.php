@@ -186,10 +186,7 @@ class ProductionProgram extends TableForm
 
         $value = $this->request->get($date->format('d.m.Y'));
 
-        if ($limits['min'] <= $value && $limits['max'] >= $value) {
-            return true;
-        }
-        return false;
+        return $limits['min'] <= $value && $limits['max'] >= $value;
     }
 
     private function calculateLimits(Carbon $date): array
