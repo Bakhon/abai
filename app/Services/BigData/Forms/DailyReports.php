@@ -73,7 +73,7 @@ abstract class DailyReports extends TableForm
         }
     }
 
-    protected function getReports($filter): Collection
+    protected function getReports(\stdClass $filter): Collection
     {
         $startDate = self::getStartDate($filter->date, $filter->period);
         $endDate = Carbon::parse($filter->date);
@@ -91,7 +91,7 @@ abstract class DailyReports extends TableForm
             ->get();
     }
 
-    protected static function getStartDate($date, $period): Carbon
+    protected static function getStartDate(string $date, string $period): Carbon
     {
         $startDate = Carbon::parse($date);
         if ($period == self::MONTH) {

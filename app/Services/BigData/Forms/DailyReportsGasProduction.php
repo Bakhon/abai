@@ -11,7 +11,8 @@ class DailyReportsGasProduction extends DailyReports
     protected $metricCode = 'GASPR';
     protected $configurationFileName = 'daily_reports_gas_prod';
 
-    protected function getData($filter): array {
+    protected function getData(\stdClass $filter): array
+    {
         $data = parent::getReports($filter);
         $result = [];
         $plan = $data->sum('plan');
