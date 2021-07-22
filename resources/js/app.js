@@ -28,7 +28,6 @@ import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 import Paginate from 'vuejs-paginate';
-import 'leaflet/dist/leaflet.css';
 //Mixins
 import showToast from '~/mixins/showToast';
 import {currentUrlPage, urlLink} from "./components/geology/js/utils";

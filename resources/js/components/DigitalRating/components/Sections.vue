@@ -119,6 +119,8 @@ import { TransitionExpand } from 'vue-transition-expand';
 import L from 'leaflet';
 import { LMap, LTileLayer, LMarker, LWMSTileLayer, LControlLayers } from 'vue2-leaflet';
 import mapsData from '../dataMap.json';
+import 'leaflet/dist/leaflet.css';
+
 export default {
   name: "Sections",
 
@@ -180,6 +182,7 @@ export default {
       };
 
       map.setView( [750, 750], 1);
+
       const markerIcon = L.divIcon({
         iconSize: new L.Point(10, 10),
         color: 'red',
@@ -199,18 +202,11 @@ export default {
           fillOpacity: 1,
           color: mapsData[i]['color'],
         }).addTo(map);
-        // L.marker(coordinate, {
-        //   icon: markerIcon,
-        //   fillColor: mapsData[i]['color'],
-        //   fillOpacity: 1,
-        //   color: mapsData[i]['color'],
-        // }).addTo(map);
       }
 
       map.on('click', this.onMapClick);
     },
     onMapClick(e) {
-      console.log('event', e);
     }
   }
 }
