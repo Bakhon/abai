@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 class MeteringUnitsListResource extends CrudListResource
 {
 
-    protected $modelName = 'metering_units';
+    protected $modelName = 'metering-units';
     protected $routeParentName;
 
     /**

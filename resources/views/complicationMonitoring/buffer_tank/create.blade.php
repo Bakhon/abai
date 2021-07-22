@@ -13,7 +13,7 @@
                 <h1>{{ trans('monitoring.buffer_tank.create_title') }}</h1>
                 <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i
                         class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('buffer_tank.store') }}" method="POST">
+                <form action="{{ route('buffer-tank.store') }}" method="POST">
                     @csrf
                     <div class="row">
                         <buffer-tank-form :validation-params='@json($validationParams)'></buffer-tank-form>
@@ -25,10 +25,10 @@
 @endsection
 <style>
     body {
-        color: white !important;
+        color: white;
     }
 
     .table {
-        color: white !important;
+        color: white;
     }
 </style>

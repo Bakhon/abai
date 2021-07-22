@@ -15,13 +15,12 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 use App\Http\Resources\BufferTankListResource;
-use App\Models\ComplicationMonitoring\Ngdu;
 
 class BufferTankController extends CrudController
 {
     use WithFieldsValidation;
 
-    protected $modelName = 'buffer_tank';
+    protected $modelName = 'buffer-tank';
 
     public function index(): \Illuminate\View\View
     {
@@ -94,17 +93,14 @@ class BufferTankController extends CrudController
             ]
         ];
 
-        if(auth()->user()->can('monitoring create '.$this->modelName)) {
-            $params['links']['create'] = route('buffer_tank.create');
-        }
-        if(auth()->user()->can('monitoring export '.$this->modelName)) {
-            $params['links']['export'] = route('buffer_tank.export');
-        }
+        // if(auth()->user()->can('monitoring create '.$this->modelName)) {
+        //     $params['links']['create'] = route('buffer_tank.create');
+        // }
 
         return view('complicationMonitoring.buffer_tank.index', compact('params'));
     }
 
-    public function list(IndexTableRequest $request)
+    public function list(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
             $query = BufferTank::query()
             ->with('gu');
@@ -116,7 +112,7 @@ class BufferTankController extends CrudController
         return response()->json(json_decode(BufferTankListResource::collection($buffer_tank)->toJson()));
     }
 
-    public function export(IndexTableRequest $request)
+    public function export(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $job = new ExportBufferTankToExcel($request->validated());
         $this->dispatch($job);
@@ -128,13 +124,13 @@ class BufferTankController extends CrudController
         );
     }
 
-    public function create()
+    public function create(): \Illuminate\View\View 
     {
         $validationParams = $this->getValidationParams('buffer_tank');
         return view('complicationMonitoring.buffer_tank.create', compact('validationParams'));
     }
 
-    public function store(BufferTankCreateRequest $request)
+    public function store(BufferTankCreateRequest $request): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'buffer_tank');
 
@@ -142,18 +138,13 @@ class BufferTankController extends CrudController
         return redirect()->route('buffer_tank.index')->with('success', __('app.created'));
     }
 
-    public function show(BufferTank $buffer_tank)
-    {
-        return view('complicationMonitoring.buffer_tank.show', ['buffer_tank' => $buffer_tank]);
-    }
-
-    public function history(BufferTank $buffer_tank)
+    public function history(BufferTank $buffer_tank): \Illuminate\View\View
     {
         $buffer_tank->load('history');
         return view('complicationMonitoring.buffer_tank.history', compact('buffer_tank'));
     }
 
-    public function edit(BufferTank $buffer_tank)
+    public function edit(BufferTank $buffer_tank): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('buffer_tank');
         return view('complicationMonitoring.buffer_tank.edit', [
@@ -162,7 +153,7 @@ class BufferTankController extends CrudController
         ]);
     }
 
-    public function update(BufferTankUpdateRequest $request, BufferTank $buffer_tank)
+    public function update(BufferTankUpdateRequest $request, BufferTank $buffer_tank): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'buffer_tank');
 
@@ -181,7 +172,7 @@ class BufferTankController extends CrudController
         }
     }
 
-    protected function getFilteredQuery($filter, $query = null)
+    protected function getFilteredQuery($filter, $query = null): \Illuminate\Database\Eloquent\Builder
     {
         return (new BufferTankFilter($query, $filter))->filter();
     }

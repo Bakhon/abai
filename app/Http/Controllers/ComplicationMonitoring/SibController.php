@@ -91,7 +91,7 @@ class SibController extends CrudController
         return view('complicationMonitoring.sib.index', compact('params'));
     }
 
-    public function list(IndexTableRequest $request)
+    public function list(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $query = Sib::query()
             ->with('gu');
@@ -103,7 +103,7 @@ class SibController extends CrudController
         return response()->json(json_decode(SibListResource::collection($sib)->toJson()));
     }
 
-    public function export(IndexTableRequest $request)
+    public function export(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $job = new ExportSibToExcel($request->validated());
         $this->dispatch($job);
@@ -115,13 +115,13 @@ class SibController extends CrudController
         );
     }
 
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('sib');
         return view('complicationMonitoring.sib.create', compact('validationParams'));
     }
 
-    public function store(SibCreateRequest $request)
+    public function store(SibCreateRequest $request): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'sib');
 
@@ -129,18 +129,18 @@ class SibController extends CrudController
         return redirect()->route('sib.store')->with('success', __('app.created'));
     }
 
-    public function show(Sib $sib)
+    public function show(Sib $sib): \Illuminate\View\View
     {
         return view('complicationMonitoring.sib.show', ['sib' => $sib]);
     }
 
-    public function history(Sib $sib)
+    public function history(Sib $sib): \Illuminate\View\View
     {
         $sib->load('history');
         return view('complicationMonitoring.sib.history', compact('sib'));
     }
 
-    public function edit(Sib $sib)
+    public function edit(Sib $sib): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('sib');
         return view('complicationMonitoring.sib.edit', [
@@ -149,7 +149,7 @@ class SibController extends CrudController
         ]);
     }
 
-    public function update(SibUpdateRequest $request, Sib $sib)
+    public function update(SibUpdateRequest $request, Sib $sib): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'sib');
 
@@ -168,7 +168,7 @@ class SibController extends CrudController
         }
     }
 
-    protected function getFilteredQuery($filter, $query = null)
+    protected function getFilteredQuery($filter, $query = null): \Illuminate\Database\Eloquent\Builder
     {
         return (new SibFilter($query, $filter))->filter();
     }

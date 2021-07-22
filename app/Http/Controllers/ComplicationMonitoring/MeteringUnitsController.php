@@ -81,17 +81,10 @@ class MeteringUnitsController extends CrudController
             ]
         ];
 
-        if(auth()->user()->can('monitoring create '.$this->modelName)) {
-            $params['links']['create'] = route('metering_units.create');
-        }
-        if(auth()->user()->can('monitoring export '.$this->modelName)) {
-            $params['links']['export'] = route('metering_units.export');
-        }
-
         return view('complicationMonitoring.metering_units.index', compact('params'));
     }
 
-    public function list(IndexTableRequest $request)
+    public function list(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $query = MeteringUnits::query()
             ->with('gu');
@@ -103,7 +96,7 @@ class MeteringUnitsController extends CrudController
         return response()->json(json_decode(MeteringUnitsListResource::collection($meteringunits)->toJson()));
     }
 
-    public function export(IndexTableRequest $request)
+    public function export(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $job = new ExportMeteringUnitsToExcel($request->validated());
         $this->dispatch($job);
@@ -115,13 +108,13 @@ class MeteringUnitsController extends CrudController
         );
     }
 
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('metering_units');
         return view('complicationMonitoring.metering_units.create', compact('validationParams'));
     }
 
-    public function store(MeteringUnitsCreateRequest $request)
+    public function store(MeteringUnitsCreateRequest $request): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'metering_units');
 
@@ -129,27 +122,27 @@ class MeteringUnitsController extends CrudController
         return redirect()->route('metering_units.store')->with('success', __('app.created'));
     }
 
-    public function show(MeteringUnits $meteringunits)
+    public function show(MeteringUnits $meteringunits): \Illuminate\View\View
     {
         return view('complicationMonitoring.metering_units.show', ['sib' => $meteringunits]);
     }
 
-    public function history(Sib $meteringunits)
+    public function history(Sib $meteringunits): \Illuminate\View\View
     {
         $meteringunits->load('history');
         return view('complicationMonitoring.metering_units.history', compact('metering_units'));
     }
 
-    public function edit(MeteringUnits $meteringunits)
+    public function edit(MeteringUnits $meteringunits): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('metering_units');
-        return view('complicationMonitoring.meteringunits.edit', [
+        return view('complicationMonitoring.metering_units.edit', [
             'metering_units' => $meteringunits,
             'validationParams' => $validationParams
         ]);
     }
 
-    public function update(MeteringUnitsUpdateRequest $request, MeteringUnits $meteringunits)
+    public function update(MeteringUnitsUpdateRequest $request, MeteringUnits $meteringunits): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'metering_units');
 
@@ -168,7 +161,7 @@ class MeteringUnitsController extends CrudController
         }
     }
 
-    protected function getFilteredQuery($filter, $query = null)
+    protected function getFilteredQuery($filter, $query = null): \Illuminate\Database\Eloquent\Builder
     {
         return (new MeteringUnitsFilter($query, $filter))->filter();
     }

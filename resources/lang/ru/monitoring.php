@@ -555,7 +555,7 @@ return array (
   array (
     'title' => 'База данных по СИБ',
   ),
-  'meteringunits' => 
+  'metering_units' => 
   array (
     'title' => 'База данных по узлам учета',
     'diameter' => 'Диаметр',

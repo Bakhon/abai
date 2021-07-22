@@ -18,8 +18,11 @@
     </div>
 @endsection
 <style>
-    body{color: white !important;}
+    body{
+        color: white;
+    }
+
     .table{
-        color: white !important;
+        color: white;
     }
 </style>

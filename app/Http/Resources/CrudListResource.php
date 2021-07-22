@@ -26,9 +26,6 @@ class CrudListResource extends JsonResource
         if ((empty($actions) || in_array('delete', $actions)) && auth()->user()->can('monitoring delete ' . $this->modelName)) {
             $links['delete'] = route($routeParentName . '.destroy', $this->id);
         }
-        if ((empty($actions) || in_array('download', $actions)) && auth()->user()->can('monitoring download ' . $this->modelName)) {
-            $links['download'] = route($routeParentName . '.download', $this->id);
-        }
         return $links;
     }
 }

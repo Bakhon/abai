@@ -193,10 +193,10 @@ Route::group(
                 Route::resource('lost-profits', 'ComplicationMonitoring\LostProfitsController');
                 Route::get('/facilities', 'DruidController@facilities')->name('facilities');
 
-                Route::get('buffer_tank/list', 'ComplicationMonitoring\BufferTankController@list')->name('buffer_tank.list');
-                Route::get('buffer_tank/export', 'ComplicationMonitoring\BufferTankController@export')->name('buffer_tank.export');
-                Route::get('buffer_tank/history/{buffer_tank}', 'ComplicationMonitoring\BufferTankController@history')->name('buffer_tank.history');
-                Route::resource('buffer_tank', 'ComplicationMonitoring\BufferTankController');
+                Route::get('buffer-tank/list', 'ComplicationMonitoring\BufferTankController@list')->name('buffer_tank.list');
+                Route::get('buffer-tank/export', 'ComplicationMonitoring\BufferTankController@export')->name('buffer_tank.export');
+                Route::get('buffer-tank/history/{buffer_tank}', 'ComplicationMonitoring\BufferTankController@history')->name('buffer_tank.history');
+                Route::resource('buffer-tank', 'ComplicationMonitoring\BufferTankController');
 
                 Route::get('pumps/list', 'ComplicationMonitoring\PumpsController@list')->name('pumps.list');
                 Route::get('pumps/export', 'ComplicationMonitoring\PumpsController@export')->name('pumps.export');
@@ -218,10 +218,11 @@ Route::group(
                 Route::get('sib/history/{sib}', 'ComplicationMonitoring\SibController@history')->name('sib.history');
                 Route::resource('sib', 'ComplicationMonitoring\SibController');
 
-                Route::get('metering_units/list', 'ComplicationMonitoring\MeteringUnitsController@list')->name('metering_units.list');
-                Route::get('metering_units/export', 'ComplicationMonitoring\MeteringUnitsController@export')->name('metering_units.export');
-                Route::get('metering_units/history/{metering_units}', 'ComplicationMonitoring\MeteringUnitsController@history')->name('metering_units.history');
-                Route::resource('metering_units', 'ComplicationMonitoring\MeteringUnitsController');
+                Route::get('metering-units/list', 'ComplicationMonitoring\MeteringUnitsController@list')->name('metering_units.list');
+                Route::get('metering-units/export', 'ComplicationMonitoring\MeteringUnitsController@export')->name('metering_units.export');
+                Route::get('metering-units/history/{metering_units}', 'ComplicationMonitoring\MeteringUnitsController@history')->name('metering_units.history');
+                Route::resource('metering-units', 'ComplicationMonitoring\MeteringUnitsController');
+                
                 Route::get('map-history/list', 'ComplicationMonitoring\MapHistory@list')->name('map-history.list');
                 Route::get('map-history/show/{activity}', 'ComplicationMonitoring\MapHistory@show')->name('map-history.show');
                 Route::get('map-history/restore/{activity}', 'ComplicationMonitoring\MapHistory@restore')->name('map-history.restore');

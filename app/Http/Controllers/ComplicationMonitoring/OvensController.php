@@ -91,7 +91,7 @@ class OvensController extends CrudController
         return view('complicationMonitoring.ovens.index', compact('params'));
     }
 
-    public function list(IndexTableRequest $request)
+    public function list(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $query = Oven::query()
             ->with('gu');
@@ -103,7 +103,7 @@ class OvensController extends CrudController
         return response()->json(json_decode(OvensListResource::collection($ovens)->toJson()));
     }
 
-    public function export(IndexTableRequest $request)
+    public function export(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $job = new ExportOvensToExcel($request->validated());
         $this->dispatch($job);
@@ -115,13 +115,13 @@ class OvensController extends CrudController
         );
     }
 
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('ovens');
         return view('complicationMonitoring.ovens.create', compact('validationParams'));
     }
 
-    public function store(OvensCreateRequest $request)
+    public function store(OvensCreateRequest $request): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'ovens');
 
@@ -129,18 +129,18 @@ class OvensController extends CrudController
         return redirect()->route('ovens.store')->with('success', __('app.created'));
     }
 
-    public function show(Oven $ovens)
+    public function show(Oven $ovens): \Illuminate\View\View
     {
         return view('complicationMonitoring.ovens.show', ['ovens' => $ovens]);
     }
 
-    public function history(Oven $ovens)
+    public function history(Oven $ovens): \Illuminate\View\View
     {
         $ovens->load('history');
         return view('complicationMonitoring.ovens.history', compact('ovens'));
     }
 
-    public function edit(Oven $ovens)
+    public function edit(Oven $ovens): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('ovens');
         return view('complicationMonitoring.ovens.edit', [
@@ -149,7 +149,7 @@ class OvensController extends CrudController
         ]);
     }
 
-    public function update(OvensUpdateRequest $request, Oven $ovens)
+    public function update(OvensUpdateRequest $request, Oven $ovens): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'ovens');
 
@@ -168,7 +168,7 @@ class OvensController extends CrudController
         }
     }
 
-    protected function getFilteredQuery($filter, $query = null)
+    protected function getFilteredQuery($filter, $query = null): \Illuminate\Database\Eloquent\Builder
     {
         return (new OvenFilter($query, $filter))->filter();
     }

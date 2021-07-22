@@ -95,7 +95,7 @@ class AgzuController extends CrudController
         return view('complicationMonitoring.agzu.index', compact('params'));
     }
 
-    public function list(IndexTableRequest $request)
+    public function list(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $query = Agzu::query()
             ->with('gu');
@@ -107,7 +107,7 @@ class AgzuController extends CrudController
         return response()->json(json_decode(AgzuListResource::collection($agzu)->toJson()));
     }
 
-    public function export(IndexTableRequest $request)
+    public function export(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $job = new ExportAgzuToExcel($request->validated());
         $this->dispatch($job);
@@ -119,13 +119,13 @@ class AgzuController extends CrudController
         );
     }
 
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('agzu');
         return view('complicationMonitoring.agzu.create', compact('validationParams'));
     }
 
-    public function store(AgzuCreateRequest $request)
+    public function store(AgzuCreateRequest $request): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'agzu');
 
@@ -133,18 +133,18 @@ class AgzuController extends CrudController
         return redirect()->route('agzu.store')->with('success', __('app.created'));
     }
 
-    public function show(Agzu $agzu)
+    public function show(Agzu $agzu): \Illuminate\View\View
     {
         return view('complicationMonitoring.agzu.show', ['agzu' => $agzu]);
     }
 
-    public function history(Agzu $agzu)
+    public function history(Agzu $agzu): \Illuminate\View\View
     {
         $agzu->load('history');
         return view('complicationMonitoring.agzu.history', compact('agzu'));
     }
 
-    public function edit(Agzu $agzu)
+    public function edit(Agzu $agzu): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('agzu');
         return view('complicationMonitoring.agzu.edit', [
@@ -153,7 +153,7 @@ class AgzuController extends CrudController
         ]);
     }
 
-    public function update(AgzuUpdateRequest $request, Agzu $agzu)
+    public function update(AgzuUpdateRequest $request, Agzu $agzu): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'agzu');
 
@@ -172,7 +172,7 @@ class AgzuController extends CrudController
         }
     }
 
-    protected function getFilteredQuery($filter, $query = null)
+    protected function getFilteredQuery($filter, $query = null): \Illuminate\Database\Eloquent\Builder
     {
         return (new AgzuFilter($query, $filter))->filter();
     }

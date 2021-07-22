@@ -62,13 +62,16 @@
                         <td>{{ $buffer_tank->type_of_repair }}</td>
                     </tr>
                 </table>
-                <a class="btn btn-primary" href="{{ route('buffer_tank.index') }}">{{__('app.back')}}</a>
+                <a class="btn btn-primary" href="{{ route('buffer-tank.index') }}">{{__('app.back')}}</a>
             </div>
         </div>
     </div>
 @endsection
 <style>
-    body{color: white !important;}
+    body{
+        color: white;
+    }
+
     .table{
         color: white !important;
     }

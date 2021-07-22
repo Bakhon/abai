@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 class BufferTankListResource extends CrudListResource
 {
 
-    protected $modelName = 'buffer_tank';
+    protected $modelName = 'buffer-tank';
     protected $routeParentName;
 
     /**

@@ -25,10 +25,10 @@
 @endsection
 <style>
     body {
-        color: white !important;
+        color: white;
     }
 
     .table {
-        color: white !important;
+        color: white;
     }
 </style>

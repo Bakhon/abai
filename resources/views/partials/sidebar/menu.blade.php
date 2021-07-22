@@ -140,9 +140,9 @@
                                 {{ trans('monitoring.gu_equipment') }}
                             </a>
                             <ul>
-                                @if(auth()->user()->can('monitoring list buffer_tank'))
+                                @if(auth()->user()->can('monitoring list buffer-tank'))
                                     <li class="left-menu-li">
-                                        <a href="{{route('buffer_tank.index')}}">
+                                        <a href="{{route('buffer-tank.index')}}">
                                             {{ trans('monitoring.buffer_tank.title') }}
                                         </a>
                                     </li>
@@ -177,8 +177,8 @@
                                 @endif
                                 @if(auth()->user()->can('monitoring list metering_units'))
                                     <li class="left-menu-li">
-                                        <a href="{{route('metering_units.index')}}">
-                                            {{ trans('monitoring.meteringunits.title') }}
+                                        <a href="{{route('metering-units.index')}}">
+                                            {{ trans('monitoring.metering_units.title') }}
                                         </a>
                                     </li>
                                 @endif

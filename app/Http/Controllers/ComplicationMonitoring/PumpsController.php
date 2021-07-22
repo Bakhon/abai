@@ -99,7 +99,7 @@ class PumpsController extends CrudController
         return view('complicationMonitoring.pumps.index', compact('params'));
     }
 
-    public function list(IndexTableRequest $request)
+    public function list(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $query = Pump::query()
             ->with('gu');
@@ -111,7 +111,7 @@ class PumpsController extends CrudController
         return response()->json(json_decode(PumpsListResource::collection($pumps)->toJson()));
     }
 
-    public function export(IndexTableRequest $request)
+    public function export(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $job = new ExportPumpsToExcel($request->validated());
         $this->dispatch($job);
@@ -123,13 +123,13 @@ class PumpsController extends CrudController
         );
     }
 
-    public function create()
+    public function create(): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('pumps');
         return view('complicationMonitoring.pumps.create', compact('validationParams'));
     }
 
-    public function store(PumpsCreateRequest $request)
+    public function store(PumpsCreateRequest $request): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'pumps');
 
@@ -137,18 +137,18 @@ class PumpsController extends CrudController
         return redirect()->route('pumps.store')->with('success', __('app.created'));
     }
 
-    public function show(Pump $pumps)
+    public function show(Pump $pumps): \Illuminate\View\View
     {
         return view('complicationMonitoring.pumps.show', ['pumps' => $pumps]);
     }
 
-    public function history(Pump $pumps)
+    public function history(Pump $pumps): \Illuminate\View\View
     {
         $pumps->load('history');
         return view('complicationMonitoring.pumps.history', compact('pumps'));
     }
 
-    public function edit(Pump $pumps)
+    public function edit(Pump $pumps): \Illuminate\View\View
     {
         $validationParams = $this->getValidationParams('pumps');
         return view('complicationMonitoring.pumps.edit', [
@@ -157,7 +157,7 @@ class PumpsController extends CrudController
         ]);
     }
 
-    public function update(PumpsUpdateRequest $request, Pump $pumps)
+    public function update(PumpsUpdateRequest $request, Pump $pumps): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'pumps');
 
@@ -176,7 +176,7 @@ class PumpsController extends CrudController
         }
     }
 
-    protected function getFilteredQuery($filter, $query = null)
+    protected function getFilteredQuery($filter, $query = null): \Illuminate\Database\Eloquent\Builder
     {
         return (new PumpsFilter($query, $filter))->filter();
     }

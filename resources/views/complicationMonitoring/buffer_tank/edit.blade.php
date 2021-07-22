@@ -13,7 +13,7 @@
                 <h1>{{ trans('monitoring.buffer_tank.edit_title') }}</h1>
                 <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i
                         class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('buffer_tank.update', $buffer_tank->id) }}" method="POST">
+                <form action="{{ route('buffer-tank.update', $buffer_tank->id) }}" method="POST">
                     @method('patch')
                     @csrf
                     <div class="row">
@@ -26,10 +26,10 @@
 @endsection
 <style>
     body {
-        color: white !important;
+        color: white;
     }
 
     .table {
-        color: white !important;
+        color: white;
     }
 </style>
