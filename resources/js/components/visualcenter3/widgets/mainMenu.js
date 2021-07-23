@@ -92,10 +92,6 @@ export default {
         switchMainMenu(parentButton, childButton,chartName) {
             this.chartHeadName = this.chartTranslateMapping[childButton];
             this.isOilResidueActive = false;
-            // if (this.oilDeliveryFilters[childButton]) {
-            //     this[this.oilDeliveryFilters[childButton]] = true;
-            //     this.chartHeadName = this.chartTranslateMapping[childButton];
-            // }
             this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();
             let self = this;
