@@ -1518,7 +1518,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1591,7 +1591,9 @@
                   <div class="col">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedInjectionFondCompanies($event)">                     
+                            @change="changeSelectedInjectionFondCompanies($event)"
+                            v-model="injectionFondSelectedCompany"
+                    >
                       <option v-for="dzo in dzoMenu.injectionFond" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
@@ -1671,7 +1673,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1745,7 +1747,9 @@
                   <div class="col pr-2">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedProductionFondCompanies($event)"> 
+                            @change="changeSelectedProductionFondCompanies($event)"
+                            v-model="productionFondSelectedCompany"
+                    >
                       <option v-for="dzo in dzoMenu.productionFond" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
@@ -1827,7 +1831,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1901,7 +1905,9 @@
                   <div class="col">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedDrillingCompanies($event)"> 
+                            @change="changeSelectedDrillingCompanies($event)"
+                            v-model="drillingSelectedCompany"
+                    >
                       <option v-for="dzo in dzoMenu.drilling" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
@@ -2037,7 +2043,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -2079,7 +2085,9 @@
                   <div class="col">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedWellsWorkoverCompanies($event)">
+                            @change="changeSelectedWellsWorkoverCompanies($event)"
+                            v-model="wellsWorkoverSelectedCompany"
+                    >
                       <option v-for="dzo in dzoMenu.wellsWorkover" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
@@ -2181,7 +2189,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -2224,7 +2232,9 @@
                   <div class="col pr-2">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedChemistryCompanies($event)">
+                            @change="changeSelectedChemistryCompanies($event)"
+                            v-model="chemistrySelectedCompany"
+                    >
                       <option v-for="dzo in dzoMenu.chemistry" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
