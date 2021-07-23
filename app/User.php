@@ -48,8 +48,6 @@ class User extends Authenticatable
 
     private $userOrgs = [];
 
-    //relations
-
     public function profile()
     {
         return $this->hasOne(Profile::class)->withDefault();
