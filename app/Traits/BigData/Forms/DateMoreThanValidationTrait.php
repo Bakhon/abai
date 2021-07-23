@@ -28,8 +28,10 @@ trait DateMoreThanValidationTrait
             ->where($dateType, '<', Well::DEFAULT_END_DATE)
             ->orderBy($dateType, 'desc')
             ->get($dateType)
-            ->first();
-        
+            ->first();        
+        if(empty($validDate) || $validDate->$dateType == null){
+            return true;
+        }
         return $date >= $validDate->$dateType;
     }
    
