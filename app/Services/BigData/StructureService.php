@@ -261,15 +261,16 @@ class StructureService
 
     private static function getChildsRecursive(array $child): void
     {
-        if (isset($child['children'])) {
-            if (in_array($child['id'], self::$childrenIds)) {
-                self::$childrenIds = array_merge(self::$childrenIds, array_map(function ($item) {
-                    return $item['id'];
-                }, $child['children']));
-            }
-            foreach ($child['children'] as $childrenItem) {
-                self::getChildsRecursive($childrenItem);
-            }
+        if (!isset($child['children'])) {
+            return;
+        }
+        if (in_array($child['id'], self::$childrenIds)) {
+            self::$childrenIds = array_merge(self::$childrenIds, array_map(function ($item) {
+                return $item['id'];
+            }, $child['children']));
+        }
+        foreach ($child['children'] as $childrenItem) {
+            self::getChildsRecursive($childrenItem);
         }
     }
 }
