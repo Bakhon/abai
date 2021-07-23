@@ -16,7 +16,7 @@ class EconomicOptimizationController extends Controller
 {
     protected $druidClient;
 
-    const DATA_SOURCE = 'economic_scenario_test_v9';
+    const DATA_SOURCE = 'economic_scenario_test_v8';
 
     const DATA_SOURCE_DATE = '2021/01/01';
 
