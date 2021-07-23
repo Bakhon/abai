@@ -1023,6 +1023,7 @@ export default {
   },
   data: function () {
     return {
+      postApiUrl: process.env.MIX_POST_API_URL,
       faHeader: null,
       wells: [],
       searchString: "",
@@ -1168,7 +1169,7 @@ export default {
       this.$store.commit("fa/SET_GEN_HIDE", true);
       this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/factor_weekly/" +
+        this.postApiUrl + "techregime/factor_weekly/" +
           yyyy +
           "/" +
           mm +
@@ -1241,7 +1242,7 @@ export default {
         this.$store.commit("fa/SET_HIDE", false);
         this.axios
           .get(
-            "http://172.20.103.187:7576/api/techregime/factor/" +
+            this.postApiUrl + "techregime/factor/" +
               yyyy +
               "/" +
               mm +
@@ -1346,7 +1347,7 @@ export default {
         : "";
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/factor/" +
+          this.postApiUrl + "techregime/factor/" +
             yyyy +
             "/" +
             mm +
@@ -1442,7 +1443,7 @@ export default {
     this.$store.commit("fa/SET_PR_DAY", prdd);
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/factor_weekly/" +
+        this.postApiUrl + "techregime/factor_weekly/" +
           yyyy +
           "/" +
           mm +

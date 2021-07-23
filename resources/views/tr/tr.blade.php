@@ -6,9 +6,9 @@
         <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">
                 <tr-table :params='@json($permissionNames)'></tr-table>
+                <cat-loader />
             </div>
         </div>
-        <cat-loader />
     </div>
 @endsection
 <link href="{{ asset('css/tr.css')}}" rel="stylesheet">

@@ -383,6 +383,7 @@ export default {
   },
   data: function () {
     return {
+      postApiUrl: process.env.MIX_POST_API_URL,
       chartShow: 0,
       chartWells: [],
       filteredWellsPreGraph: [],
@@ -1645,7 +1646,7 @@ export default {
       }
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/graph1/" +
+          this.postApiUrl + "techregime/graph1/" +
             this.selectYear +
             "/" +
             this.month +
@@ -1693,7 +1694,7 @@ export default {
     this.month = mm;
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/graph1/" +
+        this.postApiUrl + "techregime/graph1/" +
           yyyy +
           "/" +
           mm +

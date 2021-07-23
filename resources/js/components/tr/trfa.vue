@@ -460,6 +460,7 @@ export default {
   },
   data: function () {
     return {
+      postApiUrl: process.env.MIX_POST_API_URL,
       chartShow: "pie",
       chartArr: ["pie", "bar"],
       pieChartRerender: true,
@@ -775,7 +776,7 @@ export default {
         this.$store.commit("fa/SET_PR_YEAR", pryyyy);
         this.axios
           .get(
-            "http://172.20.103.187:7576/api/techregime/factor/graph1/" +
+            this.postApiUrl + "techregime/factor/graph1/" +
               yyyy +
               "/" +
               mm +
@@ -854,7 +855,7 @@ export default {
     }
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/factor/graph1/" +
+        this.postApiUrl + "techregime/factor/graph1/" +
           yyyy +
           "/" +
           mm +

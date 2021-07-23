@@ -316,6 +316,7 @@ export default {
             }
           ],
         },
+      postApiUrl: process.env.MIX_POST_API_URL,
     };
   },
   watch: {
@@ -341,7 +342,7 @@ export default {
       const dd = choosenDt[2];
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/factor/graph2/" +
+          this.postApiUrl + "techregime/factor/graph2/" +
             yyyy +
             "/" +
             mm +
@@ -387,7 +388,7 @@ export default {
     }
     this.axios
       .get(
-          "http://172.20.103.187:7576/api/techregime/factor/graph2/" +
+          this.postApiUrl + "techregime/factor/graph2/" +
             yyyy +
             "/" +
             mm +

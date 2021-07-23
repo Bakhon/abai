@@ -183,6 +183,7 @@ export default {
     this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
     this.$store.commit("tr/SET_SEARCH", this.searchString);
     this.$store.commit("tr/SET_PAGENUMBER", 1);
+    this.$store.commit("tr/SET_SORTTYPE", "true");
     var today = new Date();
     var mm = today.getMonth() + 1;
     var yyyy = today.getFullYear();
@@ -579,6 +580,11 @@ export default {
     },
     reRender() {
       this.filteredWellData = [];
+      this.lonelywell = [];
+      this.isShowAdd=false;
+      this.isDeleted=false;
+      this.isSaved=false;
+      this.isSaveChanges=false;
       this.wellStatusFilter = undefined;
       this.statusFilter = undefined;
       this.typeWellFilter = undefined;
@@ -596,6 +602,7 @@ export default {
         if(this.lonelywell[0].is_saved === "Сохранено"){
           this.isDeleted = false;
           this.isSaved = true;
+          this.isSaveChanges = true;
         }
         else{
           this.isDeleted = true;
@@ -794,8 +801,7 @@ export default {
           output).then((res) => {
             this.wellAdd();
             this.created();
-            this.isShowAdd=false;
-            this.isDeleted=false;           
+            this.reRender();
           })
     },
     // Удаление с модалки
@@ -810,9 +816,7 @@ export default {
               console.log(res.data)
               this.wellAdd();
               this.created();
-              this.isShowAdd=false;
-              this.isSaved=false;
-              
+              this.reRender();              
             })
       }
       else{
