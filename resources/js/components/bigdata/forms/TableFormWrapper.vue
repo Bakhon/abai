@@ -120,7 +120,7 @@ export default {
       this.updateForm(this.params.code).then(data => {
         this.isloading = false
 
-        if (this.formParams.filter) {
+        if (this.formParams && this.formParams.filter) {
           this.formParams.filter.forEach(item => {
             if (!this.filter[item.code]) {
               this.filter[item.code] = item.default
