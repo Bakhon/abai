@@ -68,11 +68,23 @@ export default {
         };
     },
     methods: {
-        changeTable(tableName) {
+        changeTable(tableName, isWidgetClosed) {
             _.forEach(this.tableMapping, function (item) {
                 _.set(item, 'class', 'hide-company-list');
                 _.set(item, 'hover', '');
             });
+            if (isWidgetClosed) {
+                this.chemistrySelectedCompany = 'all';
+                this.wellsWorkoverSelectedCompany = 'all';
+                this.drillingSelectedCompany = 'all';
+                this.productionFondSelectedCompany = 'all';
+                this.injectionFondSelectedCompany = 'all';
+                this.updateChemistryWidget();
+                this.updateWellsWorkoverWidget();
+                this.updateDrillingWidget();
+                this.updateProductionFondWidget();
+                this.updateInjectionFondWidget();
+            }
 
             this.isFilterTargetPlanActive = false;
             this.buttonTargetPlan = "";
