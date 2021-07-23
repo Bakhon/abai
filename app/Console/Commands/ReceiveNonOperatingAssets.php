@@ -383,6 +383,6 @@ class receiveNonOperatingAssets extends Command
     public function handle()
     {
         $this->processInboundEmail();
-        //$this->processGDUEmail(); waiting when sysadmin will do email-redirect
+        $this->processGDUEmail();
     }
 }
