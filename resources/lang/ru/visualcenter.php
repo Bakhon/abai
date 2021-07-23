@@ -384,6 +384,8 @@ return array (
   'productionAssociatedGas' => 'Добыча попутного газа',
   'productionAssociatedGasChartName' => 'Динамика добычи попутного газа',
   'flaringAssociatedGas' => 'Сжигание на факелах',
-  'flaringAssociatedGasChartName' => 'Динамика сжигания на факелах',
-  'gasOperatingAssets' => 'операц. активы'
+  'flaringAssociatedGasChartName' => 'Динамика сжигания на факелах попутного газа',
+  'gasOperatingAssets' => 'операц. активы',
+  'injectionArtesianWater' => 'Закачка артезианской воды',
+  'dynamicArtesianWater' => 'Динамика закачки артезианской воды',
 );

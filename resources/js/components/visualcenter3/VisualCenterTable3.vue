@@ -705,13 +705,13 @@
                           updateProductionData(
                             'ppd_zakachka_albsen_vody_plan',
                             'ppd_zakachka_albsen_vody_fact',
-                            trans('visualcenter.liqAlbsenDynamic'),
+                            trans('visualcenter.dynamicArtesianWater'),
                             ' м³',
-                            trans('visualcenter.liqAlbsen')
+                            trans('visualcenter.injectionArtesianWater')
                           )
                         "
                       >
-                        {{trans("visualcenter.liqAlbsen")}}
+                        {{trans("visualcenter.injectionArtesianWater")}}
                       </a>
                     </li>
                   </ul>
