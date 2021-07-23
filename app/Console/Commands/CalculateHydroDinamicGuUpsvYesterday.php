@@ -14,7 +14,7 @@ class CalculateHydroDinamicGuUpsvYesterday extends Command
      *
      * @var string
      */
-    protected $signature = 'calculate_hydro_yesterday:cron';
+    protected $signature = 'calculate-hydro-yesterday:cron';
 
     /**
      * The console command description.
