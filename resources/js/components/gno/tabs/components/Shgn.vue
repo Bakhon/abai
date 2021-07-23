@@ -30,7 +30,7 @@
 			<div class="title__block__max" style="display: flex; flex-direction: column;">
 				<div class="block1">
 					<div class="title__block__kpod">
-						<input class="checkbox__block__1" v-model="kPodMode" type="radio" v-bind:value="true"/>
+						<input class="checkbox__block__1" v-model="kPodMode" type="radio" v-bind:value="true" @change="setKpodMode()"/>
 						<label class="label-kpod">{{trans('pgno.calc_min_value')}}</label>
 						<input type="text" class="input-box-gno podbor-kpod-block-3" v-model="kpodMin" :disabled="!kPodMode">
 					</div>			
@@ -38,9 +38,9 @@
 
 				<div class="block2">
 					<div class="title__block__kpod">
-						<input class="checkbox__block__1" v-model="kPodMode" type="radio" v-bind:value="false" :disabled="true"/>
+						<input class="checkbox__block__1" v-model="kPodMode" type="radio" v-bind:value="false" @change="setKpodMode()"/>
 						<label class="label-kpod">{{trans('pgno.use_value')}}</label>
-						<input type="text" class="input-box-gno podbor-kpod-block-3" v-model="kpodCalced" :disabled="kPodMode">
+						<input type="text" class="input-box-gno podbor-kpod-block-3" v-model="kpodCalced" :disabled="true">
 					</div>	
 				</div>
 				
