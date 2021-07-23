@@ -108,13 +108,10 @@ class User extends Authenticatable
 
     private function getOrgsByIdsRecursive(array $orgsTree, array $orgIds): void {
             foreach ($orgsTree as $orgTreeItem) {
-                if (!isset($orgTreeItem['children'])) {
+                if (!in_array($orgTreeItem['id'], $orgIds) || !isset($orgTreeItem['children'])) {
                     continue;
                 }
                 foreach ($orgTreeItem['children'] as $child) {
-                    if (!in_array($orgTreeItem['id'], $orgIds)) {
-                        continue;
-                    }
                     $this->userOrgs[] = self::getOrgsArray($child);
                 }
                 $this->getOrgsByIdsRecursive($orgTreeItem['children'], $orgIds);
