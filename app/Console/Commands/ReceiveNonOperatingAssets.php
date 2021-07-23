@@ -19,7 +19,6 @@ use \jamesiarmes\PhpEws\Enumeration\ResponseClassType;
 
 use \jamesiarmes\PhpEws\Type\ConstantValueType;
 use \jamesiarmes\PhpEws\Type\DistinguishedFolderIdType;
-use \jamesiarmes\PhpEws\Type\FolderIdType;
 use \jamesiarmes\PhpEws\Type\FieldURIOrConstantType;
 use \jamesiarmes\PhpEws\Type\ItemResponseShapeType;
 use \jamesiarmes\PhpEws\Type\PathToUnindexedFieldType;
@@ -52,7 +51,6 @@ class receiveNonOperatingAssets extends Command
           'id' => '',
           'changeKey' => ''
     );
-    protected $gduFolderId = 'AAMkADRkNzVhNzFkLTVkMWYtNDRiMy05YWNhLWYwZTEzOWUwYmNjMQAuAAAAAAAReNYLTqfcSLDeg0mDUbrDAQAimyQ8p+VSTYHimU05mkoHAAABprqCAAA=';
     private $dzoMapping = array (
         'ТШО' => '"Теңізшевройл" ЖШС / ТОО "Тенгизшевройл"',
         'ТП' => '"Торғай Петролеум" АҚ / АО "Тургай Петролеум"',
@@ -60,7 +58,6 @@ class receiveNonOperatingAssets extends Command
         'НКО' => '"Норт Каспиан Оперейтинг Компани Б.В."',
         'АГ' => '"Амангелді Газ" ЖШС/ ТОО "Амангельды Газ"'
     );
-
 
     /**
      * The console command description.
@@ -81,7 +78,7 @@ class receiveNonOperatingAssets extends Command
 
     public function processInboundEmail()
     {
-        $this->assignMessageOptions(env('VISCENTER_EMAIL_ADDRESS', ''),env('VISCENTER_EMAIL_PASSWORD', ''),'nonOperating');
+        $this->assignMessageOptions(env('VISCENTER_EMAIL_ADDRESS', ''),env('VISCENTER_EMAIL_PASSWORD', ''));
         if (!$this->isDataAvailable) {
             return;
         }
@@ -91,7 +88,7 @@ class receiveNonOperatingAssets extends Command
     }
     public function processGDUEmail()
     {
-        $this->assignMessageOptions(env('VISCENTER_GDU_EMAIL_ADDRESS', ''),env('VISCENTER_GDU_EMAIL_PASSWORD', ''),'gdu');
+        $this->assignMessageOptions(env('VISCENTER_GDU_EMAIL_ADDRESS', ''),env('VISCENTER_GDU_EMAIL_PASSWORD', ''));
         if (!$this->isDataAvailable) {
             return;
         }
@@ -100,12 +97,12 @@ class receiveNonOperatingAssets extends Command
         $this->scrapDocument('gdu');
     }
 
-    public function assignMessageOptions($email,$password,$emailType)
+    public function assignMessageOptions($email,$password)
     {
         $ews = new Client($this->server, $email, $password);
         $ews->setCurlOptions(array(CURLOPT_SSL_VERIFYPEER => false));
         $this->ews = $ews;
-        $request = $this->getRequestParams($emailType);
+        $request = $this->getRequestParams();
         $response = $this->ews->FindItem($request);
         $response_messages = $response->ResponseMessages->FindItemResponseMessage;
 
@@ -123,7 +120,7 @@ class receiveNonOperatingAssets extends Command
         }
     }
 
-    public function getRequestParams($emailType)
+    public function getRequestParams()
     {
         $request = new FindItemType();
         $request->ParentFolderIds = new NonEmptyArrayOfBaseFolderIdsType();
@@ -136,14 +133,9 @@ class receiveNonOperatingAssets extends Command
         $request->Restriction->IsEqualTo->FieldURIOrConstant->Constant->Value = "false";
         $request->ItemShape = new ItemResponseShapeType();
         $request->ItemShape->BaseShape = DefaultShapeNamesType::ALL_PROPERTIES;
-        if ($emailType === 'gdu') {
-            $request->ParentFolderIds->FolderId = new FolderIdType();
-            $request->ParentFolderIds->FolderId->Id = $this->gduFolderId;
-        } else {
-            $folder_id = new DistinguishedFolderIdType();
-            $folder_id->Id = DistinguishedFolderIdNameType::INBOX;
-            $request->ParentFolderIds->DistinguishedFolderId[] = $folder_id;
-        }
+        $folder_id = new DistinguishedFolderIdType();
+        $folder_id->Id = DistinguishedFolderIdNameType::INBOX;
+        $request->ParentFolderIds->DistinguishedFolderId[] = $folder_id;
         return $request;
     }
 
@@ -390,7 +382,7 @@ class receiveNonOperatingAssets extends Command
      */
     public function handle()
     {
-        $this->processGDUEmail();
         $this->processInboundEmail();
+        $this->processGDUEmail();
     }
 }
