@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CalculateHydroDynamics implements ShouldQueue
 {
@@ -169,11 +170,16 @@ class CalculateHydroDynamics implements ShouldQueue
         }
 
         if ($isErrors) {
-            $this->setOutput(
-                [
-                    'error' => trans('monitoring.hydro_calculation.error.not-enough-data')
-                ]
-            );
+            if ($this->input['cron']) {
+                Log::channel('calculate_hydro_yesterday:cron')->error('Нет данных по ОМГ НГДУ');
+            } else {
+                $this->setOutput(
+                    [
+                        'error' => trans('monitoring.hydro_calculation.error.not-enough-data')
+                    ]
+                );
+            }
+
             return;
         }
 
@@ -223,6 +229,10 @@ class CalculateHydroDynamics implements ShouldQueue
                 array_unshift($long->data, $long->columns);
                 $this->storeLongResult($long->data);
             }
+        }
+
+        if ($this->input['cron']) {
+            Log::channel('calculate_hydro_yesterday:cron')->error('Расчет на '.$this->input['date'].' успешно завершен.');
         }
 
         if (isset($this->input['calc_export']) && $this->input['calc_export'] == 'true') {
