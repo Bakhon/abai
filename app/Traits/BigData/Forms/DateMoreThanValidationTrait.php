@@ -29,7 +29,9 @@ trait DateMoreThanValidationTrait
             ->orderBy($dateType, 'desc')
             ->get($dateType)
             ->first();
-        
+        if(empty($validDate) || $validDate->$dateType == null){
+                return true;
+        }
         return $date >= $validDate->$dateType;
     }
    
