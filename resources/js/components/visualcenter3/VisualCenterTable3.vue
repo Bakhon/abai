@@ -174,7 +174,7 @@
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
-                            {{ trans("visualcenter.getgaz") }}
+                            {{ trans("visualcenter.getgaz") }} ({{trans("visualcenter.gasOperatingAssets")}})
                           </div>
                           <br />
                           <div class="progress">
@@ -444,6 +444,75 @@
                   <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
                     <li
                             class="center-li row px-4"
+                            @click="switchMainMenu('gasProductionButton','productionNaturalGas')"
+                    >
+                      <div
+                              class="col-1 mt-2"
+                              v-html="`${getMainMenuButtonFlag('gasProductionButton','productionNaturalGas')}`"
+                      ></div>
+                      <a
+                              class="col-9 px-2"
+                              @click="
+                                updateProductionData(
+                                  'plan_prirod_gas',
+                                  'natural_gas_production_fact',
+                                  trans('visualcenter.productionNaturalGasChartName'),
+                                  ' м³',
+                                  trans('visualcenter.productionNaturalGas')
+                                )
+                              "
+                      >
+                        {{ trans("visualcenter.productionNaturalGas") }}
+                      </a>
+                    </li>
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('gasProductionButton','productionAssociatedGas')"
+                    >
+                      <div
+                              class="col-1 mt-2"
+                              v-html="`${getMainMenuButtonFlag('gasProductionButton','productionAssociatedGas')}`"
+                      ></div>
+                      <a
+                              class="col-9 px-2"
+                              @click="
+                                updateProductionData(
+                                  'plan_poput_gas',
+                                  'associated_gas_production_fact',
+                                  trans('visualcenter.productionAssociatedGasChartName'),
+                                  ' м³',
+                                  trans('visualcenter.productionAssociatedGas')
+                                )
+                              "
+                      >
+                        {{ trans("visualcenter.productionAssociatedGas") }}
+                      </a>
+                    </li>
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('gasProductionButton','flaringAssociatedGas')"
+                    >
+                      <div
+                              class="col-1 mt-2"
+                              v-html="`${getMainMenuButtonFlag('gasProductionButton','flaringAssociatedGas')}`"
+                      ></div>
+                      <a
+                              class="col-9 px-2"
+                              @click="
+                                updateProductionData(
+                                  'plan_poput_gas_burn',
+                                  'associated_gas_flaring_fact',
+                                  trans('visualcenter.flaringAssociatedGasChartName'),
+                                  ' м³',
+                                  trans('visualcenter.flaringAssociatedGas')
+                                )
+                              "
+                      >
+                        {{ trans("visualcenter.flaringAssociatedGas") }}
+                      </a>
+                    </li>
+                    <li
+                            class="center-li row px-4"
                             @click="switchMainMenu('gasProductionButton','deliveryNaturalGas')"
                     >
                       <div
@@ -540,31 +609,6 @@
                       >
                         <!-- Расход попутного газа на собственные нужды -->{{
                         trans("visualcenter.raskhodpoputGaz")
-                        }}
-                      </a>
-                    </li>
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','associatedGasProcessing')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasProcessing')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'pererabotka_gaza_poput_plan',
-                            'pererabotka_gaza_poput_fact',
-                            trans('visualcenter.pererabotkapoputGazDynamic'),
-                            ' м³',
-                            trans('visualcenter.pererabotkapoputGaz')
-                          )
-                        "
-                      >
-                        <!-- Переработка попутного газа -->{{
-                        trans("visualcenter.pererabotkapoputGaz")
                         }}
                       </a>
                     </li>
@@ -780,7 +824,7 @@
               <div class="col-8 col-lg px-1">
 
 
-                <div :class="[`${buttonYearlyTab}`,'button2']">
+                <div :class="[`${buttonYearlyTab}`,'button2 d-flex']">
                   <div
                           class="button1-vc-inner"
                           @click="changeMenu2('yearly')"
@@ -788,9 +832,9 @@
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
                   <button
-                          v-if="buttonYearlyTab && isOilProductionActive"
+                          v-if="buttonYearlyTab && oilCondensateProductionButton"
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc dzocompanies__button_position"
+                          class="btn btn-primary dropdown-toggle position-button-vc mt-1"
                           data-toggle="dropdown"
                   ></button>
                   <div class="dzo-company-list">
@@ -2629,6 +2673,14 @@
     &::-webkit-scrollbar-corner {
       background: #333975;
     }
+    .vis-table table {
+      tr {
+        td:first-child {
+          width: 4%;
+          text-align: center;
+        }
+      }
+    }
 
     .table4 {
       min-width: 683px;
@@ -2682,10 +2734,6 @@
             top: 4px;
             width: 100%;
           }
-        }
-        td:first-child {
-          width: 4%;
-          text-align: center;
         }
       }
       tr:after {
