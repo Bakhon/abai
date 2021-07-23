@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Models\Refs\Org;
+use App\Services\BigData\StructureService;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\CausesActivity;
@@ -44,8 +46,7 @@ class User extends Authenticatable
         'org_structure' => 'array'
     ];
 
-
-    //relations
+    private $userOrgs = [];
 
     public function profile()
     {
@@ -80,7 +81,20 @@ class User extends Authenticatable
         }
     }
 
-    public function getOrganizationIds()
+    public function getUserOrganizations(StructureService $structureService): array
+    {
+        if($this->org_structure) {
+            $orgIds = array_map(function ($item) {
+                return substr($item, strpos($item, ":") + 1);
+            }, $this->org_structure);
+            $orgsTree = $structureService->getTree(Carbon::now());
+            $this->getOrgsByIdsRecursive($orgsTree, $orgIds);
+        }
+
+        return $this->userOrgs;
+    }
+
+    public function getOrganizationIds(): array
     {
         return $this->getOrganizations()->pluck('id')->toArray();
     }
@@ -88,5 +102,30 @@ class User extends Authenticatable
     public function modules()
     {
         return $this->belongsToMany(Module::class);
+    }
+
+    private function getOrgsByIdsRecursive(array $orgsTree, array $orgIds): void {
+            foreach ($orgsTree as $orgTreeItem) {
+                if (!in_array($orgTreeItem['id'], $orgIds) || !isset($orgTreeItem['children'])) {
+                    continue;
+                }
+                foreach ($orgTreeItem['children'] as $child) {
+                    $this->userOrgs[] = self::getOrgsArray($child);
+                }
+                $this->getOrgsByIdsRecursive($orgTreeItem['children'], $orgIds);
+            }
+    }
+
+    private static function getOrgsArray(array $org): array
+    {
+        $result = [
+            'id' => $org['id'],
+            'name' => $org['name'],
+            'sub_type' => $org['sub_type'],
+        ];
+        if (isset($org['children'])) {
+            $result['children'] = array_map('self::getOrgsArray', $org['children']);
+        }
+        return $result;
     }
 }
