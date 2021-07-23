@@ -439,7 +439,7 @@ export default {
     calculatedHeaders() {
       return [
         {
-          name: this.trans('economic_reference.Revenue'),
+          name: this.trans('economic_reference.revenue'),
           baseValue: this.scenario.Revenue_total.value[0],
           value: this.scenario.Revenue_total[this.scenarioValueKey][0],
           dimension: this.scenario.Revenue_total[this.scenarioValueKey][1],

@@ -36,8 +36,8 @@
     </div>
 
     <subtitle font-size="18" style="line-height: 26px" class="mt-3">
-      Оптимизация категории 1: {{ scenario.percent_stop_cat_1 * 100 }}%,
-      категории 2: {{ scenario.percent_stop_cat_2 * 100 }}%
+      {{ trans('economic_reference.cat_1_trips') }}: {{ scenario.percent_stop_cat_1 * 100 }}%,
+      {{ trans('economic_reference.cat_2_trips') }}: {{ scenario.percent_stop_cat_2 * 100 }}%
     </subtitle>
 
     <div class="mt-3">
@@ -122,19 +122,19 @@ export default {
     tableData() {
       return [
         {
-          title: `при цене на экспорт - ${this.scenario.oil_price}$/bbl`,
-          uwiCount: 'ед',
-          prsCount: 'ед',
-          prsPerUwi: 'ед',
+          title: `${this.trans('economic_reference.at_export_price')} - ${this.scenario.oil_price}$/bbl`,
+          uwiCount: this.trans('economic_reference.units'),
+          prsCount: this.trans('economic_reference.units'),
+          prsPerUwi: this.trans('economic_reference.units'),
           liquid: '%',
-          avgQn: 'тн/сут',
-          oil: `тыс тонн`,
-          number: 'чел',
-          revenueTotal: 'млрд тенге',
+          avgQn: this.trans('economic_reference.tn_per_day'),
+          oil: this.trans('economic_reference.thousand_tons'),
+          number: this.trans('economic_reference.people_short'),
+          revenueTotal: `${this.trans('economic_reference.billion')} ${this.trans('economic_reference.tenge')}`,
           color: '#151E70',
         },
         {
-          title: 'Всего скважин, в т.ч.:',
+          title: this.trans('economic_reference.total_wells_including'),
           uwiCount: +this.scenario.uwi_count.original_value,
           prsCount: +this.scenario.prs.original_value,
           prsPerUwi: this.calcPrsPerUwi(this.scenario.prs.original_value, this.scenario.uwi_count.original_value),
@@ -145,7 +145,7 @@ export default {
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total.original_value)
         },
         {
-          title: 'Рентабельные',
+          title: this.trans('economic_reference.profitable'),
           uwiCount: +this.scenario.uwi_count_profitable.original_value,
           prsCount: +this.scenario.prs_profitable.original_value,
           prsPerUwi: this.calcPrsPerUwi(this.scenario.prs_profitable.original_value, this.scenario.uwi_count_profitable.original_value),
@@ -156,7 +156,7 @@ export default {
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitable.original_value)
         },
         {
-          title: 'Категория 1',
+          title: this.trans('economic_reference.profitless_cat_1'),
           uwiCount: +this.scenario.uwi_count_profitless_cat_1.original_value,
           prsCount: +this.scenario.prs_profitless_cat_1.original_value,
           prsPerUwi: this.calcPrsPerUwi(this.scenario.prs_profitless_cat_1.original_value, this.scenario.uwi_count_profitless_cat_1.original_value),
@@ -167,7 +167,7 @@ export default {
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_1.original_value)
         },
         {
-          title: 'Категория 2',
+          title: this.trans('economic_reference.profitless_cat_2'),
           uwiCount: +this.scenario.uwi_count_profitless_cat_2.original_value,
           prsCount: +this.scenario.prs_profitless_cat_2.original_value,
           prsPerUwi: this.calcPrsPerUwi(this.scenario.prs_profitless_cat_2.original_value, this.scenario.uwi_count_profitless_cat_2.original_value),
@@ -183,7 +183,7 @@ export default {
     tableDataOptimized() {
       return [
         {
-          title: 'Всего скважин, в т.ч.:',
+          title: this.trans('economic_reference.total_wells_including'),
           uwiCount: +this.scenario.uwi_count.original_value_optimized,
           prsCount: +this.scenario.prs.original_value_optimized,
           prsPerUwi: this.calcPrsPerUwi(this.scenario.prs.original_value_optimized, this.scenario.uwi_count.original_value_optimized),
@@ -194,7 +194,7 @@ export default {
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total.original_value_optimized)
         },
         {
-          title: 'Рентабельные',
+          title: this.trans('economic_reference.profitable'),
           uwiCount: +this.scenario.uwi_count_profitable.original_value_optimized,
           prsCount: +this.scenario.prs_profitable.original_value_optimized,
           prsPerUwi: this.calcPrsPerUwi(this.scenario.prs_profitable.original_value_optimized, this.scenario.uwi_count_profitable.original_value_optimized),
@@ -205,7 +205,7 @@ export default {
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitable.original_value_optimized)
         },
         {
-          title: 'Категория 1',
+          title: this.trans('economic_reference.profitless_cat_1'),
           uwiCount: +this.scenario.uwi_count_profitless_cat_1.original_value_optimized,
           prsCount: +this.scenario.prs_profitless_cat_1.original_value_optimized,
           prsPerUwi: this.calcPrsPerUwi(this.scenario.prs_profitless_cat_1.original_value_optimized, this.scenario.uwi_count_profitless_cat_1.original_value_optimized),
@@ -216,7 +216,7 @@ export default {
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_1.original_value_optimized)
         },
         {
-          title: 'Категория 2',
+          title: this.trans('economic_reference.profitless_cat_2'),
           uwiCount: +this.scenario.uwi_count_profitless_cat_2.original_value_optimized,
           prsCount: +this.scenario.prs_profitless_cat_2.original_value_optimized,
           prsPerUwi: this.calcPrsPerUwi(this.scenario.prs_profitless_cat_2.original_value_optimized, this.scenario.uwi_count_profitless_cat_2.original_value_optimized),
@@ -232,55 +232,55 @@ export default {
     tableKeys() {
       return [
         {
-          title: 'Показатели',
+          title: this.trans('economic_reference.indicators'),
           value: 'title',
           flexWidth: '300px',
           flexGrow: 1,
         },
         {
-          title: 'Скважин',
+          title: this.trans('economic_reference.wells_count'),
           value: 'uwiCount',
           flexWidth: '120px',
           flexGrow: 0,
         },
         {
-          title: 'Кол-во ПРС',
+          title: this.trans('economic_reference.prs_count'),
           value: 'prsCount',
           flexWidth: '120px',
           flexGrow: 0,
         },
         {
-          title: 'Кол-во ПРС на 1 скв',
+          title: this.trans('economic_reference.prs_per_well_count'),
           value: 'prsPerUwi',
           flexWidth: '120px',
           flexGrow: 0,
         },
         {
-          title: 'Обводненность',
+          title: this.trans('economic_reference.water_cut'),
           value: 'liquid',
           flexWidth: '140px',
           flexGrow: 0,
         },
         {
-          title: 'qн средний',
+          title: this.trans('economic_reference.avg_qn'),
           value: 'avgQn',
           flexWidth: '120px',
           flexGrow: 0,
         },
         {
-          title: 'Добыча',
+          title: this.trans('economic_reference.production'),
           value: 'oil',
           flexWidth: '120px',
           flexGrow: 0,
         },
         {
-          title: 'Численность',
+          title: this.trans('economic_reference.number'),
           value: 'number',
           flexWidth: '120px',
           flexGrow: 0,
         },
         {
-          title: 'Выручка',
+          title: this.trans('economic_reference.revenue'),
           value: 'revenueTotal',
           flexWidth: '120px',
           flexGrow: 0,
