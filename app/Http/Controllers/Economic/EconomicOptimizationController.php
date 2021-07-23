@@ -35,7 +35,7 @@ class EconomicOptimizationController extends Controller
         'production_local',
     ];
 
-    const OPTIMIZED_OTHER_COLUMNS = [
+    const OPTIMIZED_SINGLE_COLUMNS = [
         'Overall_expenditures',
         'operating_profit_12m',
     ];
@@ -292,7 +292,7 @@ class EconomicOptimizationController extends Controller
 
     static function columnVariations(string $column): array
     {
-        if (in_array($column, self::OPTIMIZED_OTHER_COLUMNS)) {
+        if (in_array($column, self::OPTIMIZED_SINGLE_COLUMNS)) {
             return [$column];
         }
 
