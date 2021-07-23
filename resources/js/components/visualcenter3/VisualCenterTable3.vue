@@ -2275,7 +2275,7 @@
                         <div v-if="index === 0" class="center">
                         </div>
                         <div class="font">
-                          {{ getFormattedNumber(item.fact) }}
+                          {{ getNumberFormat(item.fact) }}
                         </div>
                       </td>
                     </tr>
