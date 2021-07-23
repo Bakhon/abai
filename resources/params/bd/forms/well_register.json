@@ -60,7 +60,7 @@
                 "code": "whc_alt",
                 "type": "numeric",
                 "title": "alt",
-                "validation": "numeric|gte:150"
+                "validation": "numeric|gte:-150"
               },
               {
                 "code": "whc_h",
@@ -134,7 +134,7 @@
                 "code": "drill_start_date",
                 "type": "date",
                 "title": "str_date",
-                "validation": "nullable|date|before_or_equal:today|before:drill_end_date"
+                "validation": ""
               },
               {
                 "code": "drill_end_date",
