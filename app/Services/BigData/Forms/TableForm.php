@@ -91,7 +91,8 @@ abstract class TableForm extends BaseForm
 
         return [
             'params' => $params,
-            'fields' => $this->getFields()->pluck('', 'code')->toArray()
+            'fields' => $this->getFields()->pluck('', 'code')->toArray(),
+            'available_actions' => $this->getAvailableActions()
         ];
     }
 
@@ -335,7 +336,7 @@ abstract class TableForm extends BaseForm
             $wellsQuery->where('id', $id);
         }
 
-        if ($params['filter']['well_category']) {
+        if (isset($params['filter']['well_category'])) {
             $wellsQuery->whereHas(
                 'category',
                 function ($query) use ($params) {

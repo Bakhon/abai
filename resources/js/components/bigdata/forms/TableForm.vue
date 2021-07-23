@@ -32,7 +32,7 @@
 
               <td
                   v-for="column in visibleColumns"
-                  :class="{'editable': column.is_editable}"
+                  :class="{'editable': formParams && formParams.available_actions.includes('update') && column.is_editable}"
                   @dblclick="editCell(row, column)"
               >
                 <template v-if="column.type === 'link'">
@@ -112,7 +112,8 @@
                       </span>
                   </template>
                 </template>
-                <template v-if="history[row.id] && history[row.id][column.code]">
+                <template
+                    v-if="formParams.available_actions.includes('view history') && history[row.id] && history[row.id][column.code]">
                   <a :id="`history_${row.id}_${column.code}`" class="icon-history"></a>
                   <b-popover :target="`history_${row.id}_${column.code}`" custom-class="history-popover"
                              placement="top" triggers="hover">
@@ -340,6 +341,9 @@ export default {
       return formula
     },
     editCell(row, column) {
+
+      if (!this.formParams.available_actions.includes('update')) return
+
       this.editableCell.row = row
       this.editableCell.column = column
     },

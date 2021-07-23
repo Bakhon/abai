@@ -1,6 +1,6 @@
 <template>
   <div class="row m-0 p-0 bd-forms__wrapper">
-    <div class="col col-9 p-0">
+    <div class="col col-9 p-0 bd-forms__main scrollable">
       <proto-form :id="id" :type="type"></proto-form>
     </div>
     <div class="col col-3 p-0 org-select-tree-block scrollable">
@@ -35,6 +35,11 @@ export default {
 
   &__wrapper {
     align-items: stretch;
+  }
+
+  &__main {
+    height: calc(100vh - 100px);
+    overflow-y: auto;
   }
 
   .blueblock {
