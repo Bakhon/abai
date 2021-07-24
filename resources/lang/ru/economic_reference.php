@@ -198,4 +198,5 @@ return array (
   'production' => 'Добыча',
   'number' => 'Численность',
   'revenue' => 'Выручка',
+  'table_well_changes' => 'Таблица изменений скважины «Светофор»',
 );

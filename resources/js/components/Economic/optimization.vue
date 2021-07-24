@@ -7,7 +7,7 @@
         <div class="row text-white text-wrap flex-nowrap">
           <div
               v-for="(header, index) in calculatedHeaders"
-              :key="index"
+              :key="`calculated_${index}`"
               class="p-3 bg-blue-dark position-relative">
             <divider v-if="index"/>
 
@@ -50,7 +50,7 @@
 
           <div
               v-for="(header, index) in remoteHeaders"
-              :key="index"
+              :key="`remote_${index}`"
               class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column position-relative">
             <economic-title
                 font-size="58"

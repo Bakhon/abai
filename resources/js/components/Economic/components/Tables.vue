@@ -38,8 +38,14 @@
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
+          class="text-white"/>
+
+      <table-well-changes
+          v-if="index === 3"
+          :org="res.org"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
           :oil-prices="oilPrices"
-          :data="res.technicalEconomicIndicator"
           class="text-white"/>
     </div>
   </div>
@@ -50,6 +56,7 @@ import ChartButton from "./ChartButton";
 import TableSpecificIndicators from "./TableSpecificIndicators";
 import TableTechnicalEconomicIndicators from "./TableTechnicalEconomicIndicators";
 import TableOilPriceOptions from "./TableOilPriceOptions";
+import TableWellChanges from "./TableWellChanges";
 
 export default {
   name: "Tables",
@@ -58,6 +65,7 @@ export default {
     TableSpecificIndicators,
     TableTechnicalEconomicIndicators,
     TableOilPriceOptions,
+    TableWellChanges
   },
   props: {
     scenario: {
@@ -82,6 +90,7 @@ export default {
         this.trans('economic_reference.specific_indicators'),
         this.trans('economic_reference.technical_economic_indicators'),
         this.trans('economic_reference.oil_price_options'),
+        this.trans('economic_reference.table_well_changes'),
       ]
     }
   }
