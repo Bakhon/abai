@@ -1,18 +1,25 @@
 <template>
-    <div class="page-wrapper">
+    <div class="page-wrapper h-100">
         <div class="page-container row">
             <div class="col-12 mt-3 header">
+                <transition name="bounce">
+                    <div v-if="isTypeTimerActive" class="img-play"></div>
+                </transition>
+                <transition name="bounce">
+                    <div v-if="!isTypeTimerActive" class="img-pause"></div>
+                </transition>
                 <div class="header-title">
                     {{headerTitle}}
                 </div>
-                <transition name="slide-fade" mode="out-in">
+                <transition name="fade" mode="out-in">
                     <div v-if="isOpecActive" class="title-opec ml-2">
                         ОПЕК+
                     </div>
                 </transition>
                 <div class="img-download" @click="exportToExcel()"></div>
             </div>
-            <div class="col-12 mt-3">
+            <div class="col-12 mt-3" @click="switchTimers()">
+                <div class="reason-box" id="decreaseReason">{{decreaseReason}}</div>
                 <table class="main-table col-12">
                     <tr>
                         <th rowspan="2">№ п/п</th>
@@ -68,7 +75,7 @@
                     </tr>
                     <tr
                             v-for="(item,index) in tableOutput.participationByKMG"
-                            class="background-dark"
+                            class="background-dark special"
                     >
                         <td>{{item.number}}</td>
                         <td :class="index === 1 ? 'summary-header_text-align' : ''">{{item.dzo}}</td>
@@ -143,6 +150,8 @@
                         <td
                                 v-if="!isOpecActive"
                                 :class="getColorBy(item.differenceByDay)"
+                                @mouseover="mouseOver($event,item.reason)"
+                                @mouseleave="mouseLeave"
                         >
                             {{getFormattedNumber(item.differenceByDay)}}
                         </td>
@@ -190,7 +199,7 @@
                     </tr>
                     <tr
                             v-for="(item,index) in tableOutput.byKMG"
-                            :class="index > 0 ? 'background-dark hide-block' :'background-dark'"
+                            :class="index > 0 ? 'background-dark hide-block' :'background-dark special'"
                     >
                         <td>{{item.number}}</td>
                         <td>{{item.dzo}}</td>
@@ -579,6 +588,57 @@
 <script src="./index.js"></script>
 
 <style scoped lang="scss">
+    .dzo-row_dark {
+        background: #e6e6e6;
+        color: black;
+    }
+    .dzo-row_light {
+        background: white;
+        color: black;
+    }
+    .troubled-companies-padding {
+        padding-left: 2% !important;
+    }
+    .bounce-enter-active {
+        animation: bounce-in .5s;
+    }
+    .bounce-leave-active {
+        animation: bounce-in .5s reverse;
+    }
+    @keyframes bounce-in {
+        0% {
+            transform: scale(0);
+        }
+        50% {
+            transform: scale(1.5);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+    .img-play {
+        background: url(/img/visualcenter3/play.png) no-repeat;
+        height: 25px;
+        width: 25px;
+        position: absolute;
+        left: 60px;
+    }
+    .img-pause {
+        background: url(/img/visualcenter3/pause.png) no-repeat;
+        height: 25px;
+        width: 25px;
+        position: absolute;
+        left: 90px;
+    }
+    .reason-box {
+        position: absolute;
+        width: 400px;
+        background: white;
+        color: black;
+        padding: 5px;
+        border-radius: 10px;
+        display: none;
+    }
     .slide-fade-enter-active {
         transition: all .5s ease;
     }
@@ -603,9 +663,6 @@
     .summary-header_text-align {
         text-align: right !important;
     }
-    .troubled-companies-padding {
-        padding-left: 2%;
-    }
     .empty-row {
         border-bottom: 21px solid #272953;
     }
@@ -617,7 +674,7 @@
         height: 25px;
         width: 25px;
         position: absolute;
-        right: 15px;
+        right: 60px;
     }
     .header-title {
         font-style: normal;
@@ -628,9 +685,6 @@
     .hide-block {
         display:none;
     }
-   .background-light {
-       background: #4C537E;
-   }
    .color_green {
        color: #00b353;
    }
@@ -650,7 +704,7 @@
    .page-wrapper {
        font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
        position: relative;
-       min-height: 872px;
+       min-height: calc(100vh - 78px);
        background: #272953;
        color: white;
        text-align: center;
@@ -658,19 +712,21 @@
    .main-table {
        table-layout: fixed;
        border-collapse: collapse;
+       position: static;
        tr {
            &:nth-child(2) {
                th {
                    height: 40px;
+                   width: 14%;
                }
            }
            &:nth-child(3), &:nth-child(4), &:nth-child(23) {
                background: #333975;
            }
        }
-       tr:hover {
-           background: #2d3486;
-           td:not(:nth-child(2)) {
+       tr:not(.special):hover {
+           background: #D5E5F7;
+           td {
                font-size: 20px;
            }
        }
@@ -684,13 +740,16 @@
            &:first-child {
                width: 2%;
            }
+           &:nth-child(2) {
+               width: 14%;
+           }
            &:nth-child(3), &:nth-child(4), &:nth-child(5) {
-               width: 5%;
+               width: 3%;
            }
        }
        td {
            text-align: right;
-           font-size: 13px;
+           font-size: 15px;
            font-family: Bold;
            width: 10%;
            border-right: 1px solid #696e96;
@@ -707,6 +766,14 @@
            &:nth-child(3), &:nth-child(4), &:nth-child(5) {
                width: 5%;
            }
+       }
+   }
+   @media (min-width: 1950px) {
+       .page-wrapper {
+           height: 920px;
+       }
+       .main-table {
+           font-size: 15px;
        }
    }
 </style>

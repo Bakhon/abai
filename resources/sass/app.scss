@@ -8,7 +8,9 @@
   font-family: "Bold";
   src: url("/fonts/HarmoniaSansProCyr-Bold.ttf") format("truetype");
 }
-
+:root{
+  @extend .customScroll;
+}
 @import "variables";
 @import 'common';
 
@@ -36,11 +38,4 @@
 @import 'modules/geology';
 @import '~handsontable/dist/handsontable.full.css';
 
-
-
-
-
-
-
-
-
+@import "modules/geologyImports/components/aw-modal/aw-modal";

@@ -58,6 +58,7 @@ export default {
             if (categories.includes(key) && item[key] !== null) {
                 temporaryData = this.getUpdatedCategoryParams(item[key],paramName,temporaryData);
             } else if (gasFields.includes(key)) {
+                temporaryData[key] = item[key];
                 temporaryData[paramName] = this.getUpdatedGasParam(temporaryData[paramName],item[key]);
             } else {
                 temporaryData[paramName] = this.getMappedByCurrentCategory(item,key);

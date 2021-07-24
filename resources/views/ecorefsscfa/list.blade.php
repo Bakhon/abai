@@ -93,7 +93,7 @@
                        class="text-primary list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_cost')}}
                     </a>
-                    <a href="{{ route('eco_refs_scenario.index') }}"
+                    <a href="{{ route('eco_refs_cost.index',['is_forecast'=> 1]) }}"
                        class="text-primary list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_scenario')}}
                     </a>
