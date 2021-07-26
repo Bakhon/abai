@@ -348,7 +348,7 @@
               <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
 
-                  <div class="technological-mode-title">{{trans('pgno.technologicheskii_rezhim')}}</div>
+                  <div class="technological-mode-title">{{trans('pgno.technologicheskii_rezhim')}} {{techmodeDate}}</div>
                 </div>
 
                 <div class="right-block-details"

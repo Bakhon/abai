@@ -23,6 +23,24 @@
           :oil-prices="oilPrices"
           :data="res.specificIndicator"
           class="text-white"/>
+
+      <table-technical-economic-indicators
+          v-if="index === 1"
+          :org="res.org"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :oil-prices="oilPrices"
+          :data="res.technicalEconomicIndicator"
+          class="text-white"/>
+
+      <table-oil-price-options
+          v-if="index === 2"
+          :org="res.org"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :oil-prices="oilPrices"
+          :data="res.technicalEconomicIndicator"
+          class="text-white"/>
     </div>
   </div>
 </template>
@@ -30,12 +48,16 @@
 <script>
 import ChartButton from "./ChartButton";
 import TableSpecificIndicators from "./TableSpecificIndicators";
+import TableTechnicalEconomicIndicators from "./TableTechnicalEconomicIndicators";
+import TableOilPriceOptions from "./TableOilPriceOptions";
 
 export default {
   name: "Tables",
   components: {
+    ChartButton,
     TableSpecificIndicators,
-    ChartButton
+    TableTechnicalEconomicIndicators,
+    TableOilPriceOptions,
   },
   props: {
     scenario: {
@@ -58,6 +80,8 @@ export default {
     tabs() {
       return [
         this.trans('economic_reference.specific_indicators'),
+        this.trans('economic_reference.technical_economic_indicators'),
+        this.trans('economic_reference.oil_price_options'),
       ]
     }
   }

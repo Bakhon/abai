@@ -451,6 +451,8 @@ class VisualCenterController extends Controller
             ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description')
             ->whereMonth('date', $request->currentMonth)
             ->where('type',1)
+            ->orderBy('date', 'desc')
+            ->take(10)
             ->get()
             ->toArray();
     }
