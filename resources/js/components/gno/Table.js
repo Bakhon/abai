@@ -30,6 +30,7 @@ export default {
     return {
       apiUrl: process.env.MIX_PGNO_API_URL,
       steel: null,
+      techmodeDate: null,
       404: require('./images/404.svg'),
       isSkError: false,
       nearDist: 1000,
@@ -401,10 +402,14 @@ export default {
       }
     })
 
-    this.axios.get(this.apiUrl + "status/").then(res => {
-      if (res.status !== 200) {
+    this.axios.get(this.apiUrl + "status/").then(response => {
+      if (response.status !== 200) {
         this.serviceOffline = true;
       }
+    })
+
+    this.axios.get(this.apiUrl + "lastdate/").then(response => {
+      this.techmodeDate = response.data['date'];
     })
 
     this.axios.get(this.apiUrl + "pgno/sk_types").then(response => {
@@ -1578,13 +1583,18 @@ export default {
                     this.pElectricity = (data['p_electricity'] / 1000).toFixed(0)
                     this.wDay = data['w_day'].toFixed(0)
                     this.ure = data['ure'].toFixed(1)
+                    if (data['load_limit_check']['type'] === "warning") {
+                      var message = `${this.trans('pgno.load_warning')} ${data['load_limit_check']['value']} ${this.trans('measurements.percent')}`
+                      this.setNotify(message, 'warning')
+                    } else if (data['load_limit_check']['type'] === "error") {
+                      this.setNotify(this.trans('pgno.shtang_not_recommended'), 'error')
+                    }
                     if (data['load_check'] === "error") {
                       this.setNotify(this.trans('pgno.balance_more_100'), 'error')
                     } else if (data['load_check'] === "warning") {
                       this.setNotify(this.trans('pgno.balance_more_80'), 'warning')
-                    } else if (data['max_load_error'] === "max_load_error") {
-                      this.setNotify(this.trans('pgno.shtang_not_recommended'), 'warning')
-                    } if (data['load_reduct_check'] === "error") {
+                    }
+                    if (data['load_reduct_check'] === "error") {
                       this.setNotify(this.trans('pgno.max_reductor'), 'error')
                     }
 
