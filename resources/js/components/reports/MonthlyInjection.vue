@@ -1,21 +1,7 @@
 <template>
   <div class="filter-container">
     <cat-loader v-show="isLoading"/>
-    <div class="form-group1 filter-group select">
-      <select
-          class="form-control filter-input select"
-          id="companySelect"
-          :disabled="isLoading"
-          v-model="org"
-      >
-        <option disabled value="">Выберите компанию</option>
-        <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
-        <option value="КБМ">АО «Каражанбасмунай»</option>
-        <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-        <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-        <option value="ММГ">АО «Мангистаумунайгаз»</option>
-      </select>
-    </div>
+    <org-selector v-model="org"></org-selector>
 
     <div class="form-group2 filter-group">
       <label for="start_date">Выберите начальную дату</label>
@@ -86,12 +72,15 @@
 import Vue from 'vue';
 import {Datetime} from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
+import {formatDate} from '../common/FormatDate.js'
+import OrgSelector from "./OrgSelector";
 
 Vue.use(Datetime)
-import {formatDate} from '../common/FormatDate.js'
 
 export default {
-  components: {},
+  components: {
+    OrgSelector
+  },
 
   data() {
 
@@ -109,7 +98,7 @@ export default {
       this.resultLink = response.data.report_link
     },
     updateData() {
-      let uri = "http://172.20.103.187:8082/monthly/injection/";
+      let uri = process.env.MIX_MICROSERVICE_PREDEFINED_REPORTS + "/monthly/injection/";
       let data = {
         dzo: this.org,
         period: 'monthly',

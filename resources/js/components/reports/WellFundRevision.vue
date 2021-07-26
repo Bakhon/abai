@@ -1,21 +1,7 @@
 <template>
   <div class="filter-container">
     <cat-loader v-show="isLoading"/>
-    <div class="form-group1 filter-group select">
-      <select
-          class="form-control filter-input select"
-          id="companySelect"
-          :disabled="isLoading"
-          v-model="org"
-      >
-        <option disabled value="">Выберите компанию</option>
-        <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
-        <option value="КБМ">АО «Каражанбасмунай»</option>
-        <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-        <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-        <option value="ММГ">АО «Мангистаумунайгаз»</option>
-      </select>
-    </div>
+    <org-selector v-model="org"></org-selector>
 
     <div class="form-group1 filter-group select">
       <select
@@ -89,11 +75,14 @@ import Vue from "vue";
 import {Datetime} from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from '../common/FormatDate.js'
+import OrgSelector from "./OrgSelector";
 
 Vue.use(Datetime)
 
 export default {
-  components: {},
+  components: {
+    OrgSelector
+  },
 
   data() {
 
@@ -122,7 +111,7 @@ export default {
         8: "в консервации ликвидированный нагнетательный фонд",
         9: "наблюдательный фонд"
       };
-      let uri = "http://172.20.103.187:8082/generic/";
+      let uri = process.env.MIX_MICROSERVICE_PREDEFINED_REPORTS + "/generic/";
       let data = {
         type: 'rev_fund_' + this.fondType,
         period: 'days',

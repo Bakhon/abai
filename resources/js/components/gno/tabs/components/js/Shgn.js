@@ -6,7 +6,10 @@ export default {
 	components: {
 		Multiselect,
 	  },
-	props: ["qLInput", "strokeLenDev", "spm","pumpType"],
+	props: {"qLInput": Number,
+		"strokeLenDev": Number, 
+		"spm": Number,
+		"pumpType": Number},
 	data: function()  {
 		return {
 			svgTableN1: require('../../../images/tableN1.svg'),
@@ -215,7 +218,10 @@ export default {
 				this.kpodCalced = this.qLInputKpod / (1440 * 3.14 * this.pumpTypeKpod ** 2 * this.strokeLenDevKpod * (this.spmKpod / 4000000))
 				this.$store.commit('UPDATE_KPOD_CALCED', this.kpodCalced) 
 			}
-		}
+		},
+		setKpodMode() {
+			this.$store.commit('UPDATE_KPOD_MODE', this.kPodMode) 
+		},
 	},
 	created: function() {
 		this.spmMin = this.$store.getters.spmMin

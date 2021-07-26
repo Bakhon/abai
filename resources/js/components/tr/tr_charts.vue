@@ -1645,7 +1645,7 @@ export default {
       }
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/graph1/" +
+          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/graph1/" +
             this.selectYear +
             "/" +
             this.month +
@@ -1693,7 +1693,7 @@ export default {
     this.month = mm;
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/graph1/" +
+        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/graph1/" +
           yyyy +
           "/" +
           mm +

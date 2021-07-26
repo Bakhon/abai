@@ -168,19 +168,22 @@ export default {
             this.loadAttributesForSelectedObject();
         },
         getAttributeDescription(descriptionField) {
+            if (descriptionField in this.attributeDescriptions["formulas"]) {
+                return this.attributeDescriptions["formulas"][descriptionField]["description"]
+            }
             if (!this.isActualAttribute(descriptionField)) {
                 return descriptionField
             }
             let fieldParts = descriptionField.split(".")
             let table = fieldParts[0] + "." + fieldParts[1]
-            if (!(table in this.attributeDescriptions)) {
+            if (!(table in this.attributeDescriptions["tables"])) {
                 return descriptionField
             }
             let fieldName = fieldParts[2]
-            if (!(fieldName in this.attributeDescriptions[table])) {
+            if (!(fieldName in this.attributeDescriptions["tables"][table])) {
                 return fieldName
             }
-            return this.attributeDescriptions[table][fieldName]
+            return this.attributeDescriptions["tables"][table][fieldName]
         },
         isActualAttribute(field) {
             let fieldParts = field.split(".")
@@ -249,7 +252,7 @@ export default {
         _cleanEmptyHeadersOfAttributes(attributes) {
             let cleanAttributes = []
             for (let attribute of attributes) {
-                if (this.isActualAttribute(attribute.label)) {
+                if (this.isActualAttributeOrFormula(attribute.label)) {
                     cleanAttributes.push({'label': attribute.label})
                 }
                 if (!this._hasChildren(attribute)) {
@@ -262,6 +265,12 @@ export default {
                 }
             }
             return cleanAttributes
+        },
+        isActualAttributeOrFormula(field) {
+            if (this.isActualAttribute(field)) {
+                return true
+            }
+            return field in this.attributeDescriptions["formulas"]
         },
         _getStatisticsRequestParams() {
             return JSON.stringify({
@@ -400,7 +409,7 @@ export default {
             return maxChildrenNumber
         },
         getRowHeightSpan(attribute, currentDepth){
-            if (currentDepth !== this.maxDepthOfSelectedAttributes) {
+            if (attribute.maxChildrenNumber > 0) {
                 return 1
             }
             return this.maxDepthOfSelectedAttributes - currentDepth

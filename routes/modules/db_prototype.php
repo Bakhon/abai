@@ -61,6 +61,8 @@ Route::group(
                 Route::get('dict/geos/{org}', 'bd\DictionariesController@getGeoByOrg');
                 Route::get('dict/{dict}', 'bd\DictionariesController@get')->name('bigdata.dictionary');
 
+                Route::get('dzo', 'Api\DB\StructureController@getDzo')->name('bigdata.dzo');
+
                 Route::get('forms', 'Api\DB\FormsController@getForms')->name('bigdata.form.list');
                 Route::get('forms/tree', 'Api\DB\FormsController@getFormsStructure')->name('bigdata.form.list');
                 Route::get('forms/{form}', 'Api\DB\FormsController@getParams')->name('bigdata.form.params');
