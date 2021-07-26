@@ -13,6 +13,8 @@ class WaterInj extends MeasurementLogForm
     public function getRows(array $params = []): array
     {
         $filter = json_decode($this->request->get('filter'));
+        $params['filter']['well_category'] = ['INJ'];
+
         $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
 
         $tables = $this->getFields()->pluck('table')->filter()->unique();

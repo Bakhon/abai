@@ -69,6 +69,18 @@
       "pererabotka_gaza_poput_plan"
     ],
     "childItems": {
+      "productionNaturalGas": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "productionAssociatedGas": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "flaringAssociatedGas": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
       "deliveryNaturalGas": {
         "buttonClass": "",
         "flag": "flagOff"
@@ -82,10 +94,6 @@
         "flag": "flagOff"
       },
       "associatedGasConsumptionForNeeds": {
-        "buttonClass": "",
-        "flag": "flagOff"
-      },
-      "associatedGasProcessing": {
         "buttonClass": "",
         "flag": "flagOff"
       }

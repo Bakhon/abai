@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CalculateHydroDynamics implements ShouldQueue
 {
@@ -111,7 +112,6 @@ class CalculateHydroDynamics implements ShouldQueue
     ];
 
 
-
     /**
      * Create a new job instance.
      *
@@ -133,7 +133,7 @@ class CalculateHydroDynamics implements ShouldQueue
         $points = TrunklinePoint::with('oilPipe.pipeType', 'oilPipe.firstCoords', 'oilPipe.lastCoords', 'gu', 'trunkline_end_point')->get();
         $isErrors = false;
 
-        foreach($points as $key => $point) {
+        foreach ($points as $key => $point) {
             if (!$points[$key]->gu) {
                 continue;
             }
@@ -156,6 +156,11 @@ class CalculateHydroDynamics implements ShouldQueue
             $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
             $points[$key]->omgngdu->heater_output_temperature = $temperature;
 
+            if (!$points[$key]->omgngdu->pump_discharge_pressure) {
+                unset($points[$key]);
+                continue;
+            }
+
             if (!$points[$key]->omgngdu->pump_discharge_pressure ||
                 !$points[$key]->omgngdu->daily_fluid_production ||
                 !$points[$key]->omgngdu->bsw) {
@@ -165,11 +170,16 @@ class CalculateHydroDynamics implements ShouldQueue
         }
 
         if ($isErrors) {
-            $this->setOutput(
-                [
-                    'error' => trans('monitoring.hydro_calculation.error.not-enough-data')
-                ]
-            );
+            if ($this->input['cron']) {
+                Log::channel('calculate_hydro_yesterday:cron')->error('Нет данных по ОМГ НГДУ');
+            } else {
+                $this->setOutput(
+                    [
+                        'error' => trans('monitoring.hydro_calculation.error.not-enough-data')
+                    ]
+                );
+            }
+
             return;
         }
 
@@ -179,13 +189,13 @@ class CalculateHydroDynamics implements ShouldQueue
         ];
 
         $fileName = 'pipeline_calc_input.xlsx';
-        $filePath = 'public/export/'.$fileName;
+        $filePath = 'public/export/' . $fileName;
         Excel::store(new PipeLineCalcExport($data), $filePath);
 
-        if (!$isErrors AND isset($this->input['date'])) {
+        if (!$isErrors and isset($this->input['date'])) {
 
-            $fileurl = env('KMG_SERVER_URL').Storage::url($filePath);
-            $url = env('HYDRO_CALC_SERVICE_URL').'url_file/?url='.$fileurl;
+            $fileurl = env('KMG_SERVER_URL') . Storage::url($filePath);
+            $url = env('HYDRO_CALC_SERVICE_URL') . 'url_file/?url=' . $fileurl;
 
             $client = new \GuzzleHttp\Client();
 
@@ -196,8 +206,7 @@ class CalculateHydroDynamics implements ShouldQueue
                         'content-type' => 'application/json'
                     ]
                 );
-            }
-            catch (GuzzleHttp\Exception\ClientException $e) {
+            } catch (GuzzleHttp\Exception\ClientException $e) {
                 $response = $e->getResponse();
                 $responseBodyAsString = $response->getBody()->getContents();
 
@@ -222,6 +231,10 @@ class CalculateHydroDynamics implements ShouldQueue
             }
         }
 
+        if ($this->input['cron']) {
+            Log::channel('calculate_hydro_yesterday:cron')->error('Расчет на '.$this->input['date'].' успешно завершен.');
+        }
+
         if (isset($this->input['calc_export']) && $this->input['calc_export'] == 'true') {
             $this->setOutput(
                 [
@@ -231,7 +244,7 @@ class CalculateHydroDynamics implements ShouldQueue
         }
     }
 
-    protected function storeShortResult (array $data): void
+    protected function storeShortResult(array $data): void
     {
         foreach ($data as $row) {
             $trunkline_point = TrunklinePoint::find($row[self::ID]);
@@ -239,11 +252,12 @@ class CalculateHydroDynamics implements ShouldQueue
             $hydroCalcResult = HydroCalcResult::firstOrCreate(
                 [
                     'date' => Carbon::parse($this->input['date'])->format('Y-m-d'),
+                    'oil_pipe_id' => $trunkline_point->oil_pipe_id,
                     'trunkline_point_id' => $trunkline_point->id,
                 ]
             );
 
-            foreach ($this->hydroCalcShortSchema as  $param => $index) {
+            foreach ($this->hydroCalcShortSchema as $param => $index) {
                 $hydroCalcResult->$param = $row[$index];
             }
 
@@ -251,7 +265,7 @@ class CalculateHydroDynamics implements ShouldQueue
         }
     }
 
-    protected function storeLongResult (array $data): void
+    protected function storeLongResult(array $data): void
     {
         foreach ($data as $row) {
             if (!ctype_digit($row[self::POINTS_OR_SEGMENT])) {
@@ -260,7 +274,8 @@ class CalculateHydroDynamics implements ShouldQueue
                 $trunkline_point = TrunklinePoint::where('name', $pointsNames[0])
                     ->whereHas('trunkline_end_point', function ($query) use ($pointsNames) {
                         return $query->where('name', $pointsNames[1]);
-                    })->first();
+                    })
+                    ->first();
 
                 continue;
             }
@@ -273,7 +288,7 @@ class CalculateHydroDynamics implements ShouldQueue
                 ]
             );
 
-            foreach ($this->hydroCalcLongSchema as  $param => $index) {
+            foreach ($this->hydroCalcLongSchema as $param => $index) {
                 $hydroCalcLong->$param = $row[$index];
             }
 

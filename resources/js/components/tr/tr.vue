@@ -6451,6 +6451,7 @@
 <script src="./tr.js"></script>
 
 <style lang="scss" scoped>
+
 .overflow-auto {
   justify-content: center;
   display: flex;
@@ -6636,6 +6637,7 @@ tr:nth-child(even) {
   background: #272953;
 }
 
+
 .sticky {
   /* position: sticky; */
   top: 0;
@@ -6796,7 +6798,7 @@ table::-webkit-scrollbar-corner {
             align-items: center;
             text-align: center;
             border: 1px solid #ccc;
-            color: #636A99;
+            color: #ffffff;
             margin-left: -1px;
             font-size: 14px;
             &:hover {

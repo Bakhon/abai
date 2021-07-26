@@ -12,7 +12,7 @@ class DailyReportsWaterProduction extends DailyReports
     protected $configurationFileName = 'daily_reports_water_prod';
 
     protected function getData($filter): array {
-        $data = parent::getData($filter);
+        $data = parent::getReports($filter);
         $result = [];
         $plan = $data->sum('plan');
         $fact = $data->sum('fact');

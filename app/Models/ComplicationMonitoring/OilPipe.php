@@ -69,24 +69,7 @@ class OilPipe extends Model
 
     public function hydroCalcLong()
     {
-        return $this->hasMany(HydroCalcLong::class);
-    }
-
-    public function lastHydroCalcLong()
-    {
-        return $this->hydroCalcLong();
-    }
-
-    public function scopeWithLastHydroCalcLong($query)
-    {
-        $query->addSelect(
-            [
-                'last_hydro_calc_long_id' => HydroCalcLong::select('id')
-                    ->whereColumn('oil_pipe_id', 'oil_pipes.id')
-                    ->orderBy('date', 'desc')
-                    ->take(10)
-            ]
-        )->with('lastHydroCalcLong');
+        return $this->hasMany(HydroCalcLong::class)->orderby('segment');
     }
 
     public static function boot() {

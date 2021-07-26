@@ -183,7 +183,7 @@ export default {
     this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
     this.$store.commit("tr/SET_SEARCH", this.searchString);
     this.$store.commit("tr/SET_PAGENUMBER", 1);
-    this.$store.commit("tr/SET_SORTTYPE", "true");
+    this.$store.commit("tr/SET_SORTTYPE", true);
     var today = new Date();
     var mm = today.getMonth() + 1;
     var yyyy = today.getFullYear();
@@ -859,7 +859,14 @@ export default {
           } else {
             this.wells = [];
             this.fullWells = [];
-            console.log("No data");
+            this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+              title: this.trans('app.error'),
+              toaster: "b-toaster-top-center",
+              solid: true,
+              appendToast: false,
+              variant: 'danger',
+            });
+
           }
         })
         .catch((error) => {
@@ -867,7 +874,14 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
-          console.log("search error = ", error);
+          this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
+
         });
     },
   },
