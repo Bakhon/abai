@@ -294,7 +294,11 @@ export default {
             } else if (this.gasProductionButton || this.waterInjectionButton) {
                 return this.dzoNumbers['gas'][dzoName];
             }
-        }
+        },
+
+        getNumberFormat(num) {
+            return (new Intl.NumberFormat("ru-RU").format(num))
+        },
     },
     computed: {
         periodSelectFunc() {

@@ -26,7 +26,13 @@ export default {
                 'oilCondensateProductionButton': this.trans('visualcenter.oilCondensateProductionChartName'),
                 'oilCondensateDeliveryButton': this.trans('visualcenter.oilCondensateDeliveryChartName'),
                 'oilResidue': this.trans('visualcenter.stockOfGoodsDynamic'),
-                'waterInjectionButton': this.trans('injectionWaterChartName')
+                'waterInjectionButton': this.trans('visualcenter.injectionWaterChartName'),
+                'productionNaturalGas': this.trans('visualcenter.productionNaturalGasChartName'),
+                'productionAssociatedGas': this.trans('visualcenter.productionAssociatedGasChartName'),
+                'flaringAssociatedGas': this.trans('visualcenter.flaringAssociatedGasChartName'),
+                'albsenWaterInjection': this.trans('visualcenter.dynamicArtesianWater'),
+                'seaWaterInjection': this.trans('visualcenter.liqOceanDynamic'),
+                'wasteWaterInjection': this.trans('visualcenter.liqStochnayaDynamic'),
             },
             isOilResidueActive: false,
             oilDeliveryFilters: {
@@ -84,12 +90,8 @@ export default {
         },
 
         switchMainMenu(parentButton, childButton,chartName) {
-            this.chartHeadName = this.chartTranslateMapping[parentButton];
+            this.chartHeadName = this.chartTranslateMapping[childButton];
             this.isOilResidueActive = false;
-            if (this.oilDeliveryFilters[childButton]) {
-                this[this.oilDeliveryFilters[childButton]] = true;
-                this.chartHeadName = this.chartTranslateMapping[childButton];
-            }
             this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();
             let self = this;

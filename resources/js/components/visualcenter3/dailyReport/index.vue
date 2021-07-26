@@ -1,5 +1,5 @@
 <template>
-    <div class="page-wrapper">
+    <div class="page-wrapper h-100">
         <div class="page-container row">
             <div class="col-12 mt-3 header">
                 <transition name="bounce">
@@ -704,7 +704,7 @@
    .page-wrapper {
        font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
        position: relative;
-       min-height: 872px;
+       min-height: calc(100vh - 78px);
        background: #272953;
        color: white;
        text-align: center;
@@ -749,7 +749,7 @@
        }
        td {
            text-align: right;
-           font-size: 13px;
+           font-size: 15px;
            font-family: Bold;
            width: 10%;
            border-right: 1px solid #696e96;
