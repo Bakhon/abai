@@ -232,7 +232,7 @@ class CalculateHydroDynamics implements ShouldQueue
         }
 
         if ($this->input['cron']) {
-            Log::channel('calculate_hydro_yesterday:cron')->error('Расчет на '.$this->input['date'].' успешно завершен.');
+            Log::channel('calculate_hydro_yesterday:cron')->info('Расчет на '.$this->input['date'].' успешно завершен.');
         }
 
         if (isset($this->input['calc_export']) && $this->input['calc_export'] == 'true') {
