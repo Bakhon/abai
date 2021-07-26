@@ -102,7 +102,7 @@ export default {
   props: {
     org: {
       required: true,
-      type: String
+      type: Object
     },
     scenarios: {
       required: true,
@@ -215,7 +215,7 @@ export default {
         {
           index: '',
           title: this.trans('economic_reference.export'),
-          dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge_per_ton')}`,
+          dimension: `$ / bbl`,
           values: this.oilPrices.map((oilPrice, index) => this.oilSalePriceExportValue(index)),
           budget2020: this.budget2020Map,
           color: '#272953',
@@ -299,7 +299,12 @@ export default {
     oilPriceScenarios() {
       return this.oilPrices.map(oilPrice =>
           this.scenarios
-              .filter(scenario => scenario.oil_price === oilPrice)
+              .filter(scenario =>
+                  scenario.oil_price === oilPrice &&
+                  scenario.dollar_rate === this.scenario.dollar_rate &&
+                  scenario.coef_cost_WR_payroll === this.scenario.coef_cost_WR_payroll &&
+                  scenario.coef_Fixed_nopayroll === this.scenario.coef_Fixed_nopayroll
+              )
               .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
       )
     },
