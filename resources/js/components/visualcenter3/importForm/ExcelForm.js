@@ -27,6 +27,7 @@ import moment from "moment";
 import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
 import InputDataOperations from "./dataManagers/inputDataOperations";
+import Archieve from "./dataManagers/archieve";
 
 const defaultDzoTicker = "ЭМГ";
 
@@ -469,5 +470,5 @@ export default {
     components: {
         VGrid,
     },
-    mixins: [Visual,TodayDzoData,InputDataOperations],
+    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve],
 };
