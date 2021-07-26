@@ -84,7 +84,7 @@ export default {
   props: {
     org: {
       required: true,
-      type: String
+      type: Object
     },
     scenario: {
       required: true,
