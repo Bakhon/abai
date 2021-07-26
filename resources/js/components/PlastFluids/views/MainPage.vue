@@ -9,8 +9,8 @@
         <info-table inform_data="9" :description="well_head_samples"></info-table>
       </div>
     </div>
-    <p class="filter-header">Недропользователь</p>
-    <div class="filter">
+<!--    <p class="filter-header">Недропользователь</p>-->
+<!--    <div class="filter">
       <div class="user-checkbox">
         <b-form-checkbox-group
             v-model="selected"
@@ -20,8 +20,8 @@
             text-field="name"
             stacked
         ></b-form-checkbox-group>
-      </div>
-      <div class="field-checkbox">
+      </div>-->
+<!--      <div class="field-checkbox">
         <div>
           <b-input-group class="mt-3 input">
             <b-form-input class="input-bg"></b-form-input>
@@ -40,8 +40,8 @@
             ></b-form-checkbox-group>
           </div>
         </div>
-      </div>
-    </div>
+      </div>-->
+<!--    </div>-->
     <div class="buttons-wrapper">
       <button>{{ trans("plast_fluids.data_download") }}</button>
       <button>{{ trans("plast_fluids.data_analysis") }}</button>

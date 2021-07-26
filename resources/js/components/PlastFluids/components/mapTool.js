@@ -1,3 +1,4 @@
+/*
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
 
@@ -101,3 +102,4 @@ export default class MapTool {
              .style("stroke-width", 1.5 / k + "px");
      }
 }
+*/

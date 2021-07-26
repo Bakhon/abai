@@ -3,10 +3,11 @@
    <div class="pf-index-wrapper">
    
        <div class="pf-index-main">
-           <pf-oil-map />
+           <div id="map"></div>
+<!--           <pf-oil-map />-->
        </div>
        <div class="pf-index-menu"><pf-main></pf-main></div>
-       <div class="pf-index-footer"><pf-legend>
+<!--       <div class="pf-index-footer"><pf-legend>
                <div class="WindowFooter">
                    <div class="row">
                        <div class="col-sm-5 borderRightGrey">
@@ -31,17 +32,53 @@
                            </div>
                        </div>
                    </div>
-               </div>
+               </div>-->
            </pf-legend></div>
    </div>
 @endsection
 
-
-
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="./data/line.js"></script>
+<script src="./data/point.js"></script>
+<script src="./data/polygon.js"></script>
+<script src="./data/nepaldata.js"></script>
+<script src="./data/global.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script src="./data/usstates.js"></script>
+<!--<script src="./resources/js/components/PlastFluids/components/mapZoom.js"></script>-->
 {{--<script src="/js/plastFluids/mapdata.js"></script>--}}
 {{--<script src="/js/plastFluids/countrymap.js"></script>--}}
 
 <style lang="scss" scoped>
+  #map {
+    height: 100vh;
+    width: 100%;
+  }
+
+  .info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+  .info h4 {
+    margin: 0 0 5px;
+    color: #777;
+  }
+
+  .legend {
+    line-height: 18px;
+    color: #555;
+  }
+  .legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+  }
     .pf-index-wrapper {
         margin: 0;
         padding: 0;
