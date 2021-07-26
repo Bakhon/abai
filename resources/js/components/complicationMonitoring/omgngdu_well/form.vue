@@ -5,7 +5,7 @@
       <label>{{ trans('monitoring.gu.gu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="gu_id" v-model="formFields.gu_id" @change="chooseGu">
-          <option v-for="gu in gus" v-bind:value="gu.id">{{ gu.name }}</option>
+          <option v-for="gu in gus" :value="gu.id">{{ gu.name }}</option>
         </select>
       </div>
       <label>{{ trans('app.date') }}</label>

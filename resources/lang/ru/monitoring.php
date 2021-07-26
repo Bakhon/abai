@@ -248,7 +248,6 @@ return array (
     'referent_value' => 'Референтное значение',
   ),
   'module_name' => 'Мониторинг осложнений',
-  'monitoring_module' => 'Модуль "Мониторинг осложнений"',
   'tech_map_prototype' => 'Техкарта прототип',
   'gus' => 
   array (
@@ -273,6 +272,8 @@ return array (
     'deleting_error' => 'Ошибка при удалении Скважины',
     'name' => 'Имя Скважины',
     'well' => 'Скважина',
+    'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
+    'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ',
   ),
   'pipe' => 
   array (
