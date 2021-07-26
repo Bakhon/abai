@@ -170,7 +170,7 @@ class CalculateHydroDynamics implements ShouldQueue
         }
 
         if ($isErrors) {
-            if ($this->input['cron']) {
+            if (!empty($this->input['cron'])) {
                 Log::channel('calculate_hydro_yesterday:cron')->error('Нет данных по ОМГ НГДУ');
             } else {
                 $this->setOutput(

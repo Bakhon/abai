@@ -378,5 +378,14 @@ return array (
   'emergencyHistory' => 'История инцидентов',
   'gasRestriction' => 'Ограничение по газу',
   'visualcenter_module' => 'Модуль "Центр визуализации"',
-  'injectionWaterChartName' => 'Динамика закачки воды'
+  'injectionWaterChartName' => 'Динамика закачки воды',
+  'productionNaturalGas' => 'Добыча природного газа',
+  'productionNaturalGasChartName' => 'Динамика добычи природного газа',
+  'productionAssociatedGas' => 'Добыча попутного газа',
+  'productionAssociatedGasChartName' => 'Динамика добычи попутного газа',
+  'flaringAssociatedGas' => 'Сжигание на факелах',
+  'flaringAssociatedGasChartName' => 'Динамика сжигания на факелах попутного газа',
+  'gasOperatingAssets' => 'операц. активы',
+  'injectionArtesianWater' => 'Закачка артезианской воды',
+  'dynamicArtesianWater' => 'Динамика закачки артезианской воды',
 );
