@@ -116,10 +116,6 @@ export default {
       required: true,
       type: Array,
     },
-    data: {
-      required: true,
-      type: Object
-    }
   },
   methods: {
     costPriceValue(index) {

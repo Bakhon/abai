@@ -5,38 +5,30 @@
     </subtitle>
 
     <div class="mt-3 d-flex">
-      <div v-for="i in 5"
-           :key="i"
+      <div v-for="(chunk, index) in tableDataChunks"
+           :key="index"
            class="flex-grow-1">
         <div class="text-center border-grey d-flex bg-header">
           <div class="text-center border-grey" style="flex: 1 0 100px;">
             Скв
           </div>
 
-          <div class="text-center border-grey" style="flex: 0 0 80px;">
-            НГДУ
-          </div>
-
-          <div v-for="(price, index) in oilPrices"
-               :key="index"
+          <div v-for="(price, priceIndex) in oilPrices"
+               :key="`${index}_${priceIndex}`"
                class="text-center border-grey"
                style="flex: 0 0 30px;">
             {{ (+price).toLocaleString() }}$
           </div>
         </div>
 
-        <div v-for="well in 30" :key="well" class="d-flex">
+        <div v-for="uwi in chunk" :key="uwi" class="d-flex">
           <div class="text-center border-grey" style="flex: 1 0 100px;">
-            {{ data[0].uwi }}
+            {{ uwi }}
           </div>
 
-          <div class="text-center border-grey" style="flex: 0 0 80px;">
-            {{ data[0].ngdu }}
-          </div>
-
-          <div v-for="(price, index) in data[0].oilPrices"
-               :key="index"
-               :style="`background: ${getColor()}`"
+          <div v-for="price in oilPrices"
+               :key="price"
+               :style="`background: ${getColor(tableData[uwi].oilPrices[price])}`"
                class="border-grey"
                style="flex: 0 0 30px;">
           </div>
@@ -67,27 +59,63 @@ export default {
       required: true,
       type: Object
     },
-    oilPrices: {
+    // oilPrices: {
+    //   required: true,
+    //   type: Array,
+    // },
+    data: {
       required: true,
-      type: Array,
-    },
+      type: Array
+    }
   },
   methods: {
-    getColor() {
-      return ['#8D2540', '#387249', '#F7BB2E'][Math.floor(Math.random() * 3)];
+    getColor(profitability) {
+      if (profitability === 'profitable') {
+        return '#387249'
+      }
+
+      return profitability === 'profitless_cat_1'
+          ? '#8D2540'
+          : '#F7BB2E'
     }
   },
 
   computed: {
-    data() {
-      return [
-        {
-          uwi: 'UZN_0119',
-          ngdu: 'НГДУ-1',
-          oilPrices: this.oilPrices
+    tableData() {
+      let data = {}
+
+      this.data.forEach(item => {
+        if (data.hasOwnProperty(item.uwi)) {
+          return data[item.uwi].oilPrices[item.oil_price] = item.profitability_12m
         }
-      ]
+
+        data[item.uwi] = {oilPrices: {}}
+
+        data[item.uwi].oilPrices[item.oil_price] = item.profitability_12m
+      })
+
+      return data
     },
+
+    tableDataKeys() {
+      return Object.keys(this.tableData)
+    },
+
+    tableDataChunks() {
+      let result = [];
+
+      let keys = this.tableDataKeys
+
+      for (let i = 10; i > 0; i--) {
+        result.push(keys.splice(0, Math.ceil(keys.length / i)));
+      }
+
+      return result;
+    },
+
+    oilPrices() {
+      return [60]
+    }
   }
 }
 </script>

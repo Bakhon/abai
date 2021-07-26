@@ -30,7 +30,6 @@
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="oilPrices"
-          :data="res.technicalEconomicIndicator"
           class="text-white"/>
 
       <table-oil-price-options
@@ -46,6 +45,7 @@
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="oilPrices"
+          :data="res.wellChanges"
           class="text-white"/>
     </div>
   </div>
