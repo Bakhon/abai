@@ -55,7 +55,7 @@
             "items":[
               {
                 "code": "dend",
-                "type": "date",
+                "type": "datetime",
                 "title": "date_gtm_end",
                 "validation": "nullable|date|after:dbeg",
                 "callbacks": {
