@@ -842,7 +842,7 @@
                                 >
                                 </b-form-checkbox-group>
                               </b-form-group>
-                              <div class="field_filter_text">
+                              <div class="field_filter_text" style="position:relative;">
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
                                   >{{trans('tr.choose_t')}}
                                   </a>
@@ -855,10 +855,10 @@
                         </div>
                       </div>
                     </td>
-                    <td @click="sortBy('rus_wellname')" class="th">
+                    <!-- <td @click="sortBy('rus_wellname')" class="th">
                      <i class="fa fa-fw fa-sort"></i>
-                    </td>
-                  <!-- <td class="th">
+                    </td> -->
+                  <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('rus_wellname')"></i>
                       <div>
                         <b-dropdown id="dropdownFilterCustom" no-caret  toggle-class="drop-filter-custom" >
@@ -891,7 +891,7 @@
                         </b-dropdown>
                       </div>
                     </div>
-                  </td> -->
+                  </td>
                   <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('well_type')"></i>
                       <div class="outer_button_filter" >
@@ -1440,7 +1440,7 @@
                   <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row_index + 1 }}</td>
                   <td v-if="isEdit">{{ row_index + 1 }}</td>
 
-                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.field }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}" :colspan="getRowWidthSpan(row)">{{ row.field }}</td>
                   <td v-if="isEdit">{{ row.field }}</td>
 
                   <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.rus_wellname }}</td>
@@ -4807,7 +4807,7 @@
                   </td>
                   <td v-if="isEdit">{{ row.error_count }}</td>
 
-                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.error_first }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.error_first }} ые</td>
                   <td v-if="isEdit">{{ row.error_first }}</td>
 
                   <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
@@ -6621,7 +6621,6 @@ tr:nth-child(even) {
   margin: 0 10px;
   background: #272953;
 }
-
 
 .sticky {
   /* position: sticky; */

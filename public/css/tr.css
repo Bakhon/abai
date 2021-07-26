@@ -218,7 +218,7 @@ table {
   }
   .field_form_fil.field_form_fil {
     background: #333975!important;
-    width: 213px!important;
+    width: 165px!important;
   }
   .horizon_form_fil.horizon_form_fil {
     background: #333975!important;
@@ -243,6 +243,8 @@ table {
   }
   .external_field_filter {
     width: 251px;
+    overflow-y: scroll;
+    height: calc(100vh - 494px);
   }
   .external_well_type_filter  {
     width: 251px;

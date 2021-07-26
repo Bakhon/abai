@@ -760,6 +760,14 @@ export default {
       }
 
     },
+    getRowWidthSpan (row) {
+      if (row.rus_wellname) {
+          return 0
+      } else {
+          return 2
+      }
+
+    },
 
     getColor(status) {
       if (status === "1") return "#ffff00";
