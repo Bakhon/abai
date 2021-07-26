@@ -26,7 +26,7 @@
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 <strong>{{ $message }}</strong>
             </div>
-    @endif
+        @endif
 
         <form method="post" enctype="multipart/form-data" action="{{ route('tech_refs_import') }}">
             {{ csrf_field() }}
@@ -40,6 +40,11 @@
                         <td width="30%" align="left">
                             <input type="submit" name="upload" class="btn btn-primary"
                                    value="{{ __('forecast.upload') }}">
+                            <a href="/technical_forecast.xlsx"
+                               class="btn btn-primary float-right"
+                               download>
+                                {{ __('economic_reference.download_example')}}
+                            </a>
                         </td>
                     </tr>
                     <tr>
@@ -50,5 +55,5 @@
                 </table>
             </div>
         </form>
-    </div class="container bg-dark text-dark my-3 py-3">
+    </div>
 @endsection
