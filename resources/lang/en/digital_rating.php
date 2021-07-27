@@ -33,4 +33,8 @@ return array (
   'wellNumber' => 'Номер скважины',
   'number' => '№ п/п',
   'horizon' => 'Горизонт',
+  'importPlannedWells' => 'Импорт проектных скважин',
+  'maps' => 'Карты',
+  'tools' => 'Инструменты',
+  'uploadCustomMaps' => 'Загрузить пользовательские карты',
 );

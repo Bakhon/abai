@@ -24,7 +24,7 @@
           <template #header>
             <div class="d-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center">
-                <Icon class="mr-2" fill="var(--a-default)" name="i3d" />
+                <AwIcon class="mr-2" fill="var(--a-default)" name="i3d" />
                 <h5 class="mr-2">3D window 3(Any)</h5>
               </div>
               <Button @click.native="gridSwapperActiveID = 'item1'" i-width="10" i-height="10" color="transparent"
@@ -39,7 +39,7 @@
           <template #header>
             <div class="d-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center">
-                <Icon class="mr-2" fill="var(--a-default)" name="i3d" />
+                <AwIcon class="mr-2" fill="var(--a-default)" name="i3d" />
                 <h5 class="mr-2">2D window 5(Any)</h5>
               </div>
               <Button @click.native="gridSwapperActiveID = 'item2'" i-width="10" i-height="10" color="transparent"
@@ -54,7 +54,7 @@
           <template #header>
             <div class="d-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center">
-                <Icon class="mr-2" fill="var(--a-default)" name="i3d" />
+                <AwIcon class="mr-2" fill="var(--a-default)" name="i3d" />
                 <h5 class="mr-2">Interpretation window 3 (TVD)</h5>
               </div>
               <Button @click.native="gridSwapperActiveID = 'item3'" i-width="10" i-height="10" color="transparent"
@@ -439,7 +439,7 @@ import dropdown from "../components/dropdowns/dropdown";
 import ToolBlock from "../components/toolBlock/ToolBlock";
 import ToolBlockGroup from "../components/toolBlock/ToolBlockGroup";
 import ToolBlockGroupDivider from "../components/toolBlock/ToolBlockGroupDivider";
-import Icon from "../components/icons/Icon"
+import AwIcon from "../components/icons/AwIcon"
 import AwTab from "../components/awTab/AwTab";
 import AwTabContent from "../components/awTab/AwTabContent";
 
@@ -449,7 +449,7 @@ export default {
     Button,
     dropdown,
     ToolBlock,
-    Icon,
+    AwIcon,
     AwTab,
     AwTabContent,
     ToolBlockGroup,
