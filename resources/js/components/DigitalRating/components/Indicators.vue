@@ -4,7 +4,7 @@
       {{ trans('digital_rating.environmentIndicators') }}
       <img src="/img/icons/link.svg" alt="">
     </div>
-    <table class="table table-striped text-center text-white podbor-middle-table h-100">
+    <table class="table text-center text-white rating-table">
       <thead>
         <tr>
           <th class="align-middle" v-for="col in cols" :key="col">
@@ -54,8 +54,5 @@ export default {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
-}
-.podbor-middle-table th {
-  padding: 1.2rem!important;
 }
 </style>

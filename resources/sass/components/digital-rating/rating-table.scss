@@ -1,0 +1,25 @@
+.rating-table {
+  thead {
+    th {
+      font-weight: normal;
+      font-size: 16px;
+      background-color: #333975;
+      border: 1px solid #454D7D;
+    }
+  }
+  tbody {
+    border: 1px solid #454D7D;
+    tr {
+      width: 100%;
+      &:nth-of-type(even) {
+        background-color: rgba(69, 77, 125, 0.322);
+      }
+      &:nth-of-type(odd) {
+        background-color: #363B68;
+      }
+    }
+    td {
+      border: 1px solid #454D7D;
+    }
+  }
+}
