@@ -133,4 +133,34 @@ class Gu extends Model
     {
         return $this->hasMany(LostProfits::class);
     }
+
+    public function buffer_tank()
+    {
+        return $this->hasMany(BufferTank::class);
+    }
+
+    public function pumps()
+    {
+        return $this->hasMany(Pump::class);
+    }
+
+    public function ovens()
+    {
+        return $this->hasMany(Oven::class);
+    }
+
+    public function agzu()
+    {
+        return $this->hasMany(Agzu::class);
+    }
+
+    public function sib()
+    {
+        return $this->hasMany(Sib::class);
+    }
+
+    public function metering_units()
+    {
+        return $this->hasMany(MeteringUnits::class);
+    }
 }
