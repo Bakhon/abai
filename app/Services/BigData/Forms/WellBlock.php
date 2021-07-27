@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\DB;use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 class WellBlock extends PlainForm
 {
     protected $configurationFileName = 'well_block';
+    use DateMoreThanValidationTrait;
 
     public function getCalculatedFields(int $wellId, array $values): array
     {
@@ -36,31 +36,12 @@ class WellBlock extends PlainForm
         ];
     }
 
-    
-    private function isValidDate($wellId, $dbeg):bool
-    {
-           
-        $dbegWellBlock = DB::connection('tbd')
-                    ->table('prod.well_block')
-                    ->where('well', $wellId)
-                    ->orderBy('dbeg', 'desc')
-                    ->get('dbeg')
-                    ->first();
-                    
-        if(!empty($dbegWellBlock)){
-           
-            return $dbeg >= $dbegWellBlock->dbeg;
-        }   
-        return true;
-    }
-
-
     protected function getCustomValidationErrors(): array
     {
         $errors = [];
 
-        if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'))){
-            $errors[$this->request->get('dbeg')][] = trans('bd.validation.dbeg_well_block');
+        if (!$this->isValidDateDbeg($this->request->get('well'),$this->request->get('dbeg'), 'prod.well_block', 'dbeg')){
+            $errors['dbeg'] = trans('bd.validation.dbeg_well_block');
         }
 
         return $errors;

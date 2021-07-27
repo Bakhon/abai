@@ -162,7 +162,8 @@ export default {
     initMap() {
       const map = L.map('map', {
         crs: L.CRS.Simple,
-        minZoom: 1
+        minZoom: 1,
+        maxZoom: 3,
       });
       const bounds = [[0, 1500], [0,1500]];
       map.fitBounds(bounds);
@@ -189,15 +190,15 @@ export default {
         const coordinateEnd = xy(mapsData[i]['x'] + 1, mapsData[i]['y'] + 1);
         L.rectangle([[coordinateStart], [coordinateEnd]], {
           color: mapsData[i]['color'],
-          weight: 3,
+          weight: 6,
           fillColor: mapsData[i]['color'],
           fillOpacity: 1,
-        }).addTo(map).bindPopup('Сектор: ' + mapsData[i]['sector'].toString());
+        }).addTo(map).bindPopup(mapsData[i]['sector'].toString());
       }
 
       map.getBounds().pad(-1);
 
-      map.on('click', this.onMapClick);
+      map.on('dblclick', this.onMapClick);
     },
     onMapClick(e) {
     }

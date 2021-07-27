@@ -38,10 +38,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('receive-non-operating-email:cron')->dailyAt('07:40')->timezone('Asia/Almaty');
         $schedule->command('monitoring-economic-calc:cron')->dailyAt('03:00')->timezone('Asia/Almaty');
         $schedule->command('create-emergency:cron')->dailyAt('08:50')->timezone('Asia/Almaty');
-        $schedule->command('calculate_hydro_yesterday:cron')
-            ->dailyAt('04:00')
-            ->timezone('Asia/Almaty')
-            ->appendOutputTo(storage_path('logs/calculate_hydro_yesterday.log'));
+        $schedule->command('calculate-hydro-yesterday:cron')
+            ->dailyAt('06:00')
+            ->timezone('Asia/Almaty');
 
     }
 
