@@ -188,6 +188,9 @@
 <style scoped lang="scss">
     @import './revogrid.css';
 
+    ::v-deep .el-input__inner {
+        color: white;
+    }
     .status-error {
         color: red;
     }
