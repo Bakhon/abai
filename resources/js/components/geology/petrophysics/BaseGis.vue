@@ -93,7 +93,7 @@ import Button from "../components/buttons/Button";
 import dropdown from "../components/dropdowns/dropdown";
 import ToolBlock from "../components/toolBlock/ToolBlock";
 import AwModal from "../components/notifications/awModal/AwModal";
-import Icon from "../components/icons/Icon"
+import AwIcon from "../components/icons/AwIcon"
 
 import ListOfWells from "./modals/ListOfWells";
 export default {
@@ -103,7 +103,7 @@ export default {
     dropdown,
     ToolBlock,
     AwModal,
-    Icon,
+    AwIcon,
     ListOfWells
   },
   data() {

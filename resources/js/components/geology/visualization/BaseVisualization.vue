@@ -34,7 +34,7 @@
       <template #header>
         <div class="d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center">
-            <Icon class="mr-2" fill="var(--a-default)" name="i3d"/>
+            <AwIcon class="mr-2" fill="var(--a-default)" name="i3d"/>
             <h5 class="mr-2">3D window 3(Any)</h5>
           </div>
           <Button i-width="10" i-height="10" color="transparent" icon="rectArrow" size="small" />
@@ -47,7 +47,7 @@
         <template #header>
           <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-              <Icon class="mr-2" fill="var(--a-default)" name="i2d"/>
+              <AwIcon class="mr-2" fill="var(--a-default)" name="i2d"/>
               <h5 class="mr-2">3D window 3(Any)</h5>
             </div>
             <Button i-width="10" i-height="10" color="transparent" icon="rectArrow" size="small" />
@@ -59,7 +59,7 @@
         <template #header>
           <div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-              <Icon class="mr-2" fill="var(--a-default)" name="interpret"/>
+              <AwIcon class="mr-2" fill="var(--a-default)" name="interpret"/>
               <h5 class="mr-2">Interpretation window 3 (TVD)</h5>
             </div>
             <Button i-width="10" i-height="10" color="transparent" icon="rectArrow" size="small" />
@@ -92,7 +92,7 @@
 <script>
 import Button from "../components/buttons/Button";
 import ToolBlock from "../components/toolBlock/ToolBlock";
-import Icon from "../components/icons/Icon";
+import AwIcon from "../components/icons/AwIcon";
 import dropdown from "../components/dropdowns/dropdown";
 import AwForm from "../components/form/AwForm";
 import AwInput from "../components/form/AwInput";
@@ -102,7 +102,7 @@ export default {
   name: "core",
   components: {
     AwTextarea,
-    Icon,
+    AwIcon,
     Button,
     ToolBlock,
     dropdown,
