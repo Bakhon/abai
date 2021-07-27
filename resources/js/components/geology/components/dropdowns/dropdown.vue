@@ -3,7 +3,7 @@
     <Button @click.native.stop="dropDownOpened = !dropDownOpened" ref="aDropdownTrigger" color="accent-100"
             :class="cDropDownClassTarget">
       <span>{{ cSelected.label || cSelected.value || buttonText }}</span>
-      <Icon width="12" height="9" name="arrowDown" />
+      <AwIcon width="12" height="9" name="arrowDown" />
     </Button>
     <div v-show="dropDownOpened" v-click-outside="closeDropDown" ref="aDropdownTarget" class="a-dropdown__target">
       <button @click="selectOption(option)" :data-value="option.value" v-for="(option, i) in cOptions" :key="i">
@@ -17,7 +17,7 @@
 <script>
 // TODO Доделать варианты пунктов.
 import Button from "../buttons/Button";
-import Icon from "../icons/Icon.vue"
+import AwIcon from "../icons/AwIcon.vue"
 
 export default {
   name: "dropdown",
@@ -38,7 +38,7 @@ export default {
   },
   components: {
     Button,
-    Icon
+    AwIcon
   },
   computed: {
     cDropDownClass(){

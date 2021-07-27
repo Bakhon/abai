@@ -10,7 +10,7 @@
 import iconsImport from "./iconsImport.js";
 
 export default {
-  name: "Icon",
+  name: "AwIcon",
   props: {
     width: {
       type: [String, Number],
