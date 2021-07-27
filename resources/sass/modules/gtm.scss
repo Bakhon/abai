@@ -679,6 +679,11 @@
     .gtm-main-table {
         min-height: 22rem;
     }
+
+    .tree-setting-block div {
+        min-width: 30rem !important;
+    }
+    
 }
 
 @media screen and (max-width : 1500px) {

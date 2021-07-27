@@ -33,8 +33,8 @@ export default {
         return {
             isDatePickerShow: false,
             dateRange: {
-                start: new Date('2020-01-01T00:00:00+00:00'),
-                end: new Date('2020-12-31T23:59:59+00:00'),
+                start: this.$store.getters.dateStart,
+                end: this.$store.getters.dateEnd,
             },
         }
     },
@@ -42,6 +42,7 @@ export default {
         dateStartString: function () {
             if (this.dateRange.start) {
                 return this.dateRange.start.toLocaleDateString();
+                this.$store.mutations(dateRange.start, value)
             }
         },
         dateEndString: function () {
@@ -59,6 +60,8 @@ export default {
             this.isDatePickerShow = false;
             this.changeDateStart(this.dateRange.start);
             this.changeDateEnd(this.dateRange.end);
+            console.log(this.dateRange.start)
+            console.log(this.dateRange.end)
             this.$emit('dateChanged')
         }
     }

@@ -58,7 +58,7 @@
         </div>
         <div class="row m-0 p-1 pt-2">
             <div class="gtm-dark col-9 p-0 gtm-main-table">
-                <div class="position-absolute p-0 pr-2 pt-2 w-100 d-flex justify-content-end">
+                <div class="position-absolute p-0 pl-2 pt-2 w-100 d-flex justify-content-start">
                     <div @click="showMainMap = !showMainMap" class="d-flex cursor-pointer switch-map-button dr-fw-700">
                         <img class="align-middle mr-1" :src="mainBlockButtonIcon" alt="" width="18">
                         <div class="align-middle">{{ mainBlockButtonText }}</div>
@@ -131,10 +131,10 @@
 
         <div class="row p-1">
             <div class="col-6 pr-0">
-                <img src="/img/GTM/demo_chart_1.png" alt="" class="img-fluid">
+                <main-page-chart-1></main-page-chart-1>
             </div>
-            <div class="col-6 p-0 pl-2">
-                <img src="/img/GTM/demo_chart_2.png" alt="" class="img-fluid">
+            <div class="col-6 pl-2">
+                <main-page-chart-2></main-page-chart-2>
             </div>
         </div>
 

@@ -75,7 +75,7 @@
             {{ trans("paegtm.period") }}
           </div>
           <div class="mt-2 row m-0">
-            <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
+            <gtm-date-picker></gtm-date-picker>
           </div>
         </div>
 
@@ -128,7 +128,7 @@
           <div class="block-header p-2 d-flex">
 
             <div class="title-block-tree" @click="showBlock = 1">
-              <img style="padding-right: 10px;" src="./img/potencial-icon.svg" alt="">
+              <img style="padding-right: 10px;" src="../img/potencial-icon.svg" alt="">
               {{ trans("paegtm.potentialSearch") }}
             </div>
 
@@ -169,7 +169,7 @@
           <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 1 }">
             <div class="gtm-dark mt-2 row m-0 p-2">
               <div class="col-1 text-right mt-1 mb-1 p-0">
-                <img src="./img/lens.svg">
+                <img src="../img/lens.svg">
               </div>
               <div class="col-11 m-0 mt-1 mb-1 row p-0">
                 <input class="search-input w-75" type="text" placeholder="Поиск по скважине">
@@ -186,7 +186,7 @@
   </div>
 </template>
 <script>
-import structureMain from './structure_main.json'
+import structureMain from '../mock-data/structure_main.json'
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 export default {
@@ -351,7 +351,7 @@ export default {
                 methods: {
                     handleClick (data) {
                         this.$emit('node-click', {node: data.node, hideIoiMenu: false});
-                    }
+                    },
                 }
             };
         },

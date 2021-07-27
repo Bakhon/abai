@@ -7,12 +7,12 @@
             <span v-if="nodeHasChildren" @click="toggleUl()">
 
               <img width="20" height="20" :src="showChildren ? '/img/GTM/arrow_down.svg' : '/img/GTM/arrow_right.svg'">
-              <img width="20" height="20" src='./img/folder.svg'>
+              <img width="20" height="20" src='../img/folder.svg'>
             </span>
       <span v-if="!nodeHasChildren && !node.value">
         <template>
           <input v-if="this.checkable === true" type="checkbox">
-          <img v-else width="20" height="20" src='./img/file.svg'>
+          <img v-else width="20" height="20" src='../img/file.svg'>
         </template>
       </span>
       <span v-if="this.checkable !== undefined"></span>
