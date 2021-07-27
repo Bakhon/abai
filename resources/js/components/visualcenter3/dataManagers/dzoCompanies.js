@@ -140,9 +140,8 @@ export default {
 
         calculateDzoCompaniesSummary() {
             let emptyDzo = [];
-            this.dzoSummaryForTable = this.dzoCompanySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+            this.dzoSummaryForTable = _.cloneDeep(this.dzoCompanySummary).filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             let chartOutput = this.getFilteredForChartBySelectedCompanies();
-
             let summaryForChart = this.getSumForChart(chartOutput);
             this.exportDzoCompaniesSummaryForChart(summaryForChart);
             if (this.gasProductionButton || this.waterInjectionButton) {
@@ -207,6 +206,7 @@ export default {
                 _.forEach(this.dzoCompanies, function (dzo) {
                     _.set(dzo, 'selected', true);
                 });
+                this.changeDate();
                 this.selectDzoCompanies();
             }
         },
@@ -282,9 +282,19 @@ export default {
             });
         },
         getFilteredCompaniesList(data) {
-            let self = this;
+            let condensateMapping = {
+                'ОМГК': 'ОМГ',
+                'ПККР': 'ПКК',
+                'КГМКМГ': 'КГМ'
+            };
+            let companies = _.cloneDeep(this.selectedDzoCompanies);
+            for (let i in companies) {
+                if (condensateMapping[companies[i]] && !companies.includes(condensateMapping[companies[i]])) {
+                    companies[i] = condensateMapping[companies[i]];
+                }
+            }
             return _.filter(data, function (item) {
-                return self.selectedDzoCompanies.includes(item.dzo);
+                return companies.includes(item.dzo);
             });
         },
 
