@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Refs;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Technical\ImportExcelTechnicalDataRequest;
 use App\Imports\TechnicalDataForecastImport;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class TechnicalDataController extends Controller
@@ -16,19 +18,29 @@ class TechnicalDataController extends Controller
      * @return Response
      */
 
-    public function refsList(){
+    public function refsList()
+    {
         return view('technical_forecast.list');
     }
 
-    public function uploadExcel(){
+    public function uploadExcel()
+    {
         return view('technical_forecast.import_excel');
     }
-    public function importExcel(Request $request){
-        $user_id = auth()->id();
-        $file_name = $request->select_file->getClientOriginalName();
-        $file_name = pathinfo($file_name, PATHINFO_FILENAME);
-        Excel::import(new TechnicalDataForecastImport($user_id, $file_name), $request->select_file);
-        return back()->with('success', 'Загрузка прошла успешно.');
-    }
 
+    public function importExcel(ImportExcelTechnicalDataRequest $request): RedirectResponse
+    {
+        DB::transaction(function () use ($request) {
+            $fileName = pathinfo(
+                $request->file->getClientOriginalName(),
+                PATHINFO_FILENAME
+            );
+
+            $import = new TechnicalDataForecastImport(auth()->id(), $fileName);
+
+            Excel::import($import, $request->file);
+        });
+
+        return back()->with('success', __('app.success'));
+    }
 }
