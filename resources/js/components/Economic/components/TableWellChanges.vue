@@ -13,6 +13,10 @@
             Скв
           </div>
 
+          <div class="text-center border-grey" style="flex: 1 0 100px;">
+            op_profit
+          </div>
+
           <div v-for="(price, priceIndex) in oilPrices"
                :key="`${index}_${priceIndex}`"
                class="text-center border-grey"
@@ -24,6 +28,10 @@
         <div v-for="uwi in chunk" :key="uwi" class="d-flex">
           <div class="text-center border-grey" style="flex: 1 0 100px;">
             {{ uwi }}
+          </div>
+
+          <div>
+            {{ tableData[uwi].operating_profit_12m }}
           </div>
 
           <div v-for="price in oilPrices"
@@ -86,10 +94,14 @@ export default {
 
       this.data.forEach(item => {
         if (data.hasOwnProperty(item.uwi)) {
+          if (data[item.uwi].oilPrices.hasOwnProperty(item.oil_price)) return
+
           return data[item.uwi].oilPrices[item.oil_price] = item.profitability_12m
+
+          return data[item.uwi].operating_profit_12m = item.operating_profit_12m
         }
 
-        data[item.uwi] = {oilPrices: {}}
+        data[item.uwi] = {oilPrices: {}, operating_profit_12m: item.operating_profit_12m}
 
         data[item.uwi].oilPrices[item.oil_price] = item.profitability_12m
       })
@@ -106,7 +118,7 @@ export default {
 
       let keys = this.tableDataKeys
 
-      for (let i = 10; i > 0; i--) {
+      for (let i = 4; i > 0; i--) {
         result.push(keys.splice(0, Math.ceil(keys.length / i)));
       }
 

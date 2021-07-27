@@ -16,7 +16,7 @@ class EconomicOptimizationController extends Controller
 {
     protected $druidClient;
 
-    const DATA_SOURCE = 'economic_scenario_test_v10';
+    const DATA_SOURCE = 'economic_scenario_test_v12';
 
     const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_test_v11';
 
@@ -206,6 +206,7 @@ class EconomicOptimizationController extends Controller
         return $builder
             ->select($columns)
             ->orderBy('operating_profit_12m', 'asc')
+            ->orderBy('oil_price', 'asc')
             ->groupBy()
             ->data();
     }
