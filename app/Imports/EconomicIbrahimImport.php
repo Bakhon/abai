@@ -22,7 +22,7 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
 
     const CHUNK = 1000;
 
-    const ORG_COLUMN = 'org';
+    const ORG_COLUMN = 'Компания';
 
     function __construct(int $userId, string $fileName, bool $isForecast)
     {
@@ -44,7 +44,7 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
             return null;
         }
 
-        $companyName = $row[1];
+        $companyName = $row[0];
 
         $companyId = $this->companies[$companyName]
             ?? EcoRefsCompaniesId::query()
@@ -57,17 +57,18 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
         return new EcoRefsCost([
             "sc_fa" => $this->scFaId,
             "company_id" => $companyId,
-            "date" => $row[3],
-            "variable" => round($row[4], 2),
-            "fix_noWRpayroll" => round($row[5], 2),
-            "fix_payroll" => round($row[6], 2),
-            "fix_nopayroll" => round($row[7], 2),
-            "fix" => round($row[8], 2),
-            "gaoverheads" => round($row[9], 2),
-            "wr_nopayroll" => round($row[10], 2),
-            "wr_payroll" => round($row[11], 2),
-            "wo" => round($row[12], 2),
-            "amort" => isset($round[13]) ? round($row[13], 2) : null,
+            "date" => $row[1],
+            "variable" => round($row[2], 2),
+            "fix_noWRpayroll" => round($row[3], 2),
+            "fix_payroll" => round($row[4], 2),
+            "fix_nopayroll" => round($row[5], 2),
+            "fix" => round($row[6], 2),
+            "gaoverheads" => round($row[7], 2),
+            "wr_nopayroll" => round($row[8], 2),
+            "wr_payroll" => round($row[9], 2),
+            "wo" => round($row[10], 2),
+            "net_back" => round($row[11], 2),
+            "amort" => isset($round[12]) ? round($row[12], 2) : null,
             "author_id" => $this->userId,
             "log_id" => $this->logId
         ]);
