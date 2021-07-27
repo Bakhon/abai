@@ -93,10 +93,6 @@ class BufferTankController extends CrudController
             ]
         ];
 
-        // if(auth()->user()->can('monitoring create '.$this->modelName)) {
-        //     $params['links']['create'] = route('buffer_tank.create');
-        // }
-
         return view('complicationMonitoring.buffer_tank.index', compact('params'));
     }
 
