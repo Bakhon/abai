@@ -102,7 +102,7 @@ export default {
                     'КПО': this.trans("visualcenter.consolidatedDzoNameMapping.KPO"),
                     'НКО': this.trans("visualcenter.nko") + ' (8.44%)',
                     'ТП': this.trans("visualcenter.tp") + ' (50%*33%)',
-                    'УО': this.trans("visualcenter.consolidatedDzoNameMapping.YO") + ' (100%)',
+                    'УО': this.trans("visualcenter.consolidatedDzoNameMapping.YO"),
                     'ПКК': 'АО "ПККР" (100%*33%)',
                     'oilByKMG': 'Всего добыча нефти и конденсата с учетом доли участия АО НК "КазМунайГаз"',
                     'condensateByKMG': 'в т.ч.: газовый конденсат',
@@ -174,7 +174,30 @@ export default {
                         'planOpecByDay': 'plan_kondensat_dlv',
                     }
                 },
-            }
+            },
+            timeouts: {
+                'firstLoading': 0,
+                'type': 0,
+                'opek': 0
+            },
+            timers: {
+                'type': 30000,
+                'opek': 15000
+            },
+            isTypeTimerActive: true,
+            timeStart: new Date().getTime(),
+            typeRemainingTime: 0,
+            decreaseReasonMapping: [
+                'accident_explanation_reasons',
+                'gas_restriction_explanation_reasons',
+                'impulse_explanation_reasons',
+                'opec_explanation_reasons',
+                'other_explanation_reasons',
+                'restriction_kto_explanation_reasons',
+                'shutdown_explanation_reasons'
+            ],
+            isModalActive: false,
+            decreaseReason: ''
         }
     },
     methods: {
@@ -196,9 +219,9 @@ export default {
         },
         getRowClass(index) {
             if (index % 2 === 0) {
-                return 'background-light';
+                return 'dzo-row_light';
             } else {
-                return 'background-dark';
+                return 'dzo-row_dark';
             }
         },
         getFormattedNumber(num) {
@@ -404,6 +427,7 @@ export default {
                 template.yearlyPlan = yearlyPlanMapping[dzoName];
                 template.monthlyPlan = dzoRecord[typeMapping.oil.planByDay] * moment().daysInMonth();
                 template.monthlyPlanOpec = dzoRecord[typeMapping.oil.planOpecByDay] * moment().daysInMonth();
+                template.reason = this.getReason(dzoRecord);
             } else {
                 let dzoRecord = this.getDzoRecord(this.productionByDay,mapping[dzoName]);
                 template.planByDay = dzoRecord[typeMapping.condensate.planByDay];
@@ -412,8 +436,20 @@ export default {
                 template.yearlyPlan = yearlyPlanMapping[dzoName];
                 template.monthlyPlan = dzoRecord[typeMapping.condensate.planByDay] * moment().daysInMonth();
                 template.monthlyPlanOpec = dzoRecord[typeMapping.condensate.planByDay] * moment().daysInMonth();
+                template.reason = this.getReason(dzoRecord);
             }
             return template;
+        },
+        getReason(dzo) {
+            let reasons = [];
+            if (dzo.import_decrease_reason) {
+                _.forEach(this.decreaseReasonMapping, (key) => {
+                    if (dzo.import_decrease_reason[key] !== null) {
+                        reasons.push(dzo.import_decrease_reason[key]);
+                    }
+                });
+            }
+            return reasons;
         },
         getByPeriod(dzoName,template,input,periodName,typeMapping) {
             let mapping = {
@@ -657,6 +693,40 @@ export default {
                 return 'tdStyleLight2'
             }
         },
+        switchTimers() {
+            if (this.isTypeTimerActive) {
+                this.isTypeTimerActive = false;
+                this.remainingTime = new Date().getTime() - this.timeStart;
+                clearTimeout(this.timeouts.firstLoading);
+                clearTimeout(this.timeouts.type);
+                clearTimeout(this.timeouts.opek);
+            } else {
+                this.isTypeTimerActive = true;
+                this.timeouts.type = setTimeout(function changeType() {
+                    this.isProduction = !this.isProduction;
+                    this.timeStart = new Date().getTime();
+                    this.timeouts.type = setTimeout(changeType,this.timers.type);
+                    this.timeouts.opek = setTimeout(() => {
+                        this.isOpecActive = !this.isOpecActive;
+                    }, this.timers.opek);
+                }.bind(this), this.remainingTime);
+            }
+        },
+        mouseOver(event, reason) {
+            if (Array.isArray(reason) && reason.length) {
+                this.isModalActive = true;
+                this.decreaseReason = reason.join(",\n");
+                $('#decreaseReason').css('display', 'block');
+            } else {
+                this.decreaseReason = '';
+                $('#decreaseReason').css('display', 'none');
+            }
+            $('#decreaseReason').css('top', event.screenY - 225);
+            $('#decreaseReason').css('left', event.screenX - 20);
+        },
+        mouseLeave() {
+           this.isModalActive = false;
+        }
     },
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
@@ -666,15 +736,18 @@ export default {
         this.updateProductionByPeriod();
         this.fillTable();
         this.$store.commit('globalloading/SET_LOADING', false);
-        setTimeout(() => {
+        this.timeouts.firstLoading = setTimeout(() => {
             this.isOpecActive = !this.isOpecActive;
-        }, 15000);
-        setInterval(() => {
-           this.isProduction = !this.isProduction;
-            setTimeout(() => {
+        }, this.timers.opek);
+        this.timeStart = new Date().getTime();
+        this.timeouts.type = setTimeout(function changeType() {
+            this.isProduction = !this.isProduction;
+            this.timeStart = new Date().getTime();
+            this.timeouts.type = setTimeout(changeType,this.timers.type);
+            this.timeouts.opek = setTimeout(() => {
                 this.isOpecActive = !this.isOpecActive;
-            }, 15000);
-        }, 30000);
+            }, this.timers.opek);
+        }.bind(this), this.timers.type);
     },
     watch: {
         isProduction: function() {

@@ -25,6 +25,6 @@ class Material extends Model
 
     public function oilPipes()
     {
-        return $this->hasMany(OilPipe::class);
+        return $this->setConnection('tbd_cmon')->hasMany(OilPipe::class);
     }
 }

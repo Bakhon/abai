@@ -91,7 +91,8 @@ abstract class TableForm extends BaseForm
 
         return [
             'params' => $params,
-            'fields' => $this->getFields()->pluck('', 'code')->toArray()
+            'fields' => $this->getFields()->pluck('', 'code')->toArray(),
+            'available_actions' => $this->getAvailableActions()
         ];
     }
 
@@ -333,6 +334,18 @@ abstract class TableForm extends BaseForm
             );
         } else {
             $wellsQuery->where('id', $id);
+        }
+
+        if (isset($params['filter']['well_category'])) {
+            $wellsQuery->whereHas(
+                'category',
+                function ($query) use ($params) {
+                    return $query
+                        ->select('dict.well_category_type.id')
+                        ->from('dict.well_category_type')
+                        ->whereIn('code', $params['filter']['well_category']);
+                }
+            );
         }
 
         if (isset($params['filter']['row_id'])) {

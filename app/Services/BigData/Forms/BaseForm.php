@@ -62,7 +62,8 @@ abstract class BaseForm
     {
         return [
             'params' => $this->params(),
-            'fields' => $this->getFields()->pluck('', 'code')->toArray()
+            'fields' => $this->getFields()->pluck('', 'code')->toArray(),
+            'available_actions' => $this->getAvailableActions()
         ];
     }
 
@@ -99,6 +100,27 @@ abstract class BaseForm
     protected function getCustomValidationErrors(): array
     {
         return [];
+    }
+
+    protected function getAvailableActions(): array
+    {
+        $defaultActions = [
+            'create',
+            'update',
+            'view history',
+            'delete',
+        ];
+
+        $actions = $this->params()['available_actions'] ?? $defaultActions;
+
+        $actions = array_filter(
+            $actions,
+            function ($action) {
+                return auth()->user()->can("bigdata {$action} {$this->configurationFileName}");
+            }
+        );
+
+        return $actions;
     }
 
     private function validate(): void

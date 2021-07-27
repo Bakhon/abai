@@ -18,7 +18,9 @@ class EcoRefsCostController extends Controller
 {
     public function index(): View
     {
-        return view('eco_refs_cost.index');
+        $isForecast = request()->query('is_forecast');
+
+        return view('eco_refs_cost.index', compact('isForecast'));
     }
 
     public function edit(int $id): View
@@ -94,7 +96,9 @@ class EcoRefsCostController extends Controller
 
     public function uploadExcel(): View
     {
-        return view('eco_refs_cost.import_excel');
+        $isForecast = request()->query('is_forecast');
+
+        return view('eco_refs_cost.import_excel', compact('isForecast'));
     }
 
     public function importExcel(ImportExcelEcoRefsCostRequest $request): RedirectResponse

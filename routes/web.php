@@ -28,23 +28,19 @@ Route::group(
         Route::group(
             ['middleware' => 'auth'],
             function () {
-                Route::get("/geteconimicdata", "EconomicController@getEconomicData");
-                Route::post("/export-economic-data", "EconomicController@exportEconomicData");
-
                 Route::post("/corrosion", "DruidController@corrosion");
                 Route::get(
                     '/',
                     function () {
                         return view('welcome');
                     }
-                )->name('mainpage');                           
-                Route::get('/economic/nrs', 'EconomicController@index')->name('economic');
-                Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
-                Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
-                Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name(
-                    'geteconomicpivotdata'
-                );
-                Route::get('/getoilpivotdata', 'EconomicController@getOilPivotData')->name('getoilpivotdata');
+                )->name('mainpage');
+
+                Route::get('/economic/nrs', 'Economic\EconomicNrsController@index')->name('economic_nrs');
+                Route::get('/economic/nrs/get-data', "Economic\EconomicNrsController@getData");
+                Route::post('/economic/nrs/export-data', "Economic\EconomicNrsController@exportData");
+                Route::get('/economic/optimization', 'Economic\EconomicOptimizationController@index')->name('economic_optimization');
+                Route::get('/economic/optimization/get-data', 'Economic\EconomicOptimizationController@getData');
 
                 Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
                 Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
@@ -114,6 +110,7 @@ Route::group(
                 Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
 
                 Route::get('organizations', 'OrganizationsController@index')->name('organizations');
+                Route::get('user_organizations', 'OrganizationsController@getUserOrganizations')->name('user_organizations');
                 Route::get('fields', 'FieldController@index')->name('fields');
 
                 Route::get('profile', 'UserController@profile')->name('profile');
