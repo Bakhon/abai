@@ -90,7 +90,7 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
 
     private function getCdngId(array $row): int
     {
-        $name = $row[11];
+        $name = $row[10];
 
         if (isset($this->cdngIds[$name])) {
             return $this->cdngIds[$name];
