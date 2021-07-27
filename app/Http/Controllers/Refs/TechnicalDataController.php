@@ -25,7 +25,9 @@ class TechnicalDataController extends Controller
 
     public function uploadExcel()
     {
-        return view('technical_forecast.import_excel');
+        $mimeTypes = ImportExcelTechnicalDataRequest::MIME_TYPES;
+
+        return view('technical_forecast.import_excel', compact('mimeTypes'));
     }
 
     public function importExcel(ImportExcelTechnicalDataRequest $request): RedirectResponse

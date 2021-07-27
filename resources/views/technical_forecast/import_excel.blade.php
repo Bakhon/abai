@@ -44,7 +44,7 @@
             <div class="form-group">
                 <input type="file"
                        name="file"
-                       accept="{{\App\Http\Requests\Technical\ImportExcelTechnicalDataRequest::MIME_TYPES}}"
+                       accept="{{$mimeTypes}}"
                        class="form-control-file"/>
 
                 <div class="mt-3">
