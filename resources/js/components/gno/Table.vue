@@ -1217,10 +1217,7 @@
                       }}{{trans('measurements.m')}}
                     </div>
                     <div class="shgn-image-text image-text-8">{{trans('pgno.tekushii_zaboi')}} {{ this.curr }}{{trans('measurements.m')}}</div>
-
-                    <img class="podborgnoimg"
-                         src="./images/shgn.png"
-                         alt="podbor-gno"/>
+                      <shgn-img class="podborgnoimg"></shgn-img>
                   </div>
 
                       

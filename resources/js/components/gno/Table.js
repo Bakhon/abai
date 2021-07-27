@@ -293,7 +293,9 @@ export default {
       dataNNO: "2020-11-01",
       nearWells: [],
       windowWidth: null,
-
+      stup: null,
+      heavyDown: null,
+      komponovka: null,
       wellOkr: null,
       piOkr: null,
       khOkr: null,
@@ -1604,8 +1606,12 @@ export default {
     },
 
     onPgnoClick() {
+      this.stup = this.$store.getters.stupColumns
+      this.heavyDown = this.$store.getters.heavyDown
+      this.komponovka = this.$store.getters.komponovka
+      console.log(this.stup, this.heavyDown, this.komponovka)
       this.nktExist("pgno")
-      if (this.isSkError || !this.sk || this.sk=="0") {
+      if (this.isSkError || !this.sk || this.sk == "0") {
         this.$notify({
           message: this.trans('pgno.notify_error_sk'),
           type: 'error',
