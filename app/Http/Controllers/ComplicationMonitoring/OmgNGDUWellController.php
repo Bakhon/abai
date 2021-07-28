@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
-use App\Filters\BaseFilter;
 use App\Filters\OmgNGDUWellFilter;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgNGDUWellRequest;
 use App\Http\Resources\OmgNGDUWellListResource;
-use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use App\Models\ComplicationMonitoring\Well;
 use App\Models\ComplicationMonitoring\Zu;
@@ -243,7 +241,7 @@ class OmgNGDUWellController extends CrudController
     }
 
 
-    protected function getFilteredQuery($filter, $query = null): BaseFilter
+    protected function getFilteredQuery($filter, $query = null): Illuminate\Database\Eloquent\Builder
     {
         return (new OmgNGDUWellFilter($query, $filter))->filter();
     }
