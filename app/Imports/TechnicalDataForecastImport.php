@@ -33,19 +33,21 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
 
     protected $companyIds = [];
 
-    const CHUNK = 1000;
+    const COLUMNS = [
+        'well_id' => 0,
+        'date' => 1,
+        'oil' => 2,
+        'liquid' => 3,
+        'days_worked' => 4,
+        'prs' => 5,
+        'company_id' => 6,
+        'field_id' => 7,
+        'ngdu_id' => 8,
+        'gu_id' => 9,
+        'cdng_id' => 10,
+    ];
 
-    const WELL_ID = 0;
-    const DATE = 1;
-    const OIL = 2;
-    const LIQUID = 3;
-    const DAYS_WORKED = 4;
-    const PRS = 5;
-    const COMPANY_ID = 6;
-    const FIELD_ID = 7;
-    const NGDU_ID = 8;
-    const GU_ID = 9;
-    const CDNG_ID = 10;
+    const CHUNK = 1000;
 
     function __construct(int $userId, string $fileName)
     {
@@ -62,7 +64,7 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
 
     public function model(array $row): ?TechnicalDataForecast
     {
-        if (!isset($row[self::WELL_ID]) || $row[self::WELL_ID] === 'Скважина') {
+        if (!isset($row[self::COLUMNS['well_id']]) || $row[self::COLUMNS['well_id']] === 'Скважина') {
             return null;
         }
 
@@ -71,18 +73,18 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
             "author_id" => $this->userId,
             "log_id" => $this->logId,
             "gu_id" => $this->getGuId($row),
-            "well_id" => $row[self::WELL_ID],
-            "date" => Date::excelToDateTimeObject($row[self::DATE]),
-            "oil" => round($row[self::OIL], 2),
-            "liquid" => round($row[self::LIQUID], 2),
-            "days_worked" => round($row[self::DAYS_WORKED], 2),
-            "prs" => $row[self::PRS],
+            "well_id" => $row[self::COLUMNS['well_id']],
+            "date" => Date::excelToDateTimeObject($row[self::COLUMNS['date']]),
+            "oil" => round($row[self::COLUMNS['oil']], 2),
+            "liquid" => round($row[self::COLUMNS['liquid']], 2),
+            "days_worked" => round($row[self::COLUMNS['days_worked']], 2),
+            "prs" => $row[self::COLUMNS['prs']],
         ]);
     }
 
     private function getGuId(array $row): int
     {
-        $name = $row[self::GU_ID];
+        $name = $row[self::COLUMNS['gu_id']];
 
         if (isset($this->guIds[$name])) {
             return $this->guIds[$name];
@@ -100,7 +102,7 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
 
     private function getCdngId(array $row): int
     {
-        $name = $row[self::CDNG_ID];
+        $name = $row[self::COLUMNS['cdng_id']];
 
         if (isset($this->cdngIds[$name])) {
             return $this->cdngIds[$name];
@@ -118,7 +120,7 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
 
     private function getNgduId(array $row): int
     {
-        $name = $row[self::NGDU_ID];
+        $name = $row[self::COLUMNS['ngdu_id']];
 
         if (isset($this->ngduIds[$name])) {
             return $this->ngduIds[$name];
@@ -136,7 +138,7 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
 
     private function getFieldId(array $row): int
     {
-        $name = $row[self::FIELD_ID];
+        $name = $row[self::COLUMNS['field_id']];
 
         if (isset($this->fieldIds[$name])) {
             return $this->fieldIds[$name];
@@ -154,7 +156,7 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
 
     private function getCompanyId(array $row): int
     {
-        $name = $row[self::COMPANY_ID];
+        $name = $row[self::COLUMNS['company_id']];
 
         if (isset($this->companyIds[$name])) {
             return $this->companyIds[$name];
