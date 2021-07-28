@@ -6,25 +6,11 @@ namespace App\Services\BigData\Forms;
 
 use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Well;
-use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use Illuminate\Support\Facades\DB;
 
-class WellTechChangeTap extends PlainForm
+class WellTechCancelDisconnect extends PlainForm
 {
-    protected $configurationFileName = 'well_tech_change_tap';
-
-    use DateMoreThanValidationTrait;
-
-    protected function getCustomValidationErrors(): array
-    {
-        $errors = [];
-
-        if (!$this->isValidDate($this->request->get('well'), $this->request->get('dbeg'), 'prod.well_tech', 'dend')) {
-            $errors['dbeg'][] = trans('bd.validation.dbeg');
-        }
-
-        return $errors;
-    }
+    protected $configurationFileName = 'well_tech_cancel_disconnect';
 
     public function submit(): array
     {
@@ -38,7 +24,7 @@ class WellTechChangeTap extends PlainForm
             $oldRow = DB::connection('tbd')
                 ->table($tableName)
                 ->where('well', $data['well'])
-                ->orderBy('dbeg', 'desc')
+                ->orderBy('dend', 'desc')
                 ->first();
 
             DB::connection('tbd')
@@ -46,18 +32,12 @@ class WellTechChangeTap extends PlainForm
                 ->where('id', $oldRow->id)
                 ->update(
                     [
-                        'dend' => $data['dbeg']
+                        'dend' => Well::DEFAULT_END_DATE
                     ]
                 );
 
-            $data['tech'] = $oldRow->tech;
-            $data['dend'] = Well::DEFAULT_END_DATE;
-            $id = DB::connection('tbd')
-                ->table($tableName)
-                ->insertGetId($data);
-
             DB::connection('tbd')->commit();
-            return (array)DB::connection('tbd')->table($tableName)->where('id', $id)->first();
+            return (array)DB::connection('tbd')->table($tableName)->where('id', $oldRow->id)->first();
         } catch (\Exception $e) {
             DB::connection('tbd')->rollBack();
             throw new SubmitFormException($e->getMessage());
