@@ -38,6 +38,10 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\GisMethodType;
+use App\Models\BigData\Dictionaries\SaturationType;
+use App\Models\BigData\Dictionaries\GeoRockType;
+use App\Models\BigData\Dictionaries\Geo;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -178,6 +182,22 @@ class DictionaryService
         'wells' => [
             'class' => Well::class,
             'name_field' => 'uwi'
+        ],
+        'gis_method_types' => [
+            'class' => GisMethodType::class,
+            'name_field' => 'name_ru'
+        ],
+        'saturation_types' => [
+            'class' => SaturationType::class,
+            'name_field' => 'name_ru'
+        ],
+        'geo_rock_types' => [
+            'class' => GeoRockType::class,
+            'name_field' => 'name_ru'
+        ],
+        'geo' => [
+            'class' => Geo::class,
+            'name_field' => 'name_ru'
         ]
     ];
 
