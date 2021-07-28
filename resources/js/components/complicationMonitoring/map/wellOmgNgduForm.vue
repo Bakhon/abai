@@ -99,9 +99,7 @@ export default {
         let data = response.data;
         this.showToast(data.message, this.trans('app.success'), data.status);
 
-        if (data.omgngdu_well) {
-          this.currentOmgngduWell = data.omgngdu_well;
-        }
+        this.getOmgNgduData();
 
         this.SET_LOADING(false);
       });
