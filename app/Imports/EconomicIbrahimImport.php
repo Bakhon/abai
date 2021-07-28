@@ -68,7 +68,7 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
             "wr_payroll" => round($row[9], 2),
             "wo" => round($row[10], 2),
             "net_back" => round($row[11], 2),
-            "amort" => isset($round[12]) ? round($row[12], 2) : null,
+            "amort" => isset($row[12]) ? round($row[12], 2) : null,
             "author_id" => $this->userId,
             "log_id" => $this->logId
         ]);
