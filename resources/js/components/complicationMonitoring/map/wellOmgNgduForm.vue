@@ -103,7 +103,6 @@ export default {
 
         this.SET_LOADING(false);
       });
-
     }
   }
 }
