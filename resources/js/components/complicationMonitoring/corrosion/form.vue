@@ -7,7 +7,7 @@
           <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>{{ trans('monitoring.corrosion.fields.start_date_of_background_corrosion') }}</label>
+        <label>{{ trans('monitoring.corrosion.fields.start_date_of_background_corrosion') }}</label>
       <div class="form-label-group">
         <datetime
             type="date"

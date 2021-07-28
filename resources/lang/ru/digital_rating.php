@@ -33,4 +33,8 @@ return array (
   'dynamicLevel' => 'Динамический уровень',
   'number' => '№ п/п',
   'horizon' => 'Горизонт',
+  'maps' => 'Карты',
+  'uploadCustomMaps' => 'Загрузить пользовательские карты',
+  'importPlannedWells' => 'Импорт проектных скважин',
+  'tools' => 'Инструменты',
 );
