@@ -1,0 +1,30 @@
+{
+  "type": "plain",
+  "table": "prod.well_tech",
+  "tabs": [
+    {
+      "title": "main",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "tech",
+                "type": "dict_tree",
+                "dict": "techs",
+                "title": "tech",
+                "validation": "required"
+              },
+              {
+                "code": "dend",
+                "type": "date",
+                "title": "date_end"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

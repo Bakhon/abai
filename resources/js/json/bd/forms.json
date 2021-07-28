@@ -165,8 +165,20 @@
         "isVisible": false
     },
     {
-        "code": "cancel_connection",
-        "name": "Изменить данные подключения к узлу",
+        "code": "well_tech_disconnect",
+        "name": "Отключить от узла",
+        "type": "plain",
+        "isVisible": false
+    },
+    {
+        "code": "well_tech_change_disconnect",
+        "name": "Изменить данные отключения от узла",
+        "type": "plain",
+        "isVisible": false
+    },
+    {
+        "code": "well_tech_cancel_disconnect",
+        "name": "Отменить отключение от узла",
         "type": "plain",
         "isVisible": false
     },
