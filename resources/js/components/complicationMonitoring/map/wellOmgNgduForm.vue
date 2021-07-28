@@ -30,10 +30,10 @@ export default {
   },
   beforeCreate: function () {
     this.axios.get(this.localeUrl("/omgngdu_well/validation-params")).then((response) => {
-      let data = response.data;
+      let validationParams = response.data;
 
-      if (data) {
-        this.validationParams = data.validationParams;
+      if (!_.isEmpty(validationParams)) {
+        this.validationParams = validationParams;
       }
     });
   },
@@ -53,9 +53,9 @@ export default {
 
       this.SET_LOADING(true);
       this.axios.post(this.localeUrl("/omgngdu_well/get-omgngdu"), params).then((response) => {
-        let omgngdu_well = response.data.omgngdu_well;
+        let omgngdu_well = response.data;
 
-        if (omgngdu_well) {
+        if (!_.isEmpty(omgngdu_well)) {
           this.setOmgNgduParams(omgngdu_well);
           this.currentOmgngduWell = omgngdu_well;
         } else {
@@ -110,7 +110,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

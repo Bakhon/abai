@@ -249,11 +249,7 @@ class OmgNGDUWellController extends CrudController
     {
         $validationParams = $this->getValidationParams('omgngdu_well');
 
-        return response()->json(
-            [
-                'validationParams' => $validationParams
-            ]
-        );
+        return response()->json($validationParams);
     }
 
     public function getOmgNgdu (Request $request): \Symfony\Component\HttpFoundation\Response
@@ -264,10 +260,6 @@ class OmgNGDUWellController extends CrudController
         $omgngdu_well = OmgNGDUWell::where('well_id', $well_id)
             ->where('date', $date)->first();
 
-        return response()->json(
-            [
-                'omgngdu_well' => $omgngdu_well
-            ]
-        );
+        return response()->json($omgngdu_well);
     }
 }
