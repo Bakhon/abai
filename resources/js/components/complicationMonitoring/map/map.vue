@@ -104,10 +104,10 @@
         header-text-variant="light"
         footer-bg-variant="main4"
         centered
-        id="pipe-calc-modal"
-        modal-class="long-modal"
+        id="pipe-calc-long-modal"
+        modal-class="pipe-calc-long-modal"
         :title="trans('monitoring.pipe.detail-data') + ' ' + (selectedPipe ? selectedPipe.name : '')"
-        :ok-only="true"
+        :cancel-disabled="true"
     >
       <pipe-long-info
           :pipe="selectedPipe"
@@ -115,21 +115,6 @@
           :activeFilter="activeFilter"
 
       />
-    </b-modal>
-
-    <b-modal
-        size="xl"
-        header-bg-variant="main4"
-        body-bg-variant="main1"
-        header-text-variant="light"
-        footer-bg-variant="main4"
-        centered
-        id="omg-ngdu-well-form"
-        modal-class="long-modal"
-        :title="trans('monitoring.well.enter-omg-ngdu-data')"
-        :ok-only="true"
-    >
-      <wellOmgNgduForm :well="selectedWell" />
     </b-modal>
 
     <div v-show="false">
@@ -155,11 +140,10 @@ import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
-import CatLoader from '@ui-kit/CatLoader';
+import CatLoader from '../../ui-kit/CatLoader';
 import guToolTip from "./guToolTip";
 import pipeToolTip from "./pipeToolTip";
 import pipeLongInfo from "./pipeLongInfo";
-import wellOmgNgduForm from "./wellOmgNgduForm";
 
 export default {
   name: "gu-map",
@@ -174,8 +158,7 @@ export default {
     pipeToolTip,
     CatLoader,
     mapLegend,
-    pipeLongInfo,
-    wellOmgNgduForm
+    pipeLongInfo
   },
   data() {
     return {
@@ -233,7 +216,6 @@ export default {
       pipeHovered: null,
       pipeHoveredParameter: null,
       selectedPipe: null,
-      selectedWell: null,
     };
   },
   created() {
@@ -636,11 +618,7 @@ export default {
     },
     onShowDetailInfo(option) {
       this.selectedPipe = option.mapObject.object;
-      this.$bvModal.show('pipe-calc-modal');
-    },
-    onShowOmgNgduWellForm(option) {
-      this.selectedWell = option.mapObject.object;
-      this.$bvModal.show('omg-ngdu-well-form');
+      this.$bvModal.show('pipe-calc-long-modal');
     },
     optionClicked(option) {
       this.editMode = option.editMode;
@@ -1172,7 +1150,7 @@ export default {
 </script>
 
 <style>
-.long-modal .modal-dialog {
+.pipe-calc-long-modal .modal-dialog {
   max-width: calc(100vw - 114px);
   left: 28.5px;
 }

@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import ClearIcon from "@ui-kit/ClearIcon.vue";
+import ClearIcon from "../ui-kit/ClearIcon.vue";
 
 export default {
   components: {
