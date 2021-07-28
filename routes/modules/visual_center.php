@@ -77,6 +77,7 @@ Route::group(
                 Route::get('/get-production-for-year', 'VisCenter\VisualCenterController@getProductionDetailsForYear');
                 Route::get('/get-emergency-history', 'VisCenter\VisualCenterController@getEmergencyHistory');
                 Route::get('/get-historical-production', 'VisCenter\VisualCenterController@getHistoricalProductionByDzo');
+                Route::post('/store-corrected-production', 'VisCenter\ExcelForm\ExcelFormController@storeCorrected');
             }
         );
     }

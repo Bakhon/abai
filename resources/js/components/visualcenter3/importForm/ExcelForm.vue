@@ -6,14 +6,14 @@
                 <div class="col-4"></div>
                 <div
                         :class="[!isArchiveActive ? 'category-button_border category-button' : '',' col-2 category-button']"
-                        @click="isArchiveActive = false"
+                        @click="changeCategory"
                 >
                     <div class="insert-data-icon"></div>
                     {{trans('visualcenter.importForm.insertData')}}
                 </div>
                 <div
                         :class="[isArchiveActive ? 'category-button_border category-button' : '',' col-2 category-button']"
-                        @click="isArchiveActive = true"
+                        @click="changeCategory"
                 >
                     <div class="archieve-icon"></div>
                     <div>{{trans('visualcenter.importForm.dataArchieve')}}</div>
@@ -68,6 +68,7 @@
                             format="dd.MM.yyyy"
                             popper-class="custom-date-picker"
                             :picker-options="datePickerOptions"
+                            @change="changeDate"
                     >
                     </el-date-picker>
                 </div>

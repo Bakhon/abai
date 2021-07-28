@@ -15,10 +15,15 @@ class ExcelFormController extends Controller
 
     public function getDzoCurrentData(Request $request)
     {
+        $date = Carbon::yesterday('Asia/Almaty');
+        if ($request->isCorrected) {
+            $date = Carbon::parse($request->date)->addDays(1);
+        }
         $dzoName = $request->request->get('dzoName');
         $dzoImportData = DzoImportData::query()
-            ->whereDate('date',Carbon::yesterday('Asia/Almaty'))
+            ->whereDate('date',$date)
             ->where('dzo_name',$dzoName)
+            ->whereNull('is_corrected')
             ->with('importField')
             ->with('importDowntimeReason')
             ->with('importDecreaseReason')
@@ -44,7 +49,7 @@ class ExcelFormController extends Controller
         $this->deleteAlreadyExistRecord($request);
 
         $this->saveDzoSummaryData($request);
-        $dzo_summary_last_record = DzoImportData::latest('id')->first();
+        $dzo_summary_last_record = DzoImportData::latest('id')->whereNull('is_corrected')->first();
 
         $this->saveDzoFieldsSummaryData($dzo_summary_last_record,$request);
 
@@ -63,7 +68,7 @@ class ExcelFormController extends Controller
     {
         $dzoName = $request->request->get('dzo_name');
         $recordDate = $request->request->get('date');
-        $todayDzoImportDataRecord = DzoImportData::whereDate('date', Carbon::parse($recordDate))->where('dzo_name', $dzoName)->first();
+        $todayDzoImportDataRecord = DzoImportData::whereDate('date', Carbon::parse($recordDate))->where('dzo_name', $dzoName)->whereNull('is_corrected')->first();
         if ($this->isAlreadyUploaded($todayDzoImportDataRecord)) {
             DzoImportField::where('dzo_import_data_id',$todayDzoImportDataRecord->id)->delete();
             DzoImportDecreaseReason::where('dzo_import_data_id',$todayDzoImportDataRecord->id)->delete();
@@ -123,5 +128,23 @@ class ExcelFormController extends Controller
             $child_item->$key = $dzo_input_data[$key];
         }
         return $child_item;
+    }
+
+    public function storeCorrected(Request $request)
+    {
+        $this->saveDzoSummaryData($request);
+        $dzo_summary_last_record = DzoImportData::latest('id')->where('is_corrected', true)->first();
+
+        $this->saveDzoFieldsSummaryData($dzo_summary_last_record,$request);
+
+        $dzo_downtime_reason = new DzoImportDowntimeReason;
+        $downtime_data = $request->request->get('downtimeReason');
+        $dzo_downtime_reason = $this->getDzoChildSummaryData($dzo_downtime_reason,$downtime_data,$dzo_summary_last_record);
+        $dzo_downtime_reason->save();
+
+        $dzo_decrease_reason = new DzoImportDecreaseReason;
+        $decrease_data = $request->request->get('decreaseReason');
+        $dzo_decrease_reason = $this->getDzoChildSummaryData($dzo_decrease_reason,$decrease_data,$dzo_summary_last_record);
+        $dzo_decrease_reason->save();
     }
 }

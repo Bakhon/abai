@@ -178,6 +178,7 @@ export default {
     },
     props: ['userId'],
     async mounted() {
+        this.$store.commit('globalloading/SET_LOADING', true);
         let currentDayNumber = moment().date();
         if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
             this.isChemistryButtonVisible = true;
@@ -198,6 +199,7 @@ export default {
         this.setTableFormat();
         await this.updateCurrentData();
         this.addListeners();
+        this.$store.commit('globalloading/SET_LOADING', false);
     },
     methods: {
         addColumnsToGrid() {
@@ -429,18 +431,17 @@ export default {
             return parseFloat(cellValue);
         },
         async handleSave() {
-            await this.storeData();
+            let uri = this.localeUrl("/dzo-excel-form");
+            await this.storeData(uri);
             this.isDataReady = !this.isDataReady;
         },
-        storeData() {
+        storeData(uri) {
             this.excelData['dzo_name'] = this.selectedDzo.ticker;
             this.excelData['date'] = this.currentDateDetailed;
             let troubledCompanies = Object.keys(this.factorOptions);
             if (troubledCompanies.includes(this.selectedDzo.ticker)) {
                 this.updateTroubledCompaniesByFactorOptions();
             }
-
-            let uri = this.localeUrl("/dzo-excel-form");
 
             this.axios.post(uri, this.excelData).then((response) => {
                 if (response.status === 200) {
