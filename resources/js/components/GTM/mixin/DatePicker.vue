@@ -60,8 +60,6 @@ export default {
             this.isDatePickerShow = false;
             this.changeDateStart(this.dateRange.start);
             this.changeDateEnd(this.dateRange.end);
-            console.log(this.dateRange.start)
-            console.log(this.dateRange.end)
             this.$emit('dateChanged')
         }
     }

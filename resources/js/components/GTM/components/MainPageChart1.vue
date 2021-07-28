@@ -2,7 +2,6 @@
   <div>
       <apexchart type="line" height="180" :options="chartOptions" :series="series"></apexchart>
   </div>
-
 </template>
 <style scoped>
 </style>
@@ -127,7 +126,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
