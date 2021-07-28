@@ -21,6 +21,7 @@ class OmgNGDUWellController extends CrudController
     use WithFieldsValidation;
 
     protected $modelName = 'omgngdu_well';
+    protected $routeParentName = 'omgngdu-well';
 
     /**
      * Display a listing of the resource.
@@ -30,7 +31,7 @@ class OmgNGDUWellController extends CrudController
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'list' => route('omgngdu_well.list'),
+                'list' => route('omgngdu-well.list'),
             ],
             'title' => trans('monitoring.omgngdu_well.title'),
             'table_header' => [
@@ -108,11 +109,23 @@ class OmgNGDUWellController extends CrudController
                     'title' => trans('monitoring.omgngdu_well.fields.temperature'),
                     'type' => 'numeric',
                 ],
+                'sg_oil' => [
+                    'title' => trans('monitoring.omgngdu_well.fields.sg_oil'),
+                    'type' => 'numeric',
+                ],
+                'sg_gas' => [
+                    'title' => trans('monitoring.omgngdu_well.fields.sg_gas'),
+                    'type' => 'numeric',
+                ],
+                'sg_water' => [
+                    'title' => trans('monitoring.omgngdu_well.fields.sg_water'),
+                    'type' => 'numeric',
+                ],
             ]
         ];
 
         if(auth()->user()->can('monitoring create '.$this->modelName)) {
-            $params['links']['create'] = route($this->modelName.'.create');
+            $params['links']['create'] = route($this->routeParentName.'.create');
         }
 
         $params['model_name'] = $this->modelName;
@@ -234,7 +247,7 @@ class OmgNGDUWellController extends CrudController
         if ($request->ajax()) {
             return response()->json([], Response::HTTP_NO_CONTENT);
         } else {
-            return redirect()->route('omgngdu_well.index')->with('success', __('app.deleted'));
+            return redirect()->route('omgngdu-well.index')->with('success', __('app.deleted'));
         }
     }
 

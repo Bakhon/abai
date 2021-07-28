@@ -29,7 +29,7 @@ export default {
     }
   },
   beforeCreate: function () {
-    this.axios.get(this.localeUrl("/omgngdu_well/validation-params")).then((response) => {
+    this.axios.get(this.localeUrl("/omgngdu-well/validation-params")).then((response) => {
       let validationParams = response.data;
 
       if (!_.isEmpty(validationParams)) {
@@ -52,7 +52,7 @@ export default {
       };
 
       this.SET_LOADING(true);
-      this.axios.post(this.localeUrl("/omgngdu_well/get-omgngdu"), params).then((response) => {
+      this.axios.post(this.localeUrl("/omgngdu-well/get-omgngdu"), params).then((response) => {
         let omgngdu_well = response.data;
 
         if (!_.isEmpty(omgngdu_well)) {
@@ -87,7 +87,7 @@ export default {
         omgngdu[param] = this.formFields[param].value;
       }
 
-      let route = "/omgngdu_well";
+      let route = "/omgngdu-well";
       let method = 'post';
       if (this.currentOmgngduWell && this.currentOmgngduWell.id) {
         route = route + '/' + this.currentOmgngduWell.id;
