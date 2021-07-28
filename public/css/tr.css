@@ -217,29 +217,29 @@ table {
     margin-left: 90px;
   }
   .field_form_fil.field_form_fil {
-    background: #333975!important;
-    width: 165px!important;
+    background: #333975;
+    width: 165px;
   }
   .horizon_form_fil.horizon_form_fil {
-    background: #333975!important;
-    width: 123px!important;
+    background: #333975;
+    width: 123px;
   }
   .obj_form_fil {
-    background: #333975!important;
-    width: 85px!important;
+    background: #333975;
+    width: 85px;
   }
   .block_form_fil {
-    background: #333975!important;
-    width: 168px!important;
+    background: #333975;
+    width: 168px;
   }
   .exp_meth_form_fil {
-    background: #333975!important;
-    width: 108px!important;
+    background: #333975;
+    width: 108px;
   } 
 
   .well_type_form_fil.well_type_form_fil {
-    background: #333975!important;
-    width: 213px!important;
+    background: #333975;
+    width: 213px;
   }
   .external_field_filter {
     width: 251px;
@@ -248,8 +248,8 @@ table {
     width: 192px;
   }
   .well_form_fil.well_form_fil {
-    background: #333975!important;
-    width: 165px!important;
+    background: #333975;
+    width: 165px;
     height: calc(100vh - 562px);
     overflow-y: scroll;
   }
