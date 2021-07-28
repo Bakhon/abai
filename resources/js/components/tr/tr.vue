@@ -842,7 +842,7 @@
                                 >
                                 </b-form-checkbox-group>
                               </b-form-group>
-                              <div class="field_filter_text" style="position:relative;">
+                              <div class="field_filter_text">
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
                                   >{{trans('tr.choose_t')}}
                                   </a>

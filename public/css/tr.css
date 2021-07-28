@@ -243,8 +243,6 @@ table {
   }
   .external_field_filter {
     width: 251px;
-    /* overflow-y: scroll;
-    height: calc(100vh - 494px); */
   }
   .external_well_filter {
     width: 192px;
