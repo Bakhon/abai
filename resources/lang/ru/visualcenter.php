@@ -269,7 +269,9 @@ return array (
     'insertData' => 'Внесение данных',
     'dataArchieve' => 'Архив данных',
     'dateSelect' => 'Выберите дату',
-    'sendedToApprove' => 'Отправлено на согласование!'
+    'sendedToApprove' => 'Отправлено на согласование',
+    'executor' => 'Исполнитель',
+    'reason' => 'Причина',
   ),
   'idleWells' => 'Фонд нагнетательных скважин',
   'inIdle' => 'В простое',

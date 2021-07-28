@@ -73,7 +73,7 @@
                     </el-date-picker>
                 </div>
                 <div
-                        class="col-12 status-block status-block_little menu__button mt-3"
+                        :class="[isUserNameCompleted && isChangeReasonCompleted ? '' : 'menu__button_disabled','col-12 status-block status-block_little menu__button mt-3']"
                         @click="sendToApprove"
                 >
                     {{trans('visualcenter.importForm.approve')}}
@@ -81,7 +81,25 @@
             </div>
             <!--        todo-->
 
-            <div class="col-4 mt-3 row ml-1"></div>
+            <div v-if="!isArchiveActive" class="col-4 mt-3 row ml-1"></div>
+            <!--        todo-->
+            <div v-else class="col-4 mt-3 row ml-1">
+                <b-form-input
+                        size="sm"
+                        v-model="userName"
+                        :placeholder="trans('visualcenter.importForm.executor')"
+                        :state="nameState"
+                ></b-form-input>
+                <b-form-textarea
+                        class="mt-1"
+                        id="textarea"
+                        v-model="changeReason"
+                        :placeholder="trans('visualcenter.importForm.reason')"
+                        rows="3"
+                        :state="changeReasonState"
+                ></b-form-textarea>
+            </div>
+            <!--        todo-->
             <div class="col-2 row mt-3 ml-1">
                 <div class="col-12 status-block status-block_little status-label">
                     <span>{{trans('visualcenter.importForm.statusLabel')}}:</span>

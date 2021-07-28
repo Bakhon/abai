@@ -11,6 +11,10 @@ export default {
                     return moment(date) >= moment().subtract(1, 'days')
                 }
             },
+            changeReason: '',
+            userName: '',
+            isUserNameCompleted: false,
+            isChangeReasonCompleted: false,
         };
     },
     methods: {
@@ -32,8 +36,10 @@ export default {
                 this.excelData['is_corrected'] = true;
                 this.excelData['is_approved'] = false;
                 this.excelData['date'] = this.period;
+                this.excelData['user_name'] = this.userName;
+                this.excelData['change_reason'] = this.changeReason;
                 await this.storeData(uri);
-                this.status = this.trans("visualcenter.importForm.status.sendedToApprove");
+                this.status = this.trans("visualcenter.importForm.status.sendedToApprove") + '!';
             }
         },
        async changeCategory() {
@@ -46,5 +52,15 @@ export default {
                 this.addListeners();
             }
         }
+    },
+    computed: {
+        nameState() {
+            this.isUserNameCompleted = this.userName.length > 3;
+            return this.isUserNameCompleted;
+        },
+        changeReasonState() {
+            this.isChangeReasonCompleted = this.changeReason.length > 3;
+            return this.isChangeReasonCompleted;
+        },
     }
 }
