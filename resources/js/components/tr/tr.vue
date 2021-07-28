@@ -865,12 +865,12 @@
                           <template #button-content class="outer_button_filter">        
                             <i class="fas fa-filter icon_filter" ></i>
                           </template>
-                          <b-dropdown-form class="external_field_filter">
+                          <b-dropdown-form class="external_well_filter">
                             <b-form-group
                               label=""
                               v-slot="{ ariaDescribedby }"
                               @submit.stop.prevent
-                              class="field_form_fil"
+                              class="well_form_fil"
                             >
                               <b-form-checkbox-group
                                 v-model="selectWellName"

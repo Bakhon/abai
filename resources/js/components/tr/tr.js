@@ -758,7 +758,6 @@ export default {
       } else {
           return true
       }
-
     },
     getRowWidthSpan (row) {
       if (row.rus_wellname) {
