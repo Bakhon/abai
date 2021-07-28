@@ -1,9 +1,5 @@
 <template>
   <div class="rating-indicators">
-    <div class="rating-indicators__title">
-      {{ trans('digital_rating.environmentIndicators') }}
-      <img src="/img/icons/link.svg" alt="">
-    </div>
     <table class="table text-center text-white rating-table">
       <thead>
         <tr>
@@ -45,8 +41,6 @@ export default {
 <style scoped lang="scss">
 .rating-indicators {
   width: 100%;
-  background-color: #272953;
-  padding: 10px;
   color: #fff;
 }
 .rating-indicators__title {

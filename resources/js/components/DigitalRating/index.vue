@@ -104,27 +104,14 @@
         </transition-expand>
       </div>
     </div>
-    <modal
-      class="modal-bign-wrapper"
-      name="modalSetting"
-      :draggable="true"
-      :width="1000"
-      :height="700"
-      :adaptive="true">
-      <div class="modal-bign-container">
-        <div class="modal-bign-header">
-          <div class="modal-bign-title">
-            <i class="fas fa-cog"
-               style="font-size: 20px;"
-            />
-            {{ trans('profile.tabs.settings') }}
-          </div>
-          <button type="button" class="modal-bign-button" @click="closeSettingModal">
-            {{ trans('pgno.zakrit') }}
-          </button>
-        </div>
-      </div>
-    </modal>
+    <setting-modal
+      ref="setting"
+      @close="closeSettingModal"
+    />
+    <well-atlas-modal
+      ref="atlas"
+      @close="() => this.$modal.hide('modalAtlas')"
+    />
   </div>
 </template>
 
@@ -134,13 +121,17 @@ import L from 'leaflet';
 import mapsData from './dataMap.json';
 import 'leaflet/dist/leaflet.css';
 import BtnDropdown from "./components/BtnDropdown";
+import SettingModal from "./components/SettingModal";
+import WellAtlasModal from "./components/WellAtlasModal";
 
 export default {
   name: "Sections",
 
   components: {
     TransitionExpand,
-    BtnDropdown
+    BtnDropdown,
+    SettingModal,
+    WellAtlasModal
   },
 
   data() {
@@ -212,6 +203,7 @@ export default {
       map.on('dblclick', this.onMapClick);
     },
     onMapClick(e) {
+      this.$modal.show('modalAtlas');
     },
     openSettingModal() {
       this.$modal.show('modalSetting');
