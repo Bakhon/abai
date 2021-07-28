@@ -1,25 +1,20 @@
 <template>
-  <div class="geology-l-side">
-    <div class="geology-l-side__top d-flex align-items-start w-100">
-      <button class="geology-l-side__toggle">
-        <Icon name="arrowLeft" />
-      </button>
-      <div class="w-100 mb-2">
-        <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор ДЗО" :options="[
+  <PageSide>
+    <template #top>
+      <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор ДЗО" :options="[
               {label: 'option 1', value: 1},
               {label: 'option 2', value: 2},
               {label: 'option 3', value: 3}
             ]" />
-        <Button align="left" color="accent" class="w-100 mb-2">Выбор месторождения</Button>
-        <Button align="left" color="accent" class="w-100 mb-2">Выбор поверхности</Button>
-        <Button align="left" color="accent" class="w-100 mb-2">Выбор карт</Button>
-        <Button align="left" color="accent" class="w-100 mb-2">Выбор сейсмисческих данных</Button>
-        <Button align="left" color="accent" class="w-100 mb-2">Выбор разлома</Button>
-        <Button align="left" color="accent" class="w-100 mb-2">Выбор скважин</Button>
-        <Button align="left" color="accent" class="w-100 mb-2">Выбор отбивки</Button>
-        <Button align="left" color="accent" class="w-100">Модель</Button>
-      </div>
-    </div>
+      <Button align="left" color="accent" class="w-100 mb-2">Выбор месторождения</Button>
+      <Button align="left" color="accent" class="w-100 mb-2">Выбор поверхности</Button>
+      <Button align="left" color="accent" class="w-100 mb-2">Выбор карт</Button>
+      <Button align="left" color="accent" class="w-100 mb-2">Выбор сейсмисческих данных</Button>
+      <Button align="left" color="accent" class="w-100 mb-2">Выбор разлома</Button>
+      <Button align="left" color="accent" class="w-100 mb-2">Выбор скважин</Button>
+      <Button align="left" color="accent" class="w-100 mb-2">Выбор отбивки</Button>
+      <Button align="left" color="accent" class="w-100">Модель</Button>
+    </template>
     <ToolBlock class="mb-2" title="Настройка окна">
       <div class="rect">
         <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Политра" :options="[
@@ -85,7 +80,7 @@
         </tbody>
       </table>
     </ToolBlock>
-  </div>
+  </PageSide>
 </template>
 
 <script>
@@ -95,7 +90,8 @@ import ToolBlockGroupDivider from "../components/toolBlock/ToolBlockGroupDivider
 import ToolBlockList from "../components/toolBlock/ToolBlockList";
 import dropdown from "../components/dropdowns/dropdown";
 import Button from "../components/buttons/Button";
-import Icon from "../components/icons/Icon";
+import AwIcon from "../components/icons/AwIcon";
+import PageSide from "../components/pageSide/PageSide";
 export default {
   name: "Geology-LSide",
   data() {
@@ -113,7 +109,8 @@ export default {
     ToolBlockGroupDivider,
     dropdown,
     ToolBlockList,
-    Icon
+    AwIcon,
+    PageSide
   },
   computed:{
     cListSelect(){
@@ -128,16 +125,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-.geology-l-side{
-  &__toggle{
-    border: none;
-    background: var(--a-accent);
-    margin: -6px 10px 0 -7px;
-    padding: 14px 6px;
-    border-radius: 0 10px 10px 0;
-  }
-}
-
-</style>

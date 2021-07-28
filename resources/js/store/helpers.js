@@ -119,3 +119,23 @@ export const globalloadingMutations = arrNames => ({
     ]),
 });
 // End global loading //
+
+// geology //
+export const geologyState = arrNames => ({
+    ...mapState('geology', [
+        ...arrNames,
+    ]),
+});
+
+export const geologyGetters = arrNames => ({
+    ...mapGetters('geology', [
+        ...arrNames,
+    ]),
+});
+
+export const geologyMutations = arrNames => ({
+    ...mapMutations('geology', [
+        ...arrNames,
+    ]),
+});
+// End geology //

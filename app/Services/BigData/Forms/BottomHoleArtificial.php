@@ -23,7 +23,7 @@ class BottomHoleArtificial extends PlainForm
         }
 
         if (!$this->isValidDate($this->request->get('well'), $this->request->get('data'), 'dict.well' , 'drill_end_date')) {
-            $errors[$this->request->get('data')][] = trans('bd.validation.end_date');
+            $errors['data'][] = trans('bd.validation.end_date');
         }
 
         return $errors;

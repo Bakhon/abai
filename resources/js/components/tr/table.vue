@@ -87,20 +87,19 @@
                         </div>
                       </div>
                     </td>
-                <td @click="sortBy('rus_wellname')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <!-- <td class="th">
+                <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('rus_wellname')"></i>
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
                             <i class="fas fa-filter icon_filter" ></i>
                           </template>
-                            <b-dropdown-form class="external_field_filter">
+                            <b-dropdown-form class="external_well_filter">
                               <b-form-group
                                 label=""
                                 v-slot="{ ariaDescribedby }"
                                 @submit.stop.prevent
-                                class="field_form_fil"
+                                class="well_form_fil"
                               >
                                 <b-form-checkbox-group
                                 v-model="selectWellName"
@@ -121,7 +120,7 @@
                           </b-dropdown>
                         </div>
                       </div>
-                    </td> -->
+                    </td>
                 <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('well_type')"></i>
                       <div>
@@ -860,4 +859,5 @@ position: static;
   border-top: 2px solid rgb(145, 145, 145);
   font-size: 11px;
 }
+
 </style>

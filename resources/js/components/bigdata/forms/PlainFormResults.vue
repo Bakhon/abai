@@ -20,6 +20,8 @@
                    @click="showForm(action.form)">{{ action.title }}</a>
                 <a v-else-if="action.action === 'edit'" class="dropdown-item" href="#"
                    @click="editRow(selectedRow, action.form)">{{ action.title }}</a>
+                <a v-else-if="action.action === 'delete'" class="dropdown-item" href="#"
+                   @click="deleteRow(selectedRow, action.form)">{{ action.title }}</a>
               </template>
             </div>
           </div>
@@ -181,7 +183,7 @@ export default {
             blocks.forEach(block => {
 
               block.items
-                  .filter(item => item.type === 'dict')
+                  .filter(item => ['dict', 'dict_tree'].includes(item.type))
                   .map(item => {
                     dictFields[item.code] = item.dict
                   })
@@ -213,7 +215,9 @@ export default {
     loadDictionaries() {
       Object.values(this.dictFields).forEach(code => {
         if (this.getDict(code)) return
-        this.loadDict(code)
+        this.loadDict(code).then(() => {
+          this.$forceUpdate()
+        })
       })
     },
     getDict(code) {
@@ -261,10 +265,8 @@ export default {
       ) {
         let dict = this.getDict(this.dictFields[column.code])
 
-        let value = dict.find(item => item.id === row[column.code])
-        if (value) {
-          return value.name
-        }
+        let value = dict.reduce(this.findValueInDict(row[column.code]), null)
+        return value.name || value.label
 
       }
 
@@ -277,6 +279,13 @@ export default {
       }
 
       return row[column.code]
+    },
+    findValueInDict(id) {
+      const searchFunc = (found, item) => {
+        const children = item.children || []
+        return found || (item.id === id ? item : children.reduce(searchFunc, null))
+      }
+      return searchFunc
     }
   }
 }
