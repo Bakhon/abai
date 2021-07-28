@@ -66,7 +66,7 @@
                                     </a>
                                 </li>
                                 <li class="left-menu-li">
-                                    <a href="{{route('omgngdu_well.index')}}">
+                                    <a href="{{route('omgngdu-well.index')}}">
                                         {{ trans('monitoring.omgngdu_well.menu') }}
                                     </a>
                                 </li>
