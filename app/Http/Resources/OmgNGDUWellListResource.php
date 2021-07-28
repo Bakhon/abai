@@ -6,7 +6,6 @@ class OmgNGDUWellListResource extends CrudListResource
 {
 
     protected $modelName = 'omgngdu_well';
-    protected $routeParentName = 'omgngdu-well';
 
     /**
      * Transform the resource into an array.
@@ -29,9 +28,6 @@ class OmgNGDUWellListResource extends CrudListResource
                 'gas_factor' => $this->gas_factor,
                 'pressure' => $this->pressure,
                 'temperature' => $this->temperature,
-                'sg_oil' => $this->sg_oil,
-                'sg_gas' => $this->sg_gas,
-                'sg_water' => $this->sg_water,
             ],
         ];
 

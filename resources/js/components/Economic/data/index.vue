@@ -29,7 +29,7 @@
 
 <script>
 import VueTableDynamic from 'vue-table-dynamic'
-import CatLoader from "@ui-kit/CatLoader";
+import CatLoader from "../../ui-kit/CatLoader";
 import SelectScFa from "../components/SelectScFa";
 
 export default {

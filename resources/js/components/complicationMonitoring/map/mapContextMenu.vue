@@ -116,14 +116,6 @@ export default {
         });
       }
 
-      if (this.clickedObject.type == 'well') {
-        options.push({
-          name: this.trans('monitoring.well.add-omg-ngdu-data'),
-          mapObject: this.clickedObject,
-          type: 'showOmgNgduWellForm',
-        });
-      }
-
       if (this.clickedObject.type == 'pipe' && this.clickedObject.object.hydro_calc_long.length) {
         options.push({
           name: this.trans('monitoring.pipe.show-detail-data') + ' ' + this.clickedObject.object.name,

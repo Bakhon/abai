@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import CatLoader from "@ui-kit/CatLoader";
+import CatLoader from "../../ui-kit/CatLoader";
 import ScenarioForm from "../components/ScenarioForm";
 import DeleteButton from "../components/DeleteButton";
 
