@@ -207,7 +207,7 @@ class EconomicOptimizationController extends Controller
             ])
             ->orderBy('oil_price')
             ->orderBy('dollar_rate')
-            ->orderBy('operating_profit_12m','desc')
+            ->orderBy('operating_profit_12m')
             ->groupBy()
             ->data();
     }

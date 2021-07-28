@@ -106,7 +106,7 @@ export default {
         }
 
         data[item.uwi].oilPrices[item.oil_price] = {
-          operating_profit_12m: (+item.operating_profit_12m / 1000).toFixed(2),
+          operating_profit_12m: item.operating_profit_12m,
           profitability_12m: item.profitability_12m
         }
       })
