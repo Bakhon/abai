@@ -216,7 +216,6 @@ class OmgNGDUWellController extends CrudController
         return response()->json(
             [
                 'status' => config('response.status.success'),
-                'omgngdu_well' => $omgngdu_well,
                 'message' => __('app.updated')
             ]
         );

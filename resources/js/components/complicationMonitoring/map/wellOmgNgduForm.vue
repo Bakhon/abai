@@ -97,8 +97,12 @@ export default {
       this.SET_LOADING(true);
       this.axios[method](this.localeUrl(route), omgngdu).then((response) => {
         let data = response.data;
-        this.showToast(data.message, this.trans('app.' + data.status), data.status);
-        this.currentOmgngduWell = data.omgngdu_well;
+        this.showToast(data.message, this.trans('app.success'), data.status);
+
+        if (data.omgngdu_well) {
+          this.currentOmgngduWell = data.omgngdu_well;
+        }
+
         this.SET_LOADING(false);
       });
 
