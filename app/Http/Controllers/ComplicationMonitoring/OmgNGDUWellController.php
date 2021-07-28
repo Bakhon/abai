@@ -241,7 +241,7 @@ class OmgNGDUWellController extends CrudController
     }
 
 
-    protected function getFilteredQuery($filter, $query = null): Illuminate\Database\Eloquent\Builder
+    protected function getFilteredQuery($filter, $query = null)
     {
         return (new OmgNGDUWellFilter($query, $filter))->filter();
     }
