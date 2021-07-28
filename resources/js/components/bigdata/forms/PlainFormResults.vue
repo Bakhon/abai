@@ -20,6 +20,8 @@
                    @click="showForm(action.form)">{{ action.title }}</a>
                 <a v-else-if="action.action === 'edit'" class="dropdown-item" href="#"
                    @click="editRow(selectedRow, action.form)">{{ action.title }}</a>
+                <a v-else-if="action.action === 'delete'" class="dropdown-item" href="#"
+                   @click="deleteRow(selectedRow, action.form)">{{ action.title }}</a>
               </template>
             </div>
           </div>

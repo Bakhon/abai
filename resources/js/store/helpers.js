@@ -101,3 +101,22 @@ export const globalloadingMutations = arrNames => ({
         ...arrNames,
     ]),
 });
+
+export const geologyState = arrNames => ({
+    ...mapState('geology', [
+        ...arrNames,
+    ]),
+});
+
+export const geologyGetters = arrNames => ({
+    ...mapGetters('geology', [
+        ...arrNames,
+    ]),
+});
+
+export const geologyMutations = arrNames => ({
+    ...mapMutations('geology', [
+        ...arrNames,
+    ]),
+});
+

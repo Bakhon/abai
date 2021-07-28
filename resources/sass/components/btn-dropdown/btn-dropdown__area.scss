@@ -1,0 +1,31 @@
+.btn-dropdown__area {
+  background: #5D5F7F;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 10;
+  width: 200px;
+  margin-top: 6px;
+  padding: 0;
+
+  &-list {
+    list-style: none;
+    margin: 0;
+    color: #fff;
+
+    li {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+
+      span {
+        margin-left: 8px;
+      }
+
+      &:hover {
+        background: #4b4c66;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+    }
+  }
+}

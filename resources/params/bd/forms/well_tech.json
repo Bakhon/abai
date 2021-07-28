@@ -8,24 +8,33 @@
       "form": "well_tech_connect"
     },
     {
-      "action": "edit",
+      "action": "create",
       "title": "change_tap",
       "form": "well_tech_change_tap"
     },
     {
-      "action": "edit",
+      "action": "create",
       "title": "change_connection",
       "form": "well_tech_change_tech"
     },
     {
       "action": "delete",
-      "title": "cancel_connection",
-      "form": "well_tech_connect"
+      "title": "cancel_connection"
     },
     {
-      "action": "edit",
+      "action": "create",
       "title": "disconnect",
       "form": "well_tech_disconnect"
+    },
+    {
+      "action": "create",
+      "title": "change_disconnect",
+      "form": "well_tech_change_disconnect"
+    },
+    {
+      "action": "create",
+      "title": "cancel_disconnect",
+      "form": "well_tech_cancel_disconnect"
     }
   ],
   "tabs": [
@@ -38,9 +47,9 @@
             "items": [
               {
                 "code": "tech",
-                "type": "dict",
-                "title": "",
-                "validation": "required"
+                "type": "dict_tree",
+                "dict": "techs",
+                "title": ""
               },
               {
                 "code": "tap",

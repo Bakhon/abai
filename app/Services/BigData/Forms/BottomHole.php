@@ -19,11 +19,11 @@ class BottomHole extends PlainForm
         $errors = [];
 
         if (!$this->isValidDepth($this->request->get('well'),$this->request->get('depth'))) {
-            $errors[$this->request->get('depth')][] = trans('bd.validation.depth');
+            $errors['depth'][] = trans('bd.validation.depth');
         }
 
         if (!$this->isValidDate($this->request->get('well'), $this->request->get('data'), 'dict.well' , 'drill_start_date')) {
-            $errors[$this->request->get('data')][] = trans('bd.validation.bottom_hole_date');
+            $errors['data'][] = trans('bd.validation.bottom_hole_date');
         }
 
         return $errors;
