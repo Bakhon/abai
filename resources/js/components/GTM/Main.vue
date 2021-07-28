@@ -131,10 +131,10 @@
 
         <div class="row p-1">
             <div class="col-6 pr-0">
-                <main-page-chart-1></main-page-chart-1>
+              <apexchart type="line" height="180" :options="chartOptions" :series="series1"></apexchart>
             </div>
             <div class="col-6 pl-2">
-                <main-page-chart-2></main-page-chart-2>
+              <apexchart type="line" height="180"  :options="chartOptions" :series="series2"></apexchart>
             </div>
         </div>
 
@@ -186,13 +186,158 @@
 import Vue from "vue";
 import {paegtmMapActions, paegtmMapGetters} from '@store/helpers';
 import moment from "moment";
+import VueApexCharts from "vue-apexcharts";
+
 Vue.component("gtm-modal", {
   template: "#modal-template"
 });
 
 export default {
+  components: {
+    "apexchart": VueApexCharts
+  },
     data: function () {
-        return {
+      return {
+        title: {
+          text: this.trans('paegtm.dynamicChartOil'),
+          align: 'center',
+          style: {
+            fontSize:  '14px',
+            fontWeight:  'bolder',
+            offsetY: 10
+          },
+        },
+          series1: [
+            {
+              name: this.trans('paegtm.planEd'),
+              type: 'column',
+              data: [1, 2, 6, 11, 19, 27, 35, 40, 49, 57, 65, 74],
+            },
+            {
+              name: this.trans('paegtm.factEd'),
+              type: 'column',
+              data: [2, 3, 7, 16, 18, 29, 38, 43, 53, 53, 72, 89],
+            },
+            {
+              name: this.trans('paegtm.planOil'),
+              type: 'line',
+              data: [20, 30, 40, 55, 67, 75, 87, 98, 110, 120, 145, 155],
+            },
+            {
+              name: this.trans('paegtm.factOil'),
+              type: 'line',
+              data: [10, 25, 35, 47, 53, 62, 77, 81, 92, 103, 120, 130]
+            }
+          ],
+          series2: [
+            {
+              name: this.trans('paegtm.planEd'),
+              type: 'column',
+              data: [1, 4, 7, 13, 23, 30, 33, 39, 47, 56, 64, 77],
+            },
+            {
+              name: this.trans('paegtm.factEd'),
+              type: 'column',
+              data: [3, 5, 8, 14, 17, 24, 33, 47, 52, 65, 69, 76],
+            },
+            {
+              name: this.trans('paegtm.planOil'),
+              type: 'line',
+              data: [19, 27, 39, 52, 63, 77, 84, 96, 107, 117, 129, 141],
+            },
+            {
+              name: this.trans('paegtm.factOil'),
+              type: 'line',
+              data: [14, 23, 37, 43, 57, 61, 75, 86, 97, 107, 118, 133]
+            }
+          ],
+          chartOptions: {
+            grid: {
+              show: true,
+              borderColor: '#454d7d',
+              strokeDashArray: 0,
+              position: 'back',
+              xaxis: {
+                lines: {
+                  show: true
+                }
+              },
+              yaxis: {
+                lines: {
+                  show: true
+                }
+              },
+              row: {
+                colors: undefined,
+                opacity: 3
+              },
+              column: {
+                colors: undefined,
+                opacity: 3
+              },
+              padding: {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0
+              },
+            },
+            colors: [ '#4f81bd', '#c0504d', '#9bbb59', '#8064a2'],
+            chart: {
+              background: '#272953',
+              type: 'line',
+              foreColor: '#fff',
+              width: '10%',
+            },
+            stroke: {
+              width: [0, 0, 5, 5]
+            },
+            title: {
+              text: this.trans('paegtm.dynamicEnterOil'),
+              align: 'center',
+              style: {
+                fontSize:  '14px',
+                fontWeight:  'bolder',
+                offsetY: 10
+              },
+            },
+            markers: {
+              size: 4,
+              colors: undefined,
+              strokeWidth: 0
+            },
+            dataLabels: {
+              enabled: true,
+              enabledOnSeries: [0, 1],
+              background: {
+                enabled: true,
+                foreColor: '#fff',
+                opacity: 0,
+                padding: 0,
+                dropShadow: {
+                  enabled: false,
+                }
+              },
+              style: {
+                fontSize: '11px',
+                fontWeight: 'bold'
+              }
+            },
+            labels: [
+              this.trans('paegtm.Jan'),
+              this.trans('paegtm.Feb'),
+              this.trans('paegtm.Mar'),
+              this.trans('paegtm.Apr'),
+              this.trans('paegtm.May'),
+              this.trans('paegtm.Jun'),
+              this.trans('paegtm.Jul'),
+              this.trans('paegtm.Aug'),
+              this.trans('paegtm.Sep'),
+              this.trans('paegtm.Oct'),
+              this.trans('paegtm.Nov'),
+              this.trans('paegtm.Dec')
+            ],
+          },
             mainTableData: [
               ['АО "Озенмунайгаз"', 231, 284, +53, 384, 368, -16, 4724, 4687, -37, 5341, 5341, 0],
               ['АО "ЭмбаМунайГаз"', 61, 74, +13, 87, 120, +33, 2453, 2407, -46, 2600, 2601, 0],
