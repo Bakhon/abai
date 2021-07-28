@@ -81,6 +81,13 @@ Route::group(
                 Route::get('omgngdu_well/list', 'ComplicationMonitoring\OmgNGDUWellController@list')->name(
                     'omgngdu_well.list'
                 );
+                Route::get('omgngdu_well/validation-params', 'ComplicationMonitoring\OmgNGDUWellController@getWellsValidationParams')->name(
+                    'omgngdu_well.validation-params'
+                );
+                Route::post('omgngdu_well/get-omgngdu', 'ComplicationMonitoring\OmgNGDUWellController@getOmgNgdu')->name(
+                    'omgngdu_well.get-omg-ngdu'
+                );
+
                 Route::resource('omgngdu_well', 'ComplicationMonitoring\OmgNGDUWellController');
 
 

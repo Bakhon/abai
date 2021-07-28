@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
+use App\Filters\BaseFilter;
 use App\Filters\OmgNGDUWellFilter;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
@@ -173,7 +174,9 @@ class OmgNGDUWellController extends CrudController
 
         return response()->json(
             [
-                'status' => config('response.status.success')
+                'status' => config('response.status.success'),
+                'omgngdu_well' => $omgngdu_well,
+                'message' => __('app.created')
             ]
         );
     }
@@ -214,7 +217,9 @@ class OmgNGDUWellController extends CrudController
 
         return response()->json(
             [
-                'status' => config('response.status.success')
+                'status' => config('response.status.success'),
+                'omgngdu_well' => $omgngdu_well,
+                'message' => __('app.updated')
             ]
         );
     }
@@ -238,8 +243,34 @@ class OmgNGDUWellController extends CrudController
     }
 
 
-    protected function getFilteredQuery($filter, $query = null)
+    protected function getFilteredQuery($filter, $query = null): BaseFilter
     {
         return (new OmgNGDUWellFilter($query, $filter))->filter();
+    }
+
+    public function getWellsValidationParams (): \Symfony\Component\HttpFoundation\Response
+    {
+        $validationParams = $this->getValidationParams('omgngdu_well');
+
+        return response()->json(
+            [
+                'validationParams' => $validationParams
+            ]
+        );
+    }
+
+    public function getOmgNgdu (Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $date = $request->input('date');
+        $well_id = $request->input('well_id');
+
+        $omgngdu_well = OmgNGDUWell::where('well_id', $well_id)
+            ->where('date', $date)->first();
+
+        return response()->json(
+            [
+                'omgngdu_well' => $omgngdu_well
+            ]
+        );
     }
 }

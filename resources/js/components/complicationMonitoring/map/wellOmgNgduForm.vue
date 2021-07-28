@@ -1,170 +1,109 @@
 <template>
-  <b-row>
-    <b-col cols="4" class="mt-10px" v-for="(field, index) in formFields" :key="index">
-      <label>{{ field.label }}</label>
-      <div class="form-label-group">
-        <b-form-input
-            type="text"
-            v-if="field.type == 'text'"
-            v-model="formFields[index].value"
-            :name="field.name"
-            placeholder=""
-        />
-
-        <b-form-checkbox
-            v-if="field.type == 'boolean'"
-            v-model="formFields[index].value"
-            :name="field.name"
-            :value="1"
-            :unchecked-value="0"
-        />
-
-        <template v-if="field.type == 'date'">
-          <datetime
-              v-model="formFields[index].value"
-              type="date"
-              input-class="form-control date"
-              :format="field.format"
-              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-              :hour-step="1"
-              :minute-step="5"
-              :week-start="1"
-              use24-hour
-              auto
-          >
-          </datetime>
-          <input type="hidden" :name="field.name" :value="formatedDate(formFields[index].value)" />
-        </template>
-
-        <input
-            v-if="field.type == 'number'"
-            type="number"
-            :step="field.step"
-            :min="validationParamMin(field.name)"
-            :max="validationParamMax(field.name)"
-            :name="field.name"
-            v-model="formFields[index].value"
-            class="form-control"
-            placeholder=""
-        >
-
-        <select
-            v-if="field.type == 'select'"
-            class="form-control"
-            :name="field.name"
-            v-model="formFields[index].value" >
-          <option v-for="row in selectOptions(field.name)" :value="row.name">{{ row.name }}</option>
-        </select>
-
-      </div>
-    </b-col>
-  </b-row>
+  <editForm
+      :formFields="formFields"
+      :validationParams="validationParams"
+      :formObject="well"
+      @selectDate="getOmgNgduData"
+      @submit="storeOmgNgdu"
+  />
 </template>
 
 <script>
-import moment from "moment";
-import Vue from "vue";
-import {Datetime} from "vue-datetime";
-import 'vue-datetime/dist/vue-datetime.css'
+import editForm from '@ui-kit/editForm';
+import {globalloadingMutations} from '@store/helpers';
+import omgNgduWellformFields from '~/json/formFields/omg_ngdu_well.json'
 
 export default {
   name: "wellOmgNgduForm",
-  props: {},
+  props: {
+    well: Object
+  },
+  components: {
+    editForm
+  },
   data: function () {
     return {
-      formFields: [
-        {
-          name: 'field',
-          type: 'text',
-          label: this.trans('monitoring.pipe_passport.field'),
-          value: null
-        },
-        {
-          name: 'date',
-          type: 'date',
-          label: this.trans('app.date'),
-          format: {year: 'numeric', month: 'long', day: 'numeric'},
-          value: null
-        },
-        {
-          name: 'pressure',
-          type: 'number',
-          step: 0.01,
-          label: this.trans('monitoring.pipe_passport.main_reserved'),
-          value: null
-        },
-        {
-          name: 'daily_fluid_production',
-          type: 'number',
-          step: 0.01,
-          label: this.trans('monitoring.omgngdu_well.fields.daily_fluid_production'),
-          value: null
-        },
-        {
-          name: 'to',
-          type: 'text',
-          label: this.trans('monitoring.pipe_passport.to'),
-          value: null
-        },
-        {
-          name: 'length',
-          type: 'text',
-          label: this.trans('monitoring.pipe.fields.length'),
-          value: null
-        },
-        {
-          name: 'diameter',
-          type: 'text',
-          label: this.trans('monitoring.pipe_passport.diameter'),
-          value: null
-        },
-        {
-          name: 'thickness',
-          type: 'text',
-          label: this.trans('monitoring.pipe.fields.thickness'),
-          value: null
-        },
-        {
-          name: 'material',
-          type: 'text',
-          label: this.trans('monitoring.pipe.fields.material'),
-          value: null
-        },
-        {
-          name: 'condition',
-          type: 'text',
-          label: this.trans('monitoring.pipe_passport.condition'),
-          value: null
-        },
-        {
-          name: 'gusts',
-          type: 'number',
-          label: this.trans('monitoring.pipe_passport.gusts'),
-          value: null
-        },
-        {
-          name: 'data_sheet',
-          type: 'boolean',
-          label: this.trans('monitoring.pipe_passport.data_sheet'),
-          value: null
-        },
-        {
-          name: 'used',
-          type: 'boolean',
-          label: this.trans('monitoring.pipe_passport.used'),
-          value: null
-        },
-        {
-          name: 'comment',
-          type: 'text',
-          label: this.trans('monitoring.pipe_passport.comment'),
-          value: null
-        },
-      ],
-      ngdu: [],
-      cdng: []
+      formFields: _.cloneDeep(omgNgduWellformFields),
+      validationParams: {},
+      currentOmgngduWell: null
     }
   },
+  beforeCreate: function () {
+    this.axios.get(this.localeUrl("/omgngdu_well/validation-params")).then((response) => {
+      let data = response.data;
+
+      if (data) {
+        this.validationParams = data.validationParams;
+      }
+    });
+  },
+  methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+    getOmgNgduData() {
+      if (!this.formFields.date.value) {
+        return false;
+      }
+
+      let params = {
+        date: this.formFields.date.value,
+        well_id: this.well.id
+      };
+
+      this.SET_LOADING(true);
+      this.axios.post(this.localeUrl("/omgngdu_well/get-omgngdu"), params).then((response) => {
+        let omgngdu_well = response.data.omgngdu_well;
+
+        if (omgngdu_well) {
+          this.setOmgNgduParams(omgngdu_well);
+          this.currentOmgngduWell = omgngdu_well;
+        } else {
+          let date = this.formFields.date.value;
+          this.formFields = _.cloneDeep(omgNgduWellformFields);
+          this.formFields.date.value = date;
+          this.currentOmgngduWell = null;
+        }
+
+        this.SET_LOADING(false);
+      });
+    },
+    setOmgNgduParams(omgngdu_well) {
+      for (let param in this.formFields) {
+        this.formFields[param].value = omgngdu_well[param];
+      }
+    },
+    storeOmgNgdu() {
+      if (!this.formFields.date.value) {
+        return false;
+      }
+
+      let omgngdu = {
+        zu_id: this.well.zu_id,
+        well_id: this.well.id,
+      };
+
+      for (let param in this.formFields) {
+        omgngdu[param] = this.formFields[param].value;
+      }
+
+      let route = "/omgngdu_well";
+      let method = 'post';
+      if (this.currentOmgngduWell && this.currentOmgngduWell.id) {
+        route = route + '/' + this.currentOmgngduWell.id;
+        method = 'put';
+      }
+
+      this.SET_LOADING(true);
+      this.axios[method](this.localeUrl(route), omgngdu).then((response) => {
+        let data = response.data;
+        this.showToast(data.message, this.trans('app.' + data.status), data.status);
+        this.currentOmgngduWell = data.omgngdu_well;
+        this.SET_LOADING(false);
+      });
+
+    }
+  }
 }
 </script>
 

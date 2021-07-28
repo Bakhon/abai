@@ -107,7 +107,7 @@
         id="pipe-calc-modal"
         modal-class="long-modal"
         :title="trans('monitoring.pipe.detail-data') + ' ' + (selectedPipe ? selectedPipe.name : '')"
-        :cancel-disabled="true"
+        :ok-only="true"
     >
       <pipe-long-info
           :pipe="selectedPipe"
@@ -127,9 +127,9 @@
         id="omg-ngdu-well-form"
         modal-class="long-modal"
         :title="trans('monitoring.well.enter-omg-ngdu-data')"
-        :cancel-disabled="true"
+        :ok-only="true"
     >
-      <wellOmgNgduForm />
+      <wellOmgNgduForm :well="selectedWell" />
     </b-modal>
 
     <div v-show="false">
@@ -155,7 +155,7 @@ import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
-import CatLoader from '../../ui-kit/CatLoader';
+import CatLoader from '@ui-kit/CatLoader';
 import guToolTip from "./guToolTip";
 import pipeToolTip from "./pipeToolTip";
 import pipeLongInfo from "./pipeLongInfo";
@@ -233,6 +233,7 @@ export default {
       pipeHovered: null,
       pipeHoveredParameter: null,
       selectedPipe: null,
+      selectedWell: null,
     };
   },
   created() {
