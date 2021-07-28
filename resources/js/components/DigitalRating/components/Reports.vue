@@ -2,7 +2,6 @@
   <div class="rating-reports">
     <div class="rating-reports__title">
       {{ trans('digital_rating.wellsReport') }}
-      <img src="/img/icons/link.svg" alt="">
     </div>
     <table class="table text-center text-white rating-table">
       <thead>
