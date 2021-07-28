@@ -16,9 +16,9 @@ class EconomicOptimizationController extends Controller
 {
     protected $druidClient;
 
-    const DATA_SOURCE = 'economic_scenario_test_v12';
+    const DATA_SOURCE = 'economic_scenario_test_v13';
 
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_test_v11';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_test_v13';
 
     const DATA_SOURCE_DATE = '2021/01/01';
 
@@ -196,17 +196,18 @@ class EconomicOptimizationController extends Controller
                 Carbon::parse(self::DATA_SOURCE_DATE)->addDay(),
             ));
 
-        $columns = array_merge(self::SCENARIO_COLUMNS, [
-            'uwi',
-            'profitability_12m',
-            'operating_profit_12m',
-            'operating_profit_12m_optimize',
-        ]);
-
         return $builder
-            ->select($columns)
-            ->orderBy('operating_profit_12m', 'asc')
-            ->orderBy('oil_price', 'asc')
+            ->select([
+                'uwi',
+                "oil_price",
+                "dollar_rate",
+                'operating_profit_12m',
+                'profitability_12m',
+                "scenario_id",
+            ])
+            ->orderBy('oil_price')
+            ->orderBy('dollar_rate')
+            ->orderBy('operating_profit_12m','desc')
             ->groupBy()
             ->data();
     }

@@ -13,12 +13,15 @@
             Скв
           </div>
 
-          <div class="text-center border-grey" style="flex: 1 0 100px;">
+          <div
+              v-for="price in oilPrices"
+              :key="`${index}_${price}_operating_profit_12m_title`"
+              class="text-center border-grey" style="flex: 1 0 100px;">
             op_profit
           </div>
 
-          <div v-for="(price, priceIndex) in oilPrices"
-               :key="`${index}_${priceIndex}`"
+          <div v-for="price in oilPrices"
+               :key="`${index}_${price}`"
                class="text-center border-grey"
                style="flex: 0 0 30px;">
             {{ (+price).toLocaleString() }}$
@@ -30,13 +33,14 @@
             {{ uwi }}
           </div>
 
-          <div>
-            {{ tableData[uwi].operating_profit_12m }}
+          <div v-for="price in oilPrices"
+               :key="`${uwi}_${price}_operating_profit_12m`">
+            {{ tableData[uwi].oilPrices[+price].operating_profit_12m }}
           </div>
 
           <div v-for="price in oilPrices"
-               :key="price"
-               :style="`background: ${getColor(tableData[uwi].oilPrices[price])}`"
+               :key="`${uwi}_${price}_profitability_12m`"
+               :style="`background: ${getColor(tableData[uwi].oilPrices[+price])}`"
                class="border-grey"
                style="flex: 0 0 30px;">
           </div>
@@ -67,43 +71,44 @@ export default {
       required: true,
       type: Object
     },
-    // oilPrices: {
-    //   required: true,
-    //   type: Array,
-    // },
+    oilPrices: {
+      required: true,
+      type: Array,
+    },
     data: {
       required: true,
       type: Array
     }
   },
   methods: {
-    getColor(profitability) {
-      if (profitability === 'profitable') {
+    getColor({profitability_12m}) {
+      if (profitability_12m === 'profitable') {
         return '#387249'
       }
 
-      return profitability === 'profitless_cat_1'
+      return profitability_12m === 'profitless_cat_1'
           ? '#8D2540'
           : '#F7BB2E'
     }
   },
 
   computed: {
+    filteredData() {
+      return this.data.filter(x => +x.dollar_rate === +this.scenario.dollar_rate)
+    },
+
     tableData() {
       let data = {}
 
-      this.data.forEach(item => {
-        if (data.hasOwnProperty(item.uwi)) {
-          if (data[item.uwi].oilPrices.hasOwnProperty(item.oil_price)) return
-
-          return data[item.uwi].oilPrices[item.oil_price] = item.profitability_12m
-
-          return data[item.uwi].operating_profit_12m = item.operating_profit_12m
+      this.filteredData.forEach(item => {
+        if (!data.hasOwnProperty(item.uwi)) {
+          data[item.uwi] = {oilPrices: {}}
         }
 
-        data[item.uwi] = {oilPrices: {}, operating_profit_12m: item.operating_profit_12m}
-
-        data[item.uwi].oilPrices[item.oil_price] = item.profitability_12m
+        data[item.uwi].oilPrices[item.oil_price] = {
+          operating_profit_12m: (+item.operating_profit_12m / 1000).toFixed(2),
+          profitability_12m: item.profitability_12m
+        }
       })
 
       return data
@@ -122,12 +127,8 @@ export default {
         result.push(keys.splice(0, Math.ceil(keys.length / i)));
       }
 
-      return result;
+      return result
     },
-
-    oilPrices() {
-      return [60]
-    }
   }
 }
 </script>
