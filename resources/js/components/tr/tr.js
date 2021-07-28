@@ -760,11 +760,7 @@ export default {
       }
     },
     getRowWidthSpan (row) {
-      if (row.rus_wellname) {
-          return 0
-      } else {
-          return 2
-      }
+      return row.rus_wellname ? 0 : 2;
 
     },
 

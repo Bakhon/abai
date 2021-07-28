@@ -855,9 +855,6 @@
                         </div>
                       </div>
                     </td>
-                    <!-- <td @click="sortBy('rus_wellname')" class="th">
-                     <i class="fa fa-fw fa-sort"></i>
-                    </td> -->
                   <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('rus_wellname')"></i>
                       <div>
@@ -4807,7 +4804,7 @@
                   </td>
                   <td v-if="isEdit">{{ row.error_count }}</td>
 
-                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.error_first }} ые</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.error_first }}</td>
                   <td v-if="isEdit">{{ row.error_first }}</td>
 
                   <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
@@ -6623,7 +6620,6 @@ tr:nth-child(even) {
 }
 
 .sticky {
-  /* position: sticky; */
   top: 0;
   min-height: 2em;
   background: lightpink;
