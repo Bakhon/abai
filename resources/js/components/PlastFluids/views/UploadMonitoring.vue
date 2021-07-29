@@ -140,7 +140,7 @@
 <script>
 import dropdown from "../../geology/components/dropdowns/dropdown";
 import Button from "../../geology/components/buttons/Button";
-import Icon from "../../geology/components/icons/Icon";
+import Icon from "../../geology/components/icons/AwIcon";
 import {bTreeView} from "bootstrap-vue-treeview";
 
 export default {

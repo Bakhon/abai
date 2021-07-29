@@ -45,124 +45,123 @@
                 </div>
                 <div class="col-3"></div>
             </div>
-            <div class="content-block m-2 p-2 rounded-bottom">
-                <line-chart :height="800"></line-chart>
+            <div class="content-block content-block-scrollable m-2 p-2 rounded-bottom">
+                <apexchart
+                    ref="chart"
+                    :options="chartOptions"
+                    :series="chartSeries"
+                    :height="745"
+                    type="line"/>
+                <apexchart
+                    ref="chart"
+                    :options="chartOptions"
+                    :series="chartSeries"
+                    :height="745"
+                    type="line"/>
             </div>
         </div>
     </div>
 </template>
 <script>
-import Vue from "vue";
-import VueChartJs from 'vue-chartjs'
+import {GRANULARITY_DAY} from "../../../Economic/components/SelectGranularity";
+import chart from "vue-apexcharts";
 
-Vue.component('line-chart', {
-    extends: VueChartJs.Line,
-    props: {
-        isScheduleVisible: Boolean
-    },
-    mounted () {
-        this.renderChart({
-            labels: ["22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель",
-                "26 Апрель", "3 Май", "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь"],
-            datasets: [
+export default {
+    components: {apexchart: chart},
+    data: () => ({
+        currentAnnotation: {
+            minY: 0,
+            maxY: 0
+        },
+    }),
+    computed: {
+        chartSeries() {
+            return [
                 {
-                    label: "Жидкость",
-                    borderColor: "rgba(68, 114, 196, 1)",
-                    backgroundColor: 'rgba(130, 186, 255, 0.7)',
+                    name: "Жидкость",
+                    type: "area",
                     data: [100, 800, 900, 1400, 1200, 2100, 2900,
                         100, 800, 900, 1400, 1200, 2100, 2900,
                         100, 800, 900, 1400, 1200, 2100, 2900,
-                        100, 800, 900, 1400, 1200, 2100, 2900,
                         100, 800, 900, 1400, 1200, 2100, 2900],
-                    fill: true,
-                    showLine: true,
-                    pointRadius: 4,
-                    pointBorderColor: "#FFFFFF",
-                    order: 1,
-                    lineTension: 0,
                 },
                 {
-                    label: "Нефть",
-                    borderColor: "rgba(33, 186, 78, 1)",
-                    backgroundColor: 'rgba(72, 81, 95, 1)',
+                    name: "Нефть",
+                    type: "area",
                     data: [50, 300, 400, 300, 200, 500, 550,
                         50, 300, 400, 300, 200, 500, 550,
                         50, 300, 400, 300, 200, 500, 550,
                         50, 300, 400, 300, 200, 500, 550],
-                    fill: true,
-                    showLine: true,
-                    pointRadius: 4,
-                    pointBorderColor: "#FFFFFF",
-                    order: 0,
-                    lineTension: 0,
                 },
                 {
-                    label: "Обводненность",
-                    borderColor: "rgba(110, 187, 113, 1)",
+                    name: "Обводненность",
+                    type: "area",
                     data: [800, 700, 700, 1000, 450, 2000, 1400,
                         800, 700, 700, 1000, 450, 2000, 1400,
                         800, 700, 700, 1000, 450, 2000, 1400,
                         800, 700, 700, 1000, 450, 2000, 1400],
-                    fill: false,
-                    showLine: true,
-                    pointStyle: "rect",
-                    pointRadius: 4,
-                    pointBorderColor: "#FFFFFF",
-                    order: 0,
-                    lineTension: 0,
                 },
                 {
-                    label: "Н дин",
-                    borderColor: "rgba(110, 187, 113, 1)",
+                    name: "Н дин",
+                    type: "area",
                     data: [500, 900, 400, 400, 800, 1800, 1500,
                         500, 900, 400, 400, 800, 1800, 1500,
                         500, 900, 400, 400, 800, 1800, 1500,
                         500, 900, 400, 400, 800, 1800, 1500],
-                    fill: false,
-                    showLine: true,
-                    pointStyle: "triangle",
-                    pointRadius: 4,
-                    pointBorderColor: "#FFFFFF",
-                    order: 0,
-                    lineTension: 0,
-                }
-            ],
+                },
+            ];
         },
-        {
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: {
-                position: 'right',
-            },
-            scales: {
-                yAxes: [{
+        chartOptions() {
+            return {
+                labels: ["22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель","26 Апрель", "3 Май",
+                    "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь", "14 Июль",
+                    "22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель","26 Апрель", "3 Май",
+                    "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь", "14 Июль"],
+                stroke: {
+                    width: 4,
+                    curve: 'smooth'
+                },
+                legend: {
                     position: 'right',
-                    gridLines: {
-                        display: true,
-                        color: '#3C4270',
+                },
+                chart: {
+                    stacked: true,
+                    foreColor: '#FFFFFF',
+                    selection: {
+                        enabled: true,
+                        type: 'x',
                     },
-                    ticks: {
-                        suggestedMin: 0,
-                        suggestedMax: 4000,
-                        fontColor: '#FFFFFF',
+                    toolbar: {
+                        offsetY: -10,
+                    }
+                },
+                markers: {
+                    size: 0
+                },
+                xaxis: {
+                    type: this.granularity === GRANULARITY_DAY
+                        ? 'datetime'
+                        : 'date'
+                },
+                yaxis: {
+                    opposite: true,
+                    labels: {
+                        formatter(val) {
+                            return Math.round(val);
+                        },
                     },
-                }],
-                xAxes: [{
-                    gridLines: {
-                        display: false,
-                        color: '#3C4270'
+                    title: {
+                        text: this.title,
                     },
-                    ticks: {
-                        fontColor: '#FFFFFF',
-                    },
-                }],
+                    min: 0
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false,
+                }
             }
-        });
-    }
-});
-
-export default {
-
+        },
+    },
 }
 </script>
 <style scoped>
@@ -186,7 +185,18 @@ export default {
     line-height: 2rem;
 }
 
+.content-block-scrollable {
+    height: 70vh;
+    overflow-y: scroll;
+}
+
 .arrow-back {
     transform: rotate(90deg);
+}
+</style>
+<style>
+
+.apexcharts-legend {
+    justify-content: center !important;
 }
 </style>

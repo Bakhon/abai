@@ -88,6 +88,7 @@ class receiveNonOperatingAssets extends Command
     }
     public function processGDUEmail()
     {
+        $this->isDataAvailable = true;
         $this->assignMessageOptions(env('VISCENTER_GDU_EMAIL_ADDRESS', ''),env('VISCENTER_GDU_EMAIL_PASSWORD', ''));
         if (!$this->isDataAvailable) {
             return;

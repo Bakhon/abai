@@ -158,7 +158,6 @@ Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
 Vue.component('tr-charts-table', require('./components/tr/tr_charts.vue').default);
 Vue.component('tr-sidebar-charts', require('./components/tr/TrSidebarCharts.vue').default);
 Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue').default);
-Vue.component('cat-loader', require('./components/ui-kit/CatLoader.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
@@ -184,10 +183,8 @@ Vue.component('proto-org-select-tree', require('./components/bigdata/OrgSelectTr
 Vue.component('report-constructor-item-select-tree', require('./components/reportConstructor/ItemSelectTree.vue').default);
 Vue.component('report-header-builder', require('./components/reportConstructor/ReportHeaderBuilder.vue').default);
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
-Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 Vue.component('bigdata-plain-form', require('./components/bigdata/forms/PlainForm.vue').default);
-Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
 Vue.component('main-page', require('./components/mainpage.vue').default);
 
@@ -201,21 +198,10 @@ Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiv
 Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
 Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
 
-Vue.component('GeologyTopSide', require('./components/geology/TopSide.vue').default);
-
-Vue.component('BasePetrophysics', require('./components/geology/petrophysics/BaseGis.vue').default);
-Vue.component('PetrophysicsLeftSide', require('./components/geology/petrophysics/LeftSide.vue').default);
-Vue.component('PetrophysicsRightSide', require('./components/geology/petrophysics/RightSide.vue').default);
-
-Vue.component('BaseCore', require('./components/geology/core/BaseCore.vue').default);
-Vue.component('CoreLeftSide', require('./components/geology/core/LeftSide.vue').default);
-Vue.component('CoreRightSide', require('./components/geology/core/RightSide.vue').default);
-
-Vue.component('BaseVisualization', require('./components/geology/visualization/BaseVisualization.vue').default);
-Vue.component('VisualizationLeftSide', require('./components/geology/visualization/LeftSide.vue').default);
-
-Vue.component('BaseGeophysics', require('./components/geology/geophysics/BaseGeophysics').default);
-Vue.component('GeophysicsLeftSide', require('./components/geology/geophysics/LeftSide.vue').default);
+Vue.component('page-petrophysics', require('./components/geology/petrophysics/PagePetrophysics.vue').default);
+Vue.component('page-core', require('./components/geology/core/PageCore.vue').default);
+Vue.component('page-visualization', require('./components/geology/visualization/PageVisualization.vue').default);
+Vue.component('page-geophysics', require('./components/geology/geophysics/PageGeophysics.vue').default);
 
 Vue.component('digital-rating', require('./components/DigitalRating/index.vue').default);
 

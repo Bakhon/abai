@@ -16,6 +16,7 @@ mix.webpackConfig({
       alias: {
          '@store': path.resolve(__dirname, 'resources/js/store/'),
          '~': path.resolve(__dirname, 'resources/js/'),
+         '@ui-kit': path.resolve(__dirname, 'resources/js/components/ui-kit/'),
       }
    }
 });

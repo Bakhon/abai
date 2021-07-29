@@ -16,25 +16,34 @@ class EconomicOptimizationController extends Controller
 {
     protected $druidClient;
 
-    const DATA_SOURCE = 'economic_scenario_test_v4';
+    const DATA_SOURCE = 'economic_scenario_test_v8';
 
-    const DATA_SOURCE_DATE = '2021/07/13';
+    const DATA_SOURCE_DATE = '2021/01/01';
 
     const OPTIMIZED_COLUMNS = [
         'Revenue_total',
+        'Revenue_local',
+        'Revenue_export',
         'Overall_expenditures',
         'operating_profit_12m',
         'oil',
         'liquid',
         'prs',
-        'well_count',
-        'well_count_profitable',
-        'well_count_profitless_cat_1',
-        'well_count_profitless_cat_2',
-        'avg_days_worked'
+        'uwi_count',
+        'days_worked',
+        'production_export',
+        'production_local',
     ];
 
-    const OPTIMIZED_COLUMN_SUFFIX = '_optimize';
+    const OPTIMIZED_SINGLE_COLUMNS = [
+        'Overall_expenditures',
+        'operating_profit_12m',
+    ];
+
+    const SUFFIX_OPTIMIZE = '_optimize';
+    const SUFFIX_PROFITABLE = '_profitable';
+    const SUFFIX_PROFITLESS_CAT_1 = '_profitless_cat_1';
+    const SUFFIX_PROFITLESS_CAT_2 = '_profitless_cat_2';
 
     const DOLLAR_RATE_URL = 'https://www.nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut';
 
@@ -78,6 +87,7 @@ class EconomicOptimizationController extends Controller
             'org' => $org,
             'scenarios' => $this->getScenarios(),
             'specificIndicator' => $this->getSpecificIndicatorData($org),
+            'technicalEconomicIndicator' => $this->getTechnicalEconomicIndicatorData($org),
             'dollarRate' => [
                 'value' => $this->getDollarRate() ?? '0',
                 'url' => self::DOLLAR_RATE_URL
@@ -109,10 +119,16 @@ class EconomicOptimizationController extends Controller
             "oil_price",
         ];
 
-        foreach (self::OPTIMIZED_COLUMNS as $column) {
-            $columns[] = $column;
+        $columnsVariations = [];
 
-            $columns[] = $column . self::OPTIMIZED_COLUMN_SUFFIX;
+        foreach (self::OPTIMIZED_COLUMNS as $column) {
+            foreach (self::columnVariations($column) as $columnVariation) {
+                $columnsVariations[] = $columnVariation;
+
+                $columns[] = $columnVariation;
+
+                $columns[] = $columnVariation . self::SUFFIX_OPTIMIZE;
+            }
         }
 
         $data = $builder
@@ -127,14 +143,14 @@ class EconomicOptimizationController extends Controller
                 $scenarios[$index][$column] = $item[$column];
             }
 
-            foreach (self::OPTIMIZED_COLUMNS as $column) {
-                $columnOptimized = $column . self::OPTIMIZED_COLUMN_SUFFIX;
+            foreach ($columnsVariations as $columnVariation) {
+                $columnOptimized = $columnVariation . self::SUFFIX_OPTIMIZE;
 
-                $scenarios[$index][$column] = [
-                    'value' => self::formatMoney($item[$column]),
+                $scenarios[$index][$columnVariation] = [
+                    'value' => self::formatMoney($item[$columnVariation]),
                     'value_optimized' => self::formatMoney($item[$columnOptimized]),
-                    'percent' => EconomicNrsController::calcPercent($item[$columnOptimized], $item[$column], 2),
-                    'original_value' => $item[$column],
+                    'percent' => EconomicNrsController::calcPercent($item[$columnOptimized], $item[$columnVariation], 2),
+                    'original_value' => $item[$columnVariation],
                     'original_value_optimized' => $item[$columnOptimized],
                 ];
             }
@@ -144,6 +160,29 @@ class EconomicOptimizationController extends Controller
     }
 
     private function getSpecificIndicatorData(Org $org, int $scenarioId = 6): array
+    {
+        $query = EcoRefsCost::query()
+            ->select(
+                DB::raw('AVG(variable) as avg_variable'),
+                DB::raw('AVG(fix_payroll) as avg_fix_payroll'),
+                DB::raw('AVG(wo) as avg_wo'),
+                DB::raw('AVG(fix) as avg_fix'),
+                DB::raw('AVG(gaoverheads) as avg_gaoverheads'),
+                DB::raw('AVG(wr_nopayroll) as avg_wr_nopayroll'),
+                DB::raw('AVG(wr_payroll) as avg_wr_payroll'),
+            )
+            ->whereScFa($scenarioId);
+
+        if ($org->druid_id) {
+            $companyId = self::orgCompanyMap()[$org->id];
+
+            $query->whereCompanyId($companyId);
+        }
+
+        return $query->get()->first()->toArray();
+    }
+
+    private function getTechnicalEconomicIndicatorData(Org $org, int $scenarioId = 6): array
     {
         $query = EcoRefsCost::query()
             ->select(
@@ -248,6 +287,20 @@ class EconomicOptimizationController extends Controller
         return [
             number_format($digit / 1000000000, 2),
             trans('economic_reference.billion')
+        ];
+    }
+
+    static function columnVariations(string $column): array
+    {
+        if (in_array($column, self::OPTIMIZED_SINGLE_COLUMNS)) {
+            return [$column];
+        }
+
+        return [
+            $column,
+            $column . self::SUFFIX_PROFITABLE,
+            $column . self::SUFFIX_PROFITLESS_CAT_1,
+            $column . self::SUFFIX_PROFITLESS_CAT_2,
         ];
     }
 }
