@@ -79,10 +79,10 @@
         </div>
       </form>
       <div class="modal__footer">
-        <button type="button" class="btn-button btn-button--thm-blue mr-20px minw-400">
+        <button type="button" class="btn-button btn-button--thm-blue mr-20px minw-300">
           {{ trans('digital_rating.applyDefault') }}
         </button>
-        <button type="button" class="btn-button btn-button--thm-blue minw-400">
+        <button type="button" class="btn-button btn-button--thm-blue minw-300">
           {{ trans('digital_rating.applyCorrectionsMade') }}
         </button>
       </div>
@@ -126,7 +126,6 @@ export default {
     outline: none;
     padding: 5px 10px;
     color: #fff;
-    font-size: 18px;
   }
 
   &__select {

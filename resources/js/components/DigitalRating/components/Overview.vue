@@ -8,20 +8,23 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="item in overviewData">
-        <td></td>
+      <tr v-for="(item, index) in overviewData" :key="index">
+        <td v-for="(col, colIdx) in cols" :key="colIdx">
+          <span>{{ item[col.name] }}</span>
+        </td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
+import { overviews } from '../data';
 export default {
   name: "Overview",
 
   data() {
     return {
-      overviewData: []
+      overviewData: overviews
     }
   },
 

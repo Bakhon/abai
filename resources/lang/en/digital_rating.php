@@ -48,4 +48,10 @@ return array (
   'tonDay' => 'т/сут',
   'note' => 'Примечание',
   'code' => 'Код',
+  'period' => 'Период',
+  'reconciling' => 'Согласующий',
+  'comments' => 'Комментарии',
+  'markCandidate' => 'Отметить кандидат',
+  'agreeCandidate' => 'Согласовать кандидат',
+  'sectorNumber' => 'Номер сектора',
 );
