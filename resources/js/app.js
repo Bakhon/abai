@@ -158,7 +158,6 @@ Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
 Vue.component('tr-charts-table', require('./components/tr/tr_charts.vue').default);
 Vue.component('tr-sidebar-charts', require('./components/tr/TrSidebarCharts.vue').default);
 Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue').default);
-Vue.component('cat-loader', require('./components/ui-kit/CatLoader.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
@@ -184,10 +183,8 @@ Vue.component('proto-org-select-tree', require('./components/bigdata/OrgSelectTr
 Vue.component('report-constructor-item-select-tree', require('./components/reportConstructor/ItemSelectTree.vue').default);
 Vue.component('report-header-builder', require('./components/reportConstructor/ReportHeaderBuilder.vue').default);
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
-Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 Vue.component('bigdata-plain-form', require('./components/bigdata/forms/PlainForm.vue').default);
-Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
 Vue.component('main-page', require('./components/mainpage.vue').default);
 
