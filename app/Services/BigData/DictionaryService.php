@@ -230,6 +230,21 @@ class DictionaryService
         return $dict;
     }
 
+    public function getDictValueById(string $dict, string $type, int $id)
+    {
+        $dict = $this->get($dict);
+        if ($type === 'dict') {
+            foreach ($dict as $item) {
+                if ($item['id'] === $id) {
+                    return $item['name'];
+                }
+            }
+        }
+
+        if ($type === 'dict_tree') {
+        }
+    }
+
     private function getPlainDict(string $dict): array
     {
         $dictClass = self::DICTIONARIES[$dict]['class'];

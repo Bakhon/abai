@@ -175,9 +175,11 @@ abstract class PlainForm extends BaseForm
 
         foreach ($historyItems as $history) {
             foreach ($history->payload as $key => $value) {
-                $result[$key][$history->created_at->format('H:i:s')] = [
+                $result[] = [
+                    'id' => $history->id,
+                    'updated_at' => $history->updated_at,
                     'user' => $history->user->name,
-                    'value' => $value
+                    'payload' => $value
                 ];
             }
         }
@@ -204,7 +206,12 @@ abstract class PlainForm extends BaseForm
     private function saveHistory()
     {
         $historyService = new PlainFormHistory();
-        $historyService->saveHistory($this->configurationFileName, $this->originalData, $this->submittedData);
+        $historyService->saveHistory(
+            $this->configurationFileName,
+            $this->getFields(),
+            $this->originalData,
+            $this->submittedData
+        );
     }
 
 }

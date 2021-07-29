@@ -126,6 +126,14 @@
     <div v-else-if="hasFormError">
       <p style="color: #fff">Ошибка загрузки формы</p>
     </div>
+    <div v-if="isHistoryShowed" class="bd-popup">
+      <div class="bd-popup__inner">
+        <a class="bd-popup__close" href="#" @click.prevent="isHistoryShowed = false">{{ trans('bd.close') }}</a>
+        <div class="bd-main-block__form-block-content">
+          <edit-history :history="history"></edit-history>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -134,6 +142,7 @@ import forms from '../../../json/bd/forms.json'
 import BigDataPlainForm from './PlainForm'
 import {bdFormActions} from '@store/helpers'
 import CatLoader from '../../ui-kit/CatLoader'
+import EditHistory from '../../common/EditHistory'
 import moment from "moment";
 
 export default {
@@ -150,7 +159,8 @@ export default {
   },
   components: {
     BigDataPlainForm,
-    CatLoader
+    CatLoader,
+    EditHistory
   },
   data() {
     return {
@@ -166,6 +176,8 @@ export default {
       dictFields: {},
       isLoading: false,
       hasFormError: false,
+      history: {},
+      isHistoryShowed: false,
       availableActions: []
     }
   },
@@ -299,8 +311,8 @@ export default {
           id: row.id
         }
       }).then(({data}) => {
-
-        this.$set(this.history, row.id, data)
+        this.history = data
+        this.isHistoryShowed = true
       })
     }
   }
