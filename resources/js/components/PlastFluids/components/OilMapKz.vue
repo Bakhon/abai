@@ -9,33 +9,18 @@
 
 import leafMap from './leafMap';
 
-// import kzStatesData from '../plugins/global';
-
 export default {
   name: "OilMapKz",
   data() {
     return {
       map: null,
-      // global: kzStatesData,
       province: undefined,
       currentProvince: undefined,
     }
   },
   mounted() {
     leafMap();
-    // kzStatesData();
   },
-  // methods: {
-  //   selectProvince(province) {
-  //     this.province = province;
-  //   },
-  //   openInfo(province) {
-  //     this.currentProvince = province;
-  //   },
-  //   closeInfo() {
-  //     this.currentProvince = undefined;
-  //   },
-  // },
 }
 </script>
 
@@ -43,6 +28,7 @@ export default {
 #map {
   height: 100vh;
   width: 100%;
+  background: #2B2E5E;
 }
 
 .info {
@@ -68,5 +54,13 @@ export default {
   float: left;
   margin-right: 8px;
   opacity: 0.7;
+}
+
+#map::v-deep .leaflet-tooltip.my-label {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  font-size: 14px;
+  color: #A1A3BC;
 }
 </style>
