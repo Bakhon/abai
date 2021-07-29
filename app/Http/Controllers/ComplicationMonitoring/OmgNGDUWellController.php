@@ -8,7 +8,6 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgNGDUWellRequest;
 use App\Http\Resources\OmgNGDUWellListResource;
-use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use App\Models\ComplicationMonitoring\Well;
 use App\Models\ComplicationMonitoring\Zu;
@@ -22,6 +21,7 @@ class OmgNGDUWellController extends CrudController
     use WithFieldsValidation;
 
     protected $modelName = 'omgngdu_well';
+    protected $routeParentName = 'omgngdu-well';
 
     /**
      * Display a listing of the resource.
@@ -31,7 +31,7 @@ class OmgNGDUWellController extends CrudController
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'list' => route('omgngdu_well.list'),
+                'list' => route('omgngdu-well.list'),
             ],
             'title' => trans('monitoring.omgngdu_well.title'),
             'table_header' => [
@@ -109,11 +109,23 @@ class OmgNGDUWellController extends CrudController
                     'title' => trans('monitoring.omgngdu_well.fields.temperature'),
                     'type' => 'numeric',
                 ],
+                'sg_oil' => [
+                    'title' => trans('monitoring.omgngdu_well.fields.sg_oil'),
+                    'type' => 'numeric',
+                ],
+                'sg_gas' => [
+                    'title' => trans('monitoring.omgngdu_well.fields.sg_gas'),
+                    'type' => 'numeric',
+                ],
+                'sg_water' => [
+                    'title' => trans('monitoring.omgngdu_well.fields.sg_water'),
+                    'type' => 'numeric',
+                ],
             ]
         ];
 
         if(auth()->user()->can('monitoring create '.$this->modelName)) {
-            $params['links']['create'] = route($this->modelName.'.create');
+            $params['links']['create'] = route($this->routeParentName.'.create');
         }
 
         $params['model_name'] = $this->modelName;
@@ -173,7 +185,8 @@ class OmgNGDUWellController extends CrudController
 
         return response()->json(
             [
-                'status' => config('response.status.success')
+                'status' => config('response.status.success'),
+                'message' => __('app.created')
             ]
         );
     }
@@ -214,7 +227,8 @@ class OmgNGDUWellController extends CrudController
 
         return response()->json(
             [
-                'status' => config('response.status.success')
+                'status' => config('response.status.success'),
+                'message' => __('app.updated')
             ]
         );
     }
@@ -233,7 +247,7 @@ class OmgNGDUWellController extends CrudController
         if ($request->ajax()) {
             return response()->json([], Response::HTTP_NO_CONTENT);
         } else {
-            return redirect()->route('omgngdu_well.index')->with('success', __('app.deleted'));
+            return redirect()->route('omgngdu-well.index')->with('success', __('app.deleted'));
         }
     }
 
@@ -241,5 +255,23 @@ class OmgNGDUWellController extends CrudController
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new OmgNGDUWellFilter($query, $filter))->filter();
+    }
+
+    public function getWellsValidationParams (): \Symfony\Component\HttpFoundation\Response
+    {
+        $validationParams = $this->getValidationParams('omgngdu_well');
+
+        return response()->json($validationParams);
+    }
+
+    public function getOmgNgdu (Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $date = $request->input('date');
+        $well_id = $request->input('well_id');
+
+        $omgngdu_well = OmgNGDUWell::where('well_id', $well_id)
+            ->where('date', $date)->first();
+
+        return response()->json($omgngdu_well);
     }
 }
