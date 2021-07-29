@@ -20,7 +20,7 @@
                 "code": "reservoir_count",
                 "type": "numeric",
                 "title": "reserv_c",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:1"
               },
               {
                 "code": "perf_date",
@@ -32,7 +32,7 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "depth",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:0"
               },
               {
                 "code": "new_intervals",
