@@ -24,6 +24,22 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
 
     const ORG_COLUMN = 'Компания';
 
+    const COLUMNS = [
+        'date' => 1,
+        'variable' => 2,
+        'variable_processing' => 3,
+        'fix_noWRpayroll' => 4,
+        'fix_payroll' => 5,
+        'fix_nopayroll' => 6,
+        'fix' => 7,
+        'gaoverheads' => 8,
+        'wr_nopayroll' => 9,
+        'wr_payroll' => 10,
+        'wo' => 11,
+        'net_back' => 12,
+        'amort' => 13,
+    ];
+
     function __construct(int $userId, string $fileName, bool $isForecast)
     {
         $this->userId = $userId;
@@ -57,18 +73,21 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
         return new EcoRefsCost([
             "sc_fa" => $this->scFaId,
             "company_id" => $companyId,
-            "date" => $row[1],
-            "variable" => round($row[2], 2),
-            "fix_noWRpayroll" => round($row[3], 2),
-            "fix_payroll" => round($row[4], 2),
-            "fix_nopayroll" => round($row[5], 2),
-            "fix" => round($row[6], 2),
-            "gaoverheads" => round($row[7], 2),
-            "wr_nopayroll" => round($row[8], 2),
-            "wr_payroll" => round($row[9], 2),
-            "wo" => round($row[10], 2),
-            "net_back" => round($row[11], 2),
-            "amort" => isset($row[12]) ? round($row[12], 2) : null,
+            "date" => $row[self::COLUMNS['date']],
+            "variable" => round($row[self::COLUMNS['variable']], 2),
+            "variable_processing" => round($row[self::COLUMNS['variable_processing']], 2),
+            "fix_noWRpayroll" => round($row[self::COLUMNS['fix_noWRpayroll']], 2),
+            "fix_payroll" => round($row[self::COLUMNS['fix_payroll']], 2),
+            "fix_nopayroll" => round($row[self::COLUMNS['fix_nopayroll']], 2),
+            "fix" => round($row[self::COLUMNS['fix']], 2),
+            "gaoverheads" => round($row[self::COLUMNS['gaoverheads']], 2),
+            "wr_nopayroll" => round($row[self::COLUMNS['wr_nopayroll']], 2),
+            "wr_payroll" => round($row[self::COLUMNS['wr_payroll']], 2),
+            "wo" => round($row[self::COLUMNS['wo']], 2),
+            "net_back" => round($row[self::COLUMNS['net_back']], 2),
+            "amort" => isset($row[self::COLUMNS['amort']])
+                ? round($row[self::COLUMNS['amort']], 2)
+                : null,
             "author_id" => $this->userId,
             "log_id" => $this->logId
         ]);
