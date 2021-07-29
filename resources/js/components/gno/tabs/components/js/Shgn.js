@@ -34,6 +34,7 @@ export default {
 			strokeLenDevKpod: this.strokeLenDev,
 			spmKpod: this.spm,
 			markShtangs: null,
+			mechSep: null,
 			diametersShgn: [
 				{
 					pumpType: 27,
@@ -70,6 +71,25 @@ export default {
 				{
 					pumpType: 95,
 					value: 95
+				},
+
+			],
+			selectedKomponovka: [],
+			komponovkaTypes: [
+				{
+					id: 1,
+					name: this.trans('pgno.yakor_truboderzhatel'),
+					value: 'yakor'
+				},
+				{
+					id: 2,
+					name: this.trans('pgno.paker'),
+					value: 'paker'
+				},
+				{
+					id: 3,
+					name: this.trans('pgno.hvostovik'),
+					value: 'hvostovik'
 				},
 
 			],
@@ -148,6 +168,9 @@ export default {
 		},
 	},
 	methods: {
+		isDisabled(k) {
+			return this.selectedKomponovka.length === 2 && this.selectedKomponovka[0] === k.value
+		},
 		setActiveOption(val) {
 			this.$store.commit('UPDATE_MARKSHTANG', val)
 		},
@@ -224,11 +247,12 @@ export default {
 		},
 	},
 	created: function() {
+		this.mechSep = this.$store.getters.mechSep
 		this.spmMin = this.$store.getters.spmMin
-    this.spmMax = this.$store.getters.spmMax
-    this.strokeLenMin = this.$store.getters.strokeLenMin
-    this.strokeLenMax = this.$store.getters.strokeLenMax
-    this.kpodMin = this.$store.getters.kpodMin
+    	this.spmMax = this.$store.getters.spmMax
+		this.strokeLenMin = this.$store.getters.strokeLenMin
+    	this.strokeLenMax = this.$store.getters.strokeLenMax
+    	this.kpodMin = this.$store.getters.kpodMin
 		this.groupPosad = this.$store.getters.groupPosad
 		this.komponovka = this.$store.getters.komponovka
 		this.dmRods = this.$store.getters.dmRods

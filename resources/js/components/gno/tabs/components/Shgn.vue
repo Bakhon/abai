@@ -186,20 +186,28 @@
 				<div class="title__block">{{trans('pgno.prim_komponovka')}}</div>
 					<div class="title__block__pump">
 						<div class="block__dm__pump__1">
-							<input type="checkbox" v-model="komponovka" value="yakor" />
-							<label for="checkbox1">{{trans('pgno.yakor_truboderzhatel')}}</label>	
+              <b-form-checkbox-group v-model="selectedKomponovka">
+                <b-form-checkbox v-for="k in komponovkaTypes" :key="k.id" :value="k.value" :disabled="isDisabled(k)">
+                  {{ k.name }}
+                </b-form-checkbox>
+              </b-form-checkbox-group>
+
+              {{ selectedKomponovka }}
+
+<!--							<input type="checkbox" v-for="k in komponovkaTypes" :key="k.id" :value="k.name " v-model="selectedKomponovka"/>-->
+<!--							<label>{{trans('pgno.yakor_truboderzhatel')}}</label>-->
 						</div>
 						
 					
-						<div class="block__dm__pump__2">
-							<input type="checkbox" v-model="komponovka" value="paker" />
-							<label for="checkbox1">{{trans('pgno.paker')}}</label>
-						</div>
+<!--						<div class="block__dm__pump__2">-->
+<!--							<input type="checkbox" v-model="komponovka" value="paker" :disabled="komponovka == 'hvostovik' && mechSep == true" />-->
+<!--							<label for="checkbox1">{{trans('pgno.paker')}}</label>-->
+<!--						</div>-->
 
-						<div class="block__dm__pump__3">
-							<input type="checkbox" v-model="komponovka" value="hvostovik" />
-							<label for="checkbox1">{{trans('pgno.hvostovik')}}</label>
-						</div>
+<!--						<div class="block__dm__pump__3">-->
+<!--							<input type="checkbox" v-model="komponovka" value="hvostovik" />-->
+<!--							<label for="checkbox1">{{trans('pgno.hvostovik')}}</label>-->
+<!--						</div>-->
 
 				</div>
 			</div>

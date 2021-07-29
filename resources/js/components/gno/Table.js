@@ -1296,6 +1296,7 @@ export default {
           } else if (this.expMeth == "ЭЦН" || this.expMeth == "УЭЦН") {
             this.mech_sep = true
           }
+          this.$store.commit('UPDATE_MECH_SEP', this.mech_sep)
           if (Number(this.qL) < 20) {
             this.mech_sep_value = 95
           } else if (Number(this.qL) < 55) {
