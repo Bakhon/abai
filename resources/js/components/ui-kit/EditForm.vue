@@ -47,6 +47,8 @@
             v-model="formFields[param].value"
             class="form-control"
             placeholder=""
+            @input="_.isUndefined(field.input) ? null : $emit(field.input);"
+            :readonly="!_.isUndefined(field.readonly) && field.readonly"
         >
 
         <select
@@ -85,6 +87,11 @@ export default {
   data: function () {
     return {
       date: null
+    }
+  },
+  computed: {
+    _() {
+      return _;
     }
   },
   methods: {
