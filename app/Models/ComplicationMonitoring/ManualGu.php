@@ -2,8 +2,6 @@
 
 namespace App\Models\ComplicationMonitoring;
 
-use App\Models\Pipes\GuZuPipe;
-use App\Models\Pipes\ZuWellPipe;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
