@@ -1,0 +1,140 @@
+{
+  "table": "prod.gis",
+  "tabs": [
+    {
+      "title": "title",
+      "blocks": [
+        [
+          {
+            "title": "main",
+            "items": [
+              {
+                "code": "gis_date",
+                "type": "datetime",
+                "title": "data",
+                "validation": "required"
+              },
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "dict": "companies",
+                "title": "podr",
+                "validation":"required|exists:tbd.dict.company,id"
+              },
+              {
+                "code": "matering_from",
+                "type": "numeric",
+                "title": "intr_ot",
+                "validation": "required"
+              },
+              {
+                "code": "matering_to",
+                "type": "numeric",
+                "title": "intr_do",
+                "validation": "required"
+              },
+              {
+                "code": "process_from",
+                "type": "numeric",
+                "title": "intr_obr_ot",
+                "validation": ""
+              },
+              {
+                "code": "process_to",
+                "type": "numeric",
+                "title": "intr_obr_do",
+                "validation": ""
+              },
+              {
+                "code": "liquid_vol",
+                "type": "numeric",
+                "title": "liquid_vol",
+                "validation": ""
+              },
+              {
+                "code": "oil_vol",
+                "type": "numeric",
+                "title": "oil_vol",
+                "validation": ""
+              },
+              {
+                "code": "water_cut",
+                "type": "numeric",
+                "title": "water_cut",
+                "validation": ""
+              },
+              {
+                "code": "intake",
+                "type": "numeric",
+                "title": "intake",
+                "validation": ""
+              },
+              {
+                "code": "pressure_injection",
+                "type": "numeric",
+                "title": "pressure",
+                "validation": ""
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "gis_types",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "dict": "gis_kinds",
+                "title": "gis_types",
+                "validation": ""
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "gis_methods",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "dict": "",
+                "title": "gis_methods",
+                "validation": ""
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "zakl",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "conclusion",
+                "type": "text",
+                "title": "zakl",
+                "validation": "required"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
