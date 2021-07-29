@@ -16,7 +16,7 @@ class EconomicOptimizationController extends Controller
 {
     protected $druidClient;
 
-    const DATA_SOURCE = 'economic_scenario_test_v13';
+    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v1';
 
     const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_test_v13';
 
@@ -99,7 +99,7 @@ class EconomicOptimizationController extends Controller
             'org' => $org,
             'scenarios' => $this->getScenarios(),
             'specificIndicator' => $this->getSpecificIndicatorData($org),
-            'wellChanges' => $this->getWellChangesData(),
+//            'wellChanges' => $this->getWellChangesData(),
             'dollarRate' => [
                 'value' => $this->getDollarRate() ?? '0',
                 'url' => self::DOLLAR_RATE_URL

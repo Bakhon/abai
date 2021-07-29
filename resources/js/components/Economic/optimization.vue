@@ -29,7 +29,7 @@
             <div v-if="form.scenario_id"
                  class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
-                {{ 100 + header.percent }} %
+                {{ (100 + header.percent).toFixed(2) }} %
               </div>
 
               <div>{{ header.baseValue }}</div>

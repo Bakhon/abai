@@ -39,14 +39,14 @@
           :scenario="scenario"
           class="text-white"/>
 
-      <table-well-changes
-          v-if="index === 3"
-          :org="res.org"
-          :scenarios="res.scenarios"
-          :scenario="scenario"
-          :oil-prices="oilPrices"
-          :data="res.wellChanges"
-          class="text-white"/>
+<!--      <table-well-changes-->
+<!--          v-if="index === 3"-->
+<!--          :org="res.org"-->
+<!--          :scenarios="res.scenarios"-->
+<!--          :scenario="scenario"-->
+<!--          :oil-prices="oilPrices"-->
+<!--          :data="res.wellChanges"-->
+<!--          class="text-white"/>-->
     </div>
   </div>
 </template>
