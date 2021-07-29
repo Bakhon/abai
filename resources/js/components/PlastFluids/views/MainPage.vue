@@ -9,8 +9,14 @@
         <info-table inform_data="9" :description="well_head_samples"></info-table>
       </div>
     </div>
-<!--    <p class="filter-header">Недропользователь</p>-->
-<!--    <div class="filter">
+   <p class="filter-header">Недропользователь</p>
+   <b-input-group class="mt-3 input">
+            <b-form-input class="input-bg"></b-form-input>
+            <b-input-group-append>
+              <b-button variant="info">Button</b-button>
+            </b-input-group-append>
+          </b-input-group>
+   <div class="filter">
       <div class="user-checkbox">
         <b-form-checkbox-group
             v-model="selected"
@@ -20,8 +26,8 @@
             text-field="name"
             stacked
         ></b-form-checkbox-group>
-      </div>-->
-<!--      <div class="field-checkbox">
+      </div>
+     <div class="field-checkbox">
         <div>
           <b-input-group class="mt-3 input">
             <b-form-input class="input-bg"></b-form-input>
@@ -40,8 +46,8 @@
             ></b-form-checkbox-group>
           </div>
         </div>
-      </div>-->
-<!--    </div>-->
+      </div>
+   </div>
     <div class="buttons-wrapper">
       <button>{{ trans("plast_fluids.data_download") }}</button>
       <button>{{ trans("plast_fluids.data_analysis") }}</button>
@@ -61,9 +67,12 @@ export default {
       well_head_samples: this.trans("plast_fluids.well_head_samples"),
 
       options: [
-        { item: 'A', name: 'Недропользователь 1' },
-        { item: 'B', name: 'Недропользователь 2' },
-        { item: 'D', name: 'Недропользователь 3' }
+        { item: 'A', name: 'АО «Озенмунайгаз»' },
+        { item: 'B', name: 'АО «Мангистаумунайгаз»' },
+        { item: 'C', name: 'АО «Каражанбасмунай»' },
+        // { item: 'D', name: 'ТОО «Казахтуркмунай»' }
+        // { item: 'E', name: 'АО «Эмбамунайгаз»' }
+        // { item: 'F', name: 'ТОО СП «Казгермунай»' }
       ]
     };
   },
@@ -97,7 +106,7 @@ export default {
 .wrapper-info {
   display : flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   background: #272953;
   padding: 10px 14px 10px;
   height: 100%;
@@ -111,7 +120,7 @@ export default {
   background: #272953;
   display : flex;
   flex-direction: column;
-  
+
 }
 .buttons-wrapper button {
   height:40px;

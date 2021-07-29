@@ -1,13 +1,13 @@
 @extends('layouts.pf')
 @section('content')
    <div class="pf-index-wrapper">
-   
+
        <div class="pf-index-main">
-           <div id="map"></div>
-<!--           <pf-oil-map />-->
+{{--           <div id="map"></div>--}}
+           <pf-oil-map />
        </div>
        <div class="pf-index-menu"><pf-main></pf-main></div>
-<!--       <div class="pf-index-footer"><pf-legend>
+      <div class="pf-index-footer"><pf-legend>
                <div class="WindowFooter">
                    <div class="row">
                        <div class="col-sm-5 borderRightGrey">
@@ -32,19 +32,19 @@
                            </div>
                        </div>
                    </div>
-               </div>-->
+               </div>
            </pf-legend></div>
    </div>
 @endsection
 
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<!--<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script src="./data/line.js"></script>
 <script src="./data/point.js"></script>
 <script src="./data/polygon.js"></script>
 <script src="./data/nepaldata.js"></script>
 <script src="./data/global.js"></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-<script src="./data/usstates.js"></script>
+<script src="./data/usstates.js"></script>-->
 <!--<script src="./resources/js/components/PlastFluids/components/mapZoom.js"></script>-->
 {{--<script src="/js/plastFluids/mapdata.js"></script>--}}
 {{--<script src="/js/plastFluids/countrymap.js"></script>--}}
@@ -91,7 +91,7 @@
     }
 
     .pf-index-main {
-        grid-column: 2; 
+        grid-column: 2;
         grid-row: 2;
         background:#2c3064;
         width: 100%;
@@ -99,7 +99,7 @@
         overflow: hidden;
     }
     .pf-index-menu {
-        grid-column: 4; 
+        grid-column: 4;
         grid-row: 2;
         grid-row-end: 5;
         background:rgba(51, 57, 117, 1);
@@ -117,7 +117,7 @@
     .borderRightGrey{
         display: flex;
     }
-   
+
 </style>
 
 <script>
