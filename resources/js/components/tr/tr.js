@@ -804,7 +804,6 @@ export default {
         )
         .then((response) => {
           this.wellAdd();
-          // this.created();
           this.reRender();
           console.log('good')
         }) 
@@ -820,7 +819,6 @@ export default {
             this.lonelywell[0].well).then((res) => {
               console.log(res.data)
               this.wellAdd();
-              // this.created();
               this.reRender();              
             })
       }
