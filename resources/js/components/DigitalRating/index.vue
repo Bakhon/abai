@@ -80,7 +80,6 @@ export default {
 
   data() {
     return {
-      isOpen: false,
       dropdownTitle: '',
       objects: ['Объект 1', 'Объект 2'],
       maps: ['Карта ННТ', 'Накопленные отборы'],
