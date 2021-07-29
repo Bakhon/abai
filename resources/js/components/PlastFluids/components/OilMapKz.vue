@@ -7,7 +7,6 @@
 
 <script>
 
-import leafMap from './leafMap';
 
 export default {
   name: "OilMapKz",
@@ -17,9 +16,6 @@ export default {
       province: undefined,
       currentProvince: undefined,
     }
-  },
-  mounted() {
-    leafMap();
   },
 }
 </script>

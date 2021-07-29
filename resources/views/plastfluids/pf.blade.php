@@ -37,17 +37,6 @@
    </div>
 @endsection
 
-<!--<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script src="./data/line.js"></script>
-<script src="./data/point.js"></script>
-<script src="./data/polygon.js"></script>
-<script src="./data/nepaldata.js"></script>
-<script src="./data/global.js"></script>
-<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-<script src="./data/usstates.js"></script>-->
-<!--<script src="./resources/js/components/PlastFluids/components/mapZoom.js"></script>-->
-{{--<script src="/js/plastFluids/mapdata.js"></script>--}}
-{{--<script src="/js/plastFluids/countrymap.js"></script>--}}
 
 <style lang="scss" scoped>
   #map {

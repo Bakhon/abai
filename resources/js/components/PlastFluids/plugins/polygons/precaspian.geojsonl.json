@@ -1,6 +1,7 @@
 {
   "type": "Feature",
   "properties": {
+    "id": "precaspian",
     "name": "Прикаспийская НГП",
     "type": "region"
   },
