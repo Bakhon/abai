@@ -38,6 +38,8 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\GisKind;
+use App\Models\BigData\Dictionaries\GisMethod;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -178,6 +180,14 @@ class DictionaryService
         'wells' => [
             'class' => Well::class,
             'name_field' => 'uwi'
+        ],
+        'gis_kinds' => [
+            'class' => GisKind::class,
+            'name_field' => 'name_ru'
+        ],
+        'gis_methods' => [
+            'class' => GisMethod::class,
+            'name_field' => 'name_ru'
         ]
     ];
 

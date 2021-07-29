@@ -202,7 +202,7 @@ import { VueMomentLib } from "vue-moment-lib";
 import moment from "moment";
 import Vue from "vue";
 import BigNumbers from "./BigNumbers.vue";
-import ClearIcon from "../ui-kit/ClearIcon.vue";
+import ClearIcon from "@ui-kit/ClearIcon.vue";
 import TrMultiselect from "./TrMultiselect.vue";
 import trHelper from '~/mixins/trHelper';
 import VueApexCharts from "vue-apexcharts";

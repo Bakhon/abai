@@ -1,4 +1,4 @@
-const requireModule = require.context('.', false, /^((?!\.spec\.).)*\.js$/);
+const requireModule = require.context('.', false, /^((?!\.spec|.const\.).)*\.js$/);
 const modules = {};
 
 requireModule.keys().forEach(filename => {
@@ -12,4 +12,3 @@ requireModule.keys().forEach(filename => {
 });
 
 export default modules;
-
