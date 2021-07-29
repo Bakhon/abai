@@ -355,8 +355,7 @@ class DictionaryService
     {
         $dictClass = self::DICTIONARIES['geo_type']['class'];
         $nameField = self::DICTIONARIES['geo_type']['name_field'] ?? 'name';
-        echo $dictClass;
-        echo $nameField;
+        
         return $dictClass::query()
             ->select('id')
             ->selectRaw("$nameField as name")
@@ -372,6 +371,5 @@ class DictionaryService
             ->orderBy('name', 'asc')
             ->get()
             ->toArray();
-            echo $dictClass;
     }
 }
