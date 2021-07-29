@@ -36,7 +36,7 @@ class OmgNGDUWellController extends CrudController
             'title' => trans('monitoring.omgngdu_well.title'),
             'table_header' => [
                 trans('monitoring.selection_node') => 1,
-                trans('monitoring.omgngdu_well.fields.fact_data') => 9,
+                trans('monitoring.omgngdu_well.fields.fact_data') => 12,
             ],
             'fields' => [
                 'zu' => [

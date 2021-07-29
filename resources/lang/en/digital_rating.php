@@ -37,4 +37,16 @@ return array (
   'maps' => 'Карты',
   'tools' => 'Инструменты',
   'uploadCustomMaps' => 'Загрузить пользовательские карты',
+  'limitValueSector' => 'Предельное значение выработки запасов сектора, %',
+  'forecastingAlgorithm' => 'Алгоритм прогноза',
+  'radiusEnvironment' => 'Радиус окружения для расчета показателей, м',
+  'applyDefault' => 'Применить по умолчанию',
+  'applyCorrectionsMade' => 'Применить выполненные корректировки',
+  'overview' => 'Обзор',
+  'matchingHistory' => 'История согласования',
+  'cubeDay' => 'м3/сут',
+  'tonDay' => 'т/сут',
+  'note' => 'Примечание',
+  'code' => 'Код',
+
 );
