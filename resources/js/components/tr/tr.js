@@ -584,16 +584,15 @@ export default {
       this.isShowAdd=false;
       this.isDeleted=false;
       this.isSaved=false;
-      this.isSaveChanges=false;
       this.wellStatusFilter = undefined;
       this.statusFilter = undefined;
       this.typeWellFilter = undefined;
       this.wellFilter = undefined;
       this.fieldFilter = undefined;
     },
-    onChangePage(value) {
+    onChangePage(newVal) {
       this.$store.commit("globalloading/SET_LOADING", true);
-      this.$store.commit("tr/SET_PAGENUMBER", parseInt(value));
+      this.$store.commit("tr/SET_PAGENUMBER",  parseInt(newVal));
       this.chooseAxios();
     },
     showWells() {
@@ -602,7 +601,6 @@ export default {
         if(this.lonelywell[0].is_saved === "Сохранено"){
           this.isDeleted = false;
           this.isSaved = true;
-          this.isSaveChanges = true;
         }
         else{
           this.isDeleted = true;
@@ -729,13 +727,12 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           let data = response.data;
           if (data) {
-            this.isSearched = false;
+            this.isSearched = true;
             this.$store.commit("tr/SET_SORTPARAM", "");
             this.$store.commit("tr/SET_SEARCH", "");
             this.sortParam = "";
             this.searchString = "";
             this.allWells = data.data;
-            
           } else {
             console.log("No data");
           }
@@ -791,18 +788,21 @@ export default {
 
     saveadd() {
       Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
-      let output = {}
+      let output = {};
       this.$refs.editTable[0].children.forEach((el) => {
         output[el.children[0].dataset.key] = el.children[0].value;
       });
       this.axios
         .post(
           this.postApiUrl + "techregime/new_wells/add_well/", 
-          output).then((res) => {
-            this.wellAdd();
-            this.created();
-            this.reRender();
-          })
+          output,
+        )
+        .then((response) => {
+          this.wellAdd();
+          // this.created();
+          this.reRender();
+          console.log('good')
+        }) 
     },
     // Удаление с модалки
     deleteWell() {
@@ -815,7 +815,7 @@ export default {
             this.lonelywell[0].well).then((res) => {
               console.log(res.data)
               this.wellAdd();
-              this.created();
+              // this.created();
               this.reRender();              
             })
       }

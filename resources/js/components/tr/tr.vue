@@ -287,7 +287,7 @@
                                   style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                                   @click="saveadd()"
                                   @click.prevent="reRender"
-                                  v-show = isDeleted
+                                  v-if="isDeleted && isShowAdd"
                                   ><svg width="24" 
                                   height="24" 
                                   viewBox="0 0 24 24" 
@@ -302,7 +302,7 @@
                                   style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                                   @click="saveadd()"
                                   @click.prevent="reRender"
-                                  v-show = isSaveChanges
+                                  v-if="isSaved && isShowAdd"
                                   ><svg width="24" 
                                   height="24" 
                                   viewBox="0 0 24 24" 
@@ -316,7 +316,7 @@
                                   style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                                   @click="deleteWell"
                                   @click.prevent="reRender"
-                                  v-show = isSaved
+                                  v-if="isSaved && isShowAdd"
 
                                   ><svg width="24"
                                   height="24" 
@@ -6438,7 +6438,7 @@
                 :page-class="'page-item'">
             </paginate>
             <div>
-                    <input @change="onChangePage($event.target.value)" class="pgn_input">
+                    <input :value="this.$store.state.tr.pageNumber" @change="onChangePage($event.target.value)" class="pgn_input">
               
             </div>
           </div>
