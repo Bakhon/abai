@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Well extends Model
+class ManualWell extends Model
 {
     use LogsActivity, SoftDeletes;
 
@@ -23,7 +23,7 @@ class Well extends Model
 
     public function zu()
     {
-        return $this->belongsTo(Zu::class);
+        return $this->belongsTo(ManualZu::class);
     }
 
     public function ngdu()
@@ -46,9 +46,9 @@ class Well extends Model
         return $this->hasMany(OilGas::class);
     }
 
-    public function oilpipes()
+    public function oilPipes()
     {
-        return $this->setConnection('tbd_cmon')->hasMany(OilPipe::class);
+        return $this->setConnection('tbd_cmon')->hasMany(ManualOilPipe::class);
     }
 
     public function omguhe()
