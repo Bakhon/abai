@@ -173,7 +173,10 @@ class ExcelFormController extends Controller
              ->with('importDecreaseReason')
              ->get()
              ->toArray();
-        $comparedData = array_merge($forApprove,$actual);
+        $comparedData = array (
+            'forApprove' => $forApprove,
+            'actual' => $actual
+        );
         return $comparedData;
     }
 }
