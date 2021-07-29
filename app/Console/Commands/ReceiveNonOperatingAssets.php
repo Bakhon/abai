@@ -382,7 +382,8 @@ class receiveNonOperatingAssets extends Command
      */
     public function handle()
     {
-        $this->processInboundEmail();
         $this->processGDUEmail();
+        sleep(5);
+        $this->processInboundEmail();
     }
 }
