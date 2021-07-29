@@ -394,11 +394,13 @@ class EconomicNrsController extends Controller
 
         $prev = $prev ?? 0;
 
-        if ($prev) {
-            return round(($last - $prev) * 100 / $prev, $precision);
+        if (!$prev) {
+            return $last ? 100 : 0;
         }
 
-        return $last ? 100 : 0;
+        return $prev < 0
+            ? round(($prev - $last) * 100 / $prev, $precision)
+            : round(($last - $prev) * 100 / $prev, $precision);
     }
 
     static function getProfitabilities(string $profitabilityType): array
