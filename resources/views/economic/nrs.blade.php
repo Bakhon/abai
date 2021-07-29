@@ -1,4 +1,11 @@
 @extends('layouts.app')
+
+@section('module_icon')
+    <img src="/img/economic/icon.svg" alt="">
+@endsection
+
+@section('module_title', trans('economic_reference.economic_module_full'))
+
 @section('content')
     <div id="app" class="col-sm-12">
         <economic-nrs></economic-nrs>
