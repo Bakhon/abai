@@ -73,7 +73,6 @@
       <div class="form-label-group">
         <input
             v-model="formFields.sg_oil"
-            @input="calculateFluidParams"
             type="number"
             step="0.01"
             :min="validationParams.sg_oil.min"
@@ -131,7 +130,6 @@
       <div class="form-label-group">
         <input
             v-model="formFields.sg_gas"
-            @input="calculateFluidParams"
             type="number"
             step="0.01"
             :min="validationParams.sg_gas.min"
@@ -188,7 +186,6 @@
       <div class="form-label-group">
         <input
             v-model="formFields.sg_water"
-            @input="calculateFluidParams"
             type="number"
             step="0.01"
             :min="validationParams.sg_water.min"
@@ -284,7 +281,7 @@ export default {
   mounted() {
     this.$nextTick(async () => {
       this.loading = true;
-      await this.getAllComplicationMonitoringObjectsData();
+      await this.getAllComplicationMonitoringObjects();
 
       if (this.omgngduWell) {
         this.formFields = {
@@ -314,7 +311,7 @@ export default {
   },
   methods: {
     ...complicationMonitoringActions([
-      'getAllComplicationMonitoringObjectsData',
+      'getAllComplicationMonitoringObjects',
       'getAllNgdus',
       'getAllGus',
       'getAllCdngs',
