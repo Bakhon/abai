@@ -6,6 +6,7 @@ import TrFullTable from "./tablefull";
 import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
+import CatLoader from "@ui-kit/CatLoader";
 
 import Paginate from 'vuejs-paginate';
 Vue.component('paginate', Paginate);
@@ -17,6 +18,7 @@ export default {
     'params'
   ],
   components: {
+    CatLoader,
     TrTable,
     TrFullTable,
     SearchFormRefresh,

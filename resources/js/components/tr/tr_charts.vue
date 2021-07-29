@@ -216,6 +216,7 @@
       </div>
     </div>
     <big-numbers :list="filteredWells" />
+    <cat-loader />
   </div>
 </template>
 <script>
@@ -224,10 +225,12 @@ import BigNumbers from "./BigNumbers.vue";
 import TrMultiselect from "./TrMultiselect.vue";
 import trHelper from '~/mixins/trHelper';
 import ClearIcon from "@ui-kit/ClearIcon.vue";
+import CatLoader from "@ui-kit/CatLoader";
 
 export default {
   name: "TrCharts",
   components: {
+    CatLoader,
     TrMultiselect,
     ClearIcon,
     BigNumbers,

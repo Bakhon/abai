@@ -193,6 +193,7 @@
       </div>
     </div>
     <big-numbers :list="filteredWellsBar" />
+    <cat-loader />
   </div>
 </template>
 <script>
@@ -206,12 +207,14 @@ import ClearIcon from "@ui-kit/ClearIcon.vue";
 import TrMultiselect from "./TrMultiselect.vue";
 import trHelper from '~/mixins/trHelper';
 import VueApexCharts from "vue-apexcharts";
+import CatLoader from "@ui-kit/CatLoader";
 
 Vue.use(NotifyPlugin, VueMomentLib);
 
 export default {
   name: "Trfa",
   components: {
+    CatLoader,
     ClearIcon,
     BigNumbers,
     TrMultiselect,
