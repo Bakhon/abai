@@ -22,9 +22,8 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
 
     const CHUNK = 1000;
 
-    const ORG_COLUMN = 'Компания';
-
     const COLUMNS = [
+        'company' => 0,
         'date' => 1,
         'variable' => 2,
         'variable_processing' => 3,
@@ -56,11 +55,11 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
 
     public function model(array $row): ?EcoRefsCost
     {
-        if (!isset($row[0]) or ($row[0] == self::ORG_COLUMN)) {
+        if (!isset($row[self::COLUMNS['company']]) || ($row[self::COLUMNS['company']] === 'Компания')) {
             return null;
         }
 
-        $companyName = $row[0];
+        $companyName = $row[self::COLUMNS['company']];
 
         $companyId = $this->companies[$companyName]
             ?? EcoRefsCompaniesId::query()
