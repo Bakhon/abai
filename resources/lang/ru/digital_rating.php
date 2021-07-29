@@ -25,7 +25,7 @@ return array (
   'save' => 'Сохранить',
   'developmentMaps' => 'Карты разработки',
   'correlationScheme' => 'Корреляционная схема',
-  'environmentIndicators' => 'Показатели по окружению',
+  'environmentIndicators' => 'Показатели окружения',
   'wellNumber' => 'Номер скважины',
   'liquidFlowRate' => 'Дебит жидкости',
   'waterCut' => 'Обводненность',
@@ -48,5 +48,10 @@ return array (
   'tonDay' => 'т/сут',
   'note' => 'Примечание',
   'code' => 'Код',
-
+  'period' => 'Период',
+  'reconciling' => 'Согласующий',
+  'comments' => 'Комментарии',
+  'markCandidate' => 'Отметить кандидат',
+  'agreeCandidate' => 'Согласовать кандидат',
+  'sectorNumber' => 'Номер сектора',
 );

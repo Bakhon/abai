@@ -1,16 +1,13 @@
 .rating-tabs {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  margin-bottom: 10px;
 
   &__item {
-    background-color: #333975;
+    background-color: #363B68;
+    border: 0.5px solid #545580;
     color: #fff;
-    padding: 13px 20px;
-    width: 100%;
-    margin-right: 10px;
-    border-radius: 4px;
+    padding: 6px 20px;
+    margin-right: 6px;
     display: flex;
     align-items: center;
 
@@ -23,7 +20,8 @@
     }
 
     &.is-active {
-      background-color: #2E50E9;
+      background-color: #656A8A;
+      transition: all 0.2s ease-in;
     }
 
     img {
