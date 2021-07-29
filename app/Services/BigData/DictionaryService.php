@@ -194,6 +194,10 @@ class DictionaryService
         'geo_rock_types' => [
             'class' => GeoRockType::class,
             'name_field' => 'name_ru'
+        ],
+        'geo_type' => [
+            'class' => Geo::class,
+            'name_field' => 'name_ru'
         ]
     ];
 
@@ -237,7 +241,7 @@ class DictionaryService
                 case 'equip_type_casc':
                     $dict = $this->getEquipTypeCascDict();
                     break;
-                case 'geo':
+                case 'geo_type_hrz':
                     $dict = $this->getGeoTypeDict();
                     break;    
                 default:
@@ -351,7 +355,8 @@ class DictionaryService
     {
         $dictClass = self::DICTIONARIES['geo_type']['class'];
         $nameField = self::DICTIONARIES['geo_type']['name_field'] ?? 'name';
-
+        echo $dictClass;
+        echo $nameField;
         return $dictClass::query()
             ->select('id')
             ->selectRaw("$nameField as name")
@@ -367,5 +372,6 @@ class DictionaryService
             ->orderBy('name', 'asc')
             ->get()
             ->toArray();
+            echo $dictClass;
     }
 }

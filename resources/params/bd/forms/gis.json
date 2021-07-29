@@ -79,7 +79,7 @@
               {
                 "code": "ri_horizont",
                 "type": "dict",
-                "dict": "geos",
+                "dict": "geo_type_hrz",
                 "title": "geo",
                 "validation": "required|exists:tbd.dict.geo_type,id"
               },
