@@ -76,7 +76,7 @@ import 'vue-datetime/dist/vue-datetime.css'
 Vue.use(Datetime)
 
 export default {
-  name: "editForm",
+  name: "EditForm",
   props: {
     formObject: Object,
     validationParams: Object,

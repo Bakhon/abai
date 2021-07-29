@@ -1,5 +1,5 @@
 <template>
-  <editForm
+  <EditForm
       :formFields="formFields"
       :validationParams="validationParams"
       :formObject="well"
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import editForm from '@ui-kit/editForm';
+import EditForm from '@ui-kit/EditForm';
 import {globalloadingMutations} from '@store/helpers';
 import omgNgduWellformFields from '~/json/formFields/omg_ngdu_well.json'
 
@@ -19,7 +19,7 @@ export default {
     well: Object
   },
   components: {
-    editForm
+    EditForm
   },
   data: function () {
     return {
