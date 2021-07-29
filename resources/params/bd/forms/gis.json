@@ -77,14 +77,11 @@
             "title": "",
             "items": [
               {
-                "code": "name_ru",
+                "code": "ri_horizont",
                 "type": "dict",
-                "dict": "geo",
+                "dict": "geos",
                 "title": "geo",
-                "validation": "required||exists:tbd.dict.geo_type,id",
-                "default_values": {
-                  "geo_type.code": "HRZ"
-                }
+                "validation": "required|exists:tbd.dict.geo_type,id"
               },
               {
                 "code": "ri_top",
@@ -201,14 +198,14 @@
                 "validation": "gte:0|lte:100"
               },
               {
-                "code": "name_ru",
+                "code": "ri_saturation_type",
                 "type": "dict",
                 "dict": "saturation_types",
                 "title": "typeofsaturation",
                 "validation": "exists:tbd.dict.saturation_type,id"
               },
               {
-                "code": "name_ru",
+                "code": "ri_lithology",
                 "type": "dict",
                 "dict": "geo_rock_types",
                 "title": "lithology",
