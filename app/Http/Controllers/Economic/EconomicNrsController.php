@@ -385,9 +385,19 @@ class EconomicNrsController extends Controller
 
     static function getOrg(int $orgId, StructureService $structureService): Org
     {
+        /** @var Org $org */
         $org = Org::findOrFail($orgId);
 
-        if (!in_array($org->tbd_id, auth()->user()->getUserOrganizations($structureService))) {
+        $tbdId = $org->tbd_id
+            ?? Org::query()
+                ->whereParentId($org->id)
+                ->whereNotNull('tbd_id')
+                ->firstOrFail()
+                ->tbd_id;
+
+        $userOrgs = auth()->user()->getUserOrganizations($structureService);
+
+        if (array_search($tbdId, array_column($userOrgs, 'id')) === false) {
             abort(403);
         }
 
