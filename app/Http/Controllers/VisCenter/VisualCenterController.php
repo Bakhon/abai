@@ -531,5 +531,10 @@ class VisualCenterController extends Controller
             echo 'No data '.$nameOfRepairsValue;
         }
     }
+
+    public function dailyApprove()
+        {
+            return view('visualcenter.daily_approve');
+        }
 }
 

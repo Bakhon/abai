@@ -9,6 +9,7 @@ use App\Models\VisCenter\ExcelForm\DzoImportDowntimeReason;
 use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use App\Models\VisCenter\ExcelForm\DzoImportField;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ExcelFormController extends Controller
 {
@@ -146,5 +147,33 @@ class ExcelFormController extends Controller
         $decrease_data = $request->request->get('decreaseReason');
         $dzo_decrease_reason = $this->getDzoChildSummaryData($dzo_decrease_reason,$decrease_data,$dzo_summary_last_record);
         $dzo_decrease_reason->save();
+    }
+
+    public function getDailyProductionForApprove()
+    {
+        $forApprove = DzoImportData::query()
+            ->where('is_corrected', true)
+            ->with('importField')
+            ->with('importDowntimeReason')
+            ->with('importDecreaseReason')
+            ->get()
+            ->toArray();
+        $forApproveDates = array_column($forApprove, 'date');
+        $forApproveDzo = array_unique(array_column($forApprove, 'dzo_name'));
+        $actual = DzoImportData::query()
+             ->whereNull('is_corrected')
+             ->where(function($q) use($forApproveDates) {
+                 foreach ($forApproveDates as $date) {
+                    $q->whereDate('date', '=', Carbon::parse($date), 'or');
+                 }
+             })
+             ->whereIn('dzo_name',$forApproveDzo)
+             ->with('importField')
+             ->with('importDowntimeReason')
+             ->with('importDecreaseReason')
+             ->get()
+             ->toArray();
+        $comparedData = array_merge($forApprove,$actual);
+        return $comparedData;
     }
 }

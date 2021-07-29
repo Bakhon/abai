@@ -35,7 +35,7 @@ export default {
                 let uri = this.localeUrl("/store-corrected-production");
                 this.excelData['is_corrected'] = true;
                 this.excelData['is_approved'] = false;
-                this.excelData['date'] = this.period;
+                this.excelData['date'] = moment(this.period).format("YYYY-MM-DD HH:mm:ss");
                 this.excelData['user_name'] = this.userName;
                 this.excelData['change_reason'] = this.changeReason;
                 await this.storeData(uri);

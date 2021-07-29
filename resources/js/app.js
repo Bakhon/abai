@@ -221,6 +221,7 @@ Vue.component('digital-rating', require('./components/DigitalRating/index.vue').
 
 Vue.component('admin-user-settings', require('./components/admin/user/Settings.vue').default);
 Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);
+Vue.component('visual-center-daily-approve', require('./components/visualcenter3/importForm/dailyApprove/index.vue').default);
 
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;

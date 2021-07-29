@@ -432,12 +432,12 @@ export default {
         },
         async handleSave() {
             let uri = this.localeUrl("/dzo-excel-form");
+            this.excelData['date'] = this.currentDateDetailed;
             await this.storeData(uri);
             this.isDataReady = !this.isDataReady;
         },
         storeData(uri) {
             this.excelData['dzo_name'] = this.selectedDzo.ticker;
-            this.excelData['date'] = this.currentDateDetailed;
             let troubledCompanies = Object.keys(this.factorOptions);
             if (troubledCompanies.includes(this.selectedDzo.ticker)) {
                 this.updateTroubledCompaniesByFactorOptions();

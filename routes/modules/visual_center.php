@@ -78,6 +78,8 @@ Route::group(
                 Route::get('/get-emergency-history', 'VisCenter\VisualCenterController@getEmergencyHistory');
                 Route::get('/get-historical-production', 'VisCenter\VisualCenterController@getHistoricalProductionByDzo');
                 Route::post('/store-corrected-production', 'VisCenter\ExcelForm\ExcelFormController@storeCorrected');
+                Route::get('/daily-approve', 'VisCenter\VisualCenterController@dailyApprove')->name('daily-approve');
+                Route::get('/get-daily-production-for-approve', 'VisCenter\ExcelForm\ExcelFormController@getDailyProductionForApprove');
             }
         );
     }
