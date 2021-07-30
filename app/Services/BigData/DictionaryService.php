@@ -42,6 +42,8 @@ use App\Models\BigData\Dictionaries\GisMethodType;
 use App\Models\BigData\Dictionaries\SaturationType;
 use App\Models\BigData\Dictionaries\GeoRockType;
 use App\Models\BigData\Dictionaries\Geo;
+use App\Models\BigData\Dictionaries\GisKind;
+use App\Models\BigData\Dictionaries\GisMethod;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -197,6 +199,14 @@ class DictionaryService
         ],
         'geo_type' => [
             'class' => Geo::class,
+            'name_field' => 'name_ru'
+        ],
+        'gis_kinds' => [
+            'class' => GisKind::class,
+            'name_field' => 'name_ru'
+        ],
+        'gis_methods' => [
+            'class' => GisMethod::class,
             'name_field' => 'name_ru'
         ]
     ];

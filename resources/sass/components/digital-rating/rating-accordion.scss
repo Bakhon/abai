@@ -1,4 +1,4 @@
-.rating-dropdown {
+.rating-accordion {
   margin-bottom: 10px;
 
   &__icon {
@@ -17,10 +17,10 @@
   }
 
   &.is-active {
-    .rating-dropdown__header {
+    .rating-accordion__header {
       background-color: $main1;
     }
-    .rating-dropdown__icon {
+    .rating-accordion__icon {
       transform: translateY(2px) rotate(225deg);
     }
   }

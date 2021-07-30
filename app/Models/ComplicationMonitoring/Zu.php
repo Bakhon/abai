@@ -51,9 +51,9 @@ class Zu extends Model
         return $this->hasMany(OilGas::class);
     }
 
-    public function oilpipes()
+    public function oilPipes()
     {
-        return $this->hasMany(OilPipes::class);
+        return $this->setConnection('tbd_cmon')->hasMany(OilPipe::class);
     }
 
     public function omguhe()

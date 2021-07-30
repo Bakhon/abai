@@ -13,6 +13,7 @@ class UpdateEcoRefsCostRequest extends FormRequest
             'company_id' => 'required',
             'date' => 'required',
             'variable' => 'nullable|numeric',
+            'variable_processing' => 'nullable|numeric',
             'fix_noWRpayroll' => 'nullable|numeric',
             'fix_nopayroll' => 'nullable|numeric',
             'fix' => 'nullable|numeric',
