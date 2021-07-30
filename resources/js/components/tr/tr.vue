@@ -6618,7 +6618,6 @@ tr:nth-child(even) {
   margin: 0 10px;
   background: #272953;
 }
-
 .sticky {
   top: 0;
   min-height: 2em;
