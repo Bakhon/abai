@@ -27,13 +27,13 @@
                 "code": "hole_count",
                 "type": "numeric",
                 "title": "count",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:0|lte:100"
               },
               {
                 "code": "hole_diameter",
                 "type": "numeric",
                 "title": "diame_c",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:0|lte:50"
               },
               {
                 "code": "perforator_type",
@@ -53,19 +53,19 @@
                 "code": "liquid",
                 "type": "numeric",
                 "title": "liquid",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:0"
               },
               {
                 "code": "bsw",
                 "type": "numeric",
                 "title": "bsw_p",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:0|lte:100"
               },
               {
                 "code": "reservoir_count",
                 "type": "numeric",
                 "title": "reserv_c",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:1"
               },
               {
                 "code": "perf_date",
@@ -103,13 +103,13 @@
                     "code": "top",
                     "type": "numeric",
                     "title": "top",
-                    "validation": ""
+                    "validation": "numeric|gte:0|lte:base"
                   },
                   {
                     "code": "base",
                     "type": "numeric",
                     "title": "base",
-                    "validation": ""
+                    "validation": "numeric|gte:0"
                   }
                 ]
               }
