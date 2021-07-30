@@ -144,7 +144,7 @@ export default {
         10: "В консервации нагнетательный фонд",
         11: "В консервации наблюдательный фонд"
       };
-      let uri = "http://172.20.103.187:8082/generic/";
+      let uri = process.env.MIX_MICROSERVICE_PREDEFINED_REPORTS + "/generic/";
       let data = {
         type: 'rev_fund_well_' + this.fondType,
         period: 'days',

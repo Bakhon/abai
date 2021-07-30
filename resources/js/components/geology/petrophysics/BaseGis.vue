@@ -2,7 +2,7 @@
   <div class="geology__content">
     <div class="rect mb-3">
       <div class="d-flex align-items-center">
-        <Button color="accent" icon="oilTower" class="flex-grow-1 mr-3" align="center">
+        <Button @click="isShowListOfWellsModal = true" color="accent" icon="oilTower" class="flex-grow-1 mr-3" align="center">
           Список скважин
         </Button>
         <Button color="accent" icon="settPhone" class="flex-grow-1 mr-3" align="center">
@@ -81,6 +81,10 @@
         </div>
       </div>
     </div>
+
+    <AwModal size="lg" title="Список скважин" :is-show.sync="isShowListOfWellsModal">
+      <ListOfWells />
+    </AwModal>
   </div>
 </template>
 
@@ -88,21 +92,28 @@
 import Button from "../components/buttons/Button";
 import dropdown from "../components/dropdowns/dropdown";
 import ToolBlock from "../components/toolBlock/ToolBlock";
+import AwModal from "../components/notifications/awModal/AwModal";
+import AwIcon from "../components/icons/AwIcon"
 
+import ListOfWells from "./modals/ListOfWells";
 export default {
   name: "Geology-Page",
   components: {
     Button,
     dropdown,
-    ToolBlock
+    ToolBlock,
+    AwModal,
+    AwIcon,
+    ListOfWells
   },
   data() {
     return {
       dropdownValue: {
         value: null
-      }
+      },
+      isShowListOfWellsModal: false
     }
-  }
+  },
 }
 </script>
 

@@ -202,7 +202,7 @@ import { VueMomentLib } from "vue-moment-lib";
 import moment from "moment";
 import Vue from "vue";
 import BigNumbers from "./BigNumbers.vue";
-import ClearIcon from "../ui-kit/ClearIcon.vue";
+import ClearIcon from "@ui-kit/ClearIcon.vue";
 import TrMultiselect from "./TrMultiselect.vue";
 import trHelper from '~/mixins/trHelper';
 import VueApexCharts from "vue-apexcharts";
@@ -775,7 +775,7 @@ export default {
         this.$store.commit("fa/SET_PR_YEAR", pryyyy);
         this.axios
           .get(
-            "http://172.20.103.187:7576/api/techregime/factor/graph1/" +
+            process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/graph1/" +
               yyyy +
               "/" +
               mm +
@@ -854,7 +854,7 @@ export default {
     }
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/factor/graph1/" +
+        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/graph1/" +
           yyyy +
           "/" +
           mm +

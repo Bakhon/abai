@@ -15,6 +15,8 @@ class StructureService
 
     const FULL_TREE_KEY = 'bd_org_tech_tree_full';
 
+    private static $childrenIds = [];
+
     public function getTreeWithPermissions(): array
     {
         $userSelectedTreeItems = auth()->user()->org_structure;
@@ -139,7 +141,26 @@ class StructureService
         }
 
         $techs = Tech::query()
-            ->whereIn('tech_type', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU, Tech::TYPE_AGZU, Tech::TYPE_SPGU])
+            ->whereIn(
+                'tech_type',
+                function ($query) {
+                    return $query
+                        ->from('dict.tech_type')
+                        ->select('id')
+                        ->whereIn(
+                            'code',
+                            [
+                                Tech::TYPE_GZU,
+                                Tech::TYPE_GU,
+                                Tech::TYPE_ZU,
+                                Tech::TYPE_AGZU,
+                                Tech::TYPE_SPGU,
+                                Tech::TYPE_KNS,
+                                Tech::TYPE_BKNS
+                            ]
+                        );
+                }
+            )
             ->where('dbeg', '<=', $date)
             ->where('dend', '>=', $date)
             ->with(
@@ -226,5 +247,30 @@ class StructureService
             }
         }
         return $result;
+    }
+
+    public static function getChildIds(array $orgs, int $selectedUserDzo): array
+    {
+        self::$childrenIds[] = $selectedUserDzo;
+        foreach ($orgs as $child) {
+            self::getChildsRecursive($child);
+        }
+
+        return self::$childrenIds;
+    }
+
+    private static function getChildsRecursive(array $child): void
+    {
+        if (!isset($child['children'])) {
+            return;
+        }
+        if (in_array($child['id'], self::$childrenIds)) {
+            self::$childrenIds = array_merge(self::$childrenIds, array_map(function ($item) {
+                return $item['id'];
+            }, $child['children']));
+        }
+        foreach ($child['children'] as $childrenItem) {
+            self::getChildsRecursive($childrenItem);
+        }
     }
 }

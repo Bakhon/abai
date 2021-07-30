@@ -23,7 +23,7 @@
 import Vue from 'vue';
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
-import CatLoader from "../../ui-kit/CatLoader";
+import CatLoader from "@ui-kit/CatLoader";
 import SelectSource from "./../components/SelectSource";
 
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});

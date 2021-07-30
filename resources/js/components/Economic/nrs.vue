@@ -172,7 +172,7 @@
 <script>
 const fileDownload = require("js-file-download");
 
-import CatLoader from '../ui-kit/CatLoader'
+import CatLoader from '@ui-kit/CatLoader'
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
 import Charts from "./components/Charts";

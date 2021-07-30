@@ -174,7 +174,7 @@
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
-                            {{ trans("visualcenter.getgaz") }}
+                            {{ trans("visualcenter.getgaz") }} ({{trans("visualcenter.gasOperatingAssets")}})
                           </div>
                           <br />
                           <div class="progress">
@@ -444,6 +444,75 @@
                   <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
                     <li
                             class="center-li row px-4"
+                            @click="switchMainMenu('gasProductionButton','productionNaturalGas')"
+                    >
+                      <div
+                              class="col-1 mt-2"
+                              v-html="`${getMainMenuButtonFlag('gasProductionButton','productionNaturalGas')}`"
+                      ></div>
+                      <a
+                              class="col-9 px-2"
+                              @click="
+                                updateProductionData(
+                                  'plan_prirod_gas',
+                                  'natural_gas_production_fact',
+                                  trans('visualcenter.productionNaturalGasChartName'),
+                                  ' м³',
+                                  trans('visualcenter.productionNaturalGas')
+                                )
+                              "
+                      >
+                        {{ trans("visualcenter.productionNaturalGas") }}
+                      </a>
+                    </li>
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('gasProductionButton','productionAssociatedGas')"
+                    >
+                      <div
+                              class="col-1 mt-2"
+                              v-html="`${getMainMenuButtonFlag('gasProductionButton','productionAssociatedGas')}`"
+                      ></div>
+                      <a
+                              class="col-9 px-2"
+                              @click="
+                                updateProductionData(
+                                  'plan_poput_gas',
+                                  'associated_gas_production_fact',
+                                  trans('visualcenter.productionAssociatedGasChartName'),
+                                  ' м³',
+                                  trans('visualcenter.productionAssociatedGas')
+                                )
+                              "
+                      >
+                        {{ trans("visualcenter.productionAssociatedGas") }}
+                      </a>
+                    </li>
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('gasProductionButton','flaringAssociatedGas')"
+                    >
+                      <div
+                              class="col-1 mt-2"
+                              v-html="`${getMainMenuButtonFlag('gasProductionButton','flaringAssociatedGas')}`"
+                      ></div>
+                      <a
+                              class="col-9 px-2"
+                              @click="
+                                updateProductionData(
+                                  'plan_poput_gas_burn',
+                                  'associated_gas_flaring_fact',
+                                  trans('visualcenter.flaringAssociatedGasChartName'),
+                                  ' м³',
+                                  trans('visualcenter.flaringAssociatedGas')
+                                )
+                              "
+                      >
+                        {{ trans("visualcenter.flaringAssociatedGas") }}
+                      </a>
+                    </li>
+                    <li
+                            class="center-li row px-4"
                             @click="switchMainMenu('gasProductionButton','deliveryNaturalGas')"
                     >
                       <div
@@ -543,31 +612,6 @@
                         }}
                       </a>
                     </li>
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','associatedGasProcessing')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasProcessing')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'pererabotka_gaza_poput_plan',
-                            'pererabotka_gaza_poput_fact',
-                            trans('visualcenter.pererabotkapoputGazDynamic'),
-                            ' м³',
-                            trans('visualcenter.pererabotkapoputGaz')
-                          )
-                        "
-                      >
-                        <!-- Переработка попутного газа -->{{
-                        trans("visualcenter.pererabotkapoputGaz")
-                        }}
-                      </a>
-                    </li>
                   </ul>
                 </div>
               </div>
@@ -661,13 +705,13 @@
                           updateProductionData(
                             'ppd_zakachka_albsen_vody_plan',
                             'ppd_zakachka_albsen_vody_fact',
-                            trans('visualcenter.liqAlbsenDynamic'),
+                            trans('visualcenter.dynamicArtesianWater'),
                             ' м³',
-                            trans('visualcenter.liqAlbsen')
+                            trans('visualcenter.injectionArtesianWater')
                           )
                         "
                       >
-                        {{trans("visualcenter.liqAlbsen")}}
+                        {{trans("visualcenter.injectionArtesianWater")}}
                       </a>
                     </li>
                   </ul>
@@ -780,7 +824,7 @@
               <div class="col-8 col-lg px-1">
 
 
-                <div :class="[`${buttonYearlyTab}`,'button2']">
+                <div :class="[`${buttonYearlyTab}`,'button2 d-flex']">
                   <div
                           class="button1-vc-inner"
                           @click="changeMenu2('yearly')"
@@ -788,9 +832,9 @@
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
                   <button
-                          v-if="buttonYearlyTab && isOilProductionActive"
+                          v-if="buttonYearlyTab && oilCondensateProductionButton"
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc dzocompanies__button_position"
+                          class="btn btn-primary dropdown-toggle position-button-vc mt-1"
                           data-toggle="dropdown"
                   ></button>
                   <div class="dzo-company-list">
@@ -858,6 +902,7 @@
                 >
                   <thead>
                   <tr>
+                    <th>№</th>
                     <th>{{ trans("visualcenter.dzo") }}</th>
                     <th v-if="buttonMonthlyTab && !isOilResidueActive" >
                       {{ trans("visualcenter.dzoMonthlyPlan") }}
@@ -971,10 +1016,12 @@
                   </thead>
                   <tbody>
                   <tr v-for="(item, index) in dzoSummaryForTable">
+                    <td :class="`${getDzoColumnsClass(index,'difference')}`">
+                      {{getNumberByDzo(item.dzoMonth)}}
+                    </td>
                     <td
-                            @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
-                            :class="index % 2 === 0 ? 'tdStyle' : ''"
-                            style="cursor: pointer"
+                            @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth,item.dzo)}` : `${selectAllDzoCompanies()}`"
+                            :class="[index % 2 === 0 ? 'tdStyle' : '','cursor-pointer']"
                     >
                       <span v-if="!isConsolidatedCategoryActive() || isOilResidueActive">
                         {{ getNameDzoFull(item.dzoMonth) }}
@@ -984,7 +1031,7 @@
                         {{ getDzoName(item.dzoMonth,dzoNameMappingWithoutKMG) }}
                         <img src="/img/icons/link.svg" />
                       </span>
-                      <span v-else>
+                      <span :class="troubledCompanies.includes(item.dzoMonth) ? 'troubled-companies' : ''" v-else>
                         {{ getDzoName(item.dzoMonth,dzoNameMapping) }}
                         <img src="/img/icons/link.svg" />
                       </span>
@@ -1166,6 +1213,7 @@
                     </td>
                   </tr>
                   <tr v-if="isMultipleDzoCompaniesSelected">
+                    <td :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"></td>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
                       <div class="">{{ dzoCompaniesAssets['assetTitle'] }}</div>
                     </td>
@@ -1470,7 +1518,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1543,7 +1591,9 @@
                   <div class="col">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedInjectionFondCompanies($event)">                     
+                            @change="changeSelectedInjectionFondCompanies($event)"
+                            v-model="injectionFondSelectedCompany"
+                    >
                       <option v-for="dzo in dzoMenu.injectionFond" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
@@ -1623,7 +1673,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1697,7 +1747,9 @@
                   <div class="col pr-2">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedProductionFondCompanies($event)"> 
+                            @change="changeSelectedProductionFondCompanies($event)"
+                            v-model="productionFondSelectedCompany"
+                    >
                       <option v-for="dzo in dzoMenu.productionFond" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
@@ -1779,7 +1831,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1853,7 +1905,9 @@
                   <div class="col">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedDrillingCompanies($event)"> 
+                            @change="changeSelectedDrillingCompanies($event)"
+                            v-model="drillingSelectedCompany"
+                    >
                       <option v-for="dzo in dzoMenu.drilling" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
@@ -1989,7 +2043,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -2031,7 +2085,9 @@
                   <div class="col">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedWellsWorkoverCompanies($event)">
+                            @change="changeSelectedWellsWorkoverCompanies($event)"
+                            v-model="wellsWorkoverSelectedCompany"
+                    >
                       <option v-for="dzo in dzoMenu.wellsWorkover" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
@@ -2133,7 +2189,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -2176,7 +2232,9 @@
                   <div class="col pr-2">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedChemistryCompanies($event)">
+                            @change="changeSelectedChemistryCompanies($event)"
+                            v-model="chemistrySelectedCompany"
+                    >
                       <option v-for="dzo in dzoMenu.chemistry" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
@@ -2227,7 +2285,7 @@
                         <div v-if="index === 0" class="center">
                         </div>
                         <div class="font">
-                          {{ getFormattedNumber(item.fact) }}
+                          {{ getNumberFormat(item.fact) }}
                         </div>
                       </td>
                     </tr>
@@ -2570,6 +2628,9 @@
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
   @import './el-datepicker-custom.css';
+  .troubled-companies {
+    padding-left: 10%;
+  }
   .dzocompanies-dropdown__divider {
     border-bottom: 2px solid #656a8a;
   }
@@ -2622,6 +2683,14 @@
     &::-webkit-scrollbar-corner {
       background: #333975;
     }
+    .vis-table table {
+      tr {
+        td:first-child {
+          width: 4%;
+          text-align: center;
+        }
+      }
+    }
 
     .table4 {
       min-width: 683px;
@@ -2630,8 +2699,10 @@
           padding: 5px 5px 5px 10px;
           position: relative;
           vertical-align: middle;
-          min-width: 71px;
-          &:first-child {
+          &:not(:first-child) {
+            min-width: 71px;
+          }
+          &:nth-child(2) {
             white-space: normal;
             min-width: 290px;
             font-weight: bold;
@@ -2685,6 +2756,7 @@
         background: inherit;
         top: -1px;
         z-index: 3000;
+        width: 4%;
       }
       th {
         position: sticky;
@@ -2697,8 +2769,8 @@
         font-size: 12px;
         background: #353ea1;
         text-align: center;
-        &:first-child {
-          width: 322px;
+        &:nth-child(2) {
+          width: 352px;
           padding-top: 5px;
           font-size: 15px;
         }
@@ -2968,7 +3040,7 @@
   }
   @media (max-width: 2000px) {
     .table4 {
-      tr td {
+      tr td:not(:first-child) {
         min-width: 5.3em !important;
       }
     }

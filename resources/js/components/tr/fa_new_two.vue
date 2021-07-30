@@ -166,9 +166,8 @@ import "vue-easy-notify/dist/vue-easy-notify.css";
 import { VueMomentLib } from "vue-moment-lib";
 import moment from "moment";
 import Vue from "vue";
-import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
+import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
 import columnSortable from 'vue-column-sortable'
-// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 import Element from 'element-ui';
@@ -489,7 +488,7 @@ export default {
         console.log("date1", mm, yyyy, "date2", prMm, pryyyy);
         this.axios
           .get(
-            "http://172.20.103.187:7576/api/techregime/factor/" +
+            process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
               yyyy +
               "/" +
               mm +
@@ -594,7 +593,7 @@ export default {
         : "";
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/factor/" +
+          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
             yyyy +
             "/" +
             mm +
@@ -662,7 +661,7 @@ export default {
     this.$store.commit("fa/SET_PR_YEAR", pryyyy);
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/factor/" +
+        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
           yyyy +
           "/" +
           mm +
