@@ -39,7 +39,12 @@ export default {
   },
   methods: {
     fillColor(str){
-      return str.replace(/%fillPlace%/g, this.fill)
+      str = str?.match(/%fillPlace%/g) ? str.replace(/%fillPlace%/g, this.fill) : str;
+      str = str?.match(/%randomFill%/g) ? str.replaceAll(/%randomFill%/g, (log)=>`#${this.randomFill()}`) : str;
+      return str;
+    },
+    randomFill(){
+      return Math.floor(Math.random()*16777215).toString(16);
     }
   }
 }

@@ -40,7 +40,7 @@
     </div>
 </template>
 <script>
-import mainMenu from './main_menu.json'
+import mainMenu from './mock-data/main_menu.json'
 import {paegtmMapActions} from '@store/helpers';
 export default {
     props: {

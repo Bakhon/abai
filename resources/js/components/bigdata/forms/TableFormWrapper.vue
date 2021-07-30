@@ -57,6 +57,7 @@ import 'vue-datetime/dist/vue-datetime.css'
 import {bTreeView} from 'bootstrap-vue-treeview'
 import {bdFormActions, bdFormState} from '@store/helpers'
 import BigDataTableForm from './TableForm'
+import CatLoader from "@ui-kit/CatLoader";
 
 Vue.use(Datetime)
 
@@ -78,7 +79,8 @@ export default {
   },
   components: {
     bTreeView,
-    BigDataTableForm
+    BigDataTableForm,
+    CatLoader
   },
   computed: {
     ...bdFormState([

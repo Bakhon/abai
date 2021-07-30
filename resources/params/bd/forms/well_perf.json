@@ -156,19 +156,19 @@
                 "code": "hole_count",
                 "type": "numeric",
                 "title": "count",
-                "validation": "required|numeric|gt:0|lte:100"
+                "validation": "required|numeric|gte:0|lte:100"
               },
               {
                 "code": "hole_diameter",
                 "type": "numeric",
                 "title": "diame_c",
-                "validation": "required|numeric|gt:0|lte:50"
+                "validation": "required|numeric|gte:0|lte:50"
               },
               {
                 "code": "liquid",
                 "type": "numeric",
                 "title": "liquid",
-                "validation": "required|numeric|gt:0"
+                "validation": "required|numeric|gte:0"
               },
               {
                 "code": "bsw",
@@ -180,7 +180,7 @@
                 "code": "reservoir_count",
                 "type": "numeric",
                 "title": "reserv_c",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:1"
               },
               {
                 "code": "packer_type",
@@ -193,7 +193,7 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "depth",
-                "validation": "required|numeric|gt:0"
+                "validation": "required|numeric|gte:0"
               },
               {
                 "code": "iso_material_type",
@@ -213,14 +213,14 @@
                 "table": "prod.well_perf_actual",
                 "type": "numeric",
                 "title": "interv_actual",
-                "validation": "numeric|gt:0|lte:base"
+                "validation": "numeric|gte:0|lte:base"
               },
               {
                 "code": "base",
                 "table": "prod.well_perf_actual",
                 "type": "numeric",
                 "title": "interv_actual",
-                "validation": "numeric|gt:0"
+                "validation": "numeric|gte:0"
               },
               {
                 "code": "well",
