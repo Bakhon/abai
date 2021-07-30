@@ -1,5 +1,8 @@
 {
   "table": "prod.gis",
+  "default_values": {
+    "gis_type.id": 1
+  },
   "tabs": [
     {
       "title": "title",

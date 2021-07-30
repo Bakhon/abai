@@ -113,18 +113,18 @@ Vue.component('pipe-passport-form', require('./components/complicationMonitoring
 Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);
 Vue.component('gtm-main-page', require('./components/GTM/Main.vue').default);
 Vue.component('gtm-main-indicator', require('./components/GTM/MainIndicator.vue').default);
-Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
-Vue.component('gtm-aegtm-eco', require('./components/GTM/AegtmEco.vue').default);
-Vue.component('gtm-aegtm-unsuccessful-distribution', require('./components/GTM/AegtmUnsuccessfulDistribution.vue').default);
-Vue.component('gtm-podbor-gtm', require('./components/GTM/PodborGTM.vue').default);
-Vue.component('gtm-digital-rating-gtm', require('./components/GTM/DigitalRating.vue').default);
-Vue.component('gtm-etu', require('./components/GTM/Etu.vue').default);
+Vue.component('gtm-aegtm', require('./components/GTM/components/Aegtm.vue').default);
+Vue.component('gtm-aegtm-eco', require('./components/GTM/components/AegtmEco.vue').default);
+Vue.component('gtm-aegtm-unsuccessful-distribution', require('./components/GTM/components/AegtmUnsuccessfulDistribution.vue').default);
+Vue.component('gtm-podbor-gtm', require('./components/GTM/components/PodborGTM.vue').default);
+Vue.component('gtm-digital-rating-gtm', require('./components/GTM/components/DigitalRating.vue').default);
+Vue.component('gtm-etu', require('./components/GTM/components/Etu.vue').default);
 Vue.component('gtm-main-menu', require('./components/GTM/MainMenu.vue').default);
-Vue.component('gtm-bar-chart', require('./components/GTM/BarChart.vue').default);
-Vue.component('gtm-line-chart', require('./components/GTM/LineChart.vue').default);
-Vue.component('gtm-tree', require('./components/GTM/Tree.vue').default);
-Vue.component('gtm-node-tree', require('./components/GTM/NodeTree.vue').default);
-Vue.component('gtm-date-picker', require('./components/GTM/DatePicker.vue').default);
+Vue.component('gtm-bar-chart', require('./components/GTM/components/BarChart.vue').default);
+Vue.component('gtm-line-chart', require('./components/GTM/components/LineChart.vue').default);
+Vue.component('gtm-tree', require('./components/GTM/mixin/Tree.vue').default);
+Vue.component('gtm-node-tree', require('./components/GTM/mixin/NodeTree.vue').default);
+Vue.component('gtm-date-picker', require('./components/GTM/mixin/DatePicker.vue').default);
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
@@ -158,7 +158,6 @@ Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
 Vue.component('tr-charts-table', require('./components/tr/tr_charts.vue').default);
 Vue.component('tr-sidebar-charts', require('./components/tr/TrSidebarCharts.vue').default);
 Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue').default);
-Vue.component('cat-loader', require('./components/ui-kit/CatLoader.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
@@ -184,10 +183,8 @@ Vue.component('proto-org-select-tree', require('./components/bigdata/OrgSelectTr
 Vue.component('report-constructor-item-select-tree', require('./components/reportConstructor/ItemSelectTree.vue').default);
 Vue.component('report-header-builder', require('./components/reportConstructor/ReportHeaderBuilder.vue').default);
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
-Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 Vue.component('bigdata-plain-form', require('./components/bigdata/forms/PlainForm.vue').default);
-Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
 Vue.component('main-page', require('./components/mainpage.vue').default);
 
@@ -207,6 +204,7 @@ Vue.component('page-visualization', require('./components/geology/visualization/
 Vue.component('page-geophysics', require('./components/geology/geophysics/PageGeophysics.vue').default);
 
 Vue.component('digital-rating', require('./components/DigitalRating/index.vue').default);
+Vue.component('digital-rating-report', require('./components/DigitalRating/DigitalRatingReport.vue').default);
 
 Vue.component('admin-user-settings', require('./components/admin/user/Settings.vue').default);
 Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);

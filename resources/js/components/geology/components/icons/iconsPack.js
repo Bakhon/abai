@@ -67,6 +67,16 @@ export const plusAndBrackets2 = [
     `
 ];
 
+export const minus = [
+    '0 0 6 2',
+    `<path d="M6 1.5H0V0.5H6V1.5Z" fill="white"/>`
+];
+
+export const plus = [
+    '0 0 8 8',
+    `<path d="M3.5 8V4.5H0V3.5H3.5V0H4.5V3.5H8V4.5H4.5V8H3.5Z" fill="white"/>`
+];
+
 export const remove = [
     '0 0 13 14',
     `
