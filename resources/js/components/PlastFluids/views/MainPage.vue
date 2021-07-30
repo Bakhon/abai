@@ -12,7 +12,7 @@
     <p class="filter-header">Недропользователь</p>
     <b-input-group class="mt-3 input">
       <b-form-input class="input-bg"></b-form-input>
-      <b-input-group-append>0iu
+      <b-input-group-append>
         <b-button variant="info">Button</b-button>
       </b-input-group-append>
     </b-input-group>
