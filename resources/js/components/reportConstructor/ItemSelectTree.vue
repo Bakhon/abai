@@ -15,7 +15,11 @@
             :onCheckboxClick="onCheckboxClick"
             :level="level+1"
             :nodeClickOnArrow="true"
-            :isMarked="isMarked"
+            :markedNodes="markedNodes[currentOption.name]"
+            :structureType="structureType"
+            :renderComponent="renderComponent"
+            :updateThisComponent="updateThisComponent"
+            :isUntilWells="isUntilWells"
         ></tree-view>
       </div>
     </div>
@@ -32,7 +36,7 @@ export default {
       baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
       items: null,
       level: 0,
-      isMarked: false,
+      renderComponent: 1,
     }
   },
   props: {
@@ -40,9 +44,12 @@ export default {
     itemType: Number,
     isShowCheckboxes: Boolean,
     onCheckboxClick: Function,
+    markedNodes: Object,
+    isUntilWells: Boolean,
+    currentOption: Object,
   },
   mounted() {
-    this.init()
+    this.init();
   },
   watch: {
     itemType(newValue) {
@@ -52,6 +59,9 @@ export default {
   methods: {
     init() {
       this.getInitialItems().then(items => this.items = items);
+      if(this.currentOption && !this.markedNodes[this.currentOption.name]) {
+        this.markedNodes[this.currentOption.name] = {};
+      }
     },
     getInitialItems() {
       this.isLoading = true
@@ -99,6 +109,9 @@ export default {
         this.isLoading = false;
       })
     },
+    updateThisComponent() {
+      this.renderComponent += 1;
+    },
     isNodeOnBottomLevelOfHierarchy(node) {
       return (!node.children || node.children.length === 0)
     },
@@ -106,7 +119,8 @@ export default {
       return (typeof node.type !== 'undefined' && node.type === 'well')
     },
     getWells: function (child) {
-      let node = child.node
+      let node = (typeof child.node === 'undefined') ? child : child.node;
+
       return this.axios.get(this.baseUrl + "get_wells", {
         params: {
           structure_type: this.structureType,

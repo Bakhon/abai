@@ -3,7 +3,7 @@
     <div class="left-section bg-dark">
       <div class="col">
         <div class="row menu">
-          <div class="left-section-title" v-bind:class="{active: activeButtonId == 1}" @click="onMenuClick('org', 1)">
+          <div class="left-section-title" v-bind:class="{active: currentStructureType === 'org'}" @click="onMenuClick('org')">
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M6.05078 0.00301123H11.098V5.0498H6.05078V0.00301123Z"
                     fill="#fff"/>
@@ -18,7 +18,7 @@
             </svg>
             Оргструктура
           </div>
-          <div class="left-section-title" v-bind:class="{active: activeButtonId == 2}" @click="onMenuClick('geo', 2)">
+          <div class="left-section-title" v-bind:class="{active: currentStructureType === 'geo'}" @click="onMenuClick('geo')">
             <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
@@ -26,7 +26,7 @@
             </svg>
             Геоструктура
           </div>
-          <div class="left-section-title" v-bind:class="{active: activeButtonId == 3}" @click="onMenuClick('tech', 3)">
+          <div class="left-section-title" v-bind:class="{active: currentStructureType === 'tech'}" @click="onMenuClick('tech')">
             <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
@@ -52,7 +52,7 @@
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="dropdown-inner-text">
-                  {{ isShowOptions ? 'Выбор объекта' : currentOption.name }}
+                  {{ currentOption ? currentOption.name : 'Выбор объекта' }}
                 </div>
                 <div class="icon-pointer"></div>
               </button>
@@ -60,7 +60,8 @@
                 <ul>
 
                   <li @click="onClickOption(structureType);"
-                      v-for="structureType in structureTypes[currentStructureType]" class="dropdown-item">
+                      v-for="structureType in structureTypes[currentStructureType]" 
+                      class="dropdown-item">
 
                     <div class="dropdown-item-inner">
                       <a href="#">
@@ -73,6 +74,7 @@
                         {{ structureType['name'] }}
                       </a>
                     </div>
+                    <div class="dot" v-if="isActive(structureType)"></div>
                   </li>
                 </ul>
               </div>
@@ -92,7 +94,7 @@
             </form>
           </div>
           <div class="col right-section-select-area">
-            <input type="checkbox"/>
+            <input type="checkbox" v-model="isUntilWells"/>
             {{ trans('bd.wells') }}
           </div>
         </div>
@@ -112,12 +114,16 @@
               <div class="table-container-element">
                 <template>
                   <report-constructor-item-select-tree
+                      v-if="currentOption"
                       @modalChangeVisible="(value) => modalChangeVisible(value)"
                       @changeOrgSelector="changeOrgSelector()"
                       :structureType="currentStructureType"
                       :itemType="currentItemType"
                       :isShowCheckboxes="true"
                       :onCheckboxClick="updateSelectedNodes"
+                      :currentOption="currentOption"
+                      :markedNodes="markedNodes[currentStructureType]"
+                      :isUntilWells="isUntilWells"
                   >
                   </report-constructor-item-select-tree>
                 </template>
@@ -700,6 +706,15 @@ body {
       border-radius: 6px;
     }
 
+    .dot {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 10px;
+      width: 10px;
+      background-color: #09ff00;
+      border-radius: 50%;
+    }
 
     .dropdown-item:hover, .dropdown-item:focus {
       background: rgba(51, 102, 255, 0.5);

@@ -16,7 +16,6 @@ export default {
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
-            isShowOptions: true,
             structureTypes: {
                 org: null,
                 tech: null,
@@ -24,7 +23,6 @@ export default {
             },
             attributeDescriptions: null,
             attributesForObject: null,
-            activeButtonId: 1,
             currentStructureType: 'org',
             currentStructureId: null,
             currentItemType: null,
@@ -39,7 +37,9 @@ export default {
             startDate: null,
             endDate: null,
             dateFlow: ['year', 'month', 'date'],
+            markedNodes: {'org':{}, 'geo':{}, 'tech':{}},
             maxDepthOfSelectedAttributes: null,
+            isUntilWells: false,
         }
     },
     mounted: function () {
@@ -86,15 +86,13 @@ export default {
                 this.endDate = date;
             }
         },
-        onMenuClick(currentStructureType, btnId) {
-            this.isShowOptions = true;
+        onMenuClick(currentStructureType) {
             this.currentStructureType = currentStructureType;
-            this.activeButtonId = btnId;
+            this.currentOption = null;
         },
         onClickOption(structureType) {
-            this.isShowOptions = false;
-            this.currentOption = structureType
-            this.currentItemType = structureType.id
+            this.currentOption = structureType;
+            this.currentItemType = structureType.id;
         },
         setDefaultDateFilter() {
             this.currentDatePickerFilter = 'date';
@@ -115,6 +113,19 @@ export default {
         setEndOfYear(date) {
             if(!date) return;
             this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        isActive(structureType) {
+            let content = this.markedNodes[this.currentStructureType];
+            if(typeof content[structureType.name] === 'undefined') return false;
+            content = content[structureType.name];
+            if(!content) return;
+            for(let idx in content) {
+                for(let val in content[idx]) {
+                    if(content[idx][val]) return true;
+                }
+            }
+
+            return false;
         },
         loadStructureTypes(type) {
             this.isLoading = true

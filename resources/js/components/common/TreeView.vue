@@ -4,13 +4,13 @@
       <div class="my-table-border col-md-1" v-if="isShowCheckboxes">
         <div class="centered">
           <div class="custom-checkbox">
-            <form>
+            <form> 
               <label class="container">
                 <span class="bottom-border"></span>
-                <input type="checkbox" :id="node.id" name="tech_structure"
-                      :checked="isMarked"
-                      v-model="isMarked"
-                      class="dropdown-item" v-on:input="onCheckboxClick(node, level)">
+                <input type="checkbox" :id="node.id"
+                      v-if="!!renderComponent"
+                      :checked="isMarked()"
+                      class="dropdown-item" v-on:input="onClick()">
                 <span class="checkmark"></span>
               </label>
             </form>
@@ -33,8 +33,7 @@
       <node
             v-for="(child, index) in node.children"
             :node="child"
-            :key="index+child.id"
-            :isMarked="isMarked"
+            :key="index+child.id+node.id"
             :handle-click="handleClick"
             :get-wells="getWells"
             :get-initial-items="getInitialItems"
@@ -45,6 +44,10 @@
             :currentWellId="currentWellId"
             :level="level+1"
             :nodeClickOnArrow="nodeClickOnArrow"
+            :markedNodes="markedNodes"
+            :structureType="structureType"
+            :renderComponent="renderComponent"
+            :updateThisComponent="updateThisComponent"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -59,8 +62,12 @@ export default {
   props: {
     node: Object,
     level: Number,
+    markedNodes: Object,
+    structureType: String,
+    renderComponent: Number,
+    updateThisComponent: Function,
+    isUntilWells: Boolean,
     handleClick: Function,
-    isMarked: Boolean,
     getWells: Function,
     getInitialItems: Function,
     isNodeOnBottomLevelOfHierarchy: Function,
@@ -74,7 +81,32 @@ export default {
       type: Number,
       required: false
     },
+    markedNodes: {
+      type: Object,
+      required: false
+    },
+    structureType: {
+      type: String,
+      required: false
+    },
+    renderComponent: {
+      type: Number,
+      required: false
+    },
+    updateThisComponent: {
+      type: Function,
+      required: false
+    },
+    isUntilWells: Boolean,
     nodeClickOnArrow: false
+  },
+  created() {
+    if(typeof this.markedNodes[this.level] === 'undefined') {
+      this.markedNodes[this.level] = {};
+    }
+    if(typeof this.markedNodes[this.level][this.node.id] === 'undefined') {
+      this.markedNodes[this.level][this.node.id] = false;
+    }
   },
   model: {
     prop: "node",
@@ -86,15 +118,75 @@ export default {
       if (!this.isShowChildren) {
         return
       }
-      if (this.nodeClickOnArrow) {
+      if (this.nodeClickOnArrow && !this.node.children) {
           await this.handleClick(this.node);
       }
-      if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
-        this.isLoading = true;
-        this.getWells(this);
+      this.loadWells(this.node);
+      await this.onExpandTree(this.node, this.level);
+      if(this.isUntilWells) {
+        await this.updateChildren(this.node, this.level);
+        this.updateThisComponent();
+      }
+
+      this.$forceUpdate()
+    },
+    onClick: async function () {
+      this.markedNodes[this.level][this.node.id] = !this.markedNodes[this.level][this.node.id];
+      this.loadChilds(this.node);
+      this.onExpandTree(this.node,this.level);
+      this.onCheckboxClick(this.node, this.level);
+      await this.updateChildren(this.node, this.level);
+      this.updateThisComponent();
+    },
+    onExpandTree: function(node,level) {
+      if(typeof node === 'undefined' ||
+      typeof node.children === 'undefined'||
+      !node.children) return;
+      if(typeof this.markedNodes[level+1] === 'undefined') {
+        this.markedNodes[level+1] = {};
+      }
+      let content = this.markedNodes[level + 1];
+      for(let child of node.children) {
+        content[child.id] = this.markedNodes[level][node.id];
+        this.onExpandTree(child, level+1);
+      }
+    },
+    loadChilds: async function(node) {
+      if(this.isWell(node)) return;
+      if(typeof node.children === 'undefined') {
+        await this.handleClick(node);
+      }
+      
+      for(let idx in node.children) {
+        await this.loadChilds(node.children[idx]);
       }
       this.$forceUpdate()
     },
+    loadWells: async function(node) {
+      if (!this.isNodeOnBottomLevelOfHierarchy(node)) return;
+      this.isLoading = true;
+      await this.getWells(node);
+      await this.updateChildren(this.node, this.level);
+      this.updateThisComponent();
+    },
+    updateChildren: async function(node, level) {
+      if(typeof node.children === 'undefined' || !node.children) return;
+      let content = this.markedNodes[level+1];
+      let val = this.markedNodes[level][node.id];
+      for(let child of node.children) {
+        content[child.id] = val;
+        if(this.isUntilWells) {
+          this.updateChildren(child, level+1);
+        }
+      }
+    },
+    isMarked: function() {
+      if(typeof this.markedNodes[this.level] === 'undefined'
+        || !this.markedNodes[this.level][this.node.id]) {
+        return false;
+      }
+      return true;
+    }
   },
   data: function () {
     return {
