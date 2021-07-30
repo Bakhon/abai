@@ -189,5 +189,12 @@ Route::group(
                     return view('digital_drilling.analytics.balance');
                 })->name('digital-drilling-analytics-balance');
             });
+
+            // Daily report
+            Route::group(['prefix' => '/daily-report'], function () {
+                Route::get('/', function () {
+                    return view('digital_drilling.daily_report.index');
+                })->name('digital-drilling-daily-report');
+            });
         });
     });

@@ -1,4 +1,5 @@
-/*Copyright 2010-2021 
+
+/*Copyright 2010-2021
 html5countrymapv4.11 - trial version
 Use pursuant to license agreement at https:///license */
 

@@ -13,6 +13,7 @@
                         <a class="dropdown-item" href="{{ route('digital-drilling-structure-graph') }}">Визуализация</a>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-sm-12">
                         <table class="table defaultTable">
@@ -52,6 +53,11 @@
                                 </tr>
                             @endfor
                         </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <img src="/img/digital-drilling/structure.png" alt="" class="structure-img">
                     </div>
                 </div>
             </div>

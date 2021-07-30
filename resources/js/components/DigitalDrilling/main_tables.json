@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Техническое задание",
+    "id": 1,
+    "component": {
+      "name": "main-table",
+      "template": "<technical-task></technical-task>"
+    }
+  },
+  {
+    "name": "Геология",
+    "id": 2,
+    "component": {
+      "name": "main-table",
+      "template": "<geology></geology>"
+    }
+  },
+  {
+    "name": "Конструкция скважины",
+    "id": 3,
+    "component": {
+      "name": "main-table",
+      "template": "<well-design></well-design>"
+    }
+  },
+  {
+    "name": "Профиль ствола",
+    "id": 4,
+    "component": {
+      "name": "main-table",
+      "template": "<barrel-profile></barrel-profile>"
+    }
+  },
+  {
+    "name": "Буровые растворы",
+    "id": 5,
+    "component": {
+      "name": "main-table",
+      "template": "<drilling-fluids></drilling-fluids>"
+    }
+  },
+  {
+    "name": "Крепление скважины",
+    "id": 6,
+    "component": {
+      "name": "main-table",
+      "template": "<well-casing></well-casing>"
+    }
+  }
+]
