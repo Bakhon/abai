@@ -1,12 +1,12 @@
 <template>
   <div :class="cDropDownClass">
-    <Button @click.native.stop="dropDownOpened = !dropDownOpened" ref="aDropdownTrigger" color="accent-100"
+    <Button :disabled="disabled" @click.native.stop="dropDownOpened = !dropDownOpened" ref="aDropdownTrigger" color="accent-100"
             :class="cDropDownClassTarget">
       <span>{{ cSelected.label || cSelected.value || buttonText }}</span>
       <AwIcon width="12" height="9" name="arrowDown" />
     </Button>
     <div v-show="dropDownOpened" v-click-outside="closeDropDown" ref="aDropdownTarget" class="a-dropdown__target">
-      <button @click="selectOption(option)" :data-value="option.value" v-for="(option, i) in cOptions" :key="i">
+      <button :disabled="disabled" @click="selectOption(option)" :data-value="option.value" v-for="(option, i) in cOptions" :key="i">
         {{ option.label || option.value  }}
       </button>
       <slot />
@@ -26,6 +26,7 @@ export default {
     buttonText: String,
     block: Boolean,
     position: String,
+    disabled: Boolean,
     options: {
       type: Array
     },
@@ -93,6 +94,10 @@ export default {
     width: 100%;
     background: var(--a-accent-darken);
     border: 0.5px solid #454FA1;
+    &[disabled]{
+      background: #2A2E55;
+      color: #9394A9;
+    }
     span {
       margin-right: 10px;
       font-size: 16px;

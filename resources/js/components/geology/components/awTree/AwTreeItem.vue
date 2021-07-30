@@ -8,7 +8,7 @@
       <div class="label-wrapper">
         <div ref="iconBox" class="item">
           <div class="icon-box">
-            <AwIcon :name="item.iconType" v-if="item.iconType"/>
+            <AwIcon :fill="item.iconFill" :name="item.iconType" v-if="item.iconType" />
           </div>
         </div>
         <div class="item">
@@ -31,53 +31,83 @@
 </template>
 
 <script>
-import AwIcon from "../icons/AwIcon";
-
+import AwTreeItemsMixins from "./AwTreeItemsMixins";
 export default {
   name: "AwTreeItem",
-  inject: ["settings", "selected", "clickItem"],
-  props: {
-    item: Object,
-    settings: Object,
-    index: Number
-  },
-  data() {
-    return {
-      isOpen: this.item.isOpen
-    }
-  },
-  components: {
-    AwIcon
-  },
+  mixins: [AwTreeItemsMixins],
   computed: {
-    getSelectedItems() {
-      return this.selected || []
-    },
     getPaddingWithDeep() {
       return {
         paddingLeft: `${this.index}em`
       }
     },
-    getStatBoxClasses() {
-      return {
-        "state-box": true,
-        "opened": this.isOpen
-      }
-    },
-    isFolder() {
-      return (this.item.children && this.item.children.length);
-    },
     itemClasses() {
       return {
-        "aw-tree__list-item": true,
-        "is-folder": this.isFolder
+        "AwTreeItem aw-tree__list-item": true,
+        "is-folder": this.isFolder,
       }
-    }
-  },
-  methods: {
-    ontoggle() {
-      this.isOpen = !this.isOpen;
     }
   }
 }
 </script>
+
+<style lang="scss">
+.AwTreeItem{
+  .aw-tree {
+    &__list {
+      position: relative;
+      margin-bottom: 0;
+      overflow: hidden;
+      ul {
+        margin-bottom: 0;
+
+        &:after {
+          content: '';
+          width: 0;
+          height: 100%;
+          position: absolute;
+          top: 17px;
+          left: 6px;
+          border: 1px dashed var(--a-default);
+        }
+      }
+
+      &-item {
+        padding-bottom: 12px;
+        &:last-child {
+          padding-bottom: 0;
+        }
+        .label-wrapper {
+          display: flex;
+          align-items: center;
+          .item {
+            &:nth-child(1),
+            &:nth-child(2) {
+              width: 14px;
+              height: auto;
+            }
+            &:nth-child(2) {
+              margin: 0 10px;
+            }
+          }
+        }
+        ul {
+          .state-box {
+            position: relative;
+
+            &:after {
+              content: '';
+              position: absolute;
+              width: calc(100% + 7px);
+              left: calc(-100% - 8px);
+              top: 5px;
+              height: 1px;
+              border: 1px dashed var(--a-default);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+</style>
