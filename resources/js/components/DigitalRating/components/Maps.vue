@@ -5,7 +5,7 @@
         {{ item }}
       </div>
       <div class="maps-development__wrapper">
-        <div class="maps-development__item" v-for="map in maps">
+        <div class="maps-development__item" v-for="map in maps" :key="map">
           <img class="maps-development__item-icon" src="/img/icons/link.svg" alt="">
           <img
               class="maps-development__item-img"

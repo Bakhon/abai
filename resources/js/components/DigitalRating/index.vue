@@ -31,121 +31,55 @@
       </div>
     </div>
     <div class="rating-panel">
-      <div
-        class="rating-dropdown"
-        :class="{ 'is-active': dropdownTitle === 'object' }"
-      >
-        <div class="rating-dropdown__header" @click="handleToggle('object')">
-          <div class="rating-dropdown__title">{{ trans('digital_rating.object') }}</div>
-          <div class="rating-dropdown__icon"></div>
-        </div>
-        <transition-expand duration="100">
-          <div v-show="dropdownTitle === 'object'" class="rating-dropdown__body">
-            <ul class="list">
-              <li v-for="(object, index) in objects" :key="index">
-                {{ object }}
-              </li>
-            </ul>
-          </div>
-        </transition-expand>
-      </div>
-      <div
-        class="rating-dropdown"
-        :class="{ 'is-active': dropdownTitle === 'map' }"
-      >
-        <div class="rating-dropdown__header" @click="handleToggle('map')">
-          <div class="rating-dropdown__title">{{ trans('digital_rating.mapsGeologyDevelopment') }}</div>
-          <div class="rating-dropdown__icon"></div>
-        </div>
-        <transition-expand duration="100">
-          <div v-show="dropdownTitle === 'map'" class="rating-dropdown__body">
-            <ul class="list">
-              <li v-for="(map, index) in maps" :key="index">
-                {{ map }}
-              </li>
-            </ul>
-          </div>
-        </transition-expand>
-      </div>
-      <div
-        class="rating-dropdown"
-        :class="{ 'is-active': dropdownTitle === 'code' }"
-      >
-        <div class="rating-dropdown__header" @click="handleToggle('code')">
-          <div class="rating-dropdown__title">{{ trans('digital_rating.sectorCode') }}</div>
-          <div class="rating-dropdown__icon"></div>
-        </div>
-        <transition-expand duration="100">
-          <div v-show="dropdownTitle === 'code'" class="rating-dropdown__body">
-            <ul class="list">
-              <li v-for="(code, index) in cods" :key="index">
-                {{ code }}
-              </li>
-            </ul>
-          </div>
-        </transition-expand>
-      </div>
-      <div
-        class="rating-dropdown"
-        :class="{ 'is-active': dropdownTitle === 'property' }"
-      >
-        <div class="rating-dropdown__header" @click="handleToggle('property')">
-          <div class="rating-dropdown__title">{{ trans('digital_rating.property') }}</div>
-          <div class="rating-dropdown__icon"></div>
-        </div>
-        <transition-expand duration="100">
-          <div v-show="dropdownTitle === 'property'" class="rating-dropdown__body">
-            <ul class="list">
-              <li v-for="(property, index) in properties" :key="index">
-                {{ property }}
-              </li>
-            </ul>
-          </div>
-        </transition-expand>
-      </div>
+      <accordion
+        :list="objects"
+        title="digital_rating.object"
+      />
+      <accordion
+        :list="maps"
+        title="digital_rating.mapsGeologyDevelopment"
+      />
+      <accordion
+        :list="cods"
+        title="digital_rating.sectorCode"
+      />
+      <accordion
+        :list="properties"
+        title="digital_rating.property"
+      />
     </div>
-    <modal
-      class="modal-bign-wrapper"
-      name="modalSetting"
-      :draggable="true"
-      :width="1000"
-      :height="700"
-      :adaptive="true">
-      <div class="modal-bign-container">
-        <div class="modal-bign-header">
-          <div class="modal-bign-title">
-            <i class="fas fa-cog"
-               style="font-size: 20px;"
-            />
-            {{ trans('profile.tabs.settings') }}
-          </div>
-          <button type="button" class="modal-bign-button" @click="closeSettingModal">
-            {{ trans('pgno.zakrit') }}
-          </button>
-        </div>
-      </div>
-    </modal>
+    <setting-modal
+      ref="setting"
+      @close="closeSettingModal"
+    />
+    <well-atlas-modal
+      ref="atlas"
+      @close="() => this.$modal.hide('modalAtlas')"
+    />
   </div>
 </template>
 
 <script>
-import { TransitionExpand } from 'vue-transition-expand';
 import L from 'leaflet';
 import mapsData from './dataMap.json';
 import 'leaflet/dist/leaflet.css';
 import BtnDropdown from "./components/BtnDropdown";
+import SettingModal from "./components/SettingModal";
+import WellAtlasModal from "./components/WellAtlasModal";
+import Accordion from "./components/Accordion";
 
 export default {
   name: "Sections",
 
   components: {
-    TransitionExpand,
-    BtnDropdown
+    BtnDropdown,
+    SettingModal,
+    WellAtlasModal,
+    Accordion
   },
 
   data() {
     return {
-      dropdownTitle: '',
       objects: ['Объект 1', 'Объект 2'],
       maps: ['Карта ННТ', 'Накопленные отборы'],
       cods: ['1', '2', '3'],
@@ -212,6 +146,7 @@ export default {
       map.on('dblclick', this.onMapClick);
     },
     onMapClick(e) {
+      this.$modal.show('modalAtlas');
     },
     openSettingModal() {
       this.$modal.show('modalSetting');
@@ -243,20 +178,6 @@ export default {
 .rating-panel {
   width: 100%;
   max-width: 24.4%;
-}
-
-.expand-enter-active, .expand-leave-active {
-  -webkit-transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
-  transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
-  overflow: hidden;
-}
-
-.expand-enter, .expand-leave-to {
-  height: 0;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important
 }
 
 #map {
