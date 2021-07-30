@@ -49,12 +49,11 @@
       />
     </div>
     <setting-modal
-      ref="setting"
+      v-show="isVisibleSetting"
       @close="closeSettingModal"
     />
     <well-atlas-modal
-      ref="atlas"
-      @close="() => this.$modal.hide('modalAtlas')"
+      @close="closeAtlasModal"
     />
   </div>
 </template>
@@ -80,6 +79,8 @@ export default {
 
   data() {
     return {
+      isVisibleSetting: false,
+      isVisibleAtlas: false,
       objects: ['Объект 1', 'Объект 2'],
       maps: ['Карта ННТ', 'Накопленные отборы'],
       cods: ['1', '2', '3'],
@@ -90,7 +91,7 @@ export default {
         { title: 'digital_rating.save', icon: 'save', type: 'save' }
       ],
       mapsActions: [
-        { title: 'digital_rating.uploadCustomMaps', icon: '', type: 'upload' },
+        { title: 'digital_rating.uploadCustomMaps', icon: 'share', type: 'upload' },
         { title: 'digital_rating.importPlannedWells', icon: 'upload', type: 'importWells' }
       ]
     };
@@ -101,9 +102,6 @@ export default {
   },
 
   methods: {
-    handleToggle(title) {
-      this.dropdownTitle = title;
-    },
     initMap() {
       const map = L.map('map', {
         crs: L.CRS.Simple,
@@ -133,25 +131,36 @@ export default {
       for(let i = 0; i < mapsData.length; i++) {
         const coordinateStart = xy(mapsData[i]['x'], mapsData[i]['y']);
         const coordinateEnd = xy(mapsData[i]['x'] + 1, mapsData[i]['y'] + 1);
-        L.rectangle([[coordinateStart], [coordinateEnd]], {
+        let marker = L.rectangle([[coordinateStart], [coordinateEnd]], {
           color: mapsData[i]['color'],
           weight: 6,
           fillColor: mapsData[i]['color'],
           fillOpacity: 1,
         }).addTo(map).bindPopup(mapsData[i]['sector'].toString());
+        marker.on('mouseover', function (e) {
+          this.openPopup();
+        });
+        marker.on('mouseout', function (e) {
+          this.closePopup();
+        });
+        marker.on('click', (e) => {
+          this.onMapClick();
+        })
       }
-
-      map.getBounds().pad(-1);
-
-      map.on('dblclick', this.onMapClick);
+      map.getBounds().pad(1);
     },
-    onMapClick(e) {
+    onMapClick() {
       this.$modal.show('modalAtlas');
     },
+    closeAtlasModal() {
+      this.$modal.hide('modalAtlas');
+    },
     openSettingModal() {
+      this.isVisibleSetting = true;
       this.$modal.show('modalSetting');
     },
     closeSettingModal() {
+      this.isVisibleSetting = false;
       this.$modal.hide('modalSetting');
     },
   }
