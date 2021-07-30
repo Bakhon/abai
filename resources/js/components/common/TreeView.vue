@@ -156,6 +156,10 @@ export default {
       if(typeof node.children === 'undefined') {
         await this.handleClick(node);
       }
+      if(typeof node.children === 'undefined'
+        || this.isNodeOnBottomLevelOfHierarchy(node)) {
+        await this.loadWells(node);
+      }
       
       for(let idx in node.children) {
         await this.loadChilds(node.children[idx]);
@@ -164,11 +168,11 @@ export default {
     },
     loadWells: async function(node) {
       if (!this.isNodeOnBottomLevelOfHierarchy(node)) return;
-      this.isLoading = true;
       await this.getWells(node);
       await this.updateChildren(this.node, this.level);
       this.updateThisComponent();
     },
+    
     updateChildren: async function(node, level) {
       if(typeof node.children === 'undefined' || !node.children) return;
       let content = this.markedNodes[level+1];

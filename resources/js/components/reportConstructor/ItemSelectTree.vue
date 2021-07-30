@@ -58,7 +58,9 @@ export default {
   },
   methods: {
     init() {
-      this.getInitialItems().then(items => this.items = items);
+      if(!this.items) {
+        this.getInitialItems().then(items => this.items = items);
+      }
       if(this.currentOption && !this.markedNodes[this.currentOption.name]) {
         this.markedNodes[this.currentOption.name] = {};
       }
