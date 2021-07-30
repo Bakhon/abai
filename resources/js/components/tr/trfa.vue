@@ -193,6 +193,7 @@
       </div>
     </div>
     <big-numbers :list="filteredWellsBar" />
+    <cat-loader />
   </div>
 </template>
 <script>
@@ -206,12 +207,14 @@ import ClearIcon from "@ui-kit/ClearIcon.vue";
 import TrMultiselect from "./TrMultiselect.vue";
 import trHelper from '~/mixins/trHelper';
 import VueApexCharts from "vue-apexcharts";
+import CatLoader from "@ui-kit/CatLoader";
 
 Vue.use(NotifyPlugin, VueMomentLib);
 
 export default {
   name: "Trfa",
   components: {
+    CatLoader,
     ClearIcon,
     BigNumbers,
     TrMultiselect,
@@ -460,6 +463,7 @@ export default {
   },
   data: function () {
     return {
+      postApiUrl: process.env.MIX_POST_API_URL,
       chartShow: "pie",
       chartArr: ["pie", "bar"],
       pieChartRerender: true,
@@ -775,7 +779,7 @@ export default {
         this.$store.commit("fa/SET_PR_YEAR", pryyyy);
         this.axios
           .get(
-            process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/graph1/" +
+            this.postApiUrl + "techregime/factor/graph1/" +
               yyyy +
               "/" +
               mm +
@@ -823,20 +827,26 @@ export default {
   },
   created: function () {
     this.$store.commit("globalloading/SET_LOADING", true);
-    if (this.$store.getters["fa/chart"])
-      this.chartShow = this.chartArr[this.$store.getters["fa/chart"]];
+    if (this.$store.state.fa.chart)
+      this.chartShow = this.chartArr[this.$store.state.fa.chart];
     var today = new Date();
-    var dd = 1;
     if (
-      this.$store.getters["fa/month"] &&
-      this.$store.getters["fa/year"] &&
-      this.$store.getters["fa/prmonth"] &&
-      this.$store.getters["fa/pryear"]
+      this.$store.state.fa.month == 1 &&
+      this.$store.state.fa.year
     ) {
-      var mm = this.$store.getters["fa/month"];
-      var prMm = this.$store.getters["fa/prmonth"];
-      var yyyy = this.$store.getters["fa/year"];
-      var pryyyy = this.$store.getters["fa/pryear"];
+      var mm = this.$store.state.fa.month;
+      var prMm = 12;
+      var yyyy = this.$store.state.fa.year;
+      var pryyyy = this.$store.state.fa.year - 1;
+    }
+    else if (
+      this.$store.state.fa.month &&
+      this.$store.state.fa.year 
+    ) {
+      var mm = this.$store.state.fa.month;
+      var prMm = this.$store.state.fa.month - 1;
+      var yyyy = this.$store.state.fa.year;
+      var pryyyy = this.$store.state.fa.year;
     } else {
       var mm = today.getMonth() + 1;
       var yyyy = today.getFullYear();
@@ -854,7 +864,7 @@ export default {
     }
     this.axios
       .get(
-        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/graph1/" +
+        this.postApiUrl + "techregime/factor/graph1/" +
           yyyy +
           "/" +
           mm +
@@ -897,17 +907,17 @@ export default {
   },
   mounted: function () {
     const mm =
-      `${this.$store.getters["fa/month"]}`.length < 2
-        ? `0${this.$store.getters["fa/month"]}`
-        : `${this.$store.getters["fa/month"]}`;
+      `${this.$store.state.fa.month}`.length < 2
+        ? `0${this.$store.state.fa.month}`
+        : `${this.$store.state.fa.month}`;
     const prmm =
-      `${this.$store.getters["fa/prmonth"]}`.length < 2
-        ? `0${this.$store.getters["fa/prmonth"]}`
-        : `${this.$store.getters["fa/prmonth"]}`;
-    this.date1 = `${this.$store.getters["fa/year"]}-${mm}-01`;
-    this.date2 = `${this.$store.getters["fa/pryear"]}-${prmm}-01`;
-    this.dt = `01.${mm}.${this.$store.getters["fa/year"]}`;
-    this.dt2 = `01.${prmm}.${this.$store.getters["fa/pryear"]}`;
+      `${this.$store.state.fa.prmonth}`.length < 2
+        ? `0${this.$store.state.fa.prmonth}`
+        : `${this.$store.state.fa.prmonth}`;
+    this.date1 = `${this.$store.state.fa.year}-${mm}-01`;
+    this.date2 = `${this.$store.state.fa.pryear}-${prmm}-01`;
+    this.dt = `01.${mm}.${this.$store.state.fa.year}`;
+    this.dt2 = `01.${prmm}.${this.$store.state.fa.pryear}`;
   },
 };
 </script>
