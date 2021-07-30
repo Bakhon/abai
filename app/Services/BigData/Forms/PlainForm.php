@@ -79,6 +79,17 @@ abstract class PlainForm extends BaseForm
 
             $rows = $query->get();
 
+            if (!empty($this->params()['sort'])) {
+                foreach ($this->params()['sort'] as $sort) {
+                    if ($sort['order'] === 'desc') {
+                        $rows->sortByDesc($sort['field']);
+                    } else {
+                        $rows->sortBy($sort['field']);
+                    }
+                }
+            }
+
+
             $columns = $this->getFields()->filter(
                 function ($item) {
                     if (isset($this->params()['table_fields'])) {
@@ -96,7 +107,7 @@ abstract class PlainForm extends BaseForm
 
             return response()->json(
                 [
-                    'rows' => $rows,
+                    'rows' => $rows->values(),
                     'columns' => $columns,
                     'form' => $this->params()
                 ]

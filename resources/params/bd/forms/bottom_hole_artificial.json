@@ -4,6 +4,12 @@
   "default_values": {
     "bottom_hole_type": 2
   },
+  "sort": [
+    {
+      "field": "data",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "b_hole",
