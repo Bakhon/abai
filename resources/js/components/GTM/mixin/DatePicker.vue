@@ -33,8 +33,8 @@ export default {
         return {
             isDatePickerShow: false,
             dateRange: {
-                start: new Date(this.$store.state.dateStart),
-                end: new Date(this.$store.state.dateEnd),
+                start: this.$store.getters.dateStart,
+                end: this.$store.getters.dateEnd,
             },
         }
     },
@@ -42,6 +42,7 @@ export default {
         dateStartString: function () {
             if (this.dateRange.start) {
                 return this.dateRange.start.toLocaleDateString();
+                this.$store.mutations(dateRange.start, value)
             }
         },
         dateEndString: function () {
