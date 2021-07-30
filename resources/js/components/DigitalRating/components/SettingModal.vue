@@ -6,7 +6,6 @@
     :width="1000"
     :height="500"
     :adaptive="true"
-    @before-close="beforeClose"
     @click.self="close">
     <div class="modal-bign-container p-20px">
       <div class="modal-bign-header mb-20px">
@@ -116,11 +115,9 @@ export default {
   },
 
   methods: {
-    close(e) {
+    close() {
       this.$emit('close');
     },
-    beforeClose(event) {
-    }
   }
 }
 </script>

@@ -49,7 +49,6 @@
       />
     </div>
     <setting-modal
-      v-show="isVisibleSetting"
       @close="closeSettingModal"
     />
     <well-atlas-modal
@@ -79,8 +78,6 @@ export default {
 
   data() {
     return {
-      isVisibleSetting: false,
-      isVisibleAtlas: false,
       objects: ['Объект 1', 'Объект 2'],
       maps: ['Карта ННТ', 'Накопленные отборы'],
       cods: ['1', '2', '3'],
@@ -156,11 +153,9 @@ export default {
       this.$modal.hide('modalAtlas');
     },
     openSettingModal() {
-      this.isVisibleSetting = true;
       this.$modal.show('modalSetting');
     },
     closeSettingModal() {
-      this.isVisibleSetting = false;
       this.$modal.hide('modalSetting');
     },
   }
