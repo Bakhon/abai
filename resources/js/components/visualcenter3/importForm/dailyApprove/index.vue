@@ -55,7 +55,7 @@
                             >
                                 <div v-if="name !== 'import_field'" class="col-12 row p-0 m-0">
                                     <span class="col-3 table_body">ДЗО</span>
-                                    <span class="col-5 table_body">{{name}}</span>
+                                    <span class="col-5 table_body">{{names[name]}}</span>
                                     <span class="col-2 table_body">{{item.actualDetail}}</span>
                                     <span class="col-2 table_body">{{item.currentDetail}}</span>
                                 </div>
@@ -70,7 +70,7 @@
                                             v-for="(field, fieldName) in value"
                                             class="col-9 table_body row m-0 p-0"
                                     >
-                                        <span class="col-7 table_body">{{fieldName}}</span>
+                                        <span class="col-7 table_body">{{names[fieldName]}}</span>
                                         <span class="col-3 table_body child-actual">{{field.actualDetail}}</span>
                                         <span class="col-2 table_body child-current">{{field.currentDetail}}</span>
                                     </div>
@@ -84,124 +84,7 @@
     </div>
 </template>
 
-<script>
-import moment from "moment";
-export default {
-    data: function () {
-        return {
-            allProduction: [],
-            difference: [],
-            compared: [],
-            systemFields: ['id','is_corrected','is_approved','date','user_name','change_reason','dzo_import_data_id'],
-            dzoCompanies: {
-                'ЭМГ': 'АО "Эмбамунайгаз"',
-                'КОА': 'ТОО "Казахойл Актобе"',
-                'КТМ': 'ТОО "Казахтуркмунай"',
-                'КБМ': 'АО "КАРАЖАНБАСМУНАЙ"',
-                'ММГ': 'АО "Мангистаумунайгаз"',
-                'ОМГ': 'АО "ОзенМунайГаз"',
-                'УО': 'ТОО "Урихтау Оперейтинг"',
-            },
-            currentDzo: {},
-        }
-    },
-    methods: {
-        selectCompany(dzoName,index) {
-            _.forEach(this.compared, (item) => {
-                _.set(item, 'selected', false);
-            });
-            if (this.compared[index]) {
-                this.compared[index].selected = true;
-                this.currentDzo = this.compared[index];
-            }
-        },
-        async getForApprove() {
-            let uri = this.localeUrl("/get-daily-production-for-approve");
-            const response = await axios.get(uri);
-            if (response.status === 200) {
-                return response.data;
-            }
-            return [];
-        },
-        getCompared() {
-            let compared = [];
-            _.forEach(this.allProduction.forApprove, (approveItem) => {
-                let date = moment(approveItem.date).startOf('day').format('DD.MM.YYYY');
-                let actual = this.getActual(approveItem.dzo_name,date);
-                let approve = {
-                    'date': date,
-                    'dzoName': approveItem.dzo_name,
-                    'userName': approveItem.user_name,
-                    'reason': approveItem.change_reason,
-                    'selected': false
-                };
-                approve.difference = this.getDifference(approveItem,actual);
-                compared.push(approve);
-            });
-            return compared;
-        },
-        getActual(dzoName,approveDate) {
-            let actualIndex = this.allProduction.actual.findIndex((item) => {
-                let date = moment(item.date).startOf('day').format('DD.MM.YYYY');
-                return date === approveDate && dzoName === item.dzo_name;
-            });
-            if (actualIndex > -1) {
-                return this.allProduction.actual[actualIndex];
-            }
-            return {};
-        },
-        getDifference(current, actual) {
-            let difference = {};
-            _.forEach(Object.keys(current), (currentKey) => {
-                if (['import_decrease_reason','import_downtime_reason'].includes(currentKey)) {
-                    let childDifference = this.getChildDifference(current[currentKey],actual[currentKey]);
-                    difference = {...difference, ...childDifference};
-                } else if (currentKey === 'import_field') {
-                    difference[currentKey] = this.getChildFields(current[currentKey],actual[currentKey]);
-                } else if (this.systemFields.includes(currentKey)) {
-                    return;
-                } else {
-                    if (current[currentKey] !== actual[currentKey]) {
-                        difference[currentKey] = {
-                            currentDetail: current[currentKey],
-                            actualDetail: actual[currentKey]
-                        };
-                    }
-                }
-            });
-            return difference;
-        },
-        getChildDifference(current, actual) {
-            let difference = {};
-            _.forEach(Object.keys(current), (currentKey) => {
-                if (this.systemFields.includes(currentKey)) {
-                    return;
-                }
-                let currentDetail = current[currentKey];
-                let actualDetail = actual[currentKey];
-                if (currentDetail !== actualDetail) {
-                    difference[currentKey] = {
-                        'currentDetail':  currentDetail,
-                        'actualDetail': actualDetail,
-                    };
-                }
-            });
-            return difference;
-        },
-        getChildFields(currentFields, actualFields) {
-            let difference = {};
-            _.forEach(currentFields, (field, index) => {
-                difference[field['field_name']] = this.getChildDifference(field,actualFields[index]);
-            });
-            return difference;
-        }
-    },
-    async mounted() {
-        this.allProduction = await this.getForApprove();
-        this.compared = this.getCompared();
-    }
-}
-</script>
+<script src="./index.js"></script>
 
 <style scoped lang="scss">
     .content-container {
