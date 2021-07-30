@@ -8,9 +8,8 @@ use App\Models\VisCenter\DataForKGM\Daily\OilAndGasForKGM;
 use App\Models\VisCenter\DataForKGM\Daily\OilDeliveryForKGM;
 use App\Models\VisCenter\DataForKGM\Daily\WaterForKGM;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
-use App\Models\VisCenter\ExcelForm\DzoImportDowntimeReason;
-use Illuminate\Console\Command;
 use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class StoreKGMReportsFromAvocetByDay extends Command
 {
@@ -39,111 +38,124 @@ class StoreKGMReportsFromAvocetByDay extends Command
         parent::__construct();
     }
 
+    public function store()
+    {
+
+    }
+
     public function storeKGMReportsFromAvocetByDay()
     {
+        $path = resource_path() . "/js/components/visualcenter3/dailyReportImport/fields_kgm_reports_mapping.json";
+        $fields_data = json_decode(file_get_contents($path), true);
         $dzo_summary_last_record = DzoImportData::latest('id')->first();
         $date = Carbon::yesterday();
-        $oilAndGas = $this->getDataFromBD(new OilAndGasForKGM, $date);
-        $water = $this->getDataFromBD(new WaterForKGM, $date);
-        $oilDelivery = $this->getDataFromBD(new OilDeliveryForKGM, $date);
-        $gasMore = $this->getDataFromBD(new GasMoreForKGM, $date);
-        $fonds = $this->getDataFromBD(new FondsForKGM, $date);
 
-        $oilFact = 0;
-        $gasFact = 0;
-        foreach ($oilAndGas as $rowNum => $row) {
+        $dzo_import_field_data = new DzoImportData();
 
-            $oilFact += $row['fact_oil_mass'];
-            $gasFact += $row['fact_gas_vol'];
+        $multiplier = 1000;
+        /*foreach ($fields_data as $field_name => $field) {
+        $dzo_import_field_data->$field_name = $this->getWaterOilDeliveryAndGasMore( );
+        }*/
+
+        $this->getFilds($fields_data['getWaterOilDeliveryAndGasMore'], $dzo_import_field_data, 'getWaterOilDeliveryAndGasMore', $date, $multiplier);
+
+        $dzo_import_field_data->date = $date;
+        $dzo_import_field_data->dzo_name = 'КГМ';
+        $dzo_import_field_data->oil_production_fact = $this->getOilAndGas('fact_oil_mass', $date);
+        $dzo_import_field_data->associated_gas_production_fact = $this->getOilAndGas('fact_gas_vol', $date) * $multiplier;
+        $dzo_import_field_data->stock_of_goods_delivery_fact = $dzo_import_field_data['ASY_D'] + $dzo_import_field_data['AKSH_D'] + $dzo_import_field_data['NUR_D'];
+        unset($dzo_import_field_data['ASY_D']);
+        unset($dzo_import_field_data['AKSH_D']);
+        unset($dzo_import_field_data['NUR_D']);
+
+        
+    
+        if (isset($fields_data['production_fond'])){
+        $this->getFilds($fields_data['production_fond'], $dzo_import_field_data, 'quantityOfArray', $date, '');
         }
 
-        $agentUploadTotalWaterInjectionFact = $this->valueFromArray($water, 'KGM_INJ_TOTAL', 'fact');
-        $oilDeliveryFact = $this->valueFromArray($oilDelivery, 'KGM_DELIVERY', 'fact');
-        $stockOfGoodsDeliveryFactAsy = $this->valueFromArray($oilDelivery, 'ASY_D', 'fact');
-        $stockOfGoodsDeliveryFactAksh = $this->valueFromArray($oilDelivery, 'AKSH_D', 'fact');
-        $stockOfGoodsDeliveryFactNur = $this->valueFromArray($oilDelivery, 'NUR_D', 'fact');
-        $stockOfGoodsDeliveryFactTotal = $stockOfGoodsDeliveryFactAksh + $stockOfGoodsDeliveryFactAsy + $stockOfGoodsDeliveryFactNur;
-        $associatedGasDeliveryFact = $this->valueFromArray($gasMore, 'KGM_TRANS', 'fact');
-        $associatedGasExpensesForOwnFact = $this->valueFromArray($gasMore, 'KGM_UTIL', 'fact');
+        dd($dzo_import_field_data);
+        
+            $dzo_import_field_data->save();
+
+        
+       // print_r($dzo_import_field_data);
+   
+        
+       
+       
+        
+      
 
         $productionFond = 'PRODUCTION';
-        $inWorkProductionFond = $this->quantityOfArray($fonds, 'PRODUCING', $productionFond, '');
-        $inIdleProductionFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, '');
-        $inactiveProductionPrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'P_WORK_W_1');
-        $inactiveProductionOprsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'N_DOWN_T_1');
-        $inactiveProductionKrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'P_WORK_W_2');
-        $inactiveProductionOkrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'N_DOWN_T_2');
-        $inactiveProductionOtherFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'N_D_D_1');
-        $inactiveProductionFond = $this->quantityOfArray($fonds, 'IDLE', $productionFond, '');
-        $developingProductionFond = $this->quantityOfArray($fonds, 'DEVELOPMENT', $productionFond, '');
-        $pendingLiquidationProductionFond = $this->quantityOfArray($fonds, 'ABANDON', $productionFond, '');
+        // $inWorkProductionFond = $this->quantityOfArray( 'PRODUCING', $productionFond, '');
+        //$inIdleProductionFond = $this->quantityOfArray( 'SHUT_IN', $productionFond, '');
+        $inactiveProductionPrsFond = $this->quantityOfArray('SHUT_IN', $productionFond, 'P_WORK_W_1');
+        $inactiveProductionOprsFond = $this->quantityOfArray('SHUT_IN', $productionFond, 'N_DOWN_T_1');
+        $inactiveProductionKrsFond = $this->quantityOfArray('SHUT_IN', $productionFond, 'P_WORK_W_2');
+        $inactiveProductionOkrsFond = $this->quantityOfArray('SHUT_IN', $productionFond, 'N_DOWN_T_2');
+        $inactiveProductionOtherFond = $this->quantityOfArray('SHUT_IN', $productionFond, 'N_D_D_1');
+        //$inactiveProductionFond = $this->quantityOfArray( 'IDLE', $productionFond, '');
+        // $developingProductionFond = $this->quantityOfArray( 'DEVELOPMENT', $productionFond, '');
+        //$pendingLiquidationProductionFond = $this->quantityOfArray( 'ABANDON', $productionFond, '');
         $operatingProductionFond = $inWorkProductionFond + $inIdleProductionFond + $developingProductionFond + $inactiveProductionFond;
         $activeProductionFond = $inWorkProductionFond + $inIdleProductionFond;
-        $inConservationProductionFond = $this->quantityOfArray($fonds, 'SUSPENDED', $productionFond, '');
+        $inConservationProductionFond = $this->quantityOfArray('SUSPENDED', $productionFond, '');
 
         $injectionFond = 'INJECTION';
-        $inWorkInjectionFond = $this->quantityOfArray($fonds, 'PRODUCING', $injectionFond, '');
-        $inIdleInjectionFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, '');
-        $inactiveInjectionPrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'P_WORK_W_1');
-        $inactiveInjectionOprsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'N_DOWN_T_1');
-        $inactiveInjectionKrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'P_WORK_W_2');
-        $inactiveInjectionOkrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'N_DOWN_T_2');
-        $inactiveInjectionOtherFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'N_D_D_1');
-        $inactiveInjectionFond = $this->quantityOfArray($fonds, 'IDLE', $injectionFond, '');
-        $developingInjectionFond = $this->quantityOfArray($fonds, 'DEVELOPMENT', $injectionFond, '');
-        $pendingLiquidationInjectionFond = $this->quantityOfArray($fonds, 'ABANDON', $injectionFond, '');
+        $inWorkInjectionFond = $this->quantityOfArray('PRODUCING', $injectionFond, '');
+        $inIdleInjectionFond = $this->quantityOfArray('SHUT_IN', $injectionFond, '');
+        $inactiveInjectionPrsFond = $this->quantityOfArray('SHUT_IN', $injectionFond, 'P_WORK_W_1');
+        $inactiveInjectionOprsFond = $this->quantityOfArray('SHUT_IN', $injectionFond, 'N_DOWN_T_1');
+        $inactiveInjectionKrsFond = $this->quantityOfArray('SHUT_IN', $injectionFond, 'P_WORK_W_2');
+        $inactiveInjectionOkrsFond = $this->quantityOfArray('SHUT_IN', $injectionFond, 'N_DOWN_T_2');
+        $inactiveInjectionOtherFond = $this->quantityOfArray('SHUT_IN', $injectionFond, 'N_D_D_1');
+        $inactiveInjectionFond = $this->quantityOfArray('IDLE', $injectionFond, '');
+        $developingInjectionFond = $this->quantityOfArray('DEVELOPMENT', $injectionFond, '');
+        $pendingLiquidationInjectionFond = $this->quantityOfArray('ABANDON', $injectionFond, '');
         $operatingInjectionFond = $inWorkInjectionFond + $inIdleInjectionFond + $developingInjectionFond + $inactiveInjectionFond;
         $activeInjectionFond = $inWorkInjectionFond + $inIdleInjectionFond;
-        $inConservationInjectionFond = $this->quantityOfArray($fonds, 'SUSPENDED', $injectionFond, '');
+        $inConservationInjectionFond = $this->quantityOfArray('SUSPENDED', $injectionFond, '');
 
-        $dzoImportData = new DzoImportData();
-        $multiplier = 1000;
-        $dzoImportData->date = $date;
-        $dzoImportData->dzo_name = 'КГМ';
-        $dzoImportData->oil_production_fact = $oilFact;
-        $dzoImportData->associated_gas_production_fact = $gasFact * $multiplier;
-        $dzoImportData->agent_upload_total_water_injection_fact = $agentUploadTotalWaterInjectionFact * $multiplier;
-        $dzoImportData->oil_delivery_fact = $oilDeliveryFact;
-        $dzoImportData->associated_gas_delivery_fact = $associatedGasDeliveryFact * $multiplier;
-        $dzoImportData->associated_gas_expenses_for_own_fact = $associatedGasExpensesForOwnFact * $multiplier;
-        $dzoImportData->stock_of_goods_delivery_fact = $stockOfGoodsDeliveryFactTotal;
+        //$dzoImportData
+        $dzo_import_field_data->in_work_production_fond = $inWorkProductionFond;
+        $dzo_import_field_data->in_idle_production_fond = $inIdleProductionFond;
+        $dzo_import_field_data->inactive_production_fond = $inactiveProductionFond;
+        $dzo_import_field_data->developing_production_fond = $developingProductionFond;
+        $dzo_import_field_data->pending_liquidation_production_fond = $pendingLiquidationProductionFond;
+        $dzo_import_field_data->operating_production_fond = $operatingProductionFond;
+        $dzo_import_field_data->active_production_fond = $activeProductionFond;
 
-        $dzoImportData->in_work_production_fond = $inWorkProductionFond;
-        $dzoImportData->in_idle_production_fond = $inIdleProductionFond;
-        $dzoImportData->inactive_production_fond = $inactiveProductionFond;
-        $dzoImportData->developing_production_fond = $developingProductionFond;
-        $dzoImportData->pending_liquidation_production_fond = $pendingLiquidationProductionFond;
-        $dzoImportData->operating_production_fond = $operatingProductionFond;
-        $dzoImportData->active_production_fond = $activeProductionFond;
+        $dzo_import_field_data->in_work_injection_fond = $inWorkInjectionFond;
+        $dzo_import_field_data->in_idle_injection_fond = $inIdleInjectionFond;
+        $dzo_import_field_data->inactive_injection_fond = $inactiveInjectionFond;
+        $dzo_import_field_data->developing_injection_fond = $developingInjectionFond;
+        $dzo_import_field_data->pending_liquidation_injection_fond = $pendingLiquidationInjectionFond;
+        $dzo_import_field_data->operating_injection_fond = $operatingInjectionFond;
+        $dzo_import_field_data->active_injection_fond = $activeInjectionFond;
+        $dzo_import_field_data->otm_underground_workover = $inactiveProductionPrsFond;
+        $dzo_import_field_data->otm_well_workover_fact = $inactiveInjectionKrsFond;
 
-        $dzoImportData->in_work_injection_fond = $inWorkInjectionFond;
-        $dzoImportData->in_idle_injection_fond = $inIdleInjectionFond;
-        $dzoImportData->inactive_injection_fond = $inactiveInjectionFond;
-        $dzoImportData->developing_injection_fond = $developingInjectionFond;
-        $dzoImportData->pending_liquidation_injection_fond = $pendingLiquidationInjectionFond;
-        $dzoImportData->operating_injection_fond = $operatingInjectionFond;
-        $dzoImportData->active_injection_fond = $activeInjectionFond;
-        $dzoImportData->otm_underground_workover = $inactiveProductionPrsFond;
-        $dzoImportData->otm_well_workover_fact = $inactiveInjectionKrsFond;      
-        $dzoImportData->save();
+        
+        /*
+    $downtimeReason = new DzoImportDowntimeReason();
+    $downtimeReason->dzo_import_data_id = $dzo_summary_last_record['id'] + 1;
 
-        $downtimeReason = new DzoImportDowntimeReason();
-        $downtimeReason->dzo_import_data_id = $dzo_summary_last_record['id'] + 1;
+    $downtimeReason->prs_downtime_production_wells_count = $inactiveProductionPrsFond;
+    $downtimeReason->krs_downtime_production_wells_count = $inactiveProductionKrsFond;
+    $downtimeReason->other_downtime_production_wells_count = $inactiveProductionOtherFond;
+    $downtimeReason->prs_wait_downtime_production_wells_count = $inactiveProductionOprsFond;
+    $downtimeReason->krs_wait_downtime_production_wells_count = $inactiveProductionOkrsFond;
+    $downtimeReason->well_survey_downtime_production_wells_count = $this->getCountByDowntimeWells($fonds, $productionFond);
 
-        $downtimeReason->prs_downtime_production_wells_count = $inactiveProductionPrsFond;
-        $downtimeReason->krs_downtime_production_wells_count = $inactiveProductionKrsFond;
-        $downtimeReason->other_downtime_production_wells_count = $inactiveProductionOtherFond;
-        $downtimeReason->prs_wait_downtime_production_wells_count = $inactiveProductionOprsFond;
-        $downtimeReason->krs_wait_downtime_production_wells_count = $inactiveProductionOkrsFond;
-        $downtimeReason->well_survey_downtime_production_wells_count = $this->valueFromArrayWellSurvey($fonds, $productionFond);
-
-        $downtimeReason->prs_downtime_injection_wells_count = $inactiveInjectionPrsFond;
-        $downtimeReason->krs_downtime_injection_wells_count = $inactiveInjectionKrsFond;
-        $downtimeReason->other_downtime_injection_wells_count = $inactiveInjectionOtherFond;
-        $downtimeReason->prs_wait_downtime_injection_wells_count = $inactiveInjectionOprsFond;
-        $downtimeReason->krs_wait_downtime_injection_wells_count = $inactiveInjectionOkrsFond;
-        $downtimeReason->well_survey_downtime_injection_wells_count = $this->valueFromArrayWellSurvey($fonds, $injectionFond);
-        $downtimeReason->save();
+    $downtimeReason->prs_downtime_injection_wells_count = $inactiveInjectionPrsFond;
+    $downtimeReason->krs_downtime_injection_wells_count = $inactiveInjectionKrsFond;
+    $downtimeReason->other_downtime_injection_wells_count = $inactiveInjectionOtherFond;
+    $downtimeReason->prs_wait_downtime_injection_wells_count = $inactiveInjectionOprsFond;
+    $downtimeReason->krs_wait_downtime_injection_wells_count = $inactiveInjectionOkrsFond;
+    $downtimeReason->well_survey_downtime_injection_wells_count = $this->getCountByDowntimeWells($fonds, $injectionFond);
+    $downtimeReason->save();
+     */
 
     }
 
@@ -155,17 +167,32 @@ class StoreKGMReportsFromAvocetByDay extends Command
 
     }
 
-    public function valueFromArray($data, $column1, $column2)
+    public function getWaterOilDeliveryAndGasMore($column1, $date, $multiplier)
     {
-        foreach ($data as $rowNum => $row) {
-            if ($row['legacy_id'] == $column1) {
-                return $row[$column2];
-            }
-        }
+        if ($column1 == "KGM_INJ_TOTAL") {
+            $data = $this->getDataFromBD(new WaterForKGM, $date);} elseif ($column1 == "KGM_DELIVERY") {
+            $data = $this->getDataFromBD(new OilDeliveryForKGM, $date);} elseif ($column1 == "ASY_D") {
+            $data = $this->getDataFromBD(new OilDeliveryForKGM, $date);} elseif ($column1 == "AKSH_D") {
+            $data = $this->getDataFromBD(new OilDeliveryForKGM, $date);} elseif ($column1 == "NUR_D") {
+            $data = $this->getDataFromBD(new OilDeliveryForKGM, $date);} elseif ($column1 == "KGM_TRANS") {
+            $data = $this->getDataFromBD(new GasMoreForKGM, $date);} elseif ($column1 == "KGM_UTIL") {
+            $data = $this->getDataFromBD(new GasMoreForKGM, $date);}
+
+        if (isset($data)) {
+            foreach ($data as $rowNum => $row) {
+                if ($row['legacy_id'] == $column1) {
+                    if (($column1 == 'KGM_INJ_TOTAL') or ($column1 == 'KGM_TRANS') or ($column1 == 'KGM_UTIL')) {
+                        return $row['fact'] * $multiplier;
+                    } else {return $row['fact'];}
+                }
+            }}
     }
 
-    public function quantityOfArray($data, $column1, $column2, $column3)
+    public function quantityOfArray($column1, $column2, $column3, $date)
     {
+
+        
+        $data = $this->getDataFromBD(new FondsForKGM, $date);
 
         $summ = [];
 
@@ -173,16 +200,20 @@ class StoreKGMReportsFromAvocetByDay extends Command
             if ($row['type'] == $column2) {
                 if ($row['status'] == $column1) {
 
-                    if ($row['cattegory_code'] == null) {
+                    if ($row['cattegory_code'] !== null) {
+                        $summ[] = array_merge($row);
+                    } else {
                         if ($row['cattegory_code'] == $column3) {
-                            $summ[] = array_merge($row);}
-                    } else { $summ[] = array_merge($row);}
+                            $summ[] = array_merge($row);
+                        }
+                    }
+
                 }
-            }}
-        return count($summ);
+            }}        
+        return count($summ);        
     }
 
-    public function valueFromArrayWellSurvey($data, $column1)
+    public function getCountByDowntimeWells($data, $column1)
     {
         $summ = [];
 
@@ -193,6 +224,31 @@ class StoreKGMReportsFromAvocetByDay extends Command
                 }}
         }
         return count($summ);
+    }
+
+    public function getOilAndGas($column1, $date)
+    {
+        $oilAndGas = $this->getDataFromBD(new OilAndGasForKGM, $date);
+        $data = 0;
+        foreach ($oilAndGas as $rowNum => $row) {
+            $data += $row[$column1];
+        }
+        return $data;
+    }
+
+    public function getFilds($fields_data, $dzo_import_field_data, $function, $date, $multiplier)
+    {
+
+        foreach ($fields_data as $field_name => $field) {           
+            if ($function == 'getWaterOilDeliveryAndGasMore') {
+                $dzo_import_field_data->$field_name = $this->getWaterOilDeliveryAndGasMore($field, $date, $multiplier);
+            }
+            if ($function == 'quantityOfArray') {                
+                $dzo_import_field_data->$field_name = $this->quantityOfArray($field, 'PRODUCTION', '', $date);
+            }
+
+        }
+        return $dzo_import_field_data;
     }
 
     /**
