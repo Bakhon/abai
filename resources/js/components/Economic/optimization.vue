@@ -404,7 +404,7 @@ optimizedColumns.forEach(column => {
 })
 
 export default {
-  name: "economic-nrs",
+  name: "economic-optimization",
   components: {
     CatLoader,
     Divider,
