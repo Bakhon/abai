@@ -1,5 +1,5 @@
 <template>
-  <div class="row p-3 mt-3 bg-main1">
+  <div class="row p-3 bg-main1">
     <div class="d-flex">
       <chart-button
           v-for="(tab, index) in tabs"

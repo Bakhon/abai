@@ -231,4 +231,11 @@ return array (
   'power_consumption_short' => 'Потр. мощ.',
   'calc_min_value' => 'Calc min value',
   'use_value' => 'Use value',
+  'kpod_more_params' => 'Расчетный Кпод < Установленного в Настройках',
+  'cant_calc_construction' => 'Не удалось посчитать конструкцию',
+  'balance_more_80' => 'Нагрузка на головку балансира > 80%',
+  'balance_more_100' => 'Нагрузка на головку балансира > 100%',
+  'shtang_not_recommended' => 'Загрузка штанг выше рекомендуемой',
+  'max_reductor' => 'Максимальный крутящий момент на кривошипном валу редуктора выше допустимого',
+  'load_warning' => 'Загрузка штанг ',
 );

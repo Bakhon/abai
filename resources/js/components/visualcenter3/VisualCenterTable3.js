@@ -5,6 +5,7 @@ import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import {isString} from "lodash";
 
 import mainMenuConfiguration from './main_menu_configuration.json';
+import dzoNumberMapping from './dzo_number_mapping.json';
 import {dzoMapState, dzoMapActions} from '@store/helpers';
 
 import mainMenu from './widgets/mainMenu';
@@ -89,6 +90,7 @@ export default {
                 'ТП': this.trans("visualcenter.tp"),
                 'УО': this.trans("visualcenter.uo"),
                 'ПКК': this.trans("visualcenter.pkk"),
+                'КГМКМГ': this.trans("visualcenter.kgm"),
             },
             bigTable: [],
             starts: [""],
@@ -142,6 +144,14 @@ export default {
                 {ticker: 'КТМ', name: this.trans("visualcenter.ktm")},
                 {ticker: 'КБМ', name: this.trans("visualcenter.kbm")},
                 {ticker: 'ЭМГ', name: this.trans("visualcenter.emg")},
+            ],
+            dzoNumbers: dzoNumberMapping,
+            troubledCompanies: ['ОМГК','ТП','ПККР','КГМКМГ'],
+            gasSortingOrder: [
+                'ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО',
+            ],
+            waterSortingOrder: [
+                'ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА'
             ],
         };
     },

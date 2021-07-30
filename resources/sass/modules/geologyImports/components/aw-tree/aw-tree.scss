@@ -1,0 +1,54 @@
+.aw-tree {
+  background: var(--a-accent-darken-100);
+
+  ul {
+    list-style: none;
+  }
+
+  &__list {
+    padding: 0;
+
+    ul {
+      padding-left: 1em;
+      margin-top: 12px;
+    }
+
+    &-item {
+      &__label {
+        color: #ffffff;
+        user-select: none;
+      }
+
+      .state-box {
+        width: 14px;
+        height: 14px;
+        border: 1px solid var(--a-default);
+        border-radius: 4px;
+        margin-right: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 300ms background ease-in-out;
+        cursor: pointer;
+
+        &:not(.opened) {
+          background: var(--a-default);
+        }
+      }
+
+      &:not(.is-folder) {
+        margin-left: 7px;
+      }
+
+      &.is-folder {
+        position: relative;
+
+        .label-wrapper {
+          span {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}

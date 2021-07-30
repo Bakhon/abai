@@ -1,5 +1,5 @@
 <template>
-    <div class="page-wrapper">
+    <div class="page-wrapper h-100">
         <div class="page-container row">
             <div class="col-12 mt-3 header">
                 <transition name="bounce">
@@ -75,7 +75,7 @@
                     </tr>
                     <tr
                             v-for="(item,index) in tableOutput.participationByKMG"
-                            class="background-dark"
+                            class="background-dark special"
                     >
                         <td>{{item.number}}</td>
                         <td :class="index === 1 ? 'summary-header_text-align' : ''">{{item.dzo}}</td>
@@ -199,7 +199,7 @@
                     </tr>
                     <tr
                             v-for="(item,index) in tableOutput.byKMG"
-                            :class="index > 0 ? 'background-dark hide-block' :'background-dark'"
+                            :class="index > 0 ? 'background-dark hide-block' :'background-dark special'"
                     >
                         <td>{{item.number}}</td>
                         <td>{{item.dzo}}</td>
@@ -588,6 +588,17 @@
 <script src="./index.js"></script>
 
 <style scoped lang="scss">
+    .dzo-row_dark {
+        background: #e6e6e6;
+        color: black;
+    }
+    .dzo-row_light {
+        background: white;
+        color: black;
+    }
+    .troubled-companies-padding {
+        padding-left: 2% !important;
+    }
     .bounce-enter-active {
         animation: bounce-in .5s;
     }
@@ -652,9 +663,6 @@
     .summary-header_text-align {
         text-align: right !important;
     }
-    .troubled-companies-padding {
-        padding-left: 2%;
-    }
     .empty-row {
         border-bottom: 21px solid #272953;
     }
@@ -677,9 +685,6 @@
     .hide-block {
         display:none;
     }
-   .background-light {
-       background: #4C537E;
-   }
    .color_green {
        color: #00b353;
    }
@@ -699,7 +704,7 @@
    .page-wrapper {
        font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
        position: relative;
-       min-height: 872px;
+       min-height: calc(100vh - 78px);
        background: #272953;
        color: white;
        text-align: center;
@@ -712,15 +717,16 @@
            &:nth-child(2) {
                th {
                    height: 40px;
+                   width: 14%;
                }
            }
            &:nth-child(3), &:nth-child(4), &:nth-child(23) {
                background: #333975;
            }
        }
-       tr:hover {
-           background: #2d3486;
-           td:not(:nth-child(2)) {
+       tr:not(.special):hover {
+           background: #D5E5F7;
+           td {
                font-size: 20px;
            }
        }
@@ -734,13 +740,16 @@
            &:first-child {
                width: 2%;
            }
+           &:nth-child(2) {
+               width: 14%;
+           }
            &:nth-child(3), &:nth-child(4), &:nth-child(5) {
-               width: 5%;
+               width: 3%;
            }
        }
        td {
            text-align: right;
-           font-size: 13px;
+           font-size: 15px;
            font-family: Bold;
            width: 10%;
            border-right: 1px solid #696e96;

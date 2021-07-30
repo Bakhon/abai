@@ -3918,7 +3918,7 @@ import locale from 'element-ui/lib/locale';
 import TechModeSmall from "./TechModeSmall";
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
-import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
+import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 import { isString } from "lodash";

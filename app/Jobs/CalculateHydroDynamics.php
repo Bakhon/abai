@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CalculateHydroDynamics implements ShouldQueue
 {
@@ -155,6 +156,11 @@ class CalculateHydroDynamics implements ShouldQueue
             $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
             $points[$key]->omgngdu->heater_output_temperature = $temperature;
 
+            if (!$points[$key]->omgngdu->pump_discharge_pressure) {
+                unset($points[$key]);
+                continue;
+            }
+
             if (!$points[$key]->omgngdu->pump_discharge_pressure ||
                 !$points[$key]->omgngdu->daily_fluid_production ||
                 !$points[$key]->omgngdu->bsw) {
@@ -164,11 +170,16 @@ class CalculateHydroDynamics implements ShouldQueue
         }
 
         if ($isErrors) {
-            $this->setOutput(
-                [
-                    'error' => trans('monitoring.hydro_calculation.error.not-enough-data')
-                ]
-            );
+            if (!empty($this->input['cron'])) {
+                Log::channel('calculate_hydro_yesterday:cron')->error('Нет данных по ОМГ НГДУ');
+            } else {
+                $this->setOutput(
+                    [
+                        'error' => trans('monitoring.hydro_calculation.error.not-enough-data')
+                    ]
+                );
+            }
+
             return;
         }
 
@@ -220,6 +231,10 @@ class CalculateHydroDynamics implements ShouldQueue
             }
         }
 
+        if ($this->input['cron']) {
+            Log::channel('calculate_hydro_yesterday:cron')->info('Расчет на '.$this->input['date'].' успешно завершен.');
+        }
+
         if (isset($this->input['calc_export']) && $this->input['calc_export'] == 'true') {
             $this->setOutput(
                 [
@@ -237,6 +252,7 @@ class CalculateHydroDynamics implements ShouldQueue
             $hydroCalcResult = HydroCalcResult::firstOrCreate(
                 [
                     'date' => Carbon::parse($this->input['date'])->format('Y-m-d'),
+                    'oil_pipe_id' => $trunkline_point->oil_pipe_id,
                     'trunkline_point_id' => $trunkline_point->id,
                 ]
             );

@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import CatLoader from "../../ui-kit/CatLoader";
+import CatLoader from "@ui-kit/CatLoader";
 import SelectScFa from "./SelectScFa";
 import AddButton from "./AddButton";
 import DeleteButton from "./DeleteButton";

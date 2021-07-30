@@ -1,0 +1,28 @@
+.btn-dropdown {
+  position: relative;
+
+  &__title {
+    margin-left: 10px;
+  }
+
+  &__icon {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 12px;
+    bottom: 0;
+    margin: auto;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  &.show {
+    .btn-dropdown__icon {
+      transform: translateY(2px) rotate(225deg);
+    }
+  }
+}

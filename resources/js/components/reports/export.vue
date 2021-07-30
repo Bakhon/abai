@@ -80,7 +80,7 @@
 </template>
 <script>
 import moment from 'moment'
-import CatLoader from '../ui-kit/CatLoader'
+import CatLoader from '@ui-kit/CatLoader'
 
 export default {
   name: 'report-export',

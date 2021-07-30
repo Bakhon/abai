@@ -22,7 +22,7 @@ class TrunklinePoint extends Model
 
     public function oilPipe()
     {
-        return $this->belongsTo(OilPipe::class);
+        return $this->setConnection('tbd_cmon')->belongsTo(OilPipe::class);
     }
 
     public function trunkline_end_point()

@@ -1,6 +1,11 @@
 {
   "type": "plain",
   "table": "prod.well_geo",
+  "available_actions": [
+    "update",
+    "view history",
+    "delete"
+  ],
   "tabs": [
     {
       "title": "title",
@@ -20,7 +25,7 @@
                 "code": "dbeg",
                 "type": "date",
                 "title": "dbeg",
-                "validation": "required|date|before:dend"
+                "validation": "required|date"
               },
               {
                 "code": "dend",

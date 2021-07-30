@@ -102,7 +102,7 @@ export default {
                     'КПО': this.trans("visualcenter.consolidatedDzoNameMapping.KPO"),
                     'НКО': this.trans("visualcenter.nko") + ' (8.44%)',
                     'ТП': this.trans("visualcenter.tp") + ' (50%*33%)',
-                    'УО': this.trans("visualcenter.consolidatedDzoNameMapping.YO") + ' (100%)',
+                    'УО': this.trans("visualcenter.consolidatedDzoNameMapping.YO"),
                     'ПКК': 'АО "ПККР" (100%*33%)',
                     'oilByKMG': 'Всего добыча нефти и конденсата с учетом доли участия АО НК "КазМунайГаз"',
                     'condensateByKMG': 'в т.ч.: газовый конденсат',
@@ -219,9 +219,9 @@ export default {
         },
         getRowClass(index) {
             if (index % 2 === 0) {
-                return 'background-light';
+                return 'dzo-row_light';
             } else {
-                return 'background-dark';
+                return 'dzo-row_dark';
             }
         },
         getFormattedNumber(num) {

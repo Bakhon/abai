@@ -3,7 +3,7 @@ import NotifyPlugin from "vue-easy-notify";
 import "vue-easy-notify/dist/vue-easy-notify.css";
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
-import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
+import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 
@@ -758,6 +758,9 @@ export default {
       } else {
           return true
       }
+    },
+    getRowWidthSpan (row) {
+      return row.rus_wellname ? 0 : 2;
 
     },
 
