@@ -1,15 +1,17 @@
 <template>
-  <div class="maps-development" v-for="item in objects">
-    <div class="maps-development__title">
-      {{ item }}
-    </div>
-    <div class="maps-development__wrapper">
-      <div class="maps-development__item" v-for="map in maps">
-        <img class="maps-development__item-icon" src="/img/icons/link.svg" alt="">
-        <img
-          class="maps-development__item-img"
-          :src="`/img/digital-rating/${map}.svg`" alt=""
-        >
+  <div>
+    <div class="maps-development" v-for="item in objects">
+      <div class="maps-development__title">
+        {{ item }}
+      </div>
+      <div class="maps-development__wrapper">
+        <div class="maps-development__item" v-for="map in maps" :key="map">
+          <img class="maps-development__item-icon" src="/img/icons/link.svg" alt="">
+          <img
+              class="maps-development__item-img"
+              :src="`/img/digital-rating/${map}.svg`" alt=""
+          >
+        </div>
       </div>
     </div>
   </div>

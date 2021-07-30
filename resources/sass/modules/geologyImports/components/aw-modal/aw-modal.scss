@@ -32,6 +32,7 @@
     @extend .___aw-modal__transition;
     @extend .customScroll;
     background: rgba($black, .5);
+    padding-bottom: 80px;
   }
   &__header{
     display: flex;
@@ -57,11 +58,14 @@
   &.center{
     margin: auto;
   }
+  &.top{
+    margin-top: 10vh;
+  }
   &.md{
     max-width: 1024px;
   }
   &.lg{
-    max-width: 756px;
+    max-width: 945px;
   }
 }
 

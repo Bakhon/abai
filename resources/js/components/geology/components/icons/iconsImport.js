@@ -1,3 +1,5 @@
+import {u1, welltops, ybs, zone, zoneStatic} from "./chooseStratIcons";
+
 import {
     List,
     ListItemDown,
@@ -31,7 +33,7 @@ import {
     rightwardsArrow,
     downwardsArrow,
     upwardsArrow,
-    copy, returnButton, AppendXYHingeToXSection, AddPaddingToTheXScreen
+    copy, returnButton, AppendXYHingeToXSection, AddPaddingToTheXScreen, minus, plus
 } from "./iconsPack.js";
 
 export default {
@@ -56,5 +58,12 @@ export default {
     copy,
     returnButton,
     AppendXYHingeToXSection,
-    AddPaddingToTheXScreen
+    AddPaddingToTheXScreen,
+    minus,
+    plus,
+    zone,
+    u1,
+    welltops,
+    ybs,
+    zoneStatic
 }

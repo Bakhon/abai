@@ -2,13 +2,15 @@
   <div class="geology__content">
     <div class="rect mb-3">
       <div class="d-flex align-items-center">
-        <Button @click="isShowListOfWellsModal = true" color="accent" icon="oilTower" class="flex-grow-1 mr-3" align="center">
+        <Button @click="isShowListOfWellsModal = true" color="accent" icon="oilTower" class="flex-grow-1 mr-3"
+                align="center">
           Список скважин
         </Button>
-        <Button color="accent" icon="settPhone" class="flex-grow-1 mr-3" align="center">
+        <Button @click="isShowTableSettings = true" color="accent" icon="settPhone" class="flex-grow-1 mr-3" align="center">
           Настройка планшета
         </Button>
-        <Button color="accent" icon="lupa" class="flex-grow-1 mr-3" align="center">
+        <Button @click="isShowChooseStratModal = true" color="accent" icon="lupa" class="flex-grow-1 mr-3"
+                align="center">
           Выбор отбивок
         </Button>
         <Button color="accent" icon="locPC" class="flex-grow-1 mr-3" align="center">
@@ -33,7 +35,8 @@
       <div class="info__grid">
         <div class="info__grid__item" id="item1">
           <div class="rect">
-            <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор ДЗО" :options="[
+            <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор ДЗО"
+                      :options="[
               {label: 'option 1', value: 1},
               {label: 'option 2', value: 2},
               {label: 'option 3', value: 3}
@@ -85,6 +88,29 @@
     <AwModal size="lg" title="Список скважин" :is-show.sync="isShowListOfWellsModal">
       <ListOfWells />
     </AwModal>
+
+    <AwModal position="top" size="lg" title="Выбор отбивок" :is-show.sync="isShowChooseStratModal">
+      <AwTree class="p-2"
+              :selected.sync="chooseStratModalTree"
+              :items="chooseStratModalTreeItems" />
+
+      <template #footer>
+        <div class="d-flex align-items-center justify-content-center">
+          <Button class="mr-3">Ок</Button>
+          <Button color="primary" @click="isShowChooseStratModal = false">Отмена</Button>
+        </div>
+      </template>
+    </AwModal>
+
+    <AwModal position="top" size="lg" title="Настройка планшета" :is-show.sync="isShowTableSettings">
+      <TableSettings />
+      <template #footer>
+        <div class="d-flex align-items-center justify-content-center">
+          <Button class="mr-3">Ок</Button>
+          <Button color="primary" @click="isShowTableSettings = false">Отмена</Button>
+        </div>
+      </template>
+    </AwModal>
   </div>
 </template>
 
@@ -93,9 +119,10 @@ import Button from "../components/buttons/Button";
 import dropdown from "../components/dropdowns/dropdown";
 import ToolBlock from "../components/toolBlock/ToolBlock";
 import AwModal from "../components/notifications/awModal/AwModal";
+import AwTree from "../components/awTree/AwTree";
 import AwIcon from "../components/icons/AwIcon"
-
 import ListOfWells from "./modals/ListOfWells";
+import TableSettings from "./modals/TableSettings";
 export default {
   name: "Geology-Page",
   components: {
@@ -104,14 +131,63 @@ export default {
     ToolBlock,
     AwModal,
     AwIcon,
-    ListOfWells
+    ListOfWells,
+    TableSettings,
+    AwTree
   },
   data() {
     return {
       dropdownValue: {
         value: null
       },
-      isShowListOfWellsModal: false
+      isShowTableSettings: false,
+      isShowListOfWellsModal: false,
+      isShowChooseStratModal: false,
+      chooseStratModalTree: [],
+      chooseStratModalTreeItems: {
+        name: 'J-I-III.txt',
+        value: 1,
+        iconType: 'welltops',
+        isOpen: true,
+        children: [
+          {
+            name: 'Attributes',
+            value: '1-1',
+            iconType: 'ybs',
+            children: [
+              {
+                name: 'name',
+                iconType: 'u1'
+              }
+            ]
+          },
+          {
+            name: 'Stratigraphy',
+            iconType: 'zoneStatic',
+            value: 2,
+            children: [
+              {
+                name: 'U1_top',
+                iconType: 'u1',
+                value: "111",
+              },
+              {
+                name: 'Zone U1_top',
+                iconType: 'zone',
+              },
+              {
+                name: 'U1_bot',
+                iconType: 'u1',
+                value: "1111",
+              },
+              {
+                name: 'Zone U1_top',
+                iconType: 'zone',
+              },
+            ]
+          },
+        ]
+      },
     }
   },
 }
@@ -130,8 +206,9 @@ export default {
 
   #item1 {
     grid-area: item1;
-    &::v-deep{
-      .a-dropdown__trigger{
+
+    &::v-deep {
+      .a-dropdown__trigger {
         background: var(--a-accent);
         border-color: var(--a-accent);
       }
@@ -154,24 +231,27 @@ export default {
       }
     }
   }
-
 }
 
-.info-block{
+.info-block {
   color: #ffffff;
-  &__header{
+
+  &__header {
     font-size: 16px;
     display: flex;
     align-items: center;
     background: var(--a-accent-darken-100);
     padding: 10px 14px;
     justify-content: space-between;
-    h5{
+
+    h5 {
       margin: 0;
     }
   }
-  &__body{
-    &__content{}
+
+  &__body {
+    &__content {
+    }
   }
 }
 </style>

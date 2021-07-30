@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Economic;
 use App\Http\Controllers\Controller;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\Org;
+use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ use Level23\Druid\Types\Granularity;
 class EconomicOptimizationController extends Controller
 {
     protected $druidClient;
+    protected $structureService;
 
     const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v1';
 
@@ -77,13 +79,15 @@ class EconomicOptimizationController extends Controller
     const COMPANY_KARAZANBAS = 8;
     const COMPANY_KAZ_GER = 9;
 
-    public function __construct(DruidClient $druidClient)
+    public function __construct(DruidClient $druidClient, StructureService $structureService)
     {
         $this
             ->middleware('can:economic view main')
             ->only('index', 'getData');
 
         $this->druidClient = $druidClient;
+
+        $this->structureService = $structureService;
     }
 
     public function index()
@@ -93,7 +97,7 @@ class EconomicOptimizationController extends Controller
 
     public function getData(Request $request): array
     {
-        $org = EconomicNrsController::getOrg($request->org_id);
+        $org = EconomicNrsController::getOrg($request->org_id, $this->structureService);
 
         return [
             'org' => $org,

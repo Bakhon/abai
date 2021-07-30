@@ -30,18 +30,17 @@
         ref="chart"
         :options="chartOptions"
         :series="chartSeries"
-        :height="745"
+        :height="710"
         type="line"/>
   </div>
 </template>
 
 <script>
 import {GRANULARITY_DAY} from "./SelectGranularity";
-
-const ru = require("apexcharts/dist/locales/ru.json");
-
 import chart from "vue-apexcharts";
 import {chartInitMixin} from "../mixins/chartMixin";
+
+const ru = require("apexcharts/dist/locales/ru.json");
 
 export default {
   name: 'ChartWithProfitability',

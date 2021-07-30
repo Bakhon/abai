@@ -204,4 +204,6 @@ return array (
   'variable_processing' => 'Условно-переменные расходы (процессинг)',
   'tenge_per_ton_oil' => 'тенге / тонну нефти',
   'tenge_per_cube_liquid' => 'тенге / куб жидкости',
+  'economic_module_short' => 'ТЭАиОРС',
+  'economic_module_full' => 'Технико-экономический анализ и оптимизация работы скважин',
 );

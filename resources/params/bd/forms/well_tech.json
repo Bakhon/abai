@@ -64,7 +64,8 @@
               {
                 "code": "dend",
                 "type": "date",
-                "title": "date_end"
+                "title": "date_end",
+                "validation": "after:dbeg"
               }
             ]
           }

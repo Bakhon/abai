@@ -1,10 +1,10 @@
 <template>
-  <div class="container-fluid position-relative">
+  <div class="position-relative">
     <cat-loader v-show="loading"/>
 
     <div class="row">
       <div class="col-9 pr-2">
-        <div class="row text-white text-wrap flex-nowrap">
+        <div class="row text-white text-wrap flex-nowrap mb-10px">
           <div
               v-for="(header, index) in calculatedHeaders"
               :key="`calculated_${index}`"
@@ -99,8 +99,8 @@
             :res="res"/>
       </div>
 
-      <div class="col-3">
-        <div class="bg-main1 text-white text-wrap p-3 mb-3">
+      <div class="col-3 pr-0">
+        <div class="bg-main1 text-white text-wrap p-3 mb-10px">
           <subtitle>
             {{ trans('economic_reference.production_wells_fund') }}
           </subtitle>
@@ -135,7 +135,7 @@
             v-for="(block, index) in blocks"
             :key="index"
             :style="form.scenario_id ? 'min-height: 175px' : 'min-height: 100px'"
-            class="d-flex bg-main1 text-white text-wrap p-3 mb-3">
+            class="d-flex bg-main1 text-white text-wrap p-3 mb-10px">
           <div
               v-for="(subBlock, subBlockIndex) in block"
               :key="subBlock.title"
@@ -196,7 +196,7 @@
           </div>
         </div>
 
-        <div class="bg-main1 p-3 mt-3 text-white text-wrap">
+        <div class="bg-main1 p-3 text-white text-wrap">
           <div class="font-size-16px line-height-22px font-weight-bold mb-3">
             {{ trans('economic_reference.select_optimization_scenarios') }}
           </div>
@@ -886,5 +886,9 @@ export default {
   position: absolute;
   top: 5px;
   right: 5px;
+}
+
+.mb-10px {
+  margin-bottom: 10px;
 }
 </style>
