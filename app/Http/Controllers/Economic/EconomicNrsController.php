@@ -385,7 +385,6 @@ class EconomicNrsController extends Controller
 
     static function getOrg(int $orgId, StructureService $structureService): Org
     {
-        /** @var Org $org */
         $org = Org::findOrFail($orgId);
 
         $tbdId = $org->tbd_id
