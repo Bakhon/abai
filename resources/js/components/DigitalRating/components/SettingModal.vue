@@ -5,16 +5,15 @@
     :draggable="false"
     :width="1000"
     :height="500"
-    :adaptive="true">
+    :adaptive="true"
+    @click.self="close">
     <div class="modal-bign-container p-20px">
       <div class="modal-bign-header mb-20px">
         <div class="modal-bign-title">
-          <i class="fas fa-cog"
-             style="font-size: 20px;"
-          />
+          <i class="fas fa-cog" style="font-size: 20px;"/>
           {{ trans('profile.tabs.settings') }}
         </div>
-        <button type="button" class="modal-bign-button" @click="$emit('close')">
+        <button type="button" class="modal-bign-button" @click="close">
           {{ trans('pgno.zakrit') }}
         </button>
       </div>
@@ -25,11 +24,13 @@
               {{ trans('digital_rating.field') }}
             </div>
             <div class="setting-form__select-area">
-              <ul>
-                <li v-for="item in fields" :key="item">
-                  {{ item }}
-                </li>
-              </ul>
+              <div class="radio-group">
+                <div class="radio-group__item"
+                  v-for="(item, index) in fields" :key="index">
+                  <input type="radio" :id="`field${index}`" :value="item" v-model="selectedField">
+                  <label :for="`field${index}`">{{ item }}</label>
+                </div>
+              </div>
             </div>
           </div>
           <div class="setting-form__select">
@@ -37,11 +38,13 @@
               {{ trans('digital_rating.sectorSize') }}
             </div>
             <div class="setting-form__select-area">
-              <ul>
-                <li v-for="item in sectors" :key="item">
-                  {{ item }}
-                </li>
-              </ul>
+              <div class="radio-group">
+                <div class="radio-group__item"
+                  v-for="(item, index) in sectors" :key="index">
+                  <input type="radio" :id="`sector${index}`" :value="item" v-model="selectedSector">
+                  <label :for="`sector${index}`">{{ item }}</label>
+                </div>
+              </div>
             </div>
           </div>
           <div class="setting-form__select">
@@ -49,11 +52,13 @@
               {{ trans('digital_rating.forecastingAlgorithm') }}
             </div>
             <div class="setting-form__select-area">
-              <ul>
-                <li v-for="item in algorithms">
-                  {{ item }}
-                </li>
-              </ul>
+              <div class="radio-group">
+                <div class="radio-group__item"
+                  v-for="(item, index) in algorithms" :key="index">
+                  <input type="radio" :id="`algorithm${index}`" :value="item" v-model="selectedAlgorithm">
+                  <label :for="`algorithm${index}`">{{ item }}</label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -100,10 +105,19 @@ export default {
         limitValue: null,
         radius: null,
       },
+      selectedField: 'Узень',
+      selectedSector: '100x100',
+      selectedAlgorithm: 'Утвержденная методика',
       fields: ['Узень', 'Карамандыбас', 'Жетыбай'],
       sectors: ['100x100','150x150', '200x200'],
       algorithms: ['Утвержденная методика', 'С учетом возвратных объектов'],
     }
+  },
+
+  methods: {
+    close() {
+      this.$emit('close');
+    },
   }
 }
 </script>
@@ -149,5 +163,58 @@ export default {
       }
     }
   }
+}
+
+.radio-group input[type="radio"]{
+  display: none;
+}
+
+.radio-group input[type="radio"]:checked + label,
+.radio-group input[type="radio"]:not(:checked) + label
+{
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  line-height: 20px;
+  display: inline-block;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+.radio-group input[type="radio"]:checked + label:before,
+.radio-group input[type="radio"]:not(:checked) + label:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border: 3px solid #2E50E9;
+  border-radius: 50%;
+  -webkit-transition: all .1s ease;
+  transition: all .3s ease;
+  background: transparent;
+}
+.radio-group input[type="radio"]:checked + label:after,
+.radio-group input[type="radio"]:not(:checked) + label:after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  border-radius: 50%;
+  -webkit-transition: all 0.1s ease;
+  transition: all 0.3s ease;
+}
+.radio-group input[type="radio"]:not(:checked) + label:after {
+  opacity: 0;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+.radio-group input[type="radio"]:checked + label:after {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
 }
 </style>
