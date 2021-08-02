@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "",
+  "table": "prod.well_perf",
   "tabs": [
     {
       "title": "main",
@@ -71,7 +71,7 @@
                 "code": "perf_date",
                 "type": "date",
                 "title": "data",
-                "validation": ""
+                "validation": "required|date"
               }
             ]
           }

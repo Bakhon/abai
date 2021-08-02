@@ -216,6 +216,7 @@
       </div>
     </div>
     <big-numbers :list="filteredWells" />
+    <cat-loader />
   </div>
 </template>
 <script>
@@ -223,11 +224,13 @@ import VueApexCharts from "vue-apexcharts";
 import BigNumbers from "./BigNumbers.vue";
 import TrMultiselect from "./TrMultiselect.vue";
 import trHelper from '~/mixins/trHelper';
-import ClearIcon from "../ui-kit/ClearIcon.vue";
+import ClearIcon from "@ui-kit/ClearIcon.vue";
+import CatLoader from "@ui-kit/CatLoader";
 
 export default {
   name: "TrCharts",
   components: {
+    CatLoader,
     TrMultiselect,
     ClearIcon,
     BigNumbers,
@@ -383,6 +386,7 @@ export default {
   },
   data: function () {
     return {
+      postApiUrl: process.env.MIX_POST_API_URL,
       chartShow: 0,
       chartWells: [],
       filteredWellsPreGraph: [],
@@ -1645,7 +1649,7 @@ export default {
       }
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/graph1/" +
+          this.postApiUrl + "techregime/graph1/" +
             this.selectYear +
             "/" +
             this.month +
@@ -1693,7 +1697,7 @@ export default {
     this.month = mm;
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/graph1/" +
+        this.postApiUrl + "techregime/graph1/" +
           yyyy +
           "/" +
           mm +

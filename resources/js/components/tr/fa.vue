@@ -363,11 +363,11 @@
           </td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row.well">
-          <td style="background: #12135c">{{ row.rus_wellname }}</td>
-          <td style="background: #12135c; min-width: 120px;">{{ row.field }}</td>
-          <td style="background: #12135c">{{ row.horizon }}</td>
-          <td style="background: #12135c">{{ row.object }}</td>
-          <td style="background: #12135c">{{ row.exp_meth }}</td>
+          <td style="background: #12135c; min-width: 102px;">{{ row.rus_wellname }}</td>
+          <td style="background: #12135c; min-width: 182px;">{{ row.field }}</td>
+          <td style="background: #12135c; min-width: 102px;">{{ row.horizon }}</td>
+          <td style="background: #12135c; min-width: 102px;">{{ row.object }}</td>
+          <td style="background: #12135c; min-width: 102px;">{{ row.exp_meth }}</td>
 
           <td v-show= isHide
             style="background: #2c3379;"
@@ -917,7 +917,7 @@
           </td>
 
           <td
-            style="background: #12135C; min-width:248px;"
+            style="background: #12135C; min-width:270px;"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -945,7 +945,7 @@
 
 
           <td v-if= isGenHide
-            style="background: #12135C; min-width:248px;"
+            style="background: #12135C; min-width:270px;"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -972,7 +972,7 @@
           </td>
 
           <td v-if= isGenHide
-            style="background: #12135C; min-width:248px;"
+            style="background: #12135C; min-width:270px"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -1001,6 +1001,7 @@
       </table>
     </div>
     <notifications position="top"></notifications>
+    <cat-loader />
   </div>
 </template>
 <script>
@@ -1009,20 +1010,23 @@ import "vue-easy-notify/dist/vue-easy-notify.css";
 import { VueMomentLib } from "vue-moment-lib";
 import moment from "moment";
 import Vue from "vue";
-import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
+import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
 import columnSortable from 'vue-column-sortable'
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
+import CatLoader from "@ui-kit/CatLoader";
 
 Vue.use(NotifyPlugin, VueMomentLib);
 export default {
   name: "FaPage",
   components: {
+    CatLoader,
     SearchFormRefresh,
     TrMultiselect,
   },
   data: function () {
     return {
+      postApiUrl: process.env.MIX_POST_API_URL,
       faHeader: null,
       wells: [],
       searchString: "",
@@ -1168,7 +1172,7 @@ export default {
       this.$store.commit("fa/SET_GEN_HIDE", true);
       this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/factor_weekly/" +
+        this.postApiUrl + "techregime/factor_weekly/" +
           yyyy +
           "/" +
           mm +
@@ -1241,7 +1245,7 @@ export default {
         this.$store.commit("fa/SET_HIDE", false);
         this.axios
           .get(
-            "http://172.20.103.187:7576/api/techregime/factor/" +
+            this.postApiUrl + "techregime/factor/" +
               yyyy +
               "/" +
               mm +
@@ -1346,7 +1350,7 @@ export default {
         : "";
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/factor/" +
+          this.postApiUrl + "techregime/factor/" +
             yyyy +
             "/" +
             mm +
@@ -1376,7 +1380,13 @@ export default {
           } else {
             this.wells = [];
             this.fullWells = [];
-            console.log("No data");
+            this.$bvToast.toast(this.trans('tr.no_data'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
           }
           if (dynamic == true){
             this.isHide = false;
@@ -1396,7 +1406,13 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
-          console.log("search error = ", error);
+          this.$bvToast.toast(this.trans('tr.error'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
         });
     },
   },
@@ -1442,7 +1458,7 @@ export default {
     this.$store.commit("fa/SET_PR_DAY", prdd);
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/factor_weekly/" +
+        this.postApiUrl + "techregime/factor_weekly/" +
           yyyy +
           "/" +
           mm +

@@ -1,6 +1,6 @@
 <template>
   <div class="gu-map">
-    <cat-loader v-show="loading"/>
+    <cat-loader />
     <div class="gu-map__controls">
       <h1>{{ trans('monitoring.map.title') }}</h1>
       <div v-if="guPoints" class="d-flex">
@@ -97,6 +97,41 @@
       </template>
     </b-modal>
 
+    <b-modal
+        size="xl"
+        header-bg-variant="main4"
+        body-bg-variant="main1"
+        header-text-variant="light"
+        footer-bg-variant="main4"
+        centered
+        id="pipe-calc-modal"
+        modal-class="long-modal"
+        :title="trans('monitoring.pipe.detail-data') + ' ' + (selectedPipe ? selectedPipe.name : '')"
+        :ok-only="true"
+    >
+      <pipe-long-info
+          :pipe="selectedPipe"
+          :referentValue="parseInt(referentValue)"
+          :activeFilter="activeFilter"
+
+      />
+    </b-modal>
+
+    <b-modal
+        size="xl"
+        header-bg-variant="main4"
+        body-bg-variant="main1"
+        header-text-variant="light"
+        footer-bg-variant="main4"
+        centered
+        id="omg-ngdu-well-form"
+        modal-class="long-modal"
+        :title="trans('monitoring.well.enter-omg-ngdu-data')"
+        :ok-only="true"
+    >
+      <wellOmgNgduForm :well="selectedWell" />
+    </b-modal>
+
     <div v-show="false">
       <gu-tool-tip ref="guToolTip" :gu="guHovered" />
       <pipe-tool-tip ref="pipeToolTip"  :pipe="pipeHovered" :paramKey="pipeHoveredParameter" />
@@ -115,14 +150,16 @@ import mapGuForm from "./mapGuForm";
 import mapZuForm from "./mapZuForm";
 import mapWellForm from "./mapWellForm";
 import mapPipeForm from "./mapPipeForm";
-import {guMapState, guMapMutations, guMapActions} from '@store/helpers';
+import {guMapState, guMapMutations, guMapActions, globalloadingMutations} from '@store/helpers';
 import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
-import CatLoader from '../../ui-kit/CatLoader';
+import CatLoader from '@ui-kit/CatLoader';
 import guToolTip from "./guToolTip";
 import pipeToolTip from "./pipeToolTip";
+import pipeLongInfo from "./pipeLongInfo";
+import wellOmgNgduForm from "./wellOmgNgduForm";
 
 export default {
   name: "gu-map",
@@ -136,7 +173,9 @@ export default {
     guToolTip,
     pipeToolTip,
     CatLoader,
-    mapLegend
+    mapLegend,
+    pipeLongInfo,
+    wellOmgNgduForm
   },
   data() {
     return {
@@ -173,7 +212,7 @@ export default {
       layers: [],
       pipes: [],
       mapColorsMode: 'default',
-      selectedDate: null,
+      selectedDate: moment().format('YYYY-MM-DD'),
       activeFilter: null,
       mapFilters: [
         {
@@ -189,11 +228,12 @@ export default {
           key: 'temperature'
         },
       ],
-      loading: false,
       referentValue: 10,
       guHovered: null,
       pipeHovered: null,
       pipeHoveredParameter: null,
+      selectedPipe: null,
+      selectedWell: null,
     };
   },
   created() {
@@ -215,10 +255,9 @@ export default {
     },
     okBtntext() {
       return this.formType == 'create' ? this.trans('app.create') : this.trans('app.update')
-    }
+    },
   },
   methods: {
-    ...guMapMutations([]),
     ...guMapActions([
       'getMapData',
       'storeGu',
@@ -233,8 +272,11 @@ export default {
       'getElevationByCoords',
       'getHydroReverseCalc'
     ]),
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     async initMap() {
-      this.loading = true;
+      this.SET_LOADING(true);
       this.pipes = await this.getMapData(this.gu);
 
       this.viewState = {
@@ -314,7 +356,7 @@ export default {
           layers: this.layers
         });
 
-        this.loading = false;
+        this.SET_LOADING(false);
       });
     },
     getPipeCalcKey (pipe) {
@@ -592,6 +634,14 @@ export default {
       let title = this.trans('app.delete_confirm') + ' ' + this.getObjectName(this.editMode) + '?';
       this.confirmDelete(title);
     },
+    onShowDetailInfo(option) {
+      this.selectedPipe = option.mapObject.object;
+      this.$bvModal.show('pipe-calc-modal');
+    },
+    onShowOmgNgduWellForm(option) {
+      this.selectedWell = option.mapObject.object;
+      this.$bvModal.show('omg-ngdu-well-form');
+    },
     optionClicked(option) {
       this.editMode = option.editMode;
       this.formType = option.type;
@@ -664,6 +714,7 @@ export default {
         message = result.message;
       }
 
+      let variant = result.status == 'success' ? 'success' : 'danger';
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addZu() {
@@ -682,6 +733,7 @@ export default {
         message = result.message;
       }
 
+      let variant = result.status == 'success' ? 'success' : 'danger';
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addWell() {
@@ -700,6 +752,7 @@ export default {
         message = result.message;
       }
 
+      let variant = result.status == 'success' ? 'success' : 'danger';
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addPipe() {
@@ -1078,10 +1131,10 @@ export default {
         case 'speedFlow':
         case 'pressure':
         case 'temperature':
-          this.loading = true;
+          this.SET_LOADING(true);
           this.pipes = await this.getHydroReverseCalc(this.formatDate(this.selectedDate));
           this.mapRedraw();
-          this.loading = false;
+          this.SET_LOADING(false);
           break;
 
         default:
@@ -1090,7 +1143,6 @@ export default {
       }
     },
     async filterChanged() {
-      this.selectedDate = null;
       this.mapColorsMode = this.activeFilter;
 
       switch (this.activeFilter) {
@@ -1104,12 +1156,10 @@ export default {
 
         case null:
           this.mapColorsMode = 'default';
-          this.loading = true;
-          this.pipes = await this.getMapData(this.gu);
-          this.loading = false;
-          this.mapRedraw();
           break;
       }
+
+      this.mapRedraw();
     },
     mapRedraw() {
       this.layerRedraw('path-layer', 'pipe', this.pipes);
@@ -1120,7 +1170,15 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+
+<style>
+.long-modal .modal-dialog {
+  max-width: calc(100vw - 114px);
+  left: 28.5px;
+}
+</style>
+
+<style lang="scss" scoped>
 h1 {
   color: #fff;
 }
@@ -1200,4 +1258,5 @@ h1 {
     background-size: contain;
   }
 }
+
 </style>

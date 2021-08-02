@@ -1,3 +1,5 @@
+import {u1, welltops, ybs, zone, zoneStatic} from "./chooseStratIcons";
+
 import {
     List,
     ListItemDown,
@@ -18,7 +20,20 @@ import {
     geoPh,
     oilTower,
     settPhone,
-    lupa, locPC, gisto, i3d, i2d, interpret, cog, cubeArrow, eq, ruler
+    lupa,
+    locPC,
+    gisto,
+    i3d,
+    i2d,
+    interpret,
+    cog,
+    cubeArrow,
+    eq,
+    ruler,
+    rightwardsArrow,
+    downwardsArrow,
+    upwardsArrow,
+    copy, returnButton, AppendXYHingeToXSection, AddPaddingToTheXScreen, minus, plus
 } from "./iconsPack.js";
 
 export default {
@@ -36,5 +51,19 @@ export default {
     tripleDots,
     rulerToArrow,
     moleqq,
-    kern, d3, geoPh, oilTower, settPhone, lupa, locPC, gisto, i3d, i2d, interpret,cog,cubeArrow, eq,ruler
+    kern, d3, geoPh, oilTower, settPhone, lupa, locPC, gisto, i3d, i2d, interpret, cog, cubeArrow, eq, ruler,
+    rightwardsArrow,
+    downwardsArrow,
+    upwardsArrow,
+    copy,
+    returnButton,
+    AppendXYHingeToXSection,
+    AddPaddingToTheXScreen,
+    minus,
+    plus,
+    zone,
+    u1,
+    welltops,
+    ybs,
+    zoneStatic
 }

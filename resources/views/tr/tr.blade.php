@@ -8,7 +8,6 @@
                 <tr-table :params='@json($permissionNames)'></tr-table>
             </div>
         </div>
-        <cat-loader />
     </div>
 @endsection
 <link href="{{ asset('css/tr.css')}}" rel="stylesheet">

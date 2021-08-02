@@ -5,7 +5,9 @@ namespace App\Services\BigData\Forms;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\ReportOrgDailyCits;
+use App\Services\BigData\FieldLimitsService;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 abstract class DailyReports extends TableForm
 {
@@ -55,13 +57,15 @@ abstract class DailyReports extends TableForm
             ->distinct()
             ->first();
         if (!$item) {
-            ReportOrgDailyCits::insert([
+            ReportOrgDailyCits::insert(
+                [
                     'org' => $params['wellId'],
                     'metric' => $metric->id,
                     'report_date' => $params['date']->toDateTimeString(),
                     'plan' => 0,
                     $column['code'] => $params['value'],
-                ]);
+                ]
+            );
         } else {
             $field = $column['code'];
             $item->$field = $params['value'];
@@ -69,7 +73,8 @@ abstract class DailyReports extends TableForm
         }
     }
 
-    protected function getData($filter) {
+    protected function getReports(\stdClass $filter): Collection
+    {
         $startDate = self::getStartDate($filter->date, $filter->period);
         $endDate = Carbon::parse($filter->date);
 
@@ -77,13 +82,16 @@ abstract class DailyReports extends TableForm
             ->whereDate('report_date', '>=', $startDate)
             ->whereDate('report_date', '<=', $endDate)
             ->distinct()
-            ->whereHas('metric', function ($query) {
-                return $query->where('code', $this->metricCode);
-            })
+            ->whereHas(
+                'metric',
+                function ($query) {
+                    return $query->where('code', $this->metricCode);
+                }
+            )
             ->get();
     }
 
-    protected static function getStartDate($date, $period): Carbon
+    protected static function getStartDate(string $date, string $period): Carbon
     {
         $startDate = Carbon::parse($date);
         if ($period == self::MONTH) {
@@ -93,5 +101,53 @@ abstract class DailyReports extends TableForm
         }
 
         return $startDate;
+    }
+
+    protected function getCustomValidationErrors(): array
+    {
+        $errors = [];
+
+        if ($this->request->get('fact')) {
+            $limits = $this->calculateLimits();
+            if (!$this->isValidFactLimits($limits)) {
+                $errors['fact'][] = trans('bd.value_outside') . " ({$limits['min']}, {$limits['max']})";
+            }
+        }
+
+        return $errors;
+    }
+
+    private function isValidFactLimits(array $limits): bool
+    {
+        if (empty($limits)) {
+            return true;
+        }
+
+        if ($limits['min'] === $limits['max']) {
+            return true;
+        }
+
+        if ($limits['min'] <= $this->request->get('fact') && $limits['max'] >= $this->request->get('fact')) {
+            return true;
+        }
+        return false;
+    }
+
+    private function calculateLimits(): array
+    {
+        $reports = ReportOrgDailyCits::where('org', $this->request->get('well_id'))
+            ->whereDate('report_date', '<', $this->request->get('date'))
+            ->whereHas(
+                'metric',
+                function ($query) {
+                    return $query->where('code', $this->metricCode);
+                }
+            )
+            ->orderBy('report_date', 'desc')
+            ->limit(30)
+            ->get();
+
+        $fieldLimitsService = app()->make(FieldLimitsService::class);
+        return $fieldLimitsService->calculateColumnLimits('fact', $reports);
     }
 }

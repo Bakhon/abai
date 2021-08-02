@@ -3,16 +3,24 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <a href="{{ route('tech_data_forecast.index') }}" class="btn btn-info">
-                {{ __('forecast.return_menu') }}</a>
+            <a href="{{ route('tech_data_forecast.index') }}"
+               class="btn btn-info">
+                {{ __('economic_reference.return_menu') }}
+            </a>
         </div>
     </div>
-    <div class="container bg-dark text-dark my-3 py-3">
-        <h3 align="center">{{ __('forecast.import_data_from_excel') }}</h3>
-        <br/>
-        @if(count($errors) > 0)
+
+    <div class="container bg-dark text-white my-3 py-3">
+        <h3 class="mb-3">
+            {{ __('economic_reference.import_data_from_excel') }}
+        </h3>
+
+        @if(count($errors))
             <div class="alert alert-danger">
-                {{ __('forecast.upload_validation_error') }}<br><br>
+                <div>
+                    {{ __('economic_reference.upload_validation_error') }}
+                </div>
+
                 <ul>
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -24,31 +32,27 @@
         @if($message = Session::get('success'))
             <div class="alert alert-success alert-block">
                 <button type="button" class="close" data-dismiss="alert">×</button>
+
                 <strong>{{ $message }}</strong>
             </div>
-    @endif
+        @endif
 
-        <form method="post" enctype="multipart/form-data" action="{{ route('tech_refs_import') }}">
+        <form method="post"
+              enctype="multipart/form-data"
+              action="{{ route('tech_refs_import') }}">
             {{ csrf_field() }}
             <div class="form-group">
-                <table class="table">
-                    <tr>
-                        <td width="40%" align="right"><label>{{ __('forecast.choose_excel_file') }}</label></td>
-                        <td width="30" class="text-light ">
-                            <input type="file" name="select_file"/>
-                        </td>
-                        <td width="30%" align="left">
-                            <input type="submit" name="upload" class="btn btn-primary"
-                                   value="{{ __('forecast.upload') }}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="40%" align="right"></td>
-                        <td width="30"><span class="text-muted">.xls, .xslx</span></td>
-                        <td width="30%" align="left"></td>
-                    </tr>
-                </table>
+                <input type="file"
+                       name="file"
+                       accept="{{$mimeTypes}}"
+                       class="form-control-file"/>
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        {{ __('economic_reference.upload')}}
+                    </button>
+                </div>
             </div>
         </form>
-    </div class="container bg-dark text-dark my-3 py-3">
+    </div>
 @endsection

@@ -60,13 +60,13 @@
                 "code": "whc_alt",
                 "type": "numeric",
                 "title": "alt",
-                "validation": "numeric"
+                "validation": "numeric|gte:-150"
               },
               {
                 "code": "whc_h",
                 "type": "numeric",
                 "title": "alt_h",
-                "validation": "numeric"
+                "validation": "numeric|gt:0|lte:20"
               },
               {
                 "code": "coord_system",
@@ -134,7 +134,7 @@
                 "code": "drill_start_date",
                 "type": "date",
                 "title": "str_date",
-                "validation": "nullable|date|before_or_equal:today"
+                "validation": ""
               },
               {
                 "code": "drill_end_date",
@@ -159,19 +159,19 @@
                 "code": "drill_contract_date",
                 "type": "date",
                 "title": "data_dog",
-                "validation": "date"
+                "validation": "date|before:drill_start_date"
               },
               {
                 "code": "project_depth",
                 "type": "numeric",
                 "title": "depth",
-                "validation": "nullable|numeric"
+                "validation": "nullable|numeric|lte:10000"
               },
               {
                 "code": "gas_factor_avg",
                 "type": "numeric",
                 "title": "gas_f",
-                "validation": "nullable|numeric"
+                "validation": "nullable|numeric|gt:0"
               }
             ]
           }

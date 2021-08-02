@@ -57,6 +57,7 @@ import 'vue-datetime/dist/vue-datetime.css'
 import {bTreeView} from 'bootstrap-vue-treeview'
 import {bdFormActions, bdFormState} from '@store/helpers'
 import BigDataTableForm from './TableForm'
+import CatLoader from "@ui-kit/CatLoader";
 
 Vue.use(Datetime)
 
@@ -78,7 +79,8 @@ export default {
   },
   components: {
     bTreeView,
-    BigDataTableForm
+    BigDataTableForm,
+    CatLoader
   },
   computed: {
     ...bdFormState([
@@ -120,7 +122,7 @@ export default {
       this.updateForm(this.params.code).then(data => {
         this.isloading = false
 
-        if (this.formParams.filter) {
+        if (this.formParams && this.formParams.filter) {
           this.formParams.filter.forEach(item => {
             if (!this.filter[item.code]) {
               this.filter[item.code] = item.default

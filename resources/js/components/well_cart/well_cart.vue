@@ -52,7 +52,7 @@
         <div class="row mid-col__main">
           <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
             <div class="row">
-              <div class="col">
+              <div class="col-4">
                 <button class="transparent-select">
                   Скважина: <span v-if="wellUwi">{{ wellUwi }}</span>
                   <svg fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg">
@@ -61,9 +61,17 @@
                   </svg>
                 </button>
               </div>
-              <div class="col">
-                <form class="search-form">
+              <div class="col-8">
+                <form class="search-form d-flex align-items-center">
+                  <select class="select-dzo mr-2" v-if="dzoSelectOptions.length > 0"
+                          @change="selectedUserDzo = $event.target.value">
+                    <option value="0" selected>Все ДЗО</option>
+                    <option v-for="(dzoSelectOption, index) in dzoSelectOptions" :value="dzoSelectOption['id']">
+                        {{ dzoSelectOption['name'] }}
+                    </option>
+                  </select>
                   <v-select
+                      class="flex-fill"
                       v-model="wellUwi"
                       :filterable="false"
                       :options="options"
@@ -144,7 +152,7 @@
       <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
         <div class="bg-dark-transparent">
           <template>
-            <div class="row">
+            <div>
               <div class="col">
                 <div class="heading">
                   <div class="icon-all"
@@ -352,14 +360,21 @@ export default {
         'agms': 'agms',
       },
       formsStructure: {},
+      dzoSelectOptions: [],
+      selectedUserDzo: null,
     }
   },
   mounted() {
-
     this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
       this.formsStructure = data.tree
     })
-
+    this.axios.get(this.localeUrl('/user_organizations')).then(({data}) => {
+        if (typeof data !== 'undefined' &&
+            typeof data.organizations !== 'undefined' &&
+            data.organizations.length > 0) {
+            this.dzoSelectOptions = data.organizations;
+        }
+    })
   },
   methods: {
     onColumnFoldingEvent(method) {
@@ -381,7 +396,14 @@ export default {
       }
     },
     search: _.debounce((loading, search, vm) => {
-          axios.get(vm.localeUrl('/api/bigdata/wells/search'), {params: {query: escape(search)}}).then(({data}) => {
+          axios.get(vm.localeUrl('/api/bigdata/wells/search'),
+              {
+                  params: {
+                      query: escape(search),
+                      selectedUserDzo: vm.selectedUserDzo,
+                  }
+              })
+              .then(({data}) => {
             vm.options = data.items;
             loading(false);
           })
@@ -1268,9 +1290,7 @@ h4 {
 }
 
 .search-form {
-  width: 280px;
   padding: 10px 10px;
-  margin-left: auto;
 
   .v-select {
     background: url(/img/bd/search.svg) 20px 45% #272953 no-repeat;
@@ -2080,4 +2100,20 @@ h4 {
     }
   }
 }
+
+.select-dzo {
+    height: 2.2rem;
+    background-color: #494aa5;
+    color: white;
+    outline: none;
+    border: 1px #494aa5 solid;
+    border-radius: 5px;
+    margin-top: -1px;
+}
+
+.select-dzo:hover{
+    border: 1px solid transparent;
+    box-shadow: inset 0 0px 0px 1px #ccc;
+}
+
 </style>

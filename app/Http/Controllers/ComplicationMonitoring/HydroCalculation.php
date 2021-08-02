@@ -23,7 +23,8 @@ class HydroCalculation extends Controller
 
     protected $modelName = 'hydro_calculation';
 
-    public function index () {
+    public function index()
+    {
         $params = [
             'success' => Session::get('success'),
             'links' => [
@@ -57,13 +58,13 @@ class HydroCalculation extends Controller
                     'filterable' => false,
                 ],
                 'qliq' => [
-                    'title' => trans('monitoring.units.q_zh').', '.trans('measurements.m3/day'),
+                    'title' => trans('monitoring.units.q_zh') . ', ' . trans('measurements.m3/day'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'wc' => [
-                    'title' => trans('monitoring.gu.fields.bsw').', '.trans('measurements.percent'),
+                    'title' => trans('monitoring.gu.fields.bsw') . ', ' . trans('measurements.percent'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
@@ -158,13 +159,14 @@ class HydroCalculation extends Controller
         ];
 
         $params['links']['calc']['export'] = false;
-        $params['links']['calc']['link'] = route($this->modelName.'.calculate');
+        $params['links']['calc']['link'] = route($this->modelName . '.calculate');
         $params['links']['date'] = true;
+        $params['selected_date'] = session('hydro_calc_date');
 
         return view('hydro_calc.index', compact('params'));
     }
 
-    public function list (IndexTableRequest $request)
+    public function list(IndexTableRequest $request)
     {
         $input = $request->validated();
         $points = null;
@@ -178,6 +180,7 @@ class HydroCalculation extends Controller
             $prepairedData = $this->getPrepairedData($input);
             $points = $prepairedData['points'];
             $alerts = $prepairedData['alerts'];
+            $request->session()->put('from_hydro_calc', true);
             $list = json_decode(HydroCalcPrepareListResource::collection($points)->toJson());
 
             if (count($alerts)) {
@@ -188,7 +191,7 @@ class HydroCalculation extends Controller
         return response()->json($list);
     }
 
-    public function getPrepairedData (array $input) :array
+    public function getPrepairedData(array $input): array
     {
         $query = TrunklinePoint::query()
             ->with('oilPipe.pipeType', 'oilPipe.firstCoords', 'oilPipe.lastCoords', 'gu', 'trunkline_end_point');
@@ -216,14 +219,14 @@ class HydroCalculation extends Controller
             $points[$key]->omgngdu = $query->orderBy('date', 'desc')->first();
 
             if (!$points[$key]->omgngdu) {
-                $message = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-omgdu-data');
+                $message = $points[$key]->gu->name . ' ' . trans('monitoring.hydro_calculation.message.no-omgdu-data');
 
                 if (isset($input['date'])) {
-                    $message .= ' на '.$input['date'];
+                    $message .= ' на ' . $input['date'];
                 }
 
                 $alerts[] = [
-                    'message' => $message.' !',
+                    'message' => $message . ' !',
                     'variant' => 'danger'
                 ];
                 continue;
@@ -242,21 +245,21 @@ class HydroCalculation extends Controller
 
             if (is_null($points[$key]->omgngdu->pump_discharge_pressure)) {
                 $alerts[] = [
-                    'message' => $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-pressure-data'),
+                    'message' => $points[$key]->gu->name . ' ' . trans('monitoring.hydro_calculation.message.no-pressure-data'),
                     'variant' => 'danger'
                 ];
             }
 
             if (!$points[$key]->omgngdu->daily_fluid_production) {
                 $alerts[] = [
-                    'message' => $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-daily-fluid-data'),
+                    'message' => $points[$key]->gu->name . ' ' . trans('monitoring.hydro_calculation.message.no-daily-fluid-data'),
                     'variant' => 'danger'
                 ];
             }
 
             if (!$points[$key]->omgngdu->bsw) {
                 $alerts[] = [
-                    'message' => $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-bsw-data'),
+                    'message' => $points[$key]->gu->name . ' ' . trans('monitoring.hydro_calculation.message.no-bsw-data'),
                     'variant' => 'danger'
                 ];
             }
@@ -266,7 +269,7 @@ class HydroCalculation extends Controller
         return ['points' => $points, 'alerts' => $alerts];
     }
 
-    public function getCalculatedData (string $date)
+    public function getCalculatedData(string $date)
     {
         return HydroCalcResult::with('oilPipe.pipeType')
             ->where('date', $date)

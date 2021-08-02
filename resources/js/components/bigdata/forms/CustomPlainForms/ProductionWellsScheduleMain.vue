@@ -11,7 +11,7 @@
                     <a class="underline text-white cursor-pointer">Исторические сведения по добыче нефти</a>
                 </div>
             </div>
-            <div class="content-block p-2">
+            <div class="content-block content-block-scrollable p-2">
                 <div class="small-fixed-block table-responsive">
                     <table class="table table-striped text-white text-nowrap">
                         <thead>
@@ -228,6 +228,10 @@ export default {
     td:not(last-child) {
         background-color: #303560;
     }
+}
 
+.content-block-scrollable {
+    height: 70vh;
+    overflow-y: scroll;
 }
 </style>

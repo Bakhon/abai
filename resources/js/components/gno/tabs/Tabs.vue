@@ -49,7 +49,10 @@ import Develop from './components/Develop.vue'
 import Fon from './components/Fon.vue'
 export default {
     components: { Shgn, Ecn, Fon, Develop, Economic },
-    props: ["qLInput", "strokeLenDev", "spm","pumpType"],
+    props: {"qLInput": Number,
+            "strokeLenDev": Number, 
+            "spm": Number,
+            "pumpType": Number},
     data: function() {
         return {
             currentTab: 1,

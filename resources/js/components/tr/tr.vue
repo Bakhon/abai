@@ -287,7 +287,7 @@
                                   style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                                   @click="saveadd()"
                                   @click.prevent="reRender"
-                                  v-show = isDeleted
+                                  v-if="isDeleted && isShowAdd"
                                   ><svg width="24" 
                                   height="24" 
                                   viewBox="0 0 24 24" 
@@ -297,11 +297,26 @@
                                   stroke-width="1.5" stroke-linecap="round"/>
                                   </svg> {{trans('tr.save')}}</a>
 
+                                  
+                                  <a
+                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                                  @click="saveadd()"
+                                  @click.prevent="reRender"
+                                  v-if="isSaved && isShowAdd"
+                                  ><svg width="24" 
+                                  height="24" 
+                                  viewBox="0 0 24 24" 
+                                  fill="none" 
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
+                                  stroke-width="1.5" stroke-linecap="round"/>
+                                  </svg>{{trans('tr.save_changes')}}</a>
+
                                 <a
                                   style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                                   @click="deleteWell"
                                   @click.prevent="reRender"
-                                  v-show = isSaved
+                                  v-if="isSaved && isShowAdd"
 
                                   ><svg width="24"
                                   height="24" 
@@ -591,14 +606,10 @@
             :fieldFilterData="fieldFilterData" 
             :wellTypeFilterData="wellTypeFilterData" 
             :expMethFilterData="expMethFilterData"
+            :wellNameFilterData="wellNameFilterData"
             @onSort="sortBy" 
-            @filter="chooseChildFilter" 
-            @dropExpMeth="dropExpMethFilter"
-            @dropHorizon="dropHorizonFilter"
-            @dropObject="dropObjectFilter"
-            @dropBlock="dropBlockFilter"
-            @dropField="dropFieldFilter"
-            @dropWellType="dropWellTypeFilter"
+            @filter="chooseFilter"
+            @dropFilters="dropFilter"
             />
             <table
               v-if="isShowSecond"
@@ -825,7 +836,6 @@
                   <td @click="sortBy('rus_wellname')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
-
                   <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('field')"></i>
                       <div>
@@ -841,7 +851,7 @@
                                 class="field_form_fil"
                               >
                                 <b-form-checkbox-group
-                                  v-model="selectedField"
+                                  v-model="selectField"
                                   :options="fieldFilterData"
                                   :aria-describedby="ariaDescribedby"                                  
                                 >
@@ -851,7 +861,7 @@
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
                                   >{{trans('tr.choose_t')}}
                                   </a>
-                                  <a href="#" class="discard_text" @click.prevent="dropFieldFilter"
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_FIELD')"
                                   >{{trans('tr.reset')}}
                                   </a>
                               </div>
@@ -860,8 +870,39 @@
                         </div>
                       </div>
                     </td>
-                  <td @click="sortBy('well')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('rus_wellname')"></i>
+                      <div>
+                        <b-dropdown id="dropdownFilterCustom" no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                          <b-dropdown-form class="external_well_filter">
+                            <b-form-group
+                              label=""
+                              v-slot="{ ariaDescribedby }"
+                              @submit.stop.prevent
+                              class="well_form_fil"
+                            >
+                              <b-form-checkbox-group
+                                v-model="selectWellName"
+                                :options="wellNameFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                            </b-form-group>
+                            <div class="field_filter_text">
+                              <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                >{{trans('tr.choose_t')}}
+                                </a>
+                                <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_WELLNAME')"
+                                >{{trans('tr.reset')}}
+                                </a>
+                            </div>
+                          </b-dropdown-form>
+                        </b-dropdown>
+                      </div>
+                    </div>
                   </td>
                   <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('well_type')"></i>
@@ -878,7 +919,7 @@
                                 class="field_form_fil"
                               >
                                 <b-form-checkbox-group
-                                v-model="selectedWellType"
+                                v-model="selectWellType"
                                 :options="wellTypeFilterData"
                                 :aria-describedby="ariaDescribedby"                                  
                               >
@@ -888,7 +929,7 @@
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
                                   >{{trans('tr.choose_t')}}
                                   </a>
-                                  <a href="#" class="discard_text" @click.prevent="dropWellTypeFilter"
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_WELLTYPE')"
                                   >{{trans('tr.reset')}}
                                   </a>
                               </div>
@@ -912,7 +953,7 @@
                                 class="horizon_form_fil"
                               >
                                 <b-form-checkbox-group
-                                v-model="selectedHorizon"
+                                v-model="selectHorizon"
                                 :options="horizonFilterData"
                                 :aria-describedby="ariaDescribedby"                                  
                               >
@@ -922,7 +963,7 @@
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
                                   >{{trans('tr.choose_t')}}
                                   </a>
-                                  <a href="#" class="discard_text" @click.prevent="dropHorizonFilter"
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_HORIZON')"
                                   >{{trans('tr.reset')}}
                                   </a>
                               </div>
@@ -946,7 +987,7 @@
                                 class="obj_form_fil"
                               >
                               <b-form-checkbox-group
-                                v-model="selectedObject"
+                                v-model="selectObject"
                                 :options="objectFilterData"
                                 :aria-describedby="ariaDescribedby"                                  
                               >
@@ -956,7 +997,7 @@
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
                                   >{{trans('tr.choose_t')}}
                                   </a>
-                                  <a href="#" class="discard_text" @click.prevent="dropObjectFilter"
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_OBJECT')"
                                   >{{trans('tr.reset')}}
                                   </a>
                               </div>
@@ -980,7 +1021,7 @@
                                 class="block_form_fil"
                               >
                               <b-form-checkbox-group
-                                v-model="selectedBlock"
+                                v-model="selectBlock"
                                 :options="blockFilterData"
                                 :aria-describedby="ariaDescribedby"                                  
                               >
@@ -990,7 +1031,7 @@
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
                                   >{{trans('tr.choose_t')}}
                                   </a>
-                                  <a href="#" class="discard_text" @click.prevent="dropBlockFilter"
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_BLOCK')"
                                   >{{trans('tr.reset')}}
                                   </a>
                               </div>
@@ -1038,7 +1079,7 @@
                                 class="exp_meth_form_fil"
                               >
                               <b-form-checkbox-group
-                                v-model="selectedExpMeth"
+                                v-model="selectExpMeth"
                                 :options="expMethFilterData"
                                 :aria-describedby="ariaDescribedby"                                  
                               >
@@ -1048,7 +1089,7 @@
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
                                   >{{trans('tr.choose_t')}}
                                   </a>
-                                  <a href="#" class="discard_text" @click.prevent="dropExpMethFilter"
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_EXPMETH')"
                                   >{{trans('tr.reset')}}
                                   </a>
                               </div>
@@ -1411,7 +1452,7 @@
                   <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row_index + 1 }}</td>
                   <td v-if="isEdit">{{ row_index + 1 }}</td>
 
-                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.field }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}" :colspan="getRowWidthSpan(row)">{{ row.field }}</td>
                   <td v-if="isEdit">{{ row.field }}</td>
 
                   <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.rus_wellname }}</td>
@@ -6394,7 +6435,7 @@
                 :page-class="'page-item'">
             </paginate>
             <div>
-                    <input @change="onChangePage($event.target.value)" class="pgn_input">
+                    <input :value="this.$store.state.tr.pageNumber" @change="onChangePage($event.target.value)" class="pgn_input">
               
             </div>
           </div>
@@ -6402,11 +6443,13 @@
       </div>
     </div>
     <notifications position="top"></notifications>
+    <cat-loader />
   </div>
 </template>
 <script src="./tr.js"></script>
 
 <style lang="scss" scoped>
+
 .overflow-auto {
   justify-content: center;
   display: flex;
@@ -6593,7 +6636,6 @@ tr:nth-child(even) {
 }
 
 .sticky {
-  /* position: sticky; */
   top: 0;
   min-height: 2em;
   background: lightpink;
@@ -6655,7 +6697,7 @@ tr:not(.notsticky) td:nth-child(-n + 3) {
 tr:not(.notsticky) td:nth-child(2) {
   left: 23px;
   width: 100px;
-  z-index: 3000;
+  z-index: 3001;
 }
 tr:not(.notsticky) td:nth-child(3) {
   left: 121px;
@@ -6752,7 +6794,7 @@ table::-webkit-scrollbar-corner {
             align-items: center;
             text-align: center;
             border: 1px solid #ccc;
-            color: #636A99;
+            color: #ffffff;
             margin-left: -1px;
             font-size: 14px;
             &:hover {

@@ -7,21 +7,5 @@
     @include('partials.sidebar.gno_menu')
 @endsection
 @section('content')
-    <div class="geology ">
-        <div class="preloader" v-cloak></div>
-        <div class="layout core" v-cloak>
-            <div class="layout__t-side">
-                <Geology-Top-Side/>
-            </div>
-            <div class="layout__content layout__content--background layout__l-side">
-                <Core-Left-Side />
-            </div>
-            <div class="layout__content layout__center">
-                <Base-Core />
-            </div>
-            <div class="layout__content layout__content--background layout__r-side">
-                <Core-Right-Side />
-            </div>
-        </div>
-    </div>
+    <page-core></page-core>
 @endsection

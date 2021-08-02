@@ -7,7 +7,7 @@ use App\Exceptions\ParseJsonException;
 use App\Http\Controllers\Controller;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Services\BigData\Forms\BaseForm;
-use App\Services\BigData\Forms\RowHistory\RowHistory;
+use App\Services\BigData\Forms\History\RowHistory;
 use App\Services\BigData\Forms\TableForm;
 use App\Services\BigData\FormService;
 use Carbon\Carbon;
@@ -163,8 +163,12 @@ class FormsController extends Controller
         return response()->json($form->getFormByRow(json_decode($request->get('row'), 1)));
     }
 
-    public function delete(Request $request, string $form, int $row): JsonResponse
+    public function delete(string $form, int $row): JsonResponse
     {
+        if (auth()->user()->cannot("bigdata delete {$form}")) {
+            abort(403);
+        }
+
         $form = $this->getForm($form);
         return $form->delete($row);
     }

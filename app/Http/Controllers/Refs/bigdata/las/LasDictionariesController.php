@@ -19,6 +19,7 @@ class LasDictionariesController extends CrudController
     protected $model = '';
     protected $resource = '';
     protected $link = '';
+    protected $view = '';
 
     public function __construct()
     {
@@ -34,6 +35,7 @@ class LasDictionariesController extends CrudController
     public function index()
     {
         $modelName = $this->modelName;
+
         $params = [
             'success' => Session::get('success'),
             'links' => [
@@ -54,8 +56,8 @@ class LasDictionariesController extends CrudController
 
         $params['model_name'] = 'las_dictionaries';
         $params['filter'] = session('las_dictionaries_filter');
-
-        return view('bigdata.las_dictionaries.index', compact('params'));
+        
+        return view($this->view.'.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
@@ -75,10 +77,10 @@ class LasDictionariesController extends CrudController
      */
     public function create(): \Illuminate\View\View
     {
+        $link = $this->link;
         $modelName = $this->modelName;
-        $link = $this -> link;
         $validationParams = $this->getValidationParams('data');
-        return view('bigdata.las_dictionaries.create', compact('link', 'modelName', 'validationParams'));
+        return view($this->view.'.create', compact('link', 'modelName', 'validationParams'));
     }
 
     /**
@@ -104,10 +106,10 @@ class LasDictionariesController extends CrudController
      */
     public function show(int $id): \Illuminate\View\View
     {
+        $link = $this->link;
         $modelName = $this->modelName;
         $data = $this->model::find($id);
-        $link = $this -> link;
-        return view('bigdata.las_dictionaries.show', compact('link', 'modelName', 'data'));
+        return view($this->view.'.show', compact('link', 'modelName', 'data'));
     }
 
     /**
@@ -115,11 +117,11 @@ class LasDictionariesController extends CrudController
      */
     public function edit(int $id): \Illuminate\View\View
     {
+        $link = $this->link;
+        $modelName = $this->modelName;
         $data = $this->model::find($id);
         $validationParams = $this->getValidationParams('data');
-        $modelName = $this->modelName;
-        $link = $this -> link;
-        return view('bigdata.las_dictionaries.edit', compact('link', 'modelName', 'data', 'validationParams'));
+        return view($this->view.'.edit', compact('link', 'modelName', 'data', 'validationParams'));
     }
 
     /**
