@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 abstract class PlainForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'plain_form.json';
+    protected $tableFields;
+    protected $tableFieldCodes;
 
     protected $originalData;
     protected $submittedData = [];
@@ -48,22 +50,18 @@ abstract class PlainForm extends BaseForm
         DB::connection('tbd')->beginTransaction();
 
         try {
-            $tableFields = $this->getFields()
+            $this->tableFields = $this->getFields()
                 ->filter(
                     function ($item) {
                         return $item['type'] === 'table';
                     }
                 );
 
-            $tableFieldCodes = $tableFields
+            $this->tableFieldCodes = $this->tableFields
                 ->pluck('code')
                 ->toArray();
 
-            $data = $this->request->except($tableFieldCodes);
-            if (!empty($this->params()['default_values'])) {
-                $data = array_merge($this->params()['default_values'], $data);
-            }
-
+            $data = $this->prepareDataToSubmit();
             $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
             if (!empty($data['id'])) {
@@ -87,7 +85,7 @@ abstract class PlainForm extends BaseForm
                 $id = $dbQuery->insertGetId($data);
             }
 
-            $this->insertInnerTable($tableFields, $id);
+            $this->insertInnerTable($id);
 
             DB::connection('tbd')->commit();
             return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
@@ -198,10 +196,10 @@ abstract class PlainForm extends BaseForm
         return $result;
     }
 
-    protected function insertInnerTable(Collection $tableFields, int $id)
+    protected function insertInnerTable(int $id)
     {
-        if (!empty($tableFields)) {
-            foreach ($tableFields as $field) {
+        if (!empty($this->tableFields)) {
+            foreach ($this->tableFields as $field) {
                 if (!empty($this->request->get($field['code']))) {
                     $this->submittedData['table_fields'][$field['code']] = [];
                     foreach ($this->request->get($field['code']) as $data) {
@@ -223,6 +221,15 @@ abstract class PlainForm extends BaseForm
             $this->originalData,
             $this->submittedData
         );
+    }
+
+    protected function prepareDataToSubmit()
+    {
+        $data = $this->request->except($this->tableFieldCodes);
+        if (!empty($this->params()['default_values'])) {
+            $data = array_merge($this->params()['default_values'], $data);
+        }
+        return $data;
     }
 
 }

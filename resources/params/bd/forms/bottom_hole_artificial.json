@@ -1,9 +1,6 @@
 {
   "type": "plain",
   "table": "prod.bottom_hole",
-  "default_values": {
-    "bottom_hole_type": 2
-  },
   "sort": [
     {
       "field": "data",
