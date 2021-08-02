@@ -292,7 +292,6 @@ export default {
           this.getPageData(),
         )
         .then((response) => {
-          console.log(this.postApiUrl)
           let data = response.data;
           this.year = yyyy;
           this.selectYear = yyyy;
@@ -323,7 +322,6 @@ export default {
           if (data) {
             this.filter_column = data;
             this.horizonFilterData = data.horizon;
-            this.teest = data.horizon,
             this.objectFilterData = data.object;
             this.fieldFilterData = data.field;
             this.wellTypeFilterData = data.well_type;
