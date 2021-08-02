@@ -69,21 +69,29 @@ export default {
             this.dateFlow = ['year', 'month'];
         },
         onStartDatePickerClick(date) {
-            if(this.currentDatePickerFilter === 'year') {
-                this.setStartOfYear(date);
-            }else if(this.currentDatePickerFilter === 'month') {
-                this.setStartOfMonth(date);
-            }else {
-                this.startDate = date;
+            if(!date) return;
+            switch(this.currentDatePickerFilter) {
+                case "year":
+                    this.setStartOfYear(date);
+                    break;
+                case "month": 
+                    this.setStartOfMonth(date);
+                    break;
+                default: 
+                    this.startDate = date;
             }
         },
         onEndDatePickerClick(date) {
-            if(this.currentDatePickerFilter === 'year') {
-                this.setEndOfYear(date);
-            }else if(this.currentDatePickerFilter === 'month') {
-                this.setEndOfMonth(date);
-            }else {
-                this.endDate = date;
+            if(!date) return;
+            switch(this.currentDatePickerFilter) {
+                case "year":
+                    this.setEndOfYear(date);
+                    break;
+                case "month": 
+                    this.setEndOfMonth(date);
+                    break;
+                default: 
+                    this.endDate = date;
             }
         },
         onMenuClick(currentStructureType) {
@@ -99,19 +107,15 @@ export default {
             this.dateFlow = ['year', 'month', 'date'];
         },
         setStartOfMonth(date) {
-            if(!date) return;
             this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
         },
         setEndOfMonth(date) {
-            if(!date) return;
             this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
         },
         setStartOfYear(date) {
-            if(!date) return;
             this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
         },
         setEndOfYear(date) {
-            if(!date) return;
             this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
         },
         isActive(structureType) {
