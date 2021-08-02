@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class фAddNewPermissionBufferTank extends Migration
+class AddNewPermissionBufferTank extends Migration
 {
     /**
      * Run the migrations.
