@@ -940,8 +940,8 @@ body {
         font-family: $HarmoniaSansProCyr;
         padding: 0 0 0 19px;
         background-image: url(/img/bd/webkit-calendar.svg);
-        background-Position: 102% center;
-        background-Repeat: no-repeat;
+        background-position: 102% center;
+        background-repeat: no-repeat;
       }
 
       .start-date {
