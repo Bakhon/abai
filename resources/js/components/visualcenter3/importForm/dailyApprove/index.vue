@@ -15,7 +15,9 @@
                     <div class="header-title row m-0 mt-3">
                         <div
                                 v-for="(item,index) in compared"
-                                :class="[item.selected ? 'selected-company' : '', 'col-12 row approve-list p-2 mt-1']"
+                                :class="[item.selected ? 'selected-company' : '',
+                                    item.processed ? 'processed-company' : '',
+                                    'col-12 row approve-list p-2 mt-1']"
                                 @click="selectCompany(item.dzoName,index)"
                         >
                             <span class="col-1 right-arrow mt-2 ml-4"></span>
@@ -36,9 +38,12 @@
                         >
                             <span class="col-2 column-title">Исполнитель: </span>
                             <span class="column-parameter col-6">{{currentDzo.userName}}</span>
-                            <div class="col-4 row">
-                                <span class="col-5 menu__button m-1 button_approve">Согласовать</span>
-                                <span class="col-5 menu__button m-1 button_decline">Отменить</span>
+                            <div v-if="!currentDzo.processed" class="col-4 row">
+                                <span class="col-5 menu__button m-1 button_approve" @click="approve">Согласовать</span>
+                                <span class="col-5 menu__button m-1 button_decline" @click="decline">Отменить</span>
+                            </div>
+                            <div v-else class="col-4 row">
+                                {{currentStatus}}
                             </div>
                             <span class="col-2 column-title">Причина: </span>
                             <span class="column-parameter col-10">{{currentDzo.reason}}</span>
@@ -180,5 +185,8 @@
     }
     .button_decline {
         background: #E31E24;
+    }
+    .processed-company {
+        background: #00b353;
     }
 </style>

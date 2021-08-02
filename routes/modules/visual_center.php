@@ -80,6 +80,8 @@ Route::group(
                 Route::post('/store-corrected-production', 'VisCenter\ExcelForm\ExcelFormController@storeCorrected');
                 Route::get('/daily-approve', 'VisCenter\VisualCenterController@dailyApprove')->name('daily-approve');
                 Route::get('/get-daily-production-for-approve', 'VisCenter\ExcelForm\ExcelFormController@getDailyProductionForApprove');
+                Route::get('/approve-daily-correction', 'VisCenter\ExcelForm\ExcelFormController@approveDailyCorrection');
+                Route::get('/decline-daily-correction', 'VisCenter\ExcelForm\ExcelFormController@declineDailyCorrection');
             }
         );
     }

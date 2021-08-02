@@ -17,10 +17,30 @@ export default {
                 'УО': 'ТОО "Урихтау Оперейтинг"',
             },
             currentDzo: {},
-            names: fieldsMapping
+            names: fieldsMapping,
+            currentStatus: ''
         }
     },
     methods: {
+        async approve() {
+            let queryOptions = {'actualId': this.currentDzo.actualId, 'currentId': this.currentDzo.currentId};
+            console.log(queryOptions);
+            this.currentDzo.processed = true;
+            this.compared[this.currentDzo.index].processed = true;
+            this.currentStatus = 'Согласовано';
+            this.currentDzo = {};
+            let uri = this.localeUrl("/approve-daily-correction", {params:queryOptions});
+            await axios.get(uri,{params:queryOptions});
+        },
+        async decline() {
+            let queryOptions = {'currentId': this.currentDzo.currentId};
+            this.currentDzo.processed = true;
+            this.compared[this.currentDzo.index].processed = true;
+            this.currentStatus = 'Отменено';
+            this.currentDzo = {};
+            let uri = this.localeUrl("/decline-daily-correction", {params:queryOptions});
+            await axios.get(uri,{params:queryOptions});
+        },
         selectCompany(dzoName,index) {
             _.forEach(this.compared, (item) => {
                 _.set(item, 'selected', false);
@@ -28,6 +48,7 @@ export default {
             if (this.compared[index]) {
                 this.compared[index].selected = true;
                 this.currentDzo = this.compared[index];
+                this.currentDzo.index = index;
             }
         },
         async getForApprove() {
@@ -48,7 +69,9 @@ export default {
                     'dzoName': approveItem.dzo_name,
                     'userName': approveItem.user_name,
                     'reason': approveItem.change_reason,
-                    'selected': false
+                    'selected': false,
+                    'currentId': approveItem.id,
+                    'actualId': actual.id
                 };
                 approve.difference = this.getDifference(approveItem,actual);
                 compared.push(approve);

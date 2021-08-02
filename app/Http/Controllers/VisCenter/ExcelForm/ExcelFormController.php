@@ -179,4 +179,31 @@ class ExcelFormController extends Controller
         );
         return $comparedData;
     }
+
+    public function approveDailyCorrection(Request $request)
+    {
+        DzoImportField::where('dzo_import_data_id',$request->actualId)->delete();
+        DzoImportDecreaseReason::where('dzo_import_data_id',$request->actualId)->delete();
+        DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
+        DzoImportData::where('id',$request->actualId)->delete();
+        DzoImportData::query()
+                    ->where('id', $request->currentId)
+                    ->update(
+                        [
+                            'is_corrected' => null,
+                            'is_approved' => true
+                        ]
+                    );
+    }
+    public function declineDailyCorrection(Request $request)
+    {
+        DzoImportData::query()
+            ->where('id', $request->currentId)
+            ->update(
+                [
+                    'is_corrected' => false,
+                    'is_approved' => false
+                ]
+            );
+    }
 }
