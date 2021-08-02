@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Refs\bigdata\las;
+namespace App\Http\Controllers\Refs\bigdata\mapping;
 
 use App\Filters\LasDictionariesFilter;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
-use App\Http\Requests\FileStatusRequest;
+use App\Http\Requests\GeoMappingRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CrudController;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
+use App\Models\BigData\Well;
+use App\Models\BigData\Dictionaries\Geo;
 
-class LasDictionariesController extends CrudController
+class MappingController extends CrudController
 {
     use WithFieldsValidation;
 
@@ -35,7 +37,6 @@ class LasDictionariesController extends CrudController
     public function index()
     {
         $modelName = $this->modelName;
-
         $params = [
             'success' => Session::get('success'),
             'links' => [
@@ -46,6 +47,10 @@ class LasDictionariesController extends CrudController
                 'name' => [
                     'title' => trans('bd.forms.'.$modelName.'.fields.name'),
                     'type' => 'string',
+                ],
+                'geo_name' => [
+                    'title' => trans('bd.forms.'.$modelName.'.fields.geo_name'),
+                    'type' => 'string',
                 ]
             ]
         ];
@@ -54,21 +59,15 @@ class LasDictionariesController extends CrudController
             $params['links']['create'] = route($this->link.'.create');
         }
 
-        $params['model_name'] = 'las_dictionaries';
-        $params['filter'] = session('las_dictionaries_filter');
-        
         return view($this->view.'.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
-        parent::list($request);
-
-        $query = $this->model::query();
+        $query = $this->model::with('geo');
         $data = $this
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
-
         return response()->json(json_decode($this->resource::collection($data)->toJson()));
     }
 
@@ -77,23 +76,21 @@ class LasDictionariesController extends CrudController
      */
     public function create(): \Illuminate\View\View
     {
-        $link = $this->link;
         $modelName = $this->modelName;
+        $link = $this->link;
         $validationParams = $this->getValidationParams('data');
-        return view($this->view.'.create', compact('link', 'modelName', 'validationParams'));
+        $geoList = Geo::where('geo_type', 3)->orderBy('name_ru')->get();
+        return view($this->view.'.create', compact('link', 'modelName', 'validationParams', 'geoList'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(FileStatusRequest $request): \Symfony\Component\HttpFoundation\Response
+    public function store(GeoMappingRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'data');
-
         $this->model::create($request->validated());
-
         Session::flash('message', __('app.created'));
-
         return response()->json(
             [
                 'status' => config('response.status.success')
@@ -106,9 +103,9 @@ class LasDictionariesController extends CrudController
      */
     public function show(int $id): \Illuminate\View\View
     {
-        $link = $this->link;
         $modelName = $this->modelName;
         $data = $this->model::find($id);
+        $link = $this->link;
         return view($this->view.'.show', compact('link', 'modelName', 'data'));
     }
 
@@ -117,25 +114,23 @@ class LasDictionariesController extends CrudController
      */
     public function edit(int $id): \Illuminate\View\View
     {
-        $link = $this->link;
-        $modelName = $this->modelName;
         $data = $this->model::find($id);
         $validationParams = $this->getValidationParams('data');
-        return view($this->view.'.edit', compact('link', 'modelName', 'data', 'validationParams'));
+        $modelName = $this->modelName;
+        $link = $this->link;
+        $geoList = Geo::where('geo_type', 3)->orderBy('name_ru')->get();
+        return view($this->view.'.edit', compact('link', 'modelName', 'data', 'validationParams', 'geoList'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      */
-    public function update(FileStatusRequest $request, int $id): \Symfony\Component\HttpFoundation\Response
+    public function update(GeoMappingRequest $request, int $id): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'data');
-
         $this->model::find($id)->update($request->validated());
-
         Session::flash('success', __('app.updated'));
-
         return response()->json(
             [
                 'status' => config('response.status.success')
@@ -150,7 +145,6 @@ class LasDictionariesController extends CrudController
     public function destroy(Request $request, int $id)
     {
         $this->model::find($id)->delete();
-
         if($request->ajax()) {
             return response()->json([], Response::HTTP_NO_CONTENT);
         }

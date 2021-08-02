@@ -8,4 +8,5 @@ class FileStatusController extends LasDictionariesController
     protected $model = 'App\Models\BigData\Dictionaries\FileStatus';
     protected $resource = 'App\Http\Resources\FileStatusListResource';
     protected $link = 'file-status';
+    protected $view = 'bigdata.las_dictionaries';
 }
