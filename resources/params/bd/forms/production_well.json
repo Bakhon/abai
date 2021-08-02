@@ -1,5 +1,11 @@
 {
   "table": "prod.tech_mode_prod_oil",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "Основное",
