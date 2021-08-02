@@ -249,6 +249,7 @@ export default {
       editPageNumberLink: "techregime_edit_page_numbers/",
       searchLink: "techregime_totals_test_3/",
       editSearchLink: "techregime_edit_page/",
+      selected: 'A',
     };
   },
   methods: {
@@ -291,7 +292,6 @@ export default {
           this.getPageData(),
         )
         .then((response) => {
-          console.log(this.postApiUrl)
           let data = response.data;
           this.year = yyyy;
           this.selectYear = yyyy;
