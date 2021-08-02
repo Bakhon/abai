@@ -2,14 +2,14 @@
     <div class="page-wrapper">
         <div class="block-container row">
             <div class="col-12 header-title p-2">
-                Таблица согласований операционных активов
+                {{trans('visualcenter.dailyApprove.title')}}
             </div>
         </div>
         <div class="content-container">
             <div class="block-container row mt-10px">
                 <div class="col-12 header-title row m-0 table-header">
-                    <span class="col-3 p-2">Необходимо согласовать</span>
-                    <span class="col-9 p-2">Список изменений</span>
+                    <span class="col-3 p-2">{{trans('visualcenter.dailyApprove.toApprove')}}</span>
+                    <span class="col-9 p-2">{{trans('visualcenter.dailyApprove.changeList')}}</span>
                 </div>
                 <div class="col-4 menu-block">
                     <div class="header-title row m-0 mt-3">
@@ -36,30 +36,30 @@
                                 class="row change-list"
                                 v-if="Object.keys(currentDzo).length > 0"
                         >
-                            <span class="col-2 column-title">Исполнитель: </span>
+                            <span class="col-2 column-title">{{trans('visualcenter.importForm.executor')}}: </span>
                             <span class="column-parameter col-6">{{currentDzo.userName}}</span>
                             <div v-if="!currentDzo.processed" class="col-4 row">
-                                <span class="col-5 menu__button m-1 button_approve" @click="approve">Согласовать</span>
-                                <span class="col-5 menu__button m-1 button_decline" @click="decline">Отменить</span>
+                                <span class="col-5 menu__button m-1 button_approve" @click="approve">{{trans('visualcenter.dailyApprove.approve')}}</span>
+                                <span class="col-5 menu__button m-1 button_decline" @click="decline">{{trans('visualcenter.dailyApprove.cancel')}}</span>
                             </div>
                             <div v-else class="col-4 row">
                                 {{currentStatus}}
                             </div>
-                            <span class="col-2 column-title">Причина: </span>
+                            <span class="col-2 column-title">{{trans('visualcenter.importForm.reason')}}: </span>
                             <span class="column-parameter col-10">{{currentDzo.reason}}</span>
-                            <span class="col-12 header-title p-2">Планируемые изменения</span>
+                            <span class="col-12 header-title p-2">{{trans('visualcenter.dailyApprove.plannedChanges')}}</span>
                             <div class="col-12 row p-1 m-0 table_header">
-                                <span class="col-3">ДЗО/Месторождение</span>
-                                <span class="col-5">Параметр</span>
-                                <span class="col-2">Текущее значение</span>
-                                <span class="col-2">Новое значение</span>
+                                <span class="col-3">{{trans('visualcenter.dailyApprove.dzo')}}/{{trans('visualcenter.dailyApprove.field')}}</span>
+                                <span class="col-5">{{trans('visualcenter.dailyApprove.param')}}</span>
+                                <span class="col-2">{{trans('visualcenter.dailyApprove.current')}}</span>
+                                <span class="col-2">{{trans('visualcenter.dailyApprove.new')}}</span>
                             </div>
                             <div
                                     v-for="(item, name) in currentDzo.difference"
                                     class="row col-12 m-0 mt-1 p-1 difference-list"
                             >
                                 <div v-if="name !== 'import_field'" class="col-12 row p-0 m-0">
-                                    <span class="col-3 table_body">ДЗО</span>
+                                    <span class="col-3 table_body">{{trans('visualcenter.dailyApprove.dzo')}}</span>
                                     <span class="col-5 table_body">{{names[name]}}</span>
                                     <span class="col-2 table_body">{{item.actualDetail}}</span>
                                     <span class="col-2 table_body">{{item.currentDetail}}</span>

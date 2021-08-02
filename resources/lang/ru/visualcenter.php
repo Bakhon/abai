@@ -395,4 +395,18 @@ return array (
   'gasOperatingAssets' => 'операц. активы',
   'injectionArtesianWater' => 'Закачка артезианской воды',
   'dynamicArtesianWater' => 'Динамика закачки артезианской воды',
+  'dailyApprove' => 
+  array (
+    'title' => 'Таблица согласований операционных активов',
+    'toApprove' => 'Необходимо согласовать',
+    'changeList' => 'Список изменений',
+    'approve' => 'Согласовать',
+    'cancel' => 'Отменить',
+    'plannedChanges' => 'Планируемые изменения',
+    'dzo' => 'ДЗО',
+    'field' => 'Месторождение',
+    'param' => 'Параметр',
+    'current' => 'Текущее значение',
+    'new' => 'Новое значение',
+  ),
 );
