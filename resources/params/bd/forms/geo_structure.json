@@ -1,6 +1,11 @@
 {
   "type": "plain",
   "table": "prod.well_geo",
+  "available_actions": [
+    "update",
+    "view history",
+    "delete"
+  ],
   "tabs": [
     {
       "title": "title",
@@ -14,20 +19,19 @@
                 "type": "dict_tree",
                 "dict": "geos",
                 "title": "geo",
-                "validation": "",
                 "is_editable": "false"
               },
               {
-              "code": "dbeg",
-              "type": "date",
-              "title": "dbeg",
-              "validation": "required|date"
+                "code": "dbeg",
+                "type": "date",
+                "title": "dbeg",
+                "validation": "required|date"
               },
               {
-              "code": "dend",
-              "type": "date",
-              "title": "dend",
-              "validation": "required|date"
+                "code": "dend",
+                "type": "date",
+                "title": "dend",
+                "validation": "required|date|after:dbeg"
               }
             ]
           }

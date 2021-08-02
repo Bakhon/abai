@@ -20,11 +20,14 @@
                    @click="showForm(action.form)">{{ action.title }}</a>
                 <a v-else-if="action.action === 'edit'" class="dropdown-item" href="#"
                    @click="editRow(selectedRow, action.form)">{{ action.title }}</a>
+                <a v-else-if="action.action === 'delete'" class="dropdown-item" href="#"
+                   @click="deleteRow(selectedRow, action.form)">{{ action.title }}</a>
               </template>
             </div>
           </div>
         </template>
-        <svg v-else fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"
+        <svg v-else-if="availableActions.includes('create')" fill="none" height="16" viewBox="0 0 16 16" width="16"
+             xmlns="http://www.w3.org/2000/svg"
              @click="showForm()">
           <path d="M14.5 8L1.5 8" stroke="white" stroke-linecap="round" stroke-width="1.5"/>
           <path d="M8 1.5V14.5" stroke="white" stroke-linecap="round" stroke-width="1.5"/>
@@ -70,13 +73,15 @@
             </td>
             <td v-if="!form.actions" class="table-border element-position">
               <div class="table-container-svg">
-                <svg fill="none" height="18" viewBox="0 0 18 18" width="18" xmlns="http://www.w3.org/2000/svg"
+                <svg v-if="availableActions.includes('update')" fill="none" height="18" viewBox="0 0 18 18" width="18"
+                     xmlns="http://www.w3.org/2000/svg"
                      @click.prevent.stop="editRow(row)">
                   <path
                       d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998"
                       stroke="white" stroke-width="1.4"/>
                 </svg>
-                <svg fill="none" height="14" viewBox="0 0 14 14" width="14" xmlns="http://www.w3.org/2000/svg"
+                <svg v-if="availableActions.includes('delete')" fill="none" height="14" viewBox="0 0 14 14" width="14"
+                     xmlns="http://www.w3.org/2000/svg"
                      @click.prevent.stop="deleteRow(row, index)">
                   <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-linecap="round"
                         stroke-width="1.4"/>
@@ -115,7 +120,7 @@
 import forms from '../../../json/bd/forms.json'
 import BigDataPlainForm from './PlainForm'
 import {bdFormActions} from '@store/helpers'
-import CatLoader from '../../ui-kit/CatLoader'
+import CatLoader from '@ui-kit/CatLoader'
 import moment from "moment";
 
 export default {
@@ -147,7 +152,8 @@ export default {
       formParams: null,
       dictFields: {},
       isLoading: false,
-      hasFormError: false
+      hasFormError: false,
+      availableActions: []
     }
   },
   watch: {
@@ -177,7 +183,7 @@ export default {
             blocks.forEach(block => {
 
               block.items
-                  .filter(item => item.type === 'dict')
+                  .filter(item => ['dict', 'dict_tree'].includes(item.type))
                   .map(item => {
                     dictFields[item.code] = item.dict
                   })
@@ -186,6 +192,7 @@ export default {
           })
         })
         this.dictFields = dictFields
+        this.availableActions = data.available_actions
         this.loadDictionaries()
       })
 
@@ -208,7 +215,9 @@ export default {
     loadDictionaries() {
       Object.values(this.dictFields).forEach(code => {
         if (this.getDict(code)) return
-        this.loadDict(code)
+        this.loadDict(code).then(() => {
+          this.$forceUpdate()
+        })
       })
     },
     getDict(code) {
@@ -256,10 +265,8 @@ export default {
       ) {
         let dict = this.getDict(this.dictFields[column.code])
 
-        let value = dict.find(item => item.id === row[column.code])
-        if (value) {
-          return value.name
-        }
+        let value = dict.reduce(this.findValueInDict(row[column.code]), null)
+        return value.name || value.label
 
       }
 
@@ -272,6 +279,13 @@ export default {
       }
 
       return row[column.code]
+    },
+    findValueInDict(id) {
+      const searchFunc = (found, item) => {
+        const children = item.children || []
+        return found || (item.id === id ? item : children.reduce(searchFunc, null))
+      }
+      return searchFunc
     }
   }
 }

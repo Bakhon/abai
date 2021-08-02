@@ -29,10 +29,10 @@
                 "validation":"boolean"
               },
               {
-                "code":"field4",
-                "type":"checkbox",
-                "title":"own_forces",
-                "validation":""
+                "code": "own_forces",
+                "type": "checkbox",
+                "title": "own_forces",
+                "validation": ""
               },
               {
                 "code":"company",
@@ -55,9 +55,9 @@
             "items":[
               {
                 "code": "dend",
-                "type": "date",
+                "type": "datetime",
                 "title": "date_gtm_end",
-                "validation": "nullable|date",
+                "validation": "nullable|date|after:dbeg",
                 "callbacks": {
                   "fillCalculatedFields": ""
                 }

@@ -28,7 +28,7 @@ import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
 import InputDataOperations from "./dataManagers/inputDataOperations";
 
-const defaultDzoTicker = "КТМ";
+const defaultDzoTicker = "ЭМГ";
 
 export default {
     data: function () {
@@ -220,9 +220,9 @@ export default {
             let dzoTicker = '';
             let self = this;
             _.forEach(Object.keys(this.dzoMapping), function(key) {
-               if (parseInt(self.dzoMapping[key].id) === parseInt(self.userId)) {
-                   dzoTicker = key;
-               }
+                if (parseInt(self.dzoMapping[key].id) === parseInt(self.userId)) {
+                    dzoTicker = key;
+                }
             });
             return dzoTicker;
         },
@@ -270,7 +270,7 @@ export default {
         },
         storeWellWorkoverData() {
             this.wellWorkover['dzo_name'] = this.selectedDzo.ticker;
-            this.wellWorkover['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
+            this.wellWorkover['date'] = moment().subtract(1, 'months').format("YYYY-MM-DD HH:mm:ss");
             let uri = this.localeUrl("/dzo-excel-otm");
 
             this.axios.post(uri, this.wellWorkover).then((response) => {
@@ -284,7 +284,7 @@ export default {
         },
         storeChemistryData() {
             this.chemistryData['dzo_name'] = this.selectedDzo.ticker;
-            this.chemistryData['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
+            this.chemistryData['date'] = moment().subtract(1, 'months').format("YYYY-MM-DD HH:mm:ss");
 
             let uri = this.localeUrl("/dzo-chemistry-excel-form");
 
@@ -326,6 +326,9 @@ export default {
                 this.status = this.trans("visualcenter.importForm.status.dataValid");
             } else {
                 this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
+            }
+            if (this.dzoFieldsMapping[this.selectedDzo.ticker] && !this.isValidSummary(this.dzoFieldsMapping[this.selectedDzo.ticker])) {
+                this.status = this.trans("visualcenter.importForm.status.verifySumByDzo");
             }
         },
         processTableData() {
@@ -399,7 +402,7 @@ export default {
             return true;
         },
         isNumber(inputData) {
-             return !isNaN(parseFloat(inputData)) && parseFloat(inputData) >= 0 && !this.isContainsLetter(inputData);
+            return !isNaN(parseFloat(inputData)) && parseFloat(inputData) >= 0 && !this.isContainsLetter(inputData);
         },
         isContainsLetter(inputData) {
             let regExp = /[a-zA-Zа-яА-Я]/g;

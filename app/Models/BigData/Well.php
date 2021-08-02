@@ -19,12 +19,17 @@ class Well extends TBDModel
 {
     const WELL_STATUS_ACTIVE = 3;
     const WELL_STATUS_PERIODIC_EXPLOITATION = 7;
+    const WELL_STATUS_INACTIVE = 8;
+
     const WELL_ACTIVE_STATUSES = [
         self::WELL_STATUS_ACTIVE,
         self::WELL_STATUS_PERIODIC_EXPLOITATION
     ];
 
-    const WELL_CATEGORY_OIL = 13;
+    const WELL_CATEGORY_INJECTION = 'INJ';
+    const WELL_CATEGORY_OIL = 'OIL';
+
+    const DEFAULT_END_DATE = '3333-12-31 00:00:00+06';
 
     protected $table = 'dict.well';
     protected $guarded = ['id'];
@@ -154,6 +159,16 @@ class Well extends TBDModel
         return $this->belongsToMany(Zone::class, 'prod.well_zone', 'well', 'id');
     }
 
+    public function wellReact()
+    {
+        return $this->hasMany(WellReactInfl::class, 'well_reacting', 'id');
+    }
+
+    public function gtm()
+    {
+        return $this->hasMany(Gtm::class, 'well', 'id');
+    }
+
 
     public function scopeActive($query, $date)
     {
@@ -163,14 +178,6 @@ class Well extends TBDModel
                 $query->where('dbeg', '<=', $date)
                     ->where('dend', '>=', $date)
                     ->whereIn('prod.well_status.status', self::WELL_ACTIVE_STATUSES);
-            }
-        );
-        $query->whereHas(
-            'category',
-            function ($query) use ($date) {
-                $query->where('dbeg', '<=', $date)
-                    ->where('dend', '>=', $date)
-                    ->where('prod.well_category.category', self::WELL_CATEGORY_OIL);
             }
         );
 

@@ -1,12 +1,20 @@
 <template>
-  <div class="font-size-16px font-weight-bold text-wrap">
+  <div :style="`font-size: ${fontSize}px`"
+       class="font-weight-bold text-wrap">
     <slot></slot>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Subtitle"
+  name: "Subtitle",
+  props: {
+    fontSize: {
+      required: false,
+      type: Number,
+      default: 16
+    }
+  }
 }
 </script>
 

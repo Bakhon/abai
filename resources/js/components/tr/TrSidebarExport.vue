@@ -17,7 +17,7 @@
 </template>
 
 <script>
-const basePath = "http://172.20.103.187:7576/api/";
+const basePath = process.env.MIX_POST_API_URL;
 const fileDownload = require("js-file-download");
 
 export default {
@@ -29,12 +29,8 @@ export default {
     downloadLink() {
       return this.ifFaTr(
         `${basePath}techregime/factor/download/`,
-        `${basePath}techregime/download/`
+        `${basePath}techregime/download_tr/`
       );
-      // return this.ifFaTr(
-      //   `${basePath}techregime/factor/download/${this.$store.getters["fa/year"]}/${this.$store.getters["fa/month"]}/${this.$store.getters["fa/pryear"]}/${this.$store.getters["fa/prmonth"]}/`,
-      //   `${basePath}techregime/download/${this.$store.getters["tr/year"]}/${this.$store.getters["tr/month"]}/`
-      // );
     },
     postData() {
       return this.ifFaTr(
@@ -49,29 +45,38 @@ export default {
           filter: this.$store.getters["fa/filter"],
           sortType: this.$store.getters["fa/sortType"],
           sortParam: this.$store.getters["fa/sortParam"],
-          isDynamic:  this.$store.getters["fa/isDynamic"],
+          is_dynamic:  this.$store.getters["fa/isDynamic"],
         },
         {
-          year: this.$store.getters["tr/year"],
-          month: this.$store.getters["tr/month"],
-          searchString: this.$store.getters["tr/searchString"],
-          filter: this.$store.getters["tr/filter"],
-          sortType: this.$store.getters["tr/sortType"],
-          sortParam: this.$store.getters["tr/sortParam"],
-          year_dyn_start: this.$store.getters["tr/year_dyn_start"],
-          year_dyn_end:  this.$store.getters["tr/year_dyn_end"],
-          month_dyn_start: this.$store.getters["tr/month_dyn_start"],
-          month_dyn_end:  this.$store.getters["tr/month_dyn_end"],
-          day_dyn_start: this.$store.getters["tr/day_dyn_start"],
-          day_dyn_end:  this.$store.getters["tr/day_dyn_end"],
-          is_dynamic:  this.$store.getters["tr/is_dynamic"],
+          field: this.$store.state.tr.field,
+          is_dynamic:  this.$store.state.tr.isDynamic,
+          object: this.$store.state.tr.object,
+          searchString: this.$store.state.tr.searchString,
+          sortType: this.$store.state.tr.isSortType,
+          sortParam: this.$store.state.tr.sortParam,
+          wellType: this.$store.state.tr.wellType,
+          pageNum: this.$store.state.tr.pageNumber,
+          block: this.$store.state.tr.block,
+          expMeth: this.$store.state.tr.expMeth,
+          horizon: this.$store.state.tr.horizon,
+          year_1: this.$store.state.tr.year_dyn_start,
+          month_1: this.$store.state.tr.month_dyn_start,
+          day_1: this.$store.state.tr.day_dyn_start,
+          year_2:  this.$store.state.tr.year_dyn_end,
+          month_2:  this.$store.state.tr.month_dyn_end,
+          day_2:  this.$store.state.tr.day_dyn_end,
+          wellName: this.$store.state.tr.wellName,
+
+          month: this.$store.state.tr.month,
+          year: this.$store.state.tr.year,
+
         }
       );
     },
     filename() {
       const filename = this.ifFaTr(
         `FA_${this.$store.getters["fa/month"]}_${this.$store.getters["fa/year"]}_${this.$store.getters["fa/prmonth"]}_${this.$store.getters["fa/pryear"]}`,
-        `TR_${this.$store.getters["tr/month"]}_${this.$store.getters["tr/year"]}`
+        `TR_${this.$store.state.tr.month}_${this.$store.state.tr.year}`
       );
       return `${filename}.xlsx`;
   },
@@ -82,10 +87,8 @@ export default {
         window.location.pathname === this.localeUrl("/fa") ||
         window.location.pathname === this.localeUrl("/trfa")
       ) {
-        // FA
         return fa;
       } else {
-        // TR
         return tr;
       }
     },

@@ -46,5 +46,6 @@ export default {
   width: 35px;
   cursor: pointer;
   justify-content: center;
+  height: 40px;
 }
 </style>

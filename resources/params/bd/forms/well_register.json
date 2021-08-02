@@ -10,8 +10,8 @@
             "title": "title",
             "items": [
               {
-                "code": "name_ru",
-                "type": "dict",
+                "code": "org",
+                "type": "dict_tree",
                 "title": "orgs",
                 "validation": "exists:tbd.dict.org,id",
                 "dict": "orgs",
@@ -21,7 +21,7 @@
               },
               {
                 "code": "geo",
-                "type": "dict",
+                "type": "dict_tree",
                 "title": "geo_s",
                 "validation": "exists:tbd.dict.geo,id",
                 "dict": "geos",
@@ -43,7 +43,7 @@
                 "validation": "date"
               },
               {
-                "code": "name_ru",
+                "code": "category",
                 "type": "dict",
                 "title": "cat_well",
                 "validation": "required|exists:tbd.dict.well_category_type,id",
@@ -60,48 +60,48 @@
                 "code": "whc_alt",
                 "type": "numeric",
                 "title": "alt",
-                "validation": "numeric"
+                "validation": "numeric|gte:-150"
               },
               {
                 "code": "whc_h",
                 "type": "numeric",
                 "title": "alt_h",
-                "validation": "numeric"
+                "validation": "numeric|gt:0|lte:20"
               },
               {
-                "code": "name_ru",
+                "code": "coord_system",
                 "type": "dict",
                 "title": "coord",
                 "dict": "coord_systems",
                 "validation": "|exists:tbd.dict.coord_system,id"
               },
               {
-                "code": "coord_point.x",
+                "code": "whc.coord_point.x",
                 "type": "numeric",
                 "title": "coord_x",
-                "validation": "required|exists:tbd.dict.coord_system,id",
+                "validation": "nullable|exists:tbd.dict.coord_system,id",
                 "default_values": {
                   "spatial_object.spatial_object_type": 1
                 }
               },
               {
-                "code": "coord_point.y",
+                "code": "whc.coord_point.y",
                 "type": "numeric",
                 "title": "coord_y",
-                "validation": "required|exists:tbd.dict.coord_system,id",
+                "validation": "nullable|exists:tbd.dict.coord_system,id",
                 "default_values": {
                   "spatial_object.spatial_object_type": 1
-                }           
+                }
               },
               {
-                "code": "name_ru",
+                "code": "well_type",
                 "type": "dict",
                 "title": "well_t",
                 "dict": "well_types",
                 "validation": "|exists:tbd.dict.well_type,id"
               },
               {
-                "code": "coord_point.x",
+                "code": "bottom_coord.coord_point.x",
                 "type": "numeric",
                 "title": "coord_x_p",
                 "validation": "nullable|numeric|exists:tbd.dict.coord_system,id",
@@ -110,7 +110,7 @@
                 }
               },
               {
-                "code": "coord_point.y",
+                "code": "bottom_coord.coord_point.y",
                 "type": "numeric",
                 "title": "coord_y_p",
                 "validation": "nullable|numeric",
@@ -134,7 +134,7 @@
                 "code": "drill_start_date",
                 "type": "date",
                 "title": "str_date",
-                "validation": "nullable|date|before_or_equal:today"
+                "validation": ""
               },
               {
                 "code": "drill_end_date",
@@ -143,7 +143,7 @@
                 "validation": "nullable|date|before_or_equal:today|after:drill_start_date"
               },
               {
-                "code": "name_ru",
+                "code": "drill_contractor",
                 "type": "dict",
                 "title": "podr",
                 "dict": "companies",
@@ -159,19 +159,19 @@
                 "code": "drill_contract_date",
                 "type": "date",
                 "title": "data_dog",
-                "validation": "date"
+                "validation": "date|before:drill_start_date"
               },
               {
                 "code": "project_depth",
                 "type": "numeric",
                 "title": "depth",
-                "validation": "nullable|numeric"
+                "validation": "nullable|numeric|lte:10000"
               },
               {
                 "code": "gas_factor_avg",
                 "type": "numeric",
                 "title": "gas_f",
-                "validation": "nullable|numeric"
+                "validation": "nullable|numeric|gt:0"
               }
             ]
           }

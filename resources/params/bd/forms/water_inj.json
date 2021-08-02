@@ -20,7 +20,9 @@
       "table":"prod.meas_water_inj",
       "type": "float",
       "column":"water_inj_val",
-      "is_editable": true
+      "is_editable": true,
+      "validation": "numeric|gte:0|lte:10000000",
+      "validate_deviation": true
     },
     {
       "title": "volume",
@@ -47,7 +49,9 @@
       "code": "agent_temperature",
       "type": "float",
       "column":"agent_temperature",
-      "is_editable": true
+      "is_editable": true,
+      "validation": "numeric|gte:0|lte:500",
+      "validate_deviation": true
     },
     {
       "title": "pressure",
@@ -55,7 +59,9 @@
       "code": "pressure_inj",
       "type": "float",
       "column":"pressure_inj",
-      "is_editable": true
+      "is_editable": true,
+      "validation": "numeric|gte:0|lte:200",
+      "validate_deviation": true
     },
     {
       "title": "comment",

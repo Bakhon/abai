@@ -19,7 +19,7 @@
                 "code": "dend",
                 "type": "date",
                 "title": "date_end",
-                "validation": "required|date"
+                "validation": "required|date|after:dbeg"
               }
             ]
           },
@@ -30,7 +30,8 @@
                 "code": "agent_vol",
                 "type": "numeric",
                 "title": "agent_volume",
-                "validation": "required|numeric",
+                "validation": "required|numeric| gt:0",
+                "validate_deviation": true,
                 "prefix": ""
               },
               {
@@ -46,21 +47,23 @@
                 "code": "agent_temp",
                 "type": "numeric",
                 "title": "agent_temperature",
-                "validation": "required|numeric",
-                "prefix": ""
+                "validation": "required|numeric|gt:0",
+                "prefix": "",
+                "validate_deviation": true
               },
               {
                 "code": "inj_pressure",
                 "type": "numeric",
                 "title": "injection_pressure",
-                "validation": "required|numeric",
-                "prefix": ""
+                "validation": "required|numeric|gt:0",
+                "prefix": "",
+                "validate_deviation": true
               },
               {
                 "code": "q_max_intake",
                 "type": "numeric",
                 "title": "qmax_reception",
-                "validation": "required|numeric",
+                "validation": "required|numeric|gt:0|gte:agent_vol",
                 "prefix": ""
               }
             ]

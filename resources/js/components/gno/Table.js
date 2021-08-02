@@ -9,7 +9,7 @@ import moment from "moment";
 import { PerfectScrollbar } from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import Vue from 'vue';
-import FullPageLoader from '../ui-kit/FullPageLoader';
+import FullPageLoader from '@ui-kit/FullPageLoader';
 import * as htmlToImage from 'html-to-image';
 import jsPDF from 'jspdf';
 import Tabs from './tabs/Tabs.vue'
@@ -28,6 +28,9 @@ export default {
   ],
   data: function () {
     return {
+      apiUrl: process.env.MIX_PGNO_API_URL,
+      steel: null,
+      techmodeDate: null,
       404: require('./images/404.svg'),
       isSkError: false,
       nearDist: 1000,
@@ -35,7 +38,6 @@ export default {
       isPermission: false,
       isEditing: false,
       permissionName: 'podborGno edit main',
-      url: "http://172.20.103.187:7575/api/pgno/",
       isLoading: false,
       activeRightTabName: 'technological-mode',
       layout: {
@@ -226,6 +228,11 @@ export default {
           short_name: "JET",
           full_name: "Жетыбай",
           id: 2
+        },
+        {
+          short_name: "ASA",
+          full_name: "Асар",
+          id: 3
         }],
       omg_fields: [
         {
@@ -240,6 +247,10 @@ export default {
         {
           short_name: "JET",
           full_name: "Жетыбай",
+        },
+        {
+          short_name: "ASA",
+          full_name: "Асар",
         }],
       shgnTubOD: null,
       menu: "MainMenu",
@@ -351,7 +362,11 @@ export default {
       serviceOffline: false,
       isIntervals: false,
       skTypes: null,
-      horizons: null
+      horizons: null,
+      isNktError: null,
+      spm: null,
+      qLforKpod: null,
+      pumpTypeforKpod: null,
     };
 
   },
@@ -371,6 +386,7 @@ export default {
     },
   },
   beforeCreate: function () {
+    this.apiUrl = process.env.MIX_PGNO_API_URL
     this.axios.get('/ru/organizations').then(({ data }) => {
       if (data.organizations.length == 0) {
         this.organization = "НК КазМунайГаз"
@@ -386,16 +402,20 @@ export default {
       }
     })
 
-    this.axios.get("http://172.20.103.187:7575/api/status/").then(res => {
-      if (res.status !== 200) {
+    this.axios.get(this.apiUrl + "status/").then(response => {
+      if (response.status !== 200) {
         this.serviceOffline = true;
       }
     })
 
-    this.axios.get("http://172.20.103.187:7575/api/pgno/sk_types").then(response => {
+    this.axios.get(this.apiUrl + "lastdate/").then(response => {
+      this.techmodeDate = response.data['date'];
+    })
+
+    this.axios.get(this.apiUrl + "pgno/sk_types").then(response => {
       this.skTypes = response.data
     })
-    this.axios.get("http://172.20.103.187:7575/api/pgno/horizons").then(response => {
+    this.axios.get(this.apiUrl + "pgno/horizons").then(response => {
       this.horizons = response.data
     })
   },
@@ -405,8 +425,17 @@ export default {
     if (this.windowWidth <= 1300 && this.windowWidth > 991) {
       this.activeRightTabName = 'devices';
     }
+    this.setDefaultStoreValues()
   },
   methods: {
+    setNotify(message, type) {
+      this.$notify({
+        message: message,
+        type: type,
+        size: 'sm',
+        timeout: 8000
+      })
+    },
     editPage() {
       if (this.isEditing) {
         this.welldata['sk_type'] = this.sk
@@ -443,6 +472,8 @@ export default {
       this.stupColumns = this.$store.getters.stupColumns
       this.corrosion = this.$store.getters.corrosion
       this.markShtang = this.$store.getters.markShtang
+      this.kPodMode = this.$store.getters.kPodMode
+      this.kpodCalced = this.$store.getters.kPodCalced
       this.postdata = JSON.stringify(
         {
           "pgno_setings": {
@@ -463,6 +494,8 @@ export default {
             "stups": this.stupColumns,
             "corrosion": this.corrosion,
             "steel_mark": this.markShtang,
+            "kpod_mode": this.kPodMode,
+            "kpod_calced": this.kpodCalced,
           },
           "welldata": this.welldata,
           "settings": {
@@ -514,8 +547,7 @@ export default {
         this.CelValue = this.piCelValue
       }
       this.prepareData()
-      let uri = "http://172.20.103.187:7575/api/pgno/" + this.field + "/" + this.wellNumber + "/download";
-      this.axios.post(uri, this.postdata, { responseType: "blob" }).then((response) => {
+      this.axios.post(this.apiUrl + "pgno/" + this.field + "/" + this.wellNumber + "/download", this.postdata, { responseType: "blob" }).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
       }).catch(function (error) {
         console.error('oops, something went wrong!', error);
@@ -527,8 +559,7 @@ export default {
     downloadEconomicExcel() {
       this.isLoading = true;
       let req = [this.expAnalysisData.npvTable1, this.expAnalysisData.npvTable2]
-      let uri = "http://172.20.103.187:7575/api/pgno/economic/download";
-      this.axios.post(uri, req, { responseType: "blob" }).then((response) => {
+      this.axios.post(this.apiUrl + "pgno/economic/download", req, { responseType: "blob" }).then((response) => {
         fileDownload(response.data, "ЭКОНОМИКА_" + this.field + "_" + this.wellNumber + ".xlsx")
       }).catch(function (error) {
         console.error('oops, something went wrong!', error);
@@ -564,6 +595,10 @@ export default {
     },
 
     onChangeParams() {
+      if (this.qLInput && Number(this.qLInput.split(' ')[0]) !==0) {
+        this.qLforKpod = Number(this.qLInput.split(' ')[0])
+        this.pumpTypeforKpod = Number(this.pumpType.split(' ')[0])
+      }
       this.$modal.show('modalTabs')
     },
 
@@ -594,6 +629,7 @@ export default {
         this.qlPot = this.curvePointsData[1]["q_l"].toFixed(0)
         this.pinPot = this.curvePointsData[1]["pin"].toFixed(0)
       } else {
+        this.fgCelValue = data["Well Data"]["fg_cel"].toFixed(1)
         this.hPerfRangeInfo = data["Well Data"]["h_perf_range"]
         this.ngdu = data["Well Data"]["ngdu"]
         this.sk = data["Well Data"]["sk_type"]
@@ -637,6 +673,7 @@ export default {
         this.wellIncl = data["Well Data"]["well"]
         this.hPerfND = data["Well Data"]["h_perf"]
         this.strokeLenDev = data["Well Data"]["stroke_len"]
+        this.spm = data["Well Data"]["spm"]
         this.sep_value = (data["Well Data"]["es"] * 100).toFixed(0)
         this.nkt = this.tubID
         let langUrl = `${window.location.pathname}`.slice(1, 3);
@@ -651,7 +688,7 @@ export default {
             this.dNasosa = "Pump diameter"
             this.freq = "Pump rate"
           }
-          this.spmDev = data["Well Data"]["spm"] + " " + this.trans('measurements.1/min')
+          this.spmDev = this.spm + " " + this.trans('measurements.1/min')
           this.pumpType = this.pumpType + " " + this.trans('measurements.mm')
         } else {
           if (langUrl === 'ru') {
@@ -831,30 +868,15 @@ export default {
       await this.NnoCalc()
 
       if (this.casOD < 127) {
-        this.$notify({
-          message: this.trans('pgno.notify_ek_127'),
-          type: 'error',
-          size: 'sm',
-          timeout: 8000
-        })
+        this.setNotify(this.trans('pgno.notify_ek_127'), 'error')
       }
 
       if (this.qlCelValue.split(' ')[0] < 28) {
-        this.$notify({
-          message: this.trans('pgno.notify_uecn_not_recommended'),
-          type: 'warning',
-          size: 'sm',
-          timeout: 8000
-        })
+        this.setNotify(this.trans('pgno.notify_uecn_not_recommended'), 'warning')
       }
 
       if (this.qlCelValue.split(' ')[0] > 106) {
-        this.$notify({
-          message: this.trans('pgno.notify_shgn_restrict_potencial'),
-          type: 'warning',
-          size: 'sm',
-          timeout: 8000
-        })
+        this.setNotify(this.trans('pgno.notify_shgn_restrict_potencial'), 'warning')
       }
 
       this.qZhExpEcn = this.qlCelValue.split(' ')[0] * ((1 - (this.wctInput.split(' ')[0] / 100)) * this.densOil + this.wctInput.split(' ')[0] / 100 * this.densWater)
@@ -970,7 +992,6 @@ export default {
       }
     },
     async NnoCalc() {
-      let uri = "http://172.20.103.187:7575/api/nno/";
 
       this.eco_param = null;
 
@@ -1005,7 +1026,7 @@ export default {
 
         this.isLoading = true;
 
-        const responses = await Promise.all([this.axios.post(uri, jsonData), this.axios.post(uri, jsonData2)])
+        const responses = await Promise.all([this.axios.post(this.apiUrl + "nno/", jsonData), this.axios.post(this.apiUrl + "nno/", jsonData2)])
           .finally(() => {
             this.isLoading = false;
           });
@@ -1046,12 +1067,7 @@ export default {
 
     InclMenu() {
       if (this.isYoungAge) {
-        this.$notify({
-          message: this.trans('pgno.notify_no_incl'),
-          type: 'warning',
-          size: 'sm',
-          timeout: 8000
-        })
+        this.setNotify(this.trans('pgno.notify_no_incl'), 'warning')
       } else {
         this.$store.commit('UPDATE_HPUMP', this.hPumpValue)
         this.$modal.show('modalIncl')
@@ -1059,64 +1075,69 @@ export default {
     },
 
     setDefaultStoreValues() {
-      this.$store.commit("UPDATE_SPM_MIN", 4)
-      this.$store.commit("UPDATE_SPM_MAX", 7)
+      this.$store.commit("UPDATE_SPM_MIN", 3)
+      this.$store.commit("UPDATE_SPM_MAX", 8)
       this.$store.commit("UPDATE_LEN_MIN", 2.5)
       this.$store.commit("UPDATE_LEN_MAX", 3)
       this.$store.commit("UPDATE_KPOD", 0.6)
       this.$store.commit("UPDATE_KOMPONOVKA", ["hvostovik"])
       this.$store.commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
-      this.$store.commit("UPDATE_DMRODS", ["19", "22", "25"])
+      this.$store.commit("UPDATE_DMRODS", ["19", "22"])
       this.$store.commit("UPDATE_H2S", false)
       this.$store.commit("UPDATE_PINTAKE_MIN", 30)
       this.$store.commit("UPDATE_GAS_MAX", 10)
       this.$store.commit("UPDATE_INCL_STEP", 10)
-      this.$store.commit("UPDATE_CORROSION", "mediumCorrosion")
+      this.$store.commit("UPDATE_CORROSION", "antiCorrosion")
       this.$store.commit("UPDATE_GROUP_POSAD", "2")
       this.$store.commit("UPDATE_HEAVYDOWN", true)
       this.$store.commit("UPDATE_STUP_COLUMNS", 2)
-      this.$store.commit("UPDATE_MARKSHTANG", "15Х2ГМФ (НВО)")
+      this.$store.commit("UPDATE_MARKSHTANG", ["15Х2ГМФ (НВО)"])
+      this.$store.commit("UPDATE_KPOD_MODE", true)
+      this.$store.commit("UPDATE_KPOD_CALCED", null)
+    },
+
+    nktExist(val) {
+      const found = this.nkt_choose.some(el => el.for_calc_value === this.nkt);
+      if(!found) {
+        let type = "get"
+        this.isNktError = true
+        if (val === "get"){
+          type = 'warning'
+        }  else if (val === "pgno") {
+          type = 'error'
+        }
+        this.setNotify(this.trans('pgno.check_nkt_notify'), type)
+      }
     },
 
     getWellNumber(wellnumber) {
       this.isIntervals = true
       this.setDefaultStoreValues()
-
       if (this.field == "JET") {
         this.ao = 'АО "ММГ"'
       } else {
         this.ao = 'АО "ОМГ"'
       }
       this.isVisibleChart = true;
-      let uri = this.url + this.field + "/" + wellnumber + "/";
       this.isLoading = true;
+      this.sep_meth = 'input_value';
 
-      this.axios.get(uri).then((response) => {
+      this.axios.get(this.apiUrl + "pgno/" + this.field + "/" + wellnumber + "/").then((response) => {
         let data = response.data;
         this.welldata = data["Well Data"]
         this.method = 'MainMenu'
         if (data["Error"] == "NoData" || data["Error"] == 'data_error') {
           if (data["Error"] == "NoData") {
-            this.$notify({
-              message: this.trans('pgno.notify_well_doesnt_exist'),
-              type: 'error',
-              size: 'sm',
-              timeout: 8000
-            })
+            this.setNotify(this.trans('pgno.notify_well_doesnt_exist'), 'error')
           }
           if (data["Error"] == 'data_error') {
-            this.$notify({
-              message: this.trans('pgno.notify_well_data_not_correct'),
-              type: 'error',
-              size: 'sm',
-              timeout: 8000
-            })
+            this.setNotify(this.trans('pgno.notify_well_data_not_correct'), 'error')
           }
 
           this.curveLineData = JSON.parse(data.LineData)["data"]
           this.curvePointsData = JSON.parse(data.PointsData)["data"]
           this.ngdu = 0
-          this.sk = 0
+          this.sk = null
 
           //Выбор скважины
           this.horizon = 0;
@@ -1197,23 +1218,12 @@ export default {
           this.densOil = data["Well Data"]["dens_oil"].toFixed(1)
           this.densWater = data["Well Data"]["dens_liq"].toFixed(1)
           this.hPumpValue = data["Well Data"]["h_pump_set"].toFixed(0) + " " + this.trans('measurements.m')
-
-          this.$notify({
-            message: this.trans('pgno.notify_150_hpump'),
-            type: 'warning',
-            size: 'sm',
-            timeout: 8000
-          })
-
-          this.$notify({
-            message: this.trans('pgno.new_well'),
-            type: 'warning',
-            size: 'sm',
-            timeout: 8000
-          })
+          
+          this.setNotify(this.trans('pgno.notify_150_hpump'), 'warning')
+          this.setNotify(this.trans('pgno.new_well'), 'warning')
 
           this.ngdu = 0
-          this.sk = 0
+          this.sk = null
 
           //Выбор скважины
           this.expMeth = 0;
@@ -1268,30 +1278,17 @@ export default {
           this.sep_value = 60
         } else if (data["Age"] === false) {
           this.setData(data)
+          this.nktExist("get")
+
           if (data["error_len"] == "error_len") {
-            this.$notify({
-              message: this.trans('pgno.notify_no_sk_for_length'),
-              type: 'warning',
-              size: 'sm',
-              timeout: 8000
-            })
+            this.setNotify(this.trans('pgno.notify_no_sk_for_length'), 'warning')
           }
           if (data["error_spm"] == "error_spm") {
-            this.$notify({
-              message: this.trans('pgno.notify_no_sk_for_num_kach'),
-              type: 'warning',
-              size: 'sm',
-              timeout: 8000
-            })
+            this.setNotify(this.trans('pgno.notify_no_sk_for_num_kach'), 'warning')
           }
           if (data['check_sk'] === "error") {
             this.isSkError = true
-            this.$notify({
-              message: this.trans('pgno.notify_error_sk'),
-              type: 'warning',
-              size: 'sm',
-              timeout: 8000
-            })
+            this.setNotify(this.trans('pgno.notify_error_sk'), 'warning')
           }
 
           if (this.expMeth == "ШГН") {
@@ -1299,9 +1296,9 @@ export default {
           } else if (this.expMeth == "ЭЦН" || this.expMeth == "УЭЦН") {
             this.mech_sep = true
           }
-          if (this.qL * 1 < 20) {
+          if (Number(this.qL) < 20) {
             this.mech_sep_value = 95
-          } else if (this.qL * 1 < 55) {
+          } else if (Number(this.qL) < 55) {
             this.mech_sep_value = 60
           } else {
             this.mech_sep_value = 50
@@ -1321,7 +1318,6 @@ export default {
 
     fetchBlockCentrators() {
       let fieldInfo = this.wellIncl.split('_');
-      let urlForIncl = "http://172.20.103.187:7575/api/pgno/incl";
       if (this.expChoose == 'ЭЦН') {
         (this.liftValue = 'ЭЦН') && (this.stepValue = 20);
       } else {
@@ -1333,12 +1329,12 @@ export default {
           "well_number": fieldInfo[1],
           "lift_method": this.liftValue,
           "field": fieldInfo[0],
-          "glubina": this.hPumpValue.substring(0, 4) * 1,
+          "glubina": Number(this.hPumpValue.substring(0, 4)),
           "step": this.stepValue,
         }
       )
 
-      this.axios.post(urlForIncl, centratorsData).then((response) => {
+      this.axios.post(this.apiUrl + "pgno/incl", centratorsData).then((response) => {
         this.centratorsInfo = response.data
         this.centratorsRequiredValue = this.centratorsInfo["CenterRange"]["red"]
       })
@@ -1346,7 +1342,6 @@ export default {
 
     postCurveData() {
       this.isVisibleChart = true;
-      let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -1360,75 +1355,35 @@ export default {
       this.isLoading = true;
 
       if (this.casOD < 127) {
-        this.$notify({
-          message: this.trans('pgno.notify_ek_127_down'),
-          type: 'error',
-          size: 'sm',
-          timeout: 8000
-        })
+        this.setNotify(this.trans('pgno.notify_ek_127_down'), 'error')
       }
       if (this.qlCelValue.split(' ')[0] < 28 && this.expChoose == "ЭЦН") {
-        this.$notify({
-          message: this.trans('pgno.notify_uecn_not_recommended'),
-          type: 'warning',
-          size: 'sm',
-          timeout: 8000
-        })
+        this.setNotify(this.trans('pgno.notify_uecn_not_recommended'), 'warning')
       }
       if (this.qlCelValue.split(' ')[0] > 106) {
-        this.$notify({
-          message: this.trans('pgno.notify_shgn_restrict_potencial'),
-          type: 'warning',
-          size: 'sm',
-          timeout: 8000
-        })
+        this.setNotify(this.trans('pgno.notify_shgn_restrict_potencial'), 'warning')
       }
 
-      this.axios.post(uri, this.postdata).then((response) => {
+      this.axios.post(this.apiUrl + "pgno/" + this.field + "/" + this.wellNumber + "/", this.postdata).then((response) => {
         let data = response.data;
         if (data) {
           this.welldata = data["Well Data"]
           this.method = "CurveSetting"
-          if (data["Well Data"]["pi"][0] * 1 < 0) {
-            this.$notify({
-              message: this.trans('pgno.notify_p_zab_more_p_pl'),
-              type: 'warning',
-              size: 'sm',
-              timeout: 8000
-            })
+          if (Number(data["Well Data"]["pi"][0]) < 0) {
+            this.setNotify(this.trans('pgno.notify_p_zab_more_p_pl'), 'warning')
           } else {
-            if (this.hPumpValue.split(' ')[0] * 1 > this.hPerf * 1) {
-              this.$notify({
-                message: this.trans('pgno.notify_n_set_down_perf'),
-                type: 'warning',
-                size: 'sm',
-                timeout: 8000
-              })
+            if (Number(this.hPumpValue.split(' ')[0]) > Number(this.hPerf)) {
+              this.setNotify(this.trans('pgno.notify_n_set_down_perf'), 'warning')
             }
             this.setData(data)
             this.$emit('LineData', this.curveLineData)
             this.$emit('PointsData', this.curvePointsData)
-            if (this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql') {
-              this.$notify({
-                message: this.trans('pgno.notify_cel_rezhim_more_perf'),
-                type: 'error',
-                size: 'sm',
-                timeout: 8000
-              })
-            } else if (this.bhpPot * 1 > this.bhpCelValue.split(' ')[0] * 1 && this.CelButton == 'bhp') {
-              this.$notify({
-                message: this.trans('pgno.notify_cel_rezhim_more_perf'),
-                type: 'error',
-                size: 'sm',
-                timeout: 8000
-              })
-            } else if (this.pinPot * 1 > this.piCelValue.split(' ')[0] * 1 && this.CelButton == 'pin') {
-              this.$notify({
-                message: this.trans('pgno.notify_cel_rezhim_more_perf'),
-                type: 'error',
-                size: 'sm',
-                timeout: 8000
-              })
+            if (Number(this.qlPot) < Number(this.qlCelValue.split(' ')[0]) && this.CelButton == 'ql') {
+              this.setNotify(this.trans('pgno.notify_cel_rezhim_more_perf'), 'error')
+            } else if (Number(this.bhpPot) > Number(this.bhpCelValue.split(' ')[0]) && this.CelButton == 'bhp') {
+              this.setNotify(this.trans('pgno.notify_cel_rezhim_more_perf'), 'error')
+            } else if (Number(this.pinPot) > Number(this.piCelValue.split(' ')[0]) && this.CelButton == 'pin') {
+              this.setNotify(this.trans('pgno.notify_cel_rezhim_more_perf'), 'error')
             }
           }
 
@@ -1442,7 +1397,6 @@ export default {
 
     postAnalysisOld() {
       this.isVisibleChart = true;
-      let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -1456,12 +1410,11 @@ export default {
 
       this.isLoading = true;
 
-      this.axios.post(uri, this.postdata).then((response) => {
+      this.axios.post(this.apiUrl + "pgno/" + this.field + "/" + this.wellNumber + "/", this.postdata).then((response) => {
         let data = response.data;
         if (data) {
           this.newData = data["Well Data"]
           this.method = "CurveSetting"
-          this.newData = data["Well Data"]
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
           this.newPointsData = JSON.parse(data.PointsData)["data"]
           this.updateLine(this.newCurveLineData)
@@ -1475,7 +1428,6 @@ export default {
 
     postAnalysisNew() {
       this.isVisibleChart = true;
-      let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -1489,7 +1441,7 @@ export default {
 
       this.isLoading = true;
 
-      this.axios.post(uri, this.postdata).then((response) => {
+      this.axios.post(this.apiUrl + "pgno/" + this.field + "/" + this.wellNumber + "/", this.postdata).then((response) => {
         let data = response.data;
         if (data) {
           this.newData = data["Well Data"]
@@ -1515,6 +1467,7 @@ export default {
       });
     },
     setGraphOld() {
+      this.welldata = this.newData
       this.updateLine(this.newCurveLineData)
       this.setPoints(this.newPointsData)
       this.$modal.hide('modalOldWell');
@@ -1536,6 +1489,7 @@ export default {
     },
 
     setGraphNew() {
+      this.welldata = this.newData
       this.updateLine(this.newCurveLineData)
       this.setPoints(this.newPointsData)
       this.$modal.hide('modalNewWell');
@@ -1545,6 +1499,10 @@ export default {
       this.piInput = this.newData["pi"].toFixed(2) + " " + this.trans('measurements.m3/d/at');
       this.wctInput = this.newData["wct"].toFixed(0) + " " + this.trans('measurements.percent');
       this.hPumpValue = this.newData["h_pump_set"].toFixed(0) + " " + this.trans('measurements.m');
+      console.log(this.newPointsData)
+      this.bhpPot = Number(this.newPointsData[1]["p"].toFixed(0)) - 1
+      this.qlPot = Number(this.newPointsData[1]["q_l"].toFixed(0)) + 1
+      this.pinPot = Number(this.newPointsData[1]["pin"].toFixed(0)) - 1
     },
 
     onCompareNpv() {
@@ -1563,34 +1521,15 @@ export default {
     },
 
     onPgnoClick() {
-      if (this.isSkError) {
-        this.$notify({
-          message: this.trans('pgno.notify_error_sk'),
-          type: 'error',
-          size: 'sm',
-          timeout: 8000
-        })
-      } else if (this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql') {
-        this.$notify({
-          message: this.trans('pgno.notify_cel_rezhim_more_perf'),
-          type: 'error',
-          size: 'sm',
-          timeout: 8000
-        })
-      } else if (this.bhpPot * 1 > this.bhpCelValue.split(' ')[0] * 1 && this.CelButton == 'bhp') {
-        this.$notify({
-          message: this.trans('pgno.notify_cel_rezhim_more_perf'),
-          type: 'error',
-          size: 'sm',
-          timeout: 8000
-        })
-      } else if (this.pinPot * 1 > this.piCelValue.split(' ')[0] * 1 && this.CelButton == 'pin') {
-        this.$notify({
-          message: this.trans('pgno.notify_cel_rezhim_more_perf'),
-          type: 'error',
-          size: 'sm',
-          timeout: 8000
-        })
+      this.nktExist("pgno")
+      if (this.isSkError || !this.sk || this.sk=="0") {
+        this.setNotify(this.trans('pgno.notify_error_sk'), 'error')
+      } else if (Number(this.qlPot) < Number(this.qlCelValue.split(' ')[0]) && this.CelButton == 'ql' && this.qlPot) {
+        this.setNotify(this.trans('pgno.notify_cel_rezhim_more_perf'), 'error')
+      } else if (Number(this.bhpPot) > Number(this.bhpCelValue.split(' ')[0]) && this.CelButton == 'bhp' && this.bhpPot) {
+        this.setNotify(this.trans('pgno.notify_cel_rezhim_more_perf'), '')
+      } else if ((Number(this.pinPot)) > Number(this.piCelValue.split(' ')[0]) && this.CelButton == 'pin' && this.pinPot) {
+        this.setNotify(this.trans('pgno.notify_cel_rezhim_more_perf'), 'error')
       } else {
         if (this.expChoose == 'ШГН') {
           if (this.CelButton == 'ql') {
@@ -1602,10 +1541,9 @@ export default {
           }
           if (this.isVisibleChart) {
             this.isLoading = true;
-            let uri = "http://172.20.103.187:7575/api/pgno/shgn";
             this.prepareData()
-            this.axios.post(uri, this.postdata).then((response) => {
-              let data = JSON.parse(response.data);
+            this.axios.post(this.apiUrl + "pgno/shgn", this.postdata).then((response) => {
+              let data = response.data;
               if (!this.isYoungAge) {
                 this.fetchBlockCentrators()
               } else {
@@ -1613,27 +1551,14 @@ export default {
               }
               if (data) {
                 if (data["error"] == "NoIntersection") {
-                  this.$notify({
-                    message: this.trans('pgno.notify_change_depth_descent'),
-                    type: 'warning',
-                    size: 'sm',
-                    timeout: 8000
-                  })
+                  this.setNotify(this.trans('pgno.notify_change_depth_descent'), 'warning')
                 } else if (data["error"] == "KpodError") {
-                  this.$notify({
-                    message: "Расчетный Кпод < Установленного в Настройках",
-                    type: 'warning',
-                    size: 'sm',
-                    timeout: 8000
-                  })
+                  this.setNotify(this.trans('pgno.kpod_more_params'), 'warning')
+                } else if (data["error"] == "ConstructionError") {
+                  this.setNotify(this.trans('pgno.cant_calc_construction'), 'warning')
                 } else {
                   if (this.sk == "ПШГН" || this.sk == "0") {
-                    this.$notify({
-                      message: this.trans('pgno.notify_well_not_def'),
-                      type: 'warning',
-                      size: 'sm',
-                      timeout: 8000
-                    })
+                    this.setNotify(this.trans('pgno.notify_well_not_def'), 'warning')
                   }
                   this.shgnPumpType = data["pump_type"]
                   if (this.shgnPumpType == 70) {
@@ -1641,35 +1566,38 @@ export default {
                   } else {
                     this.shgnTubOD = this.tubOD
                   }
-                  if (this.shgnPumpType == 70 && this.casOD * 1 < 115) {
-                    this.$notify({
-                      message: this.trans('pgno.notify_nkn70_nkt89_restricted'),
-                      type: 'warning',
-                      size: 'sm',
-                      timeout: 8000
-                    })
-                    this.$notify({
-                      message: this.trans('pgno.notify_change_depth_descent'),
-                      type: 'warning',
-                      size: 'sm',
-                      timeout: 8000
-                    })
+                  if (this.shgnPumpType == 70 && Number(this.casOD) < 115) {
+                    this.setNotify(this.trans('pgno.notify_nkn70_nkt89_restricted'), 'warning')
+
+                    this.setNotify(this.trans('pgno.notify_change_depth_descent'), 'warning')
                   } else {
-                    this.$notify({
-                      message: this.trans('pgno.notify_shgn_under_contstruction'),
-                      type: 'warning',
-                      size: 'sm',
-                      timeout: 8000
-                    })
+                    this.setNotify(this.trans('pgno.notify_shgn_under_contstruction'), 'warning')
                     this.qoilShgnTable = this.welldata['qo_cel'].toFixed(1)
+                    this.construction = data["construction"]
                     this.shgnSPM = data["spm"].toFixed(1)
                     this.shgnLen = data["stroke_len"].toFixed(1)
-                    this.shgnS1D = data["s1d"].toFixed(0)
-                    this.shgnS2D = data["s2d"].toFixed(0)
-                    this.shgnS1L = data["s1l"].toFixed(0)
-                    this.shgnS2L = data["s2l"].toFixed(0)
-                    this.shgnTN = data["tn"]
-                    this.shgnTNL = data["tn_l"]
+                    this.kPod = data['k_pod'].toFixed(2)
+                    this.skPmax = data['sk_pmax']
+                    this.skMn2 = data['sk_mn2']
+                    this.steel = data['steel']
+                    this.pElectricity = (data['p_electricity'] / 1000).toFixed(0)
+                    this.wDay = data['w_day'].toFixed(0)
+                    this.ure = data['ure'].toFixed(1)
+                    if (data['load_limit_check']['type'] === "warning") {
+                      var message = `${this.trans('pgno.load_warning')} ${data['load_limit_check']['value']} ${this.trans('measurements.percent')}`
+                      this.setNotify(message, 'warning')
+                    } else if (data['load_limit_check']['type'] === "error") {
+                      this.setNotify(this.trans('pgno.shtang_not_recommended'), 'error')
+                    }
+                    if (data['load_check'] === "error") {
+                      this.setNotify(this.trans('pgno.balance_more_100'), 'error')
+                    } else if (data['load_check'] === "warning") {
+                      this.setNotify(this.trans('pgno.balance_more_80'), 'warning')
+                    }
+                    if (data['load_reduct_check'] === "error") {
+                      this.setNotify(this.trans('pgno.max_reductor'), 'error')
+                    }
+
                     this.isVisibleChart = !this.isVisibleChart
                   }
 
@@ -1685,13 +1613,7 @@ export default {
 
           }
         } else {
-
-          this.$notify({
-            message: this.trans('pgno.notify_uecn_ne_razrabotan'),
-            type: 'warning',
-            size: 'sm',
-            timeout: 8000
-          })
+          this.setNotify(this.trans('pgno.notify_uecn_ne_razrabotan'), 'warning')
         }
 
       }

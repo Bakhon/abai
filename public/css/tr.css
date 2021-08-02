@@ -45,17 +45,10 @@ td.fitwidth {
     vertical-align: middle !important;
     font-size: 12px;
     width: 64px;
-    /* cursor: pointer; */
 }
 
 .headerColumn td span {
     display: block;
-    /* width: 164px;
-    height: 164px; */
-    /* -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    transform: rotate(-90deg); */
 }
 
 .table .subHeaderColumn td {
@@ -68,11 +61,7 @@ td.fitwidth {
     vertical-align: middle !important;
     height: 165.2px;
     font-size: 12px;
-    /* -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    transform: rotate(-90deg); */
+
 
 }
 .verticalTableHeader p {
@@ -158,6 +147,7 @@ table {
     transition: opacity 2s;
     border-radius: 6px;
     background-color: #555;
+    font-size: 12px;
     padding:3px;
     bottom: 31px;
     /* top:-80px; */
@@ -188,3 +178,89 @@ table {
     padding: 0;
     margin: 0;
 }  
+.drop-filter-custom{
+    background: #333975 !important;
+    border-color: #333975 !important;
+  }
+.b-dropdown-form {
+  background: #333975!important;
+  width: 135px;
+}
+.dropdown-menu.show {
+    display: flex;
+    flex-direction: column;
+    background: #333975!important;
+}
+.icons_filt_sort{
+  display: flex;
+  justify-content: center;
+}
+.field_filter_text {
+  display: flex;
+  justify-content: center;
+  margin-left: -36px;
+}
+.well_type_filter_text {
+  display: flex;
+  justify-content: center;
+  margin-left: 90px;
+}
+.field_form_fil.field_form_fil {
+  background: #333975;
+  width: 165px;
+}
+.horizon_form_fil.horizon_form_fil {
+  background: #333975;
+  width: 123px;
+}
+.obj_form_fil {
+  background: #333975;
+  width: 85px;
+}
+.block_form_fil {
+  background: #333975;
+  width: 168px;
+}
+.exp_meth_form_fil {
+  background: #333975;
+  width: 108px;
+} 
+
+.well_type_form_fil.well_type_form_fil {
+  background: #333975;
+  width: 213px;
+}
+.external_field_filter {
+  width: 251px;
+}
+.external_well_filter {
+  width: 192px;
+}
+.well_form_fil.well_form_fil {
+  background: #333975;
+  width: 165px;
+  height: calc(100vh - 562px);
+  overflow-y: scroll;
+}
+.external_well_type_filter  {
+  width: 251px;
+}
+.icon_filter {
+  font-size: 7px;
+}
+.icon_sort {
+  margin-top: 6px;
+}
+.form_text {
+  color:white; 
+  font-size:13px; 
+  margin-left: 12px;
+}
+.discard_text {
+  color:white; 
+  font-size:13px; 
+  margin-left: 9px;
+}
+body {
+  overflow-y: hidden !important;
+}

@@ -38,7 +38,7 @@
                 "code":"dend",
                 "type":"datetime",
                 "title":"drill_end",
-                "validation":"required"
+                "validation":"required|after:dbeg"
               }
             ]
           },
@@ -49,7 +49,7 @@
                 "code":"daily_drill_progress",
                 "type":"numeric",
                 "title":"daily_drill_progress",
-                "validation":"required|numeric"
+                "validation":"required|numeric|gt:0|lte:1000"
               },
               {
                 "code":"work_name",
@@ -73,31 +73,31 @@
                 "code":"liquid_density",
                 "type":"numeric",
                 "title":"liquid_density",
-                "validation":"required|numeric" 
+                "validation":"required|numeric|gt:0|lte:10" 
                },
                {
                  "code":"liquid_crust",
                  "type":"numeric",
                  "title":"liquid_crust",
-                 "validation":"required|numeric" 
+                 "validation":"required|numeric|gt:0|lte:10" 
                 },
                 {
                  "code":"liquid_viscosity",
                  "type":"numeric",
                  "title":"liquid_viscosity",
-                 "validation":"required|numeric" 
+                 "validation":"required|numeric|gt:0|lte:100" 
                 },
                 {
                  "code":"liquid_ph",
                  "type":"numeric",
                  "title":"liquid_ph",
-                 "validation":"required|numeric" 
+                 "validation":"required|numeric|gt:0|lte:15" 
                 },
                 {
                  "code":"luquid_water_yield",
                  "type":"numeric",
                  "title":"liquid_water_yield",
-                 "validation":"required|numeric" 
+                 "validation":"required|numeric|gt:0|lte:100" 
                 }
             ]
           },
@@ -108,13 +108,13 @@
                 "code":"drill_rate",
                 "type":"numeric",
                 "title":"drill_rate",
-                "validation":"required|numeric" 
+                "validation":"required|numeric|gt:0" 
               },
               {
                 "code":"drill_load",
                 "type":"numeric",
                 "title":"drill_load",
-                "validation":"required|numeric" 
+                "validation":"required|numeric|gt:0" 
               },
               {
                 "code":"drill_pump_type",
@@ -127,25 +127,25 @@
                 "code":"revs_per_minute",
                 "type":"numeric",
                 "title":"revs_per_minute",
-                "validation":"required|numeric" 
+                "validation":"required|numeric|gt:0" 
               },
               {
                 "code":"drill_pump_p",
                 "type":"numeric",
                 "title":"drill_pump_p",
-                "validation":"required|numeric" 
+                "validation":"required|numeric|gt:0" 
               },
               {
                 "code":"rotating_moment",
                 "type":"numeric",
                 "title":"rotating_moment",
-                "validation":"required|numeric" 
+                "validation":"required|numeric|gt:0" 
               },
               {
                 "code":"drill_piston_d",
                 "type":"numeric",
                 "title":"drill_piston_d",
-                "validation":"required|numeric" 
+                "validation":"required|numeric|gt:0" 
               }
             ]
           },
@@ -156,13 +156,13 @@
                 "code":"kern_roofing",
                 "type":"numeric",
                 "title":"kern_roofing",
-                "validation":"required|numeric" 
+                "validation":"required|numeric|gt:0|lte:kern_sole" 
               },
               {
                 "code":"kern_sole",
                 "type":"numeric",
                 "title":"kern_sole",
-                "validation":"required|numeric" 
+                "validation":"required|numeric|gt:0" 
               }
             ]
           }
@@ -187,7 +187,7 @@
                 "code":"diameter",
                 "type":"numeric",
                 "title":"diameter",
-                "validation":"required|numeric" 
+                "validation":"required|numeric|gt:0|lte:1000" 
               }
             ]
           },

@@ -225,7 +225,7 @@
 
 <script>
   import NewReportTable from '../reports/MonthlyProduction';
-  import SearchForm from '../ui-kit/SearchForm';
+  import SearchForm from '@ui-kit/SearchForm';
   import BigDataReportButton from './BigDataReportButton';
   import moment from "moment";
 
@@ -329,7 +329,7 @@
         }
       },
       loadDataForFilters() {
-        let uri = "http://172.20.103.187:8082/dzo_field_mapping/";
+        let uri = process.env.MIX_MICROSERVICE_PREDEFINED_REPORTS + "/dzo_field_mapping/";
 
         this.isLoading = true;
 

@@ -57,6 +57,12 @@ export default {
             };
             let uri = this.localeUrl("/get-otm-details");
             const response = await axios.get(uri,{params:queryOptions});
+
+            if (response.data && response.data.length === 0) {
+                this.wellsWorkoverPeriodStartMonth = moment(this.wellsWorkoverPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+                this.wellsWorkoverPeriodEndMonth = moment(this.wellsWorkoverPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+                return await this.getWellsWorkoverByMonth();
+            }
             if (response.status === 200) {
                 return response.data;
             }

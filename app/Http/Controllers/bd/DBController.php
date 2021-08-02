@@ -51,11 +51,6 @@ class DBController extends Controller
         return view('reports.geo_data_reference_book');
     }
 
-    public function userReports()
-    {
-        return view('reports.user_reports');
-    }
-
     public function constructor()
     {
         return view('reports.constructor');

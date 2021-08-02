@@ -1,5 +1,5 @@
 <template>
-  <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
+  <form @submit.prevent="" ref="form" class="bd-main-block__form scrollable" style="width: 100%">
     <cat-loader v-show="isloading"/>
     <div class="table-page">
       <template v-if="formParams">
@@ -11,6 +11,14 @@
         </p>
         <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
         <div v-else class="table-wrap scrollable">
+          <div v-for="custom_column in formParams.custom_columns">
+            <div :is="custom_column.component_name"
+                 :column="custom_column"
+                 :allColumns="formParams.columns"
+                 :updateTableData="updateTableData"
+                 :filter="filter">
+            </div>
+          </div>
           <table v-if="rows.length" class="table">
             <thead>
             <tr>
@@ -24,7 +32,7 @@
 
               <td
                   v-for="column in visibleColumns"
-                  :class="{'editable': column.is_editable}"
+                  :class="{'editable': formParams && formParams.available_actions.includes('update') && column.is_editable}"
                   @dblclick="editCell(row, column)"
               >
                 <template v-if="column.type === 'link'">
@@ -87,7 +95,11 @@
                 </template>
                 <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
                   <div v-if="isCellEdited(row, column)" class="input-wrap">
-                    <input v-model="row[column.code].value" class="form-control" type="text">
+                    <input
+                        v-model="row[column.code].value"
+                        class="form-control"
+                        type="text"
+                        @keyup.enter.stop.prevent="saveCell(row, column)">
                     <button type="button" @click.prevent="saveCell(row, column)">OK</button>
                     <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
                   </div>
@@ -100,7 +112,8 @@
                       </span>
                   </template>
                 </template>
-                <template v-if="history[row.id] && history[row.id][column.code]">
+                <template
+                    v-if="formParams.available_actions.includes('view history') && history[row.id] && history[row.id][column.code]">
                   <a :id="`history_${row.id}_${column.code}`" class="icon-history"></a>
                   <b-popover :target="`history_${row.id}_${column.code}`" custom-class="history-popover"
                              placement="top" triggers="hover">
@@ -159,8 +172,24 @@ import 'vue-datetime/dist/vue-datetime.css'
 import {bdFormActions, bdFormState} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
+import upperFirst from 'lodash/upperFirst'
+import camelCase from 'lodash/camelCase'
+import CatLoader from "@ui-kit/CatLoader";
 
-Vue.use(Datetime)
+const requireComponent = require.context('./CustomColumns', true, /\.vue$/i);
+requireComponent.keys().forEach(fileName => {
+  const componentConfig = requireComponent(fileName)
+  const componentName = upperFirst(
+      camelCase(
+          fileName
+              .split('/')
+              .pop()
+              .replace(/\.\w+$/, '')
+      )
+  );
+  Vue.component(componentName, componentConfig.default || componentConfig);
+});
+Vue.use(Datetime);
 
 export default {
   name: "BigDataTableForm",
@@ -181,7 +210,8 @@ export default {
   },
   components: {
     BigDataHistory,
-    RowHistoryGraph
+    RowHistoryGraph,
+    CatLoader
   },
   data() {
     return {
@@ -215,7 +245,7 @@ export default {
       'formParams'
     ]),
     visibleColumns() {
-      return this.formParams.columns.filter(column => column.type !== 'hidden')
+      return this.formParams.columns.filter(column => column.type !== 'hidden' && column.visible !== false)
     }
   },
   mounted() {
@@ -313,6 +343,9 @@ export default {
       return formula
     },
     editCell(row, column) {
+
+      if (!this.formParams.available_actions.includes('update')) return
+
       this.editableCell.row = row
       this.editableCell.column = column
     },
@@ -337,7 +370,6 @@ export default {
             data['params'] = row[column.code].params
           }
           this.isloading = true
-
           this.axios
               .patch(this.localeUrl(`/api/bigdata/forms/${this.params.code}/save/${column.code}`), data)
               .then(({data}) => {
@@ -346,15 +378,11 @@ export default {
                   row: null,
                   cell: null
                 }
-                this.recalculateCells()
+                this.updateTableData()
               })
               .catch(error => {
                 Vue.set(this.errors, column.code, error.response.data.errors)
               })
-              .finally(() => {
-                this.isloading = false
-              })
-
         } else {
           this.editableCell = {
             row: null,
@@ -460,7 +488,6 @@ export default {
               })
             }
           })
-
     }
   },
 };

@@ -6,44 +6,57 @@ use App\Filters\RoleFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RoleCreateRequest;
 use App\Http\Requests\IndexTableRequest;
+use App\Http\Resources\Admin\RoleListResource;
+use App\Models\PermissionSection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class RolesController extends Controller
 {
-    static protected  $sections = [
-            'oilgas' => 'Баз данных по нефти и газу',
-            'watermeasurement' => 'База данных по промысловой жидкости и газу',
-            'corrosion' => 'База данных по скорости корозии',
-            'omgca' => 'ОМГ ДДНГ',
-            'omgngdu' => 'ОМГ НГДУ',
-            'omguhe' => 'ОМГ УХЭ',
-            'pipe' => 'Трубопроводы',
-            'inhibitors' => 'Ингибиторы',
-            'gu' => 'ГУ',
-            'zu' => 'ЗУ',
-            'well' => 'Скважины',
-            'map-history' => 'История изменений на карте',
-        ];
-
-    static protected $dictCodes = [
-        'file_status',
-        'file_type',
-        'recording_method',
-        'recording_state',
-        'stem_section',
-        'stem_type',
-        'geo_mapping'
+    static protected $modules = [
+        [
+            'name' => 'monitoring',
+            'title' => 'Модуль мониторинг'
+        ],
+        [
+            'name' => 'economic',
+            'title' => 'Модуль экономика'
+        ],
+        [
+            'name' => 'bigdata',
+            'title' => 'Модуль Прототип БД'
+        ],
+        [
+            'name' => 'tr',
+            'title' => 'Модуль ТР'
+        ],
+        [
+            'name' => 'visualcenter',
+            'title' => 'Модуль центр визуализации'
+        ],
+        [
+            'name' => 'podborGno',
+            'title' => 'Модуль Подбор ГНО'
+        ],
+        [
+            'name' => 'paegtm',
+            'title' => 'Модуль Подбор ГТМ'
+        ],
     ];
 
     static protected $fieldCodes = [
-        'list',
-        'create',
-        'read',
-        'update',
-        'delete',
+        'list' => 'Просмотр списка',
+        'create' => 'Создание',
+        'read' => 'Чтение',
+        'update' => 'Изменение',
+        'delete' => 'Удаление',
+        'export' => 'Экспорт в excel',
+        'view history' => 'Просмотр истории',
+        'view' => 'Просмотр',
+        'load_las' => 'Загрузка las',
     ];
 
     public function index()
@@ -75,7 +88,7 @@ class RolesController extends Controller
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(\App\Http\Resources\Admin\RoleListResource::collection($users)->toJson()));
+        return response()->json(json_decode(RoleListResource::collection($users)->toJson()));
     }
 
     /**
@@ -91,15 +104,15 @@ class RolesController extends Controller
 
     public function create()
     {
-        $permissions = \Spatie\Permission\Models\Permission::query()
+        $permissions = Permission::query()
             ->get()
             ->keyBy('name');
 
-        $sections = self::$sections;
+        $sections = PermissionSection::all();
         $fieldCodes = self::$fieldCodes;
-        $dictCodes = self::$dictCodes;
+        $modules = self::$modules;
 
-        return view('admin.roles.create', compact('permissions', 'sections', 'fieldCodes', 'dictCodes'));
+        return view('admin.roles.create', compact('permissions', 'sections', 'fieldCodes', 'modules'));
     }
 
     /**
@@ -129,15 +142,15 @@ class RolesController extends Controller
      */
     public function edit(Role $role)
     {
-        $permissions = \Spatie\Permission\Models\Permission::query()
+        $permissions = Permission::query()
             ->get()
             ->keyBy('name');
 
-        $sections = self::$sections;
+        $sections = PermissionSection::all();
         $fieldCodes = self::$fieldCodes;
-        $dictCodes = self::$dictCodes;
+        $modules = self::$modules;
 
-        return view('admin.roles.edit', compact('role', 'permissions', 'sections', 'fieldCodes', 'dictCodes'));
+        return view('admin.roles.edit', compact('role', 'permissions', 'sections', 'fieldCodes', 'modules'));
     }
 
     /**
