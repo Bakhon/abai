@@ -48,7 +48,7 @@ export default {
           if (data?.url && data?.component?.parentType !== 'aegtm') {
             window.location.href = this.localeUrl(data.url);
           } else {
-            this.mainContent = data;
+            this.mainContent = data.component;
             this.parentType = data.parentType;
           }
         },
