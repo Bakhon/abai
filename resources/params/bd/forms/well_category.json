@@ -4,6 +4,12 @@
     "dbeg",
     "category"
   ],
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "well_cat",

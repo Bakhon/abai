@@ -1,5 +1,6 @@
 import {mapActions, mapGetters, mapMutations, mapState,} from 'vuex';
 
+// Gu Map //
 export const guMapState = arrNames => ({
     ...mapState('guMap', [
         ...arrNames,
@@ -23,7 +24,9 @@ export const guMapActions = arrNames => ({
         ...arrNames,
     ]),
 });
+// End Gu Map //
 
+// bd Form State //
 export const bdFormState = arrNames => ({
     ...mapState('bdform', [
         ...arrNames,
@@ -35,7 +38,9 @@ export const bdFormActions = arrNames => ({
         ...arrNames,
     ]),
 });
+// End bd Form //
 
+// dzoMap //
 export const dzoMapState = arrNames => ({
     ...mapState('dzoMap', [
         ...arrNames,
@@ -47,7 +52,10 @@ export const dzoMapActions = arrNames => ({
         ...arrNames,
     ]),
 });
+// End dzoMap //
 
+
+// complication Monitoring //
 export const complicationMonitoringState = arrNames => ({
     ...mapState('complicationMonitoring', [
         ...arrNames,
@@ -65,7 +73,10 @@ export const complicationMonitoringActions = arrNames => ({
         ...arrNames,
     ]),
 });
+// End complication Monitoring //
 
+
+// paegtm Map //
 export const paegtmMapActions = arrNames => ({
     ...mapActions('paegtmMap', [
         ...arrNames,
@@ -77,7 +88,10 @@ export const paegtmMapGetters = arrNames => ({
         ...arrNames,
     ]),
 });
+// End paegtm Map //
 
+
+// pgno Map //
 export const pgnoMapMutations = arrNames => ({
     ...mapMutations('pgno', [
         ...arrNames,
@@ -89,7 +103,10 @@ export const pgnoMapActions = arrNames => ({
         ...arrNames,
     ]),
 });
+// End pgno Map //
 
+
+// global loading //
 export const globalloadingState = arrNames => ({
     ...mapState('globalloading', [
         ...arrNames,
@@ -101,3 +118,24 @@ export const globalloadingMutations = arrNames => ({
         ...arrNames,
     ]),
 });
+// End global loading //
+
+// geology //
+export const geologyState = arrNames => ({
+    ...mapState('geology', [
+        ...arrNames,
+    ]),
+});
+
+export const geologyGetters = arrNames => ({
+    ...mapGetters('geology', [
+        ...arrNames,
+    ]),
+});
+
+export const geologyMutations = arrNames => ({
+    ...mapMutations('geology', [
+        ...arrNames,
+    ]),
+});
+// End geology //

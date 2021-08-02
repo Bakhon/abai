@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.gtm",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "Gtm_start",
@@ -13,7 +19,7 @@
                 "code": "dbeg",
                 "type": "datetime",
                 "title": "date_gtm_start",
-                "validation": "required|date|before:dend"
+                "validation": "required|date"
               },
               {
                 "code": "gtm_type",

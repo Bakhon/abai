@@ -10,7 +10,7 @@
                     @click="showHistoryItem(index)"
                 >
                     <p><b>{{ historyItem.user }}</b></p>
-                    <p>{{ historyItem.updated_at }}</p>
+                    <p>{{ historyItem.updated_at | moment().format('YYYY-MM-DD HH:mm') }}</p>
                 </div>
             </div>
             <div class="col-9">
@@ -19,11 +19,11 @@
                         <th><b>{{ trans('app.param_name') }}</b></th>
                         <th>
                             <p><b>{{ previousUser }}</b></p>
-                            <span>{{ previousDate }}</span>
+                          <span>{{ previousDate | moment().format('YYYY-MM-DD HH:mm') }}</span>
                         </th>
                         <th>
                             <p><b>{{ selectedItem.user }}</b></p>
-                            <span>{{ selectedItem.created_at }}</span>
+                          <span>{{ selectedItem.created_at | moment().format('YYYY-MM-DD HH:mm') }}</span>
                         </th>
                     </tr>
                     <tr v-for="(row, index) in selectedItem.payload" :key="index" :class="{'changed': row.changed}">

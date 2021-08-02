@@ -31,7 +31,7 @@ const complicationMonitoring = {
     },
 
     actions: {
-        async getAllComplicationMonitoringObjectsData({commit}) {
+        async getAllComplicationMonitoringObjects({commit}) {
             return axios.get(this._vm.localeUrl("/get_all_monitoring_data")).then((response) => {
                 let data = response.data.data;
                 commit('SET_NGDUS', data.ngdu);

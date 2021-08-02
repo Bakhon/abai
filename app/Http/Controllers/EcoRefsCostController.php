@@ -71,6 +71,7 @@ class EcoRefsCostController extends Controller
                 $item->company->name,
                 date('Y-m', strtotime($item->date)),
                 $item->variable,
+                $item->variable_processing,
                 $item->fix_noWRpayroll,
                 $item->fix_payroll,
                 $item->fix_nopayroll,
