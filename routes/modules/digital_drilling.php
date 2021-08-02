@@ -5,34 +5,17 @@ Route::group(
         Route::group(['prefix' => '/digital-drilling'], function () {
             // BD
             Route::group(['prefix' => '/bd'], function () {
-                Route::get('/', function () {
-                    return view('digital_drilling.bd.home');
-                })->name('digital-drilling-home');
-                Route::get('/info', function () {
-                    return view('digital_drilling.bd.info');
-                })->name('digital-drilling-info');
-                Route::get('/passport', function () {
-                    return view('digital_drilling.bd.passport');
-                })->name('digital-drilling-passport');
-                Route::get('/gis', function () {
-                    return view('digital_drilling.bd.gis');
-                })->name('digital-drilling-gis');
-                Route::get('/structure', function () {
-                    return view('digital_drilling.bd.structure');
-                })->name('digital-drilling-structure');
-                Route::get('/structure-graph', function () {
-                    return view('digital_drilling.bd.structure-graph');
-                })->name('digital-drilling-structure-graph');
-                Route::get('/inclino', function () {
-                    return view('digital_drilling.bd.inclino');
-                })->name('digital-drilling-inclino');
-                Route::get('/inclino-graph', function () {
-                    return view('digital_drilling.bd.inclino-graph');
-                })->name('digital-drilling-inclino-graph');
-                Route::get('/project-data', function () {
-                    return view('digital_drilling.bd.project-data');
-                })->name('digital-drilling-project-data');
+                Route::get('/',                     '\App\Http\Controllers\DigitalDrilling\BDController@index')->name('digital-drilling-home');
+                Route::get('/info',                 '\App\Http\Controllers\DigitalDrilling\BDController@info')->name('digital-drilling-info');
+                Route::get('/passport',             '\App\Http\Controllers\DigitalDrilling\BDController@passport')->name('digital-drilling-passport');
+                Route::get('/gis',                  '\App\Http\Controllers\DigitalDrilling\BDController@gis')->name('digital-drilling-gis');
+                Route::get('/structure',            '\App\Http\Controllers\DigitalDrilling\BDController@structure')->name('digital-drilling-structure');
+                Route::get('/structure-graph',      '\App\Http\Controllers\DigitalDrilling\BDController@structureGraph')->name('digital-drilling-structure-graph');
+                Route::get('/inclino',              '\App\Http\Controllers\DigitalDrilling\BDController@inclino')->name('digital-drilling-inclino');
+                Route::get('/inclino-graph',        '\App\Http\Controllers\DigitalDrilling\BDController@inclinoGraph')->name('digital-drilling-inclino-graph');
+                Route::get('/project-data',         '\App\Http\Controllers\DigitalDrilling\BDController@projectData')->name('digital-drilling-project-data');
             });
+
             // Project
             Route::group(['prefix' => '/project'], function () {
                 Route::get('/well-profile', function () {
