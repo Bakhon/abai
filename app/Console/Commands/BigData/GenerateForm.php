@@ -3,9 +3,9 @@
 namespace App\Console\Commands\BigData;
 
 use App\Rules\ClassName;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -39,7 +39,8 @@ class GenerateForm extends Command
         $this->generateFormConfig();
         $this->generateFormClass();
         $this->addFormToFormsList();
-        $this->addFormPermissions();
+        $this->createPermissionsMigration();
+        Artisan::call('migrate');
         Artisan::call('config:clear');
     }
 
@@ -140,7 +141,30 @@ class GenerateForm extends Command
         );
     }
 
-    private function addFormPermissions()
+    private function createPermissionsMigration()
+    {
+        $permissions = $this->generatePermissions();
+
+        $migrationClassName = "AddPermissionsTo{$this->formCode}Form";
+        $migrationFileName = Carbon::now()->format('Y_m_d_His') . '_' . Str::snake($migrationClassName) . '.php';
+
+        $text = File::get(__DIR__ . '/Templates/permissionsMigrationTemplate');
+        $text = str_replace(
+            [
+                '#MIGRATION_CLASS_NAME#',
+                '#PERMISSIONS#'
+            ],
+            [
+                $migrationClassName,
+                json_encode($permissions)
+            ],
+            $text
+        );
+
+        File::put(database_path('migrations/' . $migrationFileName), $text);
+    }
+
+    private function generatePermissions(): array
     {
         $actions = [
             'list',
@@ -152,16 +176,12 @@ class GenerateForm extends Command
         $permissions = [];
 
         foreach ($actions as $action) {
-            $permissions[] = 'bd forms ' . $this->configFileName . ' ' . $action;
+            $permissions[] = [
+                'name' => 'bd forms ' . $this->configFileName . ' ' . $action,
+                'guard_name' => 'web'
+            ];
         }
 
-        foreach ($permissions as $permission) {
-            DB::table('permissions')->insert(
-                [
-                    'name' => $permission,
-                    'guard_name' => 'web'
-                ]
-            );
-        }
+        return $permissions;
     }
 }
