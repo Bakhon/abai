@@ -2,9 +2,10 @@
     <div>
         <gtm-main-menu
             :parentType="this.parentType"
+            :mainMenu="menu"
             @menuClick="menuClick"
             @closeTree="closeTree"
-        ></gtm-main-menu>
+        />
         <div
             class="main-content-block"
             v-bind:is="mainContent"
@@ -19,6 +20,7 @@
 <script>
 
 import {paegtmMapActions} from '@store/helpers';
+import mainMenu from './mock-data/main_menu.json'
 
 export default {
     data: function () {
@@ -29,7 +31,8 @@ export default {
                 template: "<div><gtm-main-page></gtm-main-page></div>",
                 parentType: "aegtm-main"
             },
-            parentType: ''
+            parentType: '',
+            menu: mainMenu,
         };
     },
     methods: {
@@ -42,8 +45,12 @@ export default {
             'changeDateEnd',
         ]),
         menuClick (data) {
-            this.mainContent = data;
+          if (data?.url && data?.component?.parentType !== 'aegtm') {
+            window.location.href = this.localeUrl(data.url);
+          } else {
+            this.mainContent = data.component;
             this.parentType = data.parentType;
+          }
         },
         closeTree () {
             this.changeDisplayShadowBlock(false);

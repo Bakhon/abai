@@ -174,6 +174,7 @@ import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
+import CatLoader from "@ui-kit/CatLoader";
 
 const requireComponent = require.context('./CustomColumns', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
@@ -209,7 +210,8 @@ export default {
   },
   components: {
     BigDataHistory,
-    RowHistoryGraph
+    RowHistoryGraph,
+    CatLoader
   },
   data() {
     return {

@@ -225,7 +225,7 @@
 
 <script>
   import NewReportTable from '../reports/MonthlyProduction';
-  import SearchForm from '../ui-kit/SearchForm';
+  import SearchForm from '@ui-kit/SearchForm';
   import BigDataReportButton from './BigDataReportButton';
   import moment from "moment";
 

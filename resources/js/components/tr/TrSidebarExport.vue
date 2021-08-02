@@ -17,7 +17,7 @@
 </template>
 
 <script>
-const basePath = process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/";
+const basePath = process.env.MIX_POST_API_URL;
 const fileDownload = require("js-file-download");
 
 export default {

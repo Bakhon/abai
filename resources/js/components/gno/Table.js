@@ -9,7 +9,7 @@ import moment from "moment";
 import { PerfectScrollbar } from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import Vue from 'vue';
-import FullPageLoader from '../ui-kit/FullPageLoader';
+import FullPageLoader from '@ui-kit/FullPageLoader';
 import * as htmlToImage from 'html-to-image';
 import jsPDF from 'jspdf';
 import Tabs from './tabs/Tabs.vue'
