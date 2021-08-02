@@ -53,8 +53,6 @@
                     {{trans('visualcenter.saveButton')}}
                 </div>
             </div>
-
-            <!--        todo-->
             <div v-else class="col-2 row mt-3 ml-1">
                 <div class="col-12 date-select">
                     <span>{{trans('visualcenter.importForm.dateSelect')}}:</span><br>
@@ -79,10 +77,7 @@
                     {{trans('visualcenter.importForm.approve')}}
                 </div>
             </div>
-            <!--        todo-->
-
             <div v-if="!isArchiveActive" class="col-4 mt-3 row ml-1"></div>
-            <!--        todo-->
             <div v-else class="col-4 mt-3 row ml-1">
                 <b-form-input
                         size="sm"
@@ -99,7 +94,6 @@
                         :state="changeReasonState"
                 ></b-form-textarea>
             </div>
-            <!--        todo-->
             <div class="col-2 row mt-3 ml-1">
                 <div class="col-12 status-block status-block_little status-label">
                     <span>{{trans('visualcenter.importForm.statusLabel')}}:</span>
