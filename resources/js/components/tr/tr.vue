@@ -6697,7 +6697,7 @@ tr:not(.notsticky) td:nth-child(-n + 3) {
 tr:not(.notsticky) td:nth-child(2) {
   left: 23px;
   width: 100px;
-  z-index: 3000;
+  z-index: 3001;
 }
 tr:not(.notsticky) td:nth-child(3) {
   left: 121px;

@@ -71,7 +71,7 @@ td.fitwidth {
 .verticalTableHeader p:before{
     content:'';
     width:0;
-    padding-top:100%;/* takes width as reference, + 10% for faking some extra padding */
+    padding-top:100%;
     display:inline-block;
     vertical-align:bottom;
 }
@@ -82,9 +82,6 @@ table {
 }
 
 .ce {
-    /* position: relative; */
-    /* top: 54.7901% !important; */
-    /* bottom: 66.58%; */
     background: rgb(13, 30, 99) none repeat scroll 0% 0%;
     left: 14px !important;
     right: 20px;
@@ -115,26 +112,18 @@ table {
 }
 
 .cell-with-comment {
-    /* display: flex; */
     align-items: center;
     text-align: center;
     position: relative;
-    /* border-bottom: none !important;
-    border-left: none !important;
-    border-right: none !important; */
 }
 
 .circle-err {
     display: block;
-    /* background: #0d092a; */
     height: 10px;
     border-radius: 50px;
     width: 10px;
     margin-right: 20px;
     background: rgb(255, 0, 0);
-    /* float: left;
-    margin-right: -10px; */
-    /* cursor: pointer; */
 }
 
 .cell-comment{
@@ -150,7 +139,6 @@ table {
     font-size: 12px;
     padding:3px;
     bottom: 31px;
-    /* top:-80px; */
 }
 .cell-with-comment:hover .cell-comment {
     display: flex;
@@ -263,4 +251,28 @@ table {
 }
 body {
   overflow-y: hidden !important;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #656A8A;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #272953;
+}
+.activ.activ {
+  border-bottom: 2px solid rgb(145, 145, 145) ;
+  border-top: 2px solid rgb(145, 145, 145);
+  font-size: 11px;
 }
