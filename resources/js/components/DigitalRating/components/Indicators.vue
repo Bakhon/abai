@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { indicators } from '../data';
+import { indicators } from '../json/data';
 
 export default {
   name: "Indicators",
