@@ -1,7 +1,6 @@
 <template>
     <div>
         <div class="row main-layout pb-3">
-            <!--        todo-->
             <div class="col-12 row mt-3 ml-1">
                 <div class="col-4"></div>
                 <div
@@ -12,7 +11,9 @@
                     {{trans('visualcenter.importForm.insertData')}}
                 </div>
                 <div
-                        :class="[isArchiveActive ? 'category-button_border category-button' : '',' col-2 category-button']"
+                        :class="[isArchiveActive ? 'category-button_border category-button' : '',
+                        dzoUsers.includes(parseInt(userId)) ? 'menu__button_disabled' : '',
+                        ' col-2 category-button']"
                         @click="changeCategory"
                 >
                     <div class="archieve-icon"></div>
@@ -20,7 +21,6 @@
                 </div>
                 <div class="col-4"></div>
             </div>
-            <!--        todo-->
         </div>
         <div class="row main-layout mt-2">
             <div class="col-2 row mt-3 ml-1">

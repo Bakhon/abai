@@ -173,12 +173,14 @@ export default {
                         'agent_upload_waste_water_injection_fact'],
                     'formula': (value) => value * 1000
                 }
-            }
+            },
+            dzoUsers: []
         };
     },
     props: ['userId'],
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
+        this.dzoUsers = Object.keys(this.dzoMapping).map(k => this.dzoMapping[k].id);
         let currentDayNumber = moment().date();
         if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
             this.isChemistryButtonVisible = true;
