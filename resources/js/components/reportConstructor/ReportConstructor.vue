@@ -94,7 +94,7 @@
             </form>
           </div>
           <div class="col right-section-select-area">
-            <input type="checkbox" v-model="isUntilWells"/>
+            <input type="checkbox" v-model="isSelectUntilWells"/>
             {{ trans('bd.wells') }}
           </div>
         </div>
@@ -123,7 +123,7 @@
                       :onCheckboxClick="updateSelectedNodes"
                       :currentOption="currentOption"
                       :markedNodes="markedNodes[currentStructureType]"
-                      :isUntilWells="isUntilWells"
+                      :isSelectUntilWells="isSelectUntilWells"
                   >
                   </report-constructor-item-select-tree>
                 </template>

@@ -19,7 +19,7 @@
             :structureType="structureType"
             :renderComponent="renderComponent"
             :updateThisComponent="updateThisComponent"
-            :isUntilWells="isUntilWells"
+            :isSelectUntilWells="isSelectUntilWells"
         ></tree-view>
       </div>
     </div>
@@ -45,7 +45,7 @@ export default {
     isShowCheckboxes: Boolean,
     onCheckboxClick: Function,
     markedNodes: Object,
-    isUntilWells: Boolean,
+    isSelectUntilWells: Boolean,
     currentOption: Object,
   },
   mounted() {

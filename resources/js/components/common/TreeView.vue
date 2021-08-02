@@ -33,7 +33,7 @@
       <node
             v-for="(child, index) in node.children"
             :node="child"
-            :key="index+child.id+node.id"
+            :key="index+child.id"
             :handle-click="handleClick"
             :get-wells="getWells"
             :get-initial-items="getInitialItems"
@@ -66,7 +66,7 @@ export default {
     structureType: String,
     renderComponent: Number,
     updateThisComponent: Function,
-    isUntilWells: Boolean,
+    isSelectUntilWells: Boolean,
     handleClick: Function,
     getWells: Function,
     getInitialItems: Function,
@@ -97,10 +97,11 @@ export default {
       type: Function,
       required: false
     },
-    isUntilWells: Boolean,
+    isSelectUntilWells: Boolean,
     nodeClickOnArrow: false
   },
   created() {
+    if(typeof this.markedNodes === 'undefined') return;
     if(typeof this.markedNodes[this.level] === 'undefined') {
       this.markedNodes[this.level] = {};
     }
@@ -121,11 +122,17 @@ export default {
       if (this.nodeClickOnArrow && !this.node.children) {
           await this.handleClick(this.node);
       }
-      this.loadWells(this.node);
-      await this.onExpandTree(this.node, this.level);
-      if(this.isUntilWells) {
-        await this.updateChildren(this.node, this.level);
-        this.updateThisComponent();
+      if(this.isNodeOnBottomLevelOfHierarchy(this.node)) {
+        this.isLoading = true;
+        this.loadWells(this);
+      }
+      if(this.isShowCheckboxes) {
+        await this.onExpandTree(this.node, this.level);
+
+        if(this.isSelectUntilWells) {
+          await this.updateChildren(this.node, this.level);
+          this.updateThisComponent();
+        }
       }
 
       this.$forceUpdate()
@@ -151,7 +158,7 @@ export default {
         this.onExpandTree(child, level+1);
       }
     },
-    loadChilds: async function(node) {
+    loadChildren: async function(node) {
       if(this.isWell(node)) return;
       if(typeof node.children === 'undefined') {
         await this.handleClick(node);
@@ -167,19 +174,18 @@ export default {
       this.$forceUpdate()
     },
     loadWells: async function(node) {
-      if (!this.isNodeOnBottomLevelOfHierarchy(node)) return;
       await this.getWells(node);
       await this.updateChildren(this.node, this.level);
       this.updateThisComponent();
     },
-    
+
     updateChildren: async function(node, level) {
       if(typeof node.children === 'undefined' || !node.children) return;
       let content = this.markedNodes[level+1];
       let val = this.markedNodes[level][node.id];
       for(let child of node.children) {
         content[child.id] = val;
-        if(this.isUntilWells) {
+        if(this.isSelectUntilWells) {
           this.updateChildren(child, level+1);
         }
       }

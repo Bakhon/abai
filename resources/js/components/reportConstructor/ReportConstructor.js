@@ -39,7 +39,7 @@ export default {
             dateFlow: ['year', 'month', 'date'],
             markedNodes: {'org':{}, 'geo':{}, 'tech':{}},
             maxDepthOfSelectedAttributes: null,
-            isUntilWells: false,
+            isSelectUntilWells: false,
         }
     },
     mounted: function () {
