@@ -305,10 +305,10 @@
               </div>
               <div class="row" v-if="statistics">
                 <div class="table-wrapper col">
-                  <ul class="nav nav-tabs">
+                  <ul class="nav nav-tabs report-tab">
                     <template v-for="(sheetType, index) in sheetTypes">
                       <li class="nav-item" v-if="statistics[sheetType].length > 0">
-                          <span class="nav-link " href="#" :class="{ active: activeTab === index }"
+                          <span class="nav-link report-link" href="#" :class="{ active: activeTab === index }"
                                 @click="activeTab = index">
                             {{ sheetTypesDescription[sheetType] }}
                           </span>
@@ -1669,11 +1669,11 @@ body {
   box-shadow: 0 0 10px #000;
 }
 
-.nav-link.active {
+.nav-link.report-link.active {
   background: #fffef5;
 }
 
-.nav-tabs {
+.nav-tabs.report-tabs {
   border-bottom-color: #272953;
 }
 
