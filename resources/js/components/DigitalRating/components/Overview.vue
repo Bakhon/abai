@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { overviews } from '../data';
+import { overviews } from '../json/data';
 export default {
   name: "Overview",
 

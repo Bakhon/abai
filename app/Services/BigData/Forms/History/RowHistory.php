@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services\BigData\Forms\RowHistory;
+namespace App\Services\BigData\Forms\History;
 
 
 use App\Models\BigData\Well;

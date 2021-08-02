@@ -350,7 +350,7 @@ export default {
     &-block {
       background: #272953;
       border-left: 1px solid #454D7D;
-      overflow-y: auto;
+      overflow-y: visible;
       width: 50%;
       @media (max-width: 767px) {
         border-left: none;

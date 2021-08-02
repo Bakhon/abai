@@ -8,4 +8,5 @@ class RecordingMethodController extends LasDictionariesController
     protected $model = 'App\Models\BigData\Dictionaries\RecordingMethod';
     protected $resource = 'App\Http\Resources\RecordingMethodResource';
     protected $link = 'recording-method';
+    protected $view = 'bigdata.las_dictionaries';
 }

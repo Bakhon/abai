@@ -6,10 +6,9 @@
       </div>
       <div class="maps-development__wrapper">
         <div class="maps-development__item" v-for="map in maps" :key="map">
-          <img class="maps-development__item-icon" src="/img/icons/link.svg" alt="">
           <img
-              class="maps-development__item-img"
-              :src="`/img/digital-rating/${map}.svg`" alt=""
+            class="maps-development__item-img"
+            :src="`/img/digital-rating/${map}.svg`" alt=""
           >
         </div>
       </div>
@@ -34,8 +33,6 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: #272953;
-  padding: 10px;
   margin-bottom: 10px;
 }
 .maps-development__title {

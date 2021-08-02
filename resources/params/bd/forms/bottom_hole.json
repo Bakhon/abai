@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.bottom_hole",
+  "sort": [
+    {
+      "field": "data",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "bottom_h",

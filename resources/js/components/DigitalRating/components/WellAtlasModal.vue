@@ -5,10 +5,11 @@
     :draggable="false"
     :width="1000"
     :height="800"
-    :adaptive="true">
+    :adaptive="false"
+    @before-open="beforeOpen">
     <div class="modal-bign-container">
       <div class="modal-bign-header justify-content-end">
-        <button type="button" class="modal-bign-button" @click="$emit('close')">
+        <button type="button" class="modal-bign-button" @click="close">
           {{ trans('pgno.zakrit') }}
         </button>
       </div>
@@ -37,9 +38,7 @@
             v-model="sectorNumber"
           />
         </div>
-        <keep-alive>
-          <component :is="currentTabComponent"></component>
-        </keep-alive>
+        <component :is="currentTabComponent"></component>
         <div class="modal__footer mb-10px">
           <button type="button" class="btn-button btn-button--thm-blue mr-20px minw-200">
             {{ trans('digital_rating.markCandidate') }}
@@ -75,6 +74,7 @@ export default {
     return {
       sectorNumber: '7777',
       currentTab: 'overview',
+      isVisibleAtlas: false,
       tabs: [
         {
           title: 'digital_rating.overview',
@@ -109,6 +109,12 @@ export default {
   methods: {
     handleSelectTab(tab) {
       this.currentTab = tab;
+    },
+    beforeOpen(e) {
+      this.currentTab = 'overview';
+    },
+    close() {
+      this.$emit('close');
     }
   }
 }
