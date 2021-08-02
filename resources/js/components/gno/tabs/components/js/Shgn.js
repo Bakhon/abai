@@ -79,17 +79,23 @@ export default {
 				{
 					id: 1,
 					name: this.trans('pgno.yakor_truboderzhatel'),
-					value: 'yakor'
+					value: 'yakor',
+					disabled: false,
+					checked: true
 				},
 				{
 					id: 2,
 					name: this.trans('pgno.paker'),
-					value: 'paker'
+					value: 'paker',
+					disabled: false,
+					checked: false
 				},
 				{
 					id: 3,
 					name: this.trans('pgno.hvostovik'),
-					value: 'hvostovik'
+					value: 'hvostovik',
+					disabled: false,
+					checked: false
 				},
 
 			],
@@ -168,8 +174,24 @@ export default {
 		},
 	},
 	methods: {
-		isDisabled(k) {
-			return this.selectedKomponovka.length === 2 && this.selectedKomponovka[0] === k.value
+		updateBoxes(selectedKomponovka) {
+			console.log(selectedKomponovka)
+			if(selectedKomponovka.includes('paker')) {
+				this.komponovkaTypes[0].disabled = true
+				this.komponovkaTypes[2].disabled = true
+			} else if (this.selectedKomponovka.includes('hvostovik')) {
+				this.komponovkaTypes[1].disabled = true
+			} else if(this.selectedKomponovka.includes('hvostovik', 'yakor')) {
+				this.komponovkaTypes[1].disabled = true
+			} else if(this.selectedKomponovka.includes('yakor')) {
+				this.selectedKomponovka.push('hvostovik')
+				this.komponovkaTypes[1].disabled = true
+			} else if(this.selectedKomponovka.length === 0) {
+				this.komponovkaTypes[0].disabled = false
+				this.komponovkaTypes[1].disabled = false
+				this.komponovkaTypes[2].disabled = false
+			}
+			this.$store.dispatch('setKomponovka', this.selectedKomponovka)
 		},
 		setActiveOption(val) {
 			this.$store.commit('UPDATE_MARKSHTANG', val)

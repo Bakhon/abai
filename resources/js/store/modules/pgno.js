@@ -17,7 +17,7 @@ const pgno = {
         corrosion: "antiCorrosion",
         dmPumps: ["32", "38", "44", "57", "70"],
         dmRods: ["19", "22"],
-        komponovka: ["hvostovik"],
+        komponovka: null,
         stupColumns: "2",
         markShtang: ["15Х2ГМФ (НВО)"],
         kPodMode: true,

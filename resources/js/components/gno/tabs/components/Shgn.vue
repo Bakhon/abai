@@ -72,65 +72,12 @@
 		<div class="flex__item__block__1">
 			<div class="title__block"><span>{{trans('pgno.diametr_nasosov')}}, {{trans('measurements.mm')}}</span></div>
 				<div class="title__block__pump">
-					<div class="title__block__pump_list">
-
-						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmPumps" value="27" type="checkbox"/>
-							<label class="checkbox__block__label__1">27</label>
-						</div>
-
-						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmPumps" value="32" type="checkbox"/>
-							<label class="checkbox__block__label__1">32</label>
-						</div>
-
-						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmPumps" value="38" type="checkbox"/>
-							<label class="checkbox__block__label__1">38</label>
-						</div>
-
-					</div>
-
-					<div class="title__block__pump_list__2">
-
-						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmPumps" value="44" type="checkbox"/>
-							<label class="checkbox__block__label__1">44</label>
-						</div>
-
-						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmPumps" value="50" type="checkbox"/>
-							<label class="checkbox__block__label__1">50</label>
-						</div>
-
-						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmPumps" value="57" type="checkbox"/>
-							<label class="checkbox__block__label__1">57</label>
-						</div>
-
-					</div>
-
-					<div class="title__block__pump_list__3">
-
-						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmPumps" value="60" type="checkbox"/>
-							<label class="checkbox__block__label__1">60</label>
-						</div>
-
-						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmPumps" value="70" type="checkbox"/>
-							<label class="checkbox__block__label__1">70</label>
-						</div>
-
-						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmPumps" value="95" type="checkbox"/>
-							<label class="checkbox__block__label__1">95</label>
-						</div>
-
-						</div>
-					</div>
-
-				
+          <b-form-checkbox-group >
+            <b-form-checkbox class="shgn-checkbox-group" v-for="k in diametersShgn" v-model="dmPumps" :key="k.id" :checked="k.checked === true" :value="k.value">
+              {{ k.value }}
+            </b-form-checkbox>
+          </b-form-checkbox-group>
+        </div>
 				</div>
 
 		<div class="flex__item__block__1">
@@ -187,26 +134,25 @@
 					<div class="title__block__pump">
 						<div class="block__dm__pump__1">
               <b-form-checkbox-group v-model="selectedKomponovka">
-                <b-form-checkbox v-for="k in komponovkaTypes" :key="k.id" :value="k.value" :disabled="isDisabled(k)">
+                <b-form-checkbox class="shgn-checkbox-group" v-for="k in komponovkaTypes" :key="k.id" :value="k.value" :disabled="k.disabled" @change="updateBoxes(selectedKomponovka)">
                   {{ k.name }}
                 </b-form-checkbox>
               </b-form-checkbox-group>
+            </div>
+<!--              <input type="checkbox" v-model="komp" value="yakor" :disabled="komp.indexOf('paker')"/>-->
+<!--              <label>{{trans('pgno.yakor_truboderzhatel')}}</label>-->
 
-              {{ selectedKomponovka }}
-
-<!--							<input type="checkbox" v-for="k in komponovkaTypes" :key="k.id" :value="k.name " v-model="selectedKomponovka"/>-->
+<!--							<input type="checkbox" v-model="komp" value="yakor" :disabled="komp.indexOf('paker')"/>-->
 <!--							<label>{{trans('pgno.yakor_truboderzhatel')}}</label>-->
-						</div>
-						
-					
+<!--						</div>-->
 <!--						<div class="block__dm__pump__2">-->
-<!--							<input type="checkbox" v-model="komponovka" value="paker" :disabled="komponovka == 'hvostovik' && mechSep == true" />-->
-<!--							<label for="checkbox1">{{trans('pgno.paker')}}</label>-->
+<!--							<input type="checkbox" v-model="komp" value="paker" :disabled="komp.indexOf('hvostovik')" />-->
+<!--							<label>{{trans('pgno.paker')}}</label>-->
 <!--						</div>-->
 
 <!--						<div class="block__dm__pump__3">-->
-<!--							<input type="checkbox" v-model="komponovka" value="hvostovik" />-->
-<!--							<label for="checkbox1">{{trans('pgno.hvostovik')}}</label>-->
+<!--							<input type="checkbox" v-model="komp" value="hvostovik" />-->
+<!--							<label>{{trans('pgno.hvostovik')}}</label>-->
 <!--						</div>-->
 
 				</div>
@@ -562,7 +508,6 @@
 .flex__item__block__1__koroz {
   background-color: #272953;
   padding: 5px;
-  width: 896px;
   height: 80px;
   margin-top: 10px;
   position: relative;
