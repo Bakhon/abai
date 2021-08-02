@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.well_org",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "title",

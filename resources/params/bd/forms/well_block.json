@@ -5,6 +5,12 @@
     "dbeg",
     "block"
   ],
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "w_block",

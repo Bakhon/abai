@@ -110,6 +110,12 @@
       "form": "well_tech_connect"
     }
   ],
+  "sort": [
+    {
+      "field": "perf_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main",

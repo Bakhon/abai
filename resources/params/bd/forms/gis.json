@@ -3,6 +3,12 @@
   "default_values": {
     "gis_type.id": 1
   },
+  "sort": [
+    {
+      "field": "gis_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "title",
