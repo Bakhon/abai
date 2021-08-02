@@ -8,6 +8,12 @@
     "dbeg",
     "expl"
   ],
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "title",

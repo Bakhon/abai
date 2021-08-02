@@ -8,6 +8,12 @@
     "dbeg",
     "status"
   ],
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "status",

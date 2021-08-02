@@ -10,7 +10,6 @@
 
             </div>
         </div>
-        <cat-loader />
     </div>
 @endsection
 <link href="{{ asset('css/trfa.css')}}" rel="stylesheet">
