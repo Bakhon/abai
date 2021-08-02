@@ -1,70 +1,78 @@
 <template>
-  <div class="rating-sections">
-    <div class="rating-content">
-      <div class="rating-content__title">
-        <div>{{ trans('digital_rating.sectorMap') }}</div>
-        <div class="d-flex align-items-center">
-          <btn-dropdown :list="fileActions">
-            <template #icon>
-              <i class="far fa-file"/>
-            </template>
-            <template #title>
-              {{ trans('digital_rating.file') }}
-            </template>
-          </btn-dropdown>
-          <btn-dropdown :list="mapsActions">
-            <template #icon>
-              <i class="fas fa-map-marked-alt"/>
-            </template>
-            <template #title>
-              {{ trans('digital_rating.maps') }}
-            </template>
-          </btn-dropdown>
-          <i class="fas fa-cog gear-icon-svg"
-             @click="openSettingModal"
-             style="font-size: 20px;"
-          />
+  <div>
+    <gtm-main-menu
+      :parentType="this.parentType"
+      :mainMenu="menu"
+      @menuClick="menuClick"
+    />
+    <div class="rating-sections">
+      <div class="rating-content">
+        <div class="rating-content__title">
+          <div>{{ trans('digital_rating.sectorMap') }}</div>
+          <div class="d-flex align-items-center">
+            <btn-dropdown :list="fileActions">
+              <template #icon>
+                <i class="far fa-file"/>
+              </template>
+              <template #title>
+                {{ trans('digital_rating.file') }}
+              </template>
+            </btn-dropdown>
+            <btn-dropdown :list="mapsActions">
+              <template #icon>
+                <i class="fas fa-map-marked-alt"/>
+              </template>
+              <template #title>
+                {{ trans('digital_rating.maps') }}
+              </template>
+            </btn-dropdown>
+            <i class="fas fa-cog gear-icon-svg"
+               @click="openSettingModal"
+               style="font-size: 20px;"
+            />
+          </div>
+        </div>
+        <div class="rating-content__wrapper">
+          <div id="map"></div>
         </div>
       </div>
-      <div class="rating-content__wrapper">
-        <div id="map"></div>
+      <div class="rating-panel">
+        <accordion
+            :list="objects"
+            title="digital_rating.object"
+        />
+        <accordion
+            :list="maps"
+            title="digital_rating.mapsGeologyDevelopment"
+        />
+        <accordion
+            :list="cods"
+            title="digital_rating.sectorCode"
+        />
+        <accordion
+            :list="properties"
+            title="digital_rating.property"
+        />
       </div>
-    </div>
-    <div class="rating-panel">
-      <accordion
-        :list="objects"
-        title="digital_rating.object"
+      <setting-modal
+        @close="closeSettingModal"
       />
-      <accordion
-        :list="maps"
-        title="digital_rating.mapsGeologyDevelopment"
-      />
-      <accordion
-        :list="cods"
-        title="digital_rating.sectorCode"
-      />
-      <accordion
-        :list="properties"
-        title="digital_rating.property"
+      <well-atlas-modal
+        @close="closeAtlasModal"
       />
     </div>
-    <setting-modal
-      @close="closeSettingModal"
-    />
-    <well-atlas-modal
-      @close="closeAtlasModal"
-    />
   </div>
 </template>
 
 <script>
 import L from 'leaflet';
-import mapsData from './dataMap.json';
+import mapsData from './json/dataMap.json';
 import 'leaflet/dist/leaflet.css';
 import BtnDropdown from "./components/BtnDropdown";
 import SettingModal from "./components/SettingModal";
 import WellAtlasModal from "./components/WellAtlasModal";
 import Accordion from "./components/Accordion";
+import mainMenu from "../GTM/mock-data/main_menu.json";
 
 export default {
   name: "Sections",
@@ -90,7 +98,9 @@ export default {
       mapsActions: [
         { title: 'digital_rating.uploadCustomMaps', icon: 'share', type: 'upload' },
         { title: 'digital_rating.importPlannedWells', icon: 'upload', type: 'importWells' }
-      ]
+      ],
+      parentType: '',
+      menu: mainMenu,
     };
   },
 
@@ -104,7 +114,13 @@ export default {
         crs: L.CRS.Simple,
         minZoom: 1,
         maxZoom: 3,
+        zoomControl: false
       });
+
+      L.control.zoom({
+        position: 'bottomright'
+      }).addTo(map);
+
       const bounds = [[0, 1500], [0,1500]];
       map.fitBounds(bounds);
 
@@ -158,6 +174,12 @@ export default {
     closeSettingModal() {
       this.$modal.hide('modalSetting');
     },
+    menuClick(data) {
+      const path = window.location.pathname.slice(3);
+      if (data?.url && data.url !== path) {
+        window.location.href = this.localeUrl(data.url);
+      }
+    }
   }
 }
 </script>
@@ -166,6 +188,7 @@ export default {
 .rating-sections {
   color: #fff;
   display: flex;
+  margin-top: 3rem;
 
   .rating-content {
     height: calc(100vh - 160px);
