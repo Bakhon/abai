@@ -362,29 +362,29 @@
                           <tr v-for="(row, row_index) in lonelywell" 
                             :key="row_index"
                             ref="editTable">
-                            <td><input data-key="field" :value="row.field" class="input_edit"></td>
-                            <td><input data-key="well_status_last_day" :value="row.well_status_last_day" class="input_edit"></td>
-                            <td><input data-key="rus_wellname" :value="row.rus_wellname" class="input_edit"></td>
-                            <td><input data-key="horizon" :value="row.horizon" class="input_edit"></td>
-                            <td><input data-key="object" :value="row.object" class="input_edit"></td>
-                            <td><input data-key="exp_meth" :value="row.exp_meth" class="input_edit"></td>
-                            <td><input data-key="type_text" :value="row.type_text" class="input_edit"></td>
-                            <td><input data-key="block" :value="row.block" class="input_edit"></td>
-                            <td><input data-key="cas_OD" :value="row.cas_OD" class="input_edit"></td>
-                            <td><input data-key="cas_ID" :value="row.cas_ID" class="input_edit"></td>
-                            <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md" class="input_edit"></td>
-                            <td><input data-key="pump_type" :value="row.pump_type" class="input_edit"></td>
-                            <td><input data-key="type_sr" :value="row.type_sr" class="input_edit"></td>
-                            <td><input data-key="whp" :value="row.whp" class="input_edit"></td>
-                            <td><input data-key="line_p" :value="row.line_p" class="input_edit"></td>
-                            <td><input data-key="p_res" :value="row.p_res" class="input_edit"></td>
-                            <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit"></td>
-                            <td><input data-key="p_annular" :value="row.p_annular" class="input_edit"></td>
-                            <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit"></td>
-                            <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit"></td>
-                            <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
-                            <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
-                            <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
+                            <td><input data-key="field" :value="row.field" class="input_edit_modal"></td>
+                            <td><input data-key="well_status_last_day" :value="row.well_status_last_day" class="input_edit_modal"></td>
+                            <td><input data-key="rus_wellname" :value="row.rus_wellname" class="input_edit_modal"></td>
+                            <td><b-form-select data-key="horizon" :value="row.horizon" :options="horizonFilterData" class="select_edit"></b-form-select></td>
+                            <td><input data-key="object" :value="row.object" class="input_edit_modal"></td>
+                            <td><input data-key="exp_meth" :value="row.exp_meth" class="input_edit_modal"></td>
+                            <td><input data-key="type_text" :value="row.type_text" class="input_edit_modal"></td>
+                            <td><input data-key="block" :value="row.block" class="input_edit_modal"></td>
+                            <td><input data-key="cas_OD" :value="row.cas_OD" class="input_edit_modal"></td>
+                            <td><input data-key="cas_ID" :value="row.cas_ID" class="input_edit_modal"></td>
+                            <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md" class="input_edit_modal"></td>
+                            <td><input data-key="pump_type" :value="row.pump_type" class="input_edit_modal"></td>
+                            <td><input data-key="type_sr" :value="row.type_sr" class="input_edit_modal"></td>
+                            <td><input data-key="whp" :value="row.whp" class="input_edit_modal"></td>
+                            <td><input data-key="line_p" :value="row.line_p" class="input_edit_modal"></td>
+                            <td><input data-key="p_res" :value="row.p_res" class="input_edit_modal"></td>
+                            <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit_modal"></td>
+                            <td><input data-key="p_annular" :value="row.p_annular" class="input_edit_modal"></td>
+                            <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit_modal"></td>
+                            <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit_modal"></td>
+                            <td><input data-key="h_perf" :value="row.h_perf" class="input_edit_modal"></td>
+                            <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit_modal"></td>
+                            <td v-show="false"><input data-key="well" :value="row.well" class="input_edit_modal"></td>
 
                           </tr>
                         </tbody>
@@ -6719,6 +6719,18 @@ tr:nth-child(even) td {
   background: #7879a6;
   color: white;
   font-size: 12px;
+}
+.select_edit {
+  width: 140px;
+  background: #7879a6;
+  height: 31px;
+  color: white;
+}
+.input_edit_modal {
+  background: #7879a6;
+  color: white;
+  font-size: 12px;
+  height: 31px;
 }
 
 /* width */

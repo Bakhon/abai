@@ -249,6 +249,7 @@ export default {
       editPageNumberLink: "techregime_edit_page_numbers/",
       searchLink: "techregime_totals_test_3/",
       editSearchLink: "techregime_edit_page/",
+      selected: 'A',
     };
   },
   methods: {
@@ -322,6 +323,7 @@ export default {
           if (data) {
             this.filter_column = data;
             this.horizonFilterData = data.horizon;
+            this.teest = data.horizon,
             this.objectFilterData = data.object;
             this.fieldFilterData = data.field;
             this.wellTypeFilterData = data.well_type;
