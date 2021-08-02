@@ -2,61 +2,61 @@
     <table class="table defaultTable">
         <tbody>
         <tr>
-            <th rowspan="3" colspan="2" class="align-middle">Номер колон-ны в рядке спуска</th>
-            <th rowspan="3" colspan="2">Номер раздельно спускаемой части колонны в порядке спуска</th>
-            <th rowspan="3" colspan="2" class="align-middle">Номер равнопрочной секции труб в раздельно спускаемой части колонны (снизу-вверх)</th>
-            <th colspan="4" class="align-middle">Интервал установки равнопрочной секции по стволу, м</th>
-            <th rowspan="3" colspan="2" class="align-middle">Длина секции по стволу, м</th>
-            <th rowspan="3" colspan="2" class="align-middle">Масса секции (в воздухе), т</th>
-            <th rowspan="3" colspan="2" class="align-middle">Нарастающая масса (в воздухе), т</th>
-            <th colspan="8" class="align-middle">Характеристика обсадной трубы</th>
-            <th colspan="6" class="align-middle" >Коэфициенты запаса прочности при</th>
+            <th rowspan="3" colspan="2" class="align-middle">{{trans('digital_drilling.well_casing.column_number')}}</th>
+            <th rowspan="3" colspan="2">{{trans('digital_drilling.well_casing.number_of_the_separately')}}</th>
+            <th rowspan="3" colspan="2" class="align-middle">{{trans('digital_drilling.well_casing.equal_strength_pipe')}}</th>
+            <th colspan="4" class="align-middle">{{trans('digital_drilling.well_casing.installation_interval')}}</th>
+            <th rowspan="3" colspan="2" class="align-middle">{{trans('digital_drilling.well_casing.section_length')}}</th>
+            <th rowspan="3" colspan="2" class="align-middle">{{trans('digital_drilling.well_casing.section_weight')}}</th>
+            <th rowspan="3" colspan="2" class="align-middle">{{trans('digital_drilling.well_casing.growing_mass')}}</th>
+            <th colspan="8" class="align-middle">{{trans('digital_drilling.well_casing.casing_pipe_characteristic')}}</th>
+            <th colspan="6" class="align-middle" >{{trans('digital_drilling.well_casing.safety_factors_at')}}</th>
         </tr>
         <tr>
-            <th rowspan="2" colspan="2" class="align-middle">от (верх)</th>
+            <th rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.from')}}</th>
             <th rowspan="2" colspan="2"></th>
-            <th rowspan="2" colspan="2">номинальный наружный диаметр, мм</th>
-            <th rowspan="2" colspan="2">код тип соединения труб</th>
-            <th rowspan="2" colspan="2">марка (группа прочности материала)</th>
-            <th rowspan="2" colspan="2">толщина стенки мм</th>
-            <th colspan="4">избыточном давлений</th>
-            <th rowspan="2" colspan="2" class="align-middle">растяжении</th>
+            <th rowspan="2" colspan="2">{{trans('digital_drilling.well_casing.nominal_outer_diameter')}}</th>
+            <th rowspan="2" colspan="2">{{trans('digital_drilling.well_casing.code_pipe')}}</th>
+            <th rowspan="2" colspan="2">{{trans('digital_drilling.well_casing.mark')}}</th>
+            <th rowspan="2" colspan="2">{{trans('digital_drilling.well_casing.wall_thickness')}}м</th>
+            <th colspan="4">{{trans('digital_drilling.well_casing.overpressure')}}</th>
+            <th rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.well_casing.stretching')}}</th>
         </tr>
         <tr>
-            <th colspan="2">наружном</th>
-            <th colspan="2">внутреннем</th>
+            <th colspan="2">{{trans('digital_drilling.well_casing.outwardly')}}</th>
+            <th colspan="2">{{trans('digital_drilling.well_casing.internal')}}</th>
         </tr>
         <tr>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
-            <th>проект</th>
-            <th>факт</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
         </tr>
         <tr v-for="(n, i) in 10">
             <td v-for="(n, i) in 30"></td>

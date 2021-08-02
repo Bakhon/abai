@@ -2,38 +2,38 @@
     <table class="table defaultTable">
         <tbody>
         <tr>
-            <th colspan="11">Элементы технологической оснастки колонны</th>
-            <th colspan="4">Суммарные на колонну</th>
+            <th colspan="11">{{trans('digital_drilling.technical_casing.elements')}}</th>
+            <th colspan="4">{{trans('digital_drilling.technical_casing.column_totals')}}</th>
         </tr>
         <tr>
-            <th rowspan="2" class="align-middle">Название колонны</th>
-            <th rowspan="2" colspan="2" class="align-middle">наименование, шифр, типоразмер</th>
-            <th rowspan="2" colspan="2" class="align-middle">масса элемента, кг</th>
-            <th colspan="4">интервал установки, м (по стволу)</th>
-            <th rowspan="2" colspan="2" class="align-middle">количество элементов на интервале</th>
-            <th rowspan="2" colspan="2" class="align-middle">количество, шт.</th>
-            <th rowspan="2" colspan="2" class="align-middle">масса, кг</th>
+            <th rowspan="2" class="align-middle">{{trans('digital_drilling.technical_casing.column_name')}}</th>
+            <th rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.technical_casing.name_code_standard_size')}}</th>
+            <th rowspan="2" colspan="2" class="align-middle">м{{trans('digital_drilling.technical_casing.element_weight')}}</th>
+            <th colspan="4">{{trans('digital_drilling.technical_casing.installation_interval')}}</th>
+            <th rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.technical_casing.number_of_elements')}}</th>
+            <th rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.technical_casing.quantity')}}</th>
+            <th rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.technical_casing.weight')}}</th>
         </tr>
         <tr>
-            <th colspan="2">Проект</th>
-            <th colspan="2">Факт</th>
+            <th colspan="2">{{trans('digital_drilling.project')}}</th>
+            <th colspan="2">{{trans('digital_drilling.fact')}}</th>
         </tr>
         <tr>
             <th></th>
-            <th>Проект</th>
-            <th>Факт</th>
-            <th>Проект</th>
-            <th>Факт</th>
-            <th>Проект</th>
-            <th>Факт</th>
-            <th>Проект</th>
-            <th>Факт</th>
-            <th>Проект</th>
-            <th>Факт</th>
-            <th>Проект</th>
-            <th>Факт</th>
-            <th>Проект</th>
-            <th>Факт</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
         </tr>
         <tr v-for="(n, i) in 10">
             <td v-for="(n, i) in 15"></td>

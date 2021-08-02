@@ -2,34 +2,35 @@
     <table class="table defaultTable">
         <tbody>
         <tr>
-            <th colspan="4">Глубина залегания, м</th>
-            <th colspan="4">Стратиграфическое подразделение</th>
-            <th colspan="4">Элементы залегания (падения) пластов по подошве</th>
-            <th rowspan="2" colspan="2" class="align-middle">Коэффициент кавернозности в интервале</th>
+            <th colspan="4">{{trans('digital_drilling.geology.depth_of_occurrence')}}</th>
+            <th colspan="4">{{trans('digital_drilling.geology.stratigraphic_division')}}</th>
+            <th colspan="4">{{trans('digital_drilling.geology.laying_elements')}}</th>
+            <th rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.geology.vug_coefficient')}}</th>
         </tr>
         <tr>
-            <th colspan="2">Проект</th>
-            <th colspan="2">Факт</th>
-            <th colspan="2">Проект</th>
-            <th colspan="2">Факт</th>
-            <th colspan="2">Проект</th>
-            <th colspan="2">Факт</th>
+            <th colspan="2">{{trans('digital_drilling.project')}}</th>
+            <th colspan="2">{{trans('digital_drilling.fact')}}</th>
+            <th colspan="2">{{trans('digital_drilling.project')}}</th>
+            <th colspan="2">{{trans('digital_drilling.fact')}}</th>
+            <th colspan="2">{{trans('digital_drilling.project')}}</th>
+            <th colspan="2">{{trans('digital_drilling.fact')}}</th>
         </tr>
         <tr>
-            <th>от (верх)</th>
-            <th>до (низ)</th>
-            <th>от (верх)</th>
-            <th>до (низ)</th>
-            <th>от (верх)</th>
-            <th>до (низ)</th>
-            <th>от (верх)</th>
-            <th>до (низ)</th>
-            <th>от (верх)</th>
-            <th>до (низ)</th>
-            <th>от (верх)</th>
-            <th>до (низ)</th>
-            <th>Проект</th>
-            <th>Факт</th>
+            <th>{{trans('digital_drilling.from')}}</th>
+            <th>{{trans('digital_drilling.to')}}</th>
+            <th>{{trans('digital_drilling.from')}}</th>
+            <th>{{trans('digital_drilling.to')}}</th>
+            <th>{{trans('digital_drilling.from')}}</th>
+            <th>{{trans('digital_drilling.to')}}</th>
+            <th>{{trans('digital_drilling.from')}}</th>
+            <th>{{trans('digital_drilling.to')}}</th>
+            <th>{{trans('digital_drilling.from')}}</th>
+            <th>{{trans('digital_drilling.to')}}</th>
+            <th>{{trans('digital_drilling.from')}}</th>
+            <th>{{trans('digital_drilling.to')}}</th>
+
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
         </tr>
             <tr v-for="(n, i) in 10">
                 <td v-for="(n, i) in 14"></td>

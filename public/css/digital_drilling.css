@@ -405,7 +405,6 @@ canvas#foo {
 
 .digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .bigTitle {
     display: table;
-    /*margin: 0 auto 20px;*/
     color: #fff;
     font-size: 22px;
     font-weight: bolder;
@@ -807,7 +806,7 @@ div#map {
 .digital_drilling .contentBlock .digitalDrillingWindow .windowHead .controlBlock {
     position: absolute;
     right: 15px;
-    top: 13px;
+    top: 13px!important;
     width: auto;
     display: flex;
     align-items: center;

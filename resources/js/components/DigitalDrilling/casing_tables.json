@@ -1,6 +1,6 @@
 [
   {
-    "name": "Обсадная колонна",
+    "name": "digital_drilling.project_data.casing",
     "id": 1,
     "component": {
       "name": "casing-table",
@@ -8,7 +8,7 @@
     }
   },
   {
-    "name": "Техническая оснастка обсадных колонн",
+    "name": "digital_drilling.project_data.technical_casing",
     "id": 2,
     "component": {
       "name": "casing-table",

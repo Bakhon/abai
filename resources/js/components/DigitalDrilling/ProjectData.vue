@@ -5,23 +5,23 @@
             <div class="bodyContent">
                 <div class="row mb-3 bodyContentRow">
                     <div class="col-sm-3">
-                        <div class="bigTitle ">Проектные данные</div>
+                        <div class="bigTitle ">{{ trans('digital_drilling.project_data.title') }}</div>
                     </div>
                     <div class="col-sm-6">
                         <div class="dropdown" v-bind:class="{ full: mainTable.id<6}">
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                {{ mainTable.name }} <i class="fas fa-chevron-down"></i>
+                                {{ trans(mainTable.name) }} <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-menu" id="dropdown-menu1">
-                                <a class="dropdown-item" v-for="table in tables" v-if="mainTable.name!=table.name" @click="changeTable(table)">{{table.name}}</a>
+                                <a class="dropdown-item" v-for="table in tables" v-if="mainTable.name!=table.name" @click="changeTable(table)">{{ trans(table.name) }}</a>
                             </div>
                         </div>
                         <div class="dropdown second" v-if="mainTable.id>5" >
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                {{ casingTable.name }} <i class="fas fa-chevron-down"></i>
+                                {{ trans(casingTable.name) }} <i class="fas fa-chevron-down"></i>
                             </button>
                             <div class="dropdown-menu" id="dropdown-menu2">
-                                <a class="dropdown-item" v-for="table in casingTables" v-if="casingTable.name!=table.name" @click="changeCasingTable(table)">{{table.name}}</a>
+                                <a class="dropdown-item" v-for="table in casingTables" v-if="casingTable.name!=table.name" @click="changeCasingTable(table)">{{ trans(table.name) }}</a>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,6 @@
     import mainTables from './main_tables'
     import casingTables from './casing_tables'
     import vSelect from 'vue-select'
-
 
     export default {
         name: "ProjectData",

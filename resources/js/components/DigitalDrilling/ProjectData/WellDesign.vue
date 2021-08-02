@@ -2,33 +2,33 @@
     <table class="table defaultTable">
         <tbody>
         <tr>
-            <th rowspan="2" colspan="2" class="align-middle">Номер колонны в порядке спуска</th>
-            <th rowspan="2" colspan="2" class="align-middle">Название колонны или открытый ствол</th>
-            <th colspan="4" class="align-middle">Интервал по стволу скважины, м</th>
-            <th colspan="2">Номинальный диаметр ствола сважины, мм</th>
-            <th colspan="2">Расстояние от устья скважины до уровня подъема тампонажного раствора за колонной, м</th>
-            <th colspan="2">Количество  раздельно спускаемых частей колонны, шт.</th>
-            <th rowspan="2" colspan="2" class="align-middle">Коэффициент кавернозности в интервале</th>
+            <th rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.well_design.column_number')}}</th>
+            <th rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.well_design.column_name')}}</th>
+            <th colspan="4" class="align-middle">{{trans('digital_drilling.well_design.bore_spacing')}}</th>
+            <th colspan="2">{{trans('digital_drilling.well_design.nominal_diameter')}}</th>
+            <th colspan="2">{{trans('digital_drilling.well_design.wellhead_distance')}}</th>
+            <th colspan="2">{{trans('digital_drilling.well_design.number_of_separately')}}</th>
+            <th rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.well_design.vug_coefficient')}}</th>
         </tr>
         <tr>
-            <th colspan="2">Проект</th>
-            <th colspan="2">Факт</th>
-            <th>Проект</th>
-            <th>Факт</th>
-            <th>Проект</th>
-            <th>Факт</th>
-            <th>Проект</th>
-            <th>Факт</th>
+            <th colspan="2">{{trans('digital_drilling.project')}}</th>
+            <th colspan="2">{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
         </tr>
         <tr>
-            <th>Проект</th>
-            <th>Факт</th>
-            <th>Проект</th>
-            <th>Факт</th>
-            <th>от (верх)</th>
-            <th>до (низ)</th>
-            <th>от (верх)</th>
-            <th>до (низ)</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.from')}}</th>
+            <th>{{trans('digital_drilling.to')}}</th>
+            <th>{{trans('digital_drilling.from')}}</th>
+            <th>{{trans('digital_drilling.to')}}</th>
 
             <th></th>
             <th></th>
@@ -37,8 +37,8 @@
             <th></th>
             <th></th>
 
-            <th>Проект</th>
-            <th>Факт</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}</th>
         </tr>
         <tr v-for="(n, i) in 10">
             <td v-for="(n, i) in 16"></td>

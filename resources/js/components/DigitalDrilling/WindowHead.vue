@@ -1,6 +1,6 @@
 <template>
     <div class="windowHead">
-        <p class="headTitle">ДЗО, Месторождение, № скважины</p>
+        <p class="headTitle">{{ trans('digital_drilling.window_head.headTitle') }}</p>
         <div class="controlBlock">
             <button @click="openSearchModal"><i class="fas fa-search"></i></button>
             <a href=""><img src="/img/digital-drilling/button1.svg" alt=""></a>
@@ -8,8 +8,8 @@
         </div>
         <div class="search" v-bind:class="{active: search}">
             <div class="searchBlock">
-                <button>Поиск</button>
-                <label for="inputSearch">Введите текст |</label>
+                <button>{{ trans('digital_drilling.window_head.search') }}</button>
+                <label for="inputSearch">{{ trans('digital_drilling.window_head.enter_text') }} |</label>
                 <input type="text" name="search" id="inputSearch">
                 <i class="fas fa-search" @click="closeSearchModal"></i>
             </div>
@@ -18,13 +18,13 @@
                     <thead>
                     <tr>
                         <th>
-                            Номер скважины
+                            {{ trans('digital_drilling.window_head.well_number') }}
                         </th>
                         <th>
-                            Месторождение
+                            {{ trans('digital_drilling.window_head.field') }}
                         </th>
                         <th>
-                            ДЗО
+                            {{ trans('digital_drilling.window_head.DZO') }}
                         </th>
                     </tr>
                     </thead>

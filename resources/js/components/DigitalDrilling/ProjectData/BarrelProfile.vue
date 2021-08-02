@@ -2,46 +2,46 @@
     <table class="table defaultTable">
         <tbody>
         <tr>
-            <th colspan="4" class="align-middle">Интервал по вертикали, м</th>
-            <th colspan="2">Азимут, (градус)</th>
-            <th colspan="4" class="align-middle">Зенитный угол, град.</th>
-            <th colspan="4" class="align-middle">Горизонтальное отклонение, м</th>
-            <th colspan="4" class="align-middle">Горизонтальное отклонение, м</th>
+            <th colspan="4" class="align-middle">{{trans('digital_drilling.barrel_profile.vertical_spacing')}}</th>
+            <th colspan="2">{{trans('digital_drilling.barrel_profile.azimuth')}}</th>
+            <th colspan="4" class="align-middle">{{trans('digital_drilling.barrel_profile.zenith_angle')}}</th>
+            <th colspan="4" class="align-middle">{{trans('digital_drilling.barrel_profile.horizontal_deflection')}}</th>
+            <th colspan="4" class="align-middle">{{trans('digital_drilling.barrel_profile.horizontal_deflection')}}</th>
         </tr>
         <tr>
-            <th colspan="2">Проект</th>
-            <th colspan="2">Факт</th>
-            <th>Проект</th>
-            <th>Факт</th>
-            <th colspan="2">Проект</th>
-            <th colspan="2">Факт</th>
-            <th colspan="2">Проект</th>
-            <th colspan="2">Факт</th>
-            <th colspan="2">Проект</th>
-            <th colspan="2">Факт</th>
+            <th colspan="2">{{trans('digital_drilling.project')}}</th>
+            <th colspan="2">{{trans('digital_drilling.fact')}}</th>
+            <th>{{trans('digital_drilling.project')}}</th>
+            <th>{{trans('digital_drilling.fact')}}кт</th>
+            <th colspan="2">{{trans('digital_drilling.project')}}</th>
+            <th colspan="2">{{trans('digital_drilling.fact')}}</th>
+            <th colspan="2">{{trans('digital_drilling.project')}}</th>
+            <th colspan="2">{{trans('digital_drilling.fact')}}</th>
+            <th colspan="2">{{trans('digital_drilling.project')}}</th>
+            <th colspan="2">{{trans('digital_drilling.fact')}}</th>
         </tr>
         <tr>
-            <th>от (верх)</th>
-            <th>до (низ)</th>
-            <th>от (верх)</th>
-            <th>до (низ)</th>
+            <th>{{trans('digital_drilling.from')}}</th>
+            <th>{{trans('digital_drilling.to')}}</th>
+            <th>{{trans('digital_drilling.from')}}</th>
+            <th>{{trans('digital_drilling.to')}}</th>
 
             <th></th>
             <th></th>
 
-            <th>в начале интервала</th>
-            <th>в конце интервала</th>
-            <th>в начале интервала</th>
-            <th>в конце интервала</th>
+            <th>{{trans('digital_drilling.barrel_profile.beginning_interval')}}</th>
+            <th>{{trans('digital_drilling.barrel_profile.finishing_interval')}}</th>
+            <th>{{trans('digital_drilling.barrel_profile.beginning_interval')}}</th>
+            <th>{{trans('digital_drilling.barrel_profile.finishing_interval')}}</th>
 
-            <th>общее</th>
-            <th>за интервал</th>
-            <th>общее</th>
-            <th>за интервал</th>
-            <th>интервала</th>
-            <th>общая</th>
-            <th>интервала</th>
-            <th>общая</th>
+            <th>{{trans('digital_drilling.barrel_profile.general')}}</th>
+            <th>{{trans('digital_drilling.barrel_profile.interval')}}</th>
+            <th>{{trans('digital_drilling.barrel_profile.general')}}</th>
+            <th>{{trans('digital_drilling.barrel_profile.interval')}}</th>
+            <th>{{trans('digital_drilling.barrel_profile.intervals')}}</th>
+            <th>{{trans('digital_drilling.barrel_profile.generals')}}</th>
+            <th>{{trans('digital_drilling.barrel_profile.intervals')}}</th>
+            <th>{{trans('digital_drilling.barrel_profile.generals')}}</th>
         </tr>
         <tr v-for="(n, i) in 10">
             <td v-for="(n, i) in 18"></td>

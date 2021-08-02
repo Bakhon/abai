@@ -1,6 +1,6 @@
 [
   {
-    "name": "Техническое задание",
+    "name":  "digital_drilling.project_data.technical_task",
     "id": 1,
     "component": {
       "name": "main-table",
@@ -8,7 +8,7 @@
     }
   },
   {
-    "name": "Геология",
+    "name": "digital_drilling.project_data.geology",
     "id": 2,
     "component": {
       "name": "main-table",
@@ -16,7 +16,7 @@
     }
   },
   {
-    "name": "Конструкция скважины",
+    "name": "digital_drilling.project_data.well_design",
     "id": 3,
     "component": {
       "name": "main-table",
@@ -24,7 +24,7 @@
     }
   },
   {
-    "name": "Профиль ствола",
+    "name": "digital_drilling.project_data.barrel_profile",
     "id": 4,
     "component": {
       "name": "main-table",
@@ -32,7 +32,7 @@
     }
   },
   {
-    "name": "Буровые растворы",
+    "name": "digital_drilling.project_data.drilling_fluids",
     "id": 5,
     "component": {
       "name": "main-table",
@@ -40,7 +40,7 @@
     }
   },
   {
-    "name": "Крепление скважины",
+    "name": "digital_drilling.project_data.well_casing",
     "id": 6,
     "component": {
       "name": "main-table",
