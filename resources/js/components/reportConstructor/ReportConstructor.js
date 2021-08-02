@@ -97,6 +97,7 @@ export default {
         onMenuClick(currentStructureType) {
             this.currentStructureType = currentStructureType;
             this.currentOption = null;
+            this.currentItemType = null;
         },
         onClickOption(structureType) {
             this.currentOption = structureType;
@@ -122,7 +123,7 @@ export default {
             let content = this.markedNodes[this.currentStructureType];
             if(typeof content[structureType.name] === 'undefined') return false;
             content = content[structureType.name];
-            if(!content) return;
+            if(!content) return false;
             for(let idx in content) {
                 for(let val in content[idx]) {
                     if(content[idx][val]) return true;

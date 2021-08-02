@@ -122,9 +122,10 @@ export default {
       if (this.nodeClickOnArrow && !this.node.children) {
           await this.handleClick(this.node);
       }
-      if(this.isNodeOnBottomLevelOfHierarchy(this.node)) {
+      if(typeof this.node.children === 'undefined'
+        || this.isNodeOnBottomLevelOfHierarchy(this.node)) {
         this.isLoading = true;
-        this.loadWells(this);
+        await this.loadWells(this);
       }
       if(this.isShowCheckboxes) {
         await this.onExpandTree(this.node, this.level);
@@ -139,8 +140,8 @@ export default {
     },
     onClick: async function () {
       this.markedNodes[this.level][this.node.id] = !this.markedNodes[this.level][this.node.id];
-      this.loadChilds(this.node);
-      this.onExpandTree(this.node,this.level);
+      this.loadChildren(this.node);
+      this.onExpandTree(this.node, this.level);
       this.onCheckboxClick(this.node, this.level);
       await this.updateChildren(this.node, this.level);
       this.updateThisComponent();
@@ -169,9 +170,8 @@ export default {
       }
       
       for(let idx in node.children) {
-        await this.loadChilds(node.children[idx]);
+        await this.loadChildren(node.children[idx]);
       }
-      this.$forceUpdate()
     },
     loadWells: async function(node) {
       await this.getWells(node);
