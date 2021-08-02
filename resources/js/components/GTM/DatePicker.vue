@@ -31,10 +31,11 @@ import {paegtmMapActions} from '@store/helpers';
 export default {
     data: function () {
         return {
+            showSettings: true,
             isDatePickerShow: false,
             dateRange: {
-                start: new Date(this.$store.state.dateStart),
-                end: new Date(this.$store.state.dateEnd),
+                start: new Date(this.$store.state.paegtmMap.dateStart),
+                end: new Date(this.$store.state.paegtmMap.dateEnd),
             },
         }
     },

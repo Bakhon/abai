@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row m-0 p-0 pl-1 pr-1">
-            <div class="col-8 gtm-dark p-1 mt-1">
+            <div class="col-9 gtm-dark p-1 mt-1">
                 <gtm-main-indicator
                     v-bind:data="[
                         {
@@ -39,7 +39,7 @@
                     ]"
                 ></gtm-main-indicator>
             </div>
-            <div class="col-4 p-0 pl-2 mt-1">
+            <div class="col-3 p-0 pl-2 mt-1">
                 <div class="gtm-dark h-100 pl-2 p-1">
                     <gtm-main-indicator
                         v-bind:data="[
@@ -90,8 +90,27 @@
                           </tr>
                           </thead>
                           <tbody>
-                          <tr v-for="mainTableItem in mainTableData">
-                              <td v-for="value in mainTableItem" class="align-middle">{{ value }}</td>
+                          <tr
+                              v-for="mainTableItem in mainTableData"
+                              @click="selectDzo(mainTableItem)"
+                              v-bind:class="{ active: mainTableItem.selected }"
+                          >
+                              <td class="align-middle">
+                                  {{ mainTableItem.name_ru}}
+                                  <i class="fas fa-external-link-alt text-blue"></i>
+                              </td>
+                              <td class="align-middle">{{ mainTableItem.col_1}}</td>
+                              <td class="align-middle">{{ mainTableItem.col_2}}</td>
+                              <td class="align-middle">{{ mainTableItem.col_3}}</td>
+                              <td class="align-middle">{{ mainTableItem.col_4}}</td>
+                              <td class="align-middle">{{ mainTableItem.col_5}}</td>
+                              <td class="align-middle">{{ mainTableItem.col_6}}</td>
+                              <td class="align-middle">{{ mainTableItem.col_7}}</td>
+                              <td class="align-middle">{{ mainTableItem.col_8}}</td>
+                              <td class="align-middle">{{ mainTableItem.col_9}}</td>
+                              <td class="align-middle">{{ mainTableItem.col_10}}</td>
+                              <td class="align-middle">{{ mainTableItem.col_11}}</td>
+                              <td class="align-middle">{{ mainTableItem.col_12}}</td>
                           </tr>
                           </tbody>
                       </table>
@@ -103,28 +122,29 @@
                 </div>
             </div>
             <div class="col-3 p-0 pl-2">
+                <div class="mb-2">
+                    <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
+                </div>
                 <div class="gtm-dark h-100">
-                    <div class="p-0">
-                        <table class="table text-center text-white podbor-middle-table h-100 mb-0">
-                            <thead>
-                            <tr>
-                                <th class="align-middle" rowspan="2" style="width: 250px;">{{ trans('paegtm.gtmType') }}</th>
-                                <th colspan="2">{{ trans('paegtm.countThLong') }}</th>
-                                <th class="align-middle" rowspan="2">{{ trans('paegtm.headway.tech') }}</th>
-                                <th class="align-middle" rowspan="2">{{ trans('paegtm.headway.econom') }}</th>
-                            </tr>
-                            <tr>
-                                <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
-                                <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="comparisonIndicatorsItem in comparisonIndicators">
-                                <td v-for="value in comparisonIndicatorsItem" class="align-middle">{{ value }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <table class="table text-center text-white podbor-middle-table h-100 mb-0">
+                        <thead>
+                        <tr>
+                            <th class="align-middle" rowspan="2" style="width: 250px;">{{ trans('paegtm.gtmType') }}</th>
+                            <th colspan="2">{{ trans('paegtm.countThLong') }}</th>
+                            <th class="align-middle" rowspan="2">{{ trans('paegtm.headway.tech') }}</th>
+                            <th class="align-middle" rowspan="2">{{ trans('paegtm.headway.econom') }}</th>
+                        </tr>
+                        <tr>
+                            <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                            <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="comparisonIndicatorsItem in comparisonIndicators">
+                            <td v-for="value in comparisonIndicatorsItem" class="align-middle">{{ value }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -137,48 +157,6 @@
                 <img src="/img/GTM/demo_chart_2.png" alt="" class="img-fluid">
             </div>
         </div>
-
-        <!--
-        <div class="row m-0 p-1">
-            <div class="col-6 gtm-dark">
-                <div class="w-100 d-flex justify-content-end cursor-pointer">
-                    <img @click="showModal" src="/img/icons/link.svg" alt="" class="m-1 mt-2" width="18">
-                </div>
-                <bar-chart :height="190"></bar-chart>
-            </div>
-            <div class="col-6 pr-0">
-                <div class="gtm-dark pr-2">
-                    <div class="w-100 d-flex justify-content-end cursor-pointer">
-                        <img @click="showModal" src="/img/icons/link.svg" alt="" class="m-1 mt-2" width="18">
-                    </div>
-                    <bar-chart :height="190"></bar-chart>
-                </div>
-            </div>
-        </div>
-        <gtm-modal v-if="!isModalHide" @close="hideModal"></gtm-modal>
-        <script type="text/x-template" id="modal-template">
-            <transition name="modal">
-                <div class="modal-mask">
-                    <div class="modal-wrapper">
-                        <div class="modal-container gtm-dark">
-                            <div class="modal-body">
-                                <slot name="body">
-                                    <bar-chart :height="500"></bar-chart>
-                                </slot>
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <slot name="footer">
-                                    <button class="modal-default-button gtm-dark-light p-1 px-2" @click="$emit('close')">
-                                        Close
-                                    </button>
-                                </slot>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </transition>
-        </script>
-        -->
     </div>
 </template>
 
@@ -193,32 +171,8 @@ Vue.component("gtm-modal", {
 export default {
     data: function () {
         return {
-            mainTableData: [
-              ['АО "Озенмунайгаз"', 231, 284, +53, 384, 368, -16, 4724, 4687, -37, 5341, 5341, 0],
-              ['АО "ЭмбаМунайГаз"', 61, 74, +13, 87, 120, +33, 2453, 2407, -46, 2600, 2601, 0],
-              ['АО "Мангистаумунайгаз"', 348, 274, -74, 283, 184, -100, 5273, 5496, +223, 5922, 5954, +32],
-              ['АО "Каражанбасмунай"', 50, 46, -3, 26, 24, -2, 2077, 1930, -147, 2153, 2002, -150],
-              ['ТОО "СП "Казгермунай"', 15, 10, -5, 58, 45, -13, 1465, 1482, +17, 1538, 1555, +17],
-              ['ТОО "Казтуркмунай"', 9, 8, -1, 26, 24, -2, 396, 409, +13, 425, 432, +7],
-              ['ТОО "Казахойл Актобе"', 0, 0, 0, 3, 1, -2, 586, 588, +2, 588, 589, +1],
-            ],
-            comparisonIndicators: [
-                ['Бурение', 414, 417, 58, 65],
-                ['ОПЛ', 0, 1, 0, 100],
-                ['Ввод оценочных скважин из бурения', 2, 9, '-', '-'],
-                ['Углубление', 1, 1, 100, 100],
-                ['Бурение нагнет. скв.', 10, 10, '-', '-'],
-                ['ГРП', 235, 221, 56, 78],
-                ['Прочие КРС', 138, 151,54, 65],
-                ['Ввод скважин из БД', 13, 11, 50, 60],
-                ['Скин-ГРП', 100,100,56, 79],
-                ['ПВР', 342, 343, 48,	75],
-                ['ПВЛГ', 144, 130, 34, 47],
-                ['РИР', 4, 3, 100, 100],
-                ['НДГ', 2, 2, 0,50],
-                ['ИДН', 0, 1, 100, 6],
-                ['Прочие ГТМ', 36, 58, 54, 73],
-            ],
+            mainTableData: [],
+            comparisonIndicators: [],
             lineChartOptions: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -258,18 +212,62 @@ export default {
         ...paegtmMapActions([
             'changeDateStart',
             'changeDateEnd',
+            'changeDzoId',
         ]),
         showModal() {
             this.isModalHide = false;
         },
         hideModal() {
             this.isModalHide = true;
-        }
+        },
+        getGtmInfo() {
+            this.$store.commit('globalloading/SET_LOADING', true);
+            this.axios.get(
+                this.localeUrl('/paegtm/get-gtms'),
+                {params: {dzoId: this.dzoId, dateStart: this.$store.state.paegtmMap.dateStart, dateEnd: this.$store.state.paegtmMap.dateEnd}}
+            ).then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.comparisonIndicators = data
+                }
+                this.$store.commit('globalloading/SET_LOADING', false);
+            });
+        },
+        getMainTableData() {
+            this.axios.get(
+                this.localeUrl('/paegtm/get-main-table-data'),
+                {params: {dzoId: this.dzoId}}
+            ).then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.mainTableData = data
+                }
+            });
+        },
+        getData() {
+            this.getGtmInfo();
+            this.getMainTableData();
+        },
+        selectDzo(dzo) {
+
+            this.mainTableData.forEach((item) => {
+                if (item.id == dzo.id) {
+                    dzo.selected = !dzo.selected
+                } else {
+                    item.selected = false;
+                }
+            });
+
+            this.changeDzoId(dzo.id);
+            this.getData();
+        },
+
     },
     computed: {
         ...paegtmMapGetters([
             'dateStart',
             'dateEnd',
+            'dzoId',
         ]),
         mainBlockButtonText: function () {
             return this.showMainMap ? this.trans('paegtm.table') : this.trans('paegtm.map')
@@ -278,10 +276,14 @@ export default {
             return this.showMainMap ? '/img/GTM/icon_main_table_button.svg' : '/img/GTM/icon_main_map_button.svg'
         },
     },
+    created() {
+        this.$store.commit('globalloading/SET_LOADING', true);
+    },
     mounted () {
-        this.$store.commit('globalloading/SET_LOADING', false);
-        this.changeDateStart(this.dateStart);
-        this.changeDateEnd(this.dateEnd);
+        this.getData();
+        // this.changeDateStart(this.dateStart);
+        // this.changeDateEnd(this.dateEnd);
+        //this.changeDzoId(this.dzoId);
     }
 }
 </script>

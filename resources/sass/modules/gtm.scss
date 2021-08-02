@@ -213,10 +213,26 @@
         font-size: 0.8rem;
         padding: 0.3rem !important;
         border-top: none !important;
+
+        i {
+            font-size: 10px;
+            color: #7caceb;
+        }
     }
 
     td:not(last-child) {
         border-right: 1px solid rgba(69,77,125,1);
+    }
+
+    tr{
+        &.active {
+            td {
+                background-color: #2E50E9!important;
+            }
+        }
+        td:first-child {
+            cursor: pointer;
+        }
     }
 
 }

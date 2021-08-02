@@ -374,7 +374,7 @@ export default {
             this.$store.commit('globalloading/SET_LOADING',true);
             this.axios.get(
                 this.localeUrl('/paegtm/accum_oil_prod_data'),
-                {params: {dateStart: this.$store.state.dateStart, dateEnd: this.$store.state.dateEnd}}
+                {params: {dateStart: this.$store.state.paegtmMap.dateStart, dateEnd: this.$store.state.paegtmMap.dateEnd}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
@@ -393,7 +393,7 @@ export default {
             });
             this.axios.get(
                 this.localeUrl('/paegtm/comparison_indicators_data'),
-                {params: {dateStart: this.$store.state.dateStart, dateEnd: this.$store.state.dateEnd}}
+                {params: {dateStart: this.$store.state.paegtmMap.dateStart, dateEnd: this.$store.state.paegtmMap.dateEnd}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
