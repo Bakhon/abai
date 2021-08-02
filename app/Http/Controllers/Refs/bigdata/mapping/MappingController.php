@@ -77,7 +77,7 @@ class MappingController extends CrudController
     public function create(): \Illuminate\View\View
     {
         $modelName = $this->modelName;
-        $link = $this -> link;
+        $link = $this->link;
         $validationParams = $this->getValidationParams('data');
         $geoList = Geo::where('geo_type', 3)->orderBy('name_ru')->get();
         return view($this->view.'.create', compact('link', 'modelName', 'validationParams', 'geoList'));
@@ -105,7 +105,7 @@ class MappingController extends CrudController
     {
         $modelName = $this->modelName;
         $data = $this->model::find($id);
-        $link = $this -> link;
+        $link = $this->link;
         return view($this->view.'.show', compact('link', 'modelName', 'data'));
     }
 
@@ -117,7 +117,7 @@ class MappingController extends CrudController
         $data = $this->model::find($id);
         $validationParams = $this->getValidationParams('data');
         $modelName = $this->modelName;
-        $link = $this -> link;
+        $link = $this->link;
         $geoList = Geo::where('geo_type', 3)->orderBy('name_ru')->get();
         return view($this->view.'.edit', compact('link', 'modelName', 'data', 'validationParams', 'geoList'));
     }
