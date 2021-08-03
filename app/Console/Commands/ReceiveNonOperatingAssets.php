@@ -341,9 +341,13 @@ class receiveNonOperatingAssets extends Command
             'oil_delivery_fact' => 7
         );
         $kuzilkiaField = $sheet[$rowIndex + 1][$columnMapping['oil_production_fact']];
-        $tuzkolField = $sheet[$rowIndex + 2][$columnMapping['oil_production_fact']] * 0.5;
+        $westTuzkolField = $sheet[$rowIndex + 2][$columnMapping['oil_production_fact']] * 0.5;
+        $tuzkolField = $sheet[$rowIndex + 3][$columnMapping['oil_production_fact']] * 0.5;
+        $ketekazganField = $sheet[$rowIndex + 4][$columnMapping['oil_production_fact']] * 0.5;;
+        $belkudukField = $sheet[$rowIndex + 5][$columnMapping['oil_production_fact']] * 0.5;
+        $dzoSummary = $kuzilkiaField + $westTuzkolField + $tuzkolField + $ketekazganField + $belkudukField;
         return array (
-            'oil_production_fact' => ($row[$columnMapping['oil_production_fact']] + $kuzilkiaField + $tuzkolField) * 0.33,
+            'oil_production_fact' => $row[$columnMapping['oil_production_fact']] + $dzoSummary,
             'oil_delivery_fact' => $row[$columnMapping['oil_delivery_fact']],
             'dzo_name' => $dzoName,
             'date' => Carbon::yesterday('Asia/Almaty'),
