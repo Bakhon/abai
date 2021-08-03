@@ -46,7 +46,7 @@ class receiveNonOperatingAssets extends Command
     protected $server = "mail.kmg.kz";
     protected $isDataAvailable = true;
     protected $ews;
-    protected $filePath = 'public/test2.xls';
+    protected $filePath = '\test2.xls';
     protected $messageOptions = array(
           'id' => '',
           'changeKey' => ''
@@ -78,6 +78,7 @@ class receiveNonOperatingAssets extends Command
 
     public function processInboundEmail()
     {
+        $this->isDataAvailable = true;
         $this->assignMessageOptions(env('VISCENTER_EMAIL_ADDRESS', ''),env('VISCENTER_EMAIL_PASSWORD', ''));
         if (!$this->isDataAvailable) {
             return;
@@ -88,7 +89,6 @@ class receiveNonOperatingAssets extends Command
     }
     public function processGDUEmail()
     {
-        $this->isDataAvailable = true;
         $this->assignMessageOptions(env('VISCENTER_GDU_EMAIL_ADDRESS', ''),env('VISCENTER_GDU_EMAIL_PASSWORD', ''));
         if (!$this->isDataAvailable) {
             return;
@@ -118,6 +118,7 @@ class receiveNonOperatingAssets extends Command
             $items = $response_message->RootFolder->Items->Message;
             $this->messageOptions['id'] = $items[0]->ItemId->Id;
             $this->messageOptions['changeKey'] = $items[0]->ItemId->ChangeKey;
+            var_dump($this->messageOptions);
         }
     }
 
@@ -226,7 +227,7 @@ class receiveNonOperatingAssets extends Command
     {
         foreach ($attachments as $attachment) {
             file_put_contents(
-                $this->filePath,
+                $_SERVER['DOCUMENT_ROOT'] . $this->filePath,
                 $attachment->Content
             );
         }
@@ -235,21 +236,24 @@ class receiveNonOperatingAssets extends Command
     public function deleteExistingFile()
     {
         if(file_exists($this->filePath)) {
-            unlink($this->filePath);
+            unlink($_SERVER['DOCUMENT_ROOT'] . $this->filePath);
         }
     }
 
     public function scrapDocument($fileType)
     {
         $xls = false;
+        var_dump($fileType);
         if ($fileType === 'gdu') {
-            $xls = SimpleXLSX::parseFile($this->filePath);
+            $xls = SimpleXLSX::parseFile($_SERVER['DOCUMENT_ROOT'] . $this->filePath);
             if ($xls) {
+                var_dump('gdu file exist');
                 $this->processExcelDocument($xls->rows(1),$fileType);
             }
         } else if ($fileType === 'nonOperating') {
-            $xls = SimpleXLS::parseFile($this->filePath);
+            $xls = SimpleXLS::parseFile($_SERVER['DOCUMENT_ROOT'] . $this->filePath);
             if ($xls) {
+                var_dump('nonOperating file exist');
                 $this->processExcelDocument($xls->rows(),$fileType);
             }
         }
@@ -346,6 +350,7 @@ class receiveNonOperatingAssets extends Command
         $ketekazganField = $sheet[$rowIndex + 4][$columnMapping['oil_production_fact']] * 0.5;;
         $belkudukField = $sheet[$rowIndex + 5][$columnMapping['oil_production_fact']] * 0.5;
         $dzoSummary = $kuzilkiaField + $westTuzkolField + $tuzkolField + $ketekazganField + $belkudukField;
+        var_dump($dzoSummary);
         return array (
             'oil_production_fact' => $row[$columnMapping['oil_production_fact']] + $dzoSummary,
             'oil_delivery_fact' => $row[$columnMapping['oil_delivery_fact']],
@@ -387,6 +392,7 @@ class receiveNonOperatingAssets extends Command
      */
     public function handle()
     {
+        var_dump($_SERVER['DOCUMENT_ROOT'] . $this->filePath);
         $this->processGDUEmail();
         sleep(5);
         $this->processInboundEmail();
