@@ -1,0 +1,62 @@
+{
+  "type": "plain",
+  "table": "",
+  "tabs": [
+    {
+      "title": "",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "autor",
+                "type": "text",
+                "title": "autor",
+                "validation": "",
+                "is_editable": false
+              },
+              {
+                "code": "date",
+                "type": "date",
+                "title": "date",
+                "validation": "",
+                "is_editable": false
+              },
+              {
+                "code": "name",
+                "type": "text",
+                "title": "name",
+                "validation": "",
+                "is_editable": true
+              },
+              {
+                "code": "document_date",
+                "type": "date",
+                "title": "document_date",
+                "validation": "required",
+                "is_editable": true
+              },
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "dict": "",
+                "title": "document_type",
+                "validation": "required",
+                "is_editable": true
+              },
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "dict": "orgs",
+                "title": "orgs",
+                "validation": "required",
+                "is_editable": true
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
