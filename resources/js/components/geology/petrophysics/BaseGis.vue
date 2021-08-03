@@ -6,7 +6,7 @@
                 align="center">
           Список скважин
         </Button>
-        <Button color="accent" icon="settPhone" class="flex-grow-1 mr-3" align="center">
+        <Button @click="isShowTableSettings = true" color="accent" icon="settPhone" class="flex-grow-1 mr-3" align="center">
           Настройка планшета
         </Button>
         <Button @click="isShowChooseStratModal = true" color="accent" icon="lupa" class="flex-grow-1 mr-3"
@@ -101,6 +101,16 @@
         </div>
       </template>
     </AwModal>
+
+    <AwModal position="top" size="lg" title="Настройка планшета" :is-show.sync="isShowTableSettings">
+      <TableSettings />
+      <template #footer>
+        <div class="d-flex align-items-center justify-content-center">
+          <Button class="mr-3">Ок</Button>
+          <Button color="primary" @click="isShowTableSettings = false">Отмена</Button>
+        </div>
+      </template>
+    </AwModal>
   </div>
 </template>
 
@@ -112,8 +122,7 @@ import AwModal from "../components/notifications/awModal/AwModal";
 import AwTree from "../components/awTree/AwTree";
 import AwIcon from "../components/icons/AwIcon"
 import ListOfWells from "./modals/ListOfWells";
-import {welltops} from "../components/icons/chooseStratIcons";
-
+import TableSettings from "./modals/TableSettings";
 export default {
   name: "Geology-Page",
   components: {
@@ -123,6 +132,7 @@ export default {
     AwModal,
     AwIcon,
     ListOfWells,
+    TableSettings,
     AwTree
   },
   data() {
@@ -130,6 +140,7 @@ export default {
       dropdownValue: {
         value: null
       },
+      isShowTableSettings: false,
       isShowListOfWellsModal: false,
       isShowChooseStratModal: false,
       chooseStratModalTree: [],

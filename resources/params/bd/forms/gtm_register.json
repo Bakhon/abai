@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.gtm",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "Gtm_start",

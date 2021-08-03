@@ -294,7 +294,6 @@ export default {
           this.getPageData(),
         )
         .then((response) => {
-          console.log(this.postApiUrl)
           let data = response.data;
           this.year = yyyy;
           this.selectYear = yyyy;

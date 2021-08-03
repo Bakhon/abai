@@ -11,6 +11,7 @@ Route::group(
                 Route::get('/well-cart', 'bd\DBController@well_cart')->name('bigdata.well_cart');
                 Route::get('/report-constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
+                Route::get('/field-list', 'bd\DBController@field_list')->name('field_list');
 
                 Route::get('file-status/list', 'Refs\bigdata\las\FileStatusController@list')->name('file-status.list');
                 Route::resource('/file-status', 'Refs\bigdata\las\FileStatusController');
@@ -29,6 +30,9 @@ Route::group(
 
                 Route::get('/stem-type/list', 'Refs\bigdata\las\StemTypeController@list')->name('stem-type.list');
                 Route::resource('/stem-type', 'Refs\bigdata\las\StemTypeController');
+
+                Route::get('/geo-mapping/list', 'Refs\bigdata\mapping\GeoMappingController@list')->name('geo-mapping.list');
+                Route::resource('/geo-mapping', 'Refs\bigdata\mapping\GeoMappingController');
 
                 Route::get('/geo-data-reference-book', 'bd\DBController@geoDataReferenceBook')->name('bigdata.geoDataReferenceBook');
 

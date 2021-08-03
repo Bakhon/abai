@@ -45,17 +45,10 @@ td.fitwidth {
     vertical-align: middle !important;
     font-size: 12px;
     width: 64px;
-    /* cursor: pointer; */
 }
 
 .headerColumn td span {
     display: block;
-    /* width: 164px;
-    height: 164px; */
-    /* -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    transform: rotate(-90deg); */
 }
 
 .table .subHeaderColumn td {
@@ -68,11 +61,7 @@ td.fitwidth {
     vertical-align: middle !important;
     height: 165.2px;
     font-size: 12px;
-    /* -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    transform: rotate(-90deg); */
+
 
 }
 .verticalTableHeader p {
@@ -82,7 +71,7 @@ td.fitwidth {
 .verticalTableHeader p:before{
     content:'';
     width:0;
-    padding-top:100%;/* takes width as reference, + 10% for faking some extra padding */
+    padding-top:100%;
     display:inline-block;
     vertical-align:bottom;
 }
@@ -93,9 +82,6 @@ table {
 }
 
 .ce {
-    /* position: relative; */
-    /* top: 54.7901% !important; */
-    /* bottom: 66.58%; */
     background: rgb(13, 30, 99) none repeat scroll 0% 0%;
     left: 14px !important;
     right: 20px;
@@ -126,26 +112,18 @@ table {
 }
 
 .cell-with-comment {
-    /* display: flex; */
     align-items: center;
     text-align: center;
     position: relative;
-    /* border-bottom: none !important;
-    border-left: none !important;
-    border-right: none !important; */
 }
 
 .circle-err {
     display: block;
-    /* background: #0d092a; */
     height: 10px;
     border-radius: 50px;
     width: 10px;
     margin-right: 20px;
     background: rgb(255, 0, 0);
-    /* float: left;
-    margin-right: -10px; */
-    /* cursor: pointer; */
 }
 
 .cell-comment{
@@ -161,7 +139,6 @@ table {
     font-size: 12px;
     padding:3px;
     bottom: 31px;
-    /* top:-80px; */
 }
 .cell-with-comment:hover .cell-comment {
     display: flex;
@@ -193,85 +170,109 @@ table {
     background: #333975 !important;
     border-color: #333975 !important;
   }
-  .b-dropdown-form {
+.b-dropdown-form {
+  background: #333975!important;
+  width: 135px;
+}
+.dropdown-menu.show {
+    display: flex;
+    flex-direction: column;
     background: #333975!important;
-    width: 135px;
-  }
-  .dropdown-menu.show {
-      display: flex;
-      flex-direction: column;
-      background: #333975!important;
-  }
-  .icons_filt_sort{
-    display: flex;
-    justify-content: center;
-  }
-  .field_filter_text {
-    display: flex;
-    justify-content: center;
-    margin-left: -36px;
-  }
-  .well_type_filter_text {
-    display: flex;
-    justify-content: center;
-    margin-left: 90px;
-  }
-  .field_form_fil.field_form_fil {
-    background: #333975;
-    width: 165px;
-  }
-  .horizon_form_fil.horizon_form_fil {
-    background: #333975;
-    width: 123px;
-  }
-  .obj_form_fil {
-    background: #333975;
-    width: 85px;
-  }
-  .block_form_fil {
-    background: #333975;
-    width: 168px;
-  }
-  .exp_meth_form_fil {
-    background: #333975;
-    width: 108px;
-  } 
+}
+.icons_filt_sort{
+  display: flex;
+  justify-content: center;
+}
+.field_filter_text {
+  display: flex;
+  justify-content: center;
+  margin-left: -36px;
+}
+.well_type_filter_text {
+  display: flex;
+  justify-content: center;
+  margin-left: 90px;
+}
+.field_form_fil.field_form_fil {
+  background: #333975;
+  width: 165px;
+}
+.horizon_form_fil.horizon_form_fil {
+  background: #333975;
+  width: 123px;
+}
+.obj_form_fil {
+  background: #333975;
+  width: 85px;
+}
+.block_form_fil {
+  background: #333975;
+  width: 168px;
+}
+.exp_meth_form_fil {
+  background: #333975;
+  width: 108px;
+} 
 
-  .well_type_form_fil.well_type_form_fil {
-    background: #333975;
-    width: 213px;
-  }
-  .external_field_filter {
-    width: 251px;
-  }
-  .external_well_filter {
-    width: 192px;
-  }
-  .well_form_fil.well_form_fil {
-    background: #333975;
-    width: 165px;
-    height: calc(100vh - 562px);
-    overflow-y: scroll;
-  }
-  .external_well_type_filter  {
-    width: 251px;
-  }
-  .icon_filter {
-    font-size: 7px;
-  }
-  .icon_sort {
-    margin-top: 6px;
-  }
-  .form_text {
-    color:white; 
-    font-size:13px; 
-    margin-left: 12px;
-  }
-  .discard_text {
-   color:white; 
-   font-size:13px; 
-   margin-left: 9px;
-  }
-  body {
-    overflow-y: hidden !important;
-  }
+.well_type_form_fil.well_type_form_fil {
+  background: #333975;
+  width: 213px;
+}
+.external_field_filter {
+  width: 251px;
+}
+.external_well_filter {
+  width: 192px;
+}
+.well_form_fil.well_form_fil {
+  background: #333975;
+  width: 165px;
+  height: calc(100vh - 562px);
+  overflow-y: scroll;
+}
+.external_well_type_filter  {
+  width: 251px;
+}
+.icon_filter {
+  font-size: 7px;
+}
+.icon_sort {
+  margin-top: 6px;
+}
+.form_text {
+  color:white; 
+  font-size:13px; 
+  margin-left: 12px;
+}
+.discard_text {
+  color:white; 
+  font-size:13px; 
+  margin-left: 9px;
+}
+body {
+  overflow-y: hidden !important;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #656A8A;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #272953;
+}
+.activ.activ {
+  border-bottom: 2px solid rgb(145, 145, 145) ;
+  border-top: 2px solid rgb(145, 145, 145);
+  font-size: 11px;
+}

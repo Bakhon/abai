@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class InjectionWells extends PlainForm
@@ -12,10 +11,10 @@ class InjectionWells extends PlainForm
     protected $configurationFileName = 'injection_wells';
     use DateMoreThanValidationTrait;
 
-    protected function insertInnerTable(Collection $tableFields, int $id)
+    protected function insertInnerTable(int $id)
     {
-        if (!empty($tableFields)) {
-            foreach ($tableFields as $field) {
+        if (!empty($this->tableFields)) {
+            foreach ($this->tableFields as $field) {
                 if (!empty($this->request->get($field['code']))) {
                     foreach ($this->request->get($field['code']) as $data) {
                         $data['well'] = $this->request->get('well');

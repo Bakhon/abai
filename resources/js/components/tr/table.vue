@@ -824,6 +824,7 @@ tr td:first-child {
 tr:nth-child(odd) .fixcol:first-child {
   background-color: #454d7d;
 }
+
 tr:nth-child(even) .fixcol:first-child {
   background-color: #26336f;
 }
