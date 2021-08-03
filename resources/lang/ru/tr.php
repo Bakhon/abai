@@ -19,7 +19,7 @@ return array (
   'operation_method' => 'Способ эксплуатации',
   'pump_type' => 'Тип насоса',
   'pump_frequency_or_speed' => 'Частота работы насоса или число оборотов',
-  'h_pump_set' => 'Н сп насоса', /////////////////////
+  'h_pump_set' => 'Глубина спуска насоса', /////////////////////
   'p_layer' => 'Р пл',
   'h_dynamic' => 'Н дин',
   'annular_pressure' => 'Р затр',
@@ -298,4 +298,5 @@ return array (
   'error' => 'Ошибка',
   'artificial_slaughter' => 'Искусcтвенный забой',
   'perforation_intervals' => 'Интервалы перфорации',
+  'tub_eqiup' => 'Оборудование низа НКТ',
 );

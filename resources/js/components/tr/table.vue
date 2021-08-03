@@ -14,13 +14,15 @@
                 <td rowspan="4" class="th">{{trans('tr.perforation_intervals')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.h_up_perf_md')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.productivity_index')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.outer_diameter_nkt')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.choke_diameter')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.h_water_permeability')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.operation_method')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.pump_type')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.pump_frequency_or_speed')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.outer_diameter_nkt')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.h_pump_set')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tub_eqiup')}}</td>
+
+                <td rowspan="4" class="th">{{trans('tr.choke_diameter')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.h_water_permeability')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.pump_frequency_or_speed')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.p_layer')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.h_dynamic')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.annular_pressure')}}</td>
@@ -267,10 +269,6 @@
                 <td @click="sortBy('perf_intervals')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
                 <td @click="sortBy('h_perf')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
                 <td @click="sortBy('pi')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day_atm')}}</td>
-
-                <td @click="sortBy('tub_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
-                <td @click="sortBy('choke_d')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
-                <td @click="sortBy('h_up_perf_md')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
                 <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('exp_meth')"></i>
                       <div>
@@ -304,10 +302,13 @@
                           </b-dropdown>
                         </div>
                       </div>
-                    </td>
+                </td>
                 <td @click="sortBy('pump_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.gc_ob/min')}}</td>
+                <td @click="sortBy('tub_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('h_pump_set')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
+                <td @click="sortBy('choke_d')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
+                <td @click="sortBy('h_up_perf_md')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
+                <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.gc_ob/min')}}</td>
                 <td @click="sortBy('p_res')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}</td>
                 <td @click="sortBy('h_dyn')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
                 <td @click="sortBy('p_annular')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}</td>
@@ -405,6 +406,26 @@
                     </span>
                 </td>
 
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`exp_meth`), 'activ': isActiveClass(row)}">
+                    <span :class="{'circle-err': wells && wells[row_index] &&
+                wells[row_index].exp_meth[1][0] !== '0'}" :style="`background :${getColor(
+                wells[row_index].exp_meth[1][0])}`"> </span>
+                    <span>{{row.exp_meth[0]}}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                        {{ wells[row_index].exp_meth[1][1]}}
+                    </span>
+                </td>
+
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`pump_type`), 'activ': isActiveClass(row)}">
+                    <span :class="{'circle-err': wells && wells[row_index] &&
+                wells[row_index].pump_type[1][0] !== '0'}" :style="`background :${getColor(
+                wells[row_index].pump_type[1][0])}`"> </span>
+                    <span>{{row.pump_type[0]}}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                        {{ wells[row_index].pump_type[1][1]}}
+                    </span>
+                </td>
+
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`tub_OD`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tub_OD[1][0] !== '0'}" :style="`background :${getColor(
@@ -412,6 +433,16 @@
                     <span v-if="row.tub_OD[0]!=null">{{row.tub_OD[0]}}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                         {{ wells[row_index].tub_OD[1][1]}}
+                    </span>
+                </td>
+
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`h_pump_set`), 'activ': isActiveClass(row)}">
+                    <span :class="{'circle-err': wells && wells[row_index] &&
+                wells[row_index].h_pump_set[1][0] !== '0'}" :style="`background :${getColor(
+                wells[row_index].h_pump_set[1][0])}`"> </span>
+                    <span v-if="row.h_pump_set[0]!=null">{{Math.round(row.h_pump_set[0]*10)/10}}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                        {{ wells[row_index].h_pump_set[1][1]}}
                     </span>
                 </td>
 
@@ -434,25 +465,6 @@
                         {{ wells[row_index].h_up_perf_md[1][1]}}
                     </span>
                 </td>
-                <td :class="{'cell-with-comment': isCommentClass(row_index,`exp_meth`), 'activ': isActiveClass(row)}">
-                    <span :class="{'circle-err': wells && wells[row_index] &&
-                wells[row_index].exp_meth[1][0] !== '0'}" :style="`background :${getColor(
-                wells[row_index].exp_meth[1][0])}`"> </span>
-                    <span>{{row.exp_meth[0]}}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                        {{ wells[row_index].exp_meth[1][1]}}
-                    </span>
-                </td>
-
-                <td :class="{'cell-with-comment': isCommentClass(row_index,`pump_type`), 'activ': isActiveClass(row)}">
-                    <span :class="{'circle-err': wells && wells[row_index] &&
-                wells[row_index].pump_type[1][0] !== '0'}" :style="`background :${getColor(
-                wells[row_index].pump_type[1][0])}`"> </span>
-                    <span>{{row.pump_type[0]}}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                        {{ wells[row_index].pump_type[1][1]}}
-                    </span>
-                </td>
 
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`pump_type`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -464,15 +476,6 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': isCommentClass(row_index,`h_pump_set`), 'activ': isActiveClass(row)}">
-                    <span :class="{'circle-err': wells && wells[row_index] &&
-                wells[row_index].h_pump_set[1][0] !== '0'}" :style="`background :${getColor(
-                wells[row_index].h_pump_set[1][0])}`"> </span>
-                    <span v-if="row.h_pump_set[0]!=null">{{Math.round(row.h_pump_set[0]*10)/10}}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                        {{ wells[row_index].h_pump_set[1][1]}}
-                    </span>
-                </td>
 
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`p_res`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
