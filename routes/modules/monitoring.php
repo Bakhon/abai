@@ -238,6 +238,10 @@ Route::group(
                 Route::get('pipe-passport/list', 'ComplicationMonitoring\PipePassportController@list')->name('pipe-passport.list');
                 Route::get('pipe-passport/history/{pipe}', 'ComplicationMonitoring\PipePassportController@history')->name('pipe-passport.history');
                 Route::resource('pipe-passport', 'ComplicationMonitoring\PipePassportController');
+
+                Route::get('zu-cleanings/list', 'ComplicationMonitoring\ZusCleaningController@list')->name('zu-cleanings.list');
+                Route::get('zu-cleanings/history/{zu-cleanings}', 'ComplicationMonitoring\ZusCleaningController@history')->name('zu-cleanings.history');
+                Route::resource('zu-cleanings', 'ComplicationMonitoring\ZusCleaningController');
             }
         );
     }
