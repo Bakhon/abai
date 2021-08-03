@@ -11,6 +11,9 @@
                 <td rowspan="4" class="th">{{trans('tr.u_block')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.outer_diameter_producing_casing')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.artificial_slaughter')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.perforation_intervals')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.h_up_perf_md')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.productivity_index')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.outer_diameter_nkt')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.choke_diameter')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.h_water_permeability')}}</td>
@@ -23,7 +26,6 @@
                 <td rowspan="4" class="th">{{trans('tr.annular_pressure')}}</td>
                 <td class="colspan th" colspan="5">{{trans('tr.actual_mode')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.state_at_the_end_of_the_month')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.productivity_index')}}</td>
                 <td class="colspan th" colspan="7">{{trans('tr.calculation_of_technological_potential_from_IDN')}}</td>
                 <td class="colspan th" colspan="6">{{trans('tr.intended_mode')}}</td>
             </tr>
@@ -262,6 +264,10 @@
                     </td>
                 <td @click="sortBy('cas_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('artificial_bottom_hole')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
+                <td @click="sortBy('perf_intervals')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
+                <td @click="sortBy('h_perf')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
+                <td @click="sortBy('pi')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day_atm')}}</td>
+
                 <td @click="sortBy('tub_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('choke_d')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('h_up_perf_md')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
@@ -311,7 +317,6 @@
                 <td @click="sortBy('wct')" class="th"><i class="fa fa-fw fa-sort"></i>%</td>
                 <td @click="sortBy('gor')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3/t')}}</td>
                 <td @click="sortBy('well_status_last_day')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('pi')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day_atm')}}</td>
                 <td @click="sortBy('tp_idn_bhp')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}</td>
                 <td @click="sortBy('tp_idn_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}</td>
                 <td @click="sortBy('tp_idn_oil_inc')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}</td>
@@ -376,16 +381,29 @@
                     </span>
                 </td>
 
-                <!-- <td :class="{'cell-with-comment': isCommentClass(row_index,`artificial_bottom_hole`), 'activ': isActiveClass(row)}">
-                    <span :class="{'circle-err': wells && wells[row_index] &&
-                wells[row_index].artificial_bottom_hole[1][0] !== '0'}" :style="`background :${getColor(
-                wells[row_index].artificial_bottom_hole[1][0])}`"> </span>
-                    <span v-if="row.artificial_bottom_hole[0]!=null">{{row.artificial_bottom_hole[0]}}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                        {{ wells[row_index].artificial_bottom_hole[1][1]}}
-                    </span>
-                </td> -->
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.artificial_bottom_hole}} </td>
+
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.perf_intervals}} </td>
+
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`h_perf`), 'activ': isActiveClass(row)}">
+                    <span :class="{'circle-err': wells && wells[row_index] &&
+                wells[row_index].h_perf[1][0] !== '0'}" :style="`background :${getColor(
+                wells[row_index].h_perf[1][0])}`"> </span>
+                    <span v-if="row.h_perf[0]!=null">{{row.h_perf[0]}}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                        {{ wells[row_index].h_perf[1][1]}}
+                    </span>
+                </td>
+
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`pi`), 'activ': isActiveClass(row)}">
+                    <span :class="{'circle-err': wells && wells[row_index] &&
+                wells[row_index].pi[1][0] !== '0'}" :style="`background :${getColor(
+                wells[row_index].pi[1][0])}`"> </span>
+                    <span v-if="row.pi[0]!=null">{{Math.round(row.pi[0]*10)/10}}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                        {{ wells[row_index].pi[1][1]}}
+                    </span>
+                </td>
 
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`tub_OD`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -543,17 +561,6 @@
                     <span v-if="row.well_status_last_day[0]!=null">{{row.well_status_last_day[0]}}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                         {{ wells[row_index].well_status_last_day[1][1]}}
-                    </span>
-                </td>
-
-
-                <td :class="{'cell-with-comment': isCommentClass(row_index,`pi`), 'activ': isActiveClass(row)}">
-                    <span :class="{'circle-err': wells && wells[row_index] &&
-                wells[row_index].pi[1][0] !== '0'}" :style="`background :${getColor(
-                wells[row_index].pi[1][0])}`"> </span>
-                    <span v-if="row.pi[0]!=null">{{Math.round(row.pi[0]*10)/10}}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                        {{ wells[row_index].pi[1][1]}}
                     </span>
                 </td>
 

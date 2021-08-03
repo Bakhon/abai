@@ -79,7 +79,7 @@ return array (
   'b_oil' => 'Объемный коэффициент',
   'oil_density' => 'Плотность нефти',
   'water_density' => 'Плотность воды',
-  'h_up_perf_md' => 'Н перф',
+  'h_up_perf_md' => 'Перф.толщина',
   'pi' => 'Kпрод',
   'geological_potential_calculation' => 'Расчёт геологического потенциала',
   'check' => 'Проверка',
@@ -296,5 +296,6 @@ return array (
   'save_changes' => 'Сохранить изменения',
   'no_data' => 'Нет данных',
   'error' => 'Ошибка',
-  'artificial_slaughter' => 'Ошибка',
+  'artificial_slaughter' => 'Искусcтвенный забой',
+  'perforation_intervals' => 'Интервалы перфорации',
 );
