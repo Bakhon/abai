@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\VisCenter\DataForKGM\Daily\FondsForKGM;
-use App\Models\VisCenter\DataForKGM\Daily\GasMoreForKGM;
+use App\Models\VisCenter\DataForKGM\Daily\GasForKGM;
 use App\Models\VisCenter\DataForKGM\Daily\OilAndGasForKGM;
 use App\Models\VisCenter\DataForKGM\Daily\OilDeliveryForKGM;
 use App\Models\VisCenter\DataForKGM\Daily\WaterForKGM;

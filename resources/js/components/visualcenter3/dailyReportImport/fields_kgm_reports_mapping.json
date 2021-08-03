@@ -40,7 +40,7 @@
             "developing_injection_fond": "DEVELOPMENT",
             "pending_liquidation_injection_fond": "ABANDON"
         },
-        "SHUT_IN_downtimeReason2": {
+        "SHUT_IN_downtimeReason": {
             "prs_wait_downtime_injection_wells_count": "N_DOWN_T_1",
             "krs_downtime_injection_wells_count": "P_WORK_W_2",
             "krs_wait_downtime_injection_wells_count": "N_DOWN_T_2",
