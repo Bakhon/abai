@@ -89,16 +89,6 @@
     "parentType": "digitalRating",
     "children": [
       {
-        "name": "Критерии подбора",
-        "component": {
-          "name": "child-component",
-          "template": "<div><gtm-digital-rating-gtm></gtm-digital-rating-gtm></div>",
-          "parentType": "digitalRating"
-        },
-        "icon": "/img/GTM/icon_menu_criteria.svg",
-        "url": "/paegtm"
-      },
-      {
         "name": "Прогноз эффективности (методика)",
         "component": null,
         "icon": "/img/GTM/icon_menu_forecast.svg"
