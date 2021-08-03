@@ -13,7 +13,7 @@ import {chartInitMixin} from "../mixins/chartMixin";
 export default {
   name: 'ChartWithLiquidProduction',
   mixins: [chartInitMixin],
-  components: {apexchart:chart},
+  components: {apexchart: chart},
   created() {
     window.economic_reference_thousand_tons = this.trans('economic_reference.thousand_tons')
     window.economic_reference_liquid = this.trans('economic_reference.liquid')
@@ -22,25 +22,12 @@ export default {
     options() {
       return {
         ...this.chartOptions, ...{
-          yaxis: {
-            labels: {
-              formatter(value) {
-                return Math.floor(value);
-              }
-            },
-            title: {
-              text: this.trans('economic_reference.liquid_production'),
-            },
-            min: 0
-          },
           tooltip: {
             shared: true,
             intersect: false,
             y: {
               formatter(y) {
-                console.log(this)
-
-                if (y === undefined) {
+                if (y === undefined || y === null) {
                   return y
                 }
 

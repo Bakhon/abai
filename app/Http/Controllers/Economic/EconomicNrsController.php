@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Economic;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\EconomicNrsDataRequest;
 use App\Jobs\ExportEconomicDataToExcel;
+use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use Level23\Druid\Queries\QueryBuilder;
@@ -349,7 +351,12 @@ class EconomicNrsController extends Controller
                 'operatingProfitTop' => $dataWithOperatingProfitTop,
                 'liquidProduction' => $dataWithLiquidProduction,
                 'pausedProfitability' => $dataWithPausedProfitability,
-            ]
+            ],
+            'oilRates' => OilRate::query()
+                ->select('value', DB::raw('DATE(date) as dt'))
+                ->whereBetween('date', [$intervalMonthsStart, $intervalMonthsEnd])
+                ->oldest('date')
+                ->get()
         ];
     }
 

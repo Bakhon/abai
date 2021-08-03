@@ -27,6 +27,7 @@
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.count_well')"
+          :oil-prices="oilPrices"
           class="bg-economic-chart"/>
 
       <chart-with-oil-production
@@ -36,6 +37,7 @@
           :profitability="profitability"
           :title="trans('economic_reference.oil_production')"
           :tooltip-text="trans('economic_reference.thousand_tons')"
+          :oil-prices="oilPrices"
           class="bg-economic-chart"/>
 
       <chart-with-operating-profit-top
@@ -43,6 +45,7 @@
           :data="charts.operatingProfitTop"
           :granularity="granularity"
           :profitability="profitability"
+          :oil-prices="oilPrices"
           class="bg-economic-chart"/>
 
       <chart-with-liquid-production
@@ -50,6 +53,7 @@
           :data="charts.liquidProduction"
           :granularity="granularity"
           :profitability="profitability"
+          :oil-prices="oilPrices"
           class="bg-economic-chart"/>
     </div>
   </div>
@@ -83,6 +87,10 @@ export default {
     profitability: {
       required: true,
       type: String
+    },
+    oilRates: {
+      required: true,
+      type: Array
     }
   },
   data: () => ({
@@ -100,6 +108,20 @@ export default {
         this.trans('economic_reference.rating_top_10_wells_by_profitability'),
         this.trans('economic_reference.distribution_liquid_production_by_profitability'),
       ]
+    },
+
+    oilPrices() {
+      let data = []
+
+      let oilRate = this.oilRates[0]
+
+      this.charts.profitability.dt.forEach(dt => {
+        oilRate = this.oilRates.find(rate => rate.dt === dt) || oilRate
+
+        data.push(oilRate ? oilRate.value : 0)
+      })
+
+      return data
     },
   }
 }
