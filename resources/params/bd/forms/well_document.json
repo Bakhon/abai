@@ -10,7 +10,7 @@
             "title": "",
             "items": [
               {
-                "code": "autor",
+                "code": "author",
                 "type": "text",
                 "title": "autor",
                 "validation": "",
