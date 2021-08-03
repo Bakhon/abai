@@ -116,7 +116,7 @@ export default {
       let oilRate = this.oilRates[0]
 
       this.charts.profitability.dt.forEach(dt => {
-        oilRate = this.oilRates.find(rate => rate.dt === dt) || oilRate
+        oilRate = this.oilRates.find(rate => [rate.dt, rate.dt_month].includes(dt)) || oilRate
 
         data.push(oilRate ? oilRate.value : 0)
       })

@@ -353,7 +353,11 @@ class EconomicNrsController extends Controller
                 'pausedProfitability' => $dataWithPausedProfitability,
             ],
             'oilRates' => OilRate::query()
-                ->select('value', DB::raw('DATE(date) as dt'))
+                ->select([
+                    'value',
+                    DB::raw('DATE(date) as dt'),
+                    DB::raw("DATE_FORMAT(date,'%m-%Y') as dt_month"),
+                ])
                 ->whereBetween('date', [$intervalMonthsStart, $intervalMonthsEnd])
                 ->oldest('date')
                 ->get()
