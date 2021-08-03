@@ -2,6 +2,7 @@
     <table class="table table-bordered table-dark table-responsive trkrtableborderedtabledarktableresponsive" style="background: #0D1E63; margin-bottom: 0;">
         <thead>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
+                <td rowspan="4" class="th">№</td>
                 <td rowspan="4" class="th" style="background: #333975;">{{trans('tr.ngdu_field')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.well_number')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.well_type')}}</td>
@@ -9,6 +10,7 @@
                 <td rowspan="4" class="th">{{trans('tr.u_object')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.u_block')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.outer_diameter_producing_casing')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.artificial_slaughter')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.outer_diameter_nkt')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.choke_diameter')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.h_water_permeability')}}</td>
@@ -53,6 +55,7 @@
             </tr>
             <tr></tr>
             <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
+                <td class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('field')"></i>
                       <div>
@@ -258,6 +261,7 @@
                       </div>
                     </td>
                 <td @click="sortBy('cas_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
+                <td @click="sortBy('artificial_bottom_hole')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
                 <td @click="sortBy('tub_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('choke_d')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('h_up_perf_md')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
@@ -325,6 +329,7 @@
         </thead>
         <tbody class="table_tbody">
             <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{ row_index + 1 }}</td>
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.field}} </td>
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.rus_wellname}} </td>
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`well_type`), 'activ': isActiveClass(row)}" td class="fixcol">
@@ -370,6 +375,17 @@
                         {{ wells[row_index].cas_OD[1][1]}}
                     </span>
                 </td>
+
+                <!-- <td :class="{'cell-with-comment': isCommentClass(row_index,`artificial_bottom_hole`), 'activ': isActiveClass(row)}">
+                    <span :class="{'circle-err': wells && wells[row_index] &&
+                wells[row_index].artificial_bottom_hole[1][0] !== '0'}" :style="`background :${getColor(
+                wells[row_index].artificial_bottom_hole[1][0])}`"> </span>
+                    <span v-if="row.artificial_bottom_hole[0]!=null">{{row.artificial_bottom_hole[0]}}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                        {{ wells[row_index].artificial_bottom_hole[1][1]}}
+                    </span>
+                </td> -->
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.artificial_bottom_hole}} </td>
 
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`tub_OD`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&

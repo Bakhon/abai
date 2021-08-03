@@ -296,4 +296,5 @@ return array (
   'save_changes' => 'Сохранить изменения',
   'no_data' => 'Нет данных',
   'error' => 'Ошибка',
+  'artificial_slaughter' => 'Ошибка',
 );
