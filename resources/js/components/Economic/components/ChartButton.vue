@@ -30,9 +30,13 @@ export default {
 .economic-tab-btn {
   border-radius: 4px;
   background: #656A8A;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
+  line-height: 16px;
   min-height: 54px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 </style>

@@ -123,6 +123,10 @@ abstract class DailyReports extends TableForm
             return true;
         }
 
+        if ($limits['min'] === $limits['max']) {
+            return true;
+        }
+
         if ($limits['min'] <= $this->request->get('fact') && $limits['max'] >= $this->request->get('fact')) {
             return true;
         }

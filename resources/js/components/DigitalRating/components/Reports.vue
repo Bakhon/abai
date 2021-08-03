@@ -4,7 +4,7 @@
       {{ trans('digital_rating.wellsReport') }}
       <img src="/img/icons/link.svg" alt="">
     </div>
-    <table class="table table-striped text-center text-white podbor-middle-table h-100">
+    <table class="table text-center text-white rating-table">
       <thead>
         <tr>
           <th class="align-middle" v-for="col in cols" :key="col">

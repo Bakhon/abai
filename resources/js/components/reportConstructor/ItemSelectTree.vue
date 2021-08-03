@@ -76,7 +76,6 @@ export default {
 
     },
     nodeClick(node) {
-      this.$parent.setCurrentStructure(node.structureId, node.type)
       this.isLoading = true
       return this.axios.get(this.baseUrl + "get_children_of_item", {
         params: {

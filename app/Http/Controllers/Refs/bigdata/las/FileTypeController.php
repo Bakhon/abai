@@ -8,4 +8,5 @@ class FileTypeController extends LasDictionariesController
     protected $model = 'App\Models\BigData\Dictionaries\FileType';
     protected $resource = 'App\Http\Resources\FileTypeListResource';
     protected $link = 'file-type';
+    protected $view = 'bigdata.las_dictionaries';
 }

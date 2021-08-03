@@ -2,40 +2,61 @@
   <div class="rating-indicators">
     <div class="rating-indicators__title">
       {{ trans('digital_rating.environmentIndicators') }}
-      <img src="/img/icons/link.svg" alt="">
     </div>
-    <table class="table table-striped text-center text-white podbor-middle-table h-100">
+    <table class="table text-center text-white rating-table">
       <thead>
         <tr>
-          <th class="align-middle" v-for="col in cols" :key="col">
-            {{ trans(col) }}
+          <th class="align-middle" v-for="col in cols" :key="col.name">
+            {{ col.title }}
           </th>
         </tr>
       </thead>
       <tbody>
+        <tr v-for="(item, index) in indicators" :key="index">
+          <td v-for="(col, colIdx) in cols" :key="colIdx">
+            <span>{{ item[col.name] }}</span>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
 </template>
 
 <script>
+import { indicators } from '../json/data';
+
 export default {
   name: "Indicators",
 
   data() {
     return {
-      indicators: [],
+      indicators: indicators,
     }
   },
 
   computed: {
     cols() {
       return [
-        'digital_rating.wellNumber',
-        'digital_rating.liquidFlowRate',
-        'digital_rating.waterCut',
-        'digital_rating.oilFlowRate',
-        'digital_rating.dynamicLevel'
+        {
+          title: this.trans('digital_rating.wellNumber'),
+          name: 'number'
+        },
+        {
+          title: this.trans('digital_rating.liquidFlowRate'),
+          name: 'liquid'
+        },
+        {
+          title: `${this.trans('digital_rating.waterCut')}, %`,
+          name: 'water'
+        },
+        {
+          title: `${this.trans('digital_rating.oilFlowRate')}, ${this.trans('digital_rating.tonDay')}`,
+          name: 'oil'
+        },
+        {
+          title: `${this.trans('digital_rating.dynamicLevel')}, м`,
+          name: 'level'
+        }
       ]
     },
   }
@@ -45,8 +66,6 @@ export default {
 <style scoped lang="scss">
 .rating-indicators {
   width: 100%;
-  background-color: #272953;
-  padding: 10px;
   color: #fff;
 }
 .rating-indicators__title {
@@ -54,8 +73,5 @@ export default {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
-}
-.podbor-middle-table th {
-  padding: 1.2rem!important;
 }
 </style>

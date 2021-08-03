@@ -19,11 +19,11 @@ class WellConstr extends PlainForm
         $errors = [];
 
         if (!$this->isValidDepth($this->request->get('well'),$this->request->get('depth'))) {
-            $errors[$this->request->get('depth')][] = trans('bd.validation.depth');
+            $errors['depth'][] = trans('bd.validation.depth');
         }
 
         if (!$this->isValidDate($this->request->get('well'), $this->request->get('landing_date'),'dict.well' , 'drill_start_date')) {
-            $errors[$this->request->get('landing_date')][] = trans('bd.validation.landing_date');
+            $errors['landing_date'][] = trans('bd.validation.landing_date');
         }
 
         return $errors;

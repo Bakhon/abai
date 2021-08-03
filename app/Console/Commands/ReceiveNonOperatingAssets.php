@@ -46,11 +46,11 @@ class receiveNonOperatingAssets extends Command
     protected $server = "mail.kmg.kz";
     protected $isDataAvailable = true;
     protected $ews;
-    protected $filePath = 'public/test2.xls';
     protected $messageOptions = array(
           'id' => '',
           'changeKey' => ''
     );
+    protected $excelContent = '';
     private $dzoMapping = array (
         'ТШО' => '"Теңізшевройл" ЖШС / ТОО "Тенгизшевройл"',
         'ТП' => '"Торғай Петролеум" АҚ / АО "Тургай Петролеум"',
@@ -78,6 +78,8 @@ class receiveNonOperatingAssets extends Command
 
     public function processInboundEmail()
     {
+        $this->excelContent = '';
+        $this->isDataAvailable = true;
         $this->assignMessageOptions(env('VISCENTER_EMAIL_ADDRESS', ''),env('VISCENTER_EMAIL_PASSWORD', ''));
         if (!$this->isDataAvailable) {
             return;
@@ -166,7 +168,6 @@ class receiveNonOperatingAssets extends Command
 
    public function processMessages()
    {
-        $this->deleteExistingFile();
         $request = new GetItemType();
         $request->ItemShape = new ItemResponseShapeType();
         $request->ItemShape->BaseShape = DefaultShapeNamesType::ALL_PROPERTIES;
@@ -224,17 +225,7 @@ class receiveNonOperatingAssets extends Command
     public function saveAttachment($attachments)
     {
         foreach ($attachments as $attachment) {
-            file_put_contents(
-                $this->filePath,
-                $attachment->Content
-            );
-        }
-    }
-
-    public function deleteExistingFile()
-    {
-        if(file_exists($this->filePath)) {
-            unlink($this->filePath);
+            $this->excelContent = $attachment->Content;
         }
     }
 
@@ -242,18 +233,16 @@ class receiveNonOperatingAssets extends Command
     {
         $xls = false;
         if ($fileType === 'gdu') {
-            $xls = SimpleXLSX::parseFile($this->filePath);
+            $xls = SimpleXLSX::parseData($this->excelContent);
             if ($xls) {
                 $this->processExcelDocument($xls->rows(1),$fileType);
             }
         } else if ($fileType === 'nonOperating') {
-            $xls = SimpleXLS::parseFile($this->filePath);
+            $xls = SimpleXLS::parseData($this->excelContent);
             if ($xls) {
                 $this->processExcelDocument($xls->rows(),$fileType);
             }
         }
-
-        $this->deleteExistingFile();
     }
 
     public function processExcelDocument($sheet,$fileType)
@@ -340,9 +329,13 @@ class receiveNonOperatingAssets extends Command
             'oil_delivery_fact' => 7
         );
         $kuzilkiaField = $sheet[$rowIndex + 1][$columnMapping['oil_production_fact']];
-        $tuzkolField = $sheet[$rowIndex + 2][$columnMapping['oil_production_fact']] * 0.5;
+        $westTuzkolField = $sheet[$rowIndex + 2][$columnMapping['oil_production_fact']] * 0.5;
+        $tuzkolField = $sheet[$rowIndex + 3][$columnMapping['oil_production_fact']] * 0.5;
+        $ketekazganField = $sheet[$rowIndex + 4][$columnMapping['oil_production_fact']] * 0.5;;
+        $belkudukField = $sheet[$rowIndex + 5][$columnMapping['oil_production_fact']] * 0.5;
+        $dzoSummary = $kuzilkiaField + $westTuzkolField + $tuzkolField + $ketekazganField + $belkudukField;
         return array (
-            'oil_production_fact' => ($row[$columnMapping['oil_production_fact']] + $kuzilkiaField + $tuzkolField) * 0.33,
+            'oil_production_fact' => $row[$columnMapping['oil_production_fact']] + $dzoSummary,
             'oil_delivery_fact' => $row[$columnMapping['oil_delivery_fact']],
             'dzo_name' => $dzoName,
             'date' => Carbon::yesterday('Asia/Almaty'),
@@ -382,7 +375,8 @@ class receiveNonOperatingAssets extends Command
      */
     public function handle()
     {
-        $this->processInboundEmail();
         $this->processGDUEmail();
+        sleep(5);
+        $this->processInboundEmail();
     }
 }

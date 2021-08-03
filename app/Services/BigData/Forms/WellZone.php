@@ -42,7 +42,7 @@ class WellZone extends PlainForm
         $errors = [];
 
         if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'),'prod.well_zone' , 'dbeg')){
-            $errors[$this->request->get('dbeg')][] = trans('bd.validation.dbeg_well_zone');
+            $errors['dbeg'][] = trans('bd.validation.dbeg_well_zone');
         }
 
         return $errors;
