@@ -45,12 +45,15 @@ export default {
             'changeDateEnd',
         ]),
         menuClick (data) {
-          if (data?.url && data?.component?.parentType !== 'aegtm') {
+          if (data?.url && this.isExternalLink(data)) {
             window.location.href = this.localeUrl(data.url);
           } else {
             this.mainContent = data.component;
             this.parentType = data.parentType;
           }
+        },
+        isExternalLink(data) {
+          return data?.component?.parentType === 'digitalRating';
         },
         closeTree () {
             this.changeDisplayShadowBlock(false);
@@ -60,9 +63,9 @@ export default {
         },
     },
     computed: {
-        isShadowBlockShow() {
-            return this.$store.state.isShadowBlockShow;
-        },
+      isShadowBlockShow() {
+          return this.$store.state.isShadowBlockShow;
+      },
     },
 }
 </script>
