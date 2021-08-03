@@ -8,6 +8,7 @@ use App\Models\VisCenter\DataForKGM\Daily\OilAndGasForKGM;
 use App\Models\VisCenter\DataForKGM\Daily\OilDeliveryForKGM;
 use App\Models\VisCenter\DataForKGM\Daily\WaterForKGM;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
+use App\Models\VisCenter\ExcelForm\DzoImportDowntimeReason;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -49,14 +50,18 @@ class StoreKGMReportsFromAvocetByDay extends Command
         $fields_data = json_decode(file_get_contents($path), true);
         $dzo_summary_last_record = DzoImportData::latest('id')->first();
         $date = Carbon::yesterday();
-
         $dzo_import_field_data = new DzoImportData();
+        $fondsModel = new FondsForKGM;
+        $downtimeReason = new DzoImportDowntimeReason();
+        $this->getDzo_import_field_data($fields_data, $dzo_import_field_data, $date, $fondsModel);
+        $this->getDowntimeReasonFilds($fields_data, $downtimeReason, $date, $fondsModel, $dzo_summary_last_record);
+        $this->saveKGMReportsFromAvocetByDay($dzo_import_field_data, $downtimeReason, $date);
+    }
+
+    private function getDzo_import_field_data($fields_data, $dzo_import_field_data, $date, $fondsModel)
+    {
 
         $multiplier = 1000;
-        /*foreach ($fields_data as $field_name => $field) {
-        $dzo_import_field_data->$field_name = $this->getWaterOilDeliveryAndGasMore( );
-        }*/
-
         $this->getFilds($fields_data['getWaterOilDeliveryAndGasMore'], $dzo_import_field_data, 'getWaterOilDeliveryAndGasMore', $date, $multiplier);
 
         $dzo_import_field_data->date = $date;
@@ -67,96 +72,45 @@ class StoreKGMReportsFromAvocetByDay extends Command
         unset($dzo_import_field_data['ASY_D']);
         unset($dzo_import_field_data['AKSH_D']);
         unset($dzo_import_field_data['NUR_D']);
+        $dzo_import_field_data->otm_well_workover_fact = count($fondsModel::query()->select('*')
+                ->WHERE('start_datetime', 'LIKE', $date . '%')
+                ->WHERE('status', 'SHUT_IN')
+                ->WHERE('cattegory_code', 'P_WORK_W_2')
+                ->get()->toArray());
 
-        
-    
-        if (isset($fields_data['production_fond'])){
-        $this->getFilds($fields_data['production_fond'], $dzo_import_field_data, 'quantityOfArray', $date, '');
+        if (isset($fields_data['production_fond']['head'])) {
+            $this->getFilds($fields_data['production_fond']['head'], $dzo_import_field_data, 'head', $date, '');
+        }
+        if (isset($fields_data['injection_fond']['head'])) {
+            $this->getFildsInjection($fields_data['injection_fond']['head'], $dzo_import_field_data, 'head', $date, '');
+        }
+        if (isset($fields_data['production_fond']['SHUT_IN'])) {
+            $this->getFilds($fields_data['production_fond']['SHUT_IN'], $dzo_import_field_data, 'SHUT_IN', $date, '');
         }
 
-        dd($dzo_import_field_data);
-        
-            $dzo_import_field_data->save();
+        $dzo_import_field_data->operating_production_fond = $dzo_import_field_data['in_work_production_fond'] + $dzo_import_field_data['in_idle_production_fond'] + $dzo_import_field_data['developing_production_fond'] + $dzo_import_field_data['inactive_injection_fond'];
+        $dzo_import_field_data->active_production_fond = $dzo_import_field_data['in_work_production_fond'] + $dzo_import_field_data['in_idle_production_fond'];
+        $dzo_import_field_data->operating_injection_fond = $dzo_import_field_data['in_work_injection_fond'] + $dzo_import_field_data['in_idle_injection_fond'] + $dzo_import_field_data['developing_injection_fond'] + $dzo_import_field_data['inactive_injection_fond'];
+        $dzo_import_field_data->active_injection_fond = $dzo_import_field_data['in_work_injection_fond'] + $dzo_import_field_data['in_idle_injection_fond'];
 
-        
-       // print_r($dzo_import_field_data);
-   
-        
-       
-       
-        
-      
+        return $dzo_import_field_data;
+    }
 
-        $productionFond = 'PRODUCTION';
-        // $inWorkProductionFond = $this->quantityOfArray( 'PRODUCING', $productionFond, '');
-        //$inIdleProductionFond = $this->quantityOfArray( 'SHUT_IN', $productionFond, '');
-        $inactiveProductionPrsFond = $this->quantityOfArray('SHUT_IN', $productionFond, 'P_WORK_W_1');
-        $inactiveProductionOprsFond = $this->quantityOfArray('SHUT_IN', $productionFond, 'N_DOWN_T_1');
-        $inactiveProductionKrsFond = $this->quantityOfArray('SHUT_IN', $productionFond, 'P_WORK_W_2');
-        $inactiveProductionOkrsFond = $this->quantityOfArray('SHUT_IN', $productionFond, 'N_DOWN_T_2');
-        $inactiveProductionOtherFond = $this->quantityOfArray('SHUT_IN', $productionFond, 'N_D_D_1');
-        //$inactiveProductionFond = $this->quantityOfArray( 'IDLE', $productionFond, '');
-        // $developingProductionFond = $this->quantityOfArray( 'DEVELOPMENT', $productionFond, '');
-        //$pendingLiquidationProductionFond = $this->quantityOfArray( 'ABANDON', $productionFond, '');
-        $operatingProductionFond = $inWorkProductionFond + $inIdleProductionFond + $developingProductionFond + $inactiveProductionFond;
-        $activeProductionFond = $inWorkProductionFond + $inIdleProductionFond;
-        $inConservationProductionFond = $this->quantityOfArray('SUSPENDED', $productionFond, '');
+    private function getDowntimeReasonFilds($fields_data, $downtimeReason, $date, $fondsModel, $dzo_summary_last_record)
+    {
+        $fonds = $this->getDataFromBD($fondsModel, $date);
+        $downtimeReason->well_survey_downtime_production_wells_count = $this->getCountByDowntimeWells($fonds, 'PRODUCTION');
+        $downtimeReason->well_survey_downtime_injection_wells_count = $this->getCountByDowntimeWells($fonds, 'INJECTION');
+        $downtimeReason->dzo_import_data_id = $dzo_summary_last_record['id'] + 1;
 
-        $injectionFond = 'INJECTION';
-        $inWorkInjectionFond = $this->quantityOfArray('PRODUCING', $injectionFond, '');
-        $inIdleInjectionFond = $this->quantityOfArray('SHUT_IN', $injectionFond, '');
-        $inactiveInjectionPrsFond = $this->quantityOfArray('SHUT_IN', $injectionFond, 'P_WORK_W_1');
-        $inactiveInjectionOprsFond = $this->quantityOfArray('SHUT_IN', $injectionFond, 'N_DOWN_T_1');
-        $inactiveInjectionKrsFond = $this->quantityOfArray('SHUT_IN', $injectionFond, 'P_WORK_W_2');
-        $inactiveInjectionOkrsFond = $this->quantityOfArray('SHUT_IN', $injectionFond, 'N_DOWN_T_2');
-        $inactiveInjectionOtherFond = $this->quantityOfArray('SHUT_IN', $injectionFond, 'N_D_D_1');
-        $inactiveInjectionFond = $this->quantityOfArray('IDLE', $injectionFond, '');
-        $developingInjectionFond = $this->quantityOfArray('DEVELOPMENT', $injectionFond, '');
-        $pendingLiquidationInjectionFond = $this->quantityOfArray('ABANDON', $injectionFond, '');
-        $operatingInjectionFond = $inWorkInjectionFond + $inIdleInjectionFond + $developingInjectionFond + $inactiveInjectionFond;
-        $activeInjectionFond = $inWorkInjectionFond + $inIdleInjectionFond;
-        $inConservationInjectionFond = $this->quantityOfArray('SUSPENDED', $injectionFond, '');
+        if (isset($fields_data['production_fond']['SHUT_IN_downtimeReason'])) {
+            $this->getFilds($fields_data['production_fond']['SHUT_IN_downtimeReason'], $downtimeReason, 'SHUT_IN_downtimeReason', $date, '');
+        }
 
-        //$dzoImportData
-        $dzo_import_field_data->in_work_production_fond = $inWorkProductionFond;
-        $dzo_import_field_data->in_idle_production_fond = $inIdleProductionFond;
-        $dzo_import_field_data->inactive_production_fond = $inactiveProductionFond;
-        $dzo_import_field_data->developing_production_fond = $developingProductionFond;
-        $dzo_import_field_data->pending_liquidation_production_fond = $pendingLiquidationProductionFond;
-        $dzo_import_field_data->operating_production_fond = $operatingProductionFond;
-        $dzo_import_field_data->active_production_fond = $activeProductionFond;
-
-        $dzo_import_field_data->in_work_injection_fond = $inWorkInjectionFond;
-        $dzo_import_field_data->in_idle_injection_fond = $inIdleInjectionFond;
-        $dzo_import_field_data->inactive_injection_fond = $inactiveInjectionFond;
-        $dzo_import_field_data->developing_injection_fond = $developingInjectionFond;
-        $dzo_import_field_data->pending_liquidation_injection_fond = $pendingLiquidationInjectionFond;
-        $dzo_import_field_data->operating_injection_fond = $operatingInjectionFond;
-        $dzo_import_field_data->active_injection_fond = $activeInjectionFond;
-        $dzo_import_field_data->otm_underground_workover = $inactiveProductionPrsFond;
-        $dzo_import_field_data->otm_well_workover_fact = $inactiveInjectionKrsFond;
-
-        
-        /*
-    $downtimeReason = new DzoImportDowntimeReason();
-    $downtimeReason->dzo_import_data_id = $dzo_summary_last_record['id'] + 1;
-
-    $downtimeReason->prs_downtime_production_wells_count = $inactiveProductionPrsFond;
-    $downtimeReason->krs_downtime_production_wells_count = $inactiveProductionKrsFond;
-    $downtimeReason->other_downtime_production_wells_count = $inactiveProductionOtherFond;
-    $downtimeReason->prs_wait_downtime_production_wells_count = $inactiveProductionOprsFond;
-    $downtimeReason->krs_wait_downtime_production_wells_count = $inactiveProductionOkrsFond;
-    $downtimeReason->well_survey_downtime_production_wells_count = $this->getCountByDowntimeWells($fonds, $productionFond);
-
-    $downtimeReason->prs_downtime_injection_wells_count = $inactiveInjectionPrsFond;
-    $downtimeReason->krs_downtime_injection_wells_count = $inactiveInjectionKrsFond;
-    $downtimeReason->other_downtime_injection_wells_count = $inactiveInjectionOtherFond;
-    $downtimeReason->prs_wait_downtime_injection_wells_count = $inactiveInjectionOprsFond;
-    $downtimeReason->krs_wait_downtime_injection_wells_count = $inactiveInjectionOkrsFond;
-    $downtimeReason->well_survey_downtime_injection_wells_count = $this->getCountByDowntimeWells($fonds, $injectionFond);
-    $downtimeReason->save();
-     */
-
+        if (isset($fields_data['injection_fond']['SHUT_IN_downtimeReason'])) {
+            $this->getFildsInjection($fields_data['injection_fond']['SHUT_IN_downtimeReason'], $downtimeReason, 'SHUT_IN_downtimeReason', $date, '');
+        }
+        return $downtimeReason;
     }
 
     private function getDataFromBD($nameData, $date)
@@ -167,7 +121,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
 
     }
 
-    public function getWaterOilDeliveryAndGasMore($column1, $date, $multiplier)
+    private function getWaterOilDeliveryAndGasMore($column1, $date, $multiplier)
     {
         if ($column1 == "KGM_INJ_TOTAL") {
             $data = $this->getDataFromBD(new WaterForKGM, $date);} elseif ($column1 == "KGM_DELIVERY") {
@@ -175,8 +129,8 @@ class StoreKGMReportsFromAvocetByDay extends Command
             $data = $this->getDataFromBD(new OilDeliveryForKGM, $date);} elseif ($column1 == "AKSH_D") {
             $data = $this->getDataFromBD(new OilDeliveryForKGM, $date);} elseif ($column1 == "NUR_D") {
             $data = $this->getDataFromBD(new OilDeliveryForKGM, $date);} elseif ($column1 == "KGM_TRANS") {
-            $data = $this->getDataFromBD(new GasMoreForKGM, $date);} elseif ($column1 == "KGM_UTIL") {
-            $data = $this->getDataFromBD(new GasMoreForKGM, $date);}
+            $data = $this->getDataFromBD(new GasForKGM, $date);} elseif ($column1 == "KGM_UTIL") {
+            $data = $this->getDataFromBD(new GasForKGM, $date);}
 
         if (isset($data)) {
             foreach ($data as $rowNum => $row) {
@@ -188,10 +142,9 @@ class StoreKGMReportsFromAvocetByDay extends Command
             }}
     }
 
-    public function quantityOfArray($column1, $column2, $column3, $date)
+    private function quantityOfArray($column1, $column2, $column3, $date)
     {
 
-        
         $data = $this->getDataFromBD(new FondsForKGM, $date);
 
         $summ = [];
@@ -200,20 +153,16 @@ class StoreKGMReportsFromAvocetByDay extends Command
             if ($row['type'] == $column2) {
                 if ($row['status'] == $column1) {
 
-                    if ($row['cattegory_code'] !== null) {
-                        $summ[] = array_merge($row);
-                    } else {
+                    if ($row['cattegory_code'] == null) {
                         if ($row['cattegory_code'] == $column3) {
-                            $summ[] = array_merge($row);
-                        }
-                    }
-
+                            $summ[] = array_merge($row);}
+                    } else { $summ[] = array_merge($row);}
                 }
-            }}        
-        return count($summ);        
+            }}
+        return count($summ);
     }
 
-    public function getCountByDowntimeWells($data, $column1)
+    private function getCountByDowntimeWells($data, $column1)
     {
         $summ = [];
 
@@ -226,7 +175,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
         return count($summ);
     }
 
-    public function getOilAndGas($column1, $date)
+    private function getOilAndGas($column1, $date)
     {
         $oilAndGas = $this->getDataFromBD(new OilAndGasForKGM, $date);
         $data = 0;
@@ -236,19 +185,73 @@ class StoreKGMReportsFromAvocetByDay extends Command
         return $data;
     }
 
-    public function getFilds($fields_data, $dzo_import_field_data, $function, $date, $multiplier)
+    private function getFildsInjection($fields_data, $dzo_import_field_data, $function, $date, $multiplier)
     {
 
-        foreach ($fields_data as $field_name => $field) {           
+        foreach ($fields_data as $field_name => $field) {
+
+            if ($function == 'head') {
+                $dzo_import_field_data->$field_name = $this->quantityOfArray($field, 'INJECTION', '', $date);
+            }
+
+            if ($function == 'SHUT_IN_downtimeReason') {
+                $dzo_import_field_data->$field_name = $this->quantityOfArray('SHUT_IN', 'INJECTION', $field, $date);
+            }
+        }
+        return $dzo_import_field_data;
+    }
+
+    private function getFilds($fields_data, $dzo_import_field_data, $function, $date, $multiplier)
+    {
+
+        foreach ($fields_data as $field_name => $field) {
+
             if ($function == 'getWaterOilDeliveryAndGasMore') {
                 $dzo_import_field_data->$field_name = $this->getWaterOilDeliveryAndGasMore($field, $date, $multiplier);
             }
-            if ($function == 'quantityOfArray') {                
+            if ($function == 'head') {
                 $dzo_import_field_data->$field_name = $this->quantityOfArray($field, 'PRODUCTION', '', $date);
+            }
+            if ($function == 'SHUT_IN') {
+                $dzo_import_field_data->$field_name = $this->quantityOfArray('SHUT_IN', 'PRODUCTION', $field, $date);
+            }
+
+            if ($function == 'SHUT_IN_downtimeReason') {
+                $dzo_import_field_data->$field_name = $this->quantityOfArray('SHUT_IN', 'PRODUCTION', $field, $date);
             }
 
         }
         return $dzo_import_field_data;
+    }
+
+    private function saveKGMReportsFromAvocetByDay($dzo_import_field_data, $downtimeReason, $date)
+    {
+        $lastDataOil = $dzo_import_field_data
+            ->where('dzo_name', '=', 'КГМ')
+            ->where('date', '=', $date)
+            ->get()->toArray();       
+
+        $dzo_import_field_data->oil_delivery_by_stations_fact = '577';
+
+        if (count($lastDataOil) === 0) {
+            $dzo_import_field_data->save();
+            $downtimeReason->save();
+            echo "Data haven't been written";
+        } else {
+            $lastDataOil = $lastDataOil[0];          
+            if (($lastDataOil['dzo_name'] == 'КГМ') || ($lastDataOil['date'] == $date)) {
+                if (($lastDataOil['oil_production_fact'] === 0.00000000) or ($lastDataOil['oil_delivery_fact'] === 0.00000000)) {
+                    $dzo_import_field_data
+                        ->where('dzo_name', '=', 'КГМ')
+                        ->where('date', '=', $date)->update($dzo_import_field_data->getAttributes());
+
+                    $downtimeReason
+                        ->where('dzo_import_data_id', '=', $lastDataOil['id'])
+                        ->update($downtimeReason->getAttributes());
+                    echo "Data have been update";
+                } else {echo "No update needed";}
+            }
+        }
     }
 
     /**
