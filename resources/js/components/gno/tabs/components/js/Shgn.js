@@ -175,7 +175,6 @@ export default {
 	},
 	methods: {
 		updateBoxes(selectedKomponovka) {
-			console.log(selectedKomponovka)
 			if(selectedKomponovka.includes('paker')) {
 				this.komponovkaTypes[0].disabled = true
 				this.komponovkaTypes[2].disabled = true

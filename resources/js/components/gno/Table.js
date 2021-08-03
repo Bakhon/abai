@@ -1500,7 +1500,6 @@ export default {
       this.piInput = this.newData["pi"].toFixed(2) + " " + this.trans('measurements.m3/d/at');
       this.wctInput = this.newData["wct"].toFixed(0) + " " + this.trans('measurements.percent');
       this.hPumpValue = this.newData["h_pump_set"].toFixed(0) + " " + this.trans('measurements.m');
-      console.log(this.newPointsData)
       this.bhpPot = Number(this.newPointsData[1]["p"].toFixed(0)) - 1
       this.qlPot = Number(this.newPointsData[1]["q_l"].toFixed(0)) + 1
       this.pinPot = Number(this.newPointsData[1]["pin"].toFixed(0)) - 1
