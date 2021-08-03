@@ -24,6 +24,7 @@ const tr = {
     expMeth: [],
     wellName: [],
     pageNumber: 1,
+    isFullVersion: false,
   },
 
   mutations: {
@@ -93,6 +94,9 @@ const tr = {
     SET_WELLNAME: (state, val) => {
       state.wellName = val;
     }, 
+    SET_VERSION: (state, val) => {
+      state.isFullVersion = val;
+    }, 
   },
 
   actions: {
@@ -121,6 +125,7 @@ const tr = {
     expMeth: (state) => state.expMeth,
     pageNumber: (state) => state.pageNumber,
     wellName: (state) => state.wellName,
+    isFullVersion: (state) => state.isFullVersion, 
   },
 };
 

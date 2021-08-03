@@ -104,7 +104,7 @@
               </select>
             </div>
             <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
-              <a href="#" @click.prevent="chooseDt"  class="btn btn-sm button_form" style="width: 80%;"
+              <a href="#" @click.prevent="chooseDate"  class="btn btn-sm button_form" style="width: 80%;"
                 >{{trans('tr.form')}}</a
               >
               <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;">
@@ -137,7 +137,7 @@
                 <label for="inputDate" style="margin-left: 8px;">{{trans('tr.end_date_enter')}}:</label>
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
                 <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
-                  <a href="#" @click.prevent="chooseDt1" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
+                  <a href="#" @click.prevent="chooseDynamicDate" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
                     >{{trans('tr.form')}}</a
                   >
                   <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;" >
@@ -520,7 +520,7 @@
               </a>
 
               <a
-                v-if="!isEdit && isPermission"
+                v-if="!isEdit && isPermission && isMaxDate"
                 v-bind:title="trans('tr.edit')"
                 style="cursor: pointer;"
                 data-toggle="tooltip"
