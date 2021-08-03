@@ -82,6 +82,9 @@ Route::group(
                 Route::get('/get-daily-production-for-approve', 'VisCenter\ExcelForm\ExcelFormController@getDailyProductionForApprove');
                 Route::get('/approve-daily-correction', 'VisCenter\ExcelForm\ExcelFormController@approveDailyCorrection');
                 Route::get('/decline-daily-correction', 'VisCenter\ExcelForm\ExcelFormController@declineDailyCorrection');
+                Route::get('get-non-operating-dzo', function() {
+                    Artisan::call('receive-non-operating-email:cron');
+                });
             }
         );
     }
