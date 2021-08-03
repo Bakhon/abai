@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="topside">
+      <button>Загрузка данных</button>
+    </div>
     <div id="map">
     </div>
   </div>

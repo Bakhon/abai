@@ -12,23 +12,18 @@
                    <div class="row">
                        <div class="col-sm-5 borderRightGrey">
                            <div class="footBlock">
-                               <p><img src="/img/digital-drilling/foot5.svg" alt=""><span>Действующий нефтепровод</span></p>
+                               <p><img src="/img/digital-drilling/foot5.svg" alt=""><span>Граница государства</span></p>
                            </div>
                            <div class="footBlock">
-                               <p><img src="/img/digital-drilling/foot6.svg" alt=""><span>Действующий газопроводя</span></p>
+                               <p><img src="/img/digital-drilling/foot6.svg" alt=""><span>Границы нефтегазосносных НГП</span></p>
                            </div>
                        </div>
                        <div class="col-sm-5 borderRightGrey">
                            <div class="footBlock">
-                               <p><img src="/img/digital-drilling/foot1.svg" alt=""><img src="/img/digital-drilling/foot2.svg" alt=""><span>Разведка и добыча</span></p>
+                               <p><img src="/img/digital-drilling/foot6.svg" alt=""><img src="/img/digital-drilling/foot2.svg" alt=""><span>Границы месторождении</span></p>
                            </div>
                            <div class="footBlock">
-                               <p><img src="/img/digital-drilling/foot3.svg" alt=""><span>Переработка</span></p>
-                           </div>
-                       </div>
-                       <div class="col-sm-2">
-                           <div class="footBlock">
-                               <p><img src="/img/digital-drilling/foot4.svg" alt=""><span>ДЗО</span></p>
+                               <p><img src="/img/digital-drilling/foot1.svg" alt=""><span>Разведка и добыча</span></p>
                            </div>
                        </div>
                    </div>
@@ -68,7 +63,12 @@
     margin-right: 8px;
     opacity: 0.7;
   }
+
+  img{
+      margin-right: 15px;
+  }
     .pf-index-wrapper {
+        height: 90vh;
         margin: 0;
         padding: 0;
         display: grid;
@@ -76,7 +76,7 @@
         grid-template-columns: 5fr 1467fr 10fr 355fr 5fr;
         background:#0f1430;
         width :100%;
-        height: 100%;
+        /* height: 100%; */
     }
 
     .pf-index-main {
@@ -105,6 +105,7 @@
     }
     .borderRightGrey{
         display: flex;
+        justify-content: space-between;
     }
 
 </style>

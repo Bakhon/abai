@@ -2,7 +2,7 @@
   <div class="wrapper-info">
     <div class="statistic-info">
       <div class="grid-container">
-        <info-table :inform_data="getFieldData.field||0" :description="amount_of_pvt"></info-table>
+        <info-table :inform_data="getFieldData.field||0" :description="wells"></info-table>
         <info-table :inform_data="getFieldData.deep||0" :description="deep_samples"></info-table>
 
         <info-table :inform_data="getFieldData.recombine||0" :description="recombined"></info-table>
@@ -29,16 +29,17 @@
       </div>
       <div class="field-checkbox">
         <div>
+          <p class="filter-header">Месторождения</p>
           <b-input-group class="mt-3 input">
             <b-form-input class="input-bg"></b-form-input>
             <b-input-group-append>
               <b-button variant="info">Button</b-button>
             </b-input-group-append>
           </b-input-group>
-          <div class="user-checkbox">
+          <div class="user-checkbox1">
             <b-form-checkbox-group
                 v-model="selected"
-                :options="options"
+                :options="options1"
                 class="mb-3 checkbox-user"
                 value-field="item"
                 text-field="name"
@@ -73,15 +74,22 @@ export default {
         },
       },
       selected: [],
-      amount_of_pvt: this.trans("plast_fluids.amount_of_pvt"),
+      wells: this.trans("Скважины"),
       deep_samples: this.trans("plast_fluids.deep_samples"),
       recombined: this.trans("plast_fluids.recombined"),
       well_head_samples: this.trans("plast_fluids.well_head_samples"),
 
       options: [
-        {item: 'A', name: 'АО «Озенмунайгаз»'},
+        {item: 'A', name: 'ТОО «Казахойл Актобе»'},
         {item: 'B', name: 'АО «Мангистаумунайгаз»'},
         {item: 'C', name: 'АО «Каражанбасмунай»'},
+        { item: 'D', name: 'ТОО «Казахтуркмунай»' },
+        { item: 'E', name: 'АО «Эмбамунайгаз»' },
+        { item: 'F', name: 'ТОО СП «Казгермунай»' }
+      ],
+      options1: [
+        {item: 'A', name: 'Кожасай'},
+        {item: 'B', name: 'Алибекмола'},
         // { item: 'D', name: 'ТОО «Казахтуркмунай»' }
         // { item: 'E', name: 'АО «Эмбамунайгаз»' }
         // { item: 'F', name: 'ТОО СП «Казгермунай»' }
@@ -154,7 +162,6 @@ export default {
   background: #272953;
   display: flex;
   flex-direction: column;
-
 }
 
 .buttons-wrapper button {
@@ -168,5 +175,6 @@ export default {
   font-family: "Harmonia Sans Pro Cyr", sans-serif;
   font-weight: 700;
   line-height: 16.8px;
+  border: none;
 }
 </style>
