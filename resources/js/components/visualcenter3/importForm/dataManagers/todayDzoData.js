@@ -1,3 +1,5 @@
+import initialRowsKOA from "../dzoData/initial_rows_koa.json";
+
 export default {
     data: function () {
         return {
@@ -33,7 +35,11 @@ export default {
                     self.processCurrentData(inputData,dataset);
                 }
             });
-            this.todayData = await this.getDzoTodayData();
+            let queryOptions = {
+                'dzoName': this.selectedDzo.ticker,
+                'isCorrected': false,
+            };
+            this.todayData = await this.getDzoTodayData(queryOptions);
             this.processTodayData();
         },
         async getCurrentData(uri) {
@@ -48,9 +54,9 @@ export default {
                 localData[key] = inputData[key];
             });
         },
-        async getDzoTodayData() {
-            let uri = this.localeUrl("/get-dzo-today-data") + '?dzoName=' + this.selectedDzo.ticker;
-            const response = await axios.get(uri);
+        async getDzoTodayData(queryOptions) {
+            let uri = this.localeUrl("/get-dzo-today-data");
+            const response = await axios.get(uri, {params:queryOptions});
             if (response.status === 200) {
                 return response.data;
             }
