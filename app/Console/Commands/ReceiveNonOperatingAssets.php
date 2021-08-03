@@ -118,7 +118,6 @@ class receiveNonOperatingAssets extends Command
             $items = $response_message->RootFolder->Items->Message;
             $this->messageOptions['id'] = $items[0]->ItemId->Id;
             $this->messageOptions['changeKey'] = $items[0]->ItemId->ChangeKey;
-            var_dump($this->messageOptions);
         }
     }
 
@@ -243,17 +242,14 @@ class receiveNonOperatingAssets extends Command
     public function scrapDocument($fileType)
     {
         $xls = false;
-        var_dump($fileType);
         if ($fileType === 'gdu') {
             $xls = SimpleXLSX::parseFile($_SERVER['DOCUMENT_ROOT'] . $this->filePath);
             if ($xls) {
-                var_dump('gdu file exist');
                 $this->processExcelDocument($xls->rows(1),$fileType);
             }
         } else if ($fileType === 'nonOperating') {
             $xls = SimpleXLS::parseFile($_SERVER['DOCUMENT_ROOT'] . $this->filePath);
             if ($xls) {
-                var_dump('nonOperating file exist');
                 $this->processExcelDocument($xls->rows(),$fileType);
             }
         }
@@ -350,7 +346,6 @@ class receiveNonOperatingAssets extends Command
         $ketekazganField = $sheet[$rowIndex + 4][$columnMapping['oil_production_fact']] * 0.5;;
         $belkudukField = $sheet[$rowIndex + 5][$columnMapping['oil_production_fact']] * 0.5;
         $dzoSummary = $kuzilkiaField + $westTuzkolField + $tuzkolField + $ketekazganField + $belkudukField;
-        var_dump($dzoSummary);
         return array (
             'oil_production_fact' => $row[$columnMapping['oil_production_fact']] + $dzoSummary,
             'oil_delivery_fact' => $row[$columnMapping['oil_delivery_fact']],
