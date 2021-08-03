@@ -86,9 +86,13 @@ export const chartInitMixin = {
                 tooltip: {
                     shared: true,
                     intersect: false,
-                    y: {
-                        formatter: (y) => this.tooltipFormatter(y)
-                    }
+                    y: this.chartSeries.map((item, index) => {
+                        return {
+                            formatter: index === 0
+                                ? (y) => y
+                                : (y) => this.tooltipFormatter(y)
+                        }
+                    })
                 }
             }
         },

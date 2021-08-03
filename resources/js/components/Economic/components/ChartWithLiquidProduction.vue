@@ -1,6 +1,6 @@
 <template>
   <apexchart
-      :options="options"
+      :options="chartOptions"
       :series="chartSeries"
       :height="740"
       type="line"/>
@@ -18,32 +18,20 @@ export default {
     window.economic_reference_thousand_tons = this.trans('economic_reference.thousand_tons')
     window.economic_reference_liquid = this.trans('economic_reference.liquid')
   },
-  computed: {
-    options() {
-      return {
-        ...this.chartOptions, ...{
-          tooltip: {
-            shared: true,
-            intersect: false,
-            y: {
-              formatter(y) {
-                if (y === undefined || y === null) {
-                  return y
-                }
-
-                let liquid = y.toString().split('.');
-
-                let res = `${liquid[0]} ${window.economic_reference_thousand_tons}`
-
-                return liquid.length > 1
-                    ? res + `, ${window.economic_reference_liquid}:  ${liquid[1]}%`
-                    : res
-              }
-            }
-          }
-        }
+  methods: {
+    tooltipFormatter(y) {
+      if (y === undefined || y === null) {
+        return y
       }
+
+      let liquid = y.toString().split('.');
+
+      let res = `${liquid[0]} ${window.economic_reference_thousand_tons}`
+
+      return liquid.length > 1
+          ? res + `, ${window.economic_reference_liquid}:  ${liquid[1]}%`
+          : res
     },
-  },
+  }
 }
 </script>

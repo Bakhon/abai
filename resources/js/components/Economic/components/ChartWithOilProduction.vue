@@ -1,6 +1,6 @@
 <template>
   <apexchart
-      :options="options"
+      :options="chartOptions"
       :series="chartSeries"
       :height="740"
       type="line"/>
@@ -21,22 +21,7 @@ export default {
       required: true,
       type: String,
     },
-  },
-  computed: {
-    options() {
-      return {
-        ...this.chartOptions, ...{
-          tooltip: {
-            shared: true,
-            intersect: false,
-            y: {
-              formatter: (y) => this.tooltipFormatter(y)
-            }
-          }
-        }
-      }
-    },
-  },
+  }
 }
 </script>
 
