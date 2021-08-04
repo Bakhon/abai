@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\DB;
 
+use App\Http\Controllers\Api\Admin\UsersController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\OrganizationsController;
 use App\Http\Resources\BigData\WellSearchResource;
@@ -465,10 +466,16 @@ class WellsController extends Controller
         }
         $selectedUserDzo = $request->get('selectedUserDzo');
         $childrenIds = [];
+        $orgsTree = $service->getTree(Carbon::now());
         if ($selectedUserDzo) {
-            $orgsTree = $service->getTree(Carbon::now());
             $childrenIds = $service::getChildIds($orgsTree, $selectedUserDzo);
-
+        } else {
+            $userDzoIds = array_map(function ($item) {
+                return substr($item, strpos($item, ":") + 1);
+            }, auth()->user()->org_structure);
+            foreach ($userDzoIds as $userDzoId) {
+                $childrenIds = array_merge($childrenIds, $service::getChildIds($orgsTree, $userDzoId));
+            }
         }
         $wells = Well::query()
             ->whereRaw("LOWER(uwi) LIKE '%" . strtolower($request->get('query')) . "%'");
