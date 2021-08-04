@@ -7,7 +7,7 @@ class AddPermissionsToGdisForm extends Migration
 {
     public function up()
     {
-        $permissions = json_decode('[{"name":"bd forms gdis list","guard_name":"web"},{"name":"bd forms gdis create","guard_name":"web"},{"name":"bd forms gdis edit","guard_name":"web"},{"name":"bd forms gdis history","guard_name":"web"},{"name":"bd forms gdis delete","guard_name":"web"}]', 1);
+        $permissions = json_decode('[{"name":"bigdata gdis list","guard_name":"web"},{"name":"bigdata gdis create","guard_name":"web"},{"name":"bigdata gdis edit","guard_name":"web"},{"name":"bigdata gdis history","guard_name":"web"},{"name":"bigdata gdis delete","guard_name":"web"}]', 1);
 
         foreach ($permissions as $permission) {
             DB::table('permissions')->insert($permission);
