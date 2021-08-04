@@ -249,7 +249,6 @@ export default {
       editPageNumberLink: "techregime_edit_page_numbers/",
       searchLink: "techregime_totals_test_3/",
       editSearchLink: "techregime_edit_page/",
-      selected: 'A',
     };
   },
   methods: {

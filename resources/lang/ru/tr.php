@@ -300,4 +300,5 @@ return array (
   'perforation_intervals' => 'Интервалы перфорации',
   'tub_eqiup' => 'Оборудование низа НКТ',
   'h_packer_set' => 'Глубина  установки пакера',
+  'swings/min' => 'кач/мин',
 );

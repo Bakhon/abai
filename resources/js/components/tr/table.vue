@@ -22,9 +22,9 @@
                 <td rowspan="4" class="th">{{trans('tr.h_packer_set')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.pump_frequency_or_speed')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.stroke_length')}}</td>
-
+                <td rowspan="4" class="th">{{trans('tr.swing_number')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.choke_diameter')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.h_water_permeability')}}</td>
+
                 <td rowspan="4" class="th">{{trans('tr.p_layer')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.h_dynamic')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.annular_pressure')}}</td>
@@ -312,9 +312,9 @@
                 <td @click="sortBy('h_packer_set')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
                 <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.gc_ob/min')}}</td>
                 <td @click="sortBy('stroke_len')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
-
+                <td @click="sortBy('spm')" class="th"><i class="fa fa-fw fa-sort">{{trans('tr.swings/min')}}</i></td>
                 <td @click="sortBy('choke_d')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
-                <td @click="sortBy('h_up_perf_md')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
+
                 <td @click="sortBy('p_res')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}</td>
                 <td @click="sortBy('h_dyn')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
                 <td @click="sortBy('p_annular')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}</td>
@@ -475,6 +475,16 @@
                         {{ wells[row_index].stroke_len[1][1]}}
                     </span>
                 </td>
+
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`spm`), 'activ': isActiveClass(row)}">
+                    <span :class="{'circle-err': wells && wells[row_index] &&
+                wells[row_index].spm[1][0] !== '0'}" :style="`background :${getColor(
+                wells[row_index].spm[1][0])}`"> </span>
+                    <span v-if="row.spm[0]!=null">{{row.spm[0]}}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                        {{ wells[row_index].spm[1][1]}}
+                    </span>
+                </td>
                 
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`choke_d`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -486,15 +496,6 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': isCommentClass(row_index,`h_up_perf_md`), 'activ': isActiveClass(row)}">
-                    <span :class="{'circle-err': wells && wells[row_index] &&
-                wells[row_index].h_up_perf_md[1][0] !== '0'}" :style="`background :${getColor(
-                wells[row_index].h_up_perf_md[1][0])}`"> </span>
-                    <span v-if="row.h_up_perf_md[0]!=null">{{Math.round(row.h_up_perf_md[0]*10)/10}}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                        {{ wells[row_index].h_up_perf_md[1][1]}}
-                    </span>
-                </td>
 
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`p_res`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
