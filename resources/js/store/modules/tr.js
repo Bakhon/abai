@@ -125,7 +125,6 @@ const tr = {
     expMeth: (state) => state.expMeth,
     pageNumber: (state) => state.pageNumber,
     wellName: (state) => state.wellName,
-    isFullVersion: (state) => state.isFullVersion, 
   },
 };
 
