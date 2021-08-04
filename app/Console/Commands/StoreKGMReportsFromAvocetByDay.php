@@ -150,14 +150,14 @@ class StoreKGMReportsFromAvocetByDay extends Command
         $summ = [];
 
         foreach ($data as $rowNum => $row) {
-            if ($row['type'] == $column2) {
-                if ($row['status'] == $column1) {
+            if (($row['type'] == $column2)
+                && ($row['status'] == $column1)) {
 
-                    if ($row['cattegory_code'] == null) {
-                        if ($row['cattegory_code'] == $column3) {
-                            $summ[] = array_merge($row);}
-                    } else { $summ[] = array_merge($row);}
-                }
+                if (($row['cattegory_code'] == null)
+                    && ($row['cattegory_code'] == $column3)) {
+                    $summ[] = array_merge($row);
+                } else { $summ[] = array_merge($row);}
+
             }}
         return count($summ);
     }
@@ -167,10 +167,10 @@ class StoreKGMReportsFromAvocetByDay extends Command
         $summ = [];
 
         foreach ($data as $rowNum => $row) {
-            if ($row['type'] == $column1) {
-                if ($row['category2'] == 'Исследование') {
-                    $summ[] = array_merge($row);
-                }}
+            if (($row['type'] == $column1)
+                && ($row['category2'] == 'Исследование')) {
+                $summ[] = array_merge($row);
+            }
         }
         return count($summ);
     }
@@ -229,7 +229,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
         $lastDataOil = $dzo_import_field_data
             ->where('dzo_name', '=', 'КГМ')
             ->where('date', '=', $date)
-            ->get()->toArray();       
+            ->get()->toArray();
 
         $dzo_import_field_data->oil_delivery_by_stations_fact = '577';
 
@@ -238,7 +238,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
             $downtimeReason->save();
             echo "Data haven't been written";
         } else {
-            $lastDataOil = $lastDataOil[0];          
+            $lastDataOil = $lastDataOil[0];
             if (($lastDataOil['dzo_name'] == 'КГМ') || ($lastDataOil['date'] == $date)) {
                 if (($lastDataOil['oil_production_fact'] === 0.00000000) or ($lastDataOil['oil_delivery_fact'] === 0.00000000)) {
                     $dzo_import_field_data
