@@ -1,0 +1,55 @@
+{
+  "type": "plain",
+  "table": "",
+  "tabs": [
+    {
+      "title": "",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "hello_world",
+                "type": "datetime",
+                "title": "dbeg",
+                "validation": "required"
+              },
+              {
+                "code": "hello_world",
+                "type": "datetime",
+                "title": "dend",
+                "validation": "required"
+              },
+              {
+                "code": "hello_world",
+                "type": "dict",
+                "dict":" ",
+                "title": "dict",
+                "validation": "required"
+              },
+              {
+                "code": "depth",
+                "type": "numeric",
+                "title": "depth",
+                "validation": "required"
+              },
+              {
+                "code": "",
+                "type": "text",
+                "title": "aim",
+                "validation": "required"
+              },
+              {
+                "code": "",
+                "type": "text",
+                "title": "conclusion",
+                "validation": "required"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

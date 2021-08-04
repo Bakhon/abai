@@ -49,4 +49,5 @@
   'daily_reports_fluid_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsFluidProd',
   'production_wells_schedule' => '\\App\\Services\\BigData\\Forms\\ProductionWellsSchedule',
   'gis_type' => '\\App\\Services\\BigData\\Forms\\GisType',
+  'gdis' => '\\App\\Services\\BigData\\Forms\\Gdis',
 );
