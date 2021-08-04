@@ -140,7 +140,7 @@
               {
                 "code": "income_devices",
                 "type": "numeric",
-                "title": "zakl",
+                "title": "income_devices",
                 "validation": ""
               },
               {
