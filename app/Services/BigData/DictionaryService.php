@@ -44,6 +44,7 @@ use App\Models\BigData\Dictionaries\GeoRockType;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GisKind;
 use App\Models\BigData\Dictionaries\GisMethod;
+use App\Models\BigData\Dictionaries\DocumentType;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -207,6 +208,10 @@ class DictionaryService
         ],
         'gis_methods' => [
             'class' => GisMethod::class,
+            'name_field' => 'name_ru'
+        ],
+        'document_types' => [
+            'class' => DocumentType::class,
             'name_field' => 'name_ru'
         ]
     ];

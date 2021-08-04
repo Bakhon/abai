@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "",
+  "table": "prod.document",
   "tabs": [
     {
       "title": "",
@@ -10,28 +10,28 @@
             "title": "",
             "items": [
               {
-                "code": "author",
+                "code": "owner",
                 "type": "text",
                 "title": "autor",
                 "validation": "",
                 "is_editable": false
               },
               {
-                "code": "date",
+                "code": "load_date",
                 "type": "date",
                 "title": "date",
                 "validation": "",
                 "is_editable": false
               },
               {
-                "code": "name",
+                "code": "name_ru",
                 "type": "text",
                 "title": "name",
                 "validation": "",
                 "is_editable": true
               },
               {
-                "code": "document_date",
+                "code": "doc_date",
                 "type": "date",
                 "title": "document_date",
                 "validation": "required",
@@ -40,9 +40,9 @@
               {
                 "code": "name_ru",
                 "type": "dict",
-                "dict": "",
+                "dict": "document_types",
                 "title": "document_type",
-                "validation": "required",
+                "validation": "required|exists:tbd.dict.document_type,id",
                 "is_editable": true
               },
               {
