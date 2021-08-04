@@ -78,5 +78,12 @@ Route::group(
                 Route::get('/akc',                  '\App\Http\Controllers\DigitalDrilling\AnalyticsController@akc')->name('digital-drilling-analytics-akc');
                 Route::get('/balance',              '\App\Http\Controllers\DigitalDrilling\AnalyticsController@balance')->name('digital-drilling-analytics-balance');
             });
+
+            // Daily report
+            Route::group(['prefix' => '/daily-report'], function () {
+                Route::get('/', function () {
+                    return view('digital_drilling.daily_report.index');
+                })->name('digital-drilling-daily-report');
+            });
         });
     });
