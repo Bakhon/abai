@@ -1,27 +1,22 @@
 <template>
-  <div class="geology-l-side">
-    <div class="geology-l-side__top d-flex align-items-start w-100">
-      <div class="w-100">
-        <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор методов" :options="[
+  <PageSide direction="right">
+    <template #top>
+      <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор методов" :options="[
               {label: 'option 1', value: 1},
               {label: 'option 2', value: 2},
               {label: 'option 3', value: 3}
             ]" />
-        <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор алгоритмов" :options="[
+      <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор алгоритмов" :options="[
               {label: 'option 1', value: 1},
               {label: 'option 2', value: 2},
               {label: 'option 3', value: 3}
             ]" />
-        <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Данные по сважине" :options="[
+      <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Данные по сважине" :options="[
               {label: 'option 1', value: 1},
               {label: 'option 2', value: 2},
               {label: 'option 3', value: 3}
             ]" />
-      </div>
-      <button class="geology-l-side__toggle">
-        <Icon name="arrowLeft"/>
-      </button>
-    </div>
+    </template>
     <ToolBlock class="mb-2">
       <template #header>
         <div class="d-flex align-items-center justify-content-between">
@@ -62,7 +57,7 @@
         <Button class="w-100" align="center">Кнопка на карту керна</Button>
       </div>
     </div>
-  </div>
+  </PageSide>
 </template>
 
 <script>
@@ -72,8 +67,9 @@ import ToolBlockGroupDivider from "../components/toolBlock/ToolBlockGroupDivider
 import ToolBlockList from "../components/toolBlock/ToolBlockList";
 import dropdown from "../components/dropdowns/dropdown";
 import Button from "../components/buttons/Button";
-import Icon from "../components/icons/Icon";
+import AwIcon from "../components/icons/AwIcon";
 import Legend from "../components/legend/Legend";
+import PageSide from "../components/pageSide/PageSide";
 export default {
   name: "GeologyCoreLeftSide",
   data() {
@@ -91,8 +87,9 @@ export default {
     ToolBlockGroupDivider,
     dropdown,
     ToolBlockList,
-    Icon,
-    Legend
+    AwIcon,
+    Legend,
+    PageSide
   },
   computed:{
     cListSelect(){
@@ -110,34 +107,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-
-.geology-l-side{
-  &__toggle{
-    border: none;
-    background: var(--a-accent);
-    margin: -6px 10px 0 -7px;
-    padding: 14px 6px;
-    border-radius: 0 10px 10px 0;
-  }
-}
-.geology-l-side{
-  .toolBlock__list{
-    background: none;
-  }
-  .btns{
-    padding: 20px 13px;
-  }
-  &__toggle{
-    border: none;
-    background: var(--a-accent);
-    margin: -6px -7px 0  10px;
-    padding: 14px 6px;
-    border-radius: 10px 0 0 10px;
-    .a-svg-icons{
-      transform: rotate(180deg);
-    }
-  }
-}
-</style>

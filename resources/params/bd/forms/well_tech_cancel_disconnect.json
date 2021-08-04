@@ -1,0 +1,23 @@
+{
+  "type": "plain",
+  "table": "prod.well_tech",
+  "tabs": [
+    {
+      "title": "main",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "tech",
+                "type": "label",
+                "title": "confirm_cancel"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

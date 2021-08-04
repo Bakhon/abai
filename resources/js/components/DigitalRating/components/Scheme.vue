@@ -3,9 +3,8 @@
     <div class="correlation-scheme__item" v-for="(item, idx) in 3">
       <div class="correlation-scheme__header">
         <div class="correlation-scheme__header-title">
-          Корреляционная схема {{ idx + 1 }}
+          {{ trans('digital_rating.correlationScheme') + idx + 1 }}
         </div>
-        <img class="correlation-scheme__header-icon" src="/img/icons/link.svg" alt="">
       </div>
       <div class="correlation-scheme__content">
         <img src="/img/digital-rating/scheme.svg" alt="">

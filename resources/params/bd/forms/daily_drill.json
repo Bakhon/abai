@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "drill.well_daily_drill",
+  "sort": [
+    {
+      "field": "date_drill",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main_information",
@@ -32,7 +38,7 @@
                 "code":"dbeg",
                 "type":"datetime",
                 "title":"drill_beg",
-                "validation":"required|before:dend"
+                "validation":"required"
               },
               {
                 "code":"dend",

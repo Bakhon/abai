@@ -3,9 +3,10 @@ import NotifyPlugin from "vue-easy-notify";
 import "vue-easy-notify/dist/vue-easy-notify.css";
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
-import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
+import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
+import CatLoader from "@ui-kit/CatLoader";
 
 import Paginate from 'vuejs-paginate';
 Vue.component('paginate', Paginate);
@@ -17,6 +18,7 @@ export default {
     'params'
   ],
   components: {
+    CatLoader,
     TrTable,
     TrFullTable,
     SearchFormRefresh,
@@ -179,87 +181,7 @@ export default {
   },
   beforeCreate: function () {},
   created() {
-    this.$store.commit("globalloading/SET_LOADING", true);
-    this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
-    this.$store.commit("tr/SET_SEARCH", this.searchString);
-    this.$store.commit("tr/SET_PAGENUMBER", 1);
-    this.$store.commit("tr/SET_SORTTYPE", true);
-    var today = new Date();
-    var mm = today.getMonth() + 1;
-    var yyyy = today.getFullYear();
-    var day = today.getDate();
-    if(day > 25 && mm < 12) {
-      var mm1 = today.getMonth() + 2;
-      var yyyy1 = today.getFullYear();
-    }
-    else if(day > 25 && mm === 12){
-      var mm1 = 1;
-      var yyyy1 = today.getFullYear() + 1;
-    }
-    else{
-      var mm1 = today.getMonth() + 1;
-      var yyyy1 = today.getFullYear();
-    }
-    this.$store.commit("tr/SET_MONTH", mm);
-    this.$store.commit("tr/SET_YEAR", yyyy);
-    this.isDynamic = false;
-    this.$store.commit("tr/SET_IS_DYNAMIC", "false");
-    this.$store.commit("tr/SET_FIELD", []);
-    this.$store.commit("tr/SET_OBJECT", []);
-    this.$store.commit("tr/SET_HORIZON", []);
-    this.$store.commit("tr/SET_WELLTYPE", []);
-    this.$store.commit("tr/SET_BLOCK", []);
-    this.$store.commit("tr/SET_EXPMETH", []);
-    this.$store.commit("tr/SET_WELLNAME", []);
-    this.axios
-      .post(
-        this.postApiUrl + this.searchLink,
-        this.getPageData(),
-      )
-      .then((response) => {
-        console.log(this.postApiUrl)
-        let data = response.data;
-        this.year = yyyy;
-        this.selectYear = yyyy;
-        this.month = mm;
-        this.currentMonth = mm;
-        this.currentYear = yyyy;
-        this.$store.commit("globalloading/SET_LOADING", false);
-        if (response.data) {
-          this.wells = data.data;
-          this.fullWells = data.data;
-        }
-        else {
-          console.log("No data");
-        }
-        if (mm1 < 10) {
-          this.dt = "01" + ".0" + mm1 + "." + yyyy1;
-        } else {
-          this.dt = "01" + "." + mm1 + "." + yyyy1;
-        }
-        this.isPermission = this.params.includes(this.permissionName);
-      });
-    this.axios
-      .get(
-        this.postApiUrl + "techregime/tr_parameter_filters/"
-      )
-      .then((response) => {
-        let data = response.data;
-        if (data) {
-          this.filter_column = data;
-          this.horizonFilterData = data.horizon;
-          this.objectFilterData = data.object;
-          this.fieldFilterData = data.field;
-          this.wellTypeFilterData = data.well_type;
-          this.blockFilterData = data.block;
-          this.expMethFilterData = data.exp_meth;
-          this.wellNameFilterData = data.rus_wellname;
-        }
-        else {
-          console.log("No data");
-        }
-      });
-    this.axiosPage(this.pageNumberLink);
+    this.loadPage();
   },
   data: function () {
     return {
@@ -327,9 +249,92 @@ export default {
       editPageNumberLink: "techregime_edit_page_numbers/",
       searchLink: "techregime_totals_test_3/",
       editSearchLink: "techregime_edit_page/",
+      selected: 'A',
     };
   },
   methods: {
+    loadPage() {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
+      this.$store.commit("tr/SET_SEARCH", this.searchString);
+      this.$store.commit("tr/SET_PAGENUMBER", 1);
+      this.$store.commit("tr/SET_SORTTYPE", true);
+      var today = new Date();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      var day = today.getDate();
+      if(day > 25 && mm < 12) {
+        var mm1 = today.getMonth() + 2;
+        var yyyy1 = today.getFullYear();
+      }
+      else if(day > 25 && mm === 12){
+        var mm1 = 1;
+        var yyyy1 = today.getFullYear() + 1;
+      }
+      else{
+        var mm1 = today.getMonth() + 1;
+        var yyyy1 = today.getFullYear();
+      }
+      this.$store.commit("tr/SET_MONTH", mm);
+      this.$store.commit("tr/SET_YEAR", yyyy);
+      this.isDynamic = false;
+      this.$store.commit("tr/SET_IS_DYNAMIC", "false");
+      this.$store.commit("tr/SET_FIELD", []);
+      this.$store.commit("tr/SET_OBJECT", []);
+      this.$store.commit("tr/SET_HORIZON", []);
+      this.$store.commit("tr/SET_WELLTYPE", []);
+      this.$store.commit("tr/SET_BLOCK", []);
+      this.$store.commit("tr/SET_EXPMETH", []);
+      this.$store.commit("tr/SET_WELLNAME", []);
+      this.axios
+        .post(
+          this.postApiUrl + this.searchLink,
+          this.getPageData(),
+        )
+        .then((response) => {
+          let data = response.data;
+          this.year = yyyy;
+          this.selectYear = yyyy;
+          this.month = mm;
+          this.currentMonth = mm;
+          this.currentYear = yyyy;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          if (response.data) {
+            this.wells = data.data;
+            this.fullWells = data.data;
+          }
+          else {
+            console.log("No data");
+          }
+          if (mm1 < 10) {
+            this.dt = "01" + ".0" + mm1 + "." + yyyy1;
+          } else {
+            this.dt = "01" + "." + mm1 + "." + yyyy1;
+          }
+          this.isPermission = this.params.includes(this.permissionName);
+        });
+      this.axios
+        .get(
+          this.postApiUrl + "techregime/tr_parameter_filters/"
+        )
+        .then((response) => {
+          let data = response.data;
+          if (data) {
+            this.filter_column = data;
+            this.horizonFilterData = data.horizon;
+            this.objectFilterData = data.object;
+            this.fieldFilterData = data.field;
+            this.wellTypeFilterData = data.well_type;
+            this.blockFilterData = data.block;
+            this.expMethFilterData = data.exp_meth;
+            this.wellNameFilterData = data.rus_wellname;
+          }
+          else {
+            console.log("No data");
+          }
+        });
+      this.axiosPage(this.pageNumberLink);      
+    },
     getPageData() {
       if (this.isDynamic) {
         return {
@@ -567,28 +572,27 @@ export default {
         });
     },
     cancelEdit() {
-      this.$store.commit("globalloading/SET_LOADING", true);
       this.isEdit = false;
       this.editedWells = [];
-      this.month = this.currentMonth;
-      this.selectYear = this.currentYear;
       this.isShowFirst = false;
       this.isShowSecond = true;
-      this.$store.commit("tr/SET_MONTH", this.currentMonth);
-      this.$store.commit("tr/SET_YEAR", this.currentYear);
-      this.chooseDt();
+      this.loadPage();
     },
     reRender() {
       this.filteredWellData = [];
+      this.lonelywell = [];
+      this.isShowAdd=false;
+      this.isDeleted=false;
+      this.isSaved=false;
       this.wellStatusFilter = undefined;
       this.statusFilter = undefined;
       this.typeWellFilter = undefined;
       this.wellFilter = undefined;
       this.fieldFilter = undefined;
     },
-    onChangePage(value) {
+    onChangePage(newVal) {
       this.$store.commit("globalloading/SET_LOADING", true);
-      this.$store.commit("tr/SET_PAGENUMBER", parseInt(value));
+      this.$store.commit("tr/SET_PAGENUMBER",  parseInt(newVal));
       this.chooseAxios();
     },
     showWells() {
@@ -723,13 +727,12 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           let data = response.data;
           if (data) {
-            this.isSearched = false;
+            this.isSearched = true;
             this.$store.commit("tr/SET_SORTPARAM", "");
             this.$store.commit("tr/SET_SEARCH", "");
             this.sortParam = "";
             this.searchString = "";
             this.allWells = data.data;
-            
           } else {
             console.log("No data");
           }
@@ -758,6 +761,9 @@ export default {
       } else {
           return true
       }
+    },
+    getRowWidthSpan (row) {
+      return row.rus_wellname ? 0 : 2;
 
     },
 
@@ -785,19 +791,20 @@ export default {
 
     saveadd() {
       Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
-      let output = {}
+      let output = {};
       this.$refs.editTable[0].children.forEach((el) => {
         output[el.children[0].dataset.key] = el.children[0].value;
       });
       this.axios
         .post(
           this.postApiUrl + "techregime/new_wells/add_well/", 
-          output).then((res) => {
-            this.wellAdd();
-            this.created();
-            this.isShowAdd=false;
-            this.isDeleted=false;           
-          })
+          output,
+        )
+        .then((response) => {
+          this.wellAdd();
+          this.reRender();
+          console.log('good')
+        }) 
     },
     // Удаление с модалки
     deleteWell() {
@@ -810,10 +817,7 @@ export default {
             this.lonelywell[0].well).then((res) => {
               console.log(res.data)
               this.wellAdd();
-              this.created();
-              this.isShowAdd=false;
-              this.isSaved=false;
-              
+              this.reRender();              
             })
       }
       else{
