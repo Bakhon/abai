@@ -177,7 +177,7 @@ class GenerateForm extends Command
 
         foreach ($actions as $action) {
             $permissions[] = [
-                'name' => 'bigdata ' . $this->configFileName . ' ' . $action,
+                'name' => 'bigdata ' . $action . ' ' . $this->configFileName,
                 'guard_name' => 'web'
             ];
         }
