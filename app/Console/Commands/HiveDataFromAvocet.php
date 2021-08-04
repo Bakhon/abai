@@ -48,8 +48,8 @@ class HiveDataFromAvocet extends Command
 
     public function saveHiveDataFromAvocet()
     {
-        $dzo_summary_last_record = DzoImportData::latest('id')->first();
-        $date = Carbon::yesterday();    
+        $dzo_summary_last_record = DzoImportData::latest('id')->whereNull('is_corrected')->first();
+        $date = Carbon::yesterday();        
         $dataOilAndGas = $this->hiveDataFromAvocet('KMG_I_PRD_AREA_VIEW', $date);
         $dataWater = $this->hiveDataFromAvocet('KMG_I_MTR_INJ_VIEW', $date);
         $dataOilDelivery = $this->hiveDataFromAvocet('KMG_I_MTR_PROD_VIEW', $date);
