@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Refs\bigdata\mapping;
 use App\Filters\LasDictionariesFilter;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
-use App\Http\Requests\GeoMappingRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CrudController;
 use Illuminate\Http\Response;
@@ -20,8 +19,11 @@ class MappingController extends CrudController
     protected $modelName = '';
     protected $model = '';
     protected $resource = '';
+    protected $request = '';
     protected $link = '';
     protected $view = '';
+    protected $queryMethod = '';
+    protected $rules = [];
 
     public function __construct()
     {
@@ -45,11 +47,11 @@ class MappingController extends CrudController
             'title' => trans('bd.forms.'.$modelName.'.title'),
             'fields' => [
                 'name' => [
-                    'title' => trans('bd.forms.'.$modelName.'.fields.name'),
+                    'title' => trans('bd.forms.geo_mapping.fields.name'),
                     'type' => 'string',
                 ],
-                'geo_name' => [
-                    'title' => trans('bd.forms.'.$modelName.'.fields.geo_name'),
+                'name_in_abai' => [
+                    'title' => trans('bd.forms.geo_mapping.fields.geo_name'),
                     'type' => 'string',
                 ]
             ]
@@ -59,12 +61,15 @@ class MappingController extends CrudController
             $params['links']['create'] = route($this->link.'.create');
         }
 
+        $params['model_name'] = $modelName;
+        $params['filter'] = session('las_dictionaries_filter');
+
         return view($this->view.'.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
-        $query = $this->model::with('geo');
+        $query = $this->model::with($this->queryMethod);
         $data = $this
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
@@ -86,10 +91,10 @@ class MappingController extends CrudController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(GeoMappingRequest $request): \Symfony\Component\HttpFoundation\Response
+    public function store(Request $request): \Symfony\Component\HttpFoundation\Response
     {
-        $this->validateFields($request, 'data');
-        $this->model::create($request->validated());
+        $request->validate($this->rules);
+        $this->model::create($request->all());
         Session::flash('message', __('app.created'));
         return response()->json(
             [
@@ -126,10 +131,10 @@ class MappingController extends CrudController
      * Update the specified resource in storage.
      *
      */
-    public function update(GeoMappingRequest $request, int $id): \Symfony\Component\HttpFoundation\Response
+    public function update(Request $request, int $id): \Symfony\Component\HttpFoundation\Response
     {
-        $this->validateFields($request, 'data');
-        $this->model::find($id)->update($request->validated());
+        $request->validate($this->rules);
+        $this->model::find($id)->update($request->all());
         Session::flash('success', __('app.updated'));
         return response()->json(
             [
