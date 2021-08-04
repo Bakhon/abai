@@ -693,7 +693,7 @@
                             <td>{{row.k_v.toFixed(3)}}</td>
                             <td>{{row.pi.toFixed(2)}}</td>
                             <td>{{row.kh.toFixed(1)}}</td>
-                            <td>{{row.tp_idn_skin.toFixed(1)}}</td>
+                            <td>{{row.grp_skin.toFixed(1)}}</td>
                             <td>{{row.p_res.toFixed(0)}}</td>
                             <td>{{row.bhp.toFixed(0)}}</td>
                             <td>{{row.q_l.toFixed(0)}}</td>
