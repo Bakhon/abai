@@ -447,8 +447,8 @@
 
 .li-multiselect {
 	background: #333975;
-	width: 131px;
-	height: 215px;
+	width: auto;
+	height: auto;
 	margin: 0;
 }
 

@@ -19,7 +19,7 @@ const pgno = {
         dmRods: ["19", "22"],
         komponovka: null,
         stupColumns: "2",
-        markShtang: ["15Х2ГМФ (НВО)"],
+        markShtang: ["С (API)", "D (API)", "15Х2ГМФ-D-sup"],
         kPodMode: true,
         kPodCalced: null,
         mechSep: null
