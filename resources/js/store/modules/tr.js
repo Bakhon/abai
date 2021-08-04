@@ -24,6 +24,7 @@ const tr = {
     expMeth: [],
     wellName: [],
     pageNumber: 1,
+    isFullVersion: false,
   },
 
   mutations: {
@@ -93,35 +94,14 @@ const tr = {
     SET_WELLNAME: (state, val) => {
       state.wellName = val;
     }, 
+    SET_VERSION: (state, val) => {
+      state.isFullVersion = val;
+    }, 
   },
 
   actions: {
   },
 
-  state: {
-    month: (state) => state.month,
-    year: (state) => state.year,
-    chart: (state) => state.chart,
-    searchString: (state) => state.searchString,
-    filter: (state) => state.filter,
-    isSortType: (state) => state.isSortType,
-    sortParam: (state) => state.sortParam,
-    year_dyn_start: (state) => state.year_dyn_start,
-    year_dyn_end: (state) => state.year_dyn_end,
-    month_dyn_start: (state) => state.month_dyn_start,
-    month_dyn_end: (state) => state.month_dyn_end,
-    day_dyn_start: (state) => state.day_dyn_start,
-    day_dyn_end: (state) => state.day_dyn_end,
-    isDynamic: (state) => state.isDynamic,
-    field: (state) => state.field,
-    horizon: (state) => state.horizon,
-    wellType: (state) => state.wellType,
-    object: (state) => state.object,
-    block: (state) => state.block,
-    expMeth: (state) => state.expMeth,
-    pageNumber: (state) => state.pageNumber,
-    wellName: (state) => state.wellName,
-  },
 };
 
 export default tr;
