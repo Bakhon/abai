@@ -146,7 +146,7 @@ class GenerateForm extends Command
         $permissions = $this->generatePermissions();
 
         $permissionSection = [
-            'code' => $this->formCode,
+            'code' => Str::snake($this->formCode),
             'title_trans' => 'bd.forms.' . Str::snake($this->formCode) . '.title',
             'module' => 'bigdata'
         ];
