@@ -17,11 +17,12 @@ const pgno = {
         corrosion: "antiCorrosion",
         dmPumps: ["32", "38", "44", "57", "70"],
         dmRods: ["19", "22"],
-        komponovka: ["hvostovik"],
+        komponovka: null,
         stupColumns: "2",
         markShtang: ["15Х2ГМФ (НВО)"],
         kPodMode: true,
         kPodCalced: null,
+        mechSep: null
 
     },
     mutations: {
@@ -84,6 +85,9 @@ const pgno = {
       },
       UPDATE_CORROSION(state, val) {
         state.corrosion = val
+      },
+      UPDATE_MECH_SEP(state, val) {
+        state.mechSep = val
       }
     },
     
@@ -111,6 +115,9 @@ const pgno = {
       },
       selectedMarkShtang({commit}, value) {
         commit('UPDATE_MARKSHTANG', value)
+      },
+      setMechSep({commit}, value) {
+        commit('UPDATE_MECH_SEP', value)
       }
     },
     
@@ -134,7 +141,8 @@ const pgno = {
       h2s: (state) => state.h2s,
       heavyDown: (state) => state.heavyDown,
       kPodMode: (state) => state.kPodMode,
-      kPodCalced: (state) => state.kPodCalced
+      kPodCalced: (state) => state.kPodCalced,
+      mechSep: (state) => state.mechSep
     },
 }
 
