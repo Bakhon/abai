@@ -1,5 +1,6 @@
 <template>
   <div class="bd-main-block">
+    <cat-loader v-show="isLoading"/>
     <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
@@ -61,12 +62,14 @@ import Vue from "vue";
 import BigdataFormField from './field'
 import BigdataPlainFormResults from './PlainFormResults'
 import {bdFormActions, bdFormState} from '@store/helpers'
+import CatLoader from '@ui-kit/CatLoader'
 
 export default {
   name: "BigDataPlainForm",
   components: {
     BigdataFormField,
-    BigdataPlainFormResults
+    BigdataPlainFormResults,
+    CatLoader
   },
   props: {
     params: {
@@ -87,7 +90,8 @@ export default {
       errors: {},
       activeTab: 0,
       formValues: {},
-      well: null
+      well: null,
+      isLoading: false
     }
   },
   computed: {
@@ -158,6 +162,8 @@ export default {
     },
     submit() {
 
+      this.isLoading = true
+
       this
           .submitForm({
             code: this.params.code,
@@ -166,11 +172,9 @@ export default {
           })
           .then(data => {
             this.errors = []
-            Object.keys(this.formValues).forEach(key => {
-              this.formValues[key] = ''
-            })
             this.$refs.form.reset()
             Vue.prototype.$notifySuccess('Ваша форма успешно отправлена')
+            this.formValues = {}
             this.$emit('change')
             this.$emit('close')
           })
@@ -200,6 +204,9 @@ export default {
                 }
               }
             }
+          })
+          .finally(() => {
+            this.isLoading = false
           })
     },
     cancel() {
@@ -252,6 +259,7 @@ export default {
       })
     },
     setWellPrefix(triggerFieldCode, changeFieldCode) {
+      if (!this.formValues[triggerFieldCode]) return
       this.getWellPrefix({code: this.params.code, geo: this.formValues[triggerFieldCode]})
           .then(({data}) => {
             for (const tab of this.formParams.tabs) {
@@ -276,10 +284,12 @@ export default {
         }
       })
 
-      this.getGeoDictByDZO({
-        dzo: this.formValues[triggerFieldCode],
-        code: dictName
-      })
+      if (this.formValues[triggerFieldCode]) {
+        this.getGeoDictByDZO({
+          dzo: this.formValues[triggerFieldCode],
+          code: dictName
+        })
+      }
 
     },
     validateField: _.debounce(function (e, formItem) {
