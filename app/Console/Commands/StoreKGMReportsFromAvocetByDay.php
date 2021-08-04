@@ -48,7 +48,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
     {
         $path = resource_path() . "/js/components/visualcenter3/dailyReportImport/fields_kgm_reports_mapping.json";
         $fields_data = json_decode(file_get_contents($path), true);
-        $dzo_summary_last_record = DzoImportData::latest('id')->first();
+        $dzo_summary_last_record = DzoImportData::latest('id')->whereNull('is_corrected')->first();
         $date = Carbon::yesterday();
         $dzo_import_field_data = new DzoImportData();
         $fondsModel = new FondsForKGM;
