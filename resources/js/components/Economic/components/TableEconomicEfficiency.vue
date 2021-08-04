@@ -59,39 +59,39 @@ export default {
         {
           name: 'Валовый доход',
           type: 'line',
-          data: this.data.map(x => +x.Revenue_total.original_value)
+          data: this.chartData.map(x => x ? +x.Revenue_total.original_value : null)
         },
         {
           name: 'Валовый доход (наилучший)',
           type: 'line',
-          data: this.data.map(x => +x.Revenue_total.original_value_optimized)
+          data: this.chartData.map(x => x ? +x.Revenue_total.original_value_optimized : null)
         },
         {
           name: 'Расходы',
           type: 'line',
-          data: this.data.map(x => +x.Overall_expenditures.original_value)
+          data: this.chartData.map(x => x ? +x.Overall_expenditures.original_value : null)
         },
         {
           name: 'Расходы (наилучший)',
           type: 'line',
-          data: this.data.map(x => +x.Overall_expenditures.original_value_optimized)
+          data: this.chartData.map(x => x ? +x.Overall_expenditures.original_value_optimized : null)
         },
         {
           name: 'Операционная прибыль',
           type: 'bar',
-          data: this.data.map(x => +x.operating_profit_12m.original_value)
+          data: this.chartData.map(x => x ? +x.operating_profit_12m.original_value : null)
         },
         {
           name: 'Операционная прибыль (наилучший)',
           type: 'bar',
-          data: this.data.map(x => +x.operating_profit_12m.original_value_optimized)
+          data: this.chartData.map(x => x ? +x.operating_profit_12m.original_value_optimized : null)
         },
       ]
     },
 
     chartOptions() {
       return {
-        labels: this.oilPrices,
+        labels: this.chartLabels,
         stroke: {
           width: 4,
           curve: 'straight',
@@ -108,8 +108,21 @@ export default {
         },
         plotOptions: {
           bar: {
-            columnWidth: '70%'
-          }
+            columnWidth: '50%',
+          },
+        },
+        dataLabels: {
+          enabled: true,
+          enabledOnSeries: [4, 5],
+          formatter(val) {
+            return val === null ? '' : (+val / 1000000000).toFixed(2);
+          },
+          background: {
+            enabled: false
+          },
+          style: {
+            colors: ['#fff']
+          },
         },
         yaxis: {
           labels: {
@@ -122,6 +135,24 @@ export default {
           },
         },
       }
+    },
+
+    chartLabels() {
+      return [
+        ...[Math.floor(+this.oilPrices[this.oilPrices.length - 1] / 1.5)],
+        ...this.oilPrices,
+        ...[Math.ceil(+this.oilPrices[this.oilPrices.length - 1] * 1.5)]
+      ]
+    },
+
+    chartData() {
+      let data = this.data
+
+      data.unshift(null)
+
+      data.push(null)
+
+      return data
     },
   }
 }
