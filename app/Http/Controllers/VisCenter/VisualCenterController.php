@@ -25,8 +25,8 @@ use Carbon\Carbon;
 use App\Models\VisCenter\ExcelForm\DzoImportOtm;
 use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
 use App\Models\VisCenter\EmergencyHistory;
-use App\Models\VisCenter\ChemistryForKGM;
-use App\Models\VisCenter\RepairsForKGM;
+use App\Models\VisCenter\DataForKGM\Monthly\ChemistryForKGM;
+use App\Models\VisCenter\DataForKGM\Monthly\RepairsForKGM;
 
 class VisualCenterController extends Controller
 {
