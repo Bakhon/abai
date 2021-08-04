@@ -78,11 +78,11 @@ class StoreKGMReportsFromAvocetByDay extends Command
                 ->WHERE('cattegory_code', 'P_WORK_W_2')
                 ->get()->toArray());
 
-        if (isset($fields_data['production_fond']['head'])) {
-            $this->getFilds($fields_data['production_fond']['head'], $dzo_import_field_data, 'head', $date, '');
+        if (isset($fields_data['production_fond']['dzo_import_field_data'])) {
+            $this->getFilds($fields_data['production_fond']['dzo_import_field_data'], $dzo_import_field_data, 'dzo_import_field_data', $date, '');
         }
-        if (isset($fields_data['injection_fond']['head'])) {
-            $this->getFildsInjection($fields_data['injection_fond']['head'], $dzo_import_field_data, 'head', $date, '');
+        if (isset($fields_data['injection_fond']['dzo_import_field_data'])) {
+            $this->getFildsInjection($fields_data['injection_fond']['dzo_import_field_data'], $dzo_import_field_data, 'dzo_import_field_data', $date, '');
         }
         if (isset($fields_data['production_fond']['SHUT_IN'])) {
             $this->getFilds($fields_data['production_fond']['SHUT_IN'], $dzo_import_field_data, 'SHUT_IN', $date, '');
@@ -190,7 +190,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
 
         foreach ($fields_data as $field_name => $field) {
 
-            if ($function == 'head') {
+            if ($function == 'dzo_import_field_data') {
                 $dzo_import_field_data->$field_name = $this->quantityOfArray($field, 'INJECTION', '', $date);
             }
 
@@ -209,7 +209,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
             if ($function == 'getWaterOilDeliveryAndGasMore') {
                 $dzo_import_field_data->$field_name = $this->getWaterOilDeliveryAndGasMore($field, $date, $multiplier);
             }
-            if ($function == 'head') {
+            if ($function == 'dzo_import_field_data') {
                 $dzo_import_field_data->$field_name = $this->quantityOfArray($field, 'PRODUCTION', '', $date);
             }
             if ($function == 'SHUT_IN') {

@@ -14,7 +14,7 @@
     "oil_production_fact_absolute": "",
     "oil_delivery_fact_absolute": "",
     "production_fond": {
-        "head": {
+        "dzo_import_field_data": {
             "in_work_production_fond": "PRODUCING",
             "in_idle_production_fond": "SHUT_IN",
             "inactive_production_fond": "IDLE",
@@ -33,7 +33,7 @@
         }
     },
     "injection_fond": {
-        "head": {
+        "dzo_import_field_data": {
             "in_work_injection_fond": "PRODUCING",
             "in_idle_injection_fond": "SHUT_IN",
             "inactive_injection_fond": "IDLE",
