@@ -27,7 +27,8 @@
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.count_well')"
-          :oil-prices="oilPrices"
+          :oil-prices="filteredOilPrices"
+          :dollar-rates="filteredDollarRates"
           class="bg-economic-chart"/>
 
       <chart-with-oil-production
@@ -37,7 +38,8 @@
           :profitability="profitability"
           :title="trans('economic_reference.oil_production')"
           :tooltip-text="trans('economic_reference.thousand_tons')"
-          :oil-prices="oilPrices"
+          :oil-prices="filteredOilPrices"
+          :dollar-rates="filteredDollarRates"
           class="bg-economic-chart"/>
 
       <chart-with-operating-profit-top
@@ -45,7 +47,8 @@
           :data="charts.operatingProfitTop"
           :granularity="granularity"
           :profitability="profitability"
-          :oil-prices="oilPrices"
+          :oil-prices="filteredOilPrices"
+          :dollar-rates="filteredDollarRates"
           class="bg-economic-chart"/>
 
       <chart-with-liquid-production
@@ -53,7 +56,8 @@
           :data="charts.liquidProduction"
           :granularity="granularity"
           :profitability="profitability"
-          :oil-prices="oilPrices"
+          :oil-prices="filteredOilPrices"
+          :dollar-rates="filteredDollarRates"
           class="bg-economic-chart"/>
     </div>
   </div>
@@ -88,7 +92,11 @@ export default {
       required: true,
       type: String
     },
-    oilRates: {
+    oilPrices: {
+      required: true,
+      type: Array
+    },
+    dollarRates: {
       required: true,
       type: Array
     }
@@ -110,15 +118,29 @@ export default {
       ]
     },
 
-    oilPrices() {
+    filteredOilPrices() {
       let data = []
 
-      let oilRate = this.oilRates[0]
+      let price = this.oilPrices[0]
 
       this.charts.profitability.dt.forEach(dt => {
-        oilRate = this.oilRates.find(rate => [rate.dt, rate.dt_month].includes(dt)) || oilRate
+        price = this.oilPrices.find(rate => [rate.dt, rate.dt_month].includes(dt)) || price
 
-        data.push(oilRate ? oilRate.value : 0)
+        data.push(price ? price.value : 0)
+      })
+
+      return data
+    },
+
+    filteredDollarRates() {
+      let data = []
+
+      let rate = this.dollarRates[0]
+
+      this.charts.profitability.dt.forEach(dt => {
+        rate = this.dollarRates.find(rate => [rate.dt, rate.dt_month].includes(dt)) || rate
+
+        data.push(rate ? rate.value : 0)
       })
 
       return data

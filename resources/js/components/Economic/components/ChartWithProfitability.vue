@@ -134,11 +134,7 @@ export default {
     chartSeries() {
       let data = this.currentAnnotation.isVisible
           ? []
-          : [{
-            name: this.trans('economic_reference.oil_price'),
-            type: 'line',
-            data: this.oilPrices
-          }]
+          : [...this.defaultSeries]
 
       if (this.isVisibleInWork) {
         this.chartKeys.forEach(key => {
@@ -174,7 +170,7 @@ export default {
     chartColors() {
       let colors = this.currentAnnotation.isVisible
           ? []
-          : [this.colorOilPrice]
+          : this.defaultColors
 
       if (this.isVisibleInWork) {
         colors = [...colors, ...this.colorsInWork]

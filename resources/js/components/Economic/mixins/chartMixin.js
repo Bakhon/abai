@@ -21,6 +21,10 @@ export const chartInitMixin = {
             required: true,
             type: Array
         },
+        dollarRates: {
+            required: true,
+            type: Array
+        },
         tooltipText: {
             required: false,
             type: String,
@@ -31,12 +35,32 @@ export const chartInitMixin = {
             return this.profitability === PROFITABILITY_FULL
         },
 
+        defaultColors() {
+            return [this.colorDollarRate, this.colorOilPrice]
+        },
+
+        defaultSeries() {
+            return [
+                {
+                    name: this.trans('economic_reference.course_prices'),
+                    type: 'line',
+                    data: this.dollarRates
+                },
+                {
+                    name: this.trans('economic_reference.oil_price'),
+                    type: 'line',
+                    data: this.oilPrices
+                },
+
+            ]
+        },
+
+        defaultSeriesLength() {
+            return this.defaultSeries.length
+        },
+
         chartSeries() {
-            let series = [{
-                name: this.trans('economic_reference.oil_price'),
-                type: 'line',
-                data: this.oilPrices
-            }]
+            let series = [...this.defaultSeries]
 
             this.chartKeys.forEach(key => {
                 series.push({
@@ -62,7 +86,7 @@ export const chartInitMixin = {
                     width: 4,
                     curve: 'smooth'
                 },
-                colors: [this.colorOilPrice, ...this.colorsInWork],
+                colors: [...this.defaultColors, ...this.colorsInWork],
                 chart: {
                     stacked: true,
                     foreColor: '#FFFFFF',
@@ -88,7 +112,7 @@ export const chartInitMixin = {
                     intersect: false,
                     y: this.chartSeries.map((item, index) => {
                         return {
-                            formatter: index === 0
+                            formatter: index < this.defaultSeriesLength
                                 ? (y) => y
                                 : (y) => this.tooltipFormatter(y)
                         }
@@ -101,14 +125,14 @@ export const chartInitMixin = {
             return this.chartSeries.map((item, index) => {
                 return {
                     min: 0,
-                    show: index < 2,
-                    opposite: index === 0,
-                    seriesName: index === 0
-                        ? this.trans('economic_reference.oil_price')
+                    show: index < this.defaultSeriesLength + 1,
+                    opposite: index < this.defaultSeriesLength,
+                    seriesName: index < this.defaultSeriesLength
+                        ? this.defaultSeries[index].name
                         : this.chartSeriesName,
                     title: {
-                        text: index === 0
-                            ? this.trans('economic_reference.oil_price')
+                        text: index < this.defaultSeriesLength
+                            ? this.defaultSeries[index].name
                             : this.title,
                     },
                     labels: {
@@ -124,6 +148,10 @@ export const chartInitMixin = {
 
         colorOilPrice() {
             return '#FC35B0'
+        },
+
+        colorDollarRate() {
+            return '#B629FE'
         },
 
         colorsInWork() {
