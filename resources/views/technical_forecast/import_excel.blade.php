@@ -37,7 +37,6 @@
             </div>
         @endif
 
-
         <form method="post"
               enctype="multipart/form-data"
               action="{{ route('tech_refs_import') }}">
@@ -52,6 +51,12 @@
                     <button type="submit" class="btn btn-primary">
                         {{ __('economic_reference.upload')}}
                     </button>
+
+                    <a href="/technical_forecast.xlsx"
+                       class="btn btn-primary float-right"
+                       download>
+                        {{ __('economic_reference.download_example')}}
+                    </a>
                 </div>
             </div>
         </form>
