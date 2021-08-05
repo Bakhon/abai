@@ -35,24 +35,26 @@ export const chartInitMixin = {
             return this.profitability === PROFITABILITY_FULL
         },
 
-        defaultColors() {
-            return [this.colorDollarRate, this.colorOilPrice]
-        },
-
         defaultSeries() {
             return [
                 {
                     name: this.trans('economic_reference.course_prices'),
                     type: 'line',
-                    data: this.dollarRates
+                    data: this.dollarRates,
+                    color: '#B629FE'
                 },
                 {
                     name: this.trans('economic_reference.oil_price'),
                     type: 'line',
-                    data: this.oilPrices
+                    data: this.oilPrices,
+                    color: '#FC35B0',
+                    max: Math.max(...this.oilPrices)
                 },
-
             ]
+        },
+
+        defaultColors() {
+            return this.defaultSeries.map(x => x.color)
         },
 
         defaultSeriesLength() {
@@ -125,7 +127,8 @@ export const chartInitMixin = {
             return this.chartSeries.map((item, index) => {
                 return {
                     min: 0,
-                    show: index < this.defaultSeriesLength + 1,
+                    max: index === 1 ? this.defaultSeries[index].max * 1.3 : undefined,
+                    show: index === 0 || index === this.defaultSeriesLength,
                     opposite: index < this.defaultSeriesLength,
                     seriesName: index < this.defaultSeriesLength
                         ? this.defaultSeries[index].name
@@ -144,14 +147,6 @@ export const chartInitMixin = {
 
         chartSeriesName() {
             return this.trans(`economic_reference.wells_${this.chartKeys[0]}`)
-        },
-
-        colorOilPrice() {
-            return '#FC35B0'
-        },
-
-        colorDollarRate() {
-            return '#B629FE'
         },
 
         colorsInWork() {
