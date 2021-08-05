@@ -4,7 +4,8 @@ import Vue from "vue";
 import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from "../common/FormatDate";
 import download from "downloadjs";
-import CatLoader from "@ui-kit/CatLoader";
+import {globalloadingMutations} from '@store/helpers';
+import CatLoader from '@ui-kit/CatLoader';
 
 Vue.use(Datetime)
 Vue.use(bTreeView)
@@ -53,7 +54,7 @@ export default {
     },
     mounted: function () {
         this.$nextTick(function () {
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         });
         for (let structureType in this.structureTypes) {
             this.loadStructureTypes(structureType);
@@ -62,8 +63,11 @@ export default {
         this.loadHeaders()
     },
     methods: {
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
         loadStructureTypes(type) {
-            this.$store.commit('globalloading/SET_LOADING', true)
+            this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_structures_types", {
                 params: {
                     structure_type: type
@@ -78,15 +82,15 @@ export default {
                 } else {
                     console.log("No data");
                 }
-                this.$store.commit('globalloading/SET_LOADING', false);
+                this.SET_LOADING(false);
             }).catch((error) => {
                 console.log(error)
-                this.$store.commit('globalloading/SET_LOADING', false)
+                this.SET_LOADING(false)
             });
 
         },
         loadAttributeDescriptions() {
-            this.$store.commit('globalloading/SET_LOADING', true)
+            this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_object_attributes_descriptions", {
                 responseType: 'json',
                 headers: {
@@ -97,12 +101,12 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.$store.commit('globalloading/SET_LOADING', false)
+                this.SET_LOADING(false)
             });
 
         },
         loadHeaders() {
-            this.$store.commit('globalloading/SET_LOADING', true)
+            this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_headers", {
                 responseType: 'json',
                 headers: {
@@ -113,7 +117,7 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.$store.commit('globalloading/SET_LOADING', false)
+                this.SET_LOADING(false)
             });
         },
         onMenuClick(currentStructureType, btnId) {
@@ -127,7 +131,7 @@ export default {
             this.currentItemType = structureType.id
         },
         loadItems(itemType) {
-            this.$store.commit('globalloading/SET_LOADING', true)
+            this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_items", {
                 params: {
                     structure_type: this.currentStructureType,
@@ -146,7 +150,7 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.$store.commit('globalloading/SET_LOADING', false)
+                this.SET_LOADING(false)
             });
 
         },
@@ -182,6 +186,7 @@ export default {
             }
         },
         loadStatistics() {
+            this.SET_LOADING(true)
             this.statistics = null;
 
             try {
@@ -201,7 +206,7 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.$store.commit('globalloading/SET_LOADING', false)
+                this.SET_LOADING(false)
             });
 
         },
@@ -316,6 +321,7 @@ export default {
         },
 
         getStatisticsFile() {
+            this.SET_LOADING(true)
             try {
                 this.validateStatisticsParams()
             } catch (e) {
@@ -337,7 +343,7 @@ export default {
                     download(response.data, "Отчет.xlsx", response.headers['content-type'])
                 }
             }).catch((error) => console.log(error)
-            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+            ).finally(() => this.SET_LOADING(false));
         },
         getHeaders(sheetType) {
             let attributes = this.getSelectedAttributes()

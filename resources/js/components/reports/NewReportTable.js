@@ -123,7 +123,11 @@ export default {
             }
         }
     },
-    methods: {
+        methods: {
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
+
         updateData() {
             let uri = '/ru/protodata';
             this.axios.post(this.localeUrl("/protodata"), {
