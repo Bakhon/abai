@@ -2,7 +2,7 @@
   <div class="form-group1 filter-group select">
     <select
         id="companySelect"
-        :disabled="isLoading"
+        :disabled="$store.state.globalloading.loading"
         class="form-control filter-input select"
         v-bind:value="value"
         v-on:change="$emit('input', $event.target.value)"
@@ -13,9 +13,15 @@
   </div>
 </template>
 <script>
+import {globalloadingMutations} from '@store/helpers';
+import CatLoader from '@ui-kit/CatLoader';
+
 export default {
   props: ['value'],
-  data() {
+     components: {
+        CatLoader
+    },
+    data() {
     return {
       orgs: []
     }
