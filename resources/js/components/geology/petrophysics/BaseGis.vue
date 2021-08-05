@@ -85,31 +85,18 @@
       </div>
     </div>
 
-    <AwModal size="lg" title="Список скважин" :is-show.sync="isShowListOfWellsModal">
+    <AwModal is-confirm size="lg" title="Список скважин" :is-show.sync="isShowListOfWellsModal">
       <ListOfWells />
     </AwModal>
 
-    <AwModal position="top" size="lg" title="Выбор отбивок" :is-show.sync="isShowChooseStratModal">
+    <AwModal is-confirm position="top" size="lg" title="Выбор отбивок" :is-show.sync="isShowChooseStratModal">
       <AwTree class="p-2"
               :selected.sync="chooseStratModalTree"
               :items="chooseStratModalTreeItems" />
-
-      <template #footer>
-        <div class="d-flex align-items-center justify-content-center">
-          <Button class="mr-3">Ок</Button>
-          <Button color="primary" @click="isShowChooseStratModal = false">Отмена</Button>
-        </div>
-      </template>
     </AwModal>
 
-    <AwModal position="top" size="lg" title="Настройка планшета" :is-show.sync="isShowTableSettings">
+    <AwModal is-confirm position="top" size="lg" title="Настройка планшета" :is-show.sync="isShowTableSettings">
       <TableSettings />
-      <template #footer>
-        <div class="d-flex align-items-center justify-content-center">
-          <Button class="mr-3">Ок</Button>
-          <Button color="primary" @click="isShowTableSettings = false">Отмена</Button>
-        </div>
-      </template>
     </AwModal>
   </div>
 </template>
