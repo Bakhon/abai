@@ -6,6 +6,10 @@
           v-model="pipe.name"
           required
       ></b-form-input>
+
+      <b-form-invalid-feedback id="input-live-feedback" :state="!($v.pipe.name.$dirty && !$v.pipe.name.required)">
+        {{ trans('validation.required', {attribute: trans('monitoring.pipe.name')}) }}
+      </b-form-invalid-feedback>
     </b-form-group>
 
     <b-form-group
@@ -18,6 +22,10 @@
           v-model="pipe.gu_id"
           :options="guOptions"
       ></b-form-select>
+
+      <b-form-invalid-feedback id="input-live-feedback" :state="!($v.pipe.gu_id.$dirty && !$v.pipe.gu_id.required)">
+        {{ trans('validation.required', {attribute: trans('monitoring.gu.gu')}) }}
+      </b-form-invalid-feedback>
     </b-form-group>
 
     <b-form-group
@@ -27,6 +35,22 @@
           id="gu"
           v-model="pipe.zu_id"
           :options="zuOptions"
+      ></b-form-select>
+
+      <b-form-invalid-feedback id="input-live-feedback" :state="!($v.pipe.zu_id.$dirty && !$v.pipe.zu_id.required)">
+        {{ trans('validation.required', {attribute: trans('monitoring.zu.zu')}) }}
+      </b-form-invalid-feedback>
+    </b-form-group>
+
+    <b-form-group
+        :label="trans('monitoring.well.well')"
+        label-for="gu"
+        v-if="pipe.well_id"
+    >
+      <b-form-select
+          id="gu"
+          v-model="pipe.well_id"
+          :options="wellOptions"
       ></b-form-select>
     </b-form-group>
 
@@ -100,6 +124,10 @@
           v-model="pipe.type_id"
           :options="pipeTypesOptions"
       ></b-form-select>
+
+      <b-form-invalid-feedback id="input-live-feedback" :state="!($v.pipe.type_id.$dirty && !$v.pipe.type_id.required)">
+        {{ trans('validation.required', {attribute: trans('monitoring.pipe.type')}) }}
+      </b-form-invalid-feedback>
     </b-form-group>
 
     <h5>{{ trans('monitoring.pipe.params') }}</h5>
@@ -118,6 +146,7 @@
 
 <script>
 import {guMapState} from '@store/helpers';
+import {required} from "vuelidate/lib/validators";
 
 const blankPipeParams = {
   inner_diameter: '',
@@ -139,11 +168,22 @@ export default {
     ...guMapState([
       'pipeTypes',
       'guPoints',
-      'zuPoints'
+      'zuPoints',
+      'wellPoints',
     ]),
     pipeTypesOptions: function () {
       let options = [];
       this.pipeTypes.forEach((item) => {
+        options.push(
+            {value: item.id, text: item.name}
+        );
+      });
+
+      return options;
+    },
+    wellOptions: function () {
+      let options = [];
+      this.wellPoints.forEach((item) => {
         options.push(
             {value: item.id, text: item.name}
         );
@@ -182,6 +222,29 @@ export default {
       return options;
     },
   },
+  validations: {
+    pipe: {
+      gu_id: {
+        required
+      },
+      name: {
+        required
+      },
+      zu_id: {
+        required
+      },
+      type_id: {
+        required
+      }
+    }
+  },
+  methods: {
+    validate() {
+      this.$v.$touch();
+
+      return this.$v.$invalid;
+    }
+  }
 }
 </script>
 

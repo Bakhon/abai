@@ -16,7 +16,12 @@ use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
+use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
+use App\Models\BigData\Dictionaries\GeoRockType;
+use App\Models\BigData\Dictionaries\GisKind;
+use App\Models\BigData\Dictionaries\GisMethod;
+use App\Models\BigData\Dictionaries\GisMethodType;
 use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\IsoMaterialType;
@@ -28,6 +33,7 @@ use App\Models\BigData\Dictionaries\PerforatorType;
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
+use App\Models\BigData\Dictionaries\SaturationType;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateType;
@@ -38,14 +44,14 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
-use App\Models\BigData\Dictionaries\GisMethodType;
-use App\Models\BigData\Dictionaries\SaturationType;
-use App\Models\BigData\Dictionaries\GeoRockType;
-use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GisKind;
 use App\Models\BigData\Dictionaries\GisMethod;
+<<<<<<< HEAD
 use App\Models\BigData\Dictionaries\DocumentType;
 use App\Models\BigData\Dictionaries\Tag;
+=======
+use App\Models\BigData\Dictionaries\GisMethodType;
+>>>>>>> becd4c0769c3cd2081dce67438d86baabcdbbcfc
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -211,12 +217,17 @@ class DictionaryService
             'class' => GisMethod::class,
             'name_field' => 'name_ru'
         ],
+<<<<<<< HEAD
         'document_types' => [
             'class' => DocumentType::class,
             'name_field' => 'name_ru'
         ],
         'tag' => [
             'class' => Tag::class,
+=======
+        'gis_method_types' =>[
+            'class' => GisMethodType::class,
+>>>>>>> becd4c0769c3cd2081dce67438d86baabcdbbcfc
             'name_field' => 'name_ru'
         ]
     ];
@@ -262,7 +273,7 @@ class DictionaryService
                     $dict = $this->getEquipTypeCascDict();
                     break;
                 case 'geo_type_hrz':
-                    $dict = $this->getGeoTypeDict();
+                    $dict = $this->getGeoHorizonDict();
                     break;    
                 default:
                     throw new DictionaryNotFound();
@@ -386,25 +397,32 @@ class DictionaryService
             ->toArray();
     }
 
-    private function getGeoTypeDict()
+    private function getGeoHorizonDict()
     {
-        $dictClass = self::DICTIONARIES['geo_type']['class'];
-        $nameField = self::DICTIONARIES['geo_type']['name_field'] ?? 'name';
-        
-        return $dictClass::query()
-            ->select('id')
-            ->selectRaw("$nameField as name")
-            ->where(
-                'parent',
-                function ($query) {
-                    return $query->select('id')
-                        ->from('dict.geo_type')
-                        ->where('code', 'HRZ')
-                        ->limit(1);
+        $items = DB::connection('tbd')
+            ->table('dict.geo as g')
+            ->select('g.id', 'g.name_ru as name', 'gp.parent as parent')
+            ->where('gt.code', 'HRZ')
+            ->distinct()
+            ->orderBy('parent', 'asc')
+            ->orderBy('name', 'asc')
+            ->join('dict.geo_type as gt', 'g.geo_type', 'gt.id')
+            ->leftJoin(
+                'dict.geo_parent as gp',
+                function ($join) {
+                    $join->on('gp.geo', '=', 'g.id');
+                    $join->on('gp.dbeg', '<=', DB::raw("NOW()"));
+                    $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }
             )
-            ->orderBy('name', 'asc')
             ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
             ->toArray();
+
+        return $items;
     }
 }
