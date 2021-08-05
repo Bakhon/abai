@@ -442,4 +442,15 @@ class OmgNGDUController extends CrudController
             return $lastBackgroundCorrosion;
         }
     }
+
+    public function getOmgNgdu (Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $date = $request->input('date');
+        $gu_id = $request->input('gu_id');
+
+        $omgngdu = OmgNGDU::where('gu_id', $gu_id)
+            ->where('date', $date)->first();
+
+        return response()->json($omgngdu);
+    }
 }
