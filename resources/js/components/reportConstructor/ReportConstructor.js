@@ -4,6 +4,7 @@ import Vue from "vue";
 import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from "../common/FormatDate";
 import download from "downloadjs";
+import CatLoader from "@ui-kit/CatLoader";
 
 Vue.use(Datetime)
 Vue.use(bTreeView)
@@ -12,7 +13,9 @@ export default {
     props: [
         'params'
     ],
-    components: {},
+    components: {
+        CatLoader
+    },
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
@@ -60,7 +63,7 @@ export default {
     },
     methods: {
         loadStructureTypes(type) {
-            this.isLoading = true
+            this.$store.commit('globalloading/SET_LOADING', true)
             this.axios.get(this.baseUrl + "get_structures_types", {
                 params: {
                     structure_type: type
@@ -75,15 +78,15 @@ export default {
                 } else {
                     console.log("No data");
                 }
-                this.isLoading = false;
+                this.$store.commit('globalloading/SET_LOADING', false);
             }).catch((error) => {
                 console.log(error)
-                this.isLoading = false
+                this.$store.commit('globalloading/SET_LOADING', false)
             });
 
         },
         loadAttributeDescriptions() {
-            this.isLoading = true
+            this.$store.commit('globalloading/SET_LOADING', true)
             this.axios.get(this.baseUrl + "get_object_attributes_descriptions", {
                 responseType: 'json',
                 headers: {
@@ -94,12 +97,12 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.isLoading = false
+                this.$store.commit('globalloading/SET_LOADING', false)
             });
 
         },
         loadHeaders() {
-            this.isLoading = true
+            this.$store.commit('globalloading/SET_LOADING', true)
             this.axios.get(this.baseUrl + "get_headers", {
                 responseType: 'json',
                 headers: {
@@ -110,7 +113,7 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.isLoading = false
+                this.$store.commit('globalloading/SET_LOADING', false)
             });
         },
         onMenuClick(currentStructureType, btnId) {
@@ -124,7 +127,7 @@ export default {
             this.currentItemType = structureType.id
         },
         loadItems(itemType) {
-            this.isLoading = true
+            this.$store.commit('globalloading/SET_LOADING', true)
             this.axios.get(this.baseUrl + "get_items", {
                 params: {
                     structure_type: this.currentStructureType,
@@ -143,7 +146,7 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.isLoading = false
+                this.$store.commit('globalloading/SET_LOADING', false)
             });
 
         },
@@ -198,7 +201,7 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.isLoading = false
+                this.$store.commit('globalloading/SET_LOADING', false)
             });
 
         },
