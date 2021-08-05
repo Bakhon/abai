@@ -94,6 +94,7 @@ Vue.component('tech-data-component', require('./components/technical_forecast/da
 Vue.component('economic-nrs', require('./components/Economic/nrs.vue').default);
 Vue.component('economic-optimization', require('./components/Economic/optimization.vue').default);
 Vue.component('gno-table', require('./components/gno/Table.vue').default);
+Vue.component('shgn-img', require('./components/gno/components/ShgnImg.vue').default);
 Vue.component('inclinometria', require('./components/gno/components/Inclinometria.vue').default);
 Vue.component('prs-crs', require('./components/gno/components/PrsCrs.vue').default);
 Vue.component('inflow-curve', require('./components/gno/components/InflowCurve.vue').default);
@@ -211,6 +212,17 @@ Vue.component('admin-user-settings', require('./components/admin/user/Settings.v
 Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);
 Vue.component('visual-center-daily-approve', require('./components/visualcenter3/importForm/dailyApprove/index.vue').default);
 
+
+Vue.component('project-data', require('./components/DigitalDrilling/ProjectData').default);
+Vue.component('window-head', require('./components/DigitalDrilling/WindowHead').default);
+Vue.component('technical-task', require('./components/DigitalDrilling/ProjectData/TechnicalTask').default);
+Vue.component('geology', require('./components/DigitalDrilling/ProjectData/Geology').default);
+Vue.component('well-design', require('./components/DigitalDrilling/ProjectData/WellDesign').default);
+Vue.component('barrel-profile', require('./components/DigitalDrilling/ProjectData/BarrelProfile').default);
+Vue.component('drilling-fluids', require('./components/DigitalDrilling/ProjectData/DrillingFluids').default);
+Vue.component('well-casing', require('./components/DigitalDrilling/ProjectData/WellСasing').default);
+Vue.component('technical-casing', require('./components/DigitalDrilling/ProjectData/TechnicalCasing').default);
+Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;

@@ -12,6 +12,9 @@ class #MIGRATION_CLASS_NAME# extends Migration
         foreach ($permissions as $permission) {
             DB::table('permissions')->insert($permission);
         }
+
+        $permissionSection = json_decode('#PERMISSION_SECTION#', 1);
+        DB::table('permission_sections')->insert($permissionSection);
     }
 
     public function down()

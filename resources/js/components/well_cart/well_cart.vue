@@ -64,7 +64,7 @@
               <div class="col-8">
                 <form class="search-form d-flex align-items-center">
                   <select class="select-dzo mr-2" v-if="dzoSelectOptions.length > 0"
-                          @change="selectedUserDzo = $event.target.value">
+                          @change="dzoSelectChange($event)">
                     <option value="0" selected>Все ДЗО</option>
                     <option v-for="(dzoSelectOption, index) in dzoSelectOptions" :value="dzoSelectOption['id']">
                         {{ dzoSelectOption['name'] }}
@@ -515,6 +515,11 @@ export default {
         this.isLeftColumnFolded = !value;
         this.isRightColumnFolded = !value;
         this.isBothColumnFolded = !value;
+    },
+    dzoSelectChange(event) {
+      this.selectedUserDzo = event.target.value;
+      this.options = [];
+      this.wellUwi = null;
     }
   },
   computed: {
