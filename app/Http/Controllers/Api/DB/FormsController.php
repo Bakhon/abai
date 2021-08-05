@@ -7,7 +7,7 @@ use App\Exceptions\ParseJsonException;
 use App\Http\Controllers\Controller;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Services\BigData\Forms\BaseForm;
-use App\Services\BigData\Forms\RowHistory\RowHistory;
+use App\Services\BigData\Forms\History\RowHistory;
 use App\Services\BigData\Forms\TableForm;
 use App\Services\BigData\FormService;
 use Carbon\Carbon;

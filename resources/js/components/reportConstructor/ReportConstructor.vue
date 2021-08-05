@@ -178,8 +178,7 @@
                           :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                           :min-datetime="startDate"
                           :week-start="1"
-                          :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
-                          use24-hour
+                          :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
                           auto
                           :flow="dateFlow"
                         >
@@ -212,15 +211,14 @@
             </section>
           </div>
         </div>
-        <div class="row">
+        <div class="row" v-for="sheetType in sheetTypes">
           <div class="col">
-
             <report-header-builder
-                v-model="attributesForObject"
-                :data="attributesForObject"
+                v-model="attributesByHeader[sheetType]"
+                :data="attributesByHeader[sheetType]"
                 :translateAttribute="getAttributeDescription"
                 group="items"
-                v-if="isDisplayParameterBuilder && currentStructureId != null"
+                v-if="isDisplayParameterBuilder"
             >
             </report-header-builder>
           </div>
@@ -279,32 +277,48 @@
                   </div>
                 </div>
               </div>
+              <div class="row" v-if="statistics">
+                <div class="table-wrapper col">
+                  <ul class="nav nav-tabs report-tab">
+                    <template v-for="(sheetType, index) in sheetTypes">
+                      <li class="nav-item" v-if="statistics[sheetType].length > 0">
+                          <span class="nav-link report-link" href="#" :class="{ active: activeTab === index }"
+                                @click="activeTab = index">
+                            {{ sheetTypesDescription[sheetType] }}
+                          </span>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </div>
               <div class="row">
                 <div class="table-wrapper col">
                   <div class="table-container" v-if="statistics">
-                    <table>
-                      <thead>
-                      <tr v-for="(attributesOnDepth, index) in getHeaders()">
-                            <th
-                                v-for="attribute in attributesOnDepth"
-                                :rowspan="getRowHeightSpan(attribute, index)"
-                                :colspan="getRowWidthSpan(attribute)"
-                            >
-                              <div class="centered">
-                                {{ getAttributeDescription(attribute.label) }}
-                              </div>
-                            </th>
-                      </tr>
+                    <template v-for="(statisticsOfSheet, sheetType) in statistics">
+                      <table v-if="sheetType === sheetTypes[activeTab]">
+                        <thead>
+                        <tr v-for="(attributesOnDepth, index) in getHeaders(sheetType)">
+                          <th
+                              v-for="attribute in attributesOnDepth"
+                              :rowspan="getRowHeightSpan(attribute, index)"
+                              :colspan="getRowWidthSpan(attribute)"
+                          >
+                            <div class="centered">
+                              {{ getAttributeDescription(attribute.label) }}
+                            </div>
+                          </th>
+                        </tr>
 
-                      </thead>
-                      <tbody>
-                        <tr v-for="row in statistics">
-                          <td class="table-body" v-for="column in statisticsColumns">
+                        </thead>
+                        <tbody>
+                        <tr v-for="row in statisticsOfSheet">
+                          <td class="table-body" v-for="column in statisticsColumns[sheetType]">
                             <div class="centered">{{ row[column] }}</div>
                           </td>
                         </tr>
-                      </tbody>
-                    </table>
+                        </tbody>
+                      </table>
+                    </template>
                   </div>
                 </div>
               </div>
@@ -931,9 +945,9 @@ body {
         font-family: $HarmoniaSansProCyr;
         padding: 0 0 0 19px;
         background-image: url(/img/bd/webkit-calendar.svg);
-        background-Position : 102% center;
-        background-Repeat :no-repeat;
-      } 
+        background-position: 102% center;
+        background-repeat: no-repeat;
+      }
 
       .vdatetime::v-deep .vdatetime-popup__year,
       .vdatetime::v-deep .vdatetime-popup__date {
@@ -1685,6 +1699,13 @@ body {
   box-shadow: 0 0 10px #000;
 }
 
+.nav-link.report-link.active {
+  background: #fffef5;
+}
+
+.nav-tabs.report-tabs {
+  border-bottom-color: #272953;
+}
 
 </style>
 

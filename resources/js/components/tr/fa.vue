@@ -1001,6 +1001,7 @@
       </table>
     </div>
     <notifications position="top"></notifications>
+    <cat-loader />
   </div>
 </template>
 <script>
@@ -1013,16 +1014,19 @@ import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
 import columnSortable from 'vue-column-sortable'
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
+import CatLoader from "@ui-kit/CatLoader";
 
 Vue.use(NotifyPlugin, VueMomentLib);
 export default {
   name: "FaPage",
   components: {
+    CatLoader,
     SearchFormRefresh,
     TrMultiselect,
   },
   data: function () {
     return {
+      postApiUrl: process.env.MIX_POST_API_URL,
       faHeader: null,
       wells: [],
       searchString: "",
@@ -1168,7 +1172,7 @@ export default {
       this.$store.commit("fa/SET_GEN_HIDE", true);
       this.axios
       .get(
-        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor_weekly/" +
+        this.postApiUrl + "techregime/factor_weekly/" +
           yyyy +
           "/" +
           mm +
@@ -1241,7 +1245,7 @@ export default {
         this.$store.commit("fa/SET_HIDE", false);
         this.axios
           .get(
-            process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
+            this.postApiUrl + "techregime/factor/" +
               yyyy +
               "/" +
               mm +
@@ -1346,7 +1350,7 @@ export default {
         : "";
       this.axios
         .get(
-          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
+          this.postApiUrl + "techregime/factor/" +
             yyyy +
             "/" +
             mm +
@@ -1376,7 +1380,13 @@ export default {
           } else {
             this.wells = [];
             this.fullWells = [];
-            console.log("No data");
+            this.$bvToast.toast(this.trans('tr.no_data'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
           }
           if (dynamic == true){
             this.isHide = false;
@@ -1396,7 +1406,13 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
-          console.log("search error = ", error);
+          this.$bvToast.toast(this.trans('tr.error'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
         });
     },
   },
@@ -1442,7 +1458,7 @@ export default {
     this.$store.commit("fa/SET_PR_DAY", prdd);
     this.axios
       .get(
-        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor_weekly/" +
+        this.postApiUrl + "techregime/factor_weekly/" +
           yyyy +
           "/" +
           mm +
