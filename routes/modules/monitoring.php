@@ -75,6 +75,10 @@ Route::group(
                 Route::get('omgngdu/history/{omgngdu}', 'ComplicationMonitoring\OmgNGDUController@history')->name(
                     'omgngdu.history'
                 );
+                Route::post('omgngdu/get-omgngdu', 'ComplicationMonitoring\OmgNGDUController@getOmgNgdu')->name(
+                    'omgngdu.get-omg-ngdu'
+                );
+
                 Route::resource('omgngdu', 'ComplicationMonitoring\OmgNGDUController');
 
 
@@ -146,15 +150,15 @@ Route::group(
                 Route::post('/gu-map/well', 'ComplicationMonitoring\MapsController@storeWell')->name('maps.store_well');
                 Route::post('/gu-map/pipe', 'ComplicationMonitoring\MapsController@storePipe')->name('maps.store_pipe');
 
-                Route::put('/gu-map/gu/{gu}', 'ComplicationMonitoring\MapsController@updateGu')->name('maps.update_gu');
-                Route::put('/gu-map/zu/{zu}', 'ComplicationMonitoring\MapsController@updateZu')->name('maps.update_zu');
-                Route::put('/gu-map/well/{well}', 'ComplicationMonitoring\MapsController@updateWell')->name('maps.update_well');
-                Route::put('/gu-map/pipe/{pipe}', 'ComplicationMonitoring\MapsController@updatePipe')->name('maps.update_pipe');
+                Route::put('/gu-map/gu/{id}', 'ComplicationMonitoring\MapsController@updateGu')->name('maps.update_gu');
+                Route::put('/gu-map/zu/{id}', 'ComplicationMonitoring\MapsController@updateZu')->name('maps.update_zu');
+                Route::put('/gu-map/well/{id}', 'ComplicationMonitoring\MapsController@updateWell')->name('maps.update_well');
+                Route::put('/gu-map/pipe/{id}', 'ComplicationMonitoring\MapsController@updatePipe')->name('maps.update_pipe');
 
-                Route::delete('/gu-map/gu/{gu}', 'ComplicationMonitoring\MapsController@deleteGu')->name('maps.delete_gu');
-                Route::delete('/gu-map/zu/{zu}', 'ComplicationMonitoring\MapsController@deleteZu')->name('maps.delete_zu');
-                Route::delete('/gu-map/well/{well}', 'ComplicationMonitoring\MapsController@deleteWell')->name('maps.delete_well');
-                Route::delete('/gu-map/pipe/{pipe}', 'ComplicationMonitoring\MapsController@deletePipe')->name('maps.delete_pipe');
+                Route::delete('/gu-map/gu/{id}', 'ComplicationMonitoring\MapsController@deleteGu')->name('maps.delete_gu');
+                Route::delete('/gu-map/zu/{id}', 'ComplicationMonitoring\MapsController@deleteZu')->name('maps.delete_zu');
+                Route::delete('/gu-map/well/{id}', 'ComplicationMonitoring\MapsController@deleteWell')->name('maps.delete_well');
+                Route::delete('/gu-map/pipe/{id}', 'ComplicationMonitoring\MapsController@deletePipe')->name('maps.delete_pipe');
 
                 Route::get('/monitor/reports', 'ReportsController@index')->name('monitor.reports');
                 Route::get('/monitor/reports/generate', 'ReportsController@generateReport');

@@ -36,14 +36,6 @@ export default {
       type: Object,
     },
   },
-  data: function () {
-    return {
-
-    }
-  },
-  mounted() {
-
-  },
   computed: {
     btnText () {
       switch (this.params.activity.description) {

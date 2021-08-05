@@ -44,6 +44,9 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\GisKind;
+use App\Models\BigData\Dictionaries\GisMethod;
+use App\Models\BigData\Dictionaries\GisMethodType;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -207,6 +210,10 @@ class DictionaryService
         ],
         'gis_methods' => [
             'class' => GisMethod::class,
+            'name_field' => 'name_ru'
+        ],
+        'gis_method_types' =>[
+            'class' => GisMethodType::class,
             'name_field' => 'name_ru'
         ]
     ];
