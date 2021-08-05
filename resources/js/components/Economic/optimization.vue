@@ -121,11 +121,11 @@
               </div>
 
               <div class="ml-2" style="width: 80px">
-                {{ wellCount.value }}
+                {{ index ? wellCount.value / 12 : wellCount.value }}
               </div>
 
               <div v-if="form.scenario_id">
-                {{ wellCount.value_optimized }}
+                {{ index ? wellCount.value_optimized / 12 : wellCount.value_optimized }}
               </div>
             </div>
           </div>
@@ -339,6 +339,7 @@ const optimizedColumns = [
   'Revenue_local',
   'Revenue_export',
   'Overall_expenditures',
+  'Overall_expenditures_full',
   'operating_profit_12m',
   'oil',
   'liquid',
@@ -351,6 +352,7 @@ const optimizedColumns = [
 
 const optimizedOtherColumns = [
   'Overall_expenditures',
+  'Overall_expenditures_full',
   'operating_profit_12m',
 ];
 
@@ -447,10 +449,10 @@ export default {
         },
         {
           name: this.trans('economic_reference.costs'),
-          baseValue: this.scenario.Overall_expenditures.value[0],
-          value: this.scenario.Overall_expenditures[this.scenarioValueKey][0],
-          dimension: this.scenario.Overall_expenditures[this.scenarioValueKey][1],
-          percent: this.scenario.Overall_expenditures.percent
+          baseValue: this.scenario.Overall_expenditures_full.value[0],
+          value: this.scenario.Overall_expenditures_full[this.scenarioValueKey][0],
+          dimension: this.scenario.Overall_expenditures_full[this.scenarioValueKey][1],
+          percent: this.scenario.Overall_expenditures_full.percent
         },
         {
           name: this.trans('economic_reference.operating_profit'),

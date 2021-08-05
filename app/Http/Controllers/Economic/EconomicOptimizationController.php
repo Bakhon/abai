@@ -18,10 +18,10 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v5';
+    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v7';
 //    const DATA_SOURCE = 'economic_scenario_test_v13';
 
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_test_v13';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_test_v5';
 
     const DATA_SOURCE_DATE = '2021/01/01';
 
@@ -40,6 +40,7 @@ class EconomicOptimizationController extends Controller
         'Revenue_local',
         'Revenue_export',
         'Overall_expenditures',
+        'Overall_expenditures_full',
         'operating_profit_12m',
         'oil',
         'liquid',
@@ -52,6 +53,7 @@ class EconomicOptimizationController extends Controller
 
     const OPTIMIZED_SINGLE_COLUMNS = [
         'Overall_expenditures',
+        'Overall_expenditures_full',
         'operating_profit_12m',
     ];
 
@@ -206,13 +208,13 @@ class EconomicOptimizationController extends Controller
                 'uwi',
                 "oil_price",
                 "dollar_rate",
-                'operating_profit_12m',
+                'operating_profit_12m_int',
                 'profitability_12m',
                 "scenario_id",
             ])
             ->orderBy('oil_price')
             ->orderBy('dollar_rate')
-            ->orderBy('operating_profit_12m')
+            ->orderBy('operating_profit_12m_int')
             ->groupBy()
             ->data();
     }
