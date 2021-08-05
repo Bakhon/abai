@@ -197,16 +197,6 @@ export default {
                 this.isLoading = false
             });
         },
-        onMenuClick(currentStructureType, btnId) {
-            this.isShowOptions = true;
-            this.currentStructureType = currentStructureType;
-            this.activeButtonId = btnId;
-        },
-        onClickOption(structureType) {
-            this.isShowOptions = false;
-            this.currentOption = structureType
-            this.currentItemType = structureType.id
-        },
         loadItems(itemType) {
             this.isLoading = true
             this.axios.get(this.baseUrl + "get_items", {

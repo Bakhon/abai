@@ -5,7 +5,7 @@
         <tree-view
             v-for="(treeData, index) in items"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
-            :key="index + treeData.id"
+            :key="`${index}-${treeData.id}`"
             :node="treeData"
             :handle-click="nodeClick"
             :get-wells="getWells"
@@ -58,9 +58,7 @@ export default {
   },
   methods: {
     init() {
-      if(!this.items) {
-        this.getInitialItems().then(items => this.items = items);
-      }
+      this.getInitialItems().then(items => this.items = items);
       if(this.currentOption && !this.markedNodes[this.currentOption.name]) {
         this.markedNodes[this.currentOption.name] = {};
       }

@@ -10,7 +10,7 @@
                 <input type="checkbox" :id="node.id"
                       v-if="!!renderComponent"
                       :checked="isMarked()"
-                      class="dropdown-item" v-on:input="onClick()">
+                      class="dropdown-item" @change="onClick()">
                 <span class="checkmark"></span>
               </label>
             </form>
@@ -33,7 +33,7 @@
       <node
             v-for="(child, index) in node.children"
             :node="child"
-            :key="index+child.id"
+            :key="`${index}-${child.id}-${node.id}`"
             :handle-click="handleClick"
             :get-wells="getWells"
             :get-initial-items="getInitialItems"
@@ -122,8 +122,7 @@ export default {
       if (this.nodeClickOnArrow && !this.node.children) {
           await this.handleClick(this.node);
       }
-      if(typeof this.node.children === 'undefined'
-        || this.isNodeOnBottomLevelOfHierarchy(this.node)) {
+      if(!this.isHaveChildren(this.node)) {
         this.isLoading = true;
         await this.getWells(this);
       }
@@ -134,16 +133,20 @@ export default {
       this.$forceUpdate()
     },
     onClick: async function () {
-      this.markedNodes[this.level][this.node.id] = !this.markedNodes[this.level][this.node.id];
+      let val = this.markedNodes[this.level][this.node.id];
+      this.markedNodes[this.level][this.node.id] = !val;
       this.loadChildren(this.node);
       this.onExpandTree(this.node, this.level);
       this.onCheckboxClick(this.node, this.level);
-      await this.updateChildren(this.node, this.level);
+      if(this.isSelectUntilWells || val) {
+        await this.updateChildren(this.node, this.level);
+      }else {
+        await this.updateNextLevelNodes();
+      }
       this.updateThisComponent();
     },
-    onExpandTree: function(node,level) {
-      if(typeof node === 'undefined' || typeof node.children === 'undefined'
-      || !node.children || this.markedNodes[level+1]) return;
+    onExpandTree: function(node, level) {
+      if(!this.isHaveChildren(node) || this.markedNodes[level+1]) return;
 
       this.markedNodes[level+1] = {};
       let content = this.markedNodes[level + 1];
@@ -157,13 +160,12 @@ export default {
       if(typeof node.children === 'undefined') {
         await this.handleClick(node);
       }
-      if(typeof node.children === 'undefined'
-        || this.isNodeOnBottomLevelOfHierarchy(node)) {
+      if(!isHaveChildren(node)) {
         this.loadWells(node);
       }
       
       for(let idx in node.children) {
-        await this.loadChildren(node.children[idx]);
+        this.loadChildren(node.children[idx]);
       }
     },
     loadWells: async function(node) {
@@ -171,22 +173,30 @@ export default {
       this.updateThisComponent();
     },
     updateChildren: async function(node, level) {
-      if(typeof node.children === 'undefined' || !node.children) return;
+      if(!isHaveChildren(node)) return;
       let content = this.markedNodes[level+1];
       let val = this.markedNodes[level][node.id];
       for(let child of node.children) {
         content[child.id] = val;
-        if(this.isSelectUntilWells || !val) {
-          this.updateChildren(child, level);
-        }
+        this.updateChildren(child, level);
+      }
+    },
+    updateNextLevelNodes: async function() {
+      if(!isHaveChildren(this.node)) return;
+      let content = this.markedNodes[level+1];
+      let val = this.markedNodes[level][node.id];
+      for(let child of this.node.children) {
+        content[child.id] = val;
       }
     },
     isMarked: function() {
-      if(typeof this.markedNodes[this.level] === 'undefined'
-        || !this.markedNodes[this.level][this.node.id]) {
-        return false;
-      }
-      return true;
+      return typeof this.markedNodes[this.level] !== 'undefined' &&
+             this.markedNodes[this.level][this.node.id];
+    },
+    isHaveChildren(node) {
+      return typeof node !== 'undefined' && 
+             typeof node.children !== 'undefined' && 
+             !this.isNodeOnBottomLevelOfHierarchy(node);
     }
   },
   data: function () {
