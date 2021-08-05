@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\Tech;
+use App\Models\BigData\Infrastructure\History;
+use App\Models\BigData\Well;
 use App\Services\BigData\FieldLimitsService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -19,7 +22,7 @@ abstract class TableForm extends BaseForm
 
     abstract public function getRows(array $params = []): array;
 
-    abstract protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void;
+    abstract protected function saveSingleFieldInDB(array $params): void;
 
     public static function getLimitsCacheKey(array $field, CarbonImmutable $yesterday)
     {
@@ -47,18 +50,20 @@ abstract class TableForm extends BaseForm
 
         $copyRow = $rowData[$columnFrom['table']]->get($wellId)->first();
         $copyValue = $copyRow->{$columnFrom['column']};
-        $this->saveSingleFieldInDB(
-            $column['code'],
-            $wellId,
-            Carbon::parse($copyRow->dbeg ?? $date)->timezone('Asia/Almaty'),
-            1
-        );
-        $this->saveSingleFieldInDB(
-            $columnTo['code'],
-            $wellId,
-            Carbon::parse($date)->timezone('Asia/Almaty'),
-            $copyValue
-        );
+        $saveParams = [
+            'field' => $column['code'],
+            'wellId' => $wellId,
+            'date' => Carbon::parse($copyRow->dbeg ?? $date)->timezone('Asia/Almaty'),
+            'value' => 1,
+        ];
+        $this->saveSingleFieldInDB($saveParams);
+        $saveParams = [
+            'field' => $columnTo['code'],
+            'wellId' => $wellId,
+            'date' => Carbon::parse($date)->timezone('Asia/Almaty'),
+            'value' => $copyValue,
+        ];
+        $this->saveSingleFieldInDB($saveParams);
 
 
         return [];
@@ -67,12 +72,13 @@ abstract class TableForm extends BaseForm
     public function saveSingleField(string $field)
     {
         $this->validateSingleField($field);
-        $this->saveSingleFieldInDB(
-            $field,
-            $this->request->get('well_id'),
-            Carbon::parse($this->request->get('date')),
-            $this->request->get($field)
-        );
+        $saveParams = [
+            'field' => $field,
+            'wellId' => $this->request->get('well_id'),
+            'date' => Carbon::parse($this->request->get('date')),
+            'value' => $this->request->get($field),
+        ];
+        $this->saveSingleFieldInDB($saveParams);
         $this->saveHistory($field, $this->request->get($field));
 
         return response()->json([], Response::HTTP_NO_CONTENT);
@@ -85,7 +91,8 @@ abstract class TableForm extends BaseForm
 
         return [
             'params' => $params,
-            'fields' => $this->getFields()->pluck('', 'code')->toArray()
+            'fields' => $this->getFields()->pluck('', 'code')->toArray(),
+            'available_actions' => $this->getAvailableActions()
         ];
     }
 
@@ -102,6 +109,7 @@ abstract class TableForm extends BaseForm
     protected function getFieldValue(array $field, array $rowData, Model $item): ?array
     {
         $result = $this->getCustomFieldValue($field, $rowData, $item);
+
         if (is_null($result)) {
             if ($field['type'] === 'link') {
                 $result = [
@@ -145,9 +153,7 @@ abstract class TableForm extends BaseForm
 
         $row = $collection->get($item->id);
         if (!empty($fieldParams['additional_filter'])) {
-            foreach ($fieldParams['additional_filter'] as $key => $value) {
-                $row = $row->where($key, '=', $value);
-            }
+            $row = $this->addAdditionalFilters($row, $fieldParams);
         }
         $row = $row->first();
 
@@ -281,7 +287,7 @@ abstract class TableForm extends BaseForm
                             $field
                         );
                     }
-                    $row[$field['code']]['limits'] = $fieldLimits[$row['id']] ?? null;
+                    $row[$field['code']]['limits'] = isset($row['id']) ? ($fieldLimits[$row['id']] ?? null) : null;
                 }
                 return $row;
             }
@@ -304,5 +310,104 @@ abstract class TableForm extends BaseForm
             );
         }
         return $params;
+    }
+
+    protected function getWells(int $id, string $type, \stdClass $filter, array $params): Collection
+    {
+        $wellsQuery = Well::query()
+            ->with('techs', 'geo')
+            ->select('id', 'uwi')
+            ->orderBy('uwi')
+            ->active(Carbon::parse($filter->date));
+
+
+        if ($type === 'tech') {
+            $tech = Tech::find($id);
+            $wellsQuery->whereHas(
+                'techs',
+                function ($query) use ($tech, $filter) {
+                    return $query
+                        ->where('dict.tech.id', $tech->id)
+                        ->whereDate('dict.tech.dbeg', '<=', $filter->date)
+                        ->whereDate('dict.tech.dend', '>=', $filter->date);
+                }
+            );
+        } else {
+            $wellsQuery->where('id', $id);
+        }
+
+        if (isset($params['filter']['well_category'])) {
+            $wellsQuery->whereHas(
+                'category',
+                function ($query) use ($params) {
+                    return $query
+                        ->select('dict.well_category_type.id')
+                        ->from('dict.well_category_type')
+                        ->whereIn('code', $params['filter']['well_category']);
+                }
+            );
+        }
+
+        if (isset($params['filter']['row_id'])) {
+            $wellsQuery->where('id', $params['filter']['row_id']);
+        }
+
+        return $wellsQuery->get();
+    }
+
+    protected function saveHistory(string $field, $value)
+    {
+        History::create(
+            [
+                'form_name' => $this->configurationFileName,
+                'payload' => [
+                    $field => $value
+                ],
+                'date' => Carbon::parse($this->request->get('date')),
+                'row_id' => $this->request->get('well_id'),
+                'user_id' => auth()->id()
+            ]
+        );
+    }
+
+    protected function getFieldRow(array $column, int $wellId, Carbon $date)
+    {
+        $query = DB::connection('tbd')
+            ->table($column['table'])
+            ->where('well', $wellId)
+            ->whereBetween(
+                'dbeg',
+                [
+                    (clone $date)->startOfDay(),
+                    (clone $date)->endOfDay()
+                ]
+            );
+
+        if (!empty($column['additional_filter'])) {
+            $query = $this->addAdditionalFilters($query, $column);
+        }
+
+        return $query->first();
+    }
+
+    private function addAdditionalFilters($query, array $field)
+    {
+        if (!empty($field['additional_filter'])) {
+            foreach ($field['additional_filter'] as $key => $value) {
+                if (is_array($value)) {
+                    $entityQuery = DB::connection('tbd')->table($value['table']);
+                    foreach ($value['fields'] as $fieldName => $fieldValue) {
+                        $entityQuery->where($fieldName, $fieldValue);
+                    }
+                    $entity = $entityQuery->first();
+                    if (!empty($entity)) {
+                        $query->where($key, $entity->id);
+                    }
+                    continue;
+                }
+                $query->where($key, $value);
+            }
+        }
+        return $query;
     }
 }

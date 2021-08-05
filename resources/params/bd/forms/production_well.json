@@ -1,5 +1,11 @@
 {
   "table": "prod.tech_mode_prod_oil",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "Основное",
@@ -18,7 +24,7 @@
                 "code": "dend",
                 "type": "date",
                 "title": "date_end",
-                "validation": "nullable|date|after:date_start"
+                "validation": "nullable|date|after:dbeg"
               }
             ]
           },
@@ -29,10 +35,11 @@
                 "code": "liquid",
                 "type": "numeric",
                 "title": "liquid",
-                "validation": "numeric",
+                "validation": "numeric|gt:0",
                 "callbacks": {
                   "fillCalculatedFields": ""
-                }
+                },
+                "validate_deviation": true
               },
               {
                 "code": "wcut",
@@ -47,7 +54,7 @@
                 "code": "oil_density",
                 "type": "numeric",
                 "title": "oil_density",
-                "validation": "numeric",
+                "validation": "numeric|min:0.7|max:1.05",
                 "callbacks": {
                   "fillCalculatedFields": ""
                 }

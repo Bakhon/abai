@@ -12,7 +12,13 @@
                         @yield('module_icon')
                     </div>
                     <div class="module-block__title">
-                        Модуль "@yield('module_title')"
+                        @hasSection('module_home_url')
+                            <a href="@yield('module_home_url')" class="text-white">
+                                {{ trans('app.module_title') }} "@yield('module_title')"
+                            </a>
+                        @else
+                            {{ trans('app.module_title') }} "@yield('module_title')"
+                        @endif
                     </div>
                 @endif
             @endif
@@ -31,13 +37,26 @@
                         @yield('module_icon')
                     </div>
                     <div class="module-block__title">
-                        Модуль "@yield('module_title')"
+                        @hasSection('module_home_url')
+                            <a href="@yield('module_home_url')" class="text-white">
+                                {{ trans('app.module_title') }} "@yield('module_title')"
+                            </a>
+                        @else
+                            {{ trans('app.module_title') }} "@yield('module_title')"
+                        @endif
                     </div>
                 @endif
             @endif
         </div>
 
         <div class="form-inline my-2 my-lg-0">
+            <li class="nav-item2 mr-2">
+                @hasSection('module_support_email')
+                    <a target="_blank" href="mailto:@yield('module_support_email')">
+                        <i class="fas fa-envelope fa-lg d-block"></i>
+                    </a>
+                @endif
+            </li>
             <li class="nav-item2 mr-5">
                 <div class="nav-lang">
                     <a href="#" class="nav-lang__select">

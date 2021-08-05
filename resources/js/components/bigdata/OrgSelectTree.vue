@@ -61,7 +61,6 @@ export default {
       })
     },
     nodeClick(node) {
-      console.log(node)
       this.$emit('idChange', {
         id: node.id,
         type: node.type

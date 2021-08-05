@@ -16,6 +16,7 @@ class CreateEcoRefsExcsTable extends Migration
         Schema::create('eco_refs_excs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('name');
+            $table->text('description');
             $table->timestamps();
         });
     }

@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "drill.well_incl",
+  "sort": [
+    {
+      "field": "incl_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "title",
@@ -10,7 +16,7 @@
             "title": "main",
             "items": [
               {
-                "code":"device",
+                "code": "device",
                 "type":"dict",
                 "title":"device",
                 "dict":"device",

@@ -17,11 +17,11 @@
                   </div>
                   <div class="icon-all" style="margin-left: auto;"
                        @click="onColumnFoldingEvent('left')">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                            stroke-linejoin="round"/>
-                      <path d="M6.19472 1L1 6L6.19472 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                            stroke-linejoin="round"/>
+                    <svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.2"/>
+                      <path d="M6.19472 1L1 6L6.19472 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.2"/>
                     </svg>
                   </div>
                 </div>
@@ -30,17 +30,17 @@
             <div class="directory text-white pt-0 mt-0">
               <ul id="myUL">
                 <well-cart-tree
-                    v-for="(item, index) in [...forms_structure, ...forms]"
-                    :data="item"
+                    v-for="(item, index) in formsStructure"
                     :key="index"
                     :active-form-code="activeFormCode"
+                    :data="item"
                     :switch-form-by-code="switchFormByCode">
                 </well-cart-tree>
               </ul>
             </div>
           </div>
           <div v-if="isLeftColumnFolded" class="row">
-            <div style="color: white" class="rotate">
+            <div class="rotate" style="color: white">
               Дело скважины
             </div>
           </div>
@@ -52,24 +52,32 @@
         <div class="row mid-col__main">
           <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
             <div class="row">
-              <div class="col">
+              <div class="col-4">
                 <button class="transparent-select">
-                  Скважина: <span v-if="wellUwi">{{ wellUwi }}</span>
-                  <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1L7 7L13 1" stroke="white" stroke-width="1.6" stroke-linecap="round"
-                          stroke-linejoin="round"/>
+                  Скважина: <span v-if="wellUwi">{{ wellUwi.name }}</span>
+                  <svg fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                          stroke-width="1.6"/>
                   </svg>
                 </button>
               </div>
-              <div class="col">
-                <form class="search-form">
+              <div class="col-8">
+                <form class="search-form d-flex align-items-center">
+                  <select class="select-dzo mr-2" v-if="dzoSelectOptions.length > 0"
+                          @change="dzoSelectChange($event)">
+                    <option value="0" selected>Все ДЗО</option>
+                    <option v-for="(dzoSelectOption, index) in dzoSelectOptions" :value="dzoSelectOption['id']">
+                        {{ dzoSelectOption['name'] }}
+                    </option>
+                  </select>
                   <v-select
+                      class="flex-fill"
+                      v-model="wellUwi"
                       :filterable="false"
                       :options="options"
                       placeholder="Номер скважины"
                       @input="selectWell"
                       @search="onSearch"
-                      v-model="wellUwi"
                   >
                     <template slot="option" slot-scope="option">
                       <span>{{ option.name }}</span>
@@ -79,7 +87,10 @@
               </div>
             </div>
             <div v-if="wellUwi" class="mid-col__main_row">
-              <div v-if="activeFormCode" class="col table-wrapper">
+              <div v-if="activeFormComponentName">
+                  <div :is="activeFormComponentName" :changeColumnsVisible="(value) => changeColumnsVisible(value)"></div>
+              </div>
+              <div v-else-if="activeFormCode" class="col table-wrapper">
                 <BigDataPlainFormResult :code="activeFormCode" :well-id="this.well.id"></BigDataPlainFormResult>
               </div>
               <div v-else class="col graphics">
@@ -103,7 +114,7 @@
                       <div class="title">Основное</div>
                       <p>Номер скважины:
                         <span v-if="wellUwi">
-                          {{ wellUwi }}
+                          {{ wellUwi.name }}
                         </span>
                       </p>
                       <p>Категория скважины:
@@ -141,34 +152,35 @@
       <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
         <div class="bg-dark-transparent">
           <template>
-            <div class="row">
+            <div>
               <div class="col">
                 <div class="heading">
                   <div class="icon-all"
                        @click="onColumnFoldingEvent('right')">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                            stroke-linejoin="round"/>
-                      <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                            stroke-linejoin="round"/>
+                    <svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.2"/>
+                      <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.2"/>
                     </svg>
                   </div>
                   <p v-if="wellUwi">Паспорт скважины</p>
                 </div>
                 <div class="title-container">
-                  <div class="sheare-icon" v-if="wellUwi">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <div v-if="wellUwi" class="sheare-icon">
+                    <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                       <path
                           d="M17.5443 8.3734L13.9393 4.79071C13.752 4.60451 13.4986 4.5 13.2344 4.5L7.10023 4.50002C6.54794 4.50002 6.10023 4.94773 6.10023 5.50002L6.10023 18.5C6.10023 19.0523 6.54795 19.5 7.10023 19.5H16.8394C17.3916 19.5 17.8394 19.0523 17.8394 18.5L17.8394 9.0827C17.8394 8.81641 17.7331 8.56111 17.5443 8.3734Z"
-                          stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                          stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"/>
                       <path d="M12.9067 4.5V8.51961C12.9067 9.07189 13.3545 9.51961 13.9067 9.51961H17.8391"
-                            stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+                            stroke="white" stroke-linejoin="round" stroke-width="1.4"/>
                       <path
                           d="M8.23505 15.02C8.52838 15.02 8.76705 15.1147 8.95105 15.304C9.13505 15.4907 9.22705 15.7347 9.22705 16.036C9.22705 16.0947 9.22438 16.148 9.21905 16.196H7.87505C7.87505 16.3053 7.91238 16.3987 7.98705 16.476C8.06171 16.5507 8.15371 16.588 8.26305 16.588C8.41238 16.588 8.51771 16.528 8.57905 16.408H9.20305C9.13638 16.608 9.02438 16.768 8.86705 16.888C8.70971 17.008 8.50438 17.068 8.25105 17.068C7.96571 17.068 7.72305 16.9733 7.52305 16.784C7.32571 16.5947 7.22705 16.3453 7.22705 16.036C7.22705 15.7427 7.31505 15.5 7.49105 15.308C7.66971 15.116 7.91771 15.02 8.23505 15.02ZM8.22705 15.456C8.12838 15.456 8.04838 15.4867 7.98705 15.548C7.92571 15.6067 7.88971 15.68 7.87905 15.768H8.57505C8.56438 15.6773 8.52705 15.6027 8.46305 15.544C8.40171 15.4853 8.32305 15.456 8.22705 15.456ZM9.29055 17L9.97855 16.044L9.32655 15.084H10.0705L10.2585 15.424C10.2905 15.4827 10.3199 15.552 10.3465 15.632H10.3625C10.3999 15.52 10.4239 15.4533 10.4345 15.432L10.6065 15.084H11.3465L10.6985 16.032L11.3665 17H10.5945L10.4105 16.66C10.3652 16.572 10.3399 16.5 10.3345 16.444H10.3185C10.3025 16.5027 10.2732 16.576 10.2305 16.664L10.0465 17H9.29055ZM12.4348 15.02C12.6908 15.02 12.9015 15.0987 13.0668 15.256C13.2322 15.4107 13.3308 15.5933 13.3628 15.804H12.7108C12.6975 15.7373 12.6642 15.684 12.6108 15.644C12.5602 15.604 12.4988 15.584 12.4268 15.584C12.3095 15.584 12.2228 15.6267 12.1668 15.712C12.1135 15.7973 12.0868 15.9067 12.0868 16.04C12.0868 16.1733 12.1162 16.284 12.1748 16.372C12.2335 16.4573 12.3215 16.5 12.4388 16.5C12.5135 16.5 12.5762 16.4787 12.6268 16.436C12.6802 16.3907 12.7162 16.3333 12.7348 16.264H13.3988C13.3402 16.5067 13.2282 16.7013 13.0628 16.848C12.9002 16.9947 12.6882 17.068 12.4268 17.068C12.1415 17.068 11.8988 16.9733 11.6988 16.784C11.5015 16.5947 11.4028 16.3453 11.4028 16.036C11.4028 15.748 11.4962 15.5067 11.6828 15.312C11.8695 15.1173 12.1202 15.02 12.4348 15.02ZM14.6218 15.02C14.9151 15.02 15.1538 15.1147 15.3378 15.304C15.5218 15.4907 15.6138 15.7347 15.6138 16.036C15.6138 16.0947 15.6111 16.148 15.6058 16.196H14.2618C14.2618 16.3053 14.2991 16.3987 14.3738 16.476C14.4484 16.5507 14.5404 16.588 14.6498 16.588C14.7991 16.588 14.9044 16.528 14.9658 16.408H15.5898C15.5231 16.608 15.4111 16.768 15.2538 16.888C15.0964 17.008 14.8911 17.068 14.6378 17.068C14.3524 17.068 14.1098 16.9733 13.9098 16.784C13.7124 16.5947 13.6138 16.3453 13.6138 16.036C13.6138 15.7427 13.7018 15.5 13.8778 15.308C14.0564 15.116 14.3044 15.02 14.6218 15.02ZM14.6138 15.456C14.5151 15.456 14.4351 15.4867 14.3738 15.548C14.3124 15.6067 14.2764 15.68 14.2658 15.768H14.9618C14.9511 15.6773 14.9138 15.6027 14.8498 15.544C14.7884 15.4853 14.7098 15.456 14.6138 15.456ZM15.9683 17V14.12H16.6443V17H15.9683Z"
                           fill="white"/>
                     </svg>
                   </div>
-                  <div class="sheare-text" v-if="wellUwi">
+                  <div v-if="wellUwi" class="sheare-text">
                     Скачать в MS-Excel
                   </div>
                 </div>
@@ -203,31 +215,50 @@
 </template>
 
 <script>
+import Vue from "vue";
 import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
-import forms from '../../json/bd/forms.json'
-import forms_structure from '../../json/bd/forms_structure.json'
 import vSelect from 'vue-select'
 import axios from 'axios'
 import moment from 'moment'
-import WellCartTree from "./WellCartTree";
+import WellCartTree from './WellCartTree'
+import upperFirst from 'lodash/upperFirst'
+import camelCase from 'lodash/camelCase'
+import CatLoader from '@ui-kit/CatLoader'
+
+const requireComponent = require.context('../bigdata/forms/CustomPlainForms', true, /\.vue$/i);
+requireComponent.keys().forEach(fileName => {
+  const componentConfig = requireComponent(fileName)
+  const componentName = upperFirst(
+      camelCase(
+          fileName
+              .split('/')
+              .pop()
+              .replace(/\.\w+$/, '')
+        )
+    );
+    Vue.component(componentName, componentConfig.default || componentConfig);
+});
 
 export default {
   components: {
     BigDataPlainFormResult,
     vSelect,
     WellCartTree,
+    CatLoader
   },
   data() {
     return {
       options: [],
       graph: null,
       activeFormCode: null,
+      activeFormComponentName: null,
       loading: false,
       isLeftColumnFolded: false,
       isRightColumnFolded: false,
       isBothColumnFolded: false,
       popup: false,
-      forms: forms,
+      wellGeo: {name_ru: null},
+      wellGeoFields: {name_ru: null},
       wellUwi: null,
       well: {
         id: null,
@@ -237,6 +268,7 @@ export default {
         'categoryLast': {'name_ru': null},
         'expl': {'dbeg': null, 'name_ru': null},
         'techs': null,
+        'tap': {'tap': null},
         'techsName': null,
         'labResearchValue': {'value_double': null},
         'wellType': {'name_ru': null},
@@ -267,7 +299,14 @@ export default {
         'gis': {'gis_date': null},
         'gdisCurrentValueBhp': {'value_double': null, 'meas_date': null},
         'zone': {'name_ru': null},
+        'wellReactInfl': {'well_reacting': null, 'well_influencing': null},
+        'gtm': {'dbeg': null},
+        'rzatrStat': {'value_double': null},
+        'rzatrAtm': {'value_double': null},
+        'gu': {'name_ru': null},
+        'agms': {'name_ru': null},
       },
+      wellParent: null,
       tubeNomOd: null,
       wellTechs: null,
       wellTechsName: null,
@@ -286,6 +325,7 @@ export default {
         'categoryLast': 'category_last',
         'expl': 'well_expl',
         'techs': 'techs',
+        'tap': 'tap',
         'labResearchValue': 'lab_research_value',
         'wellType': 'well_type',
         'org': 'org',
@@ -314,11 +354,29 @@ export default {
         'gis': 'gis',
         'gdisCurrentValueBhp': 'gdis_current_value_bhp',
         'zone': 'zone',
+        'wellReactInfl': 'well_react_infl',
+        'gtm': 'gtm',
+        'rzatrAtm': 'rzatr_atm',
+        'rzatrStat': 'rzatr_stat',
+        'gu': 'gu',
+        'agms': 'agms',
       },
-      forms_structure: forms_structure,
+      formsStructure: {},
+      dzoSelectOptions: [],
+      selectedUserDzo: null,
     }
   },
   mounted() {
+    this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
+      this.formsStructure = data.tree
+    })
+    this.axios.get(this.localeUrl('/user_organizations')).then(({data}) => {
+        if (typeof data !== 'undefined' &&
+            typeof data.organizations !== 'undefined' &&
+            data.organizations.length > 0) {
+            this.dzoSelectOptions = data.organizations;
+        }
+    })
   },
   methods: {
     onColumnFoldingEvent(method) {
@@ -340,7 +398,14 @@ export default {
       }
     },
     search: _.debounce((loading, search, vm) => {
-          axios.get(vm.localeUrl('/api/bigdata/wells/search'), {params: {query: escape(search)}}).then(({data}) => {
+          axios.get(vm.localeUrl('/api/bigdata/wells/search'),
+              {
+                  params: {
+                      query: escape(search),
+                      selectedUserDzo: vm.selectedUserDzo,
+                  }
+              })
+              .then(({data}) => {
             vm.options = data.items;
             loading(false);
           })
@@ -353,6 +418,12 @@ export default {
         try {
           this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
+          if (data.geo[Object.keys(data.geo).length - 1] != null) {
+            this.wellGeoFields = data.geo[Object.keys(data.geo).length - 1]
+          }
+          if (data.geo[0] != null) {
+            this.wellGeo = data.geo[0]
+          }
           for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
             this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
           }
@@ -377,8 +448,8 @@ export default {
         } catch (e) {
           this.loading = false
         }
-        this.loading = false
         this.setTableData()
+        this.loading = false
       })
     },
     setTableData() {
@@ -396,7 +467,7 @@ export default {
           }
         } else if (this.tableData[i].method === 'trimToDate' && this.tableData[i].description != null) {
           try {
-            this.tableData[i].data = moment(this.tableData[i].description).format('DD/MM/YYYY')
+            this.tableData[i].data = this.getFormatedDate(this.tableData[i].description)
           } catch (e) {
           }
         } else {
@@ -428,11 +499,27 @@ export default {
       } catch (e) {
       }
     },
-    switchFormByCode(formCode) {
-      this.activeFormCode = formCode
+    switchFormByCode(data) {
+      this.activeFormCode = data.code;
+      this.activeFormComponentName = data.component_name;
     },
     setForm(formCode) {
       this.activeFormCode = formCode
+    },
+    getFormatedDate(data) {
+      if (data != null && data != '') {
+        return moment(data).format('DD/MM/YYYY')
+      }
+    },
+    changeColumnsVisible(value) {
+        this.isLeftColumnFolded = !value;
+        this.isRightColumnFolded = !value;
+        this.isBothColumnFolded = !value;
+    },
+    dzoSelectChange(event) {
+      this.selectedUserDzo = event.target.value;
+      this.options = [];
+      this.wellUwi = null;
     }
   },
   computed: {
@@ -451,7 +538,7 @@ export default {
           'data': ''
         },
         {
-          'description': this.well.geo.name_ru,
+          'description': this.wellGeoFields.name_ru,
           'method': null,
           'name': 'Месторождение',
           'data': ''
@@ -459,7 +546,7 @@ export default {
         {
           'description': '',
           'method': 'neighbors',
-          'neigbor_1': this.well.geo.name_ru,
+          'neigbor_1': this.wellGeo.name_ru,
           'neigbor_2': this.well.labResearchValue.value_double,
           'name': 'Горизонт / Pнас, атм',
           'data': ''
@@ -477,15 +564,17 @@ export default {
           'data': ''
         },
         {
-          'description': this.wellTechsTap,
+          'description': this.well.tap.tap,
           'method': null,
           'name': 'Отвод',
           'data': ''
         },
         {
           'description': this.wellTechsName,
-          'method': null,
-          'name': 'ГУ/Ряд',
+          'method': 'neighbors',
+          'neigbor_1': this.well.gu.name_ru,
+          'neigbor_2': this.well.agms.name_ru,
+          'name': 'ГУ/АГЗУ',
           'data': ''
         },
         {
@@ -501,13 +590,13 @@ export default {
           'data': ''
         },
         {
-          'description': null,
+          'description': this.well.wellReactInfl.well_reacting,
           'method': null,
           'name': 'Реагирующие скважины',
           'data': ''
         },
         {
-          'description': null,
+          'description': this.well.wellReactInfl.well_influencing,
           'method': null,
           'name': 'Влияющие скважины',
           'data': ''
@@ -721,8 +810,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': moment(this.well.krsWorkover.dbeg).format('DD/MM/YYYY'),
-          'neigbor_2': moment(this.well.krsWorkover.dend).format('DD/MM/YYYY'),
+          'neigbor_1': this.getFormatedDate(this.well.krsWorkover.dbeg),
+          'neigbor_2': this.getFormatedDate(this.well.krsWorkover.dend),
           'name': 'Дата последнего КРС',
           'data': ''
         },
@@ -733,7 +822,7 @@ export default {
           'data': ''
         },
         {
-          'description': null,
+          'description': this.getFormatedDate(this.well.gtm.dbeg),
           'method': null,
           'name': 'Дата проведения ГРП',
           'data': ''
@@ -753,8 +842,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': moment(this.well.prsWellWorkover.dbeg).format('DD/MM/YYYY'),
-          'neigbor_2': moment(this.well.prsWellWorkover.dend).format('DD/MM/YYYY'),
+          'neigbor_1': this.getFormatedDate(this.well.prsWellWorkover.dbeg),
+          'neigbor_2': this.getFormatedDate(this.well.prsWellWorkover.dend),
           'name': 'Дата последнего ПРС',
           'data': ''
         },
@@ -825,6 +914,18 @@ export default {
           'data': ''
         },
         {
+          'description': this.well.rzatrAtm.value_double,
+          'method': null,
+          'name': 'Рзатр(дин), атм',
+          'data': ''
+        },
+        {
+          'description': this.well.rzatrStat.value_double,
+          'method': null,
+          'name': 'Рзатр(стат)',
+          'data': ''
+        },
+        {
           'description': this.well.gdisCurrent.note,
           'method': null,
           'name': 'Примечание',
@@ -835,8 +936,8 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss">
-$leftColumnWidth: 398px;
+<style lang="scss" scoped>
+$leftColumnWidth: 385px;
 $leftColumnFoldedWidth: 84px;
 $rightColumnWidth: 348px;
 $rightColumnFoldedWidth: 84px;
@@ -845,6 +946,27 @@ $rightColumnFoldedWidth: 84px;
   &__wrapper {
     height: calc(100vh - 90px);
   }
+}
+
+::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #40467E;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #656A8A;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #656A8A;
+}
+
+::-webkit-scrollbar-corner {
+  background: #20274F;
 }
 
 .flex {
@@ -1175,9 +1297,7 @@ h4 {
 }
 
 .search-form {
-  width: 280px;
   padding: 10px 10px;
-  margin-left: auto;
 
   .v-select {
     background: url(/img/bd/search.svg) 20px 45% #272953 no-repeat;
@@ -1802,8 +1922,9 @@ h4 {
 .left-column {
   min-width: $leftColumnWidth;
   width: $leftColumnWidth;
-  padding: 0 15px;
-  margin-bottom: 0px;
+  padding: 0 0 0 15px;
+  margin-right: 15px;
+  margin-bottom: 0;
   height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -1839,7 +1960,8 @@ h4 {
     & ~ .mid-col {
       min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 9px);
     }
-    .scrollable{
+
+    .scrollable {
       height: 100%;
     }
 
@@ -1875,7 +1997,7 @@ h4 {
     padding: 0px 15px;
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 9px);
+      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 24px);
     }
 
     .icon-all {
@@ -1908,7 +2030,7 @@ h4 {
 }
 
 .mid-col {
-  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 9px);
+  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 24px);
   padding: 0 15px;
   height: calc(100vh - 90px);
 
@@ -1986,4 +2108,20 @@ h4 {
     }
   }
 }
+
+.select-dzo {
+    height: 2.2rem;
+    background-color: #494aa5;
+    color: white;
+    outline: none;
+    border: 1px #494aa5 solid;
+    border-radius: 5px;
+    margin-top: -1px;
+}
+
+.select-dzo:hover{
+    border: 1px solid transparent;
+    box-shadow: inset 0 0px 0px 1px #ccc;
+}
+
 </style>

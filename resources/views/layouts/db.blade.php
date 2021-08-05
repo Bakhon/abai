@@ -26,3 +26,4 @@
 @section('sidebar_menu_additional')
     @include('partials.sidebar.bigdata_menu')
 @endsection
+@section('module_support_email', config('support.db_email'))

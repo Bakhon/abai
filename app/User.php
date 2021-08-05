@@ -3,11 +3,12 @@
 namespace App;
 
 use App\Models\Refs\Org;
+use App\Services\BigData\StructureService;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
-use App\Module;
 use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -19,7 +20,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'password', 'org_id'
+        'name',
+        'username',
+        'password',
+        'org_structure'
     ];
 
     /**
@@ -39,10 +43,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_authorized_at' => 'datetime',
+        'org_structure' => 'array'
     ];
 
-
-    //relations
+    private $userOrgs = [];
 
     public function profile()
     {
@@ -77,7 +81,20 @@ class User extends Authenticatable
         }
     }
 
-    public function getOrganizationIds()
+    public function getUserOrganizations(StructureService $structureService): array
+    {
+        if($this->org_structure) {
+            $orgIds = array_map(function ($item) {
+                return substr($item, strpos($item, ":") + 1);
+            }, $this->org_structure);
+            $orgsTree = $structureService->getTree(Carbon::now());
+            $this->getOrgsByIdsRecursive($orgsTree, $orgIds);
+        }
+
+        return $this->userOrgs;
+    }
+
+    public function getOrganizationIds(): array
     {
         return $this->getOrganizations()->pluck('id')->toArray();
     }
@@ -85,5 +102,30 @@ class User extends Authenticatable
     public function modules()
     {
         return $this->belongsToMany(Module::class);
+    }
+
+    private function getOrgsByIdsRecursive(array $orgsTree, array $orgIds): void {
+            foreach ($orgsTree as $orgTreeItem) {
+                if (!in_array($orgTreeItem['id'], $orgIds) || !isset($orgTreeItem['children'])) {
+                    continue;
+                }
+                foreach ($orgTreeItem['children'] as $child) {
+                    $this->userOrgs[] = self::getOrgsArray($child);
+                }
+                $this->getOrgsByIdsRecursive($orgTreeItem['children'], $orgIds);
+            }
+    }
+
+    private static function getOrgsArray(array $org): array
+    {
+        $result = [
+            'id' => $org['id'],
+            'name' => $org['name'],
+            'sub_type' => $org['sub_type'],
+        ];
+        if (isset($org['children'])) {
+            $result['children'] = array_map('self::getOrgsArray', $org['children']);
+        }
+        return $result;
     }
 }
