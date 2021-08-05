@@ -27,6 +27,7 @@ import moment from "moment";
 import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
 import InputDataOperations from "./dataManagers/inputDataOperations";
+import Archieve from "./dataManagers/archieve";
 
 const defaultDzoTicker = "ЭМГ";
 
@@ -172,11 +173,14 @@ export default {
                         'agent_upload_waste_water_injection_fact'],
                     'formula': (value) => value * 1000
                 }
-            }
+            },
+            dzoUsers: []
         };
     },
     props: ['userId'],
     async mounted() {
+        this.$store.commit('globalloading/SET_LOADING', true);
+        this.dzoUsers = Object.keys(this.dzoMapping).map(k => this.dzoMapping[k].id);
         let currentDayNumber = moment().date();
         if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
             this.isChemistryButtonVisible = true;
@@ -197,6 +201,7 @@ export default {
         this.setTableFormat();
         await this.updateCurrentData();
         this.addListeners();
+        this.$store.commit('globalloading/SET_LOADING', false);
     },
     methods: {
         addColumnsToGrid() {
@@ -428,18 +433,17 @@ export default {
             return parseFloat(cellValue);
         },
         async handleSave() {
-            await this.storeData();
+            let uri = this.localeUrl("/dzo-excel-form");
+            this.excelData['date'] = this.currentDateDetailed;
+            await this.storeData(uri);
             this.isDataReady = !this.isDataReady;
         },
-        storeData() {
+        storeData(uri) {
             this.excelData['dzo_name'] = this.selectedDzo.ticker;
-            this.excelData['date'] = this.currentDateDetailed;
             let troubledCompanies = Object.keys(this.factorOptions);
             if (troubledCompanies.includes(this.selectedDzo.ticker)) {
                 this.updateTroubledCompaniesByFactorOptions();
             }
-
-            let uri = this.localeUrl("/dzo-excel-form");
 
             this.axios.post(uri, this.excelData).then((response) => {
                 if (response.status === 200) {
@@ -469,5 +473,5 @@ export default {
     components: {
         VGrid,
     },
-    mixins: [Visual,TodayDzoData,InputDataOperations],
+    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve],
 };

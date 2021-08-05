@@ -110,6 +110,12 @@
       "form": "well_tech_connect"
     }
   ],
+  "sort": [
+    {
+      "field": "perf_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main",
@@ -220,7 +226,7 @@
                 "table": "prod.well_perf_actual",
                 "type": "numeric",
                 "title": "interv_actual",
-                "validation": "numeric|gte:0"
+                "validation": "numeric|gte:0|lte:10000"
               },
               {
                 "code": "well",

@@ -1,22 +1,45 @@
 <template>
-  <div class="aw-tree">
-    <ul v-if="typeof items === 'object'" class="aw-tree__list">
-      <AwTreeItem :index="2" :settings="settings" icon-type="zone" :item="items"/>
+  <div :class="getAwTreeClasses">
+    <ul v-if="typeof items === 'object'" :class="getAwTreeRootListClasses">
+      <component :is="variant" :index="2" :settings="settings" :item="items" />
     </ul>
   </div>
 </template>
 <script>
 import AwTreeItem from "./AwTreeItem";
+import AwTreeItem2 from "./AwTreeItem2";
+
 export default {
   name: "AwTree",
   components:{
-    AwTreeItem
+    AwTreeItem,
+    AwTreeItem2
   },
   props: {
     treeType: String,
     items: Object,
     settings: Object,
-    selected: Array
+    selected: Array,
+    isWithoutSpace: Boolean,
+    variant: {
+      type: String,
+      default: "AwTreeItem"
+    }
+  },
+  computed: {
+    getAwTreeRootListClasses(){
+      return {
+        "aw-tree__list": true,
+        [this.variant]: true
+      }
+
+    },
+    getAwTreeClasses(){
+      return {
+        "aw-tree": true,
+        [this.variant]: true
+      }
+    }
   },
   methods: {
     clickItem(value){
@@ -34,6 +57,8 @@ export default {
       selected: this.selected,
       settings: this.settings,
       clickItem: this.clickItem,
+      isWithoutSpace: this.isWithoutSpace,
+      variant: this.variant
     }
   }
 }

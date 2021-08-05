@@ -16,7 +16,12 @@ use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
+use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
+use App\Models\BigData\Dictionaries\GeoRockType;
+use App\Models\BigData\Dictionaries\GisKind;
+use App\Models\BigData\Dictionaries\GisMethod;
+use App\Models\BigData\Dictionaries\GisMethodType;
 use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\IsoMaterialType;
@@ -28,6 +33,7 @@ use App\Models\BigData\Dictionaries\PerforatorType;
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
+use App\Models\BigData\Dictionaries\SaturationType;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateType;
@@ -38,8 +44,6 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
-use App\Models\BigData\Dictionaries\GisKind;
-use App\Models\BigData\Dictionaries\GisMethod;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -181,6 +185,22 @@ class DictionaryService
             'class' => Well::class,
             'name_field' => 'uwi'
         ],
+        'gis_method_types' => [
+            'class' => GisMethodType::class,
+            'name_field' => 'name_ru'
+        ],
+        'saturation_types' => [
+            'class' => SaturationType::class,
+            'name_field' => 'name_ru'
+        ],
+        'geo_rock_types' => [
+            'class' => GeoRockType::class,
+            'name_field' => 'name_ru'
+        ],
+        'geo_type' => [
+            'class' => Geo::class,
+            'name_field' => 'name_ru'
+        ],
         'gis_kinds' => [
             'class' => GisKind::class,
             'name_field' => 'name_ru'
@@ -231,6 +251,9 @@ class DictionaryService
                 case 'equip_type_casc':
                     $dict = $this->getEquipTypeCascDict();
                     break;
+                case 'geo_type_hrz':
+                    $dict = $this->getGeoHorizonDict();
+                    break;    
                 default:
                     throw new DictionaryNotFound();
             }
@@ -238,6 +261,21 @@ class DictionaryService
 
         $this->cache->set($cacheKey, $dict, Carbon::now()->addMinutes(self::CACHE_TTL));
         return $dict;
+    }
+
+    public function getDictValueById(string $dict, string $type, int $id)
+    {
+        $dict = $this->get($dict);
+        if ($type === 'dict') {
+            foreach ($dict as $item) {
+                if ($item['id'] === $id) {
+                    return $item['name'];
+                }
+            }
+        }
+
+        if ($type === 'dict_tree') {
+        }
     }
 
     private function getPlainDict(string $dict): array
@@ -336,5 +374,34 @@ class DictionaryService
             ->orderBy('name', 'asc')
             ->get()
             ->toArray();
+    }
+
+    private function getGeoHorizonDict()
+    {
+        $items = DB::connection('tbd')
+            ->table('dict.geo as g')
+            ->select('g.id', 'g.name_ru as name', 'gp.parent as parent')
+            ->where('gt.code', 'HRZ')
+            ->distinct()
+            ->orderBy('parent', 'asc')
+            ->orderBy('name', 'asc')
+            ->join('dict.geo_type as gt', 'g.geo_type', 'gt.id')
+            ->leftJoin(
+                'dict.geo_parent as gp',
+                function ($join) {
+                    $join->on('gp.geo', '=', 'g.id');
+                    $join->on('gp.dbeg', '<=', DB::raw("NOW()"));
+                    $join->on('gp.dend', '>=', DB::raw("NOW()"));
+                }
+            )
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+        return $items;
     }
 }

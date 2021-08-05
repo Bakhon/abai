@@ -8,12 +8,12 @@
       "form": "well_tech_connect"
     },
     {
-      "action": "create",
+      "action": "edit",
       "title": "change_tap",
       "form": "well_tech_change_tap"
     },
     {
-      "action": "create",
+      "action": "edit",
       "title": "change_connection",
       "form": "well_tech_change_tech"
     },
@@ -35,6 +35,12 @@
       "action": "create",
       "title": "cancel_disconnect",
       "form": "well_tech_cancel_disconnect"
+    }
+  ],
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
     }
   ],
   "tabs": [

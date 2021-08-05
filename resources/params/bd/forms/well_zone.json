@@ -5,6 +5,12 @@
     "dbeg",
     "zone"
   ],
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "w_zone",
