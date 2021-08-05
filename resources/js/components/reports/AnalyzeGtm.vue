@@ -1,6 +1,6 @@
 <template>
   <div class="filter-container">
-    <cat-loader/>
+    <cat-loader />
     <org-selector v-model="org"></org-selector>
 
     <div class="form-group1 filter-group select">
