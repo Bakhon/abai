@@ -38,7 +38,6 @@
     php artisan migrate --force --no-interaction
 
     php artisan storage:link
-    php artisan VueTranslation:generate
 @endtask
 
 @task('restart_services')
