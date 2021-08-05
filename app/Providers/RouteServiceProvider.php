@@ -115,7 +115,6 @@ class RouteServiceProvider extends ServiceProvider
             'digital_drilling',
             'plast_fluids',
             'geology',
-            'waterflooding_management'
             'digital_rating'
         ];
 

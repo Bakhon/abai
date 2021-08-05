@@ -224,15 +224,7 @@ Vue.component('well-casing', require('./components/DigitalDrilling/ProjectData/W
 Vue.component('technical-casing', require('./components/DigitalDrilling/ProjectData/TechnicalCasing').default);
 Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
 
-Vue.component('water-flooding-management-main', require('./components/waterfloodingManagement/waterfloodingManagementLayout.vue').default);
-Vue.component('water-flooding-management-main-menu', require('./components/waterfloodingManagement/mainMenu.vue').default);
-Vue.component('water-flooding-management-map', require('./components/waterfloodingManagement/mapObject.vue').default);
-Vue.component('water-flooding-management-forecasting', require('./components/waterfloodingManagement/forecastingOptimization').default);
-Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);
-
-
-Vue.prototype.trans = string => _.get(window.i18n, string) || string;
-
+// Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
 Vue.prototype.$urlLink = url => urlLink(url);
