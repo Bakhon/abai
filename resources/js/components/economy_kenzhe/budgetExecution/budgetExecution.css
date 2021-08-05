@@ -275,6 +275,9 @@ td:last-of-type {
   cursor: pointer;
 }
 
+#app>.container-fluid {
+  max-width: 94% !important;
+}
 
 .vc-speedometer-line {
   height: 35.8%;
@@ -314,7 +317,11 @@ td:last-of-type {
   margin-top: -1px;
 }
 
-
+@media (max-width:1367px) {
+  #app>.container-fluid {
+    max-width: 95.5% !important;
+  }
+}
 @media (max-width:1367px) {
   .number {
       font-size: 20px;
