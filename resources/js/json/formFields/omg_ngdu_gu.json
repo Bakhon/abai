@@ -8,7 +8,8 @@
       "day": "numeric"
     },
     "value": null,
-    "input": "selectDate"
+    "input": "selectDate",
+    "required": true
   },
   "daily_fluid_production": {
     "type": "number",

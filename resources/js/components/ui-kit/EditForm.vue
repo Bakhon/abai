@@ -59,11 +59,17 @@
           <option v-for="option in selectOptions(param)" :value="option.name">{{ option.name }}</option>
         </select>
 
+        <b-form-invalid-feedback
+            v-if="!_.isUndefined(field.required) && field.required"
+            id="input-live-feedback"
+            :state="!($v.formFields[param].$dirty && $v.formFields[param].$invalid)">
+          {{ trans('validation.required', {attribute: trans(field.label)}) }}
+        </b-form-invalid-feedback>
       </div>
     </b-col>
 
     <div class="col-xs-12 col-sm-12 col-md-12 text-center mt-3">
-      <button type="submit" class="btn btn-success" @click="$emit('submit')">{{ trans('app.save') }}</button>
+      <button type="submit" class="btn btn-success" @click="submit">{{ trans('app.save') }}</button>
     </div>
   </b-row>
 </template>
@@ -74,6 +80,7 @@ import moment from "moment";
 import Vue from "vue";
 import {Datetime} from "vue-datetime";
 import 'vue-datetime/dist/vue-datetime.css'
+import {required} from "vuelidate/lib/validators";
 
 Vue.use(Datetime)
 
@@ -92,14 +99,17 @@ export default {
   computed: {
     _() {
       return _;
+    },
+    test() {
+      return this.$v;
     }
   },
   methods: {
     validationParamMax (field) {
-      return typeof this.validationParams[field] == 'undefined' ? null : this.validationParams[field].max;
+      return _.isUndefined(this.validationParams[field]) ? null : this.validationParams[field].max;
     },
     validationParamMin (field) {
-      return typeof this.validationParams[field] == 'undefined' ? null : this.validationParams[field].min;
+      return _.isUndefined(this.validationParams[field]) ? null : this.validationParams[field].min;
     },
     formatedDate(date) {
       if (date) {
@@ -113,8 +123,31 @@ export default {
     onDateInput(field, param) {
       this.formFields[param].value = this.formatedDate(this.date);
       this.$emit(field.input);
+    },
+    submit () {
+      this.$v.$touch();
+
+      if (!this.$v.$invalid) {
+        this.$emit('submit');
+      }
     }
-  }
+  },
+  validations() {
+    let validationParams = {
+      formFields: {}
+    };
+
+    for (let field in this.formFields) {
+      console.log('field', field);
+      console.log('this.formFields[field]', this.formFields[field]);
+      if (!_.isUndefined(this.formFields[field].required) && this.formFields[field].required) {
+        validationParams.formFields[field] = {value: {required}};
+      }
+    }
+    console.log('validationParams', validationParams);
+
+    return validationParams;
+  },
 }
 </script>
 
