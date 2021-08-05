@@ -52,6 +52,33 @@
                 "title": "orgs",
                 "validation": "required",
                 "is_editable": true
+              },
+              {
+                "code": "uwi",
+                "type": "dict",
+                "dict": "wells",
+                "title": "well",
+                "validation": "required|exists:tbd.prod.well_document,well",
+                "is_editable": true
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "doc_tag",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "dict": "tags",
+                "title": "tag",
+                "validation": "required|exists:tbd.dict.tag,id"
               }
             ]
           }

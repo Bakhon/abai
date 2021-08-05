@@ -45,6 +45,7 @@ use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GisKind;
 use App\Models\BigData\Dictionaries\GisMethod;
 use App\Models\BigData\Dictionaries\DocumentType;
+use App\Models\BigData\Dictionaries\Tag;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -212,6 +213,10 @@ class DictionaryService
         ],
         'document_types' => [
             'class' => DocumentType::class,
+            'name_field' => 'name_ru'
+        ],
+        'tag' => [
+            'class' => Tag::class,
             'name_field' => 'name_ru'
         ]
     ];
