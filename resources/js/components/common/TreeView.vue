@@ -101,7 +101,7 @@ export default {
     nodeClickOnArrow: false
   },
   created() {
-    if(typeof this.markedNodes === 'undefined') return;
+    if(!this.isShowCheckboxes) return;
     if(typeof this.markedNodes[this.level] === 'undefined') {
       this.markedNodes[this.level] = {};
     }
@@ -125,15 +125,10 @@ export default {
       if(typeof this.node.children === 'undefined'
         || this.isNodeOnBottomLevelOfHierarchy(this.node)) {
         this.isLoading = true;
-        await this.loadWells(this);
+        await this.getWells(this);
       }
       if(this.isShowCheckboxes) {
-        await this.onExpandTree(this.node, this.level);
-
-        if(this.isSelectUntilWells) {
-          await this.updateChildren(this.node, this.level);
-          this.updateThisComponent();
-        }
+        this.onExpandTree(this.node, this.level);
       }
 
       this.$forceUpdate()
@@ -147,16 +142,14 @@ export default {
       this.updateThisComponent();
     },
     onExpandTree: function(node,level) {
-      if(typeof node === 'undefined' ||
-      typeof node.children === 'undefined'||
-      !node.children) return;
-      if(typeof this.markedNodes[level+1] === 'undefined') {
-        this.markedNodes[level+1] = {};
-      }
+      if(typeof node === 'undefined' || typeof node.children === 'undefined'
+      || !node.children || this.markedNodes[level+1]) return;
+
+      this.markedNodes[level+1] = {};
       let content = this.markedNodes[level + 1];
       for(let child of node.children) {
-        content[child.id] = this.markedNodes[level][node.id];
-        this.onExpandTree(child, level+1);
+        content[child.id] = {};
+        this.onExpandTree(child, level);
       }
     },
     loadChildren: async function(node) {
@@ -166,7 +159,7 @@ export default {
       }
       if(typeof node.children === 'undefined'
         || this.isNodeOnBottomLevelOfHierarchy(node)) {
-        await this.loadWells(node);
+        this.loadWells(node);
       }
       
       for(let idx in node.children) {
@@ -175,18 +168,16 @@ export default {
     },
     loadWells: async function(node) {
       await this.getWells(node);
-      await this.updateChildren(this.node, this.level);
       this.updateThisComponent();
     },
-
     updateChildren: async function(node, level) {
       if(typeof node.children === 'undefined' || !node.children) return;
       let content = this.markedNodes[level+1];
       let val = this.markedNodes[level][node.id];
       for(let child of node.children) {
         content[child.id] = val;
-        if(this.isSelectUntilWells) {
-          this.updateChildren(child, level+1);
+        if(this.isSelectUntilWells || !val) {
+          this.updateChildren(child, level);
         }
       }
     },
