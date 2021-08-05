@@ -43,7 +43,7 @@
   </div>
   <div class="col-md-12 col-xl-3 p-0">
     <div class="card-block">
-      <WFM-list-table
+      <list_table
           v-bind:data="[
                         {title: this.trans('waterflooding_management.selected_object')},
                         {title: this.trans('waterflooding_management.first_object')},
@@ -51,7 +51,7 @@
                         {title: this.trans('waterflooding_management.polygon_1')}
                         ]">
 
-      </WFM-list-table>
+      </list_table>
     </div>
     <div class="card-block">
       <div class="card-title justify-content-between">
@@ -96,15 +96,21 @@
       <button class="prediction-btn action-btn" @click="openModal('recommendation_implementation')">{{ trans('waterflooding_management.save')}}</button>
       <button class="prediction-btn action-btn" @click="openModal('window_limitation')">{{ trans('waterflooding_management.monitoring')}}</button>
   </div>
-  <WFM-modal
+  <WFM_modal
     :modal_name="modal_name"
     v-if="modal_show"
     @modalClose="modalClose"
-  ></WFM-modal>
+  ></WFM_modal>
 </div>
 </template>
 <script>
+import WFM_modal from './modal'
+import list_table from './list-table'
 export default {
+  components:{
+    WFM_modal,
+    list_table
+  },
   name: "forecastingOptimization",
   data: function () {
     return {

@@ -206,10 +206,6 @@ Vue.component('water-flooding-management-main-menu', require('./components/water
 Vue.component('water-flooding-management-map', require('./components/waterfloodingManagement/mapObject.vue').default);
 Vue.component('water-flooding-management-forecasting', require('./components/waterfloodingManagement/forecastingOptimization').default);
 Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);
-Vue.component('WFM-list-table', require('./components/waterfloodingManagement/list-table').default);
-Vue.component('WFM-data-picker', require('./components/waterfloodingManagement/DatePicker.vue').default);
-Vue.component('WFM-button-data-picker', require('./components/waterfloodingManagement/buttonDataPicker').default);
-Vue.component('WFM-modal', require('./components/waterfloodingManagement/modal').default);
 
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;

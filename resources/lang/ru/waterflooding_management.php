@@ -1,6 +1,10 @@
 <?php
 
 return array (
+    'upload_results' => 'Выгрузить результаты',
+    'promising' => 'Перспективные',
+    'optimized' => 'Оптимизированные',
+    'number_of_elements' => 'Кол-во элементов',
     'module_title' => 'Управление заводнением',
     'selected_object' => 'Выбранный объект',
     'first_object' => 'I объект',
@@ -58,6 +62,8 @@ return array (
     'option_name'=>'Название варианта + статус',
     'motiring_period'=>'Период мониторинга',
     'plan_fact'=>'План-факт',
+    'fact'=>'Факт',
+    'plan'=>'План',
     'recommendation' => 'Рекомендации',
     'modal_number_recommendation' => '№ рекомендации',
     'modal_cluster' => 'Кластер',

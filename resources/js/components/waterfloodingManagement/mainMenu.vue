@@ -28,7 +28,6 @@ export default {
   methods: {
     menuClick (childComponent) {
       this.$emit('menuClick', childComponent);
-      // this.menuItemMouseLeave();
     }
   }
 }

@@ -141,7 +141,7 @@
             {{ trans('waterflooding_management.current_indicators') }}
           </p>
           <div class="calendar-date">
-          <WFM-data-picker></WFM-data-picker>
+            <dataPicker />
           </div>
         </div>
         <div class="choose-object-into2">
@@ -166,10 +166,10 @@
           </p>
           <div class="d-flex justify-content-between">
             <div class="calendar-date">
-              <WFM-data-picker></WFM-data-picker>
+              <dataPicker />
             </div>
             <div class="calendar-date">
-              <WFM-data-picker></WFM-data-picker>
+              <dataPicker />
             </div>
           </div>
         </div>
@@ -184,9 +184,10 @@
 </template>
 <script>
 import vSelect from 'vue-select'
+import dataPicker from './DatePicker'
 export default {
   components: {
-    vSelect
+    vSelect, dataPicker
   },
   data: function () {
     return {
@@ -340,11 +341,9 @@ export default {
   height: 120px;
   background: #2B2E5E;
   border: 1px solid #454D7D;
-  /*box-sizing: border-box;*/
   border-radius: 1px;
   color: #fff;
   text-align: center;
-  /*padding: 14px;*/
   margin: 3px 5px;
 }
 .info-object-title{

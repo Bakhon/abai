@@ -34,7 +34,7 @@
             <div class="block d-flex" style="">
               <div class="d-flex align-items-end histogram__rotate__text">
                 <span>
-                  Кол-во элементов
+                  {{ trans('waterflooding_management.number_of_elements') }}
                 </span>
               </div>
               <div class="histogram__number">
@@ -57,11 +57,11 @@
             <div class="block d-flex justify-content-center">
               <div class="graphic-text w-100 d-flex align-items-center justify-content-center">
                 <img src="/img/waterfloodingManagement/lines/green_line.svg" alt=""  >
-                <p class="p-0 " style="">Оптимизированные</p>
+                <p class="p-0 " style="">{{ trans('waterflooding_management.optimized') }}</p>
               </div>
               <div class="graphic-text w-100 d-flex align-items-center justify-content-center">
                 <img src="/img/waterfloodingManagement/lines/green_line.svg" alt=""  >
-                <p class="p-0 " style="">Перспективные</p>
+                <p class="p-0 " style="">{{ trans('waterflooding_management.promising') }}</p>
               </div>
             </div>
           </div>
@@ -128,7 +128,7 @@
           ></v-select>
         </div>
         <div class="block d-flex justify-content-between">
-          <WFM-list-table
+          <list_table
               v-bind:data="[
                         {title: this.trans('waterflooding_management.selected_object')},
                         {title: this.trans('waterflooding_management.first_object')},
@@ -136,12 +136,12 @@
                         {title: this.trans('waterflooding_management.polygon_1')}
                         ]">
 
-          </WFM-list-table>
+          </list_table>
         </div>
       </div>
 
       <div class="card-block">
-        <WFM-list-table
+        <list_table
             v-bind:data="[
                         {title: this.trans('waterflooding_management.selected_forecast_model')},
                         {title: this.trans('waterflooding_management.hybrid')},
@@ -149,7 +149,7 @@
                         {title: this.trans('waterflooding_management.maximizing_oil_production')}
                         ]">
 
-        </WFM-list-table>
+        </list_table>
       </div>
 
       <div class="card-block">
@@ -157,8 +157,8 @@
           <p class="p-0 m-0">{{ trans('waterflooding_management.motiring_period')}}</p>
         </div>
         <div class="block d-flex ">
-            <WFM-button-data-picker class="w-100" style="margin-right: 10px;"></WFM-button-data-picker>
-            <WFM-button-data-picker class="w-100"></WFM-button-data-picker>
+            <buttonDataPicker class="w-100" style="margin-right: 10px;"></buttonDataPicker>
+            <buttonDataPicker class="w-100"></buttonDataPicker>
         </div>
       </div>
 
@@ -174,8 +174,8 @@
             <thead class="">
               <tr>
                 <th></th>
-                <th>План</th>
-                <th>Факт</th>
+                <th>{{ trans('waterflooding_management.plan')}}</th>
+                <th>{{ trans('waterflooding_management.fact') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -188,15 +188,19 @@
           </table>
         </div>
       </div>
-      <button class="prediction-btn">Выгрузить результаты</button>
+      <button class="prediction-btn">{{ trans('waterflooding_management.upload_results')}}</button>
     </div>
   </div>
 </template>
 <script>
 import vSelect from 'vue-select'
+import buttonDataPicker from "./buttonDataPicker";
+import list_table from './list-table'
 export default {
   components: {
-    vSelect
+    vSelect,
+    buttonDataPicker,
+    list_table
   },
   name: "assessmentMonitoring",
   data: function () {
