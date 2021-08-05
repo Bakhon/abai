@@ -19,7 +19,6 @@ class MappingController extends CrudController
     protected $modelName = '';
     protected $model = '';
     protected $resource = '';
-    protected $request = '';
     protected $link = '';
     protected $view = '';
     protected $queryMethod = '';
