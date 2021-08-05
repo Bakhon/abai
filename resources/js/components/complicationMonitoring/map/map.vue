@@ -140,6 +140,21 @@
       <wellOmgNgduForm :well="selectedWell" />
     </b-modal>
 
+    <b-modal
+        size="xl"
+        header-bg-variant="main4"
+        body-bg-variant="main1"
+        header-text-variant="light"
+        footer-bg-variant="main4"
+        centered
+        id="omg-ngdu-gu-form"
+        modal-class="long-modal"
+        :title="trans('monitoring.gu.enter-omg-ngdu-data')"
+        :ok-only="true"
+    >
+      <guOmgNgduForm :well="selectedGu" />
+    </b-modal>
+
     <div v-show="false">
       <gu-tool-tip ref="guToolTip" :gu="guHovered" />
       <pipe-tool-tip ref="pipeToolTip"  :pipe="pipeHovered" :paramKey="pipeHoveredParameter" />
@@ -166,6 +181,7 @@ import guToolTip from "./guToolTip";
 import pipeToolTip from "./pipeToolTip";
 import pipeLongInfo from "./pipeLongInfo";
 import wellOmgNgduForm from "./wellOmgNgduForm";
+import guOmgNgduForm from "./guOmgNgduForm"
 import turfLength from '@turf/length';
 import { lineString as turfLineString} from "@turf/helpers";
 
@@ -181,7 +197,8 @@ export default {
     CatLoader,
     mapLegend,
     pipeLongInfo,
-    wellOmgNgduForm
+    wellOmgNgduForm,
+    guOmgNgduForm
   },
   data() {
     return {
@@ -241,6 +258,7 @@ export default {
       pipeHoveredParameter: null,
       selectedPipe: null,
       selectedWell: null,
+      selectedGu: null,
     };
   },
   created() {
@@ -678,6 +696,10 @@ export default {
     onShowOmgNgduWellForm(option) {
       this.selectedWell = option.mapObject.object;
       this.$bvModal.show('omg-ngdu-well-form');
+    },
+    onShowOmgNgduGuForm(option) {
+      this.selectedGu = option.mapObject.object;
+      this.$bvModal.show('omg-ngdu-gu-form');
     },
     optionClicked(option) {
       this.editMode = option.editMode;

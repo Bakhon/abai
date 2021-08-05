@@ -105,6 +105,12 @@ export default {
           type: 'redirect',
           editMode: this.clickedObject.type
         });
+
+        options.push({
+          name: this.trans('monitoring.add-omg-ngdu-data'),
+          mapObject: this.clickedObject,
+          type: 'showOmgNgduGuForm',
+        });
       }
 
       if (this.clickedObject.type == 'zu' || this.clickedObject.type == 'well') {
@@ -118,7 +124,7 @@ export default {
 
       if (this.clickedObject.type == 'well') {
         options.push({
-          name: this.trans('monitoring.well.add-omg-ngdu-data'),
+          name: this.trans('monitoring.add-omg-ngdu-data'),
           mapObject: this.clickedObject,
           type: 'showOmgNgduWellForm',
         });

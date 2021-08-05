@@ -14,6 +14,7 @@ class ClearMysqlOilPipesTable extends Migration
      */
     public function up()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
         DB::table('oil_pipes')->truncate();
     }
 
