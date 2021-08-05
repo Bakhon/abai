@@ -24,7 +24,7 @@
     </div>
 
     <div v-if="modelName === 'well_mapping'" class="col-xs-12 col-sm-4 col-md-4">
-      <label>{{ trans("bd.well_mapping.well_in_abai") }}</label>
+      <label>{{ trans("bd.forms.well_mapping.well_in_abai") }}</label>
       <div class="form-label-group">
         <select class="form-control" name="geo_id" v-model="formFields.well_id" :disabled="!formFields.geo_id">
             <option v-for="row in wellList" v-bind:value="row.id">{{ row.name }}</option>
