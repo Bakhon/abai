@@ -11,10 +11,23 @@
             placeholder=""
         >
       </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-4 col-md-4">
       <label>{{ trans("bd.geo_in_abai_system") }}</label>
       <div class="form-label-group">
-        <select class="form-control" name="geo_id" v-model="formFields.geo_id">
+        <select class="form-control" name="geo_id" v-model="formFields.geo_id"
+        @change="loadWells()">
             <option v-for="row in geoList" v-bind:value="row.id">{{ row.name_ru }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div v-if="modelName === 'well_mapping'" class="col-xs-12 col-sm-4 col-md-4">
+      <label>{{ trans("bd.forms.well_mapping.well_in_abai") }}</label>
+      <div class="form-label-group">
+        <select class="form-control" name="geo_id" v-model="formFields.well_id" :disabled="!formFields.geo_id">
+            <option v-for="row in wellList" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
     </div>
@@ -32,7 +45,8 @@ Settings.defaultLocale = 'ru'
 
 const defaultFormFields = {
   name_ru: null,
-  geo_id:null
+  geo_id: null,
+  well_id: null,
 };
 
 export default {
@@ -68,8 +82,11 @@ export default {
       formFields: defaultFormFields,
       requiredFields: [
         'name_ru',
-        'well_id'
-      ]
+        'well_id',
+        'geo_id',
+      ],
+      wellList: null,
+      baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
     }
   },
   methods: {
@@ -81,7 +98,35 @@ export default {
               window.location.replace(this.localeUrl(`bigdata/${this.link}`));
             }
           });
-    }
+    },
+    loadWells() {
+      if(!this.formFields.geo_id) return;
+      return this.axios.get(this.baseUrl + "get_wells", {
+        params: {
+          structure_type: 'geo',
+          item_id: this.formFields.geo_id
+        },
+        responseType: 'json',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        if (response.data) {
+          this.wellList = this.filterData(response.data);
+        } else {
+          console.log("No data");
+        }
+      })
+    },
+    filterData(wellList) {
+      let result = {};
+      for(let obj of wellList) {
+        if(!result[obj.name]) {
+          result[obj.name] = obj;
+        }
+      }
+      return result;
+    },
   },
   computed: {
     isValidFields() {
@@ -101,11 +146,16 @@ export default {
   },
   mounted() {
     this.formFields = this.dictData ? this.dictData : defaultFormFields;
+    this.loadWells();
   },
 };
 </script>
 <style scoped>
 .form-label-group {
   padding-bottom: 30px;
+}
+
+select:disabled {
+  background-color: gray;
 }
 </style>

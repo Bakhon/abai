@@ -1,6 +1,6 @@
 <template>
   <div class="filter-container">
-    <cat-loader v-show="isLoading"/>
+    <cat-loader/>
     <org-selector v-model="org"></org-selector>
     <div class="form-group2 filter-group">
       <label for="start_date">Выберите начальную дату</label>
@@ -13,7 +13,7 @@
           input-class="form-control filter-input"
           format="LLLL yyyy"
           :phrases="{ok: '', cancel: ''}"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           auto
           :flow="['year', 'month']"
       >
@@ -31,7 +31,7 @@
           input-class="form-control filter-input"
           format="LLLL yyyy"
           :phrases="{ok: '', cancel: ''}"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           auto
           :flow="['year', 'month']"
       >
@@ -40,7 +40,8 @@
     </div>
 
     <div class="form-group3 result-link text-center">
-      <a v-if="resultLink !== null && !isLoading" :href="resultLink" target="_blank" class="download-report">Скачать
+      <a v-if="resultLink !== null && !$store.state.globalloading.loading" :href="resultLink" target="_blank"
+         class="download-report">Скачать
         отчёт</a>
     </div>
 
@@ -73,12 +74,15 @@ import {Datetime} from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from '../common/FormatDate.js'
 import OrgSelector from './OrgSelector'
+import {globalloadingMutations} from '@store/helpers';
+import CatLoader from '@ui-kit/CatLoader';
 
 Vue.use(Datetime)
 
 export default {
   components: {
-    OrgSelector
+    OrgSelector,
+    CatLoader
   },
   data() {
 
@@ -92,11 +96,15 @@ export default {
 
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+
     createDownloadLink(response) {
       this.resultLink = response.data.report_link
     },
     updateData() {
-      this.isLoading = true;
+      this.SET_LOADING(true);
 
       let uri = process.env.MIX_MICROSERVICE_PREDEFINED_REPORTS + "/monthly/production/";
       let data = {
@@ -121,7 +129,7 @@ export default {
             }
           })
           .catch((error) => console.log(error))
-          .finally(() => this.isLoading = false);
+          .finally(() => this.SET_LOADING(false));
     },
     onChange(event) {
       this.org = event.target.value;
@@ -133,7 +141,7 @@ export default {
       this.year = event.target.value;
     },
     isMandatoryParametersFilled() {
-      return (this.org && this.startDate && this.endDate && !this.isLoading)
+      return (this.org && this.startDate && this.endDate && !this.$store.state.globalloading.loading)
     },
   },
 }

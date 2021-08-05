@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources;
 
-class GeoMappingListResource extends LasDictionariesResource
+class WellMappingListResource extends LasDictionariesResource
 {
-    protected $modelName = 'geo_mapping';
-    protected $link = 'geo-mapping';
+    protected $modelName = 'well_mapping';
+    protected $link = 'well-mapping';
 
     /**
      * Transform the resource into an array.
@@ -19,7 +19,7 @@ class GeoMappingListResource extends LasDictionariesResource
             'id' => $this->id,
             'fields' => [
                 'name' => $this->name_ru,
-                'name_in_abai' => $this->geo->name_ru
+                'name_in_abai' => $this->well->uwi
             ]
         ];
 
