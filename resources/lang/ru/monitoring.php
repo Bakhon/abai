@@ -71,7 +71,6 @@ return array (
       'weight_after' => 'Масса после извлечения, гр',
       'avg_speed' => 'Средняя скорость коррозии, мм/г',
     ),
-    'volume_fractions' => 'Объемные доли',
   ),
   'fact_common_corrosion_speed' => 'Фактическая общая скорость коррозии',
   'test_coupons' => 'тест купоны',
@@ -152,21 +151,18 @@ return array (
       'bsw' => 'Обводненность, %',
       'surge_tank_pressure' => 'Давление в буферной емкости, кгс\\см2',
       'pump_discharge_pressure' => 'Давление на выходе насоса, кгс\\см2',
-      'heater_inlet_pressure' => 'Температура на входе в печь, С',
-      'heater_output_pressure' => 'Температура на выходе из печи, С',
       'temperature' => 'Температура на входе в печь, С',
       'heater_output_temperature' => 'Температура на выходе из печи, С',
       'heater_inlet_temperature' => 'Температура на входе в печь, С',
       'gas_factor' => 'Газовый фактор, м3/м3',
+      'heater_inlet_pressure' => 'Температура на входе в печь, С',
+      'heater_output_pressure' => 'Температура на выходе из печи, С',
     ),
   ),
   'all_gus' => 'Все ГУ',
   'show_title' => 'Просмотр карточки',
   'field' => 'Месторождение',
-  'ngdu' => 
-  array (
-    'ngdu' => 'НГДУ',
-  ),
+  'ngdu' => 'НГДУ',
   'cdng' => 'ЦДНГ',
   'history' => 
   array (
@@ -224,32 +220,6 @@ return array (
     ),
   ),
   'corrosion_name' => 'Коррозия',
-  'pipe' => 
-  array (
-    'menu' => 'Трубопроводы',
-    'title' => 'Трубопроводы ГУ кармасс',
-    'create_title' => 'Ввод данных по трубопроводу',
-    'edit_title' => 'Редактирование данных по трубопроводу',
-    'fields' => 
-    array (
-      'length' => 'Длина',
-      'outside_diameter' => 'Внешний диаметр, мм',
-      'inner_diameter' => 'Внутренний диаметр',
-      'thickness' => 'Толщина стенки, мм',
-      'roughness' => 'Жесткость',
-      'material' => 'Материал',
-      'plot' => 'Участок',
-    ),
-    'updated' => 'Трубовровод изменен',
-    'deleted' => 'Трубопровод удален',
-    'deleting_error' => 'Ошибка при удалении трубопровода',
-    'coords' => 'Координаты трубопровода',
-    'add' => 'Добавить трубовровод',
-    'type' => 'Тип размер трубопровода',
-    'params' => 'Параметры трубопровода',
-    'name' => 'Наименование трубопровода',
-    'pipe' => 'Трубопровод',
-  ),
   'inhibitor' => 
   array (
     'title' => 'Справочник ингибиторов',
@@ -278,7 +248,6 @@ return array (
     'referent_value' => 'Референтное значение',
   ),
   'module_name' => 'Мониторинг осложнений',
-  'monitoring_module' => 'Модуль "Мониторинг осложнений"',
   'tech_map_prototype' => 'Техкарта прототип',
   'gus' => 
   array (
@@ -303,6 +272,8 @@ return array (
     'deleting_error' => 'Ошибка при удалении Скважины',
     'name' => 'Имя Скважины',
     'well' => 'Скважина',
+    'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
+    'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ Скважина',
   ),
   'pipe' => 
   array (
@@ -339,6 +310,7 @@ return array (
     'name' => 'Имя ГУ',
     'create_title' => 'Ввод данных по ГУ',
     'edit_title' => 'Редактирование ГУ',
+    'gu' => 'ГУ',
     'params' => 'Параметры ГУ',
     'fields' => 
     array (
@@ -354,7 +326,6 @@ return array (
       'daily_gas_production_in_sib' => 'Количество газа в СИБ',
     ),
     'redirect-to' => 'Перейти на',
-    'gu' => 'ГУ',
   ),
   'zu' => 
   array (
@@ -378,19 +349,19 @@ return array (
   'pipe_types' => 
   array (
     'menu' => 'Справочник тип размеров трубопроводов',
+    'title' => 'Справочник тип размеров трубопроводов',
     'fields' => 
     array (
       'name' => 'Тип размер',
       'outside_diameter' => 'Внешний диаметр, мм',
       'inner_diameter' => 'Внутренний диаметр, мм',
       'thickness' => 'Толщина стенки, мм',
-      'roughness' => 'Жесткость',
+      'roughness' => 'Шероховатость',
       'material' => 'Материал',
       'plot' => 'Участок',
     ),
     'edit_title' => 'Редактирование типа трубы',
     'create_title' => 'Ввод данных по типу трубы',
-    'title' => 'Справочник тип размеров трубопроводов',
   ),
   'omgngdu_well' => 
   array (
@@ -404,55 +375,14 @@ return array (
       'pressure' => 'Давление, бар',
       'temperature' => 'Температура, °C',
       'fact_data' => 'Фактические данные ОМГ НГДУ Скважина',
+      'sg_oil' => 'Относительная плотность нефти',
+      'sg_gas' => 'Относительная плотность газа',
+      'sg_water' => 'Относительная плотность воды',
     ),
     'menu' => 'ОМГ НГДУ Скважина',
     'title' => 'База данных ОМГ НГДУ Скважина',
     'create_title' => 'Ввод данных ОМГ НГДУ ЗУ - Скважина',
     'edit_title' => 'Редактирование данных ОМГ НГДУ Скважина',
-  ),
-  'hydro_calculcation' => 
-  array (
-    'fields' => 
-    array (
-      'length' => 'Протяженность, м',
-      'pressure_start' => 'Давление начальное, ата',
-      'pressure_end' => 'Давление конечное, ата',
-      'temperature_start' => 'Температура начальная, °С',
-      'temperature_end' => 'Температура конечная, °С',
-      'start_point' => 'Начальная точка',
-      'end_point' => 'Конечная точка',
-      'pipe_name' => 'Трубопровод',
-      'mix_speed_avg' => 'Средняя скорость смеси, м/с',
-      'fluid_speed' => 'Скорость жидкости, м/с',
-      'gaz_speed' => 'Скорость газа, м/с',
-      'flow_type' => 'Режим течения',
-      'press_change' => 'Перепад давления, атм/км',
-      'break_qty' => 'Количество порывов',
-      'height_drop' => 'Перепад высот, м',
-    ),
-    'table_title' => 'Таблица расчета гидравлики',
-  ),
-  'materials' => 
-  array (
-    'title' => 'Справочник материалов трубопроводов',
-    'fields' => 
-    array (
-      'material' => 'Материал',
-      'yield_point' => 'Предел текучести',
-      'roughness' => 'Шероховатость',
-    ),
-    'edit_title' => 'Редактирование материалов трубопровода',
-    'create_title' => 'Добавить материал трубопровода',
-    'reverse_calculation' => 
-    array (
-      'table_title' => 'Таблица расчета гидравлики Скважина - ГУ',
-      'menu' => 'Расчет гидравлики Скважина - ГУ',
-    ),
-    'economical_effect_title' => 'Мониторинг потерянной выгоды',
-    'difference' => 'Разница закачки ИК, г/м3',
-    'inhibitor_price' => 'Стоимость ингибитора, тенге/кг',
-    'economical_effect' => 'Суточная потерянная выгода, тыс. тенге/сут',
-    'economical_effect_sum' => 'Накопленная потерянная выгода, тыс. тенге',
   ),
   'hydro_calculation' => 
   array (
@@ -501,67 +431,16 @@ return array (
       'hydrogen_sulfide' => 'Значение H₂S в газе не должно быть равно 0 !',
     ),
   ),
-  'oilpipes_btw_points' => 'Расстояние между точками',
-  'oilpipes_comment' => 'Комментарий',
-  'oilpipes_start_point' => 'Начальная точка',
-  'oilpipes_end_point' => 'Конечная точка',
-  'oilpipes_material' => 'Материал',
-  'oilpipes_name' => 'Наименование',
-  'oilpipes' => 
+  'reverse_calculation' => 
   array (
-    'title' => 'База данных по нефтепроводам',
+    'table_title' => 'Таблица расчета гидравлики Скважина - ГУ',
+    'menu' => 'Расчет гидравлики Скважина - ГУ',
   ),
   'difference' => 'Разница закачки ИК, г/м3',
   'inhibitor_price' => 'Стоимость ингибитора, тенге/кг',
   'lost_profits_title' => 'Мониторинг потерянной выгоды',
   'lost_profits' => 'Суточная потерянная выгода, тыс. тенге/сут',
   'lost_profits_sum' => 'Накопленная потерянная выгода, тыс. тенге',
-  'economical_effect_title' => 'Экономический эффект',
-  'economical_effect' => 'Суточный экономический эффект, тыс. тенге/сут',
-  'economical_effect_sum' => 'Накопленный экономический эффект, тыс. тенге',
-  'buffer_tank' => 
-  array (
-    'title' => 'База данных по буферным емкостям',
-    'model' => 'Модель',
-    'name' => 'Наименование',
-    'type' => 'Тип',
-    'volume' => 'Объем, м3',
-    'date_of_exploitation' => 'Дата ввода в эксплуатацию',
-    'current_state' => 'Текущее состояние',
-    'external_and_internal_inspection' => 'Наружный и внутренний осмотр',
-    'hydraulic_test' => 'Гидравлическое испытание',
-    'date_of_repair' => 'Дата ремонта',
-    'type_of_repair' => 'Вид ремонта',
-  ),
-  'pumps' => 
-  array (
-    'number' => 'Номер',
-    'perfomance' => 'Производительность, м3/час',
-    'power' => 'Мощность насоса, кВт',
-    'title' => 'База данных по насосам',
-  ),
-  'ovens' => 
-  array (
-    'title' => 'База данных по печам',
-    'cipher' => 'Шифр',
-    'rated_heat_output' => 'Номинальная тепловая мощность, МВт (Гкал/ч)',
-  ),
-  'agzu' => 
-  array (
-    'title' => 'База данных по АГЗУ',
-    'method_of_measurement' => 'Метод измерения',
-    'number_of_connected_wells' => 'Количество подключаемых скважин',
-  ),
-  'sib' => 
-  array (
-    'title' => 'База данных по СИБ',
-  ),
-  'metering_units' => 
-  array (
-    'title' => 'База данных по узлам учета',
-    'diameter' => 'Диаметр',
-  ),
-  'gu_equipment' => 'Паспортизация оборудования для ГУ',
   'map-history' => 
   array (
     'action' => 'Действие',
@@ -609,4 +488,48 @@ return array (
   ),
   'economical_effect_title' => 'Мониторинг потерянной выгоды',
   'no_data' => 'Нет данных',
+  'monitoring_module' => 'Модуль "Мониторинг осложнений"',
+  'buffer_tank' => 
+  array (
+    'title' => 'База данных по буферным емкостям',
+    'model' => 'Модель',
+    'name' => 'Наименование',
+    'type' => 'Тип',
+    'volume' => 'Объем, м3',
+    'date_of_exploitation' => 'Дата ввода в эксплуатацию',
+    'current_state' => 'Текущее состояние',
+    'external_and_internal_inspection' => 'Наружный и внутренний осмотр',
+    'hydraulic_test' => 'Гидравлическое испытание',
+    'date_of_repair' => 'Дата ремонта',
+    'type_of_repair' => 'Вид ремонта',
+  ),
+  'pumps' => 
+  array (
+    'number' => 'Номер',
+    'perfomance' => 'Производительность, м3/час',
+    'power' => 'Мощность насоса, кВт',
+    'title' => 'База данных по насосам',
+  ),
+  'ovens' => 
+  array (
+    'title' => 'База данных по печам',
+    'cipher' => 'Шифр',
+    'rated_heat_output' => 'Номинальная тепловая мощность, МВт (Гкал/ч)',
+  ),
+  'agzu' => 
+  array (
+    'title' => 'База данных по АГЗУ',
+    'method_of_measurement' => 'Метод измерения',
+    'number_of_connected_wells' => 'Количество подключаемых скважин',
+  ),
+  'sib' => 
+  array (
+    'title' => 'База данных по СИБ',
+  ),
+  'metering_units' => 
+  array (
+    'title' => 'База данных по узлам учета',
+    'diameter' => 'Диаметр',
+  ),
+  'gu_equipment' => 'Паспортизация оборудования для ГУ',
 );

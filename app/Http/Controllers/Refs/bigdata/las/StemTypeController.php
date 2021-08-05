@@ -8,4 +8,5 @@ class StemTypeController extends LasDictionariesController
     protected $model = 'App\Models\BigData\Dictionaries\StemType';
     protected $resource = 'App\Http\Resources\StemTypeResource';
     protected $link = 'stem-type';
+    protected $view = 'bigdata.las_dictionaries';
 }

@@ -23,18 +23,6 @@
     <div class="dropdown-menu">
         <div class="move-menu">
             <li class="left-menu-li"><a href="{{route('bigdata')}}">{{ trans('bd.bigdata_module') }}</a>
-                <ul class="dropdown-child">
-                    <li class="left-menu-li">
-                        <a href="{{route('report_constructor')}}">
-                            {{ trans('bd.forms.report_constructor.menu') }}
-                        </a>
-                    </li>
-                    <li class="left-menu-li">
-                        <a href="{{route('bigdata.well_cart')}}">
-                            {{ trans('bd.forms.well_cart.menu') }}
-                        </a>
-                    </li>
-                </ul>
             </li>
             @if(auth()->user()->can('visualcenter view main'))
                 <li class="left-menu-li"><a href="{{route('visualcenter3')}}">{{ trans('visualcenter.visualcenter_module') }}</a></li>
@@ -66,7 +54,7 @@
                                     </a>
                                 </li>
                                 <li class="left-menu-li">
-                                    <a href="{{route('omgngdu_well.index')}}">
+                                    <a href="{{route('omgngdu-well.index')}}">
                                         {{ trans('monitoring.omgngdu_well.menu') }}
                                     </a>
                                 </li>
@@ -278,6 +266,24 @@
                     </ul>
                 </li>
             @endif
+        </div>
+    </div>
+</div>
+
+<div class="dropright">
+    <div data-toggle="dropdown">
+        <a href="#" class="bg-dark-new list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-start align-items-center">
+                <img src="/img/digital-drilling/daily-raport.png" width="25" height="25" class="companyLogo">
+                <span class="menu-collapsed companyName d-none"></span>
+            </div>
+        </a>
+    </div>
+    <div class="dropdown-menu">
+        <div class="move-menu">
+            <li class="left-menu-li">
+                <a href="{{route('digital-drilling-daily-report')}}">Суточный рапорт</a>
+            </li>
         </div>
     </div>
 </div>

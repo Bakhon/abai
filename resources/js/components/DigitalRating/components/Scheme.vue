@@ -3,7 +3,7 @@
     <div class="correlation-scheme__item" v-for="(item, idx) in 3">
       <div class="correlation-scheme__header">
         <div class="correlation-scheme__header-title">
-          {{ trans('digital_rating.correlationScheme') }} {{ idx + 1 }}
+          {{ trans('digital_rating.correlationScheme') + idx + 1 }}
         </div>
       </div>
       <div class="correlation-scheme__content">

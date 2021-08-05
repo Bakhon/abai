@@ -23,7 +23,7 @@ export default {
   name: "BtnDropdown",
 
   props: {
-    list: Array,
+    list: [],
   }
 }
 </script>

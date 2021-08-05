@@ -5,7 +5,7 @@
         {{ item }}
       </div>
       <div class="maps-development__wrapper">
-        <div class="maps-development__item" v-for="map in maps">
+        <div class="maps-development__item" v-for="map in maps" :key="map">
           <img
             class="maps-development__item-img"
             :src="`/img/digital-rating/${map}.svg`" alt=""
@@ -33,7 +33,6 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 10px;
   margin-bottom: 10px;
 }
 .maps-development__title {

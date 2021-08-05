@@ -1,5 +1,11 @@
 {
   "table": "prod.gis",
+  "sort": [
+    {
+      "field": "gis_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "title",

@@ -5,10 +5,11 @@
     :draggable="false"
     :width="1000"
     :height="800"
-    :adaptive="true">
+    :adaptive="false"
+    @before-open="beforeOpen">
     <div class="modal-bign-container">
       <div class="modal-bign-header justify-content-end">
-        <button type="button" class="modal-bign-button" @click="$emit('close')">
+        <button type="button" class="modal-bign-button" @click="close">
           {{ trans('pgno.zakrit') }}
         </button>
       </div>
@@ -27,9 +28,25 @@
         </template>
       </div>
       <div class="content">
-        <keep-alive>
-          <component :is="currentTabComponent"></component>
-        </keep-alive>
+        <div class="sector-form">
+          <div class="sector-form__label">
+            {{ trans('digital_rating.sectorNumber') }}
+          </div>
+          <input
+            type="text"
+            class="sector-form__input"
+            v-model="sectorNumber"
+          />
+        </div>
+        <component :is="currentTabComponent"></component>
+        <div class="modal__footer mb-10px">
+          <button type="button" class="btn-button btn-button--thm-blue mr-20px minw-200">
+            {{ trans('digital_rating.markCandidate') }}
+          </button>
+          <button type="button" class="btn-button btn-button--thm-green minw-200">
+            {{ trans('digital_rating.agreeCandidate') }}
+          </button>
+        </div>
       </div>
     </div>
   </modal>
@@ -40,6 +57,7 @@ import Overview from './Overview';
 import Maps from './Maps';
 import Scheme from "./Scheme";
 import Indicators from "./Indicators";
+import History from "./History";
 
 export default {
   name: "WellAtlasModal",
@@ -49,11 +67,14 @@ export default {
     Maps,
     Scheme,
     Indicators,
+    History,
   },
 
   data() {
     return {
+      sectorNumber: '7777',
       currentTab: 'overview',
+      isVisibleAtlas: false,
       tabs: [
         {
           title: 'digital_rating.overview',
@@ -88,6 +109,12 @@ export default {
   methods: {
     handleSelectTab(tab) {
       this.currentTab = tab;
+    },
+    beforeOpen(e) {
+      this.currentTab = 'overview';
+    },
+    close() {
+      this.$emit('close');
     }
   }
 }
@@ -99,5 +126,26 @@ export default {
   border: 1px solid #545580;
   padding: 10px;
   border-top: none;
+  overflow: auto;
+  height: calc(100% - 75px);
+}
+.sector-form {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  margin: 10px 0 20px 0;
+
+  &__label {
+    padding: 5px 30px;
+    background: #323370;
+  }
+
+  &__input {
+    background: #1F2142;
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    color: #fff;
+  }
 }
 </style>

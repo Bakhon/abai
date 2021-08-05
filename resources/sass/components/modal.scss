@@ -1,4 +1,6 @@
 .modal-bign-wrapper {
+  z-index: 1001 !important;
+
   .vm--modal {
     border-radius: 9px !important;
   }
@@ -56,3 +58,4 @@
   display: flex;
   justify-content: center;
 }
+
