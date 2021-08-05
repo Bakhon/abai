@@ -15,7 +15,7 @@
                 <td rowspan="4" class="th">{{trans('tr.h_up_perf_md')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.productivity_index')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.operation_method')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.pump_type')}}</td>
+                <td rowspan="4" class="th pump_type_width">{{trans('tr.pump_type')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.outer_diameter_nkt')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.h_pump_set')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.tub_eqiup')}}</td>
@@ -28,7 +28,7 @@
 
                 <td class="colspan th" colspan="8">{{trans('tr.actual_mode')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.state_at_the_end_of_the_month')}}</td>
-                <td class="colspan th" colspan="12">{{trans('tr.intended_mode')}}</td>
+                <td class="colspan th" colspan="14">{{trans('tr.intended_mode')}}</td>
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
                 <td rowspan="3" class="th">{{trans('tr.h_dynamic')}}</td>
@@ -51,11 +51,15 @@
                 <td rowspan="3" class="th"><span>{{trans('tr.planned_monthly_gas')}}</span></td>
                 <td rowspan="3" class="th"><span>{{trans('tr.planned_monthly_liquid')}}</span></td>
                 <td rowspan="3" class="th"><span>{{trans('tr.monthly_liquid_production')}}</span></td>
+                <td colspan="2" class="th"><span>{{trans('tr.change_regime')}}</span></td>
                 <td rowspan="3" class="th"><span>{{trans('tr.tr_measure_to_ensure')}}</span></td>
+ 
                 
 
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
             </tr>
             <tr></tr>
             <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
@@ -335,6 +339,8 @@
                 <td @click="sortBy('planned_monthly_gas')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.thousand_m3')}}</td>
                 <td @click="sortBy('planned_monthly_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3')}}</td>
                 <td @click="sortBy('planned_monthly_water')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3')}}</td>
+                <td @click="sortBy('planned_diff_oil')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}</td>
+                <td @click="sortBy('planned_diff_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}</td>
                 <td @click="sortBy('planned_events')" class="th"><i class="fa fa-fw fa-sort"></i></td>
             </tr>
         </thead>
@@ -674,6 +680,30 @@
                     </span>
                 </td>
 
+
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_diff_oil`), 'activ': isActiveClass(row)}">
+                    <span :class="{'circle-err': wells && wells[row_index] &&
+                wells[row_index].planned_diff_oil[1][0] !== '0'}" :style="`background :${getColor(
+                wells[row_index].planned_diff_oil[1][0])}`"> </span>
+                    <span v-if="row.planned_diff_oil[0]!=null">{{Math.round(row.planned_diff_oil[0]*10)/10}}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                        {{ wells[row_index].planned_diff_oil[1][1]}}
+                    </span>
+                </td>
+
+
+
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_diff_liq`), 'activ': isActiveClass(row)}">
+                    <span :class="{'circle-err': wells && wells[row_index] &&
+                wells[row_index].planned_diff_liq[1][0] !== '0'}" :style="`background :${getColor(
+                wells[row_index].planned_diff_liq[1][0])}`"> </span>
+                    <span v-if="row.planned_diff_liq[0]!=null">{{Math.round(row.planned_diff_liq[0]*10)/10}}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                        {{ wells[row_index].planned_diff_liq[1][1]}}
+                    </span>
+                </td>
+
+
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_events`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_events[1][0] !== '0'}" :style="`background :${getColor(
@@ -850,12 +880,14 @@ tr:nth-child(even) {
     position: relative;
 }
 
+
 tr td:first-child {
   position: sticky;
   left: -1px;
   width: 100px;
   z-index: 3009;
 }
+
 
 tr:nth-child(odd) .fixcol:first-child {
   background-color: #454d7d;
@@ -891,10 +923,13 @@ position: static;
 ::-webkit-scrollbar-thumb:hover {
   background: #272953;
 }
-.activ.activ {
+.activ {
   border-bottom: 2px solid rgb(145, 145, 145) ;
   border-top: 2px solid rgb(145, 145, 145);
   font-size: 11px;
+}
+.pump_type_width {
+  min-width: 152px; 
 }
 
 </style>

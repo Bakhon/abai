@@ -36,7 +36,6 @@ return array (
   'idn' => 'ИДН',
   'grp' => 'ГРП',
   'q_oil_total_growth' => 'Общий прирост Q н',
-  'choke_diameter' => 'Диаметр штуцера',
   'q_gas' => 'Q г',
   'q_oil_gain' => 'Прирост Q н',
   'stimulation_coefficient_of_productivity' => 'Кпрод от стимуляции',
@@ -302,4 +301,5 @@ return array (
   'h_packer_set' => 'Глубина  установки пакера',
   'swings/min' => 'кач/мин',
   'pipe_pressure' => 'Ртр',
+  'change_regime' => 'Изменения к режиму',
 );
