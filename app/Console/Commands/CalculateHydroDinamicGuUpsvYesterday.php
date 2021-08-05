@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Jobs\CalculateHydroDynamics;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class CalculateHydroDinamicGuUpsvYesterday extends Command
 {
@@ -13,7 +14,7 @@ class CalculateHydroDinamicGuUpsvYesterday extends Command
      *
      * @var string
      */
-    protected $signature = 'calculate_hydro_yesterday:cron';
+    protected $signature = 'calculate-hydro-yesterday:cron';
 
     /**
      * The console command description.
@@ -39,7 +40,11 @@ class CalculateHydroDinamicGuUpsvYesterday extends Command
      */
     public function handle()
     {
-        $input = ['date' => Carbon::yesterday()->format('Y-m-d')];
+        Log::channel('calculate_hydro_yesterday:cron')->info('Calculate  run');
+        $input = [
+            'date' => Carbon::yesterday()->format('Y-m-d'),
+            'cron' => true
+        ];
         CalculateHydroDynamics::dispatch($input);
     }
 }

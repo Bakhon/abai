@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.bsw_lab",
+  "sort": [
+    {
+      "field": "insert_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "bsw_l",
@@ -9,7 +15,6 @@
           {
             "title": "main",
             "items": [
-              
               {
                 "code": "insert_date",
                 "type": "date",
@@ -20,19 +25,19 @@
                 "code": "proba_ml",
                 "type": "numeric",
                 "title": "proba",
-                "validation": "required|gt:0"
+                "validation": "required|gte:0"
               },
               {
                 "code": "free_watter_ml",
                 "type": "numeric",
                 "title": "volume",
-                "validation": "required|gt:0"
+                "validation": "required|gte:0"
               },
               {
                 "code": "emulsion_ml",
                 "type": "numeric",
                 "title": "em_vol",
-                "validation": "required|gt:0"
+                "validation": "required|gte:0"
               },             
               {
                 "code": "bsw_lab_val",
@@ -44,7 +49,7 @@
                 "code": "watter_constrained_5_ml",
                 "type": "numeric",
                 "title": "watter_5",
-                "validation": "required|gt:0"
+                "validation": "required|gte:0"
               },
               {
                 "code": "watter_constrained_perc",
@@ -56,13 +61,13 @@
                 "code": "watter_constrained_ml",
                 "type": "numeric",
                 "title": "watter_ml",
-                "validation": "required|gt:0"
+                "validation": "required|gte:0"
               },
               {
                 "code": "bsw_volume_ml",
                 "type": "numeric",
                 "title": "bsw_vol",
-                "validation": "required|gt:0"
+                "validation": "required|gte:0"
               },
               {
                 "code": "bsw_volume_perc",

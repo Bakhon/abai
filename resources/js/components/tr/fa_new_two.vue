@@ -166,9 +166,8 @@ import "vue-easy-notify/dist/vue-easy-notify.css";
 import { VueMomentLib } from "vue-moment-lib";
 import moment from "moment";
 import Vue from "vue";
-import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
+import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
 import columnSortable from 'vue-column-sortable'
-// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 import Element from 'element-ui';

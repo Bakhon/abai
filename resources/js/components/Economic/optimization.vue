@@ -1,10 +1,10 @@
 <template>
-  <div class="container-fluid position-relative">
+  <div class="position-relative">
     <cat-loader v-show="loading"/>
 
     <div class="row">
       <div class="col-9 pr-2">
-        <div class="row text-white text-wrap flex-nowrap">
+        <div class="row text-white text-wrap flex-nowrap mb-10px">
           <div
               v-for="(header, index) in calculatedHeaders"
               :key="index"
@@ -95,12 +95,12 @@
         <tables
             v-if="!loading"
             :scenario="scenario"
-            :oil-prices="oilPrices"
+            :oil-prices="scenarioVariations.oil_prices"
             :res="res"/>
       </div>
 
-      <div class="col-3">
-        <div class="bg-main1 text-white text-wrap p-3 mb-3">
+      <div class="col-3 pr-0">
+        <div class="bg-main1 text-white text-wrap p-3 mb-10px">
           <subtitle>
             {{ trans('economic_reference.production_wells_fund') }}
           </subtitle>
@@ -135,7 +135,7 @@
             v-for="(block, index) in blocks"
             :key="index"
             :style="form.scenario_id ? 'min-height: 175px' : 'min-height: 100px'"
-            class="d-flex bg-main1 text-white text-wrap p-3 mb-3">
+            class="d-flex bg-main1 text-white text-wrap p-3 mb-10px">
           <div
               v-for="(subBlock, subBlockIndex) in block"
               :key="subBlock.title"
@@ -196,7 +196,7 @@
           </div>
         </div>
 
-        <div class="bg-main1 p-3 mt-3 text-white text-wrap">
+        <div class="bg-main1 p-3 text-white text-wrap">
           <div class="font-size-16px line-height-22px font-weight-bold mb-3">
             {{ trans('economic_reference.select_optimization_scenarios') }}
           </div>
@@ -209,7 +209,8 @@
           <select
               v-model="form.scenario_id"
               id="scenarios"
-              class="mb-3 form-control text-white border-0 bg-dark-blue">
+              class="mb-3 form-control text-white border-0 bg-dark-blue"
+              @change="selectScenario">
             <option
                 v-for="item in scenarios"
                 :key="item.value"
@@ -225,10 +226,11 @@
               </label>
 
               <select
+                  v-model="scenarioVariation.oil_price"
                   id="oil_price"
                   class="mb-3 form-control text-white border-0 bg-dark-blue">
                 <option
-                    v-for="item in oilPrices"
+                    v-for="item in scenarioVariations.oil_prices"
                     :key="item"
                     :value="item">
                   {{ item }}
@@ -242,10 +244,11 @@
               </label>
 
               <select
+                  v-model="scenarioVariation.dollar_rate"
                   id="dollar_rate"
                   class="mb-3 form-control text-white border-0 bg-dark-blue">
                 <option
-                    v-for="item in dollarRates"
+                    v-for="item in scenarioVariations.dollar_rates"
                     :key="item"
                     :value="item">
                   {{ item }}
@@ -259,10 +262,11 @@
               </label>
 
               <select
+                  v-model="scenarioVariation.salary_percent"
                   id="salary_percent"
                   class="mb-3 form-control text-white border-0 bg-dark-blue">
                 <option
-                    v-for="item in salaryPercents"
+                    v-for="item in scenarioVariations.salary_percents"
                     :key="item.value"
                     :value="item.value">
                   {{ item.label }}
@@ -276,10 +280,11 @@
               </label>
 
               <select
+                  v-model="scenarioVariation.retention_percent"
                   id="retention_percent"
                   class="mb-3 form-control text-white border-0 bg-dark-blue">
                 <option
-                    v-for="item in retentionPercents"
+                    v-for="item in scenarioVariations.retention_percents"
                     :key="item.value"
                     :value="item.value">
                   {{ item.label }}
@@ -293,12 +298,12 @@
               </label>
 
               <select
-                  v-model="scenarioIndex"
+                  v-model="scenarioVariation.optimization_percent"
                   id="optimization_percent"
                   class="mb-3 form-control text-white border-0 bg-dark-blue">
                 <option
-                    v-for="item in optimizationPercents"
-                    :key="item.value"
+                    v-for="item in scenarioVariations.optimization_percents"
+                    :key="item.label"
                     :value="item.value">
                   {{ item.label }}
                 </option>
@@ -318,7 +323,7 @@
 <script>
 const fileDownload = require("js-file-download");
 
-import CatLoader from '../ui-kit/CatLoader'
+import CatLoader from '@ui-kit/CatLoader'
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
 import EconomicTitle from "./components/EconomicTitle";
@@ -330,17 +335,23 @@ import SelectOrganization from "./components/SelectOrganization";
 import Tables from "./components/Tables";
 
 const optimizedColumns = [
-  "Revenue_total",
-  "Overall_expenditures",
-  "operating_profit_12m",
-  "oil",
-  "liquid",
-  "prs",
-  "well_count",
-  "well_count_profitable",
-  "well_count_profitless_cat_1",
-  "well_count_profitless_cat_2",
-  "avg_days_worked"
+  'Revenue_total',
+  'Revenue_local',
+  'Revenue_export',
+  'Overall_expenditures',
+  'operating_profit_12m',
+  'oil',
+  'liquid',
+  'prs',
+  'uwi_count',
+  'days_worked',
+  'production_export',
+  'production_local',
+];
+
+const optimizedOtherColumns = [
+  'Overall_expenditures',
+  'operating_profit_12m',
 ];
 
 let economicRes = {
@@ -367,14 +378,29 @@ let economicRes = {
   }
 }
 
-optimizedColumns.forEach(column => {
-  economicRes.scenarios[0][column] = {
-    value: [0, ''],
-    value_optimized: [0, ''],
-    percent: 0,
-    original_value: 0,
-    original_value_optimized: 0,
+let columnVariations = (column) => {
+  if (optimizedOtherColumns.includes(column)) {
+    return [column]
   }
+
+  return [
+    column,
+    column + '_profitable',
+    column + '_profitless_cat_1',
+    column + '_profitless_cat_2',
+  ];
+}
+
+optimizedColumns.forEach(column => {
+  columnVariations(column).forEach(columnVariation => {
+    economicRes.scenarios[0][columnVariation] = {
+      value: [0, ''],
+      value_optimized: [0, ''],
+      percent: 0,
+      original_value: 0,
+      original_value_optimized: 0,
+    }
+  })
 })
 
 export default {
@@ -396,15 +422,24 @@ export default {
       org_id: null,
       scenario_id: null
     },
+    scenarioVariation: {
+      dollar_rate: null,
+      oil_price: null,
+      salary_percent: null,
+      retention_percent: null,
+      optimization_percent: {
+        cat_1: null,
+        cat_2: null,
+      }
+    },
     res: economicRes,
     loading: true,
-    scenarioIndex: 0
   }),
   computed: {
     calculatedHeaders() {
       return [
         {
-          name: this.trans('economic_reference.Revenue'),
+          name: this.trans('economic_reference.revenue'),
           baseValue: this.scenario.Revenue_total.value[0],
           value: this.scenario.Revenue_total[this.scenarioValueKey][0],
           dimension: this.scenario.Revenue_total[this.scenarioValueKey][1],
@@ -516,34 +551,34 @@ export default {
         },
         {
           name: this.trans('economic_reference.total'),
-          value: (+this.scenario.well_count_profitable.original_value)
-              + (+this.scenario.well_count_profitless_cat_1.original_value)
-              + (+this.scenario.well_count_profitless_cat_2.original_value),
-          value_optimized: (+this.scenario.well_count_profitable.original_value_optimized)
-              + (+this.scenario.well_count_profitless_cat_1.original_value_optimized)
-              + (+this.scenario.well_count_profitless_cat_2.original_value_optimized),
+          value: (+this.scenario.uwi_count_profitable.original_value)
+              + (+this.scenario.uwi_count_profitless_cat_1.original_value)
+              + (+this.scenario.uwi_count_profitless_cat_2.original_value),
+          value_optimized: (+this.scenario.uwi_count_profitable.original_value_optimized)
+              + (+this.scenario.uwi_count_profitless_cat_1.original_value_optimized)
+              + (+this.scenario.uwi_count_profitless_cat_2.original_value_optimized),
         },
         {
           name: this.trans('economic_reference.profitable'),
-          value: this.scenario.well_count_profitable.original_value,
-          value_optimized: this.scenario.well_count_profitable.original_value_optimized,
+          value: this.scenario.uwi_count_profitable.original_value,
+          value_optimized: this.scenario.uwi_count_profitable.original_value_optimized,
         },
         {
           name: this.trans('economic_reference.profitless_all'),
-          value: (+this.scenario.well_count_profitless_cat_1.original_value)
-              + (+this.scenario.well_count_profitless_cat_2.original_value),
-          value_optimized: (+this.scenario.well_count_profitless_cat_1.original_value_optimized)
-              + (+this.scenario.well_count_profitless_cat_2.original_value_optimized)
+          value: (+this.scenario.uwi_count_profitless_cat_1.original_value)
+              + (+this.scenario.uwi_count_profitless_cat_2.original_value),
+          value_optimized: (+this.scenario.uwi_count_profitless_cat_1.original_value_optimized)
+              + (+this.scenario.uwi_count_profitless_cat_2.original_value_optimized)
         },
         {
           name: this.trans('economic_reference.profitless_cat_1'),
-          value: this.scenario.well_count_profitless_cat_1.original_value,
-          value_optimized: this.scenario.well_count_profitless_cat_1.original_value_optimized
+          value: this.scenario.uwi_count_profitless_cat_1.original_value,
+          value_optimized: this.scenario.uwi_count_profitless_cat_1.original_value_optimized
         },
         {
           name: this.trans('economic_reference.profitless_cat_2'),
-          value: this.scenario.well_count_profitless_cat_2.original_value,
-          value_optimized: this.scenario.well_count_profitless_cat_2.original_value_optimized,
+          value: this.scenario.uwi_count_profitless_cat_2.original_value,
+          value_optimized: this.scenario.uwi_count_profitless_cat_2.original_value_optimized,
         },
         {
           name: this.trans('economic_reference.new_wells'),
@@ -566,60 +601,70 @@ export default {
       ]
     },
 
-    oilPrices() {
-      let data = {}
-
-      this.res.scenarios.forEach(scenario => {
-        data[scenario.oil_price] = 1
-      })
-
-      return Object.keys(data)
-    },
-
-    dollarRates() {
-      let data = {}
-
-      this.res.scenarios.forEach(scenario => {
-        data[scenario.dollar_rate] = 1
-      })
-
-      return Object.keys(data)
-    },
-
-    salaryPercents() {
-      return [
-        {
-          label: `${this.scenario.coef_cost_WR_payroll * 100}%`,
-          value: this.scenario.coef_cost_WR_payroll,
-        },
-      ]
-    },
-
-    retentionPercents() {
-      return [
-        {
-          label: `${this.scenario.coef_Fixed_nopayroll * 100}%`,
-          value: this.scenario.coef_Fixed_nopayroll,
-        },
-      ]
-    },
-
-    optimizationPercents() {
-      let items = []
-
-      this.res.scenarios.forEach((item, index) => {
-        items.push({
-          label: `${this.trans('economic_reference.cat_1_trips')}: ${item.percent_stop_cat_1 * 100}%, ` +
-              `${this.trans('economic_reference.cat_2_trips')}: ${item.percent_stop_cat_2 * 100}%`,
-          value: index,
-        })
-      })
-
-      return items
-    },
-
     scenario() {
-      return this.res.scenarios[this.scenarioIndex]
+      return this.res.scenarios.find(item =>
+          item.oil_price === this.scenarioVariation.oil_price &&
+          item.dollar_rate === this.scenarioVariation.dollar_rate &&
+          item.coef_cost_WR_payroll === this.scenarioVariation.salary_percent &&
+          item.coef_Fixed_nopayroll === this.scenarioVariation.retention_percent &&
+          item.percent_stop_cat_1 === this.scenarioVariation.optimization_percent.cat_1 &&
+          item.percent_stop_cat_2 === this.scenarioVariation.optimization_percent.cat_2
+      ) || this.res.scenarios[0]
+    },
+
+    scenarioVariations() {
+      let variations = {
+        oil_prices: {},
+        dollar_rates: {},
+        salary_percents: {},
+        retention_percents: {},
+        optimization_percents: {},
+      }
+
+      this.res.scenarios.forEach(item => {
+        variations.oil_prices[item.oil_price] = 1
+
+        variations.dollar_rates[item.dollar_rate] = 1
+
+        variations.salary_percents[item.coef_cost_WR_payroll] = 1
+
+        variations.retention_percents[item.coef_Fixed_nopayroll] = 1
+
+        variations.optimization_percents[`${item.percent_stop_cat_1}-${item.percent_stop_cat_2}`] = 1
+      })
+
+      variations.oil_prices = Object.keys(variations.oil_prices)
+
+      variations.dollar_rates = Object.keys(variations.dollar_rates)
+
+      variations.salary_percents = Object.keys(variations.salary_percents).map(value => ({
+        label: `${value * 100}%`,
+        value: value,
+      }))
+
+      variations.retention_percents = Object.keys(variations.retention_percents).map(value => ({
+        label: `${value * 100}%`,
+        value: value,
+      }))
+
+      variations.optimization_percents = Object.keys(variations.optimization_percents).map((value) => {
+        let values = value.split('-')
+
+        let cat1 = values[0]
+
+        let cat2 = values[1]
+
+        return {
+          label: `${this.trans('economic_reference.cat_1_trips')}: ${cat1 * 100}%, ` +
+              `${this.trans('economic_reference.cat_2_trips')}: ${cat2 * 100}%`,
+          value: {
+            cat_1: cat1,
+            cat_2: cat2
+          }
+        }
+      })
+
+      return variations
     },
 
     scenarioValueKey() {
@@ -675,6 +720,20 @@ export default {
       this.loading = false
     },
 
+    selectScenario() {
+      this.scenarioVariation.dollar_rate = this.scenarioVariations.dollar_rates[0]
+
+      this.scenarioVariation.oil_price = this.scenarioVariations.oil_prices[0]
+
+      this.scenarioVariation.salary_percent = this.scenarioVariations.salary_percents[0].value
+
+      this.scenarioVariation.retention_percent = this.scenarioVariations.retention_percents[0].value
+
+      this.scenarioVariation.optimization_percent.cat_1 = this.scenarioVariations.optimization_percents[0].value.cat_1
+
+      this.scenarioVariation.optimization_percent.cat_2 = this.scenarioVariations.optimization_percents[0].value.cat_2
+    },
+
     liquidValue(optimized = true) {
       if (!this.form.scenario_id) {
         optimized = false
@@ -700,8 +759,8 @@ export default {
       }
 
       let days_worked = optimized
-          ? this.scenario.avg_days_worked.original_value_optimized
-          : this.scenario.avg_days_worked.original_value
+          ? this.scenario.days_worked.original_value_optimized
+          : this.scenario.days_worked.original_value
 
       let oil = optimized
           ? this.scenario.oil.original_value_optimized
@@ -718,8 +777,8 @@ export default {
       }
 
       let days_worked = optimized
-          ? this.scenario.avg_days_worked.original_value_optimized
-          : this.scenario.avg_days_worked.original_value
+          ? this.scenario.days_worked.original_value_optimized
+          : this.scenario.days_worked.original_value
 
       let liquid = optimized
           ? this.scenario.liquid.original_value_optimized
@@ -735,16 +794,16 @@ export default {
         optimized = false
       }
 
-      let well_count = optimized
-          ? this.scenario.well_count.original_value_optimized
-          : this.scenario.well_count.original_value
+      let uwi_count = optimized
+          ? this.scenario.uwi_count.original_value_optimized
+          : this.scenario.uwi_count.original_value
 
       let prs = optimized
           ? this.scenario.prs.original_value_optimized
           : this.scenario.prs.original_value
 
-      return well_count
-          ? (prs * 1000 / well_count).toFixed(fractionDigits)
+      return uwi_count
+          ? (prs * 1000 / uwi_count).toFixed(fractionDigits)
           : 0
     }
   }
@@ -827,5 +886,9 @@ export default {
   position: absolute;
   top: 5px;
   right: 5px;
+}
+
+.mb-10px {
+  margin-bottom: 10px;
 }
 </style>

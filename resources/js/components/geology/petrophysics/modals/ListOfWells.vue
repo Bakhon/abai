@@ -12,7 +12,7 @@
     </div>
     <div class="list-of-wells__modal__content d-flex flex-column customScroll">
       <div class="d-flex align-items-center list-of-wells__modal__content__item mb-2" v-for="(item, i) in listOfWills" :key="i">
-        <Icon width="12" height="18" name="oilTower" fill="#5B78FC" class="mr-3"/>
+        <AwIcon width="12" height="18" name="oilTower" fill="#5B78FC" class="mr-3"/>
         <label class="d-flex align-items-center m-0">
           <input type="checkbox" v-if="item.value" :value="item.value" class="mr-3">
           <span>{{item.label}}</span>
@@ -24,12 +24,12 @@
 
 <script>
 import Button from "../../components/buttons/Button";
-import Icon from "../../components/icons/Icon"
+import AwIcon from "../../components/icons/AwIcon"
 export default {
   name: "ListOfWells",
   components:{
     Button,
-    Icon
+    AwIcon
   },
   data(){
     return {

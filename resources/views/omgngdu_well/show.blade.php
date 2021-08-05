@@ -63,7 +63,7 @@
                         <td>{{$omgngdu_well->temperature}}</td>
                     </tr>
                 </table>
-                <a class="btn btn-primary" href="{{ route('omgngdu_well.index') }}">{{__('app.back')}}</a>
+                <a class="btn btn-primary" href="{{ route('omgngdu-well.index') }}">{{__('app.back')}}</a>
             </div>
         </div>
     </div>

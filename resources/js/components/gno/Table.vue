@@ -348,7 +348,7 @@
               <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
 
-                  <div class="technological-mode-title">{{trans('pgno.technologicheskii_rezhim')}}</div>
+                  <div class="technological-mode-title">{{trans('pgno.technologicheskii_rezhim')}} {{techmodeDate}}</div>
                 </div>
 
                 <div class="right-block-details"
@@ -693,7 +693,7 @@
                             <td>{{row.k_v.toFixed(3)}}</td>
                             <td>{{row.pi.toFixed(2)}}</td>
                             <td>{{row.kh.toFixed(1)}}</td>
-                            <td>{{row.tp_idn_skin.toFixed(1)}}</td>
+                            <td>{{row.grp_skin.toFixed(1)}}</td>
                             <td>{{row.p_res.toFixed(0)}}</td>
                             <td>{{row.bhp.toFixed(0)}}</td>
                             <td>{{row.q_l.toFixed(0)}}</td>
@@ -1217,10 +1217,7 @@
                       }}{{trans('measurements.m')}}
                     </div>
                     <div class="shgn-image-text image-text-8">{{trans('pgno.tekushii_zaboi')}} {{ this.curr }}{{trans('measurements.m')}}</div>
-
-                    <img class="podborgnoimg"
-                         src="./images/shgn.png"
-                         alt="podbor-gno"/>
+                      <shgn-img class="podborgnoimg"></shgn-img>
                   </div>
 
                       

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
-
+use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\WellCategory as WellCategoryDictionary;
@@ -292,25 +292,15 @@ class WellCategory extends PlainForm
             ->leftJoin('dict.well_category_type as c', 'c.id', 'wc.category')
             ->whereIn('c.code', [Well::WELL_CATEGORY_OIL]);
     }
+   
 
-    private function isValidDate($wellId, $dbeg): bool
-    {
-        $dend = DB::connection('tbd')
-            ->table('prod.well_category')
-            ->where('well', $wellId)
-            ->where('dend', '<', Well::DEFAULT_END_DATE)
-            ->orderBy('dend', 'desc')
-            ->get('dend')
-            ->first();
-
-        return $dbeg >= $dend->dend;
-    }
+    use DateMoreThanValidationTrait;
 
     protected function getCustomValidationErrors(): array
     {
         $errors = [];
 
-        if (!$this->isValidDate($this->request->get('well'), $this->request->get('dbeg'))) {
+        if (!$this->isValidDateDbeg($this->request->get('well'),$this->request->get('dbeg'), 'prod.well_category', 'dbeg')){
             $errors['dbeg'] = trans('bd.validation.dbeg');
         }
 

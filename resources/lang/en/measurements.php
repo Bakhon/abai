@@ -34,10 +34,11 @@ return array (
   'dlina' => 'длина',
   't' => 't',
   'day' => 'day',
-  'kvh' => 'kV/h',
+  'kvh' => 'kV*h',
   'kv' => 'kV',
   'kvh/m3' => 'kV*h/m3',
   'unit' => 'unit',
   'kN' => 'kN',
   'kNm' => 'kN*m',
+  'thousand_tons' => 't. tons',
 );

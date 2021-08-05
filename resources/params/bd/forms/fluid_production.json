@@ -89,7 +89,7 @@
       "column": "liquid",
       "type": "float",
       "is_editable": true,
-      "validation": "numeric|gt:0",
+      "validation": "numeric|gte:0|lte:10000000",
       "validate_deviation": true
     },
     {
@@ -239,7 +239,7 @@
       },
       "type": "float",
       "is_editable": true,
-      "validation": "numeric|gt:0",
+      "validation": "numeric|gte:0|lte:200",
       "validate_deviation": true
     },
     {
@@ -269,7 +269,7 @@
       },
       "type": "float",
       "is_editable": true,
-      "validation": "numeric|gt:0",
+      "validation": "numeric|gte:0|lte:200",
       "validate_deviation": true
     },
     {
@@ -299,7 +299,7 @@
       },
       "type": "float",
       "is_editable": true,
-      "validation": "numeric|gt:0",
+      "validation": "numeric|gte:0|lte:200",
       "validate_deviation": true
     },
     {
@@ -329,7 +329,7 @@
       },
       "type": "float",
       "is_editable": true,
-      "validation": "numeric|gt:0",
+      "validation": "numeric|gte:0|lte:200",
       "validate_deviation": true
     },
     {
@@ -423,7 +423,7 @@
       },
       "type": "float",
       "is_editable": true,
-      "validation": "numeric|gt:0",
+      "validation": "numeric|gte:0|lte:10000000",
       "validate_deviation": true
     },
     {

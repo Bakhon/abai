@@ -5,7 +5,7 @@
       <label>{{ trans('monitoring.gu.gu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="gu_id" v-model="formFields.gu_id" @change="chooseGu">
-          <option v-for="gu in gus" v-bind:value="gu.id">{{ gu.name }}</option>
+          <option v-for="gu in gus" :value="gu.id">{{ gu.name }}</option>
         </select>
       </div>
       <label>{{ trans('app.date') }}</label>
@@ -68,7 +68,22 @@
             placeholder=""
         >
       </div>
+
+      <label>{{ trans('monitoring.omgngdu_well.fields.sg_oil') }}</label>
+      <div class="form-label-group">
+        <input
+            v-model="formFields.sg_oil"
+            type="number"
+            step="0.01"
+            :min="validationParams.sg_oil.min"
+            :max="validationParams.sg_oil.max"
+            name="sg_oil"
+            class="form-control"
+            placeholder=""
+        >
+      </div>
     </div>
+
     <div class="col-xs-12 col-sm-4 col-md-4">
       <label>{{ trans('monitoring.ngdu') }}</label>
       <div class="form-label-group">
@@ -110,7 +125,22 @@
             placeholder=""
         >
       </div>
+
+      <label>{{ trans('monitoring.omgngdu_well.fields.sg_gas') }}</label>
+      <div class="form-label-group">
+        <input
+            v-model="formFields.sg_gas"
+            type="number"
+            step="0.01"
+            :min="validationParams.sg_gas.min"
+            :max="validationParams.sg_gas.max"
+            name="sg_gas"
+            class="form-control"
+            placeholder=""
+        >
+      </div>
     </div>
+
     <div class="col-xs-12 col-sm-4 col-md-4">
       <label>{{ trans('monitoring.cdng') }}</label>
       <div class="form-label-group">
@@ -151,6 +181,21 @@
             placeholder=""
         >
       </div>
+
+      <label>{{ trans('monitoring.omgngdu_well.fields.sg_water') }}</label>
+      <div class="form-label-group">
+        <input
+            v-model="formFields.sg_water"
+            type="number"
+            step="0.01"
+            :min="validationParams.sg_water.min"
+            :max="validationParams.sg_water.max"
+            name="sg_water"
+            class="form-control"
+            placeholder=""
+        >
+      </div>
+
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
       <button type="submit" :disabled="!formFields.date" class="btn btn-success" @click.prevent="submitForm">{{ trans('app.save') }}</button>
@@ -164,7 +209,7 @@ import {Datetime} from 'vue-datetime'
 import moment from 'moment'
 import 'vue-datetime/dist/vue-datetime.css'
 import {complicationMonitoringState, complicationMonitoringActions} from '@store/helpers';
-import CatLoader from '../../ui-kit/CatLoader'
+import CatLoader from '@ui-kit/CatLoader'
 
 Vue.use(Datetime)
 
@@ -205,6 +250,9 @@ export default {
         well_id: null,
         pressure: null,
         gas_factor: null,
+        sg_oil: 0.86,
+        sg_gas: 0.75,
+        sg_water: 1.03,
       },
       loading: false,
     }
@@ -224,7 +272,7 @@ export default {
       return null
     },
     requestUrl () {
-      return this.isEditing ? this.localeUrl("/omgngdu_well/" + this.omgngduWell.id) : this.localeUrl("/omgngdu_well");
+      return this.isEditing ? this.localeUrl("/omgngdu-well/" + this.omgngduWell.id) : this.localeUrl("/omgngdu-well");
     },
     requestMethod () {
       return this.isEditing ? "put" : "post";
@@ -233,7 +281,7 @@ export default {
   mounted() {
     this.$nextTick(async () => {
       this.loading = true;
-      await this.getAllComplicationMonitoringObjectsData();
+      await this.getAllComplicationMonitoringObjects();
 
       if (this.omgngduWell) {
         this.formFields = {
@@ -250,6 +298,9 @@ export default {
           well_id: this.omgngduWell.well_id,
           pressure: this.omgngduWell.pressure,
           gas_factor: this.omgngduWell.gas_factor,
+          sg_oil: this.omgngduWell.sg_oil,
+          sg_gas: this.omgngduWell.sg_gas,
+          sg_water: this.omgngduWell.sg_water,
         }
 
         this.chooseZu();
@@ -260,7 +311,7 @@ export default {
   },
   methods: {
     ...complicationMonitoringActions([
-      'getAllComplicationMonitoringObjectsData',
+      'getAllComplicationMonitoringObjects',
       'getAllNgdus',
       'getAllGus',
       'getAllCdngs',
@@ -312,7 +363,7 @@ export default {
           [this.requestMethod](this.requestUrl, this.formFields)
           .then((response) => {
             if (response.data.status == 'success') {
-              window.location.replace(this.localeUrl("/omgngdu_well"));
+              window.location.replace(this.localeUrl("/omgngdu-well"));
             }
           });
     }

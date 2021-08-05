@@ -52,18 +52,26 @@
         <div class="row mid-col__main">
           <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
             <div class="row">
-              <div class="col">
+              <div class="col-4">
                 <button class="transparent-select">
-                  Скважина: <span v-if="wellUwi">{{ wellUwi }}</span>
+                  Скважина: <span v-if="wellUwi">{{ wellUwi.name }}</span>
                   <svg fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round"
                           stroke-width="1.6"/>
                   </svg>
                 </button>
               </div>
-              <div class="col">
-                <form class="search-form">
+              <div class="col-8">
+                <form class="search-form d-flex align-items-center">
+                  <select class="select-dzo mr-2" v-if="dzoSelectOptions.length > 0"
+                          @change="dzoSelectChange($event)">
+                    <option value="0" selected>Все ДЗО</option>
+                    <option v-for="(dzoSelectOption, index) in dzoSelectOptions" :value="dzoSelectOption['id']">
+                        {{ dzoSelectOption['name'] }}
+                    </option>
+                  </select>
                   <v-select
+                      class="flex-fill"
                       v-model="wellUwi"
                       :filterable="false"
                       :options="options"
@@ -106,7 +114,7 @@
                       <div class="title">Основное</div>
                       <p>Номер скважины:
                         <span v-if="wellUwi">
-                          {{ wellUwi }}
+                          {{ wellUwi.name }}
                         </span>
                       </p>
                       <p>Категория скважины:
@@ -212,19 +220,20 @@ import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
 import vSelect from 'vue-select'
 import axios from 'axios'
 import moment from 'moment'
-import WellCartTree from "./WellCartTree";
-import upperFirst from "lodash/upperFirst";
-import camelCase from "lodash/camelCase";
+import WellCartTree from './WellCartTree'
+import upperFirst from 'lodash/upperFirst'
+import camelCase from 'lodash/camelCase'
+import CatLoader from '@ui-kit/CatLoader'
 
 const requireComponent = require.context('../bigdata/forms/CustomPlainForms', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
-    const componentConfig = requireComponent(fileName)
-    const componentName = upperFirst(
-        camelCase(
-            fileName
-                .split('/')
-                .pop()
-                .replace(/\.\w+$/, '')
+  const componentConfig = requireComponent(fileName)
+  const componentName = upperFirst(
+      camelCase(
+          fileName
+              .split('/')
+              .pop()
+              .replace(/\.\w+$/, '')
         )
     );
     Vue.component(componentName, componentConfig.default || componentConfig);
@@ -235,6 +244,7 @@ export default {
     BigDataPlainFormResult,
     vSelect,
     WellCartTree,
+    CatLoader
   },
   data() {
     return {
@@ -352,14 +362,21 @@ export default {
         'agms': 'agms',
       },
       formsStructure: {},
+      dzoSelectOptions: [],
+      selectedUserDzo: null,
     }
   },
   mounted() {
-
     this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
       this.formsStructure = data.tree
     })
-
+    this.axios.get(this.localeUrl('/user_organizations')).then(({data}) => {
+        if (typeof data !== 'undefined' &&
+            typeof data.organizations !== 'undefined' &&
+            data.organizations.length > 0) {
+            this.dzoSelectOptions = data.organizations;
+        }
+    })
   },
   methods: {
     onColumnFoldingEvent(method) {
@@ -381,7 +398,14 @@ export default {
       }
     },
     search: _.debounce((loading, search, vm) => {
-          axios.get(vm.localeUrl('/api/bigdata/wells/search'), {params: {query: escape(search)}}).then(({data}) => {
+          axios.get(vm.localeUrl('/api/bigdata/wells/search'),
+              {
+                  params: {
+                      query: escape(search),
+                      selectedUserDzo: vm.selectedUserDzo,
+                  }
+              })
+              .then(({data}) => {
             vm.options = data.items;
             loading(false);
           })
@@ -491,6 +515,11 @@ export default {
         this.isLeftColumnFolded = !value;
         this.isRightColumnFolded = !value;
         this.isBothColumnFolded = !value;
+    },
+    dzoSelectChange(event) {
+      this.selectedUserDzo = event.target.value;
+      this.options = [];
+      this.wellUwi = null;
     }
   },
   computed: {
@@ -908,7 +937,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-$leftColumnWidth: 398px;
+$leftColumnWidth: 385px;
 $leftColumnFoldedWidth: 84px;
 $rightColumnWidth: 348px;
 $rightColumnFoldedWidth: 84px;
@@ -1268,9 +1297,7 @@ h4 {
 }
 
 .search-form {
-  width: 280px;
   padding: 10px 10px;
-  margin-left: auto;
 
   .v-select {
     background: url(/img/bd/search.svg) 20px 45% #272953 no-repeat;
@@ -1895,8 +1922,9 @@ h4 {
 .left-column {
   min-width: $leftColumnWidth;
   width: $leftColumnWidth;
-  padding: 0 15px;
-  margin-bottom: 0px;
+  padding: 0 0 0 15px;
+  margin-right: 15px;
+  margin-bottom: 0;
   height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -1969,7 +1997,7 @@ h4 {
     padding: 0px 15px;
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 9px);
+      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 24px);
     }
 
     .icon-all {
@@ -2002,7 +2030,7 @@ h4 {
 }
 
 .mid-col {
-  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 9px);
+  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 24px);
   padding: 0 15px;
   height: calc(100vh - 90px);
 
@@ -2080,4 +2108,20 @@ h4 {
     }
   }
 }
+
+.select-dzo {
+    height: 2.2rem;
+    background-color: #494aa5;
+    color: white;
+    outline: none;
+    border: 1px #494aa5 solid;
+    border-radius: 5px;
+    margin-top: -1px;
+}
+
+.select-dzo:hover{
+    border: 1px solid transparent;
+    box-shadow: inset 0 0px 0px 1px #ccc;
+}
+
 </style>

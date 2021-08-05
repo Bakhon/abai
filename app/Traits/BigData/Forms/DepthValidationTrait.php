@@ -7,10 +7,10 @@ trait DepthValidationTrait
 {
     function isCorrectSummofDailyDrill($dailyDrill, $depth) : bool {
 
-        if($dailyDrill != 0){
-            return $depth < $dailyDrill;
+        if($dailyDrill == 0){
+            return $depth < 10000;
         }
-        return true;
+        return $depth < $dailyDrill;
     }
     protected function isValidDepth($wellId, $depth):bool
     {
