@@ -81,9 +81,7 @@ Route::group(
 
             // Daily report
             Route::group(['prefix' => '/daily-report'], function () {
-                Route::get('/', function () {
-                    return view('digital_drilling.daily_report.index');
-                })->name('digital-drilling-daily-report');
+                Route::get('/', '\App\Http\Controllers\DigitalDrilling\DailyReportController@index')->name('digital-drilling-daily-report');
             });
         });
     });
