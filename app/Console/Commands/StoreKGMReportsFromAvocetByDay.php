@@ -243,8 +243,12 @@ class StoreKGMReportsFromAvocetByDay extends Command
                 if (($lastDataOil['oil_production_fact'] == 0) or ($lastDataOil['oil_delivery_fact'] == 0)) {
                     $dzo_import_field_data
                         ->where('dzo_name', '=', 'КГМ')
-                        ->where('date', '=', $date)->update($dzo_import_field_data->getAttributes());  
-                        
+                        ->where('date', '=', $date)->update($dzo_import_field_data->getAttributes());
+
+                    unset($downtimeReason['dzo_import_data_id']);
+                    $downtimeReason
+                        ->where('dzo_import_data_id', '=', $lastDataOil['id'])
+                        ->update($downtimeReason->getAttributes());
                     echo "Data have been update";
                 } else {
                     echo "No update needed";
