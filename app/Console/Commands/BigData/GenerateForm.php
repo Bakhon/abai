@@ -145,6 +145,12 @@ class GenerateForm extends Command
     {
         $permissions = $this->generatePermissions();
 
+        $permissionSection = [
+            'code' => Str::snake($this->formCode),
+            'title_trans' => 'bd.forms.' . Str::snake($this->formCode) . '.title',
+            'module' => 'bigdata'
+        ];
+
         $migrationClassName = "AddPermissionsTo{$this->formCode}Form";
         $migrationFileName = Carbon::now()->format('Y_m_d_His') . '_' . Str::snake($migrationClassName) . '.php';
 
@@ -152,11 +158,13 @@ class GenerateForm extends Command
         $text = str_replace(
             [
                 '#MIGRATION_CLASS_NAME#',
-                '#PERMISSIONS#'
+                '#PERMISSIONS#',
+                '#PERMISSION_SECTION#',
             ],
             [
                 $migrationClassName,
-                json_encode($permissions)
+                json_encode($permissions),
+                json_encode($permissionSection)
             ],
             $text
         );
@@ -169,15 +177,15 @@ class GenerateForm extends Command
         $actions = [
             'list',
             'create',
-            'edit',
-            'history',
+            'update',
+            'view history',
             'delete',
         ];
         $permissions = [];
 
         foreach ($actions as $action) {
             $permissions[] = [
-                'name' => 'bd forms ' . $this->configFileName . ' ' . $action,
+                'name' => 'bigdata ' . $action . ' ' . $this->configFileName,
                 'guard_name' => 'web'
             ];
         }
