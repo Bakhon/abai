@@ -301,4 +301,5 @@ return array (
   'tub_eqiup' => 'Оборудование низа НКТ',
   'h_packer_set' => 'Глубина  установки пакера',
   'swings/min' => 'кач/мин',
+  'pipe_pressure' => 'Ртр',
 );
