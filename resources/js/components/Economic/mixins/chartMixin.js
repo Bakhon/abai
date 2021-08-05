@@ -29,32 +29,38 @@ export const chartInitMixin = {
             required: false,
             type: String,
         },
+
     },
+    data: () => ({
+        isVisibleDefaultSeries: true
+    }),
     computed: {
         isProfitabilityFull() {
             return this.profitability === PROFITABILITY_FULL
         },
 
         defaultSeries() {
-            return [
-                {
-                    name: this.trans('economic_reference.course_prices'),
-                    type: 'line',
-                    data: this.dollarRates,
-                    color: '#B629FE'
-                },
-                {
-                    name: this.trans('economic_reference.oil_price'),
-                    type: 'line',
-                    data: this.oilPrices,
-                    color: '#FC35B0',
-                    max: Math.max(...this.oilPrices)
-                },
-            ]
+            return this.isVisibleDefaultSeries ?
+                [
+                    {
+                        name: this.trans('economic_reference.course_prices'),
+                        type: 'line',
+                        data: this.dollarRates,
+                        defaultColor: '#B629FE'
+                    },
+                    {
+                        name: this.trans('economic_reference.oil_price'),
+                        type: 'line',
+                        data: this.oilPrices,
+                        defaultColor: '#FC35B0',
+                        max: Math.max(...this.oilPrices)
+                    }
+                ]
+                : []
         },
 
         defaultColors() {
-            return this.defaultSeries.map(x => x.color)
+            return this.defaultSeries.map(x => x.defaultColor)
         },
 
         defaultSeriesLength() {
@@ -83,12 +89,18 @@ export const chartInitMixin = {
 
         chartOptions() {
             return {
-                labels: this.data.hasOwnProperty('dt') ? this.data.dt : [],
+                labels: this.data.hasOwnProperty('dt')
+                    ? this.data.dt
+                    : [],
                 stroke: {
                     width: 4,
                     curve: 'smooth'
                 },
-                colors: [...this.defaultColors, ...this.colorsInWork],
+                colors: [
+                    ...this.defaultColors,
+                    ...this.colorsInWork,
+                    ...this.colorsInPause,
+                ],
                 chart: {
                     stacked: true,
                     foreColor: '#FFFFFF',
@@ -127,9 +139,11 @@ export const chartInitMixin = {
             return this.chartSeries.map((item, index) => {
                 return {
                     min: 0,
-                    max: index === 1 ? this.defaultSeries[index].max * 1.3 : undefined,
+                    max: index === 1 && index < this.defaultSeries.length
+                        ? this.defaultSeries[index].max * 1.3
+                        : undefined,
                     show: index === 0 || index === this.defaultSeriesLength,
-                    opposite: index < this.defaultSeriesLength,
+                    opposite: index < this.defaultSeriesLength && this.defaultSeriesLength,
                     seriesName: index < this.defaultSeriesLength
                         ? this.defaultSeries[index].name
                         : this.chartSeriesName,

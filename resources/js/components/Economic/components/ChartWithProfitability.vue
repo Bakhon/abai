@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import {GRANULARITY_DAY} from "./SelectGranularity";
 import chart from "vue-apexcharts";
 import {chartInitMixin} from "../mixins/chartMixin";
 
@@ -60,20 +59,19 @@ export default {
     isVisibleInWork: true,
     isVisibleInPause: false,
     currentAnnotation: {
-      isVisible: false,
       minY: 0,
       maxY: 0
     },
   }),
   methods: {
-    chartClearAnnotations(isVisible = false) {
-      this.currentAnnotation.isVisible = isVisible
+    chartClearAnnotations(isVisibleDefaultSeries = false) {
+      this.isVisibleDefaultSeries = isVisibleDefaultSeries
 
       this.$refs.chart.clearAnnotations()
     },
 
     chartSelection({data}, {xaxis}) {
-      this.chartClearAnnotations(true)
+      this.chartClearAnnotations(false)
 
       let min = Math.ceil(xaxis.min)
       let max = Math.floor(xaxis.max)
@@ -132,9 +130,7 @@ export default {
   },
   computed: {
     chartSeries() {
-      let data = this.currentAnnotation.isVisible
-          ? []
-          : [...this.defaultSeries]
+      let data = [...this.defaultSeries]
 
       if (this.isVisibleInWork) {
         this.chartKeys.forEach(key => {
@@ -167,27 +163,10 @@ export default {
           : `${name} ${this.trans(`economic_reference.in_pause`).toLowerCase()}`
     },
 
-    chartColors() {
-      let colors = this.currentAnnotation.isVisible
-          ? []
-          : this.defaultColors
-
-      if (this.isVisibleInWork) {
-        colors = [...colors, ...this.colorsInWork]
-      }
-
-      if (this.isVisibleInPause) {
-        colors = [...colors, ...this.colorsInPause]
-      }
-
-      return colors
-    },
-
     options() {
       return {
-        ...this.chartOptions, ...{
-          labels: this.data.hasOwnProperty('dt') ? this.data.dt : [],
-          colors: this.chartColors,
+        ...this.chartOptions,
+        ...{
           chart: {
             stacked: true,
             foreColor: '#FFFFFF',
@@ -195,24 +174,19 @@ export default {
             defaultLocale: 'ru',
             events: {
               selection: (chartContext, params) => this.chartSelection(chartContext, params),
-              zoomed: () => this.chartClearAnnotations()
+              zoomed: () => this.chartClearAnnotations(true)
             },
             selection: {
               enabled: true,
               type: 'x',
             },
           },
-          xaxis: {
-            type: this.granularity === GRANULARITY_DAY
-                ? 'datetime'
-                : 'date'
-          },
-          yaxis: this.currentAnnotation.isVisible
-              ? {min: 0, title: {text: this.title}}
-              : this.chartYaxis,
+          yaxis: this.isVisibleDefaultSeries
+              ? this.chartYaxis
+              : {min: 0, title: {text: this.title}}
         }
       }
-    },
+    }
   },
 }
 </script>
