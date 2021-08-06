@@ -41,10 +41,6 @@
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_avg_market_price')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsdiscontcoefbar"
-                       class="list-group-item list-group-item-action text-primary">
-                        {{__('economic_reference.eco_refs_discont_coef_bar')}}
-                    </a>
                     <a href="{{url('/')}}/ru/ecorefselectprsbrigcost"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_select_prs_brig_cost')}}
@@ -61,18 +57,10 @@
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_service_time')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefstarifytn"
-                       class="list-group-item list-group-item-action text-primary">
-                        {{__('economic_reference.eco_refs_tarify_tn')}}
-                    </a>
-                    <a href="{{url('/')}}/ru/ecorefsempper"
+                    {{-- <a href="{{url('/')}}/ru/ecorefsempper"
                        class="list-group-item list-group-item-action text-primary">
                         {{__('economic_reference.eco_refs_empper')}}
-                    </a>
-                    <a href="{{url('/')}}/ru/ecorefsmacro"
-                       class="list-group-item list-group-item-action text-primary">
-                        {{__('economic_reference.eco_refs_macro')}}
-                    </a>
+                    </a> --}}
                     <a href="{{url('/')}}/ru/ecorefsrenttax"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_rent_tax')}}
@@ -96,6 +84,22 @@
                     <a href="{{ route('eco_refs_cost.index',['is_forecast'=> 1]) }}"
                        class="text-primary list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_scenario')}}
+                    </a>
+                    <a href="{{url('/')}}/ru/ecorefsmacro"
+                       class="list-group-item list-group-item-action text-primary">
+                        {{__('economic_reference.eco_refs_macro')}}
+                    </a>
+                    <a href="{{url('/')}}/ru/ecorefsempper"
+                       class="list-group-item list-group-item-action text-primary">
+                        {{__('economic_reference.eco_refs_empper')}}
+                    </a>
+                    <a href="{{url('/')}}/ru/ecorefsdiscontcoefbar"
+                       class="list-group-item list-group-item-action text-primary">
+                        {{__('economic_reference.eco_refs_discont_coef_bar')}}
+                    </a>
+                    <a href="{{url('/')}}/ru/ecorefstarifytn"
+                       class="list-group-item list-group-item-action text-primary">
+                        {{__('economic_reference.eco_refs_tarify_tn')}}
                     </a>
                 </div>
             </div>

@@ -2,9 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EcoRefsMacro;
-use App\Models\Refs\EcoRefsScFa;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\Http\Requests\EcoRefs\Macro\EcoRefsMacroRequest;             // here
+use App\Http\Requests\EcoRefs\Macro\ImportExcelEcoRefsMacroRequest;  // here
+use App\Http\Requests\EcoRefs\Macro\UpdateEcoRefsMacroRequest;       // here
+use App\Imports\EcoRefsMacroImport;                                  // here
+use App\Models\EcoRefsMacro;              
+use App\Models\Refs\EcoRefsScFa;              
+use Illuminate\Http\Request;              
+use Illuminate\Http\RedirectResponse;                                // here
+use Illuminate\Support\Facades\DB;                                   // here
+use Illuminate\View\View;                                            // here
+use Maatwebsite\Excel\Facades\Excel;                                 // here
 
 class EcoRefsMacroController extends Controller
 {
@@ -86,7 +95,7 @@ class EcoRefsMacroController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateEcoRefsMacroRequest $request, $id)
     {
         $EcoRefsMacro=EcoRefsMacro::find($id);
         $request->validate([
@@ -115,5 +124,56 @@ class EcoRefsMacroController extends Controller
         $EcoRefsMacro->delete();
 
         return redirect()->route('ecorefsmacro.index')->with('success',__('app.deleted'));
+    }
+
+    public function getData(EcoRefsMacroRequest $request): array
+    {
+        $data = EcoRefsMacro::query()
+            ->whereScFa($request->sc_fa)
+            ->with(['scfa'])
+            ->get();
+
+        $response = [];
+
+        /** @var EcoRefsMacro $item */
+        foreach ($data as $item) {
+            $response[] = [
+                $item->scfa->name,
+                $item->date,
+                // date('m-d-Y H:i:s', strtotime($item->date)),
+                // strtotime(str_replace('/','-',$item->date)),
+                $item->ex_rate_dol,
+                $item->ex_rate_rub,
+                $item->inf_end,
+                $item->barrel_world_price,
+            ];
+        }
+
+        return [
+            'data' => $response
+        ];
+    }
+
+    public function uploadExcel(): View
+    {
+        return view('ecorefsmacro.import_excel');
+    }
+
+    public function importExcel(ImportExcelEcoRefsMacroRequest $request): RedirectResponse
+    {
+        DB::transaction(function () use ($request) {
+            $fileName = pathinfo(
+                $request->file->getClientOriginalName(),
+                PATHINFO_FILENAME
+            );
+
+            $import = new EcoRefsMacroImport(
+                $fileName,
+            );
+
+            Excel::import($import, $request->file);
+        });
+
+        return back()->with('success', __('app.success'));
     }
 }

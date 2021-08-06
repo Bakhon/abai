@@ -2,15 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Refs\EcoRefsScFa;
+use App\Http\Requests\EcoRefs\TarifyTn\EcoRefsTarifyTnRequest;   
+use App\Http\Requests\EcoRefs\TarifyTn\ImportExcelEcoRefsTarifyTnRequest;   
+use App\Http\Requests\EcoRefs\TarifyTn\UpdateEcoRefsTarifyTnRequest;   
+use App\Imports\EcoRefsTarifyTnImport; 
 use App\Models\EcoRefsCompaniesId;
-use App\Models\EcoRefsBranchId;
 use App\Models\EcoRefsDirectionId;
-use App\Models\EcoRefsRouteTnId;
-use App\Models\EcoRefsTarifyTn;
-use App\Models\EcoRefsExc;
 use App\Models\EcoRefsRoutesId;
+use App\Models\EcoRefsBranchId;
+use App\Models\EcoRefsRouteTnId;
+use App\Models\EcoRefsExc;
+use App\Models\EcoRefsTarifyTn;
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;                                 // here
+use Illuminate\Support\Facades\DB;                                    // here
+use Illuminate\View\View;                                             // here
+use Maatwebsite\Excel\Facades\Excel;  
 
 class EcoRefsTarifyTnController extends Controller
 {
@@ -108,7 +116,7 @@ class EcoRefsTarifyTnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateEcoRefsTarifyTnRequest $request, $id)
 
     {
         $EcoRefsTarifyTn=EcoRefsTarifyTn::find($id);
@@ -141,5 +149,57 @@ class EcoRefsTarifyTnController extends Controller
         $row->delete();
 
         return redirect()->route('ecorefstarifytn.index')->with('success',__('app.deleted'));
+    }
+
+    public function getData(EcoRefsTarifyTnRequest $request): array
+    {
+        $data = EcoRefsTarifyTn::query()
+            ->whereScFa($request->sc_fa)
+            ->with(['scfa', 'company', 'direction', 'route', 'branch', 'routetn', 'exc'])
+            ->get();
+
+        $response = [];
+
+        /** @var EcoRefsTarifyTn $item */
+        foreach ($data as $item) {
+            $response[] = [
+                $item->scfa->name,
+                $item->branch ->name,
+                $item->company->name,
+                $item->direction ->name,
+                $item->route->name,
+                $item->routetn->name,
+                $item->exc->name,
+                date('Y-m', strtotime($item->date)),
+                $item->tn_rate
+            ];
+        }
+
+        return [
+            'data' => $response
+        ];
+    }
+
+    public function uploadExcel(): View
+    {
+        return view('ecorefstarifytn.import_excel');
+    }
+
+    public function importExcel(ImportExcelEcoRefsTarifyTnRequest $request): RedirectResponse
+    {
+        DB::transaction(function () use ($request) {
+            $fileName = pathinfo(
+                $request->file->getClientOriginalName(),
+                PATHINFO_FILENAME
+            );
+
+            $import = new EcoRefsTarifyTnImport(
+                $fileName,
+            );
+
+            Excel::import($import, $request->file);
+        });
+
+        return back()->with('success', __('app.success'));
     }
 }

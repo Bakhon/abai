@@ -3,6 +3,31 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
+            <a href="{{ route('eco_refs_list') }}"
+               class="btn btn-info">
+                {{ __('economic_reference.return_menu') }}
+            </a>
+        </div>
+    </div>
+
+    <div class="container my-4">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="list-group text-center">
+                    <a href="{{ route('tarifytn_data_upload') }}"
+                       class="list-group-item list-group-item-action">
+                        {{ __('economic_reference.upload_excel') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- <div class="col p-4 bg-light" id="app">
+            <economic-data-tarifytn-component></economic-data-tarifytn-component>
+    </div> --}}
+        
+    <div class="row justify-content-center" style="margin-top: 75px;">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -46,7 +71,7 @@
                                             <a class="btn btn-primary" href="{{ route('ecorefstarifytn.edit',$item->id) }}">{{__('app.edit')}}</a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button>
+                                            <button type="submit" class="btn btn-danger" style="margin-top: 7px;">{{__('app.delete')}}</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -56,6 +81,5 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 @endsection

@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EcoRefs\DiscontCoefBar\EcoRefsDiscontCoefBarRequest;     
+use App\Http\Requests\EcoRefs\DiscontCoefBar\ImportExcelEcoRefsDiscontCoefBarRequest;     
+use App\Http\Requests\EcoRefs\DiscontCoefBar\UpdateEcoRefsDiscontCoefBarRequest;
+use App\Imports\EcoRefsDiscontCoefBarImport;       
 use App\Models\EcoRefsCompaniesId;
-use App\Models\Refs\EcoRefsScFa;
 use App\Models\EcoRefsDirectionId;
-use App\Models\EcoRefsDiscontCoefBar;
 use App\Models\EcoRefsRoutesId;
+use App\Models\EcoRefsDiscontCoefBar;
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;                                 // here
+use Illuminate\Support\Facades\DB;                                    // here
+use Illuminate\View\View;                                             // here
+use Maatwebsite\Excel\Facades\Excel;  
 
 class EcoRefsDiscontCoefBarController extends Controller
 {
@@ -99,7 +107,7 @@ class EcoRefsDiscontCoefBarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateEcoRefsDiscontCoefBarRequest $request, $id)
     {
         $EcoRefsDiscontCoefBar=EcoRefsDiscontCoefBar::find($id);
         $request->validate([
@@ -132,4 +140,57 @@ class EcoRefsDiscontCoefBarController extends Controller
 
         return redirect()->route('ecorefsdiscontcoefbar.index')->with('success',__('app.deleted'));
     }
+
+    public function getData(EcoRefsDiscontCoefBarRequest $request): array
+    {
+        $data = EcoRefsDiscontCoefBar::query()
+            ->whereScFa($request->sc_fa)
+            ->with(['scfa', 'company', 'direction', 'route'])
+            ->get();
+
+        $response = [];
+
+        /** @var EcoRefsDiscontCoefBar $item */
+        foreach ($data as $item) {
+            $response[] = [
+                $item->scfa->name,
+                $item->company ? "{$item->created_at} {$item->company->name}" : "",
+                $item->direction ? "{$item->created_at} {$item->direction->name}" : "",
+                $item->route ? "{$item->created_at} {$item->route->name}" : "",
+                date('Y-m', strtotime($item->date)),
+                $item->barr_coef,
+                $item->discont,
+                $item->macro
+            ];
+        }
+
+        return [
+            'data' => $response
+        ];
+    }
+
+    public function uploadExcel(): View
+    {
+        return view('ecorefsdiscontcoefbar.import_excel');
+    }
+
+    public function importExcel(ImportExcelEcoRefsDiscontCoefBarRequest $request): RedirectResponse
+    {
+        DB::transaction(function () use ($request) {
+            $fileName = pathinfo(
+                $request->file->getClientOriginalName(),
+                PATHINFO_FILENAME
+            );
+
+            $import = new EcoRefsDiscontCoefBarImport(
+                $fileName,
+            );
+
+            Excel::import($import, $request->file);
+        });
+
+        return back()->with('success', __('app.success'));
+    }
 }
+
+
