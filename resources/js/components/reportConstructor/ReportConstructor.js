@@ -131,19 +131,6 @@ export default {
         setEndOfYear(date) {
             this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
         },
-        isActive(structureType) {
-            let content = this.markedNodes[this.currentStructureType];
-            if(typeof content[structureType.name] === 'undefined') return false;
-            content = content[structureType.name];
-            if(!content) return false;
-            for(let idx in content) {
-                for(let val in content[idx]) {
-                    if(content[idx][val]) return true;
-                }
-            }
-
-            return false;
-        },
         loadStructureTypes(type) {
             this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_structures_types", {
