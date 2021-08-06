@@ -124,7 +124,7 @@ abstract class BaseForm
             }
         );
 
-        return $actions;
+        return array_values($actions);
     }
 
     protected function validate(): void

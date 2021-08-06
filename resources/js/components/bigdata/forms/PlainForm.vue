@@ -34,6 +34,7 @@
                       v-model="formValues[item.code]"
                       :error="errors[item.code]"
                       :item="item"
+                      :key="`field_${item.code}`"
                       v-on:change="validateField($event, item)"
                       v-on:input="callback($event, item)"
                   >

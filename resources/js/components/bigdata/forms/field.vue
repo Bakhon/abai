@@ -159,7 +159,7 @@ export default {
       this.formatedValue = this.getFormatedValue(newValue)
     }
   },
-  created() {
+  mounted() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
       if (this.dict === null) {
         this.loadDict(this.item.dict).then(result => {
