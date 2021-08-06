@@ -161,16 +161,13 @@ export default {
         await this.handleClick(node);
       }
       if(!isHaveChildren(node)) {
-        this.loadWells(node);
+        await this.getWells(node);
+        this.updateThisComponent();
       }
       
       for(let idx in node.children) {
         this.loadChildren(node.children[idx]);
       }
-    },
-    loadWells: async function(node) {
-      await this.getWells(node);
-      this.updateThisComponent();
     },
     updateChildren: async function(node, level) {
       if(!isHaveChildren(node)) return;
