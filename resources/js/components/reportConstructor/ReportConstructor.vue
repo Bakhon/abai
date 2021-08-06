@@ -192,7 +192,7 @@
                   </div>
 
                   <div class="btn-container">
-                    <button class="" :disabled="!startDate || !endDate" @click="updateStatistics()">{{ trans('bd.create_report') }}</button>
+                    <button class="" :disabled="!startDate" @click="updateStatistics()">{{ trans('bd.create_report') }}</button>
                     <button class="">{{ trans('bd.choose_template') }}</button>
                   </div>
                 </div>
