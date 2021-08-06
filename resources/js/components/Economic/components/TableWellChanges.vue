@@ -69,9 +69,6 @@ export default {
       type: Array
     }
   },
-  mounted() {
-    this.scrollToChanges()
-  },
   methods: {
     getColor({profitability_12m}) {
       if (profitability_12m === 'profitable') {
@@ -96,15 +93,7 @@ export default {
 
       if (index === -1) return
 
-      console.log(this.filteredData.find(item => item.uwi === 'KZH_3713'))
-
-      console.log(this.filteredData.find(item => item.uwi === 'KZH_5900'))
-
-      console.log(this.filteredData.find(item => item.uwi === 'KZH_3340'))
-
-      // console.log(this.filteredData[index])
-
-      // table.scrollLeft = index * this.columnWidth / this.chunkStep
+      table.scrollLeft = this.columnWidth * index / this.chunkStep - this.columnWidth * 4
     },
   },
   computed: {

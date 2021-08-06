@@ -46,6 +46,7 @@
           :scenario="scenario"
           :oil-prices="oilPrices"
           :data="res.wellChanges"
+          ref="well-changes"
           class="text-white"/>
 
       <table-economic-efficiency
@@ -109,6 +110,12 @@ export default {
       this.activeTab = index
 
       this.$emit('updateTab', index)
+
+      if (this.activeTab === 3) {
+        this.$nextTick(() => {
+          this.$refs['well-changes'][0].scrollToChanges()
+        })
+      }
     },
   }
 }
