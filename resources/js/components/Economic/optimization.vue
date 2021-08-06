@@ -96,10 +96,13 @@
             v-if="!loading"
             :scenario="scenario"
             :oil-prices="scenarioVariations.oil_prices"
-            :res="res"/>
+            :res="res"
+            @updateTab="updateTab"/>
       </div>
 
-      <div class="col-3 pr-0">
+      <div
+          :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right:0'"
+          class="col-3">
         <div class="bg-main1 text-white text-wrap p-3 mb-10px">
           <subtitle>
             {{ trans('economic_reference.production_wells_fund') }}
@@ -121,11 +124,11 @@
               </div>
 
               <div class="ml-2" style="width: 80px">
-                {{ index ? wellCount.value / 12 : wellCount.value }}
+                {{ wellCount.value }}
               </div>
 
               <div v-if="form.scenario_id">
-                {{ index ? wellCount.value_optimized / 12 : wellCount.value_optimized }}
+                {{ wellCount.value_optimized }}
               </div>
             </div>
           </div>
@@ -139,7 +142,7 @@
           <div
               v-for="(subBlock, subBlockIndex) in block"
               :key="subBlock.title"
-              :class="subBlockIndex % 2 === 1 ? '' : 'px-0'"
+              :class="subBlockIndex % 2 === 1 ? '' : 'pl-0 pr-2'"
               class="col-6 d-flex flex-column position-relative">
             <divider v-if="subBlockIndex % 2 === 1"/>
 
@@ -436,6 +439,7 @@ export default {
     },
     res: economicRes,
     loading: true,
+    isVisibleWellChanges: false
   }),
   computed: {
     calculatedHeaders() {
@@ -807,6 +811,10 @@ export default {
       return uwi_count
           ? (prs * 1000 / uwi_count).toFixed(fractionDigits)
           : 0
+    },
+
+    updateTab(index){
+      this.isVisibleWellChanges = index === 3
     }
   }
 };

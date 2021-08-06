@@ -4,20 +4,14 @@
       <div>{{ trans('economic_reference.table_well_changes') }}</div>
     </subtitle>
 
-    <div class="mt-3 d-flex">
+    <div class="mt-3 overflow-auto customScroll d-flex">
       <div v-for="(chunk, index) in tableDataChunks"
-           :key="index"
-           class="flex-grow-1">
-        <div class="text-center border-grey d-flex bg-header">
-          <div class="text-center border-grey" style="flex: 1 0 100px;">
+           :key="index">
+        <div
+            :style="`width: ${100 + oilPrices.length * 30}px`"
+            class="text-center border-grey d-flex bg-header">
+          <div class="text-center border-grey" style="flex: 0 0 100px;">
             Скв
-          </div>
-
-          <div
-              v-for="price in oilPrices"
-              :key="`${index}_${price}_operating_profit_12m_title`"
-              class="text-center border-grey" style="flex: 1 0 100px;">
-            op_profit
           </div>
 
           <div v-for="price in oilPrices"
@@ -29,13 +23,8 @@
         </div>
 
         <div v-for="uwi in chunk" :key="uwi" class="d-flex">
-          <div class="text-center border-grey" style="flex: 1 0 100px;">
+          <div class="text-center border-grey" style="flex: 0 0 100px;">
             {{ uwi }}
-          </div>
-
-          <div v-for="price in oilPrices"
-               :key="`${uwi}_${price}_operating_profit_12m`">
-            {{ tableData[uwi].oilPrices[+price].operating_profit_12m }}
           </div>
 
           <div v-for="price in oilPrices"
@@ -91,7 +80,6 @@ export default {
           : '#F7BB2E'
     }
   },
-
   computed: {
     filteredData() {
       return this.data.filter(x => +x.dollar_rate === +this.scenario.dollar_rate)
@@ -123,13 +111,17 @@ export default {
 
       let keys = this.tableDataKeys
 
-      for (let i = 4; i > 0; i--) {
-        result.push(keys.splice(0, Math.ceil(keys.length / i)));
+      let length = keys.length
+
+      let step = 25
+
+      for (let i = 0; i < Math.ceil(length / step); i += 1) {
+        result.push(keys.splice(0, step))
       }
 
       return result
     },
-  }
+  },
 }
 </script>
 

@@ -8,7 +8,7 @@
           :active="activeTab === index"
           :class="index ? 'ml-2' : ''"
           class="px-2 d-flex align-items-center"
-          @click.native="activeTab = index"/>
+          @click.native="selectTab(index)"/>
     </div>
 
     <div
@@ -39,14 +39,14 @@
           :scenario="scenario"
           class="text-white"/>
 
-      <!--      <table-well-changes-->
-      <!--          v-if="index === 3"-->
-      <!--          :org="res.org"-->
-      <!--          :scenarios="res.scenarios"-->
-      <!--          :scenario="scenario"-->
-      <!--          :oil-prices="oilPrices"-->
-      <!--          :data="res.wellChanges"-->
-      <!--          class="text-white"/>-->
+      <table-well-changes
+          v-if="index === 3"
+          :org="res.org"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :oil-prices="oilPrices"
+          :data="res.wellChanges"
+          class="text-white"/>
 
       <table-economic-efficiency
           v-if="index === 4"
@@ -103,6 +103,13 @@ export default {
         this.trans('economic_reference.economic_efficiency'),
       ]
     }
+  },
+  methods: {
+    selectTab(index) {
+      this.activeTab = index
+
+      this.$emit('updateTab', index)
+    },
   }
 }
 </script>
