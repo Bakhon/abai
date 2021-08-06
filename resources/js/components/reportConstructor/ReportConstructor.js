@@ -64,6 +64,9 @@ export default {
         this.loadHeaders()
     },
     methods: {
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
         onYearClick() {
             if(this.currentDatePickerFilter === 'year') {
                 this.setDefaultDateFilter();
