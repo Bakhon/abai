@@ -38,7 +38,7 @@
                 "is_editable": true
               },
               {
-                "code": "name_ru",
+                "code": "doc_type",
                 "type": "dict",
                 "dict": "document_types",
                 "title": "document_type",
@@ -46,21 +46,13 @@
                 "is_editable": true
               },
               {
-                "code": "name_ru",
+                "code": "org",
                 "type": "dict",
                 "dict": "orgs",
                 "title": "orgs",
                 "validation": "required",
                 "is_editable": true
-              },
-              {
-                "code": "uwi",
-                "type": "dict",
-                "dict": "wells",
-                "title": "well",
-                "validation": "required|exists:tbd.prod.well_document,well",
-                "is_editable": true
-              }
+              }              
             ]
           }
         ]
