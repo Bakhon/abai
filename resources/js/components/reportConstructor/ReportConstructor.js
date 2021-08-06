@@ -67,73 +67,6 @@ export default {
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
-        onYearClick() {
-            if(this.currentDatePickerFilter === 'year') {
-                this.setDefaultDateFilter();
-                return;
-            }
-            this.currentDatePickerFilter = 'year';
-            this.dateFlow = ['year'];
-        },
-        onMonthClick() {
-            if(this.currentDatePickerFilter === 'month') {
-                this.setDefaultDateFilter();
-                return;
-            }
-            this.currentDatePickerFilter = 'month';
-            this.dateFlow = ['year', 'month'];
-        },
-        onStartDatePickerClick(date) {
-            if(!date) return;
-            switch(this.currentDatePickerFilter) {
-                case "year":
-                    this.setStartOfYear(date);
-                    break;
-                case "month": 
-                    this.setStartOfMonth(date);
-                    break;
-                default: 
-                    this.startDate = date;
-            }
-        },
-        onEndDatePickerClick(date) {
-            if(!date) return;
-            switch(this.currentDatePickerFilter) {
-                case "year":
-                    this.setEndOfYear(date);
-                    break;
-                case "month": 
-                    this.setEndOfMonth(date);
-                    break;
-                default: 
-                    this.endDate = date;
-            }
-        },
-        onMenuClick(currentStructureType) {
-            this.currentStructureType = currentStructureType;
-            this.currentOption = null;
-            this.currentItemType = null;
-        },
-        onClickOption(structureType) {
-            this.currentOption = structureType;
-            this.currentItemType = structureType.id;
-        },
-        setDefaultDateFilter() {
-            this.currentDatePickerFilter = 'date';
-            this.dateFlow = ['year', 'month', 'date'];
-        },
-        setStartOfMonth(date) {
-            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
-        },
-        setEndOfMonth(date) {
-            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
-        },
-        setStartOfYear(date) {
-            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
-        },
-        setEndOfYear(date) {
-            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
-        },
         loadStructureTypes(type) {
             this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_structures_types", {
@@ -472,6 +405,76 @@ export default {
                 return 1
             }
             return attribute.maxChildrenNumber
+        },
+        getOptionName() {
+            return this.currentOption && this.currentOption.name ? this.currentOption.name : 'Выбор объекта'; 
+        },
+        onMenuClick(currentStructureType) {
+            this.currentStructureType = currentStructureType;
+            this.currentOption = null;
+            this.currentItemType = null;
+        },
+        onClickOption(structureType) {
+            this.currentOption = structureType;
+            this.currentItemType = structureType.id;
+        },
+        onYearClick() {
+            if(this.currentDatePickerFilter === 'year') {
+                this.setDefaultDateFilter();
+                return;
+            }
+            this.currentDatePickerFilter = 'year';
+            this.dateFlow = ['year'];
+        },
+        onMonthClick() {
+            if(this.currentDatePickerFilter === 'month') {
+                this.setDefaultDateFilter();
+                return;
+            }
+            this.currentDatePickerFilter = 'month';
+            this.dateFlow = ['year', 'month'];
+        },
+        setDefaultDateFilter() {
+            this.currentDatePickerFilter = 'date';
+            this.dateFlow = ['year', 'month', 'date'];
+        },
+        onStartDatePickerClick(date) {
+            if(!date) return;
+            switch(this.currentDatePickerFilter) {
+                case "year":
+                    this.setStartOfYear(date);
+                    break;
+                case "month": 
+                    this.setStartOfMonth(date);
+                    break;
+                default: 
+                    this.startDate = date;
+            }
+        },
+        setStartOfYear(date) {
+            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        setStartOfMonth(date) {
+            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        onEndDatePickerClick(date) {
+            if(!date) return;
+            switch(this.currentDatePickerFilter) {
+                case "year":
+                    this.setEndOfYear(date);
+                    break;
+                case "month": 
+                    this.setEndOfMonth(date);
+                    break;
+                default: 
+                    this.endDate = date;
+            }
+        },
+        setEndOfYear(date) {
+            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        setEndOfMonth(date) {
+            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
         },
     }
 }

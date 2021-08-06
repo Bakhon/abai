@@ -1,5 +1,6 @@
 <template>
   <div class="row">
+    <cat-loader />
     <div class="left-section bg-dark">
       <div class="col">
         <div class="row menu">
@@ -52,7 +53,7 @@
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="dropdown-inner-text">
-                  {{ currentOption ? currentOption.name : 'Выбор объекта' }}
+                  {{ getOptionName() }}
                 </div>
                 <div class="icon-pointer"></div>
               </button>
