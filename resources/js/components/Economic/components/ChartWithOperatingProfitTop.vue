@@ -2,7 +2,7 @@
   <apexchart
       :options="options"
       :series="chartSeries"
-      :height="745"
+      :height="740"
       type="bar"/>
 </template>
 
@@ -13,7 +13,7 @@ import {chartInitMixin} from "../mixins/chartMixin";
 export default {
   name: 'ChartWithOperatingProfitTop',
   mixins: [chartInitMixin],
-  components: {apexchart:chart},
+  components: {apexchart: chart},
   computed: {
     chartSeries() {
       return [
@@ -56,6 +56,7 @@ export default {
           xaxis: {
             categories: this.data.uwi,
           },
+          yaxis: {},
           fill: {
             opacity: 1
           },

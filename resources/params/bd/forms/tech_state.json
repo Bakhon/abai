@@ -5,6 +5,12 @@
     "dbeg",
     "state"
   ],
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main",

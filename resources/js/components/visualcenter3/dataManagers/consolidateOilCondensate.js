@@ -120,7 +120,6 @@ export default {
                 'formula': (value) => Math.round(((value - value * 0.019) * 241 / 1428) / 2)
             },
             dzoMultiplier: {
-                'ОМГ': (item,value,fieldName) => value + item[fieldName],
                 'ПКК': (item,value,fieldName) => value * 0.33,
                 'КГМ': (item,value,fieldName) => value * 0.5 * 0.33,
                 'ТП': (item,value,fieldName) => value * 0.5 * 0.33,
@@ -269,12 +268,9 @@ export default {
                     item.oil_fact = self.dzoMultiplier[item.dzo](item,item.oil_fact,'oil_fact');
                     item.oil_plan = self.dzoMultiplier[item.dzo](item,item.oil_plan,'oil_plan');
                 }
-            });
-
-            _.forEach(withoutKMG, function (item) {
-                if (item.dzo === 'ОМГ') {
-                    item.oil_fact += item.gk_fact;
-                    item.oil_plan += item.gk_plan;
+                if (item.dzo === 'АГ') {
+                    item.oil_fact = item.gk_fact;
+                    item.oil_plan = item.gk_plan;
                 }
             });
 
@@ -314,7 +310,6 @@ export default {
 
             let actualUpdatedByOpek = inputActualUpdatedByOpek;
             actualUpdatedByOpek = this.getFilteredByNotUsableDzo(actualUpdatedByOpek);
-
             _.forEach(dzoOptions, function(item) {
                 if (self.companiesForNominalInput.includes(item.dzoName)) {
                     actualUpdatedByOpek.push({
@@ -366,6 +361,7 @@ export default {
             if (this.buttonMonthlyTab || this.buttonYearlyTab) {
                 actualUpdatedByOpek = this.getUpdatedByPeriodPlan(actualUpdatedByOpek);
             }
+
             return actualUpdatedByOpek;
         },
 

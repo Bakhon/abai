@@ -75,13 +75,24 @@ Route::group(
                 Route::get('omgngdu/history/{omgngdu}', 'ComplicationMonitoring\OmgNGDUController@history')->name(
                     'omgngdu.history'
                 );
+                Route::post('omgngdu/get-omgngdu', 'ComplicationMonitoring\OmgNGDUController@getOmgNgdu')->name(
+                    'omgngdu.get-omg-ngdu'
+                );
+
                 Route::resource('omgngdu', 'ComplicationMonitoring\OmgNGDUController');
 
 
-                Route::get('omgngdu_well/list', 'ComplicationMonitoring\OmgNGDUWellController@list')->name(
-                    'omgngdu_well.list'
+                Route::get('omgngdu-well/list', 'ComplicationMonitoring\OmgNGDUWellController@list')->name(
+                    'omgngdu-well.list'
                 );
-                Route::resource('omgngdu_well', 'ComplicationMonitoring\OmgNGDUWellController');
+                Route::get('omgngdu-well/validation-params', 'ComplicationMonitoring\OmgNGDUWellController@getWellsValidationParams')->name(
+                    'omgngdu-well.validation-params'
+                );
+                Route::post('omgngdu-well/get-omgngdu', 'ComplicationMonitoring\OmgNGDUWellController@getOmgNgdu')->name(
+                    'omgngdu-well.get-omg-ngdu'
+                );
+
+                Route::resource('omgngdu-well', 'ComplicationMonitoring\OmgNGDUWellController');
 
 
                 Route::post(
@@ -139,15 +150,15 @@ Route::group(
                 Route::post('/gu-map/well', 'ComplicationMonitoring\MapsController@storeWell')->name('maps.store_well');
                 Route::post('/gu-map/pipe', 'ComplicationMonitoring\MapsController@storePipe')->name('maps.store_pipe');
 
-                Route::put('/gu-map/gu/{gu}', 'ComplicationMonitoring\MapsController@updateGu')->name('maps.update_gu');
-                Route::put('/gu-map/zu/{zu}', 'ComplicationMonitoring\MapsController@updateZu')->name('maps.update_zu');
-                Route::put('/gu-map/well/{well}', 'ComplicationMonitoring\MapsController@updateWell')->name('maps.update_well');
-                Route::put('/gu-map/pipe/{pipe}', 'ComplicationMonitoring\MapsController@updatePipe')->name('maps.update_pipe');
+                Route::put('/gu-map/gu/{id}', 'ComplicationMonitoring\MapsController@updateGu')->name('maps.update_gu');
+                Route::put('/gu-map/zu/{id}', 'ComplicationMonitoring\MapsController@updateZu')->name('maps.update_zu');
+                Route::put('/gu-map/well/{id}', 'ComplicationMonitoring\MapsController@updateWell')->name('maps.update_well');
+                Route::put('/gu-map/pipe/{id}', 'ComplicationMonitoring\MapsController@updatePipe')->name('maps.update_pipe');
 
-                Route::delete('/gu-map/gu/{gu}', 'ComplicationMonitoring\MapsController@deleteGu')->name('maps.delete_gu');
-                Route::delete('/gu-map/zu/{zu}', 'ComplicationMonitoring\MapsController@deleteZu')->name('maps.delete_zu');
-                Route::delete('/gu-map/well/{well}', 'ComplicationMonitoring\MapsController@deleteWell')->name('maps.delete_well');
-                Route::delete('/gu-map/pipe/{pipe}', 'ComplicationMonitoring\MapsController@deletePipe')->name('maps.delete_pipe');
+                Route::delete('/gu-map/gu/{id}', 'ComplicationMonitoring\MapsController@deleteGu')->name('maps.delete_gu');
+                Route::delete('/gu-map/zu/{id}', 'ComplicationMonitoring\MapsController@deleteZu')->name('maps.delete_zu');
+                Route::delete('/gu-map/well/{id}', 'ComplicationMonitoring\MapsController@deleteWell')->name('maps.delete_well');
+                Route::delete('/gu-map/pipe/{id}', 'ComplicationMonitoring\MapsController@deletePipe')->name('maps.delete_pipe');
 
                 Route::get('/monitor/reports', 'ReportsController@index')->name('monitor.reports');
                 Route::get('/monitor/reports/generate', 'ReportsController@generateReport');
@@ -169,6 +180,9 @@ Route::group(
 
                 Route::get('/hydro-calc/list', 'ComplicationMonitoring\HydroCalculation@list')->name('hydro_calculation.list');
                 Route::get('/hydro-calc/calculate', 'ComplicationMonitoring\HydroCalculation@calculate')->name('hydro_calculation.calculate');
+
+                Route::get('materials/list', 'ComplicationMonitoring\MaterialsController@list')->name('materials.list');
+                Route::resource('materials', 'ComplicationMonitoring\MaterialsController');
                 Route::resource('hydro-calc', 'ComplicationMonitoring\HydroCalculation', [
                     'names' => [
                         'index' => 'hydro_calculation.index'
@@ -190,6 +204,36 @@ Route::group(
                 Route::resource('lost-profits', 'ComplicationMonitoring\LostProfitsController');
                 Route::get('/facilities', 'DruidController@facilities')->name('facilities');
 
+                Route::get('buffer-tank/list', 'ComplicationMonitoring\BufferTankController@list')->name('buffer_tank.list');
+                Route::get('buffer-tank/export', 'ComplicationMonitoring\BufferTankController@export')->name('buffer_tank.export');
+                Route::get('buffer-tank/history/{buffer_tank}', 'ComplicationMonitoring\BufferTankController@history')->name('buffer_tank.history');
+                Route::resource('buffer-tank', 'ComplicationMonitoring\BufferTankController');
+
+                Route::get('pumps/list', 'ComplicationMonitoring\PumpsController@list')->name('pumps.list');
+                Route::get('pumps/export', 'ComplicationMonitoring\PumpsController@export')->name('pumps.export');
+                Route::get('pumps/history/{pumps}', 'ComplicationMonitoring\PumpsController@history')->name('pumps.history');
+                Route::resource('pumps', 'ComplicationMonitoring\PumpsController');
+
+                Route::get('ovens/list', 'ComplicationMonitoring\OvensController@list')->name('ovens.list');
+                Route::get('ovens/export', 'ComplicationMonitoring\OvensController@export')->name('ovens.export');
+                Route::get('ovens/history/{ovens}', 'ComplicationMonitoring\OvensController@history')->name('ovens.history');
+                Route::resource('ovens', 'ComplicationMonitoring\OvensController');
+
+                Route::get('agzu/list', 'ComplicationMonitoring\AgzuController@list')->name('agzu.list');
+                Route::get('agzu/export', 'ComplicationMonitoring\AgzuController@export')->name('agzu.export');
+                Route::get('agzu/history/{agzu}', 'ComplicationMonitoring\AgzuController@history')->name('agzu.history');
+                Route::resource('agzu', 'ComplicationMonitoring\AgzuController');
+
+                Route::get('sib/list', 'ComplicationMonitoring\SibController@list')->name('sib.list');
+                Route::get('sib/export', 'ComplicationMonitoring\SibController@export')->name('sib.export');
+                Route::get('sib/history/{sib}', 'ComplicationMonitoring\SibController@history')->name('sib.history');
+                Route::resource('sib', 'ComplicationMonitoring\SibController');
+
+                Route::get('metering-units/list', 'ComplicationMonitoring\MeteringUnitsController@list')->name('metering_units.list');
+                Route::get('metering-units/export', 'ComplicationMonitoring\MeteringUnitsController@export')->name('metering_units.export');
+                Route::get('metering-units/history/{metering_units}', 'ComplicationMonitoring\MeteringUnitsController@history')->name('metering_units.history');
+                Route::resource('metering-units', 'ComplicationMonitoring\MeteringUnitsController');
+                
                 Route::get('map-history/list', 'ComplicationMonitoring\MapHistory@list')->name('map-history.list');
                 Route::get('map-history/show/{activity}', 'ComplicationMonitoring\MapHistory@show')->name('map-history.show');
                 Route::get('map-history/restore/{activity}', 'ComplicationMonitoring\MapHistory@restore')->name('map-history.restore');
