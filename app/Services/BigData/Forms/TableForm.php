@@ -84,7 +84,7 @@ abstract class TableForm extends BaseForm
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function getFormatedParams(): array
+    public function getFormInfo(): array
     {
         $params = $this->params();
         $params = $this->mapParams($params);
