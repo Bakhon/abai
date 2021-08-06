@@ -369,7 +369,7 @@ export default {
             this.$store.commit('globalloading/SET_LOADING', true);
             this.axios.get(
                 this.localeUrl('/paegtm/get-gtms'),
-                {params: {dzoId: this.dzoId, dateStart: this.$store.state.paegtmMap.dateStart, dateEnd: this.$store.state.paegtmMap.dateEnd}}
+                {params: {dzoId: this.dzoId, dateStart: this.dateStart, dateEnd: this.dateEnd}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
