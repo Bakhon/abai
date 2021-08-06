@@ -45,3 +45,9 @@
           <span class="menu-collapsed companyName d-none"></span>
       </div>
   </a>
+  <a href="{{ route('kpd-tree') }}" class="bg-dark-new list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-start align-items-center">
+            <img src="/img/visualcenter3/kpd-tree.png" width="25" height="25" class="companyLogo">
+            <span class="menu-collapsed companyName d-none"></span>
+        </div>
+    </a>

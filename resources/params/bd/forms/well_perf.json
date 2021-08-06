@@ -226,7 +226,7 @@
                 "table": "prod.well_perf_actual",
                 "type": "numeric",
                 "title": "interv_actual",
-                "validation": "numeric|gte:0"
+                "validation": "numeric|gte:0|lte:10000"
               },
               {
                 "code": "well",

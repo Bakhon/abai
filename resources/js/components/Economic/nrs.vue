@@ -83,7 +83,9 @@
             v-if="!loading"
             :charts="res.charts"
             :granularity="form.granularity"
-            :profitability="form.profitability"/>
+            :profitability="form.profitability"
+            :oil-prices="res.oilPrices"
+            :dollar-rates="res.dollarRates"/>
       </div>
 
       <div class="col-3 pr-0 pl-10px">
@@ -273,6 +275,8 @@ const economicRes = {
     liquidProduction: null,
     operatingProfitTop: null,
   },
+  oilPrices: [],
+  dollarRates: [],
 }
 
 export default {

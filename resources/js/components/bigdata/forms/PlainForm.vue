@@ -256,12 +256,14 @@ export default {
       this.getWellPrefix({code: this.params.code, geo: this.formValues[triggerFieldCode]})
           .then(({data}) => {
             for (const tab of this.formParams.tabs) {
-              for (const block of tab.blocks) {
-                for (const item of block.items) {
-                  if (item.code === changeFieldCode) {
-                    item.prefix = data.prefix
+              for (const blocks of tab.blocks) {
+                blocks.forEach(block => {
+                  for (const item of block.items) {
+                    if (item.code === changeFieldCode) {
+                      item.prefix = data.prefix
+                    }
                   }
-                }
+                })
               }
             }
           })

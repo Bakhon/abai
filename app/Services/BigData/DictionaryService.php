@@ -258,8 +258,8 @@ class DictionaryService
                     $dict = $this->getEquipTypeCascDict();
                     break;
                 case 'geo_type_hrz':
-                    $dict = $this->getGeoTypeDict();
-                    break;
+                    $dict = $this->getGeoHorizonDict();
+                    break;    
                 default:
                     throw new DictionaryNotFound();
             }
@@ -388,25 +388,32 @@ class DictionaryService
             ->toArray();
     }
 
-    private function getGeoTypeDict()
+    private function getGeoHorizonDict()
     {
-        $dictClass = self::DICTIONARIES['geo_type']['class'];
-        $nameField = self::DICTIONARIES['geo_type']['name_field'] ?? 'name';
-
-        return $dictClass::query()
-            ->select('id')
-            ->selectRaw("$nameField as name")
-            ->where(
-                'parent',
-                function ($query) {
-                    return $query->select('id')
-                        ->from('dict.geo_type')
-                        ->where('code', 'HRZ')
-                        ->limit(1);
+        $items = DB::connection('tbd')
+            ->table('dict.geo as g')
+            ->select('g.id', 'g.name_ru as name', 'gp.parent as parent')
+            ->where('gt.code', 'HRZ')
+            ->distinct()
+            ->orderBy('parent', 'asc')
+            ->orderBy('name', 'asc')
+            ->join('dict.geo_type as gt', 'g.geo_type', 'gt.id')
+            ->leftJoin(
+                'dict.geo_parent as gp',
+                function ($join) {
+                    $join->on('gp.geo', '=', 'g.id');
+                    $join->on('gp.dbeg', '<=', DB::raw("NOW()"));
+                    $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }
             )
-            ->orderBy('name', 'asc')
             ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
             ->toArray();
+
+        return $items;
     }
 }
