@@ -4,11 +4,11 @@
       <div>{{ trans('economic_reference.table_well_changes') }}</div>
     </subtitle>
 
-    <div class="mt-3 overflow-auto customScroll d-flex">
+    <div id="table-well-changes" class="mt-3 overflow-auto customScroll d-flex">
       <div v-for="(chunk, index) in tableDataChunks"
            :key="index">
         <div
-            :style="`width: ${100 + oilPrices.length * 30}px`"
+            :style="`width: ${columnWidth}px`"
             class="text-center border-grey d-flex bg-header">
           <div class="text-center border-grey" style="flex: 0 0 100px;">
             Скв
@@ -69,6 +69,9 @@ export default {
       type: Array
     }
   },
+  mounted() {
+    this.scrollToChanges()
+  },
   methods: {
     getColor({profitability_12m}) {
       if (profitability_12m === 'profitable') {
@@ -78,7 +81,31 @@ export default {
       return profitability_12m === 'profitless_cat_1'
           ? '#8D2540'
           : '#F7BB2E'
-    }
+    },
+
+    scrollToChanges() {
+      let table = document.getElementById('table-well-changes')
+
+      if (!table) return
+
+      let index = this.filteredData.findIndex((item, index, data) =>
+          index &&
+          item.oil_price === data[index - 1].oil_price &&
+          item.profitability_12m !== data[index - 1].profitability_12m
+      )
+
+      if (index === -1) return
+
+      console.log(this.filteredData.find(item => item.uwi === 'KZH_3713'))
+
+      console.log(this.filteredData.find(item => item.uwi === 'KZH_5900'))
+
+      console.log(this.filteredData.find(item => item.uwi === 'KZH_3340'))
+
+      // console.log(this.filteredData[index])
+
+      // table.scrollLeft = index * this.columnWidth / this.chunkStep
+    },
   },
   computed: {
     filteredData() {
@@ -113,14 +140,20 @@ export default {
 
       let length = keys.length
 
-      let step = 25
-
-      for (let i = 0; i < Math.ceil(length / step); i += 1) {
-        result.push(keys.splice(0, step))
+      for (let i = 0; i < Math.ceil(length / this.chunkStep); i += 1) {
+        result.push(keys.splice(0, this.chunkStep))
       }
 
       return result
     },
+
+    chunkStep() {
+      return 25
+    },
+
+    columnWidth() {
+      return 100 + this.oilPrices.length * 30
+    }
   },
 }
 </script>
