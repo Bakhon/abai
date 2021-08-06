@@ -407,7 +407,8 @@ export default {
             return attribute.maxChildrenNumber
         },
         getOptionName() {
-            return this.currentOption && this.currentOption.name ? this.currentOption.name : 'Выбор объекта'; 
+            return this.currentOption && typeof this.currentOption.name !== 'undefined'
+                   && this.currentOption.name ? this.currentOption.name : 'Выбор объекта'; 
         },
         onMenuClick(currentStructureType) {
             this.currentStructureType = currentStructureType;
