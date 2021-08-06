@@ -67,6 +67,9 @@
   &.lg{
     max-width: 945px;
   }
+  &.xl{
+    max-width: 1600px;
+  }
 }
 
 @import "_aw-modal-anim";

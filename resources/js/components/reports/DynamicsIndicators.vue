@@ -1,6 +1,6 @@
 <template>
   <div class="filter-container">
-    <cat-loader v-show="isLoading"/>
+    <cat-loader/>
     <org-selector v-model="org"></org-selector>
 
     <div class="form-group3 filter-group">
@@ -14,7 +14,7 @@
           input-class="form-control filter-input"
           format="dd LLLL yyyy"
           :phrases="{ok: '', cancel: ''}"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           auto
           :flow="['year', 'month', 'date']"
       >
@@ -23,12 +23,12 @@
     </div>
 
     <div class="form-group3 result-link">
-      <a v-if="resultLink !== null && !isLoading" :href="resultLink" target="_blank"
+      <a v-if="resultLink !== null && !$store.state.globalloading.loading" :href="resultLink" target="_blank"
          class="download-report text-center">Скачать отчёт</a>
     </div>
 
     <div class="form-group4">
-      <button :disabled="!org || !end_date || isLoading"
+      <button :disabled="!org || !end_date || $store.state.globalloading.loading"
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -57,12 +57,15 @@ import {Datetime} from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from '../common/FormatDate.js'
 import OrgSelector from "./OrgSelector";
+import {globalloadingMutations} from '@store/helpers';
+import CatLoader from '@ui-kit/CatLoader';
 
 Vue.use(Datetime)
 
 export default {
   components: {
-    OrgSelector
+    OrgSelector,
+    CatLoader
   },
   data() {
 
@@ -75,6 +78,10 @@ export default {
 
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+
     createDownloadLink(response) {
       this.resultLink = response.data.report_link
     },
@@ -90,7 +97,7 @@ export default {
 
       let json_data = JSON.stringify(data);
 
-      this.isLoading = true;
+      this.SET_LOADING(true);
 
       this.axios.post(uri, json_data, {
         responseType: 'json',
@@ -106,7 +113,7 @@ export default {
             }
           })
           .catch((error) => console.log(error))
-          .finally(() => this.isLoading = false);
+          .finally(() => this.SET_LOADING(false));
     },
     onChange(event) {
       this.org = event.target.value;

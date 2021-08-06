@@ -62,8 +62,6 @@ class LasDictionariesController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        parent::list($request);
-
         $query = $this->model::query();
         $data = $this
             ->getFilteredQuery($request->validated(), $query)
