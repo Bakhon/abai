@@ -272,7 +272,6 @@ return array (
     'deleting_error' => 'Ошибка при удалении Скважины',
     'name' => 'Имя Скважины',
     'well' => 'Скважина',
-    'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
     'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ Скважина',
   ),
   'pipe' => 
@@ -326,6 +325,7 @@ return array (
       'daily_gas_production_in_sib' => 'Количество газа в СИБ',
     ),
     'redirect-to' => 'Перейти на',
+    'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ ГУ',
   ),
   'zu' => 
   array (
@@ -489,4 +489,49 @@ return array (
   'economical_effect_title' => 'Мониторинг потерянной выгоды',
   'no_data' => 'Нет данных',
   'monitoring_module' => 'Модуль "Мониторинг осложнений"',
+    'buffer_tank' =>
+        array (
+            'title' => 'База данных по буферным емкостям',
+            'model' => 'Модель',
+            'name' => 'Наименование',
+            'type' => 'Тип',
+            'volume' => 'Объем, м3',
+            'date_of_exploitation' => 'Дата ввода в эксплуатацию',
+            'current_state' => 'Текущее состояние',
+            'external_and_internal_inspection' => 'Наружный и внутренний осмотр',
+            'hydraulic_test' => 'Гидравлическое испытание',
+            'date_of_repair' => 'Дата ремонта',
+            'type_of_repair' => 'Вид ремонта',
+        ),
+    'pumps' =>
+        array (
+            'number' => 'Номер',
+            'perfomance' => 'Производительность, м3/час',
+            'power' => 'Мощность насоса, кВт',
+            'title' => 'База данных по насосам',
+        ),
+    'ovens' =>
+        array (
+            'title' => 'База данных по печам',
+            'cipher' => 'Шифр',
+            'rated_heat_output' => 'Номинальная тепловая мощность, МВт (Гкал/ч)',
+        ),
+    'agzu' =>
+        array (
+            'title' => 'База данных по АГЗУ',
+            'method_of_measurement' => 'Метод измерения',
+            'number_of_connected_wells' => 'Количество подключаемых скважин',
+        ),
+    'sib' =>
+        array (
+            'title' => 'База данных по СИБ',
+        ),
+    'metering_units' =>
+        array (
+            'title' => 'База данных по узлам учета',
+            'diameter' => 'Диаметр',
+        ),
+    'gu_equipment' => 'Паспортизация оборудования для ГУ',
+
+    'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
 );

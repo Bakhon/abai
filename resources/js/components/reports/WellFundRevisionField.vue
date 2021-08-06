@@ -1,13 +1,13 @@
 <template>
   <div class="filter-container">
-    <cat-loader v-show="isLoading"/>
+    <cat-loader/>
 
     <div class="form-group1 filter-group select">
       <select
           class="form-control filter-input
           select"
           id="companySelect"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           v-model="org"
       >
         <option disabled value="">Выберите компанию</option>
@@ -23,7 +23,7 @@
       <select
           class="form-control filter-input select"
           id="geoStructureSelect"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           v-model="geoStructure"
       >
         <option disabled value="">Выберите геоструктуру</option>
@@ -36,7 +36,7 @@
       <select
           class="form-control filter-input select"
           id="fondSelect"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           v-model="fondType"
       >
         <option disabled value="">Выберите тип фонда</option>
@@ -62,7 +62,7 @@
           input-class="form-control filter-input"
           format="dd LLLL yyyy"
           :phrases="{ok: '', cancel: ''}"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           auto
           :flow="['year', 'month', 'date']"
       >
@@ -71,12 +71,12 @@
     </div>
 
     <div class="form-group3 result-link">
-      <a v-if="resultLink !== null && !isLoading" :href="resultLink" target="_blank"
+      <a v-if="resultLink !== null && !$store.state.globalloading.loading" :href="resultLink" target="_blank"
          class="download-report text-center">Скачать отчёт</a>
     </div>
 
     <div class="form-group4">
-      <button :disabled="!fondType || !geoStructure || !end_date || isLoading"
+      <button :disabled="!fondType || !geoStructure || !end_date || $store.state.globalloading.loading"
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -104,6 +104,8 @@ import Vue from "vue";
 import {Datetime} from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from '../common/FormatDate.js'
+import {globalloadingMutations} from '@store/helpers';
+import CatLoader from '@ui-kit/CatLoader';
 
 Vue.use(Datetime)
 
@@ -114,8 +116,9 @@ export default {
       required: true
     }
   },
-  components: {},
-
+  components: {
+    CatLoader
+  },
   data() {
 
     return {
@@ -129,6 +132,10 @@ export default {
 
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+
     createDownloadLink(response) {
       this.resultLink = response.data.report_link
     },
@@ -156,7 +163,7 @@ export default {
 
       let json_data = JSON.stringify(data);
 
-      this.isLoading = true;
+      this.SET_LOADING(true);
 
       this.axios.post(uri, json_data, {
         responseType: 'json',
@@ -172,7 +179,7 @@ export default {
             }
           })
           .catch((error) => console.log(error))
-          .finally(() => this.isLoading = false);
+          .finally(() => this.SET_LOADING(false));
     },
     onChange(event) {
       this.org = event.target.value;

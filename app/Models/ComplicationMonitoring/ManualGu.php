@@ -43,12 +43,12 @@ class ManualGu extends Model
 
     public function omgca()
     {
-        return $this->hasMany(OmgCA::class);
+        return $this->hasMany(OmgCA::class, 'gu_id');
     }
 
     public function omgngdu()
     {
-        return $this->hasMany(OmgNGDU::class);
+        return $this->hasMany(OmgNGDU::class, 'gu_id');
     }
 
     public function lastOmgngdu()
@@ -74,7 +74,7 @@ class ManualGu extends Model
         $query->addSelect(
             [
                 'last_omgngdu_id' => OmgNGDU::select('id')
-                    ->whereColumn('gu_id', 'gus.id')
+                    ->whereColumn('gu_id', 'manual_gus.id')
                     ->orderBy('date', 'desc')
                     ->take(1)
             ]
@@ -83,22 +83,22 @@ class ManualGu extends Model
 
     public function watermeasurement()
     {
-        return $this->hasMany(WaterMeasurement::class);
+        return $this->hasMany(WaterMeasurement::class, 'gu_id');
     }
 
     public function oilgas()
     {
-        return $this->hasMany(OilGas::class);
+        return $this->hasMany(OilGas::class, 'gu_id');
     }
 
     public function corrosion()
     {
-        return $this->hasMany(Corrosion::class);
+        return $this->hasMany(Corrosion::class, 'gu_id');
     }
 
     public function omguhe()
     {
-        return $this->hasMany(OmgUHE::class);
+        return $this->hasMany(OmgUHE::class, 'gu_id');
     }
 
     public function oilPipes()

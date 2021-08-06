@@ -59,17 +59,17 @@ class ManualOilPipe extends Model
 
     public function hydroCalc()
     {
-        return $this->hasOne(HydroCalcResult::class);
+        return $this->hasOne(HydroCalcResult::class, 'oil_pipe_id');
     }
 
     public function reverseCalc()
     {
-        return $this->hasOne(ReverseCalculation::class);
+        return $this->hasOne(ReverseCalculation::class, 'oil_pipe_id');
     }
 
     public function hydroCalcLong()
     {
-        return $this->hasMany(HydroCalcLong::class)->orderby('segment');
+        return $this->hasMany(HydroCalcLong::class, 'oil_pipe_id')->orderby('segment');
     }
 
     public static function boot() {
@@ -83,7 +83,7 @@ class ManualOilPipe extends Model
 
     public function lastHydroCalc()
     {
-        return $this->belongsTo(HydroCalcResult::class);
+        return $this->belongsTo(HydroCalcResult::class, 'oil_pipe_id');
     }
 
     public function scopeWithLastHydroCalc($query)
@@ -91,7 +91,7 @@ class ManualOilPipe extends Model
         $query->addSelect(
             [
                 'last_hydro_calc_id' => HydroCalcResult::select('id')
-                    ->whereColumn('oil_pipe_id', 'oil_pipes.id')
+                    ->whereColumn('oil_pipe_id', 'manual_oil_pipes.id')
                     ->orderBy('date', 'desc')
                     ->take(1)
             ]
@@ -100,7 +100,7 @@ class ManualOilPipe extends Model
 
     public function lastReverseCalc()
     {
-        return $this->belongsTo(ReverseCalculation::class);
+        return $this->belongsTo(ReverseCalculation::class, 'oil_pipe_id');
     }
 
     public function scopeWithLastReverseCalc($query)
@@ -108,7 +108,7 @@ class ManualOilPipe extends Model
         $query->addSelect(
             [
                 'last_reverse_calc_id' => ReverseCalculation::select('id')
-                    ->whereColumn('oil_pipe_id', 'oil_pipes.id')
+                    ->whereColumn('oil_pipe_id', 'manual_oil_pipes.id')
                     ->orderBy('date', 'desc')
                     ->take(1)
             ]
