@@ -11,11 +11,11 @@
                         <div class="img-documents"></div>
                         <div @click="$modal.show('modalDocuments')" class="ml-1">Нормативные документы</div>
                     </div>
-                    <div class="main-buttons p-2 d-flex ml-5">
+                    <div class="main-buttons p-2 d-flex ml-4">
                         <div class="img-catalog"></div>
                         <div @click="$modal.show('modalCatalog')" class="ml-1">Каталог КПД</div>
                     </div>
-                    <div class="main-buttons p-2 d-flex ml-5">
+                    <div class="main-buttons p-2 d-flex ml-4">
                         <div class="img-export"></div>
                         <div class="ml-1">Экспорт</div>
                     </div>
@@ -109,7 +109,7 @@
                             </div>
                             <div v-for="kpd in master.kpd" class="col-12 kpd-ceo_item-b p-1 d-flex">
                                 <div class="item-list_vector m-2"></div>
-                                <div class="text-left ml-4 col-8 kpd-name_b">{{kpd.name}}</div>
+                                <div class="text-left ml-4 col-8 kpd-name_b" @click="[selectedManager = master, selectedKpd = kpd,$modal.show('modalKpdPassport')]">{{kpd.name}}</div>
                                 <div class="progress progress_template mt-2 p-0 progress-ceo_b">
                                     <div
                                             :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
@@ -132,6 +132,7 @@
             <kpd-modal-catalog></kpd-modal-catalog>
             <kpd-modal-map :manager-info="selectedManager"></kpd-modal-map>
             <kpd-modal-monitoring :manager-info="selectedManager"></kpd-modal-monitoring>
+            <kpd-modal-kpd-passport :manager-info="selectedManager" :kpd="selectedKpd"></kpd-modal-kpd-passport>
         </div>
     </div>
 </template>
@@ -195,7 +196,7 @@
     background-color: #009847 !important;
 }
 .kpd-ceo_list {
-    border: 1px solid #2A3A85;
+    border: 2px solid #2A3A85;
     border-bottom: 2px solid #656A8A;
     max-height: 99px;
 }
@@ -203,7 +204,7 @@
     border: 1px solid #2A3A85;
 }
 .kpd-ceo_header-b {
-    border-bottom: 2px solid #656A8A;
+    border-bottom: 4px solid #656A8A;
 }
 .kpd-ceo_item-b {
     background: #272C5C;
@@ -211,7 +212,7 @@
 .chairmaster:hover, .kpd-ceo_item:hover, kpd-ceo_item-b:hover  {
     background: #3C4280;
     border-radius: 5px;
-    border: 5px solid #272953;
+    border: 2px solid #272953;
 }
 .kpd-ceo-a_item:hover {
     background: #3C4280;
@@ -245,7 +246,7 @@
 .kpd-name_b {
     font-size: 14px;
 }
-.main-buttons:hover {
+.main-buttons:hover, .kpd-name_b:hover {
     background: #3A4280;
 }
 .filter-icon {
