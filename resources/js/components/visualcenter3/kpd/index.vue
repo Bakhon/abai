@@ -21,7 +21,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-3 col-12 row m-0">
+            <div class="mt-3 col-12 row m-0 ceo-table">
                 <div class="col-2 d-flex">
                     <div class="col-12 table-header kpd-main">
                         КПД CEO
@@ -47,8 +47,9 @@
                         </div>
                         <div class="col-12 p-2 kpd-column">
                             <div
-                                    v-for="kpd in kpdCeo"
-                                    class="col-12 p-3 kpd-ceo_item"
+                                    v-for="(kpd, index) in kpdCeo"
+                                    @mouseover="handleHover('.kpdDecomposition_'+index,kpd.childsA,kpd.childsB)"
+                                    :class="['kpdDecomposition_' + index,'col-12 p-3 kpd-ceo_item']"
                             >
                                 <div class="text-right">
                                     {{kpd.progress}}%
@@ -75,11 +76,11 @@
                         <img class="filter-icon" :src="kpdDecompositionA.img"></img>
                         <div class="ml-2 text-left"><b>{{kpdDecompositionA.manager}}</b> <br> {{kpdDecompositionA.title}}</div>
                     </div>
-                    <div class="col-12 p-4 kpd-column">
+                    <div class="col-12 p-2 kpd-column">
                         <div
                                 v-for="(kpd, index) in kpdCeoDecompositionA"
-                                class="col-12 p-4 kpd-ceo-a_item"
-                                @mouseover="getHoveredElement(index,'kpdCeoDecompositionA')"
+                                @mouseover="handleHoverA('.kpdDecompositionA_'+index,kpd.parent,kpd.childsB)"
+                                :class="[getChildClassA(index),'col-12 p-3 kpd-ceo-a_item']"
                         >
                             <div class="text-right">
                                 {{kpd.progress}}%
@@ -102,12 +103,16 @@
                 </div>
                 <div class="col-6 row m-0">
                     <div class="col-12 kpd-ceo_list-b p-0">
-                        <div v-for="master in kpdCeoDecompositionB" class="col-12 kpd-main row p-0 m-0">
+                        <div v-for="(master,masterIndex) in kpdCeoDecompositionB" class="col-12 kpd-main row p-0 m-0">
                             <div class="col-12 kpd-ceo_header-b d-flex p-4 chairmaster" @click="switchManager(master)">
                                 <img :src="master.img" class="filter-icon"></img>
                                 <div class="ml-2 text-left"><b>{{master.manager}}</b><br>{{master.title}}</div>
                             </div>
-                            <div v-for="kpd in master.kpd" class="col-12 kpd-ceo_item-b p-1 d-flex">
+                            <div
+                                    v-for="(kpd,index) in master.kpd"
+                                    :class="[getChildClassB(index,masterIndex),'col-12 kpd-ceo_item-b p-1 d-flex']"
+                                    @mouseover="handleHoverB('.kpdDecompositionB_'+masterIndex+'_'+index,kpd.parentA,kpd.parent)"
+                            >
                                 <div class="item-list_vector m-2"></div>
                                 <div class="text-left ml-4 col-8 kpd-name_b" @click="[selectedManager = master, selectedKpd = kpd,$modal.show('modalKpdPassport')]">{{kpd.name}}</div>
                                 <div class="progress progress_template mt-2 p-0 progress-ceo_b">
@@ -209,7 +214,7 @@
 .kpd-ceo_item-b {
     background: #272C5C;
 }
-.chairmaster:hover, .kpd-ceo_item:hover, kpd-ceo_item-b:hover  {
+.chairmaster:hover {
     background: #3C4280;
     border-radius: 5px;
     border: 2px solid #272953;
@@ -222,6 +227,9 @@
 }
 .kpd-ceo_item {
     margin-top: 5rem;
+}
+.kpd-ceo_item:hover {
+    background: #3C4280;
 }
 .kpd-ceo-a_item {
     margin-top: 3rem;
@@ -251,5 +259,10 @@
 }
 .filter-icon {
     width: 45px;
+}
+.hover {
+    background: #3C4280;
+    border-radius: 5px;
+    border: 2px solid #272953;
 }
 </style>
