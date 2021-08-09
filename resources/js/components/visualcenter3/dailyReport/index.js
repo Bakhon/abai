@@ -225,7 +225,7 @@ export default {
             }
         },
         getFormattedNumber(num) {
-            return (new Intl.NumberFormat("ru-RU").format(Math.abs(Math.round(num))))
+            return (new Intl.NumberFormat("ru-RU").format(Math.abs(num)))
         },
         getSortedBy(type,input){
             return _.orderBy(input,
@@ -650,6 +650,7 @@ export default {
         },
         getDeliveryForMerge(dzoName,delivery) {
             let itemIndex = delivery.findIndex(element => element.dzo === dzoName);
+            let isSummary = dzoName.length > 4;
             let mapping = {
                 'deliveryDifferenceByDay':  'differenceByDay',
                 'deliveryDifferenceByMonth': 'differenceByMonth',
@@ -670,10 +671,14 @@ export default {
                 'deliveryPlanOpecByYear': 'planOpecByYear',
                 'deliveryYearlyPlan': 'yearlyPlan',
             };
-            if (itemIndex > -1) {
+            if (itemIndex > -1 || isSummary) {
                 let mapped = {};
                 for (let field in mapping) {
-                    mapped[field] = delivery[itemIndex][mapping[field]]
+                    if (isSummary) {
+                        mapped[field] = delivery[0][mapping[field]]
+                    } else {
+                        mapped[field] = delivery[itemIndex][mapping[field]]
+                    }
                 }
                 return mapped;
             }
