@@ -57,32 +57,32 @@ export default {
     chartSeries() {
       return [
         {
-          name: 'Валовый доход',
+          name: this.trans('economic_reference.gross_income'),
           type: 'line',
           data: this.chartData.map(x => x ? +x.Revenue_total.original_value : null)
         },
         {
-          name: 'Валовый доход (наилучший)',
+          name: `${this.trans('economic_reference.gross_income')} ${this.trans('economic_reference.optimum')}`,
           type: 'line',
           data: this.chartData.map(x => x ? +x.Revenue_total.original_value_optimized : null)
         },
         {
-          name: 'Расходы',
+          name: this.trans('economic_reference.costs'),
           type: 'line',
           data: this.chartData.map(x => x ? +x.Overall_expenditures.original_value : null)
         },
         {
-          name: 'Расходы (наилучший)',
+          name: `${this.trans('economic_reference.costs')} ${this.trans('economic_reference.optimum')}`,
           type: 'line',
           data: this.chartData.map(x => x ? +x.Overall_expenditures.original_value_optimized : null)
         },
         {
-          name: 'Операционная прибыль',
+          name: this.trans('economic_reference.operating_profit'),
           type: 'bar',
           data: this.chartData.map(x => x ? +x.operating_profit_12m.original_value : null)
         },
         {
-          name: 'Операционная прибыль (наилучший)',
+          name: `${this.trans('economic_reference.operating_profit')} ${this.trans('economic_reference.optimum')}`,
           type: 'bar',
           data: this.chartData.map(x => x ? +x.operating_profit_12m.original_value_optimized : null)
         },
