@@ -4,6 +4,8 @@ import Vue from "vue";
 import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from "../common/FormatDate";
 import download from "downloadjs";
+import {globalloadingMutations} from '@store/helpers';
+import CatLoader from '@ui-kit/CatLoader';
 
 Vue.use(Datetime)
 Vue.use(bTreeView)
@@ -12,7 +14,9 @@ export default {
     props: [
         'params'
     ],
-    components: {},
+    components: {
+        CatLoader
+    },
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
@@ -54,7 +58,7 @@ export default {
     },
     mounted: function () {
         this.$nextTick(function () {
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         });
         for (let structureType in this.structureTypes) {
             this.loadStructureTypes(structureType);
@@ -63,88 +67,11 @@ export default {
         this.loadHeaders()
     },
     methods: {
-        onYearClick() {
-            if(this.currentDatePickerFilter === 'year') {
-                this.setDefaultDateFilter();
-                return;
-            }
-            this.currentDatePickerFilter = 'year';
-            this.dateFlow = ['year'];
-        },
-        onMonthClick() {
-            if(this.currentDatePickerFilter === 'month') {
-                this.setDefaultDateFilter();
-                return;
-            }
-            this.currentDatePickerFilter = 'month';
-            this.dateFlow = ['year', 'month'];
-        },
-        onStartDatePickerClick(date) {
-            if(!date) return;
-            switch(this.currentDatePickerFilter) {
-                case "year":
-                    this.setStartOfYear(date);
-                    break;
-                case "month": 
-                    this.setStartOfMonth(date);
-                    break;
-                default: 
-                    this.startDate = date;
-            }
-        },
-        onEndDatePickerClick(date) {
-            if(!date) return;
-            switch(this.currentDatePickerFilter) {
-                case "year":
-                    this.setEndOfYear(date);
-                    break;
-                case "month": 
-                    this.setEndOfMonth(date);
-                    break;
-                default: 
-                    this.endDate = date;
-            }
-        },
-        onMenuClick(currentStructureType) {
-            this.currentStructureType = currentStructureType;
-            this.currentOption = null;
-            this.currentItemType = null;
-        },
-        onClickOption(structureType) {
-            this.currentOption = structureType;
-            this.currentItemType = structureType.id;
-        },
-        setDefaultDateFilter() {
-            this.currentDatePickerFilter = 'date';
-            this.dateFlow = ['year', 'month', 'date'];
-        },
-        setStartOfMonth(date) {
-            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
-        },
-        setEndOfMonth(date) {
-            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
-        },
-        setStartOfYear(date) {
-            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
-        },
-        setEndOfYear(date) {
-            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
-        },
-        isActive(structureType) {
-            let content = this.markedNodes[this.currentStructureType];
-            if(typeof content[structureType.name] === 'undefined') return false;
-            content = content[structureType.name];
-            if(!content) return false;
-            for(let idx in content) {
-                for(let val in content[idx]) {
-                    if(content[idx][val]) return true;
-                }
-            }
-
-            return false;
-        },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
         loadStructureTypes(type) {
-            this.isLoading = true
+            this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_structures_types", {
                 params: {
                     structure_type: type
@@ -159,15 +86,15 @@ export default {
                 } else {
                     console.log("No data");
                 }
-                this.isLoading = false;
+                this.SET_LOADING(false);
             }).catch((error) => {
                 console.log(error)
-                this.isLoading = false
+                this.SET_LOADING(false)
             });
 
         },
         loadAttributeDescriptions() {
-            this.isLoading = true
+            this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_object_attributes_descriptions", {
                 responseType: 'json',
                 headers: {
@@ -178,12 +105,12 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.isLoading = false
+                this.SET_LOADING(false)
             });
 
         },
         loadHeaders() {
-            this.isLoading = true
+            this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_headers", {
                 responseType: 'json',
                 headers: {
@@ -194,11 +121,11 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.isLoading = false
+                this.SET_LOADING(false)
             });
         },
         loadItems(itemType) {
-            this.isLoading = true
+            this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_items", {
                 params: {
                     structure_type: this.currentStructureType,
@@ -217,7 +144,7 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.isLoading = false
+                this.SET_LOADING(false)
             });
 
         },
@@ -253,6 +180,7 @@ export default {
             }
         },
         loadStatistics() {
+            this.SET_LOADING(true)
             this.statistics = null;
 
             try {
@@ -272,7 +200,7 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.isLoading = false
+                this.SET_LOADING(false)
             });
 
         },
@@ -387,6 +315,7 @@ export default {
         },
 
         getStatisticsFile() {
+            this.SET_LOADING(true)
             try {
                 this.validateStatisticsParams()
             } catch (e) {
@@ -408,7 +337,7 @@ export default {
                     download(response.data, "Отчет.xlsx", response.headers['content-type'])
                 }
             }).catch((error) => console.log(error)
-            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+            ).finally(() => this.SET_LOADING(false));
         },
         getHeaders(sheetType) {
             let attributes = this.getSelectedAttributes()
@@ -479,6 +408,76 @@ export default {
                 return 1
             }
             return attribute.maxChildrenNumber
+        },
+        getOptionName() {
+            return this.currentOption && this.currentOption.name ? this.currentOption.name : 'Выбор объекта'; 
+        },
+        onMenuClick(currentStructureType) {
+            this.currentStructureType = currentStructureType;
+            this.currentOption = null;
+            this.currentItemType = null;
+        },
+        onClickOption(structureType) {
+            this.currentOption = structureType;
+            this.currentItemType = structureType.id;
+        },
+        onYearClick() {
+            if(this.currentDatePickerFilter === 'year') {
+                this.setDefaultDateFilter();
+                return;
+            }
+            this.currentDatePickerFilter = 'year';
+            this.dateFlow = ['year'];
+        },
+        onMonthClick() {
+            if(this.currentDatePickerFilter === 'month') {
+                this.setDefaultDateFilter();
+                return;
+            }
+            this.currentDatePickerFilter = 'month';
+            this.dateFlow = ['year', 'month'];
+        },
+        setDefaultDateFilter() {
+            this.currentDatePickerFilter = 'date';
+            this.dateFlow = ['year', 'month', 'date'];
+        },
+        onStartDatePickerClick(date) {
+            if(!date) return;
+            switch(this.currentDatePickerFilter) {
+                case "year":
+                    this.setStartOfYear(date);
+                    break;
+                case "month": 
+                    this.setStartOfMonth(date);
+                    break;
+                default: 
+                    this.startDate = date;
+            }
+        },
+        setStartOfYear(date) {
+            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        setStartOfMonth(date) {
+            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        onEndDatePickerClick(date) {
+            if(!date) return;
+            switch(this.currentDatePickerFilter) {
+                case "year":
+                    this.setEndOfYear(date);
+                    break;
+                case "month": 
+                    this.setEndOfMonth(date);
+                    break;
+                default: 
+                    this.endDate = date;
+            }
+        },
+        setEndOfYear(date) {
+            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        setEndOfMonth(date) {
+            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
         },
     }
 }

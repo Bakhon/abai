@@ -3,8 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\PermissionSection;
 
-class AddPermissionForGeoMapping extends Migration
+class AddPermissionForGeoMatching extends Migration
 {
     /**
      * Run the migrations.
@@ -59,6 +60,14 @@ class AddPermissionForGeoMapping extends Migration
                 );
             }
         }
+
+        PermissionSection::create(
+            [
+                'code' => 'geo_mapping',
+                'title_trans' => 'bd.forms.geo_mapping.title',
+                'module' => 'bigdata'
+            ]
+        );
     }
 
     /**

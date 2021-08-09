@@ -16,10 +16,16 @@ use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
+use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
+use App\Models\BigData\Dictionaries\GeoRockType;
+use App\Models\BigData\Dictionaries\GisKind;
+use App\Models\BigData\Dictionaries\GisMethod;
+use App\Models\BigData\Dictionaries\GisMethodType;
 use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\IsoMaterialType;
+use App\Models\BigData\Dictionaries\LabResearchType;
 use App\Models\BigData\Dictionaries\NoBtmReason;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\PackerType;
@@ -28,6 +34,7 @@ use App\Models\BigData\Dictionaries\PerforatorType;
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
+use App\Models\BigData\Dictionaries\SaturationType;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateType;
@@ -38,16 +45,11 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
-use App\Models\BigData\Dictionaries\GisMethodType;
-use App\Models\BigData\Dictionaries\SaturationType;
-use App\Models\BigData\Dictionaries\GeoRockType;
-use App\Models\BigData\Dictionaries\Geo;
-use App\Models\BigData\Dictionaries\GisKind;
-use App\Models\BigData\Dictionaries\GisMethod;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 
 class DictionaryService
@@ -208,6 +210,10 @@ class DictionaryService
         'gis_methods' => [
             'class' => GisMethod::class,
             'name_field' => 'name_ru'
+        ],
+        'lab_research_type' => [
+            'class' => LabResearchType::class,
+            'name_field' => 'name_ru'
         ]
     ];
 
@@ -252,7 +258,7 @@ class DictionaryService
                     $dict = $this->getEquipTypeCascDict();
                     break;
                 case 'geo_type_hrz':
-                    $dict = $this->getGeoTypeDict();
+                    $dict = $this->getGeoHorizonDict();
                     break;    
                 default:
                     throw new DictionaryNotFound();
@@ -283,12 +289,18 @@ class DictionaryService
         $dictClass = self::DICTIONARIES[$dict]['class'];
         $nameField = self::DICTIONARIES[$dict]['name_field'] ?? 'name';
 
-        return $dictClass::query()
+        $query = $dictClass::query()
             ->select('id')
             ->selectRaw("$nameField as name")
-            ->orderBy('name', 'asc')
-            ->get()
-            ->toArray();
+            ->orderBy('name', 'asc');
+
+        if (Schema::connection('tbd')->hasColumn((new $dictClass)->getTable(), 'code')) {
+            $query->selectRaw('code');
+        }
+
+        $result = $query->get()->toArray();
+
+        return $result;
     }
 
     private function getTreeDict(string $dict): array
@@ -376,25 +388,32 @@ class DictionaryService
             ->toArray();
     }
 
-    private function getGeoTypeDict()
+    private function getGeoHorizonDict()
     {
-        $dictClass = self::DICTIONARIES['geo_type']['class'];
-        $nameField = self::DICTIONARIES['geo_type']['name_field'] ?? 'name';
-        
-        return $dictClass::query()
-            ->select('id')
-            ->selectRaw("$nameField as name")
-            ->where(
-                'parent',
-                function ($query) {
-                    return $query->select('id')
-                        ->from('dict.geo_type')
-                        ->where('code', 'HRZ')
-                        ->limit(1);
+        $items = DB::connection('tbd')
+            ->table('dict.geo as g')
+            ->select('g.id', 'g.name_ru as name', 'gp.parent as parent')
+            ->where('gt.code', 'HRZ')
+            ->distinct()
+            ->orderBy('parent', 'asc')
+            ->orderBy('name', 'asc')
+            ->join('dict.geo_type as gt', 'g.geo_type', 'gt.id')
+            ->leftJoin(
+                'dict.geo_parent as gp',
+                function ($join) {
+                    $join->on('gp.geo', '=', 'g.id');
+                    $join->on('gp.dbeg', '<=', DB::raw("NOW()"));
+                    $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }
             )
-            ->orderBy('name', 'asc')
             ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
             ->toArray();
+
+        return $items;
     }
 }

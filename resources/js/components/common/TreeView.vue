@@ -160,7 +160,7 @@ export default {
       if(typeof node.children === 'undefined') {
         await this.handleClick(node);
       }
-      if(!isHaveChildren(node)) {
+      if(!this.isHaveChildren(node)) {
         await this.getWells(node);
         this.updateThisComponent();
       }
@@ -170,7 +170,7 @@ export default {
       }
     },
     updateChildren: async function(node, level) {
-      if(!isHaveChildren(node)) return;
+      if(!this.isHaveChildren(node)) return;
       let content = this.markedNodes[level+1];
       let val = this.markedNodes[level][node.id];
       for(let child of node.children) {
@@ -179,7 +179,7 @@ export default {
       }
     },
     updateNextLevelNodes: async function() {
-      if(!isHaveChildren(this.node)) return;
+      if(!this.isHaveChildren(this.node)) return;
       let content = this.markedNodes[level+1];
       let val = this.markedNodes[level][node.id];
       for(let child of this.node.children) {

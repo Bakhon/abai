@@ -11,7 +11,6 @@ import VueTableDynamic from 'vue-table-dynamic';
 import Vue from 'vue';
 
 import BootstrapVue from 'bootstrap-vue';
-
 import 'bootstrap-table/dist/bootstrap-table.js';
 import 'bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
@@ -28,6 +27,8 @@ import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 import Paginate from 'vuejs-paginate';
+import Vuelidate from 'vuelidate';
+
 //Mixins
 import showToast from '~/mixins/showToast';
 import {currentUrlPage, urlLink} from "./components/geology/js/utils";
@@ -47,6 +48,7 @@ Vue.use(columnSortable);
 Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
 Vue.component('paginate', Paginate);
+Vue.use(Vuelidate)
 
 Vue.mixin(showToast);
 
@@ -162,8 +164,6 @@ Vue.component('tr-sidebar-charts', require('./components/tr/TrSidebarCharts.vue'
 Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
-Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
-Vue.component('tr_mode-table-small', require('./components/tr/TechModeSmall.vue').default);
 Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
 Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
@@ -211,6 +211,7 @@ Vue.component('digital-rating-report', require('./components/DigitalRating/Digit
 Vue.component('admin-user-settings', require('./components/admin/user/Settings.vue').default);
 Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);
 Vue.component('visual-center-daily-approve', require('./components/visualcenter3/importForm/dailyApprove/index.vue').default);
+Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/index.vue').default);
 
 
 Vue.component('project-data', require('./components/DigitalDrilling/ProjectData').default);
@@ -224,11 +225,12 @@ Vue.component('well-casing', require('./components/DigitalDrilling/ProjectData/W
 Vue.component('technical-casing', require('./components/DigitalDrilling/ProjectData/TechnicalCasing').default);
 Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
 
-Vue.prototype.trans = string => _.get(window.i18n, string) || string;
+// Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
 Vue.prototype.$urlLink = url => urlLink(url);
 Vue.prototype.$currentPageUrl = currentUrlPage;
+Vue.prototype.trans = require('./VueTranslation/Translation').default.translate;
 
 
 /**

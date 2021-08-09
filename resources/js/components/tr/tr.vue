@@ -6722,13 +6722,12 @@ tr:nth-child(even) td {
 }
 .select_edit {
   width: 140px;
-  background: #7879a6;
   height: 31px;
-  color: white;
+  color: black;
 }
 .input_edit_modal {
-  background: #7879a6;
-  color: white;
+
+  color: black;
   font-size: 12px;
   height: 31px;
 }

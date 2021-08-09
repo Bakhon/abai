@@ -199,7 +199,6 @@ export default {
         },
       ],
       dt: null,
-      fullWells: [],
       editedWells: [],
       isShowFirst: true,
       isShowSecond: false,
@@ -303,10 +302,10 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           if (response.data) {
             this.wells = data.data;
-            this.fullWells = data.data;
           }
           else {
             console.log("No data");
+            this.wells = data.data;
           }
           if (month < 10) {
             this.dt = "01" + ".0" + month + "." + year;
@@ -443,7 +442,6 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           if (response.data) {
             this.wells = data.data;
-            this.fullWells = data.data;
           }
           else {
             console.log("No data");
@@ -464,7 +462,6 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           if (response.data) {
             this.wells = data.data;
-            this.fullWells = data.data;
           }
           else {
             console.log("No data");
@@ -502,7 +499,6 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           if (response.data) {
             this.wells = data.data;
-            this.fullWells = data.data;
           }
           else {
             console.log("No data");
@@ -554,7 +550,6 @@ export default {
           }
         )
         .then((response) => {
-          this.fullWells = response.data;
           this.editedWells = [];
           this.$store.commit("globalloading/SET_LOADING", false);
           this.isSearched = searchParam ? true : false;
@@ -863,10 +858,8 @@ export default {
           let data = response.data;
           if (data) {
             this.wells = data.data;
-            this.fullWells = data.data;
           } else {
             this.wells = [];
-            this.fullWells = [];
             this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
               title: this.trans('app.error'),
               toaster: "b-toaster-top-center",
@@ -880,8 +873,7 @@ export default {
         .catch((error) => {
           this.isSearched = searchParam ? true : false;
           this.$store.commit("globalloading/SET_LOADING", false);
-          this.wells = [];
-          this.fullWells = [];
+          this.wells = []
           this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
             title: this.trans('app.error'),
             toaster: "b-toaster-top-center",

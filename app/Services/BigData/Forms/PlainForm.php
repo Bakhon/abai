@@ -6,10 +6,12 @@ namespace App\Services\BigData\Forms;
 
 use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Infrastructure\History;
+use App\Services\BigData\DictionaryService;
 use App\Services\BigData\Forms\History\PlainFormHistory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 abstract class PlainForm extends BaseForm
@@ -18,11 +20,18 @@ abstract class PlainForm extends BaseForm
     protected $tableFields;
     protected $tableFieldCodes;
 
+    protected $formFields;
+
     protected $originalData;
     protected $submittedData = [];
 
+
     protected function getFields(): Collection
     {
+        if ($this->formFields) {
+            return $this->formFields;
+        }
+
         $fields = collect();
         foreach ($this->params()['tabs'] as $tab) {
             foreach ($tab['blocks'] as $block) {
@@ -34,6 +43,7 @@ abstract class PlainForm extends BaseForm
             }
         }
 
+        $this->formFields = $fields;
         return $fields;
     }
 
@@ -194,6 +204,72 @@ abstract class PlainForm extends BaseForm
         }
 
         return $result;
+    }
+
+    public function getFormatedParams(): array
+    {
+        $cacheKey = 'bd_forms_' . $this->configurationFileName . '_params';
+        if (Cache::has($cacheKey)) {
+            $params = Cache::get($cacheKey);
+        } else {
+            $params = $this->params();
+            $params = $this->getFormatedFieldDependencies($params);
+            Cache::put($cacheKey, $params, now()->addDay());
+        }
+
+        return $params;
+    }
+
+    protected function getFormatedFieldDependencies(array $params): array
+    {
+        if (empty($params['tabs'])) {
+            return $params;
+        }
+
+        $dictionaryService = app()->make(DictionaryService::class);
+
+        foreach ($params['tabs'] as &$tab) {
+            foreach ($tab['blocks'] as &$block) {
+                foreach ($block as &$subBlock) {
+                    foreach ($subBlock['items'] as &$item) {
+                        if (empty($item['depends_on'])) {
+                            continue;
+                        }
+
+                        $item['depends_on'] = array_map(function ($dependency) use ($dictionaryService) {
+                            if (!is_array($dependency['value'])) {
+                                return $dependency;
+                            }
+
+                            $referencedField = $this->getFields()
+                                ->where('code', $dependency['field'])
+                                ->whereIn('type', ['dict', 'dict_tree'])
+                                ->first();
+
+                            if (empty($referencedField)) {
+                                return [];
+                            }
+
+                            $dict = $dictionaryService->get($referencedField['dict']);
+                            $code = $dependency['value']['code'];
+                            $dictItem = array_filter($dict, function ($item) use ($code) {
+                                return !empty($item['code']) && $item['code'] === $code;
+                            });
+
+                            if (empty($dictItem)) {
+                                return [];
+                            }
+
+                            $dependency['value'] = reset($dictItem)['id'];
+
+                            return $dependency;
+                        }, $item['depends_on']);
+                    }
+                }
+            }
+        }
+
+        return $params;
     }
 
     protected function insertInnerTable(int $id)
