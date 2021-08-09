@@ -80,7 +80,7 @@ export default {
         },
 
         async switchChemistryPeriod(buttonType) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             this.chemistryMonthlyPeriod = "";
             this.chemistryYearlyPeriod = "";
             this.chemistryPeriod = "";
@@ -90,7 +90,7 @@ export default {
             this.isChemistryPeriodSelected = this.isChemistryFewMonthsSelected();
             this.chemistryDetails = await this.getChemistryByMonth();
             this.updateChemistryWidget();
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         },
 
         isChemistryFewMonthsSelected() {

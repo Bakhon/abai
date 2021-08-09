@@ -1,6 +1,8 @@
 import moment from "moment";
 import companyTemplate from './company_template.json';
 import yearlyPlanMapping from './yearly_plan_mapping.json';
+import CatLoader from '@ui-kit/CatLoader';
+import {globalloadingMutations} from '@store/helpers';
 
 export default {
     data: function () {
@@ -731,16 +733,19 @@ export default {
         },
         mouseLeave() {
            this.isModalActive = false;
-        }
+        },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
     },
     async mounted() {
-        this.$store.commit('globalloading/SET_LOADING', true);
+        this.SET_LOADING(true);
         this.productionSummary = await this.getProduction();
         this.planSummary = await this.getPlans();
         this.updatePlanByPeriod();
         this.updateProductionByPeriod();
         this.fillTable();
-        this.$store.commit('globalloading/SET_LOADING', false);
+        this.SET_LOADING(false);
         this.timeouts.firstLoading = setTimeout(() => {
             this.isOpecActive = !this.isOpecActive;
         }, this.timers.opek);
@@ -771,5 +776,8 @@ export default {
                 this.tableOutput.byDzo = this.summary.deliveryByDzo;
             }
         }
+    },
+    components: {
+        CatLoader
     },
 }
