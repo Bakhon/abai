@@ -42,7 +42,8 @@
                     </span>
                     <span @click.stop.prevent="childMenuToggle(index)"
                           class="toggle-btn">
-                        <img width="20" src="/img/icons/arrow.svg" alt="">
+                        <img width="20" src="/img/icons/arrow.svg"
+                             :class="{inverted: !childMenuCollapseList[index].value}" alt="">
                     </span>
                 </a>
                 <div
@@ -212,10 +213,14 @@ export default {
   },
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .toggle-btn {
     width: 180px;
     display: block;
     margin-top: -24px;
+}
+
+.inverted {
+    transform: rotate(-180deg);
 }
 </style>
