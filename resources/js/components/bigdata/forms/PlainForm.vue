@@ -28,12 +28,14 @@
               <div class="bd-main-block__form-block-content">
                 <div
                     v-for="item in subBlock.items"
+                    v-if="isShowField(item)"
                 >
                   <label>{{ item.title }}</label>
                   <bigdata-form-field
                       v-model="formValues[item.code]"
                       :error="errors[item.code]"
                       :item="item"
+                      :key="`field_${item.code}`"
                       v-on:change="validateField($event, item)"
                       v-on:input="callback($event, item)"
                   >
@@ -282,6 +284,19 @@ export default {
         dzo: this.formValues[triggerFieldCode],
         code: dictName
       })
+
+    },
+    isShowField(field) {
+      if (!field.depends_on) return true
+
+      let isShowField = true
+      field.depends_on.forEach(dependency => {
+        if (this.formValues[dependency.field] !== dependency.value) {
+          isShowField = false
+        }
+      })
+
+      return isShowField
 
     },
     validateField: _.debounce(function (e, formItem) {
