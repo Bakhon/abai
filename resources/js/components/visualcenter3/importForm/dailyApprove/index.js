@@ -24,9 +24,8 @@ export default {
     methods: {
         async approve() {
             let queryOptions = {'actualId': this.currentDzo.actualId, 'currentId': this.currentDzo.currentId};
-            console.log(queryOptions);
-            this.currentDzo.processed = true;
-            this.compared[this.currentDzo.index].processed = true;
+            this.currentDzo.isProcessed = true;
+            this.compared[this.currentDzo.index].isProcessed = true;
             this.currentStatus = 'Согласовано';
             this.currentDzo = {};
             let uri = this.localeUrl("/approve-daily-correction", {params:queryOptions});
@@ -34,8 +33,8 @@ export default {
         },
         async decline() {
             let queryOptions = {'currentId': this.currentDzo.currentId};
-            this.currentDzo.processed = true;
-            this.compared[this.currentDzo.index].processed = true;
+            this.currentDzo.isProcessed = true;
+            this.compared[this.currentDzo.index].isProcessed = true;
             this.currentStatus = 'Отменено';
             this.currentDzo = {};
             let uri = this.localeUrl("/decline-daily-correction", {params:queryOptions});

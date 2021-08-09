@@ -16,7 +16,7 @@
                         <div
                                 v-for="(item,index) in compared"
                                 :class="[item.selected ? 'selected-company' : '',
-                                    item.processed ? 'processed-company' : '',
+                                    item.isProcessed ? 'processed-company' : '',
                                     'col-12 row approve-list p-2 mt-1']"
                                 @click="selectCompany(item.dzoName,index)"
                         >
@@ -38,7 +38,7 @@
                         >
                             <span class="col-2 column-title">{{trans('visualcenter.importForm.executor')}}: </span>
                             <span class="column-parameter col-4">{{currentDzo.userName}}</span>
-                            <div v-if="!currentDzo.processed" class="col-6 row justify-content-end">
+                            <div v-if="!currentDzo.isProcessed" class="col-6 row justify-content-end">
                                 <span clas="col-4">Сенсізбай А. Н.</span>
                                 <span class="col-4 menu__button m-1 ml-5 button_approve" @click="approve">{{trans('visualcenter.dailyApprove.approve')}}</span>
                                 <span class="col-3 menu__button m-1 button_decline" @click="decline">{{trans('visualcenter.dailyApprove.cancel')}}</span>
@@ -48,13 +48,13 @@
                             </div>
                             <span class="col-2 column-title">{{trans('visualcenter.importForm.reason')}}: </span>
                             <span class="column-parameter col-4">{{currentDzo.reason}}</span>
-                            <div v-if="!currentDzo.processed" class="col-6 row justify-content-end">
+                            <div v-if="!currentDzo.isProcessed" class="col-6 row justify-content-end">
                                 <span clas="col-4">Кенжебаев Н. Х.</span>
                                 <span class="col-4 menu__button m-1 ml-5 button_approve" @click="approve">{{trans('visualcenter.dailyApprove.approve')}}</span>
                                 <span class="col-3 menu__button m-1 button_decline" @click="decline">{{trans('visualcenter.dailyApprove.cancel')}}</span>
                             </div>
-                            <div v-if="!currentDzo.processed" class="col-6"></div>
-                            <div v-if="!currentDzo.processed" class="col-6 row justify-content-end">
+                            <div v-if="!currentDzo.isProcessed" class="col-6"></div>
+                            <div v-if="!currentDzo.isProcessed" class="col-6 row justify-content-end">
                                 <span clas="col-4">Кутжанов А.А.</span>
                                 <span class="col-4 menu__button m-1 ml-5 button_approve" @click="approve">{{trans('visualcenter.dailyApprove.approve')}}</span>
                                 <span class="col-3 menu__button m-1 button_decline" @click="decline">{{trans('visualcenter.dailyApprove.cancel')}}</span>
