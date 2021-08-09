@@ -67,6 +67,7 @@
 <script>
 import L from 'leaflet';
 import mapsData from './json/dataMap.json';
+import wellsData from './json/dataWells.json';
 import 'leaflet/dist/leaflet.css';
 import BtnDropdown from "./components/BtnDropdown";
 import SettingModal from "./components/SettingModal";
@@ -139,27 +140,27 @@ export default {
         el.y = el.y / 100;
       });
 
-      L.latLng([ mapsData[0]['x'], mapsData[0]['y'] ]);
-
       for(let i = 0; i < mapsData.length; i++) {
         const coordinateStart = xy(mapsData[i]['x'], mapsData[i]['y']);
         const coordinateEnd = xy(mapsData[i]['x'] + 1, mapsData[i]['y'] + 1);
-        let marker = L.rectangle([[coordinateStart], [coordinateEnd]], {
+        let rectangle = L.rectangle([[coordinateStart], [coordinateEnd]], {
           color: mapsData[i]['color'],
           weight: 6,
           fillColor: mapsData[i]['color'],
           fillOpacity: 1,
         }).addTo(map).bindPopup(mapsData[i]['sector'].toString());
-        marker.on('mouseover', function (e) {
+
+        rectangle.on('mouseover', function (e) {
           this.openPopup();
         });
-        marker.on('mouseout', function (e) {
+        rectangle.on('mouseout', function (e) {
           this.closePopup();
         });
-        marker.on('click', (e) => {
+        rectangle.on('click', (e) => {
           this.onMapClick();
         })
       }
+
       map.getBounds().pad(1);
     },
     onMapClick() {
