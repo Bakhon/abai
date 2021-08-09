@@ -66,7 +66,7 @@ export default {
           month_2:  this.$store.state.tr.month_dyn_end,
           day_2:  this.$store.state.tr.day_dyn_end,
           wellName: this.$store.state.tr.wellName,
-
+          isFullVersion: this.$store.state.tr.isFullVersion,
           month: this.$store.state.tr.month,
           year: this.$store.state.tr.year,
 

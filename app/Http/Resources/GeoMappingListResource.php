@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 class GeoMappingListResource extends LasDictionariesResource
 {
-    protected $modelName = 'file_status';
+    protected $modelName = 'geo_mapping';
     protected $link = 'geo-mapping';
 
     /**
@@ -19,7 +19,7 @@ class GeoMappingListResource extends LasDictionariesResource
             'id' => $this->id,
             'fields' => [
                 'name' => $this->name_ru,
-                'geo_name' => $this->geo->name_ru
+                'name_in_abai' => $this->geo->name_ru
             ]
         ];
 

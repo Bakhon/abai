@@ -9,6 +9,7 @@ import TrMultiselect from "./TrMultiselect.vue";
 import CatLoader from "@ui-kit/CatLoader";
 
 import Paginate from 'vuejs-paginate';
+import moment from 'moment';
 Vue.component('paginate', Paginate);
 
 Vue.use(NotifyPlugin);
@@ -198,7 +199,6 @@ export default {
         },
       ],
       dt: null,
-      fullWells: [],
       editedWells: [],
       isShowFirst: true,
       isShowSecond: false,
@@ -249,12 +249,13 @@ export default {
       editPageNumberLink: "techregime_edit_page_numbers/",
       searchLink: "techregime_totals_test_3/",
       editSearchLink: "techregime_edit_page/",
-      selected: 'A',
+      isMaxDate: true,
     };
   },
   methods: {
     loadPage() {
       this.$store.commit("globalloading/SET_LOADING", true);
+      this.$store.commit("tr/SET_VERSION", false);
       this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
       this.$store.commit("tr/SET_SEARCH", this.searchString);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
@@ -264,19 +265,19 @@ export default {
       var yyyy = today.getFullYear();
       var day = today.getDate();
       if(day > 25 && mm < 12) {
-        var mm1 = today.getMonth() + 2;
-        var yyyy1 = today.getFullYear();
+        var month = today.getMonth() + 2;
+        var year = today.getFullYear();
       }
       else if(day > 25 && mm === 12){
-        var mm1 = 1;
-        var yyyy1 = today.getFullYear() + 1;
+        var month = 1;
+        var year = today.getFullYear() + 1;
       }
       else{
-        var mm1 = today.getMonth() + 1;
-        var yyyy1 = today.getFullYear();
+        var month = today.getMonth() + 1;
+        var year = today.getFullYear();
       }
-      this.$store.commit("tr/SET_MONTH", mm);
-      this.$store.commit("tr/SET_YEAR", yyyy);
+      this.$store.commit("tr/SET_MONTH", month);
+      this.$store.commit("tr/SET_YEAR", year);
       this.isDynamic = false;
       this.$store.commit("tr/SET_IS_DYNAMIC", "false");
       this.$store.commit("tr/SET_FIELD", []);
@@ -301,15 +302,15 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           if (response.data) {
             this.wells = data.data;
-            this.fullWells = data.data;
           }
           else {
             console.log("No data");
+            this.wells = data.data;
           }
-          if (mm1 < 10) {
-            this.dt = "01" + ".0" + mm1 + "." + yyyy1;
+          if (month < 10) {
+            this.dt = "01" + ".0" + month + "." + year;
           } else {
-            this.dt = "01" + "." + mm1 + "." + yyyy1;
+            this.dt = "01" + "." + month + "." + year;
           }
           this.isPermission = this.params.includes(this.permissionName);
         });
@@ -441,7 +442,6 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           if (response.data) {
             this.wells = data.data;
-            this.fullWells = data.data;
           }
           else {
             console.log("No data");
@@ -462,7 +462,6 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           if (response.data) {
             this.wells = data.data;
-            this.fullWells = data.data;
           }
           else {
             console.log("No data");
@@ -500,7 +499,6 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           if (response.data) {
             this.wells = data.data;
-            this.fullWells = data.data;
           }
           else {
             console.log("No data");
@@ -552,7 +550,6 @@ export default {
           }
         )
         .then((response) => {
-          this.fullWells = response.data;
           this.editedWells = [];
           this.$store.commit("globalloading/SET_LOADING", false);
           this.isSearched = searchParam ? true : false;
@@ -562,7 +559,7 @@ export default {
           this.isShowSecond = true;
           this.$store.commit("tr/SET_MONTH", this.currentMonth);
           this.$store.commit("tr/SET_YEAR", this.currentYear);
-          this.chooseDt();
+          this.chooseDate();
         })
         .catch((error) => {
           console.log(error.data);
@@ -648,7 +645,7 @@ export default {
       this.year = event.target.value;
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
-    chooseDt1() {
+    chooseDynamicDate() {
       const { date1, date2 } = this;
       var choosenDt = date1.split("-");
       var choosenSecDt = date2.split("-");
@@ -659,6 +656,7 @@ export default {
       const yyyy = choosenDt[0];
       const pryyyy = choosenSecDt[0];
       this.is_dynamic = true;
+      this.isMaxDate = false;
       if (choosenSecDt[2] >= choosenDt[2] && choosenSecDt[1] >= choosenDt[1] && choosenSecDt[0] >= choosenDt[0] || choosenSecDt[0] > choosenDt[0]) {
         Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
       } else {
@@ -697,7 +695,7 @@ export default {
         }
       }
     },
-    chooseDt() {
+    chooseDate() {
       this.$store.commit("tr/SET_FIELD", []);
       this.$store.commit("tr/SET_OBJECT", []);
       this.$store.commit("tr/SET_HORIZON", []);
@@ -715,7 +713,11 @@ export default {
         this.dt = "01" + ".0" + this.month + "." + this.selectYear;
       } else {
         this.dt = "01" + "." + this.month + "." + this.selectYear;
-      }
+      };
+      this.checkMaxDate();
+    },
+    checkMaxDate() {
+      this.isMaxDate = moment().format("01.MM.YYYY") === this.dt ? true : false;
     },
     wellAdd() {
       this.$store.commit("globalloading/SET_LOADING", true);
@@ -743,7 +745,7 @@ export default {
       this.isShowFirst = !this.isShowFirst;
       this.isShowSecond = !this.isShowSecond;
       this.isFullTable = !this.isFullTable;
-
+      this.$store.commit("tr/SET_VERSION", this.isFullTable);
     },
     calendarDynamic() {
       this.is_dynamic_calendar = !this.is_dynamic_calendar
@@ -856,10 +858,8 @@ export default {
           let data = response.data;
           if (data) {
             this.wells = data.data;
-            this.fullWells = data.data;
           } else {
             this.wells = [];
-            this.fullWells = [];
             this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
               title: this.trans('app.error'),
               toaster: "b-toaster-top-center",
@@ -873,8 +873,7 @@ export default {
         .catch((error) => {
           this.isSearched = searchParam ? true : false;
           this.$store.commit("globalloading/SET_LOADING", false);
-          this.wells = [];
-          this.fullWells = [];
+          this.wells = []
           this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
             title: this.trans('app.error'),
             toaster: "b-toaster-top-center",

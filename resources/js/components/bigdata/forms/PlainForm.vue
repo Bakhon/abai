@@ -29,12 +29,14 @@
               <div class="bd-main-block__form-block-content">
                 <div
                     v-for="item in subBlock.items"
+                    v-if="isShowField(item)"
                 >
                   <label>{{ item.title }}</label>
                   <bigdata-form-field
                       v-model="formValues[item.code]"
                       :error="errors[item.code]"
                       :item="item"
+                      :key="`field_${item.code}`"
                       v-on:change="validateField($event, item)"
                       v-on:input="callback($event, item)"
                   >
@@ -263,12 +265,14 @@ export default {
       this.getWellPrefix({code: this.params.code, geo: this.formValues[triggerFieldCode]})
           .then(({data}) => {
             for (const tab of this.formParams.tabs) {
-              for (const block of tab.blocks) {
-                for (const item of block.items) {
-                  if (item.code === changeFieldCode) {
-                    item.prefix = data.prefix
+              for (const blocks of tab.blocks) {
+                blocks.forEach(block => {
+                  for (const item of block.items) {
+                    if (item.code === changeFieldCode) {
+                      item.prefix = data.prefix
+                    }
                   }
-                }
+                })
               }
             }
           })
@@ -290,6 +294,19 @@ export default {
           code: dictName
         })
       }
+
+    },
+    isShowField(field) {
+      if (!field.depends_on) return true
+
+      let isShowField = true
+      field.depends_on.forEach(dependency => {
+        if (this.formValues[dependency.field] !== dependency.value) {
+          isShowField = false
+        }
+      })
+
+      return isShowField
 
     },
     validateField: _.debounce(function (e, formItem) {
