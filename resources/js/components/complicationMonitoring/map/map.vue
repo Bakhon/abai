@@ -152,7 +152,7 @@
         :title="trans('monitoring.gu.enter-omg-ngdu-data')"
         :ok-only="true"
     >
-      <guOmgNgduForm :well="selectedGu" />
+      <guOmgNgduForm :gu="selectedGu" />
     </b-modal>
 
     <div v-show="false">

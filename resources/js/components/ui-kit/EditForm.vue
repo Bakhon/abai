@@ -41,8 +41,8 @@
             v-if="field.type == 'number'"
             type="number"
             :step="field.step"
-            :min="validationParamMin(field.name)"
-            :max="validationParamMax(field.name)"
+            :min="validationParamMin(param)"
+            :max="validationParamMax(param)"
             :name="param"
             v-model="formFields[param].value"
             class="form-control"
@@ -62,8 +62,22 @@
         <b-form-invalid-feedback
             v-if="!_.isUndefined(field.required) && field.required"
             id="input-live-feedback"
-            :state="!($v.formFields[param].$dirty && $v.formFields[param].$invalid)">
+            :state="!isRequiredValid(param)">
           {{ trans('validation.required', {attribute: trans(field.label)}) }}
+        </b-form-invalid-feedback>
+
+        <b-form-invalid-feedback
+            v-if="!_.isNull(validationParamMax(param))"
+            id="input-live-feedback"
+            :state="!isMaxValueValid(param)">
+          {{ trans('validation.max.numeric', {attribute: trans(field.label), max: validationParamMax(param)}) }}
+        </b-form-invalid-feedback>
+
+        <b-form-invalid-feedback
+            v-if="!_.isNull(validationParamMin(param))"
+            id="input-live-feedback"
+            :state="!isMinValueValid(param)">
+          {{ trans('validation.min.numeric', {attribute: trans(field.label), min: validationParamMin(param)}) }}
         </b-form-invalid-feedback>
       </div>
     </b-col>
@@ -80,7 +94,7 @@ import moment from "moment";
 import Vue from "vue";
 import {Datetime} from "vue-datetime";
 import 'vue-datetime/dist/vue-datetime.css'
-import {required} from "vuelidate/lib/validators";
+import {required, maxValue, minValue} from "vuelidate/lib/validators";
 
 Vue.use(Datetime)
 
@@ -130,6 +144,15 @@ export default {
       if (!this.$v.$invalid) {
         this.$emit('submit');
       }
+    },
+    isRequiredValid (param) {
+      return (this.$v.formFields[param].value.$dirty && !this.$v.formFields[param].value.required);
+    },
+    isMaxValueValid (param) {
+      return (this.$v.formFields[param].value.$dirty && !this.$v.formFields[param].value.maxValue);
+    },
+    isMinValueValid (param) {
+      return (this.$v.formFields[param].value.$dirty && !this.$v.formFields[param].value.minValue);
     }
   },
   validations() {
@@ -138,13 +161,20 @@ export default {
     };
 
     for (let field in this.formFields) {
-      console.log('field', field);
-      console.log('this.formFields[field]', this.formFields[field]);
+      validationParams.formFields[field] = {value: {}};
+
       if (!_.isUndefined(this.formFields[field].required) && this.formFields[field].required) {
-        validationParams.formFields[field] = {value: {required}};
+        validationParams.formFields[field].value = {required};
+      }
+
+      if (!_.isNull(this.validationParamMax(field))) {
+        validationParams.formFields[field].value.maxValue = maxValue(this.validationParamMax(field));
+      }
+
+      if (!_.isNull(this.validationParamMin(field))) {
+        validationParams.formFields[field].value.minValue = minValue(this.validationParamMin(field));
       }
     }
-    console.log('validationParams', validationParams);
 
     return validationParams;
   },

@@ -443,6 +443,13 @@ class OmgNGDUController extends CrudController
         }
     }
 
+    public function getGuValidationParams (): \Symfony\Component\HttpFoundation\Response
+    {
+        $validationParams = $this->getValidationParams('omgngdu');
+
+        return response()->json($validationParams);
+    }
+
     public function getOmgNgdu (Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $date = $request->input('date');

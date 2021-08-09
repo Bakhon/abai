@@ -78,6 +78,9 @@ Route::group(
                 Route::post('omgngdu/get-omgngdu', 'ComplicationMonitoring\OmgNGDUController@getOmgNgdu')->name(
                     'omgngdu.get-omg-ngdu'
                 );
+                Route::get('omgngdu/validation-params', 'ComplicationMonitoring\OmgNGDUController@getGuValidationParams')->name(
+                    'omgngdu.validation-params'
+                );
 
                 Route::resource('omgngdu', 'ComplicationMonitoring\OmgNGDUController');
 

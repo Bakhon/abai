@@ -12,8 +12,7 @@
 <script>
 import EditForm from '@ui-kit/EditForm';
 import {globalloadingMutations} from '@store/helpers';
-import omgNgduGuformFields from '~/json/formFields/omg_ngdu_gu.json'
-import {required} from "vuelidate/lib/validators";
+import omgNgduGuformFields from '~/json/formFields/omg_ngdu_gu.json';
 
 const averageOilDensity = 853;
 
@@ -32,8 +31,8 @@ export default {
       currentOmgngdu: null
     }
   },
-  beforeCreate: function () {
-    this.axios.get(this.localeUrl("/omgngdu-well/validation-params")).then((response) => {
+   beforeCreate: function () {
+    this.axios.get(this.localeUrl("/omgngdu/validation-params")).then((response) => {
       let validationParams = response.data;
 
       if (!_.isEmpty(validationParams)) {
@@ -113,22 +112,6 @@ export default {
         this.formFields.daily_oil_production.value = ((this.formFields.daily_fluid_production.value * (100 - this.formFields.bsw.value)) / 100) * averageOilDensity / 1000;
       }
     },
-  },
-  validations: {
-    pipe: {
-      gu_id: {
-        required
-      },
-      name: {
-        required
-      },
-      zu_id: {
-        required
-      },
-      type_id: {
-        required
-      }
-    }
-  },
+  }
 }
 </script>
