@@ -28,6 +28,7 @@
               <div class="bd-main-block__form-block-content">
                 <div
                     v-for="item in subBlock.items"
+                    v-if="isShowField(item)"
                 >
                   <label>{{ item.title }}</label>
                   <bigdata-form-field
@@ -282,6 +283,19 @@ export default {
         dzo: this.formValues[triggerFieldCode],
         code: dictName
       })
+
+    },
+    isShowField(field) {
+      if (!field.depends_on) return true
+
+      let isShowField = true
+      field.depends_on.forEach(dependency => {
+        if (this.formValues[dependency.field] !== dependency.value) {
+          isShowField = false
+        }
+      })
+
+      return isShowField
 
     },
     validateField: _.debounce(function (e, formItem) {

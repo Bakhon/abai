@@ -892,7 +892,9 @@ return [
     'month' => 'месяц',
     'month_1' => 'месяца',
     'month_2' => 'месяцев',
+    'month_3' => 'Месяц',
     'year' => 'год',
+    'year_1' => 'Год',
     'all' => 'все',
     'sure_you_want_to_copy' => 'Вы точно хотите скопировать данные из ячейки?',
     'geo_in_abai_system' => 'Месторождения в системе ABAI',
@@ -901,9 +903,12 @@ return [
     'choose_end_date' => 'Выберите конечную дату',
     'load_las' => 'Загрузка las',
     'view' => 'Просмотр главной',
+    'create_report' => 'Создать отчет', 
+    'choose_template' => 'Выбрать шаблон',
     'choose_start_month' => 'Выберите начальный месяц',
     'choose_end_month' => 'Выберите конечный месяц',
     'choose_start_year' => 'Выберите начальный год',
     'choose_end_year' => 'Выберите конечный год',
+    'wells' => 'Скважины',
     'select_company' => 'Выберите компанию'
 ];

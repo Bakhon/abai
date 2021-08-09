@@ -130,7 +130,7 @@
             </div>
             <a
               href="#"
-              @click.prevent="chooseDt"
+              @click.prevent="chooseDate"
               class="btn btn-sm button_form"
               style="margin-left: 15px"
               >{{trans('tr.form')}}</a
@@ -393,8 +393,6 @@ export default {
       filteredWells: [],
       sortType: "asc",
       dt: null,
-      date1: null,
-      fullWells: [],
       filter: null,
       editdtm: null,
       editdty: null,
@@ -1638,7 +1636,7 @@ export default {
     onChangeYear(event) {
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
-    chooseDt() {
+    chooseDate() {
       this.$store.commit("globalloading/SET_LOADING", true);
       this.$store.commit("tr/SET_MONTH", this.month);
       this.$store.commit("tr/SET_YEAR", this.selectYear);
@@ -1659,14 +1657,15 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           let data = response.data;
           if (data) {
-            this.fullWells = data.data;
             this.chartWells = data.data;
             this.chartFilter_field_start = true;
             this.chartFilter_horizon_start = true;
             this.chartFilter_exp_meth_start = true;
             this.chartFilter_object_start = true;
+            console.log(qwerty)
           } else {
             console.log("No data");
+            this.chartWells = [];
           }
         });
     },
@@ -1709,7 +1708,6 @@ export default {
         this.editdtm = mm;
         this.editdty = yyyy;
         if (data) {
-          this.fullWells = data.data;
           this.chartWells = data.data;
         } else {
           console.log("No data");
