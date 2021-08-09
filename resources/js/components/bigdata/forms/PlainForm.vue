@@ -333,8 +333,8 @@ export default {
           display: flex;
           font-size: 14px;
           font-weight: 600;
-          height: 28px;
           margin-right: 15px;
+          min-height: 28px;
           padding: 0 45px;
           @media (max-width: 768px) {
             padding: 0 15px;
