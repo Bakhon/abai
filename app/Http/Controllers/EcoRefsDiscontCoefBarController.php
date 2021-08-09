@@ -12,9 +12,9 @@ use App\Models\EcoRefsRoutesId;
 use App\Models\EcoRefsDiscontCoefBar;
 use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;                                 // here
-use Illuminate\Support\Facades\DB;                                    // here
-use Illuminate\View\View;                                             // here
+use Illuminate\Http\RedirectResponse;                                 
+use Illuminate\Support\Facades\DB;                                    
+use Illuminate\View\View;                                             
 use Maatwebsite\Excel\Facades\Excel;  
 
 class EcoRefsDiscontCoefBarController extends Controller
@@ -154,9 +154,9 @@ class EcoRefsDiscontCoefBarController extends Controller
         foreach ($data as $item) {
             $response[] = [
                 $item->scfa->name,
-                $item->company ? "{$item->created_at} {$item->company->name}" : "",
-                $item->direction ? "{$item->created_at} {$item->direction->name}" : "",
-                $item->route ? "{$item->created_at} {$item->route->name}" : "",
+                $item->company->name,
+                $item->direction->name,
+                $item->route->name,
                 date('Y-m', strtotime($item->date)),
                 $item->barr_coef,
                 $item->discont,

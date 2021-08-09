@@ -2,11 +2,10 @@
 
 namespace App\Imports;
 
-use Carbon\Carbon;
 use App\Models\EcoRefsCompaniesId; 
 use App\Models\EcoRefsDirectionId; 
 use App\Models\EcoRefsRoutesId; 
-use App\Models\EcoRefsDiscontCoefBar;                      // Here
+use App\Models\EcoRefsDiscontCoefBar;                      
 use App\Models\Refs\EcoRefsScFa;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -27,7 +26,6 @@ class EcoRefsDiscontCoefBarImport implements ToModel, WithBatchInserts, WithChun
     const ORG_COLUMN = 'Компания:';
 
     const COLUMNS = [
-        // 'sc_fa' => 0,
         'company_id' => 0,
         'direction_id' => 1,
         'route_id' => 2,

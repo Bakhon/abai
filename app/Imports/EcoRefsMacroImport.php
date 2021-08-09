@@ -2,7 +2,6 @@
 
 namespace App\Imports;
 
-use Carbon\Carbon;
 use App\Models\EcoRefsMacro; 
 use App\Models\Refs\EcoRefsScFa;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -42,9 +41,6 @@ class EcoRefsMacroImport implements ToModel, WithBatchInserts, WithChunkReading
         return new EcoRefsMacro([
             "sc_fa" => $this->scFaId,
             "date" => gmdate("Y-m-d", (($row[0]- 25569) * 86400)),
-            // "date" => Carbon::parse(strtotime(str_replace('/','-','.', $row[0]))),
-            // "date" => Carbon::parse(getValue($row[1]))->format('Y-m-d H:i:s'),
-            // "date" => Carbon::yesterday(),
             "ex_rate_dol" => round($row[1], 2),
             "ex_rate_rub" => round($row[2], 2),
             "inf_end" => round($row[3], 2),

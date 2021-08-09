@@ -88,10 +88,6 @@ Vue.component('vc-upstream-table', require('./components/visualcenter3/UpstreamT
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 
 Vue.component('economic-data-component', require('./components/Economic/data/index.vue').default);
-Vue.component('economic-data-macro-component', require('./components/EcoRefsMacro/data/index.vue').default);
-Vue.component('economic-data-empper-component', require('./components/EcoRefsEmpPer/data/index.vue').default);
-Vue.component('economic-data-discontcoefbar-component', require('./components/EcoRefsDiscontCoefBar/data/index.vue').default);
-Vue.component('economic-data-tarifytn-component', require('./components/EcoRefsEmpPer/data/index.vue').default);
 Vue.component('economic-data-scenario-component', require('./components/Economic/data/scenario.vue').default);
 Vue.component('tech-data-component', require('./components/technical_forecast/data/index.vue').default);
 

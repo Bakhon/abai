@@ -2,13 +2,6 @@
 
 namespace App\Models;
 
-// use App\Models\EcoRefsBranchId;      
-// use App\Models\EcoRefsCompaniesId; 
-// use App\Models\EcoRefsDirectionId; 
-// use App\Models\EcoRefsRoutesId;
-// use App\Models\EcoRefsRouteTnId;      
-// use App\Models\EcoRefsExc;     
-// use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Database\Eloquent\Model;
 
 class EcoRefsTarifyTn extends Model

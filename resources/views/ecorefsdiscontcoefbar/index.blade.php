@@ -22,13 +22,6 @@
             </div>
         </div>
     </div>
-    
-    {{-- <div style="width: 1700px; margin:0 auto;">
-        <div class="col p-4 bg-light" id="app">        
-            <economic-data-discontcoefbar-component></economic-data-discontcoefbar-component>
-        </div>
-    </div> --}}
-
 
     <div class="row justify-content-center" style="margin-top: 75px;">
         <div class="col-md-12">

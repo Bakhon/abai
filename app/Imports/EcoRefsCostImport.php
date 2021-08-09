@@ -29,7 +29,7 @@ class EcoRefsCostImport implements ToModel
         return new CostYear([
             "sc_fa" => $sc_fa -> id,
             "company_id" => $company -> id,
-            "date" => $row[2],
+            "date" => gmdate("Y-m-d", (($row[2]- 25569) * 86400)),,
             "variable" => round($row[56], 5),
             "fix_noWRpayroll" => round($row[57], 5),
             "fix_payroll" => round($row[58], 5),

@@ -85,19 +85,19 @@
                        class="text-primary list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_scenario')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsmacro"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsmacro"
                        class="list-group-item list-group-item-action text-primary">
                         {{__('economic_reference.eco_refs_macro')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsempper"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsempper"
                        class="list-group-item list-group-item-action text-primary">
                         {{__('economic_reference.eco_refs_empper')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsdiscontcoefbar"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsdiscontcoefbar"
                        class="list-group-item list-group-item-action text-primary">
                         {{__('economic_reference.eco_refs_discont_coef_bar')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefstarifytn"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefstarifytn"
                        class="list-group-item list-group-item-action text-primary">
                         {{__('economic_reference.eco_refs_tarify_tn')}}
                     </a>

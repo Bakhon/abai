@@ -23,10 +23,6 @@
         </div>
     </div>
 
-    {{-- <div class="col p-4 bg-light" id="app">
-            <economic-data-macro-component></economic-data-macro-component>
-    </div> --}}
-
     <div class="row justify-content-center" style="margin-top: 75px;">
         <div class="col-md-12">
             <div class="card">

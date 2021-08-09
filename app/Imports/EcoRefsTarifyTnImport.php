@@ -2,7 +2,6 @@
 
 namespace App\Imports;
 
-use Carbon\Carbon;
 use App\Models\EcoRefsBranchId;      
 use App\Models\EcoRefsCompaniesId; 
 use App\Models\EcoRefsDirectionId; 
@@ -36,7 +35,6 @@ class EcoRefsTarifyTnImport implements ToModel, WithBatchInserts, WithChunkReadi
     const ORG_COLUMN = 'Компания:';
 
     const COLUMNS = [
-        // 'sc_fa' => 0,
         'branch_id' => 0,
         'company' => 1,
         'direction_id' => 2,
