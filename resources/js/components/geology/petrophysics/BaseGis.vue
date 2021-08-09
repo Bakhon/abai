@@ -23,19 +23,21 @@
       </div>
     </div>
     <div class="main_graph mb-2">
-      <component :is="getGraphComponents[0]" />
+      <keep-alive>
+        <component v-bind="getGraphComponents[0]" />
+      </keep-alive>
     </div>
     <div class="d-flex">
       <ToolBlock class="mr-3">
         <template #header>
           <div class="d-flex align-items-center justify-content-between">
             <h5 class="mr-2">Значения</h5>
-            <Button @click="activeGraph = getGraphComponents[1].name" i-width="10" i-height="10" color="transparent"
+            <Button @click="activeGraph = getGraphComponents[1].id" i-width="10" i-height="10" color="transparent"
                     icon="rectArrow" size="small" />
           </div>
         </template>
         <div class="secondary__graph">
-          <component :is="getGraphComponents[1]" />
+          <component v-bind="getGraphComponents[1]" />
         </div>
       </ToolBlock>
       <div class="info__grid">
@@ -135,12 +137,14 @@ import AwIcon from "../components/icons/AwIcon";
 import ListOfWells from "./modals/ListOfWells";
 import TableSettings from "./modals/TableSettings";
 import CrossPlot from "./modals/CrossPlot";
-import graph1 from "./graphics/graph1";
 import graph2 from "./graphics/graph2";
+import curve from "../demo_json/curve.json";
+import GisGraph from "./graphics/gisGraph/GisGraph";
 
 export default {
   name: "Geology-Page",
   components: {
+    GisGraph,
     Button,
     dropdown,
     ToolBlock,
@@ -150,14 +154,20 @@ export default {
     TableSettings,
     CrossPlot,
     AwTree,
-    graph1
   },
   data() {
     return {
-      activeGraph: "graph1",
+      activeGraph: "GisGraph",
       graphComponents: [
-        graph1,
-        graph2,
+        {
+          id: 1,
+          is: GisGraph,
+          graphData: curve
+        },
+        {
+          id: 2,
+          is: graph2,
+        },
       ],
       dropdownValue: {
         value: null,
@@ -215,9 +225,9 @@ export default {
   },
   computed: {
     getGraphComponents() {
-      return this.graphComponents.sort(e => e.name === this.activeGraph ? -1 : 1);
+      return this.graphComponents.sort(e => e.id === this.activeGraph ? -1 : 1);
     }
-  },
+  }
 }
 </script>
 
@@ -290,10 +300,12 @@ export default {
     object-fit: cover;
   }
 }
+
 //!TODO Поменять стили после создания графиков
-.secondary__graph{
+.secondary__graph {
   min-width: 560px;
-  img{
+
+  img {
     display: block;
     width: 100%;
     height: 100%;
