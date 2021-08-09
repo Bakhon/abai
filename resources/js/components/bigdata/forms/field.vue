@@ -216,7 +216,7 @@ export default {
       if (this.item.prefix) {
         if (value && value.length <= this.item.prefix.length) return this.item.prefix
 
-        if (value && value.indexOf(this.item.prefix) === 0) {
+        if (value) {
           value = value.replace(this.item.prefix, '')
         }
 

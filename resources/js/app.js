@@ -164,8 +164,6 @@ Vue.component('tr-sidebar-charts', require('./components/tr/TrSidebarCharts.vue'
 Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
-Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
-Vue.component('tr_mode-table-small', require('./components/tr/TechModeSmall.vue').default);
 Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
 Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
@@ -213,6 +211,7 @@ Vue.component('digital-rating-report', require('./components/DigitalRating/Digit
 Vue.component('admin-user-settings', require('./components/admin/user/Settings.vue').default);
 Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);
 Vue.component('visual-center-daily-approve', require('./components/visualcenter3/importForm/dailyApprove/index.vue').default);
+Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/index.vue').default);
 
 
 Vue.component('project-data', require('./components/DigitalDrilling/ProjectData').default);

@@ -22,16 +22,21 @@
         </Button>
       </div>
     </div>
-    <img class="mb-2" src="/images/geology/demo.graph.svg" alt="" />
+    <div class="main_graph mb-2">
+      <component :is="getGraphComponents[0]" />
+    </div>
     <div class="d-flex">
       <ToolBlock class="mr-3">
         <template #header>
           <div class="d-flex align-items-center justify-content-between">
             <h5 class="mr-2">Значения</h5>
-            <Button i-width="10" i-height="10" color="transparent" icon="rectArrow" size="small" />
+            <Button @click="activeGraph = getGraphComponents[1].name" i-width="10" i-height="10" color="transparent"
+                    icon="rectArrow" size="small" />
           </div>
         </template>
-        <img src="/images/geology/demo.map.svg" alt="" />
+        <div class="secondary__graph">
+          <component :is="getGraphComponents[1]" />
+        </div>
       </ToolBlock>
       <div class="info__grid">
         <div class="info__grid__item" id="item1">
@@ -42,10 +47,10 @@
                 :selected-value.sync="dropdownValue.value"
                 button-text="Выбор ДЗО"
                 :options="[
-								{ label: 'option 1', value: 1 },
-								{ label: 'option 2', value: 2 },
-								{ label: 'option 3', value: 3 },
-							]"
+                    {label: 'option 1', value: 1},
+                    {label: 'option 2', value: 2},
+                    {label: 'option 3', value: 3}
+                  ]"
             />
             <Button class="geology-l-side__toggle w-100 mb-2" color="accent">
               Выбор месторождения
@@ -68,7 +73,6 @@
           <div class="info-block">
             <div class="info-block__header">
               <h5>Данные по скважине</h5>
-              <Button i-width="10" i-height="10" color="transparent" icon="rectArrow" size="small" />
             </div>
             <div class="info-block__body">
               <div class="info-block__body__content">
@@ -82,7 +86,6 @@
             <template #header>
               <div class="d-flex align-items-center justify-content-between">
                 <h5 class="mr-2">Окно сообщений</h5>
-                <Button i-width="10" i-height="10" color="transparent" icon="rectArrow" size="small" />
               </div>
             </template>
             Дата, время, комментарий
@@ -138,6 +141,9 @@ import AwIcon from "../components/icons/AwIcon";
 import ListOfWells from "./modals/ListOfWells";
 import TableSettings from "./modals/TableSettings";
 import CrossPlot from "./modals/CrossPlot";
+import graph1 from "./graphics/graph1";
+import graph2 from "./graphics/graph2";
+
 export default {
   name: "Geology-Page",
   components: {
@@ -150,9 +156,15 @@ export default {
     TableSettings,
     CrossPlot,
     AwTree,
+    graph1
   },
   data() {
     return {
+      activeGraph: "graph1",
+      graphComponents: [
+        graph1,
+        graph2,
+      ],
       dropdownValue: {
         value: null,
       },
@@ -207,7 +219,12 @@ export default {
       },
     };
   },
-};
+  computed: {
+    getGraphComponents() {
+      return this.graphComponents.sort(e => e.name === this.activeGraph ? -1 : 1);
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -264,10 +281,28 @@ export default {
       margin: 0;
     }
   }
+}
 
-  &__body {
-    &__content {
-    }
+//!TODO Поменять стили после создания графиков
+.main_graph {
+  max-height: 560px;
+  width: 100%;
+  overflow: hidden;
+
+  img {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+//!TODO Поменять стили после создания графиков
+.secondary__graph{
+  min-width: 560px;
+  img{
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 }
 </style>
