@@ -1,6 +1,5 @@
 <template>
   <div class="bd-main-block">
-    <cat-loader v-show="isLoading"/>
     <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
@@ -63,7 +62,7 @@
 import Vue from "vue";
 import BigdataFormField from './field'
 import BigdataPlainFormResults from './PlainFormResults'
-import {bdFormActions, bdFormState} from '@store/helpers'
+import {bdFormActions, bdFormState, globalloadingMutations} from '@store/helpers'
 import CatLoader from '@ui-kit/CatLoader'
 
 export default {
@@ -92,8 +91,7 @@ export default {
       errors: {},
       activeTab: 0,
       formValues: {},
-      well: null,
-      isLoading: false
+      well: null
     }
   },
   computed: {
@@ -134,6 +132,9 @@ export default {
     this.init()
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     ...bdFormActions([
       'getGeoDictByDZO',
       'updateForm',
@@ -164,7 +165,7 @@ export default {
     },
     submit() {
 
-      this.isLoading = true
+      this.SET_LOADING(true)
 
       this
           .submitForm({
@@ -208,7 +209,7 @@ export default {
             }
           })
           .finally(() => {
-            this.isLoading = false
+            this.SET_LOADING(false)
           })
     },
     cancel() {
