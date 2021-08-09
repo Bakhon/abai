@@ -314,7 +314,7 @@
                 <td @click="sortBy('h_packer_set')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
                 <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.gc_ob/min')}}</td>
                 <td @click="sortBy('stroke_len')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
-                <td @click="sortBy('spm')" class="th"><i class="fa fa-fw fa-sort">{{trans('tr.swings/min')}}</i></td>
+                <td @click="sortBy('spm')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.swings/min')}}</td>
                 <td @click="sortBy('choke_d')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
 
                 <td @click="sortBy('h_dyn')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
