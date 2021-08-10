@@ -347,7 +347,7 @@
         <tbody class="table_tbody">
             <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{ row_index + 1 }}</td>
-                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.field}} </td>
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}" :colspan="getRowWidthSpan(row)">{{row.field}} </td>
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.rus_wellname}} </td>
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`well_type`), 'activ': isActiveClass(row)}" td class="fixcol">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -811,6 +811,10 @@ export default {
         chooseFilter() {
              this.$emit('filter');
         },
+        getRowWidthSpan (row) {
+            return row.rus_wellname ? 0 : 2;
+
+        },
         isCommentClass (row_index, value) {
         return this.wells &&
             this.wells[row_index] &&
@@ -855,8 +859,8 @@ tr:nth-child(even) {
     top: -1px;
     z-index: 3000;
 }
-.table.table tr .th:first-child {
-    z-index: 3010;
+.table.table tr:not(.notsticky) .th:nth-child(-n + 3) {
+  z-index: 4010;
 }
 .table tr:nth-child(2) .th {
     top: 22px;
@@ -880,20 +884,31 @@ tr:nth-child(even) {
     position: relative;
 }
 
-
-tr td:first-child {
-  position: sticky;
+tr:not(.notsticky) td:nth-child(-n + 3) {
   left: -1px;
+  width: 27px;
+  z-index: 3000;
+  position: sticky;
+}
+tr:not(.notsticky) td:nth-child(2) {
+  left: 23px;
   width: 100px;
-  z-index: 3009;
+  z-index: 3001;
+}
+tr:not(.notsticky) td:nth-child(3) {
+  left: 121px;
+  width: 55;
+  z-index: 3000;
 }
 
 
-tr:nth-child(odd) .fixcol:first-child {
+tr:nth-child(odd) .fixcol:first-child,
+tbody tr:nth-child(odd):not(.notsticky) td:nth-child(-n+3) {
   background-color: #454d7d;
 }
 
-tr:nth-child(even) .fixcol:first-child {
+tr:nth-child(even) .fixcol:first-child,
+tbody tr:nth-child(even):not(.notsticky) td:nth-child(-n+3) {
   background-color: #26336f;
 }
 
