@@ -54,4 +54,9 @@ return array (
   'markCandidate' => 'Отметить кандидат',
   'agreeCandidate' => 'Согласовать кандидат',
   'sectorNumber' => 'Номер сектора',
+  'injectionPressure' => 'Давление закачки',
+  'distance' => 'Расстояние',
+  'throttleResponse' => 'Приемистость',
+  'stitchDiameter' => 'Диаметр штучера',
+  'horizonNumber' => 'Номер горизонта',
 );

@@ -1642,9 +1642,10 @@ table::-webkit-scrollbar-corner {
   background: #333975;
 }
 .fadropmenu {
-width: calc(100% - 1px);
-background: #1627c4; 
-margin-top: 4px;
+  width: calc(100% - 1px);
+  background: #333975; 
+  margin-top: 4px;
+  z-index: 4876;
 }
 .button_form.button_form {
   background: #333975;
@@ -1689,6 +1690,7 @@ background: #272953;
 color: white;
 border: none;
 padding-right: 8px;
+padding-top: 4px;
 }
 .fatable {
 position: relative;
