@@ -81,8 +81,8 @@ class EcoRefsEmpPerImport implements ToModel, WithBatchInserts, WithChunkReading
             'company_id' =>  $companyId,
             "direction_id" => $directionId,
             "route_id" => $routeId,
-            "date" => gmdate("Y-m-d", (($row[3]- 25569) * 86400)),
-            "emp_per" => round($row[4], 2),
+            "date" => gmdate("Y-m-d", (($row[self::COLUMNS['date']]- 25569) * 86400)),
+            "emp_per" => round($row[self::COLUMNS['emp_per']], 2),
 
         ]);
     }

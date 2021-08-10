@@ -17,12 +17,11 @@ class EcoRefsMacroImport implements ToModel, WithBatchInserts, WithChunkReading
     const ORG_COLUMN = 'Дата:';
 
     const COLUMNS = [
-        'first' => 0,
-        'date' => 1,
-        'ex_rate_dol' => 2,
-        'ex_rate_rub' => 3,
-        'inf_end' => 4,
-        'barrel_world_price' => 5
+        'date' => 0,
+        'ex_rate_dol' => 1,
+        'ex_rate_rub' => 2,
+        'inf_end' => 3,
+        'barrel_world_price' => 4
     ];
 
     function __construct(string $fileName)
@@ -34,17 +33,17 @@ class EcoRefsMacroImport implements ToModel, WithBatchInserts, WithChunkReading
 
     public function model(array $row): ?EcoRefsMacro
     {
-        if (!isset($row[self::COLUMNS['first']]) || ($row[self::COLUMNS['first']] === 'Дата:')) {
+        if (!isset($row[self::COLUMNS['date']]) || ($row[self::COLUMNS['date']] === 'Дата:')) {
             return null;
         }
         
         return new EcoRefsMacro([
             "sc_fa" => $this->scFaId,
-            "date" => gmdate("Y-m-d", (($row[0]- 25569) * 86400)),
-            "ex_rate_dol" => round($row[1], 2),
-            "ex_rate_rub" => round($row[2], 2),
-            "inf_end" => round($row[3], 2),
-            "barrel_world_price" => round($row[4], 2),
+            "date" => gmdate("Y-m-d", (($row[self::COLUMNS['date']]- 25569) * 86400)),
+            "ex_rate_dol" => round($row[self::COLUMNS['ex_rate_dol']], 2),
+            "ex_rate_rub" => round($row[self::COLUMNS['ex_rate_rub']], 2),
+            "inf_end" => round($row[self::COLUMNS['inf_end']], 2),
+            "barrel_world_price" => round($row[self::COLUMNS['barrel_world_price']], 2),
         ]);
         
     }

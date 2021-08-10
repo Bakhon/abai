@@ -126,8 +126,8 @@ class EcoRefsTarifyTnImport implements ToModel, WithBatchInserts, WithChunkReadi
             "route_id" => $routeId,
             "route_tn_id" => $routetnId,
             "exc_id" => $excId,
-            "date" => gmdate("Y-m-d", (($row[6]- 25569) * 86400)),
-            "tn_rate" => round($row[7], 2),
+            "date" => gmdate("Y-m-d", (($row[self::COLUMNS['date']]- 25569) * 86400)),
+            "tn_rate" => round($row[self::COLUMNS['tn_rate']], 2),
 
         ]);
     }

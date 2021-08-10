@@ -15,30 +15,45 @@ class EcoRefsCostImport implements ToModel
      * @return \Illuminate\Database\Eloquent\Model|null
      */
 
+    const COLUMNS = [
+        'first' => 0,
+        'company_id' => 1,
+        "date" => 2,
+        "variable" => 56,
+        "fix_noWRpayroll" =>57,
+        "fix_payroll" => 58,
+        "fix_nopayroll" => 59,
+        "fix" => 60,
+        "gaoverheads" => 61,
+        "wr_nopayroll" => 62,
+        "wr_payroll" => 63,
+        "wo" => 65
+    ];
+
     public function model(array $row)
     {
-        if (!isset($row[0]) or ($row[0] == 'org')) {
+        if (!isset($row[self::COLUMNS['first']]) or ($row[self::COLUMNS['first']] == 'org')) {
             return null;
         }
 
         $source_name = 'EXCEL 2020 ДБиЭИ';
 
         $sc_fa = EcoRefsScFa::where('name', '=', $source_name)->first();
-        $company = EcoRefsCompaniesId::where('name', '=', $row[0])->first();
+        $company = EcoRefsCompaniesId::where('name', '=', $row[self::COLUMNS['first']])->first();
 
         return new CostYear([
             "sc_fa" => $sc_fa -> id,
             "company_id" => $company -> id,
-            "date" => gmdate("Y-m-d", (($row[2]- 25569) * 86400)),,
-            "variable" => round($row[56], 5),
-            "fix_noWRpayroll" => round($row[57], 5),
-            "fix_payroll" => round($row[58], 5),
-            "fix_nopayroll" => round($row[59], 5),
-            "fix" => round($row[60], 5),
-            "gaoverheads" => round($row[61], 5),
-            "wr_nopayroll" => round($row[62], 5),
-            "wr_payroll" => round($row[63], 5),
-            "wo" => round($row[65], 5)
+            "date" => gmdate("Y-m-d", (($row[self::COLUMNS['date']]- 25569) * 86400)),
+            "variable" => round($row[self::COLUMNS['variable']], 5),
+            "fix_noWRpayroll" => round($row[self::COLUMNS['fix_noWRpayroll']], 5),
+            "fix_payroll" => round($row[self::COLUMNS['fix_payroll']], 5),
+            "fix_nopayroll" => round($row[self::COLUMNS['fix_nopayroll']], 5),
+            "fix" => round($row[self::COLUMNS['fix']], 5),
+            "gaoverheads" => round($row[self::COLUMNS['gaoverheads']], 5),
+            "wr_nopayroll" => round($row[self::COLUMNS['wr_nopayroll']], 5),
+            "wr_payroll" => round($row[self::COLUMNS['wr_payroll']], 5),
+            "wo" => round($row[self::COLUMNS['wo']], 5)
         ]);
     }
 }
