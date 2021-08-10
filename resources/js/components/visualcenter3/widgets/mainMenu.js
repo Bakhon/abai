@@ -49,7 +49,7 @@ export default {
             this.lastSelectedCategory = '';
             this.oilCondensateProductionButton = '';
             this.oilCondensateDeliveryButton = '';
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             this.isOpecFilterActive = false;
             this.oilCondensateFilters.isWithoutKMGFilterActive = true;
             this.isOilResidueActive = false;
