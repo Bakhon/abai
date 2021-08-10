@@ -1435,3 +1435,26 @@ li.left-menu-li {
         padding: 0.5rem 0rem;
     }
 }
+
+.ecorefs-header{
+    position: relative;
+    display: flex;
+}
+
+.ecorefs-title{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 0 auto;
+}
+
+.ecorefsmacro-title{
+    position: relative;
+    top: -9px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+}

@@ -1,12 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="container">
         <div class="row justify-content-center">
+            <a href="{{ route('eco_refs_list') }}"
+               class="btn btn-info">
+                {{ __('economic_reference.return_menu') }}
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center mt-5">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header ecorefs-header">
                         <a class="btn btn-success" href="{{ route('ecorefsprocdob.create') }}">+</a>
+                        <div class="ecorefs-title">{{__('economic_reference.eco_refs_proc_dob')}}</div>
                     </div>
                     <div class="card-body">
                         @if ($message = Session::get('success'))
@@ -36,7 +47,7 @@
                                             <a class="btn btn-primary" href="{{ route('ecorefsprocdob.edit',$item->id) }}">{{__('app.edit')}}</a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button>
+                                            <button type="submit" class="btn btn-danger mt-2">{{__('app.delete')}}</button>
                                         </form>
                                     </td>
                                 </tr>
