@@ -1,224 +1,31 @@
 <template>
-  <div class="col-xs-12 col-sm-12 col-md-12 row">
-    <cat-loader />
-    <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>{{ trans('monitoring.gu.gu') }}</label>
-      <div class="form-label-group">
-        <select class="form-control" name="gu_id" v-model="formFields.gu_id" @change="chooseGu">
-          <option v-for="gu in gus" :value="gu.id">{{ gu.name }}</option>
-        </select>
-      </div>
-      <label>{{ trans('app.date') }}</label>
-      <div class="form-label-group">
-        <datetime
-            type="date"
-            v-model="formFields.date"
-            input-class="form-control date"
-            value-zone="Asia/Almaty"
-            zone="Asia/Almaty"
-            :format="{ year: 'numeric', month: 'long', day: 'numeric' }"
-            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-            :hour-step="1"
-            :minute-step="5"
-            :week-start="1"
-            use24-hour
-            auto
-        >
-        </datetime>
-        <input type="hidden" name="date" v-model="formatedDate" class="form-control" placeholder="">
+  <b-col cols=12>
 
-      </div>
-      <label>{{ trans('monitoring.omgngdu_well.fields.pressure') }}</label>
-      <div class="form-label-group">
-        <input
-            v-model="formFields.pressure"
-            type="number"
-            step="0.0001"
-            :min="validationParams.pressure.min"
-            :max="validationParams.pressure.max"
-            name="pressure"
-            class="form-control"
-            placeholder=""
-        >
-      </div>
-      <label>{{ trans('monitoring.omgngdu_well.fields.bsw') }}</label>
-      <div class="form-label-group">
-        <input
-            v-model="formFields.bsw"
-            @input="calculateFluidParams"
-            type="number"
-            step="0.0001"
-            :min="validationParams.bsw.min"
-            :max="validationParams.bsw.max"
-            name="bsw"
-            class="form-control"
-            placeholder=""
-        >
-      </div>
-      <label>{{ trans('monitoring.omgngdu_well.fields.temperature') }}</label>
-      <div class="form-label-group">
-        <input
-            v-model="formFields.temperature"
-            type="number"
-            step="0.0001"
-            :min="validationParams.temperature.min"
-            :max="validationParams.temperature.max"
-            name="temperature"
-            class="form-control"
-            placeholder=""
-        >
-      </div>
-
-      <label>{{ trans('monitoring.omgngdu_well.fields.sg_oil') }}</label>
-      <div class="form-label-group">
-        <input
-            v-model="formFields.sg_oil"
-            type="number"
-            step="0.01"
-            :min="validationParams.sg_oil.min"
-            :max="validationParams.sg_oil.max"
-            name="sg_oil"
-            class="form-control"
-            placeholder=""
-        >
-      </div>
-    </div>
-
-    <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>{{ trans('monitoring.ngdu') }}</label>
-      <div class="form-label-group">
-        <select class="form-control" name="ngdu_id" v-model="formFields.ngdu_id" @change="chooseNgdu($event)">
-          <option v-for="ngdu in ngdus" v-bind:value="ngdu.id">{{ ngdu.name }}</option>
-        </select>
-      </div>
-      <label>ЗУ</label>
-      <div class="form-label-group">
-        <select class="form-control" name="zu_id" v-model="formFields.zu_id" @change="chooseZu">
-          <option v-for="zu in zus" v-bind:value="zu.id">{{ zu.name }}</option>
-        </select>
-      </div>
-      <label>{{ trans('monitoring.omgngdu_well.fields.daily_fluid_production') }}</label>
-      <div class="form-label-group">
-        <input
-            v-model="formFields.daily_fluid_production"
-            @input="calculateFluidParams"
-            type="number"
-            step="0.0001"
-            :min="validationParams.daily_fluid_production.min"
-            :max="validationParams.daily_fluid_production.max"
-            name="daily_fluid_production"
-            class="form-control"
-            placeholder=""
-        >
-      </div>
-      <label>{{ trans('monitoring.omgngdu_well.fields.daily_oil_production') }}</label>
-      <div class="form-label-group">
-        <input
-            v-model="formFields.daily_oil_production"
-            @input="calculateFluidParams"
-            type="number"
-            step="0.0001"
-            :min="validationParams.daily_oil_production.min"
-            :max="validationParams.daily_oil_production.max"
-            name="daily_oil_production"
-            class="form-control"
-            placeholder=""
-        >
-      </div>
-
-      <label>{{ trans('monitoring.omgngdu_well.fields.sg_gas') }}</label>
-      <div class="form-label-group">
-        <input
-            v-model="formFields.sg_gas"
-            type="number"
-            step="0.01"
-            :min="validationParams.sg_gas.min"
-            :max="validationParams.sg_gas.max"
-            name="sg_gas"
-            class="form-control"
-            placeholder=""
-        >
-      </div>
-    </div>
-
-    <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>{{ trans('monitoring.cdng') }}</label>
-      <div class="form-label-group">
-        <select class="form-control" name="cdng_id" v-model="formFields.cdng_id" @change="chooseCdng($event)">
-          <option v-for="cdng in cdngs" v-bind:value="cdng.id">{{ cdng.name }}</option>
-        </select>
-      </div>
-      <label>{{ trans('monitoring.well.well') }}</label>
-      <div class="form-label-group">
-        <select class="form-control" name="well_id" v-model="formFields.well_id">
-          <option v-for="well in wells" v-bind:value="well.id">{{ well.name }}</option>
-        </select>
-      </div>
-      <label>{{ trans('monitoring.omgngdu_well.fields.gas_factor') }}</label>
-      <div class="form-label-group">
-        <input
-            v-model="formFields.gas_factor"
-            type="number"
-            step="0.0001"
-            :min="validationParams.gas_factor.min"
-            :max="validationParams.gas_factor.max"
-            name="gas_factor"
-            class="form-control"
-            placeholder=""
-        >
-      </div>
-      <label>{{ trans('monitoring.omgngdu_well.fields.daily_water_production') }}</label>
-      <div class="form-label-group">
-        <input
-            v-model="formFields.daily_water_production"
-            @input="calculateFluidParams"
-            type="number"
-            step="0.0001"
-            :min="validationParams.daily_water_production.min"
-            :max="validationParams.daily_water_production.max"
-            name="daily_water_production"
-            class="form-control"
-            placeholder=""
-        >
-      </div>
-
-      <label>{{ trans('monitoring.omgngdu_well.fields.sg_water') }}</label>
-      <div class="form-label-group">
-        <input
-            v-model="formFields.sg_water"
-            type="number"
-            step="0.01"
-            :min="validationParams.sg_water.min"
-            :max="validationParams.sg_water.max"
-            name="sg_water"
-            class="form-control"
-            placeholder=""
-        >
-      </div>
-
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-      <button type="submit" :disabled="!formFields.date" class="btn btn-success" @click.prevent="submitForm">{{ trans('app.save') }}</button>
-    </div>
-  </div>
+    <EditForm
+        :formFields="formFields"
+        :validationParams="validationParams"
+        :formObject="omgngduWell"
+        :selectsOptions="selectsOptions"
+        @selectDate="getOmgNgduData"
+        @changeWell="getOmgNgduData"
+        @changeZu="changeZu"
+        @submit="storeOmgNgdu"
+        @dailyProductionInput="calculateFluidParams"
+    />
+  </b-col>
 </template>
 
 <script>
-import Vue from 'vue'
-import {Datetime} from 'vue-datetime'
-import moment from 'moment'
-import 'vue-datetime/dist/vue-datetime.css'
 import {complicationMonitoringState, complicationMonitoringActions, globalloadingMutations} from '@store/helpers';
-import CatLoader from '@ui-kit/CatLoader';
-
-Vue.use(Datetime)
+import omgNgduWellformFields from '~/json/formFields/omg_ngdu_well.json';
+import EditForm from '@ui-kit/EditForm';
 
 const averageOilDensity = 853;
 
 export default {
   name: "omgngdu-well-form",
   props: {
-    omgngduWell: {
+    omgngduWellProp: {
       type: Object,
       default: null
     },
@@ -226,154 +33,130 @@ export default {
       type: Object,
       required: true,
     },
-    isEditing: {
-      type: Boolean,
-      default: false
-    },
   },
   components: {
-    CatLoader
+    EditForm
   },
   data: function () {
     return {
-      formFields: {
-        gu_id: null,
-        date: null,
-        bsw: null,
-        daily_water_production: null,
-        ngdu_id: null,
-        zu_id: null,
-        daily_fluid_production: null,
-        temperature: null,
-        daily_oil_production: null,
-        cdng_id: null,
-        well_id: null,
-        pressure: null,
-        gas_factor: null,
-        sg_oil: 0.86,
-        sg_gas: 0.75,
-        sg_water: 1.03,
-      },
+      formFields: _.cloneDeep(omgNgduWellformFields),
+      omgngduWell: this.omgngduWellProp
     }
   },
   computed: {
     ...complicationMonitoringState([
       'zus',
-      'gus',
-      'ngdus',
-      'cdngs',
       'wells'
     ]),
-    formatedDate() {
-      if (this.formFields.date) {
-        return moment.parseZone(this.formFields.date).format('Y-m-d')
+    selectsOptions() {
+      return {
+        zus: this.zus,
+        wells: this.wells,
       }
-      return null
     },
-    requestUrl () {
-      return this.isEditing ? this.localeUrl("/omgngdu-well/" + this.omgngduWell.id) : this.localeUrl("/omgngdu-well");
+    requestUrl() {
+      return this.omgngduWell && this.omgngduWell.id ? this.localeUrl("/omgngdu-well/" + this.omgngduWell.id) : this.localeUrl("/omgngdu-well");
     },
-    requestMethod () {
-      return this.isEditing ? "put" : "post";
+    requestMethod() {
+      return this.omgngduWell && this.omgngduWell.id ? "put" : "post";
     }
   },
   mounted() {
     this.$nextTick(async () => {
       this.SET_LOADING(true);
-      await this.getAllComplicationMonitoringObjects();
+      await this.getAllZus()
+      await this.getAllWells();
+      this.SET_LOADING(false);
 
       if (this.omgngduWell) {
-        this.formFields = {
-          gu_id: this.omgngduWell.zu.gu_id,
-          date: this.omgngduWell.date,
-          bsw: this.omgngduWell.bsw,
-          daily_water_production: this.omgngduWell.daily_water_production,
-          ngdu_id: this.omgngduWell.zu.ngdu_id,
-          zu_id: this.omgngduWell.zu_id,
-          daily_fluid_production: this.omgngduWell.daily_fluid_production,
-          temperature: this.omgngduWell.temperature,
-          daily_oil_production: this.omgngduWell.daily_oil_production,
-          cdng_id: this.omgngduWell.zu.gu.cdng_id,
-          well_id: this.omgngduWell.well_id,
-          pressure: this.omgngduWell.pressure,
-          gas_factor: this.omgngduWell.gas_factor,
-          sg_oil: this.omgngduWell.sg_oil,
-          sg_gas: this.omgngduWell.sg_gas,
-          sg_water: this.omgngduWell.sg_water,
-        }
-
-        this.chooseZu();
+        this.setOmgNgduFormFields(this.omgngduWell)
       }
-      this.SET_LOADING(false);
     });
 
   },
   methods: {
     ...complicationMonitoringActions([
-      'getAllComplicationMonitoringObjects',
-      'getAllNgdus',
-      'getAllGus',
-      'getAllCdngs',
       'getAllZus',
       'getAllWells',
-      'getGuRelations',
-      'getZuRelations',
-      'getNgduRelations',
-      'getCdngRelations'
+      'getZuRelations'
     ]),
     ...globalloadingMutations([
       'SET_LOADING'
     ]),
-    calculateFluidParams () {
-      if (this.formFields.daily_fluid_production && this.formFields.bsw) {
-        this.formFields.daily_water_production = (this.formFields.daily_fluid_production * this.formFields.bsw) / 100;
-        this.formFields.daily_oil_production = ((this.formFields.daily_fluid_production * (100 - this.formFields.bsw)) / 100) * averageOilDensity / 1000;
+    setOmgNgduFormFields(omgngdu_well) {
+      for (let param in this.formFields) {
+        this.formFields[param].value = omgngdu_well[param];
       }
     },
-    async chooseGu() {
+    calculateFluidParams() {
+      if (this.formFields.daily_fluid_production.value && this.formFields.bsw.value) {
+        this.formFields.daily_water_production.value = (this.formFields.daily_fluid_production.value * this.formFields.bsw.value) / 100;
+        this.formFields.daily_oil_production.value = ((this.formFields.daily_fluid_production.value * (100 - this.formFields.bsw.value)) / 100) * averageOilDensity / 1000;
+      }
+    },
+    async changeZu() {
       this.SET_LOADING(true);
-      let gu = await this.getGuRelations(this.formFields.gu_id);
+      await this.getZuRelations(this.formFields.zu_id.value);
       this.SET_LOADING(false);
+    },
+    storeOmgNgdu() {
+      if (!this.formFields.date.value) {
+        return false;
+      }
 
-      this.formFields.ngdu_id = gu.ngdu_id;
-      this.formFields.cdng_id = gu.cdng_id;
-    },
-    async chooseZu() {
-      this.SET_LOADING(true);
-      let zu = await this.getZuRelations(this.formFields.zu_id);
-      this.SET_LOADING(false);
+      let omgngdu = {};
+      for (let param in this.formFields) {
+        omgngdu[param] = this.formFields[param].value;
+      }
 
-      this.formFields.gu_id = zu.gu_id;
-      this.formFields.ngdu_id = zu.ngdu_id;
-      this.formFields.cdng_id = zu.gu.cdng_id;
-    },
-    async chooseNgdu () {
-      this.SET_LOADING(true);
-      await this.getNgduRelations(this.formFields.ngdu_id);
-      this.SET_LOADING(false);
-      this.formFields.gu_id = null;
-    },
-    async chooseCdng () {
-      this.SET_LOADING(true);
-      let cdng = await this.getCdngRelations(this.formFields.cdng_id);
-      this.SET_LOADING(false);
-      this.formFields.ngdu_id = cdng.ngdu_id;
-      this.formFields.gu_id = null;
-    },
-    submitForm () {
       this.SET_LOADING(true);
       this.axios
-          [this.requestMethod](this.requestUrl, this.formFields)
+          [this.requestMethod](this.requestUrl, omgngdu)
           .then((response) => {
             if (response.data.status == 'success') {
               window.location.replace(this.localeUrl("/omgngdu-well"));
             }
+
+          })
+          .finally(() => {
             this.SET_LOADING(false);
           });
-    }
+    },
+    getOmgNgduData() {
+      if (!this.formFields.date.value || !this.formFields.well_id.value) {
+        return false;
+      }
+
+      let params = {
+        date: this.formFields.date.value,
+        well_id: this.formFields.well_id.value
+      };
+
+      this.SET_LOADING(true);
+      this.axios.post(this.localeUrl("/omgngdu-well/get-omgngdu"), params).then((response) => {
+        let omgngdu_well = response.data;
+
+        if (!_.isEmpty(omgngdu_well)) {
+          this.setOmgNgduFormFields(omgngdu_well);
+          this.omgngduWell = omgngdu_well;
+        } else {
+          let date = this.formFields.date.value;
+          let well_id = this.formFields.well_id.value;
+          let zu_id = this.formFields.zu_id.value;
+          this.formFields = _.cloneDeep(omgNgduWellformFields);
+          this.formFields.date.value = date
+          this.formFields.well_id.value = well_id;
+          this.formFields.zu_id.value = zu_id;
+          this.omgngduWell = null;
+        }
+      }).finally(() => {
+        this.SET_LOADING(false);
+      });
+    },
   },
 };
 </script>
+
 <style scoped>
 .form-label-group {
   padding-bottom: 30px;

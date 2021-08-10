@@ -1,20 +1,4 @@
 {
-  "zu_id": {
-    "type": "select",
-    "label": "monitoring.zu.zu",
-    "value": null,
-    "optionsName": "zus",
-    "required": true,
-    "change": "changeZu"
-  },
-  "well_id": {
-    "type": "select",
-    "label": "monitoring.well.well",
-    "value": null,
-    "optionsName": "wells",
-    "required": true,
-    "change": "changeWell"
-  },
   "date": {
     "type": "date",
     "label": "app.date",

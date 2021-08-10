@@ -233,10 +233,9 @@ class ZusController extends CrudController
 
     public function getZuRelations(Request $request): \Symfony\Component\HttpFoundation\Response
     {
-        $zu = Zu::with('wells', 'gu')->find($request->zu_id);
-        $zuManual = ManualZu::with('wells', 'gu')->find($request->zu_id);
-
-        $zu = $zu->merge($zuManual);
+        $zu = $request->zu_id >= 10000 ?
+            ManualZu::with('wells')->find($request->zu_id) :
+            Zu::with('wells')->find($request->zu_id);
 
         return response()->json(
             [

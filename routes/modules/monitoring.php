@@ -92,10 +92,6 @@ Route::group(
 
 
                 Route::get('omgngdu-zu/list', 'ComplicationMonitoring\OmgNGDUZuController@list')->name('omgngdu-zu.list');
-                Route::get('omgngdu-zu/export', 'ComplicationMonitoring\OmgNGDUZuController@export')->name('omgngdu-zu.export');
-                Route::get('omgngdu-zu/history/{omgngdu_zu}', 'ComplicationMonitoring\OmgNGDUZuController@history')->name(
-                    'omgngdu-zu.history'
-                );
                 Route::post('omgngdu-zu/get-omgngdu', 'ComplicationMonitoring\OmgNGDUZuController@getOmgNgdu')->name(
                     'omgngdu-zu.get-omg-ngdu'
                 );

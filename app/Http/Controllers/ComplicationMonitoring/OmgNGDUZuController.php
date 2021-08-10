@@ -130,15 +130,6 @@ class OmgNGDUZuController extends CrudController
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function history(OmgNGDUZu $omgngdu_zu): \Illuminate\View\View
-    {
-        $omgngdu_zu->load('history');
-        return view('complicationMonitoring.omgngdu_zu.history', compact('omgngdu_zu'));
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create(): \Illuminate\View\View
@@ -170,18 +161,6 @@ class OmgNGDUZuController extends CrudController
                 'message' => __('app.created')
             ]
         );
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(int $id)
-    {
-        $omgngdu_zu = OmgNGDUZu::where('id', $id)
-            ->with('zu.gu.ngdu')
-            ->first();
-
-        return view('complicationMonitoring.omgngdu_zu.show', compact('omgngdu_zu'));
     }
 
     /**
@@ -219,9 +198,8 @@ class OmgNGDUZuController extends CrudController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, OmgNGDUZu $omgngdu_zu)
     {
-        $omgngdu_zu = OmgNGDUZu::find($id);
         $omgngdu_zu->delete();
 
         if ($request->ajax()) {

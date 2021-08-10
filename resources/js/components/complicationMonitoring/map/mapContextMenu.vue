@@ -130,6 +130,15 @@ export default {
         });
       }
 
+
+      if (this.clickedObject.type == 'zu') {
+        options.push({
+          name: this.trans('monitoring.add-omg-ngdu-data'),
+          mapObject: this.clickedObject,
+          type: 'showOmgNgduZuForm',
+        });
+      }
+
       if (this.clickedObject.type == 'pipe' &&
           ! _.isUndefined(this.clickedObject.object.hydro_calc_long) &&
           this.clickedObject.object.hydro_calc_long.length)

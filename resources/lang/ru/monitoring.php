@@ -335,6 +335,7 @@ return array (
     'create_title' => 'Ввод данных по ЗУ',
     'edit_title' => 'Редактирование ЗУ',
     'zu' => 'ЗУ',
+    'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ ЗУ',
   ),
   'well_vinit' => 'Cкважину',
   'longitude' => 'Долгота',

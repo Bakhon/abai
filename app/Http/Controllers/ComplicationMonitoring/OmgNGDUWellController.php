@@ -208,7 +208,7 @@ class OmgNGDUWellController extends CrudController
      */
     public function edit(OmgNGDUWell $omgngdu_well): \Illuminate\View\View
     {
-        $omgngdu_well->load('zu.gu');
+        $omgngdu_well->load('zu', 'well');
         $validationParams = $this->getValidationParams('omgngdu_well');
         return view('omgngdu_well.edit', compact('omgngdu_well', 'validationParams'));
     }

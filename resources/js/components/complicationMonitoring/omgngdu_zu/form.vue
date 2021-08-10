@@ -51,12 +51,6 @@ export default {
     selectsOptions() {
       return {zus: this.zus}
     },
-    formatedDate() {
-      if (this.formFields.date) {
-        return moment.parseZone(this.formFields.date).format('Y-m-d')
-      }
-      return null
-    },
     requestUrl() {
       return this.omgngduZu && this.omgngduZu.id ? this.localeUrl("/omgngdu-zu/" + this.omgngduZu.id) : this.localeUrl("/omgngdu-zu");
     },
@@ -152,6 +146,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .form-label-group {
   padding-bottom: 30px;

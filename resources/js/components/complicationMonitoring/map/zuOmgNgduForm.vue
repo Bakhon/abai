@@ -2,7 +2,7 @@
   <EditForm
       :formFields="formFields"
       :validationParams="validationParams"
-      :formObject="well"
+      :formObject="zu"
       @selectDate="getOmgNgduData"
       @submit="storeOmgNgdu"
       @dailyProductionInput="calculateFluidParams"
@@ -12,27 +12,27 @@
 <script>
 import EditForm from '@ui-kit/EditForm';
 import {globalloadingMutations} from '@store/helpers';
-import omgNgduWellformFields from '~/json/formFields/map_omg_ngdu_well.json'
+import omgNgduZuformFields from '~/json/formFields/map_omg_ngdu_zu.json'
 
 const averageOilDensity = 853;
 
 export default {
-  name: "wellOmgNgduForm",
+  name: "zuOmgNgduForm",
   props: {
-    well: Object
+    zu: Object
   },
   components: {
     EditForm
   },
   data: function () {
     return {
-      formFields: _.cloneDeep(omgNgduWellformFields),
+      formFields: _.cloneDeep(omgNgduZuformFields),
       validationParams: {},
-      currentOmgngduWell: null
+      currentOmgngduZu: null
     }
   },
   beforeCreate: function () {
-    this.axios.get(this.localeUrl("/settings/validation-params/omgngdu_well")).then((response) => {
+    this.axios.get(this.localeUrl("/settings/validation-params/omgngdu_zu")).then((response) => {
       let validationParams = response.data;
 
       if (!_.isEmpty(validationParams)) {
@@ -51,29 +51,29 @@ export default {
 
       let params = {
         date: this.formFields.date.value,
-        well_id: this.well.id
+        zu_id: this.zu.id
       };
 
       this.SET_LOADING(true);
-      this.axios.post(this.localeUrl("/omgngdu-well/get-omgngdu"), params).then((response) => {
-        let omgngdu_well = response.data;
+      this.axios.post(this.localeUrl("/omgngdu-zu/get-omgngdu"), params).then((response) => {
+        let omgngdu_zu = response.data;
 
-        if (!_.isEmpty(omgngdu_well)) {
-          this.setOmgNgduParams(omgngdu_well);
-          this.currentOmgngduWell = omgngdu_well;
+        if (!_.isEmpty(omgngdu_zu)) {
+          this.setOmgNgduParams(omgngdu_zu);
+          this.currentOmgngduZu = omgngdu_zu;
         } else {
           let date = this.formFields.date.value;
-          this.formFields = _.cloneDeep(omgNgduWellformFields);
+          this.formFields = _.cloneDeep(omgNgduZuformFields);
           this.formFields.date.value = date;
-          this.currentOmgngduWell = null;
+          this.currentOmgngduZu = null;
         }
 
         this.SET_LOADING(false);
       });
     },
-    setOmgNgduParams(omgngdu_well) {
+    setOmgNgduParams(omgngdu_zu) {
       for (let param in this.formFields) {
-        this.formFields[param].value = omgngdu_well[param];
+        this.formFields[param].value = omgngdu_zu[param];
       }
     },
     storeOmgNgdu() {
@@ -82,18 +82,17 @@ export default {
       }
 
       let omgngdu = {
-        zu_id: this.well.zu_id,
-        well_id: this.well.id,
+        zu_id: this.zu.id,
       };
 
       for (let param in this.formFields) {
         omgngdu[param] = this.formFields[param].value;
       }
 
-      let route = "/omgngdu-well";
+      let route = "/omgngdu-zu";
       let method = 'post';
-      if (this.currentOmgngduWell && this.currentOmgngduWell.id) {
-        route = route + '/' + this.currentOmgngduWell.id;
+      if (this.currentOmgngduZu && this.currentOmgngduZu.id) {
+        route = route + '/' + this.currentOmgngduZu.id;
         method = 'put';
       }
 

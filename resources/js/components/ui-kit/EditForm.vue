@@ -31,6 +31,8 @@
               :week-start="1"
               use24-hour
               auto
+              zone='local'
+              value-zone='local'
               @input="onDateInput(field, param)"
           >
           </datetime>
@@ -124,12 +126,11 @@ export default {
     formFields: {
       deep: true,
       handler(val){
-        console.log('formFields changed ', val);
         if (!_.isUndefined(this.formFields.date)) {
           this.date = this.formFields.date.value;
         }
       }
-    }
+    },
   },
   methods: {
     validationParamMax (field) {
@@ -193,7 +194,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-
-</style>
