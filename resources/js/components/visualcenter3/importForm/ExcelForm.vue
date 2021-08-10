@@ -214,13 +214,13 @@
                     <h2 class="text-center">Необходимо с 5 по 10 число заполнить параметры:</h2>
                     <div class="row justify-content-center mt-4 mx-5">
                         <div
-                                :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
+                                :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : '','col-12 status-block status-block_little menu__button ml-1']"
                                 @click="changeButtonVisibility()"
                         >
                             {{trans('visualcenter.importForm.enterChemistryButton')}}
                         </div>
                         <div
-                                :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1 mt-3']"
+                                :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : '','col-12 status-block status-block_little menu__button ml-1 mt-3']"
                                 @click="changeWellBlockVisibility()"
                         >
                             {{trans('visualcenter.importForm.wellWorkover')}}
