@@ -78,18 +78,18 @@
                                 </div>
                                 <div
                                         v-else
-                                        v-for="(value, name) in item"
-                                        class="col-12 row m-0"
+                                        v-for="(value, fieldName) in item"
+                                        class="col-12 m-0"
                                         v-if="Object.keys(value).length > 0"
                                 >
-                                    <span class="col-3 table_body">{{name}}</span>
                                     <div
-                                            v-for="(field, fieldName) in value"
-                                            class="col-9 table_body row m-0 p-0"
+                                            v-for="(fieldValue, field) in value"
+                                            class="table_body row m-0 p-0"
                                     >
-                                        <span class="col-7 table_body">{{names[fieldName]}}</span>
-                                        <span class="col-3 table_body child-actual">{{field.actualDetail}}</span>
-                                        <span class="col-2 table_body child-current">{{field.currentDetail}}</span>
+                                        <span class="col-3 table_body">{{fieldName}}</span>
+                                        <span class="col-5 table_body">{{names[field]}}</span>
+                                        <span class="col-2 table_body child-actual">{{fieldValue.actualDetail}}</span>
+                                        <span class="col-2 table_body child-current">{{fieldValue.currentDetail}}</span>
                                     </div>
                                 </div>
                             </div>

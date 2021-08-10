@@ -197,25 +197,65 @@
         <modal
                 class="modal-bign-wrapper"
                 name="additionalParamsReminder"
-                draggable=".modal-bign-header"
-                :width="900"
+                :width="720"
                 :height="250"
-                style="background: transparent;"
+                style="background-color: rgba(0, 0, 0, 0.1);"
                 :adaptive="true"
         >
             <div class="modal-bign modal-bign-container">
-                <div class="modal-bign-title modal_header">Напоминание</div>
+                <div class="modal-bign-header">
+                    <div class="modal-bign-title modal_header">Напоминание</div>
+                    <button type="button" class="modal-bign-button" @click="$modal.hide('additionalParamsReminder')">
+                        {{trans('pgno.zakrit')}}
+                    </button>
+                </div>
                 <hr class="solid">
                 <div class="modal_header mt-2">
-                    <h2 class="text-center reminder">Необходимо с "5" по "10" число заполнить параметры:</h2>
-                    <h4 class="ml-2">- Химизация производства</h4>
-                    <h4 class="ml-2">- Ремонт скважин</h4>
-                </div>
-                <div align="center">
-                    <button type="button" class="modal-bign-button" @click="$modal.hide('additionalParamsReminder')">Закрыть</button>
+                    <h2 class="text-center">Необходимо с 5 по 10 число заполнить параметры:</h2>
+                    <div class="row justify-content-center mt-4 mx-5">
+                        <div
+                                :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
+                                @click="changeButtonVisibility()"
+                        >
+                            {{trans('visualcenter.importForm.enterChemistryButton')}}
+                        </div>
+                        <div
+                                :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1 mt-3']"
+                                @click="changeWellBlockVisibility()"
+                        >
+                            {{trans('visualcenter.importForm.wellWorkover')}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </modal>
+<!--        <modal-->
+<!--                class="modal-bign-wrapper"-->
+<!--                name="additionalParamsReminder"-->
+<!--                draggable=".modal-bign-header"-->
+<!--                :width="900"-->
+<!--                :height="350"-->
+<!--                style="background-color: rgba(0, 0, 0, 0.1);"-->
+<!--                :adaptive="true"-->
+<!--        >-->
+<!--            <div class="modal-bign modal-bign-container">-->
+<!--                <div class="modal-bign-title modal_header">Напоминание</div>-->
+<!--                <hr class="solid">-->
+<!--                <div class="modal_header mt-2 row">-->
+<!--                    <h2 class="text-center reminder col-12">Необходимо с 5 по 10 число заполнить параметры:</h2>-->
+<!--                    <div class="col-6 reminder-titles">-->
+<!--                        <h4 class="ml-2">- Химизация производства</h4>-->
+<!--                        <h4 class="ml-2">- Ремонт скважин</h4>-->
+<!--                    </div>-->
+<!--                    <div class="col-6">-->
+<!--                        <img src="/img/visualcenter3/chemistry.jpg">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div align="center">-->
+<!--                    <button type="button" class="modal-bign-button" @click="$modal.hide('additionalParamsReminder')">Закрыть</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </modal>-->
     </div>
 </template>
 
@@ -424,7 +464,8 @@
     hr.solid {
         border-top: 3px solid #bbb;
     }
-    h2.reminder {
-        color: red;
+    .reminder-titles {
+        margin-top: 60px;
     }
+
 </style>
