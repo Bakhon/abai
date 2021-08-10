@@ -5,13 +5,13 @@
                 name="modalMap"
                 draggable=".modal-bign-header"
                 :width="1500"
-                :height="800"
+                :height="700"
                 style="background: transparent;"
                 :adaptive="true"
         >
             <div class="modal-bign modal-bign-container">
                 <div class="modal-bign-header">
-                    <div class="modal-bign-title modal_header">{{kpd.name}}</div>
+                    <div class="modal-bign-title modal_header">{{kpd.name}} {{managerInfo.title}} ({{managerInfo.manager}}) на {{currentYear}} г.</div>
                     <button type="button" class="modal-bign-button" @click="$modal.hide('modalMap')">
                         {{trans('pgno.zakrit')}}
                     </button>
@@ -22,10 +22,10 @@
                                 v-for="(filter,index) in filters"
                                 :class="[selectedFilter === filter ? 'filter_selected' : '',
                                     index === 0 ? 'ml-2' : 'ml-5',
-                                    'd-flex']"
+                                    'd-flex main-buttons p-2']"
                                 @click="handleFilter(index)"
                         >
-                            <img :src="filter.icon" class="mt-2 filter-icon"></img>
+                            <img :src="filter.icon" class="filter-icon"></img>
                             <div class="ml-2">{{filter.name}}</div>
                         </div>
                     </div>
@@ -164,8 +164,9 @@ export default {
             ],
             selectedUnit: null,
             selectedKpd: null,
+            currentYear: new Date().getFullYear(),
             kpd: {
-                'name': 'Карта КПД заместителя председателя правления по разведке и добыче (Марабаев Ж.Н.) на 2021 год',
+                'name': 'Карта КПД',
                 'table': {
                     'headers': [
                         '№ п/п',
@@ -314,11 +315,13 @@ export default {
     background: url(/img/kpd-tree/monitoring.png) no-repeat;
     height: 25px;
     width: 35px;
+    margin-top: -5px;
 }
 .img-export {
     background: url(/img/kpd-tree/export.png) no-repeat;
     height: 25px;
     width: 25px;
+    margin-top: -5px;
 }
 .filter_select {
     background: #1A1D46;
@@ -333,5 +336,11 @@ export default {
 }
 .manager-about {
     margin-top: -15px;
+}
+.main-buttons {
+    line-height: 10px;
+}
+.main-buttons:hover {
+    background: #3A4280;
 }
 </style>

@@ -51,26 +51,14 @@ export default {
                         'Ответственные за достоверность',
                         'Функции'
                     ],
-                    'body': [
-
-                    ]
+                    'body': []
                 }
             },
         };
     },
     async mounted() {
         for (let i=0;i<13;i++) {
-            this.catalog.table.body.push([
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-            ]);
+            this.catalog.table.body.push(Array(9).fill(''));
         }
     }
 }
