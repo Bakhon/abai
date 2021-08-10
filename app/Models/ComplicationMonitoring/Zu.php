@@ -65,4 +65,9 @@ class Zu extends Model
     {
         return $this->hasMany(OmgNGDUWell::class);
     }
+
+    public function omgngdu_zu()
+    {
+        return $this->hasMany(OmgNGDUZu::class);
+    }
 }

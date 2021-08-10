@@ -32,7 +32,7 @@ export default {
     }
   },
   beforeCreate: function () {
-    this.axios.get(this.localeUrl("/omgngdu-well/validation-params")).then((response) => {
+    this.axios.get(this.localeUrl("/settings/validation-params/omgngdu_well")).then((response) => {
       let validationParams = response.data;
 
       if (!_.isEmpty(validationParams)) {

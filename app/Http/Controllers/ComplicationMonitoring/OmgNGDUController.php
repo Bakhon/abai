@@ -177,7 +177,14 @@ class OmgNGDUController extends CrudController
         $omgngdu->cruser_id = auth()->id();
         $omgngdu->save();
 
-        return redirect()->route('omgngdu.index')->with('success', __('app.created'));
+        Session::flash('message', __('app.created'));
+
+        return response()->json(
+            [
+                'status' => config('response.status.success'),
+                'message' => __('app.created')
+            ]
+        );
     }
 
     /**
@@ -240,7 +247,14 @@ class OmgNGDUController extends CrudController
             return redirect()->route('hydro_calculation.index')->with('success', __('app.updated'));
         }
 
-        return redirect()->route('omgngdu.index')->with('success', __('app.updated'));
+        Session::flash('message', __('app.created'));
+
+        return response()->json(
+            [
+                'status' => config('response.status.success'),
+                'message' => __('app.updated')
+            ]
+        );
     }
 
     /**
@@ -441,13 +455,6 @@ class OmgNGDUController extends CrudController
         } else {
             return $lastBackgroundCorrosion;
         }
-    }
-
-    public function getGuValidationParams (): \Symfony\Component\HttpFoundation\Response
-    {
-        $validationParams = $this->getValidationParams('omgngdu');
-
-        return response()->json($validationParams);
     }
 
     public function getOmgNgdu (Request $request): \Symfony\Component\HttpFoundation\Response

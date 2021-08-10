@@ -1,6 +1,6 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
-    <cat-loader v-show="loading"/>
+    <cat-loader />
     <div class="col-xs-12 col-sm-4 col-md-4">
       <label>{{ trans('monitoring.gu.gu') }}</label>
       <div class="form-label-group">
@@ -208,8 +208,8 @@ import Vue from 'vue'
 import {Datetime} from 'vue-datetime'
 import moment from 'moment'
 import 'vue-datetime/dist/vue-datetime.css'
-import {complicationMonitoringState, complicationMonitoringActions} from '@store/helpers';
-import CatLoader from '@ui-kit/CatLoader'
+import {complicationMonitoringState, complicationMonitoringActions, globalloadingMutations} from '@store/helpers';
+import CatLoader from '@ui-kit/CatLoader';
 
 Vue.use(Datetime)
 
@@ -254,7 +254,6 @@ export default {
         sg_gas: 0.75,
         sg_water: 1.03,
       },
-      loading: false,
     }
   },
   computed: {
@@ -280,7 +279,7 @@ export default {
   },
   mounted() {
     this.$nextTick(async () => {
-      this.loading = true;
+      this.SET_LOADING(true);
       await this.getAllComplicationMonitoringObjects();
 
       if (this.omgngduWell) {
@@ -305,7 +304,7 @@ export default {
 
         this.chooseZu();
       }
-      this.loading = false;
+      this.SET_LOADING(false);
     });
 
   },
@@ -322,6 +321,9 @@ export default {
       'getNgduRelations',
       'getCdngRelations'
     ]),
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     calculateFluidParams () {
       if (this.formFields.daily_fluid_production && this.formFields.bsw) {
         this.formFields.daily_water_production = (this.formFields.daily_fluid_production * this.formFields.bsw) / 100;
@@ -329,42 +331,44 @@ export default {
       }
     },
     async chooseGu() {
-      this.loading = true;
+      this.SET_LOADING(true);
       let gu = await this.getGuRelations(this.formFields.gu_id);
-      this.loading = false;
+      this.SET_LOADING(false);
 
       this.formFields.ngdu_id = gu.ngdu_id;
       this.formFields.cdng_id = gu.cdng_id;
     },
     async chooseZu() {
-      this.loading = true;
+      this.SET_LOADING(true);
       let zu = await this.getZuRelations(this.formFields.zu_id);
-      this.loading = false;
+      this.SET_LOADING(false);
 
       this.formFields.gu_id = zu.gu_id;
       this.formFields.ngdu_id = zu.ngdu_id;
       this.formFields.cdng_id = zu.gu.cdng_id;
     },
     async chooseNgdu () {
-      this.loading = true;
+      this.SET_LOADING(true);
       await this.getNgduRelations(this.formFields.ngdu_id);
-      this.loading = false;
+      this.SET_LOADING(false);
       this.formFields.gu_id = null;
     },
     async chooseCdng () {
-      this.loading = true;
+      this.SET_LOADING(true);
       let cdng = await this.getCdngRelations(this.formFields.cdng_id);
-      this.loading = false;
+      this.SET_LOADING(false);
       this.formFields.ngdu_id = cdng.ngdu_id;
       this.formFields.gu_id = null;
     },
     submitForm () {
+      this.SET_LOADING(true);
       this.axios
           [this.requestMethod](this.requestUrl, this.formFields)
           .then((response) => {
             if (response.data.status == 'success') {
               window.location.replace(this.localeUrl("/omgngdu-well"));
             }
+            this.SET_LOADING(false);
           });
     }
   },

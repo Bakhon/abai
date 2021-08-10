@@ -56,7 +56,7 @@
             class="form-control"
             :name="param"
             v-model="formFields[param].value" >
-          <option v-for="option in selectOptions(param)" :value="option.name">{{ option.name }}</option>
+          <option v-for="option in selectOptions(formFields[param].optionsName)" :value="option.id">{{ option.name }}</option>
         </select>
 
         <b-form-invalid-feedback
@@ -113,9 +113,6 @@ export default {
   computed: {
     _() {
       return _;
-    },
-    test() {
-      return this.$v;
     }
   },
   methods: {

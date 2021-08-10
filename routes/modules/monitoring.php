@@ -78,24 +78,29 @@ Route::group(
                 Route::post('omgngdu/get-omgngdu', 'ComplicationMonitoring\OmgNGDUController@getOmgNgdu')->name(
                     'omgngdu.get-omg-ngdu'
                 );
-                Route::get('omgngdu/validation-params', 'ComplicationMonitoring\OmgNGDUController@getGuValidationParams')->name(
-                    'omgngdu.validation-params'
-                );
-
                 Route::resource('omgngdu', 'ComplicationMonitoring\OmgNGDUController');
 
 
                 Route::get('omgngdu-well/list', 'ComplicationMonitoring\OmgNGDUWellController@list')->name(
                     'omgngdu-well.list'
                 );
-                Route::get('omgngdu-well/validation-params', 'ComplicationMonitoring\OmgNGDUWellController@getWellsValidationParams')->name(
-                    'omgngdu-well.validation-params'
-                );
                 Route::post('omgngdu-well/get-omgngdu', 'ComplicationMonitoring\OmgNGDUWellController@getOmgNgdu')->name(
                     'omgngdu-well.get-omg-ngdu'
                 );
 
                 Route::resource('omgngdu-well', 'ComplicationMonitoring\OmgNGDUWellController');
+
+
+                Route::get('omgngdu-zu/list', 'ComplicationMonitoring\OmgNGDUZuController@list')->name('omgngdu-zu.list');
+                Route::get('omgngdu-zu/export', 'ComplicationMonitoring\OmgNGDUZuController@export')->name('omgngdu-zu.export');
+                Route::get('omgngdu-zu/history/{omgngdu_zu}', 'ComplicationMonitoring\OmgNGDUZuController@history')->name(
+                    'omgngdu-zu.history'
+                );
+                Route::post('omgngdu-zu/get-omgngdu', 'ComplicationMonitoring\OmgNGDUZuController@getOmgNgdu')->name(
+                    'omgngdu-zu.get-omg-ngdu'
+                );
+                Route::resource('omgngdu-zu', 'ComplicationMonitoring\OmgNGDUZuController');
+
 
 
                 Route::post(
@@ -169,6 +174,9 @@ Route::group(
                 Route::get('/settings/fields', 'Settings\FieldValidationsController@index')->name('settings.fields');
                 Route::post('/settings/fields', 'Settings\FieldValidationsController@update')->name(
                     'settings.fields.update'
+                );
+                Route::get('/settings/validation-params/{section}', 'Settings\FieldValidationsController@getValidationParams')->name(
+                    'settings.validation-params'
                 );
 
                 Route::get('gus/list', 'ComplicationMonitoring\GusController@list')->name('gus.list');

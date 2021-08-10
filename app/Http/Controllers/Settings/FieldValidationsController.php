@@ -31,4 +31,11 @@ class FieldValidationsController extends Controller
         }
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
+
+    public function getValidationParams ($section): \Symfony\Component\HttpFoundation\Response
+    {
+        $validationParams = $this->getValidationParams($section);
+
+        return response()->json($validationParams);
+    }
 }

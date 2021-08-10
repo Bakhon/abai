@@ -2,26 +2,25 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
-use App\Filters\OmgNGDUWellFilter;
+use App\Filters\OmgNGDUZuFilter;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
-use App\Http\Requests\OmgNGDUWellRequest;
-use App\Http\Resources\OmgNGDUWellListResource;
-use App\Models\ComplicationMonitoring\OmgNGDUWell;
-use App\Models\ComplicationMonitoring\Well;
+use App\Http\Requests\OmgNGDUZuRequest;
+use App\Http\Resources\OmgNGDUZuListResource;
+use App\Models\ComplicationMonitoring\OmgNGDUZu;
 use App\Models\ComplicationMonitoring\Zu;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 
-class OmgNGDUWellController extends CrudController
+class OmgNGDUZuController extends CrudController
 {
     use WithFieldsValidation;
 
-    protected $modelName = 'omgngdu_well';
-    protected $routeParentName = 'omgngdu-well';
+    protected $modelName = 'omgngdu_zu';
+    protected $routeParentName = 'omgngdu-zu';
 
     /**
      * Display a listing of the resource.
@@ -31,19 +30,19 @@ class OmgNGDUWellController extends CrudController
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'list' => route('omgngdu-well.list'),
+                'list' => route('omgngdu-zu.list'),
             ],
-            'title' => trans('monitoring.omgngdu_well.title'),
+            'title' => trans('monitoring.omgngdu_zu.title'),
             'table_header' => [
                 trans('monitoring.selection_node') => 1,
-                trans('monitoring.omgngdu_well.fields.fact_data') => 12,
+                trans('monitoring.omgngdu_zu.fields.fact_data') => 11,
             ],
             'fields' => [
                 'zu' => [
                     'title' => trans('monitoring.zu.zu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => Zu::whereHas('omgngdu_well')
+                        'values' => Zu::whereHas('omgngdu_zu')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -58,24 +57,6 @@ class OmgNGDUWellController extends CrudController
                     ]
                 ],
 
-                'well' => [
-                    'title' => trans('monitoring.well.well'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => Well::whereHas('omgngdu_well')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
 
                 'date' => [
                     'title' => trans('app.date'),
@@ -131,55 +112,55 @@ class OmgNGDUWellController extends CrudController
         $params['model_name'] = $this->modelName;
         $params['filter'] = session($this->modelName.'_filter');
 
-        return view('omgngdu_well.index', compact('params'));
+        return view('complicationMonitoring.omgngdu_zu.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
         parent::list($request);
 
-        $query = OmgNGDUWell::query()
-            ->with('zu', 'well');
+        $query = OmgNGDUZu::query()
+            ->with('zu');
 
-        $omgngdu_well = $this
+        $omgngdu_zu = $this
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(OmgNGDUWellListResource::collection($omgngdu_well)->toJson()));
+        return response()->json(json_decode(OmgNGDUZuListResource::collection($omgngdu_zu)->toJson()));
     }
 
     /**
      * Display the specified resource.
-    */
-    public function history(OmgNGDUWell $omgngdu_well): \Illuminate\View\View
+     */
+    public function history(OmgNGDUZu $omgngdu_zu): \Illuminate\View\View
     {
-        $omgngdu_well->load('history');
-        return view('omgngdu_well.history', compact('omgngdu_well'));
+        $omgngdu_zu->load('history');
+        return view('complicationMonitoring.omgngdu_zu.history', compact('omgngdu_zu'));
     }
 
     /**
      * Show the form for creating a new resource.
-    */
+     */
     public function create(): \Illuminate\View\View
     {
-        $validationParams = $this->getValidationParams('omgngdu_well');
-        return view('omgngdu_well.create', compact('validationParams'));
+        $validationParams = $this->getValidationParams('omgngdu_zu');
+        return view('complicationMonitoring.omgngdu_zu.create', compact('validationParams'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      */
-    public function store(OmgNGDUWellRequest $request): \Symfony\Component\HttpFoundation\Response
+    public function store(OmgNGDUZuRequest $request): \Symfony\Component\HttpFoundation\Response
     {
-        $this->validateFields($request, 'omgngdu_well');
+        $this->validateFields($request, 'omgngdu_zu');
         $input = $request->validated();
         $input['date'] = Carbon::parse($input['date'])->format('Y-m-d');
 
-        $omgngdu_well = new OmgNGDUWell;
-        $omgngdu_well->fill($input);
-        $omgngdu_well->cruser_id = auth()->id();
-        $omgngdu_well->save();
+        $omgngdu_zu = new OmgNGDUZu;
+        $omgngdu_zu->fill($input);
+        $omgngdu_zu->cruser_id = auth()->id();
+        $omgngdu_zu->save();
 
         Session::flash('message', __('app.created'));
 
@@ -196,32 +177,31 @@ class OmgNGDUWellController extends CrudController
      */
     public function show($id)
     {
-        $omgngdu_well = OmgNGDUWell::where('id', $id)
-            ->with('zu.gu.ngdu', 'well')
+        $omgngdu_zu = OmgNGDUZu::where('id', $id)
+            ->with('zu.gu.ngdu')
             ->first();
 
-        return view('omgngdu_well.show', compact('omgngdu_well'));
+        return view('complicationMonitoring.omgngdu_zu.show', compact('omgngdu_zu'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(OmgNGDUWell $omgngdu_well): \Illuminate\View\View
+    public function edit(OmgNGDUZu $omgngdu_zu): \Illuminate\View\View
     {
-        $omgngdu_well->load('zu.gu');
-        $validationParams = $this->getValidationParams('omgngdu_well');
-        return view('omgngdu_well.edit', compact('omgngdu_well', 'validationParams'));
+        $validationParams = $this->getValidationParams('omgngdu_zu');
+        return view('complicationMonitoring.omgngdu_zu.edit', compact('omgngdu_zu', 'validationParams'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(OmgNGDUWellRequest $request, OmgNGDUWell $omgngdu_well): \Symfony\Component\HttpFoundation\Response
+    public function update(OmgNGDUZuRequest $request, OmgNGDUZu $omgngdu_zu): \Symfony\Component\HttpFoundation\Response
     {
-        $this->validateFields($request, 'omgngdu_well');
-        $omgngdu_well->update($request->validated());
-        $omgngdu_well->cruser_id = auth()->id();
-        $omgngdu_well->save();
+        $this->validateFields($request, 'omgngdu_zu');
+        $omgngdu_zu->update($request->validated());
+        $omgngdu_zu->cruser_id = auth()->id();
+        $omgngdu_zu->save();
 
         Session::flash('message', __('app.updated'));
 
@@ -241,30 +221,37 @@ class OmgNGDUWellController extends CrudController
      */
     public function destroy(Request $request, $id)
     {
-        $omgngdu_well = OmgNGDUWell::find($id);
-        $omgngdu_well->delete();
+        $omgngdu_zu = OmgNGDUZu::find($id);
+        $omgngdu_zu->delete();
 
         if ($request->ajax()) {
             return response()->json([], Response::HTTP_NO_CONTENT);
         } else {
-            return redirect()->route('omgngdu-well.index')->with('success', __('app.deleted'));
+            return redirect()->route('omgngdu-zu.index')->with('success', __('app.deleted'));
         }
     }
 
 
     protected function getFilteredQuery($filter, $query = null)
     {
-        return (new OmgNGDUWellFilter($query, $filter))->filter();
+        return (new OmgNGDUZuFilter($query, $filter))->filter();
+    }
+
+    public function getZusValidationParams (): \Symfony\Component\HttpFoundation\Response
+    {
+        $validationParams = $this->getValidationParams('omgngdu_zu');
+
+        return response()->json($validationParams);
     }
 
     public function getOmgNgdu (Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $date = $request->input('date');
-        $well_id = $request->input('well_id');
+        $zu_id = $request->input('zu_id');
 
-        $omgngdu_well = OmgNGDUWell::where('well_id', $well_id)
+        $omgngdu_zu = OmgNGDUZu::where('zu_id', $zu_id)
             ->where('date', $date)->first();
 
-        return response()->json($omgngdu_well);
+        return response()->json($omgngdu_zu);
     }
 }
