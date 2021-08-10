@@ -1,15 +1,21 @@
 {
   "table": "prod.well_workover",
+  "sort": [
+    {
+      "field": "request_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "request",
       "blocks": [
         [
-        {
-          "title": "repair",
-          "items": [
-            {
-              "code":"request_date",
+          {
+            "title": "repair",
+            "items": [
+              {
+                "code": "request_date",
               "type":"date",
               "title":"request_date",
               "validation": "nullable|date|before_or_equal:today"

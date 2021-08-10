@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "drill.well_daily_drill",
+  "sort": [
+    {
+      "field": "date_drill",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main_information",

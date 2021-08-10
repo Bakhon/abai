@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Economic;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\EconomicNrsDataRequest;
 use App\Jobs\ExportEconomicDataToExcel;
+use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use Level23\Druid\Queries\QueryBuilder;
@@ -46,6 +48,8 @@ class EconomicNrsController extends Controller
     const BUILDER_SUM_OPERATING_PROFIT_TOP_LAST_YEAR = 'builder7';
     const BUILDER_OIL_PRODUCTION = 'builder8';
     const BUILDER_SUM_LAST_2_MONTHS = 'builder9';
+
+    const DOLLAR_RATES_URL = 'https://www.nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut/report';
 
     public function __construct(DruidClient $druidClient, StructureService $structureService)
     {
@@ -349,16 +353,15 @@ class EconomicNrsController extends Controller
                 'operatingProfitTop' => $dataWithOperatingProfitTop,
                 'liquidProduction' => $dataWithLiquidProduction,
                 'pausedProfitability' => $dataWithPausedProfitability,
-            ]
+            ],
+            'oilPrices' => self::getOilPrices($intervalMonthsStart, $intervalMonthsEnd),
+            'dollarRates' => self::getDollarRates($intervalMonthsStart, $intervalMonthsEnd),
         ];
     }
 
     public function exportData(EconomicNrsDataRequest $request)
     {
-        self::validateAccess($request->org_id);
-
-        /** @var Org $org */
-        $org = Org::findOrFail($request->org_id);
+        $org = self::getOrg($request->org_id, $this->structureService);
 
         $dpz = $request->field_id
             ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
@@ -396,7 +399,7 @@ class EconomicNrsController extends Controller
 
         $userOrgs = auth()->user()->getUserOrganizations($structureService);
 
-        if (array_search($tbdId, array_column($userOrgs, 'id')) === false) {
+        if (array_search($tbdId, array_column($userOrgs, 'parent_id')) === false) {
             abort(403);
         }
 
@@ -548,5 +551,58 @@ class EconomicNrsController extends Controller
             number_format($digit / 1000000000, 2),
             trans('economic_reference.billion')
         ];
+    }
+
+    static function getOilPrices(Carbon $intervalStart, Carbon $intervalEnd): array
+    {
+        return OilRate::query()
+            ->select([
+                'value',
+                DB::raw('DATE(date) as dt'),
+                DB::raw("DATE_FORMAT(date,'%m-%Y') as dt_month"),
+            ])
+            ->whereBetween('date', [$intervalStart, $intervalEnd])
+            ->oldest('date')
+            ->get()
+            ->toArray();
+    }
+
+    static function getDollarRates(Carbon $intervalStart, Carbon $intervalEnd): array
+    {
+        $rates = [];
+
+        $url = self::DOLLAR_RATES_URL
+            . "?rates%5B%5D=5"
+            . "&beginDate=" . $intervalStart->format('d.m.Y')
+            . "&endDate=" . $intervalEnd->format('d.m.Y');
+
+        try {
+            libxml_use_internal_errors(TRUE);
+
+            $dom = new \DOMDocument();
+
+            $dom->loadHTMLFile($url);
+
+            $xpath = new \DOMXpath($dom);
+
+            $elements = $xpath->query("//table//tbody//tr");
+
+            /** @var \DOMElement $element */
+            foreach ($elements as $element) {
+                $tds = $element->getElementsByTagName('td');
+
+                $dt = Carbon::parse($tds[0]->nodeValue);
+
+                $rates[] = [
+                    'dt' => $dt->format('Y-m-d'),
+                    'dt_month' => $dt->format('Y-m'),
+                    'value' => $tds[2]->nodeValue,
+                ];
+            }
+
+            return $rates;
+        } catch (\Throwable $e) {
+            return [];
+        }
     }
 }

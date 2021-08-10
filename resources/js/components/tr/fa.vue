@@ -55,11 +55,11 @@
           <td class="calheader">{{trans('tr.weekly_fa')}}</td>
           <!-- <form class="form-group but-nav__link"> -->
           <label for="inputDate" class="calinput_date">{{trans('tr.enter_reference_date')}}:</label>
-          <input type="date" class="form-control" v-model="date1" />
+          <input type="date" class="form-control" v-model="firstCalendarDate" />
           <label for="inputDate" class="calinput_date">{{trans('tr.enter_compare_date')}}:</label>
-          <input type="date" class="form-control" v-model="date2" />
+          <input type="date" class="form-control" v-model="secondCalendarDate" />
           <div class="fix_calendar">
-                  <a href="#" @click.prevent="chooseSecDt"  class="btn btn-sm button_form caldate"
+                  <a href="#" @click.prevent="chooseWeeklyDate"  class="btn btn-sm button_form caldate"
                     >{{trans('tr.form')}}</a
                   >
                   <a  class="butchange" @click="calendarDynamic" @click.prevent.stop="() => {}" >
@@ -85,11 +85,11 @@
         >
           <td class="calheader">{{trans('tr.monthly_fa')}}</td>
           <label for="inputDate" class="calinput_date">{{trans('tr.enter_reference_date')}}:</label>
-          <input type="date" class="form-control" v-model="date1" />
+          <input type="date" class="form-control" v-model="firstCalendarDate" />
           <label for="inputDate" class="calinput_date">{{trans('tr.enter_compare_date')}}:</label>
-          <input type="date" class="form-control" v-model="date2" />
+          <input type="date" class="form-control" v-model="secondCalendarDate" />
           <div class="fix_calendar">
-                  <a href="#" @click.prevent="chooseDt"  class="btn btn-sm button_form caldate"
+                  <a href="#" @click.prevent="chooseDate"  class="btn btn-sm button_form caldate"
                     >{{trans('tr.form')}}</a
                   >
                   <a  class="butchange" @click="calendarDynamic" @click.prevent.stop="() => {}" >
@@ -214,7 +214,7 @@
             {{faTableHeader}}
           </td>
           <td v-show= isHide class="colspan" :colspan= colsize7 style="background: #1a2370">
-            {{faTableHeader2}}
+            {{faTableHeaderEnd}}
           </td>
           <td class="colspan" colspan="1" style="background: #12135C">
             {{trans('tr.q_oil_deviation')}}
@@ -1001,6 +1001,7 @@
       </table>
     </div>
     <notifications position="top"></notifications>
+    <cat-loader />
   </div>
 </template>
 <script>
@@ -1013,26 +1014,29 @@ import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
 import columnSortable from 'vue-column-sortable'
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
+import CatLoader from "@ui-kit/CatLoader";
 
 Vue.use(NotifyPlugin, VueMomentLib);
 export default {
   name: "FaPage",
   components: {
+    CatLoader,
     SearchFormRefresh,
     TrMultiselect,
   },
   data: function () {
     return {
+      postApiUrl: process.env.MIX_POST_API_URL,
       faHeader: null,
       wells: [],
       searchString: "",
       isSearched: false,
       sortParam: "",
       sortType: "asc",
-      dt: null,
-      dt2: null,
-      date1: null,
-      date2: null,
+      firstDate: null,
+      secondDate: null,
+      firstCalendarDate: null,
+      secondCalendarDate: null,
       fullWells: [],
       isDynamic: true,
       colsize7: null,
@@ -1058,16 +1062,16 @@ export default {
       isGenHide: true,
       isDatepicker1: true,
       isDatepicker2: false,
-      firstWeekDate: null,
+      lastEndingWeekDate: null,
       factorsMeasure: this.trans('tr.t'),
       qLiquidMeasure: this.trans('tr.m3'),
       prodIndexMeasure: this.trans('tr.m3_day_atm'),
       faTableHeader: null,
-      faTableHeader2: null,
-      firstWeekDate: null,
-      firstWeekDate2: null,
-      secWeekDate: null,
-      secWeekDate2: null,
+      faTableHeaderEnd: null,
+      lastEndingWeekDate: null,
+      lastBeginningWeekDate: null,
+      startEndingWeekDate: null,
+      startBeginningWeekDate: null,
     };
   },
   watch: {
@@ -1136,22 +1140,22 @@ export default {
     getColorTwo(status) {
       if (status === "1") return "#ff0000";
     },
-    chooseSecDt() {
-      const { date1, date2 } = this;
-      var dynamic_date = date1.split("-");
-      var prdynamic_date = date2.split("-");
-      const dd = dynamic_date[2];
-      const mm = dynamic_date[1];
-      const yyyy = dynamic_date[0];
-      const prdd = prdynamic_date[2];
-      const prmm = prdynamic_date[1];
-      const pryyyy = prdynamic_date[0];
-      var firstWeekDate2 = new Date(date1)
-      this.firstWeekDate2 = firstWeekDate2.setDate(firstWeekDate2.getDate()-6);
-      this.firstWeekDate2 = firstWeekDate2.toLocaleDateString();
-      var dt2 = new Date(date2)
-      this.dt2 = dt2.setDate(dt2.getDate()-6);
-      this.dt2 = dt2.toLocaleDateString();
+    chooseWeeklyDate() {
+      const { firstCalendarDate, secondCalendarDate } = this;
+      var dynamic_date = firstCalendarDate.split("-");
+      var prdynamic_date = secondCalendarDate.split("-");
+      const day = dynamic_date[2];
+      const month = dynamic_date[1];
+      const year = dynamic_date[0];
+      const previousDay = prdynamic_date[2];
+      const previousMonth = prdynamic_date[1];
+      const previousYear = prdynamic_date[0];
+      var lastBeginningWeekDate = new Date(firstCalendarDate)
+      this.lastBeginningWeekDate = lastBeginningWeekDate.setDate(lastBeginningWeekDate.getDate()-6);
+      this.lastBeginningWeekDate = lastBeginningWeekDate.toLocaleDateString();
+      var secondDate = new Date(secondCalendarDate)
+      this.secondDate = secondDate.setDate(secondDate.getDate()-6);
+      this.secondDate = secondDate.toLocaleDateString();
       this.colsize7= 7;
       this.colsize2= 2;
       this.isDynamic = true;
@@ -1159,27 +1163,27 @@ export default {
       this.chartLink = "fa_weekly_chart"
       this.$store.commit("fa/SET_IS_DYNAMIC", true);
       this.$store.commit("globalloading/SET_LOADING", true);
-      this.$store.commit("fa/SET_MONTH", mm);
-      this.$store.commit("fa/SET_YEAR", yyyy);
-      this.$store.commit("fa/SET_PR_MONTH", prmm);
-      this.$store.commit("fa/SET_PR_YEAR", pryyyy);
-      this.$store.commit("fa/SET_DAY", dd);
-      this.$store.commit("fa/SET_PR_DAY", prdd);
+      this.$store.commit("fa/SET_MONTH", month);
+      this.$store.commit("fa/SET_YEAR", year);
+      this.$store.commit("fa/SET_PR_MONTH", previousMonth);
+      this.$store.commit("fa/SET_PR_YEAR", previousYear);
+      this.$store.commit("fa/SET_DAY", day);
+      this.$store.commit("fa/SET_PR_DAY", previousDay);
       this.$store.commit("fa/SET_GEN_HIDE", true);
       this.axios
       .get(
-        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor_weekly/" +
-          yyyy +
+        this.postApiUrl + "techregime/factor_weekly/" +
+          year +
           "/" +
-          mm +
+          month +
           "/" +
-          dd +
+          day +
           "/" +
-          pryyyy +
+          previousYear +
           "/" +
-          prmm +
+          previousMonth +
           "/" +
-          prdd +
+          previousDay +
           "/"
         )
         .then((response) => {
@@ -1198,16 +1202,18 @@ export default {
             this.isGenHide= true;
           } 
           else {
+            this.fullWells = [];
+            this.wells = [];
             console.log("No data");
           }
           this.factorsMeasure = this.trans('tr.t');
           this.qLiquidMeasure = this.trans('tr.m3');
           this.prodIndexMeasure = this.trans('tr.m3_day_atm');     
-          this.dt = dd + "." + mm + "." + yyyy;
-          this.secWeekDate = prdd + "." + prmm + "." + pryyyy;
-          this.faTableHeader = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.dt;
-          this.faTableHeader2 = this.trans('tr.period_of_act_data') + this.dt2 + '-' + this.secWeekDate;
-          this.faHeader = this.trans('tr.fa') + ' ' + this.dt2 + '-' + this.dt;
+          this.firstDate = day + "." + month + "." + year;
+          this.startEndingWeekDate = previousDay + "." + previousMonth + "." + previousYear;
+          this.faTableHeader = this.trans('tr.period_of_act_data') + this.lastBeginningWeekDate + '-' + this.firstDate;
+          this.faTableHeaderEnd = this.trans('tr.period_of_act_data') + this.secondDate + '-' + this.startEndingWeekDate;
+          this.faHeader = this.trans('tr.fa') + ' ' + this.secondDate + '-' + this.firstDate;
           this.pbhHeader = this.trans('tr.bottomhole_pressure');
           this.workDaysHeader = this.trans('tr.work_day');
           this.waterCutHeader = this.trans('tr.water_cut');
@@ -1216,53 +1222,50 @@ export default {
 
         });
     },
-    chooseDt() {
-      const { date1, date2 } = this;
-      console.log("dt1-", date1, " dt2-", date2);
-      var choosenDt = date1.split("-");
-      var choosenSecDt = date2.split("-");
-      const mm = choosenDt[1];
-      const prMm = choosenSecDt[1];
-      const yyyy = choosenDt[0];
-      const pryyyy = choosenSecDt[0];
+    chooseDate() {
+      const { firstCalendarDate, secondCalendarDate } = this;
+      var firstDate = firstCalendarDate.split("-");
+      var secondDate = secondCalendarDate.split("-");
+      const month = firstDate[1];
+      const previousMonth = secondDate[1];
+      const year = firstDate[0];
+      const previousYear = secondDate[0];
       this.chartLink = "trfa"
-      if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
+      if (firstDate[1] <= secondDate[1] && firstDate[0] === secondDate[0]) {
         Vue.prototype.$notifyError(this.trans('tr.fa_alarm'));
       } else {
         this.$store.commit("globalloading/SET_LOADING", true);
-        this.$store.commit("fa/SET_MONTH", mm);
-        this.$store.commit("fa/SET_YEAR", yyyy);
-        this.$store.commit("fa/SET_PR_MONTH", prMm);
-        this.$store.commit("fa/SET_PR_YEAR", pryyyy);
+        this.$store.commit("fa/SET_MONTH", month);
+        this.$store.commit("fa/SET_YEAR", year);
+        this.$store.commit("fa/SET_PR_MONTH", previousMonth);
+        this.$store.commit("fa/SET_PR_YEAR", previousYear);
         this.$store.commit("fa/SET_IS_DYNAMIC", false);
         this.$store.commit("fa/SET_COLSIZE7", 6);
         this.$store.commit("fa/SET_COLSIZE2", 1);
         this.$store.commit("fa/SET_GEN_HIDE", false);
-        this.$store.commit("fa/SET_HIDE", false);
         this.axios
           .get(
-            process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
-              yyyy +
+            this.postApiUrl + "techregime/factor/" +
+              year +
               "/" +
-              mm +
+              month +
               "/" +
-              pryyyy +
+              previousYear +
               "/" +
-              prMm +
+              previousMonth +
               "/"
           )
           .then((response) => {
             this.isSearched = false;
             this.$store.commit("globalloading/SET_LOADING", false);
             let data = response.data;
-            this.editdtm = choosenDt[1];
-            this.editdty = choosenDt[0];
-            this.editdtprevm = choosenSecDt[1];
-            this.editdtprevy = choosenSecDt[0];
+            this.editdtm = firstDate[1];
+            this.editdty = firstDate[0];
+            this.editdtprevm = secondDate[1];
+            this.editdtprevy = secondDate[0];
             this.isDynamic = false;
             this.isGenHide = false;
             this.isHide = true;
-
             if (data) {
               this.$store.commit("fa/SET_SORTPARAM", "");
               this.$store.commit("fa/SET_SEARCH", "");
@@ -1273,18 +1276,20 @@ export default {
               this.fullWells = data.data;
             } else {
               console.log("No data");
+              this.fullWells = [];
+              this.wells = [];
             }
-            this.dt = "01" + "." + this.editdtm + "." + this.editdty;
-            this.dt2 = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
+            this.firstDate = "01" + "." + this.editdtm + "." + this.editdty;
+            this.secondDate = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
             this.isGenHide= false;
             this.colsize7= 6;
             this.colsize2= 1;
             this.prodIndexMeasure = this.trans('tr.t_day_atm');
             this.qLiquidMeasure = this.trans('tr.m3_day');
             this.factorsMeasure = this.trans('tr.t_day');  
-            this.faTableHeader = this.trans('tr.period_of_act_data') + this.dt;
-            this.faTableHeader2 = this.trans('tr.period_of_act_data') + this.dt2;
-            this.faHeader = this.trans('tr.fa') + ' ' + this.dt2 + '-' + this.dt;
+            this.faTableHeader = this.trans('tr.period_of_act_data') + this.firstDate;
+            this.faTableHeaderEnd = this.trans('tr.period_of_act_data') + this.secondDate;
+            this.faHeader = this.trans('tr.fa') + ' ' + this.secondDate + '-' + this.firstDate;
             this.pbhHeader = this.trans('tr.failure_to_reach_the_rated_P_bottomhole');
             this.workDaysHeader = this.trans('tr.exp_coefficient');
             this.waterCutHeader = this.trans('tr.water_cut_increase');
@@ -1334,30 +1339,30 @@ export default {
       this.$store.commit("globalloading/SET_LOADING", true);
       this.$store.commit("fa/SET_SORTPARAM", "");
       this.sortParam = "";
-      const mm = this.$store.getters["fa/month"];
-      const prMm = this.$store.getters["fa/prmonth"];
-      const dd = this.$store.getters["fa/day"];
-      const yyyy = this.$store.getters["fa/year"];
-      const pryyyy = this.$store.getters["fa/pryear"];
-      const prdd = this.$store.getters["fa/prday"];
+      const month = this.$store.getters["fa/month"];
+      const previousMonth = this.$store.getters["fa/prmonth"];
+      const day = this.$store.getters["fa/day"];
+      const year = this.$store.getters["fa/year"];
+      const previousYear = this.$store.getters["fa/pryear"];
+      const previousDay = this.$store.getters["fa/prday"];
       const dynamic = this.$store.getters["fa/isDynamic"];
       const searchParam = this.searchString
         ? `search/${this.searchString}/`
         : "";
       this.axios
         .get(
-          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
-            yyyy +
+          this.postApiUrl + "techregime/factor/" +
+            year +
             "/" +
-            mm +
+            month +
             "/" +
-            dd + 
+            day + 
             "/" +
-            pryyyy +
+            previousYear +
             "/" +
-            prMm +
+            previousMonth +
             "/" +
-            prdd +
+            previousDay +
             "/" + 
             dynamic +
             "/" +
@@ -1376,7 +1381,13 @@ export default {
           } else {
             this.wells = [];
             this.fullWells = [];
-            console.log("No data");
+            this.$bvToast.toast(this.trans('tr.no_data'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
           }
           if (dynamic == true){
             this.isHide = false;
@@ -1396,7 +1407,13 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
-          console.log("search error = ", error);
+          this.$bvToast.toast(this.trans('tr.error'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
         });
     },
   },
@@ -1406,54 +1423,54 @@ export default {
     this.$store.commit("fa/SET_SORTPARAM", this.sortParam);
     this.$store.commit("fa/SET_SEARCH", this.searchString);
     this.$store.commit("fa/SET_FILTER", this.filter);
-    var secWeekDate = new Date();
-    this.secWeekDate = secWeekDate.setDate(secWeekDate.getDate()-8);
-    this.secWeekDate = secWeekDate.toLocaleDateString();
-    var secWeekDate2 = new Date();
-    this.secWeekDate2 = secWeekDate2.setDate(secWeekDate2.getDate()-14);
-    this.secWeekDate2 = secWeekDate2.toLocaleDateString();
-    var dynamic_date2 = this.secWeekDate.split(".");
-    const prdd = dynamic_date2[0];
-    const prmm = dynamic_date2[1];
-    const pryyyy = dynamic_date2[2];
+    var startEndingWeekDate = new Date();
+    this.startEndingWeekDate = startEndingWeekDate.setDate(startEndingWeekDate.getDate()-8);
+    this.startEndingWeekDate = startEndingWeekDate.toLocaleDateString();
+    var startBeginningWeekDate = new Date();
+    this.startBeginningWeekDate = startBeginningWeekDate.setDate(startBeginningWeekDate.getDate()-14);
+    this.startBeginningWeekDate = startBeginningWeekDate.toLocaleDateString();
+    var secondCalendarDate = this.startEndingWeekDate.split(".");
+    const previousDay = secondCalendarDate[0];
+    const previousMonth = secondCalendarDate[1];
+    const previousYear = secondCalendarDate[2];
     this.isDynamic = true;
-    var firstWeekDate = new Date();
-    this.firstWeekDate = firstWeekDate.setDate(firstWeekDate.getDate()-1);
-    this.firstWeekDate = firstWeekDate.toLocaleDateString();
-    var firstWeekDate2 = new Date();
-    this.firstWeekDate2 = firstWeekDate2.setDate(firstWeekDate2.getDate()-7);
-    this.firstWeekDate2 = firstWeekDate2.toLocaleDateString(); 
-    var dynamic_date1 = this.firstWeekDate.split(".");
-    const dd = dynamic_date1[0];
-    const mm = dynamic_date1[1];
-    const yyyy = dynamic_date1[2];
+    var lastEndingWeekDate = new Date();
+    this.lastEndingWeekDate = lastEndingWeekDate.setDate(lastEndingWeekDate.getDate()-1);
+    this.lastEndingWeekDate = lastEndingWeekDate.toLocaleDateString();
+    var lastBeginningWeekDate = new Date();
+    this.lastBeginningWeekDate = lastBeginningWeekDate.setDate(lastBeginningWeekDate.getDate()-7);
+    this.lastBeginningWeekDate = lastBeginningWeekDate.toLocaleDateString(); 
+    var firstDynamicDate = this.lastEndingWeekDate.split(".");
+    const day = firstDynamicDate[0];
+    const month = firstDynamicDate[1];
+    const year = firstDynamicDate[2];
     this.isGenHide= true;
     this.colsize7 = 7;
     this.colsize2 = 2;
     this.chartLink = "fa_weekly_chart"
-    var weekd1 = yyyy + "-" + mm + "-" + dd;
-    var weekd2 = pryyyy + "-" + prmm + "-" + prdd;
+    var firstWeek = year + "-" + month + "-" + day;
+    var lastWeek = previousYear + "-" + previousMonth + "-" + previousDay;
     this.$store.commit("fa/SET_IS_DYNAMIC", true);
-    this.$store.commit("fa/SET_MONTH", mm);
-    this.$store.commit("fa/SET_YEAR", yyyy);
-    this.$store.commit("fa/SET_DAY", dd);
-    this.$store.commit("fa/SET_PR_MONTH", prmm);
-    this.$store.commit("fa/SET_PR_YEAR", pryyyy);
-    this.$store.commit("fa/SET_PR_DAY", prdd);
+    this.$store.commit("fa/SET_MONTH", month);
+    this.$store.commit("fa/SET_YEAR", year);
+    this.$store.commit("fa/SET_DAY", day);
+    this.$store.commit("fa/SET_PR_MONTH", previousMonth);
+    this.$store.commit("fa/SET_PR_YEAR", previousYear);
+    this.$store.commit("fa/SET_PR_DAY", previousDay);
     this.axios
       .get(
-        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor_weekly/" +
-          yyyy +
+        this.postApiUrl + "techregime/factor_weekly/" +
+          year +
           "/" +
-          mm +
+          month +
           "/" +
-          dd +
+          day +
           "/" +
-          pryyyy +
+          previousYear +
           "/" +
-          prmm +
+          previousMonth +
           "/" +
-          prdd +
+          previousDay +
           "/"
       )
       .then((response) => {
@@ -1463,31 +1480,31 @@ export default {
           console.log(data);
           this.wells = data.data;
           this.fullWells = data.data;
-          this.dt = this.firstWeekDate;
-          this.dt2 = this.secWeekDate2;
+          this.firstDate = this.lastEndingWeekDate;
+          this.secondDate = this.startBeginningWeekDate;
         } else {
           console.log("No data");
         }
-        this.date1 = weekd1;
-        this.date2 = weekd2;
-        this.faTableHeader = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.firstWeekDate;
-        this.faTableHeader2 = this.trans('tr.period_of_act_data') + this.secWeekDate2 + '-' + this.secWeekDate;
-        this.faHeader = this.trans('tr.fa') + ' ' + this.secWeekDate2 + '-' + this.firstWeekDate;
+        this.firstCalendarDate = firstWeek;
+        this.secondCalendarDate = lastWeek;
+        this.faTableHeader = this.trans('tr.period_of_act_data') + this.lastBeginningWeekDate + '-' + this.lastEndingWeekDate;
+        this.faTableHeaderEnd = this.trans('tr.period_of_act_data') + this.startBeginningWeekDate + '-' + this.startEndingWeekDate;
+        this.faHeader = this.trans('tr.fa') + ' ' + this.startBeginningWeekDate + '-' + this.lastEndingWeekDate;
       });
   },
   mounted: function () {
-    const mm =
+    const month =
       `${this.$store.getters["fa/month"]}`.length < 2
         ? `0${this.$store.getters["fa/month"]}`
         : `${this.$store.getters["fa/month"]}`;
-    const prmm =
+    const previousMonth =
       `${this.$store.getters["fa/prmonth"]}`.length < 2
         ? `0${this.$store.getters["fa/prmonth"]}`
         : `${this.$store.getters["fa/prmonth"]}`;
-    this.date1 = `${this.$store.getters["fa/year"]}-${mm}-01`;
-    this.date2 = `${this.$store.getters["fa/pryear"]}-${prmm}-01`;
-    this.dt = `01.${mm}.${this.$store.getters["fa/year"]}`;
-    this.dt2 = `01.${prmm}.${this.$store.getters["fa/pryear"]}`;
+    this.firstCalendarDate = `${this.$store.getters["fa/year"]}-${month}-01`;
+    this.secondCalendarDate = `${this.$store.getters["fa/pryear"]}-${previousMonth}-01`;
+    this.firstDate = `01.${month}.${this.$store.getters["fa/year"]}`;
+    this.secondDate = `01.${previousMonth}.${this.$store.getters["fa/pryear"]}`;
   },
 };
 </script>
@@ -1625,9 +1642,10 @@ table::-webkit-scrollbar-corner {
   background: #333975;
 }
 .fadropmenu {
-width: calc(100% - 1px);
-background: #1627c4; 
-margin-top: 4px;
+  width: calc(100% - 1px);
+  background: #333975; 
+  margin-top: 4px;
+  z-index: 4876;
 }
 .button_form.button_form {
   background: #333975;
@@ -1672,6 +1690,7 @@ background: #272953;
 color: white;
 border: none;
 padding-right: 8px;
+padding-top: 4px;
 }
 .fatable {
 position: relative;

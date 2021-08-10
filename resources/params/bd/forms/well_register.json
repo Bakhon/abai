@@ -26,14 +26,14 @@
                 "validation": "exists:tbd.dict.geo,id",
                 "dict": "geos",
                 "callbacks": {
-                  "setWellPrefix": "name"
+                  "setWellPrefix": "uwi"
                 }
               },
               {
                 "code": "uwi",
                 "type": "text",
                 "title": "numb",
-                "validation": "max:255",
+                "validation": "required|max:255",
                 "prefix": ""
               },
               {

@@ -1,30 +1,46 @@
 <template>
   <div class="rating-indicators">
-    <div class="rating-indicators__title">
-      {{ trans('digital_rating.environmentIndicators') }}
-      <img src="/img/icons/link.svg" alt="">
+    <div class="d-flex">
+      <table class="table text-center text-white rating-table w-50">
+        <thead>
+          <tr>
+            <th class="align-middle" v-for="col in colsIndicator" :key="col.name">
+              {{ col.title }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in indicators" :key="index">
+            <td v-for="(col, colIdx) in colsIndicator" :key="colIdx">
+              <span>{{ item[col.name] }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <table class="table text-center text-white rating-table">
-      <thead>
-        <tr>
-          <th class="align-middle" v-for="col in cols" :key="col.name">
-            {{ col.title }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in indicators" :key="index">
-          <td v-for="(col, colIdx) in cols" :key="colIdx">
-            <span>{{ item[col.name] }}</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="d-flex">
+      <table class="table text-center text-white rating-table w-50">
+        <thead>
+          <tr>
+            <th class="align-middle" v-for="col in secondColsIndicators" :key="col.name">
+              {{ col.title }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in secondIndicators" :key="index">
+            <td v-for="(col, colIdx) in secondColsIndicators" :key="colIdx">
+              <span>{{ item[col.name] }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
-import { indicators } from '../data';
+import { indicators, secondIndicators } from '../json/data';
 
 export default {
   name: "Indicators",
@@ -32,11 +48,12 @@ export default {
   data() {
     return {
       indicators: indicators,
+      secondIndicators: secondIndicators
     }
   },
 
   computed: {
-    cols() {
+    colsIndicator() {
       return [
         {
           title: this.trans('digital_rating.wellNumber'),
@@ -60,6 +77,30 @@ export default {
         }
       ]
     },
+    secondColsIndicators() {
+      return [
+        {
+          title: this.trans('digital_rating.wellNumber'),
+          name: 'number'
+        },
+        {
+          title: `${this.trans('digital_rating.throttleResponse')}, ${this.trans('digital_rating.cubeDay')}`,
+          name: 'response'
+        },
+        {
+          title: `${this.trans('digital_rating.injectionPressure')}, атм`,
+          name: 'pressure'
+        },
+        {
+          title: `${this.trans('digital_rating.distance')}, м`,
+          name: 'distance'
+        },
+        {
+          title: `${this.trans('digital_rating.stitchDiameter')}, мм`,
+          name: 'diameter'
+        }
+      ]
+    }
   }
 }
 </script>
@@ -67,8 +108,6 @@ export default {
 <style scoped lang="scss">
 .rating-indicators {
   width: 100%;
-  background-color: #272953;
-  padding: 10px;
   color: #fff;
 }
 .rating-indicators__title {

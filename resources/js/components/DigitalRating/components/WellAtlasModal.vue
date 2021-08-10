@@ -3,12 +3,13 @@
     class="modal-bign-wrapper"
     name="modalAtlas"
     :draggable="false"
-    :width="1000"
+    :width="1200"
     :height="800"
-    :adaptive="true">
+    :adaptive="false"
+    @before-open="beforeOpen">
     <div class="modal-bign-container">
       <div class="modal-bign-header justify-content-end">
-        <button type="button" class="modal-bign-button" @click="$emit('close')">
+        <button type="button" class="modal-bign-button" @click="close">
           {{ trans('pgno.zakrit') }}
         </button>
       </div>
@@ -28,18 +29,28 @@
       </div>
       <div class="content">
         <div class="sector-form">
-          <div class="sector-form__label">
-            {{ trans('digital_rating.sectorNumber') }}
+          <div class="sector-form__item">
+            <div class="sector-form__label">
+              {{ trans('digital_rating.sectorNumber') }}
+            </div>
+            <input
+              type="text"
+              class="sector-form__input"
+              v-model="sectorNumber"
+            />
           </div>
-          <input
-            type="text"
-            class="sector-form__input"
-            v-model="sectorNumber"
-          />
+          <div class="sector-form__item">
+            <div class="sector-form__label">
+              {{ trans('digital_rating.horizonNumber') }}
+            </div>
+            <input
+              type="text"
+              class="sector-form__input"
+              v-model="horizonNumber"
+            />
+          </div>
         </div>
-        <keep-alive>
-          <component :is="currentTabComponent"></component>
-        </keep-alive>
+        <component :is="currentTabComponent"></component>
         <div class="modal__footer mb-10px">
           <button type="button" class="btn-button btn-button--thm-blue mr-20px minw-200">
             {{ trans('digital_rating.markCandidate') }}
@@ -73,8 +84,10 @@ export default {
 
   data() {
     return {
-      sectorNumber: '7777',
+      sectorNumber: '',
+      horizonNumber: '',
       currentTab: 'overview',
+      isVisibleAtlas: false,
       tabs: [
         {
           title: 'digital_rating.overview',
@@ -109,6 +122,12 @@ export default {
   methods: {
     handleSelectTab(tab) {
       this.currentTab = tab;
+    },
+    beforeOpen(e) {
+      this.currentTab = 'overview';
+    },
+    close() {
+      this.$emit('close');
     }
   }
 }
@@ -129,6 +148,12 @@ export default {
   font-size: 16px;
   margin: 10px 0 20px 0;
 
+  &__item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+
   &__label {
     padding: 5px 30px;
     background: #323370;
@@ -140,6 +165,7 @@ export default {
     outline: none;
     padding: 5px 10px;
     color: #fff;
+    width: 100px;
   }
 }
 </style>

@@ -9,16 +9,22 @@ use App\Models\VisCenter\ExcelForm\DzoImportDowntimeReason;
 use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use App\Models\VisCenter\ExcelForm\DzoImportField;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ExcelFormController extends Controller
 {
 
     public function getDzoCurrentData(Request $request)
     {
+        $date = Carbon::yesterday('Asia/Almaty');
+        if ($request->isCorrected) {
+            $date = Carbon::parse($request->date)->addDays(1);
+        }
         $dzoName = $request->request->get('dzoName');
         $dzoImportData = DzoImportData::query()
-            ->whereDate('date',Carbon::yesterday('Asia/Almaty'))
+            ->whereDate('date',$date)
             ->where('dzo_name',$dzoName)
+            ->whereNull('is_corrected')
             ->with('importField')
             ->with('importDowntimeReason')
             ->with('importDecreaseReason')
@@ -44,7 +50,7 @@ class ExcelFormController extends Controller
         $this->deleteAlreadyExistRecord($request);
 
         $this->saveDzoSummaryData($request);
-        $dzo_summary_last_record = DzoImportData::latest('id')->first();
+        $dzo_summary_last_record = DzoImportData::latest('id')->whereNull('is_corrected')->first();
 
         $this->saveDzoFieldsSummaryData($dzo_summary_last_record,$request);
 
@@ -63,7 +69,7 @@ class ExcelFormController extends Controller
     {
         $dzoName = $request->request->get('dzo_name');
         $recordDate = $request->request->get('date');
-        $todayDzoImportDataRecord = DzoImportData::whereDate('date', Carbon::parse($recordDate))->where('dzo_name', $dzoName)->first();
+        $todayDzoImportDataRecord = DzoImportData::whereDate('date', Carbon::parse($recordDate))->where('dzo_name', $dzoName)->whereNull('is_corrected')->first();
         if ($this->isAlreadyUploaded($todayDzoImportDataRecord)) {
             DzoImportField::where('dzo_import_data_id',$todayDzoImportDataRecord->id)->delete();
             DzoImportDecreaseReason::where('dzo_import_data_id',$todayDzoImportDataRecord->id)->delete();
@@ -123,5 +129,81 @@ class ExcelFormController extends Controller
             $child_item->$key = $dzo_input_data[$key];
         }
         return $child_item;
+    }
+
+    public function storeCorrected(Request $request)
+    {
+        $this->saveDzoSummaryData($request);
+        $dzo_summary_last_record = DzoImportData::latest('id')->where('is_corrected', true)->first();
+
+        $this->saveDzoFieldsSummaryData($dzo_summary_last_record,$request);
+
+        $dzo_downtime_reason = new DzoImportDowntimeReason;
+        $downtime_data = $request->request->get('downtimeReason');
+        $dzo_downtime_reason = $this->getDzoChildSummaryData($dzo_downtime_reason,$downtime_data,$dzo_summary_last_record);
+        $dzo_downtime_reason->save();
+
+        $dzo_decrease_reason = new DzoImportDecreaseReason;
+        $decrease_data = $request->request->get('decreaseReason');
+        $dzo_decrease_reason = $this->getDzoChildSummaryData($dzo_decrease_reason,$decrease_data,$dzo_summary_last_record);
+        $dzo_decrease_reason->save();
+    }
+
+    public function getDailyProductionForApprove()
+    {
+        $forApprove = DzoImportData::query()
+            ->where('is_corrected', true)
+            ->with('importField')
+            ->with('importDowntimeReason')
+            ->with('importDecreaseReason')
+            ->get()
+            ->toArray();
+        $forApproveDates = array_column($forApprove, 'date');
+        $forApproveDzo = array_unique(array_column($forApprove, 'dzo_name'));
+        $actual = DzoImportData::query()
+             ->whereNull('is_corrected')
+             ->where(function($q) use($forApproveDates) {
+                 foreach ($forApproveDates as $date) {
+                    $q->whereDate('date', '=', Carbon::parse($date), 'or');
+                 }
+             })
+             ->whereIn('dzo_name',$forApproveDzo)
+             ->with('importField')
+             ->with('importDowntimeReason')
+             ->with('importDecreaseReason')
+             ->get()
+             ->toArray();
+        $comparedData = array (
+            'forApprove' => $forApprove,
+            'actual' => $actual
+        );
+        return $comparedData;
+    }
+
+    public function approveDailyCorrection(Request $request)
+    {
+        DzoImportField::where('dzo_import_data_id',$request->actualId)->delete();
+        DzoImportDecreaseReason::where('dzo_import_data_id',$request->actualId)->delete();
+        DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
+        DzoImportData::where('id',$request->actualId)->delete();
+        DzoImportData::query()
+                    ->where('id', $request->currentId)
+                    ->update(
+                        [
+                            'is_corrected' => null,
+                            'is_approved' => true
+                        ]
+                    );
+    }
+    public function declineDailyCorrection(Request $request)
+    {
+        DzoImportData::query()
+            ->where('id', $request->currentId)
+            ->update(
+                [
+                    'is_corrected' => false,
+                    'is_approved' => false
+                ]
+            );
     }
 }

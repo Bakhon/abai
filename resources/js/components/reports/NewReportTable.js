@@ -78,36 +78,36 @@ export default {
                     }
                 ],
                 [
-                {
-                    title: 'Qж, м3/сут',
-                    // rowspan: 2,
-                    align: 'center'
-                },
-                {
-                    title: 'Qн, т/сут',
-                    // rowspan: 2,
-                    align: 'center'
-                },
-                {
-                    title: 'Обв, %',
-                    // rowspan: 2,
-                    align: 'center'
-                },
-                {
-                    title: 'Отработанные дни',
-                    // rowspan: 2,
-                    align: 'center'
-                },
-                {
-                    title: 'Qн, т',
-                    // rowspan: 2,
-                    align: 'center'
-                },
-                {
-                    title: 'Qж, м3',
-                    // rowspan: 2,
-                    align: 'center'
-                }
+                    {
+                        title: 'Qж, м3/сут',
+                        // rowspan: 2,
+                        align: 'center'
+                    },
+                    {
+                        title: 'Qн, т/сут',
+                        // rowspan: 2,
+                        align: 'center'
+                    },
+                    {
+                        title: 'Обв, %',
+                        // rowspan: 2,
+                        align: 'center'
+                    },
+                    {
+                        title: 'Отработанные дни',
+                        // rowspan: 2,
+                        align: 'center'
+                    },
+                    {
+                        title: 'Qн, т',
+                        // rowspan: 2,
+                        align: 'center'
+                    },
+                    {
+                        title: 'Qж, м3',
+                        // rowspan: 2,
+                        align: 'center'
+                    }
                 ],
             ],
             data: [],
@@ -124,6 +124,7 @@ export default {
         }
     },
     methods: {
+
         updateData() {
             let uri = '/ru/protodata';
             this.axios.post(this.localeUrl("/protodata"), {
@@ -162,16 +163,16 @@ export default {
                         colspan: 3,
                         align: 'center'
                     },
-                    {
-                        title: 'Qж, м3/сут',
-                        // rowspan: 2,
-                        align: 'center'
-                    },
-                    {
-                        title: 'Qн, т/сут',
-                        // rowspan: 2,
-                        align: 'center'
-                    }, {
+                        {
+                            title: 'Qж, м3/сут',
+                            // rowspan: 2,
+                            align: 'center'
+                        },
+                        {
+                            title: 'Qн, т/сут',
+                            // rowspan: 2,
+                            align: 'center'
+                        }, {
                         title: 'Обв, %',
                         // rowspan: 2,
                         align: 'center'
@@ -216,46 +217,46 @@ export default {
                         // rowspan: 2,
                         align: 'center'
                     },
-                    {
-                        title: 'Примечание',
-                        colspan: 2,
-                        align: 'center'
-                    },
-                    {
-                        title: 'Кол-во ПРС',
-                        // rowspan: 2,
-                        align: 'center'
-                    },
-                    // {
-                    //     title: 'Qж, м3/сут',
-                    //     // rowspan: 2,
-                    //     align: 'center'
-                    // },
-                    // {
-                    //     title: 'Qн, т/сут',
-                    //     // rowspan: 2,
-                    //     align: 'center'
-                    // },
-                    // {
-                    //     title: 'Обв, %',
-                    //     // rowspan: 2,
-                    //     align: 'center'
-                    // },
-                    // {
-                    //     title: 'Отработанные дни',
-                    //     // rowspan: 2,
-                    //     align: 'center'
-                    // },
-                    // {
-                    //     title: 'Qн, т',
-                    //     // rowspan: 2,
-                    //     align: 'center'
-                    // },
-                    // {
-                    //     title: 'Qж, м3',
-                    //     // rowspan: 2,
-                    //     align: 'center'
-                    // }
+                        {
+                            title: 'Примечание',
+                            colspan: 2,
+                            align: 'center'
+                        },
+                        {
+                            title: 'Кол-во ПРС',
+                            // rowspan: 2,
+                            align: 'center'
+                        },
+                        // {
+                        //     title: 'Qж, м3/сут',
+                        //     // rowspan: 2,
+                        //     align: 'center'
+                        // },
+                        // {
+                        //     title: 'Qн, т/сут',
+                        //     // rowspan: 2,
+                        //     align: 'center'
+                        // },
+                        // {
+                        //     title: 'Обв, %',
+                        //     // rowspan: 2,
+                        //     align: 'center'
+                        // },
+                        // {
+                        //     title: 'Отработанные дни',
+                        //     // rowspan: 2,
+                        //     align: 'center'
+                        // },
+                        // {
+                        //     title: 'Qн, т',
+                        //     // rowspan: 2,
+                        //     align: 'center'
+                        // },
+                        // {
+                        //     title: 'Qж, м3',
+                        //     // rowspan: 2,
+                        //     align: 'center'
+                        // }
                     ];
                 // var obj3 =
                 // [
