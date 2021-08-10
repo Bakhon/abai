@@ -250,6 +250,7 @@ export default {
       searchLink: "techregime_totals_test_3/",
       editSearchLink: "techregime_edit_page/",
       isMaxDate: true,
+      isActiveHorizonFilterr: false,
     };
   },
   methods: {
@@ -409,6 +410,7 @@ export default {
       };
       this.$store.commit("tr/SET_PAGENUMBER", 1);
       this.pageNumber = 1;
+      this.isNoActiveHorizonFilter();
       this.chooseAxios();
     },
     chooseFilter() {
@@ -417,6 +419,7 @@ export default {
       this.$store.commit("tr/SET_SEARCH", this.searchString);
       this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
       this.$store.commit("tr/SET_PAGENUMBER", 1);
+      this.isActiveHorizonFilter();
       this.chooseAxios();
     },
     chooseAxios() {
@@ -764,6 +767,26 @@ export default {
           return true
       }
     },
+
+    isActiveHorizonFilter () {
+      if (this.selectHorizon === null) {
+        return this.isActiveHorizonFilterr = false;
+    } else {
+        return this.isActiveHorizonFilterr = true;
+    }
+
+    },
+
+    isNoActiveHorizonFilter () {
+      if (this.selectHorizon === null) {
+        return this.isActiveHorizonFilterr = true;
+    } else {
+        return this.isActiveHorizonFilterr = false;
+    }
+
+    },
+    
+
     getRowWidthSpan (row) {
       return row.rus_wellname ? 0 : 2;
 
