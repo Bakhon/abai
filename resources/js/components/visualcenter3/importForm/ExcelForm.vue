@@ -194,6 +194,28 @@
                 ></v-grid>
             </div>
         </div>
+        <modal
+                class="modal-bign-wrapper"
+                name="additionalParamsReminder"
+                draggable=".modal-bign-header"
+                :width="900"
+                :height="250"
+                style="background: transparent;"
+                :adaptive="true"
+        >
+            <div class="modal-bign modal-bign-container">
+                <div class="modal-bign-title modal_header">Напоминание</div>
+                <hr class="solid">
+                <div class="modal_header mt-2">
+                    <h2 class="text-center reminder">Необходимо с "5" по "10" число заполнить параметры:</h2>
+                    <h4 class="ml-2">- Химизация производства</h4>
+                    <h4 class="ml-2">- Ремонт скважин</h4>
+                </div>
+                <div align="center">
+                    <button type="button" class="modal-bign-button" @click="$modal.hide('additionalParamsReminder')">Закрыть</button>
+                </div>
+            </div>
+        </modal>
     </div>
 </template>
 
@@ -398,5 +420,11 @@
         color: white;
         font-size: 16px;
         text-align: left;
+    }
+    hr.solid {
+        border-top: 3px solid #bbb;
+    }
+    h2.reminder {
+        color: red;
     }
 </style>
