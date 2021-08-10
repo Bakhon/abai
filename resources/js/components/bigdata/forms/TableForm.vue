@@ -185,7 +185,6 @@ import 'vue-datetime/dist/vue-datetime.css'
 import {bdFormActions, bdFormState} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
-import BigDataTableFormHeader from './TableFormHeader'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 import CatLoader from "@ui-kit/CatLoader";
@@ -223,7 +222,6 @@ export default {
     }
   },
   components: {
-    BigDataTableFormHeader,
     BigDataHistory,
     RowHistoryGraph,
     CatLoader
