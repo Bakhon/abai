@@ -3,7 +3,9 @@
     "type": "select",
     "label": "monitoring.zu.zu",
     "value": null,
-    "optionsName": "zus"
+    "optionsName": "zus",
+    "required": true,
+    "change": "changeZu"
   },
   "date": {
     "type": "date",
@@ -14,7 +16,8 @@
       "day": "numeric"
     },
     "value": null,
-    "input": "selectDate"
+    "input": "selectDate",
+    "required": true
   },
   "pressure": {
     "type": "number",

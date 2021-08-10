@@ -13,7 +13,12 @@ class OmgNGDUZu extends Model
 
     public function zu()
     {
-        return $this->hasOne(Zu::class,'id','zu_id')->withDefault();
+        return $this->hasOne(Zu::class,'id','zu_id');
+    }
+
+    public function manual_zu()
+    {
+        return $this->hasOne(ManualZu::class,'id','zu_id');
     }
 
     public function getDailyWaterProductionAttribute()

@@ -120,7 +120,7 @@ class OmgNGDUZuController extends CrudController
         parent::list($request);
 
         $query = OmgNGDUZu::query()
-            ->with('zu');
+            ->with('zu', 'manual_zu');
 
         $omgngdu_zu = $this
             ->getFilteredQuery($request->validated(), $query)
@@ -175,7 +175,7 @@ class OmgNGDUZuController extends CrudController
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(int $id)
     {
         $omgngdu_zu = OmgNGDUZu::where('id', $id)
             ->with('zu.gu.ngdu')

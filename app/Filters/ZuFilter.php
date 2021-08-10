@@ -19,14 +19,6 @@ class ZuFilter extends BaseFilter
     protected function sort(string $field, bool $isDescending)
     {
         switch ($field) {
-            case 'gu':
-                $this->query
-                    ->select('zus.*')
-                    ->leftJoin('gus', 'gus.id', 'zus.gu_id')
-                    //dirty hack for alphanumeric sort but other solutions doesn't work
-                    ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gu_name'))
-                    ->orderBy('gu_name', $isDescending ? 'desc' : 'asc');
-                break;
             case 'name':
                 $this->query
                     ->select('zus.*')

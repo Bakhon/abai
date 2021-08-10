@@ -19,7 +19,7 @@ class OmgNGDUZuListResource extends CrudListResource
         $result = [
             'id' => $this->id,
             'fields' => [
-                'zu' => $this->zu->name,
+                'zu' => $this->zu ? $this->zu->name : $this->manual_zu->name,
                 'date' => $this->date,
                 'bsw' => $this->bsw,
                 'daily_fluid_production' => $this->daily_fluid_production,

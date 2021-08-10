@@ -55,6 +55,7 @@
             v-if="field.type == 'select'"
             class="form-control"
             :name="param"
+            @change="_.isUndefined(field.change) ? null : $emit(field.change);"
             v-model="formFields[param].value" >
           <option v-for="option in selectOptions(formFields[param].optionsName)" :value="option.id">{{ option.name }}</option>
         </select>
@@ -83,7 +84,7 @@
     </b-col>
 
     <div class="col-xs-12 col-sm-12 col-md-12 text-center mt-3">
-      <button type="submit" class="btn btn-success" @click="submit">{{ trans('app.save') }}</button>
+      <button type="submit" class="btn btn-success" @click.prevent="submit">{{ trans('app.save') }}</button>
     </div>
   </b-row>
 </template>
@@ -103,7 +104,8 @@ export default {
   props: {
     formObject: Object,
     validationParams: Object,
-    formFields: Object
+    formFields: Object,
+    selectsOptions: Object
   },
   data: function () {
     return {
@@ -113,6 +115,20 @@ export default {
   computed: {
     _() {
       return _;
+    },
+    test () {
+      return this.$v;
+    }
+  },
+  watch: {
+    formFields: {
+      deep: true,
+      handler(val){
+        console.log('formFields changed ', val);
+        if (!_.isUndefined(this.formFields.date)) {
+          this.date = this.formFields.date.value;
+        }
+      }
     }
   },
   methods: {
@@ -129,7 +145,7 @@ export default {
       return null
     },
     selectOptions(field) {
-      return this[field];
+      return this.selectsOptions[field];
     },
     onDateInput(field, param) {
       this.formFields[param].value = this.formatedDate(this.date);

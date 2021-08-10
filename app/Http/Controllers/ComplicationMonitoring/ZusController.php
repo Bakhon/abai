@@ -11,6 +11,7 @@ use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\ZuListResource;
 use App\Jobs\ExportOmgCAToExcel;
 use App\Models\ComplicationMonitoring\Gu;
+use App\Models\ComplicationMonitoring\ManualZu;
 use App\Models\ComplicationMonitoring\Zu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -92,18 +93,6 @@ class ZusController extends CrudController
         return response()->json(json_decode(ZuListResource::collection($zus)->toJson()));
     }
 
-    public function export(IndexTableRequest $request)
-    {
-        $job = new ExportOmgCAToExcel($request->validated());
-        $this->dispatch($job);
-
-        return response()->json(
-            [
-                'id' => $job->getJobStatusId()
-            ]
-        );
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -124,7 +113,7 @@ class ZusController extends CrudController
     {
         $this->validateFields($request, 'zu');
 
-        Zu::create($request->validated());
+        ManualZu::create($request->validated());
 
         return redirect()->route('zus.index')->with('success', __('app.created'));
     }
@@ -134,8 +123,9 @@ class ZusController extends CrudController
      *
      * @param int $id
      */
-    public function history(Zu $zu)
+    public function history(int $id)
     {
+        $zu = $id >= 10000 ? ManualZu::find($id) : Zu::find($id);
         $zu->load('history');
         return view('zus.history', compact('zu'));
     }
@@ -146,8 +136,9 @@ class ZusController extends CrudController
      * @param int $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|Response|\Illuminate\View\View
      */
-    public function edit(Zu $zu)
+    public function edit(int $id)
     {
+        $zu = $id >= 10000 ? ManualZu::find($id) : Zu::find($id);
         $validationParams = $this->getValidationParams('zu');
 
         return view('zus.edit', compact('zu', 'validationParams'));
@@ -160,13 +151,20 @@ class ZusController extends CrudController
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(ZuUpdateRequest $request, Zu $zu)
+    public function update(ZuUpdateRequest $request, int $id)
     {
+        if (!auth()->user()->hasPermissionTo('monitoring update zu', 'web')) {
+            return redirect()->route('zus.index')->with('error', __('app.no_permissions_rights'));
+        }
+
         $this->validateFields($request, 'zu');
+        $zu = $id >= 10000 ? ManualZu::find($id) : Zu::find($id);
 
         $zu->update($request->validated());
+
         return redirect()->route('zus.index')->with('success', __('app.updated'));
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -176,8 +174,18 @@ class ZusController extends CrudController
      */
     public function destroy(Request $request, $id)
     {
-        $omgca = Zu::find($id);
-        $omgca->delete();
+        if (!auth()->user()->hasPermissionTo('monitoring delete zu', 'web')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
+        $zu = $id >= 10000 ? ManualZu::find($id) : Zu::find($id);
+
+        $zu->delete();
 
         if ($request->ajax()) {
             return response()->json([], Response::HTTP_NO_CONTENT);
@@ -189,5 +197,53 @@ class ZusController extends CrudController
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new ZuFilter($query, $filter))->filter();
+    }
+
+    public function getAllZu(): \Symfony\Component\HttpFoundation\Response
+    {
+        $zus = Zu::get();
+        $manualZus = ManualZu::get();
+
+        $zus = $zus->merge($manualZus);
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $zus
+            ]
+        );
+    }
+
+    public function getZu(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $zu = Zu::where('gu_id', $request->gu_id)->get();
+        $zuManual = ManualZu::where('gu_id', $request->gu_id)->get();
+
+        $zu = $zu->merge($zuManual);
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $zu
+            ]
+        );
+    }
+
+    public function getZuRelations(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $zu = Zu::with('wells', 'gu')->find($request->zu_id);
+        $zuManual = ManualZu::with('wells', 'gu')->find($request->zu_id);
+
+        $zu = $zu->merge($zuManual);
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $zu
+            ]
+        );
     }
 }
