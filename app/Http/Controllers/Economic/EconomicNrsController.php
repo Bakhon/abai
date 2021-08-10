@@ -399,7 +399,7 @@ class EconomicNrsController extends Controller
 
         $userOrgs = auth()->user()->getUserOrganizations($structureService);
 
-        if (array_search($tbdId, array_column($userOrgs, 'id')) === false) {
+        if (array_search($tbdId, array_column($userOrgs, 'parent_id')) === false) {
             abort(403);
         }
 
