@@ -21,11 +21,24 @@
           </div>
           <table v-if="rows.length" class="table">
             <thead>
-            <tr>
-              <th v-for="column in visibleColumns">
-                {{ column.title }}
-              </th>
-            </tr>
+            <template v-if="formParams.complicated_header">
+              <tr v-for="row in formParams.complicated_header">
+                <th
+                    v-for="column in row"
+                    :colspan="column.colspan"
+                    :rowspan="column.rowspan"
+                >
+                  {{ column.title }}
+                </th>
+              </tr>
+            </template>
+            <template v-else>
+              <tr>
+                <th v-for="column in visibleColumns">
+                  {{ column.title }}
+                </th>
+              </tr>
+            </template>
             </thead>
             <tbody>
             <tr v-for="(row, rowIndex) in rows">
@@ -172,6 +185,7 @@ import 'vue-datetime/dist/vue-datetime.css'
 import {bdFormActions, bdFormState} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
+import BigDataTableFormHeader from './TableFormHeader'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 import CatLoader from "@ui-kit/CatLoader";
@@ -209,6 +223,7 @@ export default {
     }
   },
   components: {
+    BigDataTableFormHeader,
     BigDataHistory,
     RowHistoryGraph,
     CatLoader
