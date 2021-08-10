@@ -95,7 +95,7 @@
         <tables
             v-if="!loading"
             :scenario="scenario"
-            :oil-prices="scenarioVariations.oil_prices"
+            :scenario-variations="scenarioVariations"
             :res="res"
             @updateTab="updateTab"/>
       </div>

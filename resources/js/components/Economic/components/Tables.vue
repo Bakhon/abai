@@ -20,7 +20,7 @@
           v-if="index === 0"
           :org="res.org"
           :scenario="scenario"
-          :oil-prices="oilPrices"
+          :oil-prices="scenarioVariations.oil_prices"
           :data="res.specificIndicator"
           class="text-white"/>
 
@@ -29,7 +29,7 @@
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
-          :oil-prices="oilPrices"
+          :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
 
       <table-oil-price-options
@@ -44,7 +44,7 @@
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
-          :oil-prices="oilPrices"
+          :oil-prices="scenarioVariations.oil_prices"
           :data="res.wellChanges"
           ref="well-changes"
           class="text-white"/>
@@ -53,7 +53,14 @@
           v-if="index === 4"
           :scenarios="res.scenarios"
           :scenario="scenario"
-          :oil-prices="oilPrices"
+          :oil-prices="scenarioVariations.oil_prices"
+          class="text-white"/>
+
+      <table-porcupine
+          v-if="index === 5"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :scenario-variations="scenarioVariations"
           class="text-white"/>
     </div>
   </div>
@@ -66,6 +73,7 @@ import TableTechnicalEconomicIndicators from "./TableTechnicalEconomicIndicators
 import TableOilPriceOptions from "./TableOilPriceOptions";
 import TableWellChanges from "./TableWellChanges";
 import TableEconomicEfficiency from "./TableEconomicEfficiency";
+import TablePorcupine from "./TablePorcupine";
 
 export default {
   name: "Tables",
@@ -75,16 +83,17 @@ export default {
     TableTechnicalEconomicIndicators,
     TableOilPriceOptions,
     TableWellChanges,
-    TableEconomicEfficiency
+    TableEconomicEfficiency,
+    TablePorcupine
   },
   props: {
     scenario: {
       required: true,
       type: Object
     },
-    oilPrices: {
+    scenarioVariations: {
       required: true,
-      type: Array
+      type: Object
     },
     res: {
       required: true,
@@ -102,6 +111,7 @@ export default {
         this.trans('economic_reference.oil_price_options'),
         this.trans('economic_reference.table_well_changes'),
         this.trans('economic_reference.economic_efficiency'),
+        this.trans('economic_reference.table_porcupine'),
       ]
     }
   },
