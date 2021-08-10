@@ -236,7 +236,12 @@ table {
 .icon_filter {
   font-size: 7px;
 }
+.icon_filter_active {
+  font-size: 7px;
+  color: #82BAFF!important;
+}
 .icon_sort {
+  
   margin-top: 6px;
 }
 .form_text {
