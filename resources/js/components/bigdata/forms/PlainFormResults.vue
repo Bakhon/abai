@@ -293,16 +293,22 @@ export default {
         let dict = this.getDict(this.dictFields[column.code])
 
         let value = dict.reduce(this.findValueInDict(row[column.code]), null)
+
+        if (!value) return null
         return value.name || value.label
 
       }
 
-      if (column.type === 'date') {
+      if (row[column.code] && column.type === 'date') {
         return moment(row[column.code]).format('DD.MM.YYYY')
       }
 
-      if (column.type === 'datetime') {
+      if (row[column.code] && column.type === 'datetime') {
         return moment(row[column.code]).format('DD.MM.YYYY HH:MM')
+      }
+
+      if (column.type === 'checkbox') {
+        return row[column.code] ? this.trans('app.yes') : this.trans('app.no')
       }
 
       return row[column.code]
