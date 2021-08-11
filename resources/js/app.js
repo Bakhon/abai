@@ -28,8 +28,6 @@ import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 import Paginate from 'vuejs-paginate';
-import VueLayers from 'vuelayers'
-import 'vuelayers/lib/style.css'
 
 require('./bootstrap');
 window.Vue = require('vue');
@@ -45,7 +43,6 @@ Vue.use(PerfectScrollbar);
 Vue.use(columnSortable);
 Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
-Vue.use(VueLayers)
 
 Vue.component('paginate', Paginate);
 

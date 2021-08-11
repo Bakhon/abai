@@ -68,6 +68,7 @@
         "vue-mapbox": "^0.4.1",
         "vue-moment": "^4.1.0",
         "vue-moment-lib": "^1.2.2",
+        "vue-monthly-picker": "^0.2.8",
         "vue-multiselect": "^2.1.6",
         "vue-plotly": "^1.1.0",
         "vue-round-slider": "^1.0.1",
@@ -81,7 +82,6 @@
         "vue2-perfect-scrollbar": "^1.5.0",
         "vuedraggable": "^2.24.3",
         "vuejs-paginate": "^2.1.0",
-        "vuelayers": "^0.11.36",
         "vuex": "^3.6.2",
         "vuex-persistedstate": "^4.0.0-beta.3",
         "weekstart": "^1.1.0"

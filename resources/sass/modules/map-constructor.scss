@@ -1,5 +1,10 @@
 .map-constructor {
     padding: 15px;
+    .ol-mouse-position {
+        color: white;
+        font-size: 36px;
+        margin-top: 50px;
+    }
     #map {
         height: 100%;
     }
@@ -224,7 +229,7 @@
                 &:hover{
                     background: #0079FF;
                 }
-                #file-upload {
+                #file-upload, #import {
                     visibility: hidden;
                 }
             }
@@ -258,13 +263,37 @@
                 margin-right: 20px;
                 cursor: pointer;
                 .box {
-                    padding: 6px 18px;
                     display: block;
                     background: #464869;
                     border-radius: 4px;
                     width: 70px;
                     height: 28px;
                     margin: 0 auto;
+                    line-height: 2;
+                    position: relative;
+                    .vue-monthly-picker .month-picker-wrapper{
+                        min-width: auto;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 70px;
+                        height: 50px;
+                    }
+                    .vue-monthly-picker .date-popover {
+                        left: -59px;
+                        min-width: 200px;
+                    }
+                    .vue-monthly-picker .input {
+                        visibility: hidden;
+                    }
+                    .date-picker {
+                        button {
+                            background: transparent;
+                            border: none;
+                            display: block;
+                            font-size: 13px;
+                        }
+                    }
                     .fa-location-arrow {
                         transform: scaleX(-1);
                     }
@@ -272,6 +301,7 @@
                         color: #BEBECB;
                     }
                 }
+
                 span {
                     font-size: 16px;
                     line-height: 19px;
@@ -280,12 +310,21 @@
                     margin-top: 6px;
                 }
             }
+            .is-active{
+                    background: white!important;
+                    i {
+                        color: black!important;
+                    }
+                span {
+                    font-weight: bold;
+                }
+            }
         }
         .main {
             display: flex;
             .layers {
                 width: 20%;
-                height: 107vh;
+                height: 100vh;
                 background: #272953;
                 .layers-info {
                     padding: 9px;
@@ -313,16 +352,36 @@
 
                 }
             }
+            .vue-loaders{
+                position: absolute;
+                left: 61%;
+                top: 35%;
+            }
             .main-map {
                 width: 80%;
                 text-align: center;
                 position: relative;
-                padding: 20px;
+                .popover-header {
+                    color: #15509D;
+                }
+                .popover-body {
+                    min-width: 200px;
+                    p, code {
+                        font-size: 16px;
+                        margin-bottom: 0;
+                        font-family: "Harmonia-sans";
+                    }
+                }
+                .custom-mouse-position{
+                    font-size: 20px;
+                    color: white;
+                    text-align: left;
+                }
                 .map-ol {
                     position: absolute;
                     margin: 0;
                     padding: 0;
-                    height: 350px;
+                    height: 250px;
                     width: 99%;
                     top: 0;
                     right: 0;
