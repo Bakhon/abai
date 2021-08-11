@@ -395,8 +395,13 @@ class DictionaryService
                         ->from('dict.equip_type')
                         ->where('code', 'CASC')
                         ->limit(1);
-                });
+                }
+            )
+            ->orderBy('name', 'asc')
+            ->get()
+            ->toArray();
     }
+
     private function getGeoHorizonDict()
     {
         $items = DB::connection('tbd')
@@ -424,6 +429,5 @@ class DictionaryService
             ->toArray();
 
         return $items;
-    }
-     
+    }     
 }
