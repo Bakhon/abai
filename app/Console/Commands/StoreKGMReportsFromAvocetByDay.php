@@ -3,40 +3,16 @@
 namespace App\Console\Commands;
 
 use App\Models\VisCenter\DataForKGM\Daily\FondsForKGM;
-use App\Models\VisCenter\DataForKGM\Daily\GasForKGM;
 use App\Models\VisCenter\DataForKGM\Daily\OilAndGasForKGM;
-use App\Models\VisCenter\DataForKGM\Daily\OilDeliveryForKGM;
-use App\Models\VisCenter\DataForKGM\Daily\WaterForKGM;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\VisCenter\ExcelForm\DzoImportDowntimeReason;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Carbon\Carbon;
 
 class StoreKGMReportsFromAvocetByDay extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
+
     protected $signature = 'store-kgm-reports-from-avocet:cron';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'This command is designed to copy some fields from hive';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     public function storeKGMReportsFromAvocetByDay()
     {
@@ -48,7 +24,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
         $fondsModel = new FondsForKGM;
         $downtimeReason = new DzoImportDowntimeReason();
         $this->getDzoImportFieldData($fields_json_data, $dzo_import_field_data, $date, $fondsModel);
-        $this->getDowntimeReasonFilds($fields_json_data, $downtimeReason, $date, $fondsModel, $dzo_summary_last_record);
+        $this->getDowntimeReasonFields($fields_json_data, $downtimeReason, $date, $fondsModel, $dzo_summary_last_record);
         $this->saveKGMReportsFromAvocetByDay($dzo_import_field_data, $downtimeReason, $date);
     }
 
@@ -98,7 +74,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
         return $dzo_import_field_data;
     }
 
-    private function getDowntimeReasonFilds($fields_json_data, $downtimeReason, $date, $fondsModel, $dzo_summary_last_record)
+    private function getDowntimeReasonFields($fields_json_data, $downtimeReason, $date, $fondsModel, $dzo_summary_last_record)
     {
         $fonds = $this->getDataFromBD($fondsModel, $date);
         $downtimeReason->well_survey_downtime_production_wells_count = $this->getCountByDowntimeWells($fonds, 'PRODUCTION');
@@ -125,36 +101,49 @@ class StoreKGMReportsFromAvocetByDay extends Command
 
     private function getWaterOilDeliveryAndGasMore($column1, $date, $multiplier)
     {
-        if ($column1 == "KGM_INJ_TOTAL") {
-            $data = $this->getDataFromBD(new WaterForKGM, $date);} elseif ($column1 == "KGM_DELIVERY") {
-            $data = $this->getDataFromBD(new OilDeliveryForKGM, $date);} elseif ($column1 == "ASY_D") {
-            $data = $this->getDataFromBD(new OilDeliveryForKGM, $date);} elseif ($column1 == "AKSH_D") {
-            $data = $this->getDataFromBD(new OilDeliveryForKGM, $date);} elseif ($column1 == "NUR_D") {
-            $data = $this->getDataFromBD(new OilDeliveryForKGM, $date);} elseif ($column1 == "KGM_TRANS") {
-            $data = $this->getDataFromBD(new GasForKGM, $date);} elseif ($column1 == "KGM_UTIL") {
-            $data = $this->getDataFromBD(new GasForKGM, $date);}
 
-        if (isset($data)) {
-            foreach ($data as $rowNum => $row) {
-                if ($row['legacy_id'] == $column1) {
-                    if (($column1 == 'KGM_INJ_TOTAL') || ($column1 == 'KGM_TRANS') || ($column1 == 'KGM_UTIL')) {
-                        return $row['fact'] * $multiplier;
-                    } else {return $row['fact'];}
+        $column_names = array(
+            "KGM_INJ_TOTAL" => "WaterForKGM",
+            "KGM_DELIVERY" => "OilDeliveryForKGM",
+            "ASY_D" => "OilDeliveryForKGM",
+            "AKSH_D" => "OilDeliveryForKGM",
+            "NUR_D" => "OilDeliveryForKGM",
+            "KGM_TRANS" => "GasForKGM",
+            "KGM_UTIL" => "GasForKGM",
+        );
+        $pathOfClasses = "\App\Models\VisCenter\DataForKGM\Daily";
+        foreach ($column_names as $key => $value) {
+            if ($column1 == $key) {
+                $class = $pathOfClasses . "\\" . $value;
+                $data = $this->getDataFromBD(new $class, $date);
+
+                if (empty($data)) {
+                    return 0;
+                }
+                foreach ($data as $rowNum => $row) {
+                    if ($row['legacy_id'] == $column1) {
+                        if (($column1 == 'KGM_INJ_TOTAL') || ($column1 == 'KGM_TRANS') || ($column1 == 'KGM_UTIL')) {
+                            return $row['fact'] * $multiplier;
+                        } else {
+                            return $row['fact'];
+                        }
+                    }
                 }
             }
+
         }
+
     }
 
-    private function quantityOfArray($column1, $column2, $column3, $date)
+    private function quantityOfArray($status, $type, $cattegory_code, $date)
     {
 
         $data = $this->getDataFromBD(new FondsForKGM, $date);
-
         $summ = [];
 
         foreach ($data as $rowNum => $row) {
-            if (($row['type'] == $column2) && ($row['status'] == $column1)) {
-                if (($row['cattegory_code'] == null) && ($row['cattegory_code'] == $column3)) {
+            if (($row['type'] == $type) && ($row['status'] == $status)) {
+                if (($row['cattegory_code'] == null) && ($row['cattegory_code'] == $cattegory_code)) {
                     $summ[] = array_merge($row);
                 } else {
                     $summ[] = array_merge($row);
@@ -237,31 +226,29 @@ class StoreKGMReportsFromAvocetByDay extends Command
             $dzo_import_field_data->save();
             $downtimeReason->save();
             echo "Data haven't been written";
-        } else {
-            $lastDataOil = $lastDataOil[0];
-            if (($lastDataOil['dzo_name'] == 'КГМ') || ($lastDataOil['date'] == $date)) {
-                if (($lastDataOil['oil_production_fact'] == 0) or ($lastDataOil['oil_delivery_fact'] == 0)) {
-                    $dzo_import_field_data
-                        ->where('dzo_name', '=', 'КГМ')
-                        ->where('date', '=', $date)->update($dzo_import_field_data->getAttributes());
-
-                    unset($downtimeReason['dzo_import_data_id']);
-                    $downtimeReason
-                        ->where('dzo_import_data_id', '=', $lastDataOil['id'])
-                        ->update($downtimeReason->getAttributes());
-                    echo "Data have been update";
-                } else {
-                    echo "No update needed";
-                }
-            }
+            return;
         }
-    }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
+        $lastDataOil = $lastDataOil[0];
+        if (($lastDataOil['dzo_name'] == 'КГМ') || ($lastDataOil['date'] == $date)) {
+            if (($lastDataOil['oil_production_fact'] != 0) && ($lastDataOil['oil_delivery_fact'] != 0)) {
+                echo "No update needed";
+                return;
+            }
+
+            $dzo_import_field_data
+                ->where('dzo_name', '=', 'КГМ')
+                ->where('date', '=', $date)->update($dzo_import_field_data->getAttributes());
+
+            unset($downtimeReason['dzo_import_data_id']);
+            $downtimeReason
+                ->where('dzo_import_data_id', '=', $lastDataOil['id'])
+                ->update($downtimeReason->getAttributes());
+            echo "Data have been update";
+
+        }
+
+    } 
 
     public function handle()
     {
