@@ -1,6 +1,5 @@
 <template>
   <div class="table-page">
-    <cat-loader/>
     <div class="filter-bg" v-if="filterOpened" @click="hideFilters"></div>
     <div class="float-right table-page__links">
       <a v-if="params.links.create" class="table-page__links-item table-page__links-item_add"
@@ -220,7 +219,6 @@
 import Vue from "vue";
 import moment from "moment"
 import vSelect from 'vue-select'
-import CatLoader from '@ui-kit/CatLoader'
 import 'vue-select/dist/vue-select.css'
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
@@ -231,8 +229,7 @@ Vue.use(Datetime)
 export default {
   name: "view-table",
   components: {
-    vSelect,
-    CatLoader,
+    vSelect
   },
   props: {
     params: {

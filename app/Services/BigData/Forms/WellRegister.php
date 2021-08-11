@@ -39,6 +39,9 @@ class WellRegister extends PlainForm
             $dbQuery = DB::connection('tbd')->table($this->params()['table']);
             $wellId = $dbQuery->insertGetId($data);
 
+            $this->submittedData['fields'] = $data;
+            $this->submittedData['id'] = $wellId;
+
             $this->insertWellRelation($wellId, 'org');
             $this->insertWellRelation($wellId, 'category');
             $this->insertGeoFields($wellId);
@@ -124,20 +127,31 @@ class WellRegister extends PlainForm
 
     private function insertWellRelation(int $wellId, string $type)
     {
+        if (!$this->request->get($type)) {
+            return;
+        }
+
         DB::connection('tbd')
             ->table('prod.well_' . $type)
             ->insert(
                 [
                     'well' => $wellId,
-                    'category' => $this->request->get($type),
+                    $type => $this->request->get($type),
                     'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
                     'dend' => Well::DEFAULT_END_DATE
                 ]
             );
     }
 
-    private function insertTopWellCoord($spatialObjectType): int
+    private function insertTopWellCoord($spatialObjectType): ?int
     {
+        if (!$this->request->get('whc.coord_point.x')) {
+            return null;
+        }
+        if (!$this->request->get('whc.coord_point.y')) {
+            return null;
+        }
+
         $topCoordId = DB::connection('tbd')
             ->table('geo.spatial_object')
             ->insertGetId(
@@ -156,8 +170,15 @@ class WellRegister extends PlainForm
         return $topCoordId;
     }
 
-    private function insertBottomWellCoord($spatialObjectType): int
+    private function insertBottomWellCoord($spatialObjectType): ?int
     {
+        if (!$this->request->get('bottom_coord.coord_point.x')) {
+            return null;
+        }
+        if (!$this->request->get('bottom_coord.coord_point.y')) {
+            return null;
+        }
+
         $bottomCoordId = DB::connection('tbd')
             ->table('geo.spatial_object')
             ->insertGetId(

@@ -1,7 +1,5 @@
 <template>
   <div class="position-relative">
-    <cat-loader v-show="loading"/>
-
     <div class="row">
       <div class="col-9">
         <div class="row justify-content-between text-white bg-blue-dark text-wrap mb-10px">
@@ -83,7 +81,9 @@
             v-if="!loading"
             :charts="res.charts"
             :granularity="form.granularity"
-            :profitability="form.profitability"/>
+            :profitability="form.profitability"
+            :oil-prices="res.oilPrices"
+            :dollar-rates="res.dollarRates"/>
       </div>
 
       <div class="col-3 pr-0 pl-10px">
@@ -173,7 +173,6 @@
 <script>
 const fileDownload = require("js-file-download");
 
-import CatLoader from '@ui-kit/CatLoader'
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
 import Charts from "./components/Charts";
@@ -273,12 +272,14 @@ const economicRes = {
     liquidProduction: null,
     operatingProfitTop: null,
   },
+  oilPrices: [],
+  dollarRates: [],
 }
 
 export default {
   name: "economic-nrs",
   components: {
-    CatLoader,
+
     Divider,
     EconomicCol,
     Charts,

@@ -1,7 +1,7 @@
 @extends('layouts.monitor')
 
 @section('content')
-    <div id="app">
+    <div  >
         @if ($message = Session::get('message'))
             <div class="alert alert-success">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>

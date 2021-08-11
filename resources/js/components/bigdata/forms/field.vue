@@ -159,7 +159,7 @@ export default {
       this.formatedValue = this.getFormatedValue(newValue)
     }
   },
-  created() {
+  mounted() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
       if (this.dict === null) {
         this.loadDict(this.item.dict).then(result => {
@@ -216,7 +216,7 @@ export default {
       if (this.item.prefix) {
         if (value && value.length <= this.item.prefix.length) return this.item.prefix
 
-        if (value && value.indexOf(this.item.prefix) === 0) {
+        if (value) {
           value = value.replace(this.item.prefix, '')
         }
 

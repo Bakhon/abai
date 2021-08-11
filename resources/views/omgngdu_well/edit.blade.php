@@ -1,7 +1,7 @@
 @extends('layouts.monitor')
 
 @section('content')
-    <div id="app">
+    <div  >
         <div class="col-md-12">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
@@ -16,7 +16,7 @@
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <omgngdu-well-form :is-editing="true" :omgngdu-well='@json($omgngdu_well)' :validation-params='@json($validationParams)'></omgngdu-well-form>
+                        <omgngdu-well-form :is-editing="true" :omgngdu-well-prop='@json($omgngdu_well)' :validation-params='@json($validationParams)'></omgngdu-well-form>
                     </div>
                 </form>
             </div>

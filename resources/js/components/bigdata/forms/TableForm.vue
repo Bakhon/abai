@@ -1,6 +1,5 @@
 <template>
   <form @submit.prevent="" ref="form" class="bd-main-block__form scrollable" style="width: 100%">
-    <cat-loader v-show="isloading"/>
     <div class="table-page">
       <template v-if="formParams">
         <p v-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
@@ -21,11 +20,24 @@
           </div>
           <table v-if="rows.length" class="table">
             <thead>
-            <tr>
-              <th v-for="column in visibleColumns">
-                {{ column.title }}
-              </th>
-            </tr>
+            <template v-if="formParams.complicated_header">
+              <tr v-for="row in formParams.complicated_header">
+                <th
+                    v-for="column in row"
+                    :colspan="column.colspan"
+                    :rowspan="column.rowspan"
+                >
+                  {{ column.title }}
+                </th>
+              </tr>
+            </template>
+            <template v-else>
+              <tr>
+                <th v-for="column in visibleColumns">
+                  {{ column.title }}
+                </th>
+              </tr>
+            </template>
             </thead>
             <tbody>
             <tr v-for="(row, rowIndex) in rows">
@@ -174,7 +186,7 @@ import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import CatLoader from "@ui-kit/CatLoader";
+
 
 const requireComponent = require.context('./CustomColumns', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
@@ -210,8 +222,7 @@ export default {
   },
   components: {
     BigDataHistory,
-    RowHistoryGraph,
-    CatLoader
+    RowHistoryGraph
   },
   data() {
     return {

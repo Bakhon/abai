@@ -2,20 +2,13 @@ const globalloading = {
   namespaced: true,
 
   state: {
-    loading: true,
+    loading: false,
   },
 
   mutations: {
     SET_LOADING: (state, val) => {
       state.loading = val;
     },
-  },
-
-  actions: {
-  },
-
-  getters: {
-    loading: (state) => state.loading,
   },
 };
 

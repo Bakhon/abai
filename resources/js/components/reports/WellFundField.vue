@@ -1,13 +1,13 @@
 <template>
   <div class="filter-container">
-    <cat-loader v-show="isLoading"/>
+
     <org-selector v-model="org"></org-selector>
 
     <div class="form-group1 filter-group select">
       <select
           class="form-control filter-input select"
           id="geoStructureSelect"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           v-model="geoStructure"
       >
         <option disabled value="">Выберите геоструктуру</option>
@@ -27,7 +27,7 @@
           input-class="form-control filter-input"
           format="dd LLLL yyyy"
           :phrases="{ok: '', cancel: ''}"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           auto
           :flow="['year', 'month', 'date']"
       >
@@ -36,12 +36,12 @@
     </div>
 
     <div class="form-group3 result-link">
-      <a v-if="resultLink !== null && !isLoading" :href="resultLink" target="_blank"
+      <a v-if="resultLink !== null && !$store.state.globalloading.loading" :href="resultLink" target="_blank"
          class="download-report text-center">Скачать отчёт</a>
     </div>
 
     <div class="form-group4">
-      <button :disabled="!org || !end_date || isLoading || !geoStructure "
+      <button :disabled="!org || !end_date || $store.state.globalloading.loading || !geoStructure "
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -70,6 +70,8 @@ import {Datetime} from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from '../common/FormatDate.js'
 import OrgSelector from "./OrgSelector";
+import {globalloadingMutations} from '@store/helpers';
+;
 
 Vue.use(Datetime)
 
@@ -94,7 +96,11 @@ export default {
     }
 
   },
-  methods: {
+      methods: {
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
+
     createDownloadLink(response) {
       this.resultLink = response.data.report_link
     },
@@ -111,7 +117,7 @@ export default {
 
       let json_data = JSON.stringify(data);
 
-      this.isLoading = true;
+      this.SET_LOADING(true);
 
       this.axios.post(uri, json_data, {
         responseType: 'json',
@@ -127,7 +133,7 @@ export default {
             }
           })
           .catch((error) => console.log(error))
-          .finally(() => this.isLoading = false);
+          .finally(() => this.SET_LOADING(false));
     },
     onChange(event) {
       this.org = event.target.value;

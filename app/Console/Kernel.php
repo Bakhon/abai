@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('parse-usd:cron')->dailyAt('18:30')->timezone('Asia/Almaty');
         $schedule->command('parse-oil:cron')->dailyAt('08:10')->timezone('Asia/Almaty');
         $schedule->command('form:calc_field_limits')->dailyAt('02:00')->timezone('Asia/Almaty');
-        $schedule->command('receive-non-operating-email:cron')->dailyAt('07:40')->timezone('Asia/Almaty');
+        $schedule->command('receive-non-operating-email:cron')->dailyAt('07:40')->timezone('Asia/Almaty')->appendOutputTo(storage_path('logs/non_operating_scrapping.log'));
         $schedule->command('monitoring-economic-calc:cron')->dailyAt('03:00')->timezone('Asia/Almaty');
         $schedule->command('create-emergency:cron')->dailyAt('08:50')->timezone('Asia/Almaty');
         $schedule->command('calculate-hydro-yesterday:cron')

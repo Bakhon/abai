@@ -1,6 +1,5 @@
 <template>
   <div>
-    <cat-loader v-show="isLoading"/>
     <div v-if="rows" class="table-container scrollable">
       <div class="table-container-header">
 
@@ -143,7 +142,7 @@
 import forms from '../../../json/bd/forms.json'
 import BigDataPlainForm from './PlainForm'
 import {bdFormActions} from '@store/helpers'
-import CatLoader from '@ui-kit/CatLoader'
+
 import EditHistory from '../../common/EditHistory'
 import moment from "moment";
 
@@ -161,7 +160,7 @@ export default {
   },
   components: {
     BigDataPlainForm,
-    CatLoader,
+
     EditHistory
   },
   data() {
@@ -293,16 +292,22 @@ export default {
         let dict = this.getDict(this.dictFields[column.code])
 
         let value = dict.reduce(this.findValueInDict(row[column.code]), null)
+
+        if (!value) return null
         return value.name || value.label
 
       }
 
-      if (column.type === 'date') {
+      if (row[column.code] && column.type === 'date') {
         return moment(row[column.code]).format('DD.MM.YYYY')
       }
 
-      if (column.type === 'datetime') {
+      if (row[column.code] && column.type === 'datetime') {
         return moment(row[column.code]).format('DD.MM.YYYY HH:MM')
+      }
+
+      if (column.type === 'checkbox') {
+        return row[column.code] ? this.trans('app.yes') : this.trans('app.no')
       }
 
       return row[column.code]
