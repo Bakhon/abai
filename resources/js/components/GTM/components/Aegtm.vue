@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="row mx-0 mt-lg-2 gtm">
+        <div class="row mx-0 mt-lg-2 gtm pt-1">
             <div class="gtm-dark col-lg-10 p-0">
                 <div class="row col-12 p-0 m-0 mb-4">
                     <div class="col-6 d-none d-lg-block p-0 pl-1">
@@ -75,12 +75,27 @@
                         :options="dzosForFilter"
                         label="name"
                         :placeholder="this.trans('paegtm.select_dzo')"
+                        @input="dzoFilterChanged"
+                        v-model="dzo"
                     >
                     </v-select>
                     <v-select
                         :options="oilFieldsForFilter"
                         label="name"
                         :placeholder="this.trans('paegtm.select_oil_field')"
+                        @input="oilFilterChanghed"
+                        v-model="oilFileds"
+                        :disabled="!oilFieldsForFilter.length"
+                    >
+                    </v-select>
+
+                    <v-select
+                        :options="horizontsForFilter"
+                        label="name"
+                        :placeholder="'Выберите горизонт'"
+                        @input="horizontsFilterChanghed"
+                        v-model="horizonts"
+                        :disabled="!horizontsForFilter.length"
                     >
                     </v-select>
 
@@ -88,20 +103,9 @@
                         :options="objectsForFilter"
                         label="name"
                         :placeholder="this.trans('paegtm.select_object')"
-                    >
-                    </v-select>
-
-                    <v-select
-                        :options="structuresForFilter"
-                        label="name"
-                        :placeholder="this.trans('paegtm.select_structure')"
-                    >
-                    </v-select>
-
-                    <v-select
-                        :options="gusForFilter"
-                        label="name"
-                        :placeholder="this.trans('paegtm.select_gu')"
+                        @input="objectsFilterChanghed"
+                        v-model="objects"
+                        :disabled="!objectsForFilter.length"
                     >
                     </v-select>
 
@@ -114,12 +118,47 @@
                         {{ trans('paegtm.gtmType') }}
                     </div>
                     <div class="gtm-dark text-white pl-2">
-                        {{ trans('paegtm.all_gtm') }}<br>
-                        {{ trans('paegtm.gtm_vns') }}<br>
-                        {{ trans('paegtm.gtm_grp') }}<br>
-                        {{ trans('paegtm.gtm_pvlg') }}<br>
-                        {{ trans('paegtm.gtm_pvr') }}<br>
-                        {{ trans('paegtm.gtm_rir') }}<br>
+                        <b-form-checkbox
+                            v-model="gtmTypes"
+                            value="all"
+                        >
+                            {{ trans('paegtm.all_gtm') }}
+                        </b-form-checkbox>
+
+                        <b-form-checkbox
+                            v-model="gtmTypes"
+                            value="vns"
+                        >
+                            {{ trans('paegtm.gtm_vns') }}
+                        </b-form-checkbox>
+
+                        <b-form-checkbox
+                            v-model="gtmTypes"
+                            value="grp"
+                        >
+                            {{ trans('paegtm.gtm_grp') }}
+                        </b-form-checkbox>
+
+                        <b-form-checkbox
+                            v-model="gtmTypes"
+                            value="pvlg"
+                        >
+                            {{ trans('paegtm.gtm_pvlg') }}
+                        </b-form-checkbox>
+
+                        <b-form-checkbox
+                            v-model="gtmTypes"
+                            value="pvr"
+                        >
+                            {{ trans('paegtm.gtm_pvr') }}
+                        </b-form-checkbox>
+
+                        <b-form-checkbox
+                            v-model="gtmTypes"
+                            value="gtm_"
+                        >
+                            {{ trans('paegtm.gtm_rir') }}
+                        </b-form-checkbox>
                     </div>
                 </div>
                 <div class="gtm-dark mt-2 row m-0">
@@ -163,6 +202,7 @@ import Vue from "vue";
 import VueChartJs from 'vue-chartjs'
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
+import orgStructure from '../mock-data/org_structure.json'
 
 Vue.component('bar-chart', {
     extends: VueChartJs.Bar,
@@ -318,29 +358,29 @@ export default {
                     }],
                 }
             },
-            dzosForFilter: [
-                { name: 'АО "Озенмунайгаз"', code: 'omg'},
-                { name: 'АО "ЭмбаМунайГаз"',code: 'emba'},
-                { name: 'АО "Мангистаумунайгаз"',code: 'mmg'},
-                { name: 'АО "Каражанбасмунай"',code: 'krm'},
-                { name: 'ТОО "СП "Казгермунай"',code: 'kazger'},
-                { name: 'ТОО "Казтуркмунай"',code: 'ktm'},
-                { name: 'ТОО "Казахойл Актобе"',code: 'koa'},
+            gtmTypesList: [
+                { id: "vns", name: this.trans('paegtm.gtm_vns') },
+                { id: "grp", name: this.trans('paegtm.gtm_grp') },
+                { id: "pvlg", name: this.trans('paegtm.gtm_pvlg') },
+                { id: "pvr", name: this.trans('paegtm.gtm_pvr') },
+                { id: "rir", name: this.trans('paegtm.gtm_rir') },
             ],
-            oilFieldsForFilter: [
-                { name: 'Акшабулак', code: 'oil_1'},
-                { name: 'Актобе', code: 'oil_2'},
-                { name: 'Алтыколь', code: 'oil_3'},
-                { name: 'Жетыбай', code: 'oil_4'},
-                { name: 'Жыланды', code: 'oil_5'},
-                { name: 'Жыланды', code: 'oil_6'},
-                { name: 'Каламкас', code: 'oil_7'},
-                { name: 'Каражанбас', code: 'oil_8'},
-            ],
-            objectsForFilter: [{ name: 'Вариант 1'}],
-            structuresForFilter: [{ name: 'Вариант 1'}],
-            gusForFilter: [{ name: 'Вариант 1'}],
+            dzos: orgStructure,
             loaded: false,
+
+            allGtmTypesSelected: null,
+
+            dzo: null,
+            oilFileds: [],
+            horizonts: [],
+            objects: [],
+            gtmTypes : [],
+
+            dzosForFilter: [],
+            oilFieldsForFilter: [],
+            horizontsForFilter: [],
+            objectsForFilter: [],
+
         };
     },
     computed: {
@@ -411,10 +451,68 @@ export default {
                 }
             });
             this.$store.commit('globalloading/SET_LOADING',false);
+        },
+        dzoFilterChanged(dzo) {
+            this.oilFieldsForFilter = (dzo.hasOwnProperty('oilFields') && dzo.oilFields.length) ? dzo.oilFields : [];
+
+            //reset selections
+            this.oilFileds = 0;
+            this.horizonts = 0;
+            this.objects = 0;
+        },
+        oilFilterChanghed(oilFiled) {
+            this.horizontsForFilter = (oilFiled.hasOwnProperty('horizonts') && oilFiled.horizonts.length) ? oilFiled.horizonts : [];
+
+            //reset selections
+            this.horizonts = 0;
+            this.objects = 0;
+        },
+        horizontsFilterChanghed(horizont) {
+            this.objectsForFilter = (horizont.hasOwnProperty('objects') && horizont.objects.length) ? horizont.objects : [];
+
+            //reset selections
+            this.objects = 0;
+        },
+        objectsFilterChanghed(object) {
+
+        },
+        selectGtmType() {
+            this.allGtmTypesSelected = false;
+            console.log('selected');
+        },
+        selectAllGtmTypes() {
+            // get: function () {
+            //     return this.users ? this.selected.length == this.users.length : false;
+            // },
+            // set: function (value) {
+            //     let selected = [];
+            //
+            //     if (value) {
+            //         this.users.forEach(function (user) {
+            //             selected.push(user.id);
+            //         });
+            //     }
+            //
+            //     this.gtmTypes = selected;
+            // }
+
+            //this.allGtmTypesSelected = !this.allGtmTypesSelected;
+
+            // this.gtmTypes = [];
+            //
+            // console.log(this.gtmTypes)
+            //
+            // if (this.allGtmTypesSelected) {
+            //     this.gtmTypesList.forEach(function (gtm) {
+            //         this.gtmTypes.push(gtm.id);
+            //     });
+            // }
         }
+
     },
     mounted() {
         this.getData();
+        this.dzosForFilter = this.dzos;
     },
 }
 </script>

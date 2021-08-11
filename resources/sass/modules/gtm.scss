@@ -324,6 +324,18 @@
 
 }
 
+.distribution-table {
+    display: block;
+    overflow-y: scroll;
+    //height: calc(100vh - 600px);
+    height: 350px;
+
+    //th {
+    //    position: sticky;
+    //    top: 0;
+    //}
+}
+
 .dr-border-light {
     border: 0.1rem solid rgba(69, 77, 125, 1);
 }
@@ -526,6 +538,14 @@
 }
 
 .gtm-filter {
+    .vs--disabled .vs__clear,
+    .vs--disabled .vs__dropdown-toggle,
+    .vs--disabled .vs__open-indicator,
+    .vs--disabled .vs__search,
+    .vs--disabled .vs__selected {
+        background-color: transparent;
+    }
+
     .v-select {
         width: 100%;
         min-width: 100%;

@@ -97,7 +97,7 @@ return array (
   'p_plast_atm' => 'Рпл, атм',
   'jd_unit' => 'Jd, ед.',
   'kh' => 'kh, мД*м',
-  'delta_qh_day' => '&#916;Qн, т/сут',
+  'delta_qh_day' => 'Qн, т/сут',
   'by_water_cut_short' => 'По обв.',
   'water_cut_reason' => 'Причина обв.',
   'q_liq_common' => 'По Qж (всего)',
