@@ -11,7 +11,8 @@ use App\Models\EcoRefsDirectionId;
 use App\Models\EcoRefsRoutesId;                                       
 use App\Models\EcoRefsEmpPer;              
 use App\Models\Refs\EcoRefsScFa;              
-use Illuminate\Http\Request;              
+use Illuminate\Http\Request;    
+use App\Http\Resources\EcoRefsEmpPerListResource;            
 use Illuminate\Http\RedirectResponse;                                
 use Illuminate\Support\Facades\DB;                                   
 use Illuminate\View\View;                                            
@@ -19,6 +20,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class EcoRefsEmpPerController extends Controller
 {
+    protected $modelName = 'ecorefsempper';
+
     /**
      * Display a listing of the resource.
      *
@@ -26,10 +29,17 @@ class EcoRefsEmpPerController extends Controller
      */
     public function index()
     {
+        $params = [
+            'links' => [
+                'list' => route('ecorefsempper.list'),
+            ]
+        ];
         $ecorefsempper = EcoRefsEmpPer::latest()->with('scfa')->paginate(5);
 
-        return view('ecorefsempper.index',compact('ecorefsempper'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        $ecorefsempperPages = view('ecorefsempper.index',compact('ecorefsempper'))
+            ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);
+
+        return $ecorefsempperPages;
        //
     }
 
@@ -135,30 +145,20 @@ class EcoRefsEmpPerController extends Controller
         return redirect()->route('ecorefsempper.index')->with('success',__('app.deleted'));
     }
 
-    public function getData(EcoRefsEmpPerRequest $request): array
+    public function list(EcoRefsEmpPerRequest $request)
     {
-        $data = EcoRefsEmpPer::query()
+        parent::list($request);
+
+        $query = EcoRefsEmpPer::query()
             ->whereScFa($request->sc_fa)
             ->with(['scfa', 'company', 'direction', 'route'])
             ->get();
 
-        $response = [];
+        $ecorefsempper = $this
+            ->getFilteredQuery($request->validated(), $query)
+            ->paginate(25);
 
-        /** @var EcoRefsEmpPer $item */
-        foreach ($data as $item) {
-            $response[] = [
-                $item->scfa->name,
-                $item->company -> name,
-                $item->direction->name,
-                $item->route->name,
-                date('Y-m-d', strtotime($item->date)),
-                $item->emp_per
-            ];
-        }
-
-        return [
-            'data' => $response
-        ];
+        return response()->json(json_decode(EcoRefsEmpPerListResource::collection($ecorefsempper)->toJson()));
     }
 
     public function uploadExcel(): View

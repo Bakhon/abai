@@ -8,7 +8,8 @@ use App\Http\Requests\EcoRefs\Macro\UpdateEcoRefsMacroRequest;
 use App\Imports\EcoRefsMacroImport;                                  
 use App\Models\EcoRefsMacro;              
 use App\Models\Refs\EcoRefsScFa;              
-use Illuminate\Http\Request;              
+use Illuminate\Http\Request;       
+use App\Http\Resources\EcoRefsMacroListResource;       
 use Illuminate\Http\RedirectResponse;                                
 use Illuminate\Support\Facades\DB;                                   
 use Illuminate\View\View;                                            
@@ -16,6 +17,9 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class EcoRefsMacroController extends Controller
 {
+
+    protected $modelName = 'ecorefsmacro';
+
     /**
      * Display a listing of the resource.
      *
@@ -23,10 +27,18 @@ class EcoRefsMacroController extends Controller
      */
     public function index()
     {
+        $params = [
+            'links' => [
+                'list' => route('ecorefsmacro.list'),
+            ]
+        ];
+
         $ecorefsmacro = EcoRefsMacro::latest()->with('scfa')->paginate(5);
 
-        return view('ecorefsmacro.index',compact('ecorefsmacro'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        $ecorefsmacroPages = view('ecorefsmacro.index',compact('ecorefsmacro'))
+            ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);
+
+        return $ecorefsmacroPages;
        //
     }
 
@@ -125,30 +137,20 @@ class EcoRefsMacroController extends Controller
         return redirect()->route('ecorefsmacro.index')->with('success',__('app.deleted'));
     }
 
-    public function getData(EcoRefsMacroRequest $request): array
+    public function list(EcoRefsMacroRequest $request)
     {
-        $data = EcoRefsMacro::query()
+        parent::list($request);
+
+        $query = EcoRefsMacro::query()
             ->whereScFa($request->sc_fa)
             ->with(['scfa'])
             ->get();
 
-        $response = [];
-
-        /** @var EcoRefsMacro $item */
-        foreach ($data as $item) {
-            $response[] = [
-                $item->scfa->name,
-                $item->date,
-                $item->ex_rate_dol,
-                $item->ex_rate_rub,
-                $item->inf_end,
-                $item->barrel_world_price,
-            ];
-        }
-
-        return [
-            'data' => $response
-        ];
+        $ecorefsmacro = $this
+            ->getFilteredQuery($request->validated(), $query)
+            ->paginate(25);
+        
+        return response()->json(json_decode(EcoRefsMacroListResource::collection($ecorefsmacro)->toJson()));
     }
 
     public function uploadExcel(): View

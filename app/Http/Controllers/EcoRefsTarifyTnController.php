@@ -15,6 +15,7 @@ use App\Models\EcoRefsExc;
 use App\Models\EcoRefsTarifyTn;
 use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
+use App\Http\Resources\EcoRefsTarifyTnListResource;   
 use Illuminate\Http\RedirectResponse;                                 
 use Illuminate\Support\Facades\DB;                                    
 use Illuminate\View\View;                                             
@@ -22,6 +23,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class EcoRefsTarifyTnController extends Controller
 {
+    protected $modelName = 'ecorefstarifytn';
+
     /**
      * Display a listing of the resource.
      *
@@ -29,11 +32,18 @@ class EcoRefsTarifyTnController extends Controller
      */
     public function index()
     {
+            $params = [
+                'links' => [
+                    'list' => route('ecorefstarifytn.list'),
+                ]
+            ];
 
             $ecorefstarifytn = EcoRefsTarifyTn::latest()->with('scfa')->with('branch')->with('company')->with('direction')->with('route')->with('routetn')->with('exc')->paginate(5);
 
-            return view('ecorefstarifytn.index',compact('ecorefstarifytn'))
-                ->with('i', (request()->input('page', 1) - 1) * 5);
+            $ecorefstarifytnPages = view('ecorefstarifytn.index',compact('ecorefstarifytn'))
+                ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);
+
+            return $ecorefstarifytnPages;
     }
 
     /**
@@ -151,33 +161,20 @@ class EcoRefsTarifyTnController extends Controller
         return redirect()->route('ecorefstarifytn.index')->with('success',__('app.deleted'));
     }
 
-    public function getData(EcoRefsTarifyTnRequest $request): array
+    public function list(EcoRefsTarifyTnRequest $request)
     {
-        $data = EcoRefsTarifyTn::query()
+        parent::list($request);
+
+        $query = EcoRefsTarifyTn::query()
             ->whereScFa($request->sc_fa)
             ->with(['scfa', 'company', 'direction', 'route', 'branch', 'routetn', 'exc'])
             ->get();
 
-        $response = [];
+        $ecorefstarifytn = $this
+            ->getFilteredQuery($request->validated(), $query)
+            ->paginate(25);
 
-        /** @var EcoRefsTarifyTn $item */
-        foreach ($data as $item) {
-            $response[] = [
-                $item->scfa->name,
-                $item->branch ->name,
-                $item->company->name,
-                $item->direction ->name,
-                $item->route->name,
-                $item->routetn->name,
-                $item->exc->name,
-                date('Y-m', strtotime($item->date)),
-                $item->tn_rate
-            ];
-        }
-
-        return [
-            'data' => $response
-        ];
+        return response()->json(json_decode(EcoRefsTarifyTnListResource::collection($ecorefstarifytn)->toJson()));
     }
 
     public function uploadExcel(): View

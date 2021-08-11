@@ -12,6 +12,7 @@ use App\Models\EcoRefsRoutesId;
 use App\Models\EcoRefsDiscontCoefBar;
 use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
+use App\Http\Resources\EcoRefsDiscontCoefBarListResource;  
 use Illuminate\Http\RedirectResponse;                                 
 use Illuminate\Support\Facades\DB;                                    
 use Illuminate\View\View;                                             
@@ -19,6 +20,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class EcoRefsDiscontCoefBarController extends Controller
 {
+    protected $modelName = 'ecorefsdiscontcoefbar';
+
     /**
      * Display a listing of the resource.
      *
@@ -26,11 +29,18 @@ class EcoRefsDiscontCoefBarController extends Controller
      */
     public function index()
     {
+        $params = [
+            'links' => [
+                'list' => route('ecorefsdiscontcoefbar.list'),
+            ]
+        ];
+        
+        $ecorefsdiscontcoefbar = EcoRefsDiscontCoefBar::latest()->with('scfa')->with('company')->with('direction')->with('route')->paginate(5);
 
-            $ecorefsdiscontcoefbar = EcoRefsDiscontCoefBar::latest()->with('scfa')->with('company')->with('direction')->with('route')->paginate(5);
+        $ecorefsdiscontcoefbarPages = view('ecorefsdiscontcoefbar.index',compact('ecorefsdiscontcoefbar'))
+            ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);
 
-            return view('ecorefsdiscontcoefbar.index',compact('ecorefsdiscontcoefbar'))
-                ->with('i', (request()->input('page', 1) - 1) * 5);
+        return $ecorefsdiscontcoefbarPages;
     }
 
     /**
@@ -141,32 +151,20 @@ class EcoRefsDiscontCoefBarController extends Controller
         return redirect()->route('ecorefsdiscontcoefbar.index')->with('success',__('app.deleted'));
     }
 
-    public function getData(EcoRefsDiscontCoefBarRequest $request): array
+    public function list(EcoRefsDiscontCoefBarRequest $request)
     {
-        $data = EcoRefsDiscontCoefBar::query()
+        parent::list($request);
+
+        $query = EcoRefsDiscontCoefBar::query()
             ->whereScFa($request->sc_fa)
             ->with(['scfa', 'company', 'direction', 'route'])
             ->get();
 
-        $response = [];
+        $ecorefsdiscontcoefbar = $this
+            ->getFilteredQuery($request->validated(), $query)
+            ->paginate(25);
 
-        /** @var EcoRefsDiscontCoefBar $item */
-        foreach ($data as $item) {
-            $response[] = [
-                $item->scfa->name,
-                $item->company->name,
-                $item->direction->name,
-                $item->route->name,
-                date('Y-m', strtotime($item->date)),
-                $item->barr_coef,
-                $item->discont,
-                $item->macro
-            ];
-        }
-
-        return [
-            'data' => $response
-        ];
+        return response()->json(json_decode(EcoRefsDiscontCoefBarListResource::collection($ecorefsdiscontcoefbar)->toJson()));
     }
 
     public function uploadExcel(): View
