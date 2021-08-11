@@ -109,11 +109,41 @@
         </div>
 
         <div class="row p-1">
-            <div class="col-6 pr-0">
-              <apexchart type="line" height="180" :options="chartOptions" :series="chartData.series_1"></apexchart>
+            <div class="col-6 pr-0 z-index-1">
+                <div class="svg-icon-chart-1 z-index-2" @click="showModal('chart1')">
+                    <img src="./img/maximize-chart.svg" alt="">
+                </div>
+                <apexchart type="line" height="180"  :options="chartOptions" :series="chartData.series_1"></apexchart>
             </div>
-            <div class="col-6 pl-2">
-              <apexchart type="line" height="180"  :options="chartOptions" :series="series2"></apexchart>
+            <div class="col-6 pl-2 z-index-1">
+                <div class="svg-icon-chart-2 z-index-2" @click="showModal('chart2')">
+                    <img src="./img/maximize-chart.svg" alt="">
+                </div>
+                <apexchart type="line" height="180"  :options="chartOptions2" :series="chartData.series_2"></apexchart>
+            </div>
+            <div>
+                <modal class="modal-bign-wrapper" name="chart1" draggable=".modal-bign-header" :width="1000" :height="500"
+                       style="background: transparent;" :adaptive="true">
+                    <div class="modal-bign modal-bign-container">
+                        <div class="modal-bign-header">
+                            <button type="button" class="modal-bign-button" @click="closeModal('chart1')">
+                                {{trans('pgno.zakrit')}}
+                            </button>
+                        </div>
+                        <apexchart type="line" height="400" width="950" style="color: black" :options="chartOptions" :series="chartData.series_1"></apexchart>
+                    </div>
+                </modal>
+                <modal class="modal-bign-wrapper" name="chart2" draggable=".modal-bign-header" :width="1000" :height="500"
+                       style="background: transparent; color: black" :adaptive="true">
+                    <div class="modal-bign modal-bign-container">
+                        <div class="modal-bign-header">
+                            <button type="button" class="modal-bign-button" @click="closeModal('chart2')">
+                                {{trans('pgno.zakrit')}}
+                            </button>
+                        </div>
+                        <apexchart type="line" height="400" width="950" style="color: black" chart="chart" :options="chartOptions2" :series="chartData.series_2"></apexchart>
+                    </div>
+                </modal>
             </div>
         </div>
     </div>
@@ -141,16 +171,7 @@ export default {
         mainTableData: [],
         comparisonIndicators: [],
         chartData: [],
-        title: {
-          text: this.trans('paegtm.dynamicChartOil'),
-          align: 'center',
-          style: {
-            fontSize:  '14px',
-            fontWeight:  'bolder',
-            offsetY: 10
-          },
-        },
-          series1: [
+        series1: [
             {
               name: this.trans('paegtm.planEd'),
               type: 'column',
@@ -172,7 +193,7 @@ export default {
               data: [10, 25, 35, 47, 53, 62, 77, 81, 92, 103, 120, 130]
             }
           ],
-          series2: [
+        series2: [
             {
               name: this.trans('paegtm.planEd'),
               type: 'column',
@@ -194,7 +215,7 @@ export default {
               data: [14, 23, 37, 43, 57, 61, 75, 86, 97, 107, 118, 133]
             }
           ],
-          chartOptions: {
+        chartOptions: {
             grid: {
               show: true,
               borderColor: '#454d7d',
@@ -281,9 +302,96 @@ export default {
               this.trans('paegtm.Dec')
             ],
           },
-            isModalHide: true,
-            showMainMap: false,
-        };
+        chartOptions2: {
+              grid: {
+                  show: true,
+                  borderColor: '#454d7d',
+                  strokeDashArray: 0,
+                  position: 'back',
+                  xaxis: {
+                      lines: {
+                          show: true
+                      }
+                  },
+                  yaxis: {
+                      lines: {
+                          show: true
+                      }
+                  },
+                  row: {
+                      colors: undefined,
+                      opacity: 3
+                  },
+                  column: {
+                      colors: undefined,
+                      opacity: 3
+                  },
+                  padding: {
+                      top: 0,
+                      right: 0,
+                      bottom: 0,
+                      left: 0
+                  },
+              },
+              colors: [ '#4f81bd', '#c0504d', '#9bbb59', '#8064a2'],
+              chart: {
+                  background: '#272953',
+                  type: 'line',
+                  foreColor: '#fff',
+                  width: '10%',
+              },
+              stroke: {
+                  width: [0, 0, 5, 5]
+              },
+              title: {
+                  text: this.trans('paegtm.dynamicChartOil'),
+                  align: 'center',
+                  style: {
+                      fontSize:  '14px',
+                      fontWeight:  'bolder',
+                      offsetY: 10
+                  },
+              },
+              markers: {
+                  size: 4,
+                  colors: undefined,
+                  strokeWidth: 0
+              },
+              dataLabels: {
+                  enabled: true,
+                  enabledOnSeries: [0, 1],
+                  background: {
+                      enabled: true,
+                      foreColor: '#fff',
+                      opacity: 0,
+                      padding: 0,
+                      dropShadow: {
+                          enabled: false,
+                      }
+                  },
+                  style: {
+                      fontSize: '11px',
+                      fontWeight: 'bold'
+                  }
+              },
+              labels: [
+                  this.trans('paegtm.Jan'),
+                  this.trans('paegtm.Feb'),
+                  this.trans('paegtm.Mar'),
+                  this.trans('paegtm.Apr'),
+                  this.trans('paegtm.May'),
+                  this.trans('paegtm.Jun'),
+                  this.trans('paegtm.Jul'),
+                  this.trans('paegtm.Aug'),
+                  this.trans('paegtm.Sep'),
+                  this.trans('paegtm.Oct'),
+                  this.trans('paegtm.Nov'),
+                  this.trans('paegtm.Dec')
+              ],
+          },
+        isModalHide: true,
+        showMainMap: false,
+      };
     },
     methods: {
         ...paegtmMapActions([
@@ -294,11 +402,11 @@ export default {
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
-        showModal() {
-            this.isModalHide = false;
+        showModal(modalName) {
+            this.$modal.show(modalName);
         },
-        hideModal() {
-            this.isModalHide = true;
+        closeModal(modalName) {
+            this.$modal.hide(modalName)
         },
         getGtmInfo() {
             this.axios.get(

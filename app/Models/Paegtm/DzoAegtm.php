@@ -53,6 +53,14 @@ class DzoAegtm extends TBDModel
         'pvr_plan',
         'pvr_fact',
         'pvr_prod_plan',
-        'prv_prod_fact'
+        'prv_prod_fact',
+        'vns_prod_plan_chart',
+        'vns_prod_fact_chart',
+        'vns_plan_chart',
+        'vns_fact_chart',
+        'gtm_prod_plan_chart',
+        'gtm_prod_fact_chart',
+        'gtm_plan_chart',
+        'gtm_fact_chart',
     ];
 }

@@ -601,13 +601,18 @@ class GTMController extends Controller
         $result = [];
 
         $vnsPlan = $vnsFact = $vnsProdPlan = $vnsProdFact =  [];
+        $gtmPlan = $gtmFact = $gtmProdPlan = $gtmProdFact =  [];
 
         foreach ($data as $item) {
-            $vnsPlan[] =  round($item->vns_plan_total, 2);
-            $vnsFact[] = round($item->vns_fact_total, 2);
+            $vnsPlan[] =  $item->vns_plan_chart;
+            $vnsFact[] = $item->vns_fact_chart;
+            $vnsProdPlan[] = round($item->vns_prod_plan_chart, 2);
+            $vnsProdFact[] = round($item->vns_prod_fact_chart, 2);
 
-            $vnsProdPlan[] = round($item->vns_prod_plan, 2);
-            $vnsProdFact[] = round($item->vns_prod_fact, 2);
+            $gtmPlan[] =  $item->gtm_plan_chart;
+            $gtmFact[] = $item->gtm_fact_chart;
+            $gtmProdPlan[] = round($item->gtm_prod_plan_chart, 2);
+            $gtmProdFact[] = round($item->gtm_prod_fact_chart, 2);
         }
 
         $result['series_1'][] = [
@@ -632,6 +637,32 @@ class GTMController extends Controller
             'name' => trans('paegtm.factOil'),
             'type' => 'line',
             'data' => $vnsProdFact
+        ];
+
+        //
+
+        $result['series_2'][] = [
+            'name' => trans('paegtm.planEd'),
+            'type' => 'column',
+            'data' => $gtmPlan
+        ];
+
+        $result['series_2'][] = [
+            'name' => trans('paegtm.factEd'),
+            'type' => 'column',
+            'data' => $gtmFact
+        ];
+
+        $result['series_2'][] = [
+            'name' => trans('paegtm.planOil'),
+            'type' => 'line',
+            'data' => $gtmProdPlan
+        ];
+
+        $result['series_2'][] = [
+            'name' => trans('paegtm.factOil'),
+            'type' => 'line',
+            'data' => $gtmProdFact
         ];
 
 //        dd($result);
