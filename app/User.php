@@ -122,6 +122,7 @@ class User extends Authenticatable
             'id' => $org['id'],
             'name' => $org['name'],
             'sub_type' => $org['sub_type'],
+            'parent_id' => $org['parent_id'] ?? null,
         ];
         if (isset($org['children'])) {
             $result['children'] = array_map('self::getOrgsArray', $org['children']);
