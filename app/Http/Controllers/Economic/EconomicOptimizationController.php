@@ -19,7 +19,7 @@ class EconomicOptimizationController extends Controller
     protected $structureService;
 
     const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v9';
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_test_v9';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_test_v9_3';
     const DATA_SOURCE_DATE = '2021/01/01';
 
     const SCENARIO_COLUMNS = [
@@ -103,7 +103,7 @@ class EconomicOptimizationController extends Controller
             'org' => $org,
             'scenarios' => $this->getScenarios(),
             'specificIndicator' => $this->getSpecificIndicatorData($org),
-            'wellChanges' => $this->getWellChangesData(),
+//            'wellChanges' => $this->getWellChangesData(),
             'dollarRate' => [
                 'value' => $this->getDollarRate() ?? '0',
                 'url' => self::DOLLAR_RATE_URL
@@ -207,6 +207,7 @@ class EconomicOptimizationController extends Controller
                 "dollar_rate",
                 'profitability_12m',
                 "scenario_id",
+                "rank",
             ])
             ->doubleSum('operating_profit_12m')
             ->orderBy('oil_price')
@@ -218,6 +219,7 @@ class EconomicOptimizationController extends Controller
                 "dollar_rate",
                 'profitability_12m',
                 "scenario_id",
+                "rank",
             ])
             ->data();
     }
