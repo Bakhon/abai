@@ -2,7 +2,7 @@
   <div class="main-page">
     <div class="main-page__inner">
       <div class="main-page__logo">
-        <svg width="400" height="100%" viewBox="0 0 129 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="288" height="100%" viewBox="0 0 129 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd"
                 d="M48.7953 8.90239H58.1889L66.9862 26.621H60.5993L58.9097 23.6428H48.0746L46.385 26.621H39.998L48.7953 8.90239ZM53.9147 12.8978H53.0696L50.1124 19.0522H56.8468L53.9147 12.8978ZM75.0872 19.5484H84.5557C85.0689 19.5484 85.4625 19.6522 85.7358 19.8586C86.0094 20.0657 86.1456 20.4501 86.1456 21.0128C86.1456 21.906 85.6154 22.3531 84.5557 22.3531H75.0872V19.5484ZM69.62 8.85254V26.621H86.1456C88.1011 26.621 89.5005 26.2485 90.3456 25.5041C91.1908 24.7557 91.6125 23.4903 91.6125 21.6992C91.6125 19.6308 90.7928 18.2292 89.1523 17.501C89.6659 17.2695 90.0971 16.8397 90.4449 16.2065C90.7928 15.5784 90.9667 14.8005 90.9667 13.8737C90.9667 11.7687 90.387 10.3461 89.2276 9.59765C88.4485 9.10103 87.2061 8.85254 85.4995 8.85254H69.62ZM75.0872 13.1707H84.7791C85.2266 13.1707 85.5659 13.2619 85.7982 13.4439C86.03 13.626 86.1456 13.9317 86.1456 14.3622C86.1456 14.7757 86.0256 15.0778 85.7856 15.2676C85.5453 15.4577 85.2096 15.5533 84.7791 15.5533H75.0872V13.1707ZM102.373 8.90239H111.766L120.563 26.621H114.177L112.487 23.6428H101.652L99.9626 26.621H93.5764L102.373 8.90239ZM107.492 12.8978H106.647L103.69 19.0522H110.425L107.492 12.8978ZM123.024 26.6709V8.92749H128.491V26.6709H123.024Z"
                 fill="#FEFEFE"/>
@@ -20,7 +20,7 @@
                 fill="#1D70B7"/>
         </svg>
       </div>
-      <div class="main-page__search mb-5">
+      <div class="main-page__search">
         <input placeholder="Введите текст" type="text" v-model="query">
         <button>
           <span>Поиск</span>
@@ -42,8 +42,8 @@
                     </span>
                     <span @click.stop.prevent="childMenuToggle(index)"
                           class="toggle-btn">
-                        <img width="12" src="/img/icons/arrow.svg"
-                             :class="{inverted: !childMenuCollapseList[index].value}" alt="">
+                        <img width="12" src="/img/icons/small_arrow.svg"
+                             :class="{inverted: childMenuCollapseList[index].value}" alt="">
                     </span>
                 </a>
                 <div
