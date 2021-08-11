@@ -33,17 +33,17 @@ export default {
                 'firstMaster': {
                     'name': 'Сенсізбай А. Н.',
                     'field': 'is_approved_by_first_master',
-                    'isFirstApprover': true,
+                    'isFinalApprove': false
                 },
                 'secondMaster': {
                     'name': 'Кенжебаев Н. Х.',
                     'field': 'is_approved_by_second_master',
-                    'isFirstApprover': true,
+                    'isFinalApprove': false
                 },
                 'mainMaster': {
                     'name': 'Кутжанов А.А.',
                     'field': 'is_approved',
-                    'isFirstApprover': false,
+                    'isFinalApprove': true
                 }
             },
             statusTransition: [
@@ -54,7 +54,16 @@ export default {
     },
     methods: {
         async approve(master) {
-            let queryOptions = {'actualId': this.currentDzo.actualId, 'currentId': this.currentDzo.currentId, 'currentApproverField': master.field, 'isFirstApproverStep': master.isFirstApprover};
+            let queryOptions = {
+                'actualId': this.currentDzo.actualId,
+                'currentId': this.currentDzo.currentId,
+                'currentApproverField': master.field,
+                'dzo_name': this.currentDzo.dzoName,
+                'date': this.currentDzo.date,
+                'user_name': this.currentDzo.userName,
+                'change_reason': this.currentDzo.reason,
+                'isFinalApprove': master.isFinalApprove
+            };
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
             this.currentStatus = 'Согласовано';
@@ -63,7 +72,13 @@ export default {
             await axios.get(uri,{params:queryOptions});
         },
         async decline() {
-            let queryOptions = {'currentId': this.currentDzo.currentId};
+            let queryOptions = {
+                'currentId': this.currentDzo.currentId,
+                'dzo_name': this.currentDzo.dzoName,
+                'date': this.currentDzo.date,
+                'user_name': this.currentDzo.userName,
+                'change_reason': this.currentDzo.reason,
+            };
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
             this.currentStatus = 'Отменено';
