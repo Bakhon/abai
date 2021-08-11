@@ -1,6 +1,5 @@
 <template>
   <div class="gu-map">
-    <cat-loader />
     <div class="gu-map__controls">
       <h1>{{ trans('monitoring.map.title') }}</h1>
       <div v-if="guPoints" class="d-flex">
@@ -165,7 +164,6 @@ import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
-import CatLoader from '@ui-kit/CatLoader';
 import guToolTip from "./guToolTip";
 import pipeToolTip from "./pipeToolTip";
 import pipeLongInfo from "./pipeLongInfo";
@@ -184,7 +182,6 @@ export default {
     objectForm,
     guToolTip,
     pipeToolTip,
-    CatLoader,
     mapLegend,
     pipeLongInfo,
     wellOmgNgduForm,

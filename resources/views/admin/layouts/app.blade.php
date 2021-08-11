@@ -21,7 +21,7 @@
 
 <body>
 @include('admin.layouts.navbar')
-<div class="no-row row" id="app">
+<div class="no-row row"  >
     <div class="col m-lg-3 m-1 p-0">
         @yield('content')
     </div>
