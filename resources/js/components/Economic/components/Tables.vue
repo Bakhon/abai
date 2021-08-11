@@ -1,5 +1,5 @@
 <template>
-  <div class="row p-3 bg-main1">
+  <div class="row p-3 bg-main1 position-relative">
     <div class="d-flex">
       <chart-button
           v-for="(tab, index) in tabs"
@@ -11,13 +11,14 @@
           @click.native="selectTab(index)"/>
     </div>
 
-    <div
-        v-for="(tab, index) in tabs"
-        v-show="activeTab === index"
-        :key="tab"
-        class="mt-3 w-100">
+    <div class="mt-3 w-100">
+      <table-chess
+          v-if="activeTab === 0"
+          :scenario="scenario"
+          :oil-prices="scenarioVariations.oil_prices"/>
+
       <table-specific-indicators
-          v-if="index === 0"
+          v-else-if="activeTab === null"
           :org="res.org"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
@@ -25,7 +26,7 @@
           class="text-white"/>
 
       <table-technical-economic-indicators
-          v-if="index === 1"
+          v-if="activeTab === 1"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
@@ -33,14 +34,14 @@
           class="text-white"/>
 
       <table-oil-price-options
-          v-if="index === 2"
+          v-else-if="activeTab === 2"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
           class="text-white"/>
 
       <table-well-changes
-          v-if="index === 3"
+          v-else-if="activeTab === 3"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
@@ -50,14 +51,14 @@
           class="text-white"/>
 
       <table-economic-efficiency
-          v-if="index === 4"
+          v-else-if="activeTab === 4"
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
 
       <table-porcupine
-          v-if="index === 5"
+          v-else-if="activeTab === 5"
           :scenarios="res.scenarios"
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
@@ -74,6 +75,7 @@ import TableOilPriceOptions from "./TableOilPriceOptions";
 import TableWellChanges from "./TableWellChanges";
 import TableEconomicEfficiency from "./TableEconomicEfficiency";
 import TablePorcupine from "./TablePorcupine";
+import TableChess from "./TableChess";
 
 export default {
   name: "Tables",
@@ -84,7 +86,8 @@ export default {
     TableOilPriceOptions,
     TableWellChanges,
     TableEconomicEfficiency,
-    TablePorcupine
+    TablePorcupine,
+    TableChess
   },
   props: {
     scenario: {
@@ -101,11 +104,12 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 0
+    activeTab: 0,
   }),
   computed: {
     tabs() {
       return [
+        this.trans('economic_reference.table_chess'),
         this.trans('economic_reference.specific_indicators'),
         this.trans('economic_reference.technical_economic_indicators'),
         this.trans('economic_reference.oil_price_options'),
@@ -120,12 +124,6 @@ export default {
       this.activeTab = index
 
       this.$emit('updateTab', index)
-
-      if (this.activeTab === 3) {
-        this.$nextTick(() => {
-          this.$refs['well-changes'][0].scrollToChanges()
-        })
-      }
     },
   }
 }
