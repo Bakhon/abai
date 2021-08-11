@@ -3,13 +3,13 @@
     <div class="top_wrapper">
       <div class="select_wrapper_left">
         <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12.6099 2.85938V5.74349H15.494C15.494 4.15096 14.2024 2.85938 12.6099 2.85938Z" fill="white"/>
-        <path d="M12.1761 9.06145C13.7686 9.06145 15.0602 7.77043 15.0602 6.17733H12.1761V3.29321C10.5836 3.29321 9.29199 4.58423 9.29199 6.17733C9.        29199 7.77043 10.5836 9.06145 12.1761 9.06145Z" fill="white"/>
-        <path d="M3.63239 7.55103H2.50732V8.56528H3.63239V7.55103Z" fill="white"/>
-        <path d="M5.31257 5.19556H4.1875V8.56514H5.31257V5.19556Z" fill="white"/>
-        <path d="M6.99226 3.48315H5.86719V8.5651H6.99226V3.48315Z" fill="white"/>
-        <path d="M8.67243 6.72461H7.54736V8.56466H8.67243V6.72461Z" fill="white"/>
-        <path d="M5.9235 16.8749H4.92218V18H13.0789V16.8749H12.0776L11.6839 14.0966H17.0011C17.5534 14.0966 18.0011 13.6489 18.0011 13.0966V1C18.0011 0.447716 17.5534 0 17.0011 0H1C0.447717 0 0 0.447715 0 1V13.0971C0 13.6494 0.447715 14.0971 1 14.0971H6.31727L5.9235 16.8749ZM7.05982 16.8749L7.1442 16.2815L10.745 15.49L10.9413 16.8749H7.05982ZM10.5863 14.3728L7.31296 15.0928L7.45415 14.0966H10.5475L10.5863 14.3728ZM16.8761 1.12507V11.0459H1.12507V1.12507H16.8761ZM1.12507 12.171H16.8761V12.9715H1.12507V12.171Z" fill="white"/>
+          <path d="M12.6099 2.85938V5.74349H15.494C15.494 4.15096 14.2024 2.85938 12.6099 2.85938Z" fill="white"/>
+          <path d="M12.1761 9.06145C13.7686 9.06145 15.0602 7.77043 15.0602 6.17733H12.1761V3.29321C10.5836 3.29321 9.29199 4.58423 9.29199 6.17733C9.        29199 7.77043 10.5836 9.06145 12.1761 9.06145Z" fill="white"/>
+          <path d="M3.63239 7.55103H2.50732V8.56528H3.63239V7.55103Z" fill="white"/>
+          <path d="M5.31257 5.19556H4.1875V8.56514H5.31257V5.19556Z" fill="white"/>
+          <path d="M6.99226 3.48315H5.86719V8.5651H6.99226V3.48315Z" fill="white"/>
+          <path d="M8.67243 6.72461H7.54736V8.56466H8.67243V6.72461Z" fill="white"/>
+          <path d="M5.9235 16.8749H4.92218V18H13.0789V16.8749H12.0776L11.6839 14.0966H17.0011C17.5534 14.0966 18.0011 13.6489 18.0011 13.0966V1C18.0011 0.447716 17.5534 0 17.0011 0H1C0.447717 0 0 0.447715 0 1V13.0971C0 13.6494 0.447715 14.0971 1 14.0971H6.31727L5.9235 16.8749ZM7.05982 16.8749L7.1442 16.2815L10.745 15.49L10.9413 16.8749H7.05982ZM10.5863 14.3728L7.31296 15.0928L7.45415 14.0966H10.5475L10.5863 14.3728ZM16.8761 1.12507V11.0459H1.12507V1.12507H16.8761ZM1.12507 12.171H16.8761V12.9715H1.12507V12.171Z" fill="white"/>
         </svg>
 
         <select class="select_left">
@@ -18,7 +18,7 @@
       </div>
       <div class="select_wrapper_right">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.33434 2.2999C6.61637 2.2999 6.03434 2.88193 6.03434 3.5999V7.99993C6.03434 8.38653 5.72094 8.69993 5.33434 8.69993C4.94774 8.69993 4.63434 8.38653 4.63434 7.99993V3.5999C4.63434 2.10873 5.84317 0.899902 7.33434 0.899902H16.4049C17.896 0.899902 19.1049 2.10873 19.1049 3.5999V12.6704C19.1049 14.1616 17.8961 15.3704 16.4049 15.3704H12.0004C11.6138 15.3704 11.3004 15.057 11.3004 14.6704C11.3004 14.2838 11.6138 13.9704 12.0004 13.9704H16.4049C17.1229 13.9704 17.7049 13.3884 17.7049 12.6704V3.5999C17.7049 2.88193 17.1229 2.2999 16.4049 2.2999H7.33434ZM5.33434 10.236C5.72094 10.236 6.03434 10.5494 6.03434 10.936V13.9705H9.06927C9.45587 13.9705 9.76927 14.2839 9.76927 14.6705C9.76927 15.0571 9.45587 15.3705 9.06927 15.3705H6.03434V18.4049C6.03434 18.7915 5.72094 19.1049 5.33434 19.1049C4.94774 19.1049 4.63434 18.7915 4.63434 18.4049V15.3705H1.60039C1.21379 15.3705 0.900391 15.0571 0.900391 14.6705C0.900391 14.2839 1.21379 13.9705 1.60039 13.9705H4.63434V10.936C4.63434 10.5494 4.94774 10.236 5.33434 10.236Z" fill="white"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M7.33434 2.2999C6.61637 2.2999 6.03434 2.88193 6.03434 3.5999V7.99993C6.03434 8.38653 5.72094 8.69993 5.33434 8.69993C4.94774 8.69993 4.63434 8.38653 4.63434 7.99993V3.5999C4.63434 2.10873 5.84317 0.899902 7.33434 0.899902H16.4049C17.896 0.899902 19.1049 2.10873 19.1049 3.5999V12.6704C19.1049 14.1616 17.8961 15.3704 16.4049 15.3704H12.0004C11.6138 15.3704 11.3004 15.057 11.3004 14.6704C11.3004 14.2838 11.6138 13.9704 12.0004 13.9704H16.4049C17.1229 13.9704 17.7049 13.3884 17.7049 12.6704V3.5999C17.7049 2.88193 17.1229 2.2999 16.4049 2.2999H7.33434ZM5.33434 10.236C5.72094 10.236 6.03434 10.5494 6.03434 10.936V13.9705H9.06927C9.45587 13.9705 9.76927 14.2839 9.76927 14.6705C9.76927 15.0571 9.45587 15.3705 9.06927 15.3705H6.03434V18.4049C6.03434 18.7915 5.72094 19.1049 5.33434 19.1049C4.94774 19.1049 4.63434 18.7915 4.63434 18.4049V15.3705H1.60039C1.21379 15.3705 0.900391 15.0571 0.900391 14.6705C0.900391 14.2839 1.21379 13.9705 1.60039 13.9705H4.63434V10.936C4.63434 10.5494 4.94774 10.236 5.33434 10.236Z" fill="white"/>
         </svg>
 
         <select class="select_right">
@@ -53,7 +53,7 @@
         <div class="sectors">
           <div class="sectors-svg">
             <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5.33671 12.6923V12.5423H5.18671H3.52294V9.15H8.05965V12.5423H6.39588H6.24588V12.6923V17V17.15H6.39588H10.628H10.778V17V12.6923V12.5423H10.628H8.96424V9.15H13.5009V12.5423H11.8372H11.6872V12.6923V17V17.15H11.8372H16.0693H16.2193V17V12.6923V12.5423H16.0693H14.4055V8.38462V8.23462H14.2555H8.96424V5.45769H10.628H10.778V5.30769V1V0.85H10.628H6.39588H6.24588V1V5.30769V5.45769H6.39588H8.05965V8.23462H2.76835H2.61835V8.38462V12.5423H0.95459H0.80459V12.6923V17V17.15H0.95459H5.18671H5.33671V17V12.6923ZM15.3147 13.4577V16.2346H12.5918V13.4577H15.3147ZM7.15047 4.54231V1.76538H9.87341V4.54231H7.15047ZM9.87341 13.4577V16.2346H7.15047V13.4577H9.87341ZM4.43212 16.2346H1.70918V13.4577H4.43212V16.2346Z" fill="#3366FF" stroke="#3366FF" stroke-width="0.3"/>
+              <path d="M5.33671 12.6923V12.5423H5.18671H3.52294V9.15H8.05965V12.5423H6.39588H6.24588V12.6923V17V17.15H6.39588H10.628H10.778V17V12.6923V12.5423H10.628H8.96424V9.15H13.5009V12.5423H11.8372H11.6872V12.6923V17V17.15H11.8372H16.0693H16.2193V17V12.6923V12.5423H16.0693H14.4055V8.38462V8.23462H14.2555H8.96424V5.45769H10.628H10.778V5.30769V1V0.85H10.628H6.39588H6.24588V1V5.30769V5.45769H6.39588H8.05965V8.23462H2.76835H2.61835V8.38462V12.5423H0.95459H0.80459V12.6923V17V17.15H0.95459H5.18671H5.33671V17V12.6923ZM15.3147 13.4577V16.2346H12.5918V13.4577H15.3147ZM7.15047 4.54231V1.76538H9.87341V4.54231H7.15047ZM9.87341 13.4577V16.2346H7.15047V13.4577H9.87341ZM4.43212 16.2346H1.70918V13.4577H4.43212V16.2346Z" fill="#3366FF" stroke="#3366FF" stroke-width="0.3"/>
             </svg>
 
             {{ trans("plast_fluids.sections") }}
@@ -66,7 +66,7 @@
                   <i style="color: #3366FF" class="fa fa-folder light-blue"></i> PVT пластовой нефти
                 </label>
                 <ul>
-                  <li @click="StandartSeparationFlash ='StandartSeparationFlash' ">
+                  <li @click="test ='componentvue2' ">
                     <label>
                       <i style="color: #999DC0" class="fa fa-file "></i> Стандартная сепарация Flash
                     </label>
@@ -155,8 +155,8 @@
                       <i style="color: #999DC0" class="fa fa-file "></i> Пластовая вода
                     </label>
                   </li>
-            </ul>
-            </li>
+                </ul>
+              </li>
             </ul>
           </div>
         </div>
@@ -166,9 +166,8 @@
         <div class="monitoring_select">
           <div>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 6L8 12L14 18" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14 6L8 12L14 18" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
-
             {{ trans("plast_fluids.downloads_monitoring") }}
           </div>
         </div>
@@ -193,7 +192,6 @@
                       :options="pageOptions"
                       size="sm"
                   ></b-form-select>
-
                 </b-form-group>
               </b-col>
               <div style="margin-left: 180px;" class="pagination">
@@ -208,33 +206,66 @@
               </div>
             </b-row>
           </div>
-          <div class="upload_wrapper">
-            <div class="file_upload">
-              <div class="file_upload_title">
-                {{ trans("plast_fluids.download_file") }}
-                <dropdown style="margin-top: 10px;" block class="w-100 mb-2"  button-text="Выбрать формат загрузки" :options="[
-              {label: 'option 1', value: 1},
-              {label: 'option 2', value: 2},
-              {label: 'option 3', value: 3}
-            ]" />
-                <div class="file_service">
-
-                  <div class="upload_border"></div>
-                  <button class="btn-common upload_file">
-                    {{ trans("plast_fluids.download_package") }}
-                  </button>
-                  <button class="btn-common exchange_file">
-                    {{ trans("plast_fluids.replace_package") }}
-                  </button>
-                </div>
+        </div>
+        <div id="app">
+          {{info}}
+        </div>
+        <div class="create_pattern">
+          <div>
+            {{ trans("plast_fluids.downloads_monitoring") }}
+          </div>
+          <div class="tables_wrapper">
+            <div class="ready_patterns">
+              <p>Готовые шаблоны: Стандартная сепарация Flash</p>
+              <table class="table">
+                <tr>
+                  <th>Поле 1</th>
+                </tr>
+                <tr>
+                  <td>Поле 2</td>
+                </tr>
+                <tr>
+                  <td>Поле 3</td>
+                </tr>
+                <tr>
+                  <td>Поле 4</td>
+                </tr>
+                <tr>
+                  <td>Поле 5</td>
+                </tr>
+              </table>
+            </div>
+            <div class="arrows">
+              <div class="right_arrow">
+                <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1 1L9 9L1 17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="left_arrow">
+                <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 1L1 9L9 17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
               </div>
             </div>
-            <div class="upload_status">
-              <div class="upload_status_title">
-                {{ trans("plast_fluids.download_log") }}
-              </div>
-              <div class="log_status"></div>
-              <button class="btn-common download_log">Скачать лог загрузки</button>
+            <div class="arbitrary_pattern">
+              <p>Произвольный шаблон</p>
+              <table class="table">
+                <tr>
+                  <th>Поле 1</th>
+                </tr>
+                <tr>
+                  <td>Поле 2</td>
+                </tr>
+                <tr>
+                  <td>Поле 3</td>f
+                </tr>
+                <tr>
+                  <td>Поле 4</td>
+                </tr>
+                <tr>
+                  <td>Поле 5</td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
@@ -247,7 +278,8 @@
 import dropdown from "../../geology/components/dropdowns/dropdown";
 import Button from "../../geology/components/buttons/Button";
 import Icon from "../../geology/components/icons/AwIcon";
-import StandartSeparationFlash from "../components/StandartSeparationFlash";
+import componentvue from "./componentvue";
+import componentvue2 from "./componentvue2";
 
 export default {
   name: "UploadMonitoring",
@@ -255,79 +287,77 @@ export default {
     dropdown,
     Button,
     Icon,
-    StandartSeparationFlash
+    componentvue,
+    componentvue2
   },
+  el: '#app',
   data() {
     return {
-      StandartSeparationFlash: "StandartSeparationFlash",
+      info: null,
+      test: "componentvue",
       fields: [
         {
-          key: 'Дата загрузки',
+          label: 'Дата загрузки',
+          key: "uploadDate",
           sortable: true
         },
         {
-          key: 'Автор загрузки',
+          label: 'Автор загрузки',
+          key: "uploadAuthor",
           sortable: true
         },
         {
-          key: 'Недропользователь',
+          label: 'Недропользователь',
+          key: "subsoilUser",
           sortable: true
         },
         {
-          key: 'Месторождение',
+          label: 'Месторождение',
+          key: "fields",
           sortable: true
         },
         {
-          key: 'Дата отбора начало',
+          label: 'Дата отбора начало',
+          key: "selectionDateStart",
           sortable: true
         },
         {
-          key: 'Дата отбора конец',
+          label: 'Дата отбора конец',
+          key: "selectionDateEnd",
           sortable: true
         },
         {
-          key: 'Тип данных',
+          label: 'Тип данных',
+          key: "dataType",
           sortable: true
         }
       ],
       items: [
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
-        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
+        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
+        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
+        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
+        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
+        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
+        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
+        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
+        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
+        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
       ],
       currentPage: 1,
       perPage: 15,
       pageOptions: [15, 20, 25, { value: 100, text: "Показать больше" }],
     }
+  },
+
+  mounted(){
+    axios
+      .get('http://172.20.103.51:8000/api/templates/report-templates')
+      .then(response => (this.info = response));
   }
+
+
 };
-
-
 </script>
 
 <style scoped>
@@ -585,7 +615,6 @@ label{font-weight:normal}
   color: aliceblue;
 }
 .table_div {
-  max-width: 960px;
   width: 100%;
   height: 100%;
   margin: 15px;
@@ -599,6 +628,43 @@ td {
 th,
 td {
   padding: 15px;
+}
+
+.create_pattern{
+  background: #272953;
+  display: block;
+  color: #fff;
+  padding: 20px;
+  font-size: 18px;
+}
+
+.tables_wrapper{
+  background: rgba(31, 33, 66, 0.5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+}
+
+.table{
+  color: #fff;
+  text-align: center;
+  width: 100%;
+}
+
+.ready_patterns, .arbitrary_pattern{
+  width: 45%;
+}
+
+tr:nth-child(even) {
+  background-color: #2B2E5E;
+}
+
+.right_arrow, .left_arrow{
+  background: #3A4280;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
 #per-page-select{
