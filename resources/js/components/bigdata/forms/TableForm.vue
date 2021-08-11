@@ -20,11 +20,24 @@
           </div>
           <table v-if="rows.length" class="table">
             <thead>
-            <tr>
-              <th v-for="column in visibleColumns">
-                {{ column.title }}
-              </th>
-            </tr>
+            <template v-if="formParams.complicated_header">
+              <tr v-for="row in formParams.complicated_header">
+                <th
+                    v-for="column in row"
+                    :colspan="column.colspan"
+                    :rowspan="column.rowspan"
+                >
+                  {{ column.title }}
+                </th>
+              </tr>
+            </template>
+            <template v-else>
+              <tr>
+                <th v-for="column in visibleColumns">
+                  {{ column.title }}
+                </th>
+              </tr>
+            </template>
             </thead>
             <tbody>
             <tr v-for="(row, rowIndex) in rows">

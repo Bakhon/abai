@@ -8,9 +8,11 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
 use App\Services\BigData\FieldLimitsService;
+use App\Services\BigData\TableFormHeaderService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -19,10 +21,18 @@ use Illuminate\Support\Facades\DB;
 abstract class TableForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'table_form.json';
+    protected $tableHeaderService;
 
     abstract public function getRows(array $params = []): array;
 
     abstract protected function saveSingleFieldInDB(array $params): void;
+
+    public function __construct(Request $request)
+    {
+        $this->tableHeaderService = app()->make(TableFormHeaderService::class);
+        parent::__construct($request);
+    }
+
 
     public static function getLimitsCacheKey(array $field, CarbonImmutable $yesterday)
     {
@@ -309,6 +319,11 @@ abstract class TableForm extends BaseForm
                 $params['filter']
             );
         }
+
+        if (!empty($params['merge_columns'])) {
+            $params['complicated_header'] = $this->tableHeaderService->getHeader($params);
+        }
+
         return $params;
     }
 
