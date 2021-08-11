@@ -252,7 +252,7 @@ class DictionaryService
                     $dict = $this->getEquipTypeCascDict();
                     break;
                 case 'geo_type_hrz':
-                    $dict = $this->getGeoTypeDict();
+                    $dict = $this->getGeoTypeHrz();
                     break;    
                 default:
                     throw new DictionaryNotFound();
@@ -338,6 +338,25 @@ class DictionaryService
 
         return $this->generateTree((array)$items);
     }
+    private function getGeoTypeHrz(): array
+    {
+        return DB::connection('tbd')
+            ->table('dict.geo as g')
+            // ->select('g.id')
+            ->selectRaw('g.name_ru')
+            ->leftJoin(
+                'dict.geo_type as gt',
+                function ($join) {
+                    $join->on('gt.id', '=', 'g.geo_type');
+                    $join->where('gt.code', 'HRZ'); 
+                    $join->limit(1);                  
+                }
+            )
+            ->distinct()
+            ->orderBy('g.name_ru', 'asc')
+            ->get()
+            ->toArray();
+    }
 
     private function getEquipTypeCascDict()
     {
@@ -360,26 +379,5 @@ class DictionaryService
             ->get()
             ->toArray();
     }
-
-    private function getGeoTypeDict()
-    {
-        $dictClass = self::DICTIONARIES['geo_type']['class'];
-        $nameField = self::DICTIONARIES['geo_type']['name_field'] ?? 'name';
-        
-        return $dictClass::query()
-            ->select('id')
-            ->selectRaw("$nameField as name")
-            ->where(
-                'parent',
-                function ($query) {
-                    return $query->select('id')
-                        ->from('dict.geo_type')
-                        ->where('code', 'HRZ')
-                        ->limit(1);
-                }
-            )
-            ->orderBy('name', 'asc')
-            ->get()
-            ->toArray();
-    }
+     
 }
