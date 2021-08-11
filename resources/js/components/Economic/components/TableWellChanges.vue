@@ -67,7 +67,10 @@ export default {
     data: {
       required: true,
       type: Array
-    }
+    },
+  },
+  mounted() {
+    this.scrollToChanges()
   },
   methods: {
     getColor({profitability_12m}) {

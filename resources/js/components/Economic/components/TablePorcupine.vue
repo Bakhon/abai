@@ -78,11 +78,11 @@ export default {
             retention_percent: retention_percent,
             series: retentionScenarios.reverse().map(scenario => {
               return {
-                uwi_count: scenario.uwi_count_profitable_optimize,
+                uwi_count: scenario.uwi_count_optimize,
                 cat_1: scenario.percent_stop_cat_1,
                 cat_2: scenario.percent_stop_cat_2,
                 oil: scenario.oil.original_value_optimized,
-                operating_profit_12m: scenario.operating_profit_12m.value_optimized[0],
+                operating_profit_12m: (+scenario.operating_profit_12m.original_value_optimized / 1000000000).toFixed(2),
               }
             }),
           })
