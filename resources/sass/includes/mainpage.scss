@@ -22,7 +22,6 @@
 
   &__search {
     display: flex;
-    margin-bottom: 110px;
     position: relative;
     width: 100%;
 
@@ -70,19 +69,15 @@
   }
 
   &__blocks {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-
     &-item {
       margin: 0 45px 20px 0;
       text-align: center;
-      width: 180px;
+      width: 125px;
 
       &-bg {
         background: $main4;
-        height: 180px;
-        width: 180px;
+        width: 96px;
+        height: 99px;
         border-radius: 7px;
 
         &-img {
@@ -102,8 +97,8 @@
 
       &-name {
         color: #fff;
-        font-size: 24px;
-        line-height: 29px;
+        font-size: 16px;
+        line-height: 20px;
 
         &:hover {
           color: #fff;
@@ -129,11 +124,30 @@
     }
     &-children {
       position: absolute;
+      min-width: 25rem;
       background-color: rgba(39, 41, 83, 0.97);
-      left: -125%;
-      bottom: -170%;
+      left: -160%;
+      bottom: -230%;
       border-radius: 7px;
       border: 2px solid rgba(51, 57, 117, 1);
+    }
+
+    &-child {
+      &-item {
+        width: 80px;
+        text-align: center;
+        &-bg {
+          background: $main4;
+          border-radius: 7px;
+          width: 48px;
+          height: 48px;
+        }
+
+        &-name {
+          color: #fff;
+          font-size: 14px;
+        }
+      }
     }
   }
 }
