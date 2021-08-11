@@ -100,7 +100,14 @@
                     <span>{{trans('visualcenter.importForm.statusLabel')}}:</span>
                     <span :class="[isValidateError ? 'status-error' : '','label']">&nbsp;{{status}}</span>
                 </div>
-                <div class="col-12 mt-3 status-block status-block_little">
+                <select
+                        class="form-select col-12 mt-3 status-block status-block_little"
+                        v-if="dzoUsers.includes(parseInt(userId))"
+                        @change="switchCompany($event)"
+                >
+                    <option v-for="company in dzoCompanies" :value="company.ticker">{{company.name}}</option>
+                </select>
+                <div v-else class="col-12 mt-3 status-block status-block_little">
                     &nbsp;
                 </div>
                 <div class="col-12 mt-3 status-block status-block_little">
@@ -229,33 +236,6 @@
                 </div>
             </div>
         </modal>
-<!--        <modal-->
-<!--                class="modal-bign-wrapper"-->
-<!--                name="additionalParamsReminder"-->
-<!--                draggable=".modal-bign-header"-->
-<!--                :width="900"-->
-<!--                :height="350"-->
-<!--                style="background-color: rgba(0, 0, 0, 0.1);"-->
-<!--                :adaptive="true"-->
-<!--        >-->
-<!--            <div class="modal-bign modal-bign-container">-->
-<!--                <div class="modal-bign-title modal_header">Напоминание</div>-->
-<!--                <hr class="solid">-->
-<!--                <div class="modal_header mt-2 row">-->
-<!--                    <h2 class="text-center reminder col-12">Необходимо с 5 по 10 число заполнить параметры:</h2>-->
-<!--                    <div class="col-6 reminder-titles">-->
-<!--                        <h4 class="ml-2">- Химизация производства</h4>-->
-<!--                        <h4 class="ml-2">- Ремонт скважин</h4>-->
-<!--                    </div>-->
-<!--                    <div class="col-6">-->
-<!--                        <img src="/img/visualcenter3/chemistry.jpg">-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div align="center">-->
-<!--                    <button type="button" class="modal-bign-button" @click="$modal.hide('additionalParamsReminder')">Закрыть</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </modal>-->
     </div>
 </template>
 
@@ -466,6 +446,9 @@
     }
     .reminder-titles {
         margin-top: 60px;
+    }
+    select.status-block {
+        color: black;
     }
 
 </style>

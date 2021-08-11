@@ -51,6 +51,18 @@ export default {
                 await this.updateCurrentData();
                 this.addListeners();
             }
+        },
+        async switchCompany(e) {
+            this.SET_LOADING(true);
+            this.selectedDzo.ticker = e.target.value;
+            if (this.selectedDzo.ticker === 'КОА') {
+                this.addColumnsToGrid();
+            }
+            this.selectedDzo.name = this.getDzoName();
+            this.changeDefaultDzo();
+            await this.updateCurrentData();
+            this.addListeners();
+            this.SET_LOADING(false);
         }
     },
     computed: {
