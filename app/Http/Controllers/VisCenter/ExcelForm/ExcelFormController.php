@@ -154,6 +154,16 @@ class ExcelFormController extends Controller
     {
         $forApprove = DzoImportData::query()
             ->where('is_corrected', true)
+            ->where(function($q) {
+                return $q
+                         ->whereNull('is_approved_by_first_master')
+                         ->orWhere('is_approved_by_first_master', true);
+             })
+             ->where(function($q) {
+                return $q
+                      ->whereNull('is_approved_by_second_master')
+                      ->orWhere('is_approved_by_second_master', true);
+            })
             ->with('importField')
             ->with('importDowntimeReason')
             ->with('importDecreaseReason')
@@ -183,18 +193,20 @@ class ExcelFormController extends Controller
 
     public function approveDailyCorrection(Request $request)
     {
-        DzoImportField::where('dzo_import_data_id',$request->actualId)->delete();
-        DzoImportDecreaseReason::where('dzo_import_data_id',$request->actualId)->delete();
-        DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
-        DzoImportData::where('id',$request->actualId)->delete();
+        $updateOptions = array(
+            $request->currentApproverField => true
+        );
+        if ($request->isFirstApproverStep === FALSE) {
+            DzoImportField::where('dzo_import_data_id',$request->actualId)->delete();
+            DzoImportDecreaseReason::where('dzo_import_data_id',$request->actualId)->delete();
+            DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
+            DzoImportData::where('id',$request->actualId)->delete();
+            $updateOptions['is_corrected'] = null;
+        }
+
         DzoImportData::query()
                     ->where('id', $request->currentId)
-                    ->update(
-                        [
-                            'is_corrected' => null,
-                            'is_approved' => true
-                        ]
-                    );
+                    ->update($updateOptions);
     }
     public function declineDailyCorrection(Request $request)
     {

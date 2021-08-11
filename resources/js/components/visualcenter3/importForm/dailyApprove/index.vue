@@ -39,9 +39,20 @@
                             <span class="col-2 column-title">{{trans('visualcenter.importForm.executor')}}: </span>
                             <span class="column-parameter col-4">{{currentDzo.userName}}</span>
                             <div v-if="!currentDzo.isProcessed" class="col-6 row justify-content-end">
-                                <span clas="col-4">Сенсізбай А. Н.</span>
-                                <span class="col-4 menu__button m-1 ml-5 button_approve" @click="approve">{{trans('visualcenter.dailyApprove.approve')}}</span>
-                                <span class="col-3 menu__button m-1 button_decline" @click="decline">{{trans('visualcenter.dailyApprove.cancel')}}</span>
+                                <span clas="col-4">{{approvers.firstMaster.name}}</span>
+                                <span
+                                        class="col-4 menu__button m-1 ml-5 button_approve"
+                                        :class="[currentDzo.isFirstMasterApproved !== null ? currentDzo.isFirstMasterApproved ? 'button_approved' : 'button_disabled' : '']"
+                                        @click="approve(approvers.firstMaster)"
+                                >
+                                    {{trans(currentDzo.firstMasterApproveTranslation)}}</span>
+                                <span
+                                        class="col-3 menu__button m-1 button_decline"
+                                        @click="decline"
+                                        :class="[currentDzo.isFirstMasterApproved !== null ? !currentDzo.isFirstMasterApproved ? 'button_disabled' : 'button_disabled' : '']"
+                                >
+                                    {{trans('visualcenter.dailyApprove.cancel')}}
+                                </span>
                             </div>
                             <div v-else class="col-4 row">
                                 {{currentStatus}}
@@ -49,14 +60,24 @@
                             <span class="col-2 column-title">{{trans('visualcenter.importForm.reason')}}: </span>
                             <span class="column-parameter col-4">{{currentDzo.reason}}</span>
                             <div v-if="!currentDzo.isProcessed" class="col-6 row justify-content-end">
-                                <span clas="col-4">Кенжебаев Н. Х.</span>
-                                <span class="col-4 menu__button m-1 ml-5 button_approve" @click="approve">{{trans('visualcenter.dailyApprove.approve')}}</span>
-                                <span class="col-3 menu__button m-1 button_decline" @click="decline">{{trans('visualcenter.dailyApprove.cancel')}}</span>
+                                <span clas="col-4">{{approvers.secondMaster.name}}</span>
+                                <span
+                                        class="col-4 menu__button m-1 ml-5 button_approve"
+                                        :class="[currentDzo.isSecondMasterApproved !== null ? currentDzo.isSecondMasterApproved ? 'button_approved' : 'button_disabled' : '']"
+                                        @click="approve(approvers.secondMaster)"
+                                >
+                                    {{trans(currentDzo.secondMasterApproveTranslation)}}</span>
+                                <span
+                                        class="col-3 menu__button m-1 button_decline"
+                                        :class="[currentDzo.isSecondMasterApproved !== null ? !currentDzo.isSecondMasterApproved ? 'button_approved' : 'button_disabled' : '']"
+                                        @click="decline"
+                                >
+                                    {{trans('visualcenter.dailyApprove.cancel')}}</span>
                             </div>
                             <div v-if="!currentDzo.isProcessed" class="col-6"></div>
                             <div v-if="!currentDzo.isProcessed" class="col-6 row justify-content-end">
-                                <span clas="col-4">Кутжанов А.А.</span>
-                                <span class="col-4 menu__button m-1 ml-5 button_approve" @click="approve">{{trans('visualcenter.dailyApprove.approve')}}</span>
+                                <span clas="col-4">{{approvers.mainMaster.name}}</span>
+                                <span class="col-4 menu__button m-1 ml-5 button_approve" @click="approve(approvers.mainMaster)">{{trans('visualcenter.dailyApprove.approve')}}</span>
                                 <span class="col-3 menu__button m-1 button_decline" @click="decline">{{trans('visualcenter.dailyApprove.cancel')}}</span>
                             </div>
                             <span class="col-12 header-title p-2">{{trans('visualcenter.dailyApprove.plannedChanges')}}</span>
@@ -200,5 +221,13 @@
     }
     .processed-company {
         background: #00b353;
+    }
+    .button_disabled {
+        pointer-events: none;
+        visibility: hidden;
+    }
+    .button_approved {
+        pointer-events: none;
+        opacity: 0.4;
     }
 </style>

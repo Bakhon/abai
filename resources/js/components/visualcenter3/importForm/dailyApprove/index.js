@@ -6,7 +6,17 @@ export default {
             allProduction: [],
             difference: [],
             compared: [],
-            systemFields: ['id','is_corrected','is_approved','date','user_name','change_reason','dzo_import_data_id'],
+            systemFields: [
+                'id',
+                'is_corrected',
+                'is_approved',
+                'date',
+                'user_name',
+                'change_reason',
+                'dzo_import_data_id',
+                'is_approved_by_first_master',
+                'is_approved_by_second_master'
+            ],
             dzoCompanies: {
                 'ЭМГ': 'АО "Эмбамунайгаз"',
                 'КОА': 'ТОО "Казахойл Актобе"',
@@ -18,12 +28,33 @@ export default {
             },
             currentDzo: {},
             names: fieldsMapping,
-            currentStatus: ''
+            currentStatus: '',
+            approvers: {
+                'firstMaster': {
+                    'name': 'Сенсізбай А. Н.',
+                    'field': 'is_approved_by_first_master',
+                    'isFirstApprover': true,
+                },
+                'secondMaster': {
+                    'name': 'Кенжебаев Н. Х.',
+                    'field': 'is_approved_by_second_master',
+                    'isFirstApprover': true,
+                },
+                'mainMaster': {
+                    'name': 'Кутжанов А.А.',
+                    'field': 'is_approved',
+                    'isFirstApprover': false,
+                }
+            },
+            statusTransition: [
+                'visualcenter.dailyApprove.approve',
+                'visualcenter.dailyApprove.approved'
+            ],
         }
     },
     methods: {
-        async approve() {
-            let queryOptions = {'actualId': this.currentDzo.actualId, 'currentId': this.currentDzo.currentId};
+        async approve(master) {
+            let queryOptions = {'actualId': this.currentDzo.actualId, 'currentId': this.currentDzo.currentId, 'currentApproverField': master.field, 'isFirstApproverStep': master.isFirstApprover};
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
             this.currentStatus = 'Согласовано';
@@ -70,8 +101,18 @@ export default {
                     'reason': approveItem.change_reason,
                     'selected': false,
                     'currentId': approveItem.id,
-                    'actualId': actual.id
+                    'actualId': actual.id,
+                    'isFirstMasterApproved': approveItem.is_approved_by_first_master,
+                    'isSecondMasterApproved': approveItem.is_approved_by_second_master,
+                    'firstMasterApproveTranslation': this.statusTransition[0],
+                    'secondMasterApproveTranslation': this.statusTransition[0],
                 };
+                if (approve.isFirstMasterApproved) {
+                    approve.firstMasterApproveTranslation = this.statusTransition[1]
+                }
+                if (approve.isSecondMasterApproved) {
+                    approve.secondMasterApproveTranslation = this.statusTransition[1]
+                }
                 approve.difference = this.getDifference(approveItem,actual);
                 compared.push(approve);
             });
