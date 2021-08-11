@@ -14,7 +14,7 @@ class DropOmgNgduReferenceColumn extends Migration
     public function up()
     {
         Schema::table('omg_n_g_d_u_s_1', function (Blueprint $table) {
-            $table->dropForeign(['gu_id']);
+
         });
 
     }
@@ -27,7 +27,7 @@ class DropOmgNgduReferenceColumn extends Migration
     public function down()
     {
         Schema::table('omg_n_g_d_u_s_1', function (Blueprint $table) {
-            $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
+            
         });
     }
 }
