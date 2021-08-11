@@ -27,7 +27,7 @@ class DropOmgNgduReferenceColumn extends Migration
     public function down()
     {
         Schema::table('omg_n_g_d_u_s_1', function (Blueprint $table) {
-            
+
         });
     }
 }
