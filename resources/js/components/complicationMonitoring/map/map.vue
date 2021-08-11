@@ -1,6 +1,5 @@
 <template>
   <div class="gu-map">
-    <cat-loader />
     <div class="gu-map__controls">
       <h1>{{ trans('monitoring.map.title') }}</h1>
       <div v-if="guPoints" class="d-flex">
@@ -72,10 +71,18 @@
         id="object-modal"
         :title="modalTitle">
 
-      <map-gu-form :gu="objectData" v-if="editMode == 'gu'"></map-gu-form>
-      <map-zu-form :zu="objectData" v-if="editMode == 'zu'"></map-zu-form>
-      <map-well-form :well="objectData" v-if="editMode == 'well'"></map-well-form>
-      <map-pipe-form :pipe="pipeObject" v-if="editMode == 'pipe' && pipeObject"></map-pipe-form>
+      <object-form
+          v-if="editMode != 'pipe' && editMode"
+          ref="objectForm"
+          :object="objectData"
+          :editMode="editMode"
+      />
+
+      <map-pipe-form
+          v-if="editMode == 'pipe' && pipeObject"
+          ref="pipeForm"
+          :pipe="pipeObject"
+      />
 
       <template #modal-footer>
         <div class="w-100">
@@ -84,7 +91,7 @@
               class="float-right ml-3"
               @click="cancelAddObject()"
           >
-            Отмена
+            {{ trans('app.cancel') }}
           </b-button>
           <b-button
               variant="primary"
@@ -104,10 +111,11 @@
         header-text-variant="light"
         footer-bg-variant="main4"
         centered
-        id="pipe-calc-long-modal"
-        modal-class="pipe-calc-long-modal"
+        id="pipe-calc-modal"
+        modal-class="long-modal"
         :title="trans('monitoring.pipe.detail-data') + ' ' + (selectedPipe ? selectedPipe.name : '')"
-        :cancel-disabled="true"
+        :ok-only="true"
+        @hide="resetSelectedObjects()"
     >
       <pipe-long-info
           :pipe="selectedPipe"
@@ -115,6 +123,24 @@
           :activeFilter="activeFilter"
 
       />
+    </b-modal>
+
+    <b-modal
+        size="xl"
+        header-bg-variant="main4"
+        body-bg-variant="main1"
+        header-text-variant="light"
+        footer-bg-variant="main4"
+        centered
+        id="omg-ngdu-form"
+        modal-class="long-modal"
+        :title="omgNgduFormModalTitle"
+        :ok-only="true"
+        @hide="resetSelectedObjects()"
+    >
+      <wellOmgNgduForm v-if="selectedWell" :well="selectedWell" />
+      <guOmgNgduForm v-if="selectedGu" :gu="selectedGu" />
+      <zuOmgNgduForm v-if="selectedZu" :zu="selectedZu" />
     </b-modal>
 
     <div v-show="false">
@@ -131,34 +157,36 @@ import {PathLayer, IconLayer} from '@deck.gl/layers';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import vSelect from "vue-select";
 import mapLegend from "./mapLegend";
-import mapGuForm from "./mapGuForm";
-import mapZuForm from "./mapZuForm";
-import mapWellForm from "./mapWellForm";
+import objectForm from "./objectForm";
 import mapPipeForm from "./mapPipeForm";
 import {guMapState, guMapMutations, guMapActions, globalloadingMutations} from '@store/helpers';
 import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
-import CatLoader from '../../ui-kit/CatLoader';
 import guToolTip from "./guToolTip";
 import pipeToolTip from "./pipeToolTip";
 import pipeLongInfo from "./pipeLongInfo";
+import wellOmgNgduForm from "./wellOmgNgduForm";
+import guOmgNgduForm from "./guOmgNgduForm"
+import zuOmgNgduForm from "./zuOmgNgduForm"
+import turfLength from '@turf/length';
+import { lineString as turfLineString} from "@turf/helpers";
 
 export default {
   name: "gu-map",
   components: {
     vSelect,
-    'map-gu-form': mapGuForm,
-    'map-zu-form': mapZuForm,
-    'map-well-form': mapWellForm,
-    'map-pipe-form': mapPipeForm,
-    'map-context-menu': mapContextMenu,
+    mapPipeForm,
+    mapContextMenu,
+    objectForm,
     guToolTip,
     pipeToolTip,
-    CatLoader,
     mapLegend,
-    pipeLongInfo
+    pipeLongInfo,
+    wellOmgNgduForm,
+    guOmgNgduForm,
+    zuOmgNgduForm
   },
   data() {
     return {
@@ -174,6 +202,7 @@ export default {
       formType: 'create',
       isHovering: false,
       pipeObject: null,
+      isPipeEnd: false,
       gu: null,
       mapBoxToken: process.env.MIX_MAPBOX_TOKEN,
       mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
@@ -216,6 +245,9 @@ export default {
       pipeHovered: null,
       pipeHoveredParameter: null,
       selectedPipe: null,
+      selectedWell: null,
+      selectedGu: null,
+      selectedZu: null
     };
   },
   created() {
@@ -238,6 +270,21 @@ export default {
     okBtntext() {
       return this.formType == 'create' ? this.trans('app.create') : this.trans('app.update')
     },
+    omgNgduFormModalTitle () {
+      switch (true) {
+        case this.selectedWell != null:
+          return this.trans('monitoring.well.enter-omg-ngdu-data');
+          break;
+
+        case this.selectedGu != null:
+          return this.trans('monitoring.gu.enter-omg-ngdu-data');
+          break;
+
+        case this.selectedZu != null:
+          return this.trans('monitoring.zu.enter-omg-ngdu-data');
+          break;
+      }
+    }
   },
   methods: {
     ...guMapActions([
@@ -257,6 +304,12 @@ export default {
     ...globalloadingMutations([
       'SET_LOADING'
     ]),
+    resetSelectedObjects() {
+      this.selectedPipe = null;
+      this.selectedWell = null;
+      this.selectedGu = null;
+      this.selectedZu = null;
+    },
     async initMap() {
       this.SET_LOADING(true);
       this.pipes = await this.getMapData(this.gu);
@@ -405,15 +458,37 @@ export default {
 
         this.$bvModal.show('object-modal');
       } else if (this.editMode == 'pipe' && this.pipeObject) {
-        this.pipeObject.coords.push({
-          lat: e.lngLat.lat,
-          lon: e.lngLat.lng,
-          elevation,
-          h_distance: 0,
-          m_distance: 0
-        });
-        this.renderPipe();
+
+        let lastCoords = this.pipeObject.coords[this.pipeObject.coords.length - 1];
+
+        let lastCoordsLonLat = [
+          lastCoords.lon,
+          lastCoords.lat
+        ];
+
+        let currentCoordsLonLat = [
+          e.lngLat.lng,
+          e.lngLat.lat
+        ];
+
+        let distance = this.calculateDistance(lastCoordsLonLat, currentCoordsLonLat) + lastCoords.m_distance;
+
+        if (!this.isPipeEnd) {
+          this.pipeObject.coords.push({
+            lat: e.lngLat.lat,
+            lon: e.lngLat.lng,
+            elevation,
+            h_distance: distance,
+            m_distance: distance
+          });
+
+          this.renderPipe();
+        }
       }
+    },
+    calculateDistance(lastCoords, currentCoords) {
+      let line = turfLineString([lastCoords ,currentCoords]);
+      return turfLength(line, {units: 'kilometers'}) * 1000;
     },
     handleContextmenu(event) {
       this.clickedObject = null;
@@ -582,28 +657,36 @@ export default {
     onCreate(option) {
       //pipe start point
       if (option.editMode == 'pipe') {
-        this.pipeObject = {
-          id: null,
-          between_points: option.mapObject.type == 'zu' ? 'zu-gu' : 'well-zu',
-          name: '',
-          coords: [],
-        };
+        this.startNewPipe(option);
+      } else {
+        this.mapClickHandle(option);
+      }
+    },
+    startNewPipe (option) {
+      this.pipeObject = {
+        id: null,
+        between_points: option.mapObject.type == 'zu' ? 'zu-gu' : 'well-zu',
+        name: '',
+        coords: [],
+      };
 
-        if (option.mapObject.type == 'zu') {
-          this.pipeObject.zu_id = option.mapObject.object.id;
-        }
-
-        if (option.mapObject.type == 'well') {
-          this.pipeObject.well_id = option.mapObject.object.id;
-        }
-
-        option.lngLat = {
-          lng: parseFloat(option.mapObject.object.lon),
-          lat: parseFloat(option.mapObject.object.lat)
-        };
+      if (option.mapObject.type == 'zu') {
+        this.pipeObject.zu_id = option.mapObject.object.id;
       }
 
-      this.mapClickHandle(option);
+      if (option.mapObject.type == 'well') {
+        this.pipeObject.well_id = option.mapObject.object.id;
+      }
+
+      this.pipeObject.coords.push({
+        lat: option.mapObject.object.lat,
+        lon: option.mapObject.object.lon,
+        elevation: option.mapObject.object.elevation,
+        h_distance: 0,
+        m_distance: 0
+      });
+
+      this.renderPipe();
     },
     onDelete(option) {
       if (option.editMode == 'pipe') {
@@ -618,7 +701,19 @@ export default {
     },
     onShowDetailInfo(option) {
       this.selectedPipe = option.mapObject.object;
-      this.$bvModal.show('pipe-calc-long-modal');
+      this.$bvModal.show('pipe-calc-modal');
+    },
+    onShowOmgNgduWellForm(option) {
+      this.selectedWell = option.mapObject.object;
+      this.$bvModal.show('omg-ngdu-form');
+    },
+    onShowOmgNgduGuForm(option) {
+      this.selectedGu = option.mapObject.object;
+      this.$bvModal.show('omg-ngdu-form');
+    },
+    onShowOmgNgduZuForm(option) {
+      this.selectedZu = option.mapObject.object;
+      this.$bvModal.show('omg-ngdu-form');
     },
     optionClicked(option) {
       this.editMode = option.editMode;
@@ -639,6 +734,8 @@ export default {
       return [c.r, c.g, c.b, 255];
     },
     resetForm() {
+      this.editMode = null;
+
       this.objectData = {
         id: null,
         name: '',
@@ -646,8 +743,8 @@ export default {
         lon: null
       }
 
-      this.editMode = null;
       this.pipeObject = null;
+      this.isPipeEnd = false;
     },
     cancelAddObject() {
       if (this.pipeObject) {
@@ -668,14 +765,24 @@ export default {
       this.$bvModal.hide('object-modal');
     },
     handlerFormSubmit() {
+      if (this.isInvalid()) {
+        return false;
+      }
+
       let method = (this.pipeObject != null && this.pipeObject.id)
       || (this.objectData != null && this.objectData.id) ? 'edit' : 'add';
 
       method += this.editMode.charAt(0).toUpperCase() + this.editMode.slice(1);
       this[method]();
     },
+    isInvalid () {
+      let form = this.editMode == 'pipe' ? 'pipeForm' : 'objectForm';
+      return this.$refs[form].validate();
+    },
     async addGu() {
+      this.SET_LOADING(true);
       let result = await this.storeGu(this.objectData);
+      this.SET_LOADING(false);
       let message = '';
 
       if (result.status == 'success') {
@@ -696,7 +803,9 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addZu() {
+      this.SET_LOADING(true);
       let result = await this.storeZu(this.objectData);
+      this.SET_LOADING(false);
       let message = '';
 
       if (result.status == 'success') {
@@ -715,7 +824,9 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addWell() {
+      this.SET_LOADING(true);
       let result = await this.storeWell(this.objectData);
+      this.SET_LOADING(false);
       let message = '';
 
       if (result.status == 'success') {
@@ -734,7 +845,9 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addPipe() {
+      this.SET_LOADING(true);
       let result = await this.storePipe();
+      this.SET_LOADING(false);
       let message = '';
 
       if (result.status == 'success') {
@@ -751,16 +864,21 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async storePipe() {
+      this.SET_LOADING(true);
       return this.axios.post(this.localeUrl("/gu-map/pipe"), {pipe: this.pipeObject}).then((response) => {
         if (response.data.status == 'success') {
           this.pipes.push(response.data.pipe);
         }
 
+        this.SET_LOADING(false);
+
         return response.data;
       });
     },
     async editGu() {
+      this.SET_LOADING(true);
       let result = await this.updateGu(this.objectData);
+      this.SET_LOADING(false);
       let message = '';
 
       if (result.status == 'success') {
@@ -781,7 +899,9 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async editZu() {
+      this.SET_LOADING(true);
       let result = await this.updateZu(this.objectData);
+      this.SET_LOADING(false);
       let message = '';
 
       if (result.status == 'success') {
@@ -789,7 +909,7 @@ export default {
         this.$bvModal.hide('object-modal');
 
         this.layerRedraw(layerId, 'zu', this.zuPoints);
-        this.centerTo(zu);
+        this.centerTo(this.objectData);
         this.resetForm();
 
         message = this.trans('monitoring.zu.zu') + ' ' + this.trans('app.updated');
@@ -801,7 +921,9 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async editWell() {
+      this.SET_LOADING(true);
       let result = await this.updateWell(this.objectData);
+      this.SET_LOADING(false);
       let message = '';
 
       if (result.status == 'success') {
@@ -809,7 +931,7 @@ export default {
         this.$bvModal.hide('object-modal');
 
         this.layerRedraw(layerId, 'well', this.wellPoints);
-        this.centerTo(well);
+        this.centerTo(this.objectData);
         this.resetForm();
 
         message = this.trans('monitoring.well.updated');
@@ -821,7 +943,9 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async editPipe() {
+      this.SET_LOADING(true);
       let result = await this.updatePipe();
+      this.SET_LOADING(false);
       let message = '';
 
       if (result.status == 'success') {
@@ -838,6 +962,7 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async updatePipe() {
+      this.SET_LOADING(true);
       return this.axios.put(this.localeUrl("/gu-map/pipe/" + this.pipeObject.id), {pipe: this.pipeObject}).then((response) => {
         if (response.data.status == 'success') {
           let pipeIndex = this.pipes.findIndex((pipeItem) => {
@@ -846,11 +971,14 @@ export default {
           this.$set(this.pipes, pipeIndex, response.data.pipe);
         }
 
+        this.SET_LOADING(false);
         return response.data;
       });
     },
     async removeGu() {
+      this.SET_LOADING(true);
       let result = await this.deleteGu(this.objectData);
+      this.SET_LOADING(false);
       let message = '';
 
       if (result.status == 'success') {
@@ -869,7 +997,9 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async removeZu() {
+      this.SET_LOADING(true);
       let result = await this.deleteZu(this.objectData);
+      this.SET_LOADING(false);
       let message = '';
 
       if (result.status == 'success') {
@@ -887,7 +1017,9 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async removeWell() {
+      this.SET_LOADING(true);
       let result = await this.deleteWell(this.objectData);
+      this.SET_LOADING(false);
       let message = '';
 
       if (result.status == 'success') {
@@ -905,7 +1037,9 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async removePipe() {
+      this.SET_LOADING(true);
       let result = await this.deletePipe();
+      this.SET_LOADING(false);
       let message = '';
 
       if (result.status == 'success') {
@@ -921,12 +1055,14 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async deletePipe() {
+      this.SET_LOADING(true);
       return this.axios.delete(this.localeUrl("/gu-map/pipe/" + this.pipeObject.id))
           .then((response) => {
             if (response.data.status == 'success') {
               this.pipes.splice(this.pipeObject.index, 1);
             }
 
+            this.SET_LOADING(false);
             return response.data;
           });
     },
@@ -1014,18 +1150,28 @@ export default {
       if (this.editMode == 'pipe') {
 
         //pipe end point
+        this.isPipeEnd = true;
         if ((info.type == 'zu' || info.type == 'gu') && this.pipeObject) {
-          let elevation = await this.getElevationByCoords({
-            lat: info.coordinate[1],
-            lon: info.coordinate[0],
-          });
+          let lastCoords = this.pipeObject.coords[this.pipeObject.coords.length - 1];
+
+          let lastCoordsLonLat = [
+            lastCoords.lon,
+            lastCoords.lat
+          ];
+
+          let currentCoordsLonLat = [
+            info.object.lon,
+            info.object.lat
+          ];
+
+          let distance = this.calculateDistance(lastCoordsLonLat, currentCoordsLonLat) + lastCoords.m_distance;
 
           this.pipeObject.coords.push({
-            lat: info.coordinate[1],
-            lon: info.coordinate[0],
-            elevation,
-            h_distance: 0,
-            m_distance: 0
+            lat: info.object.lat,
+            lon: info.object.lon,
+            elevation: info.object.elevation,
+            h_distance: distance,
+            m_distance: distance
           });
 
           if (info.type == 'gu') {
@@ -1036,6 +1182,8 @@ export default {
             this.pipeObject.zu_id = info.object.id;
             this.pipeObject.gu_id = info.object.gu_id;
           }
+
+          this.pipeObject.ngdu_id = info.object.ngdu_id;
 
           this.renderPipe();
           this.$bvModal.show('object-modal');
@@ -1150,7 +1298,7 @@ export default {
 </script>
 
 <style>
-.pipe-calc-long-modal .modal-dialog {
+.long-modal .modal-dialog {
   max-width: calc(100vw - 114px);
   left: 28.5px;
 }

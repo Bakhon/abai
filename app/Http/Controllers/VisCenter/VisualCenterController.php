@@ -332,6 +332,7 @@ class VisualCenterController extends Controller
         $factDataByPeriod = DzoImportData::query()
             ->whereDate('date','>', $startPeriod)
             ->whereDate('date','<=', $endPeriod)
+            ->whereNull('is_corrected')
             ->with('importDowntimeReason')
             ->with('importDecreaseReason')
             ->get()
@@ -409,6 +410,7 @@ class VisualCenterController extends Controller
     {
         return DzoImportData::query()
             ->select('date','dzo_name','otm_drilling_fact','otm_wells_commissioning_from_drilling_fact')
+            ->whereNull('is_corrected')
             ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
             ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
             ->get()
@@ -423,6 +425,7 @@ class VisualCenterController extends Controller
             ->select($fields)
             ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
             ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
+            ->whereNull('is_corrected')
             ->with('importDowntimeReason')
             ->get()
             ->toArray();
@@ -441,6 +444,7 @@ class VisualCenterController extends Controller
             ->select()
             ->whereDate('date', '>=', $startPeriod)
             ->whereDate('date', '<=', $endPeriod)
+            ->whereNull('is_corrected')
             ->with('importDecreaseReason')
             ->get()
             ->toArray();
@@ -460,6 +464,7 @@ class VisualCenterController extends Controller
     {
         $factByDzo = DzoImportData::query()
             ->where('dzo_name', $request->dzoName)
+            ->whereNull('is_corrected')
             ->orderBy('date', 'desc')
             ->with('importDowntimeReason')
             ->with('importDecreaseReason')
@@ -525,6 +530,15 @@ class VisualCenterController extends Controller
         } else {
             echo 'No data '.$nameOfRepairsValue;
         }
+    }
+
+    public function dailyApprove()
+    {
+        return view('visualcenter.daily_approve');
+    }
+    public function kpdTree()
+    {
+        return view('visualcenter.kpd_tree');
     }
 }
 

@@ -1,10 +1,8 @@
 <template>
-  <div class="container-fluid position-relative">
-    <cat-loader v-show="loading"/>
-
+  <div class="position-relative">
     <div class="row">
       <div class="col-9">
-        <div class="row justify-content-between text-white bg-blue-dark text-wrap">
+        <div class="row justify-content-between text-white bg-blue-dark text-wrap mb-10px">
           <economic-col>
             <economic-title>
               <span>{{ res.lastMonth.cat1.count.value.toLocaleString() }}</span>
@@ -20,7 +18,7 @@
               </div>
             </economic-title>
 
-            <subtitle>
+            <subtitle class="mt-2 line-height-20px">
               {{ trans('economic_reference.count_unprofitable_well_last_month') }}
             </subtitle>
           </economic-col>
@@ -35,7 +33,7 @@
               </span>
             </economic-title>
 
-            <subtitle>
+            <subtitle class="mt-2 line-height-20px">
               {{ trans('economic_reference.operating_profit_last_year') }}
             </subtitle>
           </economic-col>
@@ -61,7 +59,7 @@
               </div>
             </economic-title>
 
-            <subtitle>
+            <subtitle class="mt-2 line-height-20px">
               {{ trans('economic_reference.operating_profit_last_month') }}
             </subtitle>
           </economic-col>
@@ -73,7 +71,7 @@
               {{ res.lastYear.prs1.count.value.toLocaleString() }}
             </economic-title>
 
-            <subtitle>
+            <subtitle class="mt-2 line-height-20px">
               {{ trans('economic_reference.count_prs_per_nrs_last_year') }}
             </subtitle>
           </economic-col>
@@ -83,18 +81,21 @@
             v-if="!loading"
             :charts="res.charts"
             :granularity="form.granularity"
-            :profitability="form.profitability"/>
+            :profitability="form.profitability"
+            :oil-prices="res.oilPrices"
+            :dollar-rates="res.dollarRates"/>
       </div>
 
-      <div class="col-3">
+      <div class="col-3 pr-0 pl-10px">
         <div
             v-for="(block, index) in blocks"
             :key="index"
-            class="d-flex bg-main1 text-white text-wrap p-3 mb-3"
+            class="d-flex bg-main1 text-white text-wrap p-3 mb-10px"
             style="min-height: 220px">
           <div
               v-for="(subBlock, subBlockIndex) in block"
               :key="subBlock.title"
+              :class="subBlockIndex % 2 === 0 ? 'pl-0' : ''"
               class="col-6 d-flex flex-column position-relative">
             <divider v-if="subBlockIndex % 2 === 1"/>
 
@@ -127,7 +128,7 @@
           </div>
         </div>
 
-        <div class="bg-main1 p-3 mt-3 text-white text-wrap">
+        <div class="bg-main1 p-3 text-white text-wrap">
           <div class="font-size-16px line-height-22px font-weight-bold mb-3">
             {{ trans('economic_reference.select_data_display_options') }}
           </div>
@@ -172,7 +173,6 @@
 <script>
 const fileDownload = require("js-file-download");
 
-import CatLoader from '../ui-kit/CatLoader'
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
 import Charts from "./components/Charts";
@@ -272,12 +272,14 @@ const economicRes = {
     liquidProduction: null,
     operatingProfitTop: null,
   },
+  oilPrices: [],
+  dollarRates: [],
 }
 
 export default {
   name: "economic-nrs",
   components: {
-    CatLoader,
+
     Divider,
     EconomicCol,
     Charts,
@@ -456,20 +458,11 @@ export default {
   color: #82BAFF;
 }
 
-.loader {
-  flex: 0 1 auto;
-  flex-flow: row wrap;
-  width: 100%;
-  align-items: flex-start;
-  position: absolute;
-  height: 100%;
-  justify-content: center;
-  display: flex;
-  z-index: 5000;
-  background: rgba(0, 0, 0, 0.4);
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
+.pl-10px {
+  padding-left: 10px;
+}
+
+.mb-10px {
+  margin-bottom: 10px;
 }
 </style>

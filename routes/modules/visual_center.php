@@ -77,6 +77,15 @@ Route::group(
                 Route::get('/get-production-for-year', 'VisCenter\VisualCenterController@getProductionDetailsForYear');
                 Route::get('/get-emergency-history', 'VisCenter\VisualCenterController@getEmergencyHistory');
                 Route::get('/get-historical-production', 'VisCenter\VisualCenterController@getHistoricalProductionByDzo');
+                Route::post('/store-corrected-production', 'VisCenter\ExcelForm\ExcelFormController@storeCorrected');
+                Route::get('/daily-approve', 'VisCenter\VisualCenterController@dailyApprove')->name('daily-approve');
+                Route::get('/get-daily-production-for-approve', 'VisCenter\ExcelForm\ExcelFormController@getDailyProductionForApprove');
+                Route::get('/approve-daily-correction', 'VisCenter\ExcelForm\ExcelFormController@approveDailyCorrection');
+                Route::get('/decline-daily-correction', 'VisCenter\ExcelForm\ExcelFormController@declineDailyCorrection');
+                Route::get('get-non-operating-dzo', function() {
+                    Artisan::call('receive-non-operating-email:cron');
+                });
+                Route::get('/kpd-tree', 'VisCenter\VisualCenterController@kpdTree')->name('kpd-tree');
             }
         );
     }

@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <div class="col p-4 bg-light" id="app">
+    <div class="col p-4 bg-light"  >
         @if($isForecast)
             <div class="ecorefsmacro-title">{{__('economic_reference.eco_refs_scenario')}}</div>
             <economic-data-component is-forecast></economic-data-component>

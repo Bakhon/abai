@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid economic-wrap">
-    <cat-loader v-show="loading"/>
 
     <div class="row justify-content-between">
       <select-source
@@ -23,7 +22,7 @@
 import Vue from 'vue';
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
-import CatLoader from "../../ui-kit/CatLoader";
+
 import SelectSource from "./../components/SelectSource";
 
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
@@ -32,7 +31,7 @@ export default {
   name: "tech-data-component",
   components: {
     VueTableDynamic,
-    CatLoader,
+
     SelectSource
   },
   data: () => ({

@@ -1,7 +1,5 @@
 <template>
   <div class="container-fluid">
-    <cat-loader v-show="loading"/>
-
     <div class="row justify-content-between">
       <select-sc-fa
           :loading="loading"
@@ -29,14 +27,14 @@
 
 <script>
 import VueTableDynamic from 'vue-table-dynamic'
-import CatLoader from "../../ui-kit/CatLoader";
+
 import SelectScFa from "../components/SelectScFa";
 
 export default {
   name: "economic-data-component",
   components: {
     VueTableDynamic,
-    CatLoader,
+
     SelectScFa
   },
   props: {
@@ -77,12 +75,12 @@ export default {
         border: true,
         stripe: true,
         pagination: true,
-        sort: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13],
+        sort: this.columns.map((col, index) => (index)),
         pageSize: 12,
         pageSizes: [12, 24, 48],
         headerHeight: 120,
         rowHeight: 50,
-        columnWidth: this.columns.map((col, index) => ({column: index, width: 150}))
+        columnWidth: this.columns.map((col, index) => ({column: index, width: 180}))
       }
     },
 
@@ -111,7 +109,8 @@ export default {
         {value: this.isForecast ? 'scenario' : 'source_data'},
         {value: 'company'},
         {value: 'month-year'},
-        {value: 'variable', dimension: 'tenge_per_ton'},
+        {value: 'variable', dimension: 'tenge_per_cube_liquid'},
+        {value: 'variable_processing', dimension: 'tenge_per_ton_oil'},
         {value: 'fix_noWRpayroll', dimension: dimensionPerPeriod},
         {value: 'fix_payroll', dimension: dimensionPerPeriod},
         {value: 'fix_nopayroll', dimension: dimensionPerPeriod},

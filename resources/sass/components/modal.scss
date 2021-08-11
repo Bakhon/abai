@@ -1,4 +1,6 @@
 .modal-bign-wrapper {
+  z-index: 1001 !important;
+
   .vm--modal {
     border-radius: 9px !important;
   }
@@ -46,4 +48,13 @@
 
 .modal-bign-button:hover {
   background: #4e516c;
+  transition: all 0.2s ease-in;
 }
+
+.modal__footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+

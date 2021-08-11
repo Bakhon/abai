@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class="mt-4 col" id="app">
+    <div class="mt-4 col"  >
         <economic-data-scenario-component></economic-data-scenario-component>
     </div>
 @endsection
