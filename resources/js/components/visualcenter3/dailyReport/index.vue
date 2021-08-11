@@ -1,5 +1,6 @@
 <template>
     <div class="page-wrapper h-100">
+        <cat-loader />
         <div class="page-container row">
             <div class="col-12 mt-3 header">
                 <transition name="bounce">

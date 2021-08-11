@@ -29,12 +29,15 @@ import productionFondDetails from './widgets/productionFondDetails';
 import wellsDetails from './dataManagers/wellsDetails';
 import injectionFondDetails from './widgets/injectionFondDetails';
 import emergency from './widgets/emergency';
+import CatLoader from '@ui-kit/CatLoader';
+import {globalloadingMutations} from '@store/helpers';
 
 
 export default {
     components: {
         Calendar,
-        DatePicker
+        DatePicker,
+        CatLoader
     },
     props: ['userId'],
     data: function () {
@@ -159,6 +162,9 @@ export default {
         ...dzoMapActions([
             'getYearlyPlan'
         ]),
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
 
         async getDzoYearlyPlan() {
             await this.getYearlyPlan();
@@ -217,7 +223,7 @@ export default {
         },
 
         async processProductionData(metricName,chartSecondaryName) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             let productionData = await this.getProductionDataByPeriod();
             if (productionData && Object.keys(productionData).length > 0) {
                 if (this.isFirstLoading) {
@@ -230,7 +236,7 @@ export default {
                 }
                 await this.processProductionDataByCompanies(productionData,metricName,chartSecondaryName);
             }
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         },
 
         async calculateInitialCategories(productionData,metricName,chartSecondaryName) {
@@ -268,9 +274,9 @@ export default {
                 let companies = _.map(todayProduction, 'dzo_name');
                 let difference = _.differenceWith(this.companies, companies, _.isEqual);
                 if (difference.length > 0) {
-                    this.$store.commit('globalloading/SET_LOADING', true);
+                    this.SET_LOADING(true);
                     let missingCompanies = await this.getMissedCompanies(difference);
-                    this.$store.commit('globalloading/SET_LOADING', false);
+                    this.SET_LOADING(false);
                     let merged = response.data.concat(missingCompanies);
                     return merged;
                 }
@@ -720,7 +726,7 @@ export default {
         emergency
     ],
     async mounted() {
-        this.$store.commit('globalloading/SET_LOADING', true);
+        this.SET_LOADING(true);
         this.getOpecDataForYear();
 
         if (window.location.host === 'dashboard') {

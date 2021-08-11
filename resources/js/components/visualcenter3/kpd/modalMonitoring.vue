@@ -5,7 +5,7 @@
                 name="modalMonitoring"
                 draggable=".modal-bign-header"
                 :width="1500"
-                :height="800"
+                :height="700"
                 style="background: transparent;"
                 :adaptive="true"
         >
@@ -19,21 +19,51 @@
                 </div>
                 <table class="modal_table mt-5">
                     <tr>
-                        <th rowspan="2" class="p-3">№<br>п/п</th>
-                        <th rowspan="2" class="p-3">Наименование КПД</th>
-                        <th rowspan="2" class="p-3">Единица<br>измерения</th>
-                        <th rowspan="2" class="p-3">Вес</th>
-                        <th rowspan="2" class="p-3">Порог (50%)&emsp;&emsp;Цель (100%)&emsp;&emsp;Вызов (125%)</th>
-                        <th colspan="3" class="p-3">Результаты</th>
-                        <th rowspan="2" class="p-3">Комментарии</th>
+                        <th rowspan="2" class="p-2">№<br>п/п</th>
+                        <th rowspan="2" class="p-2">Наименование КПД</th>
+                        <th rowspan="2" class="p-2">Единица<br>измерения</th>
+                        <th rowspan="2" class="p-2">Вес</th>
+                        <th rowspan="2" class="p-2">Порог \n (50%)&emsp;&emsp;Цель (100%)&emsp;&emsp;Вызов (125%)</th>
+                        <th colspan="3" class="p-2">Результаты</th>
+                        <th rowspan="2" class="p-2">Комментарии</th>
                     </tr>
                     <tr>
-                        <th class="p-3">Факт за</th>
-                        <th class="p-3">Оценка<br>(баллы)</th>
-                        <th class="p-3">Вклад<br>в суммарную<br>результативность</th>
+                        <th class="p-2">Факт за</th>
+                        <th class="p-2">Оценка<br>(баллы)</th>
+                        <th class="p-2">Вклад<br>в суммарную<br>результативность</th>
                     </tr>
                     <tr v-for="row in kpd.table.body">
-                        <td class="p-3" v-for="column in row">{{column}}</td>
+                        <td class="p-2" v-for="(column,index) in row">
+                            <div v-if="index === 4" class="row m-0">
+                                <div class="col-12 d-flex justify-content-around">
+                                    <div v-for="position in column">
+                                        {{position}}
+                                    </div>
+                                </div>
+                                <div class="col-12 progress progress_template mt-2 p-0 progress-monitoring">
+                                    <div
+                                            :class="[getProgressBarFillingColor(row[index+1]),'col-12 progress-bar progress-bar_filling']"
+                                            :style="{width: row[index+1] + '%',}"
+                                            role="progressbar"
+                                            :aria-valuenow="row[index+1]"
+                                            :aria-valuemin="getProgressPoint('min',column)"
+                                            :aria-valuemax="getProgressPoint('max',column)"
+                                    >
+                                        <div class="d-flex justify-content-around">
+                                            <div v-for="position in column" class="progress-splitter">
+                                            </div>
+                                        </div>
+                                        </div>
+                                </div>
+                                <div
+                                        :style="{ 'padding-left': `${row[index+1]}px` }"
+                                        :class="getProgressBarTitleColor(row[index+1])"
+                                >
+                                    {{row[index+1]}}
+                                </div>
+                            </div>
+                            <div v-else>{{column}}</div>
+                        </td>
                     </tr>
                     <tr>
                         <td></td>
@@ -66,6 +96,7 @@ export default {
                 'Согласовано': '/img/kpd-tree/filter_blue.png',
                 'Проект': '/img/kpd-tree/filter_gray.png',
             },
+            test:5,
             units: [
                 'сутки',
                 'месяц',
@@ -83,8 +114,8 @@ export default {
                             'Прирост извлекаемых запасов',
                             'млн. тонн',
                             '20%',
-                            '',
-                            '31',
+                            ['29.2','34.5','37.0'],
+                            31,
                             '70%',
                             '25%',
                             ''
@@ -94,8 +125,8 @@ export default {
                             'Операционные и капитальные затраты по ДЗО дивизиона',
                             'млн. тенге',
                             '20%',
-                            '',
-                            '1 000 000',
+                            ['1121388','1065318','1012053'],
+                            1000000,
                             '125%',
                             '25%',
                             ''
@@ -105,8 +136,8 @@ export default {
                             'Чистый денежный поток в КЦ КМГ от дивизиона',
                             'млн. тенге',
                             '20%',
-                            '',
-                            '-15 000',
+                            ['-14732','0','-'],
+                            -15000,
                             '0',
                             '0',
                             ''
@@ -116,8 +147,8 @@ export default {
                             'Исполнение бизнес-инициатив',
                             '%',
                             '20%',
-                            '',
-                            '104%',
+                            ['81','100','104'],
+                            104,
                             '125%',
                             '25%',
                             ''
@@ -127,8 +158,8 @@ export default {
                             'Реализация инвестиционных проектов',
                             '%',
                             '20%',
-                            '',
-                            '90%',
+                            [90,100,110],
+                            90,
                             '50%',
                             '10%',
                             ''
@@ -166,6 +197,39 @@ export default {
             this.filters[index].selected = true;
             selectedFilter = this.filters[index];
         },
+        getProgressBarFillingColor(progress) {
+            if (progress < 0) {
+                return 'progress-bar_filling__low';
+            } else if (progress <= 70) {
+                return 'progress-bar_filling__medium';
+            } else if (progress > 70) {
+                return 'progress-bar_filling__high';
+            }
+        },
+        getProgressPoint(type,values) {
+            if (type === 'min' && values.length === 3) {
+                if (parseInt(values[0])) {
+                    return parseInt(values[0]);
+                } else {
+                    0;
+                }
+            } else if (type === 'max' && values.length === 3) {
+                if (parseInt(values[2])) {
+                    return parseInt(values[2]);
+                } else {
+                    parseInt(values[1]);
+                }
+            }
+        },
+        getProgressBarTitleColor(progress) {
+            if (progress < 0) {
+                return 'progress-bar_title__low';
+            } else if (progress <= 70) {
+                return 'progress-bar_title__medium';
+            } else if (progress > 70) {
+                return 'progress-bar_title__high';
+            }
+        },
     },
     async mounted() {
         this.kpdCount = this.kpd.table.body.length;
@@ -181,6 +245,18 @@ export default {
 }
 .modal_table {
     width: 100%;
+    table-layout: fixed;
+    tr:first-child th {
+        &:first-child {
+            width: 60px;
+        }
+        &:nth-child(2) {
+            width: 250px;
+        }
+        &:nth-child(5) {
+            width: 400px;
+        }
+    }
     tr th {
         background: #3A4280;
         border: 1px solid #545580;
@@ -254,5 +330,40 @@ export default {
 .summary {
     color: #FF8736;
     font-size: 20px;
+}
+.main-buttons:hover {
+    background: #3A4280;
+}
+.progress.progress_template {
+    background-color: #A4A8BF !important;
+}
+.progress-bar_filling__low {
+    background-color: #F12F42 !important;
+    color: #F12F42 !important;
+}
+.progress-bar_filling__medium {
+    background-color: #FF8736 !important;
+    color: #FF8736 !important;
+}
+.progress-bar_filling__high {
+    background-color: #009847 !important;
+    color: #009847 !important;
+}
+.progress-bar_title__low {
+    color: #F12F42 !important;
+}
+.progress-bar_title__medium {
+    color: #FF8736 !important;
+}
+.progress-bar_title__high {
+    color: #009847 !important;
+}
+.progress-monitoring {
+    height: 2px !important;
+}
+.progress-splitter {
+    width: 5px;
+    height: 5px;
+    background-color: #656A8A;
 }
 </style>

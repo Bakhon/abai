@@ -124,7 +124,7 @@ export default {
     },
     methods: {
         async switchProductionFondPeriod(buttonType) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             this.productionFondDailyPeriod = "";
             this.productionFondMonthlyPeriod = "";
             this.productionFondYearlyPeriod = "";
@@ -137,7 +137,7 @@ export default {
             this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
             this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
             this.updateProductionFondWidget();
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         },
 
         async updateProductionFondHistory() {

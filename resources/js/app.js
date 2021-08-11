@@ -28,6 +28,8 @@ import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 import Paginate from 'vuejs-paginate';
 import Vuelidate from 'vuelidate';
+import elementLang from 'element-ui/lib/locale/lang/ru-RU'
+import elementLocale from 'element-ui/lib/locale'
 
 //Mixins
 import showToast from '~/mixins/showToast';
@@ -38,6 +40,7 @@ window.Vue = require('vue');
 window.Jquery = require('jquery');
 moment.locale('ru');
 Vue.prototype.$moment = moment
+elementLocale.use(elementLang)
 
 Vue.use(VueAxios, axios)
 Vue.use(VueTableDynamic);
