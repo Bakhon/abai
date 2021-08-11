@@ -17,9 +17,10 @@ class ExcelFormController extends Controller
     public function getDzoCurrentData(Request $request)
     {
         $date = Carbon::yesterday('Asia/Almaty');
-        if ($request->isCorrected) {
+        if ($request->isCorrected === TRUE) {
             $date = Carbon::parse($request->date)->addDays(1);
         }
+
         $dzoName = $request->request->get('dzoName');
         $dzoImportData = DzoImportData::query()
             ->whereDate('date',$date)
