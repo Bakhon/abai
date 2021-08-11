@@ -66,7 +66,7 @@ export default {
             };
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
-            this.currentStatus = 'Согласовано';
+            this.currentStatus = this.trans("visualcenter.dailyApprove.approved")
             this.currentDzo = {};
             let uri = this.localeUrl("/approve-daily-correction", {params:queryOptions});
             await axios.get(uri,{params:queryOptions});
@@ -81,7 +81,7 @@ export default {
             };
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
-            this.currentStatus = 'Отменено';
+            this.currentStatus = this.trans("visualcenter.dailyApprove.cancelled");
             this.currentDzo = {};
             let uri = this.localeUrl("/decline-daily-correction", {params:queryOptions});
             await axios.get(uri,{params:queryOptions});
