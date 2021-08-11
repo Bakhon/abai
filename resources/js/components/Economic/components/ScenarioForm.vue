@@ -1,7 +1,5 @@
 <template>
   <div>
-    <cat-loader v-show="loading"/>
-
     <h5 class="text-secondary">
       {{ trans('economic_reference.name') }}
     </h5>
@@ -96,7 +94,7 @@
 </template>
 
 <script>
-import CatLoader from "@ui-kit/CatLoader";
+
 import SelectScFa from "./SelectScFa";
 import AddButton from "./AddButton";
 import DeleteButton from "./DeleteButton";
@@ -107,7 +105,7 @@ import {EcoRefsScenarioModel} from "../models/EcoRefsScenarioModel";
 export default {
   name: "ScenarioForm",
   components: {
-    CatLoader,
+
     SelectScFa,
     AddButton,
     DeleteButton,

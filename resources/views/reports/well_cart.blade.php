@@ -21,7 +21,7 @@
 @endsection
 @section('module_title', 'Карточка скважины')
 @section('content')
-    <div id="app">
+    <div  >
         <well_cart></well_cart>
     </div>
 @endsection

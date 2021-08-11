@@ -6443,7 +6443,7 @@
       </div>
     </div>
     <notifications position="top"></notifications>
-    <cat-loader />
+
   </div>
 </template>
 <script src="./tr.js"></script>

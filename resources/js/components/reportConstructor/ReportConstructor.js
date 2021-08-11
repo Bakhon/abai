@@ -5,7 +5,7 @@ import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from "../common/FormatDate";
 import download from "downloadjs";
 import {globalloadingMutations} from '@store/helpers';
-import CatLoader from '@ui-kit/CatLoader';
+;
 
 Vue.use(Datetime)
 Vue.use(bTreeView)
@@ -14,9 +14,6 @@ export default {
     props: [
         'params'
     ],
-    components: {
-        CatLoader
-    },
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,

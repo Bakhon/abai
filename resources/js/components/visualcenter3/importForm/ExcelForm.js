@@ -28,7 +28,7 @@ import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
 import InputDataOperations from "./dataManagers/inputDataOperations";
 import Archieve from "./dataManagers/archieve";
-import CatLoader from '@ui-kit/CatLoader';
+;
 import {globalloadingMutations} from '@store/helpers';
 
 const defaultDzoTicker = "ЭМГ";
@@ -476,8 +476,7 @@ export default {
         ]),
     },
     components: {
-        VGrid,
-        CatLoader
+        VGrid
     },
     mixins: [Visual,TodayDzoData,InputDataOperations,Archieve],
 };

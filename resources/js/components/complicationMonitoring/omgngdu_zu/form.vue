@@ -1,6 +1,6 @@
 <template>
   <b-col cols=12>
-    <cat-loader/>
+
     <EditForm
         :formFields="formFields"
         :validationParams="validationParams"
@@ -18,7 +18,7 @@
 
 import {complicationMonitoringState, complicationMonitoringActions, globalloadingMutations} from '@store/helpers';
 import omgNgduZuformFields from '~/json/formFields/omg_ngdu_zu.json';
-import CatLoader from '@ui-kit/CatLoader';
+;
 import EditForm from '@ui-kit/EditForm';
 
 const averageOilDensity = 853;
@@ -36,7 +36,7 @@ export default {
     }
   },
   components: {
-    CatLoader,
+
     EditForm
   },
   data: function () {

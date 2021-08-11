@@ -1,6 +1,6 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
-    <cat-loader />
+
     <div class="col-xs-12 col-sm-4 col-md-4">
       <label>{{ trans('monitoring.field') }}</label>
       <div class="form-label-group">
@@ -198,7 +198,7 @@ import {Datetime} from 'vue-datetime'
 import moment from 'moment'
 import 'vue-datetime/dist/vue-datetime.css'
 import {globalloadingMutations} from '@store/helpers';
-import CatLoader from '@ui-kit/CatLoader';
+;
 
 Vue.use(Datetime)
 
@@ -213,9 +213,6 @@ export default {
       type: Object,
       required: true,
     }
-  },
-  components: {
-    CatLoader
   },
   data: function () {
     return {

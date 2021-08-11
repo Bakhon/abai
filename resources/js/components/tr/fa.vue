@@ -1001,7 +1001,7 @@
       </table>
     </div>
     <notifications position="top"></notifications>
-    <cat-loader />
+
   </div>
 </template>
 <script>
@@ -1014,13 +1014,13 @@ import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
 import columnSortable from 'vue-column-sortable'
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
-import CatLoader from "@ui-kit/CatLoader";
+
 
 Vue.use(NotifyPlugin, VueMomentLib);
 export default {
   name: "FaPage",
   components: {
-    CatLoader,
+
     SearchFormRefresh,
     TrMultiselect,
   },

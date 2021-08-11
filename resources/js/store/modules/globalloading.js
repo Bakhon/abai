@@ -10,13 +10,6 @@ const globalloading = {
       state.loading = val;
     },
   },
-
-  actions: {
-  },
-
-  getters: {
-    loading: (state) => state.loading,
-  },
 };
 
 export default globalloading;

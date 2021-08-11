@@ -1,6 +1,6 @@
 <template>
     <div>
-        <cat-loader />
+
         <div class="row main-layout pb-3">
             <div class="col-12 row mt-3 ml-1">
                 <div class="col-4"></div>

@@ -29,15 +29,13 @@ import productionFondDetails from './widgets/productionFondDetails';
 import wellsDetails from './dataManagers/wellsDetails';
 import injectionFondDetails from './widgets/injectionFondDetails';
 import emergency from './widgets/emergency';
-import CatLoader from '@ui-kit/CatLoader';
 import {globalloadingMutations} from '@store/helpers';
 
 
 export default {
     components: {
         Calendar,
-        DatePicker,
-        CatLoader
+        DatePicker
     },
     props: ['userId'],
     data: function () {
