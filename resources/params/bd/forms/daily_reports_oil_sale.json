@@ -142,16 +142,5 @@
       "visible": false,
       "is_editable": false
     }
-  ],
-  "custom_columns": [
-    {
-      "type": "select",
-      "values": [
-        "ЦИТС",
-        "ГС",
-        "ЦИТС/ГС"
-      ],
-      "component_name": "DailyReportsSelect"
-    }
   ]
 }

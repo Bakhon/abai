@@ -7,6 +7,7 @@
         "laravel"
     ],
     "license": "MIT",
+<<<<<<< HEAD
   "require": {
     "php": "^7.3",
     "ext-json": "*",
@@ -29,6 +30,31 @@
     "spatie/laravel-activitylog": "^3.17",
     "spatie/laravel-permission": "^3.13"
   },
+=======
+    "require": {
+        "php": "^7.3",
+        "ext-json": "*",
+        "adldap2/adldap2-laravel": "^6.0",
+        "barryvdh/laravel-translation-manager": "^0.5.7",
+        "doctrine/dbal": "^2.0",
+        "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "6.5",
+        "imtigger/laravel-job-status": "^1.2",
+        "jenssegers/agent": "^2.6",
+        "justinrainbow/json-schema": "^5.2",
+        "laravel/framework": "^6.2",
+        "laravel/tinker": "^2.0",
+        "laravel/ui": "^1.1",
+        "level23/druid-client": "^1.0",
+        "maatwebsite/excel": "^3.1",
+        "php-ews/php-ews": "^1.0",
+        "shuchkin/simplexls": "^0.9.9",
+        "shuchkin/simplexlsx": "^0.8.24",
+        "spatie/laravel-activitylog": "^3.17",
+        "spatie/laravel-permission": "^3.13",
+        "tohidplus/laravel-vue-translation": "^2.1"
+    },
+>>>>>>> 4eb8282b076c5a1a76fec9db1af2339095fd3b3a
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
         "barryvdh/laravel-ide-helper": "^2.8",

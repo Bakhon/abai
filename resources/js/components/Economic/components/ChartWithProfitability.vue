@@ -28,20 +28,18 @@
 
     <apexchart
         ref="chart"
-        :options="chartOptions"
+        :options="options"
         :series="chartSeries"
-        :height="745"
+        :height="710"
         type="line"/>
   </div>
 </template>
 
 <script>
-import {GRANULARITY_DAY} from "./SelectGranularity";
-
-const ru = require("apexcharts/dist/locales/ru.json");
-
 import chart from "vue-apexcharts";
 import {chartInitMixin} from "../mixins/chartMixin";
+
+const ru = require("apexcharts/dist/locales/ru.json");
 
 export default {
   name: 'ChartWithProfitability',
@@ -52,14 +50,10 @@ export default {
       required: true,
       type: String,
     },
-    tooltipText: {
-      required: false,
-      type: String,
-    },
     pausedData: {
       required: true,
       type: Object
-    }
+    },
   },
   data: () => ({
     isVisibleInWork: true,
@@ -70,23 +64,14 @@ export default {
     },
   }),
   methods: {
-    tooltipFormatter(y) {
-      if (y === undefined || y === null) {
-        return y
-      }
+    chartClearAnnotations(isVisibleDefaultSeries = false) {
+      this.isVisibleDefaultSeries = isVisibleDefaultSeries
 
-      return new Intl.NumberFormat(
-          'en-IN',
-          {maximumSignificantDigits: 3}
-      ).format(y.toFixed(0)) + ` ${this.tooltipText || ''}`;
-    },
-
-    chartClearAnnotations() {
       this.$refs.chart.clearAnnotations()
     },
 
     chartSelection({data}, {xaxis}) {
-      this.chartClearAnnotations()
+      this.chartClearAnnotations(false)
 
       let min = Math.ceil(xaxis.min)
       let max = Math.floor(xaxis.max)
@@ -144,14 +129,8 @@ export default {
     }
   },
   computed: {
-    chartKeys() {
-      return this.isProfitabilityFull
-          ? ['profitable', 'profitless_cat_2', 'profitless_cat_1']
-          : ['profitable', 'profitless']
-    },
-
     chartSeries() {
-      let data = []
+      let data = [...this.defaultSeries]
 
       if (this.isVisibleInWork) {
         this.chartKeys.forEach(key => {
@@ -176,78 +155,38 @@ export default {
       return data
     },
 
-    chartColors() {
-      const colorsInWork = this.isProfitabilityFull
-          ? ['#13B062', '#F7BB2E', '#AB130E']
-          : ['#13B062', '#AB130E']
+    chartSeriesName() {
+      const name = this.trans(`economic_reference.wells_${this.chartKeys[0]}`)
 
-      const colorsInPause = this.isProfitabilityFull
-          ? ['#0E7D45', '#C49525', '#780D0A']
-          : ['#0E7D45', '#780D0A']
-
-      let colors = []
-
-      if (this.isVisibleInWork) {
-        colors = [...colors, ...colorsInWork]
-      }
-
-      if (this.isVisibleInPause) {
-        colors = [...colors, ...colorsInPause]
-      }
-
-      return colors
+      return this.isVisibleInWork
+          ? name
+          : `${name} ${this.trans(`economic_reference.in_pause`).toLowerCase()}`
     },
 
-    chartOptions() {
+    options() {
       return {
-        labels: this.data.hasOwnProperty('dt') ? this.data.dt : [],
-        stroke: {
-          width: 4,
-          curve: 'smooth'
-        },
-        colors: this.chartColors,
-        chart: {
-          stacked: true,
-          foreColor: '#FFFFFF',
-          locales: [ru],
-          defaultLocale: 'ru',
-          events: {
-            selection: (chartContext, params) => this.chartSelection(chartContext, params),
-            zoomed: () => this.chartClearAnnotations()
+        ...this.chartOptions,
+        ...{
+          chart: {
+            stacked: true,
+            foreColor: '#FFFFFF',
+            locales: [ru],
+            defaultLocale: 'ru',
+            events: {
+              selection: (chartContext, params) => this.chartSelection(chartContext, params),
+              zoomed: () => this.chartClearAnnotations(true)
+            },
+            selection: {
+              enabled: true,
+              type: 'x',
+            },
           },
-          selection: {
-            enabled: true,
-            type: 'x',
-          },
-        },
-        markers: {
-          size: 0
-        },
-        xaxis: {
-          type: this.granularity === GRANULARITY_DAY
-              ? 'datetime'
-              : 'date'
-        },
-        yaxis: {
-          labels: {
-            formatter(val) {
-              return Math.round(val);
-            }
-          },
-          title: {
-            text: this.title,
-          },
-          min: 0
-        },
-        tooltip: {
-          shared: true,
-          intersect: false,
-          y: {
-            formatter: (y) => this.tooltipFormatter(y)
-          }
+          yaxis: this.isVisibleDefaultSeries
+              ? this.chartYaxis
+              : {min: 0, title: {text: this.title}}
         }
       }
-    },
+    }
   },
 }
 </script>

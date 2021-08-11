@@ -1,7 +1,5 @@
 <template>
-  <div class="bd-main-block">
-    <cat-loader v-show="isloading"/>
-    <notifications position="top"></notifications>
+  <div class="bd-main-block"><notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
@@ -57,6 +55,7 @@ import 'vue-datetime/dist/vue-datetime.css'
 import {bTreeView} from 'bootstrap-vue-treeview'
 import {bdFormActions, bdFormState} from '@store/helpers'
 import BigDataTableForm from './TableForm'
+
 
 Vue.use(Datetime)
 

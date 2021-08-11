@@ -1,0 +1,81 @@
+{
+  "type": "plain",
+  "table": "prod.document",
+  "tabs": [
+    {
+      "title": "",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "owner",
+                "type": "text",
+                "title": "autor",
+                "validation": "",
+                "is_editable": false
+              },
+              {
+                "code": "load_date",
+                "type": "date",
+                "title": "date",
+                "validation": "",
+                "is_editable": false
+              },
+              {
+                "code": "name_ru",
+                "type": "text",
+                "title": "name",
+                "validation": "",
+                "is_editable": true
+              },
+              {
+                "code": "doc_date",
+                "type": "date",
+                "title": "document_date",
+                "validation": "required",
+                "is_editable": true
+              },
+              {
+                "code": "doc_type",
+                "type": "dict",
+                "dict": "document_types",
+                "title": "document_type",
+                "validation": "required|exists:tbd.dict.document_type,id",
+                "is_editable": true
+              },
+              {
+                "code": "org",
+                "type": "dict",
+                "dict": "orgs",
+                "title": "orgs",
+                "validation": "required",
+                "is_editable": true
+              }              
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "doc_tag",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "dict": "tags",
+                "title": "tag",
+                "validation": "required|exists:tbd.dict.tag,id"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

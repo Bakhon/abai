@@ -1,5 +1,11 @@
 {
   "table": "prod.well_workover",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "delivery_cert",

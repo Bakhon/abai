@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Exceptions\ParseJsonException;
 use App\Models\BigData\Infrastructure\History;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -28,8 +29,12 @@ abstract class BaseForm
         $this->validator = app()->make(\App\Services\BigData\CustomValidator::class);
     }
 
-    public function getHistory(int $id, \DateTimeInterface $date): array
+    public function getHistory(int $id, \DateTimeInterface $date = null): array
     {
+        if (!$date) {
+            $date = Carbon::now();
+        }
+
         $historyItems = History::query()
             ->where('row_id', $id)
             ->where('date', $date)
@@ -51,17 +56,16 @@ abstract class BaseForm
         return $result;
     }
 
-
     public function send(): array
     {
         $this->validate();
         return $this->submit();
     }
 
-    public function getFormatedParams(): array
+    public function getFormInfo(): array
     {
         return [
-            'params' => $this->params(),
+            'params' => $this->getFormatedParams(),
             'fields' => $this->getFields()->pluck('', 'code')->toArray(),
             'available_actions' => $this->getAvailableActions()
         ];
@@ -82,6 +86,11 @@ abstract class BaseForm
     public function getConfigFilePath()
     {
         return base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
+    }
+
+    protected function getFormatedParams(): array
+    {
+        return $this->params();
     }
 
     protected function params(): array
@@ -120,10 +129,10 @@ abstract class BaseForm
             }
         );
 
-        return $actions;
+        return array_values($actions);
     }
 
-    private function validate(): void
+    protected function validate(): void
     {
         $errors = $this->getCustomValidationErrors();
         $this->validator->validate(

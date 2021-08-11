@@ -45,6 +45,10 @@ class RolesController extends Controller
             'name' => 'paegtm',
             'title' => 'Модуль Подбор ГТМ'
         ],
+        [
+            'name' => 'digitalDrilling',
+            'title' => 'Модуль Цифровое бурение'
+        ],
     ];
 
     static protected $fieldCodes = [

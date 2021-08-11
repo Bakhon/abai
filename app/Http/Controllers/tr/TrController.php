@@ -31,14 +31,6 @@ class TrController extends Controller
     {
         return view('tr_charts.tr_charts');
     } 
-    public function TechMode()
-    {
-        return view('TechMode.TechMode');
-    }
-    public function TechModeSmall()
-    {
-        return view('TechModeSmall.TechModeSmall');
-    }
     public function FaWeeklyChart()
     {
         return view('FaWeeklyChart.FaWeeklyChart');

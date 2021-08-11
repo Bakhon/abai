@@ -130,7 +130,7 @@
             </div>
             <a
               href="#"
-              @click.prevent="chooseDt"
+              @click.prevent="chooseDate"
               class="btn btn-sm button_form"
               style="margin-left: 15px"
               >{{trans('tr.form')}}</a
@@ -216,6 +216,7 @@
       </div>
     </div>
     <big-numbers :list="filteredWells" />
+
   </div>
 </template>
 <script>
@@ -223,11 +224,13 @@ import VueApexCharts from "vue-apexcharts";
 import BigNumbers from "./BigNumbers.vue";
 import TrMultiselect from "./TrMultiselect.vue";
 import trHelper from '~/mixins/trHelper';
-import ClearIcon from "../ui-kit/ClearIcon.vue";
+import ClearIcon from "@ui-kit/ClearIcon.vue";
+
 
 export default {
   name: "TrCharts",
   components: {
+
     TrMultiselect,
     ClearIcon,
     BigNumbers,
@@ -383,14 +386,13 @@ export default {
   },
   data: function () {
     return {
+      postApiUrl: process.env.MIX_POST_API_URL,
       chartShow: 0,
       chartWells: [],
       filteredWellsPreGraph: [],
       filteredWells: [],
       sortType: "asc",
       dt: null,
-      date1: null,
-      fullWells: [],
       filter: null,
       editdtm: null,
       editdty: null,
@@ -1634,7 +1636,7 @@ export default {
     onChangeYear(event) {
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
-    chooseDt() {
+    chooseDate() {
       this.$store.commit("globalloading/SET_LOADING", true);
       this.$store.commit("tr/SET_MONTH", this.month);
       this.$store.commit("tr/SET_YEAR", this.selectYear);
@@ -1645,7 +1647,7 @@ export default {
       }
       this.axios
         .get(
-          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/graph1/" +
+          this.postApiUrl + "techregime/graph1/" +
             this.selectYear +
             "/" +
             this.month +
@@ -1655,14 +1657,15 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           let data = response.data;
           if (data) {
-            this.fullWells = data.data;
             this.chartWells = data.data;
             this.chartFilter_field_start = true;
             this.chartFilter_horizon_start = true;
             this.chartFilter_exp_meth_start = true;
             this.chartFilter_object_start = true;
+            console.log(qwerty)
           } else {
             console.log("No data");
+            this.chartWells = [];
           }
         });
     },
@@ -1693,7 +1696,7 @@ export default {
     this.month = mm;
     this.axios
       .get(
-        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/graph1/" +
+        this.postApiUrl + "techregime/graph1/" +
           yyyy +
           "/" +
           mm +
@@ -1705,7 +1708,6 @@ export default {
         this.editdtm = mm;
         this.editdty = yyyy;
         if (data) {
-          this.fullWells = data.data;
           this.chartWells = data.data;
         } else {
           console.log("No data");

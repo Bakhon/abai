@@ -26,6 +26,7 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
         'company' => 0,
         'date' => 1,
         'variable' => 2,
+<<<<<<< HEAD
         'fix_noWRpayroll' => 3,
         'fix_payroll' => 4,
         'fix_nopayroll' => 5,
@@ -36,6 +37,19 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
         'wo' => 10,
         'net_back' => 11,
         'amort' => 12,
+=======
+        'variable_processing' => 3,
+        'fix_noWRpayroll' => 4,
+        'fix_payroll' => 5,
+        'fix_nopayroll' => 6,
+        'fix' => 7,
+        'gaoverheads' => 8,
+        'wr_nopayroll' => 9,
+        'wr_payroll' => 10,
+        'wo' => 11,
+        'net_back' => 12,
+        'amort' => 13,
+>>>>>>> 4eb8282b076c5a1a76fec9db1af2339095fd3b3a
     ];
 
     function __construct(int $userId, string $fileName, bool $isForecast)
@@ -71,8 +85,14 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
         return new EcoRefsCost([
             "sc_fa" => $this->scFaId,
             "company_id" => $companyId,
+<<<<<<< HEAD
             "date" => gmdate("Y-m-d", (($row[self::COLUMNS['date']]- 25569) * 86400)),
             "variable" => round($row[self::COLUMNS['variable']], 2),
+=======
+            "date" => $row[self::COLUMNS['date']],
+            "variable" => round($row[self::COLUMNS['variable']], 2),
+            "variable_processing" => round($row[self::COLUMNS['variable_processing']], 2),
+>>>>>>> 4eb8282b076c5a1a76fec9db1af2339095fd3b3a
             "fix_noWRpayroll" => round($row[self::COLUMNS['fix_noWRpayroll']], 2),
             "fix_payroll" => round($row[self::COLUMNS['fix_payroll']], 2),
             "fix_nopayroll" => round($row[self::COLUMNS['fix_nopayroll']], 2),

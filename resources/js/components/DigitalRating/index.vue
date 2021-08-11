@@ -1,151 +1,92 @@
 <template>
-  <div class="rating-sections">
-    <div class="rating-content">
-      <div class="rating-content__title">
-        <div>{{ trans('digital_rating.sectorMap') }}</div>
-        <div class="d-flex align-items-center">
-          <btn-dropdown :list="fileActions">
-            <template #icon>
-              <i class="far fa-file"/>
-            </template>
-            <template #title>
-              {{ trans('digital_rating.file') }}
-            </template>
-          </btn-dropdown>
-          <btn-dropdown :list="mapsActions">
-            <template #icon>
-              <i class="fas fa-map-marked-alt"/>
-            </template>
-            <template #title>
-              {{ trans('digital_rating.maps') }}
-            </template>
-          </btn-dropdown>
-          <i class="fas fa-cog gear-icon-svg"
-             @click="openSettingModal"
-             style="font-size: 20px;"
-          />
-        </div>
-      </div>
-      <div class="rating-content__wrapper">
-        <div id="map"></div>
-      </div>
-    </div>
-    <div class="rating-panel">
-      <div
-        class="rating-dropdown"
-        :class="{ 'is-active': dropdownTitle === 'object' }"
-      >
-        <div class="rating-dropdown__header" @click="handleToggle('object')">
-          <div class="rating-dropdown__title">{{ trans('digital_rating.object') }}</div>
-          <div class="rating-dropdown__icon"></div>
-        </div>
-        <transition-expand duration="100">
-          <div v-show="dropdownTitle === 'object'" class="rating-dropdown__body">
-            <ul class="list">
-              <li v-for="(object, index) in objects" :key="index">
-                {{ object }}
-              </li>
-            </ul>
-          </div>
-        </transition-expand>
-      </div>
-      <div
-        class="rating-dropdown"
-        :class="{ 'is-active': dropdownTitle === 'map' }"
-      >
-        <div class="rating-dropdown__header" @click="handleToggle('map')">
-          <div class="rating-dropdown__title">{{ trans('digital_rating.mapsGeologyDevelopment') }}</div>
-          <div class="rating-dropdown__icon"></div>
-        </div>
-        <transition-expand duration="100">
-          <div v-show="dropdownTitle === 'map'" class="rating-dropdown__body">
-            <ul class="list">
-              <li v-for="(map, index) in maps" :key="index">
-                {{ map }}
-              </li>
-            </ul>
-          </div>
-        </transition-expand>
-      </div>
-      <div
-        class="rating-dropdown"
-        :class="{ 'is-active': dropdownTitle === 'code' }"
-      >
-        <div class="rating-dropdown__header" @click="handleToggle('code')">
-          <div class="rating-dropdown__title">{{ trans('digital_rating.sectorCode') }}</div>
-          <div class="rating-dropdown__icon"></div>
-        </div>
-        <transition-expand duration="100">
-          <div v-show="dropdownTitle === 'code'" class="rating-dropdown__body">
-            <ul class="list">
-              <li v-for="(code, index) in cods" :key="index">
-                {{ code }}
-              </li>
-            </ul>
-          </div>
-        </transition-expand>
-      </div>
-      <div
-        class="rating-dropdown"
-        :class="{ 'is-active': dropdownTitle === 'property' }"
-      >
-        <div class="rating-dropdown__header" @click="handleToggle('property')">
-          <div class="rating-dropdown__title">{{ trans('digital_rating.property') }}</div>
-          <div class="rating-dropdown__icon"></div>
-        </div>
-        <transition-expand duration="100">
-          <div v-show="dropdownTitle === 'property'" class="rating-dropdown__body">
-            <ul class="list">
-              <li v-for="(property, index) in properties" :key="index">
-                {{ property }}
-              </li>
-            </ul>
-          </div>
-        </transition-expand>
-      </div>
-    </div>
-    <modal
-      class="modal-bign-wrapper"
-      name="modalSetting"
-      :draggable="true"
-      :width="1000"
-      :height="700"
-      :adaptive="true">
-      <div class="modal-bign-container">
-        <div class="modal-bign-header">
-          <div class="modal-bign-title">
-            <i class="fas fa-cog"
+  <div>
+    <gtm-main-menu
+      :parentType="this.parentType"
+      :mainMenu="menu"
+      @menuClick="menuClick"
+    />
+    <div class="rating-sections">
+      <div class="rating-content">
+        <div class="rating-content__title">
+          <div>{{ trans('digital_rating.sectorMap') }}</div>
+          <div class="d-flex align-items-center">
+            <btn-dropdown :list="fileActions">
+              <template #icon>
+                <i class="far fa-file"/>
+              </template>
+              <template #title>
+                {{ trans('digital_rating.file') }}
+              </template>
+            </btn-dropdown>
+            <btn-dropdown :list="mapsActions">
+              <template #icon>
+                <i class="fas fa-map-marked-alt"/>
+              </template>
+              <template #title>
+                {{ trans('digital_rating.maps') }}
+              </template>
+            </btn-dropdown>
+            <i class="fas fa-cog gear-icon-svg"
+               @click="openSettingModal"
                style="font-size: 20px;"
             />
-            {{ trans('profile.tabs.settings') }}
           </div>
-          <button type="button" class="modal-bign-button" @click="closeSettingModal">
-            {{ trans('pgno.zakrit') }}
-          </button>
+        </div>
+        <div class="rating-content__wrapper">
+          <div id="map"></div>
         </div>
       </div>
-    </modal>
+      <div class="rating-panel">
+        <accordion
+            :list="objects"
+            title="digital_rating.object"
+        />
+        <accordion
+            :list="maps"
+            title="digital_rating.mapsGeologyDevelopment"
+        />
+        <accordion
+            :list="cods"
+            title="digital_rating.sectorCode"
+        />
+        <accordion
+            :list="properties"
+            title="digital_rating.property"
+        />
+      </div>
+      <setting-modal
+        @close="closeSettingModal"
+      />
+      <well-atlas-modal
+        @close="closeAtlasModal"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import { TransitionExpand } from 'vue-transition-expand';
 import L from 'leaflet';
-import mapsData from './dataMap.json';
+import mapsData from './json/dataMap.json';
+import wellsData from './json/dataWells.json';
 import 'leaflet/dist/leaflet.css';
 import BtnDropdown from "./components/BtnDropdown";
+import SettingModal from "./components/SettingModal";
+import WellAtlasModal from "./components/WellAtlasModal";
+import Accordion from "./components/Accordion";
+import mainMenu from "../GTM/mock-data/main_menu.json";
 
 export default {
   name: "Sections",
 
   components: {
-    TransitionExpand,
-    BtnDropdown
+    BtnDropdown,
+    SettingModal,
+    WellAtlasModal,
+    Accordion
   },
 
   data() {
     return {
-      dropdownTitle: '',
       objects: ['Объект 1', 'Объект 2'],
       maps: ['Карта ННТ', 'Накопленные отборы'],
       cods: ['1', '2', '3'],
@@ -156,9 +97,11 @@ export default {
         { title: 'digital_rating.save', icon: 'save', type: 'save' }
       ],
       mapsActions: [
-        { title: 'digital_rating.uploadCustomMaps', icon: '', type: 'upload' },
+        { title: 'digital_rating.uploadCustomMaps', icon: 'share', type: 'upload' },
         { title: 'digital_rating.importPlannedWells', icon: 'upload', type: 'importWells' }
-      ]
+      ],
+      parentType: '',
+      menu: mainMenu,
     };
   },
 
@@ -167,15 +110,18 @@ export default {
   },
 
   methods: {
-    handleToggle(title) {
-      this.dropdownTitle = title;
-    },
     initMap() {
       const map = L.map('map', {
         crs: L.CRS.Simple,
         minZoom: 1,
         maxZoom: 3,
+        zoomControl: false
       });
+
+      L.control.zoom({
+        position: 'bottomright'
+      }).addTo(map);
+
       const bounds = [[0, 1500], [0,1500]];
       map.fitBounds(bounds);
 
@@ -194,24 +140,34 @@ export default {
         el.y = el.y / 100;
       });
 
-      L.latLng([ mapsData[0]['x'], mapsData[0]['y'] ]);
-
       for(let i = 0; i < mapsData.length; i++) {
         const coordinateStart = xy(mapsData[i]['x'], mapsData[i]['y']);
         const coordinateEnd = xy(mapsData[i]['x'] + 1, mapsData[i]['y'] + 1);
-        L.rectangle([[coordinateStart], [coordinateEnd]], {
+        let rectangle = L.rectangle([[coordinateStart], [coordinateEnd]], {
           color: mapsData[i]['color'],
           weight: 6,
           fillColor: mapsData[i]['color'],
           fillOpacity: 1,
         }).addTo(map).bindPopup(mapsData[i]['sector'].toString());
+
+        rectangle.on('mouseover', function (e) {
+          this.openPopup();
+        });
+        rectangle.on('mouseout', function (e) {
+          this.closePopup();
+        });
+        rectangle.on('click', (e) => {
+          this.onMapClick();
+        })
       }
 
-      map.getBounds().pad(-1);
-
-      map.on('dblclick', this.onMapClick);
+      map.getBounds().pad(1);
     },
-    onMapClick(e) {
+    onMapClick() {
+      this.$modal.show('modalAtlas');
+    },
+    closeAtlasModal() {
+      this.$modal.hide('modalAtlas');
     },
     openSettingModal() {
       this.$modal.show('modalSetting');
@@ -219,6 +175,12 @@ export default {
     closeSettingModal() {
       this.$modal.hide('modalSetting');
     },
+    menuClick(data) {
+      const path = window.location.pathname.slice(3);
+      if (data?.url && data.url !== path) {
+        window.location.href = this.localeUrl(data.url);
+      }
+    }
   }
 }
 </script>
@@ -227,6 +189,7 @@ export default {
 .rating-sections {
   color: #fff;
   display: flex;
+  margin-top: 3rem;
 
   .rating-content {
     height: calc(100vh - 160px);
@@ -243,20 +206,6 @@ export default {
 .rating-panel {
   width: 100%;
   max-width: 24.4%;
-}
-
-.expand-enter-active, .expand-leave-active {
-  -webkit-transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
-  transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
-  overflow: hidden;
-}
-
-.expand-enter, .expand-leave-to {
-  height: 0;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important
 }
 
 #map {
