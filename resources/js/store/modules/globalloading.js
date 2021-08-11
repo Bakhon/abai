@@ -2,7 +2,7 @@ const globalloading = {
   namespaced: true,
 
   state: {
-    loading: true,
+    loading: false,
   },
 
   mutations: {
