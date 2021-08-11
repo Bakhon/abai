@@ -6,14 +6,15 @@
                 align="center">
           Список скважин
         </Button>
-        <Button color="accent" icon="settPhone" class="flex-grow-1 mr-3" align="center">
+        <Button @click="isShowTableSettings = true" color="accent" icon="settPhone" class="flex-grow-1 mr-3"
+                align="center">
           Настройка планшета
         </Button>
         <Button @click="isShowChooseStratModal = true" color="accent" icon="lupa" class="flex-grow-1 mr-3"
                 align="center">
           Выбор отбивок
         </Button>
-        <Button color="accent" icon="locPC" class="flex-grow-1 mr-3" align="center">
+        <Button @click="isShowCrossPlot = true" color="accent" icon="locPC" class="flex-grow-1 mr-3" align="center">
           Кросс-плот
         </Button>
         <Button color="accent" icon="gisto" class="flex-grow-1" align="center">
@@ -21,26 +22,36 @@
         </Button>
       </div>
     </div>
-    <img class="mb-2" src="/images/geology/demo.graph.svg" alt="">
+    <div class="main_graph mb-2">
+      <component :is="getGraphComponents[0]" />
+    </div>
     <div class="d-flex">
       <ToolBlock class="mr-3">
         <template #header>
           <div class="d-flex align-items-center justify-content-between">
             <h5 class="mr-2">Значения</h5>
-            <Button i-width="10" i-height="10" color="transparent" icon="rectArrow" size="small" />
+            <Button @click="activeGraph = getGraphComponents[1].name" i-width="10" i-height="10" color="transparent"
+                    icon="rectArrow" size="small" />
           </div>
         </template>
-        <img src="/images/geology/demo.map.svg" alt="">
+        <div class="secondary__graph">
+          <component :is="getGraphComponents[1]" />
+        </div>
       </ToolBlock>
       <div class="info__grid">
         <div class="info__grid__item" id="item1">
           <div class="rect">
-            <dropdown block class="w-100 mb-2" :selected-value.sync="dropdownValue.value" button-text="Выбор ДЗО"
-                      :options="[
-              {label: 'option 1', value: 1},
-              {label: 'option 2', value: 2},
-              {label: 'option 3', value: 3}
-            ]" />
+            <dropdown
+                block
+                class="w-100 mb-2"
+                :selected-value.sync="dropdownValue.value"
+                button-text="Выбор ДЗО"
+                :options="[
+                    {label: 'option 1', value: 1},
+                    {label: 'option 2', value: 2},
+                    {label: 'option 3', value: 3}
+                  ]"
+            />
             <Button class="geology-l-side__toggle w-100 mb-2" color="accent">
               Выбор месторождения
             </Button>
@@ -62,11 +73,10 @@
           <div class="info-block">
             <div class="info-block__header">
               <h5>Данные по скважине</h5>
-              <Button i-width="10" i-height="10" color="transparent" icon="rectArrow" size="small" />
             </div>
             <div class="info-block__body">
               <div class="info-block__body__content">
-                <img src="/images/geology/demo.table.svg" alt="">
+                <img src="/images/geology/demo.table.svg" alt="" />
               </div>
             </div>
           </div>
@@ -76,7 +86,6 @@
             <template #header>
               <div class="d-flex align-items-center justify-content-between">
                 <h5 class="mr-2">Окно сообщений</h5>
-                <Button i-width="10" i-height="10" color="transparent" icon="rectArrow" size="small" />
               </div>
             </template>
             Дата, время, комментарий
@@ -90,14 +99,32 @@
     </AwModal>
 
     <AwModal position="top" size="lg" title="Выбор отбивок" :is-show.sync="isShowChooseStratModal">
-      <AwTree class="p-2"
-              :selected.sync="chooseStratModalTree"
-              :items="chooseStratModalTreeItems" />
+      <AwTree class="p-2" :selected.sync="chooseStratModalTree" :items="chooseStratModalTreeItems" />
 
       <template #footer>
         <div class="d-flex align-items-center justify-content-center">
           <Button class="mr-3">Ок</Button>
           <Button color="primary" @click="isShowChooseStratModal = false">Отмена</Button>
+        </div>
+      </template>
+    </AwModal>
+
+    <AwModal position="top" size="lg" title="Настройка планшета" :is-show.sync="isShowTableSettings">
+      <TableSettings />
+      <template #footer>
+        <div class="d-flex align-items-center justify-content-center">
+          <Button class="mr-3">Ок</Button>
+          <Button color="primary" @click="isShowTableSettings = false">Отмена</Button>
+        </div>
+      </template>
+    </AwModal>
+
+    <AwModal position="top" size="xl" title="Кросс-плот" :is-show.sync="isShowCrossPlot">
+      <CrossPlot></CrossPlot>
+      <template #footer>
+        <div class="d-flex align-items-center justify-content-center">
+          <Button class="mr-3">Ок</Button>
+          <Button color="primary" @click="isShowCrossPlot = false">Отмена</Button>
         </div>
       </template>
     </AwModal>
@@ -110,9 +137,12 @@ import dropdown from "../components/dropdowns/dropdown";
 import ToolBlock from "../components/toolBlock/ToolBlock";
 import AwModal from "../components/notifications/awModal/AwModal";
 import AwTree from "../components/awTree/AwTree";
-import AwIcon from "../components/icons/AwIcon"
+import AwIcon from "../components/icons/AwIcon";
 import ListOfWells from "./modals/ListOfWells";
-import {welltops} from "../components/icons/chooseStratIcons";
+import TableSettings from "./modals/TableSettings";
+import CrossPlot from "./modals/CrossPlot";
+import graph1 from "./graphics/graph1";
+import graph2 from "./graphics/graph2";
 
 export default {
   name: "Geology-Page",
@@ -123,75 +153,89 @@ export default {
     AwModal,
     AwIcon,
     ListOfWells,
-    AwTree
+    TableSettings,
+    CrossPlot,
+    AwTree,
+    graph1
   },
   data() {
     return {
+      activeGraph: "graph1",
+      graphComponents: [
+        graph1,
+        graph2,
+      ],
       dropdownValue: {
-        value: null
+        value: null,
       },
+      isShowTableSettings: false,
+      isShowCrossPlot: false,
       isShowListOfWellsModal: false,
       isShowChooseStratModal: false,
       chooseStratModalTree: [],
       chooseStratModalTreeItems: {
-        name: 'J-I-III.txt',
+        name: "J-I-III.txt",
         value: 1,
-        iconType: 'welltops',
+        iconType: "welltops",
         isOpen: true,
         children: [
           {
-            name: 'Attributes',
-            value: '1-1',
-            iconType: 'ybs',
+            name: "Attributes",
+            value: "1-1",
+            iconType: "ybs",
             children: [
               {
-                name: 'name',
-                iconType: 'u1'
-              }
-            ]
+                name: "name",
+                iconType: "u1",
+              },
+            ],
           },
           {
-            name: 'Stratigraphy',
-            iconType: 'zoneStatic',
+            name: "Stratigraphy",
+            iconType: "zoneStatic",
             value: 2,
             children: [
               {
-                name: 'U1_top',
-                iconType: 'u1',
+                name: "U1_top",
+                iconType: "u1",
                 value: "111",
               },
               {
-                name: 'Zone U1_top',
-                iconType: 'zone',
+                name: "Zone U1_top",
+                iconType: "zone",
               },
               {
-                name: 'U1_bot',
-                iconType: 'u1',
+                name: "U1_bot",
+                iconType: "u1",
                 value: "1111",
               },
               {
-                name: 'Zone U1_top',
-                iconType: 'zone',
+                name: "Zone U1_top",
+                iconType: "zone",
               },
-            ]
+            ],
           },
-        ]
+        ],
       },
+    };
+  },
+  computed: {
+    getGraphComponents() {
+      return this.graphComponents.sort(e => e.name === this.activeGraph ? -1 : 1);
     }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-
 .info__grid {
   display: grid;
   width: 100%;
   grid-template-rows: 1fr 96px;
   grid-gap: 10px;
   grid-template-areas:
-            "item1 item2"
-            "item3 item3";
+			"item1 item2"
+			"item3 item3";
 
   #item1 {
     grid-area: item1;
@@ -237,10 +281,28 @@ export default {
       margin: 0;
     }
   }
+}
 
-  &__body {
-    &__content {
-    }
+//!TODO Поменять стили после создания графиков
+.main_graph {
+  max-height: 560px;
+  width: 100%;
+  overflow: hidden;
+
+  img {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+//!TODO Поменять стили после создания графиков
+.secondary__graph{
+  min-width: 560px;
+  img{
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 }
 </style>

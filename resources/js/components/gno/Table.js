@@ -1091,7 +1091,7 @@ export default {
       this.$store.commit("UPDATE_GROUP_POSAD", "2")
       this.$store.commit("UPDATE_HEAVYDOWN", true)
       this.$store.commit("UPDATE_STUP_COLUMNS", 2)
-      this.$store.commit("UPDATE_MARKSHTANG", ["15Х2ГМФ (НВО)"])
+      this.$store.commit("UPDATE_MARKSHTANG", ["С (API)", "D (API)", "15Х2ГМФ-D-sup"])
       this.$store.commit("UPDATE_KPOD_MODE", true)
       this.$store.commit("UPDATE_KPOD_CALCED", null)
     },
@@ -1218,7 +1218,7 @@ export default {
           this.densOil = data["Well Data"]["dens_oil"].toFixed(1)
           this.densWater = data["Well Data"]["dens_liq"].toFixed(1)
           this.hPumpValue = data["Well Data"]["h_pump_set"].toFixed(0) + " " + this.trans('measurements.m')
-          
+
           this.setNotify(this.trans('pgno.notify_150_hpump'), 'warning')
           this.setNotify(this.trans('pgno.new_well'), 'warning')
 
@@ -1296,6 +1296,7 @@ export default {
           } else if (this.expMeth == "ЭЦН" || this.expMeth == "УЭЦН") {
             this.mech_sep = true
           }
+          this.$store.commit('UPDATE_MECH_SEP', this.mech_sep)
           if (Number(this.qL) < 20) {
             this.mech_sep_value = 95
           } else if (Number(this.qL) < 55) {
@@ -1499,7 +1500,6 @@ export default {
       this.piInput = this.newData["pi"].toFixed(2) + " " + this.trans('measurements.m3/d/at');
       this.wctInput = this.newData["wct"].toFixed(0) + " " + this.trans('measurements.percent');
       this.hPumpValue = this.newData["h_pump_set"].toFixed(0) + " " + this.trans('measurements.m');
-      console.log(this.newPointsData)
       this.bhpPot = Number(this.newPointsData[1]["p"].toFixed(0)) - 1
       this.qlPot = Number(this.newPointsData[1]["q_l"].toFixed(0)) + 1
       this.pinPot = Number(this.newPointsData[1]["pin"].toFixed(0)) - 1

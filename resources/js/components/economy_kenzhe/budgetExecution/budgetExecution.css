@@ -275,10 +275,6 @@ td:last-of-type {
   cursor: pointer;
 }
 
-#app>.container-fluid {
-  max-width: 100% !important;
-}
-
 .vc-speedometer-line {
   height: 35.8%;
 }

@@ -1,7 +1,7 @@
 @extends('layouts.db')
 
 @section('content')
-    <div class="row" id="app">
+    <div class="row"  >
         <div class="col-md-12">
 
             @if ($message = Session::get('success'))

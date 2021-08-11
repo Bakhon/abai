@@ -1,7 +1,5 @@
 <template>
   <div class="container-fluid">
-    <cat-loader v-show="loading"/>
-
     <div class="row justify-content-between">
       <select-sc-fa
           :loading="loading"
@@ -29,14 +27,14 @@
 
 <script>
 import VueTableDynamic from 'vue-table-dynamic'
-import CatLoader from "@ui-kit/CatLoader";
+
 import SelectScFa from "../components/SelectScFa";
 
 export default {
   name: "economic-data-component",
   components: {
     VueTableDynamic,
-    CatLoader,
+
     SelectScFa
   },
   props: {

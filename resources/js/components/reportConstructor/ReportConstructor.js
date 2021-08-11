@@ -4,6 +4,8 @@ import Vue from "vue";
 import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from "../common/FormatDate";
 import download from "downloadjs";
+import {globalloadingMutations} from '@store/helpers';
+;
 
 Vue.use(Datetime)
 Vue.use(bTreeView)
@@ -12,22 +14,29 @@ export default {
     props: [
         'params'
     ],
-    components: {},
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
-            isShowOptions: true,
             structureTypes: {
                 org: null,
                 tech: null,
                 geo: null
             },
             attributeDescriptions: null,
-            attributesForObject: null,
+            attributesByHeader: null,
+            sheetTypesDescription: {
+                "well": "скважины",
+                "object": "объекты",
+                "well_summary": "суммарные данные по скважинам",
+                "object_summary": "суммарные данные по объекту",
+            },
+            sheetTypes: ["well", "object", "well_summary", "object_summary"],
+            activeTab: 0,
             activeButtonId: 1,
             currentStructureType: 'org',
             currentStructureId: null,
             currentItemType: null,
+            currentDatePickerFilter: 'date',
             currentOption: null,
             statistics: null,
             statisticsColumns: null,
@@ -37,51 +46,26 @@ export default {
             selectedObjects: [],
             startDate: null,
             endDate: null,
+            dateFlow: ['year', 'month', 'date'],
             maxDepthOfSelectedAttributes: null,
         }
     },
     mounted: function () {
         this.$nextTick(function () {
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         });
         for (let structureType in this.structureTypes) {
             this.loadStructureTypes(structureType);
         }
         this.loadAttributeDescriptions()
+        this.loadHeaders()
     },
     methods: {
-        onYearClick() {
-            document.querySelector('.start-year-date .vdatetime-input').click();
-            document.querySelector('.end-year-date .vdatetime-input').click();
-        },
-        onMonthClick() {
-            document.querySelector('.start-month-date .vdatetime-input').click();
-            document.querySelector('.end-month-date .vdatetime-input').click();
-        },
-        setStartOfMonth(date) {
-            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
-        },
-        setEndOfMonth(date) {
-            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
-        },
-        setStartOfYear(date) {
-            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
-        },
-        setEndOfYear(date) {
-            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
-        },
-        onMenuClick(currentStructureType, btnId) {
-            this.isShowOptions = true;
-            this.currentStructureType = currentStructureType;
-            this.activeButtonId = btnId;
-        },
-        onClickOption(structureType) {
-            this.isShowOptions = false;
-            this.currentOption = structureType
-            this.currentItemType = structureType.id
-        },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
         loadStructureTypes(type) {
-            this.isLoading = true
+            this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_structures_types", {
                 params: {
                     structure_type: type
@@ -96,15 +80,15 @@ export default {
                 } else {
                     console.log("No data");
                 }
-                this.isLoading = false;
+                this.SET_LOADING(false);
             }).catch((error) => {
                 console.log(error)
-                this.isLoading = false
+                this.SET_LOADING(false)
             });
 
         },
         loadAttributeDescriptions() {
-            this.isLoading = true
+            this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_object_attributes_descriptions", {
                 responseType: 'json',
                 headers: {
@@ -115,30 +99,27 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.isLoading = false
+                this.SET_LOADING(false)
             });
 
         },
-        loadAttributesForSelectedObject() {
-            this.isLoading = true
-            this.axios.get(this.baseUrl + "get_object_attributes", {
-                params: {
-                    structure_subtype: this.currentStructureSubType
-                },
+        loadHeaders() {
+            this.SET_LOADING(true)
+            this.axios.get(this.baseUrl + "get_headers", {
                 responseType: 'json',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             }).then((response) => {
-                this.attributesForObject = response.data
+                this.attributesByHeader = response.data
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.isLoading = false
+                this.SET_LOADING(false)
             });
         },
         loadItems(itemType) {
-            this.isLoading = true
+            this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_items", {
                 params: {
                     structure_type: this.currentStructureType,
@@ -157,15 +138,9 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.isLoading = false
+                this.SET_LOADING(false)
             });
 
-        },
-        setCurrentStructure(structureId, structureSubType) {
-            this.currentStructureId = structureId.toString()
-            this.currentStructureSubType = structureSubType
-            this.isDisplayParameterBuilder = false
-            this.loadAttributesForSelectedObject();
         },
         getAttributeDescription(descriptionField) {
             if (descriptionField in this.attributeDescriptions["formulas"]) {
@@ -192,9 +167,14 @@ export default {
         updateStatistics() {
             this.loadStatistics()
             let selectedAttributes = this.getSelectedAttributes()
-            this.statisticsColumns = this.getStatisticsColumnNames(selectedAttributes)
+            this.statisticsColumns = {}
+            this.maxDepthOfSelectedAttributes = {}
+            for (let sheetType in selectedAttributes) {
+                this.statisticsColumns[sheetType] = this.getStatisticsColumnNames(selectedAttributes[sheetType])
+            }
         },
         loadStatistics() {
+            this.SET_LOADING(true)
             this.statistics = null;
 
             try {
@@ -214,7 +194,7 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
-                this.isLoading = false
+                this.SET_LOADING(false)
             });
 
         },
@@ -227,8 +207,12 @@ export default {
             }
         },
         getSelectedAttributes() {
-            let allSelectedAttributes = this._getAllSelectedAttributes(this.attributesForObject)
-            allSelectedAttributes = this._cleanEmptyHeadersOfAttributes(allSelectedAttributes)
+            let allSelectedAttributes = {}
+            for (let sheetType in this.attributesByHeader) {
+                let selectedAttributes = this._getAllSelectedAttributes(this.attributesByHeader[sheetType])
+                selectedAttributes = this._cleanEmptyHeadersOfAttributes(selectedAttributes)
+                allSelectedAttributes[sheetType] = selectedAttributes
+            }
             return allSelectedAttributes
         },
         _getAllSelectedAttributes(attributes) {
@@ -325,6 +309,7 @@ export default {
         },
 
         getStatisticsFile() {
+            this.SET_LOADING(true)
             try {
                 this.validateStatisticsParams()
             } catch (e) {
@@ -346,13 +331,12 @@ export default {
                     download(response.data, "Отчет.xlsx", response.headers['content-type'])
                 }
             }).catch((error) => console.log(error)
-            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+            ).finally(() => this.SET_LOADING(false));
         },
-        getHeaders() {
+        getHeaders(sheetType) {
             let attributes = this.getSelectedAttributes()
-            this.maxDepthOfSelectedAttributes = this._getMaxDepthOfTree(attributes)
-            return this._convertTreeToLayersOfAttributes(attributes, this.maxDepthOfSelectedAttributes)
-
+            this.maxDepthOfSelectedAttributes[sheetType] = this._getMaxDepthOfTree(attributes[sheetType])
+            return this._convertTreeToLayersOfAttributes(attributes[sheetType], this.maxDepthOfSelectedAttributes[sheetType])
         },
         _getMaxDepthOfTree(attributes) {
             let maxChildrenDepth = 0
@@ -367,8 +351,7 @@ export default {
             }
             return maxChildrenDepth + 1
         },
-        _convertTreeToLayersOfAttributes(attributes, layerDepth)
-        {
+        _convertTreeToLayersOfAttributes(attributes, layerDepth) {
             let layers = []
             for (let i = 0; i < layerDepth; i++) {
                 layers.push(this._getAttributesOnDepth(attributes, i))
@@ -408,7 +391,7 @@ export default {
             }
             return maxChildrenNumber
         },
-        getRowHeightSpan(attribute, currentDepth){
+        getRowHeightSpan(attribute, currentDepth) {
             if (attribute.maxChildrenNumber > 0) {
                 return 1
             }
@@ -419,6 +402,76 @@ export default {
                 return 1
             }
             return attribute.maxChildrenNumber
-        }
+        },
+        getOptionName() {
+            return this.currentOption && this.currentOption.name ? this.currentOption.name : 'Выбор объекта'; 
+        },
+        onMenuClick(currentStructureType) {
+            this.currentStructureType = currentStructureType;
+            this.currentOption = null;
+            this.currentItemType = null;
+        },
+        onClickOption(structureType) {
+            this.currentOption = structureType;
+            this.currentItemType = structureType.id;
+        },
+        onYearClick() {
+            if(this.currentDatePickerFilter === 'year') {
+                this.setDefaultDateFilter();
+                return;
+            }
+            this.currentDatePickerFilter = 'year';
+            this.dateFlow = ['year'];
+        },
+        onMonthClick() {
+            if(this.currentDatePickerFilter === 'month') {
+                this.setDefaultDateFilter();
+                return;
+            }
+            this.currentDatePickerFilter = 'month';
+            this.dateFlow = ['year', 'month'];
+        },
+        setDefaultDateFilter() {
+            this.currentDatePickerFilter = 'date';
+            this.dateFlow = ['year', 'month', 'date'];
+        },
+        onStartDatePickerClick(date) {
+            if(!date) return;
+            switch(this.currentDatePickerFilter) {
+                case "year":
+                    this.setStartOfYear(date);
+                    break;
+                case "month": 
+                    this.setStartOfMonth(date);
+                    break;
+                default: 
+                    this.startDate = date;
+            }
+        },
+        setStartOfYear(date) {
+            this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        setStartOfMonth(date) {
+            this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        onEndDatePickerClick(date) {
+            if(!date) return;
+            switch(this.currentDatePickerFilter) {
+                case "year":
+                    this.setEndOfYear(date);
+                    break;
+                case "month": 
+                    this.setEndOfMonth(date);
+                    break;
+                default: 
+                    this.endDate = date;
+            }
+        },
+        setEndOfYear(date) {
+            this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
+        },
+        setEndOfMonth(date) {
+            this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
     }
 }

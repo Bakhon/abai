@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.bsw_lab",
+  "sort": [
+    {
+      "field": "insert_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "bsw_l",
@@ -9,7 +15,6 @@
           {
             "title": "main",
             "items": [
-              
               {
                 "code": "insert_date",
                 "type": "date",

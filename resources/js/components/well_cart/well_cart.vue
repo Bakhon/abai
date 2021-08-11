@@ -1,7 +1,6 @@
 <template>
   <div class="all-contents">
     <div class="row well-cart__wrapper">
-      <cat-loader v-show="loading"/>
       <div
           :class="{'left-column_folded': isLeftColumnFolded}"
           class="left-column"
@@ -54,7 +53,7 @@
             <div class="row">
               <div class="col-4">
                 <button class="transparent-select">
-                  Скважина: <span v-if="wellUwi">{{ wellUwi }}</span>
+                  Скважина: <span v-if="wellUwi">{{ wellUwi.name }}</span>
                   <svg fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round"
                           stroke-width="1.6"/>
@@ -64,7 +63,7 @@
               <div class="col-8">
                 <form class="search-form d-flex align-items-center">
                   <select class="select-dzo mr-2" v-if="dzoSelectOptions.length > 0"
-                          @change="selectedUserDzo = $event.target.value">
+                          @change="dzoSelectChange($event)">
                     <option value="0" selected>Все ДЗО</option>
                     <option v-for="(dzoSelectOption, index) in dzoSelectOptions" :value="dzoSelectOption['id']">
                         {{ dzoSelectOption['name'] }}
@@ -114,7 +113,7 @@
                       <div class="title">Основное</div>
                       <p>Номер скважины:
                         <span v-if="wellUwi">
-                          {{ wellUwi }}
+                          {{ wellUwi.name }}
                         </span>
                       </p>
                       <p>Категория скважины:
@@ -220,19 +219,20 @@ import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
 import vSelect from 'vue-select'
 import axios from 'axios'
 import moment from 'moment'
-import WellCartTree from "./WellCartTree";
-import upperFirst from "lodash/upperFirst";
-import camelCase from "lodash/camelCase";
+import WellCartTree from './WellCartTree'
+import upperFirst from 'lodash/upperFirst'
+import camelCase from 'lodash/camelCase'
+
 
 const requireComponent = require.context('../bigdata/forms/CustomPlainForms', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
-    const componentConfig = requireComponent(fileName)
-    const componentName = upperFirst(
-        camelCase(
-            fileName
-                .split('/')
-                .pop()
-                .replace(/\.\w+$/, '')
+  const componentConfig = requireComponent(fileName)
+  const componentName = upperFirst(
+      camelCase(
+          fileName
+              .split('/')
+              .pop()
+              .replace(/\.\w+$/, '')
         )
     );
     Vue.component(componentName, componentConfig.default || componentConfig);
@@ -242,7 +242,7 @@ export default {
   components: {
     BigDataPlainFormResult,
     vSelect,
-    WellCartTree,
+    WellCartTree
   },
   data() {
     return {
@@ -513,6 +513,11 @@ export default {
         this.isLeftColumnFolded = !value;
         this.isRightColumnFolded = !value;
         this.isBothColumnFolded = !value;
+    },
+    dzoSelectChange(event) {
+      this.selectedUserDzo = event.target.value;
+      this.options = [];
+      this.wellUwi = null;
     }
   },
   computed: {
@@ -930,7 +935,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-$leftColumnWidth: 398px;
+$leftColumnWidth: 385px;
 $leftColumnFoldedWidth: 84px;
 $rightColumnWidth: 348px;
 $rightColumnFoldedWidth: 84px;
@@ -1915,8 +1920,9 @@ h4 {
 .left-column {
   min-width: $leftColumnWidth;
   width: $leftColumnWidth;
-  padding: 0 15px;
-  margin-bottom: 0px;
+  padding: 0 0 0 15px;
+  margin-right: 15px;
+  margin-bottom: 0;
   height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -1989,7 +1995,7 @@ h4 {
     padding: 0px 15px;
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 9px);
+      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 24px);
     }
 
     .icon-all {
@@ -2022,7 +2028,7 @@ h4 {
 }
 
 .mid-col {
-  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 9px);
+  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 24px);
   padding: 0 15px;
   height: calc(100vh - 90px);
 

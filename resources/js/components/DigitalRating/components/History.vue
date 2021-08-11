@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { histories } from '../data';
+import { histories } from '../json/data';
 
 export default {
   name: "History",

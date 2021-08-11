@@ -4,6 +4,12 @@
     "gis_type.id": 1,
     "dict.gis_type_code" : "BLL"
   },
+  "sort": [
+    {
+      "field": "gis_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "title",

@@ -38,7 +38,7 @@ export default {
 
   data() {
     return {
-      isOpen: false,
+      isOpen: true,
       objects: ['Объект 1', 'Объект 2'],
     }
   },

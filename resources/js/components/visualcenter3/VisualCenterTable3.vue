@@ -1,5 +1,6 @@
 <template>
   <div class="visualcenter-page-wrapper">
+
     <div class="row visualcenter-page-container">
       <div class="left-side col-lg-10 middle-block-columns">
         <div class="first-string px-2 middle-block__table">

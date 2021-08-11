@@ -1,5 +1,11 @@
 {
   "table": "prod.gis",
+  "sort": [
+    {
+      "field": "gis_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "title",
@@ -109,9 +115,9 @@
               {
                 "code": "name_ru",
                 "type": "dict",
-                "dict": "",
+                "dict": "gis_method_types",
                 "title": "gis_methods",
-                "validation": ""
+                "validation": "required|exists:tbd.dict.gis_method_type,id"
               }
             ]
           }
@@ -130,6 +136,102 @@
                 "type": "text",
                 "title": "zakl",
                 "validation": "required"
+              },
+              {
+                "code": "liquid_level",
+                "type": "numeric",
+                "title": "liquid_level",
+                "validation": ""
+              },
+              {
+                "code": "income_devices",
+                "type": "numeric",
+                "title": "income_devices",
+                "validation": ""
+              },
+              {
+                "code": "injection_pressure",
+                "type": "numeric",
+                "title": "injection_pressure",
+                "validation": ""
+              },
+              {
+                "code": "intake",
+                "type": "numeric",
+                "title": "intake",
+                "validation": ""
+              },
+              {
+                "code": "сement_bridge",
+                "type": "numeric",
+                "title": "сement_bridge",
+                "validation": ""
+              },
+              {
+                "code": "volume_expense",
+                "type": "numeric",
+                "title": "volume_expense",
+                "validation": ""
+              },
+              {
+                "code": "zp_top",
+                "type": "numeric",
+                "title": "zp_top",
+                "validation": ""
+              },
+              {
+                "code": "zp_bottom",
+                "type": "numeric",
+                "title": "zp_bottom",
+                "validation": ""
+              },
+              {
+                "code": "in_top",
+                "type": "numeric",
+                "title": "in_top",
+                "validation": ""
+              },
+              {
+                "code": "in_bottom",
+                "type": "numeric",
+                "title": "in_bottom",
+                "validation": ""
+              },
+              {
+                "code": "pm_top",
+                "type": "numeric",
+                "title": "pm_top",
+                "validation": ""
+              },
+              {
+                "code": "pm_bottom",
+                "type": "numeric",
+                "title": "pm_bottom",
+                "validation": ""
+              },
+              {
+                "code": "ip_top",
+                "type": "numeric",
+                "title": "ip_top",
+                "validation": ""
+              },
+              {
+                "code": "ip_bottom",
+                "type": "numeric",
+                "title": "ip_bottom",
+                "validation": ""
+              },
+              {
+                "code": "coverage",
+                "type": "numeric",
+                "title": "coverage",
+                "validation": ""
+              },
+              {
+                "code": "distribution",
+                "type": "numeric",
+                "title": "distribution",
+                "validation": ""
               }
             ]
           }

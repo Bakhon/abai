@@ -26,6 +26,11 @@ class ManualWell extends Model
         return $this->belongsTo(ManualZu::class);
     }
 
+    public function gu()
+    {
+        return $this->belongsTo(ManualGu::class);
+    }
+
     public function ngdu()
     {
         return $this->belongsTo(Ngdu::class);
@@ -33,31 +38,31 @@ class ManualWell extends Model
 
     public function omgngdu()
     {
-        return $this->hasMany(OmgNGDU::class);
+        return $this->hasMany(OmgNGDU::class, 'well_id');
     }
 
     public function watermeasurement()
     {
-        return $this->hasMany(WaterMeasurement::class);
+        return $this->hasMany(WaterMeasurement::class, 'well_id');
     }
 
     public function oilgas()
     {
-        return $this->hasMany(OilGas::class);
+        return $this->hasMany(OilGas::class, 'well_id');
     }
 
     public function oilPipes()
     {
-        return $this->setConnection('tbd_cmon')->hasMany(ManualOilPipe::class);
+        return $this->setConnection('tbd_cmon')->hasMany(ManualOilPipe::class, 'well_id');
     }
 
     public function omguhe()
     {
-        return $this->hasMany(OmgUHE::class);
+        return $this->hasMany(OmgUHE::class, 'well_id');
     }
 
     public function omgngdu_well()
     {
-        return $this->hasMany(OmgNGDUWell::class);
+        return $this->hasMany(OmgNGDUWell::class, 'well_id');
     }
 }

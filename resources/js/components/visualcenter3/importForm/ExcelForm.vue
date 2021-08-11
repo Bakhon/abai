@@ -1,133 +1,198 @@
 <template>
-    <div class="row main-layout">
-        <div class="col-2 row mt-3 ml-1">
-            <div class="col-12 status-block currentdate-label status-label">
-                <span>{{trans('visualcenter.importForm.yesterdayDate')}}</span><br>
-                <span class="dzo-name">{{currentDate}}</span><br>
-            </div>
-            <div class="col-12 status-block dzoname-label status-label">
-                <span class="dzo-name">{{selectedDzo.name}}</span>
-            </div>
-        </div>
+    <div>
 
-        <div class="col-2 row mt-3 ml-1">
-            <div
-                    class="col-12 status-block status-block_little menu__button rainbow"
-                    @click="pasteClipboardContent()"
-            >
-                {{trans('visualcenter.importForm.pasteData')}}
-            </div>
-            <div
-                    :class="[!isDataExist ? 'menu__button_disabled' : '','col-12 status-block status-block_little menu__button mt-3']"
-                    @click="handleValidate()"
-            >
-                {{trans('visualcenter.validateButton')}}
-            </div>
-            <div
-                    :class="[!isDataReady ? 'menu__button_disabled' : '','status-block status-block_little menu__button col-12 mt-3']"
-                    @click="handleSave()"
-            >
-                {{trans('visualcenter.saveButton')}}
-            </div>
-        </div>
-        <div class="col-4 mt-3 row ml-1"></div>
-        <div class="col-2 row mt-3 ml-1">
-            <div class="col-12 status-block status-block_little status-label">
-                <span>{{trans('visualcenter.importForm.statusLabel')}}</span>
-                <span :class="[isValidateError ? 'status-error' : '','label']">&nbsp;{{status}}</span>
-            </div>
-            <div class="col-12 mt-3 status-block status-block_little">
-                &nbsp;
-            </div>
-            <div class="col-12 mt-3 status-block status-block_little">
-                &nbsp;
-            </div>
-        </div>
-
-        <div class="col-2 row mt-3 ml-1">
-            <div class="vert-line"></div>
-            <div
-                    id="chemistryButton"
-                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
-                    @click="changeButtonVisibility()"
-            >
-                {{trans('visualcenter.importForm.enterChemistryButton')}}
-            </div>
-            <div :class="[isChemistryNeeded ? 'chemistry-disabled' : '','chemistry-block row col-12 p-2']">
-                <h4 class="col-12">{{trans("visualcenter.importForm.chemistry")}}</h4>
-                <div class="col-12 d-flex">
-                    <span class="col-7">{{trans("visualcenter.chemProdZakackaDemulg")}}</span>
-                    <input v-model="chemistryData.demulsifier" @change="formatCategoryByType($event,'chemistryData','demulsifier')" class="col-5"></input>
-                </div>
-                <div class="col-12 d-flex">
-                    <span class="col-7">{{trans("visualcenter.chemProdZakackaBakteracid")}}</span>
-                    <input v-model="chemistryData.bactericide" @change="formatCategoryByType($event,'chemistryData','bactericide')" class="col-5"></input>
-                </div>
-                <div class="col-12 d-flex">
-                    <span class="col-7">{{trans("visualcenter.chemProdZakackaIngibatorKorrozin")}}</span>
-                    <input v-model="chemistryData.corrosion_inhibitor" @change="formatCategoryByType($event,'chemistryData','corrosion_inhibitor')" class="col-5"></input>
-                </div>
-                <div class="col-12 d-flex">
-                    <span class="col-7">{{trans("visualcenter.chemProdZakackaIngibatorSoleotloj")}}</span>
-                    <input v-model="chemistryData.scale_inhibitor" @change="formatCategoryByType($event,'chemistryData','scale_inhibitor')" class="col-5"></input>
-                </div>
-                <div v-if="chemistryErrorFields.length > 0" class="col-12 d-flex">
-                    <span class="col-12 status-error">{{trans("visualcenter.errors")}}:</span>
-                </div>
-                <div v-if="chemistryErrorFields.length > 0" class="col-12 d-flex">
-                    <span class="col-12">{{chemistryErrorFields.toString()}}</span>
-                </div>
-                <div class="col-6"></div>
-                <div class="col-8 mt-2"></div>
+        <div class="row main-layout pb-3">
+            <div class="col-12 row mt-3 ml-1">
+                <div class="col-4"></div>
                 <div
-                        class="status-block status-block_little col-4 mt-2 menu__button"
-                        @click="chemistrySave()"
+                        :class="[!isArchiveActive ? 'category-button_border category-button' : '',' col-2 category-button']"
+                        @click="changeCategory"
+                >
+                    <div class="insert-data-icon"></div>
+                    {{trans('visualcenter.importForm.insertData')}}
+                </div>
+                <div
+                        :class="[isArchiveActive ? 'category-button_border category-button' : '',
+                        dzoUsers.includes(parseInt(userId)) ? 'menu__button_disabled' : '',
+                        ' col-2 category-button']"
+                        @click="changeCategory"
+                >
+                    <div class="archieve-icon"></div>
+                    <div>{{trans('visualcenter.importForm.dataArchieve')}}</div>
+                </div>
+                <div class="col-4"></div>
+            </div>
+        </div>
+        <div class="row main-layout mt-2">
+            <div class="col-2 row mt-3 ml-1">
+                <div class="col-12 status-block currentdate-label status-label">
+                    <span>{{trans('visualcenter.importForm.yesterdayDate')}}:</span><br>
+                    <span class="dzo-name">{{currentDate}}</span><br>
+                </div>
+                <div class="col-12 status-block dzoname-label status-label">
+                    <span class="dzo-name">{{selectedDzo.name}}</span>
+                </div>
+            </div>
+
+            <div v-if="!isArchiveActive" class="col-2 row mt-3 ml-1">
+                <div
+                        class="col-12 status-block status-block_little menu__button rainbow"
+                        @click="pasteClipboardContent()"
+                >
+                    {{trans('visualcenter.importForm.pasteData')}}
+                </div>
+                <div
+                        :class="[!isDataExist ? 'menu__button_disabled' : '','col-12 status-block status-block_little menu__button mt-3']"
+                        @click="handleValidate()"
+                >
+                    {{trans('visualcenter.validateButton')}}
+                </div>
+                <div
+                        :class="[!isDataReady ? 'menu__button_disabled' : '','status-block status-block_little menu__button col-12 mt-3']"
+                        @click="handleSave()"
                 >
                     {{trans('visualcenter.saveButton')}}
                 </div>
             </div>
-            <div
-                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1 mt-3']"
-                    @click="changeWellBlockVisibility()"
-            >
-                {{trans('visualcenter.importForm.wellWorkover')}}
-            </div>
-            <div :class="[isWellsWorkoverNeeded ? 'chemistry-disabled' : '','chemistry-block well-workover-block row col-12 p-2']">
-                <h4 class="col-12">{{trans("visualcenter.importForm.wellWorkover")}}</h4>
-                <div class="col-12 d-flex">
-                    <span class="col-7">{{trans("visualcenter.undergroundRepairFond")}}</span>
-                    <input v-model="wellWorkover.otm_underground_workover" @change="formatCategoryByType($event,'wellWorkover','otm_underground_workover')" class="col-5"></input>
+            <div v-else class="col-2 row mt-3 ml-1">
+                <div class="col-12 date-select">
+                    <span>{{trans('visualcenter.importForm.dateSelect')}}:</span><br>
                 </div>
-                <div class="col-12 d-flex">
-                    <span class="col-7">{{trans("visualcenter.overhaulFond")}}</span>
-                    <input v-model="wellWorkover.otm_well_workover_fact" @change="formatCategoryByType($event,'wellWorkover','otm_well_workover_fact')" class="col-5"></input>
-                </div>
-                <div class="col-6"></div>
-                <div class="col-8 mt-2"></div>
                 <div
-                        class="status-block status-block_little col-4 mt-2 menu__button"
-                        @click="wellWorkoverSave()"
+                        class="col-12 status-block status-block_little p-0 mt-1"
                 >
-                    {{trans('visualcenter.saveButton')}}
+                    <el-date-picker
+                            v-model="period"
+                            type="date"
+                            format="dd.MM.yyyy"
+                            popper-class="custom-date-picker"
+                            :picker-options="datePickerOptions"
+                            @change="changeDate"
+                    >
+                    </el-date-picker>
+                </div>
+                <div
+                        :class="[isUserNameCompleted && isChangeReasonCompleted ? '' : 'menu__button_disabled','col-12 status-block status-block_little menu__button mt-3']"
+                        @click="sendToApprove"
+                >
+                    {{trans('visualcenter.importForm.approve')}}
+                </div>
+            </div>
+            <div v-if="!isArchiveActive" class="col-4 mt-3 row ml-1"></div>
+            <div v-else class="col-4 mt-3 row ml-1">
+                <b-form-input
+                        size="sm"
+                        v-model="userName"
+                        :placeholder="trans('visualcenter.importForm.executor')"
+                        :state="nameState"
+                ></b-form-input>
+                <b-form-textarea
+                        class="mt-1"
+                        id="textarea"
+                        v-model="changeReason"
+                        :placeholder="trans('visualcenter.importForm.reason')"
+                        rows="3"
+                        :state="changeReasonState"
+                ></b-form-textarea>
+            </div>
+            <div class="col-2 row mt-3 ml-1">
+                <div class="col-12 status-block status-block_little status-label">
+                    <span>{{trans('visualcenter.importForm.statusLabel')}}:</span>
+                    <span :class="[isValidateError ? 'status-error' : '','label']">&nbsp;{{status}}</span>
+                </div>
+                <div class="col-12 mt-3 status-block status-block_little">
+                    &nbsp;
+                </div>
+                <div class="col-12 mt-3 status-block status-block_little">
+                    &nbsp;
                 </div>
             </div>
 
-            <div class="col-12 mt-3 status-block status-block_little">
-                &nbsp;
+            <div class="col-2 row mt-3 ml-1">
+                <div class="vert-line"></div>
+                <div
+                        id="chemistryButton"
+                        :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
+                        @click="changeButtonVisibility()"
+                >
+                    {{trans('visualcenter.importForm.enterChemistryButton')}}
+                </div>
+                <div :class="[isChemistryNeeded ? 'chemistry-disabled' : '','chemistry-block row col-12 p-2']">
+                    <h4 class="col-12">{{trans("visualcenter.importForm.chemistry")}}</h4>
+                    <div class="col-12 d-flex">
+                        <span class="col-7">{{trans("visualcenter.chemProdZakackaDemulg")}}</span>
+                        <input v-model="chemistryData.demulsifier" @change="formatCategoryByType($event,'chemistryData','demulsifier')" class="col-5"></input>
+                    </div>
+                    <div class="col-12 d-flex">
+                        <span class="col-7">{{trans("visualcenter.chemProdZakackaBakteracid")}}</span>
+                        <input v-model="chemistryData.bactericide" @change="formatCategoryByType($event,'chemistryData','bactericide')" class="col-5"></input>
+                    </div>
+                    <div class="col-12 d-flex">
+                        <span class="col-7">{{trans("visualcenter.chemProdZakackaIngibatorKorrozin")}}</span>
+                        <input v-model="chemistryData.corrosion_inhibitor" @change="formatCategoryByType($event,'chemistryData','corrosion_inhibitor')" class="col-5"></input>
+                    </div>
+                    <div class="col-12 d-flex">
+                        <span class="col-7">{{trans("visualcenter.chemProdZakackaIngibatorSoleotloj")}}</span>
+                        <input v-model="chemistryData.scale_inhibitor" @change="formatCategoryByType($event,'chemistryData','scale_inhibitor')" class="col-5"></input>
+                    </div>
+                    <div v-if="chemistryErrorFields.length > 0" class="col-12 d-flex">
+                        <span class="col-12 status-error">{{trans("visualcenter.errors")}}:</span>
+                    </div>
+                    <div v-if="chemistryErrorFields.length > 0" class="col-12 d-flex">
+                        <span class="col-12">{{chemistryErrorFields.toString()}}</span>
+                    </div>
+                    <div class="col-6"></div>
+                    <div class="col-8 mt-2"></div>
+                    <div
+                            class="status-block status-block_little col-4 mt-2 menu__button"
+                            @click="chemistrySave()"
+                    >
+                        {{trans('visualcenter.saveButton')}}
+                    </div>
+                </div>
+                <div
+                        :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1 mt-3']"
+                        @click="changeWellBlockVisibility()"
+                >
+                    {{trans('visualcenter.importForm.wellWorkover')}}
+                </div>
+                <div :class="[isWellsWorkoverNeeded ? 'chemistry-disabled' : '','chemistry-block well-workover-block row col-12 p-2']">
+                    <h4 class="col-12">{{trans("visualcenter.importForm.wellWorkover")}}</h4>
+                    <div class="col-12 d-flex">
+                        <span class="col-7">{{trans("visualcenter.undergroundRepairFond")}}</span>
+                        <input v-model="wellWorkover.otm_underground_workover" @change="formatCategoryByType($event,'wellWorkover','otm_underground_workover')" class="col-5"></input>
+                    </div>
+                    <div class="col-12 d-flex">
+                        <span class="col-7">{{trans("visualcenter.overhaulFond")}}</span>
+                        <input v-model="wellWorkover.otm_well_workover_fact" @change="formatCategoryByType($event,'wellWorkover','otm_well_workover_fact')" class="col-5"></input>
+                    </div>
+                    <div class="col-6"></div>
+                    <div class="col-8 mt-2"></div>
+                    <div
+                            class="status-block status-block_little col-4 mt-2 menu__button"
+                            @click="wellWorkoverSave()"
+                    >
+                        {{trans('visualcenter.saveButton')}}
+                    </div>
+                </div>
+
+                <div class="col-12 mt-3 status-block status-block_little">
+                    &nbsp;
+                </div>
+
             </div>
 
-        </div>
-
-        <div class="table-form col-12 mt-3 ml-1">
-            <v-grid
-                    theme="material"
-                    :source="rows"
-                    :columns="columns"
-                    :rowSize="30"
-                    @beforeRangeEdit="beforeRangeEdit"
-                    @beforeEdit="beforeRangeEdit"
-                    :frameSize="72"
-            ></v-grid>
+            <div class="table-form col-12 mt-3 ml-1">
+                <v-grid
+                        theme="material"
+                        :source="rows"
+                        :columns="columns"
+                        :rowSize="30"
+                        @beforeRangeEdit="beforeRangeEdit"
+                        @beforeEdit="beforeRangeEdit"
+                        :frameSize="72"
+                ></v-grid>
+            </div>
         </div>
     </div>
 </template>
@@ -137,6 +202,9 @@
 <style scoped lang="scss">
     @import './revogrid.css';
 
+    ::v-deep .el-input__inner {
+        color: white;
+    }
     .status-error {
         color: red;
     }
@@ -212,7 +280,7 @@
     }
     .main-layout {
         background: #272953;
-        max-width: 1826px;
+        max-width: 1838px;
     }
     .menu__button {
         background: #656A8A;
@@ -302,5 +370,33 @@
     }
     .well-workover-block {
         margin-top: 75px;
+    }
+    .category-button {
+        font-size: 24px;
+        color: white;
+        text-align: center;
+        cursor: pointer;
+    }
+    .category-button_border {
+        border-bottom: 2px solid #2E50E9;
+    }
+    .insert-data-icon {
+        background: url(/img/visualcenter3/import-form-insert-data.svg) no-repeat;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        margin-top: 1vh;
+    }
+    .archieve-icon {
+        background: url(/img/visualcenter3/import-form-archieve.svg) no-repeat;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        margin-top: 1vh;
+    }
+    .date-select {
+        color: white;
+        font-size: 16px;
+        text-align: left;
     }
 </style>

@@ -8,4 +8,5 @@ class StemSectionController extends LasDictionariesController
     protected $model = 'App\Models\BigData\Dictionaries\StemSection';
     protected $resource = 'App\Http\Resources\StemSectionResource';
     protected $link = 'stem-section';
+    protected $view = 'bigdata.las_dictionaries';
 }
