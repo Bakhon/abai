@@ -1,57 +1,16 @@
 <template>
     <div>
+        <cat-loader />
         <div class="row m-0 p-0 pl-1 pr-1">
             <div class="col-9 gtm-dark p-1 mt-1">
                 <gtm-main-indicator
-                    v-bind:data="[
-                        {
-                            number: 1458,
-                            units: this.trans('paegtm.activities'),
-                            title: this.trans('paegtm.number_of_gtm_and_vns'),
-                            progressValue: 1458,
-                            progressMax: 1441,
-                            progressPercents: 1458 / 1441 * 100,
-                        },
-                        {
-                            number: 695,
-                            units: this.trans('paegtm.tons'),
-                            title: this.trans('paegtm.additional_oil_production_from_vns'),
-                            progressValue: 695,
-                            progressMax: 713,
-                            progressPercents: 695 / 713 * 100,
-                        },
-                        {
-                            number: 766,
-                            units: this.trans('paegtm.tons'),
-                            title: this.trans('paegtm.additional_oil_production_from_gtm'),
-                            progressValue: 766,
-                            progressMax: 867,
-                            progressPercents: 766 / 867 * 100,
-                        },
-                        {
-                            number: 16998,
-                            units: this.trans('paegtm.tons'),
-                            title: this.trans('paegtm.basic_oil_production'),
-                            progressValue: 16998,
-                            progressMax: 16973,
-                            progressPercents: 16998 / 16973 * 100,
-                        },
-                    ]"
+                    v-bind:data="this.mainIndicatorData"
                 ></gtm-main-indicator>
             </div>
             <div class="col-3 p-0 pl-2 mt-1">
                 <div class="gtm-dark h-100 pl-2 p-1">
                     <gtm-main-indicator
-                        v-bind:data="[
-                        {
-                            number: 18475,
-                            units: this.trans('paegtm.tons'),
-                            title: this.trans('paegtm.oil_production'),
-                            progressValue: 18475,
-                            progressMax: 18568,
-                            progressPercents: 18475 / 18568 * 100,
-                        },
-                    ]"
+                        v-bind:data="this.additionalIndicatorData"
                     ></gtm-main-indicator>
                 </div>
             </div>
@@ -99,18 +58,18 @@
                                   {{ mainTableItem.name_ru}}
                                   <i class="fas fa-external-link-alt text-blue"></i>
                               </td>
-                              <td class="align-middle">{{ mainTableItem.col_1}}</td>
-                              <td class="align-middle">{{ mainTableItem.col_2}}</td>
-                              <td class="align-middle">{{ mainTableItem.col_3}}</td>
-                              <td class="align-middle">{{ mainTableItem.col_4}}</td>
-                              <td class="align-middle">{{ mainTableItem.col_5}}</td>
-                              <td class="align-middle">{{ mainTableItem.col_6}}</td>
-                              <td class="align-middle">{{ mainTableItem.col_7}}</td>
-                              <td class="align-middle">{{ mainTableItem.col_8}}</td>
-                              <td class="align-middle">{{ mainTableItem.col_9}}</td>
-                              <td class="align-middle">{{ mainTableItem.col_10}}</td>
-                              <td class="align-middle">{{ mainTableItem.col_11}}</td>
-                              <td class="align-middle">{{ mainTableItem.col_12}}</td>
+                              <td class="align-middle">{{ mainTableItem.vns_additional_oil_prod_plan.toFixed(1)}}</td>
+                              <td class="align-middle">{{ mainTableItem.vns_additional_oil_prod_fact.toFixed(1)}}</td>
+                              <td class="align-middle">{{ mainTableItem.vns_additional_oil_prod_difference.toFixed(1)}}</td>
+                              <td class="align-middle">{{ mainTableItem.gtm_additional_oil_prod_plan.toFixed(1)}}</td>
+                              <td class="align-middle">{{ mainTableItem.gtm_additional_oil_prod_fact.toFixed(1)}}</td>
+                              <td class="align-middle">{{ mainTableItem.gtm_additional_oil_prod_difference.toFixed(1)}}</td>
+                              <td class="align-middle">{{ mainTableItem.base_oil_prod_plan.toFixed(1)}}</td>
+                              <td class="align-middle">{{ mainTableItem.base_oil_prod_fact.toFixed(1)}}</td>
+                              <td class="align-middle">{{ mainTableItem.base_oil_prod_difference.toFixed(1)}}</td>
+                              <td class="align-middle">{{ mainTableItem.oil_prod_plan.toFixed(1)}}</td>
+                              <td class="align-middle">{{ mainTableItem.oil_prod_fact.toFixed(1)}}</td>
+                              <td class="align-middle">{{ mainTableItem.oil_prod_difference.toFixed(1)}}</td>
                           </tr>
                           </tbody>
                       </table>
@@ -125,7 +84,7 @@
                 <div class="mb-2">
                     <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
                 </div>
-                <div class="gtm-dark h-100">
+                <div class="gtm-dark h-100*">
                     <table class="table text-center text-white podbor-middle-table h-100 mb-0">
                         <thead>
                         <tr>
@@ -151,7 +110,7 @@
 
         <div class="row p-1">
             <div class="col-6 pr-0">
-              <apexchart type="line" height="180" :options="chartOptions" :series="series1"></apexchart>
+              <apexchart type="line" height="180" :options="chartOptions" :series="chartData.series_1"></apexchart>
             </div>
             <div class="col-6 pl-2">
               <apexchart type="line" height="180"  :options="chartOptions" :series="series2"></apexchart>
@@ -162,9 +121,9 @@
 
 <script>
 import Vue from "vue";
-import {paegtmMapActions, paegtmMapGetters} from '@store/helpers';
-import moment from "moment";
+import {paegtmMapActions, paegtmMapGetters, globalloadingMutations} from '@store/helpers';
 import VueApexCharts from "vue-apexcharts";
+import CatLoader from '@ui-kit/CatLoader';
 
 Vue.component("gtm-modal", {
   template: "#modal-template"
@@ -172,12 +131,16 @@ Vue.component("gtm-modal", {
 
 export default {
   components: {
-    "apexchart": VueApexCharts
+    "apexchart": VueApexCharts,
+    CatLoader
   },
     data: function () {
       return {
-            mainTableData: [],
-            comparisonIndicators: [],
+        mainIndicatorData: [],
+        additionalIndicatorData: [],
+        mainTableData: [],
+        comparisonIndicators: [],
+        chartData: [],
         title: {
           text: this.trans('paegtm.dynamicChartOil'),
           align: 'center',
@@ -318,37 +281,6 @@ export default {
               this.trans('paegtm.Dec')
             ],
           },
-            lineChartOptions: {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        fontSize: 14,
-                        fontColor: '#FFF',
-                    },
-                },
-                scales: {
-                    yAxes: [{
-                        gridLines: {
-                            color: '#3C4270',
-                        },
-                        ticks: {
-                            fontColor: '#FFF',
-                            fontSize: 10,
-                        },
-                    }],
-                    xAxes: [{
-                        gridLines: {
-                            fontColor: '#3C4270',
-                        },
-                        ticks: {
-                            fontColor: '#FFF',
-                            fontSize: 10,
-                        },
-                    }],
-                }
-            },
             isModalHide: true,
             showMainMap: false,
         };
@@ -359,6 +291,9 @@ export default {
             'changeDateEnd',
             'changeDzoId',
         ]),
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
         showModal() {
             this.isModalHide = false;
         },
@@ -366,35 +301,70 @@ export default {
             this.isModalHide = true;
         },
         getGtmInfo() {
-            this.$store.commit('globalloading/SET_LOADING', true);
             this.axios.get(
                 this.localeUrl('/paegtm/get-gtms'),
-                {params: {dzoId: this.dzoId, dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                {params: {dzoName: 'ММГ', dateStart: this.dateStart, dateEnd: this.dateEnd}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
                     this.comparisonIndicators = data
                 }
-                this.$store.commit('globalloading/SET_LOADING', false);
             });
         },
         getMainTableData() {
             this.axios.get(
                 this.localeUrl('/paegtm/get-main-table-data'),
-                {params: {dzoId: this.dzoId}}
+                {params: {dzoName: 'ММГ', dateStart: this.dateStart, dateEnd: this.dateEnd}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
                     this.mainTableData = data
                 }
             });
+
+        },
+        getMainIndicatorData() {
+            this.axios.get(
+                this.localeUrl('/paegtm/get-main-indicator-data'),
+                {params: {dzoName: 'ММГ', dateStart: this.dateStart, dateEnd: this.dateEnd}}
+            ).then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.mainIndicatorData = data
+                }
+            });
+        },
+        getAdditionalIndicatorData() {
+            this.axios.get(
+                this.localeUrl('/paegtm/get-additional-indicator-data'),
+                {params: {dzoName: 'ММГ', dateStart: this.dateStart, dateEnd: this.dateEnd}}
+            ).then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.additionalIndicatorData = data
+                }
+            });
+        },
+        getChartData()
+        {
+            this.axios.get(
+                this.localeUrl('/paegtm/get-chart-data'),
+                {params: {dzoName: 'ММГ', dateStart: this.dateStart, dateEnd: this.dateEnd}}
+            ).then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.chartData = data
+                }
+            });
         },
         getData() {
+            this.getMainIndicatorData();
+            this.getAdditionalIndicatorData();
             this.getGtmInfo();
             this.getMainTableData();
+            this.getChartData();
         },
         selectDzo(dzo) {
-
             this.mainTableData.forEach((item) => {
                 if (item.id == dzo.id) {
                     dzo.selected = !dzo.selected
@@ -422,7 +392,7 @@ export default {
         },
     },
     created() {
-        this.$store.commit('globalloading/SET_LOADING', true);
+        this.SET_LOADING(false);
     },
     mounted () {
         this.getData();

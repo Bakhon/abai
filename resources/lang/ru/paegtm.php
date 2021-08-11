@@ -56,7 +56,7 @@ return array (
   'successful' => 'Успешные',
   'activities' => 'мероприятий',
   'number_of_gtm_and_vns' => 'Количество ГТМ и ВНС',
-  'tons' => 'тонн',
+  'tons' => ' тыс.т',
   'additional_oil_production_from_vns' => 'Дополнительная добыча нефти от ВНС',
   'additional_oil_production_from_gtm' => 'Дополнительная добыча нефти от ГТМ',
   'basic_oil_production' => 'Базовая добыча нефти',
