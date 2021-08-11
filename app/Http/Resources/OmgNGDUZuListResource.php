@@ -2,11 +2,11 @@
 
 namespace App\Http\Resources;
 
-class OmgNGDUWellListResource extends CrudListResource
+class OmgNGDUZuListResource extends CrudListResource
 {
 
-    protected $modelName = 'omgngdu_well';
-    protected $routeParentName = 'omgngdu-well';
+    protected $modelName = 'omgngdu_zu';
+    protected $routeParentName = 'omgngdu-zu';
 
     /**
      * Transform the resource into an array.
@@ -19,8 +19,7 @@ class OmgNGDUWellListResource extends CrudListResource
         $result = [
             'id' => $this->id,
             'fields' => [
-                'zu' => $this->zu->name,
-                'well' => $this->well->name,
+                'zu' => $this->zu ? $this->zu->name : $this->manual_zu->name,
                 'date' => $this->date,
                 'bsw' => $this->bsw,
                 'daily_fluid_production' => $this->daily_fluid_production,
@@ -38,5 +37,6 @@ class OmgNGDUWellListResource extends CrudListResource
         $result['links'] = $this->getLinks('update', 'delete');
 
         return $result;
+
     }
 }

@@ -1,24 +1,22 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\Models\Permission;
 
-class AddPipePermissionsToRolePermissions extends Migration
+class AddPermissionsOmgngduZuPage extends Migration
 {
     protected $permissions = [
-        'monitoring create gu',
-        'monitoring update gu',
-        'monitoring delete gu',
-        'monitoring create zu',
-        'monitoring update zu',
-        'monitoring delete zu',
-        'monitoring create well',
-        'monitoring update well',
-        'monitoring delete well',
-        'monitoring create pipe',
-        'monitoring update pipe',
-        'monitoring delete pipe'
+        'monitoring create omgngdu_zu',
+        'monitoring update omgngdu_zu',
+        'monitoring delete omgngdu_zu',
+        'monitoring list omgngdu_zu',
+        'monitoring view omgngdu_zu',
+        'monitoring read omgngdu_zu',
+        'monitoring export omgngdu_zu',
+        'monitoring view history omgngdu_zu',
     ];
 
     /**

@@ -12,7 +12,7 @@
 <script>
 import EditForm from '@ui-kit/EditForm';
 import {globalloadingMutations} from '@store/helpers';
-import omgNgduGuformFields from '~/json/formFields/omg_ngdu_gu.json'
+import omgNgduGuformFields from '~/json/formFields/omg_ngdu_gu.json';
 
 const averageOilDensity = 853;
 
@@ -31,8 +31,8 @@ export default {
       currentOmgngdu: null
     }
   },
-  beforeCreate: function () {
-    this.axios.get(this.localeUrl("/omgngdu-well/validation-params")).then((response) => {
+   beforeCreate: function () {
+    this.axios.get(this.localeUrl("/settings/validation-params/omgngdu")).then((response) => {
       let validationParams = response.data;
 
       if (!_.isEmpty(validationParams)) {

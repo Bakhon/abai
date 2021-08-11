@@ -11,62 +11,50 @@
     "input": "selectDate",
     "required": true
   },
+  "pressure": {
+    "type": "number",
+    "step": 0.01,
+    "label": "monitoring.omgngdu_well.fields.pressure",
+    "value": null
+  },
   "daily_fluid_production": {
     "type": "number",
     "step": 0.01,
-    "label": "monitoring.omgngdu.fields.daily_fluid_production",
+    "label": "monitoring.omgngdu_well.fields.daily_fluid_production",
+    "value": null,
+    "input": "dailyProductionInput"
+  },
+  "bsw": {
+    "type": "number",
+    "step": 0.01,
+    "label": "monitoring.omgngdu_well.fields.bsw",
     "value": null,
     "input": "dailyProductionInput"
   },
   "daily_water_production": {
     "type": "number",
     "step": 0.01,
-    "label": "monitoring.omgngdu.fields.daily_water_production",
+    "label": "monitoring.omgngdu_well.fields.daily_water_production",
     "value": null,
-    "input": "dailyProductionInput"
+    "readonly": true
   },
   "daily_oil_production": {
     "type": "number",
     "step": 0.01,
-    "label": "monitoring.omgngdu.fields.daily_oil_production",
+    "label": "monitoring.omgngdu_well.fields.daily_oil_production",
     "value": null,
-    "input": "dailyProductionInput"
+    "readonly": true
   },
-  "daily_gas_production_in_sib": {
+  "temperature": {
     "type": "number",
     "step": 0.01,
-    "label": "monitoring.omgngdu.fields.daily_gas_production_in_sib",
+    "label": "monitoring.omgngdu_well.fields.temperature",
     "value": null
   },
-  "bsw": {
+  "gas_factor": {
     "type": "number",
     "step": 0.01,
-    "label": "monitoring.omgngdu.fields.bsw",
-    "value": null,
-    "input": "dailyProductionInput"
-  },
-  "surge_tank_pressure": {
-    "type": "number",
-    "step": 0.01,
-    "label": "monitoring.omgngdu.fields.surge_tank_pressure",
-    "value": null
-  },
-  "pump_discharge_pressure": {
-    "type": "number",
-    "step": 0.01,
-    "label": "monitoring.omgngdu.fields.pump_discharge_pressure",
-    "value": null
-  },
-  "heater_inlet_temperature": {
-    "type": "number",
-    "step": 0.01,
-    "label": "monitoring.omgngdu.fields.heater_inlet_temperature",
-    "value": null
-  },
-  "heater_output_temperature": {
-    "type": "number",
-    "step": 0.01,
-    "label": "monitoring.omgngdu.fields.heater_output_temperature",
+    "label": "monitoring.omgngdu_well.fields.gas_factor",
     "value": null
   },
   "sg_oil": {
