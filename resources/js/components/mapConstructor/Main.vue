@@ -577,8 +577,19 @@
                                         <p> {{ trans('map_constructor.date_picker') }}</p>
                                     </div>
                                     <div class="col-8">
-                                        <b-form-datepicker id="example-datepicker" v-model="date"
-                                                           class="mb-2 dropdown-toggle"></b-form-datepicker>
+                                        <datetime
+                                                v-model="date3"
+                                                :disabled="isLoading"
+                                                :flow="['year', 'month', 'date']"
+                                                :phrases="{ok: '', cancel: ''}"
+                                                auto
+                                                format="dd LLLL yyyy"
+                                                input-class="form-control"
+                                                type="date"
+                                                value-zone="Asia/Almaty"
+                                                zone="Asia/Almaty"
+                                        >
+                                        </datetime>
                                     </div>
                                 </div>
 
@@ -717,14 +728,17 @@
                             <div class="box">
                                 <i v-if="!selectedMonth" class="far fa-calendar"></i>
                                 <span v-else>{{selectedMonth | dateFormat()}}</span>
-                                <vue-monthly-picker
+                                <datetime
+                                        type="date"
                                         v-model="selectedMonth"
-                                        :monthLabels="monthLabels"
-                                        :min="min"
-                                        :max="max"
-                                        dateFormat="'YYYY/MM'"
+                                        input-class="form-control filter-input calendar"
+                                        format="MM/yy"
+                                        :phrases="{ok: '', cancel: ''}"
+                                        :disabled="isLoading"
+                                        auto
+                                        :flow="['year', 'month']"
                                 >
-                                </vue-monthly-picker>
+                                </datetime>
                             </div>
                             <span>{{ trans('map_constructor.date_picker') }}</span>
                         </div>
@@ -766,7 +780,6 @@
                                     <span class="ml-2 text-white">File</span>
                                 </div>
                             </template>
-
                         </div>
                     </div>
                     <div v-if="isSelected" class="main-map" @contextmenu="openMenu">
@@ -784,7 +797,9 @@
 </template>
 <script>
     import './MyFilter'
-    import VueMonthlyPicker from 'vue-monthly-picker'
+    import moment from 'moment'
+    import {Datetime} from 'vue-datetime'
+    import 'vue-datetime/dist/vue-datetime.css'
     import 'ol/ol.css';
     import {Vector as VectorLayer} from 'ol/layer';
     import {Vector as VectorSource} from 'ol/source';
@@ -803,10 +818,11 @@
     import Static from 'ol/source/ImageStatic';
     import Chart from 'ol-ext/style/Chart'
 
-
     export default {
         data() {
             return {
+                isLoading: false,
+                date3: null,
                 accumulatedSelected: false,
                 currentSelected: false,
                 data: null,
@@ -833,7 +849,7 @@
             ]),
         },
         components: {
-            VueMonthlyPicker,
+            Datetime
         },
         methods: {
             ...mapConstructActions([
@@ -1083,7 +1099,7 @@
                     return style;
                 }
 
-                let selectedDate = this.selectedMonth.format('DD.MM.YYYY');
+                let selectedDate = moment(this.selectedMonth).format('01.MM.YYYY');
 
                 let features = [];
                 let features2 = [];
