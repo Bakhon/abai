@@ -490,6 +490,49 @@ return array (
   'economical_effect_title' => 'Мониторинг потерянной выгоды',
   'no_data' => 'Нет данных',
   'monitoring_module' => 'Модуль "Мониторинг осложнений"',
+  'agzu' => 
+  array (
+    'title' => 'База данных по АГЗУ',
+    'method_of_measurement' => 'Метод измерения',
+    'number_of_connected_wells' => 'Количество подключаемых скважин',
+  ),
+  'buffer_tank' => 
+  array (
+    'model' => 'Модель',
+    'date_of_exploitation' => 'Дата ввода в эксплуатацию',
+    'current_state' => 'Текущее состояние',
+    'date_of_repair' => 'Дата ремонта',
+    'type_of_repair' => 'Вид ремонта',
+    'title' => 'База данных по буферным емкостям',
+    'name' => 'Наименование',
+    'type' => 'Тип',
+    'volume' => 'Объем, м3',
+    'external_and_internal_inspection' => 'Наружный и внутренний осмотр',
+    'hydraulic_test' => 'Гидравлическое испытание',
+  ),
+  'metering_units' => 
+  array (
+    'title' => 'База данных по узлам учета',
+    'diameter' => 'Диаметр',
+  ),
+  'ovens' => 
+  array (
+    'title' => 'База данных по печам',
+    'cipher' => 'Шифр',
+    'rated_heat_output' => 'Номинальная тепловая мощность, МВт (Гкал/ч)',
+  ),
+  'pumps' => 
+  array (
+    'title' => 'База данных по насосам',
+    'number' => 'Номер',
+    'perfomance' => 'Производительность, м3/час',
+    'power' => 'Мощность насоса, кВт',
+  ),
+  'sib' => 
+  array (
+    'title' => 'База данных по СИБ',
+  ),
+  'gu_equipment' => 'Паспортизация оборудования для ГУ',
   'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
   'omgngdu_zu' => 
   array (
