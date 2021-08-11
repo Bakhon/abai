@@ -1,7 +1,7 @@
 import moment from "moment";
 import companyTemplate from './company_template.json';
 import yearlyPlanMapping from './yearly_plan_mapping.json';
-import CatLoader from '@ui-kit/CatLoader';
+;
 import {globalloadingMutations} from '@store/helpers';
 
 export default {
@@ -776,8 +776,5 @@ export default {
                 this.tableOutput.byDzo = this.summary.deliveryByDzo;
             }
         }
-    },
-    components: {
-        CatLoader
     },
 }

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <cat-loader v-show="isLoading"/>
     <div v-if="rows" class="table-container scrollable">
       <div class="table-container-header">
 
@@ -143,7 +142,7 @@
 import forms from '../../../json/bd/forms.json'
 import BigDataPlainForm from './PlainForm'
 import {bdFormActions} from '@store/helpers'
-import CatLoader from '@ui-kit/CatLoader'
+
 import EditHistory from '../../common/EditHistory'
 import moment from "moment";
 
@@ -161,7 +160,7 @@ export default {
   },
   components: {
     BigDataPlainForm,
-    CatLoader,
+
     EditHistory
   },
   data() {

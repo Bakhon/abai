@@ -1,6 +1,5 @@
 <template>
   <form @submit.prevent="" ref="form" class="bd-main-block__form scrollable" style="width: 100%">
-    <cat-loader v-show="isloading"/>
     <div class="table-page">
       <template v-if="formParams">
         <p v-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
@@ -174,7 +173,7 @@ import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import CatLoader from "@ui-kit/CatLoader";
+
 
 const requireComponent = require.context('./CustomColumns', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
@@ -210,8 +209,7 @@ export default {
   },
   components: {
     BigDataHistory,
-    RowHistoryGraph,
-    CatLoader
+    RowHistoryGraph
   },
   data() {
     return {

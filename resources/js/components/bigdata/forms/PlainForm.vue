@@ -63,14 +63,13 @@ import Vue from "vue";
 import BigdataFormField from './field'
 import BigdataPlainFormResults from './PlainFormResults'
 import {bdFormActions, bdFormState, globalloadingMutations} from '@store/helpers'
-import CatLoader from '@ui-kit/CatLoader'
+
 
 export default {
   name: "BigDataPlainForm",
   components: {
     BigdataFormField,
-    BigdataPlainFormResults,
-    CatLoader
+    BigdataPlainFormResults
   },
   props: {
     params: {

@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <cat-loader />
+
     <div class="left-section bg-dark">
       <div class="col">
         <div class="row menu">

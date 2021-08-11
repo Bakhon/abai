@@ -1,7 +1,5 @@
 <template>
   <div class="position-relative">
-    <cat-loader v-show="loading"/>
-
     <div class="row">
       <div class="col-9">
         <div class="row justify-content-between text-white bg-blue-dark text-wrap mb-10px">
@@ -175,7 +173,6 @@
 <script>
 const fileDownload = require("js-file-download");
 
-import CatLoader from '@ui-kit/CatLoader'
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
 import Charts from "./components/Charts";
@@ -282,7 +279,7 @@ const economicRes = {
 export default {
   name: "economic-nrs",
   components: {
-    CatLoader,
+
     Divider,
     EconomicCol,
     Charts,
