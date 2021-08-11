@@ -168,18 +168,8 @@ class ExcelFormController extends Controller
     public function storeCorrected(Request $request)
     {
         $client = $this->getEmailClient();
-        $emailBody = "<b>Добрый день!</b> <p>Уведомляем вас о необходимости согласовать/отклонить заявку на изменение суточных данных в ИС ABAI.<br /><br />
-            <b>Детали заявки:</b><br />
-            <b>Дата:</b> {$request->date}<br />
-            <b>ДЗО:</b> {$request->dzo_name}<br />
-            <b>Исполнитель:</b> {$request->user_name}<br />
-            <b>Причина:</b> {$request->change_reason}<br />
-            <a href='http://abai.kmg.kz/ru/daily-approve'>Ссылка на Таблицу Согласований</a></p>";
         foreach($request->toList as $item) {
-            $messageOptions = $this->getEmailOptions($client,$emailBody,$this->kmgEmails[$item]);
-            if (!is_null($messageOptions['id']) || !is_null($messageOptions['changeKey'])) {
-                $this->sendEmail($messageOptions,$client);
-            }
+            $this->sendEmailToMaster($request->request, $client, $item);
         }
 
         $request->request->remove('toList');
@@ -243,27 +233,23 @@ class ExcelFormController extends Controller
     public function approveDailyCorrection(Request $request)
     {
         $client = $this->getEmailClient();
+        $updateOptions = array(
+            $request->currentApproverField => true
+        );
         if ($request->isFinalApprove === 'true') {
            $this->sendApproveEmailToDzo($request->request,$client);
+           DzoImportField::where('dzo_import_data_id',$request->actualId)->delete();
+           DzoImportDecreaseReason::where('dzo_import_data_id',$request->actualId)->delete();
+           DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
+           DzoImportData::where('id',$request->actualId)->delete();
+           $updateOptions['is_corrected'] = null;
         } else {
             $this->sendEmailToMaster($request->request, $client, 'mainMaster');
         }
 
-        $updateOptions = array(
-            $request->currentApproverField => true
-        );
-
-        if ($request->isFirstApproverStep === FALSE) {
-            DzoImportField::where('dzo_import_data_id',$request->actualId)->delete();
-            DzoImportDecreaseReason::where('dzo_import_data_id',$request->actualId)->delete();
-            DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
-            DzoImportData::where('id',$request->actualId)->delete();
-            $updateOptions['is_corrected'] = null;
-        }
-
         DzoImportData::query()
-                    ->where('id', $request->currentId)
-                    ->update($updateOptions);
+            ->where('id', $request->currentId)
+            ->update($updateOptions);
     }
 
     protected function getEmailClient()
