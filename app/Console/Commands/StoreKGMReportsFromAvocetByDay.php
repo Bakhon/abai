@@ -6,8 +6,8 @@ use App\Models\VisCenter\DataForKGM\Daily\FondsForKGM;
 use App\Models\VisCenter\DataForKGM\Daily\OilAndGasForKGM;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\VisCenter\ExcelForm\DzoImportDowntimeReason;
-use Illuminate\Console\Command;
 use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class StoreKGMReportsFromAvocetByDay extends Command
 {
@@ -96,7 +96,6 @@ class StoreKGMReportsFromAvocetByDay extends Command
         return $nameData::query()->select('*')
             ->WHERE('start_datetime', 'LIKE', $date . '%')
             ->get()->toArray();
-
     }
 
     private function getWaterOilDeliveryAndGasMore($column1, $date, $multiplier)
@@ -130,9 +129,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
                     }
                 }
             }
-
         }
-
     }
 
     private function quantityOfArray($status, $type, $cattegory_code, $date)
@@ -248,7 +245,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
 
         }
 
-    } 
+    }
 
     public function handle()
     {
