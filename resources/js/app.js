@@ -228,7 +228,7 @@ Vue.component('drilling-fluids', require('./components/DigitalDrilling/ProjectDa
 Vue.component('well-casing', require('./components/DigitalDrilling/ProjectData/WellСasing').default);
 Vue.component('technical-casing', require('./components/DigitalDrilling/ProjectData/TechnicalCasing').default);
 Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
-Vue.component('cat-loader', require('./components/ui-kit/catLoader').default);
+Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 
 // Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
