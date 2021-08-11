@@ -40,6 +40,18 @@ export default {
       type: Object
     },
   },
+  methods: {
+    tooltipFormatter(value, index) {
+      return `${value},
+              cat1: ${this.filteredData[0].series[index].cat_1 * 100}%,
+              cat2: ${this.filteredData[0].series[index].cat_2 * 100}%
+              `
+    },
+
+    dataLabelsFormatter(value, {seriesIndex, dataPointIndex}) {
+      return this.filteredData[seriesIndex].series[dataPointIndex].uwi_count
+    }
+  },
   computed: {
     filteredScenarios() {
       return this.scenarios.filter(scenario =>
@@ -64,11 +76,12 @@ export default {
           data.push({
             salary_percent: salary_percent,
             retention_percent: retention_percent,
-            series: retentionScenarios.map(scenario => {
+            series: retentionScenarios.reverse().map(scenario => {
               return {
+                uwi_count: scenario.uwi_count_profitable_optimize,
                 cat_1: scenario.percent_stop_cat_1,
                 cat_2: scenario.percent_stop_cat_2,
-                oil: scenario.oil.value_optimized[0],
+                oil: scenario.oil.original_value_optimized,
                 operating_profit_12m: scenario.operating_profit_12m.value_optimized[0],
               }
             }),
@@ -94,22 +107,52 @@ export default {
       })
     },
 
-    chartLabels() {
-      return this.filteredData.map(item => {
-        return {
-          name: `${item.salary_percent.value}, ${item.retention_percent.value}`,
-          data: item.series.map(item => item.oil)
-        }
-      })
-    },
-
     chartOptions() {
       return {
-        labels: [],
         stroke: {
           width: 4,
           curve: 'straight',
-          dashArray: [0, 0, 5, 5]
+        },
+        chart: {
+          foreColor: '#FFFFFF',
+          locales: [ru],
+          defaultLocale: 'ru'
+        },
+        markers: {
+          size: 7,
+          strokeOpacity: 0.1,
+        },
+        yaxis: {
+          title: {
+            text: 'Доход/убыток предприятия, млрд. тг.',
+          },
+        },
+        xaxis: {
+          labels: {
+            formatter: (val) => (+val / 1000).toFixed(0),
+          },
+          title: {
+            text: 'Годовая добыча нефти, тыс. тонн',
+          },
+        },
+        tooltip: {
+          shared: true,
+          intersect: false,
+          y: {
+            formatter: (value, {dataPointIndex}) => this.tooltipFormatter(value, dataPointIndex)
+          }
+        },
+        dataLabels: {
+          enabled: true,
+          offsetY: -7,
+          offsetX: 5,
+          formatter: (value, params) => this.dataLabelsFormatter(value, params),
+          background: {
+            enabled: false
+          },
+          style: {
+            colors: ['#fff']
+          },
         },
         colors: [
           '#34558C',
@@ -127,35 +170,6 @@ export default {
           '#374AB4',
           '#436B2A',
         ],
-        chart: {
-          foreColor: '#FFFFFF',
-          locales: [ru],
-          defaultLocale: 'ru'
-        },
-        markers: {
-          size: 5
-        },
-        plotOptions: {
-          bar: {
-            columnWidth: '70%',
-          },
-        },
-        yaxis: {
-          labels: {
-            formatter: (val) => val,
-          },
-          title: {
-            text: 'Доход/убыток предприятия, млрд. тг.',
-          },
-        },
-        xaxis: {
-          labels: {
-            formatter: (val) => (+val).toFixed(2).toLocaleString(),
-          },
-          title: {
-            text: 'Годовая добыча нефти, тыс. тонн',
-          },
-        },
       }
     },
   }
