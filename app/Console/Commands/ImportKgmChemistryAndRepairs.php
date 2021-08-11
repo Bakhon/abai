@@ -19,12 +19,12 @@ class ImportKgmChemistryAndRepairs extends Command
 
     public function handle()
     {
-
-        $this->getKGMData();
+        
+        $this->storeKGMChemistryAndRepairsByMonth();
 
     }
 
-    public function getKGMData()
+    public function storeKGMChemistryAndRepairsByMonth()
     {
 
         $date = Carbon::now();
