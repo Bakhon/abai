@@ -181,6 +181,7 @@ import Vue from "vue";
 import VueChartJs from 'vue-chartjs'
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
+import unsuccessfulDistributionMmg from '../mock-data/unsuccessful_distribution_mmg.json'
 
 export default {
     components: {
@@ -214,15 +215,7 @@ export default {
             objectsForFilter: [{ name: 'Вариант 1'}],
             structuresForFilter: [{ name: 'Вариант 1'}],
             gusForFilter: [{ name: 'Вариант 1'}],
-            mainTableData: [
-                ['ММГ','ПУ-ЖМГ', 'Жетыбай', 'XXX1', 16.9, 69, 70, 88, 183, 0.6, 38, 4.7, 72, 92, 80, 180, 1.1, 20, -12.2, -13.55, 'ЗКЦ', 1.34, 0, 1, -7, 8],
-                ['ММГ','ПУ-ЖМГ', 'Жетыбай', 'XXX1', 16.9, 69, 70, 88, 183, 0.6, 38, 4.7, 72, 92, 80, 180, 1.1, 20, -12.2, -13.55, 'ЗКЦ', 1.34, 0, 1, -7, 8],
-                ['ММГ','ПУ-ЖМГ', 'Жетыбай', 'XXX1', 16.9, 69, 70, 88, 183, 0.6, 38, 4.7, 72, 92, 80, 180, 1.1, 20, -12.2, -13.55, 'ЗКЦ', 1.34, 0, 1, -7, 8],
-                ['ММГ','ПУ-ЖМГ', 'Жетыбай', 'XXX1', 16.9, 69, 70, 88, 183, 0.6, 38, 4.7, 72, 92, 80, 180, 1.1, 20, -12.2, -13.55, 'ЗКЦ', 1.34, 0, 1, -7, 8],
-                ['ММГ','ПУ-ЖМГ', 'Жетыбай', 'XXX1', 16.9, 69, 70, 88, 183, 0.6, 38, 4.7, 72, 92, 80, 180, 1.1, 20, -12.2, -13.55, 'ЗКЦ', 1.34, 0, 1, -7, 8],
-                ['ММГ','ПУ-ЖМГ', 'Жетыбай', 'XXX1', 16.9, 69, 70, 88, 183, 0.6, 38, 4.7, 72, 92, 80, 180, 1.1, 20, -12.2, -13.55, 'ЗКЦ', 1.34, 0, 1, -7, 8],
-
-            ],
+            mainTableData: unsuccessfulDistributionMmg,
             loaded: false,
         };
     },
