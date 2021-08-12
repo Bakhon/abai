@@ -410,7 +410,7 @@ export default {
             return attribute.maxChildrenNumber
         },
         getOptionName() {
-            return this.currentOption && this.currentOption.name ? this.currentOption.name : 'Выбор объекта'; 
+            return this.currentOption?.name ? this.currentOption.name : 'Выбор объекта'; 
         },
         onMenuClick(currentStructureType) {
             this.currentStructureType = currentStructureType;

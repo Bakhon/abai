@@ -7,7 +7,7 @@
             <form> 
               <label class="container">
                 <span class="bottom-border"></span>
-                <input type="checkbox" :id="node.id"
+                <input type="checkbox"
                       v-if="!!renderComponent"
                       :checked="isMarked()"
                       class="dropdown-item" @change="onClick()">
@@ -127,32 +127,33 @@ export default {
         await this.getWells(this);
       }
       if(this.isShowCheckboxes) {
-        this.onExpandTree(this.node, this.level);
+        await this.onExpandTree(this.node, this.level);
+        this.updateThisComponent();
       }
-
       this.$forceUpdate()
     },
     onClick: async function () {
       let val = this.markedNodes[this.level][this.node.id];
       this.markedNodes[this.level][this.node.id] = !val;
-      this.loadChildren(this.node);
-      this.onExpandTree(this.node, this.level);
+      await this.loadChildren(this.node);
+      await this.onExpandTree(this.node, this.level);
       this.onCheckboxClick(this.node, this.level);
       if(this.isSelectUntilWells || val) {
         await this.updateChildren(this.node, this.level);
       }else {
         await this.updateNextLevelNodes();
       }
+      console.log(this.isSelectUntilWells);
       this.updateThisComponent();
     },
     onExpandTree: function(node, level) {
       if(!this.isHaveChildren(node) || this.markedNodes[level+1]) return;
 
       this.markedNodes[level+1] = {};
-      let content = this.markedNodes[level + 1];
+      let content = this.markedNodes[level+1];
       for(let child of node.children) {
-        content[child.id] = {};
-        this.onExpandTree(child, level);
+        content[child.id] = false;
+        this.onExpandTree(child, level+1);
       }
     },
     loadChildren: async function(node) {
@@ -175,13 +176,13 @@ export default {
       let val = this.markedNodes[level][node.id];
       for(let child of node.children) {
         content[child.id] = val;
-        this.updateChildren(child, level);
+        this.updateChildren(child, level+1);
       }
     },
     updateNextLevelNodes: async function() {
       if(!this.isHaveChildren(this.node)) return;
-      let content = this.markedNodes[level+1];
-      let val = this.markedNodes[level][node.id];
+      let content = this.markedNodes[this.level+1];
+      let val = this.markedNodes[this.level][this.node.id];
       for(let child of this.node.children) {
         content[child.id] = val;
       }
