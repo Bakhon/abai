@@ -315,8 +315,8 @@
           <div class="first-string first-string2">
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
-                <div :class="[`${oilCondensateProductionButton}`, 'button1']">
-                  <div class="button1-vc-inner">
+                <div class="button1 d-flex">
+                  <div :class="[`${oilCondensateProductionButton}`, 'col-10 category-button_border']">
                     <div class="icon-all icons1"></div>
                     <div
                             class="txt5"
@@ -332,12 +332,14 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc"
+                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
+                          @click="switchDropdownCategories('oilCondensateProduction')"
+                          :class="{ 'button-tab-highlighted': dropdownMenu.oilCondensateProduction }"
                   ></button>
                   <div>
                     <ul
-                            class="dropdown-menu-vc dropdown-menu dropdown-menu-right"
+                            class="dropdown-menu dropdown-menu-right dropdown-position mt-1"
                     >
                       <li
                               class="center-li row px-4"
@@ -347,7 +349,7 @@
                                 class="col-1 mt-2"
                                 v-html="`${getMainMenuButtonFlag('oilCondensateProductionButton','withoutKmgParticipation')}`"
                         ></div>
-                        <a class="col-9 px-2">
+                        <a class="col-9 mt-1">
                           {{trans("visualcenter.withoutKmgParticipation")}}
                         </a>
                       </li>
@@ -356,30 +358,30 @@
                 </div>
               </div>
               <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
-                <div :class="[`${oilCondensateDeliveryButton}`, 'button1']">
-                  <div class="button1-vc-inner">
-                    <div class="icon-all icons2"></div>
-                    <div
-                            class="txt5"
-                            @click="switchCategory(
-                                    'oilCondensateDeliveryButton',
-                                    'oil_dlv_plan',
-                                    'oil_dlv_fact',
-                                    trans('visualcenter.tonWithSpace'),
-                                    trans('visualcenter.oilCondensateDelivery'))"
-                    >
-                      {{ trans("visualcenter.oilCondensateDelivery") }}
-                    </div>
+                <div class="button1 d-flex">
+                  <div :class="[`${oilCondensateDeliveryButton}`, 'col-10 category-button_border']">
+                      <div class="icon-all icons2"></div>
+                      <div
+                              class="txt5"
+                              @click="switchCategory(
+                                      'oilCondensateDeliveryButton',
+                                      'oil_dlv_plan',
+                                      'oil_dlv_fact',
+                                      trans('visualcenter.tonWithSpace'),
+                                      trans('visualcenter.oilCondensateDelivery'))"
+                      >
+                        {{ trans("visualcenter.oilCondensateDelivery") }}
+                      </div>
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc"
+                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
+                          @click="switchDropdownCategories('oilCondensateDelivery')"
+                          :class="{ 'button-tab-highlighted': dropdownMenu.oilCondensateDelivery }"
                   ></button>
                   <div>
-                    <ul
-                            class="dropdown-menu-vc dropdown-menu dropdown-menu-right"
-                    >
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
                       <li
                               class="center-li row px-4"
                               @click="switchFilterConsolidatedOilCondensate('oilCondensateDeliveryButton','withoutKmgParticipation','isWithoutKMGFilterActive')"
@@ -403,13 +405,13 @@
                         <a
                                 class="col-9 px-2"
                                 @click="
-                                  updateProductionData(
-                                    'tovarnyi_ostatok_nefti_prev_day',
-                                    'tovarnyi_ostatok_nefti_today',
-                                    `${oilChartHeadName}`,
-                                    ' тонн',
-                                    trans('visualcenter.ostatokNefti')
-                                  )"
+                                    updateProductionData(
+                                      'tovarnyi_ostatok_nefti_prev_day',
+                                      'tovarnyi_ostatok_nefti_today',
+                                      `${oilChartHeadName}`,
+                                      ' тонн',
+                                      trans('visualcenter.ostatokNefti')
+                                    )"
                         >
                           {{trans("visualcenter.ostatokNefti")}}
                         </a>
@@ -419,303 +421,314 @@
                 </div>
               </div>
               <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
-                <div
-                        :class="[`${gasProductionButton}`, 'button1']"
-                >
+                <div class="button1 d-flex">
                   <div
-                          class="button1-vc-inner"
-                          @click="switchCategory(
-                            'gasProductionButton',
-                            'gas_plan',
-                            'gas_fact',
-                            trans('visualcenter.meterCubicWithSpace'),
-                            trans('visualcenter.getgaz'),
-                            'gasProductionButton')"
+                          :class="[`${gasProductionButton}`, 'col-10 category-button_border']"
                   >
-                    <div class="icon-all icons3"></div>
-                    <div class="txt5">
-                      <!-- Добыча газа -->{{ trans("visualcenter.getgaz") }}
+                    <div
+                            @click="switchCategory(
+                              'gasProductionButton',
+                              'gas_plan',
+                              'gas_fact',
+                              trans('visualcenter.meterCubicWithSpace'),
+                              trans('visualcenter.getgaz'),
+                              'gasProductionButton')"
+                    >
+                      <div class="icon-all icons3"></div>
+                      <div class="txt5">
+                        <!-- Добыча газа -->{{ trans("visualcenter.getgaz") }}
+                      </div>
                     </div>
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc"
+                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
+                          @click="switchDropdownCategories('gasProduction')"
+                          :class="{ 'button-tab-highlighted': dropdownMenu.gasProduction }"
                   ></button>
-                  <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','productionNaturalGas')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','productionNaturalGas')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                                updateProductionData(
-                                  'plan_prirod_gas',
-                                  'natural_gas_production_fact',
-                                  trans('visualcenter.productionNaturalGasChartName'),
-                                  ' м³',
-                                  trans('visualcenter.productionNaturalGas')
-                                )
-                              "
+                  <div>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','productionNaturalGas')"
                       >
-                        {{ trans("visualcenter.productionNaturalGas") }}
-                      </a>
-                    </li>
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','productionAssociatedGas')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','productionAssociatedGas')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                                updateProductionData(
-                                  'plan_poput_gas',
-                                  'associated_gas_production_fact',
-                                  trans('visualcenter.productionAssociatedGasChartName'),
-                                  ' м³',
-                                  trans('visualcenter.productionAssociatedGas')
-                                )
-                              "
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','productionNaturalGas')}`"
+                        ></div>
+                        <a
+                                class="col-9 px-2"
+                                @click="
+                                  updateProductionData(
+                                    'plan_prirod_gas',
+                                    'natural_gas_production_fact',
+                                    trans('visualcenter.productionNaturalGasChartName'),
+                                    ' м³',
+                                    trans('visualcenter.productionNaturalGas')
+                                  )
+                                "
+                        >
+                          {{ trans("visualcenter.productionNaturalGas") }}
+                        </a>
+                      </li>
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','productionAssociatedGas')"
                       >
-                        {{ trans("visualcenter.productionAssociatedGas") }}
-                      </a>
-                    </li>
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','flaringAssociatedGas')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','flaringAssociatedGas')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                                updateProductionData(
-                                  'plan_poput_gas_burn',
-                                  'associated_gas_flaring_fact',
-                                  trans('visualcenter.flaringAssociatedGasChartName'),
-                                  ' м³',
-                                  trans('visualcenter.flaringAssociatedGas')
-                                )
-                              "
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','productionAssociatedGas')}`"
+                        ></div>
+                        <a
+                                class="col-9 px-2"
+                                @click="
+                                  updateProductionData(
+                                    'plan_poput_gas',
+                                    'associated_gas_production_fact',
+                                    trans('visualcenter.productionAssociatedGasChartName'),
+                                    ' м³',
+                                    trans('visualcenter.productionAssociatedGas')
+                                  )
+                                "
+                        >
+                          {{ trans("visualcenter.productionAssociatedGas") }}
+                        </a>
+                      </li>
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','flaringAssociatedGas')"
                       >
-                        {{ trans("visualcenter.flaringAssociatedGas") }}
-                      </a>
-                    </li>
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','deliveryNaturalGas')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryNaturalGas')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'sdacha_gaza_prirod_plan',
-                            'sdacha_gaza_prirod_fact',
-                            trans('visualcenter.dlvPrirodGasldynamic'),
-                            ' м³',
-                            trans('visualcenter.prirodGazdlv')
-                          )
-                        "
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','flaringAssociatedGas')}`"
+                        ></div>
+                        <a
+                                class="col-9 px-2"
+                                @click="
+                                  updateProductionData(
+                                    'plan_poput_gas_burn',
+                                    'associated_gas_flaring_fact',
+                                    trans('visualcenter.flaringAssociatedGasChartName'),
+                                    ' м³',
+                                    trans('visualcenter.flaringAssociatedGas')
+                                  )
+                                "
+                        >
+                          {{ trans("visualcenter.flaringAssociatedGas") }}
+                        </a>
+                      </li>
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','deliveryNaturalGas')"
                       >
-                        <!-- Сдача природного газа -->{{
-                        trans("visualcenter.prirodGazdlv")
-                        }}
-                      </a>
-                    </li>
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryNaturalGas')}`"
+                        ></div>
+                        <a
+                                class="col-9 px-2"
+                                @click="
+                            updateProductionData(
+                              'sdacha_gaza_prirod_plan',
+                              'sdacha_gaza_prirod_fact',
+                              trans('visualcenter.dlvPrirodGasldynamic'),
+                              ' м³',
+                              trans('visualcenter.prirodGazdlv')
+                            )
+                          "
+                        >
+                          <!-- Сдача природного газа -->{{
+                          trans("visualcenter.prirodGazdlv")
+                          }}
+                        </a>
+                      </li>
 
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','gasConsumptionForNeeds')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','gasConsumptionForNeeds')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'raskhod_prirod_plan',
-                            'raskhod_prirod_fact',
-                            trans('visualcenter.raskhodprirodGazDynamic'),
-                            ' м³',
-                            trans('visualcenter.raskhodprirodGaz')
-                          )
-                        "
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','gasConsumptionForNeeds')"
                       >
-                        <!-- Расход природного газа на собственные нужды -->{{
-                        trans("visualcenter.raskhodprirodGaz")
-                        }}
-                      </a>
-                    </li>
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','deliveryAssociatedGas')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryAssociatedGas')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'sdacha_gaza_poput_plan',
-                            'sdacha_gaza_poput_fact',
-                            trans('visualcenter.poputGazdlvDynamic'),
-                            ' тонн',
-                            trans('visualcenter.poputGazdlv')
-                          )
-                        "
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','gasConsumptionForNeeds')}`"
+                        ></div>
+                        <a
+                                class="col-9 px-2"
+                                @click="
+                            updateProductionData(
+                              'raskhod_prirod_plan',
+                              'raskhod_prirod_fact',
+                              trans('visualcenter.raskhodprirodGazDynamic'),
+                              ' м³',
+                              trans('visualcenter.raskhodprirodGaz')
+                            )
+                          "
+                        >
+                          <!-- Расход природного газа на собственные нужды -->{{
+                          trans("visualcenter.raskhodprirodGaz")
+                          }}
+                        </a>
+                      </li>
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','deliveryAssociatedGas')"
                       >
-                        <!-- Сдача попутного газа -->{{
-                        trans("visualcenter.poputGazdlv")
-                        }}
-                      </a>
-                    </li>
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','associatedGasConsumptionForNeeds')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasConsumptionForNeeds')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'raskhod_poput_plan',
-                            'raskhod_poput_fact',
-                            trans('visualcenter.raskhodpoputGazDynamic'),
-                            ' м³',
-                            trans('visualcenter.raskhodpoputGaz')
-                          )
-                        "
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryAssociatedGas')}`"
+                        ></div>
+                        <a
+                                class="col-9 px-2"
+                                @click="
+                            updateProductionData(
+                              'sdacha_gaza_poput_plan',
+                              'sdacha_gaza_poput_fact',
+                              trans('visualcenter.poputGazdlvDynamic'),
+                              ' тонн',
+                              trans('visualcenter.poputGazdlv')
+                            )
+                          "
+                        >
+                          <!-- Сдача попутного газа -->{{
+                          trans("visualcenter.poputGazdlv")
+                          }}
+                        </a>
+                      </li>
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','associatedGasConsumptionForNeeds')"
                       >
-                        <!-- Расход попутного газа на собственные нужды -->{{
-                        trans("visualcenter.raskhodpoputGaz")
-                        }}
-                      </a>
-                    </li>
-                  </ul>
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasConsumptionForNeeds')}`"
+                        ></div>
+                        <a
+                                class="col-9 px-2"
+                                @click="
+                            updateProductionData(
+                              'raskhod_poput_plan',
+                              'raskhod_poput_fact',
+                              trans('visualcenter.raskhodpoputGazDynamic'),
+                              ' м³',
+                              trans('visualcenter.raskhodpoputGaz')
+                            )
+                          "
+                        >
+                          <!-- Расход попутного газа на собственные нужды -->{{
+                          trans("visualcenter.raskhodpoputGaz")
+                          }}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-              <div class="col-12 col-lg dropdown dropdown4 font-weight pl-1">
-                <div
-                        :class="[`${waterInjectionButton}`, 'button1']"
-                >
+              <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
+                <div class="button1 d-flex">
                   <div
-                          class="button1-vc-inner"
-                          @click="switchCategory(
-                            'waterInjectionButton',
-                            'liq_plan',
-                            'liq_fact',
-                            trans('visualcenter.meterCubicWithSpace'),
-                            trans('visualcenter.liq'))"
+                          :class="[`${waterInjectionButton}`, 'col-10 category-button_border']"
                   >
-                    <div class="icon-all icons5"></div>
-                    <div class="txt5">
-                      <!-- Закачка воды -->{{ trans("visualcenter.liq") }}
+                    <div
+                            class="button1-vc-inner"
+                            @click="switchCategory(
+                              'waterInjectionButton',
+                              'liq_plan',
+                              'liq_fact',
+                              trans('visualcenter.meterCubicWithSpace'),
+                              trans('visualcenter.liq'))"
+                    >
+                      <div class="icon-all icons5"></div>
+                      <div class="txt5">
+                        <!-- Закачка воды -->{{ trans("visualcenter.liq") }}
+                      </div>
                     </div>
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc"
+                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
+                          @click="switchDropdownCategories('waterInjection')"
+                          :class="{ 'button-tab-highlighted': dropdownMenu.waterInjection }"
                   ></button>
-                  <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('waterInjectionButton','seaWaterInjection')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('waterInjectionButton','seaWaterInjection')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'ppd_zakachka_morskoi_vody_plan',
-                            'ppd_zakachka_morskoi_vody_fact',
-                            trans('visualcenter.liqOceanDynamic'),
-                            ' м³',
-                            trans('visualcenter.liqOcean')
-                          )
-                        "
+                  <div>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('waterInjectionButton','seaWaterInjection')"
                       >
-                        <!-- Закачка морской воды -->{{
-                        trans("visualcenter.liqOcean")
-                        }}
-                      </a>
-                    </li>
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('waterInjectionButton','seaWaterInjection')}`"
+                        ></div>
+                        <a
+                                class="col-9 px-2"
+                                @click="
+                            updateProductionData(
+                              'ppd_zakachka_morskoi_vody_plan',
+                              'ppd_zakachka_morskoi_vody_fact',
+                              trans('visualcenter.liqOceanDynamic'),
+                              ' м³',
+                              trans('visualcenter.liqOcean')
+                            )
+                          "
+                        >
+                          <!-- Закачка морской воды -->{{
+                          trans("visualcenter.liqOcean")
+                          }}
+                        </a>
+                      </li>
 
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('waterInjectionButton','wasteWaterInjection')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('waterInjectionButton','wasteWaterInjection')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'ppd_zakachka_stochnoi_vody_plan',
-                            'ppd_zakachka_stochnoi_vody_fact',
-                            trans('visualcenter.liqStochnayaDynamic'),
-                            ' м³',
-                            trans('visualcenter.liqStochnaya')
-                          )
-                        "
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('waterInjectionButton','wasteWaterInjection')"
                       >
-                        <!-- Закачка сточной воды -->{{
-                        trans("visualcenter.liqStochnaya")
-                        }}
-                      </a>
-                    </li>
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('waterInjectionButton','wasteWaterInjection')}`"
+                        ></div>
+                        <a
+                                class="col-9 px-2"
+                                @click="
+                            updateProductionData(
+                              'ppd_zakachka_stochnoi_vody_plan',
+                              'ppd_zakachka_stochnoi_vody_fact',
+                              trans('visualcenter.liqStochnayaDynamic'),
+                              ' м³',
+                              trans('visualcenter.liqStochnaya')
+                            )
+                          "
+                        >
+                          <!-- Закачка сточной воды -->{{
+                          trans("visualcenter.liqStochnaya")
+                          }}
+                        </a>
+                      </li>
 
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('waterInjectionButton','albsenWaterInjection')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('waterInjectionButton','albsenWaterInjection')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'ppd_zakachka_albsen_vody_plan',
-                            'ppd_zakachka_albsen_vody_fact',
-                            trans('visualcenter.dynamicArtesianWater'),
-                            ' м³',
-                            trans('visualcenter.injectionArtesianWater')
-                          )
-                        "
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('waterInjectionButton','albsenWaterInjection')"
                       >
-                        {{trans("visualcenter.injectionArtesianWater")}}
-                      </a>
-                    </li>
-                  </ul>
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('waterInjectionButton','albsenWaterInjection')}`"
+                        ></div>
+                        <a
+                                class="col-9 px-2"
+                                @click="
+                            updateProductionData(
+                              'ppd_zakachka_albsen_vody_plan',
+                              'ppd_zakachka_albsen_vody_fact',
+                              trans('visualcenter.dynamicArtesianWater'),
+                              ' м³',
+                              trans('visualcenter.injectionArtesianWater')
+                            )
+                          "
+                        >
+                          {{trans("visualcenter.injectionArtesianWater")}}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -855,7 +868,7 @@
 
 
               </div>
-              <div class="col-8 col-lg pl-1">
+              <div class="col-8 col-lg px-1">
                 <div class="dropdown3">
                   <div
                           :class="[`${buttonPeriodTab}`,'button2']"
@@ -2868,7 +2881,7 @@
   }
   .button-tab-highlighted {
     border: none;
-    background: #2e50e9;
+    background: #2e50e9 !important;
     color: white;
   }
 
@@ -3170,5 +3183,21 @@
     .emergency-description {
       background: #313561;
     }
+  }
+  .category-button_border {
+    border-right: 2px solid #272953;
+  }
+  .dropdown-position {
+    margin: 0;
+    padding: 5px;
+    list-style: none;
+    background: #fff;
+    z-index: 999;
+    border-radius: 10px;
+    margin-left: 10px;
+    border: 2px solid #2743cb;
+    cursor: pointer;
+    color: black;
+    min-width: 99%;
   }
 </style>
