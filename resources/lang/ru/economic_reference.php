@@ -226,4 +226,5 @@ return array (
   'table_chess_title' => 'Денежный поток НДО при различных сценариях производственной программы «Шахматка»',
   'annual_oil_production' => 'Годовая добыча нефти',
   'enterprise_income_loss' => 'Доход / убыток предприятия',
+  'technological_indicators' => 'Технологические показатели',
 );
