@@ -430,5 +430,5 @@ class DictionaryService
             ->toArray();
 
         return $items;
-    }
+    }     
 }

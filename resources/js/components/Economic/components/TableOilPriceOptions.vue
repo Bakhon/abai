@@ -82,14 +82,6 @@ export default {
       required: true,
       type: Object
     },
-    oilPrices: {
-      required: true,
-      type: Array,
-    },
-    data: {
-      required: true,
-      type: Object
-    }
   },
   methods: {
     calcPrsPerUwi(prs, uwi_count) {

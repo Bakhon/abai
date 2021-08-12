@@ -20,19 +20,19 @@
                 "code": "reservoir_count",
                 "type": "numeric",
                 "title": "reserv_c",
-                "validation": "required|numeric|gte:1"
+                "validation": "numeric|gte:1"
               },
               {
                 "code": "perf_date",
                 "type": "date",
                 "title": "data",
-                "validation": ""
+                "validation": "required"
               },
               {
                 "code": "depth",
                 "type": "numeric",
                 "title": "depth",
-                "validation": "required|numeric|gte:0|lte:10000"
+                "validation": "numeric|gte:0|lte:10000"
               },
               {
                 "code": "new_intervals",

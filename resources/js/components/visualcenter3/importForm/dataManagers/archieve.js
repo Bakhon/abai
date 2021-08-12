@@ -38,6 +38,7 @@ export default {
                 this.excelData['date'] = moment(this.period).format("YYYY-MM-DD HH:mm:ss");
                 this.excelData['user_name'] = this.userName;
                 this.excelData['change_reason'] = this.changeReason;
+                this.excelData['toList'] = ['firstMaster','secondMaster'];
                 await this.storeData(uri);
                 this.status = this.trans("visualcenter.importForm.status.sendedToApprove") + '!';
             }
@@ -51,6 +52,18 @@ export default {
                 await this.updateCurrentData();
                 this.addListeners();
             }
+        },
+        async switchCompany(e) {
+            this.SET_LOADING(true);
+            this.selectedDzo.ticker = e.target.value;
+            if (this.selectedDzo.ticker === 'КОА') {
+                this.addColumnsToGrid();
+            }
+            this.selectedDzo.name = this.getDzoName();
+            this.changeDefaultDzo();
+            await this.updateCurrentData();
+            this.addListeners();
+            this.SET_LOADING(false);
         }
     },
     computed: {

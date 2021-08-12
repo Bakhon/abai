@@ -8,7 +8,7 @@
           :active="activeTab === index"
           :class="index ? 'ml-2' : ''"
           class="px-2 d-flex align-items-center"
-          @click.native="activeTab = index"/>
+          @click.native="selectTab(index)"/>
     </div>
 
     <div
@@ -30,7 +30,6 @@
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="oilPrices"
-          :data="res.technicalEconomicIndicator"
           class="text-white"/>
 
       <table-oil-price-options
@@ -38,8 +37,23 @@
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
+          class="text-white"/>
+
+      <table-well-changes
+          v-if="index === 3"
+          :org="res.org"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
           :oil-prices="oilPrices"
-          :data="res.technicalEconomicIndicator"
+          :data="res.wellChanges"
+          ref="well-changes"
+          class="text-white"/>
+
+      <table-economic-efficiency
+          v-if="index === 4"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :oil-prices="oilPrices"
           class="text-white"/>
     </div>
   </div>
@@ -50,6 +64,8 @@ import ChartButton from "./ChartButton";
 import TableSpecificIndicators from "./TableSpecificIndicators";
 import TableTechnicalEconomicIndicators from "./TableTechnicalEconomicIndicators";
 import TableOilPriceOptions from "./TableOilPriceOptions";
+import TableWellChanges from "./TableWellChanges";
+import TableEconomicEfficiency from "./TableEconomicEfficiency";
 
 export default {
   name: "Tables",
@@ -58,6 +74,8 @@ export default {
     TableSpecificIndicators,
     TableTechnicalEconomicIndicators,
     TableOilPriceOptions,
+    TableWellChanges,
+    TableEconomicEfficiency
   },
   props: {
     scenario: {
@@ -82,8 +100,23 @@ export default {
         this.trans('economic_reference.specific_indicators'),
         this.trans('economic_reference.technical_economic_indicators'),
         this.trans('economic_reference.oil_price_options'),
+        this.trans('economic_reference.table_well_changes'),
+        this.trans('economic_reference.economic_efficiency'),
       ]
     }
+  },
+  methods: {
+    selectTab(index) {
+      this.activeTab = index
+
+      this.$emit('updateTab', index)
+
+      if (this.activeTab === 3) {
+        this.$nextTick(() => {
+          this.$refs['well-changes'][0].scrollToChanges()
+        })
+      }
+    },
   }
 }
 </script>

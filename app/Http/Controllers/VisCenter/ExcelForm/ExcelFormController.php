@@ -10,16 +10,50 @@ use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use App\Models\VisCenter\ExcelForm\DzoImportField;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use \jamesiarmes\PhpEws\Client;
+use \jamesiarmes\PhpEws\Request\CreateItemType;
+use \jamesiarmes\PhpEws\ArrayType\ArrayOfRecipientsType;
+use \jamesiarmes\PhpEws\ArrayType\NonEmptyArrayOfAllItemsType;
+use \jamesiarmes\PhpEws\Enumeration\BodyTypeType;
+use \jamesiarmes\PhpEws\Enumeration\MessageDispositionType;
+use \jamesiarmes\PhpEws\Enumeration\ResponseClassType;
+use \jamesiarmes\PhpEws\Type\BodyType;
+use \jamesiarmes\PhpEws\Type\EmailAddressType;
+use \jamesiarmes\PhpEws\Type\MessageType;
+use \jamesiarmes\PhpEws\Type\SingleRecipientType;
+use \jamesiarmes\PhpEws\Request\SendItemType;
+use \jamesiarmes\PhpEws\Enumeration\DistinguishedFolderIdNameType;
+use \jamesiarmes\PhpEws\ArrayType\NonEmptyArrayOfBaseItemIdsType;
+use \jamesiarmes\PhpEws\Type\DistinguishedFolderIdType;
+use \jamesiarmes\PhpEws\Type\ItemIdType;
+use \jamesiarmes\PhpEws\Type\TargetFolderIdType;
 
 class ExcelFormController extends Controller
 {
+    private $host = 'mail.kmg.kz';
+    private $emailSubject = 'Заявка на изменение суточных данных в ИС ABAI';
+    private $kmgEmails = array (
+        'firstMaster' => 's.sugal@kmg.kz',
+        'secondMaster' => 's.sugal@kmg.kz',
+        'mainMaster' => 's.sugal@kmg.kz',
+    );
+    private $dzoEmails = array (
+        'ЭМГ' => 's.sugal@kmg.kz',
+        'УО' => 's.sugal@kmg.kz',
+        'КБМ' => 's.sugal@kmg.kz',
+        'КОА' => 's.sugal@kmg.kz',
+        'ОМГ' => 's.sugal@kmg.kz',
+        'КТМ' => 's.sugal@kmg.kz',
+        'ММГ' => 's.sugal@kmg.kz',
+    );
 
     public function getDzoCurrentData(Request $request)
     {
         $date = Carbon::yesterday('Asia/Almaty');
-        if ($request->isCorrected) {
+        if ($request->isCorrected === TRUE) {
             $date = Carbon::parse($request->date)->addDays(1);
         }
+
         $dzoName = $request->request->get('dzoName');
         $dzoImportData = DzoImportData::query()
             ->whereDate('date',$date)
@@ -133,6 +167,12 @@ class ExcelFormController extends Controller
 
     public function storeCorrected(Request $request)
     {
+        $client = $this->getEmailClient();
+        foreach($request->toList as $item) {
+            $this->sendEmailToMaster($request->request, $client, $item);
+        }
+
+        $request->request->remove('toList');
         $this->saveDzoSummaryData($request);
         $dzo_summary_last_record = DzoImportData::latest('id')->where('is_corrected', true)->first();
 
@@ -153,6 +193,16 @@ class ExcelFormController extends Controller
     {
         $forApprove = DzoImportData::query()
             ->where('is_corrected', true)
+            ->where(function($q) {
+                return $q
+                         ->whereNull('is_approved_by_first_master')
+                         ->orWhere('is_approved_by_first_master', true);
+             })
+             ->where(function($q) {
+                return $q
+                      ->whereNull('is_approved_by_second_master')
+                      ->orWhere('is_approved_by_second_master', true);
+            })
             ->with('importField')
             ->with('importDowntimeReason')
             ->with('importDecreaseReason')
@@ -182,21 +232,45 @@ class ExcelFormController extends Controller
 
     public function approveDailyCorrection(Request $request)
     {
-        DzoImportField::where('dzo_import_data_id',$request->actualId)->delete();
-        DzoImportDecreaseReason::where('dzo_import_data_id',$request->actualId)->delete();
-        DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
-        DzoImportData::where('id',$request->actualId)->delete();
+        $client = $this->getEmailClient();
+        $updateOptions = array(
+            $request->currentApproverField => true
+        );
+        if ($request->isFinalApprove === 'true') {
+           $this->sendApproveEmailToDzo($request->request,$client);
+           DzoImportField::where('dzo_import_data_id',$request->actualId)->delete();
+           DzoImportDecreaseReason::where('dzo_import_data_id',$request->actualId)->delete();
+           DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
+           DzoImportData::where('id',$request->actualId)->delete();
+           $updateOptions['is_corrected'] = null;
+        } else {
+            $this->sendEmailToMaster($request->request, $client, 'mainMaster');
+        }
+
         DzoImportData::query()
-                    ->where('id', $request->currentId)
-                    ->update(
-                        [
-                            'is_corrected' => null,
-                            'is_approved' => true
-                        ]
-                    );
+            ->where('id', $request->currentId)
+            ->update($updateOptions);
     }
+
+    protected function getEmailClient()
+    {
+        $username = env('VISCENTER_EMAIL_ADDRESS', '');
+        $password = env('VISCENTER_EMAIL_PASSWORD', '');
+        $client = new Client($this->host, $username, $password);
+        $client->setCurlOptions(array(CURLOPT_SSL_VERIFYPEER => false));
+        return $client;
+    }
+
     public function declineDailyCorrection(Request $request)
     {
+        $client = $this->getEmailClient();
+        $emailBody = "<b>Добрый день!</b> <p>Ваша заявка на изменение суточных данных в ИС ABAI. была <b>отклонена</b><br /><br />
+            <b>Детали заявки: {$request->dzo_name}</b><br />
+            <b>Дата:</b> {$request->date}<br />
+            <b>Исполнитель:</b> {$request->user_name}<br />
+            <b>Причина:</b> {$request->change_reason}</p>";
+        $messageOptions = $this->getEmailOptions($client,$emailBody,$this->dzoEmails[$request->dzo_name]);
+        $this->sendEmail($messageOptions,$client);
         DzoImportData::query()
             ->where('id', $request->currentId)
             ->update(
@@ -205,5 +279,91 @@ class ExcelFormController extends Controller
                     'is_approved' => false
                 ]
             );
+    }
+
+    protected function getEmailOptions($client, $body, $to)
+    {
+        $messageOptions = array (
+            'id' => null,
+            'changeKey' => null
+        );
+        $request = new CreateItemType();
+        $request->Items = new NonEmptyArrayOfAllItemsType();
+        $request->MessageDisposition = MessageDispositionType::SAVE_ONLY;
+        $message = new MessageType();
+        $message->Subject = $this->emailSubject;
+        $message->ToRecipients = new ArrayOfRecipientsType();
+        $message->From = new SingleRecipientType();
+        $message->From->Mailbox = new EmailAddressType();
+        $message->From->Mailbox->EmailAddress = env('VISCENTER_EMAIL_ADDRESS', '');
+        $recipient = new EmailAddressType();
+        $recipient->EmailAddress = $to;
+        $message->ToRecipients->Mailbox[] = $recipient;
+        $message->Body = new BodyType();
+        $message->Body->BodyType = BodyTypeType::HTML;
+        $message->Body->_ = $body;
+        $request->Items->Message[] = $message;
+        $response = $client->CreateItem($request);
+        $response_messages = $response->ResponseMessages->CreateItemResponseMessage;
+
+        foreach ($response_messages as $response_message) {
+            if ($response_message->ResponseClass != ResponseClassType::SUCCESS) {
+                continue;
+            }
+            foreach ($response_message->Items->Message as $item) {
+                $messageOptions['id'] = $item->ItemId->Id;
+                $messageOptions['changeKey'] = $item->ItemId->ChangeKey;
+            }
+        }
+        return $messageOptions;
+    }
+
+    protected function sendEmail($messageOptions,$client)
+    {
+        $request = new SendItemType();
+        $request->SaveItemToFolder = true;
+        $request->ItemIds = new NonEmptyArrayOfBaseItemIdsType();
+
+        $item = new ItemIdType();
+        $item->Id = $messageOptions['id'];
+        $item->ChangeKey = $messageOptions['changeKey'];
+        $request->ItemIds->ItemId[] = $item;
+
+        $send_folder = new TargetFolderIdType();
+        $send_folder->DistinguishedFolderId = new DistinguishedFolderIdType();
+        $send_folder->DistinguishedFolderId->Id = DistinguishedFolderIdNameType::SENT;
+        $request->SavedItemFolderId = $send_folder;
+        $response = $client->SendItem($request);
+
+        $response_messages = $response->ResponseMessages->SendItemResponseMessage;
+        foreach ($response_messages as $response_message) {
+            if ($response_message->ResponseClass != ResponseClassType::SUCCESS) {
+                continue;
+            }
+        }
+    }
+
+    protected function sendEmailToMaster($input, $client, $master)
+    {
+        $emailBody = "<b>Добрый день!</b> <p>Уведомляем вас о необходимости согласовать/отклонить заявку на изменение суточных данных в ИС ABAI.<br /><br />
+            <b>Детали заявки:</b><br />
+            <b>Дата:</b> {$input->get('date')}<br />
+            <b>ДЗО:</b> {$input->get('dzo_name')}<br />
+            <b>Исполнитель:</b> {$input->get('user_name')}<br />
+            <b>Причина:</b> {$input->get('change_reason')}<br />
+            <a href='http://abai.kmg.kz/ru/daily-approve'>Ссылка на Таблицу Согласований</a></p>";
+        $messageOptions = $this->getEmailOptions($client,$emailBody,$this->kmgEmails[$master]);
+        $this->sendEmail($messageOptions,$client);
+    }
+
+    protected function sendApproveEmailToDzo($input, $client)
+    {
+        $emailBody = "<b>Добрый день!</b> <p>Ваша заявка на изменение суточных данных в ИС ABAI. была <b>одобрена</b><br /><br />
+            <b>Детали заявки:</b><br />
+            <b>Дата:</b> {$input->get('date')}<br />
+            <b>Исполнитель:</b> {$input->get('user_name')}<br />
+            <b>Причина:</b> {$input->get('change_reason')}";
+        $messageOptions = $this->getEmailOptions($client,$emailBody,$this->dzoEmails[$input->get('dzo_name')]);
+        $this->sendEmail($messageOptions,$client);
     }
 }
