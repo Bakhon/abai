@@ -816,11 +816,11 @@
     import Overlay from 'ol/Overlay';
     import Static from 'ol/source/ImageStatic';
     import Chart from 'ol-ext/style/Chart'
-    import pieCharts from './data.json'
+    import monthlyOilValue from './data.json'
     export default {
         data() {
             return {
-                pieCharts: pieCharts.data,
+                monthlyOilValue: monthlyOilValue.data,
                 isLoading: false,
                 date3: null,
                 accumulatedSelected: false,
@@ -864,7 +864,7 @@
                 let layers = [
                     new ImageLayer({
                         source: await new Static({
-                            url: 'https://abai.dashboard/img/map-constructor/map.jpg',
+                            url: '/img/map-constructor/map.jpg',
                             projection: projection,
                             imageExtent: extent,
                         }),
@@ -1097,12 +1097,12 @@
                 if (this.currentSelected) {
                     switch (selectedDate) {
                         case '01.01.2021':
-                            for (let i = 0; i < this.pieCharts[0].sum.length; i++) {
-                                let data = this.pieCharts[0].values;
-                                let sum = this.pieCharts[0].sum;
-                                let position = this.pieCharts[0].coordinates;
-                                let name = this.pieCharts[0].name_numbers;
-                                let water_percent = this.pieCharts[0].water_percent;
+                            for (let i = 0; i < this.monthlyOilValue[0].sum.length; i++) {
+                                let data = this.monthlyOilValue[0].values;
+                                let sum = this.monthlyOilValue[0].sum;
+                                let position = this.monthlyOilValue[0].coordinates;
+                                let name = this.monthlyOilValue[0].name_numbers;
+                                let water_percent = this.monthlyOilValue[0].water_percent;
                                 features[i] = new Feature({
                                     geometry: new Point(position[i]),
                                     data: data[i],
@@ -1114,12 +1114,12 @@
                             }
                             break
                         case '01.02.2021':
-                            for (let i = 0; i < this.pieCharts[1].sum.length; i++) {
-                                let data = this.pieCharts[1].values;
-                                let sum = this.pieCharts[1].sum;
-                                let position = this.pieCharts[1].coordinates;
-                                let name = this.pieCharts[1].name_numbers;
-                                let water_percent = this.pieCharts[1].water_percent;
+                            for (let i = 0; i < this.monthlyOilValue[1].sum.length; i++) {
+                                let data = this.monthlyOilValue[1].values;
+                                let sum = this.monthlyOilValue[1].sum;
+                                let position = this.monthlyOilValue[1].coordinates;
+                                let name = this.monthlyOilValue[1].name_numbers;
+                                let water_percent = this.monthlyOilValue[1].water_percent;
                                 features[i] = new Feature({
                                     geometry: new Point(position[i]),
                                     data: data[i],
@@ -1131,12 +1131,12 @@
                             }
                             break
                         case '01.03.2021':
-                            for (let i = 0; i < this.pieCharts[2].sum.length; i++) {
-                                let data = this.pieCharts[2].values;
-                                let sum = this.pieCharts[2].sum;
-                                let position = this.pieCharts[2].coordinates;
-                                let name = this.pieCharts[2].name_numbers;
-                                let water_percent = this.pieCharts[2].water_percent;
+                            for (let i = 0; i < this.monthlyOilValue[2].sum.length; i++) {
+                                let data = this.monthlyOilValue[2].values;
+                                let sum = this.monthlyOilValue[2].sum;
+                                let position = this.monthlyOilValue[2].coordinates;
+                                let name = this.monthlyOilValue[2].name_numbers;
+                                let water_percent = this.monthlyOilValue[2].water_percent;
                                 features[i] = new Feature({
                                     geometry: new Point(position[i]),
                                     data: data[i],
@@ -1148,12 +1148,12 @@
                             }
                             break
                         case '01.04.2021':
-                            for (let i = 0; i < this.pieCharts[3].sum.length; i++) {
-                                let data = this.pieCharts[3].values;
-                                let sum = this.pieCharts[3].sum;
-                                let position = this.pieCharts[3].coordinates;
-                                let name = this.pieCharts[3].name_numbers;
-                                let water_percent = this.pieCharts[3].water_percent;
+                            for (let i = 0; i < this.monthlyOilValue[3].sum.length; i++) {
+                                let data = this.monthlyOilValue[3].values;
+                                let sum = this.monthlyOilValue[3].sum;
+                                let position = this.monthlyOilValue[3].coordinates;
+                                let name = this.monthlyOilValue[3].name_numbers;
+                                let water_percent = this.monthlyOilValue[3].water_percent;
                                 features[i] = new Feature({
                                     geometry: new Point(position[i]),
                                     data: data[i],
@@ -1165,12 +1165,12 @@
                             }
                             break
                         case '01.05.2021':
-                            for (let i = 0; i < this.pieCharts[4].sum.length; i++) {
-                                let data = this.pieCharts[4].values;
-                                let sum = this.pieCharts[4].sum;
-                                let position = this.pieCharts[4].coordinates;
-                                let name = this.pieCharts[4].name_numbers;
-                                let water_percent = this.pieCharts[4].water_percent;
+                            for (let i = 0; i < this.monthlyOilValue[4].sum.length; i++) {
+                                let data = this.monthlyOilValue[4].values;
+                                let sum = this.monthlyOilValue[4].sum;
+                                let position = this.monthlyOilValue[4].coordinates;
+                                let name = this.monthlyOilValue[4].name_numbers;
+                                let water_percent = this.monthlyOilValue[4].water_percent;
                                 features[i] = new Feature({
                                     geometry: new Point(position[i]),
                                     data: data[i],
@@ -1558,12 +1558,12 @@
                 if (this.accumulatedSelected) {
                     switch (selectedDate) {
                         case '01.01.2021':
-                            for (let i = 0; i < this.pieCharts[0].accum_sum.length; i++) {
-                                let data = this.pieCharts[0].accum_values;
-                                let sum = this.pieCharts[0].accum_sum;
-                                let position = this.pieCharts[0].coordinates;
-                                let name = this.pieCharts[0].name_numbers;
-                                let water_percent = this.pieCharts[0].water_percent;
+                            for (let i = 0; i < this.monthlyOilValue[0].accum_sum.length; i++) {
+                                let data = this.monthlyOilValue[0].accum_values;
+                                let sum = this.monthlyOilValue[0].accum_sum;
+                                let position = this.monthlyOilValue[0].coordinates;
+                                let name = this.monthlyOilValue[0].name_numbers;
+                                let water_percent = this.monthlyOilValue[0].water_percent;
                                 features3[i] = new Feature({
                                     geometry: new Point(position[i]),
                                     data: data[i],
@@ -1575,12 +1575,12 @@
                             }
                             break
                         case '01.02.2021':
-                            for (let i = 0; i < this.pieCharts[1].accum_sum.length; i++) {
-                                let data = this.pieCharts[1].accum_values;
-                                let sum = this.pieCharts[1].accum_sum;
-                                let position = this.pieCharts[1].coordinates;
-                                let name = this.pieCharts[1].name_numbers;
-                                let water_percent = this.pieCharts[1].water_percent;
+                            for (let i = 0; i < this.monthlyOilValue[1].accum_sum.length; i++) {
+                                let data = this.monthlyOilValue[1].accum_values;
+                                let sum = this.monthlyOilValue[1].accum_sum;
+                                let position = this.monthlyOilValue[1].coordinates;
+                                let name = this.monthlyOilValue[1].name_numbers;
+                                let water_percent = this.monthlyOilValue[1].water_percent;
                                 features3[i] = new Feature({
                                     geometry: new Point(position[i]),
                                     data: data[i],
@@ -1592,12 +1592,12 @@
                             }
                             break
                         case '01.03.2021':
-                            for (let i = 0; i < this.pieCharts[2].accum_sum.length; i++) {
-                                let data = this.pieCharts[2].accum_values;
-                                let sum = this.pieCharts[2].accum_sum;
-                                let position = this.pieCharts[2].coordinates;
-                                let name = this.pieCharts[2].name_numbers;
-                                let water_percent = this.pieCharts[2].water_percent;
+                            for (let i = 0; i < this.monthlyOilValue[2].accum_sum.length; i++) {
+                                let data = this.monthlyOilValue[2].accum_values;
+                                let sum = this.monthlyOilValue[2].accum_sum;
+                                let position = this.monthlyOilValue[2].coordinates;
+                                let name = this.monthlyOilValue[2].name_numbers;
+                                let water_percent = this.monthlyOilValue[2].water_percent;
                                 features3[i] = new Feature({
                                     geometry: new Point(position[i]),
                                     data: data[i],
@@ -1609,12 +1609,12 @@
                             }
                             break
                         case '01.04.2021':
-                            for (let i = 0; i < this.pieCharts[3].accum_sum.length; i++) {
-                                let data = this.pieCharts[3].accum_values;
-                                let sum = this.pieCharts[3].accum_sum;
-                                let position = this.pieCharts[3].coordinates;
-                                let name = this.pieCharts[3].name_numbers;
-                                let water_percent = this.pieCharts[3].water_percent;
+                            for (let i = 0; i < this.monthlyOilValue[3].accum_sum.length; i++) {
+                                let data = this.monthlyOilValue[3].accum_values;
+                                let sum = this.monthlyOilValue[3].accum_sum;
+                                let position = this.monthlyOilValue[3].coordinates;
+                                let name = this.monthlyOilValue[3].name_numbers;
+                                let water_percent = this.monthlyOilValue[3].water_percent;
                                 features3[i] = new Feature({
                                     geometry: new Point(position[i]),
                                     data: data[i],
@@ -1626,12 +1626,12 @@
                             }
                             break
                         case '01.05.2021':
-                            for (let i = 0; i < this.pieCharts[4].accum_sum.length; i++) {
-                                let data = this.pieCharts[4].accum_values;
-                                let sum = this.pieCharts[4].accum_sum;
-                                let position = this.pieCharts[4].coordinates;
-                                let name = this.pieCharts[4].name_numbers;
-                                let water_percent = this.pieCharts[4].water_percent;
+                            for (let i = 0; i < this.monthlyOilValue[4].accum_sum.length; i++) {
+                                let data = this.monthlyOilValue[4].accum_values;
+                                let sum = this.monthlyOilValue[4].accum_sum;
+                                let position = this.monthlyOilValue[4].coordinates;
+                                let name = this.monthlyOilValue[4].name_numbers;
+                                let water_percent = this.monthlyOilValue[4].water_percent;
                                 features3[i] = new Feature({
                                     geometry: new Point(position[i]),
                                     data: data[i],
