@@ -30,8 +30,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('store-kgm-reports-from-avocet:cron')->dailyAt('08:00')->timezone('Asia/Almaty')->appendOutputTo(storage_path('logs/avocet.log'));
-        $schedule->command('store-kgm-reports-from-avocet:cron')->dailyAt('08:40')->timezone('Asia/Almaty')->appendOutputTo(storage_path('logs/avocet.log'));       
+        $schedule->command('hive-data-from-avocet:cron')->dailyAt('08:35')->timezone('Asia/Almaty');
+        $schedule->command('import-kgm-chemistry-and-repairs:cron')->monthlyOn(8, '20:00')->timezone('Asia/Almaty');      
         $schedule->command('parse-usd:cron')->dailyAt('16:20')->timezone('Asia/Almaty');
         $schedule->command('parse-usd:cron')->dailyAt('18:30')->timezone('Asia/Almaty');
         $schedule->command('parse-oil:cron')->dailyAt('08:10')->timezone('Asia/Almaty');
