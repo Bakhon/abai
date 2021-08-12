@@ -25,7 +25,6 @@ export default new Vuex.Store({
             'pgno',
             'techMode',
             'tr',
-            'mapConstruct'
         ]
     })],
 });

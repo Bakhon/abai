@@ -754,7 +754,7 @@
                             </div>
                             <span>{{ trans('map_constructor.select_kto') }}</span>
                         </div>
-                        <div class="tool" @click="mapInit2">
+                        <div class="tool" @click="mapInit">
                             <div class="box">
                                 <i class="fas fa-map"></i>
                             </div>
@@ -814,13 +814,13 @@
     import View from 'ol/View';
     import CircleStyle from 'ol/style/Circle';
     import Overlay from 'ol/Overlay';
-    import {mapConstructActions, mapConstructState, mapConstructGetters} from '@store/helpers';
     import Static from 'ol/source/ImageStatic';
     import Chart from 'ol-ext/style/Chart'
-
+    import pieCharts from './data.json'
     export default {
         data() {
             return {
+                pieCharts: pieCharts.data,
                 isLoading: false,
                 date3: null,
                 accumulatedSelected: false,
@@ -843,24 +843,15 @@
                 isSelected: false
             }
         },
-        computed: {
-            ...mapConstructState([
-                'pieCharts',
-            ]),
-        },
         components: {
             Datetime
         },
         methods: {
-            ...mapConstructActions([
-                'getMapData',
-                'setLoader'
-            ]),
-            async mapInit2() {
-                this.setLoader(true);
+            mapInit() {
                 this.isSelected = false;
-                await this.getMapData();
-                this.setLoader(false);
+                setTimeout(() => this.mapInit2(), 100);
+            },
+            async mapInit2() {
                 this.isSelected = true;
 
                 let extent = [11705000, 5089113, 11718100, 5100000];
@@ -889,7 +880,6 @@
                         zoom: 1,
                     }),
                 });
-                this.setLoader(false);
                 let popup = new Overlay({
                     element: document.getElementById('popup'),
                 });

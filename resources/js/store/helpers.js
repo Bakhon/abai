@@ -89,21 +89,3 @@ export const pgnoMapActions = arrNames => ({
         ...arrNames,
     ]),
 });
-
-export const mapConstructState = arrNames => ({
-    ...mapState('mapConstruct', [
-        ...arrNames,
-    ]),
-});
-
-export const mapConstructActions = arrNames => ({
-    ...mapActions('mapConstruct', [
-        ...arrNames,
-    ]),
-});
-
-export const mapConstructGetters = arrNames => ({
-    ...mapGetters('mapConstruct', [
-        ...arrNames,
-    ]),
-});
