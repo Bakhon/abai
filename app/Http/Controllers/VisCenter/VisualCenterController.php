@@ -451,7 +451,7 @@ class VisualCenterController extends Controller
     }
     public function getEmergencyHistory(Request $request)
     {
-        $query = EmergencyHistory::query()
+        $emergencySituations = EmergencyHistory::query()
             ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description')
             ->whereMonth('date', $request->currentMonth)
             ->where('type',1)
@@ -459,12 +459,12 @@ class VisualCenterController extends Controller
             ->take(10);
 
         if (!empty($request->dzoName)){
-        return $query->where('description','like', "%".$request->dzoName."%")
+        return $emergencySituations->where('description','like', "%".$request->dzoName."%")
             ->get()
             ->toArray();              
         } 
 
-        return $query
+        return $emergencySituations
             ->get()
             ->toArray();
                 
