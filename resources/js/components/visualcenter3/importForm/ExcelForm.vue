@@ -102,7 +102,7 @@
                 </div>
                 <select
                         class="form-select col-12 mt-3 status-block status-block_little"
-                        v-if="dzoUsers.includes(parseInt(userId))"
+                        v-if="!dzoUsers.includes(parseInt(userId))"
                         @change="switchCompany($event)"
                 >
                     <option v-for="company in dzoCompanies" :value="company.ticker">{{company.name}}</option>
