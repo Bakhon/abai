@@ -35,7 +35,7 @@ class EcoRefsMacroController extends Controller
 
         $ecorefsmacro = EcoRefsMacro::latest()->with('scfa')->paginate(5);
 
-        $ecorefsmacroPages = view('ecorefsmacro.index',compact('ecorefsmacro'))
+        $ecorefsmacroPages = view('economy_kenzhe/ecorefsmacro.index',compact('ecorefsmacro'))
             ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);
 
         return $ecorefsmacroPages;
@@ -50,7 +50,7 @@ class EcoRefsMacroController extends Controller
     public function create()
     {
         $sc_fa = EcoRefsScFa::get();
-        return view('ecorefsmacro.create',compact('sc_fa'));
+        return view('economy_kenzhe/ecorefsmacro.create',compact('sc_fa'));
     }
 
     /**
@@ -94,9 +94,9 @@ class EcoRefsMacroController extends Controller
      */
     public function edit($id)
     {
-        $sc_fa = EcoRefsScFa::get();
-        $row = EcoRefsMacro::find($id);
-        return view('ecorefsmacro.edit',compact('row', 'sc_fa'));
+        $scFas = EcoRefsScFa::get();
+        $ecoRefsMacro = EcoRefsMacro::find($id);
+        return view('economy_kenzhe/ecorefsmacro.edit',compact('ecoRefsMacro', 'scFas'));
     }
 
     /**
@@ -155,7 +155,7 @@ class EcoRefsMacroController extends Controller
 
     public function uploadExcel(): View
     {
-        return view('ecorefsmacro.import_excel');
+        return view('economy_kenzhe/ecorefsmacro.import_excel');
     }
 
     public function importExcel(ImportExcelEcoRefsMacroRequest $request): RedirectResponse

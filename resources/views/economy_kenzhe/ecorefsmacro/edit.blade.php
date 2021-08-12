@@ -13,7 +13,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('eco_refs_cost.update', $ecoRefsCost->id) }}"
+                        <form action="{{ route('ecorefsmacro.update', $ecoRefsMacro->id) }}"
                               method="POST">
                             @csrf
                             @method('PUT')
@@ -30,7 +30,7 @@
                                             </option>
 
                                             @foreach ($scFas as $item)
-                                                @if($item->id==$ecoRefsCost->sc_fa)
+                                                @if($item->id==$ecoRefsMacro->sc_fa)
                                                     <option value="{{ $item->id }}" selected>
                                                         {{ $item->name }}
                                                     </option>
@@ -43,33 +43,7 @@
                                         </select>
                                     </div>
                                 </div>
-
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <strong>
-                                            {{ __('economic_reference.company') }}
-                                        </strong>
-
-                                        <select name="company_id" class="form-control">
-                                            <option>
-                                                {{ __('economic_reference.select_item') }}
-                                            </option>
-
-                                            @foreach ($companies as $item)
-                                                @if($item->id==$ecoRefsCost->company_id)
-                                                    <option value="{{ $item->id }}" selected>
-                                                        {{ $item->name }}
-                                                    </option>
-                                                @else
-                                                    <option value="{{ $item->id }}">
-                                                        {{ $item->name }}
-                                                    </option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
+                                
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>
@@ -78,7 +52,7 @@
 
                                         <input type="date"
                                                name="date"
-                                               value="{{$ecoRefsCost->date}}"
+                                               value="{{$ecoRefsMacro->date}}"
                                                class="form-control">
                                     </div>
                                 </div>
@@ -92,7 +66,7 @@
 
                                             <input type="float"
                                                    name="{{$key}}"
-                                                   value="{{$ecoRefsCost->$key}}"
+                                                   value="{{$ecoRefsMacro->$key}}"
                                                    class="form-control">
                                         </div>
                                     </div>
@@ -107,7 +81,7 @@
                                         <input type="float"
                                                name="comment"
                                                class="form-control"
-                                               value="{{$ecoRefsCost->comment}}">
+                                               value="{{$ecoRefsMacro->comment}}">
                                     </div>
                                 </div>
 

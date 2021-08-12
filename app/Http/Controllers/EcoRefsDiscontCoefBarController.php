@@ -37,7 +37,7 @@ class EcoRefsDiscontCoefBarController extends Controller
         
         $ecorefsdiscontcoefbar = EcoRefsDiscontCoefBar::latest()->with('scfa')->with('company')->with('direction')->with('route')->paginate(5);
 
-        $ecorefsdiscontcoefbarPages = view('ecorefsdiscontcoefbar.index',compact('ecorefsdiscontcoefbar'))
+        $ecorefsdiscontcoefbarPages = view('economy_kenzhe/ecorefsdiscontcoefbar.index',compact('ecorefsdiscontcoefbar'))
             ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);
 
         return $ecorefsdiscontcoefbarPages;
@@ -54,7 +54,7 @@ class EcoRefsDiscontCoefBarController extends Controller
         $company = EcoRefsCompaniesId::get();
         $direction = EcoRefsDirectionId::get();
         $route = EcoRefsRoutesId::get();
-        return view('ecorefsdiscontcoefbar.create',compact('sc_fa', 'company', 'direction', 'route'));
+        return view('economy_kenzhe/ecorefsdiscontcoefbar.create',compact('sc_fa', 'company', 'direction', 'route'));
     }
 
     /**
@@ -106,7 +106,7 @@ class EcoRefsDiscontCoefBarController extends Controller
         $direction = EcoRefsDirectionId::get();
         $route = EcoRefsRoutesId::get();
 
-        return view('ecorefsdiscontcoefbar.edit',compact('sc_fa', 'row', 'company', 'direction', 'route'));
+        return view('economy_kenzhe/ecorefsdiscontcoefbar.edit',compact('sc_fa', 'row', 'company', 'direction', 'route'));
 
     }
 
@@ -169,7 +169,7 @@ class EcoRefsDiscontCoefBarController extends Controller
 
     public function uploadExcel(): View
     {
-        return view('ecorefsdiscontcoefbar.import_excel');
+        return view('economy_kenzhe/ecorefsdiscontcoefbar.import_excel');
     }
 
     public function importExcel(ImportExcelEcoRefsDiscontCoefBarRequest $request): RedirectResponse

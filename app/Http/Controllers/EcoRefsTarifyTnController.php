@@ -40,7 +40,7 @@ class EcoRefsTarifyTnController extends Controller
 
             $ecorefstarifytn = EcoRefsTarifyTn::latest()->with('scfa')->with('branch')->with('company')->with('direction')->with('route')->with('routetn')->with('exc')->paginate(5);
 
-            $ecorefstarifytnPages = view('ecorefstarifytn.index',compact('ecorefstarifytn'))
+            $ecorefstarifytnPages = view('economy_kenzhe/ecorefstarifytn.index',compact('ecorefstarifytn'))
                 ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);
 
             return $ecorefstarifytnPages;
@@ -60,7 +60,7 @@ class EcoRefsTarifyTnController extends Controller
         $route = EcoRefsRoutesId::get();
         $routetn = EcoRefsRouteTnId::get();
         $exc = EcoRefsExc::get();
-        return view('ecorefstarifytn.create',compact('sc_fa', 'branch', 'company', 'direction', 'route', 'routetn', 'exc'));
+        return view('economy_kenzhe/ecorefstarifytn.create',compact('sc_fa', 'branch', 'company', 'direction', 'route', 'routetn', 'exc'));
     }
 
     /**
@@ -116,7 +116,7 @@ class EcoRefsTarifyTnController extends Controller
             $routetn = EcoRefsRouteTnId::get();
             $exc = EcoRefsExc::get();
 
-            return view('ecorefstarifytn.edit',compact('row', 'sc_fa', 'branch', 'company', 'direction', 'route', 'routetn', 'exc'));
+            return view('economy_kenzhe/ecorefstarifytn.edit',compact('row', 'sc_fa', 'branch', 'company', 'direction', 'route', 'routetn', 'exc'));
     }
 
     /**
@@ -179,7 +179,7 @@ class EcoRefsTarifyTnController extends Controller
 
     public function uploadExcel(): View
     {
-        return view('ecorefstarifytn.import_excel');
+        return view('economy_kenzhe/ecorefstarifytn.import_excel');
     }
 
     public function importExcel(ImportExcelEcoRefsTarifyTnRequest $request): RedirectResponse

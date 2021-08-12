@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "4cb4ee001adbed5cf7741b2ccaeeb0a8",
-=======
     "content-hash": "63ce24c9bd4b1dd58ff04f32e41ebc72",
->>>>>>> 4eb8282b076c5a1a76fec9db1af2339095fd3b3a
     "packages": [
         {
             "name": "adldap2/adldap2",
@@ -4449,13 +4445,6 @@
                 "spatie",
                 "user"
             ],
-<<<<<<< HEAD
-            "support": {
-                "issues": "https://github.com/spatie/laravel-activitylog/issues",
-                "source": "https://github.com/spatie/laravel-activitylog/tree/3.17.0"
-            },
-=======
->>>>>>> 4eb8282b076c5a1a76fec9db1af2339095fd3b3a
             "funding": [
                 {
                     "url": "https://spatie.be/open-source/support-us",
@@ -10452,9 +10441,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-<<<<<<< HEAD
-    "plugin-api-version": "2.1.0"
-=======
     "plugin-api-version": "1.1.0"
->>>>>>> 4eb8282b076c5a1a76fec9db1af2339095fd3b3a
 }

@@ -5,75 +5,71 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="list-group">
-                    <a href="{{url('/')}}/ru/ecorefsscfa"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsscfa"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.source_data')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsbranchid"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsbranchid"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.branch')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefscompaniesids"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefscompaniesids"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.company_name')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsequipid"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsequipid"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.equipment_name')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsrouteid"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsrouteid"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.route')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsroutetnid"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsroutetnid"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.route_tn')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsdirection"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsdirection"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.direction')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsannualprodvolume"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsannualprodvolume"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_annual_prod_volume')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsavgmarketprice"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsavgmarketprice"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_avg_market_price')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefselectprsbrigcost"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefselectprsbrigcost"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_select_prs_brig_cost')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsndorates"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsndorates"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_ndo_rates')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsrentequipelectservcost"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsrentequipelectservcost"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_rent_equip_select_serv_cost')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsservicetime"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsservicetime"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_service_time')}}
                     </a>
-                    {{-- <a href="{{url('/')}}/ru/ecorefsempper"
-                       class="list-group-item list-group-item-action text-primary">
-                        {{__('economic_reference.eco_refs_empper')}}
-                    </a> --}}
-                    <a href="{{url('/')}}/ru/ecorefsrenttax"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsrenttax"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_rent_tax')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsexc"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsexc"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_exc')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsprocdob"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsprocdob"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_proc_dob')}}
                     </a>
-                    <a href="{{url('/')}}/ru/ecorefsavgprs"
+                    <a href="{{url('/')}}/ru/module_economy/ecorefsavgprs"
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_avg_prs')}}
                     </a>

@@ -36,7 +36,7 @@ class EcoRefsEmpPerController extends Controller
         ];
         $ecorefsempper = EcoRefsEmpPer::latest()->with('scfa')->paginate(5);
 
-        $ecorefsempperPages = view('ecorefsempper.index',compact('ecorefsempper'))
+        $ecorefsempperPages = view('economy_kenzhe/ecorefsempper.index',compact('ecorefsempper'))
             ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);
 
         return $ecorefsempperPages;
@@ -54,7 +54,7 @@ class EcoRefsEmpPerController extends Controller
         $company = EcoRefsCompaniesId::get();
         $direction = EcoRefsDirectionId::get();
         $route = EcoRefsRoutesId::get();
-        return view('ecorefsempper.create',compact('sc_fa', 'company', 'direction', 'route'));
+        return view('economy_kenzhe/ecorefsempper.create',compact('sc_fa', 'company', 'direction', 'route'));
     }
 
     /**
@@ -104,7 +104,7 @@ class EcoRefsEmpPerController extends Controller
         $direction = EcoRefsDirectionId::get();
         $route = EcoRefsRoutesId::get();
 
-        return view('ecorefsempper.edit',compact('row', 'sc_fa', 'company', 'direction'. 'route'));
+        return view('economy_kenzhe/ecorefsempper.edit',compact('row', 'sc_fa', 'company', 'direction', 'route'));
     }
 
     /**
@@ -163,7 +163,7 @@ class EcoRefsEmpPerController extends Controller
 
     public function uploadExcel(): View
     {
-        return view('ecorefsempper.import_excel');
+        return view('economy_kenzhe/ecorefsempper.import_excel');
     }
 
     public function importExcel(ImportExcelEcoRefsEmpPerRequest $request): RedirectResponse
