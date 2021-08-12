@@ -97,19 +97,19 @@
                     "type": "dict_tree",
                     "title": "horizon",
                     "dict": "geos",
-                    "validation": "exists:tbd.dict.org,id"
+                    "validation": "required|exists:tbd.dict.org,id"
                   },
                   {
                     "code": "top",
                     "type": "numeric",
                     "title": "top",
-                    "validation": "numeric|gte:0|lte:base"
+                    "validation": "required|numeric|gte:0|lte:base"
                   },
                   {
                     "code": "base",
                     "type": "numeric",
                     "title": "base",
-                    "validation": "numeric|gte:0|lte:10000"
+                    "validation": "required|numeric|gte:0|lte:10000"
                   }
                 ]
               }
