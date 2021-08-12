@@ -70,3 +70,7 @@
         </div>
     </div>
 @endsection
+
+<style>
+    @import "../../css/ecorefs.css";
+</style>

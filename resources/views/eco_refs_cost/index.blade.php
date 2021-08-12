@@ -47,7 +47,5 @@
 @endsection
 
 <style>
-    .container-main {
-        overflow-x: auto;
-    }
+   @import "../../css/ecorefs.css"; 
 </style>
