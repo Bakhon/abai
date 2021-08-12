@@ -19,7 +19,7 @@ export default {
     },
     methods: {
         async changeDate() {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             let queryOptions = {
                 'dzoName': this.selectedDzo.ticker,
                 'isCorrected': true,
@@ -27,7 +27,7 @@ export default {
             };
             this.todayData = await this.getDzoTodayData(queryOptions);
             this.processTodayData();
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         },
         async sendToApprove() {
             this.handleValidate();

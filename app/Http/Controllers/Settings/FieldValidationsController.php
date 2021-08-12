@@ -31,4 +31,21 @@ class FieldValidationsController extends Controller
         }
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
+
+    public function getValidationParams ($section): \Symfony\Component\HttpFoundation\Response
+    {
+        $validationParams = CrudFieldSettings::query()
+            ->where('section', $section)
+            ->get()
+            ->keyBy('field_code')
+            ->map(function($field){
+                return [
+                    'min' => $field->min_value,
+                    'max' => $field->max_value,
+                ];
+            })
+            ->toArray();
+
+        return response()->json($validationParams);
+    }
 }

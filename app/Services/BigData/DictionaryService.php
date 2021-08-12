@@ -25,6 +25,7 @@ use App\Models\BigData\Dictionaries\GisMethodType;
 use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\IsoMaterialType;
+use App\Models\BigData\Dictionaries\LabResearchType;
 use App\Models\BigData\Dictionaries\NoBtmReason;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\PackerType;
@@ -44,13 +45,13 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
-use App\Models\BigData\Dictionaries\GisKind;
-use App\Models\BigData\Dictionaries\GisMethod;
-use App\Models\BigData\Dictionaries\GisMethodType;
+use App\Models\BigData\Dictionaries\DocumentType;
+use App\Models\BigData\Dictionaries\Tag;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 
 class DictionaryService
@@ -212,8 +213,20 @@ class DictionaryService
             'class' => GisMethod::class,
             'name_field' => 'name_ru'
         ],
+        'document_types' => [
+            'class' => DocumentType::class,
+            'name_field' => 'name_ru'
+        ],
+        'tag' => [
+            'class' => Tag::class,
+            'name_field' => 'name_ru'
+        ],
         'gis_method_types' =>[
             'class' => GisMethodType::class,
+            'name_field' => 'name_ru'
+        ],
+        'lab_research_type' => [
+            'class' => LabResearchType::class,
             'name_field' => 'name_ru'
         ]
     ];
@@ -290,12 +303,18 @@ class DictionaryService
         $dictClass = self::DICTIONARIES[$dict]['class'];
         $nameField = self::DICTIONARIES[$dict]['name_field'] ?? 'name';
 
-        return $dictClass::query()
+        $query = $dictClass::query()
             ->select('id')
             ->selectRaw("$nameField as name")
-            ->orderBy('name', 'asc')
-            ->get()
-            ->toArray();
+            ->orderBy('name', 'asc');
+
+        if (Schema::connection('tbd')->hasColumn((new $dictClass)->getTable(), 'code')) {
+            $query->selectRaw('code');
+        }
+
+        $result = $query->get()->toArray();
+
+        return $result;
     }
 
     private function getTreeDict(string $dict): array

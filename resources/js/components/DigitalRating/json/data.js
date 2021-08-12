@@ -67,8 +67,33 @@ const indicators = [
     }
 ]
 
+const secondIndicators = [
+    {
+        number: 'UZN_1001',
+        response: 100,
+        pressure: 123,
+        distance: 452,
+        diameter: 2
+    },
+    {
+        number: 'UZN_0002',
+        response: 200,
+        pressure: 120,
+        distance: 245,
+        diameter: 3
+    },
+    {
+        number: 'UZN_0003',
+        response: 500,
+        pressure: 100,
+        distance: 345,
+        diameter: 4
+    }
+]
+
 export {
     overviews,
     histories,
-    indicators
+    indicators,
+    secondIndicators
 }

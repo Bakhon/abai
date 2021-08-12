@@ -88,6 +88,7 @@ Route::group(
                 Route::get('get-non-operating-dzo', function() {
                     Artisan::call('receive-non-operating-email:cron');
                 });
+                Route::get('/kpd-tree', 'VisCenter\VisualCenterController@kpdTree')->name('kpd-tree');
             }
         );
     }

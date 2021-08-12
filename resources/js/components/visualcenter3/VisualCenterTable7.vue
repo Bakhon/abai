@@ -129,7 +129,7 @@
                 v-bind:dateEnd="dateEnd"
             ></vertical-indicators>
         </div>
-        <cat-loader />
+
     </div>
 </template>
 <script src="./VisualCenterTable7.js"></script>

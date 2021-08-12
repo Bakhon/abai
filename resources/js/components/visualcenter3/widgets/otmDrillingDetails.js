@@ -75,7 +75,7 @@ export default {
         },
 
         async switchDrillingPeriod(buttonType) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             this.drillingDailyPeriod = "";
             this.drillingMonthlyPeriod = "";
             this.drillingYearlyPeriod = "";
@@ -86,7 +86,7 @@ export default {
             this.isDrillingPeriodSelected = this.isDrillingFewDaysSelected();
             this.drillingDetails = await this.getDrillingByMonth();
             this.updateDrillingWidget();
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         },
 
         isDrillingFewDaysSelected() {

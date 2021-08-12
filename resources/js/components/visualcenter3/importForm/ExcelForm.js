@@ -28,6 +28,8 @@ import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
 import InputDataOperations from "./dataManagers/inputDataOperations";
 import Archieve from "./dataManagers/archieve";
+;
+import {globalloadingMutations} from '@store/helpers';
 
 const defaultDzoTicker = "ЭМГ";
 
@@ -179,7 +181,7 @@ export default {
     },
     props: ['userId'],
     async mounted() {
-        this.$store.commit('globalloading/SET_LOADING', true);
+        this.SET_LOADING(true);
         this.dzoUsers = Object.keys(this.dzoMapping).map(k => this.dzoMapping[k].id);
         let currentDayNumber = moment().date();
         if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
@@ -201,7 +203,7 @@ export default {
         this.setTableFormat();
         await this.updateCurrentData();
         this.addListeners();
-        this.$store.commit('globalloading/SET_LOADING', false);
+        this.SET_LOADING(false);
     },
     methods: {
         addColumnsToGrid() {
@@ -469,9 +471,12 @@ export default {
                 });
             }
         },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
     },
     components: {
-        VGrid,
+        VGrid
     },
     mixins: [Visual,TodayDzoData,InputDataOperations,Archieve],
 };
