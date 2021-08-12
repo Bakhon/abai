@@ -227,4 +227,5 @@ return array (
   'annual_oil_production' => 'Годовая добыча нефти',
   'enterprise_income_loss' => 'Доход / убыток предприятия',
   'technological_indicators' => 'Технологические показатели',
+  'palette' => 'Палетка',
 );

@@ -126,10 +126,13 @@ export default {
         {
           title: 'Остановка нерентабельных скважин',
           dimension: 'скв.',
-          values: this.filteredData.map(item =>
-              +item.uwi_count_profitless_cat_1.original_value_optimized +
-              (+item.uwi_count_profitless_cat_2.original_value_optimized)
-          )
+          values: this.filteredData.map(item => {
+            let cat1 = +item.uwi_count_profitless_cat_1.original_value_optimized
+
+            let cat2 = +item.uwi_count_profitless_cat_2.original_value_optimized
+
+            return cat1 + cat2
+          })
         },
         {
           title: 'Потери добычи из-за остановки',

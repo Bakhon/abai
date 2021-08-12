@@ -12,7 +12,7 @@
     </div>
 
     <div class="mt-3 w-100">
-      <table-technological-indicators
+      <table-palette
           v-if="1"
           :scenarios="res.scenarios"
           :scenario="scenario"
@@ -65,6 +65,13 @@
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
           class="text-white"/>
+
+      <table-technological-indicators
+          v-else-if="6"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :oil-prices="scenarioVariations.oil_prices"
+          class="text-white"/>
     </div>
   </div>
 </template>
@@ -78,6 +85,7 @@ import TableWellChanges from "./TableWellChanges";
 import TableEconomicEfficiency from "./TableEconomicEfficiency";
 import TablePorcupine from "./TablePorcupine";
 import TableTechnologicalIndicators from "./TableTechnologicalIndicators";
+import TablePalette from "./TablePalette";
 
 export default {
   name: "Tables",
@@ -89,7 +97,8 @@ export default {
     TableWellChanges,
     TableEconomicEfficiency,
     TablePorcupine,
-    TableTechnologicalIndicators
+    TableTechnologicalIndicators,
+    TablePalette
   },
   props: {
     scenario: {
@@ -111,6 +120,7 @@ export default {
   computed: {
     tabs() {
       return [
+        this.trans('economic_reference.palette'),
         this.trans('economic_reference.technological_indicators'),
         this.trans('economic_reference.specific_indicators'),
         this.trans('economic_reference.technical_economic_indicators'),
