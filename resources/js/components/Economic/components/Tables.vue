@@ -12,13 +12,8 @@
     </div>
 
     <div class="mt-3 w-100">
-      <table-chess
-          v-if="activeTab === 0"
-          :scenario="scenario"
-          :oil-prices="scenarioVariations.oil_prices"/>
-
       <table-specific-indicators
-          v-else-if="activeTab === null"
+          v-if="activeTab === 0"
           :org="res.org"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
@@ -63,6 +58,11 @@
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
           class="text-white"/>
+
+      <table-chess
+          v-else-if="activeTab === 6"
+          :scenario="scenario"
+          :oil-prices="scenarioVariations.oil_prices"/>
     </div>
   </div>
 </template>
@@ -109,13 +109,13 @@ export default {
   computed: {
     tabs() {
       return [
-        this.trans('economic_reference.table_chess'),
         this.trans('economic_reference.specific_indicators'),
         this.trans('economic_reference.technical_economic_indicators'),
         this.trans('economic_reference.oil_price_options'),
         this.trans('economic_reference.table_well_changes'),
         this.trans('economic_reference.economic_efficiency'),
         this.trans('economic_reference.table_porcupine'),
+        this.trans('economic_reference.table_chess'),
       ]
     }
   },
