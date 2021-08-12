@@ -80,7 +80,6 @@
                   <div v-if="isCellEdited(row, column)" class="input-wrap">
                     <datetime
                         v-model="row[column.code].value"
-                        :disabled="isLoading"
                         :flow="['year', 'month', 'date']"
                         :phrases="{ok: '', cancel: ''}"
                         auto
@@ -181,7 +180,7 @@
 import Vue from "vue";
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
-import {bdFormActions, bdFormState} from '@store/helpers'
+import {bdFormActions, bdFormState, globalloadingMutations} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
 import upperFirst from 'lodash/upperFirst'
@@ -236,11 +235,11 @@ export default {
         row: null,
         column: null
       },
-      isloading: false,
       history: {},
       rowHistory: null,
       rowHistoryColumns: [],
       rowHistoryGraph: null,
+      oldFilter: null
     }
   },
   watch: {
@@ -249,6 +248,12 @@ export default {
     },
     id() {
       this.updateTableData()
+    },
+    filter: {
+      deep: true,
+      handler(val) {
+        this.updateTableData()
+      }
     },
   },
   computed: {
@@ -266,11 +271,14 @@ export default {
     ...bdFormActions([
       'updateForm'
     ]),
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     updateTableData() {
 
       if (!this.filter || !this.id || !this.type) return
 
-      this.isloading = true
+      this.SET_LOADING(true)
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/rows`), {
         params: {
           filter: this.filter,
@@ -287,7 +295,7 @@ export default {
             this.loadEditHistory()
           })
           .finally(() => {
-            this.isloading = false
+            this.SET_LOADING(false)
           })
 
     },
@@ -380,7 +388,7 @@ export default {
           if (row[column.code].params) {
             data['params'] = row[column.code].params
           }
-          this.isloading = true
+          this.SET_LOADING(true)
           this.axios
               .patch(this.localeUrl(`/api/bigdata/forms/${this.params.code}/save/${column.code}`), data)
               .then(({data}) => {
@@ -437,7 +445,7 @@ export default {
       document.body.classList.remove('fixed')
     },
     showHistoricalDataForRow(row, column) {
-      this.isloading = true
+      this.SET_LOADING(true)
       document.body.classList.add('fixed')
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/row-history`), {
         params: {
@@ -454,11 +462,11 @@ export default {
         })
 
         this.rowHistoryColumns = columns
-        this.isloading = false
+        this.SET_LOADING(false)
       })
     },
     showHistoryGraphDataForRow(row, column) {
-      this.isloading = true
+      this.SET_LOADING(true)
       document.body.classList.add('fixed')
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/row-history-graph`), {
         params: {
@@ -467,7 +475,7 @@ export default {
           date: this.filter.date
         }
       }).then(({data}) => {
-        this.isloading = false
+        this.SET_LOADING(false)
         this.rowHistoryGraph = data
       })
     },
@@ -479,7 +487,7 @@ export default {
       })
           .then(result => {
             if (result === true) {
-              this.isloading = true
+              this.SET_LOADING(true)
               this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/copy`), {
                 params: {
                   well_id: row.id,
@@ -487,7 +495,7 @@ export default {
                   date: this.filter.date
                 }
               }).then(({data}) => {
-                this.isloading = false
+                this.SET_LOADING(false)
                 this.rowHistoryGraph = data
 
                 row[column.copy.to].value = row[column.copy.from].value

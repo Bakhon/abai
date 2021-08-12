@@ -51,8 +51,5 @@
     'daily_reports_fluid_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsFluidProd',
     'production_wells_schedule' => '\\App\\Services\\BigData\\Forms\\ProductionWellsSchedule',
     'lab_research' => '\\App\\Services\\BigData\\Forms\\LabResearch',
-    'test_form1' => '\\App\\Services\\BigData\\Forms\\TestForm1',
-    'еуыеtestform1' => '\\App\\Services\\BigData\\Forms\\Еуыеtestform1',
-    'form_test1' => '\\App\\Services\\BigData\\Forms\\FormTest1',
-    'test_form2' => '\\App\\Services\\BigData\\Forms\\TestForm2',
+    'well_treat' => '\\App\\Services\\BigData\\Forms\\WellTreat',
 );
