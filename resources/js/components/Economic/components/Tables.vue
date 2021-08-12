@@ -58,11 +58,6 @@
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
           class="text-white"/>
-
-      <table-chess
-          v-else-if="activeTab === 6"
-          :scenario="scenario"
-          :oil-prices="scenarioVariations.oil_prices"/>
     </div>
   </div>
 </template>
@@ -75,7 +70,6 @@ import TableOilPriceOptions from "./TableOilPriceOptions";
 import TableWellChanges from "./TableWellChanges";
 import TableEconomicEfficiency from "./TableEconomicEfficiency";
 import TablePorcupine from "./TablePorcupine";
-import TableChess from "./TableChess";
 
 export default {
   name: "Tables",
@@ -87,7 +81,6 @@ export default {
     TableWellChanges,
     TableEconomicEfficiency,
     TablePorcupine,
-    TableChess
   },
   props: {
     scenario: {
@@ -115,7 +108,6 @@ export default {
         this.trans('economic_reference.table_well_changes'),
         this.trans('economic_reference.economic_efficiency'),
         this.trans('economic_reference.table_porcupine'),
-        this.trans('economic_reference.table_chess'),
       ]
     }
   },
