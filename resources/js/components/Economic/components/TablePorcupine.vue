@@ -120,8 +120,23 @@ export default {
           defaultLocale: 'ru'
         },
         markers: {
-          size: 7,
+          size: 5,
           strokeOpacity: 0.1,
+          discrete: this.chartSeries.map((series, seriesIndex) => {
+            return {
+              seriesIndex: seriesIndex,
+              dataPointIndex: series.data.reduce(
+                  (bestIndex, value, currentIndex, data) => +value.y > +data[bestIndex].y
+                      ? currentIndex
+                      : bestIndex
+                  , 0
+              ),
+              fillColor: '#fff',
+              strokeColor: '#fff',
+              size: 10,
+              shape: "circle"
+            }
+          })
         },
         yaxis: {
           title: {
@@ -137,7 +152,10 @@ export default {
             formatter: (val) => (+val / 1000).toFixed(0),
           },
           title: {
-            text: `${this.trans('economic_reference.annual_oil_production')}, ${this.trans('economic_reference.thousand_tons')}`,
+            text: `
+            ${this.trans('economic_reference.annual_oil_production')},
+            ${this.trans('economic_reference.thousand_tons')}
+            `,
           },
         },
         tooltip: {
