@@ -12,15 +12,8 @@
     </div>
 
     <div class="mt-3 w-100">
-      <table-palette
-          v-if="1"
-          :scenarios="res.scenarios"
-          :scenario="scenario"
-          :oil-prices="scenarioVariations.oil_prices"
-          class="text-white"/>
-
       <table-specific-indicators
-          v-else-if="activeTab === 0"
+          v-if="activeTab === 0"
           :org="res.org"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
@@ -67,7 +60,14 @@
           class="text-white"/>
 
       <table-technological-indicators
-          v-else-if="6"
+          v-else-if="activeTab === 6"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :oil-prices="scenarioVariations.oil_prices"
+          class="text-white"/>
+
+      <table-palette
+          v-else-if="activeTab === 7"
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
@@ -120,14 +120,14 @@ export default {
   computed: {
     tabs() {
       return [
-        this.trans('economic_reference.palette'),
-        this.trans('economic_reference.technological_indicators'),
         this.trans('economic_reference.specific_indicators'),
         this.trans('economic_reference.technical_economic_indicators'),
         this.trans('economic_reference.oil_price_options'),
         this.trans('economic_reference.table_well_changes'),
         this.trans('economic_reference.economic_efficiency'),
         this.trans('economic_reference.table_porcupine'),
+        this.trans('economic_reference.technological_indicators'),
+        this.trans('economic_reference.palette'),
       ]
     }
   },

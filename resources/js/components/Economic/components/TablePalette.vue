@@ -52,6 +52,29 @@
           {{ item.values[priceIndex].toLocaleString() }}
         </div>
       </div>
+
+      <div v-for="(oilPrice, index) in oilPrices"
+           :key="index"
+           :class="index % 2 === 0 ? 'bg-header-light' : 'bg-header'"
+           class="d-flex">
+        <div class="px-3 py-2 border-grey text-center flex-300px">
+          {{ (+oilPrice).toLocaleString() }}
+          {{ trans('economic_reference.dollar_per_bar') }}
+        </div>
+
+        <div
+            :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
+            class="px-3 py-2 border-grey text-center flex-150px">
+        </div>
+
+        <div v-for="(price, priceIndex) in oilPrices"
+             :key="price"
+             :style="`flex-basis: ${100 / oilPrices.length}%`"
+             :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
+             class="px-3 py-2 border-grey text-center flex-grow-1">
+
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -175,6 +198,10 @@ export default {
 
 .bg-header {
   background: #333975;
+}
+
+.bg-header-light {
+  background: #454D7D;
 }
 
 .bg-light-blue {
