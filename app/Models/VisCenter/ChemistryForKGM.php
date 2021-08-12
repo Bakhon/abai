@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\VisCenter\DataForKGM\Monthly;
+namespace App\Models\VisCenter;
 
 use App\Models\TBDModel;
 

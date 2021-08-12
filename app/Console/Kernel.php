@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\UsdParse::class,
         \App\Console\Commands\OilParse::class,
-        \App\Console\Commands\StoreKGMReportsFromAvocetByDay::class,
+        \App\Console\Commands\HiveDataFromAvocet::class,
         \App\Console\Commands\ReceiveNonOperatingAssets::class,
         \App\Console\Commands\ComplicationMonitoringEconomicCalculate::class,
         \App\Console\Commands\EmergencySituations::class,
