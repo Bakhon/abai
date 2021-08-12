@@ -42,10 +42,11 @@ export default {
   },
   methods: {
     tooltipFormatter(value, index) {
-      return `${value},
-              cat1: ${this.filteredData[0].series[index].cat_1 * 100}%,
-              cat2: ${this.filteredData[0].series[index].cat_2 * 100}%
-              `
+      return `
+        ${value} ${this.trans('economic_reference.billion')}. ${this.trans('economic_reference.tenge')}.
+        ${this.trans('economic_reference.cat_1_trips')}: ${this.filteredData[0].series[index].cat_1 * 100}%,
+        ${this.trans('economic_reference.cat_2_trips')}: ${this.filteredData[0].series[index].cat_2 * 100}%
+      `
     },
 
     dataLabelsFormatter(value, {seriesIndex, dataPointIndex}) {
@@ -124,7 +125,11 @@ export default {
         },
         yaxis: {
           title: {
-            text: 'Доход/убыток предприятия, млрд. тг.',
+            text: `
+            ${this.trans('economic_reference.enterprise_income_loss')},
+            ${this.trans('economic_reference.billion')}.
+            ${this.trans('economic_reference.tenge')}.
+            `,
           },
         },
         xaxis: {
@@ -132,7 +137,7 @@ export default {
             formatter: (val) => (+val / 1000).toFixed(0),
           },
           title: {
-            text: 'Годовая добыча нефти, тыс. тонн',
+            text: `${this.trans('economic_reference.annual_oil_production')}, ${this.trans('economic_reference.thousand_tons')}`,
           },
         },
         tooltip: {
@@ -144,6 +149,7 @@ export default {
         },
         dataLabels: {
           enabled: true,
+          enabledOnSeries: [0],
           offsetY: -7,
           offsetX: 5,
           formatter: (value, params) => this.dataLabelsFormatter(value, params),
