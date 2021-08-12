@@ -1,7 +1,6 @@
 <template>
   <div class="all-contents">
     <div class="row well-cart__wrapper">
-      <cat-loader v-show="loading"/>
       <div
           :class="{'left-column_folded': isLeftColumnFolded}"
           class="left-column"
@@ -64,7 +63,7 @@
               <div class="col-8">
                 <form class="search-form d-flex align-items-center">
                   <select class="select-dzo mr-2" v-if="dzoSelectOptions.length > 0"
-                          @change="selectedUserDzo = $event.target.value">
+                          @change="dzoSelectChange($event)">
                     <option value="0" selected>Все ДЗО</option>
                     <option v-for="(dzoSelectOption, index) in dzoSelectOptions" :value="dzoSelectOption['id']">
                         {{ dzoSelectOption['name'] }}
@@ -223,7 +222,7 @@ import moment from 'moment'
 import WellCartTree from './WellCartTree'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import CatLoader from '@ui-kit/CatLoader'
+
 
 const requireComponent = require.context('../bigdata/forms/CustomPlainForms', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
@@ -243,8 +242,7 @@ export default {
   components: {
     BigDataPlainFormResult,
     vSelect,
-    WellCartTree,
-    CatLoader
+    WellCartTree
   },
   data() {
     return {
@@ -515,6 +513,11 @@ export default {
         this.isLeftColumnFolded = !value;
         this.isRightColumnFolded = !value;
         this.isBothColumnFolded = !value;
+    },
+    dzoSelectChange(event) {
+      this.selectedUserDzo = event.target.value;
+      this.options = [];
+      this.wellUwi = null;
     }
   },
   computed: {

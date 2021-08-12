@@ -1,7 +1,7 @@
 @extends('layouts.monitor')
 
 @section('content')
-    <div id="app">
+    <div  >
         <div class="col-md-12">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
