@@ -3,7 +3,6 @@
    <div class="pf-index-wrapper">
 
        <div class="pf-index-main">
-{{--           <div id="map"></div>--}}
            <pf-oil-map />
        </div>
        <div class="pf-index-menu"><pf-main></pf-main></div>
@@ -76,7 +75,6 @@
         grid-template-columns: 5fr 1467fr 10fr 355fr 5fr;
         background:#0f1430;
         width :100%;
-        /* height: 100%; */
     }
 
     .pf-index-main {

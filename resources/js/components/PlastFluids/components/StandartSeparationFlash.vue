@@ -475,7 +475,6 @@ li {
   padding: 0
 }
 label{font-weight:normal}
-/*Tree*/
 
 .trees {
   margin-left: 10px;
@@ -503,7 +502,6 @@ label{font-weight:normal}
 }
 
 .trees li:last-child:after {
-  /*content: "";*/
   position: absolute;
   width: 2px;
   height: 13px;

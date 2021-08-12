@@ -17,16 +17,14 @@
 
 <script>
 import PageLayoutGrid from "../LayoutPage";
-import BaseGis from "./BaseGis";
 import LeftSide from "./LeftSide";
 import RightSide from "./RightSide";
 import TopSide from "../TopSide";
 
 export default {
-  name: "PagePetrophysics",
+  name: "LayoutPage",
   components: {
     LayoutPage,
-    BaseGis,
     LeftSide,
     RightSide,
     TopSide

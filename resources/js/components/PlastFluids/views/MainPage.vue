@@ -90,9 +90,6 @@ export default {
       options1: [
         {item: 'A', name: 'Кожасай'},
         {item: 'B', name: 'Алибекмола'},
-        // { item: 'D', name: 'ТОО «Казахтуркмунай»' }
-        // { item: 'E', name: 'АО «Эмбамунайгаз»' }
-        // { item: 'F', name: 'ТОО СП «Казгермунай»' }
       ]
     };
   },
@@ -146,7 +143,6 @@ export default {
 .wrapper-info {
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
   background: #272953;
   padding: 10px 14px 10px;
   height: 100%;
