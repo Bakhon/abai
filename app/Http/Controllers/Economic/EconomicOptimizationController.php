@@ -200,27 +200,22 @@ class EconomicOptimizationController extends Controller
                 Carbon::parse(self::DATA_SOURCE_DATE)->addDay(),
             ));
 
+        $columns = [
+            'uwi',
+            "oil_price",
+            "dollar_rate",
+            'profitability_12m',
+            "scenario_id",
+            "rank",
+        ];
+
         return $builder
-            ->select([
-                'uwi',
-                "oil_price",
-                "dollar_rate",
-                'profitability_12m',
-                "scenario_id",
-                "rank",
-            ])
+            ->select($columns)
             ->doubleSum('operating_profit_12m')
             ->orderBy('oil_price')
             ->orderBy('dollar_rate')
             ->orderBy('operating_profit_12m')
-            ->groupBy([
-                'uwi',
-                "oil_price",
-                "dollar_rate",
-                'profitability_12m',
-                "scenario_id",
-                "rank",
-            ])
+            ->groupBy($columns)
             ->data();
     }
 
