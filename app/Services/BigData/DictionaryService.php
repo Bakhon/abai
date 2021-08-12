@@ -11,6 +11,7 @@ use App\Models\BigData\Dictionaries\CasingType;
 use App\Models\BigData\Dictionaries\Company;
 use App\Models\BigData\Dictionaries\CoordSystem;
 use App\Models\BigData\Dictionaries\Device;
+use App\Models\BigData\Dictionaries\DocumentType;
 use App\Models\BigData\Dictionaries\DrillChisel;
 use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
@@ -35,9 +36,11 @@ use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
 use App\Models\BigData\Dictionaries\SaturationType;
+use App\Models\BigData\Dictionaries\Tag;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateType;
+use App\Models\BigData\Dictionaries\TreatType;
 use App\Models\BigData\Dictionaries\Well;
 use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\WellCategory;
@@ -45,8 +48,6 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
-use App\Models\BigData\Dictionaries\DocumentType;
-use App\Models\BigData\Dictionaries\Tag;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -221,12 +222,12 @@ class DictionaryService
             'class' => Tag::class,
             'name_field' => 'name_ru'
         ],
-        'gis_method_types' =>[
-            'class' => GisMethodType::class,
-            'name_field' => 'name_ru'
-        ],
         'lab_research_type' => [
             'class' => LabResearchType::class,
+            'name_field' => 'name_ru'
+        ],
+        'treat_type' => [
+            'class' => TreatType::class,
             'name_field' => 'name_ru'
         ]
     ];
