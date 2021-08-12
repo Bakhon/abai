@@ -6,7 +6,17 @@ export default {
             allProduction: [],
             difference: [],
             compared: [],
-            systemFields: ['id','is_corrected','is_approved','date','user_name','change_reason','dzo_import_data_id'],
+            systemFields: [
+                'id',
+                'is_corrected',
+                'is_approved',
+                'date',
+                'user_name',
+                'change_reason',
+                'dzo_import_data_id',
+                'is_approved_by_first_master',
+                'is_approved_by_second_master'
+            ],
             dzoCompanies: {
                 'ЭМГ': 'АО "Эмбамунайгаз"',
                 'КОА': 'ТОО "Казахойл Актобе"',
@@ -18,24 +28,60 @@ export default {
             },
             currentDzo: {},
             names: fieldsMapping,
-            currentStatus: ''
+            currentStatus: '',
+            approvers: {
+                'firstMaster': {
+                    'name': 'Сенсізбай А. Н.',
+                    'field': 'is_approved_by_first_master',
+                    'isFinalApprove': false
+                },
+                'secondMaster': {
+                    'name': 'Кенжебаев Н. Х.',
+                    'field': 'is_approved_by_second_master',
+                    'isFinalApprove': false
+                },
+                'mainMaster': {
+                    'name': 'Кутжанов А.А.',
+                    'field': 'is_approved',
+                    'isFinalApprove': true
+                }
+            },
+            statusTransition: [
+                'visualcenter.dailyApprove.approve',
+                'visualcenter.dailyApprove.approved'
+            ],
         }
     },
     methods: {
-        async approve() {
-            let queryOptions = {'actualId': this.currentDzo.actualId, 'currentId': this.currentDzo.currentId};
+        async approve(master) {
+            let queryOptions = {
+                'actualId': this.currentDzo.actualId,
+                'currentId': this.currentDzo.currentId,
+                'currentApproverField': master.field,
+                'dzo_name': this.currentDzo.dzoName,
+                'date': this.currentDzo.date,
+                'user_name': this.currentDzo.userName,
+                'change_reason': this.currentDzo.reason,
+                'isFinalApprove': master.isFinalApprove
+            };
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
-            this.currentStatus = 'Согласовано';
+            this.currentStatus = this.trans("visualcenter.dailyApprove.approved")
             this.currentDzo = {};
             let uri = this.localeUrl("/approve-daily-correction", {params:queryOptions});
             await axios.get(uri,{params:queryOptions});
         },
         async decline() {
-            let queryOptions = {'currentId': this.currentDzo.currentId};
+            let queryOptions = {
+                'currentId': this.currentDzo.currentId,
+                'dzo_name': this.currentDzo.dzoName,
+                'date': this.currentDzo.date,
+                'user_name': this.currentDzo.userName,
+                'change_reason': this.currentDzo.reason,
+            };
             this.currentDzo.isProcessed = true;
             this.compared[this.currentDzo.index].isProcessed = true;
-            this.currentStatus = 'Отменено';
+            this.currentStatus = this.trans("visualcenter.dailyApprove.cancelled");
             this.currentDzo = {};
             let uri = this.localeUrl("/decline-daily-correction", {params:queryOptions});
             await axios.get(uri,{params:queryOptions});
@@ -70,8 +116,18 @@ export default {
                     'reason': approveItem.change_reason,
                     'selected': false,
                     'currentId': approveItem.id,
-                    'actualId': actual.id
+                    'actualId': actual.id,
+                    'isFirstMasterApproved': approveItem.is_approved_by_first_master,
+                    'isSecondMasterApproved': approveItem.is_approved_by_second_master,
+                    'firstMasterApproveTranslation': this.statusTransition[0],
+                    'secondMasterApproveTranslation': this.statusTransition[0],
                 };
+                if (approve.isFirstMasterApproved) {
+                    approve.firstMasterApproveTranslation = this.statusTransition[1]
+                }
+                if (approve.isSecondMasterApproved) {
+                    approve.secondMasterApproveTranslation = this.statusTransition[1]
+                }
                 approve.difference = this.getDifference(approveItem,actual);
                 compared.push(approve);
             });

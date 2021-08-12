@@ -1,0 +1,24 @@
+{
+  "type": "table",
+  "filter": [
+    {
+      "code": "treat_type",
+      "title": "treat_type",
+      "type": "dict",
+      "dict": "treat_type"
+    },
+    {
+      "code": "date",
+      "title": "date",
+      "type": "date"
+    }
+  ],
+  "columns": [
+    {
+      "title": "uwi",
+      "code": "uwi",
+      "type": "link",
+      "is_editable": false
+    }
+  ]
+}
