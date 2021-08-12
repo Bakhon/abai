@@ -11,7 +11,7 @@ export default {
   props: {
     fontSize: {
       required: false,
-      type: Number,
+      type: [Number, String],
       default: 16
     }
   }
