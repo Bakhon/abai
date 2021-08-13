@@ -14,9 +14,9 @@
           Ед. изм
         </div>
 
-        <div v-for="price in oilPrices"
+        <div v-for="price in reverseOilPrices"
              :key="price"
-             :style="`flex-basis: ${100 / oilPrices.length}%`"
+             :style="`flex-basis: ${100 / reverseOilPrices.length}%`"
              class="py-2 px-3 border-grey text-center">
           {{ (+price).toLocaleString() }}{{ trans('economic_reference.dollar_per_bar') }}
         </div>
@@ -36,9 +36,9 @@
           {{ item.dimension }}
         </div>
 
-        <div v-for="(price, priceIndex) in oilPrices"
+        <div v-for="(price, priceIndex) in reverseOilPrices"
              :key="`${index}_${priceIndex}`"
-             :style="`flex-basis: ${100 / oilPrices.length}%`"
+             :style="`flex-basis: ${100 / reverseOilPrices.length}%`"
              class="py-2 px-3 border-grey text-center">
           {{ item.values[priceIndex].toLocaleString() }}
         </div>
@@ -70,6 +70,10 @@ export default {
     },
   },
   computed: {
+    reverseOilPrices() {
+      return this.oilPrices.reverse()
+    },
+
     filteredData() {
       let scenarios = this.scenarios.filter(scenario =>
           scenario.dollar_rate === this.scenario.dollar_rate &&
@@ -77,8 +81,10 @@ export default {
           scenario.coef_Fixed_nopayroll === this.scenario.coef_Fixed_nopayroll
       )
 
-      return this.oilPrices.map(oilPrice => {
-        return scenarios.find(scenario => scenario.oil_price === oilPrice)
+      return this.reverseOilPrices.map(oilPrice => {
+        return scenarios
+            .filter(scenario => scenario.oil_price === oilPrice)
+            .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
       })
     },
 

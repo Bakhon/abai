@@ -23,7 +23,7 @@
           </div>
 
           <div class="d-flex">
-            <div v-for="price in oilPrices"
+            <div v-for="price in reverseOilPrices"
                  :key="price"
                  class="py-3 border-grey text-center flex-grow-1">
               {{ (+price).toLocaleString() }}
@@ -45,15 +45,15 @@
           {{ item.pp2020 }}
         </div>
 
-        <div v-for="(price, priceIndex) in oilPrices"
+        <div v-for="(price, priceIndex) in reverseOilPrices"
              :key="price"
-             :style="`flex-basis: ${100 / oilPrices.length}%`"
+             :style="`flex-basis: ${100 / reverseOilPrices.length}%`"
              class="px-3 py-2 border-grey text-center flex-grow-1">
           {{ item.values[priceIndex].toLocaleString() }}
         </div>
       </div>
 
-      <div v-for="(oilPrice, index) in oilPrices"
+      <div v-for="(oilPrice, index) in reverseOilPrices"
            :key="index"
            :class="index % 2 === 0 ? 'bg-header-light' : 'bg-header'"
            class="d-flex">
@@ -67,9 +67,9 @@
             class="px-3 py-2 border-grey text-center flex-150px">
         </div>
 
-        <div v-for="(price, priceIndex) in oilPrices"
+        <div v-for="(price, priceIndex) in reverseOilPrices"
              :key="price"
-             :style="`flex-basis: ${100 / oilPrices.length}%`"
+             :style="`flex-basis: ${100 / reverseOilPrices.length}%`"
              :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
              class="px-3 py-2 border-grey text-center flex-grow-1">
 
@@ -133,6 +133,10 @@ export default {
     }
   },
   computed: {
+    reverseOilPrices() {
+      return this.oilPrices.reverse()
+    },
+
     filteredData() {
       let scenarios = this.scenarios.filter(scenario =>
           scenario.dollar_rate === this.scenario.dollar_rate &&
@@ -140,8 +144,10 @@ export default {
           scenario.coef_Fixed_nopayroll === this.scenario.coef_Fixed_nopayroll
       )
 
-      return this.oilPrices.map(oilPrice => {
-        return scenarios.find(scenario => scenario.oil_price === oilPrice)
+      return this.reverseOilPrices.map(oilPrice => {
+        return scenarios
+            .filter(scenario => scenario.oil_price === oilPrice)
+            .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
       })
     },
 
