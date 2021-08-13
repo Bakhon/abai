@@ -63,6 +63,7 @@ import Vue from "vue";
 import BigdataFormField from './field'
 import BigdataPlainFormResults from './PlainFormResults'
 import {bdFormActions, bdFormState, globalloadingMutations} from '@store/helpers'
+import axios from "axios";
 
 
 export default {
@@ -112,10 +113,20 @@ export default {
       }
       return fields
     },
+    formFilesToSubmit() {
+      let files = {}
+      for (let key in this.formValues) {
+        let field = this.formFields.find(field => field.code === key)
+        if (field.type !== 'file') continue
+        files[key] = this.formValues[key]
+      }
+      return files
+    },
     formValuesToSubmit() {
       let values = {}
       for (let key in this.formValues) {
         let field = this.formFields.find(field => field.code === key)
+        if (field.type === 'file') continue
         if (field && field.type === 'calc' && field.submit_value !== true) continue
         values[key] = this.formValues[key]
       }
@@ -162,15 +173,36 @@ export default {
       }
 
     },
-    submit() {
+    async submit() {
 
       this.SET_LOADING(true)
+
+      let files = {}
+      if (Object.keys(this.formFilesToSubmit).length > 0) {
+        for (let key in this.formFilesToSubmit) {
+          let formData = new FormData()
+          this.formFilesToSubmit[key].forEach((file, index) => {
+            formData.append(`uploads[]`, file.file)
+          })
+
+          let fileField = this.formFields.find(field => field.code === key)
+          let origin = this.formValues[fileField.origin]
+          formData.append('origin', origin)
+
+          await axios.post(this.localeUrl('/attachments'), formData).then(({data}) => {
+            files[key] = data.files
+          }).catch(() => {
+            this.SET_LOADING(false)
+          })
+        }
+      }
 
       this
           .submitForm({
             code: this.params.code,
             wellId: this.wellId,
-            values: this.formValuesToSubmit
+            values: this.formValuesToSubmit,
+            files: files
           })
           .then(data => {
             this.errors = []
@@ -211,6 +243,13 @@ export default {
             this.SET_LOADING(false)
           })
     },
+    submitForm(params) {
+      return axios.post(this.localeUrl(`/api/bigdata/forms/${params.code}`), {
+        ...params.values,
+        well: params.wellId,
+        files: params.files
+      })
+    },
     cancel() {
       this.$emit('close')
     },
@@ -226,7 +265,7 @@ export default {
       }
     },
     fillCalculatedFields() {
-      this.$store.commit('globalloading/SET_LOADING', true);
+      this.SET_LOADING(true)
       axios.post(
           this.localeUrl(`/api/bigdata/forms/${this.params.code}/calc-fields`),
           {
@@ -238,11 +277,11 @@ export default {
           this.formValues[key] = data[key]
         }
       }).finally(() => {
-        this.$store.commit('globalloading/SET_LOADING', false);
+        this.SET_LOADING(false)
       })
     },
     updateFields() {
-      this.$store.commit('globalloading/SET_LOADING', true);
+      this.SET_LOADING(true)
       axios.post(
           this.localeUrl(`/api/bigdata/forms/${this.params.code}/update-fields`),
           {
@@ -257,7 +296,7 @@ export default {
           }
         }
       }).finally(() => {
-        this.$store.commit('globalloading/SET_LOADING', false);
+        this.SET_LOADING(false)
       })
     },
     setWellPrefix(triggerFieldCode, changeFieldCode) {

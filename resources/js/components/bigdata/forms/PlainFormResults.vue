@@ -141,7 +141,7 @@
 <script>
 import forms from '../../../json/bd/forms.json'
 import BigDataPlainForm from './PlainForm'
-import {bdFormActions} from '@store/helpers'
+import {bdFormActions, globalloadingMutations} from '@store/helpers'
 
 import EditHistory from '../../common/EditHistory'
 import moment from "moment";
@@ -175,7 +175,6 @@ export default {
       formValues: null,
       formParams: null,
       dictFields: {},
-      isLoading: false,
       hasFormError: false,
       history: {},
       isHistoryShowed: false,
@@ -195,11 +194,14 @@ export default {
     this.updateResults()
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     ...bdFormActions([
       'loadDict'
     ]),
     updateResults() {
-      this.isLoading = true
+      this.SET_LOADING(true)
       this.hasFormError = false
 
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.code}`)).then(({data}) => {
@@ -235,7 +237,7 @@ export default {
         this.columns = null
         this.hasFormError = true
       }).finally(() => {
-        this.isLoading = false
+        this.SET_LOADING(false)
       })
     },
     loadDictionaries() {

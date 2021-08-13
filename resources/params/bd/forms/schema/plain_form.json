@@ -38,7 +38,8 @@
                             "checkbox",
                             "checkbox_table",
                             "calc",
-                            "label"
+                            "label",
+                            "file"
                           ]
                         },
                         "title": {
@@ -80,7 +81,8 @@
                                 "checkbox",
                                 "checkbox_table",
                                 "calc",
-                                "label"
+                                "label",
+                                "file"
                               ]
                             }
                           }
