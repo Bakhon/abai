@@ -67,7 +67,11 @@ Route::group(
                 Route::get('eco_refs_costs', 'EcoRefsCostController@getData');
                 Route::resource('eco_refs_scenario', 'Refs\EcoRefsScenarioController');
                 Route::get('eco_refs_scenarios', 'Refs\EcoRefsScenarioController@getData');
-                Route::get('economic_data/upload_excel', 'EcoRefsCostController@uploadExcel')->name('economic_data_upload');
+                Route::get('eco_refs_gtms', 'Refs\EcoRefsGtmController@getData');
+                Route::get('eco_refs_gtm/upload_excel', 'Refs\EcoRefsGtmController@uploadExcel')->name('eco_refs_gtm_upload');
+                Route::post('eco_refs_gtm/import_excel', 'Refs\EcoRefsGtmController@importExcel')->name('eco_refs_gtm_import');
+                Route::resource('eco_refs_gtm', 'Refs\EcoRefsGtmController');
+               Route::get('economic_data/upload_excel', 'EcoRefsCostController@uploadExcel')->name('economic_data_upload');
                 Route::post('economic_data/import_excel', 'EcoRefsCostController@importExcel')->name('economic_data_import');
                 Route::resource('economic_data_log', 'Refs\EconomicDataLogController');
                 Route::resource('ecorefsbranchid', 'EcoRefsBrachIdController');
@@ -122,7 +126,7 @@ Route::group(
 
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
                 Route::get('/paegtm/accum_oil_prod_data', 'GTM\GTMController@getAccumOilProd')->name('gtm');
-                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');                  
+                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');
             }
         );
         Auth::routes(
