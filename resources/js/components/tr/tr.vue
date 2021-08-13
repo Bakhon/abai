@@ -1455,8 +1455,8 @@
                   <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}" :colspan="getRowWidthSpan(row)">{{ row.field }}</td>
                   <td v-if="isEdit">{{ row.field }}</td>
 
-                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.rus_wellname }}</td>
-                  <td v-if="isEdit">{{ row.rus_wellname }}</td>
+                  <td v-if="!isEdit && !isActiveClass(row)" :class="{'activ': isActiveClass(row)}" >{{ row.rus_wellname }}</td>
+                  <td v-if="isEdit && !isActiveClass(row)">{{ row.rus_wellname }}</td>
                   <td
                     v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`well_type`), 'activ': isActiveClass(row)}"
