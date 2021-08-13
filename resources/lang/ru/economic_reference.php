@@ -229,4 +229,5 @@ return array (
   'technological_indicators' => 'Технологические показатели',
   'palette' => 'Палетка',
   'cost' => 'Цена',
+  'eco_refs_gtm' => 'Загрузка входных данных для прогнозных ГТМ',
 );
