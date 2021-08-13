@@ -101,5 +101,6 @@ export default {
     max-width: 80vw;
     padding: 0px;
     margin: 0;
+    z-index: 5000
 }
 </style>
