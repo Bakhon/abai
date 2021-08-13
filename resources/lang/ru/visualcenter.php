@@ -224,7 +224,7 @@ return array (
   'tonWithSpace' => ' тонн',
   'meterCubicWithSpace' => ' м³/сут',
   'requiredDailyPlan' => 'Необходимый ср/сут уровень',
-  'dzoRegions' => 
+  'dzoRegions' =>
   array (
     'aturay' => 'Атырауская область',
     'actubinsk' => 'Актюбинская область',
@@ -238,13 +238,13 @@ return array (
   'saveButton' => 'Сохранить',
   'errors' => 'Ошибки',
   'validateButton' => 'Провести проверку данных',
-  'importForm' => 
+  'importForm' =>
   array (
-    'errorList' => 
+    'errorList' =>
     array (
       'incorrectDocumentFormat' => 'Неверный формат Excel документа',
     ),
-    'status' => 
+    'status' =>
     array (
       'waitForData' => 'Ожидание входящих данных..',
       'dataValid' => 'Данные успешно проверены.',
@@ -297,9 +297,9 @@ return array (
   'buy' => 'Покупка',
   'chemVolume' => 'Объём хим. реагента, тонны',
   'nrs' => 'Нерентабельные скважины',
-  'chartOptions' => 
+  'chartOptions' =>
   array (
-    'monthNames' => 
+    'monthNames' =>
     array (
       'january' => 'Январь',
       'february' => 'Февраль',
@@ -326,7 +326,7 @@ return array (
   'indicatorFall' => 'Снижение',
   'oilCondensateProduction' => 'Добыча нефти и конденсата',
   'withoutKmgParticipation' => 'Без учета доли участия КМГ',
-  'consolidatedDzoNameMapping' => 
+  'consolidatedDzoNameMapping' =>
   array (
     'OMG' => 'АО "Озенмунайгаз"  (нефть) (100%)',
     'OMGK' => 'АО "Озенмунайгаз"  (конденсат) (100%)',
@@ -349,7 +349,7 @@ return array (
     'NKOS' => '"Норт Каспиан Оперейтинг Компани н.в." (на долю Самрук Казына - 8,44%)',
     'PKK' => 'АО "ПетроКазахстан Кумколь Ресорсиз"',
   ),
-  'consolidatedDzoNameMappingWithoutKMG' => 
+  'consolidatedDzoNameMappingWithoutKMG' =>
   array (
     'OMG' => 'АО "Озенмунайгаз" (нефть)',
     'OMGK' => 'АО "Озенмунайгаз" (конденсат)',
