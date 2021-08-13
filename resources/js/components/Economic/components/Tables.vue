@@ -1,5 +1,5 @@
 <template>
-  <div class="row p-3 bg-main1">
+  <div class="row p-3 bg-main1 position-relative">
     <div class="d-flex">
       <chart-button
           v-for="(tab, index) in tabs"
@@ -11,49 +11,52 @@
           @click.native="selectTab(index)"/>
     </div>
 
-    <div
-        v-for="(tab, index) in tabs"
-        v-show="activeTab === index"
-        :key="tab"
-        class="mt-3 w-100">
+    <div class="mt-3 w-100">
       <table-specific-indicators
-          v-if="index === 0"
+          v-if="activeTab === 0"
           :org="res.org"
           :scenario="scenario"
-          :oil-prices="oilPrices"
+          :oil-prices="scenarioVariations.oil_prices"
           :data="res.specificIndicator"
           class="text-white"/>
 
       <table-technical-economic-indicators
-          v-if="index === 1"
+          v-if="activeTab === 1"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
-          :oil-prices="oilPrices"
+          :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
 
       <table-oil-price-options
-          v-if="index === 2"
+          v-else-if="activeTab === 2"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
           class="text-white"/>
 
       <table-well-changes
-          v-if="index === 3"
+          v-else-if="activeTab === 3"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
-          :oil-prices="oilPrices"
+          :oil-prices="scenarioVariations.oil_prices"
           :data="res.wellChanges"
           ref="well-changes"
           class="text-white"/>
 
       <table-economic-efficiency
-          v-if="index === 4"
+          v-else-if="activeTab === 4"
           :scenarios="res.scenarios"
           :scenario="scenario"
-          :oil-prices="oilPrices"
+          :oil-prices="scenarioVariations.oil_prices"
+          class="text-white"/>
+
+      <table-porcupine
+          v-else-if="activeTab === 5"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :scenario-variations="scenarioVariations"
           class="text-white"/>
     </div>
   </div>
@@ -66,6 +69,7 @@ import TableTechnicalEconomicIndicators from "./TableTechnicalEconomicIndicators
 import TableOilPriceOptions from "./TableOilPriceOptions";
 import TableWellChanges from "./TableWellChanges";
 import TableEconomicEfficiency from "./TableEconomicEfficiency";
+import TablePorcupine from "./TablePorcupine";
 
 export default {
   name: "Tables",
@@ -75,16 +79,17 @@ export default {
     TableTechnicalEconomicIndicators,
     TableOilPriceOptions,
     TableWellChanges,
-    TableEconomicEfficiency
+    TableEconomicEfficiency,
+    TablePorcupine,
   },
   props: {
     scenario: {
       required: true,
       type: Object
     },
-    oilPrices: {
+    scenarioVariations: {
       required: true,
-      type: Array
+      type: Object
     },
     res: {
       required: true,
@@ -92,7 +97,7 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 0
+    activeTab: 0,
   }),
   computed: {
     tabs() {
@@ -102,6 +107,7 @@ export default {
         this.trans('economic_reference.oil_price_options'),
         this.trans('economic_reference.table_well_changes'),
         this.trans('economic_reference.economic_efficiency'),
+        this.trans('economic_reference.table_porcupine'),
       ]
     }
   },
@@ -110,12 +116,6 @@ export default {
       this.activeTab = index
 
       this.$emit('updateTab', index)
-
-      if (this.activeTab === 3) {
-        this.$nextTick(() => {
-          this.$refs['well-changes'][0].scrollToChanges()
-        })
-      }
     },
   }
 }
