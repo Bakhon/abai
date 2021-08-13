@@ -121,18 +121,6 @@ export default {
         '',
       ]
     },
-
-    columns() {
-      return [
-        'id',
-        'name',
-        'sc_fa_name',
-        'oil_prices',
-        'course_prices',
-        'optimizations',
-        'delete',
-      ]
-    },
   }
 };
 </script>

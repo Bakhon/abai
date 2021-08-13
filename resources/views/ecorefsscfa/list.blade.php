@@ -97,6 +97,10 @@
                        class="text-primary list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_scenario')}}
                     </a>
+                    <a href="{{ route('eco_refs_gtm.index') }}"
+                       class="text-primary list-group-item list-group-item-action">
+                        {{__('economic_reference.eco_refs_gtm')}}
+                    </a>
                 </div>
             </div>
         </div>
