@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     {{-- content --}}
-    <div class="col p-4" id="app">
+    <div class="col p-4"  >
         <h2 class="subtitle">ГТМ скорпион</h2>
         <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">

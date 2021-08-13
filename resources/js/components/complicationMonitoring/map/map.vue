@@ -1,6 +1,5 @@
 <template>
   <div class="gu-map">
-    <cat-loader />
     <div class="gu-map__controls">
       <h1>{{ trans('monitoring.map.title') }}</h1>
       <div v-if="guPoints" class="d-flex">
@@ -116,6 +115,7 @@
         modal-class="long-modal"
         :title="trans('monitoring.pipe.detail-data') + ' ' + (selectedPipe ? selectedPipe.name : '')"
         :ok-only="true"
+        @hide="resetSelectedObjects()"
     >
       <pipe-long-info
           :pipe="selectedPipe"
@@ -132,27 +132,15 @@
         header-text-variant="light"
         footer-bg-variant="main4"
         centered
-        id="omg-ngdu-well-form"
+        id="omg-ngdu-form"
         modal-class="long-modal"
-        :title="trans('monitoring.well.enter-omg-ngdu-data')"
+        :title="omgNgduFormModalTitle"
         :ok-only="true"
+        @hide="resetSelectedObjects()"
     >
-      <wellOmgNgduForm :well="selectedWell" />
-    </b-modal>
-
-    <b-modal
-        size="xl"
-        header-bg-variant="main4"
-        body-bg-variant="main1"
-        header-text-variant="light"
-        footer-bg-variant="main4"
-        centered
-        id="omg-ngdu-gu-form"
-        modal-class="long-modal"
-        :title="trans('monitoring.gu.enter-omg-ngdu-data')"
-        :ok-only="true"
-    >
-      <guOmgNgduForm :well="selectedGu" />
+      <wellOmgNgduForm v-if="selectedWell" :well="selectedWell" />
+      <guOmgNgduForm v-if="selectedGu" :gu="selectedGu" />
+      <zuOmgNgduForm v-if="selectedZu" :zu="selectedZu" />
     </b-modal>
 
     <div v-show="false">
@@ -176,12 +164,12 @@ import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
-import CatLoader from '@ui-kit/CatLoader';
 import guToolTip from "./guToolTip";
 import pipeToolTip from "./pipeToolTip";
 import pipeLongInfo from "./pipeLongInfo";
 import wellOmgNgduForm from "./wellOmgNgduForm";
 import guOmgNgduForm from "./guOmgNgduForm"
+import zuOmgNgduForm from "./zuOmgNgduForm"
 import turfLength from '@turf/length';
 import { lineString as turfLineString} from "@turf/helpers";
 
@@ -194,11 +182,11 @@ export default {
     objectForm,
     guToolTip,
     pipeToolTip,
-    CatLoader,
     mapLegend,
     pipeLongInfo,
     wellOmgNgduForm,
-    guOmgNgduForm
+    guOmgNgduForm,
+    zuOmgNgduForm
   },
   data() {
     return {
@@ -259,6 +247,7 @@ export default {
       selectedPipe: null,
       selectedWell: null,
       selectedGu: null,
+      selectedZu: null
     };
   },
   created() {
@@ -281,6 +270,21 @@ export default {
     okBtntext() {
       return this.formType == 'create' ? this.trans('app.create') : this.trans('app.update')
     },
+    omgNgduFormModalTitle () {
+      switch (true) {
+        case this.selectedWell != null:
+          return this.trans('monitoring.well.enter-omg-ngdu-data');
+          break;
+
+        case this.selectedGu != null:
+          return this.trans('monitoring.gu.enter-omg-ngdu-data');
+          break;
+
+        case this.selectedZu != null:
+          return this.trans('monitoring.zu.enter-omg-ngdu-data');
+          break;
+      }
+    }
   },
   methods: {
     ...guMapActions([
@@ -300,6 +304,12 @@ export default {
     ...globalloadingMutations([
       'SET_LOADING'
     ]),
+    resetSelectedObjects() {
+      this.selectedPipe = null;
+      this.selectedWell = null;
+      this.selectedGu = null;
+      this.selectedZu = null;
+    },
     async initMap() {
       this.SET_LOADING(true);
       this.pipes = await this.getMapData(this.gu);
@@ -695,11 +705,15 @@ export default {
     },
     onShowOmgNgduWellForm(option) {
       this.selectedWell = option.mapObject.object;
-      this.$bvModal.show('omg-ngdu-well-form');
+      this.$bvModal.show('omg-ngdu-form');
     },
     onShowOmgNgduGuForm(option) {
       this.selectedGu = option.mapObject.object;
-      this.$bvModal.show('omg-ngdu-gu-form');
+      this.$bvModal.show('omg-ngdu-form');
+    },
+    onShowOmgNgduZuForm(option) {
+      this.selectedZu = option.mapObject.object;
+      this.$bvModal.show('omg-ngdu-form');
     },
     optionClicked(option) {
       this.editMode = option.editMode;

@@ -18,15 +18,26 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_test_v8';
-
+    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v9';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_test_v9_3';
     const DATA_SOURCE_DATE = '2021/01/01';
+
+    const SCENARIO_COLUMNS = [
+        "scenario_id",
+        "percent_stop_cat_1",
+        "percent_stop_cat_2",
+        "coef_Fixed_nopayroll",
+        "coef_cost_WR_payroll",
+        "dollar_rate",
+        "oil_price",
+    ];
 
     const OPTIMIZED_COLUMNS = [
         'Revenue_total',
         'Revenue_local',
         'Revenue_export',
         'Overall_expenditures',
+        'Overall_expenditures_full',
         'operating_profit_12m',
         'oil',
         'liquid',
@@ -39,6 +50,7 @@ class EconomicOptimizationController extends Controller
 
     const OPTIMIZED_SINGLE_COLUMNS = [
         'Overall_expenditures',
+        'Overall_expenditures_full',
         'operating_profit_12m',
     ];
 
@@ -91,7 +103,7 @@ class EconomicOptimizationController extends Controller
             'org' => $org,
             'scenarios' => $this->getScenarios(),
             'specificIndicator' => $this->getSpecificIndicatorData($org),
-            'technicalEconomicIndicator' => $this->getTechnicalEconomicIndicatorData($org),
+            'wellChanges' => $this->getWellChangesData(),
             'dollarRate' => [
                 'value' => $this->getDollarRate() ?? '0',
                 'url' => self::DOLLAR_RATE_URL
@@ -113,15 +125,7 @@ class EconomicOptimizationController extends Controller
                 Carbon::parse(self::DATA_SOURCE_DATE)->addDay(),
             ));
 
-        $columns = [
-            "scenario_id",
-            "percent_stop_cat_1",
-            "percent_stop_cat_2",
-            "coef_Fixed_nopayroll",
-            "coef_cost_WR_payroll",
-            "dollar_rate",
-            "oil_price",
-        ];
+        $columns = self::SCENARIO_COLUMNS;
 
         $columnsVariations = [];
 
@@ -137,7 +141,7 @@ class EconomicOptimizationController extends Controller
 
         $data = $builder
             ->select($columns)
-            ->groupBy()
+            ->groupBy(self::SCENARIO_COLUMNS)
             ->data();
 
         $scenarios = [];
@@ -186,27 +190,33 @@ class EconomicOptimizationController extends Controller
         return $query->get()->first()->toArray();
     }
 
-    private function getTechnicalEconomicIndicatorData(Org $org, int $scenarioId = 6): array
+    private function getWellChangesData(): array
     {
-        $query = EcoRefsCost::query()
-            ->select(
-                DB::raw('AVG(variable) as avg_variable'),
-                DB::raw('AVG(fix_payroll) as avg_fix_payroll'),
-                DB::raw('AVG(wo) as avg_wo'),
-                DB::raw('AVG(fix) as avg_fix'),
-                DB::raw('AVG(gaoverheads) as avg_gaoverheads'),
-                DB::raw('AVG(wr_nopayroll) as avg_wr_nopayroll'),
-                DB::raw('AVG(wr_payroll) as avg_wr_payroll'),
-            )
-            ->whereScFa($scenarioId);
+        $builder = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE_WELL_CHANGES, Granularity::YEAR)
+            ->interval(EconomicNrsController::formatInterval(
+                Carbon::parse(self::DATA_SOURCE_DATE),
+                Carbon::parse(self::DATA_SOURCE_DATE)->addDay(),
+            ));
 
-        if ($org->druid_id) {
-            $companyId = self::orgCompanyMap()[$org->id];
+        $columns = [
+            'uwi',
+            "oil_price",
+            "dollar_rate",
+            'profitability_12m',
+            "scenario_id",
+            "rank",
+        ];
 
-            $query->whereCompanyId($companyId);
-        }
-
-        return $query->get()->first()->toArray();
+        return $builder
+            ->select($columns)
+            ->doubleSum('operating_profit_12m')
+            ->orderBy('oil_price')
+            ->orderBy('dollar_rate')
+            ->orderBy('operating_profit_12m')
+            ->groupBy($columns)
+            ->data();
     }
 
     private function getDollarRate(): ?string
