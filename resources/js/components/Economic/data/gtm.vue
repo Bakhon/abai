@@ -75,11 +75,11 @@ export default {
 
     headers() {
       return [
-        'id',
+        'ID',
         this.trans('economic_reference.name'),
         this.trans('economic_reference.company'),
         this.trans('economic_reference.cost'),
-        this.trans('economic_reference.pi'),
+        'pi',
         this.trans('economic_reference.comment'),
         '',
       ]
