@@ -2028,7 +2028,7 @@
               <div class="container-fluid">
                 <div class="row p-0 emergency-table__header">
                   <span class="col-1 p-2 pl-5">{{ trans("visualcenter.date") }}</span>
-                  <span class="col-11 p-2 pl-5">{{ trans("visualcenter.notes") }}</span>
+                  <span class="col-11 p-2 pl-3">{{ trans("visualcenter.notes") }}</span>
                 </div>
                 <div
                         class="row emergency-view"
@@ -3203,6 +3203,7 @@
   .emergency-table__header {
     background: #2E50E9;
     border-bottom: 0.5px solid #272953;
+    font-size: 17px;
     span:first-child {
       border-right: 0.5px solid #272953;
     }
