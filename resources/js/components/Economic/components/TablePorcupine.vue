@@ -1,7 +1,7 @@
 <template>
   <div>
     <subtitle font-size="18" style="line-height: 26px">
-      <div>{{ trans('economic_reference.table_porcupine_title') }}</div>
+      {{ trans('economic_reference.table_porcupine_title') }}
     </subtitle>
 
     <apexchart

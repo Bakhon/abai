@@ -72,6 +72,13 @@
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
+
+      <table-chess
+          v-else-if="activeTab === 8"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :oil-prices="scenarioVariations.oil_prices"
+          class="text-white"/>
     </div>
   </div>
 </template>
@@ -86,6 +93,7 @@ import TableEconomicEfficiency from "./TableEconomicEfficiency";
 import TablePorcupine from "./TablePorcupine";
 import TableTechnologicalIndicators from "./TableTechnologicalIndicators";
 import TablePalette from "./TablePalette";
+import TableChess from "./TableChess";
 
 export default {
   name: "Tables",
@@ -98,7 +106,8 @@ export default {
     TableEconomicEfficiency,
     TablePorcupine,
     TableTechnologicalIndicators,
-    TablePalette
+    TablePalette,
+    TableChess
   },
   props: {
     scenario: {
@@ -128,6 +137,7 @@ export default {
         this.trans('economic_reference.table_porcupine'),
         this.trans('economic_reference.technological_indicators'),
         this.trans('economic_reference.palette'),
+        this.trans('economic_reference.table_chess'),
       ]
     }
   },

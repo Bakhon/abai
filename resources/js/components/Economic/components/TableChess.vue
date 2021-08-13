@@ -31,7 +31,7 @@
         <div v-for="oilPrice in oilPrices"
              :key="oilPrice"
              class="px-3 py-1 border-grey flex-grow-1 text-center">
-          {{ oilPrice }}$/барр
+          {{ (+oilPrice).toLocaleString() }}$/барр
         </div>
       </div>
 
@@ -66,7 +66,7 @@
            :class="oilIndex % 2 === 0 ? 'bg-light-blue' : 'bg-deep-blue'"
            class="d-flex">
         <div class="px-3 py-1 border-grey text-center flex-200px">
-          {{ oilPrice }}$/
+          {{ (+oilPrice).toLocaleString() }}$/
         </div>
 
         <div class="px-3 py-1 border-grey text-center flex-120px"></div>
@@ -75,7 +75,7 @@
              :key="priceIndex"
              :style="`background: ${getColor(priceIndex)}`"
              class="px-3 py-1 border-grey flex-grow-1 text-center">
-          729206
+
         </div>
       </div>
 
@@ -105,7 +105,7 @@
            :class="oilIndex % 2 === 0 ? 'bg-light-blue' : 'bg-deep-blue'"
            class="d-flex">
         <div class="px-3 py-1 border-grey text-center flex-200px">
-          {{ oilPrice }}$/
+          {{ (+oilPrice).toLocaleString() }}$/
         </div>
 
         <div class="px-3 py-1 border-grey text-center flex-120px"></div>
@@ -114,7 +114,7 @@
              :key="priceIndex"
              :style="`background: ${getColor(priceIndex)}`"
              class="px-3 py-1 border-grey flex-grow-1 text-center">
-          729206
+
         </div>
       </div>
 
@@ -149,7 +149,7 @@
         <div v-for="oilPrice in oilPrices"
              :key="oilPrice"
              class="px-3 py-1 border-grey flex-grow-1 text-center">
-          {{ oilPrice }}$/барр
+          {{ (+oilPrice).toLocaleString() }}$/барр
         </div>
       </div>
 
@@ -158,19 +158,18 @@
            :class="oilIndex % 2 === 0 ? 'bg-light-blue' : 'bg-deep-blue'"
            class="d-flex">
         <div class="px-3 py-1 border-grey text-center flex-200px">
-          {{ oilPrice }}$/
+          {{ (+oilPrice).toLocaleString() }}$/
         </div>
 
         <div :style="`background: ${getColor(priceIndex)}`"
              class="px-3 py-1 border-grey text-center flex-120px">
-          100
         </div>
 
         <div v-for="(price, priceIndex) in oilPrices"
              :key="priceIndex"
              :style="`background: ${getColor(priceIndex)}`"
              class="px-3 py-1 border-grey flex-grow-1 text-center">
-          729206
+
         </div>
       </div>
     </div>
