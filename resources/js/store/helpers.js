@@ -89,3 +89,15 @@ export const pgnoMapActions = arrNames => ({
         ...arrNames,
     ]),
 });
+
+export const digitalDrillingActions = arrNames => ({
+    ...mapActions('digitalDrilling', [
+        ...arrNames,
+    ]),
+});
+
+export const digitalDrillingGetters = arrNames => ({
+    ...mapGetters('digitalDrilling', [
+        ...arrNames,
+    ]),
+});
