@@ -19,7 +19,7 @@ class EcoRefsMacroListResource extends CrudListResource
     {
         $result = [
             'scfa' => $this-> scfa -> name,
-            'date' => Carbon::parse($this->date)->format('Y-m'),,
+            'date' => Carbon::parse($this->date)->format('Y-m'),
             'ex_rate_dol' => $this-> ex_rate_dol,
             'ex_rate_rub' => $this-> ex_rate_rub,
             'inf_end' => $this-> inf_end,

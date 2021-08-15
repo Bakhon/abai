@@ -1,16 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="container">
         <div class="row justify-content-center">
-            <a href="{{ route('ecorefsmacro.index') }}" class="btn btn-info">
-                {{ __('economic_reference.return_menu') }}</a>
+            <a href="{{ route('eco_refs_list') }}"
+               class="btn btn-info">
+                {{ __('economic_reference.return_menu') }}
+            </a>
         </div>
     </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+
+    <div class="container-fluid">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-12">
                 <div class="card">
+                    <div class="card-header ecorefs-header">
+                        <a class="btn btn-success" href="{{ route('ecorefsempper.create') }}">+</a>
+                        <div class="ecorefs-title">{{__('economic_reference.eco_refs_empper')}}</div>
+                    </div>
                     <div class="card-body">
                         @if ($message = Session::get('success'))
                             <div class="alert alert-success">
@@ -34,7 +42,7 @@
                                         <form action="{{ route('economic_data_log1.destroy',$item->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button>
+                                            <button type="submit" class="btn btn-danger mt-2">{{__('app.delete')}}</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -47,3 +55,7 @@
         </div>
     </div>
 @endsection
+
+<style>
+    @import "../../css/ecorefs.css";
+</style>

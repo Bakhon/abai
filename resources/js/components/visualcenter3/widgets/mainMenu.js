@@ -41,7 +41,13 @@ export default {
             condolidatedButtons: ['oilCondensateProductionButton','oilCondensateDeliveryButton'],
             isFirstLoading: true,
             lastSelectedCategory: 'oilCondensateProductionButton',
-            oilResidueChartName: this.trans('visualcenter.ostatokNefti')
+            oilResidueChartName: this.trans('visualcenter.ostatokNefti'),
+            dropdownMenu: {
+                'oilCondensateProduction': false,
+                'oilCondensateDelivery': false,
+                'gasProduction': false,
+                'waterInjection': false
+            }
         };
     },
     methods: {
@@ -197,6 +203,11 @@ export default {
             this.updateDzoMenu();         
             this.updateProductionFondWidget();
             this.updateInjectionFondWidget();          
+        },
+
+        switchDropdownCategories(category) {
+            this.dropdownMenu = _.mapValues(this.dropdownMenu, () => false);
+            this.dropdownMenu[category] = true;
         },
     },
 }

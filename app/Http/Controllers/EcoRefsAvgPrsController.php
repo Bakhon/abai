@@ -19,7 +19,7 @@ class EcoRefsAvgPrsController extends Controller
 
             $ecorefsavgprs = EcoRefsAvgPrs::latest()->with('scfa')->with('company')->paginate(5);
 
-            return view('ecorefsavgprs.index',compact('ecorefsavgprs'))
+            return view('economy_kenzhe/ecorefsavgprs.index',compact('ecorefsavgprs'))
                 ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -32,7 +32,7 @@ class EcoRefsAvgPrsController extends Controller
     {
         $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
-        return view('ecorefsavgprs.create',compact('sc_fa', 'company'));
+        return view('economy_kenzhe/ecorefsavgprs.create',compact('sc_fa', 'company'));
     }
 
     /**
@@ -78,7 +78,7 @@ class EcoRefsAvgPrsController extends Controller
         $row = EcoRefsAvgPrs::find($id);
         $company = EcoRefsCompaniesId::get();
 
-        return view('ecorefsavgprs.edit',compact('sc_fa', 'row', 'company'));
+        return view('economy_kenzhe/ecorefsavgprs.edit',compact('sc_fa', 'row', 'company'));
     }
 
     /**

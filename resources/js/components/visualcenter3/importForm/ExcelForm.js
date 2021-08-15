@@ -186,6 +186,7 @@ export default {
         let currentDayNumber = moment().date();
         if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
             this.isChemistryButtonVisible = true;
+            this.$modal.show('additionalParamsReminder');
         }
         this.selectedDzo.ticker = this.getDzoTicker();
         if (!this.selectedDzo.ticker) {
