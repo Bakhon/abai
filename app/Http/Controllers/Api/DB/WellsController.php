@@ -9,9 +9,12 @@ use App\Http\Resources\BigData\WellSearchResource;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
+use App\Models\BigData\MeasLiq;
+use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\Well;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 
 class WellsController extends Controller
@@ -489,5 +492,54 @@ class WellsController extends Controller
         return [
             'items' => WellSearchResource::collection($wells)
         ];
+    }
+
+    public function productionWellsScheduleData(Request $request):array {
+        $result = [
+            'measLiq' => [
+                'name' => trans('app.liquid'),
+                'type' => 'area',
+                'data' => [],
+                ],
+            'measWaterCut' => [
+                'name' => trans('app.waterCut'),
+                'type' => 'area',
+                'data' => [],
+                ],
+            'oil' => [
+                'name' => trans('app.oil'),
+                'type' => 'area',
+                'data' => [],
+                ],
+            'labels' => [],
+        ];
+        $wellId = $request->get('wellId');
+        $measLiqs = MeasLiq::where('well', $wellId)
+            ->orderBy('dbeg', 'asc')
+            ->get()
+            ->toArray();
+        $measWaterCuts = MeasWaterCut::where('well', $wellId)
+            ->orderBy('dbeg', 'asc')
+            ->get()
+            ->toArray();
+        foreach ($measLiqs as $measLiq) {
+            $measWaterCutVal = 0;
+            $oilVal = 0;
+            $dateTime = DateTime::createFromFormat('Y-m-d H:i:sP', $measLiq['dbeg']);
+            $result['measLiq']['data'][] = $measLiq['liquid'];
+            $result['labels'][] = $dateTime->format('Y-m-d');
+            foreach ($measWaterCuts as $measWaterCut) {
+                $dateTimeWC = DateTime::createFromFormat('Y-m-d H:i:sP', $measWaterCut['dbeg']);
+                if ($dateTime == $dateTimeWC) {
+                    $measWaterCutVal = $measWaterCut['water_cut'];
+                    $oilVal = $measLiq['liquid'] * (1 - $measWaterCut['water_cut']) * 0.86;
+                    break;
+                }
+            }
+            $result['measWaterCut']['data'][] = $measWaterCutVal;
+            $result['oil']['data'][] = $oilVal;
+        }
+
+        return $result;
     }
 }

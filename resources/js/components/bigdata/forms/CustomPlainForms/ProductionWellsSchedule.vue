@@ -4,8 +4,8 @@
             <img class="arrow-back pr-3" src="/img/icons/arrow.svg" @click.stop="$emit('changeScheduleVisible')">
             <div>График оперативной информации</div>
         </div>
-        <div class="main-block text-white pb-2">
-            <div class="d-flex justify-content-between align-items-center p-2">
+        <div class="main-block pb-2">
+            <div class="d-flex justify-content-between align-items-center text-white p-2">
                 <div class="d-flex">
                     <div>
                         <div class="input-border">
@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center pl-3">
-                        <div>Скважина: KAL_8224</div>
+                        <div>Скважина: {{ well.wellInfo.uwi }}</div>
                         <img src="/img/icons/close.svg" alt="">
                     </div>
                     <div class="d-flex align-items-center pl-3">
@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row content-block m-0 mt-2 mx-2 p-0 rounded-top">
+            <div class="row content-block m-0 mt-2 mx-2 p-0 rounded-top text-white">
                 <div class="col-3">Период:</div>
                 <div class="col-6 d-flex justify-content-between">
                     <div>1 неделя</div>
@@ -52,71 +52,89 @@
                     :series="chartSeries"
                     :height="745"
                     type="line"/>
-                <apexchart
-                    ref="chart"
-                    :options="chartOptions"
-                    :series="chartSeries"
-                    :height="745"
-                    type="line"/>
             </div>
         </div>
     </div>
 </template>
 <script>
-import {GRANULARITY_DAY} from "../../../Economic/components/SelectGranularity";
 import chart from "vue-apexcharts";
+import {globalloadingMutations} from '@store/helpers';
 
 export default {
     components: {apexchart: chart},
+    props: {
+        well: {}
+    },
     data: () => ({
         currentAnnotation: {
             minY: 0,
             maxY: 0
         },
+        chartSeries: [
+            {
+                name: "Жидкость",
+                type: "area",
+                data: [100, 800, 900, 1400, 1200, 2100, 2900,
+                    100, 800, 900, 1400, 1200, 2100, 2900,
+                    100, 800, 900, 1400, 1200, 2100, 2900,
+                    100, 800, 900, 1400, 1200, 2100, 2900],
+            },
+            {
+                name: "Нефть",
+                type: "area",
+                data: [50, 300, 400, 300, 200, 500, 550,
+                    50, 300, 400, 300, 200, 500, 550,
+                    50, 300, 400, 300, 200, 500, 550,
+                    50, 300, 400, 300, 200, 500, 550],
+            },
+            {
+                name: "Обводненность",
+                type: "area",
+                data: [800, 700, 700, 1000, 450, 2000, 1400,
+                    800, 700, 700, 1000, 450, 2000, 1400,
+                    800, 700, 700, 1000, 450, 2000, 1400,
+                    800, 700, 700, 1000, 450, 2000, 1400],
+            },
+            {
+                name: "Н дин",
+                type: "area",
+                data: [500, 900, 400, 400, 800, 1800, 1500,
+                    500, 900, 400, 400, 800, 1800, 1500,
+                    500, 900, 400, 400, 800, 1800, 1500,
+                    500, 900, 400, 400, 800, 1800, 1500],
+            },
+        ],
+        labels: ["22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель","26 Апрель", "3 Май",
+            "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь", "14 Июль",
+            "22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель","26 Апрель", "3 Май",
+            "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь", "14 Июль"],
     }),
-    computed: {
-        chartSeries() {
-            return [
-                {
-                    name: "Жидкость",
-                    type: "area",
-                    data: [100, 800, 900, 1400, 1200, 2100, 2900,
-                        100, 800, 900, 1400, 1200, 2100, 2900,
-                        100, 800, 900, 1400, 1200, 2100, 2900,
-                        100, 800, 900, 1400, 1200, 2100, 2900],
-                },
-                {
-                    name: "Нефть",
-                    type: "area",
-                    data: [50, 300, 400, 300, 200, 500, 550,
-                        50, 300, 400, 300, 200, 500, 550,
-                        50, 300, 400, 300, 200, 500, 550,
-                        50, 300, 400, 300, 200, 500, 550],
-                },
-                {
-                    name: "Обводненность",
-                    type: "area",
-                    data: [800, 700, 700, 1000, 450, 2000, 1400,
-                        800, 700, 700, 1000, 450, 2000, 1400,
-                        800, 700, 700, 1000, 450, 2000, 1400,
-                        800, 700, 700, 1000, 450, 2000, 1400],
-                },
-                {
-                    name: "Н дин",
-                    type: "area",
-                    data: [500, 900, 400, 400, 800, 1800, 1500,
-                        500, 900, 400, 400, 800, 1800, 1500,
-                        500, 900, 400, 400, 800, 1800, 1500,
-                        500, 900, 400, 400, 800, 1800, 1500],
-                },
+    methods: {
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
+    },
+    mounted() {
+        this.SET_LOADING(true);
+        this.axios.get(this.localeUrl('api/bigdata/wells/production-wells-schedule-data'), {
+            params: {
+                wellId: this.well.id
+            }
+        }).then(({data}) => {
+            this.chartSeries = [
+                data.oil,
+                data.measLiq,
+                data.measWaterCut,
             ];
-        },
+            this.labels = data.labels
+        }).finally(() => {
+            this.SET_LOADING(false);
+        });
+    },
+    computed: {
         chartOptions() {
             return {
-                labels: ["22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель","26 Апрель", "3 Май",
-                    "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь", "14 Июль",
-                    "22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель","26 Апрель", "3 Май",
-                    "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь", "14 Июль"],
+                labels: this.labels,
                 stroke: {
                     width: 4,
                     curve: 'smooth'
@@ -139,9 +157,7 @@ export default {
                     size: 0
                 },
                 xaxis: {
-                    type: this.granularity === GRANULARITY_DAY
-                        ? 'datetime'
-                        : 'date'
+                    tickAmount: 10,
                 },
                 yaxis: {
                     opposite: true,

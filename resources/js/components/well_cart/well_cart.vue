@@ -87,7 +87,11 @@
             </div>
             <div v-if="wellUwi" class="mid-col__main_row">
               <div v-if="activeFormComponentName">
-                  <div :is="activeFormComponentName" :changeColumnsVisible="(value) => changeColumnsVisible(value)"></div>
+                  <div
+                      :is="activeFormComponentName"
+                      :well="well"
+                      :changeColumnsVisible="(value) => changeColumnsVisible(value)"
+                  ></div>
               </div>
               <div v-else-if="activeFormCode" class="col table-wrapper">
                 <BigDataPlainFormResult :code="activeFormCode" :well-id="this.well.id"></BigDataPlainFormResult>
@@ -222,6 +226,7 @@ import moment from 'moment'
 import WellCartTree from './WellCartTree'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
+import {globalloadingMutations} from '@store/helpers';
 
 
 const requireComponent = require.context('../bigdata/forms/CustomPlainForms', true, /\.vue$/i);
@@ -378,6 +383,9 @@ export default {
     })
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     onColumnFoldingEvent(method) {
       if (method === 'left') {
         this.isLeftColumnFolded = !this.isLeftColumnFolded;
@@ -412,7 +420,7 @@ export default {
         350
     ),
     selectWell(well) {
-      this.loading = true
+      this.SET_LOADING(true);
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
         try {
           this.well.id = data.wellInfo.id
@@ -445,10 +453,10 @@ export default {
             this.wellSaptialObjectBottomY = spatialObjectBottom[1]
           }
         } catch (e) {
-          this.loading = false
+            this.SET_LOADING(false);
         }
         this.setTableData()
-        this.loading = false
+          this.SET_LOADING(false);
       })
     },
     setTableData() {
