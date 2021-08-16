@@ -2804,9 +2804,11 @@
         border: 0.5px solid #272953;
         border-left: 0;
         position: sticky;
-        font-size: 12px;
         background: #353ea1;
         text-align: center;
+        height: 80px;
+        padding: 5px 5px 5px 10px;
+
         &:nth-child(2) {
           width: 352px;
           padding-top: 5px;
