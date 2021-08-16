@@ -67,11 +67,18 @@ Route::group(
                 Route::get('eco_refs_costs', 'EcoRefsCostController@getData');
                 Route::resource('eco_refs_scenario', 'Refs\EcoRefsScenarioController');
                 Route::get('eco_refs_scenarios', 'Refs\EcoRefsScenarioController@getData');
+
                 Route::get('eco_refs_gtms', 'Refs\EcoRefsGtmController@getData');
                 Route::get('eco_refs_gtm/upload_excel', 'Refs\EcoRefsGtmController@uploadExcel')->name('eco_refs_gtm_upload');
                 Route::post('eco_refs_gtm/import_excel', 'Refs\EcoRefsGtmController@importExcel')->name('eco_refs_gtm_import');
                 Route::resource('eco_refs_gtm', 'Refs\EcoRefsGtmController');
-               Route::get('economic_data/upload_excel', 'EcoRefsCostController@uploadExcel')->name('economic_data_upload');
+
+                Route::get('eco_refs_gtm_values', 'Refs\EcoRefsGtmValueController@getData');
+                Route::get('eco_refs_gtm_value/upload_excel', 'Refs\EcoRefsGtmValueController@uploadExcel')->name('eco_refs_gtm_value_upload');
+                Route::post('eco_refs_gtm_value/import_excel', 'Refs\EcoRefsGtmValueController@importExcel')->name('eco_refs_gtm_value_import');
+                Route::resource('eco_refs_gtm_value', 'Refs\EcoRefsGtmValueController');
+
+                Route::get('economic_data/upload_excel', 'EcoRefsCostController@uploadExcel')->name('economic_data_upload');
                 Route::post('economic_data/import_excel', 'EcoRefsCostController@importExcel')->name('economic_data_import');
                 Route::resource('economic_data_log', 'Refs\EconomicDataLogController');
                 Route::resource('ecorefsbranchid', 'EcoRefsBrachIdController');
