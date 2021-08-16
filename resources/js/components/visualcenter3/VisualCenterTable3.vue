@@ -1651,7 +1651,7 @@
               <br />
               <div class="row container-fluid">
                 <div class="vis-table px-4 col-sm-7">
-                  <table v-if="injectionFondData.length" class="table4 w-100 chemistry-table">
+                  <table v-if="injectionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
                       <th v-if="fondDaysCountSelected.injection < 2">{{ trans("visualcenter.idleWells") }} ({{ trans("visualcenter.Fact") }})</th>
@@ -1807,7 +1807,7 @@
               <br />
               <div class="row container-fluid">
                 <div class="vis-table px-4 col-sm-7">
-                  <table v-if="productionFondData.length" class="table4 w-100 chemistry-table">
+                  <table v-if="productionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
                       <th v-if="fondDaysCountSelected.production < 2">{{ trans("visualcenter.prodWells") }} ({{ trans("visualcenter.Fact") }})</th>
@@ -1958,7 +1958,7 @@
                 <div class="vis-table px-4 col-sm-7">
                   <table
                           v-if="drillingData.length"
-                          class="table4 w-100 chemistry-table"
+                          class="table4 w-100 chemistry-table additional-tables"
                   >
                     <thead>
                     <tr>
@@ -2138,7 +2138,7 @@
                 <div class="vis-table px-4 col-sm-7">
                   <table
                           v-if="wellsWorkoverData.length"
-                          class="table4 w-100 chemistry-table"
+                          class="table4 w-100 chemistry-table additional-tables"
                   >
                     <thead>
                     <tr>
@@ -2285,7 +2285,7 @@
                 <div class="vis-table px-4 col-sm-7">
                   <table
                           v-if="chemistryData.length"
-                          class="table4 w-100 chemistry-table"
+                          class="table4 w-100 chemistry-table additional-tables"
                   >
                     <thead>
                     <tr>
@@ -2804,17 +2804,23 @@
         border: 0.5px solid #272953;
         border-left: 0;
         position: sticky;
+        font-size: 12px;
         background: #353ea1;
         text-align: center;
-        height: 80px;
-        padding: 5px 5px 5px 10px;
-
         &:nth-child(2) {
           width: 352px;
           padding-top: 5px;
           font-size: 15px;
         }
       }
+    }
+  }
+
+  .additional-tables {
+    th {
+      height: 80px;
+      padding: 5px 5px 5px 10px;
+      font-size: 16px !important;
     }
   }
 
