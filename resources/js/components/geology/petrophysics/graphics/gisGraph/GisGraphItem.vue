@@ -1,10 +1,10 @@
 <template>
-<div>asd</div>
+  <div>test</div>
 </template>
 
 <script>
 export default {
-  name: "GisGraphItem"
+  name: "GisGraphItem",
 }
 </script>
 

@@ -14,8 +14,8 @@
           </div>
           <div v-if="$scopedSlots.footer||isConfirm" class="aw-modal__footer">
             <div v-if="isConfirm" class="d-flex align-items-center justify-content-center">
-              <Button class="mr-3">{{ trans('ok') }}</Button>
-              <Button ref="cancelBtn" color="primary" @click="cancel">{{ trans('cancel') }}</Button>
+              <Button class="mr-3">{{ trans('app.save') }}</Button>
+              <Button ref="cancelBtn" color="primary" @click="cancel">{{ trans('app.cancel') }}</Button>
             </div>
             <slot name="footer" v-else/>
           </div>

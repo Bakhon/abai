@@ -1,5 +1,5 @@
 <template>
-  <GisGraphItem />
+  <GisGraphItem/>
 </template>
 
 <script>
