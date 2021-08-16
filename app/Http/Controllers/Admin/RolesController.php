@@ -61,6 +61,7 @@ class RolesController extends Controller
         'view history' => 'Просмотр истории',
         'view' => 'Просмотр',
         'load_las' => 'Загрузка las',
+        'one_dzo' => 'Только Дашборды "Добыча" и "Форма ввода" для одного ДЗО',
     ];
 
     public function index()
