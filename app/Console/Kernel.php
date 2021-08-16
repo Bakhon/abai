@@ -42,6 +42,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('calculate-hydro-yesterday:cron')
             ->dailyAt('06:00')
             ->timezone('Asia/Almaty');
+        $schedule->command('calculate-gu-corrosion:cron')
+            ->dailyAt('06:00')
+            ->timezone('Asia/Almaty');
 
     }
 
