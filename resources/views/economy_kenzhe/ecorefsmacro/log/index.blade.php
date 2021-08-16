@@ -13,11 +13,11 @@
 
     <div class="container-fluid">
         <div class="row justify-content-center mt-5">
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header ecorefs-header">
-                        <a class="btn btn-success" href="{{ route('ecorefsmacro.create') }}">+</a>
-                        <div class="ecorefs-title">{{__('economic_reference.eco_refs_macro')}}</div>
+                        <a class="btn btn-success" href="{{ route('ecorefsempper.create') }}">+</a>
+                        <div class="ecorefs-title">{{__('economic_reference.eco_refs_empper')}}</div>
                     </div>
                     <div class="card-body">
                         @if ($message = Session::get('success'))
@@ -29,26 +29,17 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
-                                <th>Сценарий/Факт:</th>
-                                <th>Дата:</th>
-                                <th>Курс доллара, тенге:</th>
-                                <th>Курс рубля, тенге:</th>
-                                <th>Инфляция, в % на конец периода:</th>
-                                <th>Мировая стоимость барреля нефти, доллар:</th>
+                                <th>{{ __('economic_reference.date_added') }}:</th>
+                                <th>{{ __('economic_reference.author_added') }}:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
-                            @foreach ($ecorefsmacro as $item)
+                            @foreach ($economicDataLog as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ $item->scfa->name}}</td>
-                                    <td>{{ $item->date }}</td>
-                                    <td>{{ $item->ex_rate_dol }}</td>
-                                    <td>{{ $item->ex_rate_rub }}</td>
-                                    <td>{{ $item->inf_end }}</td>
-                                    <td>{{ $item->barrel_world_price }}</td>
+                                    <td>{{ $item->created_at  }}</td>
+                                    <td>{{ $item->author->name  }}</td>
                                     <td>
-                                        <form action="{{ route('ecorefsmacro.destroy',$item->id) }}" method="POST">
-                                            <a class="btn btn-primary" href="{{ route('ecorefsmacro.edit',$item->id) }}">{{__('app.edit')}}</a>
+                                        <form action="{{ route('economic_data_log1.destroy',$item->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger mt-2">{{__('app.delete')}}</button>
@@ -57,7 +48,7 @@
                                 </tr>
                             @endforeach
                         </table>
-                        {!! $ecorefsmacro->links() !!}
+                        {!! $economicDataLog->links() !!}
                     </div>
                 </div>
             </div>

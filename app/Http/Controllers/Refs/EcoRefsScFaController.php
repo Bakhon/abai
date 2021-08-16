@@ -35,12 +35,12 @@ class EcoRefsScFaController extends Controller
             ->latest()
             ->paginate(self::PAGINATION);
 
-        return view('ecorefsscfa.index', compact('scFas'));
+        return view('economy_kenzhe/ecorefsscfa.index', compact('scFas'));
     }
 
     public function create(): View
     {
-        return view('ecorefsscfa.create');
+        return view('economy_kenzhe/ecorefsscfa.create');
     }
 
     function store(StoreEcoRefsScFaRequest $request): RedirectResponse
@@ -56,7 +56,7 @@ class EcoRefsScFaController extends Controller
     {
         $scFa = EcoRefsScFa::findOrFail($id);
 
-        return view('ecorefsscfa.edit', compact('scFa'));
+        return view('economy_kenzhe/ecorefsscfa.edit', compact('scFa'));
     }
 
     public function update(StoreEcoRefsScFaRequest $request, int $id): RedirectResponse
@@ -82,7 +82,7 @@ class EcoRefsScFaController extends Controller
 
     public function refsList(): View
     {
-        return view('ecorefsscfa.list');
+        return view('economy_kenzhe/ecorefsscfa.list');
     }
 
     public function nnoeco(Request $request)

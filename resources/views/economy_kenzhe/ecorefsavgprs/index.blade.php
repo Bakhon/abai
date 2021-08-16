@@ -11,13 +11,13 @@
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header ecorefs-header">
-                        <a class="btn btn-success" href="{{ route('ecorefselectprsbrigcost.create') }}">+</a>
-                        <div class="ecorefs-title">{{__('economic_reference.eco_refs_select_prs_brig_cost')}}</div>
+                        <a class="btn btn-success" href="{{ route('ecorefsavgprs.create') }}">+</a>
+                        <div class="ecorefs-title">{{__('economic_reference.eco_refs_avg_prs')}}</div>
                     </div>
                     <div class="card-body">
                         @if ($message = Session::get('success'))
@@ -29,26 +29,22 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
-                                <th>Сценарий/Факт:</th>
-                                <th>Компания:</th>
-                                <th>Дата:</th>
-                                <th>Стоимость электроэнергии, тенге/кВт*ч:</th>
-                                <th>Стоимость транспортировки и подготовки, тенге/тонна:</th>
-                                <th>Стоимость 1 сутки бригады ПРС, тенге:</th>
+                                <th style="width: 200px;">Сценарий/Факт:</th>
+                                <th style="width: 230px;">Компания:</th>
+                                <th style="width: 130px;">Дата:</th>
+                                <th>Средняя продолжительность 1 ПРС, сут:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
-                            @foreach ($ecorefselectprsbrigcost as $item)
+                            @foreach ($ecorefsavgprs as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->scfa->name}}</td>
                                     <td>{{ $item->company->name}}</td>
                                     <td>{{ $item->date }}</td>
-                                    <td>{{ $item->elect_cost }}</td>
-                                    <td>{{ $item->trans_prep_cost }}</td>
-                                    <td>{{ $item->prs_brigade_cost }}</td>
+                                    <td>{{ $item->avg_prs }}</td>
                                     <td>
-                                        <form action="{{ route('ecorefselectprsbrigcost.destroy',$item->id) }}" method="POST">
-                                            <a class="btn btn-primary" href="{{ route('ecorefselectprsbrigcost.edit',$item->id) }}">{{__('app.edit')}}</a>
+                                        <form action="{{ route('ecorefsavgprs.destroy',$item->id) }}" method="POST">
+                                            <a class="btn btn-primary" href="{{ route('ecorefsavgprs.edit',$item->id) }}">{{__('app.edit')}}</a>
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger mt-2">{{__('app.delete')}}</button>
@@ -57,7 +53,7 @@
                                 </tr>
                             @endforeach
                         </table>
-                        {!! $ecorefselectprsbrigcost->links() !!}
+                        {!! $ecorefsavgprs->links() !!}
                     </div>
                 </div>
             </div>
