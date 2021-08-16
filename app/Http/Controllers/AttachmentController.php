@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\AttachmentService;
+use GuzzleHttp\Psr7\Utils;
 use Illuminate\Http\Request;
 
 class AttachmentController extends Controller
@@ -27,7 +28,15 @@ class AttachmentController extends Controller
 
     public function get(int $attachment)
     {
-        $result = $this->service->get($attachment);
-        dd($result);
+        $response = $this->service->get($attachment);
+        $body = $response->getBody();
+
+        header("Content-Type:{$response->getHeader('Content-Type')[0]}");
+
+        while (!$body->eof()) {
+            echo Utils::readline($body);
+            ob_flush();
+            flush();
+        }
     }
 }

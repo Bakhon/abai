@@ -20,12 +20,20 @@ class AttachmentService
 
     public function get(int $fileId)
     {
-        return $this->request('get', ['file_id' => $fileId]);
+        return $this->request('get', ['file_id' => $fileId], 'GET', [], [
+            'stream' => true,
+            'sink' => 'STDOUT'
+        ]);
     }
 
-    private function request(string $route, array $data, string $method = 'GET', array $query = [])
-    {
-        $options = [];
+    private function request(
+        string $route,
+        array $data,
+        string $method = 'GET',
+        array $query = [],
+        array $userOptions = []
+    ) {
+        $options = $userOptions;
         if (!empty($data)) {
             if ($method === 'GET') {
                 $options['query'] = $data;
@@ -37,8 +45,7 @@ class AttachmentService
             $options['query'] = $query;
         }
 
-        $response = $this->client->request($method, $route, $options);
-        return $response->getBody()->getContents();
+        return $this->client->request($method, $route, $options);
     }
 
     public function upload(array $files, array $query)
@@ -47,9 +54,10 @@ class AttachmentService
         foreach ($files as $file) {
             $result[] = [
                 'name' => 'files',
-                'contents' => Utils::tryFopen($file->path(), 'r')
+                'contents' => Utils::tryFopen($file->path(), 'r'),
+                'filename' => $file->getClientOriginalName()
             ];
         }
-        return $this->request('upload/', $result, 'POST', $query);
+        return $this->request('upload/', $result, 'POST', $query)->getBody()->getContents();
     }
 }
