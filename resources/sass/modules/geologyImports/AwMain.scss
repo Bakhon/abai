@@ -1,0 +1,15 @@
+.aw-form{
+  &__input{
+    display: flex;
+    flex-direction: column;
+    textarea, input{
+      border: 0.5px solid #454FA1;
+      background: var(--a-accent-darken);
+      padding: 7px 16px;
+      color: #ffffff;
+      border-radius: 4px;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

@@ -11,44 +11,69 @@ export default {
             categoryMenuPreviousParent: '',
             mainMenuButtonHighlighted: "color: #fff;background: #237deb;font-weight:bold;",
             isOpecFilterActive: false,
-            isKmgParticipationFilterActive: false,
             flagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +
                 '</svg>',
             flagOff: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"> \n' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
                 '</svg>',
-            selectedButtonName: 'oilCondensateProductionButton',
+            selectedButtonName: 'oilCondensateDeliveryButton',
             chartTranslateMapping: {
                 'oilProductionButton': this.trans('visualcenter.getoildynamic'),
                 'oilDeliveryButton': this.trans('visualcenter.dlvoildynamic'),
                 'gasProductionButton': this.trans('visualcenter.getgasdynamic'),
-                'oilCondensate':this.trans('visualcenter.liqDynamic'),
-                'oilDeliveryButton': this.trans('visualcenter.dlvoildynamic'),
+                'oilCondensate': this.trans('visualcenter.liqDynamic'),
+                'oilCondensateProductionButton': this.trans('visualcenter.oilCondensateProductionChartName'),
+                'oilCondensateDeliveryButton': this.trans('visualcenter.oilCondensateDeliveryChartName'),
+                'oilResidue': this.trans('visualcenter.stockOfGoodsDynamic'),
+                'waterInjectionButton': this.trans('visualcenter.injectionWaterChartName'),
+                'productionNaturalGas': this.trans('visualcenter.productionNaturalGasChartName'),
+                'productionAssociatedGas': this.trans('visualcenter.productionAssociatedGasChartName'),
+                'flaringAssociatedGas': this.trans('visualcenter.flaringAssociatedGasChartName'),
+                'albsenWaterInjection': this.trans('visualcenter.dynamicArtesianWater'),
+                'seaWaterInjection': this.trans('visualcenter.liqOceanDynamic'),
+                'wasteWaterInjection': this.trans('visualcenter.liqStochnayaDynamic'),
             },
             isOilResidueActive: false,
             oilDeliveryFilters: {
                 'oilResidue': 'isOilResidueActive'
+            },
+            condolidatedButtons: ['oilCondensateProductionButton','oilCondensateDeliveryButton'],
+            isFirstLoading: true,
+            lastSelectedCategory: 'oilCondensateProductionButton',
+            oilResidueChartName: this.trans('visualcenter.ostatokNefti'),
+            dropdownMenu: {
+                'oilCondensateProduction': false,
+                'oilCondensateDelivery': false,
+                'gasProduction': false,
+                'waterInjection': false
             }
         };
     },
     methods: {
         switchCategory(buttonName, planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.lastSelectedCategory = '';
+            this.oilCondensateProductionButton = '';
+            this.oilCondensateDeliveryButton = '';
+            this.SET_LOADING(true);
             this.isOpecFilterActive = false;
             this.oilCondensateFilters.isWithoutKMGFilterActive = true;
             this.isOilResidueActive = false;
-            if (buttonName !== 'oilCondensateProductionButton') {
+            if (!this.condolidatedButtons.includes(buttonName)) {
                 this.changeDzoCompaniesList(dzoCompaniesInitial);
             } else {
                 this.changeDzoCompaniesList(companiesListWithKMG);
             }
-            this.selectAllDzoCompanies();
+            if (!this.isOneDzoSelected){
+                this.selectAllDzoCompanies();
+            }
+            this.setDzoCompaniesToInitial();
             this.disableTargetCompanyFilter();
             if (!childButton) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
                 this.disableOilFilters();
             }
+            this.selectedView = buttonName;
             this.chartHeadName = this.chartTranslateMapping[buttonName];
             this.chartSecondaryName = categoryName;
             this.selectedButtonName = buttonName;
@@ -70,28 +95,21 @@ export default {
             this.dzoCompaniesTemplate = _.cloneDeep(companyList);
         },
 
-        switchMainMenu(parentButton, childButton) {
-            this.chartHeadName = this.chartTranslateMapping[parentButton];
+        switchMainMenu(parentButton, childButton,chartName) {
+            this.chartHeadName = this.chartTranslateMapping[childButton];
             this.isOilResidueActive = false;
-            if (this.oilDeliveryFilters[childButton]) {
-                this[this.oilDeliveryFilters[childButton]] = true;
-            }
             this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();
             let self = this;
             this.isMainMenuItemChanged = false;
             let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
-            if (this.categoryMenuPreviousParent !== parentButton || !this.isOilProductionMenu(parentButton,childButton)) {
+            if (this.categoryMenuPreviousParent !== parentButton) {
                 _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
                     self.disableMainMenuFlags(self.mainMenuButtonElementOptions[button]);
                 });
             }
             this.categoryMenuPreviousParent = parentButton;
             this.switchButtonOptions(currentFilterOptions);
-        },
-        isOilProductionMenu(parentButton,childButton) {
-            let oilProductionSubMenuButtons = ['kmgParticipation','opecRestriction'];
-            return parentButton === 'oilProductionButton' && oilProductionSubMenuButtons.includes(childButton);
         },
         switchButtonOptions(elementOptions) {
             let enabledFlag = 'flagOn';
@@ -129,10 +147,7 @@ export default {
 
             if (type === "opecRestriction") {
                 this.isOpecFilterActive = !this.isOpecFilterActive;
-            } else if (type === 'kmgParticipation') {
-                this.chartSecondaryName = this.trans("visualcenter.dolyaUchast");
-                this.isKmgParticipationFilterActive = !this.isKmgParticipationFilterActive;
-            } else {
+            }  else {
                 this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
                 this.dzoCompaniesAssets[type] = !this.dzoCompaniesAssets[type];
                 this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
@@ -177,6 +192,22 @@ export default {
             } else {
                 return this.trans("visualcenter.tonWithSpace");
             }
+        },
+
+        assignOneCompanyToSelectedDzo(oneDzoNameSelected) {
+            this.isOneDzoSelected = true;
+            if (oneDzoNameSelected == 'ОМГ') {
+                oneDzoNameSelected = [oneDzoNameSelected, 'ОМГК'];
+            }
+            this.selectedDzoCompanies = oneDzoNameSelected;
+            this.updateDzoMenu();         
+            this.updateProductionFondWidget();
+            this.updateInjectionFondWidget();          
+        },
+
+        switchDropdownCategories(category) {
+            this.dropdownMenu = _.mapValues(this.dropdownMenu, () => false);
+            this.dropdownMenu[category] = true;
         },
     },
 }

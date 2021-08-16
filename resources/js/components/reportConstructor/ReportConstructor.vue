@@ -1,36 +1,37 @@
 <template>
   <div class="row">
+
     <div class="left-section bg-dark">
       <div class="col">
         <div class="row menu">
-          <div class="left-section-title" @click="currentStructureType = 'org'">
+          <div class="left-section-title" v-bind:class="{active: currentStructureType === 'org'}" @click="onMenuClick('org')">
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M6.05078 0.00301123H11.098V5.0498H6.05078V0.00301123Z"
-                    fill="#868BB2"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M0 10.0743H5.0472V15.1211H0V10.0743Z" fill="#868BB2"/>
+                    fill="#fff"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M0 10.0743H5.0472V15.1211H0V10.0743Z" fill="#fff"/>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M6.05078 10.0743H11.098V15.1211H6.05078V10.0743Z"
-                    fill="#868BB2"/>
+                    fill="#fff"/>
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M3.02602 8.06429H8.07322V9.06934H9.07775V8.06429H14.1249V9.06934H15.1296V7.05973H9.07775V6.05469H8.07322V7.05973H2.02148V9.06934H3.02602V8.06429Z"
-                    fill="#868BB2"/>
+                    fill="#fff"/>
               <path fill-rule="evenodd" clip-rule="evenodd" d="M12.1035 10.0743H17.1506V15.1211H12.1035V10.0743Z"
-                    fill="#868BB2"/>
+                    fill="#fff"/>
             </svg>
             Оргструктура
           </div>
-          <div class="left-section-title" @click="currentStructureType = 'geo'">
+          <div class="left-section-title" v-bind:class="{active: currentStructureType === 'geo'}" @click="onMenuClick('geo')">
             <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
-                    fill="#868BB2"/>
+                    fill="#fff"/>
             </svg>
             Геоструктура
           </div>
-          <div class="left-section-title" @click="currentStructureType = 'tech'">
+          <div class="left-section-title" v-bind:class="{active: currentStructureType === 'tech'}" @click="onMenuClick('tech')">
             <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
-                    fill="#868BB2"/>
+                    fill="#fff"/>
             </svg>
             Техструктура
           </div>
@@ -52,7 +53,7 @@
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="dropdown-inner-text">
-                  {{ showOptions ? 'Выбор скважины' : currentOption.name }}
+                  {{ getOptionName() }}
                 </div>
                 <div class="icon-pointer"></div>
               </button>
@@ -87,7 +88,7 @@
                     fill="white" fill-opacity="0.3"/>
             </svg>
             <form @click="isDisplayParameterBuilder = !isDisplayParameterBuilder">
-              <input type="text" placeholder="Выбор параметров" id="parametr-search">
+              <input type="text" placeholder="Выбор параметров" id="parameter-search">
               </input>
             </form>
           </div>
@@ -113,6 +114,7 @@
                       :structureType="currentStructureType"
                       :itemType="currentItemType"
                       :isShowCheckboxes="true"
+                      :onCheckboxClick="updateSelectedNodes"
                   >
                   </report-constructor-item-select-tree>
                 </template>
@@ -129,23 +131,69 @@
             <section class="section-top  bg-dark">
               <div class="vertical-centered">
                 <div class="row">
-                  <div class="inline-flex date-container">
-                    <span class="">Дата</span>
-                    <form class="">
-                      <input type="date">
-                    </form>
+                  <div class="row date-container">
+                    <div class="col start-date-container mb-2">
+                      <label>{{ trans('bd.choose_start_date') }}</label>
+                      <template>
+                        <datetime
+                            type="date"
+                            v-bind:value="startDate"
+                            v-on:input="onStartDatePickerClick($event)"
+                            class="start-date"
+                            value-zone="Asia/Almaty"
+                            zone="Asia/Almaty"
+                            :title="trans('bd.choose_start_date')"
+                            :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                            :max-datetime="endDate"
+                            :week-start="1"
+                            :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
+                            auto
+                            :flow="dateFlow"
+                        >
+                        </datetime>
+                      </template>
+                    </div>
+                    <div class="col end-date-container mb-2">
+                      <label>{{ trans('bd.choose_end_date') }}</label>
+                      <template>
+                        <datetime
+                          type="date"
+                          v-bind:value="endDate"
+                          v-on:input="onEndDatePickerClick($event)"
+                          class="end-date"
+                          value-zone="Asia/Almaty"
+                          zone="Asia/Almaty"
+                          :title="trans('bd.choose_end_date')"
+                          :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                          :min-datetime="startDate"
+                          :week-start="1"
+                          :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+                          auto
+                          :flow="dateFlow"
+                        >
+                        </datetime>
+                      </template>
+                    </div>
                   </div>
-                  <div class="inline-flex">
-                    <span class="calendar">Сегодня</span>
-                    <span class="calendar">Сутки</span>
-                    <span class="calendar">Неделя</span>
-                    <span class="calendar">Месяц</span>
-                    <span class="calendar">Год</span>
+                  <div class="row date-picker inline-flex mb-2">
+                    <button 
+                      @click="onMonthClick()" 
+                      class="calendar" 
+                      v-bind:class="{active: currentDatePickerFilter === 'month'}"
+                    >{{ trans('bd.month_3') }}</button>
+
+                    <button 
+                      @click="onYearClick()" 
+                      class="calendar justify-content-center"
+                      v-bind:class="{active: currentDatePickerFilter === 'year'}"
+                    >{{ trans('bd.year_1') }}</button>
                   </div>
 
                   <div class="btn-container">
-                    <button class="btn-disabled" @click="updateStatistics()">Создать отчет</button>
-                    <button class="">Выбрать шаблон</button>
+                    <button class="" :disabled="!startDate" @click="updateStatistics()">{{ trans('bd.create_report') }}</button>
+                    <button class="">{{ trans('bd.choose_template') }}</button>
                   </div>
                 </div>
 
@@ -154,15 +202,14 @@
             </section>
           </div>
         </div>
-        <div class="row">
+        <div class="row" v-for="sheetType in sheetTypes">
           <div class="col">
-
             <report-header-builder
-                v-model="attributesForObject"
-                :data="attributesForObject"
+                v-model="attributesByHeader[sheetType]"
+                :data="attributesByHeader[sheetType]"
                 :translateAttribute="getAttributeDescription"
                 group="items"
-                v-if="isDisplayParameterBuilder && currentStructureId != null"
+                v-if="isDisplayParameterBuilder"
             >
             </report-header-builder>
           </div>
@@ -202,7 +249,7 @@
                   <div class="col">
                     <div class="row" style="width: 100%; padding-right: 0px;">
                       <div class="content-top-element" style="width: 100%; padding-right: 0px; margin-right:0px;">
-                        Отчет: <span class="width-400">Оргструктура - АО “ЭмбаМунайГаз” > НГДУ “Жылыоймунайгаз” > Цех добычи 1 > ГУ-16</span>
+                        Отчет:
                         <div class="share">
                           <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
                                xmlns="http://www.w3.org/2000/svg">
@@ -215,40 +262,60 @@
                     </div>
                     <div class="row">
                       <div class="content-top-element">
-                        Геоструктура <span class="width-400">- АО “ЭмбаМунайГаз” > Макат Восточный</span>
+                        Геоструктура:
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <div class="row" v-if="statistics">
+                <div class="table-wrapper col">
+                  <ul class="nav nav-tabs report-tab">
+                    <template v-for="(sheetType, index) in sheetTypes">
+                      <li class="nav-item" v-if="statistics[sheetType].length > 0">
+                          <span class="nav-link report-link" href="#" :class="{ active: activeTab === index }"
+                                @click="activeTab = index">
+                            {{ sheetTypesDescription[sheetType] }}
+                          </span>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </div>
               <div class="row">
                 <div class="table-wrapper col">
                   <div class="table-container" v-if="statistics">
-                    <table>
-                      <thead>
-                      <tr>
-                        <th rowspan="2" class="heading" v-for="column in statisticsColumns">
-                          <div class="centered">
-                            {{ getAttributeDescription(column) }}
-                          </div>
-                        </th>
-                      </tr>
+                    <template v-for="(statisticsOfSheet, sheetType) in statistics">
+                      <table v-if="sheetType === sheetTypes[activeTab]">
+                        <thead>
+                        <tr v-for="(attributesOnDepth, index) in getHeaders(sheetType)">
+                          <th
+                              v-for="attribute in attributesOnDepth"
+                              :rowspan="getRowHeightSpan(attribute, index)"
+                              :colspan="getRowWidthSpan(attribute)"
+                          >
+                            <div class="centered">
+                              {{ getAttributeDescription(attribute.label) }}
+                            </div>
+                          </th>
+                        </tr>
 
-                      </thead>
-                      <tbody>
-                        <tr v-for="row in statistics">
-                          <td class="table-body" v-for="column in statisticsColumns">
+                        </thead>
+                        <tbody>
+                        <tr v-for="row in statisticsOfSheet">
+                          <td class="table-body" v-for="column in statisticsColumns[sheetType]">
                             <div class="centered">{{ row[column] }}</div>
                           </td>
                         </tr>
-                      </tbody>
-                    </table>
+                        </tbody>
+                      </table>
+                    </template>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="btn-container">
-                  <button disabled>Скачать отчет</button>
+                  <button @click="getStatisticsFile()">Скачать отчет</button>
                   <button>Сохранить как шаблон</button>
                 </div>
               </div>
@@ -566,23 +633,35 @@ body {
   }
 
   .left-section-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     font-family: $HarmoniaSansProCyr;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 13.5px;
+    width: 140px;
+    height: 35px;
     line-height: 19px;
-    padding: 17px 45px 15px 45px;
+    letter-spacing: 1px;
+    border-radius: 2px;
+    cursor: pointer;
 
     svg {
       margin-right: 10px;
     }
   }
 
-  .left-section-title:hover {
+  .active {
+    background-color: #3366FF;
+  }
+
+  .left-section-title:not(.active):hover {
     background-color: #323370;
   }
 
   .left-section-title:active {
-    background-color: #323370;
+    background-color: #3366FF;
   }
 
   .dropdown-item {
@@ -614,6 +693,9 @@ body {
 
   .menu {
     flex-wrap: wrap-reverse;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 50px;
   }
 
   .dropdown-menu.show {
@@ -629,6 +711,15 @@ body {
       border-radius: 6px;
     }
 
+    .dot {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      height: 10px;
+      width: 10px;
+      background-color: #09ff00;
+      border-radius: 50%;
+    }
 
     .dropdown-item:hover, .dropdown-item:focus {
       background: rgba(51, 102, 255, 0.5);
@@ -649,7 +740,7 @@ body {
   }
 
   .btn-secondary {
-    border: 1px solid #454FA1;
+    border: 1.3px solid #3366FF;
     border-radius: 5px;
     width: 350px;
     height: 30px;
@@ -731,6 +822,28 @@ body {
     }
   }
 
+  .right-section-select-area {
+    margin: 20px 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+
+    input[type="checkbox"] {
+      height: 15px;
+      width: 15px;
+      background-color: white;
+      border-radius: 3.5px;
+      margin-bottom: auto;
+      margin-top: auto;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+  }
+
   .table-wrapper {
     padding: 0px 10px;
   }
@@ -770,9 +883,14 @@ body {
     min-height: 52px;
     width: 100%;
     margin-bottom: 10px;
-    padding: 11px 0px 11px 14px;
+    padding: 11px 7px 11px 7px;
 
-    span {
+    .col {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    span, label {
       font-family: $HarmoniaSansProCyr;
       font-weight: 700;
       font-size: 14px;
@@ -801,8 +919,82 @@ body {
     }
 
     .date-container {
-      &:first-child span {
-        margin-right: 17px;
+      margin-bottom: 10px;
+
+      label {
+        margin-right: 10px;
+      }
+
+      .vdatetime::v-deep .vdatetime-input {
+        width: 142px;
+        background: #1F2142;
+        color: #B6BAD9;
+        border-radius: 4px;
+        border: 0.5px solid #454FA1;
+        font-size: 16px;
+        font-weight: 400;
+        font-family: $HarmoniaSansProCyr;
+        padding: 0 0 0 19px;
+        background-image: url(/img/bd/webkit-calendar.svg);
+        background-position: 102% center;
+        background-repeat: no-repeat;
+      }
+
+      .vdatetime::v-deep .vdatetime-popup__year,
+      .vdatetime::v-deep .vdatetime-popup__date {
+        display: none;
+      }
+
+      @media(max-width: 1035px) {
+        .start-date-container {
+          display: flex;
+          justify-content: flex-start;
+          margin-right: 30px;
+        }
+      }
+
+      @media(min-width: 1035px) {
+        .start-date-container {
+          display: flex;
+          justify-content: flex-end;
+          margin-right: 30px;
+        }
+      }
+
+      .end-date-container {
+        display: flex;
+        justify-content: flex-start;
+      }
+    }
+
+    .date-picker {
+      justify-content: center;
+
+      .calendar {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+        font-family: $HarmoniaSansProCyr;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 19px;
+        background: url(/img/bd/date-time.svg) 1% no-repeat;
+        padding: 0px 35px;
+        width: 100px;
+        height: 25px;
+        border: none;
+        border-radius: 2px;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .calendar:not(.active):hover {
+        background-color: #323370;
+      }
+
+      .active {
+        color: #fff;
+        background-color: #3366FF;
       }
     }
   }
@@ -1050,11 +1242,6 @@ body {
     position: inherit;
     margin: auto;
   }
-}
-
-.calendar {
-  background: url(/img/bd/date-time.svg) 1% no-repeat;
-  padding: 0px 35px;
 }
 
 .vertical-centered {
@@ -1503,6 +1690,13 @@ body {
   box-shadow: 0 0 10px #000;
 }
 
+.nav-link.report-link.active {
+  background: #fffef5;
+}
+
+.nav-tabs.report-tabs {
+  border-bottom-color: #272953;
+}
 
 </style>
 

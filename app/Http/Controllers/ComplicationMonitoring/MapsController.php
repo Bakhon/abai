@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
+use App\Models\ComplicationMonitoring\ManualGu;
+use App\Models\ComplicationMonitoring\ManualOilPipe;
+use App\Models\ComplicationMonitoring\ManualWell;
+use App\Models\ComplicationMonitoring\ManualZu;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\ComplicationMonitoring\OilPipe;
 use App\Http\Controllers\Controller;
 use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\Ngdu;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\MapService;
 use App\Models\ComplicationMonitoring\Gu;
@@ -18,6 +23,7 @@ use App\Services\DruidService;
 class MapsController extends Controller
 {
     protected $mapService;
+    protected $modelNameSpace = 'App\\Models\\ComplicationMonitoring\\';
 
     public function __construct(MapService $mapService)
     {
@@ -45,14 +51,52 @@ class MapsController extends Controller
         return $center;
     }
 
-    public function mapData(Request $request, DruidService $druidService): array
+    public function mapData(): array
     {
-        $pipes = OilPipe::with('coords', 'pipeType')->get();
+        $pipes = OilPipe::with('coords', 'pipeType')
+            ->with([
+                'hydroCalcLong' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                },
+                'hydroCalc' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                },
+                'reverseCalc' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                }
+            ])
+            ->WithLastHydroCalc()
+            ->WithLastReverseCalc()
+            ->get();
+
+        $manualPipes = ManualOilPipe::with('coords', 'pipeType')
+            ->with([
+                'hydroCalcLong' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                },
+                'hydroCalc' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                },
+                'reverseCalc' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                }
+            ])
+            ->WithLastHydroCalc()
+            ->WithLastReverseCalc()
+            ->get();
 
         $center = [52.854602599069, 43.426262258809];
 
         $wellPoints = Well::query()
             ->whereHas('zu.gu')
+            ->whereHas('ngdu')
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->get();
+
+        $wellManualPoints = ManualWell::query()
+            ->whereNotNull('zu_id')
+            ->whereNotNull('gu_id')
             ->whereHas('ngdu')
             ->whereNotNull('lat')
             ->whereNotNull('lon')
@@ -65,11 +109,29 @@ class MapsController extends Controller
             ->whereNotNull('lon')
             ->get();
 
+        $zuManualPoints = ManualZu::query()
+            ->whereHas('gu')
+            ->whereHas('ngdu')
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->get();
+
         $guPoints = Gu::whereNotNull('lat')
             ->whereNotNull('lon')
             ->WithLastOmgngdu()
             ->orderByRaw('lpad(name, 10, 0) asc')
             ->get();
+
+        $guManualPoints = ManualGu::whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->WithLastOmgngdu()
+            ->orderByRaw('lpad(name, 10, 0) asc')
+            ->get();
+
+        $wellPoints = $wellPoints->merge($wellManualPoints);
+        $zuPoints = $zuPoints->merge($zuManualPoints);
+        $guPoints = $guPoints->merge($guManualPoints);
+        $pipes = $pipes->merge($manualPipes);
 
         $pipeTypes = PipeType::all();
         $ngdus = Ngdu::all();
@@ -139,12 +201,12 @@ class MapsController extends Controller
         }
 
         $gu_input = $request->input('gu');
-        $gu = new Gu;
+        $gu = new ManualGu;
 
         $gu->fill($gu_input);
         $gu->save();
 
-        $gu = Gu::with(
+        $gu = ManualGu::with(
             [
                 'omgngdu' => function ($query) {
                     $query->select(
@@ -183,7 +245,7 @@ class MapsController extends Controller
         }
 
         $zu_input = $request->input('zu');
-        $zu = new Zu;
+        $zu = new ManualZu;
 
         $zu->fill($zu_input);
         $zu->save();
@@ -208,7 +270,7 @@ class MapsController extends Controller
         }
 
         $well_input = $request->input('well');
-        $well = new Well;
+        $well = new ManualWell;
 
         $well->fill($well_input);
         $well->save();
@@ -233,7 +295,7 @@ class MapsController extends Controller
         }
 
         $pipe_input = $request->input('pipe');
-        $pipe = new OilPipe;
+        $pipe = new ManualOilPipe;
         $pipe->fill($pipe_input);
         $pipe->save();
 
@@ -244,7 +306,21 @@ class MapsController extends Controller
             $pipe_coord->save();
         }
 
-        $pipe = OilPipe::with('coords', 'pipeType')->find($pipe->id);
+        $pipe = ManualOilPipe::with('coords', 'pipeType')
+            ->with([
+                'hydroCalcLong' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                },
+                'hydroCalc' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                },
+                'reverseCalc' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                }
+            ])
+            ->WithLastHydroCalc()
+            ->WithLastReverseCalc()
+            ->find($pipe->id);
 
         return response()->json(
             [
@@ -254,7 +330,7 @@ class MapsController extends Controller
         );
     }
 
-    public function updateGu(Request $request, Gu $gu): \Symfony\Component\HttpFoundation\Response
+    public function updateGu(Request $request, int $id): \Symfony\Component\HttpFoundation\Response
     {
         if (!auth()->user()->hasPermissionTo('monitoring update gu', 'web')) {
             return response()->json(
@@ -265,12 +341,15 @@ class MapsController extends Controller
             );
         }
 
+        $model = $id >= 10000 ? app($this->modelNameSpace.'ManualGu') : app($this->modelNameSpace.'Gu');
+        $gu = $model->find($id);
+
         $gu_input = $request->input('gu');
 
         $gu->fill($gu_input);
         $gu->save();
 
-        $gu = Gu::with(
+        $gu = $model->with(
             [
                 'omgngdu' => function ($query) {
                     $query->select(
@@ -297,7 +376,7 @@ class MapsController extends Controller
         );
     }
 
-    public function updateZu(Request $request, Zu $zu): \Symfony\Component\HttpFoundation\Response
+    public function updateZu(Request $request, int $id): \Symfony\Component\HttpFoundation\Response
     {
         if (!auth()->user()->hasPermissionTo('monitoring update zu', 'web')) {
             return response()->json(
@@ -307,6 +386,8 @@ class MapsController extends Controller
                 ]
             );
         }
+
+        $zu = $id >= 10000 ? ManualZu::find($id) : Zu::find($id);
 
         $zu_input = $request->input('zu');
 
@@ -321,7 +402,7 @@ class MapsController extends Controller
         );
     }
 
-    public function updateWell(Request $request, Well $well): \Symfony\Component\HttpFoundation\Response
+    public function updateWell(Request $request, int $id): \Symfony\Component\HttpFoundation\Response
     {
         if (!auth()->user()->hasPermissionTo('monitoring update well', 'web')) {
             return response()->json(
@@ -331,6 +412,8 @@ class MapsController extends Controller
                 ]
             );
         }
+
+        $well = $id >= 10000 ? ManualWell::find($id) : Well::find($id);
 
         $well_input = $request->input('well');
 
@@ -345,7 +428,7 @@ class MapsController extends Controller
         );
     }
 
-    public function updatePipe(Request $request, OilPipe $pipe): \Symfony\Component\HttpFoundation\Response
+    public function updatePipe(Request $request, int $id): \Symfony\Component\HttpFoundation\Response
     {
         if (!auth()->user()->hasPermissionTo('monitoring update pipe', 'web')) {
             return response()->json(
@@ -356,17 +439,34 @@ class MapsController extends Controller
             );
         }
 
+        $model = $id >= 10000 ? app($this->modelNameSpace.'ManualOilPipe') : app($this->modelNameSpace.'OilPipe');
+        $pipe = $model->find($id);
+
         $pipe_input = $request->input('pipe');
         $pipe->fill($pipe_input);
         $pipe->save();
 
         foreach ($pipe_input['coords'] as $coord) {
-            $pipe_coord = PipeCoord::find($coord['id']);
+            $pipe_coord = PipeCoord::findOrNew($coord['id']);
             $pipe_coord->fill($coord);
             $pipe_coord->save();
         }
 
-        $pipe = OilPipe::with('coords', 'pipeType')->find($pipe->id);
+        $pipe = $model->with('coords', 'pipeType')
+            ->with([
+                'hydroCalcLong' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                },
+                'hydroCalc' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                },
+                'reverseCalc' => function($query) {
+                    $query->where('date', Carbon::now()->format('Y-m-d'));
+                }
+            ])
+            ->WithLastHydroCalc()
+            ->WithLastReverseCalc()
+            ->find($id);
 
         return response()->json(
             [
@@ -376,7 +476,7 @@ class MapsController extends Controller
         );
     }
 
-    public function deleteGu(Gu $gu): \Symfony\Component\HttpFoundation\Response
+    public function deleteGu(int $id): \Symfony\Component\HttpFoundation\Response
     {
         if (!auth()->user()->hasPermissionTo('monitoring delete gu', 'web')) {
             return response()->json(
@@ -387,6 +487,8 @@ class MapsController extends Controller
             );
         }
 
+        $gu = $id >= 10000 ? ManualGu::find($id) : Gu::find($id);
+
         $gu->delete();
 
         return response()->json(
@@ -396,7 +498,7 @@ class MapsController extends Controller
         );
     }
 
-    public function deleteZu(Zu $zu): \Symfony\Component\HttpFoundation\Response
+    public function deleteZu(int $id): \Symfony\Component\HttpFoundation\Response
     {
         if (!auth()->user()->hasPermissionTo('monitoring delete zu', 'web')) {
             return response()->json(
@@ -407,6 +509,8 @@ class MapsController extends Controller
             );
         }
 
+        $zu = $id >= 10000 ? ManualZu::find($id) : Zu::find($id);
+
         $zu->delete();
 
         return response()->json(
@@ -416,7 +520,7 @@ class MapsController extends Controller
         );
     }
 
-    public function deleteWell(Well $well): \Symfony\Component\HttpFoundation\Response
+    public function deleteWell(int $id): \Symfony\Component\HttpFoundation\Response
     {
         if (!auth()->user()->hasPermissionTo('monitoring delete well', 'web')) {
             return response()->json(
@@ -427,6 +531,8 @@ class MapsController extends Controller
             );
         }
 
+        $well = $id >= 10000 ? ManualWell::find($id) : Well::find($id);
+
         $well->delete();
 
         return response()->json(
@@ -436,7 +542,7 @@ class MapsController extends Controller
         );
     }
 
-    public function deletePipe(OilPipe $pipe): \Symfony\Component\HttpFoundation\Response
+    public function deletePipe(int $id): \Symfony\Component\HttpFoundation\Response
     {
         if (!auth()->user()->hasPermissionTo('monitoring delete pipe', 'web')) {
             return response()->json(
@@ -447,7 +553,11 @@ class MapsController extends Controller
             );
         }
 
-        PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
+        $pipe = $id >= 100000 ? ManualOilPipe::find($id) : OilPipe::find($id);
+
+//        dd($pipe);
+
+//        PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
         $pipe->delete();
 
         return response()->json(
@@ -457,21 +567,43 @@ class MapsController extends Controller
         );
     }
 
-    public function getSpeedFlow(Request $request)
+    public function getHydroReverseCalc(Request $request)
     {
         $date = $request->input('date');
+
         $pipes = OilPipe::with(
             [
                 'coords',
                 'pipeType',
-                'speedFlowGuUpsv' => function ($query) use ($date) {
+                'hydroCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
                 },
-                'speedFlowWellGu' => function ($query) use ($date) {
+                'reverseCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
-                }
+                },
+                'hydroCalcLong' => function($query) use ($date) {
+                    $query->where('date', $date);
+                },
             ]
         )->get();
+
+        $manualPipes = ManualOilPipe::with(
+            [
+                'coords',
+                'pipeType',
+                'hydroCalc' => function ($query) use ($date) {
+                    $query->where('date', $date);
+                },
+                'reverseCalc' => function ($query) use ($date) {
+                    $query->where('date', $date);
+                },
+                'hydroCalcLong' => function($query) use ($date) {
+                    $query->where('date', $date);
+                },
+            ]
+        )->get();
+
+        $pipes = $pipes->merge($manualPipes);
 
         return [
             'pipes' => $pipes

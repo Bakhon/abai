@@ -24,7 +24,7 @@ class Org extends TBDModel
 
     public function type()
     {
-        return $this->belongsTo(OrgType::class, 'type_id');
+        return $this->belongsTo(OrgType::class, 'org_type');
     }
 
 

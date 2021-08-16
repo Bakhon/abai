@@ -21,6 +21,11 @@ class Ngdu extends Model
         return $this->hasMany(OilGas::class);
     }
 
+    public function oilpipes()
+    {
+        return $this->hasMany(OilPipes::class);
+    }
+
     public function corrosion()
     {
         return $this->hasMany(Corrosion::class);
@@ -44,5 +49,15 @@ class Ngdu extends Model
     public function zus()
     {
         return $this->hasManyThrough(Zu::class, Gu::class);
+    }
+
+    public function buffer_tank()
+    {
+        return $this->hasMany(BufferTank::class);
+    }
+
+    public function pumps()
+    {
+        return $this->hasMany(Pump::class);
     }
 }

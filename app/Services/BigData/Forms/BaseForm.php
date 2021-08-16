@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Exceptions\ParseJsonException;
 use App\Models\BigData\Infrastructure\History;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -28,8 +29,12 @@ abstract class BaseForm
         $this->validator = app()->make(\App\Services\BigData\CustomValidator::class);
     }
 
-    public function getHistory(int $id, \DateTimeInterface $date): array
+    public function getHistory(int $id, \DateTimeInterface $date = null): array
     {
+        if (!$date) {
+            $date = Carbon::now();
+        }
+
         $historyItems = History::query()
             ->where('row_id', $id)
             ->where('date', $date)
@@ -51,18 +56,18 @@ abstract class BaseForm
         return $result;
     }
 
-
     public function send(): array
     {
         $this->validate();
         return $this->submit();
     }
 
-    public function getFormatedParams(): array
+    public function getFormInfo(): array
     {
         return [
-            'params' => $this->params(),
-            'fields' => $this->getFields()->pluck('', 'code')->toArray()
+            'params' => $this->getFormatedParams(),
+            'fields' => $this->getFields()->pluck('', 'code')->toArray(),
+            'available_actions' => $this->getAvailableActions()
         ];
     }
 
@@ -83,6 +88,11 @@ abstract class BaseForm
         return base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
     }
 
+    protected function getFormatedParams(): array
+    {
+        return $this->params();
+    }
+
     protected function params(): array
     {
         $jsonFile = $this->getConfigFilePath();
@@ -101,7 +111,28 @@ abstract class BaseForm
         return [];
     }
 
-    private function validate(): void
+    protected function getAvailableActions(): array
+    {
+        $defaultActions = [
+            'create',
+            'update',
+            'view history',
+            'delete',
+        ];
+
+        $actions = $this->params()['available_actions'] ?? $defaultActions;
+
+        $actions = array_filter(
+            $actions,
+            function ($action) {
+                return auth()->user()->can("bigdata {$action} {$this->configurationFileName}");
+            }
+        );
+
+        return array_values($actions);
+    }
+
+    protected function validate(): void
     {
         $errors = $this->getCustomValidationErrors();
         $this->validator->validate(

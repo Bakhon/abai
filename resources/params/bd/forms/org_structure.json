@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.well_org",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "title",
@@ -20,7 +26,7 @@
               "code": "dbeg",
               "type": "date",
               "title": "dbeg",
-              "validation": "required|date"
+              "validation": "required|date|before:dend"
               },
               {
               "code": "dend",

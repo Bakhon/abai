@@ -12,6 +12,7 @@ use App\Http\Resources\GuListResource;
 use App\Jobs\ExportOmgCAToExcel;
 use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\ComplicationMonitoring\Gu;
+use App\Models\ComplicationMonitoring\ManualGu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
@@ -176,8 +177,8 @@ class GusController extends CrudController
      */
     public function destroy(Request $request, $id)
     {
-        $omgca = Gu::find($id);
-        $omgca->delete();
+        $gu = Gu::find($id);
+        $gu->delete();
 
         if ($request->ajax()) {
             return response()->json([], Response::HTTP_NO_CONTENT);
@@ -189,5 +190,47 @@ class GusController extends CrudController
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new GuFilter($query, $filter))->filter();
+    }
+
+    public function getAllGu(): \Symfony\Component\HttpFoundation\Response
+    {
+        $gus = Gu::query()
+            ->select('name', 'id', 'cdng_id')
+            //dirty hack for alphanumeric sort but other solutions doesn't work
+            ->orderByRaw('lpad(name, 10, 0) asc')
+            ->get();
+
+
+        $gusManual = ManualGu::query()
+            ->select('name', 'id', 'cdng_id')
+            //dirty hack for alphanumeric sort but other solutions doesn't work
+            ->orderByRaw('lpad(name, 10, 0) asc')
+            ->get();
+
+        $gus = $gus->merge($gusManual);
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $gus
+            ]
+        );
+    }
+
+    public function getGuRelations(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $gu = Gu::with('zus', 'wells')->find($request->gu_id);
+        $guManual = ManualGu::with('zus', 'wells')->find($request->gu_id);
+
+        $gu = $gu->merge($guManual);
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $gu
+            ]
+        );
     }
 }

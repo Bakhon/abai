@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Exports\EconomicDataExport;
-use App\Http\Controllers\EconomicController;
+use App\Http\Controllers\Economic\EconomicNrsController;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -38,20 +38,20 @@ class ExportEconomicDataToExcel implements ShouldQueue
     {
         /** @var Carbon $intervalStart */
         /** @var Carbon $intervalEnd */
-        list($intervalStart, $intervalEnd) = EconomicController::calcIntervalMonthsStartEnd(
+        list($intervalStart, $intervalEnd) = EconomicNrsController::calcIntervalMonthsStartEnd(
             $this->params['interval_start'] ?? null,
             $this->params['interval_end'] ?? null
         );
 
-        $interval = EconomicController::intervalFormat($intervalStart, $intervalEnd);
+        $interval = EconomicNrsController::formatInterval($intervalStart, $intervalEnd);
 
         $druid = new DruidClient(config('druid'));
 
         $granularity = $this->params['granularity'];
-        $granularityFormat = EconomicController::granularityFormat($granularity);
+        $granularityFormat = EconomicNrsController::granularityFormat($granularity);
 
         $builder = $druid
-            ->query(EconomicController::DATA_SOURCE, $granularity)
+            ->query(EconomicNrsController::DATA_SOURCE, $granularity)
             ->interval($interval)
             ->select('__time', EconomicDataExport::COLUMN_DATE, function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
                 $extBuilder->timeFormat($granularityFormat);

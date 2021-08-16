@@ -1,119 +1,245 @@
 <template>
-  <div class="digital-rating">
-    <div class="rating-tabs">
-      <template v-for="(tab, tabIdx) in tabs">
-        <div
-          :key="tabIdx"
-          class="rating-tabs__item"
-          :class="{
-            'is-active': tab.name === currentTab
-          }"
-          @click="handleSelectTab(tab.name)"
-        >
-          <img :src="tab.icon" alt="">
-          <span>{{ trans(tab.title) }}</span>
+  <div>
+    <gtm-main-menu
+      :parentType="this.parentType"
+      :mainMenu="menu"
+      @menuClick="menuClick"
+    />
+    <div class="rating-sections">
+      <div class="rating-content">
+        <div class="rating-content__title">
+          <div>{{ trans('digital_rating.sectorMap') }}</div>
+          <div class="d-flex align-items-center">
+            <btn-dropdown :list="fileActions">
+              <template #icon>
+                <i class="far fa-file"/>
+              </template>
+              <template #title>
+                {{ trans('digital_rating.file') }}
+              </template>
+            </btn-dropdown>
+            <btn-dropdown :list="mapsActions">
+              <template #icon>
+                <i class="fas fa-map-marked-alt"/>
+              </template>
+              <template #title>
+                {{ trans('digital_rating.maps') }}
+              </template>
+            </btn-dropdown>
+            <i class="fas fa-cog gear-icon-svg"
+               @click="openSettingModal"
+               style="font-size: 20px;"
+            />
+          </div>
         </div>
-      </template>
+        <div class="rating-content__wrapper">
+          <div id="map"></div>
+        </div>
+      </div>
+      <div class="rating-panel">
+        <accordion
+            :list="objects"
+            title="digital_rating.object"
+        />
+        <accordion
+            :list="maps"
+            title="digital_rating.mapsGeologyDevelopment"
+        />
+        <accordion
+            :list="cods"
+            title="digital_rating.sectorCode"
+        />
+        <accordion
+            :list="properties"
+            title="digital_rating.property"
+        />
+      </div>
+      <setting-modal
+        @close="closeSettingModal"
+      />
+      <well-atlas-modal
+        @close="closeAtlasModal"
+      />
     </div>
-    <keep-alive>
-      <component v-bind:is="currentTabComponent"></component>
-    </keep-alive>
   </div>
 </template>
 
 <script>
-import Settings from './components/Settings';
-import Sections from './components/Sections';
-import Atlas from './components/Atlas';
-import Reports from './components/Reports';
+import L from 'leaflet';
+import mapsData from './json/dataMap.json';
+import wellsData from './json/dataWells.json';
+import 'leaflet/dist/leaflet.css';
+import BtnDropdown from "./components/BtnDropdown";
+import SettingModal from "./components/SettingModal";
+import WellAtlasModal from "./components/WellAtlasModal";
+import Accordion from "./components/Accordion";
+import mainMenu from "../GTM/mock-data/main_menu.json";
 
 export default {
-  name: 'DigitalRating',
+  name: "Sections",
 
   components: {
-    Settings,
-    Sections,
-    Atlas,
-    Reports,
+    BtnDropdown,
+    SettingModal,
+    WellAtlasModal,
+    Accordion,
   },
 
   data() {
     return {
-      tabs: [
-        {
-          title: 'digital_rating.mapSetup',
-          name: 'settings',
-          icon: '/img/digital-rating/settings.svg',
-        },
-        {
-          title: 'digital_rating.sectorMap',
-          name: 'sections',
-          icon: '/img/digital-rating/sections.svg',
-        },
-        {
-          title: 'digital_rating.wellAtlas',
-          name: 'atlas',
-          icon: '/img/digital-rating/atlas.svg',
-        },
-        {
-          title: 'digital_rating.wellsReport',
-          name: 'reports',
-          icon: '/img/digital-rating/reports.svg',
-        }
+      objects: ['Объект 1', 'Объект 2'],
+      maps: ['Карта ННТ', 'Накопленные отборы'],
+      cods: ['1', '2', '3'],
+      properties: ['Значок', 'Шрифт', 'Палитра'],
+      fileActions: [
+        { title: 'digital_rating.import', icon: 'upload', type: 'import'  },
+        { title: 'digital_rating.export', icon: 'download', type: 'export' },
+        { title: 'digital_rating.save', icon: 'save', type: 'save' }
       ],
-      currentTab: 'settings',
-    }
+      mapsActions: [
+        { title: 'digital_rating.uploadCustomMaps', icon: 'share', type: 'upload' },
+        { title: 'digital_rating.importPlannedWells', icon: 'upload', type: 'importWells' }
+      ],
+      parentType: '',
+      menu: mainMenu,
+      mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
+    };
   },
 
-  computed: {
-    currentTabComponent() {
-      return this.currentTab.toLowerCase();
-    }
+  async mounted() {
+    await this.initMap();
   },
 
   methods: {
-    handleSelectTab(tab) {
-      this.currentTab = tab;
+    initMap() {
+      const map = L.map('map', {
+        crs: L.CRS.Simple,
+        minZoom: 1,
+        maxZoom: 3,
+        zoomControl: false
+      });
+
+      L.control.zoom({
+        position: 'bottomright'
+      }).addTo(map);
+
+      const bounds = [[0, 1500], [0,1500]];
+      map.fitBounds(bounds);
+
+      let yx = L.latLng;
+      const xy = function (x, y) {
+        if (L.Util.isArray(x)) {
+          return yx(x[1], x[0]);
+        }
+        return yx(y, x);
+      };
+
+      map.setView( [850, 520], 1);
+
+      mapsData.forEach((el) => {
+        el.x = el.x / 100;
+        el.y = el.y / 100;
+      });
+
+      for(let i = 0; i < mapsData.length; i++) {
+        const coordinateStart = xy(mapsData[i]['x'], mapsData[i]['y']);
+        const coordinateEnd = xy(mapsData[i]['x'] + 1, mapsData[i]['y'] + 1);
+        let rectangle = L.rectangle([[coordinateStart], [coordinateEnd]], {
+          color: mapsData[i]['color'],
+          weight: 6,
+          fillColor: mapsData[i]['color'],
+          fillOpacity: 1,
+        }).addTo(map).bindPopup(mapsData[i]['sector'].toString());
+
+        rectangle.on('mouseover', function (e) {
+          this.openPopup();
+        });
+        rectangle.on('mouseout', function (e) {
+          this.closePopup();
+        });
+        rectangle.on('click', (e) => {
+          this.onMapClick();
+        })
+      }
+
+      map.getBounds().pad(1);
+    },
+    onMapClick() {
+      this.$modal.show('modalAtlas');
+    },
+    closeAtlasModal() {
+      this.$modal.hide('modalAtlas');
+    },
+    openSettingModal() {
+      this.$modal.show('modalSetting');
+    },
+    closeSettingModal() {
+      this.$modal.hide('modalSetting');
+    },
+    menuClick(data) {
+      const path = window.location.pathname.slice(3);
+      if (data?.url && data.url !== path) {
+        window.location.href = this.localeUrl(data.url);
+      }
     }
   }
 }
 </script>
-<style scoped lang="scss">
-.rating-tabs {
+
+<style lang="scss" scoped>
+.rating-sections {
+  color: #fff;
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin-bottom: 10px;
+  margin-top: 3rem;
+
+  .rating-content {
+    height: calc(100vh - 160px);
+
+    &__wrapper {
+      height: calc(100% - 40px);
+      img {
+        width: 80%;
+      }
+    }
+  }
 }
 
-.rating-tabs__item {
-  background-color: #333975;
-  color: #fff;
-  padding: 13px 20px;
+.rating-panel {
   width: 100%;
-  margin-right: 10px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
+  max-width: 24.4%;
+}
 
-  &:last-child {
-    margin-right: 0;
+#map {
+  width: 100%;
+}
+
+.leaflet-container {
+  background: transparent;
+}
+
+.gear-icon-svg {
+  cursor: pointer;
+  margin-left: 10px;
+  &:hover {
+    content: "";
+    opacity: 100;
+    -webkit-animation: gear-icon-svg 3s infinite both;
+    animation: gear-icon-svg 3s infinite both;
   }
+}
 
-  &:hover, &:focus {
-    cursor: pointer;
+@-webkit-keyframes gear-icon-svg {
+  0% {
+    -webkit-transform: scale(1) rotateZ(0);
+    transform: scale(1) rotateZ(0);
   }
-
-  &.is-active {
-    background-color: #2E50E9;
+  50% {
+    -webkit-transform: scale(1) rotateZ(180deg);
+    transform: scale(1) rotateZ(180deg);
   }
-
-  img {
-    margin-right: 10px;
-  }
-
-  span {
-    font-size: 16px;
+  100% {
+    -webkit-transform: scale(1) rotateZ(360deg);
+    transform: scale(1) rotateZ(360deg);
   }
 }
 </style>

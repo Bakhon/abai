@@ -3,8 +3,8 @@ import axios from 'axios'
 const pgno = {
     state: {
         hPump: null,
-        spmMin: 4,
-        spmMax: 7,
+        spmMin: 3,
+        spmMax: 8,
         strokeLenMin: 2.5,
         strokeLenMax: 3,
         kpodMin: 0.6,
@@ -14,14 +14,24 @@ const pgno = {
         groupPosad: 2,
         h2s: false,
         heavyDown: true,
-        corrosion: "mediumCorrosion",
+        corrosion: "antiCorrosion",
         dmPumps: ["32", "38", "44", "57", "70"],
-        dmRods: ["19", "22", "25"],
-        komponovka: ["hvostovik"],
+        dmRods: ["19", "22"],
+        komponovka: null,
         stupColumns: "2",
-        markShtang: "15Х2ГМФ (НВО)",
+        markShtang: ["С (API)", "D (API)", "15Х2ГМФ-D-sup"],
+        kPodMode: true,
+        kPodCalced: null,
+        mechSep: null
+
     },
     mutations: {
+      UPDATE_KPOD_MODE(state, val) {
+        state.kPodMode = val
+      },
+      UPDATE_KPOD_CALCED(state, val) {
+        state.kPodCalced = val
+      },
       UPDATE_HEAVYDOWN(state, val) {
         state.heavyDown = val
       },
@@ -75,10 +85,19 @@ const pgno = {
       },
       UPDATE_CORROSION(state, val) {
         state.corrosion = val
+      },
+      UPDATE_MECH_SEP(state, val) {
+        state.mechSep = val
       }
     },
     
     actions: {
+      setKpodMode({commit}, value) {
+        commit('UPDATE_KPOD_MODE', value)
+      },
+      setKpodCalced({commit}, value) {
+        commit('UPDATE_KPOD_CALCED', value)
+      },
       setDmPumps({commit}, value) {
         commit('UPDATE_DMPUMPS', value)
       },
@@ -96,6 +115,9 @@ const pgno = {
       },
       selectedMarkShtang({commit}, value) {
         commit('UPDATE_MARKSHTANG', value)
+      },
+      setMechSep({commit}, value) {
+        commit('UPDATE_MECH_SEP', value)
       }
     },
     
@@ -117,7 +139,10 @@ const pgno = {
       corrosion: (state) => state.corrosion,
       stupColumns: (state) => state.stupColumns,
       h2s: (state) => state.h2s,
-      heavyDown: (state) => state.heavyDown
+      heavyDown: (state) => state.heavyDown,
+      kPodMode: (state) => state.kPodMode,
+      kPodCalced: (state) => state.kPodCalced,
+      mechSep: (state) => state.mechSep
     },
 }
 

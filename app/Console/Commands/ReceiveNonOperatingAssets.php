@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use SimpleXLS;
+use SimpleXLSX;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use Carbon\Carbon;
 use \jamesiarmes\PhpEws\Client;
@@ -49,9 +50,9 @@ class receiveNonOperatingAssets extends Command
           'id' => '',
           'changeKey' => ''
     );
+    protected $excelContent = '';
     private $dzoMapping = array (
         'ТШО' => '"Теңізшевройл" ЖШС / ТОО "Тенгизшевройл"',
-        'ПКК' => '"Петро Қазақстан Құмкөл Ресорсиз" АҚ / АО "Петро Казахстан Кумколь Ресорсиз"',
         'ТП' => '"Торғай Петролеум" АҚ / АО "Тургай Петролеум"',
         'ПКИ' => '"Петро Казахстан Венчерс Инк."',
         'НКО' => '"Норт Каспиан Оперейтинг Компани Б.В."',
@@ -77,18 +78,30 @@ class receiveNonOperatingAssets extends Command
 
     public function processInboundEmail()
     {
-        $this->assignMessageOptions();
+        $this->excelContent = '';
+        $this->isDataAvailable = true;
+        $this->assignMessageOptions(env('VISCENTER_EMAIL_ADDRESS', ''),env('VISCENTER_EMAIL_PASSWORD', ''));
         if (!$this->isDataAvailable) {
             return;
         }
         $this->markAsRead();
         $this->processMessages();
-        $this->scrapDocument();
+        $this->scrapDocument('nonOperating');
+    }
+    public function processGDUEmail()
+    {
+        $this->assignMessageOptions(env('VISCENTER_GDU_EMAIL_ADDRESS', ''),env('VISCENTER_GDU_EMAIL_PASSWORD', ''));
+        if (!$this->isDataAvailable) {
+            return;
+        }
+        $this->markAsRead();
+        $this->processMessages();
+        $this->scrapDocument('gdu');
     }
 
-    public function assignMessageOptions()
+    public function assignMessageOptions($email,$password)
     {
-        $ews = new Client($this->server, env('VISCENTER_EMAIL_ADDRESS', ''), env('VISCENTER_EMAIL_PASSWORD', ''));
+        $ews = new Client($this->server, $email, $password);
         $ews->setCurlOptions(array(CURLOPT_SSL_VERIFYPEER => false));
         $this->ews = $ews;
         $request = $this->getRequestParams();
@@ -155,7 +168,6 @@ class receiveNonOperatingAssets extends Command
 
    public function processMessages()
    {
-        $this->deleteExistingFile();
         $request = new GetItemType();
         $request->ItemShape = new ItemResponseShapeType();
         $request->ItemShape->BaseShape = DefaultShapeNamesType::ALL_PROPERTIES;
@@ -213,32 +225,30 @@ class receiveNonOperatingAssets extends Command
     public function saveAttachment($attachments)
     {
         foreach ($attachments as $attachment) {
-            file_put_contents(
-                'public/test2.xls',
-                $attachment->Content
-            );
+            $this->excelContent = $attachment->Content;
         }
     }
 
-    public function deleteExistingFile()
+    public function scrapDocument($fileType)
     {
-        if(file_exists('public/test2.xls')) {
-            unlink('public/test2.xls');
+        $xls = false;
+        if ($fileType === 'gdu') {
+            $xls = SimpleXLSX::parseData($this->excelContent);
+            if ($xls) {
+                $this->processExcelDocument($xls->rows(1),$fileType);
+            }
+        } else if ($fileType === 'nonOperating') {
+            $xls = SimpleXLS::parseData($this->excelContent);
+            if ($xls) {
+                $this->processExcelDocument($xls->rows(),$fileType);
+            }
         }
     }
 
-    public function scrapDocument()
+    public function processExcelDocument($sheet,$fileType)
     {
-        if ( $xls = SimpleXLS::parseFile('public/test2.xls') ) {
-            $this->processExcelDocument($xls);
-        }
-        $this->deleteExistingFile();
-    }
-
-    public function processExcelDocument($sheet)
-    {
-      foreach( $sheet->rows() as $r => $row) {
-          $this->processColumns($row,$sheet,$r);
+      foreach( $sheet as $rowIndex => $row) {
+          $this->processColumns($row,$sheet,$rowIndex,$fileType);
       }
     }
 
@@ -252,14 +262,22 @@ class receiveNonOperatingAssets extends Command
         }
     }
 
-    public function processColumns($row,$sheet,$r)
+    public function processColumns($row,$sheet,$rowIndex,$fileType)
     {
-        foreach($row as $k => $col) {
+        foreach($row as $columnIndex => $col) {
             $trimmedColumn = trim($col);
-            $this->processCompanies($trimmedColumn,$row);
-            if ($trimmedColumn === '"Қарашығанақ Петролеум Опер.Б.В." / "Карачаганак Петролеум Опер. Б.В."') {
-                $data = $this->getKPOData($row,'КПО',$sheet,$r);
-                $this->insertDataToDB($data);
+            if ($fileType === 'nonOperating') {
+                $this->processCompanies($trimmedColumn,$row);
+                if ($trimmedColumn === '"Қарашығанақ Петролеум Опер.Б.В." / "Карачаганак Петролеум Опер. Б.В."') {
+                    $data = $this->getKPOData($row,'КПО',$sheet,$rowIndex);
+                    $this->insertDataToDB($data);
+                }
+            } else if ($fileType === 'gdu') {
+                if ($trimmedColumn === 'SC "PetroKazakhstan Kumkol Resources"') {
+                    $data = $this->getPKK($row,'ПКК',$sheet,$rowIndex,$columnIndex+2);
+                    $this->insertDataToDB($data);
+                }
+
             }
         }
     }
@@ -296,12 +314,31 @@ class receiveNonOperatingAssets extends Command
         return array (
             'oil_production_fact' => $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilProduction']],$yesterdayFact,'oilProduction'),
             'oil_delivery_fact' => $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilDelivery']],$yesterdayFact,'oilDelivery'),
-            'condensate_production_fact' => $sheet->rows()[$rowIndex + 2][$columnMapping['condensateProduction']],
-            'condensate_delivery_fact' => $sheet->rows()[$rowIndex + 2][$columnMapping['condensateDelivery']],
+            'condensate_production_fact' => $sheet[$rowIndex + 2][$columnMapping['condensateProduction']],
+            'condensate_delivery_fact' => $sheet[$rowIndex + 2][$columnMapping['condensateDelivery']],
             'dzo_name' => $dzoName,
             'date' => Carbon::yesterday('Asia/Almaty'),
             'oil_production_fact_absolute' => $row[$columnMapping['KPOoilProduction']],
             'oil_delivery_fact_absolute' => $row[$columnMapping['KPOoilDelivery']]
+        );
+    }
+    public function getPKK($row, $dzoName, $sheet, $rowIndex, $columnIndex)
+    {
+        $columnMapping = array(
+            'oil_production_fact' => 5,
+            'oil_delivery_fact' => 7
+        );
+        $kuzilkiaField = $sheet[$rowIndex + 1][$columnMapping['oil_production_fact']];
+        $westTuzkolField = $sheet[$rowIndex + 2][$columnMapping['oil_production_fact']] * 0.5;
+        $tuzkolField = $sheet[$rowIndex + 3][$columnMapping['oil_production_fact']] * 0.5;
+        $ketekazganField = $sheet[$rowIndex + 4][$columnMapping['oil_production_fact']] * 0.5;;
+        $belkudukField = $sheet[$rowIndex + 5][$columnMapping['oil_production_fact']] * 0.5;
+        $dzoSummary = $kuzilkiaField + $westTuzkolField + $tuzkolField + $ketekazganField + $belkudukField;
+        return array (
+            'oil_production_fact' => $row[$columnMapping['oil_production_fact']] + $dzoSummary,
+            'oil_delivery_fact' => $row[$columnMapping['oil_delivery_fact']],
+            'dzo_name' => $dzoName,
+            'date' => Carbon::yesterday('Asia/Almaty'),
         );
     }
 
@@ -338,6 +375,8 @@ class receiveNonOperatingAssets extends Command
      */
     public function handle()
     {
+        $this->processGDUEmail();
+        sleep(5);
         $this->processInboundEmail();
     }
 }

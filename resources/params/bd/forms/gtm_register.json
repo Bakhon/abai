@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.gtm",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "Gtm_start",
@@ -55,9 +61,9 @@
             "items":[
               {
                 "code": "dend",
-                "type": "date",
+                "type": "datetime",
                 "title": "date_gtm_end",
-                "validation": "nullable|date",
+                "validation": "nullable|date|after:dbeg",
                 "callbacks": {
                   "fillCalculatedFields": ""
                 }

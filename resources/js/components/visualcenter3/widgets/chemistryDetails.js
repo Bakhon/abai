@@ -68,6 +68,11 @@ export default {
             };
             let uri = this.localeUrl("/get-chemistry-details");
             const response = await axios.get(uri,{params:queryOptions});
+            if (response.data && response.data.length === 0) {
+                this.chemistryPeriodStartMonth = moment(this.chemistryPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+                this.chemistryPeriodEndMonth = moment(this.chemistryPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+                return await this.getChemistryByMonth();
+            }
             if (response.status === 200) {
                 return response.data;
             }
@@ -75,7 +80,7 @@ export default {
         },
 
         async switchChemistryPeriod(buttonType) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             this.chemistryMonthlyPeriod = "";
             this.chemistryYearlyPeriod = "";
             this.chemistryPeriod = "";
@@ -85,7 +90,7 @@ export default {
             this.isChemistryPeriodSelected = this.isChemistryFewMonthsSelected();
             this.chemistryDetails = await this.getChemistryByMonth();
             this.updateChemistryWidget();
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         },
 
         isChemistryFewMonthsSelected() {

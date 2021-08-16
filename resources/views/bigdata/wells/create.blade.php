@@ -1,7 +1,7 @@
-@extends('layouts.monitor')
+@extends('layouts.db')
 
 @section('content')
-    <div class="row" id="app">
+    <div class="row"  >
         <div class="col-md-12">
 
             @if ($message = Session::get('success'))
@@ -11,11 +11,9 @@
                 </div>
             @endif
             <div class="x_panel">
-                <h1>Бурение скважины</h1>
-                <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i
-                            class="fas fa-arrow-left"></i></a>
-                <div class="row">
-                    <bigdata-form action="{{ route('bigdata.wells.store') }}"></bigdata-form>
+                <div class="col-6">
+                    <h1>Бурение скважины</h1>
+                    <bigdata-plain-form :params="{{json_encode($params)}}" :well-id="0"></bigdata-plain-form>
                 </div>
             </div>
         </div>

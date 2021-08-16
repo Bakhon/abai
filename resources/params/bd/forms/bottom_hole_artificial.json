@@ -1,9 +1,12 @@
 {
   "type": "plain",
   "table": "prod.bottom_hole",
-  "default_values": {
-    "bottom_hole_type": 2
-  },
+  "sort": [
+    {
+      "field": "data",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "b_hole",
@@ -22,7 +25,7 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "b_hole_m",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gt:0"
               }
             ]
           }

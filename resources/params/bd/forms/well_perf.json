@@ -110,6 +110,12 @@
       "form": "well_tech_connect"
     }
   ],
+  "sort": [
+    {
+      "field": "perf_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main",
@@ -122,7 +128,7 @@
                 "code": "perf_date",
                 "type": "date",
                 "title": "data",
-                "validation": ""
+                "validation": "required"
               },
               {
                 "code": "perf_type",
@@ -143,64 +149,64 @@
                 "type": "dict",
                 "dict": "perforator_types",
                 "title": "perf_y",
-                "validation": "required|exists:tbd.dict.perforator_type,id"
+                "validation": "exists:tbd.dict.perforator_type,id"
               },
               {
                 "code": "patron_type",
                 "type": "dict",
                 "dict": "patron_types",
                 "title": "marka",
-                "validation": "required|exists:tbd.dict.patron_type,id"
+                "validation": "exists:tbd.dict.patron_type,id"
               },
               {
                 "code": "hole_count",
                 "type": "numeric",
                 "title": "count",
-                "validation": "required|numeric"
+                "validation": "numeric|gte:0|lte:100"
               },
               {
                 "code": "hole_diameter",
                 "type": "numeric",
                 "title": "diame_c",
-                "validation": "required|numeric"
+                "validation": "numeric|gte:0|lte:50"
               },
               {
                 "code": "liquid",
                 "type": "numeric",
                 "title": "liquid",
-                "validation": "required|numeric"
+                "validation": "numeric|gte:0"
               },
               {
                 "code": "bsw",
                 "type": "numeric",
                 "title": "bsw_p",
-                "validation": "required|numeric"
+                "validation": "numeric|gte:0|lte:100"
               },
               {
                 "code": "reservoir_count",
                 "type": "numeric",
                 "title": "reserv_c",
-                "validation": "required|numeric"
+                "validation": "numeric|gte:1"
               },
               {
                 "code": "packer_type",
                 "type": "dict",
                 "dict": "packer_types",
                 "title": "packer_t",
-                "validation": "required|exists:tbd.dict.packer_type,id"
+                "validation": "exists:tbd.dict.packer_type,id"
               },
               {
                 "code": "depth",
                 "type": "numeric",
                 "title": "depth",
-                "validation": "required|numeric"
+                "validation": "numeric|gte:0"
               },
               {
                 "code": "iso_material_type",
                 "type": "dict",
                 "dict": "iso_material_types",
                 "title": "iso_mat_type",
-                "validation": "required|exists:tbd.dict.iso_material_type,id"
+                "validation": "exists:tbd.dict.iso_material_type,id"
               },
               {
                 "code": "intervals",
@@ -213,14 +219,14 @@
                 "table": "prod.well_perf_actual",
                 "type": "numeric",
                 "title": "interv_actual",
-                "validation": "numeric"
+                "validation": "required|numeric|gte:0|lte:base"
               },
               {
                 "code": "base",
                 "table": "prod.well_perf_actual",
                 "type": "numeric",
                 "title": "interv_actual",
-                "validation": "numeric"
+                "validation": "required|numeric|gte:0|lte:10000"
               },
               {
                 "code": "well",
@@ -228,7 +234,7 @@
                 "type": "calc",
                 "formula": "$base$ - $top$",
                 "title": "well_e",
-                "validation": "required|numeric"
+                "validation": "numeric"
               }
             ]
           }

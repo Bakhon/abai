@@ -54,8 +54,8 @@
             style="background: #40467e"
           >
             <label for="inputDate" style="margin-left: 8px;">{{trans('tr.enter_reference_date')}}:</label>
-            <input type="date" class="form-control" v-model="date1" />
-            <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
+            <input type="date" class="form-control" v-model="calendarDate" />
+            <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDate"
               >{{trans('tr.form')}}</a
             >
           </div>
@@ -102,6 +102,7 @@
         </div>      
         </div>
     </div>
+
   </div>
 </template>
 <script>
@@ -109,9 +110,13 @@ import TrMultiselect from "./TrMultiselect.vue";
 import VueApexCharts from "vue-apexcharts";
 import trHelper from '~/mixins/trHelper';
 
+import moment from "moment";
+
+
 export default {
   name: "Trfa",
   components: {
+
     "apexchart": VueApexCharts
   },
   mixins: [trHelper],
@@ -218,9 +223,8 @@ export default {
       chartWells: [],
       allWells: [],
       filteredWellsBar: [],
-      dt: null,
-      date1: null,
-      fullWells: [],
+      titleDate: null,
+      calendarDate: null,
       areaChartRerender: true,
       Filter_well: undefined,
       Filter_field: undefined,
@@ -316,6 +320,7 @@ export default {
             }
           ],
         },
+      postApiUrl: process.env.MIX_POST_API_URL,
     };
   },
   watch: {
@@ -333,45 +338,36 @@ export default {
     },
   },
   methods: {
-    chooseDt() {
-      const { date1 } = this;
-      var choosenDt = date1.split("-");
-      const mm = choosenDt[1];
-      const yyyy = choosenDt[0];
-      const dd = choosenDt[2];
+    chooseDate() {
+      const { calendarDate } = this;
+      const apiDate = moment(calendarDate).format("YYYY/MM/DD");
+      this.titleDate = moment(calendarDate).format("DD.MM.YYYY");
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/factor/graph2/" +
-            yyyy +
-            "/" +
-            mm +
-            "/" +
-            dd +
+          this.postApiUrl + "techregime/factor/graph2/" +
+            apiDate +
             "/"
         )
         .then((response) => {
           this.$store.commit("globalloading/SET_LOADING", false);
           let data = response.data;
           if (data) {
-            this.fullWells = data.data;
             this.chartWells = data.data;
             this.allWells = data.data;
           } else {
-            console.log("No data");
+            this.chartWells = [];
+            this.allWells = [];            
+            this.$store.commit("globalloading/SET_LOADING", false);
           }
+        })
+        .catch((error) => {
+          console.log(error.data);
+          this.$store.commit("globalloading/SET_LOADING", false);
         });
-        this.dt = dd + '.' + mm + '.' + yyyy;
     },
   },
   created: function () {
     this.$store.commit("globalloading/SET_LOADING", true);
-    var wdate1 = new Date();
-    this.wdate1 = wdate1.setDate(wdate1.getDate()-1);
-    this.wdate1 = wdate1.toLocaleDateString();
-    var dynamic_date1 = this.wdate1.split(".");
-    var dd = dynamic_date1[0];
-    var mm = dynamic_date1[1];
-    var yyyy = dynamic_date1[2];
     if (
       this.$store.getters["fa/month"] &&
       this.$store.getters["fa/year"] &&
@@ -380,34 +376,34 @@ export default {
       var mm = this.$store.getters["fa/month"];
       var dd = this.$store.getters["fa/day"];
       var yyyy = this.$store.getters["fa/year"];
+      this.calendarDate = yyyy + "-" + mm + "-" + dd;
+      this.titleDate = dd + '.' + mm + '.' + yyyy;
+      var apiDate = yyyy + "/" + mm + "/" + dd;      
     } else {
-      var mm = today.getMonth();
-      var yyyy = today.getFullYear();
-      var dd = today.getDate();
+      this.calendarDate = moment().format("YYYY-MM-DD");
+      var apiDate = moment().format("YYYY/MM/DD");
+      this.titleDate = moment().format("DD.MM.YYYY");
     }
     this.axios
       .get(
-          "http://172.20.103.187:7576/api/techregime/factor/graph2/" +
-            yyyy +
-            "/" +
-            mm +
-            "/" +
-            dd +
+          this.postApiUrl + "techregime/factor/graph2/" +
+            apiDate +
             "/"
         )
       .then((response) => {
         this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
         if (data) {
-          this.fullWells = data.data;
           this.chartWells = data.data;
           this.allWells = data.data;
         } else {
           console.log("No data");
         }
-        this.date1 = yyyy + "-" + mm + "-" + dd;
-        this.dt = dd + '.' + mm + '.' + yyyy;
-      });
+      })
+      .catch((error) => {
+        console.log(error.data);
+        this.$store.commit("globalloading/SET_LOADING", false);
+      });  
   },
 
 };

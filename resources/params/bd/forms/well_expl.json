@@ -8,6 +8,12 @@
     "dbeg",
     "expl"
   ],
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "title",
@@ -20,7 +26,7 @@
                 "code": "dbeg",
                 "type": "date",
                 "title": "data",
-                "validation": ""
+                "validation": "required|date"
               },
               {
                 "code": "name_ru",

@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "",
+  "table": "prod.well_perf",
   "tabs": [
     {
       "title": "main",
@@ -27,13 +27,13 @@
                 "code": "hole_count",
                 "type": "numeric",
                 "title": "count",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:0|lte:100"
               },
               {
                 "code": "hole_diameter",
                 "type": "numeric",
                 "title": "diame_c",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:0|lte:50"
               },
               {
                 "code": "perforator_type",
@@ -53,25 +53,25 @@
                 "code": "liquid",
                 "type": "numeric",
                 "title": "liquid",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:0"
               },
               {
                 "code": "bsw",
                 "type": "numeric",
                 "title": "bsw_p",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:0|lte:100"
               },
               {
                 "code": "reservoir_count",
                 "type": "numeric",
                 "title": "reserv_c",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gte:1"
               },
               {
                 "code": "perf_date",
                 "type": "date",
                 "title": "data",
-                "validation": ""
+                "validation": "required|date"
               }
             ]
           }
@@ -97,19 +97,19 @@
                     "type": "dict_tree",
                     "title": "horizon",
                     "dict": "geos",
-                    "validation": "exists:tbd.dict.org,id"
+                    "validation": "required|exists:tbd.dict.org,id"
                   },
                   {
                     "code": "top",
                     "type": "numeric",
                     "title": "top",
-                    "validation": ""
+                    "validation": "required|numeric|gte:0|lte:base"
                   },
                   {
                     "code": "base",
                     "type": "numeric",
                     "title": "base",
-                    "validation": ""
+                    "validation": "required|numeric|gte:0|lte:10000"
                   }
                 ]
               }

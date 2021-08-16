@@ -67,7 +67,7 @@ export default {
                 },
             },
 
-            baseUrl: 'http://172.20.103.187:8083/',
+            baseUrl: process.env.MIX_MICROSERVICE_GEO_DATA,
             experimentInfo: null,
             selectedExperimentsInfo: null,
             loadProvenance: null,

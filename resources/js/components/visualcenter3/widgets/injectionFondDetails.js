@@ -134,7 +134,7 @@ export default {
         },
 
         async switchInjectionFondPeriod(buttonType) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             this.injectionFondButtons = _.mapValues(this.injectionFondButtons, () => '');
             this.injectionFondButtons[buttonType] = this.highlightedButton;
             this.injectionFondPeriodStart = this.injectionFondPeriodMapping[buttonType].start;
@@ -144,7 +144,7 @@ export default {
             this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
             this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
             this.updateInjectionFondWidget();
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         },
 
         async updateInjectionFondHistory() {

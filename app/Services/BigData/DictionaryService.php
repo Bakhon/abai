@@ -11,15 +11,22 @@ use App\Models\BigData\Dictionaries\CasingType;
 use App\Models\BigData\Dictionaries\Company;
 use App\Models\BigData\Dictionaries\CoordSystem;
 use App\Models\BigData\Dictionaries\Device;
+use App\Models\BigData\Dictionaries\DocumentType;
 use App\Models\BigData\Dictionaries\DrillChisel;
 use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
+use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
+use App\Models\BigData\Dictionaries\GeoRockType;
+use App\Models\BigData\Dictionaries\GisKind;
+use App\Models\BigData\Dictionaries\GisMethod;
+use App\Models\BigData\Dictionaries\GisMethodType;
 use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\IsoMaterialType;
+use App\Models\BigData\Dictionaries\LabResearchType;
 use App\Models\BigData\Dictionaries\NoBtmReason;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\PackerType;
@@ -28,8 +35,12 @@ use App\Models\BigData\Dictionaries\PerforatorType;
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
+use App\Models\BigData\Dictionaries\SaturationType;
+use App\Models\BigData\Dictionaries\Tag;
+use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateType;
+use App\Models\BigData\Dictionaries\TreatType;
 use App\Models\BigData\Dictionaries\Well;
 use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\WellCategory;
@@ -41,6 +52,7 @@ use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 
 class DictionaryService
@@ -52,7 +64,7 @@ class DictionaryService
         ],
         'well_types' => [
             'class' => WellType::class,
-            'name_field' => 'name'
+            'name_field' => 'name_ru'
         ],
         'companies' => [
             'class' => Company::class,
@@ -114,7 +126,7 @@ class DictionaryService
             'class' => DrillColumnType::class,
             'name_field' => 'name_ru'
         ],
-        'zone' =>[
+        'zone' => [
             'class' => Zone::class,
             'name_field' => 'name_ru'
         ],
@@ -177,12 +189,56 @@ class DictionaryService
         'wells' => [
             'class' => Well::class,
             'name_field' => 'uwi'
+        ],
+        'gis_method_types' => [
+            'class' => GisMethodType::class,
+            'name_field' => 'name_ru'
+        ],
+        'saturation_types' => [
+            'class' => SaturationType::class,
+            'name_field' => 'name_ru'
+        ],
+        'geo_rock_types' => [
+            'class' => GeoRockType::class,
+            'name_field' => 'name_ru'
+        ],
+        'geo_type' => [
+            'class' => Geo::class,
+            'name_field' => 'name_ru'
+        ],
+        'gis_kinds' => [
+            'class' => GisKind::class,
+            'name_field' => 'name_ru'
+        ],
+        'gis_methods' => [
+            'class' => GisMethod::class,
+            'name_field' => 'name_ru'
+        ],
+        'document_types' => [
+            'class' => DocumentType::class,
+            'name_field' => 'name_ru'
+        ],
+        'tag' => [
+            'class' => Tag::class,
+            'name_field' => 'name_ru'
+        ],
+        'lab_research_type' => [
+            'class' => LabResearchType::class,
+            'name_field' => 'name_ru'
+        ],
+        'treat_type' => [
+            'class' => TreatType::class,
+            'name_field' => 'name_ru'
         ]
     ];
 
     const TREE_DICTIONARIES = [
         'orgs' => [
             'class' => Org::class,
+            'name_field' => 'name_ru'
+        ],
+        'techs' => [
+            'class' => Tech::class,
             'name_field' => 'name_ru'
         ]
     ];
@@ -213,6 +269,12 @@ class DictionaryService
                 case 'geos':
                     $dict = $this->getGeoDict();
                     break;
+                case 'equip_type_casc':
+                    $dict = $this->getEquipTypeCascDict();
+                    break;
+                case 'geo_type_hrz':
+                    $dict = $this->getGeoHorizonDict();
+                    break;    
                 default:
                     throw new DictionaryNotFound();
             }
@@ -222,17 +284,38 @@ class DictionaryService
         return $dict;
     }
 
+    public function getDictValueById(string $dict, string $type, int $id)
+    {
+        $dict = $this->get($dict);
+        if ($type === 'dict') {
+            foreach ($dict as $item) {
+                if ($item['id'] === $id) {
+                    return $item['name'];
+                }
+            }
+        }
+
+        if ($type === 'dict_tree') {
+        }
+    }
+
     private function getPlainDict(string $dict): array
     {
         $dictClass = self::DICTIONARIES[$dict]['class'];
         $nameField = self::DICTIONARIES[$dict]['name_field'] ?? 'name';
 
-        return $dictClass::query()
+        $query = $dictClass::query()
             ->select('id')
             ->selectRaw("$nameField as name")
-            ->orderBy('name', 'asc')
-            ->get()
-            ->toArray();
+            ->orderBy('name', 'asc');
+
+        if (Schema::connection('tbd')->hasColumn((new $dictClass)->getTable(), 'code')) {
+            $query->selectRaw('code');
+        }
+
+        $result = $query->get()->toArray();
+
+        return $result;
     }
 
     private function getTreeDict(string $dict): array
@@ -274,15 +357,15 @@ class DictionaryService
     private function getGeoDict(): array
     {
         $items = DB::connection('tbd')
-            ->table('tbdi.geo as g')
-            ->select('g.id', 'g.name as label', 'gp.id as parent')
+            ->table('dict.geo as g')
+            ->select('g.id', 'g.name_ru as label', 'gp.parent as parent')
             ->distinct()
             ->orderBy('parent', 'asc')
             ->orderBy('label', 'asc')
             ->leftJoin(
-                'tbdi.geo as gp',
+                'dict.geo_parent as gp',
                 function ($join) {
-                    $join->on('gp.id', '=', 'g.parent_id');
+                    $join->on('gp.geo', '=', 'g.id');
                     $join->on('gp.dbeg', '<=', DB::raw("NOW()"));
                     $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }
@@ -297,4 +380,55 @@ class DictionaryService
 
         return $this->generateTree((array)$items);
     }
+
+    private function getEquipTypeCascDict()
+    {
+        $dictClass = self::DICTIONARIES['equip_type']['class'];
+        $nameField = self::DICTIONARIES['equip_type']['name_field'] ?? 'name';
+
+        return $dictClass::query()
+            ->select('id')
+            ->selectRaw("$nameField as name")
+            ->where(
+                'parent',
+                function ($query) {
+                    return $query->select('id')
+                        ->from('dict.equip_type')
+                        ->where('code', 'CASC')
+                        ->limit(1);
+                }
+            )
+            ->orderBy('name', 'asc')
+            ->get()
+            ->toArray();
+    }
+
+    private function getGeoHorizonDict()
+    {
+        $items = DB::connection('tbd')
+            ->table('dict.geo as g')
+            ->select('g.id', 'g.name_ru as name', 'gp.parent as parent')
+            ->where('gt.code', 'HRZ')
+            ->distinct()
+            ->orderBy('parent', 'asc')
+            ->orderBy('name', 'asc')
+            ->join('dict.geo_type as gt', 'g.geo_type', 'gt.id')
+            ->leftJoin(
+                'dict.geo_parent as gp',
+                function ($join) {
+                    $join->on('gp.geo', '=', 'g.id');
+                    $join->on('gp.dbeg', '<=', DB::raw("NOW()"));
+                    $join->on('gp.dend', '>=', DB::raw("NOW()"));
+                }
+            )
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+        return $items;
+    }     
 }
