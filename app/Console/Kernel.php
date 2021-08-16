@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ComplicationMonitoringEconomicCalculate::class,
         \App\Console\Commands\EmergencySituations::class,
         \App\Console\Commands\CalculateHydroDinamicGuUpsvYesterday::class,
+        \App\Console\Commands\CalculateGuCorrosionCron::class,
     ];
 
     /**

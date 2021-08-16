@@ -72,7 +72,7 @@ class CalculateGuCorrosionCron extends Command
                 'getGuDataByDay',
                 Request::class,
                 [
-                    'dt' => $date->format('Y-m-d'),
+                    'dt' => $date,
                     'gu_id' => $gu->id
                 ]
             );
@@ -126,7 +126,7 @@ class CalculateGuCorrosionCron extends Command
 
                 $calcCorrosion = CalculatedCorrosion::firstOrNew(
                     [
-                        'date' => $date->format('Y-m-d'),
+                        'date' => $date,
                         'gu_id' => $gu->id
                     ]
                 );
