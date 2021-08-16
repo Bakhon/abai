@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="container d-flex flex-column justify-content-center align-items-center mb-3">
-        <a href="{{ route('eco_refs_list') }}"
+        <a href="{{ route('eco_refs_gtm.index') }}"
            class="btn btn-info">
-            {{ __('economic_reference.return_menu') }}
+            {{ __('app.back') }}
         </a>
 
         <div class="mt-3 text-center">

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EcoRefs\GtmValue\EcoRefsGtmValueRequest;
 use App\Http\Requests\EcoRefs\GtmValue\ImportExcelEcoRefsGtmValueRequest;
 use App\Http\Resources\EcoRefsGtmValueResource;
-use App\Imports\EcoRefsGtmImport;
+use App\Imports\EcoRefsGtmValueImport;
 use App\Models\Refs\EcoRefsGtmValue;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -61,7 +61,7 @@ class EcoRefsGtmValueController extends Controller
     public function importExcel(ImportExcelEcoRefsGtmValueRequest $request): RedirectResponse
     {
         DB::transaction(function () use ($request) {
-            $import = new EcoRefsGtmImport(auth()->id());
+            $import = new EcoRefsGtmValueImport(auth()->id());
 
             Excel::import($import, $request->file);
         });

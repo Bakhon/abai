@@ -12,6 +12,11 @@
                class="list-group-item list-group-item-action">
                 {{ __('economic_reference.upload_excel') }}
             </a>
+
+            <a href="{{ route('eco_refs_gtm_value.index') }}"
+               class="list-group-item list-group-item-action">
+                {{ __('economic_reference.eco_refs_gtm_values') }}
+            </a>
         </div>
     </div>
 
