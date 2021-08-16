@@ -10,12 +10,12 @@
     <div class="dropdown-menu">
         <div class="move-menu vc3_min-width">
              @if ((auth()->user()->can('visualcenter view main')) or (auth()->user()->can('visualcenter one_dzo main')))
-            <li><a href="{{ route('visualcenter3') }}">Главная страница модуля</a></li>
-            <li><a href="{{ route('excelform') }}">Форма ввода</a></li>
+            <li><a href="{{ route('visualcenter3') }}">{{ trans("visualcenter.headOfPageModule") }}</a></li>
+            <li><a href="{{ route('excelform') }}">{{ trans("visualcenter.inputForm") }}</a></li>
             @endif
             @if (auth()->user()->can('visualcenter view main'))
-            <li><a href="{{ route('daily-report') }}">Суточная отчетность КМГ</a></li>
-            <li><a href="{{ route('daily-approve') }}">Таблица согласований</a></li>
+            <li><a href="{{ route('daily-report') }}">{{ trans("visualcenter.dailyReportsKMG") }}</a></li>
+            <li><a href="{{ route('daily-approve') }}">{{ trans("visualcenter.approvalsTable") }}</a></li>
             @endif
         </div>
     </div>
@@ -32,12 +32,12 @@
     </div>
     <div class="dropdown-menu">
         <div class="move-menu vc3_min-width">
-            <li class="font-weight-bold">Версия 2020</li>
-            <li class="move-menu"><a href="{{url('/')}}/ru/visualcenter4">Корпоративные КПД</a></li>
-            <li class="move-menu"><a href="{{url('/')}}/ru/visualcenter7">КПД Блока добычи</a></li>
-            <li class="move-menu"><a href="{{url('/')}}/ru/visualcenter6">КПД Блока стратегии</a></li>
-            <li class="font-weight-bold">Версия 2021</li>
-            <li class="move-menu"><a href="{{ route('kpd-tree') }}">КПД Блока Upstream</a></li>
+            <li class="font-weight-bold">{{ trans("visualcenter.version") }} 2020</li>
+            <li class="move-menu"><a href="{{url('/')}}/ru/visualcenter4">{{ trans("visualcenter.corpKPI") }}</a></li>
+            <li class="move-menu"><a href="{{url('/')}}/ru/visualcenter7">{{ trans("visualcenter.prodKPI") }}</a></li>
+            <li class="move-menu"><a href="{{url('/')}}/ru/visualcenter6">{{ trans("visualcenter.strategyKPI") }}</a></li>
+            <li class="font-weight-bold">{{ trans("visualcenter.version") }} 2021</li>
+            <li class="move-menu"><a href="{{ route('kpd-tree') }}">{{ trans("visualcenter.upstreamKPI") }}</a></li>
         </div>
     </div>
 </div>
