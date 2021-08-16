@@ -49,9 +49,9 @@
       "is_editable": true
     },
     {
-      "code": "name_ru",
+      "code": "treatment_type",
       "type": "dict",
-      "dict": "treat_types",
+      "dict": "treat_type",
       "title": "treat_type",
       "validation": "exists:tbd.dict.treat_type,id"
     },
@@ -70,16 +70,16 @@
       "is_editable": true
     },
     {
-      "code": "name_ru",
+      "code": "chemical_reagent_type",
       "type": "dict",
       "dict": "chemical_reagent_types",
       "title": "ch_reagent_type",
       "validation": "exists:tbd.dict.chemical_reagent_type,id"
     },
     {
-      "code": "name_ru",
+      "code": "reason",
       "type": "dict",
-      "dict": "no_btm_reasons",
+      "dict": "reason_type_rtr",
       "title": "reason",
       "validation": "required|exists:tbd.dict.reason,id"
     },
