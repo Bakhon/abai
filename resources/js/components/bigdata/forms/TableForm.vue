@@ -291,6 +291,12 @@ export default {
             if (data.columns) {
               this.formParams.columns = data.columns
             }
+            if (data.merge_columns) {
+              this.formParams.merge_columns = data.merge_columns
+            }
+            if (data.complicated_header) {
+              this.formParams.complicated_header = data.complicated_header
+            }
             this.recalculateCells()
             this.loadEditHistory()
           })

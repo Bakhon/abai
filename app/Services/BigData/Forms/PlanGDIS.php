@@ -25,21 +25,34 @@ class PlanGDIS extends TableForm
         $dictionaryService = app()->make(DictionaryService::class);
         $explTypes = $dictionaryService->get('expl_type_plan_gdis');
 
-        $columns = $mergeColumns = [];
+        $mergeColumns = [];
+        $columns = [
+            [
+                'code' => 'value',
+                'title' => 'Показатель',
+                'type' => 'text'
+            ]
+        ];
         $date = Carbon::parse($filter->date);
         $dateTo = Carbon::parse($filter->date_to);
         while (true) {
-            $mergeColumns[] = [
+            $mergeColumns['date_' . $date->format('m_Y')] = [
                 'code' => 'date_' . $date->format('m_Y'),
                 'title' => $date->format('F Y')
             ];
             $columns[] = [
                 'code' => "date_{$date->format('m_Y')}_well_count",
-                'title' => 'скваж.'
+                'title' => 'скваж.',
+                'parent_column' => 'date_' . $date->format('m_Y'),
+                'type' => 'integer',
+                'is_editable' => true
             ];
             $columns[] = [
                 'code' => "date_{$date->format('m_Y')}_fact",
-                'title' => 'замер.'
+                'title' => 'замер.',
+                'parent_column' => 'date_' . $date->format('m_Y'),
+                'type' => 'integer',
+                'is_editable' => true
             ];
 
             $date->addMonth();
@@ -51,10 +64,13 @@ class PlanGDIS extends TableForm
         return [
             'columns' => $columns,
             'merge_columns' => $mergeColumns,
+            'complicated_header' => $this->tableHeaderService->getHeader($columns, $mergeColumns),
             'rows' => [
                 [
+                    'value' => ['value' => 'd11'],
                     'date_08_2021_well_count' => ['value' => 'dd'],
-                    'date_08_2021_fact' => ['value' => 'dd']
+                    'date_08_2021_fact' => ['value' => 'dd'],
+                    'is_editable' => true
                 ]
             ]
         ];
@@ -62,35 +78,6 @@ class PlanGDIS extends TableForm
 
     protected function saveSingleFieldInDB(array $params): void
     {
-        $column = $this->getFieldByCode($params['field']);
-        $metric = Metric::query()
-            ->select('id')
-            ->where('code', $this->metricCode)
-            ->first();
-        if (!$metric) {
-            return;
-        }
-        $item = ReportOrgDailyCits::where('org', $params['wellId'])
-            ->where('metric', $metric->id)
-            ->whereDate('report_date', '>=', $params['date']->toDateTimeString())
-            ->whereDate('report_date', '<=', $params['date']->toDateTimeString())
-            ->distinct()
-            ->first();
-        if (!$item) {
-            ReportOrgDailyCits::insert(
-                [
-                    'org' => $params['wellId'],
-                    'metric' => $metric->id,
-                    'report_date' => $params['date']->toDateTimeString(),
-                    'plan' => 0,
-                    $column['code'] => $params['value'],
-                ]
-            );
-        } else {
-            $field = $column['code'];
-            $item->$field = $params['value'];
-            $item->save();
-        }
     }
 
 }
