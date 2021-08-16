@@ -140,16 +140,11 @@
                             </tr>
                             <tr>
                                 <td colspan="1">14</td>
-                                <td colspan="1"></td>
-                                <td colspan="1">{{this.passport.ГДИС}}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="1">15</td>
                                 <td colspan="1">Категория</td>
                                 <td colspan="1">{{this.passport.Категория}}</td>
                             </tr>
                             <tr>
-                                <td colspan="1">16</td>
+                                <td colspan="1">15</td>
                                 <td colspan="1">Дата ввода в эксплуатацию</td>
                                 <td colspan="1">{{this.passport.Экспл_дата}}</td>
                             </tr>
@@ -158,67 +153,57 @@
                     <div class="col-sm-4">
                         <table class="table secondTable">
                             <tr>
-                                <td colspan="1">17</td>
-                                <td colspan="1">Буровой подрядчик</td>
-                                <td colspan="1">{{this.passport.Подрядчик}}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="1">18</td>
+                                <td colspan="1">16</td>
                                 <td colspan="1">Проектная глубина</td>
                                 <td colspan="1">{{this.passport.Пр_глуб}}</td>
                             </tr>
                             <tr>
-                                <td colspan="1">19</td>
-                                <td colspan="1">Радиус дренирования</td>
-                                <td colspan="1">{{this.passport.Радиус}}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="1">20</td>
+                                <td colspan="1">17</td>
                                 <td colspan="1">Состояние</td>
                                 <td colspan="1">{{this.passport.Состояние}}</td>
                             </tr>
                             <tr>
-                                <td colspan="1">21</td>
+                                <td colspan="1">18</td>
                                 <td colspan="1">Способ эксплуатации</td>
                                 <td colspan="1">{{this.passport.Экспл}}</td>
                             </tr>
                             <tr>
-                                <td colspan="1">22</td>
+                                <td colspan="1">19</td>
                                 <td colspan="1">Дин уровень</td>
                                 <td colspan="1">{{this.passport.Дин_уров}}</td>
                             </tr>
                             <tr>
-                                <td colspan="1">23</td>
+                                <td colspan="1">20</td>
                                 <td colspan="1">Стат уровень</td>
                                 <td colspan="1">{{this.passport.Стат_уровень}}</td>
                             </tr>
                             <tr>
-                                <td colspan="1">24</td>
+                                <td colspan="1">21</td>
                                 <td colspan="1">Рпл / (дата замера)</td>
                                 <td colspan="1">{{this.passport.Рпл}}</td>
                             </tr>
                             <tr>
-                                <td colspan="1">25</td>
+                                <td colspan="1">22</td>
                                 <td colspan="1">Рзаб / (дата замера)</td>
                                 <td colspan="1">{{this.passport.Рзаб}}</td>
                             </tr>
                             <tr>
-                                <td colspan="1">26</td>
+                                <td colspan="1">23</td>
                                 <td colspan="1">Факт.забой (дата отбивки)</td>
                                 <td colspan="1">{{this.passport.Факт_заб}}</td>
                             </tr>
                             <tr>
-                                <td colspan="1">27</td>
+                                <td colspan="1">24</td>
                                 <td colspan="1">Дата последнего КРС</td>
                                 <td colspan="1">{{this.passport.КРС}}</td>
                             </tr>
                             <tr>
-                                <td colspan="1">28</td>
+                                <td colspan="1">25</td>
                                 <td colspan="1">Дата последнего ПРС</td>
                                 <td colspan="1">{{this.passport.ПРС}}</td>
                             </tr>
                             <tr>
-                                <td colspan="1">29</td>
+                                <td colspan="1">26</td>
                                 <td colspan="1">Дата последнего ГИС</td>
                                 <td colspan="1">{{this.passport.ГИС}}</td>
                             </tr>
