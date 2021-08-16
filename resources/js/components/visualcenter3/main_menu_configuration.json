@@ -8,6 +8,10 @@
       "withoutKmgParticipation": {
         "buttonClass": "",
         "flag": "flagOff"
+      },
+      "condensateOnly": {
+        "buttonClass": "",
+        "flag": "flagOff"
       }
     }
   },
@@ -22,6 +26,10 @@
         "flag": "flagOff"
       },
       "oilResidue": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "condensateOnly": {
         "buttonClass": "",
         "flag": "flagOff"
       }

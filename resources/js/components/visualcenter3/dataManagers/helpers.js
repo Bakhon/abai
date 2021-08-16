@@ -280,25 +280,41 @@ export default {
             return this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0;
         },
 
-        getNumberByDzo(dzoName){
+        getNumberByDzo(dzoName, index){
+            if (this.oilCondensateFilters.isCondensateOnly) {
+                return this.dzoNumbers['condensateOnly'][dzoName];
+            }
+            if (this.isOilResidueActive) {
+                return this.dzoNumbers['oilResidue'][dzoName];
+            }
             if (this.oilCondensateProductionButton && this.oilCondensateFilters.isWithoutKMGFilterActive) {
                 return this.dzoNumbers['productionConsolidated'][dzoName];
-            } else if (this.oilCondensateProductionButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return this.dzoNumbers['productionKMG'][dzoName];
-            } else if (this.oilCondensateDeliveryButton && !this.isOilResidueActive && this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return this.dzoNumbers['deliveryConsolidated'][dzoName];
-            } else if (this.oilCondensateDeliveryButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return this.dzoNumbers['deliveryKMG'][dzoName];
-            } else if (this.oilCondensateDeliveryButton && this.isOilResidueActive) {
-                return this.dzoNumbers['oilResidue'][dzoName];
-            } else if (this.gasProductionButton || this.waterInjectionButton) {
-                return this.dzoNumbers['gas'][dzoName];
             }
+            if (this.oilCondensateProductionButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                return this.dzoNumbers['productionKMG'][dzoName];
+            }
+            if (this.oilCondensateDeliveryButton && this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                return this.dzoNumbers['deliveryConsolidated'][dzoName];
+            }
+            if (this.oilCondensateDeliveryButton && this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                return this.dzoNumbers['deliveryKMG'][dzoName];
+            }
+            return '1.' + index + 1;
         },
 
         getNumberFormat(num) {
             return (new Intl.NumberFormat("ru-RU").format(num))
         },
+
+        getDzoNameFormatting(dzo) {
+            if (this.oilCondensateFilters.isCondensateOnly) {
+                return '';
+            }
+            if (this.troubledCompanies.includes(dzo)) {
+                return 'troubled-companies';
+            }
+            return '';
+        }
     },
     computed: {
         periodSelectFunc() {

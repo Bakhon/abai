@@ -353,6 +353,18 @@
                           {{trans("visualcenter.withoutKmgParticipation")}}
                         </a>
                       </li>
+                      <li
+                              class="center-li row px-4"
+                              @click="switchFilterConsolidatedOilCondensate('oilCondensateProductionButton','condensateOnly','isCondensateOnly')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('oilCondensateProductionButton','condensateOnly')}`"
+                        ></div>
+                        <a class="col-9 mt-1">
+                          {{trans("visualcenter.getgk")}}
+                        </a>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -414,6 +426,18 @@
                                     )"
                         >
                           {{trans("visualcenter.ostatokNefti")}}
+                        </a>
+                      </li>
+                      <li
+                              class="center-li row px-4"
+                              @click="switchFilterConsolidatedOilCondensate('oilCondensateDeliveryButton','condensateOnly','isCondensateOnly')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('oilCondensateDeliveryButton','condensateOnly')}`"
+                        ></div>
+                        <a class="col-9 mt-1">
+                          {{trans("visualcenter.getgk")}}
                         </a>
                       </li>
                     </ul>
@@ -1045,7 +1069,7 @@
                         {{ getDzoName(item.dzoMonth,dzoNameMappingWithoutKMG) }}
                         <img src="/img/icons/link.svg" />
                       </span>
-                      <span :class="troubledCompanies.includes(item.dzoMonth) ? 'troubled-companies' : ''" v-else>
+                      <span v-else :class="getDzoNameFormatting(item.dzoMonth)">
                         {{ getDzoName(item.dzoMonth,dzoNameMapping) }}
                         <img src="/img/icons/link.svg" />
                       </span>

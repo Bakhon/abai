@@ -97,11 +97,15 @@ export default {
 
         switchMainMenu(parentButton, childButton,chartName) {
             this.chartHeadName = this.chartTranslateMapping[childButton];
-            this.isOilResidueActive = false;
             this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();
             let self = this;
             this.isMainMenuItemChanged = false;
+            if (childButton === 'oilResidue' && !this.isOilResidueActive) {
+                this.isOilResidueActive = true;
+            } else {
+                this.isOilResidueActive = false;
+            }
             let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
             if (this.categoryMenuPreviousParent !== parentButton) {
                 _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
