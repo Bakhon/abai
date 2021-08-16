@@ -20,19 +20,15 @@
 
 <script>
 import VueTableDynamic from 'vue-table-dynamic'
-import CatLoader from '@ui-kit/CatLoader';
 import {globalloadingMutations} from '@store/helpers';
 import SelectScFa from "../components/SelectScFa";
-import CatLoader from '../../ui-kit/CatLoader.vue';
 
 
 export default {
   name: "economic-data-component",
   components: {
     VueTableDynamic,
-
     SelectScFa
-    CatLoader
   },
   props: {
     isForecast: {
