@@ -1,12 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="container">
         <div class="row justify-content-center">
+            <a href="{{ route('eco_refs_list') }}"
+               class="btn btn-info">
+                {{ __('economic_reference.return_menu') }}
+            </a>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row justify-content-center mt-5">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header ecorefs-header">
                         <a class="btn btn-success" href="{{ route('ecorefsdiscontcoefbar.create') }}">+</a>
+                        <div class="ecorefs-title"> {{__('economic_reference.eco_refs_discont_coef_bar')}}</div>
                     </div>
                     <div class="card-body">
                         @if ($message = Session::get('success'))
@@ -19,10 +30,10 @@
                             <tr>
                                 <th>#</th>
                                 <th>Сценарий/Факт:</th>
-                                <th>Компания:</th>
+                                <th style="width: 180px;">Компания:</th>
                                 <th>Направление:</th>
-                                <th>Маршрут:</th>
-                                <th>Дата:</th>
+                                <th style="width: 180px;">Маршрут:</th>
+                                <th style="width: 130px">Дата:</th>
                                 <th>Коэффициент баррелизации:</th>
                                 <th>Дисконт ($/баррель):</th>
                                 <th>Стоимость нефти (экспорт - $/баррель, внутренний рынок - тенге/тонна):</th>
@@ -44,7 +55,7 @@
                                             <a class="btn btn-primary" href="{{ route('ecorefsdiscontcoefbar.edit',$item->id) }}">{{__('app.edit')}}</a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button>
+                                            <button type="submit" class="btn btn-danger mt-2">{{__('app.delete')}}</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -57,3 +68,7 @@
         </div>
     </div>
 @endsection
+
+<style>
+    @import "../../css/ecorefs.css";
+</style>

@@ -244,6 +244,7 @@ td:last-of-type {
     overflow: hidden;
     border-radius: 10px;
     cursor: pointer;
+    border: 1px solid transparent;
 }
 
 .icon-all {
@@ -663,7 +664,7 @@ td.small-td {
 
 
 .dropdown4 a {
-    color: #373435;
+    color: black;
     font-weight: normal!important;
     font-size: 1.1em;
     margin-left: 10%;

@@ -57,32 +57,32 @@ export default {
     chartSeries() {
       return [
         {
-          name: this.trans('economic_reference.gross_income'),
+          name: `${this.trans('economic_reference.gross_income')} ${this.trans('economic_reference.before_optimization')}`,
           type: 'line',
           data: this.chartData.map(x => x ? +x.Revenue_total.original_value : null)
         },
         {
-          name: `${this.trans('economic_reference.gross_income')} ${this.trans('economic_reference.optimum')}`,
+          name: `${this.trans('economic_reference.gross_income')} ${this.trans('economic_reference.after_optimization')}`,
           type: 'line',
           data: this.chartData.map(x => x ? +x.Revenue_total.original_value_optimized : null)
         },
         {
-          name: this.trans('economic_reference.costs'),
+          name: `${this.trans('economic_reference.costs')} ${this.trans('economic_reference.before_optimization')}`,
           type: 'line',
           data: this.chartData.map(x => x ? +x.Overall_expenditures.original_value : null)
         },
         {
-          name: `${this.trans('economic_reference.costs')} ${this.trans('economic_reference.optimum')}`,
+          name: `${this.trans('economic_reference.costs')} ${this.trans('economic_reference.after_optimization')}`,
           type: 'line',
           data: this.chartData.map(x => x ? +x.Overall_expenditures.original_value_optimized : null)
         },
         {
-          name: this.trans('economic_reference.operating_profit'),
+          name: `${this.trans('economic_reference.operating_profit_loss')} ${this.trans('economic_reference.before_optimization')}`,
           type: 'bar',
           data: this.chartData.map(x => x ? +x.operating_profit_12m.original_value : null)
         },
         {
-          name: `${this.trans('economic_reference.operating_profit')} ${this.trans('economic_reference.optimum')}`,
+          name: `${this.trans('economic_reference.operating_profit_loss')} ${this.trans('economic_reference.after_optimization')}`,
           type: 'bar',
           data: this.chartData.map(x => x ? +x.operating_profit_12m.original_value_optimized : null)
         },
@@ -104,7 +104,8 @@ export default {
           defaultLocale: 'ru'
         },
         markers: {
-          size: 5
+          size: 7,
+          strokeOpacity: 0.1,
         },
         plotOptions: {
           bar: {

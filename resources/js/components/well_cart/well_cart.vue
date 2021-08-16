@@ -368,7 +368,8 @@ export default {
     this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
       this.formsStructure = data.tree
     })
-    this.axios.get(this.localeUrl('/user_organizations')).then(({data}) => {
+    this.axios.get(this.localeUrl('/user_organizations'), {params: {'only_main': true}})
+        .then(({data}) => {
         if (typeof data !== 'undefined' &&
             typeof data.organizations !== 'undefined' &&
             data.organizations.length > 0) {

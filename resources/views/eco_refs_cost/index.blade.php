@@ -11,7 +11,7 @@
     </div>
 
     <div class="container my-4">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mt-5">
             <div class="col-md-4">
                 <div class="list-group text-center">
                     <a href="{{ route('economic_data_upload', ['is_forecast'=> $isForecast]) }}"
@@ -37,15 +37,15 @@
 
     <div class="col p-4 bg-light"  >
         @if($isForecast)
+            <div class="ecorefsmacro-title">{{__('economic_reference.eco_refs_scenario')}}</div>
             <economic-data-component is-forecast></economic-data-component>
         @else
+            <div class="ecorefsmacro-title">{{__('economic_reference.eco_refs_cost')}}</div>
             <economic-data-component></economic-data-component>
         @endif
     </div>
 @endsection
 
 <style>
-    .container-main {
-        overflow-x: auto;
-    }
+   @import "../../css/ecorefs.css"; 
 </style>

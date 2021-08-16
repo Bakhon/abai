@@ -18,8 +18,8 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v8';
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_test_v5';
+    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v9';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_test_v9_3';
     const DATA_SOURCE_DATE = '2021/01/01';
 
     const SCENARIO_COLUMNS = [
@@ -141,7 +141,7 @@ class EconomicOptimizationController extends Controller
 
         $data = $builder
             ->select($columns)
-            ->groupBy()
+            ->groupBy(self::SCENARIO_COLUMNS)
             ->data();
 
         $scenarios = [];
@@ -200,25 +200,22 @@ class EconomicOptimizationController extends Controller
                 Carbon::parse(self::DATA_SOURCE_DATE)->addDay(),
             ));
 
+        $columns = [
+            'uwi',
+            "oil_price",
+            "dollar_rate",
+            'profitability_12m',
+            "scenario_id",
+            "rank",
+        ];
+
         return $builder
-            ->select([
-                'uwi',
-                "oil_price",
-                "dollar_rate",
-                'profitability_12m',
-                "scenario_id",
-            ])
+            ->select($columns)
             ->doubleSum('operating_profit_12m')
             ->orderBy('oil_price')
             ->orderBy('dollar_rate')
             ->orderBy('operating_profit_12m')
-            ->groupBy([
-                'uwi',
-                "oil_price",
-                "dollar_rate",
-                'profitability_12m',
-                "scenario_id",
-            ])
+            ->groupBy($columns)
             ->data();
     }
 
