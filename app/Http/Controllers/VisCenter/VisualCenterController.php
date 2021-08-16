@@ -451,14 +451,23 @@ class VisualCenterController extends Controller
     }
     public function getEmergencyHistory(Request $request)
     {
-        return EmergencyHistory::query()
+        $emergencySituations = EmergencyHistory::query()
             ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description')
             ->whereMonth('date', $request->currentMonth)
             ->where('type',1)
             ->orderBy('date', 'desc')
-            ->take(10)
+            ->take(10);
+
+        if (!empty($request->dzoName)){
+        return $emergencySituations->where('description','like', "%".$request->dzoName."%")
+            ->get()
+            ->toArray();              
+        } 
+
+        return $emergencySituations
             ->get()
             ->toArray();
+                
     }
     public function getHistoricalProductionByDzo(Request $request)
     {
@@ -533,8 +542,11 @@ class VisualCenterController extends Controller
     }
 
     public function dailyApprove()
-        {
-            return view('visualcenter.daily_approve');
-        }
+    {
+        return view('visualcenter.daily_approve');
+    }
+    public function kpdTree()
+    {
+        return view('visualcenter.kpd_tree');
+    }
 }
-

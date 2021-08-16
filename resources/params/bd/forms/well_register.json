@@ -13,7 +13,7 @@
                 "code": "org",
                 "type": "dict_tree",
                 "title": "orgs",
-                "validation": "exists:tbd.dict.org,id",
+                "validation": "required|exists:tbd.dict.org,id",
                 "dict": "orgs",
                 "callbacks": {
                   "filterGeoByDZO": "geo"
@@ -23,17 +23,17 @@
                 "code": "geo",
                 "type": "dict_tree",
                 "title": "geo_s",
-                "validation": "exists:tbd.dict.geo,id",
+                "validation": "required|exists:tbd.dict.geo,id",
                 "dict": "geos",
                 "callbacks": {
-                  "setWellPrefix": "name"
+                  "setWellPrefix": "uwi"
                 }
               },
               {
                 "code": "uwi",
                 "type": "text",
                 "title": "numb",
-                "validation": "max:255",
+                "validation": "required|max:255",
                 "prefix": ""
               },
               {

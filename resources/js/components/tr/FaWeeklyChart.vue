@@ -55,7 +55,7 @@
           >
             <label for="inputDate" style="margin-left: 8px;">{{trans('tr.enter_reference_date')}}:</label>
             <input type="date" class="form-control" v-model="calendarDate" />
-            <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
+            <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDate"
               >{{trans('tr.form')}}</a
             >
           </div>
@@ -102,21 +102,21 @@
         </div>      
         </div>
     </div>
-    <cat-loader />
+
   </div>
 </template>
 <script>
 import TrMultiselect from "./TrMultiselect.vue";
 import VueApexCharts from "vue-apexcharts";
 import trHelper from '~/mixins/trHelper';
-import CatLoader from "@ui-kit/CatLoader";
+
 import moment from "moment";
 
 
 export default {
   name: "Trfa",
   components: {
-    CatLoader,
+
     "apexchart": VueApexCharts
   },
   mixins: [trHelper],
@@ -225,7 +225,6 @@ export default {
       filteredWellsBar: [],
       titleDate: null,
       calendarDate: null,
-      fullWells: [],
       areaChartRerender: true,
       Filter_well: undefined,
       Filter_field: undefined,
@@ -339,7 +338,7 @@ export default {
     },
   },
   methods: {
-    chooseDt() {
+    chooseDate() {
       const { calendarDate } = this;
       const apiDate = moment(calendarDate).format("YYYY/MM/DD");
       this.titleDate = moment(calendarDate).format("DD.MM.YYYY");
@@ -353,11 +352,11 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           let data = response.data;
           if (data) {
-            this.fullWells = data.data;
             this.chartWells = data.data;
             this.allWells = data.data;
           } else {
-            console.log("No data");
+            this.chartWells = [];
+            this.allWells = [];            
             this.$store.commit("globalloading/SET_LOADING", false);
           }
         })
@@ -395,7 +394,6 @@ export default {
         this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
         if (data) {
-          this.fullWells = data.data;
           this.chartWells = data.data;
           this.allWells = data.data;
         } else {

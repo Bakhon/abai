@@ -1,7 +1,8 @@
 {
   "table": "prod.gis",
   "default_values": {
-    "gis_type.id": 1
+    "gis_type.id": 1,
+    "dict.gis_type_code" : "BLL"
   },
   "sort": [
     {
@@ -67,11 +68,11 @@
             "title": "",
             "items": [
               {
-                "code": "name_ru",
+                "code": "gis_type",
                 "type": "dict",
                 "dict": "gis_method_types",
                 "title": "gis_methods",
-                "validation": "required|exists:tbd.dict.gis_method_type,id"
+                "validation": "required"
               }
             ]
           }
@@ -87,7 +88,7 @@
             "items": [
               {
                 "code": "ri_horizont",
-                "type": "dict",
+                "type": "dict_tree",
                 "dict": "geo_type_hrz",
                 "title": "geo",
                 "validation": "required|exists:tbd.dict.geo_type,id"
@@ -99,7 +100,7 @@
                 "validation": "required"
               },
               {
-                "code": "ri_botton",
+                "code": "ri_bottom",
                 "type": "numeric",
                 "title": "Botton",
                 "validation": "required|gt:ri_top"

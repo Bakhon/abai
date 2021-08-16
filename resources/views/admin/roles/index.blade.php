@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <div id="app" class="roles-list ml-auto mr-auto col-8">
+    <div   class="roles-list ml-auto mr-auto col-8">
         <view-table :params='@json($params)'></view-table>
     </div>
 @endsection
