@@ -61,16 +61,22 @@ export default {
   components: {
     Plotly
   },
-
   data() {
     return {
       indicators: indicators,
       secondIndicators: secondIndicators,
-      data:[{
-        x: [2015, 2016, 2017, 2018, 2019, 2020, 2021],
-        y: [200,400,600,800,1000,1200,1400],
-        type:"scatter"
-      }],
+      data:[
+        {
+          x: [2015, 2016, 2017, 2018, 2019, 2020],
+          y: [1200, 1300, 1200, 1200, 1000, 1100],
+          type:"scatter"
+        },
+        {
+          x: [2015, 2016, 2017, 2018, 2019, 2020],
+          y: [352.38, 349.024, 302.04, 302.04, 234.92, 230.725],
+          type:"scatter"
+        }
+      ],
       layout: {
         height: 320,
         showlegend: true,
