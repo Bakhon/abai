@@ -36,12 +36,11 @@
             <div class="row content-block m-0 mt-2 mx-2 p-0 rounded-top text-white">
                 <div class="col-3">Период:</div>
                 <div class="col-6 d-flex justify-content-between">
-                    <div>1 неделя</div>
-                    <div>1 месяц</div>
-                    <div>3 месяца</div>
-                    <div>6 месяцев</div>
-                    <div>1 год</div>
-                    <div>Все</div>
+                    <div v-for="period in schedulePeriods"
+                         :class="{'active': period.value === activePeriod,
+                          'cursor-pointer': period.value !== activePeriod}"
+                         @click="changePeriod(period.value)"
+                    >{{ period.period }}</div>
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -104,32 +103,87 @@ export default {
                     500, 900, 400, 400, 800, 1800, 1500],
             },
         ],
+        chartPoints: [],
         labels: ["22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель","26 Апрель", "3 Май",
             "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь", "14 Июль",
             "22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель","26 Апрель", "3 Май",
             "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь", "14 Июль"],
+        schedulePeriods: [
+            {
+                period: "1 неделя",
+                value: 7,
+            },
+            {
+                period: "1 месяц",
+                value: 30,
+            },
+            {
+                period: "3 месяца",
+                value: 90,
+            },
+            {
+                period: "6 месяцев",
+                value: 183,
+            },
+            {
+                period: "1 год",
+                value: 365,
+            },
+            {
+                period: "Все",
+                value: 0,
+            },
+        ],
+        activePeriod: 90,
     }),
     methods: {
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
+        changePeriod(value) {
+            this.activePeriod = value;
+            this.getSchuduleData();
+        },
+        getSchuduleData() {
+            this.SET_LOADING(true);
+            this.axios.get(this.localeUrl('api/bigdata/wells/production-wells-schedule-data'), {
+                params: {
+                    wellId: this.well.id,
+                    period: this.activePeriod,
+                }
+            }).then(({data}) => {
+                this.chartSeries = [
+                    data.oil,
+                    data.measLiq,
+                    data.measWaterCut,
+                ];
+                if (data.wellStatuses) {
+                    this.chartPoints = [];
+                    data.wellStatuses.forEach(status => {
+                        this.chartPoints.push({
+                            x: status[0],
+                            y: 0,
+                            marker: {
+                                size: 10,
+                                fillColor: '#fff'
+                            },
+                            label: {
+                                text: status[2],
+                                style: {
+                                    color: '#000'
+                                }
+                            }
+                        });
+                    });
+                }
+                this.labels = data.labels;
+            }).finally(() => {
+                this.SET_LOADING(false);
+            });
+        }
     },
     mounted() {
-        this.SET_LOADING(true);
-        this.axios.get(this.localeUrl('api/bigdata/wells/production-wells-schedule-data'), {
-            params: {
-                wellId: this.well.id
-            }
-        }).then(({data}) => {
-            this.chartSeries = [
-                data.oil,
-                data.measLiq,
-                data.measWaterCut,
-            ];
-            this.labels = data.labels
-        }).finally(() => {
-            this.SET_LOADING(false);
-        });
+        this.getSchuduleData();
     },
     computed: {
         chartOptions() {
@@ -174,7 +228,10 @@ export default {
                 tooltip: {
                     shared: true,
                     intersect: false,
-                }
+                },
+                annotations: {
+                    points: this.chartPoints,
+                },
             }
         },
     },
@@ -208,6 +265,10 @@ export default {
 
 .arrow-back {
     transform: rotate(90deg);
+}
+
+.active {
+    border-bottom: 2px solid rgba(46, 80, 233, 1);
 }
 </style>
 <style>

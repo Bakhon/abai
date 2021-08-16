@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Api\DB;
 
-use App\Http\Controllers\Api\Admin\UsersController;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\OrganizationsController;
 use App\Http\Resources\BigData\WellSearchResource;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
+use App\Models\BigData\WellStatus;
 use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\Well;
@@ -494,7 +493,7 @@ class WellsController extends Controller
         ];
     }
 
-    public function productionWellsScheduleData(Request $request):array {
+    public function getProductionWellsScheduleData(Request $request):array {
         $result = [
             'measLiq' => [
                 'name' => trans('app.liquid'),
@@ -512,16 +511,37 @@ class WellsController extends Controller
                 'data' => [],
                 ],
             'labels' => [],
+            'wellStatuses' => [],
         ];
         $wellId = $request->get('wellId');
-        $measLiqs = MeasLiq::where('well', $wellId)
+        $period = $request->get('period');
+        $dateFrom = Carbon::now('Asia/Almaty');
+        $measLiqs = MeasLiq::where('well', $wellId);
+        $measWaterCuts = MeasWaterCut::where('well', $wellId);
+        $wellStatuses = WellStatus::where('well', $wellId);
+        if ($period) {
+            $dateFrom->subDays($period);
+            $measLiqs->where('dbeg', '>=', $dateFrom);
+            $measWaterCuts->where('dbeg', '>=', $dateFrom);
+            $wellStatuses->where('dbeg', '>=', $dateFrom);
+        }
+        $measLiqs = $measLiqs->orderBy('dbeg', 'asc')
+            ->get()
+            ->toArray();
+        $measWaterCuts = $measWaterCuts->orderBy('dbeg', 'asc')
+            ->get()
+            ->toArray();
+        $wellStatuses = $wellStatuses->with('statusType')
             ->orderBy('dbeg', 'asc')
             ->get()
             ->toArray();
-        $measWaterCuts = MeasWaterCut::where('well', $wellId)
-            ->orderBy('dbeg', 'asc')
-            ->get()
-            ->toArray();
+        foreach ($wellStatuses as $wellStatus) {
+            $result['wellStatuses'][] = [
+                DateTime::createFromFormat('Y-m-d H:i:sP', $wellStatus['dbeg'])->format('Y-m-d'),
+                $wellStatus['status_type']['code'],
+                $wellStatus['status_type']['name_ru'],
+            ];
+        }
         foreach ($measLiqs as $measLiq) {
             $measWaterCutVal = 0;
             $oilVal = 0;
@@ -532,7 +552,7 @@ class WellsController extends Controller
                 $dateTimeWC = DateTime::createFromFormat('Y-m-d H:i:sP', $measWaterCut['dbeg']);
                 if ($dateTime == $dateTimeWC) {
                     $measWaterCutVal = $measWaterCut['water_cut'];
-                    $oilVal = $measLiq['liquid'] * (1 - $measWaterCut['water_cut']) * 0.86;
+                    $oilVal = abs($measLiq['liquid'] * (1 - $measWaterCut['water_cut'] / 100) * 0.86);
                     break;
                 }
             }
