@@ -240,7 +240,7 @@ Route::group(
                 Route::resource('pipe-passport', 'ComplicationMonitoring\PipePassportController');
 
                 Route::get('zu-cleanings/list', 'ComplicationMonitoring\ZusCleaningController@list')->name('zu-cleanings.list');
-                Route::get('zu-cleanings/history/{zu-cleanings}', 'ComplicationMonitoring\ZusCleaningController@history')->name('zu-cleanings.history');
+                Route::get('zu-cleanings/history/{zu_cleaning}', 'ComplicationMonitoring\ZusCleaningController@history')->name('zu-cleanings.history');
                 Route::resource('zu-cleanings', 'ComplicationMonitoring\ZusCleaningController');
             }
         );
