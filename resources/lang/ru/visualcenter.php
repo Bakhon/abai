@@ -251,6 +251,7 @@ return array (
       'dataSaved' => 'Данные успешно сохранены!',
       'dataIsNotValid' => 'В данных найдены ошибки!',
       'verifySumByDzo' => 'Ошибка! Проверьте общие суммы по параметрам.',
+      'sendedToApprove' => 'Отправлено на согласование',
     ),
     'chemistry' => 'Химизация производства, т/мес',
     'enterChemistryButton' => 'Химизация производства',
@@ -269,7 +270,6 @@ return array (
     'insertData' => 'Внесение данных',
     'dataArchieve' => 'Архив данных',
     'dateSelect' => 'Выберите дату',
-    'sendedToApprove' => 'Отправлено на согласование',
     'executor' => 'Исполнитель',
     'reason' => 'Причина',
   ),
@@ -411,5 +411,6 @@ return array (
     'approved' => 'Согласовано',
     'cancelled' => 'Отменено'
   ),
-  'condensateDelivery' => 'Сдача конденсата'
+  'condensateDelivery' => 'Сдача конденсата',
+  'notes' => 'Примечания'
 );

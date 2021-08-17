@@ -358,6 +358,9 @@ export default {
                     item.opekPlan = self.dzoMultiplier['НКО'](null,item.opekPlan,null);
                     item.planMonth = self.dzoMultiplier['НКО'](null,item.planMonth,null);
                 }
+                if (item.opekPlan === null || item.opekPlan === 0) {
+                    item.opekPlan = item.planMonth;
+                }
             });
 
             let pkiIndex = actualUpdatedByOpek.findIndex(element => element.dzoMonth === 'ПКИ');
