@@ -10,7 +10,7 @@
             "title": "",
             "items": [
               {
-                "code": "hello_world",
+                "code": "research_date",
                 "type": "datetime",
                 "title": "dbeg",
                 "validation": "required"
@@ -22,9 +22,9 @@
                 "validation": "required"
               },
               {
-                "code": "hello_world",
+                "code": "method",
                 "type": "dict",
-                "dict":" ",
+                "dict":"research_methods",
                 "title": "research_type",
                 "validation": "required"
               },
@@ -35,14 +35,16 @@
                 "validation": "required"
               },
               {
-                "code": "",
-                "type": "text",
+                "code": "research_target",
+                "type": "dict",
+                "dict": "research_target",
                 "title": "aim",
                 "validation": "required"
               },
               {
-                "code": "",
-                "type": "text",
+                "code": "conclusion",
+                "type": "dict",
+                "dict": "gdis_conclusion",
                 "title": "conclusion",
                 "validation": "required"
               }
