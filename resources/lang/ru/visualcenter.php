@@ -411,5 +411,6 @@ return array (
     'approved' => 'Согласовано',
     'cancelled' => 'Отменено'
   ),
-  'notes' => 'Примечания'
+  'notes' => 'Примечания',
+  'kpdModuleTitle' => 'КПД Upstream'
 );

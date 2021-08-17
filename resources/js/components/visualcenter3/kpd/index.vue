@@ -29,13 +29,13 @@
                 </div>
                 <div class="col-4 d-flex">
                     <div class="col-12 table-header p-1">
-                        Карта КПД СЕО-1<br />
+                        КПД СЕО-1<br />
                         (заместитель председателя Правления)
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="col-12 table-header p-1">
-                        Карты КПД СЕО-2<br />
+                        КПД СЕО-2<br />
                         (директора департаментов)
                     </div>
                 </div>

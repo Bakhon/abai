@@ -12,9 +12,14 @@
             <div class="modal-bign modal-bign-container">
                 <div class="modal-bign-header">
                     <div class="modal-bign-title modal_header">{{catalog.name}}</div>
-                    <button type="button" class="modal-bign-button" @click="$modal.hide('modalCatalog')">
-                        {{trans('pgno.zakrit')}}
-                    </button>
+                    <div class="btn-toolbar">
+                        <button type="button" class="modal-button_add mr-2" @click="$modal.show('modalKpdEdit')">
+                            {{trans('kpd_tree.add')}}
+                        </button>
+                        <button type="button" class="modal-bign-button" @click="$modal.hide('modalCatalog')">
+                            {{trans('pgno.zakrit')}}
+                        </button>
+                    </div>
                 </div>
                 <table class="modal_table">
                     <tr>
@@ -30,6 +35,7 @@
                 </div>
             </div>
         </modal>
+        <kpd-modal-kpd-edit></kpd-modal-kpd-edit>
     </div>
 </template>
 
@@ -100,5 +106,15 @@ export default {
     position: absolute;
     bottom: 0;
     justify-content: center;
+}
+.modal-button_add {
+    border: none;
+    outline: none;
+    background: #2d995b;
+    color: white;
+    font-weight: normal;
+    font-size: 16px;
+    width: 100px;
+    border-radius: 8px;
 }
 </style>

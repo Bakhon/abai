@@ -23,12 +23,29 @@
                         <th rowspan="2" class="p-2">Наименование КПД</th>
                         <th rowspan="2" class="p-2">Единица<br>измерения</th>
                         <th rowspan="2" class="p-2">Вес</th>
-                        <th rowspan="2" class="p-2">Порог \n (50%)&emsp;&emsp;Цель (100%)&emsp;&emsp;Вызов (125%)</th>
+                        <th rowspan="2" class="p-2">
+                            <div class="d-flex">
+                                <div class="col-4">Порог<br>(50%)</div>
+                                <div class="col-4">Цель<br>(100%)</div>
+                                <div class="col-4">Вызов<br>(125%)</div>
+                            </div>
+                        </th>
                         <th colspan="3" class="p-2">Результаты</th>
                         <th rowspan="2" class="p-2">Комментарии</th>
                     </tr>
                     <tr>
-                        <th class="p-2">Факт за</th>
+                        <th class="p-2">
+                            Факт за<br>
+                            <el-date-picker
+                                    v-model="period"
+                                    type="date"
+                                    format="dd.MM.yyyy"
+                                    popper-class="custom-date-picker"
+                                    :picker-options="datePickerOptions"
+                                    @change="changeDate"
+                            >
+                            </el-date-picker>
+                        </th>
                         <th class="p-2">Оценка<br>(баллы)</th>
                         <th class="p-2">Вклад<br>в суммарную<br>результативность</th>
                     </tr>
@@ -88,6 +105,8 @@
 </template>
 
 <script>
+import moment from "moment-timezone";
+
 export default {
     data: function () {
         return {
@@ -186,7 +205,13 @@ export default {
                 }
             ],
             selectedFilter: null,
-            kpdCount: 0
+            kpdCount: 0,
+            period: moment(),
+            datePickerOptions: {
+                disabledDate (date) {
+                    return moment(date) >= moment().subtract(1, 'days')
+                }
+            },
         };
     },
     methods: {
@@ -230,6 +255,17 @@ export default {
                 return 'progress-bar_title__high';
             }
         },
+        async changeDate() {
+            this.SET_LOADING(true);
+            // let queryOptions = {
+            //     'dzoName': this.selectedDzo.ticker,
+            //     'isCorrected': true,
+            //     'date': this.period
+            // };
+            // this.todayData = await this.getDzoTodayData(queryOptions);
+            // this.processTodayData();
+            this.SET_LOADING(false);
+        },
     },
     async mounted() {
         this.kpdCount = this.kpd.table.body.length;
@@ -253,7 +289,7 @@ export default {
         &:nth-child(2) {
             width: 250px;
         }
-        &:nth-child(5) {
+        &:nth-child(5), &:nth-child(6) {
             width: 400px;
         }
     }

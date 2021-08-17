@@ -6,6 +6,7 @@ Vue.component('kpd-modal-catalog', require('./modalCatalog.vue').default);
 Vue.component('kpd-modal-map', require('./modalMap.vue').default);
 Vue.component('kpd-modal-monitoring', require('./modalMonitoring.vue').default);
 Vue.component('kpd-modal-kpd-passport', require('./modalKpdPassport.vue').default);
+Vue.component('kpd-modal-kpd-edit', require('./modalEditKpd.vue').default);
 
 export default {
     data: function () {
