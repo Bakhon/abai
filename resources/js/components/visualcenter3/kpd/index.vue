@@ -134,7 +134,7 @@
                 </div>
             </div>
             <kpd-modal-documents></kpd-modal-documents>
-            <kpd-modal-catalog></kpd-modal-catalog>
+            <kpd-modal-catalog :kpd-list="kpdDecompositionB"></kpd-modal-catalog>
             <kpd-modal-map :manager-info="selectedManager"></kpd-modal-map>
             <kpd-modal-monitoring :manager-info="selectedManager"></kpd-modal-monitoring>
             <kpd-modal-kpd-passport :manager-info="selectedManager" :kpd="selectedKpd"></kpd-modal-kpd-passport>

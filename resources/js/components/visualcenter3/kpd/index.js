@@ -333,10 +333,20 @@ export default {
             selectedManager: {
                 concordants: []
             },
-            selectedKpd: {}
+            selectedKpd: {},
+            kpdList: [],
+            kpdDecompositionB: []
         };
     },
     methods: {
+        async getAllKpd() {
+            let uri = this.localeUrl("/kpd-tree-catalog");
+            const response = await axios.get(uri);
+            if (response.status === 200) {
+                return response.data;
+            }
+            return [];
+        },
         getProgressBarFillingColor(progress) {
             if (progress <= 70) {
                 return 'progress-bar_filling__medium';
@@ -383,7 +393,7 @@ export default {
             });
         },
     },
-    created() {
+    async created() {
         this.selectedManager = this.kpdDecompositionA;
         _.forEach(this.kpdCeoDecompositionB, (master) => {
             _.forEach(master.kpd, (kpd) => {
@@ -391,5 +401,7 @@ export default {
             });
         });
         this.selectedKpd = this.kpdCeoDecompositionB[0].kpd[0];
+        this.kpdList = await this.getAllKpd();
+        this.kpdDecompositionB = _.filter(this.kpdList, (item) => item.type === 3);
     },
 }

@@ -69,8 +69,11 @@
                         <input class="input_kpd p-2 col-7" type="text" v-model="kpd.current.functions">
                     </div>
                 </div>
-                <div class="d-flex justify-content-center mt-4">
-                    <button type="button" class="modal-button_save mr-2" @click="$modal.show('modalKpdEdit')">
+                <div class="d-flex justify-content-center mt-3">
+                    <div class="status__red" v-if="status.length > 0">{{status}}</div>
+                </div>
+                <div class="d-flex justify-content-center mt-1">
+                    <button type="button" class="modal-button_save mr-2" @click="store">
                         {{trans('kpd_tree.save')}}
                     </button>
                     <button type="button" class="modal-button_delete mr-2" @click="$modal.show('modalKpdEdit')">
@@ -97,7 +100,8 @@ export default {
                     variables: '',
                     source: '',
                     responsible: '',
-                    functions: ''
+                    functions: '',
+                    type: 3
                 }
             },
             sourceDictionary: [
@@ -108,6 +112,7 @@ export default {
                 growth: false,
                 fall: false
             },
+            status: ''
         };
     },
     methods: {
@@ -115,8 +120,23 @@ export default {
             Object.keys(this.polaritySelected).forEach((i) => this.polaritySelected[i] = false);
             this.polaritySelected[type] = true;
             this.kpd.current.polarity = type;
+        },
+        async store() {
+            let uri = this.localeUrl("/kpd-tree-catalog-store");
+            this.axios.post(uri, this.kpd.current).then((response) => {
+                if (response.status === 200) {
+                    this.$modal.hide('modalKpdEdit')
+                } else {
+                    this.status = 'Ошибки при сохранении. Проверьте данные!';
+                }
+            });
+
         }
     },
+    mounted() {
+        this.kpd.current.source = this.sourceDictionary[0];
+    },
+    props: ['kpdList'],
 }
 
 
@@ -147,6 +167,9 @@ export default {
 }
 .edit-block {
 
+}
+.status__red {
+    color: #C82333;
 }
 .input_kpd {
     background: #1A1D46;

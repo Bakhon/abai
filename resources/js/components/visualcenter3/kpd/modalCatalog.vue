@@ -25,8 +25,16 @@
                     <tr>
                         <th class="p-4" v-for="header in catalog.table.headers">{{header}}</th>
                     </tr>
-                    <tr v-for="row in catalog.table.body">
-                        <td class="p-1" v-for="column in row">{{column}}</td>
+                    <tr v-if="kpdList.length > 0" v-for="row in kpdList">
+                        <td class="p-1">{{row.name}}</td>
+                        <td class="p-1">{{row.description}}</td>
+                        <td class="p-1">{{row.unit}}</td>
+                        <td class="p-1">{{row.polarity}}</td>
+                        <td class="p-1">{{row.formula}}</td>
+                        <td class="p-1">{{row.variables}}</td>
+                        <td class="p-1">{{row.source}}</td>
+                        <td class="p-1">{{row.responsible}}</td>
+                        <td class="p-1">{{row.functions}}</td>
                     </tr>
                 </table>
                 <div align="center" class="bottom-buttons col-12 row">
@@ -57,16 +65,11 @@ export default {
                         'Ответственные за достоверность',
                         'Функции'
                     ],
-                    'body': []
                 }
             },
         };
     },
-    async mounted() {
-        for (let i=0;i<13;i++) {
-            this.catalog.table.body.push(Array(9).fill(''));
-        }
-    }
+    props: ['kpdList'],
 }
 
 
