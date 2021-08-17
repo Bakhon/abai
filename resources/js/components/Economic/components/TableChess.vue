@@ -28,7 +28,7 @@
           ПП-2020
         </div>
 
-        <div v-for="oilPrice in oilPrices"
+        <div v-for="oilPrice in reverseOilPrices"
              :key="oilPrice"
              class="px-3 py-1 border-grey flex-grow-1 text-center">
           {{ (+oilPrice).toLocaleString() }}$/барр
@@ -61,7 +61,7 @@
         </div>
       </div>
 
-      <div v-for="(oilPrice, oilIndex) in oilPrices"
+      <div v-for="(oilPrice, oilIndex) in reverseOilPrices"
            :key="oilPrice"
            :class="oilIndex % 2 === 0 ? 'bg-light-blue' : 'bg-deep-blue'"
            class="d-flex">
@@ -71,7 +71,7 @@
 
         <div class="px-3 py-1 border-grey text-center flex-120px"></div>
 
-        <div v-for="(price, priceIndex) in oilPrices"
+        <div v-for="(price, priceIndex) in reverseOilPrices"
              :key="priceIndex"
              :style="`background: ${getColor(priceIndex)}`"
              class="px-3 py-1 border-grey flex-grow-1 text-center">
@@ -84,7 +84,7 @@
 
         <div class="px-3 py-1 border-grey text-center flex-120px height-31px"></div>
 
-        <div v-for="price in oilPrices"
+        <div v-for="price in reverseOilPrices"
              :key="price"
              class="px-3 py-1 border-grey flex-grow-1 text-center height-31px">
         </div>
@@ -100,7 +100,7 @@
         </div>
       </div>
 
-      <div v-for="(oilPrice, oilIndex) in oilPrices"
+      <div v-for="(oilPrice, oilIndex) in reverseOilPrices"
            :key="oilPrice"
            :class="oilIndex % 2 === 0 ? 'bg-light-blue' : 'bg-deep-blue'"
            class="d-flex">
@@ -110,7 +110,7 @@
 
         <div class="px-3 py-1 border-grey text-center flex-120px"></div>
 
-        <div v-for="(price, priceIndex) in oilPrices"
+        <div v-for="(price, priceIndex) in reverseOilPrices"
              :key="priceIndex"
              :style="`background: ${getColor(priceIndex)}`"
              class="px-3 py-1 border-grey flex-grow-1 text-center">
@@ -123,7 +123,7 @@
 
         <div class="px-3 py-1 border-grey text-center flex-120px height-31px"></div>
 
-        <div v-for="price in oilPrices"
+        <div v-for="price in reverseOilPrices"
              :key="price"
              class="px-3 py-1 border-grey flex-grow-1 text-center height-31px">
         </div>
@@ -146,14 +146,14 @@
 
         <div class="px-3 py-1 border-grey text-center flex-120px"></div>
 
-        <div v-for="oilPrice in oilPrices"
+        <div v-for="oilPrice in reverseOilPrices"
              :key="oilPrice"
              class="px-3 py-1 border-grey flex-grow-1 text-center">
           {{ (+oilPrice).toLocaleString() }}$/барр
         </div>
       </div>
 
-      <div v-for="(oilPrice, oilIndex) in oilPrices"
+      <div v-for="(oilPrice, oilIndex) in reverseOilPrices"
            :key="oilPrice"
            :class="oilIndex % 2 === 0 ? 'bg-light-blue' : 'bg-deep-blue'"
            class="d-flex">
@@ -165,7 +165,7 @@
              class="px-3 py-1 border-grey text-center flex-120px">
         </div>
 
-        <div v-for="(price, priceIndex) in oilPrices"
+        <div v-for="(price, priceIndex) in reverseOilPrices"
              :key="priceIndex"
              :style="`background: ${getColor(priceIndex)}`"
              class="px-3 py-1 border-grey flex-grow-1 text-center">
@@ -193,6 +193,11 @@ export default {
       required: true,
       type: Array
     }
+  },
+  computed: {
+    reverseOilPrices() {
+      return [...this.oilPrices].reverse()
+    },
   },
   methods: {
     getColor(index) {

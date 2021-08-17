@@ -134,7 +134,7 @@ export default {
   },
   computed: {
     reverseOilPrices() {
-      return this.oilPrices.reverse()
+      return [...this.oilPrices].reverse()
     },
 
     filteredData() {
