@@ -101,11 +101,7 @@ export default {
             this.disableTargetCompanyFilter();
             let self = this;
             this.isMainMenuItemChanged = false;
-            if (childButton === 'oilResidue' && !this.isOilResidueActive) {
-                this.isOilResidueActive = true;
-            } else {
-                this.isOilResidueActive = false;
-            }
+            this.isOilResidueActive = childButton === 'oilResidue' && !this.isOilResidueActive;
             let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
             if (this.categoryMenuPreviousParent !== parentButton) {
                 _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
