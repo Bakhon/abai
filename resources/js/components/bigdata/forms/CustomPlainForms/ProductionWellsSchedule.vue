@@ -213,18 +213,86 @@ export default {
                 xaxis: {
                     tickAmount: 10,
                 },
-                yaxis: {
-                    opposite: true,
-                    labels: {
-                        formatter(val) {
-                            return Math.round(val);
+                yaxis: [
+                    {
+                        opposite: true,
+                        labels: {
+                            formatter(val) {
+                                return Math.round(val);
+                            },
+                        },
+                        title: {
+                            text: this.title,
+                        },
+                        min: 0
+                    },
+                    {
+                        seriesName: this.trans('app.liquid'),
+                        opposite: true,
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: 'rgba(69, 77, 125, 1)'
+                        },
+                        labels: {
+                            style: {
+                                colors: '#fff',
+                            }
+                        },
+                        title: {
+                            text: this.trans('app.liquid'),
+                            style: {
+                                color: '#fff',
+                            }
                         },
                     },
-                    title: {
-                        text: this.title,
+                    {
+                        seriesName: this.trans('app.waterCut'),
+                        opposite: true,
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: 'rgba(69, 77, 125, 1)'
+                        },
+                        labels: {
+                            style: {
+                                colors: '#fff',
+                            }
+                        },
+                        title: {
+                            text: this.trans('app.waterCut'),
+                            style: {
+                                color: '#fff',
+                            }
+                        },
                     },
-                    min: 0
-                },
+                    {
+                        seriesName: this.trans('app.oil'),
+                        opposite: true,
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: 'rgba(69, 77, 125, 1)'
+                        },
+                        labels: {
+                            style: {
+                                colors: '#fff',
+                            }
+                        },
+                        title: {
+                            text: this.trans('app.oil'),
+                            style: {
+                                color: '#fff',
+                            }
+                        },
+                    }
+                ],
                 tooltip: {
                     shared: true,
                     intersect: false,
@@ -232,6 +300,7 @@ export default {
                 annotations: {
                     points: this.chartPoints,
                 },
+                colors:['rgba(130, 186, 255, 0.7)', 'rgba(72, 81, 95, 1)', 'rgba(33, 186, 78, 1)'],
             }
         },
     },
@@ -269,6 +338,27 @@ export default {
 
 .active {
     border-bottom: 2px solid rgba(46, 80, 233, 1);
+}
+
+::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #40467E;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #656A8A;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #656A8A;
+}
+
+::-webkit-scrollbar-corner {
+    background: #20274F;
 }
 </style>
 <style>

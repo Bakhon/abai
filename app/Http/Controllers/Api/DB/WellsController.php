@@ -502,7 +502,7 @@ class WellsController extends Controller
                 ],
             'measWaterCut' => [
                 'name' => trans('app.waterCut'),
-                'type' => 'area',
+                'type' => 'line',
                 'data' => [],
                 ],
             'oil' => [
@@ -549,10 +549,11 @@ class WellsController extends Controller
             $result['measLiq']['data'][] = $measLiq['liquid'];
             $result['labels'][] = $dateTime->format('Y-m-d');
             foreach ($measWaterCuts as $measWaterCut) {
-                $dateTimeWC = DateTime::createFromFormat('Y-m-d H:i:sP', $measWaterCut['dbeg']);
-                if ($dateTime == $dateTimeWC) {
+                $dateTimeWCBeg = DateTime::createFromFormat('Y-m-d H:i:sP', $measWaterCut['dbeg']);
+                $dateTimeWCEnd = DateTime::createFromFormat('Y-m-d H:i:sP', $measWaterCut['dend']);
+                if ($dateTimeWCBeg >= $dateTime && $dateTime >= $dateTimeWCEnd) {
                     $measWaterCutVal = $measWaterCut['water_cut'];
-                    $oilVal = abs($measLiq['liquid'] * (1 - $measWaterCut['water_cut'] / 100) * 0.86);
+                    $oilVal = round(abs($measLiq['liquid'] * (1 - $measWaterCut['water_cut'] / 100) * 0.86));
                     break;
                 }
             }
