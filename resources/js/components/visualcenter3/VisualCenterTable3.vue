@@ -1806,16 +1806,13 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div
-                        :class="[isProductionFondPeriodSelected ? 'col-sm-7' : 'col-sm-12','vis-table px-4']"
-                >
+                <div class="vis-table px-4 col-sm-7">
                   <table v-if="productionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
                       <th v-if="fondDaysCountSelected.production < 2">{{ trans("visualcenter.prodWells") }} ({{ trans("visualcenter.Fact") }})</th>
                       <th v-else>{{ trans("visualcenter.prodWells") }} ({{ trans("visualcenter.fondMiddleInMonth") }})</th>
                       <th>{{ trans("visualcenter.otmMetricSystemWells") }}</th>
-                      <th v-if="!isProductionFondPeriodSelected">Количество добывающих скважин, скв.</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -1845,26 +1842,14 @@
                           {{ getFormattedNumber(item.fact) }}
                         </div>
                       </td>
-                      <td v-if="!isProductionFondPeriodSelected">
-                        <div class="progress progress-bar_header">
-                          <div
-                                  class="progress-bar progress-bar_body"
-                                  role="progressbar"
-                                  :style="{width: '25%',}"
-                                  :aria-valuenow="item.fact"
-                                  aria-valuemin="0"
-                                  :aria-valuemax="productionFondData[0].fact"
-                          ></div>
-                        </div>
-                      </td>
                     </tr>
                     </tbody>
                   </table>
                 </div>
-                <div :class="isProductionFondPeriodSelected ? 'col-sm-5' : 'col-0'">
+                <div class="col-sm-5">
                   <div  class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
                   <visual-center3-wells
-                          v-if="productionFondDataForChart && isProductionFondPeriodSelected"
+                          v-if="productionFondDataForChart"
                           :chartData="productionFondDataForChart"
                   >
                   </visual-center3-wells>
@@ -2836,9 +2821,6 @@
       height: 80px;
       padding: 5px 5px 5px 10px;
       font-size: 16px !important;
-      &:nth-child(3) {
-        min-width: 612px;
-      }
     }
   }
 
