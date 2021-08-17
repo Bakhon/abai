@@ -17,7 +17,7 @@ class EcoRefsRentTaxController extends Controller
     {
         $ecorefsrenttax = EcoRefsRentTax::latest()->with('scfa')->paginate(5);
 
-        return view('ecorefsrenttax.index',compact('ecorefsrenttax'))
+        return view('economy_kenzhe/ecorefsrenttax.index',compact('ecorefsrenttax'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
        //
     }
@@ -30,7 +30,7 @@ class EcoRefsRentTaxController extends Controller
     public function create()
     {
         $sc_fa = EcoRefsScFa::get();
-        return view('ecorefsrenttax.create',compact('sc_fa'));
+        return view('economy_kenzhe/ecorefsrenttax.create',compact('sc_fa'));
     }
 
     /**
@@ -74,7 +74,7 @@ class EcoRefsRentTaxController extends Controller
     {
         $row = EcoRefsRentTax::find($id);
         $sc_fa = EcoRefsScFa::get();
-        return view('ecorefsrenttax.edit',compact('row', 'sc_fa'));
+        return view('economy_kenzhe/ecorefsrenttax.edit',compact('row', 'sc_fa'));
     }
 
     /**

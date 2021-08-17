@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ComplicationMonitoring\CalculatedCorrosion;
 use App\Models\ComplicationMonitoring\Gu;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
@@ -71,6 +72,7 @@ class DruidController extends Controller
     {
         //GU переменная
         $gu_id = $request->gu_id;
+        $date = $request->date;
 
         $gu = Gu::find($gu_id);
 
@@ -903,6 +905,18 @@ class DruidController extends Controller
             'pH2S_point_A' => $pH2SpointA
         ];
 
+
+        if ($date) {
+            $calcCorrosion = CalculatedCorrosion::firstOrNew(
+                [
+                    'date' => $date,
+                    'gu_id' => $gu->id
+                ]
+            );
+
+            $calcCorrosion->corrosion = $vdata['corrosion_rate_mm_per_y_point_A'];
+            $calcCorrosion->save();
+        }
 
         return response()->json($vdata);
     }
