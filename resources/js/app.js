@@ -28,6 +28,8 @@ import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 import Paginate from 'vuejs-paginate';
 import Vuelidate from 'vuelidate';
+import elementLang from 'element-ui/lib/locale/lang/ru-RU'
+import elementLocale from 'element-ui/lib/locale'
 
 //Mixins
 import showToast from '~/mixins/showToast';
@@ -38,6 +40,7 @@ window.Vue = require('vue');
 window.Jquery = require('jquery');
 moment.locale('ru');
 Vue.prototype.$moment = moment
+elementLocale.use(elementLang)
 
 Vue.use(VueAxios, axios)
 Vue.use(VueTableDynamic);
@@ -102,13 +105,12 @@ Vue.component('prs-crs', require('./components/gno/components/PrsCrs.vue').defau
 Vue.component('inflow-curve', require('./components/gno/components/InflowCurve.vue').default);
 Vue.component('economic', require('./components/gno/components/Economic.vue').default);
 Vue.component('monitor-table', require('./components/complicationMonitoring/monitor/MonitorTable.vue').default);
-Vue.component('monitor-chart', require('./components/complicationMonitoring/monitor/chart.vue').default);
-Vue.component('monitor-chart-radialbar', require('./components/complicationMonitoring/monitor/MonitorChartRadialBar.vue').default);
 Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/complicationMonitoring/omgca/form.vue').default);
 Vue.component('omguhe-form', require('./components/complicationMonitoring/omguhe/form.vue').default);
 Vue.component('omgngdu-form', require('./components/complicationMonitoring/omgngdu/form.vue').default);
 Vue.component('omgngdu-well-form', require('./components/complicationMonitoring/omgngdu_well/form.vue').default);
+Vue.component('omgngdu-zu-form', require('./components/complicationMonitoring/omgngdu_zu/form.vue').default);
 Vue.component('gu-form', require('./components/complicationMonitoring/gu/form.vue').default);
 Vue.component('zu-form', require('./components/complicationMonitoring/zu/form.vue').default);
 Vue.component('pipe-passport-form', require('./components/complicationMonitoring/pipePassport/form.vue').default);
@@ -164,8 +166,6 @@ Vue.component('tr-sidebar-charts', require('./components/tr/TrSidebarCharts.vue'
 Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
-Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
-Vue.component('tr_mode-table-small', require('./components/tr/TechModeSmall.vue').default);
 Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
 Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
@@ -213,6 +213,7 @@ Vue.component('digital-rating-report', require('./components/DigitalRating/Digit
 Vue.component('admin-user-settings', require('./components/admin/user/Settings.vue').default);
 Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);
 Vue.component('visual-center-daily-approve', require('./components/visualcenter3/importForm/dailyApprove/index.vue').default);
+Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/index.vue').default);
 
 
 Vue.component('project-data', require('./components/DigitalDrilling/ProjectData').default);
@@ -225,8 +226,8 @@ Vue.component('drilling-fluids', require('./components/DigitalDrilling/ProjectDa
 Vue.component('well-casing', require('./components/DigitalDrilling/ProjectData/WellСasing').default);
 Vue.component('technical-casing', require('./components/DigitalDrilling/ProjectData/TechnicalCasing').default);
 Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
+Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 
-// Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
 Vue.prototype.$urlLink = url => urlLink(url);

@@ -34,6 +34,9 @@ Route::group(
                 Route::get('/geo-mapping/list', 'Refs\bigdata\mapping\GeoMappingController@list')->name('geo-mapping.list');
                 Route::resource('/geo-mapping', 'Refs\bigdata\mapping\GeoMappingController');
 
+                Route::get('/well-mapping/list', 'Refs\bigdata\mapping\WellMappingController@list')->name('well-mapping.list');
+                Route::resource('/well-mapping', 'Refs\bigdata\mapping\WellMappingController');
+
                 Route::get('/geo-data-reference-book', 'bd\DBController@geoDataReferenceBook')->name('bigdata.geoDataReferenceBook');
 
                 Route::get('/reports', 'bd\DBController@reports')->name('bigdata.reports');

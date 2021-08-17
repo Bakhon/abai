@@ -88,6 +88,23 @@ class User extends Authenticatable
 
     public function getUserOrganizations(StructureService $structureService): array
     {
+        $orgs = [];
+        if($this->org_structure) {
+            $orgIds = array_map(function ($item) {
+                return substr($item, strpos($item, ":") + 1);
+            }, $this->org_structure);
+            $orgs = \App\Models\BigData\Dictionaries\Org::query()
+                ->select(['id', 'name_ru as name'])
+                ->whereIn('id', $orgIds)
+                ->get()
+                ->toArray();
+        }
+
+        return $orgs;
+    }
+
+    public function getUserAllOrganizations(StructureService $structureService): array
+    {
         if($this->org_structure) {
             $orgIds = array_map(function ($item) {
                 return substr($item, strpos($item, ":") + 1);
@@ -127,6 +144,7 @@ class User extends Authenticatable
             'id' => $org['id'],
             'name' => $org['name'],
             'sub_type' => $org['sub_type'],
+            'parent_id' => $org['parent_id'] ?? null,
         ];
         if (isset($org['children'])) {
             $result['children'] = array_map('self::getOrgsArray', $org['children']);

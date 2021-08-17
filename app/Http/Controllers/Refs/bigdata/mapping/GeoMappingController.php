@@ -12,4 +12,9 @@ class GeoMappingController extends MappingController
     protected $resource = GeoMappingListResource::class;
     protected $link = 'geo-mapping';
     protected $view = 'bigdata.geo_mapping';
+    protected $queryMethod = 'geo';
+    protected $rules = [
+        'name_ru' => 'required|string',
+        'geo_id' => 'required|numeric',
+    ];
 }

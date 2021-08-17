@@ -1,6 +1,6 @@
 <template>
   <apexchart
-      :options="options"
+      :options="chartOptions"
       :series="chartSeries"
       :height="740"
       type="line"/>
@@ -14,56 +14,14 @@ import {chartInitMixin} from "../mixins/chartMixin";
 
 export default {
   name: 'ChartWithOilProduction',
-  components: {apexchart:chart},
+  components: {apexchart: chart},
   mixins: [chartInitMixin],
   props: {
     title: {
       required: true,
       type: String,
     },
-    tooltipText: {
-      required: false,
-      type: String,
-    }
-  },
-  methods: {
-    tooltipFormatter(y) {
-      if (y === undefined) {
-        return y
-      }
-
-      return new Intl.NumberFormat(
-          'en-IN',
-          {maximumSignificantDigits: 3}
-      ).format(y.toFixed(0)) + ` ${this.tooltipText || ''}`;
-    }
-  },
-  computed: {
-    options() {
-      return {
-        ...this.chartOptions, ...{
-          yaxis: {
-            labels: {
-              formatter(val) {
-                return Math.round(val);
-              }
-            },
-            title: {
-              text: this.title,
-            },
-            min: 0
-          },
-          tooltip: {
-            shared: true,
-            intersect: false,
-            y: {
-              formatter: (y) => this.tooltipFormatter(y)
-            }
-          }
-        }
-      }
-    },
-  },
+  }
 }
 </script>
 

@@ -16,7 +16,7 @@ class EcoRefsRouteTnIdController extends Controller
     {
         $ecorefsroutetnid = EcoRefsRouteTnId::latest()->paginate(5);
 
-        return view('ecorefsroutetnid.index',compact('ecorefsroutetnid'))
+        return view('economy_kenzhe/ecorefsroutetnid.index',compact('ecorefsroutetnid'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -27,7 +27,7 @@ class EcoRefsRouteTnIdController extends Controller
      */
     public function create()
     {
-        return view('ecorefsroutetnid.create');
+        return view('economy_kenzhe/ecorefsroutetnid.create');
     }
 
     /**
@@ -68,7 +68,7 @@ class EcoRefsRouteTnIdController extends Controller
     public function edit($id)
     {
         $EcoRefsRouteTnId = EcoRefsRouteTnId::find($id);
-        return view('ecorefsroutetnid.edit',compact('EcoRefsRouteTnId'));
+        return view('economy_kenzhe/ecorefsroutetnid.edit',compact('EcoRefsRouteTnId'));
  
     }
 

@@ -1,5 +1,5 @@
 {
-  "oil_production_fact": "Остановлены для регулирования закачки (количество скважин, ед), нефтедобывающие скважины",
+  "oil_production_fact": "Добыча нефти",
   "oil_delivery_fact": "Сдача нефти",
   "oil_delivery_by_stations_fact": "Сдача нефти по узлам учета",
   "condensate_production_fact": "Добыча конденсата",

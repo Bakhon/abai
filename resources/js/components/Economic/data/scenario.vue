@@ -1,7 +1,5 @@
 <template>
   <div>
-    <cat-loader v-show="loading"/>
-
     <div class="container-fluid bg-light p-4 mb-4">
       <scenario-form @created="addScenario"/>
     </div>
@@ -44,14 +42,14 @@
 </template>
 
 <script>
-import CatLoader from "@ui-kit/CatLoader";
+import {globalloadingMutations} from '@store/helpers';
 import ScenarioForm from "../components/ScenarioForm";
 import DeleteButton from "../components/DeleteButton";
 
 export default {
   name: "economic-data-scenario-component",
   components: {
-    CatLoader,
+
     ScenarioForm,
     DeleteButton
   },
@@ -63,8 +61,12 @@ export default {
     this.getData()
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     async getData() {
-      this.loading = true
+
+      this.SET_LOADING(true);
 
       try {
         const {data} = await this.axios.get(this.localeUrl('/eco_refs_scenarios'))
@@ -74,7 +76,7 @@ export default {
         console.log(e)
       }
 
-      this.loading = false
+      this.SET_LOADING(false);
     },
 
     async deleteScenario(id) {

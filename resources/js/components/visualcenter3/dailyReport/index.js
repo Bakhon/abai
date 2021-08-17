@@ -1,6 +1,8 @@
 import moment from "moment";
 import companyTemplate from './company_template.json';
 import yearlyPlanMapping from './yearly_plan_mapping.json';
+;
+import {globalloadingMutations} from '@store/helpers';
 
 export default {
     data: function () {
@@ -225,7 +227,7 @@ export default {
             }
         },
         getFormattedNumber(num) {
-            return (new Intl.NumberFormat("ru-RU").format(Math.abs(Math.round(num))))
+            return (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
         },
         getSortedBy(type,input){
             return _.orderBy(input,
@@ -650,6 +652,7 @@ export default {
         },
         getDeliveryForMerge(dzoName,delivery) {
             let itemIndex = delivery.findIndex(element => element.dzo === dzoName);
+            let isSummary = dzoName.length > 4;
             let mapping = {
                 'deliveryDifferenceByDay':  'differenceByDay',
                 'deliveryDifferenceByMonth': 'differenceByMonth',
@@ -670,10 +673,14 @@ export default {
                 'deliveryPlanOpecByYear': 'planOpecByYear',
                 'deliveryYearlyPlan': 'yearlyPlan',
             };
-            if (itemIndex > -1) {
+            if (itemIndex > -1 || isSummary) {
                 let mapped = {};
                 for (let field in mapping) {
-                    mapped[field] = delivery[itemIndex][mapping[field]]
+                    if (isSummary) {
+                        mapped[field] = delivery[0][mapping[field]]
+                    } else {
+                        mapped[field] = delivery[itemIndex][mapping[field]]
+                    }
                 }
                 return mapped;
             }
@@ -726,16 +733,19 @@ export default {
         },
         mouseLeave() {
            this.isModalActive = false;
-        }
+        },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
     },
     async mounted() {
-        this.$store.commit('globalloading/SET_LOADING', true);
+        this.SET_LOADING(true);
         this.productionSummary = await this.getProduction();
         this.planSummary = await this.getPlans();
         this.updatePlanByPeriod();
         this.updateProductionByPeriod();
         this.fillTable();
-        this.$store.commit('globalloading/SET_LOADING', false);
+        this.SET_LOADING(false);
         this.timeouts.firstLoading = setTimeout(() => {
             this.isOpecActive = !this.isOpecActive;
         }, this.timers.opek);

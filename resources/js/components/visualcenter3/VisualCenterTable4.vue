@@ -94,7 +94,7 @@
         ></vertical-indicators>
       </div>
     </div>
-    <cat-loader />
+
   </div>
 </template>
 <script src="./VisualCenterTable4.js"></script>

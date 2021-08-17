@@ -41,7 +41,7 @@ class FormsController extends Controller
     {
         $form = $this->getForm($formName);
         try {
-            $result = $form->getFormatedParams();
+            $result = $form->getFormInfo();
         } catch (ParseJsonException $e) {
             return response()->json(
                 [

@@ -85,9 +85,9 @@
             style="background: #40467e"
           >
             <label for="inputDate" style="margin-left: 8px;">{{trans('tr.enter_reference_date')}}:</label>
-            <input type="date" class="form-control" v-model="date1" />
+            <input type="date" class="form-control" v-model="firstCalendarDate" />
             <label for="inputDate" style="margin-left: 8px;">{{trans('tr.enter_compare_date')}}:</label>
-            <input type="date" class="form-control" v-model="date2" />
+            <input type="date" class="form-control" v-model="secondCalendarDate" />
             <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
               >{{trans('tr.form')}}</a
             >
@@ -193,7 +193,7 @@
       </div>
     </div>
     <big-numbers :list="filteredWellsBar" />
-    <cat-loader />
+
   </div>
 </template>
 <script>
@@ -207,14 +207,14 @@ import ClearIcon from "@ui-kit/ClearIcon.vue";
 import TrMultiselect from "./TrMultiselect.vue";
 import trHelper from '~/mixins/trHelper';
 import VueApexCharts from "vue-apexcharts";
-import CatLoader from "@ui-kit/CatLoader";
+
 
 Vue.use(NotifyPlugin, VueMomentLib);
 
 export default {
   name: "Trfa",
   components: {
-    CatLoader,
+
     ClearIcon,
     BigNumbers,
     TrMultiselect,
@@ -264,8 +264,7 @@ export default {
                 exp_meth.indexOf(this.getStringOrFirstItem(row, "exp_meth")) !==
                   -1)
           );
-          console.log("filteredResult pie = ", filteredResult);
-          this.chartOptions.title.text = `${this.trans('tr.distribution_of_the_well_stock_due_to_the_main_reason_for_the_decline_in_oil_production_on')} ${this.dt}/${this.dt2}`;
+          this.chartOptions.title.text = `${this.trans('tr.distribution_of_the_well_stock_due_to_the_main_reason_for_the_decline_in_oil_production_on')} ${this.firstHeaderDate}/${this.secondHeaderDate}`;
           this.chartOptions.subtitle.text = this.subtitleText;
           let filteredData = filteredResult.reduce((acc, res) => {
             if (acc.hasOwnProperty(res["Main_problem"])) {
@@ -275,7 +274,6 @@ export default {
             }
             return acc;
           }, {});
-          console.log("Pie chart filtered data:", filteredData);
           return [
             filteredData["P забойное"] || 0,
             filteredData["Обводненность"] || 0,
@@ -287,7 +285,6 @@ export default {
           console.error(err);
           return false;
         }
-        return false;
       } else return false;
     },
     barChartData() {
@@ -309,8 +306,7 @@ export default {
                   -1)
           );
           this.filteredWellsBar = filteredResult;
-          console.log("filteredResult bat = ", filteredResult);
-          this.chartBarOptions.title.text = `${this.trans('tr.distribution_of_total_TP_deviations_by_factors_on')} ${this.dt}/${this.dt2}`;
+          this.chartBarOptions.title.text = `${this.trans('tr.distribution_of_total_TP_deviations_by_factors_on')} ${this.firstHeaderDate}/${this.secondHeaderDate}`;
           this.chartBarOptions.subtitle.text = this.subtitleText;
           let filteredData = filteredResult.reduce(
             (acc, res) => {
@@ -471,11 +467,10 @@ export default {
       chartWells: [],
       filteredWellsBar: [],
       sortType: "asc",
-      dt: null,
-      dt2: null,
-      date1: null,
-      date2: null,
-      fullWells: [],
+      firstHeaderDate: null,
+      secondHeaderDate: null,
+      firstCalendarDate: null,
+      secondCalendarDate: null,
       filter: null,
       editdtm: null,
       editdty: null,
@@ -759,16 +754,13 @@ export default {
       this.chartFilter_object = filter;
     },
     chooseDt() {
-      
-      const { date1, date2 } = this;
-      console.log("dt1-", date1, " dt2-", date2);
-      var choosenDt = date1.split("-");
-      var choosenSecDt = date2.split("-");
+      const { firstCalendarDate, secondCalendarDate } = this;
+      var choosenDt = firstCalendarDate.split("-");
+      var choosenSecDt = secondCalendarDate.split("-");
       const mm = choosenDt[1];
       const prMm = choosenSecDt[1];
       const yyyy = choosenDt[0];
       const pryyyy = choosenSecDt[0];
-
       if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
         Vue.prototype.$notifyError(this.trans('tr.fa_alarm'));
       } else {
@@ -797,9 +789,7 @@ export default {
             this.editdtprevm = choosenSecDt[1];
             this.editdtprevy = choosenSecDt[0];
             if (data) {
-              console.log(data);
               this.wells = data.data;
-              this.fullWells = data.data;
               this.chartWells = data.data;
               this.chartFilter_field_start = true;
               this.chartFilter_horizon_start = true;
@@ -807,9 +797,11 @@ export default {
               this.chartFilter_object_start = true;
             } else {
               console.log("No data");
+              this.wells = [];
+              this.chartWells = [];      
             }
-            this.dt = "01" + "." + this.editdtm + "." + this.editdty;
-            this.dt2 = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
+            this.firstHeaderDate = "01" + "." + this.editdtm + "." + this.editdty;
+            this.secondHeaderDate = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
           });
       }
     },
@@ -878,30 +870,24 @@ export default {
         this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
         this.editdtm = mm;
-        console.log(this.editdtm);
         this.editdty = yyyy;
-        console.log(this.editdty);
         this.editdtprevm = prMm;
-        console.log(this.editdtprevm);
         this.editdtprevy = yyyy;
-        console.log(this.editdtprevy);
         if (data) {
-          console.log(data);
           this.wells = data.data;
-          this.fullWells = data.data;
           this.chartWells = data.data;
         } else {
           console.log("No data");
         }
         if (String(this.editdtm).length < 2) {
-          this.dt = "01" + ".0" + this.editdtm + "." + this.editdty;
+          this.firstHeaderDate = "01" + ".0" + this.editdtm + "." + this.editdty;
         } else {
-          this.dt = "01" + "." + this.editdtm + "." + this.editdty;
+          this.firstHeaderDate = "01" + "." + this.editdtm + "." + this.editdty;
         }
         if (String(this.editdtprevm).length < 2) {
-          this.dt2 = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
+          this.secondHeaderDate = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
         } else {
-          this.dt2 = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
+          this.secondHeaderDate = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
         }
       });
   },
@@ -914,10 +900,10 @@ export default {
       `${this.$store.state.fa.prmonth}`.length < 2
         ? `0${this.$store.state.fa.prmonth}`
         : `${this.$store.state.fa.prmonth}`;
-    this.date1 = `${this.$store.state.fa.year}-${mm}-01`;
-    this.date2 = `${this.$store.state.fa.pryear}-${prmm}-01`;
-    this.dt = `01.${mm}.${this.$store.state.fa.year}`;
-    this.dt2 = `01.${prmm}.${this.$store.state.fa.pryear}`;
+    this.firstCalendarDate = `${this.$store.state.fa.year}-${mm}-01`;
+    this.secondCalendarDate = `${this.$store.state.fa.pryear}-${prmm}-01`;
+    this.firstHeaderDate = `01.${mm}.${this.$store.state.fa.year}`;
+    this.secondHeaderDate = `01.${prmm}.${this.$store.state.fa.pryear}`;
   },
 };
 </script>

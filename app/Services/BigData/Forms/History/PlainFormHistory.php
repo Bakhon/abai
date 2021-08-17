@@ -58,7 +58,7 @@ class PlainFormHistory
 
             $oldValue = $originalData->$key ?? '';
 
-            if (in_array($formField['type'], ['dict', 'dict_tree'])) {
+            if ($value && in_array($formField['type'], ['dict', 'dict_tree'])) {
                 $oldValue = !empty($oldValue) ? $dictService->getDictValueById(
                     $formField['dict'],
                     $formField['type'],

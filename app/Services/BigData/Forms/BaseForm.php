@@ -62,10 +62,10 @@ abstract class BaseForm
         return $this->submit();
     }
 
-    public function getFormatedParams(): array
+    public function getFormInfo(): array
     {
         return [
-            'params' => $this->params(),
+            'params' => $this->getFormatedParams(),
             'fields' => $this->getFields()->pluck('', 'code')->toArray(),
             'available_actions' => $this->getAvailableActions()
         ];
@@ -86,6 +86,11 @@ abstract class BaseForm
     public function getConfigFilePath()
     {
         return base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
+    }
+
+    protected function getFormatedParams(): array
+    {
+        return $this->params();
     }
 
     protected function params(): array
@@ -124,7 +129,7 @@ abstract class BaseForm
             }
         );
 
-        return $actions;
+        return array_values($actions);
     }
 
     protected function validate(): void

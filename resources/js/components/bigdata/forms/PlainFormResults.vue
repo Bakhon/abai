@@ -1,6 +1,5 @@
 <template>
   <div>
-    <cat-loader v-show="isLoading"/>
     <div v-if="rows" class="table-container scrollable">
       <div class="table-container-header">
 
@@ -143,7 +142,7 @@
 import forms from '../../../json/bd/forms.json'
 import BigDataPlainForm from './PlainForm'
 import {bdFormActions} from '@store/helpers'
-import CatLoader from '@ui-kit/CatLoader'
+
 import EditHistory from '../../common/EditHistory'
 import moment from "moment";
 
@@ -161,7 +160,7 @@ export default {
   },
   components: {
     BigDataPlainForm,
-    CatLoader,
+
     EditHistory
   },
   data() {
@@ -250,6 +249,9 @@ export default {
     getDict(code) {
       return this.$store.getters['bdform/dict'](code);
     },
+    getDictFlat(code) {
+      return this.$store.getters['bdform/dictFlat'](code);
+    },
     showForm(formCode = null) {
       this.formParams = this.forms.find(form => form.code === (formCode || this.code))
       this.formValues = null
@@ -290,19 +292,40 @@ export default {
           typeof this.dictFields[column.code] !== 'undefined'
           && typeof this.getDict(this.dictFields[column.code]) !== 'undefined'
       ) {
-        let dict = this.getDict(this.dictFields[column.code])
+        let dict = this.getDictFlat(this.dictFields[column.code])
 
-        let value = dict.reduce(this.findValueInDict(row[column.code]), null)
+        let value = dict.find(dictItem => dictItem.id === row[column.code])
+
+        if (!value) return null
+
+        if (this.dictFields[column.code] === 'geos') {
+          let result = [value.label]
+          while (true) {
+            if (value.parent) {
+              value = dict.find(dictItem => dictItem.id === value.parent)
+              result.push(value.label)
+              continue;
+            }
+            break;
+          }
+
+          return result.reverse().join(' / ')
+        }
+
         return value.name || value.label
 
       }
 
-      if (column.type === 'date') {
-        return moment(row[column.code]).format('DD.MM.YYYY')
+      if (row[column.code] && column.type === 'date') {
+        return moment(row[column.code]).tz('Asia/Almaty').format('DD.MM.YYYY')
       }
 
-      if (column.type === 'datetime') {
-        return moment(row[column.code]).format('DD.MM.YYYY HH:MM')
+      if (row[column.code] && column.type === 'datetime') {
+        return moment(row[column.code]).tz('Asia/Almaty').format('DD.MM.YYYY HH:MM')
+      }
+
+      if (column.type === 'checkbox') {
+        return row[column.code] ? this.trans('app.yes') : this.trans('app.no')
       }
 
       return row[column.code]
@@ -316,13 +339,6 @@ export default {
         this.history = data
         this.isHistoryShowed = true
       })
-    },
-    findValueInDict(id) {
-      const searchFunc = (found, item) => {
-        const children = item.children || []
-        return found || (item.id === id ? item : children.reduce(searchFunc, null))
-      }
-      return searchFunc
     }
   }
 }
