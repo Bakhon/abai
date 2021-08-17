@@ -6,8 +6,10 @@ namespace App\Services\BigData\Forms;
 
 use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Infrastructure\History;
+use App\Models\BigData\Well;
 use App\Services\BigData\DictionaryService;
 use App\Services\BigData\Forms\History\PlainFormHistory;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
@@ -125,6 +127,7 @@ abstract class PlainForm extends BaseForm
                 }
             }
 
+            $rows = $this->formatRows($rows);
 
             $columns = $this->getFields()->filter(
                 function ($item) {
@@ -288,6 +291,18 @@ abstract class PlainForm extends BaseForm
         }
     }
 
+    protected function formatRows(Collection $rows)
+    {
+        return $rows->map(function ($row) {
+            if (isset($row->dend)) {
+                if (Carbon::parse($row->dend) > Carbon::parse('01-01-3000')) {
+                    $row->dend = null;
+                }
+            }
+            return $row;
+        });
+    }
+
     private function saveHistory()
     {
         $historyService = new PlainFormHistory();
@@ -306,6 +321,10 @@ abstract class PlainForm extends BaseForm
         if (!empty($this->params()['default_values'])) {
             $data = array_merge($this->params()['default_values'], $data);
         }
+        if (array_key_exists('dend', $data) && empty($data['dend'])) {
+            $data['dend'] = Well::DEFAULT_END_DATE;
+        }
+
         return $data;
     }
 

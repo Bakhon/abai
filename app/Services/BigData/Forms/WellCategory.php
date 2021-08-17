@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
-use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
+
 use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\WellCategory as WellCategoryDictionary;
 use App\Models\BigData\Well;
+use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
@@ -292,7 +293,7 @@ class WellCategory extends PlainForm
             ->leftJoin('dict.well_category_type as c', 'c.id', 'wc.category')
             ->whereIn('c.code', [Well::WELL_CATEGORY_OIL]);
     }
-   
+
 
     use DateMoreThanValidationTrait;
 
@@ -300,7 +301,13 @@ class WellCategory extends PlainForm
     {
         $errors = [];
 
-        if (!$this->isValidDateDbeg($this->request->get('well'),$this->request->get('dbeg'), 'prod.well_category', 'dbeg')){
+        if (!$this->isValidDateDbeg(
+            $this->request->get('well'),
+            $this->request->get('dbeg'),
+            'prod.well_category',
+            'dbeg',
+            $this->request->get('id')
+        )) {
             $errors['dbeg'] = trans('bd.validation.dbeg');
         }
 
