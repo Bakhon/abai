@@ -181,13 +181,13 @@ export default {
         switchFilterConsolidatedOilCondensate(parentButton,childButton,filterName) {
             this.oilCondensateFilters[filterName] = !this.oilCondensateFilters[filterName];
             this.chartOutput = this.consolidatedData.chartWithParticipation;
-            this.dzoCompanySummary = this.consolidatedData.withParticipation;
-            this.yesterdaySummary = this.consolidatedData.yesterdayWithParticipation;
+            this.dzoCompanySummary = _.cloneDeep(this.consolidatedData.withParticipation);
+            this.yesterdaySummary = _.cloneDeep(this.consolidatedData.yesterdayWithParticipation);
             this.changeDzoCompaniesList(companiesListWithKMG);
             if (!this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                this.chartOutput = this.consolidatedData.chartWithoutParticipation;
-                this.dzoCompanySummary = this.consolidatedData.withoutParticipation;
-                this.yesterdaySummary = this.consolidatedData.yesterdayWithoutParticipation;
+                this.chartOutput = _.cloneDeep(this.consolidatedData.chartWithoutParticipation);
+                this.dzoCompanySummary = _.cloneDeep(this.consolidatedData.withoutParticipation);
+                this.yesterdaySummary = _.cloneDeep(this.consolidatedData.yesterdayWithoutParticipation);
                 this.changeDzoCompaniesList(companiesListWithoutKMG);
             }
             this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);

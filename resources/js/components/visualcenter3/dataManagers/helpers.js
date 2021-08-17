@@ -296,7 +296,7 @@ export default {
             if (this.oilCondensateDeliveryButton && this.oilCondensateFilters.isWithoutKMGFilterActive) {
                 return this.dzoNumbers['deliveryConsolidated'][dzoName];
             }
-            if (this.oilCondensateDeliveryButton && this.oilCondensateFilters.isWithoutKMGFilterActive) {
+            if (this.oilCondensateDeliveryButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
                 return this.dzoNumbers['deliveryKMG'][dzoName];
             }
             return '1.' + index + 1;
@@ -307,13 +307,17 @@ export default {
         },
 
         getDzoNameFormatting(dzo) {
-            if (this.oilCondensateFilters.isCondensateOnly) {
-                return '';
-            }
-            if (this.troubledCompanies.includes(dzo)) {
+            if (this.troubledCompanies.includes(dzo) && !this.oilCondensateFilters.isCondensateOnly) {
                 return 'troubled-companies';
             }
             return '';
+        },
+
+        getIndicatorClass(plan,fact) {
+            if (fact < plan) {
+                return 'triangle fall-indicator-production-data';
+            }
+            return 'triangle growth-indicator-production-data';
         }
     },
     computed: {

@@ -353,6 +353,7 @@
                           {{trans("visualcenter.withoutKmgParticipation")}}
                         </a>
                       </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
                               @click="switchFilterConsolidatedOilCondensate('oilCondensateProductionButton','condensateOnly','isCondensateOnly')"
@@ -361,7 +362,7 @@
                                 class="col-1 mt-2"
                                 v-html="`${getMainMenuButtonFlag('oilCondensateProductionButton','condensateOnly')}`"
                         ></div>
-                        <a class="col-9 mt-1">
+                        <a class="col-9 mt-1 p-0 ml-3">
                           {{trans("visualcenter.getgk")}}
                         </a>
                       </li>
@@ -429,6 +430,7 @@
                           {{trans("visualcenter.ostatokNefti")}}
                         </a>
                       </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
                               @click="switchFilterConsolidatedOilCondensate('oilCondensateDeliveryButton','condensateOnly','isCondensateOnly')"
@@ -437,7 +439,7 @@
                                 class="col-1 mt-2"
                                 v-html="`${getMainMenuButtonFlag('oilCondensateDeliveryButton','condensateOnly')}`"
                         ></div>
-                        <a class="col-9 mt-1">
+                        <a class="col-9 mt-1 p-0 ml-3">
                           {{trans("visualcenter.getgk")}}
                         </a>
                       </li>
@@ -1335,11 +1337,7 @@
                     >
                       <div
                               v-if="totalSummary.fact > 0"
-                              :class="
-                            totalSummary.fact < totalSummary.plan ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                          "
+                              :class="getIndicatorClass(totalSummary.plan,totalSummary.fact)"
                       ></div>
                       <div class="font dynamic">
                         {{dzoCompaniesSummary.difference}}
@@ -1355,11 +1353,7 @@
                     >
                       <div
                               v-if="totalSummary.fact > 0"
-                              :class="
-                            totalSummary.fact < totalSummary.plan ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                          "
+                              :class="getIndicatorClass(totalSummary.plan,totalSummary.fact)"
                       ></div>
                       <div class="font dynamic">
                         {{dzoCompaniesSummary.difference}}
@@ -1383,11 +1377,7 @@
                     >
                       <div
                               v-if="totalSummary.fact > 0"
-                              :class="
-                            totalSummary.fact < totalSummary.opekPlan ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                          "
+                              :class="getIndicatorClass(totalSummary.opekPlan,totalSummary.fact)"
                       ></div>
                       <div class="font dynamic">
                         {{dzoCompaniesSummary.opekDifference}}
@@ -1399,11 +1389,7 @@
                     >
                       <div
                               v-if="totalSummary.fact > 0"
-                              :class="
-                            totalSummary.fact < totalSummary.opekPlan ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                          "
+                              :class="getIndicatorClass(totalSummary.opekPlan,totalSummary.fact)"
                       ></div>
                       <div class="font dynamic" v-if="totalSummary.fact > 0">
                         {{dzoCompaniesSummary.percent}}
@@ -2005,9 +1991,7 @@
                               class="width-20 text-center data-pointer"
                               :class="`${getDzoColumnsClass(index,'difference')}`"
                       >
-                        <div :class="item.plan > item.fact ?
-                            'ml-5 triangle fall-indicator-production-data' :
-                            'ml-5 triangle growth-indicator-production-data'">
+                        <div :class="[getIndicatorClass(item.plan,item.fact),'ml-5']">
                         </div>
                         <div class="font dynamic">
                           {{formatDigitToThousand(Math.abs(item.difference))}}
@@ -2198,9 +2182,7 @@
                               class="width-20 text-center data-pointer"
                               :class="`${getDzoColumnsClass(index,'difference')}`"
                       >
-                        <div :class="item.plan > item.fact ?
-                            'ml-5 triangle fall-indicator-production-data' :
-                            'ml-5 triangle growth-indicator-production-data'">
+                        <div :class="[getIndicatorClass(item.plan,item.fact),'ml-5']">
                         </div>
                         <div class="font dynamic">
                           {{Math.abs(formatDigitToThousand(item.difference))}}
