@@ -8,6 +8,7 @@ use App\Models\BigData\Dictionaries\Block;
 use App\Models\BigData\Dictionaries\Brigade;
 use App\Models\BigData\Dictionaries\Brigadier;
 use App\Models\BigData\Dictionaries\CasingType;
+use App\Models\BigData\Dictionaries\ChemicalReagentType;
 use App\Models\BigData\Dictionaries\Company;
 use App\Models\BigData\Dictionaries\CoordSystem;
 use App\Models\BigData\Dictionaries\Device;
@@ -33,6 +34,7 @@ use App\Models\BigData\Dictionaries\PackerType;
 use App\Models\BigData\Dictionaries\PatronType;
 use App\Models\BigData\Dictionaries\PerforatorType;
 use App\Models\BigData\Dictionaries\PerfType;
+use App\Models\BigData\Dictionaries\PlanGISType;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
 use App\Models\BigData\Dictionaries\SaturationType;
@@ -48,7 +50,6 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
-use App\Models\BigData\Dictionaries\ChemicalReagentType;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -234,6 +235,10 @@ class DictionaryService
         'chemical_reagent_types' => [
             'class' => ChemicalReagentType::class,
             'name_field' => 'name_ru'
+        ],
+        'plan_gis_type' => [
+            'class' => PlanGISType::class,
+            'name_field' => 'name'
         ]
     ];
 
