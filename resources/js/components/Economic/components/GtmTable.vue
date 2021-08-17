@@ -32,7 +32,7 @@ export default {
       this.SET_LOADING(true);
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/eco_refs_gtms'))
+        const {data} = await this.axios.get(this.localeUrl('/eco-refs-gtm/get-data'))
 
         this.data = [...[this.headers], ...data.data]
       } catch (e) {
@@ -46,7 +46,7 @@ export default {
       this.SET_LOADING(true);
 
       try {
-        await this.axios.delete(this.localeUrl(`/eco_refs_gtm/${id}`))
+        await this.axios.delete(this.localeUrl(`/eco-refs-gtm/${id}`))
 
         let index = this.data.findIndex(x => x[0] === id)
 

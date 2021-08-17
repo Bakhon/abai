@@ -37,7 +37,7 @@
 
         <form method="post"
               enctype="multipart/form-data"
-              action="{{ route($isTechnical ? 'eco_refs_gtm_value_import' : 'eco_refs_gtm_import') }}">
+              action="{{ route($isTechnical ? 'eco-refs-gtm-value-import' : 'eco-refs-gtm-import') }}">
             {{ csrf_field() }}
             <div class="form-group">
                 <input type="file"

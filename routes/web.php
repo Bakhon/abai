@@ -53,25 +53,18 @@ Route::group(
                 Route::get('/dob', 'DruidController@dob')->name('dob');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
 
-                Route::resource('eco_refs_cost', 'EcoRefsCostController');
-                Route::get('eco_refs_costs', 'EcoRefsCostController@getData');
+                Route::get('eco-refs-scenario/get-data', 'Refs\EcoRefsScenarioController@getData');
 
-                Route::resource('eco_refs_scenario', 'Refs\EcoRefsScenarioController');
-                Route::get('eco_refs_scenarios', 'Refs\EcoRefsScenarioController@getData');
+                Route::get('eco-refs-sc-fa/get-data', 'Refs\EcoRefsScFaController@getData');
 
-                Route::get('eco_refs_sc_fas', 'Refs\EcoRefsScFaController@getData');
+                Route::get('eco-refs-gtm/get-data', 'Refs\EcoRefsGtmController@getData');
+                Route::get('eco-refs-gtm/upload-excel', 'Refs\EcoRefsGtmController@uploadExcel')->name('eco-refs-gtm-upload');
+                Route::post('eco-refs-gtm/import-excel', 'Refs\EcoRefsGtmController@importExcel')->name('eco-refs-gtm-import');
+                Route::resource('eco-refs-gtm', 'Refs\EcoRefsGtmController');
 
-                Route::get('eco_refs_gtms', 'Refs\EcoRefsGtmController@getData');
-                Route::get('eco_refs_gtm/upload_excel', 'Refs\EcoRefsGtmController@uploadExcel')->name('eco_refs_gtm_upload');
-                Route::post('eco_refs_gtm/import_excel', 'Refs\EcoRefsGtmController@importExcel')->name('eco_refs_gtm_import');
-                Route::resource('eco_refs_gtm', 'Refs\EcoRefsGtmController');
-
-                Route::get('eco_refs_gtm_values', 'Refs\EcoRefsGtmValueController@getData');
-                Route::post('eco_refs_gtm_value/import_excel', 'Refs\EcoRefsGtmValueController@importExcel')->name('eco_refs_gtm_value_import');
-                Route::resource('eco_refs_gtm_value', 'Refs\EcoRefsGtmValueController');
-
-                Route::get('economic_data/upload_excel', 'EcoRefsCostController@uploadExcel')->name('economic_data_upload');
-                Route::post('economic_data/import_excel', 'EcoRefsCostController@importExcel')->name('economic_data_import');
+                Route::get('eco-refs-gtm-value/get-data', 'Refs\EcoRefsGtmValueController@getData');
+                Route::post('eco-refs-gtm-value/import-excel', 'Refs\EcoRefsGtmValueController@importExcel')->name('eco-refs-gtm-value-import');
+                Route::resource('eco-refs-gtm-value', 'Refs\EcoRefsGtmValueController');
 
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
                 Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
