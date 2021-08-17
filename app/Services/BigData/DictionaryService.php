@@ -279,10 +279,10 @@ class DictionaryService
                     break;
                 case 'geo_type_hrz':
                     $dict = $this->getGeoHorizonDict();
-                    break;    
+                    break;
                 case 'reason_type_rtr':
                     $dict = $this->getReasonTypeRtrDict();
-                    break;       
+                    break;
                 default:
                     throw new DictionaryNotFound();
             }
@@ -292,19 +292,39 @@ class DictionaryService
         return $dict;
     }
 
-    public function getDictValueById(string $dict, string $type, int $id)
+    public function getFlatten(array $dict)
+    {
+        $result = [];
+        foreach ($dict as $dictItem) {
+            if (isset($dictItem['children'])) {
+                $result = array_merge($result, $this->getFlatten($dictItem['children']));
+                unset($dictItem['children']);
+            }
+            $result[] = $dictItem;
+        }
+        return $result;
+    }
+
+    public function getDictValueById(string $dict, string $type, int $id): ?string
     {
         $dict = $this->get($dict);
-        if ($type === 'dict') {
+        if ($type === 'dict_tree') {
+            $dict = $this->getFlatten($dict);
             foreach ($dict as $item) {
                 if ($item['id'] === $id) {
-                    return $item['name'];
+                    return $item['label'];
                 }
+            }
+            return null;
+        }
+
+        foreach ($dict as $item) {
+            if ($item['id'] === $id) {
+                return $item['name'];
             }
         }
 
-        if ($type === 'dict_tree') {
-        }
+        return null;
     }
 
     private function getPlainDict(string $dict): array
@@ -438,7 +458,7 @@ class DictionaryService
             ->toArray();
 
         return $items;
-    }     
+    }
     private function getReasonTypeRtrDict()
     {
         $items = DB::connection('tbd')
@@ -458,5 +478,5 @@ class DictionaryService
             ->toArray();
 
         return $items;
-    }     
+    }
 }
