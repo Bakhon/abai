@@ -53,7 +53,6 @@ Route::group(
                 Route::get('/dob', 'DruidController@dob')->name('dob');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
 
-
                 Route::resource('eco_refs_cost', 'EcoRefsCostController');
                 Route::get('eco_refs_costs', 'EcoRefsCostController@getData');
                 Route::resource('eco_refs_scenario', 'Refs\EcoRefsScenarioController');
