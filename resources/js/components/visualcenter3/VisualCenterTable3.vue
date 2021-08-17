@@ -1338,9 +1338,9 @@
                             :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
                     >
                       <div
-                              v-if="factMonthSumm"
+                              v-if="totalSummary.fact > 0"
                               :class="
-                            factMonthSumm < planMonthSumm ?
+                            totalSummary.fact < totalSummary.plan ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
@@ -1358,9 +1358,9 @@
                             getDarkerClass(index) : getLighterClass(index)"
                     >
                       <div
-                              v-if="factMonthSumm"
+                              v-if="totalSummary.fact > 0"
                               :class="
-                            factMonthSumm < planMonthSumm ?
+                            totalSummary.fact < totalSummary.plan ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
@@ -1386,9 +1386,9 @@
                             getLighterClass(index) : getDarkerClass(index)"
                     >
                       <div
-                              v-if="factMonthSumm"
+                              v-if="totalSummary.fact > 0"
                               :class="
-                            factMonthSumm < planMonthSumm ?
+                            totalSummary.fact < totalSummary.opekPlan ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
@@ -1402,14 +1402,14 @@
                             :class="`${getColorClassBySelectedPeriod(index)}`"
                     >
                       <div
-                              v-if="factMonthSumm"
+                              v-if="totalSummary.fact > 0"
                               :class="
-                            planMonthSumm > factMonthSumm ?
+                            totalSummary.fact < totalSummary.opekPlan ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
                       ></div>
-                      <div class="font dynamic" v-if="factMonthSumm">
+                      <div class="font dynamic" v-if="totalSummary.fact > 0">
                         {{dzoCompaniesSummary.percent}}
                       </div>
                     </td>
@@ -2009,6 +2009,10 @@
                               class="width-20 text-center data-pointer"
                               :class="`${getDzoColumnsClass(index,'difference')}`"
                       >
+                        <div :class="item.plan > item.fact ?
+                            'ml-5 triangle fall-indicator-production-data' :
+                            'ml-5 triangle growth-indicator-production-data'">
+                        </div>
                         <div class="font dynamic">
                           {{formatDigitToThousand(Math.abs(item.difference))}}
                           <span class="data-metrics">
@@ -2194,6 +2198,10 @@
                               class="width-20 text-center data-pointer"
                               :class="`${getDzoColumnsClass(index,'difference')}`"
                       >
+                        <div :class="item.plan > item.fact ?
+                            'ml-5 triangle fall-indicator-production-data' :
+                            'ml-5 triangle growth-indicator-production-data'">
+                        </div>
                         <div class="font dynamic">
                           {{Math.abs(formatDigitToThousand(item.difference))}}
                           <span class="data-metrics">
