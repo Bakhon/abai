@@ -29,7 +29,7 @@
         v-for="child in subsoil.childNodes"
         :key="child.field_id"
         :subsoil="child"
-        :pickedSubsoil="pickedSubsoilChild"
+        :pickedSubsoil="hasChild ? checkedSubsoilChild[0] : pickedSubsoilChild"
       ></SubsoilTreeChildren>
     </div>
   </div>
@@ -65,6 +65,9 @@ export default {
     clearCheckboxArray() {
       this.checkedSubsoilChild = [];
     },
+  },
+  beforeDestroy() {
+    this.SET_PICKED_SUBSOIL_CHILD_RADIO("");
   },
 };
 </script>

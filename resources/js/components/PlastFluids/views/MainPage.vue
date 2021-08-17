@@ -50,7 +50,7 @@
             <button>ОК</button>
           </div>
           <div
-            v-if="currentSubsoilChildren.length"
+            v-if="currentSubsoilChildren.length && pickedSubsoil[0]"
             class="subsoil-secondary-tree-holder"
           >
             <SubsoilTreeChildren
@@ -200,12 +200,31 @@ export default {
   position: relative;
   width: 100%;
   height: 35px;
+  margin-bottom: 14px;
 }
 
 .subsoil-search-block > input {
   width: 100%;
   height: 100%;
+  border: 0.5px;
+  border-color: #454fa1;
   border-radius: 5px;
+  background: #1f2142;
+  padding: 10px;
+  color: #fff;
+  font-size: 16px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #272953;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #656a8a;
 }
 
 .subsoil-search-block > button {

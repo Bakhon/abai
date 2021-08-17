@@ -53,7 +53,6 @@ export default {
 
 <style>
 .subsoil-tree {
-  margin-top: 14px;
   border-radius: 4px;
   background: #1c1f4c;
   padding: 14px 9px;
