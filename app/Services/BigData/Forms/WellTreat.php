@@ -6,10 +6,12 @@ namespace App\Services\BigData\Forms;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Traits\BigData\Forms\DepthValidationTrait;
 
 class WellTreat extends TableForm
 {
     protected $configurationFileName = 'well_treat';
+    use DepthValidationTrait;
 
     public function getRows(array $params = []): array
     {
@@ -76,5 +78,16 @@ class WellTreat extends TableForm
                     ]
                 );
         }
+    }
+
+    protected function getCustomValidationErrors(): array
+    {
+        $errors = [];
+
+        if (!$this->isValidDepth($this->request->get('well'),$this->request->get('scraper_income'))) {
+            $errors['scraper_income'][] = trans('bd.validation.depth');
+        }
+
+        return $errors;
     }
 }
