@@ -20,7 +20,7 @@ class EcoRefsCostController extends Controller
     {
         $isForecast = request()->query('is_forecast');
 
-        return view('eco_refs_cost.index', compact('isForecast'));
+        return view('economy_kenzhe/eco_refs_cost.index', compact('isForecast'));
     }
 
     public function edit(int $id): View
@@ -31,7 +31,7 @@ class EcoRefsCostController extends Controller
 
         $companies = EcoRefsCompaniesId::get();
 
-        return view('eco_refs_cost.edit', compact('ecoRefsCost', 'scFas', 'companies'));
+        return view('economy_kenzhe/eco_refs_cost.edit', compact('ecoRefsCost', 'scFas', 'companies'));
     }
 
     public function update(UpdateEcoRefsCostRequest $request, int $id): RedirectResponse
@@ -99,7 +99,7 @@ class EcoRefsCostController extends Controller
     {
         $isForecast = request()->query('is_forecast');
 
-        return view('eco_refs_cost.import_excel', compact('isForecast'));
+        return view('economy_kenzhe/eco_refs_cost.import_excel', compact('isForecast'));
     }
 
     public function importExcel(ImportExcelEcoRefsCostRequest $request): RedirectResponse
