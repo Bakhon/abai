@@ -442,8 +442,7 @@ export default {
             this.$store.commit(x, []);
         } else {
             this.$store.commit("tr/SET_WELLNAME", []);
-        }
-        ;
+        };
         this.$store.commit("tr/SET_PAGENUMBER", 1);
         this.pageNumber = 1;
         this.isNoActiveHorizonFilter();
@@ -626,18 +625,19 @@ export default {
         this.chooseAxios();
     },
     showWells() {
-        if (this.lonelywell.length === 1) {
-            this.isShowAdd = !this.isShowAdd;
-            if (this.lonelywell[0].is_saved === "Сохранено") {
-                this.isDeleted = false;
-                this.isSaved = true;
-            } else {
-                this.isDeleted = true;
-                this.isSaved = false;
-            }
-        } else {
-            this.isShowAdd = this.isShowAdd;
-        }
+      if(this.lonelywell[0].is_saved === "Сохранено"){
+        this.isShowAdd = !this.isShowAdd;
+        this.isDeleted = false;
+        this.isSaved = true;
+      }
+      else if(this.lonelywell[0].is_saved === "Не сохранено"){
+        this.isShowAdd = !this.isShowAdd;
+        this.isDeleted = true;
+        this.isSaved = false;
+      }
+      else{
+        this.isShowAdd = this.isShowAdd;
+      }
     },
     editable() {
         this.$store.commit("globalloading/SET_LOADING", true);
