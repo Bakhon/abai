@@ -55,6 +55,7 @@ Route::group(
 
                 Route::resource('eco_refs_cost', 'EcoRefsCostController');
                 Route::get('eco_refs_costs', 'EcoRefsCostController@getData');
+
                 Route::resource('eco_refs_scenario', 'Refs\EcoRefsScenarioController');
                 Route::get('eco_refs_scenarios', 'Refs\EcoRefsScenarioController@getData');
 
