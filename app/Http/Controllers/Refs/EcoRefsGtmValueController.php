@@ -10,7 +10,6 @@ use App\Imports\EcoRefsGtmValueImport;
 use App\Models\Refs\EcoRefsGtmValue;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 
 class EcoRefsGtmValueController extends Controller
@@ -40,13 +39,6 @@ class EcoRefsGtmValueController extends Controller
         return [
             'data' => EcoRefsGtmValueResource::collection($data)
         ];
-    }
-
-    public function uploadExcel(): View
-    {
-        $mimeTypes = ImportExcelEcoRefsGtmValueRequest::MIME_TYPES;
-
-        return view('eco_refs_gtm_value.import_excel', compact('mimeTypes'));
     }
 
     public function importExcel(ImportExcelEcoRefsGtmValueRequest $request): RedirectResponse

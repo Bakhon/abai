@@ -9,6 +9,7 @@ use App\Http\Resources\EcoRefsGtmResource;
 use App\Imports\EcoRefsGtmImport;
 use App\Models\Refs\EcoRefsGtm;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
@@ -43,11 +44,13 @@ class EcoRefsGtmController extends Controller
         ];
     }
 
-    public function uploadExcel(): View
+    public function uploadExcel(Request $request): View
     {
         $mimeTypes = ImportExcelEcoRefsGtmRequest::MIME_TYPES;
 
-        return view('eco_refs_gtm.import_excel', compact('mimeTypes'));
+        $isTechnical = $request->is_technical;
+
+        return view('eco_refs_gtm.import_excel', compact('mimeTypes', 'isTechnical'));
     }
 
     public function importExcel(ImportExcelEcoRefsGtmRequest $request): RedirectResponse

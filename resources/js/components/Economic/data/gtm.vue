@@ -55,7 +55,7 @@ export default {
         },
         {
           title: this.trans('economic_reference.upload_technical_data'),
-          url: this.localeUrl('/eco_refs_gtm_value/upload_excel')
+          url: this.localeUrl('/eco_refs_gtm/upload_excel?is_technical=1')
         }
       ]
     }

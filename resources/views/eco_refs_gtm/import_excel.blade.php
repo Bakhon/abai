@@ -37,7 +37,7 @@
 
         <form method="post"
               enctype="multipart/form-data"
-              action="{{ route('eco_refs_gtm_import') }}">
+              action="{{ route($isTechnical ? 'eco_refs_gtm_value_import' : 'eco_refs_gtm_import') }}">
             {{ csrf_field() }}
             <div class="form-group">
                 <input type="file"
@@ -50,7 +50,7 @@
                         {{ __('economic_reference.upload')}}
                     </button>
 
-                    <a href="/eco_refs_gtm.xlsx"
+                    <a href="/{{$isTechnical ? 'eco_refs_gtm_value' : 'eco_refs_gtm'}}.xlsx"
                        class="btn btn-primary float-right"
                        download>
                         {{ __('economic_reference.download_example')}}

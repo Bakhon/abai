@@ -74,7 +74,6 @@ Route::group(
                 Route::resource('eco_refs_gtm', 'Refs\EcoRefsGtmController');
 
                 Route::get('eco_refs_gtm_values', 'Refs\EcoRefsGtmValueController@getData');
-                Route::get('eco_refs_gtm_value/upload_excel', 'Refs\EcoRefsGtmValueController@uploadExcel')->name('eco_refs_gtm_value_upload');
                 Route::post('eco_refs_gtm_value/import_excel', 'Refs\EcoRefsGtmValueController@importExcel')->name('eco_refs_gtm_value_import');
                 Route::resource('eco_refs_gtm_value', 'Refs\EcoRefsGtmValueController');
 
