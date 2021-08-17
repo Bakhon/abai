@@ -69,7 +69,7 @@ export default {
       this.SET_LOADING(true);
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/eco-refs-scenario/get-data'))
+        const {data} = await this.axios.get(this.localeUrl('/module_economy/eco_refs_scenarios'))
 
         this.data = [...[this.headers], ...data.data]
       } catch (e) {
@@ -81,7 +81,7 @@ export default {
 
     async deleteScenario(id) {
       try {
-        await this.axios.delete(this.localeUrl(`/eco-refs-scenario/${id}`))
+        await this.axios.delete(this.localeUrl(`/module_economy/eco_refs_scenario/${id}`))
 
         let index = this.data.findIndex(x => x[0] === id)
 

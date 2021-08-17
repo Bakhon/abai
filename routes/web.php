@@ -53,10 +53,6 @@ Route::group(
                 Route::get('/dob', 'DruidController@dob')->name('dob');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
 
-                Route::get('eco-refs-scenario/get-data', 'Refs\EcoRefsScenarioController@getData');
-
-                Route::get('eco-refs-sc-fa/get-data', 'Refs\EcoRefsScFaController@getData');
-
                 Route::get('eco-refs-gtm/get-data', 'Refs\EcoRefsGtmController@getData');
                 Route::get('eco-refs-gtm/upload-excel', 'Refs\EcoRefsGtmController@uploadExcel')->name('eco-refs-gtm-upload');
                 Route::post('eco-refs-gtm/import-excel', 'Refs\EcoRefsGtmController@importExcel')->name('eco-refs-gtm-import');

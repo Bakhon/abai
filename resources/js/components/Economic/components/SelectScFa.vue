@@ -52,7 +52,7 @@ export default {
         is_forecast: +this.isForecast
       }
 
-      const {data} = await this.axios.get(this.localeUrl('/eco-refs-sc-fa/get-data'), {params: params})
+      const {data} = await this.axios.get(this.localeUrl('/module_economy/eco_refs_sc_fas'), {params: params})
 
       this.scFas = [...this.scFas, ...data.data]
 
