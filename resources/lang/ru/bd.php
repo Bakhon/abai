@@ -876,6 +876,20 @@ return [
             'doc_tag' => 'Тэги документа',
             'tag' => 'Наименование тэга'
         ],
+        'well_treat' => [
+            'uwi' => 'Номер скважины',
+            'volume' => 'Объем, м3',
+            'pretreat_pressure' => 'Рагр. пред., атм',
+            'posttreat_pressure' => 'Рагр.посл. атм',
+            'temperature' => 'Температура',
+            'pretreat_buff_pressure' => 'Рбуф перед',
+            'posttreat_buff_pressure' => 'Рбуф после',
+            'reason' => 'Причины обработки',
+            'treat_type' => 'Вид обработки',
+            'ch_reagent_type' => 'Хим.реагент',
+            'scraper_income' => 'Доход скребка, м',
+            'data' => 'Дата',
+        ],
             
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',

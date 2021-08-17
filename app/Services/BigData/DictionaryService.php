@@ -48,6 +48,7 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\ChemicalReagentType;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -229,6 +230,10 @@ class DictionaryService
         'treat_type' => [
             'class' => TreatType::class,
             'name_field' => 'name_ru'
+        ],
+        'chemical_reagent_types' => [
+            'class' => ChemicalReagentType::class,
+            'name_field' => 'name_ru'
         ]
     ];
 
@@ -274,6 +279,9 @@ class DictionaryService
                     break;
                 case 'geo_type_hrz':
                     $dict = $this->getGeoHorizonDict();
+                    break;
+                case 'reason_type_rtr':
+                    $dict = $this->getReasonTypeRtrDict();
                     break;
                 default:
                     throw new DictionaryNotFound();
@@ -441,6 +449,26 @@ class DictionaryService
                     $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }
             )
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+        return $items;
+    }
+    private function getReasonTypeRtrDict()
+    {
+        $items = DB::connection('tbd')
+            ->table('prod.well_treatment as p')
+            ->select('r.id', 'r.name_ru as name')
+            ->where('rt.code', 'RTR')
+            ->distinct()
+            ->orderBy('name', 'asc')
+            ->join('dict.reason as r', 'p.reason', 'r.id')
+            ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
             ->get()
             ->map(
                 function ($item) {
