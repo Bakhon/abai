@@ -82,7 +82,7 @@ export default {
     BtnDropdown,
     SettingModal,
     WellAtlasModal,
-    Accordion
+    Accordion,
   },
 
   data() {
@@ -102,6 +102,7 @@ export default {
       ],
       parentType: '',
       menu: mainMenu,
+      mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
     };
   },
 

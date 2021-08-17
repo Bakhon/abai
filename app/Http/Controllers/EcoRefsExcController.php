@@ -16,7 +16,7 @@ class EcoRefsExcController extends Controller
     {
         $ecorefsexc = EcoRefsExc::latest()->paginate(5);
 
-        return view('ecorefsexc.index',compact('ecorefsexc'))
+        return view('economy_kenzhe/ecorefsexc.index',compact('ecorefsexc'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -27,7 +27,7 @@ class EcoRefsExcController extends Controller
      */
     public function create()
     {
-        return view('ecorefsexc.create');
+        return view('economy_kenzhe/ecorefsexc.create');
     }
 
     /**
@@ -68,7 +68,7 @@ class EcoRefsExcController extends Controller
     public function edit($id)
     {
         $EcoRefsExc = EcoRefsExc::find($id);
-        return view('ecorefsexc.edit',compact('EcoRefsExc'));
+        return view('economy_kenzhe/ecorefsexc.edit',compact('EcoRefsExc'));
 
     }
 

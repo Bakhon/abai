@@ -42,7 +42,7 @@
 </template>
 
 <script>
-
+import {globalloadingMutations} from '@store/helpers';
 import ScenarioForm from "../components/ScenarioForm";
 import DeleteButton from "../components/DeleteButton";
 
@@ -61,8 +61,12 @@ export default {
     this.getData()
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     async getData() {
-      this.loading = true
+
+      this.SET_LOADING(true);
 
       try {
         const {data} = await this.axios.get(this.localeUrl('/eco_refs_scenarios'))
@@ -72,7 +76,7 @@ export default {
         console.log(e)
       }
 
-      this.loading = false
+      this.SET_LOADING(false);
     },
 
     async deleteScenario(id) {
