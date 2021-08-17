@@ -20,13 +20,9 @@ class EcoRefsGtmController extends Controller
         return view('eco_refs_gtm.index');
     }
 
-    public function destroy(int $id): RedirectResponse
+    public function destroy(int $id): int
     {
-        EcoRefsGtm::query()->whereId($id)->delete();
-
-        return redirect()
-            ->route('eco_refs_gtm.index')
-            ->with('success', __('app.deleted'));
+        return EcoRefsGtm::query()->whereId($id)->delete();
     }
 
     public function getData(EcoRefsGtmRequest $request): array
