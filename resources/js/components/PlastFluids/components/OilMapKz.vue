@@ -1,16 +1,8 @@
 <template>
-  <div>
-    <div class="topside">
-      <button>Загрузка данных</button>
-    </div>
-    <div id="map">
-    </div>
-  </div>
+  <div id="map"></div>
 </template>
 
 <script>
-
-
 export default {
   name: "OilMapKz",
   data() {
@@ -18,16 +10,16 @@ export default {
       map: null,
       province: undefined,
       currentProvince: undefined,
-    }
+    };
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
 #map {
-  height: 100vh;
+  height: calc(100% - 45px);
   width: 100%;
-  background: #2B2E5E;
+  background: #2b2e5e;
 }
 
 .info {
@@ -60,6 +52,6 @@ export default {
   border: none;
   box-shadow: none;
   font-size: 14px;
-  color: #A1A3BC;
+  color: #a1a3bc;
 }
 </style>

@@ -207,9 +207,6 @@
             </b-row>
           </div>
         </div>
-        <div id="app">
-          {{info}}
-        </div>
         <div class="create_pattern">
           <div>
             {{ trans("plast_fluids.downloads_monitoring") }}
@@ -278,8 +275,6 @@
 import dropdown from "../../geology/components/dropdowns/dropdown";
 import Button from "../../geology/components/buttons/Button";
 import Icon from "../../geology/components/icons/AwIcon";
-import componentvue from "./componentvue";
-import componentvue2 from "./componentvue2";
 
 export default {
   name: "UploadMonitoring",
@@ -287,8 +282,6 @@ export default {
     dropdown,
     Button,
     Icon,
-    componentvue,
-    componentvue2
   },
   el: '#app',
   data() {
@@ -349,13 +342,6 @@ export default {
       pageOptions: [15, 20, 25, { value: 100, text: "Показать больше" }],
     }
   },
-
-  mounted(){
-    axios
-      .get('http://172.20.103.51:8000/api/templates/report-templates')
-      .then(response => (this.info = response));
-  }
-
 
 };
 </script>

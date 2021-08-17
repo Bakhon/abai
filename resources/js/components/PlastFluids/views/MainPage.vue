@@ -1,157 +1,232 @@
 <template>
-  <div class="wrapper-info">
-    <div class="statistic-info">
-      <div class="grid-container">
-        <info-table :inform_data="getFieldData.field||0" :description="wells"></info-table>
-        <info-table :inform_data="getFieldData.deep||0" :description="deep_samples"></info-table>
-
-        <info-table :inform_data="getFieldData.recombine||0" :description="recombined"></info-table>
-        <info-table :inform_data="getFieldData.estuarine||0" :description="well_head_samples"></info-table>
+  <div id="plast-fluids-main">
+    <Header />
+    <div class="main-content-holder">
+      <div class="map-and-page-footer">
+        <OilMap />
+        <Footer />
       </div>
-    </div>
-    <p class="filter-header">Недропользователь</p>
-    <b-input-group class="mt-3 input">
-      <b-form-input class="input-bg"></b-form-input>
-      <b-input-group-append>
-        <b-button variant="info">Button</b-button>
-      </b-input-group-append>
-    </b-input-group>
-    <div class="filter">
-      <div class="user-checkbox">
-        <b-form-checkbox-group
-            v-model="selected"
-            :options="options"
-            class="mb-3 checkbox-user"
-            value-field="item"
-            text-field="name"
-            stacked
-        ></b-form-checkbox-group>
-      </div>
-      <div class="field-checkbox">
-        <div>
-          <p class="filter-header">Месторождения</p>
-          <b-input-group class="mt-3 input">
-            <b-form-input class="input-bg"></b-form-input>
-            <b-input-group-append>
-              <b-button variant="info">Button</b-button>
-            </b-input-group-append>
-          </b-input-group>
-          <div class="user-checkbox1">
-            <b-form-checkbox-group
-                v-model="selected"
-                :options="options1"
-                class="mb-3 checkbox-user"
-                value-field="item"
-                text-field="name"
-                stacked
-            ></b-form-checkbox-group>
+      <div class="area-choose-block-and-map-statistics">
+        <div class="map-statistics">
+          <div class="statistics-container">
+            <p>
+              {{ selectedField ? fieldData[selectedField].field : 0 }}
+            </p>
+            <p>{{ trans("Скважины") }}</p>
+          </div>
+          <div class="statistics-container">
+            <p>
+              {{ selectedField ? fieldData[selectedField].deep : 0 }}
+            </p>
+            <p>
+              {{ trans("plast_fluids.deep_samples") }}
+            </p>
+          </div>
+          <div class="statistics-container">
+            <p>
+              {{ selectedField ? fieldData[selectedField].recombine : 0 }}
+            </p>
+            <p>{{ trans("plast_fluids.recombined") }}</p>
+          </div>
+          <div class="statistics-container">
+            <p>
+              {{ selectedField ? fieldData[selectedField].estuarine : 0 }}
+            </p>
+            <p>
+              {{ trans("plast_fluids.well_head_samples") }}
+            </p>
+          </div>
+        </div>
+        <div class="subsoil-user" v-if="subsoilUsers.length">
+          <p>Недропользователь</p>
+          <div class="subsoil-search-block">
+            <input type="text" v-model="subsoilUserSearch" />
+            <button>ОК</button>
+          </div>
+          <SubsoilTreeMain :treeData="subsoilUsers" />
+          <p>Месторождения</p>
+          <div class="subsoil-search-block">
+            <input type="text" v-model="subsoilUserSearch" />
+            <button>ОК</button>
+          </div>
+          <div
+            v-if="currentSubsoilChildren.length"
+            class="subsoil-secondary-tree-holder"
+          >
+            <SubsoilTreeChildren
+              v-for="subsoilChild in currentSubsoilChildren"
+              :key="subsoilChild.field_id"
+              :subsoil="subsoilChild"
+              :pickedSubsoil="pickedSubsoil[0]"
+            />
           </div>
         </div>
       </div>
-    </div>
-    <div class="buttons-wrapper">
-      <button>{{ trans("plast_fluids.data_download") }}</button>
-      <button>{{ trans("plast_fluids.data_analysis") }}</button>
-      <button>{{ trans("plast_fluids.data_upload") }}</button>
     </div>
   </div>
 </template>
 
 <script>
-import InfoTable from "../components/InfoTable.vue";
-import leafMap from '../components/leafMap';
+import leafMap from "../components/leafMap";
+import OilMap from "../components/OilMapKz.vue";
+import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
+import SubsoilTreeMain from "../components/SubsoilTreeMain.vue";
+import helpers from "../helpers";
+import { getMapOwners } from "../services/mapService";
+import { mapState } from "vuex";
+import SubsoilTreeChildren from "../components/SubsoilTreeChildren.vue";
 
 export default {
-  data: function () {
+  name: "PlastFluidsMain",
+  components: {
+    Header,
+    OilMap,
+    Footer,
+    SubsoilTreeMain,
+    SubsoilTreeChildren,
+  },
+  data() {
     return {
+      subsoilUserSearch: "",
+      subsoilUsers: [],
       selectedField: null,
       fieldData: {
         kozhasai: {
           field: 60,
           deep: 86,
           recombine: 24,
-          estuarine: 86
+          estuarine: 86,
         },
       },
-      selected: [],
-      wells: this.trans("Скважины"),
-      deep_samples: this.trans("plast_fluids.deep_samples"),
-      recombined: this.trans("plast_fluids.recombined"),
-      well_head_samples: this.trans("plast_fluids.well_head_samples"),
-
-      options: [
-        {item: 'A', name: 'ТОО «Казахойл Актобе»'},
-        {item: 'B', name: 'АО «Мангистаумунайгаз»'},
-        {item: 'C', name: 'АО «Каражанбасмунай»'},
-        { item: 'D', name: 'ТОО «Казахтуркмунай»' },
-        { item: 'E', name: 'АО «Эмбамунайгаз»' },
-        { item: 'F', name: 'ТОО СП «Казгермунай»' }
-      ],
-      options1: [
-        {item: 'A', name: 'Кожасай'},
-        {item: 'B', name: 'Алибекмола'},
-      ]
     };
   },
-  components: {
-    InfoTable,
-  },
   computed: {
-    getFieldData() {
-      return this.fieldData[this. selectedField]||{}
-    }
+    ...mapState("plastFluids", ["currentSubsoilChildren", "pickedSubsoil"]),
+  },
+  methods: {
+    async getOwners() {
+      const data = await getMapOwners();
+      this.subsoilUsers = helpers.createDataTree(data);
+    },
   },
   mounted() {
+    this.getOwners();
     leafMap((e) => {
       if (e.target.feature.properties.type === "field") {
         this.selectedField = e.target.feature.properties.id;
       } else {
-        this.selectedField = null
+        this.selectedField = null;
       }
     });
-  }
+  },
 };
 </script>
 
 <style scoped>
-.user-checkbox {
-  background: #1C1F4C;
-  padding: 5px;
-}
-
-.filter-header {
-  color: #fff;
-  font-size: 20px;
-}
-
-.checkbox-user {
-  margin: 15px;
-}
-
-.field-checkbox {
-  margin-bottom: 10px;
-}
-
-.input {
-  margin-top: 15px;
-}
-
-.input-bg {
-  background-color: #1F2142;
-}
-
-.wrapper-info {
+#plast-fluids-main {
   display: flex;
-  flex-direction: column;
-  background: #272953;
-  padding: 10px 14px 10px;
+  flex-flow: column;
+  width: 100%;
   height: 100%;
 }
 
-.grid-container {
+.main-content-holder {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.map-and-page-footer {
+  display: flex;
+  flex-flow: column;
+  width: 80%;
+}
+
+.area-choose-block-and-map-statistics {
+  display: flex;
+  width: 20%;
+  flex-direction: column;
+  background: #272953;
+  margin-left: 10px;
+  padding: 10px;
+  height: 100%;
+}
+
+.map-statistics {
   display: grid;
+  height: 250px;
+  row-gap: 10px;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
+}
+
+.statistics-container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  background: #1c1f4c;
+}
+
+.statistics-container > p {
+  margin: 0;
+}
+
+.statistics-container > p:first-child {
+  font-size: 48px;
+  color: #fff;
+  font-family: "Harmonia Sans Pro Cyr", sans-serif;
+  font-weight: 700;
+  line-height: 57.6px;
+  margin-bottom: 14px;
+}
+
+.statistics-container > p:last-child {
+  font-size: 14px;
+  color: #fff;
+  font-family: "Harmonia Sans Pro Cyr", sans-serif;
+  font-weight: 700;
+  line-height: 16.8px;
+}
+
+.subsoil-user > p {
+  color: #fff;
+  font-size: 20px;
+  margin: 24px 0 14px 8px;
+}
+
+.subsoil-search-block {
+  position: relative;
+  width: 100%;
+  height: 35px;
+}
+
+.subsoil-search-block > input {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.subsoil-search-block > button {
+  position: absolute;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  top: 4px;
+  height: 27px;
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+  background: #3366ff;
+  color: #fff;
+  font-size: 10px;
+}
+
+.subsoil-secondary-tree-holder {
+  max-height: 130px;
+  overflow-y: auto;
+  background: #1c1f4c;
 }
 
 .buttons-wrapper {
