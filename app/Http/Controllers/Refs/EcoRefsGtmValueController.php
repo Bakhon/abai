@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Refs;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EcoRefs\Gtm\ImportExcelEcoRefsGtmRequest;
 use App\Http\Requests\EcoRefs\GtmValue\EcoRefsGtmValueRequest;
-use App\Http\Requests\EcoRefs\GtmValue\ImportExcelEcoRefsGtmValueRequest;
 use App\Http\Resources\EcoRefsGtmValueResource;
 use App\Imports\EcoRefsGtmValueImport;
 use App\Models\Refs\EcoRefsGtmValue;
@@ -41,7 +41,7 @@ class EcoRefsGtmValueController extends Controller
         ];
     }
 
-    public function importExcel(ImportExcelEcoRefsGtmValueRequest $request): RedirectResponse
+    public function importExcel(ImportExcelEcoRefsGtmRequest $request): RedirectResponse
     {
         DB::transaction(function () use ($request) {
             $import = new EcoRefsGtmValueImport(auth()->id());
