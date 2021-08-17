@@ -450,7 +450,7 @@ export default {
     },
     chooseFilter() {
         this.$store.commit("globalloading/SET_LOADING", true),
-            this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
+        this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
         this.$store.commit("tr/SET_SEARCH", this.searchString);
         this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
         this.$store.commit("tr/SET_PAGENUMBER", 1);

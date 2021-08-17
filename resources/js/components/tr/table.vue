@@ -310,7 +310,7 @@
                 <td @click="sortBy('pump_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('tub_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('h_pump_set')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
-                <td @click="sortBy('tub_eqiup')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td @click="sortBy('tub_equip')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('h_packer_set')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
                 <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.gc_ob/min')}}</td>
                 <td @click="sortBy('stroke_len')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
@@ -333,7 +333,7 @@
                 <td @click="sortBy('planned_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}</td>
                 <td @click="sortBy('planned_gas')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.thousan_m3_day')}}</td>
                 <td @click="sortBy('planned_wct')" class="th"><i class="fa fa-fw fa-sort"></i>%</td>
-                <td @click="sortBy('planned_gor')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3/t')}}</td>
+                <td @click="sortBy('gor')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3/t')}}</td>
                 <td @click="sortBy('planned_month_days')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.day')}}</td>
                 <td @click="sortBy('planned_monthly_oil')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.tonn')}}</td>
                 <td @click="sortBy('planned_monthly_gas')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.thousand_m3')}}</td>
@@ -457,7 +457,7 @@
                     </span>
                 </td>
 
-                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.tub_eqiup}} </td>   
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.tub_equip}} </td>   
 
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.h_packer_set}} </td>
 
@@ -628,7 +628,15 @@
                     </span>
                 </td>
 
-                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{Math.round(row.planned_month_days*10)/10}} </td>
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`gor`), 'activ': isActiveClass(row)}">
+                    <span :class="{'circle-err': wells && wells[row_index] &&
+                wells[row_index].gor[1][0] !== '0'}" :style="`background :${getColor(
+                wells[row_index].gor[1][0])}`"> </span>
+                    <span v-if="row.gor[0]!=null">{{Math.round(row.gor[0]*10)/10}}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                        {{ wells[row_index].gor[1][1]}}
+                    </span>
+                </td>
 
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_month_days`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
