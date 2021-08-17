@@ -175,6 +175,7 @@ Vue.component('report-constructor', require('./components/reportConstructor/Repo
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
 Vue.component('pf-upload_monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
 Vue.component('pf-template_pvt_plast_oil', require('./components/PlastFluids/views/SuperTemplatePvtPlastOil.vue').default);
+Vue.component('pf-data-analysis', require('./components/PlastFluids/views/PfDataAnalysis').default);
 Vue.component('pf-standart_separation_flash', require('./components/PlastFluids/components/StandartSeparationFlash').default);
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
