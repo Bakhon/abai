@@ -11,17 +11,18 @@
         @loaded="loading = false"
         @change="getData"/>
 
-    <vue-table-dynamic
-        v-if="form.sc_fa"
-        ref="table"
-        :params="params"
-        class="height-fit-content">
-      <a :slot="`column-${columnEditIndex}`"
-         slot-scope="{ props }"
-         :href="props.cellData">
-        {{ trans('app.edit') }}
-      </a>
-    </vue-table-dynamic>
+      <vue-table-dynamic
+          v-if="form.sc_fa"
+          ref="table"
+          :params="params"
+          class="height-fit-content">
+        <a :slot="`column-${columnEditIndex}`"
+           slot-scope="{ props }"
+           :href="props.cellData">
+          {{ trans('app.edit') }}
+        </a>
+      </vue-table-dynamic>
+    </div>
   </div>
 </template>
 
@@ -29,7 +30,9 @@
 import VueTableDynamic from 'vue-table-dynamic'
 
 import Subtitle from "../components/Subtitle";
+import {globalloadingMutations} from '@store/helpers';
 import SelectScFa from "../components/SelectScFa";
+
 
 export default {
   name: "economic-data-component",
@@ -52,18 +55,22 @@ export default {
     loading: false
   }),
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+
     async getData() {
       if (!this.form.sc_fa) return
 
-      this.loading = true
+      this.SET_LOADING(true);
 
       this.data = []
 
-      const {data} = await this.axios.get(this.localeUrl('/eco_refs_costs'), {params: this.form})
+      const {data} = await this.axios.get(this.localeUrl('module_economy/eco_refs_costs'), {params: this.form})
 
       this.data = [...[this.headers], ...data.data]
 
-      this.loading = false
+      this.SET_LOADING(false);
     },
   },
   computed: {

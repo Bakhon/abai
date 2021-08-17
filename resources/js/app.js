@@ -106,8 +106,6 @@ Vue.component('prs-crs', require('./components/gno/components/PrsCrs.vue').defau
 Vue.component('inflow-curve', require('./components/gno/components/InflowCurve.vue').default);
 Vue.component('economic', require('./components/gno/components/Economic.vue').default);
 Vue.component('monitor-table', require('./components/complicationMonitoring/monitor/MonitorTable.vue').default);
-Vue.component('monitor-chart', require('./components/complicationMonitoring/monitor/chart.vue').default);
-Vue.component('monitor-chart-radialbar', require('./components/complicationMonitoring/monitor/MonitorChartRadialBar.vue').default);
 Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/complicationMonitoring/omgca/form.vue').default);
 Vue.component('omguhe-form', require('./components/complicationMonitoring/omguhe/form.vue').default);

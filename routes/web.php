@@ -54,6 +54,7 @@ Route::group(
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
 
                 //gno economic
+                //gno economic
                 Route::resource('ecorefscompaniesids', 'EcoRefsCompaniesIdsController');
                 Route::resource('ecorefsdirection', 'EcoRefsDirectionController');
                 Route::resource('ecorefsrouteid', 'EcoRefsRouteIdController');
@@ -92,6 +93,7 @@ Route::group(
                 Route::resource('ecorefsscfa', 'Refs\EcoRefsScFaController');
                 Route::get('eco_refs_sc_fas', 'Refs\EcoRefsScFaController@getData');
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
+                Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
 
                 // economic tech data
                 Route::get('tech_data_list', 'Refs\TechnicalDataController@refsList')->name('tech_data_list');
@@ -110,15 +112,10 @@ Route::group(
                 Route::post('technical_forecast/import_excel', 'Refs\TechnicalDataController@importExcel')->name('tech_refs_import');
 
                 Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
-                Route::resource('ecorefsexc', 'EcoRefsExcController');
                 Route::resource('antiecoone', 'AntiCrisis\AntiEcoOneController');
                 Route::resource('antiecotwo', 'AntiCrisis\AntiEcoTwoController');
-                Route::resource('ecorefsprocdob', 'EcoRefsProcDobController');
-                Route::resource('ecorefsavgprs', 'EcoRefsAvgPrsController');
-
 
                 Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
-
                 Route::get('organizations', 'OrganizationsController@index')->name('organizations');
                 Route::get('user_organizations', 'OrganizationsController@getUserOrganizations')->name('user_organizations');
                 Route::get('fields', 'FieldController@index')->name('fields');
@@ -132,6 +129,12 @@ Route::group(
 
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
                 Route::get('/paegtm/accum_oil_prod_data', 'GTM\GTMController@getAccumOilProd')->name('gtm');
+                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name(
+                    'gtm'
+                );
+
+                Route::post('attachments', 'AttachmentController@upload');
+                Route::get('attachments/{attachment}', 'AttachmentController@get');
                 Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');
             }
         );
