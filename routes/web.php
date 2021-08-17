@@ -135,7 +135,6 @@ Route::group(
 
                 Route::post('attachments', 'AttachmentController@upload');
                 Route::get('attachments/{attachment}', 'AttachmentController@get');
-                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');
             }
         );
         Auth::routes(
