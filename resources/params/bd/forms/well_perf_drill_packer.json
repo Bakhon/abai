@@ -20,20 +20,20 @@
                 "code": "reservoir_count",
                 "type": "numeric",
                 "title": "reserv_c",
-                "validation": "required|numeric|gte:1"
+                "validation": "numeric|gte:1"
               },
               {
                 "code": "perf_date",
                 "type": "date",
                 "title": "data",
-                "validation": ""
+                "validation": "required"
               },
               {
                 "code": "packer_type",
                 "type": "dict",
                 "dict": "packer_types",
                 "title": "packer_t",
-                "validation": "required|exists:tbd.dict.packer_type,id"
+                "validation": "exists:tbd.dict.packer_type,id"
               },
               {
                 "code": "new_intervals",

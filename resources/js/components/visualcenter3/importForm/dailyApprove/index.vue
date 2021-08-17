@@ -16,7 +16,7 @@
                         <div
                                 v-for="(item,index) in compared"
                                 :class="[item.selected ? 'selected-company' : '',
-                                    item.processed ? 'processed-company' : '',
+                                    item.isProcessed ? 'processed-company' : '',
                                     'col-12 row approve-list p-2 mt-1']"
                                 @click="selectCompany(item.dzoName,index)"
                         >
@@ -37,16 +37,49 @@
                                 v-if="Object.keys(currentDzo).length > 0"
                         >
                             <span class="col-2 column-title">{{trans('visualcenter.importForm.executor')}}: </span>
-                            <span class="column-parameter col-6">{{currentDzo.userName}}</span>
-                            <div v-if="!currentDzo.processed" class="col-4 row">
-                                <span class="col-5 menu__button m-1 button_approve" @click="approve">{{trans('visualcenter.dailyApprove.approve')}}</span>
-                                <span class="col-5 menu__button m-1 button_decline" @click="decline">{{trans('visualcenter.dailyApprove.cancel')}}</span>
+                            <span class="column-parameter col-4">{{currentDzo.userName}}</span>
+                            <div v-if="!currentDzo.isProcessed" class="col-6 row justify-content-end">
+                                <span clas="col-4">{{approvers.firstMaster.name}}</span>
+                                <span
+                                        class="col-4 menu__button m-1 ml-5 button_approve"
+                                        :class="[currentDzo.isFirstMasterApproved !== null ? currentDzo.isFirstMasterApproved ? 'button_approved' : 'button_disabled' : '']"
+                                        @click="approve(approvers.firstMaster)"
+                                >
+                                    {{trans(currentDzo.firstMasterApproveTranslation)}}</span>
+                                <span
+                                        class="col-3 menu__button m-1 button_decline"
+                                        @click="decline"
+                                        :class="[currentDzo.isFirstMasterApproved !== null ? !currentDzo.isFirstMasterApproved ? 'button_disabled' : 'button_disabled' : '']"
+                                >
+                                    {{trans('visualcenter.dailyApprove.cancel')}}
+                                </span>
                             </div>
                             <div v-else class="col-4 row">
                                 {{currentStatus}}
                             </div>
                             <span class="col-2 column-title">{{trans('visualcenter.importForm.reason')}}: </span>
-                            <span class="column-parameter col-10">{{currentDzo.reason}}</span>
+                            <span class="column-parameter col-4">{{currentDzo.reason}}</span>
+                            <div v-if="!currentDzo.isProcessed" class="col-6 row justify-content-end">
+                                <span clas="col-4">{{approvers.secondMaster.name}}</span>
+                                <span
+                                        class="col-4 menu__button m-1 ml-5 button_approve"
+                                        :class="[currentDzo.isSecondMasterApproved !== null ? currentDzo.isSecondMasterApproved ? 'button_approved' : 'button_disabled' : '']"
+                                        @click="approve(approvers.secondMaster)"
+                                >
+                                    {{trans(currentDzo.secondMasterApproveTranslation)}}</span>
+                                <span
+                                        class="col-3 menu__button m-1 button_decline"
+                                        :class="[currentDzo.isSecondMasterApproved !== null ? !currentDzo.isSecondMasterApproved ? 'button_approved' : 'button_disabled' : '']"
+                                        @click="decline"
+                                >
+                                    {{trans('visualcenter.dailyApprove.cancel')}}</span>
+                            </div>
+                            <div v-if="!currentDzo.isProcessed" class="col-6"></div>
+                            <div v-if="!currentDzo.isProcessed" class="col-6 row justify-content-end">
+                                <span clas="col-4">{{approvers.mainMaster.name}}</span>
+                                <span class="col-4 menu__button m-1 ml-5 button_approve" @click="approve(approvers.mainMaster)">{{trans('visualcenter.dailyApprove.approve')}}</span>
+                                <span class="col-3 menu__button m-1 button_decline" @click="decline">{{trans('visualcenter.dailyApprove.cancel')}}</span>
+                            </div>
                             <span class="col-12 header-title p-2">{{trans('visualcenter.dailyApprove.plannedChanges')}}</span>
                             <div class="col-12 row p-1 m-0 table_header">
                                 <span class="col-3">{{trans('visualcenter.dailyApprove.dzo')}}/{{trans('visualcenter.dailyApprove.field')}}</span>
@@ -66,18 +99,18 @@
                                 </div>
                                 <div
                                         v-else
-                                        v-for="(value, name) in item"
-                                        class="col-12 row m-0"
+                                        v-for="(value, fieldName) in item"
+                                        class="col-12 m-0"
                                         v-if="Object.keys(value).length > 0"
                                 >
-                                    <span class="col-3 table_body">{{name}}</span>
                                     <div
-                                            v-for="(field, fieldName) in value"
-                                            class="col-9 table_body row m-0 p-0"
+                                            v-for="(fieldValue, field) in value"
+                                            class="table_body row m-0 p-0"
                                     >
-                                        <span class="col-7 table_body">{{names[fieldName]}}</span>
-                                        <span class="col-3 table_body child-actual">{{field.actualDetail}}</span>
-                                        <span class="col-2 table_body child-current">{{field.currentDetail}}</span>
+                                        <span class="col-3 table_body">{{fieldName}}</span>
+                                        <span class="col-5 table_body">{{names[field]}}</span>
+                                        <span class="col-2 table_body child-actual">{{fieldValue.actualDetail}}</span>
+                                        <span class="col-2 table_body child-current">{{fieldValue.currentDetail}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -188,5 +221,13 @@
     }
     .processed-company {
         background: #00b353;
+    }
+    .button_disabled {
+        pointer-events: none;
+        visibility: hidden;
+    }
+    .button_approved {
+        pointer-events: none;
+        opacity: 0.4;
     }
 </style>

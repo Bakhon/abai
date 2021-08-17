@@ -1,16 +1,7 @@
 <template>
   <div class="container-fluid">
-    <cat-loader v-show="loading"/>
-
     <div class="row justify-content-between">
-      <select-sc-fa
-          :loading="loading"
-          :form="form"
-          :is-forecast="isForecast"
-          form-key="sc_fa"
-          @loading="loading = true"
-          @loaded="loading = false"
-          @change="getData"/>
+      <cat-loader v-show="loading"/>
 
       <vue-table-dynamic
           v-if="form.sc_fa"
@@ -29,14 +20,14 @@
 
 <script>
 import VueTableDynamic from 'vue-table-dynamic'
-import CatLoader from "@ui-kit/CatLoader";
+import {globalloadingMutations} from '@store/helpers';
 import SelectScFa from "../components/SelectScFa";
+
 
 export default {
   name: "economic-data-component",
   components: {
     VueTableDynamic,
-    CatLoader,
     SelectScFa
   },
   props: {
@@ -53,18 +44,22 @@ export default {
     loading: false
   }),
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+
     async getData() {
       if (!this.form.sc_fa) return
 
-      this.loading = true
+      this.SET_LOADING(true);
 
       this.data = []
 
-      const {data} = await this.axios.get(this.localeUrl('/eco_refs_costs'), {params: this.form})
+      const {data} = await this.axios.get(this.localeUrl('module_economy/eco_refs_costs'), {params: this.form})
 
       this.data = [...[this.headers], ...data.data]
 
-      this.loading = false
+      this.SET_LOADING(false);
     },
   },
   computed: {

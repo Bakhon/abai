@@ -1,7 +1,6 @@
 <template>
   <div class="all-contents">
     <div class="row well-cart__wrapper">
-      <cat-loader v-show="loading"/>
       <div
           :class="{'left-column_folded': isLeftColumnFolded}"
           class="left-column"
@@ -223,7 +222,7 @@ import moment from 'moment'
 import WellCartTree from './WellCartTree'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import CatLoader from '@ui-kit/CatLoader'
+
 
 const requireComponent = require.context('../bigdata/forms/CustomPlainForms', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
@@ -243,8 +242,7 @@ export default {
   components: {
     BigDataPlainFormResult,
     vSelect,
-    WellCartTree,
-    CatLoader
+    WellCartTree
   },
   data() {
     return {
@@ -370,7 +368,8 @@ export default {
     this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
       this.formsStructure = data.tree
     })
-    this.axios.get(this.localeUrl('/user_organizations')).then(({data}) => {
+    this.axios.get(this.localeUrl('/user_organizations'), {params: {'only_main': true}})
+        .then(({data}) => {
         if (typeof data !== 'undefined' &&
             typeof data.organizations !== 'undefined' &&
             data.organizations.length > 0) {

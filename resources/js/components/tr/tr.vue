@@ -961,7 +961,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter icon_filter" v-if="!isActiveHorizonFilterr"></i><i class="fas fa-filter icon_filter_active" v-if="isActiveHorizonFilterr"></i>
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -1473,8 +1473,8 @@
                   <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}" :colspan="getRowWidthSpan(row)">{{ row.field }}</td>
                   <td v-if="isEdit">{{ row.field }}</td>
 
-                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.rus_wellname }}</td>
-                  <td v-if="isEdit">{{ row.rus_wellname }}</td>
+                  <td v-if="!isEdit && !isActiveClass(row)" :class="{'activ': isActiveClass(row)}" >{{ row.rus_wellname }}</td>
+                  <td v-if="isEdit && !isActiveClass(row)">{{ row.rus_wellname }}</td>
                   <td
                     v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`well_type`), 'activ': isActiveClass(row)}"
@@ -6461,7 +6461,7 @@
       </div>
     </div>
     <notifications position="top"></notifications>
-    <cat-loader />
+
   </div>
 </template>
 <script src="./tr.js"></script>
