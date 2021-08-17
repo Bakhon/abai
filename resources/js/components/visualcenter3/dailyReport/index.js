@@ -227,7 +227,7 @@ export default {
             }
         },
         getFormattedNumber(num) {
-            return (new Intl.NumberFormat("ru-RU").format(Math.round(Math.abs(num))))
+            return (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
         },
         getSortedBy(type,input){
             return _.orderBy(input,
