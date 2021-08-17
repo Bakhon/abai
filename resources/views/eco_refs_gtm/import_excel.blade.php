@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container text-center">
-        <a href="{{ route('eco_refs_gtm.index')}}"
+        <a href="{{ route('eco-refs-gtm.index')}}"
            class="btn btn-info">
             {{ __('economic_reference.return_menu') }}
         </a>
