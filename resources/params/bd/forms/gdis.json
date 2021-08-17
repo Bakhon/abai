@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "",
+  "table": "prod.gdis_complex",
   "tabs": [
     {
       "title": "",
@@ -25,7 +25,7 @@
                 "code": "hello_world",
                 "type": "dict",
                 "dict":" ",
-                "title": "dict",
+                "title": "research_type",
                 "validation": "required"
               },
               {
