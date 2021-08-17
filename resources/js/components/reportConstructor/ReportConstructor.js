@@ -426,5 +426,16 @@ export default {
         setEndOfYear(date) {
             this.endDate = formatDate.getEndOfYearFormatted(date, 'datetimePickerFormat');
         },
+        saveTemplate() {
+            let jsonData = this._getStatisticsRequestParams()
+            this.axios.post(this.localeUrl('/bigdata/report-constructor/save-template/'), jsonData)
+            .then((response) => {
+                console.log("success")
+            }).catch((error) => {
+                console.log(error)
+            }).finally(() => {
+                this.isLoading = false
+            });
+        }
     }
 }

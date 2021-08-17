@@ -351,7 +351,7 @@
               <div class="row">
                 <div class="btn-container">
                   <button @click="getStatisticsFile()">Скачать отчет</button>
-                  <button>Сохранить как шаблон</button>
+                  <button @click="saveTemplate()">Сохранить как шаблон</button>
                 </div>
               </div>
             </section>
