@@ -126,30 +126,29 @@ export default {
         this.isLoading = true;
         await this.getWells(this);
       }
-      if(this.isShowCheckboxes) {
-        await this.onExpandTree(this.node, this.level);
-        this.updateThisComponent();
-      }
+      // if(this.isShowCheckboxes) {
+      //   await this.onExpandTree(this.node, this.level);
+      //   this.updateChildren();
+      //   this.updateThisComponent();
+      // }
       this.$forceUpdate()
     },
     onClick: async function () {
       let val = this.markedNodes[this.level][this.node.id];
       this.markedNodes[this.level][this.node.id] = !val;
-      await this.loadChildren(this.node);
-      await this.onExpandTree(this.node, this.level);
+      this.loadChildren(this.node).then(() => {
+        this.onExpandTree(this.node, this.level);
+        this.updateChildren(this.node, this.level);
+      });
       this.onCheckboxClick(this.node, this.level);
-      if(this.isSelectUntilWells || val) {
-        await this.updateChildren(this.node, this.level);
-      }else {
-        await this.updateNextLevelNodes();
-      }
-      console.log(this.isSelectUntilWells);
       this.updateThisComponent();
     },
     onExpandTree: function(node, level) {
-      if(!this.isHaveChildren(node) || this.markedNodes[level+1]) return;
-
-      this.markedNodes[level+1] = {};
+      if(!node?.children) return;
+      console.log(node);
+      if(!this.markedNodes[level+1]) {
+        this.markedNodes[level+1] = {};
+      }
       let content = this.markedNodes[level+1];
       for(let child of node.children) {
         content[child.id] = false;
@@ -173,18 +172,13 @@ export default {
     updateChildren: async function(node, level) {
       if(!this.isHaveChildren(node)) return;
       let content = this.markedNodes[level+1];
-      let val = this.markedNodes[level][node.id];
       for(let child of node.children) {
-        content[child.id] = val;
-        this.updateChildren(child, level+1);
-      }
-    },
-    updateNextLevelNodes: async function() {
-      if(!this.isHaveChildren(this.node)) return;
-      let content = this.markedNodes[this.level+1];
-      let val = this.markedNodes[this.level][this.node.id];
-      for(let child of this.node.children) {
-        content[child.id] = val;
+        content[child.id] = this.markedNodes[level][node.id];
+        this.onCheckboxClick(child, level+1);
+        if(this.isSelectUntilWells || !content[child.id]) {
+          this.updateChildren(child, level+1);
+          this.updateThisComponent();
+        }
       }
     },
     isMarked: function() {
