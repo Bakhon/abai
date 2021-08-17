@@ -1,21 +1,43 @@
 <template>
   <div class="container p-4 bg-light" style="max-width: 90vw">
     <div>
-      <a :href="localeUrl('/eco_refs_gtm/upload_excel')"
-         class="list-group-item list-group-item-action">
+      <h4 class="text-secondary cursor-pointer mb-0"
+          @click="isVisibleEconomicUpload = !isVisibleEconomicUpload">
+        Загрузка входных экономических данных
+      </h4>
+
+      <a v-if="isVisibleEconomicUpload"
+         :href="localeUrl('/eco_refs_gtm/upload_excel')"
+         class="mt-3">
         {{ trans('economic_reference.upload_excel') }}
       </a>
 
-      <gtm-table/>
+      <h4 class="text-secondary cursor-pointer mb-0"
+          @click="isVisibleEconomicTable = !isVisibleEconomicTable">
+        Входные экономические данные
+      </h4>
+
+      <gtm-table v-if="isVisibleEconomicTable"/>
     </div>
 
     <div>
-      <a :href="localeUrl('/eco_refs_gtm_value/upload_excel')"
-         class="list-group-item list-group-item-action">
+      <h4 class="text-secondary cursor-pointer mb-0"
+          @click="isVisibleTechUpload = !isVisibleTechUpload">
+        Загрузка входных технических данных
+      </h4>
+
+      <a v-if="isVisibleTechUpload"
+         :href="localeUrl('/eco_refs_gtm_value/upload_excel')"
+         class="mt-3">
         {{ trans('economic_reference.upload_excel') }}
       </a>
 
-      <gtm-value-table/>
+      <h4 class="text-secondary cursor-pointer mb-0"
+          @click="isVisibleTechTable = !isVisibleTechTable">
+        Входные технические данные
+      </h4>
+
+      <gtm-value-table v-if="isVisibleTechTable"/>
     </div>
   </div>
 </template>
@@ -30,6 +52,12 @@ export default {
     GtmTable,
     GtmValueTable
   },
+  data: () => ({
+    isVisibleEconomicUpload: false,
+    isVisibleEconomicTable: false,
+    isVisibleTechUpload: false,
+    isVisibleTechTable: false,
+  })
 };
 </script>
 <style scoped>
