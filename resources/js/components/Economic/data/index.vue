@@ -7,32 +7,31 @@
         :form="form"
         :is-forecast="isForecast"
         form-key="sc_fa"
-        @loading="loading = true"
-        @loaded="loading = false"
+        @loading="SET_LOADING(true)"
+        @loaded="SET_LOADING(false)"
         @change="getData"/>
 
-      <vue-table-dynamic
-          v-if="form.sc_fa"
-          ref="table"
-          :params="params"
-          class="height-fit-content">
-        <a :slot="`column-${columnEditIndex}`"
-           slot-scope="{ props }"
-           :href="props.cellData">
-          {{ trans('app.edit') }}
-        </a>
-      </vue-table-dynamic>
-    </div>
+    <vue-table-dynamic
+        v-if="form.sc_fa"
+        ref="table"
+        :params="params"
+        class="height-fit-content">
+      <a :slot="`column-${columnEditIndex}`"
+         slot-scope="{ props }"
+         :href="props.cellData">
+        {{ trans('app.edit') }}
+      </a>
+    </vue-table-dynamic>
   </div>
 </template>
 
 <script>
 import VueTableDynamic from 'vue-table-dynamic'
 
-import Subtitle from "../components/Subtitle";
 import {globalloadingMutations} from '@store/helpers';
-import SelectScFa from "../components/SelectScFa";
 
+import Subtitle from "../components/Subtitle";
+import SelectScFa from "../components/SelectScFa";
 
 export default {
   name: "economic-data-component",
@@ -52,12 +51,9 @@ export default {
       sc_fa: null
     },
     data: [],
-    loading: false
   }),
   methods: {
-    ...globalloadingMutations([
-      'SET_LOADING'
-    ]),
+    ...globalloadingMutations(['SET_LOADING']),
 
     async getData() {
       if (!this.form.sc_fa) return
