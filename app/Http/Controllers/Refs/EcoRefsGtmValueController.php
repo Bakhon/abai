@@ -15,11 +15,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class EcoRefsGtmValueController extends Controller
 {
-    public function index(): View
-    {
-        return view('eco_refs_gtm_value.index');
-    }
-
     public function destroy(int $id): RedirectResponse
     {
         EcoRefsGtmValue::query()->whereId($id)->delete();
