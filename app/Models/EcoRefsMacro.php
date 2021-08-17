@@ -8,8 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class EcoRefsMacro extends Model
 {
     protected $fillable = [
-        'sc_fa', 'date', 'ex_rate_dol', 'ex_rate_rub', 'inf_end', 'barrel_world_price'
+        'sc_fa', 'date',  'ex_rate_dol', 'ex_rate_rub', 'inf_end', 'barrel_world_price'
     ];
+
+    const FILLABLE_FLOAT_KEYS = [
+        'ex_rate_dol', 'ex_rate_rub', 'inf_end', 'barrel_world_price'
+    ];
+
     public function scfa()
     {
         return $this->hasOne(EcoRefsScFa::class,'id','sc_fa')->withDefault();

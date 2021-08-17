@@ -16,7 +16,7 @@ class EcoRefsBrachIdController extends Controller
     {
         $ecorefsbranchid = EcoRefsBranchId::latest()->paginate(5);
 
-        return view('ecorefsbranchid.index',compact('ecorefsbranchid'))
+        return view('economy_kenzhe/ecorefsbranchid.index',compact('ecorefsbranchid'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -27,7 +27,7 @@ class EcoRefsBrachIdController extends Controller
      */
     public function create()
     {
-        return view('ecorefsbranchid.create');
+        return view('economy_kenzhe/ecorefsbranchid.create');
     }
 
     /**
@@ -67,7 +67,7 @@ class EcoRefsBrachIdController extends Controller
     public function edit($id)
     {
         $EcoRefsBranchId = EcoRefsBranchId::find($id);
-        return view('ecorefsbranchid.edit',compact('EcoRefsBranchId'));
+        return view('economy_kenzhe/ecorefsbranchid.edit',compact('EcoRefsBranchId'));
 
     }
 

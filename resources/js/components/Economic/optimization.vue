@@ -324,6 +324,7 @@
 <script>
 const fileDownload = require("js-file-download");
 
+import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
@@ -436,10 +437,11 @@ export default {
       }
     },
     res: economicRes,
-    loading: true,
     isVisibleWellChanges: false
   }),
   computed: {
+    ...globalloadingState(['loading']),
+
     calculatedHeaders() {
       return [
         {
@@ -708,8 +710,10 @@ export default {
     }
   },
   methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
     async getData() {
-      this.loading = true
+      this.SET_LOADING(true);
 
       try {
         const {data} = await this.axios.get(this.localeUrl('/economic/optimization/get-data'), {params: this.form})
@@ -721,7 +725,7 @@ export default {
         console.log(e)
       }
 
-      this.loading = false
+      this.SET_LOADING(false);
     },
 
     selectScenario() {

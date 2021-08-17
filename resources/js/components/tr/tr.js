@@ -602,9 +602,6 @@ export default {
             this.isShowFirst = false;
             this.axiosEdit();
         },
-        closeModal(modalName) {
-            this.$modal.hide(modalName)
-        },
         sortBy(type) {
             this.$store.commit("tr/SET_SORTTYPE", this.isSortType);
             this.$store.commit("tr/SET_SORTPARAM", type);

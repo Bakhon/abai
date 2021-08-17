@@ -16,7 +16,7 @@ class EcoRefsCompaniesIdsController extends Controller
     {
         $ecorefscompanies = EcoRefsCompaniesId::latest()->paginate(5);
 
-        return view('ecorefscompanies.index',compact('ecorefscompanies'))
+        return view('economy_kenzhe/ecorefscompanies.index',compact('ecorefscompanies'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -27,7 +27,7 @@ class EcoRefsCompaniesIdsController extends Controller
      */
     public function create()
     {
-        return view('ecorefscompanies.create');
+        return view('economy_kenzhe/ecorefscompanies.create');
     }
 
     /**
@@ -40,6 +40,7 @@ class EcoRefsCompaniesIdsController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'num' => 'nullable|numeric'
         ]);
 
         EcoRefsCompaniesId::create($request->all());
@@ -67,7 +68,7 @@ class EcoRefsCompaniesIdsController extends Controller
     public function edit($id)
     {
         $EcoRefsCompaniesId = EcoRefsCompaniesId::find($id);
-        return view('ecorefscompanies.edit',compact('EcoRefsCompaniesId'));
+        return view('economy_kenzhe/ecorefscompanies.edit',compact('EcoRefsCompaniesId'));
 
     }
 

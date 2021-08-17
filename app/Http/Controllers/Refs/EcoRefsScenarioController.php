@@ -14,7 +14,7 @@ class EcoRefsScenarioController extends Controller
 {
     public function index(): View
     {
-        return view('eco_refs_scenario.index');
+        return view('economy_kenzhe/eco_refs_scenario.index');
     }
 
     public function store(StoreEcoRefsScenarioRequest $request): EcoRefsScenarioResource
