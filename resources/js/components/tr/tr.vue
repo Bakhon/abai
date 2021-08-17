@@ -197,7 +197,7 @@
                                     value="Статус"
                                   >
                                     <option v-for="(f, k) in statusFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_status') : f }}
+                                      {{ f }}
                                     </option>
                                   </select>
                                 </div>
@@ -240,7 +240,7 @@
                                   </select>
                                 </div>
 
-                                <div style="margin-left: 7px; cursor: pointer;">
+                                <!-- <div style="margin-left: 7px; cursor: pointer;">
                                   <select
                                     class="select_mod form-control"
                                     style="background: #334296 !important"
@@ -251,8 +251,26 @@
                                       {{ f === undefined ? trans('tr.choose_well') : f }}
                                     </option>
                                   </select>
-                                </div>
+                                </div> -->
                                 
+                                <div class="filters__item">
+                                  <multiselect
+                                    v-model="wellFilter"
+                                    :options="wellFilters"
+                                    value="Скважина"
+                                    :multiple="true"
+                                    :close-on-select="false" 
+                                    :clear-on-select="false"
+                                    select-label=""
+                                    deselect-label=""
+                                    select-group-label=""
+                                    deselect-group-label=""
+                                    selected-label=""
+                                  />
+                                </div>
+
+
+
                                   <a
                                     
                                     style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"

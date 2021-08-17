@@ -7,6 +7,7 @@ import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 import CatLoader from "@ui-kit/CatLoader";
+import Multiselect from 'vue-multiselect';
 
 import Paginate from 'vuejs-paginate';
 import moment from 'moment';
@@ -24,6 +25,7 @@ export default {
     TrFullTable,
     SearchFormRefresh,
     TrMultiselect,
+    Multiselect,
   },
   computed: {
     selectHorizon: {
@@ -86,95 +88,138 @@ export default {
       try {
         let filteredResult = this.allWells.filter(
           (row) =>
-            (!this.statusFilter || row.is_saved === this.statusFilter) &&
-            (!this.fieldFilter || row.field === this.fieldFilter) &&
-            (!this.wellFilter || row.rus_wellname === this.wellFilter) &&
-            (!this.typeWellFilter || row.type_text === this.typeWellFilter) &&
-            (!this.wellStatusFilter || row.well_status_last_day === this.wellStatusFilter)
+            (!this.fieldFilter || this.fieldFilter.indexOf(row.field) !== -1) &&
+            (!this.wellStatusFilter || this.wellStatusFilter.indexOf(row.well_status_last_day) !== -1) &&
+            (!this.statusFilter || this.statusFilter.indexOf(row.is_saved) !== -1) &&
+            (!this.typeWellFilter || this.typeWellFilter.indexOf(row.type_text) !== -1) &&
+            (!this.wellFilter || this.wellFilter.indexOf(row.rus_wellname) !== -1)
         );
         this.filteredWellData = filteredResult;
       } catch (err) {
         console.error(err);
         return false;
       }
-      if(this.filteredWellData.length === 1){
+      if (this.filteredWellData.length < 6) {
         this.lonelywell = this.filteredWellData;
       }
-      else return false;
+      else {
+        this.lonelywell = [];
+      }
       this.render++;
     },
     fieldFilters() {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.field) === -1 &&
-            (!this.wellFilter || el.rus_wellname === this.wellFilter) &&
-            (!this.wellStatusFilter || el.well_status_last_day === this.wellStatusFilter) &&
-            (!this.statusFilter || el.is_saved === this.statusFilter) &&
-            (!this.typeWellFilter || el.type_text === this.typeWellFilter)
-          ) {
-            filters = [...filters, el.field];
-          }
-        });
-        return [undefined, ...filters];
-    },
-
-    wellFilters() {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.rus_wellname) === -1 &&
-            (!this.fieldFilter || el.field === this.fieldFilter) &&
-            (!this.wellStatusFilter || el.well_status_last_day === this.wellStatusFilter) &&
-            (!this.statusFilter || el.is_saved === this.statusFilter) &&
-            (!this.typeWellFilter || el.type_text === this.typeWellFilter)
-          ) {
-            filters = [...filters, el.rus_wellname];
-          }
-        });
-        return [undefined, ...filters];
-    },
-    wellStatusFilters() {
+      let filters = [];
+      this.allWells.forEach((el) => {
+        // const el_horizon = this.getStringOrFirstItem(el, "horizon");
+        // const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
+        if (
+          filters.indexOf(el.field) === -1 &&
+          (!this.wellStatusFilter ||
+            this.wellStatusFilter.length === 0 ||
+            this.wellStatusFilter.indexOf(el.well_status_last_day) !== -1) &&
+          (!this.statusFilter ||
+            this.statusFilter.length === 0 ||
+            this.statusFilter.indexOf(el.is_saved) !== -1) &&
+          (!this.typeWellFilter ||
+            this.typeWellFilter.length === 0 ||
+            this.typeWellFilter.indexOf(el.type_text) !== -1) &&
+          (!this.wellFilter ||
+            this.wellFilter.length === 0 ||
+            this.wellFilter.indexOf(el.rus_wellname) !== -1)
+        ) {
+          filters = [...filters, el.field];
+        }
+      });
+      return [undefined, ...filters];
+  },  
+      wellStatusFilters() {
         let filters = [];
         this.allWells.forEach((el) => {
           if (
             filters.indexOf(el.well_status_last_day) === -1 &&
-            (!this.fieldFilter || el.field === this.fieldFilter) &&
-            (!this.wellFilter || el.rus_wellname === this.wellFilter) &&
-            (!this.statusFilter || el.is_saved === this.statusFilter) &&
-            (!this.typeWellFilter || el.type_text === this.typeWellFilter)
+            (!this.fieldFilter ||
+              this.fieldFilter.length === 0 ||
+              this.fieldFilter.indexOf(el.field) !== -1) &&
+            (!this.statusFilter ||
+              this.statusFilter.length === 0 ||
+              this.statusFilter.indexOf(el.is_saved) !== -1) &&
+            (!this.typeWellFilter ||
+              this.typeWellFilter.length === 0 ||
+              this.typeWellFilter.indexOf(el.type_text) !== -1) &&
+            (!this.wellFilter ||
+              this.wellFilter.length === 0 ||
+              this.wellFilter.indexOf(el.rus_wellname) !== -1)
           ) {
             filters = [...filters, el.well_status_last_day];
           }
         });
         return [undefined, ...filters];
-    },
+    },  
     statusFilters() {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.is_saved) === -1 &&
-            (!this.fieldFilter || el.field === this.fieldFilter) &&
-            (!this.wellFilter || el.rus_wellname === this.wellFilter)  &&
-            (!this.wellStatusFilter || el.well_status_last_day === this.wellStatusFilter) &&
-            (!this.typeWellFilter || el.type_text === this.typeWellFilter)
-          ) {
-            filters = [...filters, el.is_saved];
-          }
-        });
-        return [undefined, ...filters];
-    },
-    typeWellFilters() {
+      let filters = [];
+      this.allWells.forEach((el) => {
+        if (
+          filters.indexOf(el.is_saved) === -1 &&
+          (!this.fieldFilter ||
+            this.fieldFilter.length === 0 ||
+            this.fieldFilter.indexOf(el.field) !== -1) &&
+          (!this.wellStatusFilter ||
+            this.wellStatusFilter.length === 0 ||
+            this.wellStatusFilter.indexOf(el.well_status_last_day) !== -1) &&
+          (!this.typeWellFilter ||
+            this.typeWellFilter.length === 0 ||
+            this.typeWellFilter.indexOf(el.type_text) !== -1) &&
+          (!this.wellFilter ||
+            this.wellFilter.length === 0 ||
+            this.wellFilter.indexOf(el.rus_wellname) !== -1)
+        ) {
+          filters = [...filters, el.is_saved];
+        }
+      });
+      return [...filters];
+  },  
+      typeWellFilters() {
         let filters = [];
         this.allWells.forEach((el) => {
           if (
             filters.indexOf(el.type_text) === -1 &&
-            (!this.fieldFilter || el.field === this.fieldFilter) &&
-            (!this.wellFilter || el.rus_wellname === this.wellFilter)  &&
-            (!this.wellStatusFilter || el.well_status_last_day === this.wellStatusFilter) &&
-            (!this.statusFilter || el.is_saved === this.statusFilter)
+            (!this.fieldFilter ||
+              this.fieldFilter.length === 0 ||
+              this.fieldFilter.indexOf(el.field) !== -1) &&
+            (!this.wellStatusFilter ||
+              this.wellStatusFilter.length === 0 ||
+              this.wellStatusFilter.indexOf(el.well_status_last_day) !== -1) &&
+            (!this.statusFilter ||
+              this.statusFilter.length === 0 ||
+              this.statusFilter.indexOf(el.is_saved) !== -1) &&
+            (!this.wellFilter ||
+              this.wellFilter.length === 0 ||
+              this.wellFilter.indexOf(el.rus_wellname) !== -1)
           ) {
             filters = [...filters, el.type_text];
+          }
+        });
+        return [undefined, ...filters];
+    },   
+    wellFilters() {
+        let filters = [];
+        this.allWells.forEach((el) => {
+          if (
+            filters.indexOf(el.rus_wellname) === -1 &&
+            (!this.fieldFilter ||
+              this.fieldFilter.length === 0 ||
+              this.fieldFilter.indexOf(el.field) !== -1) &&
+            (!this.wellStatusFilter ||
+              this.wellStatusFilter.length === 0 ||
+              this.wellStatusFilter.indexOf(el.well_status_last_day) !== -1) &&
+            (!this.statusFilter ||
+              this.statusFilter.length === 0 ||
+              this.statusFilter.indexOf(el.is_saved) !== -1) &&
+            (!this.typeWellFilter ||
+              this.typeWellFilter.length === 0 ||
+              this.typeWellFilter.indexOf(el.type_text) !== -1)
+          ) {
+            filters = [...filters, el.rus_wellname];
           }
         });
         return [undefined, ...filters];
@@ -213,7 +258,7 @@ export default {
       fieldFilter: undefined,
       allWells: [],
       wellStatusFilter: undefined,
-      statusFilter: undefined,
+      statusFilter: "Не сохранено",
       typeWellFilter: undefined,
       filteredWellData: [],
       lonelywell: [],
@@ -593,16 +638,15 @@ export default {
       this.chooseAxios();
     },
     showWells() {
-      if(this.lonelywell.length === 1){
+      if(this.lonelywell[0].is_saved === "Сохранено"){
         this.isShowAdd = !this.isShowAdd;
-        if(this.lonelywell[0].is_saved === "Сохранено"){
-          this.isDeleted = false;
-          this.isSaved = true;
-        }
-        else{
-          this.isDeleted = true;
-          this.isSaved = false;
-        }
+        this.isDeleted = false;
+        this.isSaved = true;
+      }
+      else if(this.lonelywell[0].is_saved === "Не сохранено"){
+        this.isShowAdd = !this.isShowAdd;
+        this.isDeleted = true;
+        this.isSaved = false;
       }
       else{
         this.isShowAdd = this.isShowAdd;
