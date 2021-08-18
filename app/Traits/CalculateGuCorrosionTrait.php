@@ -39,7 +39,9 @@ trait CalculateGuCorrosionTrait
 
         $guDataByDay = $post->call()->getData();
 
-        if ($this->isValidParams($guDataByDay, $guData)) {
+        if (!$this->isValidParams($guDataByDay, $guData)) {
+            return 'Not enough data for ' . $gu->name . ' on ' . $this->date;
+        } else {
             $data = $this->setParams($gu, $guDataByDay, $guData);
 
             $post = new POSTCaller(
@@ -60,12 +62,8 @@ trait CalculateGuCorrosionTrait
             $calcCorrosion->corrosion = $corrosion->corrosion_rate_mm_per_y_point_A;
             $calcCorrosion->save();
 
-            $message = 'GU ' . $gu->name . ' corrosion ' . $corrosion->corrosion_rate_mm_per_y_point_A;
-        } else {
-            $message = 'Not enough data for ' . $gu->name . ' on ' . $this->date;
+            return 'GU ' . $gu->name . ' corrosion ' . $corrosion->corrosion_rate_mm_per_y_point_A;
         }
-
-        return $message;
     }
 
     public function isValidParams($guDataByDay, $guData)
