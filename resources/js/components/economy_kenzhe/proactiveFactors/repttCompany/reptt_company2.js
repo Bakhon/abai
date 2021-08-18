@@ -2,9 +2,11 @@ export default {
 	props: [ 'dataReptt' ],
 	data() {
 		return {
+			unit: 'тыс. kzt',
 			yearLast: 2019,
 			day: '30.01.19',
 			yearNow: 2020,
+            col2Reptt: '',
 			col3Reptt: '',
 			col4Reptt: '',
 			col5Reptt: '',
@@ -12,6 +14,8 @@ export default {
 			col7Reptt: '',
 			col8Reptt: '',
 			col9Reptt: '',
+            col10Reptt: '',
+            col11Reptt: '',
 			defaultProps: {
 				id: 'id',
 				children: 'handbook_items'
@@ -52,9 +56,12 @@ export default {
 		},
 
 		getChangedColumnClass(obj) {
-			if (obj.columnIndex > 4) {
-				return 'reptt-column-blue reptt-cell';
-			} else if (obj.columnIndex === 0) {
+			if ((obj.columnIndex >4) && (obj.columnIndex < 8 )) {
+				return 'reptt-column-blue3 reptt-cell';
+			} else if (obj.columnIndex > 7) {
+                return 'reptt-column-blue reptt-cell';
+            }
+             else if (obj.columnIndex === 0) {
 				return 'reptt-column-zero reptt-column reptt-cell';
 			} else {
 				return 'reptt-column reptt-cell';
@@ -62,7 +69,30 @@ export default {
 		},
 
 		hideEmptyValues: function(row, index) {
-			if (row.row.plan_value[this.currentYear] === 0 && row.row.level !== 0) {
+			console.log(row.row.name);
+			console.log(row.row.id);
+			if (row.row.plan_value[this.currentYear] === 0) {
+				return 'hidden-row';
+			}
+			else if (row.row.name === 'Производственные показатели') {
+				return 'hidden-row';
+			}
+			else if (row.row.name === 'Реализация') {
+				return 'hidden-row';
+			}
+			else if (row.row.name === 'Транспортировка/Хранение') {
+				return 'hidden-row';
+			}
+			else if (row.row.name === 'Закуп') {
+				return 'hidden-row';
+			}
+			else if (row.row.name === 'Сальдо движения денежных средств на начало периода') {
+				return 'hidden-row';
+			}
+			else if (row.row.name === 'Чистая сумма денежных средств по операционной деятельности') {
+				return 'hidden-row';
+			}
+			else if (row.row.name === 'Чистое поступление денежных средств по инвестиц.деятельности') {
 				return 'hidden-row';
 			}
 		},
@@ -77,20 +107,22 @@ export default {
 			}
 			return result;
 		},
-		formatter: (data) => {
-			data = data / 1000000000;
-			data = data.toLocaleString();
-			return data;
-		}
+        formatter: (data) => {
+            data=data / 1000    
+                  return Math.round(data).toLocaleString();         
+           },
 	},
 	updated() {
-		this.col3Reptt = this.trans('economy_pf.repttTable.factZa') + ' \n' + this.yearLast + ' ' + this.trans('economy_pf.repttTable.year');
-		this.col4Reptt = this.trans('economy_pf.repttTable.factZa') + ' \n' + this.day;
-		this.col5Reptt = this.trans('economy_pf.repttTable.planNa') + ' \n' + this.yearNow;
-		this.col6Reptt = this.trans('economy_pf.repttTable.plan') + ' \n' + this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear');
-		this.col7Reptt = this.trans('economy_pf.repttTable.fact') + ' \n' + this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear');
-		this.col8Reptt = this.trans('economy_pf.repttTable.absDeviation') + ' \n ' + this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear') + ', +/-';
-		this.col9Reptt = this.trans('economy_pf.repttTable.relativeDeviation') + ' \n' + this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear') + ', %';
+        this.col2Reptt = 'План на \n январь - \n июнь'
+		this.col3Reptt = 'Факт на \n январь - \n июнь'//this.trans('economy_pf.repttTable.factZa') + ' \n' + this.yearLast + ' ' + this.trans('economy_pf.repttTable.year');
+		this.col4Reptt = this.trans('economy_pf.repttTable.absDeviation') + ' \n '+ '+/-';
+		this.col5Reptt = this.trans('economy_pf.repttTable.relativeDeviation') + ' \n' + ' %'; //this.trans('economy_pf.repttTable.planNa') + ' \n' + this.yearNow;
+		this.col6Reptt = 'Прогноз \n + 3 мес.';
+		this.col7Reptt = this.trans('economy_pf.repttTable.absDeviation') + ' +/- \n от утв. плана';
+		this.col8Reptt = this.trans('economy_pf.repttTable.relativeDeviation') + ' % \n от утв. плана';
+        this.col9Reptt = 'Прогноз \n + 12 мес.';
+		this.col10Reptt = this.trans('economy_pf.repttTable.absDeviation') + ' +/- \n от утв. плана';
+		this.col11Reptt = this.trans('economy_pf.repttTable.relativeDeviation') + ' % \n от утв. плана';
 		let handbookKeys = [ 'plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value' ];
 		handbookKeys.forEach((key) => {
 			this.distributionSumOverTree(key, this.currentYear);

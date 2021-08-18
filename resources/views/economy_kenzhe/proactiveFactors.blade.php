@@ -5,6 +5,35 @@
 </div>
 @endsection
 <style scoped>
+   th.reptt-cell>.cell, td.reptt-cell>.cell {
+        line-height: 1.3!important;
+        padding: 12px 0;
+        margin: 0;
+        height: auto;
+        width: auto;
+        background: transparent;
+        color: white;
+        float: unset;
+        word-break: normal!important;
+        line-height:unset!important;
+        white-space: normal;
+    }
+
+        th.reptt-column-zero, th.reptt-column{
+        background:#323370!important;
+    }
+
+    td.reptt-column, td.reptt-column-zero {
+    height: 0px!important;
+    }
+
+    .el-table--enable-row-hover .el-table__body tr:hover>td{
+        background: #293688!important;
+    }
+
+    td.reptt-cell {
+        padding: unset!important;
+    }
     .proactive-factors-page-container {
         flex-wrap: wrap;
         margin: 0 !important;
@@ -51,60 +80,11 @@
         background-color: #293688;
         border: none;
     }
-
-
-    tr.reptt-header>th div {
-        background: #323370;
-        height: 75px !important;
-        padding: 20px 0;
-        color: #fff;
-        font-size: 14px;
+    .hidden-row{
+        display: none;
     }
-
-    td.reptt-column,
-    td.reptt-column-zero {
-        background: #25264e;
-        height: 75px !important;
-        padding: 20px 0;
-        color: #fff;
-        font-size: 14px;
-    }
-
-    td.reptt-column-zero .cell {
-        text-align: left;
-        color: #fff;
-    }
-
-    td.reptt-column-blue,
-    th.reptt-column-blue .cell {
-        background: #1a2370 !important;
-    }
-
-    td.reptt-cell .el-table__expand-icon {
-        color: white;
-    }
-
-    td.reptt-cell {
-        font-size: 14px;
-        text-align: left;
-    }
-
-    .el-table--border td.reptt-cell,
-    .el-table--border th.reptt-cell,
-    .el-table.reptt th.is-leaf {
-        border-color: #424a7e;
-    }
-
-    .el-table .cell {
-        white-space: pre-line;
-    }
-
-    .reptt.el-table--border {
-        border-color: #424a7e;
-    }
-
-    .reptt.el-table::before,
-    .reptt.el-table::after {
-        background-color: #424a7e;
+    
+    td.reptt-column-blue3 , th.reptt-column-blue3 .cell, .reptt-column-blue3 {
+        background:#12135c!important;
     }
 </style>
