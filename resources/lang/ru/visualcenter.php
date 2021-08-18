@@ -224,6 +224,12 @@ return array (
   'tonWithSpace' => ' тонн',
   'meterCubicWithSpace' => ' м³/сут',
   'requiredDailyPlan' => 'Необходимый ср/сут уровень',
+  'headOfPageModule' => 'Главная страница модуля',
+  'inputForm' => 'Форма ввода',
+  'dailyReportsKMG' => 'Суточная отчетность КМГ',
+  'approvalsTable' => 'Таблица согласований',
+  'version' => 'Версия',
+  'upstreamKPI' => 'КПД Блока Upstream',
   'dzoRegions' => 
   array (
     'aturay' => 'Атырауская область',
@@ -411,5 +417,6 @@ return array (
     'approved' => 'Согласовано',
     'cancelled' => 'Отменено'
   ),
+  'condensateDelivery' => 'Сдача конденсата',
   'notes' => 'Примечания'
 );

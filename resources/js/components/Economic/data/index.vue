@@ -1,33 +1,43 @@
 <template>
-  <div class="container-fluid">
-    <div class="row justify-content-between">
-      <cat-loader v-show="loading"/>
+  <div class="container p-4 bg-light" style="max-width: 90vw">
+    <subtitle class="mb-2">{{ title }}</subtitle>
 
-      <vue-table-dynamic
-          v-if="form.sc_fa"
-          ref="table"
-          :params="params"
-          class="height-fit-content">
-        <a :slot="`column-${columnEditIndex}`"
-           slot-scope="{ props }"
-           :href="props.cellData">
-          {{ trans('app.edit') }}
-        </a>
-      </vue-table-dynamic>
-    </div>
+    <select-sc-fa
+        :loading="loading"
+        :form="form"
+        :is-forecast="isForecast"
+        form-key="sc_fa"
+        @loading="SET_LOADING(true)"
+        @loaded="SET_LOADING(false)"
+        @change="getData"/>
+
+    <vue-table-dynamic
+        v-if="form.sc_fa"
+        ref="table"
+        :params="params"
+        class="height-fit-content">
+      <a :slot="`column-${columnEditIndex}`"
+         slot-scope="{ props }"
+         :href="props.cellData">
+        {{ trans('app.edit') }}
+      </a>
+    </vue-table-dynamic>
   </div>
 </template>
 
 <script>
 import VueTableDynamic from 'vue-table-dynamic'
-import {globalloadingMutations} from '@store/helpers';
-import SelectScFa from "../components/SelectScFa";
 
+import {globalloadingMutations} from '@store/helpers';
+
+import Subtitle from "../components/Subtitle";
+import SelectScFa from "../components/SelectScFa";
 
 export default {
   name: "economic-data-component",
   components: {
     VueTableDynamic,
+    Subtitle,
     SelectScFa
   },
   props: {
@@ -41,12 +51,9 @@ export default {
       sc_fa: null
     },
     data: [],
-    loading: false
   }),
   methods: {
-    ...globalloadingMutations([
-      'SET_LOADING'
-    ]),
+    ...globalloadingMutations(['SET_LOADING']),
 
     async getData() {
       if (!this.form.sc_fa) return
@@ -124,6 +131,12 @@ export default {
         {value: 'edit'},
         {value: 'id_of_add'}
       ]
+    },
+
+    title() {
+      return this.isForecast
+          ? this.trans('economic_reference.eco_refs_scenario')
+          : this.trans('economic_reference.eco_refs_cost')
     },
   }
 };
