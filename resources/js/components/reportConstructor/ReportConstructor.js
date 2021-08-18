@@ -54,6 +54,7 @@ export default {
             markedNodes: {'org':{}, 'geo':{}, 'tech':{}},
             maxDepthOfSelectedAttributes: null,
             isSelectUntilWells: false,
+            selectedObjectsIndex: {},
         }
     },
     mounted: function () {
@@ -296,24 +297,15 @@ export default {
             return columns
         },
         updateSelectedNodes(node, level) {
-            let index = this._findNodeInSelectedNodes(node)
-            if (typeof index === 'undefined') {
+            if (typeof this.selectedObjectsIndex[node.id] === 'undefined') {
                 node.level = level
                 this.selectedObjects.push(node)
+                this.selectedObjectsIndex[node.id] = this.selectedObjects.length-1;
             } else {
-                this.selectedObjects.splice(index)
+                this.selectedObjects.splice(this.selectedObjectsIndex[node.id])
+                this.selectedObjectsIndex[node.id] = undefined;
             }
         },
-        _findNodeInSelectedNodes(node) {
-            for (let i = 0; i < this.selectedObjects.length; i++) {
-                let n = this.selectedObjects[i]
-                if (n['id'] === node['id'] && n['structureId'] === node['structureId']) {
-                    return i
-                }
-            }
-            return undefined;
-        },
-
         getStatisticsFile() {
             this.SET_LOADING(true)
             try {
