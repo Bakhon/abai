@@ -41,29 +41,29 @@ trait CalculateGuCorrosionTrait
 
         if (!$this->isValidParams($guDataByDay, $guData)) {
             return 'Not enough data for ' . $gu->name . ' on ' . $this->date;
-        } else {
-            $data = $this->setParams($gu, $guDataByDay, $guData);
-
-            $post = new POSTCaller(
-                DruidController::class,
-                'corrosion',
-                Request::class,
-                $data
-            );
-            $corrosion = $post->call()->getData();
-
-            $calcCorrosion = CalculatedCorrosion::firstOrNew(
-                [
-                    'date' => $this->date,
-                    'gu_id' => $gu->id
-                ]
-            );
-
-            $calcCorrosion->corrosion = $corrosion->corrosion_rate_mm_per_y_point_A;
-            $calcCorrosion->save();
-
-            return 'GU ' . $gu->name . ' corrosion ' . $corrosion->corrosion_rate_mm_per_y_point_A;
         }
+
+        $data = $this->setParams($gu, $guDataByDay, $guData);
+
+        $post = new POSTCaller(
+            DruidController::class,
+            'corrosion',
+            Request::class,
+            $data
+        );
+        $corrosion = $post->call()->getData();
+
+        $calcCorrosion = CalculatedCorrosion::firstOrNew(
+            [
+                'date' => $this->date,
+                'gu_id' => $gu->id
+            ]
+        );
+
+        $calcCorrosion->corrosion = $corrosion->corrosion_rate_mm_per_y_point_A;
+        $calcCorrosion->save();
+
+        return 'GU ' . $gu->name . ' corrosion ' . $corrosion->corrosion_rate_mm_per_y_point_A;
     }
 
     public function isValidParams($guDataByDay, $guData)
