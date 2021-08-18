@@ -2,7 +2,7 @@ export default {
 	props: [ 'dataReptt' ],
 	data() {
 		return {
-			unit: 'тыс. kzt',
+			unit: this.trans("economy_pf.repttTable.unitKzt"),
 			yearLast: 2019,
 			day: '30.01.19',
 			yearNow: 2020,
@@ -22,11 +22,11 @@ export default {
 			},
 			tableHeader: [
 				{
-					label: 'Наименование',
+					label: this.trans('economy_pf.repttTable.name'),
 					prop: 'name'
 				},
 				{
-					label: 'План на январь',
+					label: this.trans('economy_pf.repttTable.planNa') + this.trans('economy_pf.months.0'),
 					prop: 'value'
 				}
 			]
@@ -68,9 +68,7 @@ export default {
 			}
 		},
 
-		hideEmptyValues: function(row, index) {
-			console.log(row.row.name);
-			console.log(row.row.id);
+		hideEmptyValues: function(row) {	
 			if (row.row.plan_value[this.currentYear] === 0) {
 				return 'hidden-row';
 			}
@@ -109,20 +107,20 @@ export default {
 		},
         formatter: (data) => {
             data=data / 1000    
-                  return Math.round(data).toLocaleString();         
-           },
+            return Math.round(data).toLocaleString();
+        },
 	},
 	updated() {
-        this.col2Reptt = 'План на \n январь - \n июнь'
-		this.col3Reptt = 'Факт на \n январь - \n июнь'//this.trans('economy_pf.repttTable.factZa') + ' \n' + this.yearLast + ' ' + this.trans('economy_pf.repttTable.year');
+        this.col2Reptt = this.trans('economy_pf.repttTable.planNa') +'\n' + this.trans('economy_pf.months.0') + '-' + this.trans('economy_pf.months.7') + ' \n ';
+		this.col3Reptt = this.trans('economy_pf.repttTable.factNa') + '\n' + this.trans('economy_pf.months.0') + '-' + this.trans('economy_pf.months.7') + ' \n ';
 		this.col4Reptt = this.trans('economy_pf.repttTable.absDeviation') + ' \n '+ '+/-';
-		this.col5Reptt = this.trans('economy_pf.repttTable.relativeDeviation') + ' \n' + ' %'; //this.trans('economy_pf.repttTable.planNa') + ' \n' + this.yearNow;
-		this.col6Reptt = 'Прогноз \n + 3 мес.';
-		this.col7Reptt = this.trans('economy_pf.repttTable.absDeviation') + ' +/- \n от утв. плана';
-		this.col8Reptt = this.trans('economy_pf.repttTable.relativeDeviation') + ' % \n от утв. плана';
-        this.col9Reptt = 'Прогноз \n + 12 мес.';
-		this.col10Reptt = this.trans('economy_pf.repttTable.absDeviation') + ' +/- \n от утв. плана';
-		this.col11Reptt = this.trans('economy_pf.repttTable.relativeDeviation') + ' % \n от утв. плана';
+		this.col5Reptt = this.trans('economy_pf.repttTable.relativeDeviation') + ' \n' + ' %';
+		this.col6Reptt = this.trans('economy_pf.repttTable.forecast') + ' \n + 3 '+ this.trans('economy_pf.repttTable.monthShort'); 
+		this.col7Reptt = this.trans('economy_pf.repttTable.absDeviation') + ' +/- \n ' + this.trans('economy_pf.repttTable.fromApprovedPlan'); 
+		this.col8Reptt = this.trans('economy_pf.repttTable.relativeDeviation') + ' % \n ' + this.trans('economy_pf.repttTable.fromApprovedPlan'); 
+        this.col9Reptt = this.trans('economy_pf.repttTable.forecast') + ' \n + 12 '+ this.trans('economy_pf.repttTable.monthShort'); 
+		this.col10Reptt = this.trans('economy_pf.repttTable.absDeviation') + ' +/- \n ' + this.trans('economy_pf.repttTable.fromApprovedPlan'); 
+		this.col11Reptt = this.trans('economy_pf.repttTable.relativeDeviation') + ' % \n ' + this.trans('economy_pf.repttTable.fromApprovedPlan'); 
 		let handbookKeys = [ 'plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value' ];
 		handbookKeys.forEach((key) => {
 			this.distributionSumOverTree(key, this.currentYear);

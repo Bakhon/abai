@@ -21,7 +21,6 @@
       </el-table-column>
        <el-table-column       
         prop="unit"
-        :formatter = "stateFormat"
         :label="this.trans('economy_pf.repttTable.unit')"
         :min-width="10"
         :key="Math.random()"

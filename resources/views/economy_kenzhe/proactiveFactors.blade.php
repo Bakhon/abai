@@ -30,12 +30,16 @@
         padding: unset!important;
     }
 
-        th.reptt-column-zero, th.reptt-column{
+    th.reptt-column-zero, th.reptt-column{
         background:#323370!important;
     }
   
     tr:hover>td.reptt-cell{
         background: #293688!important;
+    }
+
+    td.reptt-column-blue3 , th.reptt-column-blue3>.cell, .reptt-column-blue3 {
+        background:#12135c!important;
     }
   
     .proactive-factors-page-container {
@@ -85,9 +89,5 @@
     }
     .hidden-row{
         display: none;
-    }
-    
-    td.reptt-column-blue3 , th.reptt-column-blue3 .cell, .reptt-column-blue3 {
-        background:#12135c!important;
     }
 </style>
