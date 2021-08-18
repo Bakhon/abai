@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Traits\CalculateGuCorrosionTrait;
+use App\Traits\CalculateGuCorrosionTrait;
 use App\Models\ComplicationMonitoring\Gu;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
