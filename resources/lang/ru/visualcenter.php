@@ -418,5 +418,6 @@ return array (
     'cancelled' => 'Отменено'
   ),
   'condensateDelivery' => 'Сдача конденсата',
-  'notes' => 'Примечания'
+  'notes' => 'Примечания',
+  'countOfProductionWells' => 'Количество добывающих скважин, скв.'
 );

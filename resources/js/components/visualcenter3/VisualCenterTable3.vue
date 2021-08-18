@@ -1057,7 +1057,7 @@
                   <tbody>
                   <tr v-for="(item, index) in dzoSummaryForTable">
                     <td :class="`${getDzoColumnsClass(index,'difference')}`">
-                      {{getNumberByDzo(item.dzoMonth)}}
+                      {{getNumberByDzo(item.dzoMonth,index)}}
                     </td>
                     <td
                             @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth,item.dzo)}` : `${selectAllDzoCompanies()}`"
@@ -1788,7 +1788,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-475">
                   <table v-if="productionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
@@ -1829,12 +1829,15 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
+                  <div v-if="isProductionFondPeriodSelected" class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
+                  <vc-daily-chart
+                          v-if="dailyChart.series.length > 0 && !isProductionFondPeriodSelected"
+                          :chart-data="dailyChart"
+                  ></vc-daily-chart>
                   <visual-center3-wells
-                          v-if="productionFondDataForChart"
+                          v-if="productionFondDataForChart && isProductionFondPeriodSelected"
                           :chartData="productionFondDataForChart"
-                  >
-                  </visual-center3-wells>
+                  ></visual-center3-wells>
                 </div>
               </div>
             </div>
@@ -2812,6 +2815,9 @@
       padding: 5px 5px 5px 10px;
       font-size: 16px !important;
     }
+  }
+  .mh-475 {
+    max-height: 475px;
   }
 
   .vis-table-small {

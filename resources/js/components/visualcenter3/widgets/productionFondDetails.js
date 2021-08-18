@@ -119,7 +119,12 @@ export default {
                     'idle': 0
                 }
             },
-            productionFondHistory: []
+            productionFondHistory: [],
+            forDailyChart: [],
+            dailyChart: {
+                series: [],
+                labels: []
+            }
         };
     },
     methods: {
@@ -136,7 +141,7 @@ export default {
             this.updateProductionFondHistory();
             this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
             this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
-            this.updateProductionFondWidget();
+            await this.updateProductionFondWidget();
             this.SET_LOADING(false);
         },
 
@@ -160,6 +165,7 @@ export default {
         },
 
         async updateProductionFondWidget() {
+            this.SET_LOADING(true);
             let productionFondDetails = _.cloneDeep(this.productionFondDetails);
             let productionFondDetailsHistory = _.cloneDeep(this.productionFondHistory);
             if (this.productionFondSelectedCompany !== 'all') {
@@ -171,6 +177,20 @@ export default {
             this.productionFondChartData = this.getProductionFondWidgetChartData(compared);
             this.updateProductionFondSum('actual',productionFondDetails);
             this.updateProductionFondSum('history',productionFondDetailsHistory);
+            this.forDailyChart = await this.getChartData();
+            this.updateDailyChart();
+            this.SET_LOADING(false);
+        },
+
+        updateDailyChart() {
+            let filtered = _.filter(this.forDailyChart, (value, key) => key === this.productionFondSelectedCompany);
+            if (this.fondsFilter.isProductionIdleActive) {
+                this.dailyChart.series = Object.values(filtered[0].idle);
+                this.dailyChart.labels = Object.keys(filtered[0].idle);
+            } else {
+                this.dailyChart.series = Object.values(filtered[0].work);
+                this.dailyChart.labels = Object.keys(filtered[0].work);
+            }
         },
 
         updateProductionFondSum(type,inputData) {
@@ -236,6 +256,19 @@ export default {
             }
             this.updateProductionFondWidget();
         },
+
+        async getChartData() {
+            let uri = this.localeUrl("/get-production-fond-chart");
+            let queryOptions = {
+                startPeriod: this.productionFondPeriodStart,
+                endPeriod: this.productionFondPeriodEnd
+            };
+            const response = await axios.get(uri,{params:queryOptions});
+            if (response.status !== 200) {
+                return {};
+            }
+            return response.data;
+        }
     },
     computed: {
         productionFondDataForChart() {

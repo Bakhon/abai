@@ -30,6 +30,10 @@ import wellsDetails from './dataManagers/wellsDetails';
 import injectionFondDetails from './widgets/injectionFondDetails';
 import emergency from './widgets/emergency';
 import {globalloadingMutations} from '@store/helpers';
+import Vue from "vue";
+
+Vue.component('vc-daily-chart', require('./charts/dailyChart.vue').default);
+
 
 
 export default {
@@ -753,7 +757,7 @@ export default {
         this.updateChemistryWidget();
         this.updateWellsWorkoverWidget();
         this.updateDrillingWidget();
-        this.updateProductionFondWidget();
+        await this.updateProductionFondWidget();
         this.updateInjectionFondWidget();
     },   
     watch: {
