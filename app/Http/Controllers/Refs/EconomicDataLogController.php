@@ -19,7 +19,7 @@ class EconomicDataLogController extends Controller
             ->latest()
             ->paginate(self::PAGINATION);
 
-        return view('eco_refs_cost.log.index', compact('economicDataLog'));
+        return view('economy_kenzhe/eco_refs_cost.log.index', compact('economicDataLog'));
     }
 
     public function destroy(int $id): RedirectResponse

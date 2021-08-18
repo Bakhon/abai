@@ -309,7 +309,7 @@ abstract class TableForm extends BaseForm
         if (!empty($params['filter'])) {
             $params['filter'] = array_map(
                 function ($item) {
-                    if ($item['type'] === 'date' && $item['default']) {
+                    if ($item['type'] === 'date' && !empty($item['default'])) {
                         $item['default'] = Carbon::createFromTimestamp(strtotime($item['default']))->timezone(
                             'Asia/Almaty'
                         );

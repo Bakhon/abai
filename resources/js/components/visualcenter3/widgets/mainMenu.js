@@ -41,7 +41,13 @@ export default {
             condolidatedButtons: ['oilCondensateProductionButton','oilCondensateDeliveryButton'],
             isFirstLoading: true,
             lastSelectedCategory: 'oilCondensateProductionButton',
-            oilResidueChartName: this.trans('visualcenter.ostatokNefti')
+            oilResidueChartName: this.trans('visualcenter.ostatokNefti'),
+            dropdownMenu: {
+                'oilCondensateProduction': false,
+                'oilCondensateDelivery': false,
+                'gasProduction': false,
+                'waterInjection': false
+            }
         };
     },
     methods: {
@@ -91,11 +97,11 @@ export default {
 
         switchMainMenu(parentButton, childButton,chartName) {
             this.chartHeadName = this.chartTranslateMapping[childButton];
-            this.isOilResidueActive = false;
             this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();
             let self = this;
             this.isMainMenuItemChanged = false;
+            this.isOilResidueActive = childButton === 'oilResidue' && !this.isOilResidueActive;
             let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
             if (this.categoryMenuPreviousParent !== parentButton) {
                 _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
@@ -197,6 +203,11 @@ export default {
             this.updateDzoMenu();         
             this.updateProductionFondWidget();
             this.updateInjectionFondWidget();          
+        },
+
+        switchDropdownCategories(category) {
+            this.dropdownMenu = _.mapValues(this.dropdownMenu, () => false);
+            this.dropdownMenu[category] = true;
         },
     },
 }

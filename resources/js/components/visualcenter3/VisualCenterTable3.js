@@ -96,8 +96,6 @@ export default {
             bigTable: [],
             starts: [""],
             series: ["", ""],
-            planMonthSumm: "",
-            factMonthSumm: "",
             timestampToday: "",
             timestampEnd: "",
             isPricesChartLoading: false,
@@ -524,25 +522,6 @@ export default {
                 otheraccidents.push({otheraccidents: item.otheraccidents});
                 gasRestriction.push({gasRestriction: item.gasRestriction});
             });
-
-            var planMonthSumm = _.reduce(
-                planMonth,
-                function (memo, item) {
-                    return memo + item.planMonth;
-                },
-                0
-            );
-
-            var factMonthSumm = _.reduce(
-                factMonth,
-                function (memo, item) {
-                    return memo + item.factMonth;
-                },
-                0
-            );
-
-            this.planMonthSumm = planMonthSumm;
-            this.factMonthSumm = factMonthSumm;
 
             var bigTable = _.zipWith(
                 opec,

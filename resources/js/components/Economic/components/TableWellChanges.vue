@@ -67,7 +67,10 @@ export default {
     data: {
       required: true,
       type: Array
-    }
+    },
+  },
+  mounted() {
+    this.scrollToChanges()
   },
   methods: {
     getColor({profitability_12m}) {
@@ -88,7 +91,8 @@ export default {
       let index = this.filteredData.findIndex((item, index, data) =>
           index &&
           item.oil_price === data[index - 1].oil_price &&
-          item.profitability_12m !== data[index - 1].profitability_12m
+          item.profitability_12m === 'profitable' &&
+          data[index - 1].profitability_12m !== 'profitable'
       )
 
       if (index === -1) return
