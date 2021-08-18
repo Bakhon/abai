@@ -332,4 +332,8 @@ td:last-of-type {
   color:#fff;
 }
 
+.header__subtitle{
+  color: #a4a5c6!important;
+  font-size: 24px;
+}
 

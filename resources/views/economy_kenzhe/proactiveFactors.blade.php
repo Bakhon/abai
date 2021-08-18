@@ -67,7 +67,7 @@
         background-color: #272953;
         color: #fff;
         border: none;
-        height: 75px;
+        height: 73px;
     }
 
     .filter__option {
