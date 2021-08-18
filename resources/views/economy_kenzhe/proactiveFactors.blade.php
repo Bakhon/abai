@@ -5,9 +5,14 @@
 </div>
 @endsection
 <style scoped>
-   th.reptt-cell>.cell, td.reptt-cell>.cell {
+    th.reptt-cell>.cell {
+        font-size: 14px;
+        color: #fff;
+    }
+    
+    td.reptt-cell>.cell {
+        font-size: 14px;
         line-height: 1.3!important;
-        padding: 12px 0;
         margin: 0;
         height: auto;
         width: auto;
@@ -16,24 +21,23 @@
         float: unset;
         word-break: normal!important;
         line-height:unset!important;
+        padding: unset!important;
         white-space: normal;
-    }
-
-        th.reptt-column-zero, th.reptt-column{
-        background:#323370!important;
-    }
-
-    td.reptt-column, td.reptt-column-zero {
-    height: 0px!important;
-    }
-
-    .el-table--enable-row-hover .el-table__body tr:hover>td{
-        background: #293688!important;
     }
 
     td.reptt-cell {
         padding: unset!important;
     }
+
+        th.reptt-column-zero, th.reptt-column{
+        background:#323370!important;
+    }
+  
+    .el-table--enable-row-hover .el-table__body tr:hover>td{
+        background: #293688!important;
+    }
+
+  
     .proactive-factors-page-container {
         flex-wrap: wrap;
         margin: 0 !important;
@@ -53,7 +57,6 @@
     .contro-panel-col_text {
         position: relative;
         top: 2em;
-
     }
 
     .filter__input {
