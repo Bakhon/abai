@@ -11,8 +11,7 @@
     }
     
     td.reptt-cell>.cell {
-        font-size: 14px;
-        line-height: 1.3!important;
+        font-size: 14px;      
         margin: 0;
         height: auto;
         width: auto;
@@ -33,10 +32,9 @@
         background:#323370!important;
     }
   
-    .el-table--enable-row-hover .el-table__body tr:hover>td{
+    tr:hover>td.reptt-cell{
         background: #293688!important;
     }
-
   
     .proactive-factors-page-container {
         flex-wrap: wrap;
