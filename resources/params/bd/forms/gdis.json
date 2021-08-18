@@ -3,7 +3,7 @@
   "table": "prod.gdis_complex",
   "tabs": [
     {
-      "title": "",
+      "title": "main",
       "blocks": [
         [
           {
@@ -16,7 +16,7 @@
                 "validation": "required"
               },
               {
-                "code": "hello_world",
+                "code": "",
                 "type": "datetime",
                 "title": "dend",
                 "validation": "required"
@@ -26,7 +26,34 @@
                 "type": "dict",
                 "dict":"research_methods",
                 "title": "research_type",
-                "validation": "required"
+                "validation": "required|exists:tbd.dict.research_method,id"
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "option_1",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "type": "numeric",
+                "title": "option_2",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
               },
               {
                 "code": "depth",
