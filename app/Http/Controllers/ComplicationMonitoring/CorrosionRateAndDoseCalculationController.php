@@ -22,17 +22,21 @@ class CorrosionRateAndDoseCalculationController extends Controller
 
         if ($gu->name == "ГУ-24") 
         {
-            if($request->current_dosage > 0){
+            if($request->current_dosage > 0)
+            {
                 $r_a = 0.045375-0.0004*$request->current_dosage-0.18198*$pCO2+438.4723*$pH2S; 
-            }else{
+            }else
+            {
                 $r_a = -0.15107+1.146195*$pCO2-854.1*$pH2S;
             }
         }        
         else if ($gu->name == "ГУ-22") 
         {
-            if($request->current_dosage > 0){
+            if($request->current_dosage > 0)
+            {
                 $r_a = 0.3651+0.001705*$request->current_dosage-1.4529*$pCO2+1015.4313*$pH2S; 
-            }else{
+            }else
+            {
                 $r_a = 0.3242 - 0.3512 * $pCO2 + 689.7732 * $pH2S; 
             }
         }
