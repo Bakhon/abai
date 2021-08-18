@@ -201,7 +201,7 @@ export default {
             }
             this.selectedDzoCompanies = oneDzoNameSelected;
             if (Array.isArray(oneDzoNameSelected)) {
-                oneDzoNameSelected = oneDzoNameSelected['0']
+                oneDzoNameSelected = oneDzoNameSelected[0]
             }       
             this.chemistrySelectedCompany= oneDzoNameSelected;
             this.wellsWorkoverSelectedCompany= oneDzoNameSelected;
