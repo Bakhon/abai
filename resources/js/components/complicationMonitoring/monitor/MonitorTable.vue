@@ -282,31 +282,31 @@
       <div class="col-2 monitor__charts">
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.action_substance_of_co2') }}</p>
-          <monitor-chart
+          <chart
               :title="trans('monitoring.action_substance_of_co2')"
               :measurement="trans('measurements.mg/dm3')"
-              :data="chart1Data"/>
+              :data="chartDtCarbonDioxide"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.action_substance_of_h2s') }}</p>
-          <monitor-chart
+          <chart
               :title="trans('monitoring.action_substance_of_h2s')"
               :measurement="trans('measurements.mg/dm3')"
-              :data="chart2Data"/>
+              :data="chartDtHydrogenSulfide"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_corrosion_speed') }}</p>
-          <monitor-chart
+          <chart
               :title="trans('monitoring.actual_corrosion_speed')"
               :measurement="trans('measurements.mm/g')"
-              :data="chart3Data"/>
+              :data="chartCorrosion"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_inhibitor_level') }}</p>
-          <monitor-chart
+          <chart
               :title="trans('monitoring.actual_inhibitor_level')"
               :measurement="trans('measurements.g/m3')"
-              :data="chart4Data"/>
+              :data="chartIngibitor"/>
         </div>
       </div>
       <div class="col-8 monitor__schema">
@@ -471,7 +471,7 @@
         <div class="monitor__right-block monitor__right-block_radial">
           <p class="monitor__right-block-title">{{ trans('monitoring.ik_recommend') }}</p>
           <div class="radial">
-            <monitor-chart-radialbar></monitor-chart-radialbar>
+            <chart-radial-bar/>
           </div>
           <div class="signalizator">
             <div class="signalizator-gus" v-if="problemGus.length > 0">
@@ -531,7 +531,10 @@ import Vue from "vue";
 import Calendar from "v-calendar/lib/components/calendar.umd"
 import DatePicker from "v-calendar/lib/components/date-picker.umd"
 import VueTableDynamic from 'vue-table-dynamic'
-import moment from 'moment'
+import moment from 'moment';
+import chart from './chart';
+import chartRadialBar from './MonitorChartRadialBar';
+import {globalloadingMutations} from '@store/helpers';
 
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
@@ -540,7 +543,9 @@ export default {
   components: {
     Calendar,
     DatePicker,
-    VueTableDynamic
+    VueTableDynamic,
+    chart,
+    chartRadialBar
   },
   props: {
     gu: {
@@ -590,10 +595,10 @@ export default {
       corF: null,
       dose: 0,
       result: {},
-      chart1Data: null,
-      chart2Data: null,
-      chart3Data: null,
-      chart4Data: null,
+      chartDtCarbonDioxide: null,
+      chartDtHydrogenSulfide: null,
+      chartCorrosion: null,
+      chartIngibitor: null,
       problemGus: [],
       validation: [
         {
@@ -628,7 +633,6 @@ export default {
   },
   computed: {
     schemaImage() {
-      console.log(this.currentLang)
       if (this.currentLang === 'kz') return '/img/monitor/schema_kz.svg'
       return '/img/monitor/schema.svg'
     }
@@ -641,15 +645,17 @@ export default {
       } else {
         console.log("No data");
       }
-    });
-    this.axios.get(this.localeUrl("/getguproblems")).then((response) => {
-      let data = response.data;
-      if (data) {
-        this.problemGus = data.problemGus;
-      } else {
-        console.log("No data");
-      }
-    });
+    })
+
+    this.axios.get(this.localeUrl("/getguproblems"))
+        .then((response) => {
+          let data = response.data;
+          if (data) {
+            this.problemGus = data.problemGus;
+          } else {
+            console.log("No data");
+          }
+        })
   },
   mounted: function () {
     this.$nextTick(function () {
@@ -657,6 +663,9 @@ export default {
     })
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     chooseProblemGu(gu_id) {
       this.localGu = gu_id
       this.chooseGu()
@@ -666,6 +675,7 @@ export default {
     },
     chooseGu() {
       this.dose = 0;
+      this.SET_LOADING(true);
       this.axios
           .post(this.localeUrl("/getgudata"), {
             gu_id: this.localGu
@@ -673,10 +683,10 @@ export default {
           .then((response) => {
             let data = response.data;
             if (data) {
-              this.chart1Data = data.chart1
-              this.chart2Data = data.chart2
-              this.chart3Data = data.chart3
-              this.chart4Data = data.chart4
+              this.chartDtCarbonDioxide = data.chartDtCarbonDioxide
+              this.chartDtHydrogenSulfide = data.chartDtHydrogenSulfide
+              this.chartCorrosion = data.chartCorrosion
+              this.chartIngibitor = data.chartIngibitor
 
               this.kormass = data.kormass
               this.pipe = data.pipe
@@ -686,6 +696,9 @@ export default {
             } else {
               console.log("No data");
             }
+          })
+          .finally(() => {
+            this.SET_LOADING(false);
           });
     },
     resetData() {
@@ -719,7 +732,8 @@ export default {
 
       this.resetData();
 
-      this.$emit("chart5", this.dose)
+      this.$emit("chart5", this.dose);
+      this.SET_LOADING(true);
       this.axios
           .post(this.localeUrl("/getgudatabyday"), {
             gu_id: this.localGu,
@@ -770,11 +784,15 @@ export default {
             } else {
               console.log("No data");
             }
+          })
+          .finally(() => {
+            this.SET_LOADING(false);
           });
+      ;
     },
     validateData() {
       this.validationErrors = [];
-      
+
       this.validation.forEach((rule) => {
         let ruleKeys = rule.key.split('.');
 
@@ -806,6 +824,7 @@ export default {
     calc() {
       this.axios
           .post(this.localeUrl("/corrosion"), {
+            date: this.date,
             gu_id: this.localGu,
             WC: this.ngdu.bsw,
             GOR1: this.constantsValues[0].value,

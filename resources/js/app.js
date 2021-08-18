@@ -94,6 +94,7 @@ Vue.component('visual-center-menu', require('./components/visualcenter/VisualCen
 
 Vue.component('economic-data-component', require('./components/Economic/data/index.vue').default);
 Vue.component('economic-data-scenario-component', require('./components/Economic/data/scenario.vue').default);
+Vue.component('economic-data-gtm-component', require('./components/Economic/data/gtm.vue').default);
 Vue.component('tech-data-component', require('./components/technical_forecast/data/index.vue').default);
 
 Vue.component('economic-nrs', require('./components/Economic/nrs.vue').default);
@@ -105,8 +106,6 @@ Vue.component('prs-crs', require('./components/gno/components/PrsCrs.vue').defau
 Vue.component('inflow-curve', require('./components/gno/components/InflowCurve.vue').default);
 Vue.component('economic', require('./components/gno/components/Economic.vue').default);
 Vue.component('monitor-table', require('./components/complicationMonitoring/monitor/MonitorTable.vue').default);
-Vue.component('monitor-chart', require('./components/complicationMonitoring/monitor/chart.vue').default);
-Vue.component('monitor-chart-radialbar', require('./components/complicationMonitoring/monitor/MonitorChartRadialBar.vue').default);
 Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/complicationMonitoring/omgca/form.vue').default);
 Vue.component('omguhe-form', require('./components/complicationMonitoring/omguhe/form.vue').default);

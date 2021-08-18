@@ -19,7 +19,7 @@ class EcoRefsNdoRatesController extends Controller
 
             $ecorefsndorates = EcoRefsNdoRates::latest()->with('scfa')->with('company')->paginate(5);
 
-            return view('ecorefsndorates.index',compact('ecorefsndorates'))
+            return view('economy_kenzhe/ecorefsndorates.index',compact('ecorefsndorates'))
                 ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -32,7 +32,7 @@ class EcoRefsNdoRatesController extends Controller
     {
         $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
-        return view('ecorefsndorates.create',compact('sc_fa', 'company'));
+        return view('economy_kenzhe/ecorefsndorates.create',compact('sc_fa', 'company'));
     }
 
     /**
@@ -77,7 +77,7 @@ class EcoRefsNdoRatesController extends Controller
         $row = EcoRefsNdoRates::find($id);
         $company = EcoRefsCompaniesId::get();
 
-        return view('ecorefsndorates.edit',compact('sc_fa', 'row', 'company'));
+        return view('economy_kenzhe/ecorefsndorates.edit',compact('sc_fa', 'row', 'company'));
     }
 
     /**

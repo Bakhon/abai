@@ -17,7 +17,7 @@ class EcoRefsAvgMarketPriceController extends Controller
     {
         $ecorefsavgmarketprice = EcoRefsAvgMarketPrice::latest()->with('scfa')->paginate(5);
 
-        return view('ecorefsavgmarketprice.index',compact('ecorefsavgmarketprice'))
+        return view('economy_kenzhe/ecorefsavgmarketprice.index',compact('ecorefsavgmarketprice'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
        //
     }
@@ -30,7 +30,7 @@ class EcoRefsAvgMarketPriceController extends Controller
     public function create()
     {
         $sc_fa = EcoRefsScFa::get();
-        return view('ecorefsavgmarketprice.create',compact('sc_fa'));
+        return view('economy_kenzhe/ecorefsavgmarketprice.create',compact('sc_fa'));
     }
 
     /**
@@ -74,7 +74,7 @@ class EcoRefsAvgMarketPriceController extends Controller
     {
         $row = EcoRefsAvgMarketPrice::find($id);
         $sc_fa = EcoRefsScFa::get();
-        return view('ecorefsavgmarketprice.edit',compact('row', 'sc_fa'));
+        return view('economy_kenzhe/ecorefsavgmarketprice.edit',compact('row', 'sc_fa'));
     }
 
     /**
