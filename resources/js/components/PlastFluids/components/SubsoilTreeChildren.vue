@@ -7,8 +7,8 @@
       <input
         v-if="hasChild"
         type="checkbox"
-        name="subsoil-checkbox"
-        :id="subsoil.field_id"
+        :name="subsoil.field_name"
+        :id="subsoil.field_name"
         :value="subsoil.field_id"
         v-model="checkedSubsoilChild"
         @click="clearCheckboxArray"
@@ -16,8 +16,8 @@
       <input
         v-else
         type="radio"
-        name="subsoil-checkbox"
-        :id="subsoil.field_id"
+        :name="subsoil.field_name"
+        :id="subsoil.field_name"
         :value="subsoil.field_id"
         v-model="pickedSubsoilChild"
       />

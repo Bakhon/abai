@@ -8,7 +8,7 @@
       <div class="subsoil-input-label-holder">
         <input
           type="checkbox"
-          name="subsoil-checkbox"
+          :name="subsoil.field_name"
           :id="subsoil.field_name"
           :value="subsoil.field_id"
           v-model="computedPickedSubsoil"
@@ -60,8 +60,18 @@ export default {
   overflow-y: auto;
 }
 
+.subsoil-tree > p {
+  margin: 0;
+  color: #fff;
+}
+
 .subsoil-tree-item:not(:first-child) {
   margin-top: 20px;
+}
+
+.subsoil-input-label-holder > label,
+.subsoil-input-label-holder > input {
+  cursor: pointer;
 }
 
 .subsoil-input-label-holder > label {

@@ -19,6 +19,7 @@ export default new Vuex.Store({
             'index',
             'paegtmMap',
             'pgno',
+            'plastFluids',
             'techMode',
             'tr'
         ]

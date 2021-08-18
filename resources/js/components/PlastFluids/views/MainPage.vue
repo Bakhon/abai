@@ -12,7 +12,7 @@
             <p>
               {{ selectedField ? fieldData[selectedField].field : 0 }}
             </p>
-            <p>{{ trans("Скважины") }}</p>
+            <p>{{ trans("plast_fluids.wells") }}</p>
           </div>
           <div class="statistics-container">
             <p>
@@ -38,28 +38,38 @@
           </div>
         </div>
         <div class="subsoil-user" v-if="subsoilUsers.length">
-          <p>Недропользователь</p>
+          <p>{{ trans("plast_fluids.subsurface_user") }}</p>
           <div class="subsoil-search-block">
-            <input type="text" v-model="subsoilUserSearch" />
+            <input type="text" v-model.trim="subsoilUserSearch" />
             <button>ОК</button>
           </div>
-          <SubsoilTreeMain :treeData="subsoilUsers" />
-          <p>Месторождения</p>
+          <SubsoilTreeMain
+            v-if="filteredSubsoilUsers.length"
+            :treeData="filteredSubsoilUsers"
+          />
+          <div v-else class="subsoil-not-found">
+            <p>{{ trans("plast_fluids.subsoil_not_found") }}</p>
+          </div>
+          <p>{{ trans("plast_fluids.field") }}</p>
           <div class="subsoil-search-block">
-            <input type="text" v-model="subsoilUserSearch" />
+            <input type="text" v-model.trim="subsoilChildrenSearch" />
             <button>ОК</button>
           </div>
-          <div
-            v-if="currentSubsoilChildren.length && pickedSubsoil[0]"
-            class="subsoil-secondary-tree-holder"
-          >
-            <SubsoilTreeChildren
-              v-for="subsoilChild in currentSubsoilChildren"
-              :key="subsoilChild.field_id"
-              :subsoil="subsoilChild"
-              :pickedSubsoil="pickedSubsoil[0]"
-            />
-          </div>
+          <template v-if="pickedSubsoil[0]">
+            <div class="subsoil-secondary-tree-holder">
+              <template v-if="filteredSubsoilChildren.length">
+                <SubsoilTreeChildren
+                  v-for="subsoilChild in filteredSubsoilChildren"
+                  :key="subsoilChild.field_id"
+                  :subsoil="subsoilChild"
+                  :pickedSubsoil="pickedSubsoil[0]"
+                />
+              </template>
+              <div v-else class="subsoil-not-found">
+                <p>{{ trans("plast_fluids.subsoil_not_found") }}</p>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -72,7 +82,7 @@ import OilMap from "../components/OilMapKz.vue";
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
 import SubsoilTreeMain from "../components/SubsoilTreeMain.vue";
-import helpers from "../helpers";
+import { createDataTree, handleSearch } from "../helpers";
 import { getMapOwners } from "../services/mapService";
 import { mapState } from "vuex";
 import SubsoilTreeChildren from "../components/SubsoilTreeChildren.vue";
@@ -89,6 +99,7 @@ export default {
   data() {
     return {
       subsoilUserSearch: "",
+      subsoilChildrenSearch: "",
       subsoilUsers: [],
       selectedField: null,
       fieldData: {
@@ -103,11 +114,20 @@ export default {
   },
   computed: {
     ...mapState("plastFluids", ["currentSubsoilChildren", "pickedSubsoil"]),
+    filteredSubsoilUsers() {
+      return handleSearch(this.subsoilUsers, this.subsoilUserSearch);
+    },
+    filteredSubsoilChildren() {
+      return handleSearch(
+        this.currentSubsoilChildren,
+        this.subsoilChildrenSearch
+      );
+    },
   },
   methods: {
     async getOwners() {
       const data = await getMapOwners();
-      this.subsoilUsers = helpers.createDataTree(data);
+      this.subsoilUsers = createDataTree(data);
     },
   },
   mounted() {
@@ -246,6 +266,16 @@ export default {
   max-height: 130px;
   overflow-y: auto;
   background: #1c1f4c;
+}
+
+.subsoil-not-found {
+  padding: 15px;
+  background: #1c1f4c;
+  color: #fff;
+}
+
+.subsoil-not-found > p {
+  margin: 0;
 }
 
 .buttons-wrapper {

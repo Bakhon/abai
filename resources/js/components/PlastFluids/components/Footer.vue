@@ -3,13 +3,13 @@
     <div class="footer-block">
       <img class="flat" src="/img/digital-drilling/foot5.svg" alt="" />
       <p>
-        Граница государства
+        {{ trans("plast_fluids.government_border") }}
       </p>
     </div>
     <div class="footer-block">
       <img class="flat" src="/img/digital-drilling/foot6.svg" alt="" />
       <p>
-        Границы нефтегазосносных НГП
+        {{ trans("plast_fluids.gas_oil_field_borders") }}
       </p>
     </div>
     <div class="footer-double-icon-block">
@@ -18,7 +18,7 @@
         <img class="shaped" src="/img/digital-drilling/foot2.svg" alt="" />
       </div>
       <p>
-        Границы месторождении
+        {{ trans("plast_fluids.occurance_borders") }}
       </p>
     </div>
   </div>

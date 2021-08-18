@@ -248,6 +248,7 @@ import dropdown from "../../geology/components/dropdowns/dropdown";
 import Button from "../../geology/components/buttons/Button";
 import Icon from "../../geology/components/icons/AwIcon";
 import StandartSeparationFlash from "../components/StandartSeparationFlash";
+import { mapState } from "vuex";
 
 export default {
   name: "UploadMonitoring",
@@ -324,6 +325,9 @@ export default {
       perPage: 15,
       pageOptions: [15, 20, 25, { value: 100, text: "Показать больше" }],
     }
+  },
+  computed: {
+    ...mapState("plastFluids", ["pickedSubsoilChildRadio"])
   }
 };
 
