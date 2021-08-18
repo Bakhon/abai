@@ -1916,7 +1916,7 @@ h4 {
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 9px) !important;
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 24px) !important;
     }
 
   }
@@ -1965,7 +1965,7 @@ h4 {
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 9px);
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 24px);
     }
 
     .scrollable {
