@@ -72,7 +72,12 @@ export default {
                 isOperating: [],
                 isNonOperating: []
             },
-            dzoSummaryForTable: []
+            dzoSummaryForTable: [],
+            totalSummary: {
+                plan: 0,
+                fact: 0,
+                opekPlan: 0
+            }
         };
     },
     methods: {
@@ -172,8 +177,10 @@ export default {
                     summary.opekPlan = parseInt(summary.opekPlan) + parseInt(company.opekPlan);
                 }
             });
+            this.totalSummary.plan = summary.plan;
+            this.totalSummary.opekPlan = summary.opekPlan;
+            this.totalSummary.fact = summary.fact;
             summary = this.getFormatted(summary);
-
             this.dzoCompaniesSummary = summary;
             if (this.isConsolidatedCategoryActive()) {
                 this.updateProductionTotalFact(filteredByCompaniesYesterday,actualFilteredSummary,this.selectedView);
