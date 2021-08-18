@@ -1,0 +1,75 @@
+@import "../../colors";
+.___aw-modal__transition{
+  transition: 300ms all;
+}
+.aw-modal{
+  @extend .___aw-modal__transition;
+  padding: 23px 20px;
+  background: var(--a-accent-darken-300);
+  border: 2px solid var(--a-gray);
+  width: 100%;
+  border-radius: 10px;
+  z-index: 1;
+
+  &-opened{
+    overflow: hidden;
+  }
+
+  &__background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 9999;
+    overflow: auto;
+  }
+
+  &__background{
+    @extend .___aw-modal__transition;
+    @extend .customScroll;
+    background: rgba($black, .5);
+    padding-bottom: 80px;
+  }
+  &__header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    h5{
+      color: #ffffff;
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1;
+    }
+  }
+
+  &__body{
+    background: var(--a-default);
+    padding: 10px 15px;
+  }
+  &__footer{
+    padding-top: 24px;
+  }
+  &.center{
+    margin: auto;
+  }
+  &.top{
+    margin-top: 10vh;
+  }
+  &.md{
+    max-width: 1024px;
+  }
+  &.lg{
+    max-width: 945px;
+  }
+  &.xl{
+    max-width: 1600px;
+  }
+}
+
+@import "_aw-modal-anim";

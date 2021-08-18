@@ -1,0 +1,35 @@
+.rating-tabs {
+  display: flex;
+  align-items: center;
+
+  &__item {
+    background-color: #363B68;
+    border: 0.5px solid #545580;
+    color: #fff;
+    padding: 6px 20px;
+    margin-right: 6px;
+    display: flex;
+    align-items: center;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:hover, &:focus {
+      cursor: pointer;
+    }
+
+    &.is-active {
+      background-color: #656A8A;
+      transition: all 0.2s ease-in;
+    }
+
+    img {
+      margin-right: 10px;
+    }
+
+    span {
+      font-size: 16px;
+    }
+  }
+}

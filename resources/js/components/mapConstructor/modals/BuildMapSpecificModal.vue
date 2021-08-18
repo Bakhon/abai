@@ -53,7 +53,7 @@
                         </div>
                         <div class="col-8">
                             <datetime
-                                    v-model="date3"
+                                    v-model="dateBuildMap"
                                     :disabled="isLoading"
                                     :flow="['year', 'month', 'date']"
                                     :phrases="{ok: '', cancel: ''}"
@@ -77,3 +77,14 @@
         </div>
     </div>
 </template>
+<script>
+    export default {
+        data() {
+            return {
+                dateBuildMap : null,
+                isLoading: false,
+
+            }
+        }
+    }
+</script>

@@ -1,3 +1,5 @@
+import RightClickMenu from './shared/RightClickMenu'
+import TopMenu from './shared/TopMenu'
 import PrinterModal from './modals/PrinterModal'
 import BuildMapModal from './modals/BuildMapModal'
 import BuildMapSpecificModal from './modals/BuildMapSpecificModal'
@@ -56,7 +58,9 @@ export default {
         BuildMapModal,
         BuildMapSpecificModal,
         ReportModal,
-        ExportModal
+        ExportModal,
+        RightClickMenu,
+        TopMenu
     },
     methods: {
         mapInit() {
@@ -1294,8 +1298,8 @@ export default {
 
         },
         setMenu(top, left) {
-            let largestHeight = this.windHeight - this.$refs.right.offsetHeight - 25;
-            let largestWidth = this.windWidth - this.$refs.right.offsetWidth - 25;
+            let largestHeight = this.windHeight - this.$refs.rightClickMenu.$refs.right.offsetHeight - 25;
+            let largestWidth = this.windWidth - this.$refs.rightClickMenu.$refs.right.offsetWidth - 25;
 
             top = top > largestHeight ? largestHeight : top;
             left = left > largestWidth ? largestWidth : left
@@ -1304,8 +1308,8 @@ export default {
             this.left = `${left}px`;
         },
         setMenuLayers(top, left) {
-            let largestHeight = this.windHeight - this.$refs.rightLayers.offsetHeight - 25;
-            let largestWidth = this.windWidth - this.$refs.rightLayers.offsetWidth - 25;
+            let largestHeight = this.windHeight -  this.$refs.rightClickMenu.$refs.rightLayers.offsetHeight - 25;
+            let largestWidth = this.windWidth -  this.$refs.rightClickMenu.$refs.rightLayers.offsetWidth - 25;
 
             top = top > largestHeight ? largestHeight : top;
             left = left > largestWidth ? largestWidth : left
@@ -1322,7 +1326,7 @@ export default {
         openMenu(e) {
             this.viewMenu = true;
             Vue.nextTick(() => {
-                this.$refs.right.focus();
+                this.$refs.rightClickMenu.$refs.right.focus();
                 this.setMenu(e.y, e.x);
             });
             e.preventDefault();
@@ -1330,7 +1334,7 @@ export default {
         openMenuLayers(e) {
             this.viewMenuLayers = true;
             Vue.nextTick(() => {
-                this.$refs.rightLayers.focus();
+                this.$refs.rightClickMenu.$refs.rightLayers.focus();
                 this.setMenuLayers(e.y, e.x);
             });
             e.preventDefault();
