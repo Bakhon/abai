@@ -417,5 +417,6 @@ return array (
     'approved' => 'Согласовано',
     'cancelled' => 'Отменено'
   ),
+  'condensateDelivery' => 'Сдача конденсата',
   'notes' => 'Примечания'
 );
