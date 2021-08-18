@@ -58,6 +58,9 @@ Route::group(
                 Route::post('/report-constructor/save-template', 'bd\DBController@saveTemplate')->name(
                     'reports.constructor.save.template'
                 );
+                Route::get('/report-constructor/get-templates', 'bd\DBController@getTemplates')->name(
+                    'reports.constructor.get.templates'
+                );
             }
         );
     }

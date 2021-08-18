@@ -15,10 +15,11 @@ class CreateBigdataReportUserTable extends Migration
     {
         Schema::create('bigdata_report_user', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('bigdata_report_id');
+            $table->jsonb('template');
+            $table->string('name');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
             $table->unsignedBigInteger('user_id');
-
-            $table->foreign('bigdata_report_id')->references('id')->on('bigdata_reports')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

@@ -105,18 +105,22 @@ class DBController extends Controller
 
     public function saveTemplate(Request $request)
     {
-        dd($request);
-/*        $reportTemplate = ReportTemplate::create(
+        $template = $request->json()->all();
+        ReportTemplate::create(
             [
-                'fields' => $request['fields'],
-                'dates' => $request['dates'],
-                'structure_type' => $request['structureType'],
-                'selected_objects' => $request['selectedObjects'],
-                'name' => $request['name']
+                'template' => $template['template'],
+                'name' => $template['name'],
+                'user_id' => auth()->id()
             ]
         );
-        auth()->user()->reportTemplates()->attach($reportTemplate);
-        return [];*/
+    }
+
+    public function getTemplates()
+    {
+        return ReportTemplate::select('id', 'template', 'name')
+            ->where('user_id', auth()->id())
+            ->orderBy('updated_at', 'DESC')
+            ->get();
     }
 
 }
