@@ -15,6 +15,10 @@
               {{ template['name'] }}
             </div>
           </div>
+
+          <div v-if="!templates || templates.length === 0">
+            Нет сохраненных шаблонов
+          </div>
         </div>
       </modal>
 

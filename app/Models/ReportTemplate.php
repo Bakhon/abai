@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ReportTemplate extends Model
 {
     protected $guarded = ['id'];
-    protected $table = 'bigdata_report_user';
+    protected $table = 'report_template';
 
     protected $casts = [
         'name' => 'string',

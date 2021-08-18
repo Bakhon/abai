@@ -49,7 +49,7 @@ export default {
             endDate: null,
             dateFlow: ['year', 'month', 'date'],
             maxDepthOfSelectedAttributes: null,
-            templates: null,
+            templates: [],
             newTemplateName: "",
             storableParameters: [
                 "startDate", "endDate", "selectedObjects",

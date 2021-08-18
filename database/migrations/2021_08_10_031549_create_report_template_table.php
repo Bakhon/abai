@@ -15,14 +15,14 @@ class CreateReportTemplateTable extends Migration
     {
         Schema::create('report_template', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->jsonb('template');
             $table->string('name');
-            $table->string('fields');
-            $table->string('structure_type');
-            $table->string('selected_objects')->nullable();
-            $table->string('dates')->nullable();
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
             $table->unsignedBigInteger('user_id');
-            $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+
         });
     }
 
