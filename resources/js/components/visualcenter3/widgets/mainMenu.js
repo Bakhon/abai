@@ -200,7 +200,18 @@ export default {
                 oneDzoNameSelected = [oneDzoNameSelected, 'ОМГК'];
             }
             this.selectedDzoCompanies = oneDzoNameSelected;
+            if (Array.isArray(oneDzoNameSelected)) {
+                oneDzoNameSelected = oneDzoNameSelected['0']
+            }       
+            this.chemistrySelectedCompany= oneDzoNameSelected;
+            this.wellsWorkoverSelectedCompany= oneDzoNameSelected;
+            this.drillingSelectedCompany= oneDzoNameSelected;
+            this.productionFondSelectedCompany = oneDzoNameSelected;
+            this.injectionFondSelectedCompany = oneDzoNameSelected; 
             this.updateDzoMenu();         
+            this.updateChemistryWidget();
+            this.updateWellsWorkoverWidget();
+            this.updateDrillingWidget();    
             this.updateProductionFondWidget();
             this.updateInjectionFondWidget();          
         },
