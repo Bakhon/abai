@@ -90,28 +90,29 @@
                             <div
                                     v-for="(item, name) in currentDzo.difference"
                                     class="row col-12 m-0 mt-1 p-1 difference-list"
+                                    v-if="name !== 'import_field'"
                             >
-                                <div v-if="name !== 'import_field'" class="col-12 row p-0 m-0">
+                                <div class="col-12 row p-0 m-0">
                                     <span class="col-3 table_body">{{trans('visualcenter.dailyApprove.dzo')}}</span>
                                     <span class="col-5 table_body">{{names[name]}}</span>
                                     <span class="col-2 table_body">{{item.actualDetail}}</span>
                                     <span class="col-2 table_body">{{item.currentDetail}}</span>
                                 </div>
+                            </div>
+                            <div
+                                    v-if="Object.keys(currentDzo.difference.import_field).length > 0"
+                                    v-for="(value, fieldName) in currentDzo.difference.import_field"
+                                    class="col-12 p-0"
+                            >
                                 <div
-                                        v-else
-                                        v-for="(value, fieldName) in item"
-                                        class="col-12 m-0"
                                         v-if="Object.keys(value).length > 0"
+                                        v-for="(fieldValue, field) in value"
+                                        class="col-12 row m-0 mt-1 p-1 difference-list"
                                 >
-                                    <div
-                                            v-for="(fieldValue, field) in value"
-                                            class="table_body row m-0 p-0"
-                                    >
-                                        <span class="col-3 table_body">{{fieldName}}</span>
-                                        <span class="col-5 table_body">{{names[field]}}</span>
-                                        <span class="col-2 table_body child-actual">{{fieldValue.actualDetail}}</span>
-                                        <span class="col-2 table_body child-current">{{fieldValue.currentDetail}}</span>
-                                    </div>
+                                    <span class="col-3 table_body">{{fieldName}}</span>
+                                    <span class="col-5 table_body">{{names[field]}}</span>
+                                    <span class="col-2 table_body child-actual">{{fieldValue.actualDetail}}</span>
+                                    <span class="col-2 table_body child-current">{{fieldValue.currentDetail}}</span>
                                 </div>
                             </div>
                         </div>
