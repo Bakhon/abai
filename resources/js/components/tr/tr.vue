@@ -6439,6 +6439,9 @@
               </tbody>
             </table>
           </div>
+          <div>
+            <button v-on:click="dropAllFilters">Сбросить все фильтры</button>
+          </div>
           <div class="overflow-auto">
             
             <paginate

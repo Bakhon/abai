@@ -425,6 +425,20 @@ export default {
         this.$store.commit("tr/SET_PAGENUMBER", pageNum);
         this.chooseAxios();
     },
+    dropAllFilters() {
+      this.$store.commit("globalloading/SET_LOADING", true),
+      this.$store.commit("tr/SET_FIELD", []);
+      this.$store.commit("tr/SET_OBJECT", []);
+      this.$store.commit("tr/SET_HORIZON", []);
+      this.$store.commit("tr/SET_WELLTYPE", []);
+      this.$store.commit("tr/SET_BLOCK", []);
+      this.$store.commit("tr/SET_EXPMETH", []);
+      this.$store.commit("tr/SET_WELLNAME", []);
+      this.$store.commit("tr/SET_PAGENUMBER", 1);
+      this.pageNumber = 1;
+      this.isNoActiveHorizonFilter();
+      this.chooseAxios();
+    },
     dropFilter(x) {
         this.$store.commit("globalloading/SET_LOADING", true),
             console.log(x);
@@ -885,6 +899,15 @@ export default {
             this.axiosPage(this.pageNumberLink);
         }
     },
+    notification(val) {
+      this.$bvToast.toast(val, {
+        title: this.trans('app.error'),
+        toaster: "b-toaster-top-center",
+        solid: true,
+        appendToast: false,
+        variant: 'danger',
+      });
+    },
     // API поиска простого ТР
     axiosSearch(link) {
         this.axios
@@ -901,26 +924,14 @@ export default {
                     this.wells = data.data;
                 } else {
                     this.wells = [];
-                    this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
-                        title: this.trans('app.error'),
-                        toaster: "b-toaster-top-center",
-                        solid: true,
-                        appendToast: false,
-                        variant: 'danger',
-                    });
+                    this.notification(this.trans('tr.no_well_toaster'));
                 }
             })
             .catch((error) => {
                 this.isSearched = searchParam ? true : false;
                 this.$store.commit("globalloading/SET_LOADING", false);
                 this.wells = []
-                this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
-                    title: this.trans('app.error'),
-                    toaster: "b-toaster-top-center",
-                    solid: true,
-                    appendToast: false,
-                    variant: 'danger',
-                });
+                this.notification(this.trans('tr.no_well_toaster'));
             });
     },
   },

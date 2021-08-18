@@ -346,7 +346,7 @@
         </thead>
         <tbody class="table_tbody">
             <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
-                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{ row_index + 1 }}</td>
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.number}} </td>
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}" :colspan="getRowWidthSpan(row)">{{row.field}} </td>
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}" v-if="!isActiveClass(row)">{{row.rus_wellname}} </td>
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`well_type`), 'activ': isActiveClass(row)}" td class="fixcol">
