@@ -351,7 +351,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "uwi_time",
@@ -365,7 +365,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "type": "numeric",
                 "table":"prod.gdis_complex_value",
                 "title": "pressure",
@@ -379,7 +379,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast_model",
@@ -393,7 +393,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast",
@@ -407,7 +407,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "dist",
@@ -421,7 +421,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pronicm",
@@ -435,7 +435,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "skin_f",
@@ -449,7 +449,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pre_plast",
@@ -463,7 +463,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "vop",
@@ -477,7 +477,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "nop",
@@ -491,7 +491,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "vnk",
@@ -505,7 +505,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "hydro",
@@ -519,7 +519,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pz",
@@ -533,7 +533,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "temp",
@@ -547,7 +547,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "rad",
@@ -561,7 +561,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "tol",
@@ -575,7 +575,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pr",
@@ -589,7 +589,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff",
@@ -603,7 +603,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "water",
@@ -617,7 +617,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "system",
@@ -631,7 +631,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast_uwi",
@@ -645,7 +645,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "model_g",
@@ -659,7 +659,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pres_pl",
@@ -673,7 +673,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbn",
@@ -687,7 +687,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbk",
@@ -701,7 +701,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "prov",
@@ -715,7 +715,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff_pr",
@@ -729,7 +729,7 @@
                 ]
               },
               {
-                "code": "option_2",
+                "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "dlina",
