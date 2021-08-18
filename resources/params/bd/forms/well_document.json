@@ -10,13 +10,6 @@
             "title": "",
             "items": [
               {
-                "code": "load_date",
-                "type": "date",
-                "title": "date",
-                "validation": "",
-                "is_editable": false
-              },
-              {
                 "code": "name_ru",
                 "type": "text",
                 "title": "name",
@@ -69,7 +62,7 @@
                 ]
               },
               {
-                "code": "files",
+                "code": "file",
                 "type": "file",
                 "origin": "name_ru",
                 "title": "uploaded_files",

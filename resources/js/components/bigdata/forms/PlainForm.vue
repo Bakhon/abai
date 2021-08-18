@@ -201,8 +201,7 @@ export default {
           .submitForm({
             code: this.params.code,
             wellId: this.wellId,
-            values: this.formValuesToSubmit,
-            files: files
+            values: {...this.formValuesToSubmit, ...files}
           })
           .then(data => {
             this.errors = []

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Exceptions\BigData\SubmitFormException;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -18,11 +19,22 @@ class WellDocument extends PlainForm
         try {
             $query = DB::connection('tbd')
                 ->table('prod.document as d')
+                ->select('d.id', 'owner', 'load_date', 'name_ru', 'doc_date', 'doc_type', 'org', 'well', 'file')
                 ->join('prod.well_document as wd', 'wd.document', 'd.id')
+                ->join('prod.document_file as df', 'df.document', 'd.id')
                 ->where('wd.well', $wellId)
                 ->orderBy('d.id', 'desc');
 
-            $rows = $query->get();
+            $tmpRows = $query->get();
+            $rows = [];
+            foreach ($tmpRows as $row) {
+                if (isset($rows[$row->id])) {
+                    $rows[$row->id]->file[] = $row->file;
+                } else {
+                    $row->file = [$row->file];
+                    $rows[$row->id] = $row;
+                }
+            }
 
             if (!empty($this->params()['sort'])) {
                 foreach ($this->params()['sort'] as $sort) {
@@ -52,7 +64,7 @@ class WellDocument extends PlainForm
 
             return response()->json(
                 [
-                    'rows' => $rows->values(),
+                    'rows' => array_values($rows),
                     'columns' => $columns,
                     'form' => $this->params()
                 ]
@@ -84,8 +96,12 @@ class WellDocument extends PlainForm
                 ->toArray();
 
             $data = $this->prepareDataToSubmit();
+            $data['owner'] = auth()->id();
+            $data['load_date'] = Carbon::now();
             $wellId = $data['well'];
+            $files = $data['file'];
             unset($data['well']);
+            unset($data['file']);
 
             $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
@@ -109,13 +125,29 @@ class WellDocument extends PlainForm
                 }
                 $id = $dbQuery->insertGetId($data);
 
-                $files = $this->request->get('files');
-                if (!empty($files['files'])) {
-                }
-                dd($files);
-            }
+                DB::connection('tbd')
+                    ->table('prod.well_document')
+                    ->insert(
+                        [
+                            'document' => $id,
+                            'well' => $wellId
+                        ]
+                    );
 
-            $this->insertInnerTable($id);
+                $files = json_decode($files);
+                if (!empty($files)) {
+                    foreach ($files as $file) {
+                        DB::connection('tbd')
+                            ->table('prod.document_file')
+                            ->insert(
+                                [
+                                    'document' => $id,
+                                    'file' => $file
+                                ]
+                            );
+                    }
+                }
+            }
 
             DB::connection('tbd')->commit();
             return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();

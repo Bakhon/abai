@@ -68,7 +68,7 @@
               @click="selectedRow = row"
           >
             <td v-for="column in columns" class="table-border element-position">
-              <p>{{ getCellValue(row, column) }}</p>
+              <p v-html="getCellValue(row, column)"></p>
             </td>
             <td v-if="!form.actions" class="table-border element-position">
               <div class="table-container-svg">
@@ -328,6 +328,12 @@ export default {
 
       if (column.type === 'checkbox') {
         return row[column.code] ? this.trans('app.yes') : this.trans('app.no')
+      }
+
+      if (column.type === 'file') {
+        return row[column.code].map(file => {
+          return '<a href="' + this.localeUrl(`/attachments/${file}`) + `">${file}</a>`
+        }).join('<br>')
       }
 
       return row[column.code]
