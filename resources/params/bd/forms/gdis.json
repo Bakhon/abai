@@ -16,7 +16,7 @@
                 "validation": "required"
               },
               {
-                "code": "",
+                "code": "dend",
                 "type": "datetime",
                 "title": "dend",
                 "validation": "required"
@@ -43,9 +43,696 @@
                 ]
               },
               {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "uwi_time",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pressure",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "plast_model",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "plast",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "skin_f",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pronicm",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pronicm",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "upr",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "vyvody",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "recc",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "uwi_r",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "tol",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pr",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "koeff",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "water",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "system",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "plast_uwi",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "model_g",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pres_pl",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pbn",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pbk",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "prov",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Гидропрослушивание"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "uwi_time",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
                 "code": "option_2",
                 "type": "numeric",
-                "title": "option_2",
+                "table":"prod.gdis_complex_value",
+                "title": "pressure",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "plast_model",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "plast",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "dist",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pronicm",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "skin_f",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pre_plast",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "vop",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "nop",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "vnk",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "hydro",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pz",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "temp",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "rad",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "tol",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pr",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "koeff",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "water",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "system",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "plast_uwi",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "model_g",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pres_pl",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pbn",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pbk",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "prov",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "koeff_pr",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "dlina",
                 "depends_on": [
                   {
                     "field": "method",
