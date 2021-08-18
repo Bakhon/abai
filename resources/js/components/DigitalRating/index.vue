@@ -68,6 +68,7 @@
 import L from 'leaflet';
 import mapsData from './json/dataMap.json';
 import wellsData from './json/dataWells.json';
+import geojson from './json/geojson.json';
 import 'leaflet/dist/leaflet.css';
 import BtnDropdown from "./components/BtnDropdown";
 import SettingModal from "./components/SettingModal";
@@ -111,13 +112,26 @@ export default {
   },
 
   methods: {
+    initMap2() {
+      var mapboxAccessToken = 'pk.eyJ1IjoibWFja2V5c2kiLCJhIjoiY2sxZ2JwdzF1MDk4eDNubDhraHNxNTluaCJ9.5VnpUHKLM0rdx1pYjpNYPw';
+      var map = L.map('map');
+
+      L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=' + mapboxAccessToken, {
+        id: 'mapbox/light-v9',
+        tileSize: 512,
+        zoomOffset: -1
+      }).addTo(map);
+
+      L.geoJson(geojson).addTo(map);
+    },
     initMap() {
       const map = L.map('map', {
         crs: L.CRS.Simple,
+        zoomControl: false,
         minZoom: 1,
         maxZoom: 3,
-        zoomControl: false
       });
+      // L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png").addTo(map);
 
       L.control.zoom({
         position: 'bottomright'
@@ -141,10 +155,13 @@ export default {
         el.y = el.y / 100;
       });
 
+      const renderer = L.canvas({ padding: 0.5 })
+
       for(let i = 0; i < mapsData.length; i++) {
         const coordinateStart = xy(mapsData[i]['x'], mapsData[i]['y']);
         const coordinateEnd = xy(mapsData[i]['x'] + 1, mapsData[i]['y'] + 1);
         let rectangle = L.rectangle([[coordinateStart], [coordinateEnd]], {
+          renderer: renderer,
           color: mapsData[i]['color'],
           weight: 6,
           fillColor: mapsData[i]['color'],
@@ -162,7 +179,45 @@ export default {
         })
       }
 
-      map.getBounds().pad(1);
+      wellsData.forEach((el) => {
+        el.x = el.x / 100;
+        el.y = el.y / 100;
+      });
+
+      for(let i = 0; i < wellsData.length; i++) {
+        const coordinate = xy(wellsData[i]['x'], wellsData[i]['y']);
+        const marker = L.circleMarker(coordinate, {
+          renderer: renderer,
+          radius: 10,
+          stroke: true,
+          color: 'black',
+          opacity: 1,
+          weight: 1,
+          fill: false,
+          fillOpacity: 0
+        }, 500).addTo(map).bindPopup(wellsData[i]['well']);
+      }
+
+      const myZoom = {
+        start:  map.getZoom(),
+        end: map.getZoom()
+      };
+
+      // map.on('zoomstart', function(e) {
+      //   myZoom.start = map.getZoom();
+      // });
+      //
+      // map.on('zoomend', function(e) {
+      //   myZoom.end = map.getZoom();
+      //   const diff = myZoom.start - myZoom.end;
+      //   if (diff > 0) {
+      //     L.circle.setRadius(L.circle.getRadius() / 2);
+      //   } else if (diff < 0) {
+      //     L.circle.setRadius(L.circle.getRadius() / 2);
+      //   }
+      // });
+
+      // map.getBounds().pad(1);
     },
     onMapClick() {
       this.$modal.show('modalAtlas');
