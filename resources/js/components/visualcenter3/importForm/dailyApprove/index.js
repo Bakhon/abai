@@ -1,5 +1,6 @@
 import moment from "moment";
 import fieldsMapping from './fields_mapping.json';
+import {globalloadingMutations} from '@store/helpers';
 export default {
     data: function () {
         return {
@@ -109,6 +110,9 @@ export default {
             _.forEach(this.allProduction.forApprove, (approveItem) => {
                 let date = moment(approveItem.date).startOf('day').format('DD.MM.YYYY');
                 let actual = this.getActual(approveItem.dzo_name,date);
+                if (Object.keys(actual).length === 0) {
+                    return;
+                }
                 let approve = {
                     'date': date,
                     'dzoName': approveItem.dzo_name,
@@ -187,10 +191,15 @@ export default {
                 difference[field['field_name']] = this.getChildDifference(field,actualFields[index]);
             });
             return difference;
-        }
+        },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
     },
     async mounted() {
+        this.SET_LOADING(true);
         this.allProduction = await this.getForApprove();
         this.compared = this.getCompared();
+        this.SET_LOADING(false);
     }
 }

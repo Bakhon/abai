@@ -30,6 +30,6 @@ class PipeType extends Model
 
     public function oilPipes()
     {
-        return $this->hasMany(OilPipe::class, 'type_id', 'id');
+        return $this->setConnection('tbd_cmon')->hasMany(OilPipe::class, 'type_id', 'id');
     }
 }

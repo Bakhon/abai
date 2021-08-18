@@ -79,6 +79,9 @@ export default {
         },
 
         getNameDzoFull: function (dzo) {
+            if (Array.isArray(dzo)) {
+                dzo = dzo['0']
+            }
             if (typeof this.NameDzoFull[dzo] !== 'undefined') {
                 return this.NameDzoFull[dzo]
             }
@@ -176,12 +179,6 @@ export default {
             );
         },
 
-        getCovidData(data) {
-            return _.reduce(data, function (memo, item) {
-                return memo + item['tb_covid_total'];
-            }, 0);
-        },
-
         getFilteredData(data, type) {
             _.forEach(this.dzoType[type], function (dzoName) {
                 data = _.reject(data, _.iteratee({dzo: dzoName}));
@@ -249,13 +246,6 @@ export default {
             }
             return arrowClass;
         },
-        getIndicatorForStaffCovidParams(previosValue,currentValue) {
-            if (previosValue > currentValue) {
-                return this.trans("visualcenter.indicatorFall");
-            } else if (previosValue < currentValue) {
-                return this.trans("visualcenter.indicatorGrow");
-            }
-        },
 
         getFilteredDataByOneCompany(data) {
             let self = this;
@@ -285,6 +275,50 @@ export default {
             }
             return classes;
         },
+
+        isConsolidatedCategoryActive() {
+            return this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0;
+        },
+
+        getNumberByDzo(dzoName, index){
+            if (this.oilCondensateFilters.isCondensateOnly) {
+                return this.dzoNumbers['condensateOnly'][dzoName];
+            }
+            if (this.isOilResidueActive) {
+                return this.dzoNumbers['oilResidue'][dzoName];
+            }
+            if (this.oilCondensateProductionButton && this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                return this.dzoNumbers['productionConsolidated'][dzoName];
+            }
+            if (this.oilCondensateProductionButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                return this.dzoNumbers['productionKMG'][dzoName];
+            }
+            if (this.oilCondensateDeliveryButton && this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                return this.dzoNumbers['deliveryConsolidated'][dzoName];
+            }
+            if (this.oilCondensateDeliveryButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                return this.dzoNumbers['deliveryKMG'][dzoName];
+            }
+            return '1.' + index + 1;
+        },
+
+        getNumberFormat(num) {
+            return (new Intl.NumberFormat("ru-RU").format(num))
+        },
+
+        getDzoNameFormatting(dzo) {
+            if (this.troubledCompanies.includes(dzo) && !this.oilCondensateFilters.isCondensateOnly) {
+                return 'troubled-companies';
+            }
+            return '';
+        },
+
+        getIndicatorClass(plan,fact) {
+            if (fact < plan) {
+                return 'triangle fall-indicator-production-data';
+            }
+            return 'triangle growth-indicator-production-data';
+        }
     },
     computed: {
         periodSelectFunc() {

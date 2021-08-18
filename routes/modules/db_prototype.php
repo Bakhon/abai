@@ -8,9 +8,10 @@ Route::group(
             function () {
                 Route::get('/', 'bd\DBController@bigdata')->name('bigdata');
                 Route::get('/las', 'bd\DBController@las')->name('las');
-                Route::get('/well_cart', 'bd\DBController@well_cart')->name('well_cart');
+                Route::get('/well-cart', 'bd\DBController@well_cart')->name('bigdata.well_cart');
                 Route::get('/report-constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
+                Route::get('/field-list', 'bd\DBController@field_list')->name('field_list');
 
                 Route::get('file-status/list', 'Refs\bigdata\las\FileStatusController@list')->name('file-status.list');
                 Route::resource('/file-status', 'Refs\bigdata\las\FileStatusController');
@@ -30,6 +31,12 @@ Route::group(
                 Route::get('/stem-type/list', 'Refs\bigdata\las\StemTypeController@list')->name('stem-type.list');
                 Route::resource('/stem-type', 'Refs\bigdata\las\StemTypeController');
 
+                Route::get('/geo-mapping/list', 'Refs\bigdata\mapping\GeoMappingController@list')->name('geo-mapping.list');
+                Route::resource('/geo-mapping', 'Refs\bigdata\mapping\GeoMappingController');
+
+                Route::get('/well-mapping/list', 'Refs\bigdata\mapping\WellMappingController@list')->name('well-mapping.list');
+                Route::resource('/well-mapping', 'Refs\bigdata\mapping\WellMappingController');
+
                 Route::get('/geo-data-reference-book', 'bd\DBController@geoDataReferenceBook')->name('bigdata.geoDataReferenceBook');
 
                 Route::get('/reports', 'bd\DBController@reports')->name('bigdata.reports');
@@ -43,10 +50,17 @@ Route::group(
 
                 Route::get('/protoform', 'bd\DBController@form')->name('bigdata.protoform');
                 Route::get('/mobileform', 'bd\DBController@mobileForm')->name('bigdata.form.mobile');
-                Route::post('/mobileform', 'Api\DB\FormsController@saveMobileForm');
-                Route::get('/mobileform/values', 'Api\DB\FormsController@getMobileFormValues');
+                Route::post('/mobileform', 'Api\DB\MobileFormsController@saveMobileForm');
+                Route::get('/mobileform/values', 'Api\DB\MobileFormsController@getMobileFormValues');
 
                 Route::resource('wells', 'bd\WellsController', ['as' => 'bigdata']);
+
+                Route::post('/report-constructor/save-template', 'bd\DBController@saveTemplate')->name(
+                    'reports.constructor.save.template'
+                );
+                Route::get('/report-constructor/get-templates', 'bd\DBController@getTemplates')->name(
+                    'reports.constructor.get.templates'
+                );
             }
         );
     }
@@ -61,6 +75,10 @@ Route::group(
                 Route::get('dict/geos/{org}', 'bd\DictionariesController@getGeoByOrg');
                 Route::get('dict/{dict}', 'bd\DictionariesController@get')->name('bigdata.dictionary');
 
+                Route::get('dzo', 'Api\DB\StructureController@getDzo')->name('bigdata.dzo');
+
+                Route::get('forms', 'Api\DB\FormsController@getForms')->name('bigdata.form.list');
+                Route::get('forms/tree', 'Api\DB\FormsController@getFormsStructure')->name('bigdata.form.list');
                 Route::get('forms/{form}', 'Api\DB\FormsController@getParams')->name('bigdata.form.params');
                 Route::post('forms/{form}', 'Api\DB\FormsController@submit')->name('bigdata.form.send');
                 Route::get('forms/{form}/history', 'Api\DB\FormsController@getHistory');

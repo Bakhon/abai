@@ -4,12 +4,15 @@ namespace App\Http\Controllers\bd;
 
 use App\Http\Controllers\Controller;
 use App\Models\DZO\DZOdaily;
+use App\Models\BigData\Dictionaries\Geo;
+use App\Models\ReportTemplate;
+use Illuminate\Http\Request;
 
 class DBController extends Controller
 {
     public function __construct()
     {
-      $this->middleware('can:bigdata view main')->only('bigdata', 'form', 'las', 'userReports', 'geoDataReferenceBook');
+        $this->middleware('can:bigdata view main')->only('bigdata', 'form', 'las', 'userReports', 'geoDataReferenceBook');
     }
 
     public function mzdn()
@@ -24,8 +27,8 @@ class DBController extends Controller
 
     public function las()
     {
-        $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();       
-        
+        $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();
+
         return view('reports.las', compact('permissionNames'));
     }
 
@@ -33,6 +36,12 @@ class DBController extends Controller
     public function well_cart()
     {
         return view('reports.well_cart');
+    }
+
+    public function field_list()
+    {
+        $geoList = Geo::where('geo_type', 3)->orderBy('name_ru')->get();
+        return $geoList;
     }
 
     public function report_constructor()
@@ -45,15 +54,11 @@ class DBController extends Controller
         return view('reports.geo_data_reference_book');
     }
 
-    public function userReports()
-    {
-        return view('reports.user_reports');
-    }
-
     public function constructor()
     {
         return view('reports.constructor');
     }
+
     public function gtm()
     {
         return view('reports.gtm');
@@ -96,6 +101,26 @@ class DBController extends Controller
     {
         auth()->user()->bigdataFavoriteReports()->detach($report);
         return [];
+    }
+
+    public function saveTemplate(Request $request)
+    {
+        $template = $request->json()->all();
+        ReportTemplate::create(
+            [
+                'template' => $template['template'],
+                'name' => $template['name'],
+                'user_id' => auth()->id()
+            ]
+        );
+    }
+
+    public function getTemplates()
+    {
+        return ReportTemplate::select('id', 'template', 'name')
+            ->where('user_id', auth()->id())
+            ->orderBy('updated_at', 'DESC')
+            ->get();
     }
 
 }

@@ -8,7 +8,7 @@
               <label class="container">
                 <span class="bottom-border"></span>
                 <input type="checkbox" :id="node.id" name="tech_structure" value="tech_structure"
-                       class="dropdown-item">
+                       class="dropdown-item" @change="onCheckboxClick(node, level)" :checked="isCheckedCheckbox(node, level)">
                 <span class="checkmark"></span>
               </label>
             </form>
@@ -21,7 +21,7 @@
         >
       </div>
       <div v-if="node.name"
-           class="text-right text-white ml-2"
+           class="text-right text-white ml-2 cursor-pointer"
            :class="{'cursor-pointer': isWell(node), 'h5 m-0': currentWellId === node.id}"
            @click.stop="handleClick(node)">
         {{ node.name }}
@@ -37,8 +37,12 @@
             :get-initial-items="getInitialItems"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :isShowCheckboxes="isShowCheckboxes"
+            :onCheckboxClick="onCheckboxClick"
             :isWell="isWell"
             :currentWellId="currentWellId"
+            :level="level+1"
+            :nodeClickOnArrow="nodeClickOnArrow"
+            :isCheckedCheckbox="isCheckedCheckbox"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -52,28 +56,40 @@ export default {
   name: "node",
   props: {
     node: Object,
+    level: Number,
     handleClick: Function,
     getWells: Function,
     getInitialItems: Function,
     isNodeOnBottomLevelOfHierarchy: Function,
     isShowCheckboxes: Boolean,
     isWell: Function,
+    onCheckboxClick: {
+      type: Function,
+      required: false
+    },
+    isCheckedCheckbox: {
+      type: Function,
+      required: false
+    },
     currentWellId: {
       type: Number,
       required: false
     },
+    nodeClickOnArrow: false
   },
   model: {
     prop: "node",
     event: "nodeChange"
   },
   methods: {
-    showChildren: async function() {
+    showChildren: async function () {
       this.isShowChildren = !this.isShowChildren;
       if (!this.isShowChildren) {
         return
       }
-      await this.handleClick(this)
+      if (this.nodeClickOnArrow) {
+          await this.handleClick(this.node);
+      }
       if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
         this.isLoading = true;
         this.getWells(this);

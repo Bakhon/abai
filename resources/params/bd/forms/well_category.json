@@ -4,6 +4,12 @@
     "dbeg",
     "category"
   ],
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "well_cat",
@@ -43,6 +49,7 @@
               },
               {
                 "code": "org",
+                "table": "dict.org",
                 "type": "dict_tree",
                 "dict": "orgs",
                 "title": "org",

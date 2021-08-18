@@ -1,5 +1,6 @@
 <template>
   <div class="visualcenter-page-wrapper">
+
     <div class="row visualcenter-page-container">
       <div class="left-side col-lg-10 middle-block-columns">
         <div class="first-string px-2 middle-block__table">
@@ -13,7 +14,7 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ formatDigitToThousand(productionParams.oil_fact) }}
+                              {{ formatDigitToThousand(productionSummary.oilCondensateProductionButton.actual.oilFact) }}
                             </div>
                             <div
                                     v-if="!buttonDailyTab && !isOneDateSelected"
@@ -28,15 +29,8 @@
                               {{ trans('visualcenter.tonWithSpace') }}
                             </div>
                           </div>
-                          <div
-                                  v-if="oilCondensateProductionButton.length > 0"
-                                  class="additional-header txt1 col-6 col-md-12">
+                          <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.oilCondensateProduction") }}
-                          </div>
-                          <div
-                                  v-else
-                                  class="additional-header txt1 col-6 col-md-12">
-                            {{ trans("visualcenter.getoil") }}
                           </div>
                           <br />
                           <div class="progress">
@@ -44,30 +38,40 @@
                             <div
                                     class="progress-bar"
                                     role="progressbar"
-                                    :style="{
-                                width: dailyProgressBars.oil + '%',
-                              }"
-                                    :aria-valuenow="productionParams.oil_fact"
+                                    :style="{width: productionSummary.oilCondensateProductionButton.actual.progress + '%',}"
+                                    :aria-valuenow="productionSummary.oilCondensateProductionButton.actual.oilFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="productionParams.oil_plan"
+                                    :aria-valuemax="productionSummary.oilCondensateProductionButton.actual.oilPlan"
                             ></div>
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="productionParams.oil_fact">
-                              {{ getDiffProcentLastBigN(productionParams.oil_fact, productionParams.oil_plan) }}%
+                            <div
+                                    class="percent-header col-5 col-md-6"
+                                    v-if="productionSummary.oilCondensateProductionButton.actual.oilFact"
+                            >
+                              {{ getDiffProcentLastBigN(
+                                productionSummary.oilCondensateProductionButton.actual.oilFact,
+                                productionSummary.oilCondensateProductionButton.actual.oilPlan)
+                              }}%
                             </div>
-                            <div class="plan-header col-6" v-if="productionParams.oil_plan">
-                              {{ formatDigitToThousand(productionParams.oil_plan) }}
+                            <div class="plan-header col-6" v-if="productionSummary.oilCondensateProductionButton.actual.oilPlan">
+                              {{ formatDigitToThousand(productionSummary.oilCondensateProductionButton.actual.oilPlan) }}
                             </div>
                             <br />
                           </div>
                           <div class="col-12 mt-4">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(productionParams.oil_fact, productionPercentParams.oil_fact)}`"
+                                    :class="`${getGrowthIndicatorByDifference(
+                                              productionSummary.oilCondensateProductionButton.actual.oilFact,
+                                              productionSummary.oilCondensateProductionButton.yesterday.oilFact)
+                                            }`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDifferencePercentBetweenLastValues(productionPercentParams.oil_fact, productionParams.oil_fact))}}%
+                              {{ Math.abs(getDifferencePercentBetweenLastValues(
+                                productionSummary.oilCondensateProductionButton.yesterday.oilFact,
+                                productionSummary.oilCondensateProductionButton.actual.oilFact))
+                              }}%
                             </div>
                             <div class="txt3">
                               vs
@@ -84,7 +88,7 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ formatDigitToThousand(productionParams.oil_dlv_fact) }}
+                              {{ formatDigitToThousand(productionSummary.oilCondensateDeliveryButton.actual.oilFact) }}
                             </div>
                             <div
                                     v-if="!buttonDailyTab && !isOneDateSelected"
@@ -100,7 +104,7 @@
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
-                            {{ trans("visualcenter.oildlv") }}
+                            {{ trans("visualcenter.oilCondensateDelivery") }}
                           </div>
                           <br />
                           <div class="progress">
@@ -108,30 +112,37 @@
                             <div
                                     class="progress-bar"
                                     role="progressbar"
-                                    :style="{
-                                width: dailyProgressBars.oilDelivery + '%',
-                              }"
-                                    :aria-valuenow="productionParams.oil_dlv_fact"
+                                    :style="{width: productionSummary.oilCondensateDeliveryButton.actual.progress + '%'}"
+                                    :aria-valuenow="productionSummary.oilCondensateDeliveryButton.actual.oilFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="productionParams.oil_dlv_plan"
+                                    :aria-valuemax="productionSummary.oilCondensateDeliveryButton.actual.oilPlan"
                             ></div>
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="productionParams.oil_dlv_fact">
-                              {{getDiffProcentLastBigN(productionParams.oil_dlv_fact, productionParams.oil_dlv_plan)}}%
+                            <div class="percent-header col-5 col-md-6" v-if="productionSummary.oilCondensateDeliveryButton.actual.oilFact">
+                              {{getDiffProcentLastBigN(
+                                productionSummary.oilCondensateDeliveryButton.actual.oilFact,
+                                productionSummary.oilCondensateDeliveryButton.actual.oilPlan)
+                              }}%
                             </div>
-                            <div class="plan-header col-6" v-if="productionParams.oil_dlv_plan">
-                              {{ formatDigitToThousand(productionParams.oil_dlv_plan) }}
+                            <div class="plan-header col-6" v-if="productionSummary.oilCondensateDeliveryButton.actual.oilPlan">
+                              {{ formatDigitToThousand(productionSummary.oilCondensateDeliveryButton.actual.oilPlan) }}
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(productionParams.oil_dlv_fact,productionPercentParams.oil_dlv_fact)}`"
+                                    :class="`${getGrowthIndicatorByDifference(
+                                              productionSummary.oilCondensateDeliveryButton.actual.oilFact,
+                                              productionSummary.oilCondensateDeliveryButton.yesterday.oilFact)
+                                            }`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDifferencePercentBetweenLastValues(productionPercentParams.oil_dlv_fact,productionParams.oil_dlv_fact))}}%
+                              {{Math.abs(getDifferencePercentBetweenLastValues(
+                                productionSummary.oilCondensateDeliveryButton.yesterday.oilFact,
+                                productionSummary.oilCondensateDeliveryButton.actual.oilFact))
+                              }}%
                             </div>
                             <div class="txt3">
                               vs
@@ -164,7 +175,7 @@
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
-                            {{ trans("visualcenter.getgaz") }}
+                            {{ trans("visualcenter.getgaz") }} ({{trans("visualcenter.gasOperatingAssets")}})
                           </div>
                           <br />
                           <div class="progress">
@@ -304,8 +315,8 @@
           <div class="first-string first-string2">
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
-                <div :class="[`${oilCondensateProductionButton}`, 'button1']">
-                  <div class="button1-vc-inner">
+                <div class="button1 d-flex">
+                  <div :class="[`${oilCondensateProductionButton}`, 'col-10 category-button_border']">
                     <div class="icon-all icons1"></div>
                     <div
                             class="txt5"
@@ -314,19 +325,21 @@
                                     'oil_plan',
                                     'oil_fact',
                                     trans('visualcenter.tonWithSpace'),
-                                    trans('visualcenter.oilCondensateProductionChartName'))"
+                                    trans('visualcenter.oilCondensateProduction'))"
                     >
                       {{ trans("visualcenter.oilCondensateProduction") }}
                     </div>
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc"
+                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
+                          @click="switchDropdownCategories('oilCondensateProduction')"
+                          :class="{ 'button-tab-highlighted': dropdownMenu.oilCondensateProduction }"
                   ></button>
                   <div>
                     <ul
-                            class="dropdown-menu-vc dropdown-menu dropdown-menu-right"
+                            class="dropdown-menu dropdown-menu-right dropdown-position mt-1"
                     >
                       <li
                               class="center-li row px-4"
@@ -336,75 +349,21 @@
                                 class="col-1 mt-2"
                                 v-html="`${getMainMenuButtonFlag('oilCondensateProductionButton','withoutKmgParticipation')}`"
                         ></div>
-                        <a class="col-9 px-2">
+                        <a class="col-9 p-0 ml-3 mt-2">
                           {{trans("visualcenter.withoutKmgParticipation")}}
                         </a>
                       </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
-                <div :class="[`${oilProductionButton}`, 'button1']">
-                  <div class="button1-vc-inner">
-                    <div class="icon-all icons1"></div>
-                    <div
-                            class="txt5"
-                            @click="switchCategory(
-                                    'oilProductionButton',
-                                    'oil_plan',
-                                    'oil_fact',
-                                    trans('visualcenter.tonWithSpace'),
-                                    trans('visualcenter.getoil'))"
-                    >
-                      <!-- Добыча нефти -->{{ trans("visualcenter.getoil") }}
-                    </div>
-                  </div>
-                  <button
-                          type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc"
-                          data-toggle="dropdown"
-                  ></button>
-                  <div>
-                    <ul
-                            class="dropdown-menu-vc dropdown-menu dropdown-menu-right"
-                    >
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchCategory(
-                                      'oilProductionButton',
-                                      'oil_plan',
-                                      'oil_fact',
-                                      trans('visualcenter.tonWithSpace'),
-                                      trans('visualcenter.getoil'),
-                                      'oilProductionButton',
-                                      'kmgParticipation')"
+                              @click="switchFilterConsolidatedOilCondensate('oilCondensateProductionButton','condensateOnly','isCondensateOnly')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('oilProductionButton','kmgParticipation')}`"
+                                v-html="`${getMainMenuButtonFlag('oilCondensateProductionButton','condensateOnly')}`"
                         ></div>
-                        <a class="col-9 px-2">
-                          {{trans("visualcenter.dolyaUchast")}}
-                        </a>
-                      </li>
-                      <li
-                              class="center-li row px-4"
-                              @click="switchCategory(
-                                      'oilProductionButton',
-                                      'oil_opek_plan',
-                                      'oil_fact',
-                                      trans('visualcenter.tonWithSpace'),
-                                      trans('visualcenter.getoil'),
-                                      'oilProductionButton',
-                                      'opecRestriction')"
-                      >
-                        <div
-                                class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('oilProductionButton','opecRestriction')}`"
-                        ></div>
-                        <a class="col-9 px-2">
-                          {{trans("visualcenter.opek")}}
+                        <a class="col-9 mt-1 p-0 ml-3">
+                          {{trans("visualcenter.getgk")}}
                         </a>
                       </li>
                     </ul>
@@ -412,350 +371,400 @@
                 </div>
               </div>
               <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
-                <div :class="[`${oilDeliveryButton}`, 'button1']">
-                  <div
-                          class="button1-vc-inner"
-                          @click="switchCategory(
-                            'oilDeliveryButton',
-                            'oil_dlv_plan',
-                            'oil_dlv_fact',
-                            trans('visualcenter.tonWithSpace'),
-                            trans('visualcenter.oildlv'))"
-                  >
-                    <div class="icon-all icons2"></div>
-                    <div class="txt5">
-                      <!-- Сдача нефти  -->{{ trans("visualcenter.oildlv") }}
-                    </div>
-                  </div>
-                  <button
-                          type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc"
-                          data-toggle="dropdown"
-                  ></button>
-
-                  <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                    <li
-                            class="center-li row px-4"
-                            @click="switchCategory(
-                                      'oilDeliveryButton',
+                <div class="button1 d-flex">
+                  <div :class="[`${oilCondensateDeliveryButton}`, 'col-10 category-button_border']">
+                      <div class="icon-all icons2"></div>
+                      <div
+                              class="txt5"
+                              @click="switchCategory(
+                                      'oilCondensateDeliveryButton',
                                       'oil_dlv_plan',
                                       'oil_dlv_fact',
                                       trans('visualcenter.tonWithSpace'),
-                                      trans('visualcenter.oildlv'),
-                                      'oilDeliveryButton',
-                                      'kmgParticipation')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('oilDeliveryButton','kmgParticipation')}`"
-                      ></div>
-
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'oil_dlv_plan',
-                            'oil_dlv_fact',
-                            trans('visualcenter.dlvoildynamic'),
-                            ' тонн',
-                            trans('visualcenter.dolyaUchast')
-                          )
-                        "
+                                      trans('visualcenter.oilCondensateDelivery'))"
                       >
-                        <!-- С учётом доли участия КМГ -->{{
-                        trans("visualcenter.dolyaUchast")
-                        }}
-                      </a>
-                    </li>
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('oilDeliveryButton','oilResidue')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('oilDeliveryButton','oilResidue')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'tovarnyi_ostatok_nefti_prev_day',
-                            'tovarnyi_ostatok_nefti_today',
-                            `${oilChartHeadName}`,
-                            ' тонн',
-                            trans('visualcenter.ostatokNefti')
-                          )
-                        "
+                        {{ trans("visualcenter.oilCondensateDelivery") }}
+                      </div>
+                  </div>
+                  <button
+                          type="button"
+                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
+                          data-toggle="dropdown"
+                          @click="switchDropdownCategories('oilCondensateDelivery')"
+                          :class="{ 'button-tab-highlighted': dropdownMenu.oilCondensateDelivery }"
+                  ></button>
+                  <div>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
+                      <li
+                              class="center-li row px-4"
+                              @click="switchFilterConsolidatedOilCondensate('oilCondensateDeliveryButton','withoutKmgParticipation','isWithoutKMGFilterActive')"
                       >
-                        <!-- Товарный остаток нефти -->{{
-                        trans("visualcenter.ostatokNefti")
-                        }}
-                      </a>
-                    </li>
-                  </ul>
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('oilCondensateDeliveryButton','withoutKmgParticipation')}`"
+                        ></div>
+                        <a class="col-9 p-0 ml-3 mt-2">
+                          {{trans("visualcenter.withoutKmgParticipation")}}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('oilCondensateDeliveryButton','oilResidue')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('oilCondensateDeliveryButton','oilResidue')}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                                @click="
+                                    updateProductionData(
+                                      'tovarnyi_ostatok_nefti_prev_day',
+                                      'tovarnyi_ostatok_nefti_today',
+                                      `${oilChartHeadName}`,
+                                      ' тонн',
+                                      trans('visualcenter.ostatokNefti')
+                                    )"
+                        >
+                          {{trans("visualcenter.ostatokNefti")}}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchFilterConsolidatedOilCondensate('oilCondensateDeliveryButton','condensateOnly','isCondensateOnly')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('oilCondensateDeliveryButton','condensateOnly')}`"
+                        ></div>
+                        <a class="col-9 mt-1 p-0 ml-3">
+                          {{trans("visualcenter.getgk")}}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
               <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
-                <div
-                        :class="[`${gasProductionButton}`, 'button1']"
-                >
+                <div class="button1 d-flex">
                   <div
-                          class="button1-vc-inner"
-                          @click="switchCategory(
-                            'gasProductionButton',
-                            'gas_plan',
-                            'gas_fact',
-                            trans('visualcenter.meterCubicWithSpace'),
-                            trans('visualcenter.getgaz'),
-                            'gasProductionButton')"
+                          :class="[`${gasProductionButton}`, 'col-10 category-button_border']"
                   >
-                    <div class="icon-all icons3"></div>
-                    <div class="txt5">
-                      <!-- Добыча газа -->{{ trans("visualcenter.getgaz") }}
+                    <div
+                            @click="switchCategory(
+                              'gasProductionButton',
+                              'gas_plan',
+                              'gas_fact',
+                              trans('visualcenter.meterCubicWithSpace'),
+                              trans('visualcenter.getgaz'),
+                              'gasProductionButton')"
+                    >
+                      <div class="icon-all icons3"></div>
+                      <div class="txt5">
+                        <!-- Добыча газа -->{{ trans("visualcenter.getgaz") }}
+                      </div>
                     </div>
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc"
+                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
+                          @click="switchDropdownCategories('gasProduction')"
+                          :class="{ 'button-tab-highlighted': dropdownMenu.gasProduction }"
                   ></button>
-                  <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','deliveryNaturalGas')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryNaturalGas')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'sdacha_gaza_prirod_plan',
-                            'sdacha_gaza_prirod_fact',
-                            trans('visualcenter.dlvPrirodGasldynamic'),
-                            ' м³',
-                            trans('visualcenter.prirodGazdlv')
-                          )
-                        "
+                  <div>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','productionNaturalGas')"
                       >
-                        <!-- Сдача природного газа -->{{
-                        trans("visualcenter.prirodGazdlv")
-                        }}
-                      </a>
-                    </li>
-
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','gasConsumptionForNeeds')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','gasConsumptionForNeeds')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'raskhod_prirod_plan',
-                            'raskhod_prirod_fact',
-                            trans('visualcenter.raskhodprirodGazDynamic'),
-                            ' м³',
-                            trans('visualcenter.raskhodprirodGaz')
-                          )
-                        "
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','productionNaturalGas')}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                                @click="
+                                  updateProductionData(
+                                    'plan_prirod_gas',
+                                    'natural_gas_production_fact',
+                                    trans('visualcenter.productionNaturalGasChartName'),
+                                    ' м³',
+                                    trans('visualcenter.productionNaturalGas')
+                                  )
+                                "
+                        >
+                          {{ trans("visualcenter.productionNaturalGas") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','productionAssociatedGas')"
                       >
-                        <!-- Расход природного газа на собственные нужды -->{{
-                        trans("visualcenter.raskhodprirodGaz")
-                        }}
-                      </a>
-                    </li>
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','deliveryAssociatedGas')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryAssociatedGas')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'sdacha_gaza_poput_plan',
-                            'sdacha_gaza_poput_fact',
-                            trans('visualcenter.poputGazdlvDynamic'),
-                            ' тонн',
-                            trans('visualcenter.poputGazdlv')
-                          )
-                        "
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','productionAssociatedGas')}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                                @click="
+                                  updateProductionData(
+                                    'plan_poput_gas',
+                                    'associated_gas_production_fact',
+                                    trans('visualcenter.productionAssociatedGasChartName'),
+                                    ' м³',
+                                    trans('visualcenter.productionAssociatedGas')
+                                  )
+                                "
+                        >
+                          {{ trans("visualcenter.productionAssociatedGas") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','flaringAssociatedGas')"
                       >
-                        <!-- Сдача попутного газа -->{{
-                        trans("visualcenter.poputGazdlv")
-                        }}
-                      </a>
-                    </li>
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','associatedGasConsumptionForNeeds')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasConsumptionForNeeds')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'raskhod_poput_plan',
-                            'raskhod_poput_fact',
-                            trans('visualcenter.raskhodpoputGazDynamic'),
-                            ' м³',
-                            trans('visualcenter.raskhodpoputGaz')
-                          )
-                        "
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','flaringAssociatedGas')}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                                @click="
+                                  updateProductionData(
+                                    'plan_poput_gas_burn',
+                                    'associated_gas_flaring_fact',
+                                    trans('visualcenter.flaringAssociatedGasChartName'),
+                                    ' м³',
+                                    trans('visualcenter.flaringAssociatedGas')
+                                  )
+                                "
+                        >
+                          {{ trans("visualcenter.flaringAssociatedGas") }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','deliveryNaturalGas')"
                       >
-                        <!-- Расход попутного газа на собственные нужды -->{{
-                        trans("visualcenter.raskhodpoputGaz")
-                        }}
-                      </a>
-                    </li>
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('gasProductionButton','associatedGasProcessing')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasProcessing')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'pererabotka_gaza_poput_plan',
-                            'pererabotka_gaza_poput_fact',
-                            trans('visualcenter.pererabotkapoputGazDynamic'),
-                            ' м³',
-                            trans('visualcenter.pererabotkapoputGaz')
-                          )
-                        "
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryNaturalGas')}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                                @click="
+                            updateProductionData(
+                              'sdacha_gaza_prirod_plan',
+                              'sdacha_gaza_prirod_fact',
+                              trans('visualcenter.dlvPrirodGasldynamic'),
+                              ' м³',
+                              trans('visualcenter.prirodGazdlv')
+                            )
+                          "
+                        >
+                          {{trans("visualcenter.prirodGazdlv")}}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','gasConsumptionForNeeds')"
                       >
-                        <!-- Переработка попутного газа -->{{
-                        trans("visualcenter.pererabotkapoputGaz")
-                        }}
-                      </a>
-                    </li>
-                  </ul>
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','gasConsumptionForNeeds')}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                                @click="
+                            updateProductionData(
+                              'raskhod_prirod_plan',
+                              'raskhod_prirod_fact',
+                              trans('visualcenter.raskhodprirodGazDynamic'),
+                              ' м³',
+                              trans('visualcenter.raskhodprirodGaz')
+                            )
+                          "
+                        >
+                          <!-- Расход природного газа на собственные нужды -->{{
+                          trans("visualcenter.raskhodprirodGaz")
+                          }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','deliveryAssociatedGas')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryAssociatedGas')}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                                @click="
+                            updateProductionData(
+                              'sdacha_gaza_poput_plan',
+                              'sdacha_gaza_poput_fact',
+                              trans('visualcenter.poputGazdlvDynamic'),
+                              ' тонн',
+                              trans('visualcenter.poputGazdlv')
+                            )
+                          "
+                        >
+                          {{trans("visualcenter.poputGazdlv")}}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('gasProductionButton','associatedGasConsumptionForNeeds')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasConsumptionForNeeds')}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                                @click="
+                            updateProductionData(
+                              'raskhod_poput_plan',
+                              'raskhod_poput_fact',
+                              trans('visualcenter.raskhodpoputGazDynamic'),
+                              ' м³',
+                              trans('visualcenter.raskhodpoputGaz')
+                            )
+                          "
+                        >
+                          {{ trans("visualcenter.raskhodpoputGaz") }}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-              <div class="col-12 col-lg dropdown dropdown4 font-weight pl-1">
-                <div
-                        :class="[`${waterInjectionButton}`, 'button1']"
-                >
+              <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
+                <div class="button1 d-flex">
                   <div
-                          class="button1-vc-inner"
-                          @click="switchCategory(
-                            'waterInjectionButton',
-                            'liq_plan',
-                            'liq_fact',
-                            trans('visualcenter.meterCubicWithSpace'),
-                            trans('visualcenter.liq'))"
+                          :class="[`${waterInjectionButton}`, 'col-10 category-button_border']"
                   >
-                    <div class="icon-all icons5"></div>
-                    <div class="txt5">
-                      <!-- Закачка воды -->{{ trans("visualcenter.liq") }}
+                    <div
+                            class="button1-vc-inner"
+                            @click="switchCategory(
+                              'waterInjectionButton',
+                              'liq_plan',
+                              'liq_fact',
+                              trans('visualcenter.meterCubicWithSpace'),
+                              trans('visualcenter.liq'))"
+                    >
+                      <div class="icon-all icons5"></div>
+                      <div class="txt5">
+                        <!-- Закачка воды -->{{ trans("visualcenter.liq") }}
+                      </div>
                     </div>
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc"
+                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
+                          @click="switchDropdownCategories('waterInjection')"
+                          :class="{ 'button-tab-highlighted': dropdownMenu.waterInjection }"
                   ></button>
-                  <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('waterInjectionButton','seaWaterInjection')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('waterInjectionButton','seaWaterInjection')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'ppd_zakachka_morskoi_vody_plan',
-                            'ppd_zakachka_morskoi_vody_fact',
-                            trans('visualcenter.liqOceanDynamic'),
-                            ' м³',
-                            trans('visualcenter.liqOcean')
-                          )
-                        "
+                  <div>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('waterInjectionButton','seaWaterInjection')"
                       >
-                        <!-- Закачка морской воды -->{{
-                        trans("visualcenter.liqOcean")
-                        }}
-                      </a>
-                    </li>
-
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('waterInjectionButton','wasteWaterInjection')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('waterInjectionButton','wasteWaterInjection')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'ppd_zakachka_stochnoi_vody_plan',
-                            'ppd_zakachka_stochnoi_vody_fact',
-                            trans('visualcenter.liqStochnayaDynamic'),
-                            ' м³',
-                            trans('visualcenter.liqStochnaya')
-                          )
-                        "
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('waterInjectionButton','seaWaterInjection')}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                                @click="
+                            updateProductionData(
+                              'ppd_zakachka_morskoi_vody_plan',
+                              'ppd_zakachka_morskoi_vody_fact',
+                              trans('visualcenter.liqOceanDynamic'),
+                              ' м³',
+                              trans('visualcenter.liqOcean')
+                            )
+                          "
+                        >
+                          <!-- Закачка морской воды -->{{
+                          trans("visualcenter.liqOcean")
+                          }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('waterInjectionButton','wasteWaterInjection')"
                       >
-                        <!-- Закачка сточной воды -->{{
-                        trans("visualcenter.liqStochnaya")
-                        }}
-                      </a>
-                    </li>
-
-                    <li
-                            class="center-li row px-4"
-                            @click="switchMainMenu('waterInjectionButton','albsenWaterInjection')"
-                    >
-                      <div
-                              class="col-1 mt-2"
-                              v-html="`${getMainMenuButtonFlag('waterInjectionButton','albsenWaterInjection')}`"
-                      ></div>
-                      <a
-                              class="col-9 px-2"
-                              @click="
-                          updateProductionData(
-                            'ppd_zakachka_albsen_vody_plan',
-                            'ppd_zakachka_albsen_vody_fact',
-                            trans('visualcenter.liqAlbsenDynamic'),
-                            ' м³',
-                            trans('visualcenter.liqAlbsen')
-                          )
-                        "
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('waterInjectionButton','wasteWaterInjection')}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                                @click="
+                            updateProductionData(
+                              'ppd_zakachka_stochnoi_vody_plan',
+                              'ppd_zakachka_stochnoi_vody_fact',
+                              trans('visualcenter.liqStochnayaDynamic'),
+                              ' м³',
+                              trans('visualcenter.liqStochnaya')
+                            )
+                          "
+                        >
+                          <!-- Закачка сточной воды -->{{
+                          trans("visualcenter.liqStochnaya")
+                          }}
+                        </a>
+                      </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
+                      <li
+                              class="center-li row px-4"
+                              @click="switchMainMenu('waterInjectionButton','albsenWaterInjection')"
                       >
-                        {{trans("visualcenter.liqAlbsen")}}
-                      </a>
-                    </li>
-                  </ul>
+                        <div
+                                class="col-1 mt-2"
+                                v-html="`${getMainMenuButtonFlag('waterInjectionButton','albsenWaterInjection')}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                                @click="
+                            updateProductionData(
+                              'ppd_zakachka_albsen_vody_plan',
+                              'ppd_zakachka_albsen_vody_fact',
+                              trans('visualcenter.dynamicArtesianWater'),
+                              ' м³',
+                              trans('visualcenter.injectionArtesianWater')
+                            )
+                          "
+                        >
+                          {{trans("visualcenter.injectionArtesianWater")}}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-8 col-lg dropdown px-1">
-                <div class="button2 dzocompanylist__button">
-                  <div class="button2 dzocompanylist__button">
+                <div  class="button2 no-hover dzocompanylist__button" v-if="isOneDzoSelected">                  
+                    {{ trans("visualcenter.dzoAllCompany") }}
+                  </div>    
+                <div class="button2 dzocompanylist__button" v-else>                               
+                  <div class="button2 dzocompanylist__button" >                  
                     {{ trans("visualcenter.dzoAllCompany") }}
                     <button
                             type="button"
@@ -855,7 +864,7 @@
               <div class="col-8 col-lg px-1">
 
 
-                <div :class="[`${buttonYearlyTab}`,'button2']">
+                <div :class="[`${buttonYearlyTab}`,'button2 d-flex']">
                   <div
                           class="button1-vc-inner"
                           @click="changeMenu2('yearly')"
@@ -863,9 +872,9 @@
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
                   <button
-                          v-if="buttonYearlyTab && oilProductionButton"
+                          v-if="buttonYearlyTab && oilCondensateProductionButton"
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc dzocompanies__button_position"
+                          class="btn btn-primary dropdown-toggle position-button-vc mt-1"
                           data-toggle="dropdown"
                   ></button>
                   <div class="dzo-company-list">
@@ -885,7 +894,7 @@
 
 
               </div>
-              <div class="col-8 col-lg pl-1">
+              <div class="col-8 col-lg px-1">
                 <div class="dropdown3">
                   <div
                           :class="[`${buttonPeriodTab}`,'button2']"
@@ -933,6 +942,7 @@
                 >
                   <thead>
                   <tr>
+                    <th>№</th>
                     <th>{{ trans("visualcenter.dzo") }}</th>
                     <th v-if="buttonMonthlyTab && !isOilResidueActive" >
                       {{ trans("visualcenter.dzoMonthlyPlan") }}
@@ -942,7 +952,7 @@
                       <div v-if="currentDzoList === 'daily'">
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive && oilCondensateProductionButton.length === 0">
+                      <div v-if="isOpecFilterActive && !isConsolidatedCategoryActive()">
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
@@ -954,7 +964,7 @@
                       <div v-if="currentDzoList === 'daily'">
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive && oilCondensateProductionButton.length === 0">
+                      <div v-if="isOpecFilterActive && !isConsolidatedCategoryActive()">
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
@@ -966,11 +976,11 @@
                       <div v-else>
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive && oilCondensateProductionButton.length === 0">
+                      <div v-if="isOpecFilterActive && !isConsolidatedCategoryActive()">
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
-                    <th v-if="oilCondensateProductionButton.length > 0">
+                    <th v-if="isConsolidatedCategoryActive() && !isOilResidueActive">
                       {{ trans("visualcenter.plan") }}
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
@@ -1000,10 +1010,10 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length === 0 && !isOilResidueActive">
+                    <th v-if="!isFilterTargetPlanActive && !isConsolidatedCategoryActive() && !isOilResidueActive">
                       {{ trans("visualcenter.dzoPercent") }}
                     </th>
-                    <th v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0">
+                    <th v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive() && !isOilResidueActive">
                       {{ trans("visualcenter.dzoDifference") }}
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
@@ -1039,27 +1049,29 @@
                     <th v-if="exactDateSelected">
                       {{ trans("visualcenter.dzoOthers") }}
                     </th>
+                    <th v-if="exactDateSelected">
+                      {{ trans("visualcenter.gasRestriction") }}
+                    </th>
                   </tr>
                   </thead>
                   <tbody>
                   <tr v-for="(item, index) in dzoSummaryForTable">
+                    <td :class="`${getDzoColumnsClass(index,'difference')}`">
+                      {{getNumberByDzo(item.dzoMonth)}}
+                    </td>
                     <td
-                            @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
-                            :class="index % 2 === 0 ? 'tdStyle' : ''"
-                            style="cursor: pointer"
+                            @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth,item.dzo)}` : `${selectAllDzoCompanies()}`"
+                            :class="[index % 2 === 0 ? 'tdStyle' : '','cursor-pointer']"
                     >
-                      <span v-if="oilCondensateProductionButton.length === 0">
+                      <span v-if="!isConsolidatedCategoryActive() || isOilResidueActive">
                         {{ getNameDzoFull(item.dzoMonth) }}
-                        <span v-if="isKmgParticipationFilterActive">
-                          {{getOilProductionKmgParticipationDzoTitle(kmgParticipationPercent[getNameDzoFull(item.dzoMonth)])}}
-                        </span>
                         <img src="/img/icons/link.svg" />
                       </span>
-                      <span v-else-if="oilCondensateProductionButton.length > 0 && !oilCondensateFilters.isWithoutKMGFilterActive">
+                      <span v-else-if="isConsolidatedCategoryActive() && !oilCondensateFilters.isWithoutKMGFilterActive">
                         {{ getDzoName(item.dzoMonth,dzoNameMappingWithoutKMG) }}
                         <img src="/img/icons/link.svg" />
                       </span>
-                      <span v-else>
+                      <span v-else :class="getDzoNameFormatting(item.dzoMonth)">
                         {{ getDzoName(item.dzoMonth,dzoNameMapping) }}
                         <img src="/img/icons/link.svg" />
                       </span>
@@ -1088,14 +1100,14 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
+                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="currentDzoList === 'daily' ? getDzoColumnsClass(index,'companyName') : getDzoColumnsClass(index,'fact')">
                       <div class="font">
                         {{ formatDigitToThousand(item.opekPlan) }}
                       </div>
                     </td>
                     <td
-                            v-if="oilCondensateProductionButton.length > 0"
+                            v-if="isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="currentDzoList === 'daily' ?
                             getDzoColumnsClass(index,'plan') : getDzoColumnsClass(index,'difference')"
                     >
@@ -1112,16 +1124,15 @@
                       </div>
                     </td>
                     <td
-                            v-if="oilCondensateProductionButton.length > 0"
+                            v-if="isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="currentDzoList === 'daily' ?
                             getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'percent')">
                       <div
-                              v-if="item.factMonth"
-                              :class="
-                            item.planMonth > item.factMonth ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                          "
+                              v-if="item.planMonth - item.factMonth  !== 0"
+                              :class="item.planMonth > item.factMonth || item.factMonth === 0 ?
+                                'triangle fall-indicator-production-data' :
+                                'triangle growth-indicator-production-data'
+                              "
                       ></div>
                       <div class="font dynamic" >
                         {{getFormattedNumberToThousand(item.planMonth,item.factMonth)}}
@@ -1131,45 +1142,42 @@
                             v-else-if="!isOilResidueActive"
                             :class="getDzoColumnsClass(index,'difference')">
                       <div
-                              v-if="item.factMonth"
-                              :class="
-                            item.planMonth > item.factMonth ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                          "
+                              v-if="item.planMonth - item.factMonth  !== 0"
+                              :class="item.planMonth > item.factMonth || item.factMonth === 0 ?
+                                'triangle fall-indicator-production-data' :
+                                'triangle growth-indicator-production-data'
+                              "
                       ></div>
                       <div class="font dynamic" >
                         {{getFormattedNumberToThousand(item.planMonth,item.factMonth)}}
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length === 0 && !isOilResidueActive"
+                            v-if="!isFilterTargetPlanActive && !isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="`${getDzoColumnsClass(index,'percent')}`"
                     >
                       <div
-                              v-if="item.factMonth"
-                              :class="
-                            item.planMonth > item.factMonth ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                          "
+                              v-if="item.planMonth - item.factMonth  !== 0"
+                              :class="item.planMonth > item.factMonth || item.factMonth === 0 ?
+                                'triangle fall-indicator-production-data' :
+                                'triangle growth-indicator-production-data'
+                              "
                       ></div>
                       <div class="font dynamic">
                         {{getPercentDifference (item.planMonth , item.factMonth)}}
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive() && !isOilResidueActive"
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDzoColumnsClass(index,'difference') : getDzoColumnsClass(index,'difference')"
                     >
                       <div
-                              v-if="item.factMonth"
-                              :class="
-                            item.planMonth > item.factMonth ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                          "
+                              v-if="item.opekPlan - item.factMonth  !== 0"
+                              :class="item.opekPlan > item.factMonth || item.factMonth === 0 ?
+                                'triangle fall-indicator-production-data' :
+                                'triangle growth-indicator-production-data'
+                              "
                       ></div>
                       <div class="font dynamic">
                         {{ getFormattedNumberToThousand(item.opekPlan,item.factMonth) }}
@@ -1185,7 +1193,7 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
                       <div :class="item.opec ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
@@ -1193,7 +1201,7 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
                       <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
@@ -1201,7 +1209,7 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
                       <div :class="item.landing ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
@@ -1209,7 +1217,7 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
                       <div :class="item.accident ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
@@ -1217,7 +1225,7 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
                       <div :class="item.restrictions ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
@@ -1225,14 +1233,23 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
                       <div :class="item.otheraccidents ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
+                    <td
+                            v-if="exactDateSelected"
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
+                            getDarkColorClass(index) : getLightColorClass(index)"
+                    >
+                      <div :class="item.gasRestriction ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                      </div>
+                    </td>
                   </tr>
                   <tr v-if="isMultipleDzoCompaniesSelected">
+                    <td :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"></td>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
                       <div class="">{{ dzoCompaniesAssets['assetTitle'] }}</div>
                     </td>
@@ -1280,7 +1297,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="oilCondensateProductionButton.length > 0"
+                            v-if="isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="currentDzoList === 'daily' ?
                             getDarkerClass(index) : getLighterClass(index)"
                     >
@@ -1304,7 +1321,7 @@
                     </td>
                     <td
                             v-else
-                            :class="(currentDzoList === 'daily' && oilCondensateProductionButton.length > 0) || isOilResidueActive ?
+                            :class="(currentDzoList === 'daily' && isConsolidatedCategoryActive()) || isOilResidueActive ?
                             getLighterClass(index) : getDarkerClass(index)"
                     >
                       <div class="font">
@@ -1319,12 +1336,8 @@
                             :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
                     >
                       <div
-                              v-if="factMonthSumm"
-                              :class="
-                            factMonthSumm < planMonthSumm ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                          "
+                              v-if="totalSummary.fact > 0"
+                              :class="getIndicatorClass(totalSummary.plan,totalSummary.fact)"
                       ></div>
                       <div class="font dynamic">
                         {{dzoCompaniesSummary.difference}}
@@ -1335,16 +1348,12 @@
                     </td>
                     <td
                             v-else-if="!isOilResidueActive"
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
                     >
                       <div
-                              v-if="factMonthSumm"
-                              :class="
-                            factMonthSumm < planMonthSumm ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                          "
+                              v-if="totalSummary.fact > 0"
+                              :class="getIndicatorClass(totalSummary.plan,totalSummary.fact)"
                       ></div>
                       <div class="font dynamic">
                         {{dzoCompaniesSummary.difference}}
@@ -1362,67 +1371,64 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
+                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="currentDzoList === 'daily' ?
                             getLighterClass(index) : getDarkerClass(index)"
                     >
                       <div
-                              v-if="factMonthSumm"
-                              :class="
-                            factMonthSumm < planMonthSumm ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                          "
+                              v-if="totalSummary.fact > 0"
+                              :class="getIndicatorClass(totalSummary.opekPlan,totalSummary.fact)"
                       ></div>
                       <div class="font dynamic">
                         {{dzoCompaniesSummary.opekDifference}}
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length === 0 && !isOilResidueActive"
+                            v-if="!isFilterTargetPlanActive && !isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="`${getColorClassBySelectedPeriod(index)}`"
                     >
                       <div
-                              v-if="factMonthSumm"
-                              :class="
-                            planMonthSumm > factMonthSumm ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                          "
+                              v-if="totalSummary.fact > 0"
+                              :class="getIndicatorClass(totalSummary.opekPlan,totalSummary.fact)"
                       ></div>
-                      <div class="font dynamic" v-if="factMonthSumm">
+                      <div class="font dynamic" v-if="totalSummary.fact > 0">
                         {{dzoCompaniesSummary.percent}}
                       </div>
                     </td>
 
                     <td
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
                             v-if="exactDateSelected"
                     >
                     </td>
                     <td
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
+                            getLighterClass(index) : getDarkerClass(index)"
+                            v-if="exactDateSelected"
+                    ></td>
+                    <td
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
                             v-if="exactDateSelected"
                     ></td>
@@ -1452,6 +1458,9 @@
                     <div class="mt-2" v-if="item.otheraccidents">
                       {{ item.otheraccidents }}
                     </div>
+                    <div class="mt-2" v-if="item.gasRestriction">
+                      {{ item.gasRestriction }}
+                    </div>
                   </div>
                 </div>
 
@@ -1467,10 +1476,16 @@
                 "
               >
                 <div
-                        v-if="oilCondensateProductionButton.length > 0 || isOilResidueActive"
+                        v-if="isConsolidatedCategoryActive() && !isOilResidueActive"
                         class="oil-condensate-chart-secondary-name"
                 >
                   {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
+                </div>
+                <div
+                        v-else-if="isOilResidueActive"
+                        class="oil-condensate-chart-secondary-name"
+                >
+                  {{ oilResidueChartName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
                 </div>
                 <div
                         v-else
@@ -1523,7 +1538,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1597,6 +1612,7 @@
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedInjectionFondCompanies($event)"
+                            v-model="injectionFondSelectedCompany"
                     >
                       <option v-for="dzo in dzoMenu.injectionFond" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1617,7 +1633,7 @@
               <br />
               <div class="row container-fluid">
                 <div class="vis-table px-4 col-sm-7">
-                  <table v-if="injectionFondData.length" class="table4 w-100 chemistry-table">
+                  <table v-if="injectionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
                       <th v-if="fondDaysCountSelected.injection < 2">{{ trans("visualcenter.idleWells") }} ({{ trans("visualcenter.Fact") }})</th>
@@ -1677,7 +1693,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1752,6 +1768,7 @@
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedProductionFondCompanies($event)"
+                            v-model="productionFondSelectedCompany"
                     >
                       <option v-for="dzo in dzoMenu.productionFond" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1772,7 +1789,7 @@
               <br />
               <div class="row container-fluid">
                 <div class="vis-table px-4 col-sm-7">
-                  <table v-if="productionFondData.length" class="table4 w-100 chemistry-table">
+                  <table v-if="productionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
                       <th v-if="fondDaysCountSelected.production < 2">{{ trans("visualcenter.prodWells") }} ({{ trans("visualcenter.Fact") }})</th>
@@ -1834,7 +1851,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1909,6 +1926,7 @@
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedDrillingCompanies($event)"
+                            v-model="drillingSelectedCompany"
                     >
                       <option v-for="dzo in dzoMenu.drilling" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1922,7 +1940,7 @@
                 <div class="vis-table px-4 col-sm-7">
                   <table
                           v-if="drillingData.length"
-                          class="table4 w-100 chemistry-table"
+                          class="table4 w-100 chemistry-table additional-tables"
                   >
                     <thead>
                     <tr>
@@ -1973,6 +1991,8 @@
                               class="width-20 text-center data-pointer"
                               :class="`${getDzoColumnsClass(index,'difference')}`"
                       >
+                        <div :class="[getIndicatorClass(item.plan,item.fact),'ml-5']">
+                        </div>
                         <div class="font dynamic">
                           {{formatDigitToThousand(Math.abs(item.difference))}}
                           <span class="data-metrics">
@@ -2002,7 +2022,43 @@
             </div>
           </div>
         </div>
-
+        <div :class="[`${tableMapping.emergencyInfo.class}`, 'third-table big-area']">
+          <div class="first-string first-string2">
+            <div class="container-fluid">
+              <div class="area-6-name row mt-3 mb-3 px-2">
+                <div class="col">
+                  <div class="ml-4 bold">
+                    {{ trans("visualcenter.emergencyHistory") }}
+                  </div>
+                </div>
+                <div class="col px-4">
+                  <div class="close2" @click="changeTable('productionDetails')">
+                    {{ trans("visualcenter.close") }}
+                  </div>
+                </div>
+              </div>
+              <div class="container-fluid">
+                <div class="row p-0 emergency-table__header">
+                  <span class="col-1 p-2 pl-5">{{ trans("visualcenter.date") }}</span>
+                  <span class="col-11 p-2 pl-3">{{ trans("visualcenter.notes") }}</span>
+                </div>
+                <div
+                        class="row emergency-view"
+                        v-for="(item, index) in emergencyHistory"
+                >
+                  <div class="col-12 d-flex emergency-title p-0">
+                    <span class="col-1">{{item.date}}</span>
+                    <span class="col-11">{{item.title}}</span>
+                  </div>
+                  <div class="col-12 d-flex emergency-description p-2">
+                    <span class="col-1"></span>
+                    <span class="col-11">{{item.description}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div :class="[`${tableMapping.otmWorkover.class}`, 'third-table big-area']">
           <div class="first-string first-string2">
             <div class="container-fluid">
@@ -2013,7 +2069,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -2056,6 +2112,7 @@
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedWellsWorkoverCompanies($event)"
+                            v-model="wellsWorkoverSelectedCompany"
                     >
                       <option v-for="dzo in dzoMenu.wellsWorkover" :value="dzo.ticker">
                         {{dzo.name}}
@@ -2069,7 +2126,7 @@
                 <div class="vis-table px-4 col-sm-7">
                   <table
                           v-if="wellsWorkoverData.length"
-                          class="table4 w-100 chemistry-table"
+                          class="table4 w-100 chemistry-table additional-tables"
                   >
                     <thead>
                     <tr>
@@ -2125,8 +2182,10 @@
                               class="width-20 text-center data-pointer"
                               :class="`${getDzoColumnsClass(index,'difference')}`"
                       >
+                        <div :class="[getIndicatorClass(item.plan,item.fact),'ml-5']">
+                        </div>
                         <div class="font dynamic">
-                          {{formatDigitToThousand(item.difference)}}
+                          {{Math.abs(formatDigitToThousand(item.difference))}}
                           <span class="data-metrics">
                               {{item.metricSystem}}
                             </span>
@@ -2158,7 +2217,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('productionDetails')">
+                  <div class="close2" @click="changeTable('productionDetails', true)">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -2202,6 +2261,7 @@
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedChemistryCompanies($event)"
+                            v-model="chemistrySelectedCompany"
                     >
                       <option v-for="dzo in dzoMenu.chemistry" :value="dzo.ticker">
                         {{dzo.name}}
@@ -2215,7 +2275,7 @@
                 <div class="vis-table px-4 col-sm-7">
                   <table
                           v-if="chemistryData.length"
-                          class="table4 w-100 chemistry-table"
+                          class="table4 w-100 chemistry-table additional-tables"
                   >
                     <thead>
                     <tr>
@@ -2253,7 +2313,7 @@
                         <div v-if="index === 0" class="center">
                         </div>
                         <div class="font">
-                          {{ getFormattedNumber(item.fact) }}
+                          {{ getNumberFormat(item.fact) }}
                         </div>
                       </td>
                     </tr>
@@ -2541,32 +2601,52 @@
                 </table>
               </div>
             </div>
-          </div>
-          <div class="first-string first-string2">
-            <div>
-              <table class="table">
-                <tr class="d-flex">
-                  <td class="col-6">
-                    <div class="secondaryTitle">0</div>
-                    <div class="metric-title">
-                      {{ trans('visualcenter.chemistryMetricTon') }}
-                    </div>
-                    <div class="in-idle">
-                      {{ timeSelect }}
-                    </div>
-                  </td>
-                </tr>
-                <tr class="d-flex">
-                  <td class="col-12">
-                    <div class="right-column_header">
-                      {{ trans('visualcenter.expectedProduction') }}
-                    </div>
-                  </td>
-                </tr>
-              </table>
+
+            <div class="first-string first-string2">
+              <div>
+                <table class="table emergency-table">
+                  <tr class="d-flex">
+                    <td class="col-6">
+                      <div class="secondaryTitle">0</div>
+                      <div class="metric-title">
+                        {{ trans('visualcenter.chemistryMetricTon') }}
+                      </div>
+                      <div class="in-idle">
+                        {{ timeSelect }}
+                      </div>
+                    </td>
+                    <td
+                            class="col-6 cursor-pointer emergency-block"
+                            @click="switchWidget('emergencyInfo')"
+                            :class="`${tableMapping.emergencyInfo.hover}`"
+                    >
+                      <div class="secondaryTitle d-flex">
+                        <div class="col-9 p-0 emergency-icon"></div>
+                        <div class="mt-1 col-2">
+                          <img src="/img/icons/link.svg" />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="d-flex">
+                    <td class="col-6">
+                      <div class="right-column_header">
+                        {{ trans('visualcenter.expectedProduction') }}
+                      </div>
+                    </td>
+                    <td
+                            class="col-6 cursor-pointer emergency-block"
+                            :class="`${tableMapping.emergencyInfo.hover}`"
+                    >
+                      <div class="right-column_header">
+                        {{ trans('visualcenter.emergencyHistory') }}
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -2576,6 +2656,9 @@
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
   @import './el-datepicker-custom.css';
+  .troubled-companies {
+    padding-left: 10%;
+  }
   .dzocompanies-dropdown__divider {
     border-bottom: 2px solid #656a8a;
   }
@@ -2628,6 +2711,14 @@
     &::-webkit-scrollbar-corner {
       background: #333975;
     }
+    .vis-table table {
+      tr {
+        td:first-child {
+          width: 4%;
+          text-align: center;
+        }
+      }
+    }
 
     .table4 {
       min-width: 683px;
@@ -2636,8 +2727,10 @@
           padding: 5px 5px 5px 10px;
           position: relative;
           vertical-align: middle;
-          min-width: 71px;
-          &:first-child {
+          &:not(:first-child) {
+            min-width: 71px;
+          }
+          &:nth-child(2) {
             white-space: normal;
             min-width: 290px;
             font-weight: bold;
@@ -2691,6 +2784,7 @@
         background: inherit;
         top: -1px;
         z-index: 3000;
+        width: 4%;
       }
       th {
         position: sticky;
@@ -2703,12 +2797,20 @@
         font-size: 12px;
         background: #353ea1;
         text-align: center;
-        &:first-child {
-          width: 322px;
+        &:nth-child(2) {
+          width: 352px;
           padding-top: 5px;
           font-size: 15px;
         }
       }
+    }
+  }
+
+  .additional-tables {
+    th {
+      height: 80px;
+      padding: 5px 5px 5px 10px;
+      font-size: 16px !important;
     }
   }
 
@@ -2801,7 +2903,7 @@
   }
   .button-tab-highlighted {
     border: none;
-    background: #2e50e9;
+    background: #2e50e9 !important;
     color: white;
   }
 
@@ -2951,9 +3053,6 @@
   .rates-block__row {
     height: 100%;
   }
-  .button_hover {
-    background: #0d2792;
-  }
   @media (max-width: 1400px) {
     .rates-block__row {
       height: auto;
@@ -2977,7 +3076,7 @@
   }
   @media (max-width: 2000px) {
     .table4 {
-      tr td {
+      tr td:not(:first-child) {
         min-width: 5.3em !important;
       }
     }
@@ -3065,5 +3164,79 @@
     position: absolute;
     writing-mode: tb-rl;
     transform: rotate(180deg);
+  }
+  .emergency-situations {
+    background: #333975 60%;
+  }
+  .emergency-table {
+    height: 145px;
+    td {
+      word-break: break-word;
+    }
+    tr {
+      max-height: 100px;
+    }
+    tr:last-child {
+      max-height: 56px;
+    }
+  }
+  .emergency-block {
+    background: #333975 60%;
+  }
+  .emergency-icon {
+    width: 70px;
+    height: 70px;
+    background: url(/img/visualcenter3/emergency.png) 3% no-repeat;
+    background-size: 50%;
+  }
+  .button_hover {
+    background: #0d2792;
+  }
+  .emergency-view {
+    .emergency-title {
+      font-size: 16px;
+      span:first-child {
+        background: #353EA1;
+      }
+      span:last-child {
+        background: #4C537E;
+      }
+    }
+    .emergency-description {
+      background: #313561;
+    }
+  }
+  .category-button_border {
+    border-right: 2px solid #272953;
+  }
+  .dropdown-position {
+    margin: 0;
+    padding: 5px;
+    list-style: none;
+    background: white;
+    z-index: 999;
+    border-radius: 10px;
+    margin-left: 10px;
+    border: 2px solid #2743cb;
+    cursor: pointer;
+    color: black;
+    min-width: 99%;
+  }
+  .progress-bar_header {
+    height: 80px !important;
+  }
+  .progress-bar_body {
+    border-radius: 0;
+  }
+  .emergency-table__header {
+    background: #2E50E9;
+    border-bottom: 0.5px solid #272953;
+    font-size: 17px;
+    span:first-child {
+      border-right: 0.5px solid #272953;
+    }
+  }
+  .dropdown-splitter {
+    background: #C4DEF2;
   }
 </style>

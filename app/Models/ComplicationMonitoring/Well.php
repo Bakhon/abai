@@ -46,6 +46,11 @@ class Well extends Model
         return $this->hasMany(OilGas::class);
     }
 
+    public function oilpipes()
+    {
+        return $this->setConnection('tbd_cmon')->hasMany(OilPipe::class);
+    }
+
     public function omguhe()
     {
         return $this->hasMany(OmgUHE::class);

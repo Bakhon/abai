@@ -1,5 +1,5 @@
 <template>
-  <div class="row p-3 mt-3 bg-main1">
+  <div class="row p-3 bg-main1">
     <div class="d-flex">
       <chart-button
           v-for="(tab, index) in tabs"
@@ -20,43 +20,44 @@
         {{ tab }}
       </h5>
 
-      <chart1
+      <chart-with-profitability
           v-if="index === 0"
-          :data="charts.chart1"
+          :data="charts.profitability"
+          :paused-data="charts.pausedProfitability"
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.count_well')"
+          :oil-prices="filteredOilPrices"
+          :dollar-rates="filteredDollarRates"
           class="bg-economic-chart"/>
 
-      <chart1
+      <chart-with-oil-production
           v-if="index === 1"
-          :data="charts.chart2"
+          :data="charts.oilProduction"
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.oil_production')"
           :tooltip-text="trans('economic_reference.thousand_tons')"
+          :oil-prices="filteredOilPrices"
+          :dollar-rates="filteredDollarRates"
           class="bg-economic-chart"/>
 
-      <chart3
+      <chart-with-operating-profit-top
           v-else-if="index === 2"
-          :data="charts.chart3"
+          :data="charts.operatingProfitTop"
           :granularity="granularity"
           :profitability="profitability"
+          :oil-prices="filteredOilPrices"
+          :dollar-rates="filteredDollarRates"
           class="bg-economic-chart"/>
 
-      <chart4
+      <chart-with-liquid-production
           v-else-if="index === 3"
-          :data="charts.chart4"
+          :data="charts.liquidProduction"
           :granularity="granularity"
           :profitability="profitability"
-          class="bg-economic-chart"/>
-
-      <chart1
-          v-else-if="index === 4"
-          :data="charts.chart5"
-          :granularity="granularity"
-          :profitability="profitability"
-          :title="trans('economic_reference.count_well')"
+          :oil-prices="filteredOilPrices"
+          :dollar-rates="filteredDollarRates"
           class="bg-economic-chart"/>
     </div>
   </div>
@@ -64,17 +65,19 @@
 
 <script>
 import ChartButton from "./ChartButton";
-import Chart1 from "./Chart1";
-import Chart3 from "./Chart3";
-import Chart4 from "./Chart4";
+import ChartWithProfitability from "./ChartWithProfitability";
+import ChartWithOilProduction from "./ChartWithOilProduction";
+import ChartWithOperatingProfitTop from "./ChartWithOperatingProfitTop";
+import ChartWithLiquidProduction from "./ChartWithLiquidProduction";
 
 export default {
   name: "Charts",
   components: {
     ChartButton,
-    Chart1,
-    Chart3,
-    Chart4,
+    ChartWithProfitability,
+    ChartWithOilProduction,
+    ChartWithOperatingProfitTop,
+    ChartWithLiquidProduction,
   },
   props: {
     charts: {
@@ -88,6 +91,14 @@ export default {
     profitability: {
       required: true,
       type: String
+    },
+    oilPrices: {
+      required: true,
+      type: Array
+    },
+    dollarRates: {
+      required: true,
+      type: Array
     }
   },
   data: () => ({
@@ -104,8 +115,35 @@ export default {
         this.trans('economic_reference.distribution_oil_production_by_profitability'),
         this.trans('economic_reference.rating_top_10_wells_by_profitability'),
         this.trans('economic_reference.distribution_liquid_production_by_profitability'),
-        this.trans('economic_reference.distribution_pause_wells_by_profitability'),
       ]
+    },
+
+    filteredOilPrices() {
+      let data = []
+
+      let price = this.oilPrices[0]
+
+      this.charts.profitability.dt.forEach(dt => {
+        price = this.oilPrices.find(rate => [rate.dt, rate.dt_month].includes(dt)) || price
+
+        data.push(price ? price.value : 0)
+      })
+
+      return data
+    },
+
+    filteredDollarRates() {
+      let data = []
+
+      let rate = this.dollarRates[0]
+
+      this.charts.profitability.dt.forEach(dt => {
+        rate = this.dollarRates.find(rate => [rate.dt, rate.dt_month].includes(dt)) || rate
+
+        data.push(rate ? rate.value : 0)
+      })
+
+      return data
     },
   }
 }

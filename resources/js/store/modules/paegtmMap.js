@@ -5,8 +5,8 @@ const paegtmMap = {
     treeChildrenComponent: Object,
     treeSettingComponent: Object,
     isTreeMainComponentShow: true,
-    dateStart: new Date('2020-01-01T00:00:00+00:00'),
-    dateEnd: new Date('2020-12-31T23:59:59+00:00'),
+    dateStart: null,
+    dateEnd: null,
   },
   mutations: {
     CHANGE_DISPLAY_SHADOW_BLOCK (state, value) {
@@ -22,10 +22,10 @@ const paegtmMap = {
       this.state.isTreeMainComponentShow = value;
     },
     CHANGE_DATE_START (state, value) {
-      this.state.dateStart = value;
+      state.dateStart = value;
     },
     CHANGE_DATE_END (state, value) {
-      this.state.dateEnd = value;
+      state.dateEnd = value;
     },
   },
   getters: {

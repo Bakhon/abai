@@ -1,96 +1,145 @@
 import NotifyPlugin from "vue-easy-notify";
+import Multiselect from "vue-multiselect";
 
 Vue.use(NotifyPlugin);
 export default {
+	components: {
+		Multiselect,
+	  },
+	props: {"qLInput": Number,
+		"strokeLenDev": Number, 
+		"spm": Number,
+		"pumpType": Number},
 	data: function()  {
 		return {
 			svgTableN1: require('../../../images/tableN1.svg'),
 			svgTableN2: require('../../../images/tableN2.svg'),
-			pintakeMin: 30,
-			groupPosad: 2,
+			pintakeMin: null,
+			groupPosad: null,
 			stup: "2",
-			inclStep: 10,
-			gasMax: 10,
+			inclStep: null,
+			gasMax: null,
 			hvostovik: true,
-			corrosion: 'mediumCorrosion',
-			strokeLenMin: 2,
-			strokeLenMax: 3,
-			spmMin: 3,
-			spmMax: 8,
-			kpodMin: 0.6,
+			corrosion: null,
+			strokeLenMin: null,
+			strokeLenMax: null,
+			spmMin: null,
+			spmMax: null,
+			kpodMin: null,
 			isModal: false,
-			pumpCheckboxes: [
+			kpodCalced: null,
+			value: [],
+			pumpTypeKpod: this.pumpType,
+			qLInputKpod: this.qLInput,
+			strokeLenDevKpod: this.strokeLenDev,
+			spmKpod: this.spm,
+			markShtangs: null,
+			mechSep: null,
+			diametersShgn: [
 				{
-					id: 1,
+					pumpType: 27,
 					value: 27
 				},
 				{
-					id: 2,
+					pumpType: 32,
 					value: 32
 				},
 				{
-					id: 3,
+					pumpType: 38,
 					value: 38
 				},
 				{
-					id: 4,
+					pumpType: 44,
 					value: 44
 				},
 				{
-					id: 5,
+					pumpType: 50,
 					value: 50
 				},
+				{
+					pumpType:57,
+					value: 57
+				},
+				{
+					pumpType: 60,
+					value: 60
+				},
+				{
+					pumpType: 70,
+					value: 70
+				},
+				{
+					pumpType: 95,
+					value: 95
+				},
 
-				],
-			markShtang: "30ХМ(А) (НсУ)",
+			],
+			selectedKomponovka: [],
+			komponovkaTypes: [
+				{
+					id: 1,
+					name: this.trans('pgno.yakor_truboderzhatel'),
+					value: 'yakor',
+					disabled: false,
+					checked: true
+				},
+				{
+					id: 2,
+					name: this.trans('pgno.paker'),
+					value: 'paker',
+					disabled: false,
+					checked: false
+				},
+				{
+					id: 3,
+					name: this.trans('pgno.hvostovik'),
+					value: 'hvostovik',
+					disabled: false,
+					checked: false
+				},
+
+			],
+			markShtang: [],
 			markShtangsTypes: {
 				"mediumCorrosion": [
-					{mValue: "20Н2М (Н)",
-					tempValue: "20Н2М (Н)"},
-				  	{mValue: "20Н2М (НсУ)",
-					tempValue: "20Н2М (НсУ)"},
-					{mValue: "30ХМ(А) (НсУ)",
-					tempValue: "30ХМ(А) (НсУ)"},
-					{mValue: "15НЗМА (НсУ)",
-					tempValue: "15НЗМА (НсУ)"},
-					{mValue: "15Х2НМФ (НВО)",
-					tempValue: "15Х2НМФ (НВО)"},
-					{mValue: "15Х2ГМФ (НВО)",
-					tempValue: "15Х2ГМФ (НВО)"},
-					{mValue: "14Х3ГМЮ (НВО)",
-					tempValue: "14Х3ГМЮ (НВО)"},
-					{mValue: "АЦ28ХГНЗФТ (О)",
-					tempValue: "АЦ28ХГНЗФТ (О)"}
+					"20Н2М (Н)",
+					"20Н2М (НсУ)", 
+					"30ХМ(А) (НсУ)",
+					"15НЗМА (НсУ)",
+					"15Х2НМФ (НВО)",
+					"15Х2ГМФ (НВО)",
+					"14Х3ГМЮ (НВО)",
+					"АЦ28ХГНЗФТ (О)",
 				],
 				"antiCorrosion": [
-					{mValue: "40 (Н)",
-					tempValue: "40 (Н)"},
-					{mValue: "40 (НсУ)",
-					tempValue: "40 (НсУ)"},
-					{mValue: "20Н2М (Н)",
-					tempValue: "20Н2М (Н)"},
-					{mValue: "20Н2М (НсУ)",
-					tempValue: "20Н2М (НсУ)"},
-					{mValue: "30ХМ(А) (НсУ)",
-					tempValue: "30ХМ(А) (НсУ)"},
-					{mValue: "15НЗМА (НсУ)",
-					tempValue: "15НЗМА (НсУ)"},
-					{mValue: "15Х2НМФ (НВО)",
-					tempValue: "15Х2НМФ (НВО)"},
-					{mValue: "15Х2ГМФ (НВО)",
-					tempValue: "15Х2ГМФ (НВО)"},
-					{mValue: "14Х3ГМЮ (НВО)",
-					tempValue: "14Х3ГМЮ (НВО)"},
-					{mValue: "АЦ28ХГНЗФТ (О)",
-					tempValue: "АЦ28ХГНЗФТ (О)"}
+					"40 (Н)",
+					"40 (НсУ)",
+					"20Н2М (Н)",
+					"20Н2М (НсУ)",
+					"30ХМ(А) (НсУ)",
+					"15НЗМА (НсУ)",
+					"15Х2НМФ (НВО)",
+					"15Х2ГМФ (НВО)",
+					"14Х3ГМЮ (НВО)",
+					"АЦ28ХГНЗФТ (О)",
+					"С (API)",
+					"D (API)",
+					"K (API)",
+					"D super",
+					"15Х2ГМФ-D-sup",
+					"Ст-40(С)рем",
+					"Ст-40(Д)рем",
+					"20Н2М(D)рем",
+					"30ХМА(D)рем",
+					"15Х2ГМФ(D)рем",
+					"15Х2МНФ(D)рем",
 				],
 				"highCorrosion": [
-					{mValue: "15НЗМА (Н)",
-					tempValue: "15НЗМА (Н)"},
-					{mValue: "АЦ28ХГНЗФТ (О)",
-					tempValue: "АЦ28ХГНЗФТ (О)"}
+					"15НЗМА (Н)",
+					"АЦ28ХГНЗФТ (О)"
 				]
-				}
+			},
+			kPodMode: true,
 		}
 	},
 	computed: {
@@ -136,6 +185,32 @@ export default {
 		},
 	},
 	methods: {
+		setNotify(message, type) {
+      this.$notify({
+        message: message,
+        type: type,
+        size: 'sm',
+        timeout: 8000
+      })
+    },
+		updateBoxes(selectedKomponovka) {
+			if(selectedKomponovka.includes('paker')) {
+				this.komponovkaTypes[0].disabled = true
+				this.komponovkaTypes[2].disabled = true
+			} else if (this.selectedKomponovka.includes('hvostovik')) {
+				this.komponovkaTypes[1].disabled = true
+			} else if(this.selectedKomponovka.includes('hvostovik', 'yakor')) {
+				this.komponovkaTypes[1].disabled = true
+			} else if(this.selectedKomponovka.includes('yakor')) {
+				this.selectedKomponovka.push('hvostovik')
+				this.komponovkaTypes[1].disabled = true
+			} else if(this.selectedKomponovka.length === 0) {
+				this.komponovkaTypes[0].disabled = false
+				this.komponovkaTypes[1].disabled = false
+				this.komponovkaTypes[2].disabled = false
+			}
+			this.$store.dispatch('setKomponovka', this.selectedKomponovka)
+		},
 		setActiveOption(val) {
 			this.$store.commit('UPDATE_MARKSHTANG', val)
 		},
@@ -172,12 +247,15 @@ export default {
 		onChangeCorrosion(event) {
 			this.$store.commit("UPDATE_CORROSION", event.target.value)
 			this.markShtangs = this.markShtangsTypes[this.corrosion]
+			if (this.corrosion === "highCorrosion" || this.corrosion === "mediumCorrosion" ) {
+				this.markShtang = []
+			} else {
+				this.markShtang = this.$store.getters.markShtang
+			}
 		},
 		onChangeStupColumns(event) {
 			this.$store.commit("UPDATE_STUP_COLUMNS", event.target.value)
 		},
-		
-
 		onClick() {
 			this.$modal.show('modalTable')
 			this.isModal = true;
@@ -198,11 +276,25 @@ export default {
 			this.$emit('on-submit-params');
 			this.$modal.show('tabs');
 		},
+		calKpod(){
+			if (this.qLInput) {
+				this.kpodCalced = Number(((this.qLInputKpod / (1440 * 3.14 * this.pumpTypeKpod ** 2 * this.strokeLenDevKpod * (this.spmKpod / 4000000)))).toFixed(2))
+				this.$store.commit('UPDATE_KPOD_CALCED', this.kpodCalced)
+				if (this.kpodCalced < 0.4 || this.kpodCalced > 0.9) {
+					var message = `${this.trans('pgno.kpod_warning_start')} ${this.kpodCalced.toFixed(2)} ${this.trans('pgno.kpod_warning_end')}`
+					this.setNotify(message, "warning")
+				}
+			}
+		},
+		setKpodMode() {
+			this.$store.commit('UPDATE_KPOD_MODE', this.kPodMode) 
+		},
 	},
 	created: function() {
+		this.mechSep = this.$store.getters.mechSep
 		this.spmMin = this.$store.getters.spmMin
     	this.spmMax = this.$store.getters.spmMax
-    	this.strokeLenMin = this.$store.getters.strokeLenMin
+		this.strokeLenMin = this.$store.getters.strokeLenMin
     	this.strokeLenMax = this.$store.getters.strokeLenMax
     	this.kpodMin = this.$store.getters.kpodMin
 		this.groupPosad = this.$store.getters.groupPosad
@@ -217,5 +309,8 @@ export default {
 		this.inclStep = this.$store.getters.inclStep
 		this.markShtang = this.$store.getters.markShtang
 		this.markShtangs = this.markShtangsTypes[this.corrosion]
+		this.kPodMode = this.$store.getters.kPodMode
+		this.kpodCalced = this.$store.getters.kPodCalced
+		this.calKpod()
 	}
 }

@@ -1,0 +1,23 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
+
+class #MIGRATION_CLASS_NAME# extends Migration
+{
+    public function up()
+    {
+        $permissions = json_decode('#PERMISSIONS#', 1);
+
+        foreach ($permissions as $permission) {
+            DB::table('permissions')->insert($permission);
+        }
+
+        $permissionSection = json_decode('#PERMISSION_SECTION#', 1);
+        DB::table('permission_sections')->insert($permissionSection);
+    }
+
+    public function down()
+    {
+    }
+}

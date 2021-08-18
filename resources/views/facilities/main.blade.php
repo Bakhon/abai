@@ -1,11 +1,11 @@
 @extends('layouts.app')
 @section('content')
     {{-- content --}}
-    <div class="col p-4" id="app">
+    <div class="col p-4"  >
         <h2 class="subtitle">Обустройство</h2>
         <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">
-            <iframe onload="this.style.opacity=1;" style="opacity:0;border:none;"  src="{{ url('http://172.20.103.32:8080/superset/dashboard/24') }}" width="100%" height="760px" frameborder="0" allowfullscreen></iframe>
+            <iframe onload="this.style.opacity=1;" style="opacity:0;border:none;"  src="{{ url(env(MIX_SUPERSET)+'/superset/dashboard/24') }}" width="100%" height="760px" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>

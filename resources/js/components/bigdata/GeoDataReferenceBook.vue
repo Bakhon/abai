@@ -1,6 +1,5 @@
 <template>
   <div class="container container-main">
-    <cat-loader/>
     <template v-for="referenceBook in referenceBooks">
       <div class="row">
         <label class="section-text">Добавить данные в справочник: {{ referenceBook.description }}</label>
@@ -44,7 +43,7 @@ export default {
   components: {},
   data() {
     return {
-      baseUrl: 'http://172.20.103.187:8083/',
+      baseUrl: process.env.MIX_MICROSERVICE_GEO_DATA,
       referenceBooks: referenceBooksJson['referenceBooks'],
       input: referenceBooksJson['input'],
       isUpdated: {

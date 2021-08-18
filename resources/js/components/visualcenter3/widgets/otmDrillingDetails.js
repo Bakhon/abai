@@ -62,6 +62,12 @@ export default {
 
             let uri = this.localeUrl("/get-drilling-details");
             const response = await axios.get(uri,{params:queryOptions});
+
+            if (response.data && response.data.length === 0) {
+                this.drillingPeriodStart = moment(this.drillingPeriodStart).subtract(1,'days').format('DD.MM.YYYY');
+                this.drillingPeriodEnd = moment(this.drillingPeriodEnd).subtract(1,'days').format('DD.MM.YYYY');
+                return await this.getDrillingByMonth();
+            }
             if (response.status === 200) {
                 return response.data;
             }
@@ -69,7 +75,7 @@ export default {
         },
 
         async switchDrillingPeriod(buttonType) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             this.drillingDailyPeriod = "";
             this.drillingMonthlyPeriod = "";
             this.drillingYearlyPeriod = "";
@@ -80,7 +86,7 @@ export default {
             this.isDrillingPeriodSelected = this.isDrillingFewDaysSelected();
             this.drillingDetails = await this.getDrillingByMonth();
             this.updateDrillingWidget();
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         },
 
         isDrillingFewDaysSelected() {

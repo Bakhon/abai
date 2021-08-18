@@ -15,10 +15,10 @@
             "title": "",
             "items": [
               {
-                "code": "name_ru",
+                "code": "casing_type",
                 "type": "dict",
                 "title": "column_type",
-                "dict": "equip_type",
+                "dict": "equip_type_casc",
                 "validation": "required|exists:tbd.dict.equip_type,id"
               },
               {

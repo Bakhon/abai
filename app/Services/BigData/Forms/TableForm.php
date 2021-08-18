@@ -8,9 +8,11 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
 use App\Services\BigData\FieldLimitsService;
+use App\Services\BigData\TableFormHeaderService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -19,10 +21,18 @@ use Illuminate\Support\Facades\DB;
 abstract class TableForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'table_form.json';
+    protected $tableHeaderService;
 
     abstract public function getRows(array $params = []): array;
 
-    abstract protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void;
+    abstract protected function saveSingleFieldInDB(array $params): void;
+
+    public function __construct(Request $request)
+    {
+        $this->tableHeaderService = app()->make(TableFormHeaderService::class);
+        parent::__construct($request);
+    }
+
 
     public static function getLimitsCacheKey(array $field, CarbonImmutable $yesterday)
     {
@@ -50,18 +60,20 @@ abstract class TableForm extends BaseForm
 
         $copyRow = $rowData[$columnFrom['table']]->get($wellId)->first();
         $copyValue = $copyRow->{$columnFrom['column']};
-        $this->saveSingleFieldInDB(
-            $column['code'],
-            $wellId,
-            Carbon::parse($copyRow->dbeg ?? $date)->timezone('Asia/Almaty'),
-            1
-        );
-        $this->saveSingleFieldInDB(
-            $columnTo['code'],
-            $wellId,
-            Carbon::parse($date)->timezone('Asia/Almaty'),
-            $copyValue
-        );
+        $saveParams = [
+            'field' => $column['code'],
+            'wellId' => $wellId,
+            'date' => Carbon::parse($copyRow->dbeg ?? $date)->timezone('Asia/Almaty'),
+            'value' => 1,
+        ];
+        $this->saveSingleFieldInDB($saveParams);
+        $saveParams = [
+            'field' => $columnTo['code'],
+            'wellId' => $wellId,
+            'date' => Carbon::parse($date)->timezone('Asia/Almaty'),
+            'value' => $copyValue,
+        ];
+        $this->saveSingleFieldInDB($saveParams);
 
 
         return [];
@@ -70,25 +82,27 @@ abstract class TableForm extends BaseForm
     public function saveSingleField(string $field)
     {
         $this->validateSingleField($field);
-        $this->saveSingleFieldInDB(
-            $field,
-            $this->request->get('well_id'),
-            Carbon::parse($this->request->get('date')),
-            $this->request->get($field)
-        );
+        $saveParams = [
+            'field' => $field,
+            'wellId' => $this->request->get('well_id'),
+            'date' => Carbon::parse($this->request->get('date')),
+            'value' => $this->request->get($field),
+        ];
+        $this->saveSingleFieldInDB($saveParams);
         $this->saveHistory($field, $this->request->get($field));
 
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function getFormatedParams(): array
+    public function getFormInfo(): array
     {
         $params = $this->params();
         $params = $this->mapParams($params);
 
         return [
             'params' => $params,
-            'fields' => $this->getFields()->pluck('', 'code')->toArray()
+            'fields' => $this->getFields()->pluck('', 'code')->toArray(),
+            'available_actions' => $this->getAvailableActions()
         ];
     }
 
@@ -105,6 +119,7 @@ abstract class TableForm extends BaseForm
     protected function getFieldValue(array $field, array $rowData, Model $item): ?array
     {
         $result = $this->getCustomFieldValue($field, $rowData, $item);
+
         if (is_null($result)) {
             if ($field['type'] === 'link') {
                 $result = [
@@ -282,7 +297,7 @@ abstract class TableForm extends BaseForm
                             $field
                         );
                     }
-                    $row[$field['code']]['limits'] = $fieldLimits[$row['id']] ?? null;
+                    $row[$field['code']]['limits'] = isset($row['id']) ? ($fieldLimits[$row['id']] ?? null) : null;
                 }
                 return $row;
             }
@@ -294,7 +309,7 @@ abstract class TableForm extends BaseForm
         if (!empty($params['filter'])) {
             $params['filter'] = array_map(
                 function ($item) {
-                    if ($item['type'] === 'date' && $item['default']) {
+                    if ($item['type'] === 'date' && !empty($item['default'])) {
                         $item['default'] = Carbon::createFromTimestamp(strtotime($item['default']))->timezone(
                             'Asia/Almaty'
                         );
@@ -304,6 +319,11 @@ abstract class TableForm extends BaseForm
                 $params['filter']
             );
         }
+
+        if (!empty($params['merge_columns'])) {
+            $params['complicated_header'] = $this->tableHeaderService->getHeader($params);
+        }
+
         return $params;
     }
 
@@ -329,6 +349,18 @@ abstract class TableForm extends BaseForm
             );
         } else {
             $wellsQuery->where('id', $id);
+        }
+
+        if (isset($params['filter']['well_category'])) {
+            $wellsQuery->whereHas(
+                'category',
+                function ($query) use ($params) {
+                    return $query
+                        ->select('dict.well_category_type.id')
+                        ->from('dict.well_category_type')
+                        ->whereIn('code', $params['filter']['well_category']);
+                }
+            );
         }
 
         if (isset($params['filter']['row_id'])) {
