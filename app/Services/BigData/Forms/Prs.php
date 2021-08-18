@@ -9,6 +9,20 @@ class Prs extends PlainForm
 {
     protected $configurationFileName = 'prs';
     use DateMoreThanValidationTrait;
+    protected function prepareDataToSubmit()
+    {
+        $data = $this->request->except($this->tableFieldCodes);
+
+        $prs = DB::connection('tbd')
+            ->table('dict.well_repair_type')
+            ->where('code', 'WLO')
+            ->first();
+
+        $data['repair_type'] = $prs->id;
+        return $data;
+    }
+
+
     protected function getCustomValidationErrors(): array
     {
         $errors = [];

@@ -239,7 +239,16 @@ class DictionaryService
         'chemical_reagent_types' => [
             'class' => ChemicalReagentType::class,
             'name_field' => 'name_ru'
-        ]
+        ],
+        'well_prs_repair_types' => [
+            'class' => WellPrsRepairType::class,
+            'name_field' => 'name_ru'
+        ],
+        'tech_state_casings' => [
+            'class' => TechStateCasing::class,
+            'name_field' => 'name_ru'
+        ],
+        
     ];
 
     const TREE_DICTIONARIES = [
@@ -286,10 +295,10 @@ class DictionaryService
                     $dict = $this->getGeoHorizonDict();
                     break; 
                 case 'reason_ref':
-                    $dict = $this->getReasonRefDict();
+                    $dict = $this->getReasonTypeRefDict();
                     break; 
                 case 'reason_rst':
-                    $dict = $this->getReasonRstDict();
+                    $dict = $this->getReasonTypeRstDict();
                     break;        
                     break;
                 case 'reason_type_rtr':
@@ -471,25 +480,47 @@ class DictionaryService
 
         return $items;
     }     
-    private function getReasonRefDict()
+    private function getReasonTypeRefDict()
     {
         $items = DB::connection('tbd')
-            ->table('dict.geo as g')
-            ->select('g.id', 'g.name_ru as name', 'gp.parent as parent')
-            ->where('gt.code', 'HRZ')
+        ->table('prod.well_workover as p')
+        ->select('r.id', 'r.name_ru as name')
+        ->where('rt.code', 'REF')
+        ->distinct()
+        ->orderBy('name', 'asc')
+        ->join('dict.reason as r', 'p.reason_equip_fail', 'r.id')
+        ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
+        ->get()
+        ->map(
+            function ($item) {
+                return (array)$item;
+            }
+        )
+            ->toArray();
+
+        return $items;
+    }
+    
+    private function getReasonTypeRstDict()
+    {
+        $items = DB::connection('tbd')
+            ->table('prod.well_workover as p')
+            ->select('r.id', 'r.name_ru as name')
+            ->where('rt.code', 'RST')
             ->distinct()
-            ->orderBy('parent', 'asc')
             ->orderBy('name', 'asc')
-            ->join('dict.geo_type as gt', 'g.geo_type', 'gt.id')
-            ->leftJoin(
-                'dict.geo_parent as gp',
-                function ($join) {
-                    $join->on('gp.geo', '=', 'g.id');
-                    $join->on('gp.dbeg', '<=', DB::raw("NOW()"));
-                    $join->on('gp.dend', '>=', DB::raw("NOW()"));
+            ->join('dict.reason as r', 'p.stop_reason', 'r.id')
+            ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
                 }
             )
-    }
+            ->toArray();
+
+        return $items;
+    }     
     private function getReasonTypeRtrDict()
     {
         $items = DB::connection('tbd')
@@ -510,5 +541,4 @@ class DictionaryService
 
         return $items;
     }     
-    }
 }

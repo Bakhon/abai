@@ -25,7 +25,7 @@
                 "type": "dict",
                 "title": "type_rep_work",
                 "validation": "required|exists:tbd.dict.repair_work_type, id",
-                "dict": "dict.repair_work_type"
+                "dict": "repair_work_types"
               },
               {
                 "code": "work_plan",
@@ -42,21 +42,21 @@
                 "type": "dict",
                 "title": "contractor",
                 "validation": "required|exists:tbd.dict.company, id",
-                "dict": "dict.company"
+                "dict": "companies"
               },
               {
                 "code": "brigadier",
                 "type": "dict",
                 "title": "brigade",
                 "validation": "required|exists:tbd.dict.brigade, id",
-                "dict": "dict.brigade"
+                "dict": "brigades"
               },
               {
                 "code": "full_name",
                 "type": "dict",
                 "title": "brigade_master",
                 "validation": "required|exists:tbd.dict.brigadier, id",
-                "dict": "dict.brigadier"
+                "dict": "brigadiers"
               },
               {
                 "code": "gtm_dublicate",
@@ -91,7 +91,7 @@
                 "type": "dict",
                 "title": "rep_type",
                 "validation": "required",
-                "dict": "prod.well_workover"
+                "dict": "well_prs_repair_types"
               },
               {
                 "code": "out_of_plan",
@@ -121,13 +121,13 @@
                 "code": "tech_state",
                 "type": "dict",
                 "title": "tech_condition",
-                "dict": "dict.tech_state_casing"
+                "dict": "tech_state_casings"
               },
               {
                 "code": "no_change_tech_status",
                 "type": "checkbox",
                 "title": "do_not_chenge_teckh_condition",
-                "dict": "dict.tech_state_casing",
+                "dict": "tech_state_casings",
                 "validation": "exists:tbd.dict.tech_state_casing, id"
               },
               {
@@ -135,7 +135,7 @@
                 "type": "dict",
                 "title": "new_condition",
                 "validation": "exists:tbd.dict.well_status, id",
-                "dict": "dict.well_status"
+                "dict": "well_statuses"
               },
               {
                 "code": "no_change_state",
@@ -155,7 +155,7 @@
             "title": "repair",
             "items": [
               {
-                "code": "main_reason_equip_fail",
+                "code": "reason_equip_fail",
                 "type": "dict",
                 "title": "cause_h_failure",
                 "validation": "required|exists:tbd.dict.reason, id",
@@ -175,7 +175,7 @@
                 "validation": "required"
               },
               {
-                "code": "name_ru",
+                "code": "stop_reason",
                 "type": "dict",
                 "title": "reason_stopping",
                 "validation": "required|exists:tbd.dict.reason, id",

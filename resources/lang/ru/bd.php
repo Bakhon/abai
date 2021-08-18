@@ -188,7 +188,8 @@ return [
             'by_your_own' => 'Дублировать в ГТМ',
             'owt_of_plan' => 'Вне плана',
             'do_not_chenge_teckh_condition' => 'Не менять техническое состояние',
-            'do_not_chenge_condition' => 'Не менять состояние'
+            'do_not_chenge_condition' => 'Не менять состояние',
+            'gtm_duplicate' => 'Дублировать в ГТМ'
 
         ],
         'gas_well' => [
