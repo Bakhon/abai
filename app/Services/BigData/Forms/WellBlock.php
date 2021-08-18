@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
+use Illuminate\Support\Facades\DB;
+
 class WellBlock extends PlainForm
 {
     protected $configurationFileName = 'well_block';
@@ -40,7 +42,13 @@ class WellBlock extends PlainForm
     {
         $errors = [];
 
-        if (!$this->isValidDateDbeg($this->request->get('well'),$this->request->get('dbeg'), 'prod.well_block', 'dbeg')){
+        if (!$this->isValidDateDbeg(
+            $this->request->get('well'),
+            $this->request->get('dbeg'),
+            'prod.well_block',
+            'dbeg',
+            $this->request->get('id')
+        )) {
             $errors['dbeg'] = trans('bd.validation.dbeg_well_block');
         }
 

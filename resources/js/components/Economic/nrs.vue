@@ -1,7 +1,5 @@
 <template>
   <div class="position-relative">
-    <cat-loader v-show="loading"/>
-
     <div class="row">
       <div class="col-9">
         <div class="row justify-content-between text-white bg-blue-dark text-wrap mb-10px">
@@ -83,7 +81,9 @@
             v-if="!loading"
             :charts="res.charts"
             :granularity="form.granularity"
-            :profitability="form.profitability"/>
+            :profitability="form.profitability"
+            :oil-prices="res.oilPrices"
+            :dollar-rates="res.dollarRates"/>
       </div>
 
       <div class="col-3 pr-0 pl-10px">
@@ -173,7 +173,8 @@
 <script>
 const fileDownload = require("js-file-download");
 
-import CatLoader from '@ui-kit/CatLoader'
+import {globalloadingMutations, globalloadingState} from '@store/helpers';
+
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
 import Charts from "./components/Charts";
@@ -273,12 +274,13 @@ const economicRes = {
     liquidProduction: null,
     operatingProfitTop: null,
   },
+  oilPrices: [],
+  dollarRates: [],
 }
 
 export default {
   name: "economic-nrs",
   components: {
-    CatLoader,
     Divider,
     EconomicCol,
     Charts,
@@ -302,9 +304,10 @@ export default {
       profitability: PROFITABILITY_FULL,
     },
     res: economicRes,
-    loading: true
   }),
   computed: {
+    ...globalloadingState(['loading']),
+
     blocks() {
       return [
         [
@@ -347,8 +350,10 @@ export default {
     },
   },
   methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
     async getData() {
-      this.loading = true
+      this.SET_LOADING(true);
 
       try {
         const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-data'), {params: this.form})
@@ -360,21 +365,21 @@ export default {
         console.log(e)
       }
 
-      this.loading = false
+      this.SET_LOADING(false);
     },
 
     async exportData() {
-      try {
-        this.loading = true
+      this.SET_LOADING(true);
 
+      try {
         const {data} = await this.axios.post(this.localeUrl('/economic/nrs/export-data'), this.form)
 
         this.exportFromExcelJob(data)
       } catch (e) {
-        this.loading = false
-
         console.log(e)
       }
+
+      this.SET_LOADING(false);
     },
 
     exportFromExcelJob({id}) {
@@ -385,13 +390,13 @@ export default {
           case 'finished':
             clearInterval(interval)
 
-            this.loading = false
+            this.SET_LOADING(false);
 
             return window.open(data.job.output.filename, '_blank')
           case 'failed':
             clearInterval(interval)
 
-            this.loading = false
+            this.SET_LOADING(false);
 
             return alert('Export error')
         }

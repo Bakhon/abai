@@ -33,6 +33,7 @@
         "@handsontable/vue": "^5.1.0",
         "@revolist/vue-datagrid": "^2.9.9",
         "@riophae/vue-treeselect": "^0.4.0",
+        "@turf/turf": "^6.5.0",
         "apexcharts": "^3.26.0",
         "bootstrap-select": "^1.13.18",
         "bootstrap-table": "^1.18.3",
@@ -57,7 +58,6 @@
         "moment": "^2.29.1",
         "moment-timezone": "^0.5.33",
         "plotly.js-locales": "^1.58.4",
-        "topojson": "^3.0.2",
         "topojson-client": "^3.1.0",
         "v-calendar": "^1.1.1",
         "v-click-outside": "^3.1.2",
@@ -83,6 +83,7 @@
         "vue2-perfect-scrollbar": "^1.5.0",
         "vuedraggable": "^2.24.3",
         "vuejs-paginate": "^2.1.0",
+        "vuelidate": "^0.7.6",
         "vuex": "^3.6.2",
         "vuex-persistedstate": "^4.0.0-beta.3",
         "weekstart": "^1.1.0"

@@ -27,7 +27,8 @@
         "shuchkin/simplexls": "^0.9.9",
         "shuchkin/simplexlsx": "^0.8.24",
         "spatie/laravel-activitylog": "^3.17",
-        "spatie/laravel-permission": "^3.13"
+        "spatie/laravel-permission": "^3.13",
+        "tohidplus/laravel-vue-translation": "^2.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",

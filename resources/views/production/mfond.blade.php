@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     {{-- content --}}
-    <div class="col p-4" id="app">
+    <div class="col p-4"  >
         <h2 class="subtitle">Мехфонд</h2>
         <button class="mleft" onclick="document.location='{{url('/')}}/ru/map'">Карта</button>
         <div class="level1-content row">

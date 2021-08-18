@@ -53,35 +53,9 @@ Route::group(
                 Route::get('/dob', 'DruidController@dob')->name('dob');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
 
-                //gno economic
-                Route::resource('ecorefscompaniesids', 'EcoRefsCompaniesIdsController');
-                Route::resource('ecorefsdirection', 'EcoRefsDirectionController');
-                Route::resource('ecorefsrouteid', 'EcoRefsRouteIdController');
-                Route::resource('ecorefsroutetnid', 'EcoRefsRouteTnIdController');
-                Route::resource('ecorefsequipid', 'EcoRefsEquipIdController');
-                Route::resource('ecorefsannualprodvolume', 'EcoRefsAnnualProdVolumeController');
-                Route::resource('ecorefsrenttax', 'EcoRefsRentTaxController');
-                Route::resource('ecorefsavgmarketprice', 'EcoRefsAvgMarketPriceController');
-                Route::resource('ecorefsdiscontcoefbar', 'EcoRefsDiscontCoefBarController');
-                Route::resource('eco_refs_cost', 'EcoRefsCostController');
-                Route::get('eco_refs_costs', 'EcoRefsCostController@getData');
-                Route::resource('eco_refs_scenario', 'Refs\EcoRefsScenarioController');
-                Route::get('eco_refs_scenarios', 'Refs\EcoRefsScenarioController@getData');
-                Route::get('economic_data/upload_excel', 'EcoRefsCostController@uploadExcel')->name('economic_data_upload');
-                Route::post('economic_data/import_excel', 'EcoRefsCostController@importExcel')->name('economic_data_import');
-                Route::resource('economic_data_log', 'Refs\EconomicDataLogController');
-                Route::resource('ecorefsbranchid', 'EcoRefsBrachIdController');
-                Route::resource('ecorefsrentequipelectservcost', 'EcoRefsRentEquipElectServCostController');
-                Route::resource('ecorefsservicetime', 'EcoRefsServiceTimeController');
-                Route::resource('ecorefsndorates', 'EcoRefsNdoRatesController');
-                Route::resource('ecorefselectprsbrigcost', 'EcoRefsPrepElectPrsBrigCostController');
-                Route::resource('ecorefstarifytn', 'EcoRefsTarifyTnController');
-                Route::resource('ecorefsmacro', 'EcoRefsMacroController');
-                Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
-                Route::resource('ecorefsempper', 'Refs\EcoRefsEmpPerController');
-                Route::resource('ecorefsscfa', 'Refs\EcoRefsScFaController');
-                Route::get('eco_refs_sc_fas', 'Refs\EcoRefsScFaController@getData');
+                //gno economic               
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
+                Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
 
                 // economic tech data
                 Route::get('tech_data_list', 'Refs\TechnicalDataController@refsList')->name('tech_data_list');
@@ -100,15 +74,10 @@ Route::group(
                 Route::post('technical_forecast/import_excel', 'Refs\TechnicalDataController@importExcel')->name('tech_refs_import');
 
                 Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
-                Route::resource('ecorefsexc', 'EcoRefsExcController');
                 Route::resource('antiecoone', 'AntiCrisis\AntiEcoOneController');
                 Route::resource('antiecotwo', 'AntiCrisis\AntiEcoTwoController');
-                Route::resource('ecorefsprocdob', 'EcoRefsProcDobController');
-                Route::resource('ecorefsavgprs', 'EcoRefsAvgPrsController');
-
 
                 Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
-
                 Route::get('organizations', 'OrganizationsController@index')->name('organizations');
                 Route::get('user_organizations', 'OrganizationsController@getUserOrganizations')->name('user_organizations');
                 Route::get('fields', 'FieldController@index')->name('fields');
@@ -124,11 +93,13 @@ Route::group(
                 Route::get('/paegtm/accum_oil_prod_data', 'GTM\GTMController@getAccumOilProd')->name('gtm');
                 Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');        
 
+                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name(
+                    'gtm'
+                );
 
-            
-                Route::get('/serach_wells', 'DigitalRatingContoller@serach_wells')->name('serach_wells');     
-                
-                
+                Route::post('attachments', 'AttachmentController@upload');
+                Route::get('attachments/{attachment}', 'AttachmentController@get');
+                Route::get('/serach_wells', 'DigitalRatingContoller@serach_wells')->name('serach_wells');   
             }
         );
         Auth::routes(

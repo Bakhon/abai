@@ -104,7 +104,7 @@
               </select>
             </div>
             <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
-              <a href="#" @click.prevent="chooseDt"  class="btn btn-sm button_form" style="width: 80%;"
+              <a href="#" @click.prevent="chooseDate"  class="btn btn-sm button_form" style="width: 80%;"
                 >{{trans('tr.form')}}</a
               >
               <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;">
@@ -137,7 +137,7 @@
                 <label for="inputDate" style="margin-left: 8px;">{{trans('tr.end_date_enter')}}:</label>
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
                 <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
-                  <a href="#" @click.prevent="chooseDt1" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
+                  <a href="#" @click.prevent="chooseDynamicDate" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
                     >{{trans('tr.form')}}</a
                   >
                   <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;" >
@@ -520,7 +520,7 @@
               </a>
 
               <a
-                v-if="!isEdit && isPermission"
+                v-if="!isEdit && isPermission && isMaxDate"
                 v-bind:title="trans('tr.edit')"
                 style="cursor: pointer;"
                 data-toggle="tooltip"
@@ -943,7 +943,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter icon_filter" v-if="!isActiveHorizonFilterr"></i><i class="fas fa-filter icon_filter_active" v-if="isActiveHorizonFilterr"></i>
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -1455,8 +1455,8 @@
                   <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}" :colspan="getRowWidthSpan(row)">{{ row.field }}</td>
                   <td v-if="isEdit">{{ row.field }}</td>
 
-                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.rus_wellname }}</td>
-                  <td v-if="isEdit">{{ row.rus_wellname }}</td>
+                  <td v-if="!isEdit && !isActiveClass(row)" :class="{'activ': isActiveClass(row)}" >{{ row.rus_wellname }}</td>
+                  <td v-if="isEdit && !isActiveClass(row)">{{ row.rus_wellname }}</td>
                   <td
                     v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`well_type`), 'activ': isActiveClass(row)}"
@@ -6443,7 +6443,7 @@
       </div>
     </div>
     <notifications position="top"></notifications>
-    <cat-loader />
+
   </div>
 </template>
 <script src="./tr.js"></script>
@@ -6722,13 +6722,12 @@ tr:nth-child(even) td {
 }
 .select_edit {
   width: 140px;
-  background: #7879a6;
   height: 31px;
-  color: white;
+  color: black;
 }
 .input_edit_modal {
-  background: #7879a6;
-  color: white;
+
+  color: black;
   font-size: 12px;
   height: 31px;
 }

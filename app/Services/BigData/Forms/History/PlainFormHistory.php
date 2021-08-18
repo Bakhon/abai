@@ -12,8 +12,12 @@ use Illuminate\Support\Collection;
 class PlainFormHistory
 {
 
-    public function saveHistory(string $formName, Collection $formFields, \stdClass $originalData, array $submittedData)
-    {
+    public function saveHistory(
+        string $formName,
+        Collection $formFields,
+        ?\stdClass $originalData,
+        array $submittedData
+    ) {
         if (empty($submittedData)) {
             return;
         }
@@ -41,7 +45,7 @@ class PlainFormHistory
         }
     }
 
-    private function getFieldsPayload(Collection $formFields, \stdClass $originalData, array $fields)
+    private function getFieldsPayload(Collection $formFields, ?\stdClass $originalData, array $fields)
     {
         $dictService = app()->make(DictionaryService::class);
 
@@ -54,7 +58,7 @@ class PlainFormHistory
 
             $oldValue = $originalData->$key ?? '';
 
-            if (in_array($formField['type'], ['dict', 'dict_tree'])) {
+            if ($value && in_array($formField['type'], ['dict', 'dict_tree'])) {
                 $oldValue = !empty($oldValue) ? $dictService->getDictValueById(
                     $formField['dict'],
                     $formField['type'],

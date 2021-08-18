@@ -6,5 +6,4 @@
 @section('module_home_url', route('gtm_index'))
 @section('content')
     <gtm-main></gtm-main>
-    <cat-loader />
 @endsection
