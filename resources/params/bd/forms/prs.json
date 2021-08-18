@@ -18,10 +18,10 @@
                 "code": "dbeg",
                 "type": "date",
                 "title": "start_date",
-                "validation": "nullable|date|before_or_equal:today"
+                "validation": "required|nullable|date|before_or_equal:today"
               },
               {
-                "code": "name_ru",
+                "code": "repair_work_type",
                 "type": "dict",
                 "title": "type_rep_work",
                 "validation": "required|exists:tbd.dict.repair_work_type, id",
@@ -38,14 +38,14 @@
                 "title": "gtm_dublicate"
               },
               {
-                "code": "name_ru",
+                "code": "contractor",
                 "type": "dict",
                 "title": "contractor",
                 "validation": "required|exists:tbd.dict.company, id",
                 "dict": "dict.company"
               },
               {
-                "code": "name_ru",
+                "code": "brigadier",
                 "type": "dict",
                 "title": "brigade",
                 "validation": "required|exists:tbd.dict.brigade, id",
@@ -79,7 +79,7 @@
                 "code": "dend",
                 "type": "date",
                 "title": "completion_date",
-                "validation": "nullable|date|before_or_equal:today"
+                "validation": "nullable|date|after:dbeg"
               },
               {
                 "code": "work_list",
@@ -101,13 +101,15 @@
               },
               {
                 "code": "cnl_new",
-                "type": "text",
-                "title": "nkt_new"
+                "type": "numeric",
+                "title": "nkt_new",
+                "validation":"gte:0"
               },
               {
                 "code": "cnl_used",
-                "type": "text",
-                "title": "nkt_used"
+                "type": "numeric",
+                "title": "nkt_used",
+                "validation":"gte:0"
               },
               {
                 "code": "td",
@@ -116,7 +118,7 @@
                 "validation": ""
               },
               {
-                "code": "name_ru",
+                "code": "tech_state",
                 "type": "dict",
                 "title": "tech_condition",
                 "dict": "dict.tech_state_casing"
@@ -126,13 +128,13 @@
                 "type": "checkbox",
                 "title": "do_not_chenge_teckh_condition",
                 "dict": "dict.tech_state_casing",
-                "validation": "required|exists:tbd.dict.tech_state_casing, id"
+                "validation": "exists:tbd.dict.tech_state_casing, id"
               },
               {
-                "code": "name_ru",
+                "code": "well_status",
                 "type": "dict",
                 "title": "new_condition",
-                "validation": "required|exists:tbd.dict.well_status, id",
+                "validation": "exists:tbd.dict.well_status, id",
                 "dict": "dict.well_status"
               },
               {
@@ -153,25 +155,31 @@
             "title": "repair",
             "items": [
               {
-                "code": "name_ru",
+                "code": "main_reason_equip_fail",
                 "type": "dict",
                 "title": "cause_h_failure",
                 "validation": "required|exists:tbd.dict.reason, id",
-                "dict": "dict.reason"
+                "dict": "reason_ref"
               },
               {
-                "code": "equil_fail_reason_type",
+                "code": "add_reason_equip_fail",
                 "type": "dict",
+                "title": "add_f",
+                "validation": "required|exists:tbd.dict.reason_equip_fail, id",
+                "dict": "reason_equip_fail"
+              },
+              {
+                "code": "more_info_reason_fail",
+                "type": "text",
                 "title": "reason_type",
-                "validation": "required|exists:tbd.prod.well_workover, id",
-                "dict": "prod.well_workover"
+                "validation": "required"
               },
               {
                 "code": "name_ru",
                 "type": "dict",
                 "title": "reason_stopping",
                 "validation": "required|exists:tbd.dict.reason, id",
-                "dict": "dict.reason"
+                "dict": "reason_rst"
               }
             ]
           }

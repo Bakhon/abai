@@ -48,6 +48,7 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\ReasonEquipFail;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -229,6 +230,10 @@ class DictionaryService
         'treat_type' => [
             'class' => TreatType::class,
             'name_field' => 'name_ru'
+        ],
+        'reason_equip_fail' => [
+            'class' => ReasonEquipFail::class,
+            'name_field' => 'name_ru'
         ]
     ];
 
@@ -274,7 +279,13 @@ class DictionaryService
                     break;
                 case 'geo_type_hrz':
                     $dict = $this->getGeoHorizonDict();
-                    break;    
+                    break; 
+                case 'reason_ref':
+                    $dict = $this->getReasonRefDict();
+                    break; 
+                case 'reason_rst':
+                    $dict = $this->getReasonRstDict();
+                    break;        
                 default:
                     throw new DictionaryNotFound();
             }
@@ -404,6 +415,34 @@ class DictionaryService
     }
 
     private function getGeoHorizonDict()
+    {
+        $items = DB::connection('tbd')
+            ->table('dict.geo as g')
+            ->select('g.id', 'g.name_ru as name', 'gp.parent as parent')
+            ->where('gt.code', 'HRZ')
+            ->distinct()
+            ->orderBy('parent', 'asc')
+            ->orderBy('name', 'asc')
+            ->join('dict.geo_type as gt', 'g.geo_type', 'gt.id')
+            ->leftJoin(
+                'dict.geo_parent as gp',
+                function ($join) {
+                    $join->on('gp.geo', '=', 'g.id');
+                    $join->on('gp.dbeg', '<=', DB::raw("NOW()"));
+                    $join->on('gp.dend', '>=', DB::raw("NOW()"));
+                }
+            )
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+        return $items;
+    }     
+    private function getReasonRefDict()
     {
         $items = DB::connection('tbd')
             ->table('dict.geo as g')
