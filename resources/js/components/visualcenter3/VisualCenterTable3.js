@@ -776,7 +776,7 @@ export default {
                 this.consolidatedData[this.selectedButtonName].current = this.getConsolidatedBy('current');
                 this.consolidatedData[this.selectedButtonName].yesterday = this.getConsolidatedBy('yesterday');
             }
-            this.calculateDzoCompaniesSummary();          
+            this.calculateDzoCompaniesSummary();
         },
         tables: function() {
             this.dzoCompanySummary = this.tables;
