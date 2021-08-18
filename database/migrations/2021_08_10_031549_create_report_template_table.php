@@ -17,8 +17,8 @@ class CreateReportTemplateTable extends Migration
             $table->bigIncrements('id');
             $table->jsonb('template');
             $table->string('name');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
