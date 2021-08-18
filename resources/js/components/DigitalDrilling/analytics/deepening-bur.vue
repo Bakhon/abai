@@ -46,13 +46,8 @@
         </tbody>
     </table>
 </template>
-
 <script>
     export default {
         name: "deepening-bur"
     }
 </script>
-
-<style scoped>
-
-</style>

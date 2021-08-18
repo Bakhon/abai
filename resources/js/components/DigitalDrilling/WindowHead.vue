@@ -38,7 +38,8 @@
                     </tr>
                     </tbody>
                 </table>
-                <p v-if="resultNot" class="not__result">{{resultNot}}</p>
+                <p v-if="resultNot" class="not__result">{{trans(resultNot)}}</p>
+                123 {{url}}
             </div>
         </div>
     </div>
@@ -59,7 +60,7 @@
         computed:{
             well(){
                 return this.$store.getters['digitalDrilling/isCurrentWell']
-            }
+            },
         },
         mounted(){
             this.searchItem = this.well.Месторождение + ' ' + this.well.Скважина + ' ' + this.well.ДЗО
@@ -82,12 +83,12 @@
                             this.resultNot = null
                         } else {
                             this.wells = []
-                            this.resultNot = 'Совпадений не найдено'
+                            this.resultNot = 'digital_drilling.request.result_not'
                         }
                     });
                 }else{
                     this.wells = []
-                    this.resultNot = 'Совпадений не найдено'
+                    this.resultNot = 'digital_drilling.request.result_not'
                 }
             },
             getWellID(well){

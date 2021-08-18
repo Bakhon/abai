@@ -217,86 +217,10 @@ Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/
 
 Vue.component('digital-drilling', require('./components/DigitalDrilling/digital-drilling').default);
 Vue.component('digital-drilling-menu', require('./components/DigitalDrilling/menu').default);
-
-Vue.component('project-data', require('./components/DigitalDrilling/bd/ProjectData').default);
 Vue.component('window-head', require('./components/DigitalDrilling/WindowHead').default);
-Vue.component('technical-task', require('./components/DigitalDrilling/bd/ProjectData/TechnicalTask').default);
-Vue.component('geology', require('./components/DigitalDrilling/bd/ProjectData/Geology').default);
-Vue.component('well-design', require('./components/DigitalDrilling/bd/ProjectData/WellDesign').default);
-Vue.component('barrel-profile', require('./components/DigitalDrilling/bd/ProjectData/BarrelProfile').default);
-Vue.component('pd-drilling-fluids', require('./components/DigitalDrilling/bd/ProjectData/DrillingFluids').default);
-Vue.component('well-casing', require('./components/DigitalDrilling/bd/ProjectData/WellСasing').default);
-Vue.component('technical-casing', require('./components/DigitalDrilling/bd/ProjectData/TechnicalCasing').default);
+
 Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
-Vue.component('home', require('./components/DigitalDrilling/bd/home').default);
-Vue.component('passport', require('./components/DigitalDrilling/bd/passport').default);
-Vue.component('gis', require('./components/DigitalDrilling/bd/gis').default);
-Vue.component('inclino', require('./components/DigitalDrilling/bd/inclino').default);
-Vue.component('structure', require('./components/DigitalDrilling/bd/structure').default);
 
-Vue.component('project', require('./components/DigitalDrilling/project/project').default);
-Vue.component('well-profile', require('./components/DigitalDrilling/project/well-profile').default);
-Vue.component('well-profile-graph', require('./components/DigitalDrilling/project/well-profile-graph').default);
-
-Vue.component('structural-analysis', require('./components/DigitalDrilling/project/structural-analysis').default);
-Vue.component('calculation', require('./components/DigitalDrilling/project/calculation').default);
-Vue.component('calculation-graph', require('./components/DigitalDrilling/project/calculation-graph').default);
-
-Vue.component('drilling-fluids', require('./components/DigitalDrilling/project/drilling-fluids').default);
-Vue.component('rasters', require('./components/DigitalDrilling/project/rasters').default);
-Vue.component('rasters-component', require('./components/DigitalDrilling/project/rasters-component').default);
-Vue.component('rasters-params', require('./components/DigitalDrilling/project/rasters-params').default);
-
-Vue.component('well-deepening', require('./components/DigitalDrilling/project/well-deepening').default);
-Vue.component('w-deepening', require('./components/DigitalDrilling/project/deepening').default);
-Vue.component('w-deepening-params', require('./components/DigitalDrilling/project/deepening-params').default);
-Vue.component('w-deepening-graph', require('./components/DigitalDrilling/project/deepening-graph').default);
-
-Vue.component('well-fastening', require('./components/DigitalDrilling/project/well-fastening').default);
-Vue.component('fastening', require('./components/DigitalDrilling/project/fastening').default);
-Vue.component('fastening-page2', require('./components/DigitalDrilling/project/fastening-page2').default);
-Vue.component('fastening-page3', require('./components/DigitalDrilling/project/fastening-page3').default);
-Vue.component('fastening-page4', require('./components/DigitalDrilling/project/fastening-page4').default);
-Vue.component('fastening-page5', require('./components/DigitalDrilling/project/fastening-page5').default);
-Vue.component('fastening-page6', require('./components/DigitalDrilling/project/fastening-page6').default);
-Vue.component('fastening-page7', require('./components/DigitalDrilling/project/fastening-page7').default);
-
-Vue.component('alarm', require('./components/DigitalDrilling/online/alarm').default);
-Vue.component('geo', require('./components/DigitalDrilling/online/geo').default);
-Vue.component('geo-first', require('./components/DigitalDrilling/online/geo-first').default);
-Vue.component('geo-second', require('./components/DigitalDrilling/online/geo-second').default);
-Vue.component('geo-third', require('./components/DigitalDrilling/online/geo-third').default);
-Vue.component('sector', require('./components/DigitalDrilling/online/sector').default);
-Vue.component('visual', require('./components/DigitalDrilling/online/visual').default);
-
-Vue.component('report', require('./components/DigitalDrilling/online/report').default);
-Vue.component('report1', require('./components/DigitalDrilling/online/report1').default);
-Vue.component('report2', require('./components/DigitalDrilling/online/report2').default);
-Vue.component('reports', require('./components/DigitalDrilling/supervising/reports').default);
-Vue.component('balance', require('./components/DigitalDrilling/supervising/balance').default);
-Vue.component('balance-graph-first', require('./components/DigitalDrilling/supervising/balance-graph-first').default);
-Vue.component('balance-graph-second', require('./components/DigitalDrilling/supervising/balance-graph-second').default);
-Vue.component('fact', require('./components/DigitalDrilling/supervising/fact').default);
-Vue.component('npv', require('./components/DigitalDrilling/supervising/npv').default);
-Vue.component('akc', require('./components/DigitalDrilling/supervising/akc').default);
-
-Vue.component('analytics-deepening', require('./components/DigitalDrilling/analytics/analytics-deepening').default);
-Vue.component('deepening', require('./components/DigitalDrilling/analytics/deepening').default);
-Vue.component('deepening-visual', require('./components/DigitalDrilling/analytics/deepening-visual').default);
-Vue.component('deepening-knbk', require('./components/DigitalDrilling/analytics/deepening-knbk').default);
-Vue.component('deepening-params', require('./components/DigitalDrilling/analytics/deepening-params').default);
-Vue.component('deepening-bur', require('./components/DigitalDrilling/analytics/deepening-bur').default);
-Vue.component('deepening-gidro', require('./components/DigitalDrilling/analytics/deepening-gidro').default);
-Vue.component('deepening-sorting', require('./components/DigitalDrilling/analytics/deepening-sorting').default);
-Vue.component('deepening-selection', require('./components/DigitalDrilling/analytics/deepening-selection').default);
-
-Vue.component('well-fastening', require('./components/DigitalDrilling/analytics/well-fastening').default);
-Vue.component('fastening-first', require('./components/DigitalDrilling/analytics/fastening-first').default);
-Vue.component('fastening-second', require('./components/DigitalDrilling/analytics/fastening-second').default);
-Vue.component('fastening-third', require('./components/DigitalDrilling/analytics/fastening-third').default);
-Vue.component('complications', require('./components/DigitalDrilling/analytics/complications').default);
-Vue.component('analytics-akc', require('./components/DigitalDrilling/analytics/akc').default);
-Vue.component('balance', require('./components/DigitalDrilling/analytics/balance').default);
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;

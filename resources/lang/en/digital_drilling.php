@@ -36,6 +36,9 @@ return array (
   'menu28' => 'Анализ АКЦ',
   'menu29' => 'Баланс времени',
 
+    'request' => [
+        'result_not' => 'No matches found'
+    ],
     'default' => [
         'well' => 'скважин',
         'in_drilling' => 'В бурении',
