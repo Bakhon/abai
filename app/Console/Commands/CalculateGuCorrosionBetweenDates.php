@@ -48,13 +48,13 @@ class CalculateGuCorrosionBetweenDates extends Command
             ->get();
 
         foreach ($period as $date) {
-            $this->line(' ');
-            $this->line('----------------------------');
-            $this->info('Processing '.$date->format('Y-m-d'));
-            $this->line('----------------------------');
-            $this->line(' ');
-
             $this->date = $date->format('Y-m-d');
+
+            $this->line(' ');
+            $this->line('----------------------------');
+            $this->info('Processing '.$this->date);
+            $this->line('----------------------------');
+            $this->line(' ');
 
             foreach ($gus as $gu) {
                 $message = $this->calculateCorrosion($gu);
