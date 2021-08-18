@@ -257,13 +257,6 @@ export default {
         },
         async changeDate() {
             this.SET_LOADING(true);
-            // let queryOptions = {
-            //     'dzoName': this.selectedDzo.ticker,
-            //     'isCorrected': true,
-            //     'date': this.period
-            // };
-            // this.todayData = await this.getDzoTodayData(queryOptions);
-            // this.processTodayData();
             this.SET_LOADING(false);
         },
     },
