@@ -19,7 +19,7 @@
                 "code": "dend",
                 "type": "datetime",
                 "title": "dend",
-                "validation": "required"
+                "validation": "required|after:dbeg"
               },
               {
                 "code": "method",
@@ -32,26 +32,12 @@
                 "code": "value_string",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
-                "title": "option_1",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "name_ru": "Гидропрослушивание"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
                 "title": "uwi_time",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code": "IPR"
                     }
                   }
                 ]
@@ -61,11 +47,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pressure",
+                "validation":"gte:0|lte:1500",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code": "IPR"
                     }
                   }
                 ]
@@ -79,7 +66,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -93,7 +80,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -103,11 +90,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "skin_f",
+                "validation":"gte:-7.5|lte:100",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -117,25 +105,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pronicm",
+                "validation":"gte:0|lte:1000",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "pronicm",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -145,11 +120,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "upr",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -163,7 +139,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -177,7 +153,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -187,11 +163,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "uwi_r",
+                "validation":"gte:0|lte:0.5",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -201,11 +178,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "tol",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -215,11 +193,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pr",
+                "validation":"gte:0|lte:1",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -229,11 +208,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff",
+                "validation":"gte:0|lte:10",
                 "depends_on": [
                   {
                     "field": "method",
-                    "value": {
-                      "name_ru": "Гидропрослушивание"
+                    "value": {                   
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -243,11 +223,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "water",
+                "validation":"gte:0|lte:1000000",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -257,11 +238,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "system",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -275,7 +257,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -289,7 +271,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -299,11 +281,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pres_pl",
+                "validation":"gte:0|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -313,11 +296,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbn",
+                "validation":"gte:0|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -327,11 +311,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbk",
+                "validation":"gte:0|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -341,11 +326,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "prov",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Гидропрослушивание"
+                      "code":"IPR"
                     }
                   }
                 ]
@@ -359,7 +345,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -369,11 +355,12 @@
                 "type": "numeric",
                 "table":"prod.gdis_complex_value",
                 "title": "pressure",
+                "validation":"gte:0|lte:1500",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -387,7 +374,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -397,11 +384,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -415,7 +403,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -425,11 +413,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pronicm",
+                "validation":"gte:0|lte:1000",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -439,11 +428,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "skin_f",
+                "validation":"gte:-7.5|lte:100",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -453,11 +443,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pre_plast",
+                "validation":"gte:0|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -467,11 +458,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "vop",
+                "validation":"gte:0|lte:2000",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -481,11 +473,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "nop",
+                "validation":"gte:0|lte:2000",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -495,11 +488,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "vnk",
+                "validation":"gte:0|lte:2000",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -509,11 +503,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "hydro",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -523,11 +518,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pz",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -537,11 +533,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "temp",
+                "validation":"gte:0|lte:250",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -551,11 +548,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "rad",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -565,11 +563,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "tol",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -579,11 +578,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pr",
+                "validation":"gte:0|lte:1",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -593,11 +593,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff",
+                "validation":"gte:0|lte:10",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -607,11 +608,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "water",
+                "validation":"gte:0|lte:1000000",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -621,11 +623,12 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "system",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -639,7 +642,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -653,7 +656,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
                     }
                   }
                 ]
@@ -663,11 +666,283 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pres_pl",
+                "validation":"gte:0|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "IDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pbn",
+                "validation":"gte:0|lte:2100",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "IDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pbk",
+                "validation":"gte:0|lte:2100",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "IDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "prov",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "IDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "koeff_pr",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "IDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "dlina",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "IDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "uwi_time",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pressure",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "manometr_depth",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "uwi_model",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "plast_model",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "plast",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "dist",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pronicm",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "skin_f",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "zab_press",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pre_plast",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "hydro",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pz",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "temp",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
                     }
                   }
                 ]
@@ -681,7 +956,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "PBR"
                     }
                   }
                 ]
@@ -695,7 +970,147 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "priv",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "uwi_r",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "tol",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pr",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "koeff",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "water",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "system",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "plast_uwi",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "model_g",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pres_pl",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "PBR"
                     }
                   }
                 ]
@@ -709,7 +1124,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "PBR"
                     }
                   }
                 ]
@@ -723,21 +1138,7 @@
                   {
                     "field": "method",
                     "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
-                "type": "numeric",
-                "title": "dlina",
-                "depends_on": [
-                  {
-                    "field": "method",
-                    "value": {
-                      "name_ru": "Исследование ИД (индикаторная кривая)"
+                      "code": "PBR"
                     }
                   }
                 ]

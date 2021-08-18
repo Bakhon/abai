@@ -15,7 +15,15 @@ class Gdis extends PlainForm
     {
         $errors = [];
         if (!$this->isValidDepth($this->request->get('well'),$this->request->get('depth'))) {
-            $errors['depth'][] = trans('bd.validation.depth');
+            $errors['depth'] = trans('bd.validation.depth');
+        }
+        if (!$this->isValidDate(
+            $this->request->get('well'),
+            $this->request->get('research_date'),
+            'dict.well',
+            'drill_start_date'
+        )) {
+            $errors['research_date'] = trans('bd.validation.date');
         }
         
         return $errors;
