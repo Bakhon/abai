@@ -10,9 +10,9 @@
                         <div class="block">
                             <p class="num">
                                 <span class="big">14</span>
-                                <span>скважин</span>
+                                <span>{{ trans('digital_drilling.default.well') }}</span>
                             </p>
-                            <p class="title green">В бурении</p>
+                            <p class="title green">{{ trans('digital_drilling.default.in_drilling') }}</p>
                             <p class="percent"><span>5,2%</span> vs 23.03.2021</p>
                         </div>
                     </li>
@@ -20,9 +20,9 @@
                         <div class="block">
                             <p class="num">
                                 <span class="big">506</span>
-                                <span>скважин</span>
+                                <span>{{ trans('digital_drilling.default.well') }}</span>
                             </p>
-                            <p class="title yellow">Пробурено</p>
+                            <p class="title yellow">{{ trans('digital_drilling.default.drilled') }}</p>
                             <p class="percent"><span>1,4%</span> vs 23.03.2021</p>
                         </div>
                     </li>
@@ -30,9 +30,9 @@
                         <div class="block">
                             <p class="num">
                                 <span class="big">0</span>
-                                <span>скважин</span>
+                                <span>{{ trans('digital_drilling.default.well') }}</span>
                             </p>
-                            <p class="title red">В освоении</p>
+                            <p class="title red">{{ trans('digital_drilling.default.in_mastering') }}</p>
                             <p class="percent"><span>0,0%</span> vs 23.03.2021</p>
                         </div>
                     </li>
@@ -40,9 +40,9 @@
                         <div class="block">
                             <p class="num">
                                 <span class="big">520</span>
-                                <span>скважин</span>
+                                <span>{{ trans('digital_drilling.default.well') }}</span>
                             </p>
-                            <p class="title">Итого</p>
+                            <p class="title">{{ trans('digital_drilling.default.Total') }}</p>
                             <p class="percent"><span>1,4%</span> vs 23.03.2021</p>
                         </div>
                     </li>
@@ -59,41 +59,41 @@
         <div class="col-sm-2 rightBlock">
             <div class="analyticsBlock">
                 <div class="techNumsBlock">
-                    <p class="name">Технико-экономические показатели</p>
-                    <label>Механическая скорость</label>
+                    <p class="name">{{ trans('digital_drilling.default.technical_and_economic') }}</p>
+                    <label>{{ trans('digital_drilling.default.mechanical_speed') }}</label>
                     <div class="lineBlock">
-                        <p>21 м/ч</p>
+                        <p>21 {{ trans('digital_drilling.default.m_h') }}</p>
                         <input type="range" max="40" min="0" value="21" class="rangeInput" disabled>
                     </div>
-                    <label>Рейсовая скорость</label>
+                    <label>{{ trans('digital_drilling.default.cruising_speed') }}</label>
                     <div class="lineBlock">
-                        <p>15 м/ч</p>
+                        <p>15 {{ trans('digital_drilling.default.m_h') }}</p>
                         <input type="range" max="40" min="0" value="15" class="rangeInput" disabled>
                     </div>
-                    <label>Техническая скорость</label>
+                    <label>{{ trans('digital_drilling.default.technical_speed') }}</label>
                     <div class="lineBlock">
-                        <p>2200 м/ст.мес</p>
+                        <p>2200 {{ trans('digital_drilling.default.m_st_month') }}</p>
                         <input type="range" max="3000" min="0" value="2200" class="rangeInput" disabled>
                     </div>
-                    <label>Коммерческая скорость</label>
+                    <label>{{ trans('digital_drilling.default.commercial_speed') }}</label>
                     <div class="lineBlock">
-                        <p>1500 м/ст.мес</p>
+                        <p>1500 {{ trans('digital_drilling.default.m_st_month') }}</p>
                         <input type="range" max="3000" min="0" value="1500" class="rangeInput" disabled>
                     </div>
-                    <label>Цикловая скорость</label>
+                    <label>{{ trans('digital_drilling.default.cycle_speed') }}</label>
                     <div class="lineBlock">
-                        <p>1700 м/ст.мес</p>
+                        <p>1700 {{ trans('digital_drilling.default.m_st_month') }}</p>
                         <input type="range" max="3000" min="0" value="1700" class="rangeInput" disabled>
                     </div>
                 </div>
             </div>
             <div class="analyticsBlock">
-                <p class="num"><span>1230</span>метров</p>
-                <p class="name"><img src="/img/digital-drilling/drilling.svg" alt=""><span>Пробурено за сутки</span></p>
+                <p class="num"><span>1230</span>{{ trans('digital_drilling.default.meters') }}</p>
+                <p class="name"><img src="/img/digital-drilling/drilling.svg" alt=""><span>{{ trans('digital_drilling.default.drilled_per_day') }}</span></p>
             </div>
             <div class="analyticsBlock">
                 <p class="num"><span>14251</span>метров</p>
-                <p class="name"><img src="/img/digital-drilling/drilling.svg" alt=""><span>Пробурено итого</span></p>
+                <p class="name"><img src="/img/digital-drilling/drilling.svg" alt=""><span>{{ trans('digital_drilling.default.total_drilled') }}</span></p>
             </div>
             <button class="alarm">ALARM</button>
         </div>

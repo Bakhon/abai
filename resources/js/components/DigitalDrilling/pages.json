@@ -53,6 +53,15 @@
         "name": "main-table",
         "template": "<project-data></project-data>"
       }
+    },
+    {
+      "name": "digital_drilling.menu27",
+      "img": "/img/digital-drilling/menu7.svg",
+      "id": 3,
+      "component": {
+        "name": "main-table",
+        "template": "<complications></complications>"
+      }
     }
   ],
   "project": [
@@ -213,15 +222,6 @@
       "component": {
         "name": "main-table",
         "template": "<well-fastening></well-fastening>"
-      }
-    },
-    {
-      "name": "digital_drilling.menu27",
-      "img": "/img/digital-drilling/menu7.svg",
-      "id": 3,
-      "component": {
-        "name": "main-table",
-        "template": "<complications></complications>"
       }
     },
     {

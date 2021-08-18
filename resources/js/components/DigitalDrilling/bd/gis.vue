@@ -3,43 +3,43 @@
         <window-head />
         <div class="windowBody">
             <div class="bodyContent">
-                <p class="bigTitle">ГИС в открытом стволе</p>
+                <p class="bigTitle">{{ trans('digital_drilling.gis.open_hole_logging') }}</p>
                 <div class="row">
                     <div class="col-sm-12">
                         <table class="table defaultTable gisTable">
                             <tr>
                                 <th></th>
-                                <th>Радиоактивный каротаж</th>
-                                <th>Интервальные времена</th>
-                                <th>Сжимаемость</th>
-                                <th>Кн (Сопр.)</th>
-                                <th>Кн (Акуст.)</th>
+                                <th>{{ trans('digital_drilling.gis.radioactive_logging') }}</th>
+                                <th>{{ trans('digital_drilling.gis.interval_times') }}</th>
+                                <th>{{ trans('digital_drilling.gis.compressibility') }}</th>
+                                <th>{{ trans('digital_drilling.gis.Kn_Res') }}</th>
+                                <th>{{ trans('digital_drilling.gis.Kn_Acoustic') }}</th>
                             </tr>
                             <tr>
-                                <td><p>Глубина</p></td>
+                                <td><p>{{ trans('digital_drilling.gis.depth') }}</p></td>
                                 <td>
-                                    <p class="inter red"><span class="first">U</span>ГК <i>гамма</i><span class="second">12</span></p>
-                                    <p class="inter blue"><span class="first">1</span>НК <i>усп.ед.</i><span class="second">5</span></p>
+                                    <p class="inter red"><span class="first">U</span>{{ trans('digital_drilling.gis.GK') }} <i>{{ trans('digital_drilling.gis.gamma') }}</i><span class="second">12</span></p>
+                                    <p class="inter blue"><span class="first">1</span>{{ trans('digital_drilling.gis.NK') }} <i>{{ trans('digital_drilling.gis.usd_ed') }}</i><span class="second">5</span></p>
                                 </td>
                                 <td>
-                                    <p class="inter red"><span class="first">180</span>dtp <i>мкс/м</i><span class="second">280</span></p>
-                                    <p class="inter blue"><span class="first">300</span>dts <i>мкс/м</i><span class="second">500</span></p>
+                                    <p class="inter red"><span class="first">180</span>dtp <i>{{ trans('digital_drilling.gis.mks_m') }}</i><span class="second">280</span></p>
+                                    <p class="inter blue"><span class="first">300</span>dts <i>{{ trans('digital_drilling.gis.mks_m') }}</i><span class="second">500</span></p>
                                 </td>
                                 <td>
                                     <p class="inter orange"><span class="first">2</span>Rn <i class="bold"></i><span class="second">0</span></p>
                                 </td>
                                 <td>
                                     <p>
-                                        Заключение по ИК<br>
+                                        {{ trans('digital_drilling.gis.conclusion_on_IC') }}<br>
                                         21.09.94</p>
-                                    <p class="inter red"><span class="first">0</span>Кн <i class="bold"></i><span class="second">1</span></p>
+                                    <p class="inter red"><span class="first">0</span>{{ trans('digital_drilling.gis.Kn') }} <i class="bold"></i><span class="second">1</span></p>
                                 </td>
                                 <td>
                                     <p>
-                                        Заключение по RAK<br>
+                                        {{ trans('digital_drilling.gis.conclusion_on_RAK') }}<br>
                                         05.12.96
                                     </p>
-                                    <p class="inter red"><span class="first">0</span>Кн <i class="bold"></i><span class="second">1</span></p>
+                                    <p class="inter red"><span class="first">0</span>{{ trans('digital_drilling.gis.Kn') }} <i class="bold"></i><span class="second">1</span></p>
                                 </td>
                             </tr>
                             <tr>

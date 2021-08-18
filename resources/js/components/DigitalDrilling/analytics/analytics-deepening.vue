@@ -40,7 +40,7 @@
                     },
                     {
                         "name":  "digital_drilling.analytics.well_profile_visualization",
-                        "id": 1,
+                        "id": 2,
                         "component": {
                             "name": "main-table",
                             "template": "<deepening-visual></deepening-visual>"
@@ -48,7 +48,7 @@
                     },
                     {
                         "name":  "digital_drilling.analytics.KNBK",
-                        "id": 1,
+                        "id": 3,
                         "component": {
                             "name": "main-table",
                             "template": "<deepening-knbk></deepening-knbk>"
@@ -56,7 +56,7 @@
                     },
                     {
                         "name":  "digital_drilling.analytics.mode_parameters",
-                        "id": 1,
+                        "id": 4,
                         "component": {
                             "name": "main-table",
                             "template": "<deepening-params></deepening-params>"
@@ -64,7 +64,7 @@
                     },
                     {
                         "name":  "digital_drilling.analytics.drilling_fluids_parameters_composition",
-                        "id": 1,
+                        "id": 5,
                         "component": {
                             "name": "main-table",
                             "template": "<deepening-bur></deepening-bur>"
@@ -72,7 +72,7 @@
                     },
                     {
                         "name":  "digital_drilling.analytics.drilling_fluids_hydraulics",
-                        "id": 1,
+                        "id": 6,
                         "component": {
                             "name": "main-table",
                             "template": "<deepening-gidro></deepening-gidro>"
@@ -80,7 +80,7 @@
                     },
                     {
                         "name":  "digital_drilling.analytics.drilling_fluids_distribution_pressure",
-                        "id": 1,
+                        "id": 7,
                         "component": {
                             "name": "main-table",
                             "template": "<deepening-sorting></deepening-sorting>"
@@ -88,7 +88,7 @@
                     },
                     {
                         "name":  "digital_drilling.analytics.coring",
-                        "id": 1,
+                        "id": 8,
                         "component": {
                             "name": "main-table",
                             "template": "<deepening-selection></deepening-selection>"
