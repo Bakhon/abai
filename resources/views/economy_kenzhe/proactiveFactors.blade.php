@@ -7,7 +7,10 @@
 <style scoped>
     th.reptt-cell>.cell {
         font-size: 14px;
-        color: #fff;
+        color: #fff;       
+        height: auto;
+        word-break: normal!important;
+        white-space: normal;
     }
     
     td.reptt-cell>.cell {
@@ -17,8 +20,7 @@
         width: auto;
         background: transparent;
         color: white;
-        float: unset;
-        word-break: normal!important;
+        float: unset;      
         line-height:unset!important;
         padding: unset!important;
         white-space: normal;
