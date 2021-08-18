@@ -34,7 +34,7 @@
                             <th class="align-middle" colspan="3">{{ trans('paegtm.total_production') }}</th>
                           </tr>
                           <tr>
-                              <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+               в               <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
                               <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
                               <th>+/-</th>
                               <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
@@ -82,7 +82,7 @@
             </div>
             <div class="col-3 p-0 pl-2">
                 <div class="mb-2">
-                    <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
+                    <gtm-date-picker @dateChanged="getData" v-bind:showSettings="false"></gtm-date-picker>
                 </div>
                 <div class="gtm-dark h-100*">
                     <table class="table text-center text-white podbor-middle-table h-100 mb-0">
@@ -398,6 +398,7 @@ export default {
             'changeDateStart',
             'changeDateEnd',
             'changeDzoId',
+            'changeDzoName',
         ]),
         ...globalloadingMutations([
             'SET_LOADING'
@@ -411,7 +412,7 @@ export default {
         getGtmInfo() {
             this.axios.get(
                 this.localeUrl('/paegtm/get-gtms'),
-                {params: {dzoName: 'ММГ', dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
@@ -422,11 +423,11 @@ export default {
         getMainTableData() {
             this.axios.get(
                 this.localeUrl('/paegtm/get-main-table-data'),
-                {params: {dzoName: 'ММГ', dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                {params: {selectedDdzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
-                    this.mainTableData = data
+                    this.mainTableData = JSON.parse(JSON.stringify(data));
                 }
             });
 
@@ -434,7 +435,7 @@ export default {
         getMainIndicatorData() {
             this.axios.get(
                 this.localeUrl('/paegtm/get-main-indicator-data'),
-                {params: {dzoName: 'ММГ', dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
@@ -445,7 +446,7 @@ export default {
         getAdditionalIndicatorData() {
             this.axios.get(
                 this.localeUrl('/paegtm/get-additional-indicator-data'),
-                {params: {dzoName: 'ММГ', dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
@@ -457,15 +458,17 @@ export default {
         {
             this.axios.get(
                 this.localeUrl('/paegtm/get-chart-data'),
-                {params: {dzoName: 'ММГ', dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
                     this.chartData = data
                 }
+                this.SET_LOADING(false);
             });
         },
         getData() {
+            this.SET_LOADING(true);
             this.getMainIndicatorData();
             this.getAdditionalIndicatorData();
             this.getGtmInfo();
@@ -473,15 +476,23 @@ export default {
             this.getChartData();
         },
         selectDzo(dzo) {
-            this.mainTableData.forEach((item) => {
-                if (item.id == dzo.id) {
+            let data = JSON.parse(JSON.stringify(this.mainTableData));
+
+            Object.entries(data).forEach(([key, dzoItem]) => {
+                if (dzoItem.org_name_short == dzo.org_name_short) {
                     dzo.selected = !dzo.selected
                 } else {
-                    item.selected = false;
+                    dzo.selected = false;
                 }
             });
 
-            this.changeDzoId(dzo.id);
+            let selectedDzoName = null;
+
+            if (dzo.org_name_short != this.dzoName) {
+                selectedDzoName =  dzo.org_name_short ;
+            }
+
+            this.changeDzoName(selectedDzoName);
             this.getData();
         },
 
@@ -491,6 +502,7 @@ export default {
             'dateStart',
             'dateEnd',
             'dzoId',
+            'dzoName',
         ]),
         mainBlockButtonText: function () {
             return this.showMainMap ? this.trans('paegtm.table') : this.trans('paegtm.map')
