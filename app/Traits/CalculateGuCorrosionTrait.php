@@ -70,15 +70,11 @@ trait CalculateGuCorrosionTrait
 
     public function isValidParams($guDataByDay, $guData)
     {
-        if ($guDataByDay->oilGas &&
+        return ($guDataByDay->oilGas &&
             $guData->pipe &&
             $guDataByDay->ngdu &&
             $guDataByDay->ngdu->surge_tank_pressure &&
-            $guDataByDay->ngdu->pump_discharge_pressure) {
-            return true;
-        }
-
-        return false;
+            $guDataByDay->ngdu->pump_discharge_pressure);
     }
 
     public function setParams($gu, $guDataByDay, $guData)
