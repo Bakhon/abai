@@ -122,7 +122,13 @@ Route::group(
 
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
                 Route::get('/paegtm/accum_oil_prod_data', 'GTM\GTMController@getAccumOilProd')->name('gtm');
-                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');                  
+                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');        
+
+
+            
+                Route::get('/serach_wells', 'DigitalRatingContoller@serach_wells')->name('serach_wells');     
+                
+                
             }
         );
         Auth::routes(
