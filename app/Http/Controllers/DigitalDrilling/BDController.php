@@ -20,7 +20,7 @@ class BDController extends Controller
                 'inclino',
                 'inclinoGraph',
                 'projectData',
-//                'home'
+                'home'
             ]);
     }
 
