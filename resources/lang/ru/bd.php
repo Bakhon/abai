@@ -910,5 +910,7 @@ return [
     'choose_start_year' => 'Выберите начальный год',
     'choose_end_year' => 'Выберите конечный год',
     'wells' => 'Скважины',
-    'select_company' => 'Выберите компанию'
+    'select_company' => 'Выберите компанию',
+    'show_events' => 'Показывать события',
+    'show_full_history' => 'Показывать всю историю'
 ];

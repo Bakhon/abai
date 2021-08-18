@@ -23,13 +23,13 @@
                     </div>
                 </div>
                 <div class="d-flex">
-                    <div class="d-flex align-items-center">
-                        <input type="checkbox">
-                        <div class="pl-1">Показывать события</div>
+                    <div class="checkbox-inline">
+                        <input id="show_events" type="checkbox" :checked="true" @change="toggleShowEvents">
+                        <label for="show_events" class="pl-1">{{ trans('bd.show_events') }}</label>
                     </div>
-                    <div class="d-flex align-items-center pl-3">
-                        <input type="checkbox">
-                        <div class="pl-1">Показывать всю историю</div>
+                    <div class="checkbox-inline pl-3">
+                        <input id="show_full_history" type="checkbox">
+                        <label for="show_full_history" class="pl-1">{{ trans('bd.show_full_history') }}</label>
                     </div>
                 </div>
             </div>
@@ -69,45 +69,10 @@ export default {
             minY: 0,
             maxY: 0
         },
-        chartSeries: [
-            {
-                name: "Жидкость",
-                type: "area",
-                data: [100, 800, 900, 1400, 1200, 2100, 2900,
-                    100, 800, 900, 1400, 1200, 2100, 2900,
-                    100, 800, 900, 1400, 1200, 2100, 2900,
-                    100, 800, 900, 1400, 1200, 2100, 2900],
-            },
-            {
-                name: "Нефть",
-                type: "area",
-                data: [50, 300, 400, 300, 200, 500, 550,
-                    50, 300, 400, 300, 200, 500, 550,
-                    50, 300, 400, 300, 200, 500, 550,
-                    50, 300, 400, 300, 200, 500, 550],
-            },
-            {
-                name: "Обводненность",
-                type: "area",
-                data: [800, 700, 700, 1000, 450, 2000, 1400,
-                    800, 700, 700, 1000, 450, 2000, 1400,
-                    800, 700, 700, 1000, 450, 2000, 1400,
-                    800, 700, 700, 1000, 450, 2000, 1400],
-            },
-            {
-                name: "Н дин",
-                type: "area",
-                data: [500, 900, 400, 400, 800, 1800, 1500,
-                    500, 900, 400, 400, 800, 1800, 1500,
-                    500, 900, 400, 400, 800, 1800, 1500,
-                    500, 900, 400, 400, 800, 1800, 1500],
-            },
-        ],
+        chartSeries: [],
         chartPoints: [],
-        labels: ["22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель","26 Апрель", "3 Май",
-            "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь", "14 Июль",
-            "22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель","26 Апрель", "3 Май",
-            "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь", "14 Июль"],
+        tmpChartPoints: [],
+        labels: [],
         schedulePeriods: [
             {
                 period: "1 неделя",
@@ -180,7 +145,15 @@ export default {
             }).finally(() => {
                 this.SET_LOADING(false);
             });
-        }
+        },
+        toggleShowEvents() {
+            if (this.chartPoints.length > 0) {
+                this.tmpChartPoints = this.chartPoints;
+                this.chartPoints = [];
+            } else {
+                this.chartPoints = this.tmpChartPoints;
+            }
+        },
     },
     mounted() {
         this.getSchuduleData();
@@ -190,7 +163,7 @@ export default {
             return {
                 labels: this.labels,
                 stroke: {
-                    width: 4,
+                    width: 1.5,
                     curve: 'smooth'
                 },
                 legend: {
@@ -208,24 +181,12 @@ export default {
                     }
                 },
                 markers: {
-                    size: 0
+                    size: 2,
                 },
                 xaxis: {
                     tickAmount: 10,
                 },
                 yaxis: [
-                    {
-                        opposite: true,
-                        labels: {
-                            formatter(val) {
-                                return Math.round(val);
-                            },
-                        },
-                        title: {
-                            text: this.title,
-                        },
-                        min: 0
-                    },
                     {
                         seriesName: this.trans('app.liquid'),
                         opposite: true,
@@ -300,7 +261,7 @@ export default {
                 annotations: {
                     points: this.chartPoints,
                 },
-                colors:['rgba(130, 186, 255, 0.7)', 'rgba(72, 81, 95, 1)', 'rgba(33, 186, 78, 1)'],
+                colors:[ 'rgba(72, 81, 95, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(33, 186, 78, 1)'],
             }
         },
     },
