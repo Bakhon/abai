@@ -6,7 +6,6 @@ import {formatDate} from "../common/FormatDate";
 import download from "downloadjs";
 import {globalloadingMutations} from '@store/helpers';
 
-;
 
 Vue.use(Datetime)
 Vue.use(bTreeView)
@@ -488,13 +487,14 @@ export default {
                 template: JSON.stringify(this.composeTemplate())
             }
             this.axios.post(this.localeUrl('/bigdata/report-constructor/save-template/'), JSON.stringify(params))
-                .then((response) => {})
+                .then((response) => {
+                })
                 .catch((error) => {
                     console.log(error)
                 })
                 .finally(() => {
                     this.SET_LOADING(false)
-            });
+                });
         },
         composeTemplate() {
             let template = {}
