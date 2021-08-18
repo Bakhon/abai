@@ -36,7 +36,7 @@ class CorrosionRateAndDoseCalculationController extends Controller
                 $r_a = 0.3242 - 0.3512 * $pCO2 + 689.7732 * $pH2S; 
             }
         }
-        elseif ($gu->name == "ГУ-107") 
+        else if ($gu->name == "ГУ-107") 
         {
             $r_a = 0.0401 + 0.000032408 * $pCO2 - 1.2192 * $pH2S; 
         }
