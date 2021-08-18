@@ -68,6 +68,11 @@ class User extends Authenticatable
         return $this->belongsToMany(\App\Models\BigdataReport::class);
     }
 
+    public function reportTemplates()
+    {
+        return $this->belongsToMany(\App\Models\ReportTemplate::class);
+    }
+
     public function getOrganizations()
     {
         if($this->org_id) {
