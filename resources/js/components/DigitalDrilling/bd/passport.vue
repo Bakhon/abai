@@ -3,20 +3,20 @@
         <window-head @getWellID="getWellID"/>
         <div class="windowBody">
             <div class="bodyContent">
-                <p class="bigTitle">Паспорт скважины</p>
+                <p class="bigTitle">{{ trans('digital_drilling.passport.well_passport') }}</p>
 
                 <div class="row" v-if="passport">
                     <div class="col-sm-4">
                         <table class="table firstTable">
                             <tr>
-                                <th colspan="2">План бурения</th>
+                                <th colspan="2">{{ trans('digital_drilling.passport.drilling_plan') }}</th>
                             </tr>
                             <tr>
-                                <td colspan="1">Дата начала бурения</td>
+                                <td colspan="1">{{ trans('digital_drilling.passport.drilling_start_date') }}</td>
                                 <td colspan="1">20.09.2017</td>
                             </tr>
                             <tr>
-                                <td colspan="1">Дата окончания бурения</td>
+                                <td colspan="1">{{ trans('digital_drilling.passport.drilling_end_date') }}</td>
                                 <td colspan="1">23.10.2017</td>
                             </tr>
                         </table>
