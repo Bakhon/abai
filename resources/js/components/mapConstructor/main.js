@@ -50,6 +50,44 @@ export default {
             windWidth: window.innerWidth,
             date: null,
             mapInitialized: false,
+            leftTools: [
+                {
+                    icon: 'fas fa-plus',
+                    langCode: 'map_constructor.add'
+                },
+                {
+                    icon: 'fas fa-location-arrow',
+                    langCode: 'map_constructor.cursor'
+                },
+                {
+                    icon: 'far fa-hand-paper',
+                    langCode: 'map_constructor.hand'
+                },
+                {
+                    icon: 'far fa-copy',
+                    langCode: 'map_constructor.copy'
+                },
+                {
+                    icon: 'fas fa-ruler',
+                    langCode: 'map_constructor.ruler'
+                },
+                {
+                    icon: 'fas fa-info-circle',
+                    langCode: 'map_constructor.reference'
+                },
+                {
+                    icon: 'fas fa-cut',
+                    langCode: 'map_constructor.scissors'
+                },
+                {
+                    icon: 'fas fa-draw-polygon',
+                    langCode: 'map_constructor.edit_polygon'
+                },
+                {
+                    icon: 'far fa-circle',
+                    langCode: 'map_constructor.fictitious_point'
+                },
+            ]
         }
     },
     components: {

@@ -1,65 +1,28 @@
 <template>
     <div class="map-constructor">
-        <RightClickMenu @openRightMap="openRightMap" @closeMenu="closeMenu" @openRightLayers="openRightLayers" @closeMenuLayers="closeMenuLayers" ref="rightClickMenu" :right-map="rightMap" :right-layers="rightLayers" :top="top" :left="left" :viewMenu="viewMenu" :viewMenuLayers="viewMenuLayers"></RightClickMenu>
+        <RightClickMenu
+                @openRightMap="openRightMap"
+                @closeMenu="closeMenu"
+                @openRightLayers="openRightLayers"
+                @closeMenuLayers="closeMenuLayers"
+                ref="rightClickMenu"
+                :right-map="rightMap"
+                :right-layers="rightLayers"
+                :top="top"
+                :left="left"
+                :viewMenu="viewMenu"
+                :viewMenuLayers="viewMenuLayers">
+        </RightClickMenu>
         <TopMenu @addFile="addFile"></TopMenu>
         <div class="col-lg-12 px-1 py-3">
             <div class="dashboard">
                 <div class="tools">
-                    <div class="left-tools">
+                    <div class="left-tools" v-for="tool in leftTools">
                         <div class="tool">
                             <div class="box">
-                                <i class="fas fa-plus"></i>
-                                <i class="fas fa-chevron-down"></i>
+                                <i :class="tool.icon"></i>
                             </div>
-                            <span>{{ trans('map_constructor.add') }}</span>
-                        </div>
-                        <div class="tool">
-                            <div class="box">
-                                <i class="fas fa-location-arrow"></i>
-                            </div>
-                            <span>{{ trans('map_constructor.cursor') }}</span>
-                        </div>
-                        <div class="tool">
-                            <div class="box">
-                                <i class="far fa-hand-paper"></i>
-                            </div>
-                            <span>{{ trans('map_constructor.hand') }}</span>
-                        </div>
-                        <div class="tool">
-                            <div class="box">
-                                <i class="far fa-copy"></i>
-                            </div>
-                            <span>{{ trans('map_constructor.copy') }}</span>
-                        </div>
-                        <div class="tool">
-                            <div class="box">
-                                <i class="fas fa-ruler"></i>
-                            </div>
-                            <span>{{ trans('map_constructor.ruler') }}</span>
-                        </div>
-                        <div class="tool">
-                            <div class="box">
-                                <i class="fas fa-info-circle"></i>
-                            </div>
-                            <span>{{ trans('map_constructor.reference') }}</span>
-                        </div>
-                        <div class="tool">
-                            <div class="box">
-                                <i class="fas fa-cut"></i>
-                            </div>
-                            <span>{{ trans('map_constructor.scissors') }}</span>
-                        </div>
-                        <div class="tool">
-                            <div class="box">
-                                <i class="fas fa-draw-polygon"></i>
-                            </div>
-                            <span>{{ trans('map_constructor.edit_polygon') }}</span>
-                        </div>
-                        <div class="tool">
-                            <div class="box">
-                                <i class="far fa-circle"></i>
-                            </div>
-                            <span>{{ trans('map_constructor.fictitious_point') }}</span>
+                            <span>{{ trans(tool.langCode) }}</span>
                         </div>
                     </div>
                     <div class="right-tools">
