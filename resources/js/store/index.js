@@ -19,7 +19,8 @@ export default new Vuex.Store({
             'paegtmMap',
             'pgno',
             'techMode',
-            'tr'
+            'tr',
+            'pgno'
         ]
     })],
 });

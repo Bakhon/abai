@@ -100,12 +100,14 @@ Vue.component('tech-data-component', require('./components/technical_forecast/da
 
 Vue.component('economic-nrs', require('./components/Economic/nrs.vue').default);
 Vue.component('economic-optimization', require('./components/Economic/optimization.vue').default);
-Vue.component('gno-table', require('./components/gno/Table.vue').default);
-Vue.component('shgn-img', require('./components/gno/components/ShgnImg.vue').default);
-Vue.component('inclinometria', require('./components/gno/components/Inclinometria.vue').default);
-Vue.component('prs-crs', require('./components/gno/components/PrsCrs.vue').default);
-Vue.component('inflow-curve', require('./components/gno/components/InflowCurve.vue').default);
-Vue.component('economic', require('./components/gno/components/Economic.vue').default);
+Vue.component('gno-table', require('./components/gno/GnoMain.vue').default);
+Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue').default);
+Vue.component('prs-crs', require('./components/gno/modals/PrsCrs.vue').default);
+Vue.component('inflow-curve', require('./components/gno/modals/InflowCurve.vue').default);
+Vue.component('economic', require('./components/gno/modals/Economic.vue').default);
+Vue.component('economic-table', require('./components/gno/modals/EconomicTable.vue').default);
+Vue.component('near-wells-table', require('./components/gno/modals/NearWellsTable.vue').default);
+Vue.component('pgno-analysis', require('./components/gno/modals/AnalysisMenu.vue').default);
 Vue.component('monitor-table', require('./components/complicationMonitoring/monitor/MonitorTable.vue').default);
 Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/complicationMonitoring/omgca/form.vue').default);

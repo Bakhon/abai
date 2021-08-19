@@ -3,7 +3,7 @@
     <div v-if="!data" class="gno-modal-loading-label">{{ trans('pgno.zagruzka') }}</div>
     <div v-else-if="data.length === 0" class="gno-modal-loading-label">{{ trans('pgno.no_data') }}</div>
 
-    <div v-else class="row no-margin col-12 no-padding relative gno-incl-content-wrapper">
+    <div v-else class="row no-margin col-12 no-padding pos-rel gno-incl-content-wrapper">
 
       <div class="plot-block col-8 gno-plotly-graph">
         <h5>{{ trans('pgno.prichini_prs') }}</h5>
@@ -56,11 +56,19 @@
 </template>
 <script>
 import {Plotly} from "vue-plotly";
+import { pgnoMapState, pgnoMapGetters, pgnoMapMutations, pgnoMapActions } from '@store/helpers';
 
 export default {
   props: ["wellNumber", "field", "wellIncl"],
   components: {
     Plotly
+  },
+  computed: {
+    ...pgnoMapState([
+      'well',
+      'shgnSettings',
+      'curveSettings'
+    ])
   },
   data: function () {
     return {
@@ -88,21 +96,16 @@ export default {
     }
   },
   mounted() {
-    let uriPrsKrs = this.apiUrl + "nno/history/" + this.field + "/" + this.wellNumber + "/";
-    this.axios.get(uriPrsKrs).then((response) => {
-      let krs = response['data']['krs']
-      let nno = JSON.parse(response['data']['prs']['nno'])
-      this.numberRepairs = nno['prs']
-      this.numberNNO = nno['NNO'].toFixed(0)
-      this.krsTable = JSON.parse(krs)["data"]
+    let uri = this.apiUrl + "nno/" + this.well.fieldUwi + "/" + this.well.wellUwi + "/";
 
-    })
-
-    var wi = this.wellIncl.split('_');
-    let uri = this.apiUrl + "nno/history/" + wi[0] + "/" + wi[1] + "/";
-    this.$emit('update:isLoading', true);
     this.axios.get(uri).then((response) => {
-      this.prs = response['data']['prs']['data']
+      let data = response.data
+      let krs = data.krs
+      let prs = data.prs
+      this.numberRepairs = prs.nno.prs
+      this.numberNNO = prs.nno.nno
+      this.krsTable = krs
+      this.prs = prs.data
       for (let key of Object.keys(this.prs)) {
         if (this.prs[key].length != undefined) {
           for (let val of this.prs[key]) {
