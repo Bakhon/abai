@@ -2192,7 +2192,7 @@
                         <div :class="[getIndicatorClass(item.plan,item.fact),'ml-5']">
                         </div>
                         <div class="font dynamic">
-                          {{Math.abs(formatDigitToThousand(item.difference))}}
+                          {{formatDigitToThousand(Math.abs(item.difference))}}
                           <span class="data-metrics">
                               {{item.metricSystem}}
                             </span>
