@@ -3,18 +3,18 @@
         <window-head />
         <div class="windowBody">
             <div class="bodyContent">
-                <p class="bigTitle left">Инклинометрия</p>
+                <p class="bigTitle left">{{ trans('digital_drilling.inclino.inclinometry') }}</p>
                 <div class="row">
                     <div class="col-sm-12">
                         <table class="table defaultTable">
                             <tbody>
                                 <tr>
-                                    <th>Скважина</th>
-                                    <th>Прибор</th>
-                                    <th>Источник</th>
-                                    <th>Истинная глубина по вертикали</th>
-                                    <th>Дата</th>
-                                    <th>Географический идентификатор</th>
+                                    <th>{{ trans('digital_drilling.inclino.well') }}</th>
+                                    <th>{{ trans('digital_drilling.inclino.appliance') }}</th>
+                                    <th>{{ trans('digital_drilling.inclino.source') }}</th>
+                                    <th>{{ trans('digital_drilling.inclino.true_vertical_depth') }}</th>
+                                    <th>{{ trans('digital_drilling.inclino.date') }}</th>
+                                    <th>{{ trans('digital_drilling.inclino.geographic_identifier') }}</th>
                                 </tr>
                                 <tr v-for="i in 10">
                                     <td></td>
