@@ -17,8 +17,8 @@
         <div class="col-lg-12 px-1 py-3">
             <div class="dashboard">
                 <div class="tools">
-                    <div class="left-tools" v-for="tool in leftTools">
-                        <div class="tool">
+                    <div class="left-tools" >
+                        <div class="tool" v-for="tool in leftTools">
                             <div class="box">
                                 <i :class="tool.icon"></i>
                             </div>
