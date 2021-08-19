@@ -399,6 +399,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "dist",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
@@ -770,6 +771,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pressure",
+                "validation":"gte:0|lte:1500",
                 "depends_on": [
                   {
                     "field": "method",
@@ -784,6 +786,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "manometr_depth",
+                "validation":"lte:10000",
                 "depends_on": [
                   {
                     "field": "method",
@@ -840,6 +843,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "dist",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
@@ -854,6 +858,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pronicm",
+                "validation":"gte:0|lte:1000",
                 "depends_on": [
                   {
                     "field": "method",
@@ -868,6 +873,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "skin_f",
+                "validation":"gte:-7.5|lte:100",
                 "depends_on": [
                   {
                     "field": "method",
@@ -882,6 +888,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "zab_press",
+                "validation":"gte:0|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
@@ -896,6 +903,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pre_plast",
+                "validation":"gte:0|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
@@ -910,6 +918,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "hydro",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
@@ -924,6 +933,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pz",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
@@ -938,6 +948,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "temp",
+                "validation":"gte:0|lte:250",
                 "depends_on": [
                   {
                     "field": "method",
@@ -952,6 +963,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbn",
+                "validation":"gte:1|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
@@ -966,6 +978,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbk",
+                "validation":"gte:1|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
@@ -980,6 +993,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "priv",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
@@ -994,6 +1008,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "uwi_r",
+                "validation":"gte:0|lte:0.5",
                 "depends_on": [
                   {
                     "field": "method",
@@ -1008,6 +1023,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "tol",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
@@ -1022,6 +1038,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pr",
+                "validation":"gte:0|lte:1",
                 "depends_on": [
                   {
                     "field": "method",
@@ -1036,6 +1053,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff",
+                "validation":"gte:0|lte:10",
                 "depends_on": [
                   {
                     "field": "method",
@@ -1050,6 +1068,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "water",
+                "validation":"gte:0|lte:1000000",
                 "depends_on": [
                   {
                     "field": "method",
@@ -1064,6 +1083,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "system",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
@@ -1106,6 +1126,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pres_pl",
+                "validation":"gte:0|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
@@ -1120,6 +1141,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "prov",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
@@ -1134,6 +1156,7 @@
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff_pr",
+                "validation":"gte:0",
                 "depends_on": [
                   {
                     "field": "method",
@@ -1143,6 +1166,2149 @@
                   }
                 ]
               },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "uwi_time",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pressure",
+                "validation":"gte:0|lte:1500",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "manometr_depth",
+                "validation":"gte:0|lte:10000",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },{
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "uwi_model",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "plast_model",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "plast",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "dist",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pronicm",
+                "validation":"gte:0|lte:1000",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "skin_f",
+                "validation":"gte:-7.5|lte:100",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "zab_press",
+                "validation":"gte:0|lte:2100",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pre_plast",
+                "validation":"gte:0|lte:2100",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "hydro",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pz",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "temp",
+                "validation":"gte:0|lte:250",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "tol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pr",
+                "validation":"gte:0|lte:1",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "koeff",
+                "validation":"gte:0|lte:10",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "water",
+                "validation":"gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "system",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "plast_uwi",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "model_g",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pres_pl",
+                "validation":"gte:0|lte:2100",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pbn",
+                "validation":"gte:1|lte:2100",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "pbk",
+                "validation":"gte:1|lte:2100",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "prov",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "value_string",
+                "table":"prod.gdis_complex_value",
+                "type": "numeric",
+                "title": "koeff_pr",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "method",
+                    "value": {
+                      "code": "LDR"
+                    }
+                  }
+                ]
+              },
+              {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "uwi_time",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pressure",
+              "validation":"gte:0|lte:1500",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "manometr_depth",
+              "validation":"gte:0|lte:10000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },{
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "uwi_model",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "plast_model",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "plast",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "dist",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pronicm",
+              "validation":"gte:0|lte:1000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "skin_f",
+              "validation":"gte:-7.5|lte:100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "zab_press",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pre_plast",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "hydro",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pz",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "temp",
+              "validation":"gte:0|lte:250",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "tol",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pr",
+              "validation":"gte:0|lte:1",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "koeff",
+              "validation":"gte:0|lte:10",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "water",
+              "validation":"gte:0|lte:1000000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "system",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "plast_uwi",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "model_g",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pres_pl",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pbn",
+              "validation":"gte:1|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pbk",
+              "validation":"gte:1|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "prov",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "koeff_pr",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RLR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "uwi_time",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pressure",
+              "validation":"gte:0|lte:1500",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "manometr_depth",
+              "validation":"gte:0|lte:10000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },{
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "uwi_model",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "plast_model",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "plast",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "dist",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pronicm",
+              "validation":"gte:0|lte:1000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "skin_f",
+              "validation":"gte:-7.5|lte:100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "zab_press",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pre_plast",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "hydro",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pz",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "temp",
+              "validation":"gte:0|lte:250",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "tol",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pr",
+              "validation":"gte:0|lte:1",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "koeff",
+              "validation":"gte:0|lte:10",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "water",
+              "validation":"gte:0|lte:1000000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "system",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "plast_uwi",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "model_g",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pres_pl",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pbn",
+              "validation":"gte:1|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pbk",
+              "validation":"gte:1|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "prov",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "koeff_pr",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "PDR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "rezhim",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "sht",
+              "validation":"gte:0|lte:50",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pri",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pbn",
+              "validation":"gte:1|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pbk",
+              "validation":"gte:1|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "zt_pre",
+              "validation":"gte:1|lte:1000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "zab_press",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pri_koeff",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pres_pl",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pronicm",
+              "validation":"gte:1|lte:1000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "skin_f",
+              "validation":"gte:-7.5|lte:100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "hydro",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pz",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "temp",
+              "validation":"gte:0|lte:250",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "prov",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSPR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "rezhim",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "temp_pre",
+              "validation":"gte:0|lte:10",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "water_debit",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "wat",
+              "validation":"gte:0|lte:100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "oil_debit",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "zab_press",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "koeff_pr",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "din",
+              "validation":"gte:0|lte:10000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "zt_pre",
+              "validation":"gte:1|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pronicm",
+              "validation":"gte:0|lte:1000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "skin_f",
+              "validation":"gte:-7.5|lte:100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "hydro",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pz",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "temp",
+              "validation":"gte:0|lte:250",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pres_pl",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pbn",
+              "validation":"gte:1|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pbk",
+              "validation":"gte:1|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "prov",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "SSSR"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "uwi_time",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pressure",
+              "validation":"gte:0|lte:1500",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "uwi_model",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "plast_model",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "plast",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "dist",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pronicm",
+              "validation":"gte:0|lte:1000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "skin_f",
+              "validation":"gte:-7.5|lte:100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "zab_press",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pre_plast",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "hydro",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pz",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "temp",
+              "validation":"gte:0|lte:250",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pbn",
+              "validation":"gte:1|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pbk",
+              "validation":"gte:1|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pribor",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "uwi_r",
+              "validation":"gte:0|lte:0.5",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "tol",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "plast_uwi",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "model_g",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pres_pl",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "prov",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "UKPD"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "artif",
+              "validation":"gte:0|lte:10000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "MN"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "rotor",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "MN"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "pribor",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "MN"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "per",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "MN"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "well_perf",
+              "validation":"gte:0|lte:10000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "MN"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "zaboi",
+              "validation":"gte:0|lte:10000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "MN"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "buf",
+              "validation":"gte:1|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "MN"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "temp",
+              "validation":"gte:0|lte:250",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "MN"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "rpl",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "MN"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "priv",
+              "validation":"gte:0",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "MN"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "plast_pr",
+              "validation":"gte:0|lte:2100",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RPM"
+                  }
+                }
+              ]
+            },
+            {
+              "code": "value_string",
+              "table":"prod.gdis_complex_value",
+              "type": "numeric",
+              "title": "st_lvl",
+              "validation":"gte:0|lte:10000",
+              "depends_on": [
+                {
+                  "field": "method",
+                  "value": {
+                    "code": "RPM"
+                  }
+                }
+              ]
+            },
               {
                 "code": "depth",
                 "type": "numeric",
