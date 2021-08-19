@@ -117,7 +117,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
                 $data = $this->getDataFromBD(new $class, $date);
 
                 if (empty($data)) {
-                    return 0;
+                    continue;
                 }
                 foreach ($data as $rowNum => $row) {
                     if ($row['legacy_id'] == $column1) {
@@ -142,9 +142,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
             if (($row['type'] == $type) && ($row['status'] == $status)) {
                 if (($row['cattegory_code'] == null) && ($row['cattegory_code'] == $cattegory_code)) {
                     $summ[] = array_merge($row);
-                } else {
-                    $summ[] = array_merge($row);
-                }
+                } 
             }
         }
         return count($summ);
@@ -227,25 +225,25 @@ class StoreKGMReportsFromAvocetByDay extends Command
         }
 
         $lastDataOil = $lastDataOil[0];
-        if (($lastDataOil['dzo_name'] == 'КГМ') || ($lastDataOil['date'] == $date)) {
-            if (($lastDataOil['oil_production_fact'] != 0) && ($lastDataOil['oil_delivery_fact'] != 0)) {
-                echo "No update needed";
-                return;
-            }
-
-            $dzo_import_field_data
-                ->where('dzo_name', '=', 'КГМ')
-                ->where('date', '=', $date)->update($dzo_import_field_data->getAttributes());
-
-            unset($downtimeReason['dzo_import_data_id']);
-            $downtimeReason
-                ->where('dzo_import_data_id', '=', $lastDataOil['id'])
-                ->update($downtimeReason->getAttributes());
-            echo "Data have been update";
-
+        if (($lastDataOil['dzo_name'] != 'КГМ') || ($lastDataOil['date'] != $date)) {
+            return;
+        } 
+        
+        if (($lastDataOil['oil_production_fact'] != 0) || ($lastDataOil['oil_delivery_fact'] != 0)) {
+            echo "No update needed";
+            return;
         }
 
-    }
+        $dzo_import_field_data
+            ->where('dzo_name', '=', 'КГМ')
+            ->where('date', '=', $date)->update($dzo_import_field_data->getAttributes());
+
+        unset($downtimeReason['dzo_import_data_id']);
+        $downtimeReason
+            ->where('dzo_import_data_id', '=', $lastDataOil['id'])
+            ->update($downtimeReason->getAttributes());
+            echo "Data have been update";        
+         }
 
     public function handle()
     {
