@@ -231,11 +231,10 @@
         },
         methods:{
             getWellID(id){
-                this.axios.get('http://172.20.103.203:8000/digital_drilling/api/passport/'+id + '/').then((response) => {
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/passport/'+id + '/').then((response) => {
                     let data = response.data;
                     if (data) {
                         this.passport = data[0];
-                        console.log(this.passport)
                     } else {
                         console.log('No data');
                     }

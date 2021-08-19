@@ -66,11 +66,10 @@
         },
         methods:{
             getWellID(id){
-                this.axios.get('http://172.20.103.203:8000/digital_drilling/api/structure/'+id + '/').then((response) => {
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/structure/'+id + '/').then((response) => {
                     let data = response.data;
                     if (data) {
                         this.structure = data;
-                        console.log(this.structure)
                     } else {
                         console.log('No data');
                     }

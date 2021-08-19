@@ -64,6 +64,7 @@
         mounted(){
             this.searchItem = this.well.Месторождение + ' ' + this.well.Скважина + ' ' + this.well.ДЗО
             this.searchBy()
+            console.log(process.env.MIX_DIGITAL_DRILLING_URL)
         },
         methods:{
             openSearchModal(){
@@ -75,7 +76,7 @@
             searchBy(){
                 if (this.searchItem) {
                     const searchItemList = this.searchItem.split(" ");
-                    this.axios.get('http://172.20.103.203:8000/digital_drilling/api/search/?q='+searchItemList ).then((response) => {
+                    this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL +'/digital_drilling/api/search/?q='+searchItemList ).then((response) => {
                         let data = response.data;
                         if (data.length>0) {
                             this.wells = data;
