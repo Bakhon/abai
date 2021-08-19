@@ -29,6 +29,7 @@ export default {
     },
     computed: {
         chartOptions() {
+            console.log(this.chartData.series);
             let datetime;
             if (this.chartData.labels.length > 1) {
                 datetime = "datetime";

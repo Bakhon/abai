@@ -425,6 +425,6 @@ return array (
   'countDrillingHeading' => 'Бурение проходка, м.',
   'countWellsWorkover' => 'Количество КРС/ПРС, скв.',
   'countChemistry' => 'Химизация производства, тонн',
-  'countDrillingWells' => 'Количество скважин из бурения, скв.'
+  'countDrillingWells' => 'Количество скважин из бурения, скв.',
   'countDrilling' => 'Бурение проходка, м.'
 );

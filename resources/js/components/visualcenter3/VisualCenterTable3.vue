@@ -2016,21 +2016,6 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div v-if="isInjectionFondPeriodSelected" class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
-                  <fonds-daily-chart
-                          v-if="injectionDailyChart.series.length > 0 && !isInjectionFondPeriodSelected"
-                          :chart-data="injectionDailyChart"
-                          :name="'visualcenter.countOfInjectionWells'"
-                          :is-yaxis-active="false"
-                  ></fonds-daily-chart>
-                  <visual-center3-wells
-                          v-if="injectionFondDataForChart && isInjectionFondPeriodSelected"
-                          :chartData="injectionFondDataForChart"
-                  ></visual-center3-wells>
-
-
-
-
                   <div
                           v-if="drillingSelectedRow === 'otm_wells_commissioning_from_drilling_fact' && isDrillingPeriodSelected"
                           class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}

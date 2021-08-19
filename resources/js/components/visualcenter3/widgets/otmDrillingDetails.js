@@ -51,6 +51,10 @@ export default {
             ],
             drillingChartData: [],
             drillingWidgetFactSum: 0,
+            drillingDailyChart: {
+                series: [],
+                labels: []
+            }
         };
     },
     methods: {

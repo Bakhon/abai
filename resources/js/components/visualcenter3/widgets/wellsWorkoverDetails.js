@@ -118,8 +118,15 @@ export default {
 
             this.updateWellsWorkoverWidgetTable(temporaryWellsWorkoverDetails);
             if (this.wellsWorkoverMonthlyPeriod.length > 0) {
-                this.wellsWorkoverDailyChart.series = this.wellsWorkoverData.map(field => field.fact);
-                this.wellsWorkoverDailyChart.series = this.wellsWorkoverDailyChart.series.concat(this.wellsWorkoverData.map(field => field.plan));
+                this.wellsWorkoverDailyChart.series = [];
+                for (let i in this.wellsWorkoverData) {
+                    console.log('iter')
+                    console.log(this.wellsWorkoverDailyChart.series)
+                    this.wellsWorkoverDailyChart.series.push(this.wellsWorkoverData[i].fact,this.wellsWorkoverData[i].plan);
+                }
+               // console.log(this.wellsWorkoverDailyChart.series);
+                // this.wellsWorkoverDailyChart.series = this.wellsWorkoverData.map(field => field.fact);
+                // this.wellsWorkoverDailyChart.series = this.wellsWorkoverDailyChart.series.concat(this.wellsWorkoverData.map(field => field.plan));
             } else {
                 this.wellsWorkoverChartData = this.getWellsWorkoverWidgetChartData(temporaryWellsWorkoverDetails);
             }
