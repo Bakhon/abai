@@ -69,7 +69,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .bd-file-field {
   &__buttons {
     align-items: center;

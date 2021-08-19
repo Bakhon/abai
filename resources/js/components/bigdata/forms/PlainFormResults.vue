@@ -332,7 +332,7 @@ export default {
 
       if (column.type === 'file') {
         return row[column.code].map(file => {
-          return '<a href="' + this.localeUrl(`/attachments/${file}`) + `">${file}</a>`
+          return '<a href="' + this.localeUrl(`/attachments/${file.id}`) + `">${file.filename} (${file.size})</a>`
         }).join('<br>')
       }
 

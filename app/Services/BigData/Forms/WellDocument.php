@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Exceptions\BigData\SubmitFormException;
+use App\Services\AttachmentService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -27,11 +28,15 @@ class WellDocument extends PlainForm
 
             $tmpRows = $query->get();
             $rows = [];
+            $fileIds = $tmpRows->pluck('file')->unique()->toArray();
+            $files = $this->getFilesInfo($fileIds);
+
             foreach ($tmpRows as $row) {
+                $file = $files->where('id', $row->file)->first();
                 if (isset($rows[$row->id])) {
-                    $rows[$row->id]->file[] = $row->file;
+                    $rows[$row->id]->file[] = $file;
                 } else {
-                    $row->file = [$row->file];
+                    $row->file = [$file];
                     $rows[$row->id] = $row;
                 }
             }
@@ -155,5 +160,11 @@ class WellDocument extends PlainForm
             DB::connection('tbd')->rollBack();
             throw new SubmitFormException($e->getMessage());
         }
+    }
+
+    private function getFilesInfo(array $fileIds)
+    {
+        $attachmentService = app()->make(AttachmentService::class);
+        return $attachmentService->getInfo($fileIds);
     }
 }
