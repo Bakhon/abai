@@ -29,15 +29,17 @@ class WellDocument extends PlainForm
             $tmpRows = $query->get();
             $rows = [];
             $fileIds = $tmpRows->pluck('file')->unique()->toArray();
-            $files = $this->getFilesInfo($fileIds);
+            if (!empty($fileIds)) {
+                $files = $this->getFilesInfo($fileIds);
 
-            foreach ($tmpRows as $row) {
-                $file = $files->where('id', $row->file)->first();
-                if (isset($rows[$row->id])) {
-                    $rows[$row->id]->file[] = $file;
-                } else {
-                    $row->file = [$file];
-                    $rows[$row->id] = $row;
+                foreach ($tmpRows as $row) {
+                    $file = $files->where('id', $row->file)->first();
+                    if (isset($rows[$row->id])) {
+                        $rows[$row->id]->file[] = $file;
+                    } else {
+                        $row->file = [$file];
+                        $rows[$row->id] = $row;
+                    }
                 }
             }
 
