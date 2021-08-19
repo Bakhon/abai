@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container text-center">
-        <a href="{{ route('eco_refs_cost.index', ['is_forecast'=> $isForecast])}}"
+        <a href="{{ route('eco-refs-gtm.index')}}"
            class="btn btn-info">
             {{ __('economic_reference.return_menu') }}
         </a>
@@ -37,17 +37,12 @@
 
         <form method="post"
               enctype="multipart/form-data"
-              action="{{ route('economic_data_import') }}">
+              action="{{ route($isTechnical ? 'eco-refs-gtm-value-import' : 'eco-refs-gtm-import') }}">
             {{ csrf_field() }}
             <div class="form-group">
-                <input type="checkbox"
-                       name="is_forecast"
-                       {{$isForecast ? 'checked' : ''}}
-                       hidden>
-
                 <input type="file"
                        name="file"
-                       accept="{{\App\Http\Requests\EcoRefs\Cost\ImportExcelEcoRefsCostRequest::MIME_TYPES}}"
+                       accept="{{$mimeTypes}}"
                        class="form-control-file"/>
 
                 <div class="mt-3">
@@ -55,7 +50,7 @@
                         {{ __('economic_reference.upload')}}
                     </button>
 
-                    <a href="/{{$isForecast ? 'eco_refs_cost_forecast' : 'eco_refs_cost'}}.xlsx"
+                    <a href="/{{$isTechnical ? 'eco_refs_gtm_value' : 'eco_refs_gtm'}}.xlsx"
                        class="btn btn-primary float-right"
                        download>
                         {{ __('economic_reference.download_example')}}
