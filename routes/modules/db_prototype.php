@@ -54,6 +54,13 @@ Route::group(
                 Route::get('/mobileform/values', 'Api\DB\MobileFormsController@getMobileFormValues');
 
                 Route::resource('wells', 'bd\WellsController', ['as' => 'bigdata']);
+
+                Route::post('/report-constructor/save-template', 'bd\DBController@saveTemplate')->name(
+                    'reports.constructor.save.template'
+                );
+                Route::get('/report-constructor/get-templates', 'bd\DBController@getTemplates')->name(
+                    'reports.constructor.get.templates'
+                );
             }
         );
     }
