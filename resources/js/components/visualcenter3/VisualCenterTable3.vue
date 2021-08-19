@@ -1632,7 +1632,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-475">
                   <table v-if="injectionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
@@ -1673,9 +1673,13 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <div v-if="isInjectionFondPeriodSelected" class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <injection-daily-chart
+                          v-if="injectionDailyChart.series.length > 0 && !isInjectionFondPeriodSelected"
+                          :chart-data="injectionDailyChart"
+                  ></injection-daily-chart>
                   <visual-center3-wells
-                          v-if="injectionFondDataForChart"
+                          v-if="injectionFondDataForChart && isInjectionFondPeriodSelected"
                           :chartData="injectionFondDataForChart"
                   ></visual-center3-wells>
                 </div>
@@ -1830,10 +1834,10 @@
                 </div>
                 <div class="col-sm-5">
                   <div v-if="isProductionFondPeriodSelected" class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
-                  <vc-daily-chart
-                          v-if="dailyChart.series.length > 0 && !isProductionFondPeriodSelected"
-                          :chart-data="dailyChart"
-                  ></vc-daily-chart>
+                  <production-daily-chart
+                          v-if="productionDailyChart.series.length > 0 && !isProductionFondPeriodSelected"
+                          :chart-data="productionDailyChart"
+                  ></production-daily-chart>
                   <visual-center3-wells
                           v-if="productionFondDataForChart && isProductionFondPeriodSelected"
                           :chartData="productionFondDataForChart"
@@ -2817,7 +2821,7 @@
     }
   }
   .mh-475 {
-    max-height: 475px;
+    max-height: 495px;
   }
 
   .vis-table-small {

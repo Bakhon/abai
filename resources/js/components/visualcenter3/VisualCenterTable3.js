@@ -32,7 +32,8 @@ import emergency from './widgets/emergency';
 import {globalloadingMutations} from '@store/helpers';
 import Vue from "vue";
 
-Vue.component('vc-daily-chart', require('./charts/dailyChart.vue').default);
+Vue.component('production-daily-chart', require('./charts/productionDailyChart.vue').default);
+Vue.component('injection-daily-chart', require('./charts/injectionDailyChart.vue').default);
 
 
 

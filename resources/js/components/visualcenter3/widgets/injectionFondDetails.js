@@ -115,7 +115,27 @@ export default {
                     'idle': 0
                 }
             },
-            injectionFondHistory: []
+            injectionFondHistory: [],
+            forDailyInjectionChart: [],
+            injectionDailyChart: {
+                series: [],
+                labels: []
+            },
+            injectionFondWorkFields: [
+                'operating_injection_fond',
+                'active_injection_fond',
+                'inactive_injection_fond',
+                'developing_injection_fond',
+                'pending_liquidation_injection_fond'
+            ],
+            injectionFondIdleFields: [
+                'prs_wait_downtime_injection_wells_count',
+                'prs_downtime_injection_wells_count',
+                'krs_wait_downtime_injection_wells_count',
+                'krs_downtime_injection_wells_count',
+                'well_survey_downtime_injection_wells_count',
+                'other_downtime_injection_wells_count'
+            ]
         };
     },
     methods: {
@@ -168,6 +188,7 @@ export default {
         },
 
         async updateInjectionFondWidget() {
+            this.SET_LOADING(true);
             let injectionFondDetails = _.cloneDeep(this.injectionFondDetails);
             let injectionFondDetailsHistory = _.cloneDeep(this.injectionFondHistory);
             if (this.injectionFondSelectedCompany !== 'all') {
@@ -175,10 +196,16 @@ export default {
                 injectionFondDetailsHistory = this.getFoundsFilteredByDzo(injectionFondDetailsHistory,this.injectionFondSelectedCompany);
             }
             let compared = this.getMergedByChild(injectionFondDetails,'import_downtime_reason');
+            if (!this.isInjectionFondPeriodSelected) {
+                this.forDailyInjectionChart = await this.getChartData(this.injectionFondWorkFields,this.injectionFondIdleFields,this.injectionFondPeriodStart,this.injectionFondPeriodEnd);
+                this.updateDailyChart(this.forDailyInjectionChart,this.injectionFondSelectedCompany,'isInjectionIdleActive','injectionDailyChart');
+            } else {
+                this.injectionFondChartData = this.getInjectionFondWidgetChartData(compared);
+            }
             this.updateInjectionFondWidgetTable(compared);
-            this.injectionFondChartData = this.getInjectionFondWidgetChartData(compared);
             this.updateInjectionFondSum('actual',injectionFondDetails);
             this.updateInjectionFondSum('history',injectionFondDetailsHistory);
+            this.SET_LOADING(false);
         },
 
         updateInjectionFondSum(type,inputData) {
@@ -194,7 +221,7 @@ export default {
             let chartData = {};
             if (groupedForChart) {
                 for (let i in groupedForChart) {
-                    chartData[i] = this.getSumByFond(groupedForChart[i],'injection','other_downtime_injection_wells_count','isInjectionIdleActive');
+                    chartData[i] = this.getSumOfFond(groupedForChart[i],this.injectionFondWorkFields,this.injectionFondIdleFields,'isInjectionIdleActive');
                 }
             }
             return chartData;

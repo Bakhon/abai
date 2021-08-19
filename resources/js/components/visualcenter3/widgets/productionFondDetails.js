@@ -120,11 +120,27 @@ export default {
                 }
             },
             productionFondHistory: [],
-            forDailyChart: [],
-            dailyChart: {
+            forDailyProductionChart: [],
+            productionDailyChart: {
                 series: [],
                 labels: []
-            }
+            },
+            productionFondWorkFields: [
+                'operating_production_fond',
+                'active_production_fond',
+                'inactive_production_fond',
+                'developing_production_fond',
+                'pending_liquidation_production_fond'
+            ],
+            productionFondIdleFields: [
+                'prs_wait_downtime_production_wells_count',
+                'prs_downtime_production_wells_count',
+                'krs_wait_downtime_production_wells_count',
+                'krs_downtime_production_wells_count',
+                'well_survey_downtime_production_wells_count',
+                'unprofitable_downtime_production_wells_count',
+                'other_downtime_production_wells_count'
+            ]
         };
     },
     methods: {
@@ -173,23 +189,26 @@ export default {
                 productionFondDetailsHistory = this.getFoundsFilteredByDzo(productionFondDetailsHistory,this.productionFondSelectedCompany);
             }
             let compared = this.getMergedByChild(productionFondDetails,'import_downtime_reason');
+            if (!this.isProductionFondPeriodSelected) {
+                this.forDailyProductionChart = await this.getChartData(this.productionFondWorkFields,this.productionFondIdleFields,this.productionFondPeriodStart,this.productionFondPeriodEnd);
+                this.updateDailyChart(this.forDailyProductionChart,this.productionFondSelectedCompany,'isProductionIdleActive','productionDailyChart');
+            } else {
+                this.productionFondChartData = this.getProductionFondWidgetChartData(compared);
+            }
             this.updateProductionFondWidgetTable(compared);
-            this.productionFondChartData = this.getProductionFondWidgetChartData(compared);
             this.updateProductionFondSum('actual',productionFondDetails);
             this.updateProductionFondSum('history',productionFondDetailsHistory);
-            this.forDailyChart = await this.getChartData();
-            this.updateDailyChart();
             this.SET_LOADING(false);
         },
 
-        updateDailyChart() {
-            let filtered = _.filter(this.forDailyChart, (value, key) => key === this.productionFondSelectedCompany);
-            if (this.fondsFilter.isProductionIdleActive) {
-                this.dailyChart.series = Object.values(filtered[0].idle);
-                this.dailyChart.labels = Object.keys(filtered[0].idle);
+        updateDailyChart(input,selectedCompany,filter,chartOutput) {
+            let filtered = _.filter(input, (value, key) => key === selectedCompany);
+            if (this.fondsFilter[filter]) {
+                this[chartOutput].series = Object.values(filtered[0].idle);
+                this[chartOutput].labels = Object.keys(filtered[0].idle);
             } else {
-                this.dailyChart.series = Object.values(filtered[0].work);
-                this.dailyChart.labels = Object.keys(filtered[0].work);
+                this[chartOutput].series = Object.values(filtered[0].work);
+                this[chartOutput].labels = Object.keys(filtered[0].work);
             }
         },
 
@@ -206,7 +225,7 @@ export default {
             let chartData = {};
             if (groupedForChart) {
                 for (let i in groupedForChart) {
-                    chartData[i] = this.getSumByFond(groupedForChart[i],'production','other_downtime_production_wells_count','isProductionIdleActive');
+                   chartData[i] = this.getSumOfFond(groupedForChart[i],this.productionFondWorkFields,this.productionFondIdleFields,'isProductionIdleActive');
                 }
             }
             return chartData;
@@ -256,19 +275,6 @@ export default {
             }
             this.updateProductionFondWidget();
         },
-
-        async getChartData() {
-            let uri = this.localeUrl("/get-production-fond-chart");
-            let queryOptions = {
-                startPeriod: this.productionFondPeriodStart,
-                endPeriod: this.productionFondPeriodEnd
-            };
-            const response = await axios.get(uri,{params:queryOptions});
-            if (response.status !== 200) {
-                return {};
-            }
-            return response.data;
-        }
     },
     computed: {
         productionFondDataForChart() {

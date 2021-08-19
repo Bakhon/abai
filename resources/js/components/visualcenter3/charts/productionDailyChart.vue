@@ -2,7 +2,7 @@
     <div>
         <div class="header text-center pt-5">{{trans('visualcenter.countOfProductionWells')}}</div>
         <apexchart
-                height="440"
+                height="460"
                 style="margin-top:0px"
                 :options="chartOptions"
                 :series="series"

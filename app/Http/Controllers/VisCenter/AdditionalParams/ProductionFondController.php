@@ -10,22 +10,6 @@ use Carbon\Carbon;
 
 class ProductionFondController extends Controller
 {
-    protected $workFields = array(
-        'operating_production_fond',
-        'active_production_fond',
-        'inactive_production_fond',
-        'developing_production_fond',
-        'pending_liquidation_production_fond'
-    );
-    protected $idleFields = array(
-        'prs_wait_downtime_production_wells_count',
-        'prs_downtime_production_wells_count',
-        'krs_wait_downtime_production_wells_count',
-        'krs_downtime_production_wells_count',
-        'well_survey_downtime_production_wells_count',
-        'unprofitable_downtime_production_wells_count',
-        'other_downtime_production_wells_count'
-    );
     protected $formatted = array(
         'all' => array(),
         'ОМГ' => array(),
@@ -47,7 +31,7 @@ class ProductionFondController extends Controller
              ->get()
              ->toArray();
         $result = $this->getMergedForDailyChart($importData);
-        $formatted = $this->getFormattedForDailyChart($result);
+        $formatted = $this->getFormattedForDailyChart($result,$request->workFields,$request->idleFields);
 
         return $formatted;
     }
@@ -67,21 +51,21 @@ class ProductionFondController extends Controller
         return $result;
     }
 
-    protected function getFormattedForDailyChart($input)
+    protected function getFormattedForDailyChart($input,$workFields,$idleFields)
     {
         $result = array();
         foreach($this->formatted as $dzoName => $dzo) {
             if ($dzoName === 'all') {
                 $result[$dzoName] = array();
-                $result[$dzoName]['work'] = $this->getSumByTypeForDailyChart($input,'workFields');
-                $result[$dzoName]['idle'] = $this->getSumByTypeForDailyChart($input,'idleFields');
+                $result[$dzoName]['work'] = $this->getSumByTypeForDailyChart($input,$workFields);
+                $result[$dzoName]['idle'] = $this->getSumByTypeForDailyChart($input,$idleFields);
             } else {
                 $result[$dzoName] = array();
                 $filtered = array_filter($input, function ($var) use ($dzoName) {
                    return ($var['dzo_name'] === $dzoName);
                 });
-                $result[$dzoName]['work'] = $this->getSumByTypeForDailyChart($filtered,'workFields');
-                $result[$dzoName]['idle'] = $this->getSumByTypeForDailyChart($filtered,'idleFields');
+                $result[$dzoName]['work'] = $this->getSumByTypeForDailyChart($filtered,$workFields);
+                $result[$dzoName]['idle'] = $this->getSumByTypeForDailyChart($filtered,$idleFields);
             }
         }
         return $result;
@@ -90,7 +74,7 @@ class ProductionFondController extends Controller
     protected function getSumByTypeForDailyChart($input,$fieldsType)
     {
         $result = array();
-        foreach($this->$fieldsType as $fieldName) {
+        foreach($fieldsType as $fieldName) {
             $result[$fieldName] = array_sum(array_column($input,$fieldName));
         }
         return $result;
