@@ -57,6 +57,7 @@
 <script>
 import {Plotly} from "vue-plotly";
 import { pgnoMapState, pgnoMapGetters, pgnoMapMutations, pgnoMapActions } from '@store/helpers';
+import {globalloadingMutations} from '@store/helpers';
 
 export default {
   props: ["wellNumber", "field", "wellIncl"],
@@ -96,6 +97,7 @@ export default {
     }
   },
   mounted() {
+    this.SET_LOADING(true);
     let uri = this.apiUrl + "nno/" + this.well.fieldUwi + "/" + this.well.wellUwi + "/";
 
     this.axios.get(uri).then((response) => {
@@ -162,8 +164,13 @@ export default {
     }).catch()
 
         .finally(() => {
-          this.$emit('update:isLoading', false);
+          this.SET_LOADING(false);
         })
+  },
+  methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+      ]),
   }
 }
 </script>

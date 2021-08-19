@@ -63,7 +63,6 @@ export default {
       permissionName: "podborGno edit main",
       activeRightTabName: "technological-mode",
       curveSettings: {},
-      isLoading: false,
       lines_analysis: {},
       points_analysis: {},
       bhpPot: null,
@@ -428,7 +427,7 @@ export default {
 
     async getWellData(wellnumber) {
       this.isIntervals = true;
-      this.isLoading = true;
+      this.SET_LOADING(true);
       this.isVisibleChart = true;
       this.setDefault();
       if (["JET", "ASA"].includes(this.field)) {
@@ -481,7 +480,7 @@ export default {
       }
       this.setCurveSettings(this.curveSettings);
       this.updateCurveTrigger = !this.updateCurveTrigger;
-      this.isLoading = false;
+      this.SET_LOADING(false);
     },
     editPage() {
       if (this.isEditing) {
@@ -492,7 +491,7 @@ export default {
     },
     async postCurveData() {
       this.isVisibleChart = true;
-      this.isLoading = true;
+      this.SET_LOADING(true);
       if (this.well.casOd < 127) {
         this.setNotify(
           this.trans("pgno.notify_ek_127_down"),
@@ -530,7 +529,7 @@ export default {
       var isPostSuccess = await this.postWell(payload);
       if (!isPostSuccess){
         this.curveSettings.es = this.curveSettings.es * 100
-        this.isLoading = false;
+        this.SET_LOADING(false);
         return
       }
       this.setCurveData(this.calcedWell, this.points);
@@ -550,7 +549,7 @@ export default {
         }
       }
       this.updateCurveTrigger = !this.updateCurveTrigger;
-      this.isLoading = false;
+      this.SET_LOADING(false);
     },
     raiseTargetNotify() {
       if (
@@ -689,7 +688,7 @@ export default {
       } else if (errorCheck || nktError) {
         if (this.curveSettings.expChoosen == "ШГН") {
           if (this.isVisibleChart) {
-            this.isLoading = true;
+            this.SET_LOADING(true);
             var payload = {
               shgn_settings: this.shgnSettings,
               well: this.well,
@@ -813,7 +812,7 @@ export default {
                 }
               })
               .finally(() => {
-                this.isLoading = false;
+                this.SET_LOADING(false);
               });
           } else {
             this.isVisibleChart = !this.isVisibleChart;
@@ -830,7 +829,7 @@ export default {
     },
 
     downloadEconomicExcel() {
-      this.isLoading = true;
+      this.SET_LOADING(true);
       let req = [
         this.expAnalysisData.npvTable1,
         this.expAnalysisData.npvTable2,
@@ -847,7 +846,7 @@ export default {
           console.error("oops, something went wrong!", error);
         })
         .finally(() => {
-          this.isLoading = false;
+          this.SET_LOADING(false);
         });
     },
     async fetchBlockCentrators() {
@@ -897,7 +896,7 @@ export default {
       this.activeRightTabName = val;
     },
     takePhoto() {
-      this.isLoading = true;
+      this.SET_LOADING(true);
 
       htmlToImage
         .toPng(this.$refs["gno-chart"])
@@ -912,11 +911,11 @@ export default {
           console.error("oops, something went wrong!", error);
         })
         .finally(() => {
-          this.isLoading = false;
+          this.SET_LOADING(false);
         });
     },
     takePhotoOldNewWell() {
-      this.isLoading = true;
+      this.SET_LOADING(true);
 
       htmlToImage
         .toPng(this.$refs["gno-chart-new-old-well"])
@@ -931,7 +930,7 @@ export default {
           console.error("oops, something went wrong!", error);
         })
         .finally(() => {
-          this.isLoading = false;
+          this.SET_LOADING(false);
         });
     },
   },
