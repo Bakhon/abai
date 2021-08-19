@@ -894,7 +894,9 @@ return [
         'plan_g_i_s' => [
             'name' => 'Наименование',
             'total_period' => 'Всего за период',
-            'total' => 'Всего'
+            'total' => 'Всего',
+            'date' => 'Дата с',
+            'date_to' => 'Дата по',
         ]
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',
