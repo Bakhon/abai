@@ -16,7 +16,7 @@ import 'bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
-
+import VModal from 'vue-js-modal';
 import VueMomentLib from 'vue-moment-lib';
 import moment from 'moment';
 import ElementUI from 'element-ui';
@@ -52,6 +52,7 @@ Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
 Vue.component('paginate', Paginate);
 Vue.use(Vuelidate)
+Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
 Vue.mixin(showToast);
 
