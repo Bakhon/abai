@@ -26,6 +26,22 @@ function createDataTree(dataset) {
   return dataTree;
 }
 
+function convertTemplateData(dataset, lang) {
+  const hash = {};
+  dataset.forEach((template) => {
+    hash[template["type_" + lang]] = {
+      name: template["type_" + lang],
+      childNodes: [],
+    };
+  });
+  dataset.forEach((template) =>
+    hash[template["type_" + lang]].childNodes.push(template)
+  );
+
+  const dataTree = Object.values(hash);
+  return dataTree;
+}
+
 function handleSearch(arrayForSearch, query) {
   const filtered = arrayForSearch.filter((item) =>
     item.field_name.toLowerCase().includes(query.toLowerCase()) ? item : ""
@@ -33,4 +49,4 @@ function handleSearch(arrayForSearch, query) {
   return filtered;
 }
 
-export { createDataTree, handleSearch };
+export { createDataTree, handleSearch, convertTemplateData };
