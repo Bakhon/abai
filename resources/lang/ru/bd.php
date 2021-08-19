@@ -607,7 +607,7 @@ return [
         ],
         'geo_structure' => [
             'title' => 'Принадлежность скважины к геоструктуре',
-            'org' => 'Геоструктура',
+            'geo' => 'Геоструктура',
             'dbeg' => 'Начало периода',
             'dend' => 'Конец периода'
         ],
@@ -883,6 +883,20 @@ return [
             'geo' => 'Геоструктура',
             'mark_type' => 'Тип отметки',
             'depth' => 'Глубина отметки'
+        ],
+        'well_treat' => [
+            'uwi' => 'Номер скважины',
+            'volume' => 'Объем, м3',
+            'pretreat_pressure' => 'Рагр. пред., атм',
+            'posttreat_pressure' => 'Рагр.посл. атм',
+            'temperature' => 'Температура',
+            'pretreat_buff_pressure' => 'Рбуф перед',
+            'posttreat_buff_pressure' => 'Рбуф после',
+            'reason' => 'Причины обработки',
+            'treat_type' => 'Вид обработки',
+            'ch_reagent_type' => 'Хим.реагент',
+            'scraper_income' => 'Доход скребка, м',
+            'data' => 'Дата',
         ],
             
     ],

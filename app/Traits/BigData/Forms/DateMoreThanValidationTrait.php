@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Traits\BigData\Forms;
-use Illuminate\Support\Facades\DB;
 use App\Models\BigData\Well;
+use Illuminate\Support\Facades\DB;
 
 trait DateMoreThanValidationTrait
 {
@@ -18,18 +18,24 @@ trait DateMoreThanValidationTrait
             return true;
         }
         return $date >= $validDate->$dateType;    
-    } 
+    }
 
-    private function isValidDateDbeg($wellId, $date, $table,$dateType ):bool
+    private function isValidDateDbeg($wellId, $date, $table, $dateType, $rowId = null): bool
     {
-        $validDate = DB::connection('tbd')
+        $query = DB::connection('tbd')
             ->table($table)
             ->where('well', $wellId)
             ->where($dateType, '<', Well::DEFAULT_END_DATE)
-            ->orderBy($dateType, 'desc')
+            ->orderBy($dateType, 'desc');
+
+        if ($rowId) {
+            $query->where('id', '!=', $rowId);
+        }
+
+        $validDate = $query
             ->get($dateType)
-            ->first();        
-        if(empty($validDate) || $validDate->$dateType == null){
+            ->first();
+        if (empty($validDate) || $validDate->$dateType == null) {
             return true;
         }
         return $date >= $validDate->$dateType;

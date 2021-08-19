@@ -96,8 +96,6 @@ export default {
             bigTable: [],
             starts: [""],
             series: ["", ""],
-            planMonthSumm: "",
-            factMonthSumm: "",
             timestampToday: "",
             timestampEnd: "",
             isPricesChartLoading: false,
@@ -525,25 +523,6 @@ export default {
                 gasRestriction.push({gasRestriction: item.gasRestriction});
             });
 
-            var planMonthSumm = _.reduce(
-                planMonth,
-                function (memo, item) {
-                    return memo + item.planMonth;
-                },
-                0
-            );
-
-            var factMonthSumm = _.reduce(
-                factMonth,
-                function (memo, item) {
-                    return memo + item.factMonth;
-                },
-                0
-            );
-
-            this.planMonthSumm = planMonthSumm;
-            this.factMonthSumm = factMonthSumm;
-
             var bigTable = _.zipWith(
                 opec,
                 impulses,
@@ -771,11 +750,14 @@ export default {
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
-        this.updateChemistryWidget();
-        this.updateWellsWorkoverWidget();
-        this.updateDrillingWidget();
-        this.updateProductionFondWidget();
-        this.updateInjectionFondWidget();
+        let isOneDzoSelected = this.getDzoTicker();     
+        if (!isOneDzoSelected) {       
+            this.updateChemistryWidget();
+            this.updateWellsWorkoverWidget();
+            this.updateDrillingWidget();
+            this.updateProductionFondWidget();
+            this.updateInjectionFondWidget();
+        };
     },   
     watch: {
         bigTable: function () {

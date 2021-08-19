@@ -14,7 +14,6 @@ export default new Vuex.Store({
             'complicationMonitoring',
             'dzoMap',
             'fa',
-            'globalloading',
             'guMap',
             'index',
             'paegtmMap',
