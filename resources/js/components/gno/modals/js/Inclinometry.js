@@ -3,6 +3,7 @@ import { Plotly } from "vue-plotly";
 import { PerfectScrollbar } from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import { pgnoMapState, pgnoMapGetters, pgnoMapMutations, pgnoMapActions } from '@store/helpers';
+import {globalloadingMutations} from '@store/helpers';
 import NotifyPlugin from "vue-easy-notify";
 
 
@@ -15,7 +16,6 @@ export default {
     return {
       apiUrl: process.env.MIX_PGNO_API_URL,
       data() { },
-      isLoading: false,
       dls1: "-",
       dls2: "-",
       zu1: "-",
@@ -117,6 +117,9 @@ export default {
     ]),
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+      ]),
     ...pgnoMapActions([
       'getInclinometry',
       'sethPumpValue'
@@ -137,7 +140,7 @@ export default {
     },
 
     async buildModel() {
-      this.isLoading = true
+      this.SET_LOADING(true);
       this.xChart = []
       this.yChart = []
       this.zChart = []
@@ -213,7 +216,8 @@ export default {
         }
       }
       ],
-          this.point = []
+      this.point = []
+      this.SET_LOADING(false);
     },
     async onClickHpump() {
       await this.sethPumpValue(this.hPump)

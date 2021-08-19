@@ -454,14 +454,13 @@
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">{{ trans('pgno.inclinometria') }}</div>
 
-                    <button type="button" class="modal-bign-button" @click="closeModal('modalTabs')">
+                    <button type="button" class="modal-bign-button" @click="closeModal('modalIncl')">
                       {{ trans('pgno.zakrit') }}
                     </button>
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <inclinometry @update-hpump="closeInclModal($event)"
-                                   :is-loading.sync="isLoading">
+                    <inclinometry @update-hpump="closeInclModal($event)">
                     </inclinometry>
                   </div>
                 </div>
@@ -496,8 +495,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <prs-crs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field"
-                             :is-loading.sync="isLoading"></prs-crs>
+                    <prs-crs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field"></prs-crs>
                   </div>
                 </div>
               </modal>
@@ -528,8 +526,7 @@
                       {{ trans('pgno.zakrit') }}
                     </button>
                   </div>
-                  <pgno-analysis @clicked="closeAnalysisModal" :analysisTrigger="analysisTrigger"
-                                 :is-loading.sync="isLoading"></pgno-analysis>
+                  <pgno-analysis @clicked="closeAnalysisModal" :analysisTrigger="analysisTrigger"></pgno-analysis>
                 </div>
               </modal>
 
@@ -622,7 +619,7 @@
                     </div>
                   </div>
                 </div>
-                <inflow-curve :updateCurveTrigger="updateCurveTrigger" :is-loading.sync="isLoading"></inflow-curve>
+                <inflow-curve :updateCurveTrigger="updateCurveTrigger"></inflow-curve>
               </div>
 
 
@@ -1234,7 +1231,6 @@
       </div>
     </div>
     <notifications position="top"></notifications>
-    <full-page-loader v-show="isLoading"/>
   </div>
 </template>
 <script src="./GnoMain.js"></script>

@@ -1,4 +1,5 @@
 import {pgnoMapState, pgnoMapGetters, pgnoMapMutations, pgnoMapActions} from '@store/helpers';
+import {globalloadingMutations} from '@store/helpers';
 import {Plotly} from "vue-plotly";
 import Vue from 'vue';
 
@@ -9,7 +10,6 @@ export default {
     data: function () {
         return {
             apiUrl: process.env.MIX_PGNO_API_URL,
-            isLoading: false,
             name: "analysis-menu",
             layout: {
                 shapes: [{
@@ -89,12 +89,15 @@ export default {
         ]),
     },
     methods: {
+        ...globalloadingMutations([
+            'SET_LOADING'
+            ]),
         ...pgnoMapActions([
             "postAnalysis",
             "updateWell"
         ]),
         async updateGraph() {
-            this.isLoading = true
+            this.SET_LOADING(true);
             var payload = {}
             payload.url = this.apiUrl + "analysis"
             payload.data = {
@@ -162,8 +165,7 @@ export default {
               labels: this.lines.qlLine,
             };
             this.layout.shapes[0].x0 = this.layout.shapes[0].x1 = this.pointsAnalysis.qlPotencial
-            console.log("ANALYSIS MENU UPDATED")
-            this.isLoading = false
+            this.SET_LOADING(false);
           },
         changeAnalysisSettings() {
             var payload = {}
@@ -288,7 +290,5 @@ export default {
                     "Pзаб = %{y:.1f} атм<extra></extra>"
         }
         this.updateGraph()
-        console.log("TEST")
-        console.log(this.analysisSettings)
     },
 }
