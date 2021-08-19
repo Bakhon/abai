@@ -2,6 +2,15 @@ export default {
 	props: [ 'dataReptt' ],
 	data() {
 		return {
+            hiddenRowMapping : [                
+                'Реализация',
+                'Транспортировка/Хранение',
+                'Закуп',
+                'Сальдо движения денежных средств на начало периода',
+                'Чистая сумма денежных средств по операционной деятельности',
+                'Чистое поступление денежных средств по инвестиц.деятельности',
+                'Производственные показатели',
+            ],
 			unit: this.trans("economy_pf.repttTable.unitKzt"),
 			yearLast: 2019,
 			day: '30.01.19',
@@ -68,31 +77,15 @@ export default {
 			}
 		},
 
-		hideEmptyValues: function(row) {	
-			if (row.row.plan_value[this.currentYear] === 0) {
-				return 'hidden-row';
-			}
-			else if (row.row.name === 'Производственные показатели') {
-				return 'hidden-row';
-			}
-			else if (row.row.name === 'Реализация') {
-				return 'hidden-row';
-			}
-			else if (row.row.name === 'Транспортировка/Хранение') {
-				return 'hidden-row';
-			}
-			else if (row.row.name === 'Закуп') {
-				return 'hidden-row';
-			}
-			else if (row.row.name === 'Сальдо движения денежных средств на начало периода') {
-				return 'hidden-row';
-			}
-			else if (row.row.name === 'Чистая сумма денежных средств по операционной деятельности') {
-				return 'hidden-row';
-			}
-			else if (row.row.name === 'Чистое поступление денежных средств по инвестиц.деятельности') {
-				return 'hidden-row';
-			}
+		hideEmptyValues: function(row) {
+            let self = this;
+            for (let i = 1; i < self.hiddenRowMapping.length; i++) {
+                if (row.row.plan_value[self.currentYear] === 0) {
+                    return 'hidden-row';
+                } else if (row.row.name === self.hiddenRowMapping[i]) {
+                    return 'hidden-row';
+                }                
+             }
 		},
 		getAbsoluteDeviation(currentYearPlanValue, currentYearFactValue) {
 			let result = Math.abs(currentYearPlanValue - currentYearFactValue).toFixed(1);
