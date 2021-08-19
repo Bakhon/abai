@@ -46,7 +46,15 @@ export default {
             wellsWorkoverSummary: {
                 'krs': 0,
                 'prs': 0
-            }
+            },
+            wellsWorkoverDailyChart: {
+                series: [],
+                labels: [
+                    this.trans("visualcenter.Plan"),
+                    this.trans("visualcenter.Fact"),
+                    this.trans("visualcenter.Plan"),
+                    this.trans("visualcenter.Fact")]
+            },
         };
     },
     methods: {
@@ -107,7 +115,10 @@ export default {
                     item['undeground_workover_plan'] = self.dzoMonthlyPlans[planIndex].plan_otm_prs_skv_plan;
                 }
             });
+
             this.updateWellsWorkoverWidgetTable(temporaryWellsWorkoverDetails);
+            this.wellsWorkoverDailyChart.series = this.wellsWorkoverData.map(field => field.fact);
+            this.wellsWorkoverDailyChart.series = this.wellsWorkoverDailyChart.series.concat(this.wellsWorkoverData.map(field => field.plan));
             this.wellsWorkoverChartData = this.getWellsWorkoverWidgetChartData(temporaryWellsWorkoverDetails);
         },
 

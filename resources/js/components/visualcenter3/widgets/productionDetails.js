@@ -108,7 +108,12 @@ export default {
             this.updateChemistryWidget();
             this.updateWellsWorkoverWidget();
             this.updateDrillingWidget();
-            await this.updateProductionFondWidget();
+            if (widgetName === 'productionWells') {
+                await this.updateProductionFondWidget();
+            }
+            if (widgetName === 'injectionWells') {
+                await this.updateInjectionFondWidget();
+            }
             this.SET_LOADING(false);
         },
 

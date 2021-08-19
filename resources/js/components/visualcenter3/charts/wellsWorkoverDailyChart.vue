@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="header text-center pt-5">{{trans('visualcenter.countOfInjectionWells')}}</div>
+        <div class="header text-center pt-5">{{trans(name)}}</div>
         <apexchart
                 height="460"
                 style="margin-top:0px"
@@ -28,7 +28,7 @@ export default {
     components: {
         "apexchart": VueApexCharts
     },
-    props: ["chartData"],
+    props: ["chartData", "name"],
     data: function () {
         return {
         };

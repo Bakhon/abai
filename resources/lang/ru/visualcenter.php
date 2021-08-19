@@ -420,5 +420,8 @@ return array (
   'condensateDelivery' => 'Сдача конденсата',
   'notes' => 'Примечания',
   'countOfProductionWells' => 'Количество добывающих скважин, скв.',
-  'countOfInjectionWells' => 'Количество добывающих скважин, скв.'
+  'countOfInjectionWells' => 'Количество нагнетательных скважин, скв.',
+  'countDrillingWells' => 'Количество скважин из бурения, скв.',
+  'countDrillingHeading' => 'Бурение проходка, м.',
+  'countWellsWorkover' => 'Количество КРС/ПРС, скв.'
 );

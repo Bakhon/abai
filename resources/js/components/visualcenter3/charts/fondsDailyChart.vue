@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="header text-center pt-5">{{trans('visualcenter.countOfProductionWells')}}</div>
+        <div class="header text-center pt-5">{{trans(this.name)}}</div>
         <apexchart
                 height="460"
                 style="margin-top:0px"
@@ -28,7 +28,7 @@ export default {
     components: {
         "apexchart": VueApexCharts
     },
-    props: ["chartData"],
+    props: ["chartData", "name", "isYaxisActive"],
     data: function () {
         return {
         };
@@ -57,7 +57,7 @@ export default {
                     enabled: false,
                 },
                 yaxis: {
-                    show: false,
+                    show: this.isYaxisActive,
                 },
                 chart: {
                     type: 'bar',

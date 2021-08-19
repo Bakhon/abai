@@ -1674,10 +1674,12 @@
                 </div>
                 <div class="col-sm-5">
                   <div v-if="isInjectionFondPeriodSelected" class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
-                  <injection-daily-chart
+                  <fonds-daily-chart
                           v-if="injectionDailyChart.series.length > 0 && !isInjectionFondPeriodSelected"
                           :chart-data="injectionDailyChart"
-                  ></injection-daily-chart>
+                          :name="'visualcenter.countOfInjectionWells'"
+                          :is-yaxis-active="false"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
                           v-if="injectionFondDataForChart && isInjectionFondPeriodSelected"
                           :chartData="injectionFondDataForChart"
@@ -1834,10 +1836,12 @@
                 </div>
                 <div class="col-sm-5">
                   <div v-if="isProductionFondPeriodSelected" class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
-                  <production-daily-chart
+                  <fonds-daily-chart
                           v-if="productionDailyChart.series.length > 0 && !isProductionFondPeriodSelected"
                           :chart-data="productionDailyChart"
-                  ></production-daily-chart>
+                          :name="'visualcenter.countOfProductionWells'"
+                          :is-yaxis-active="false"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
                           v-if="productionFondDataForChart && isProductionFondPeriodSelected"
                           :chartData="productionFondDataForChart"
@@ -2130,7 +2134,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-475">
                   <table
                           v-if="wellsWorkoverData.length"
                           class="table4 w-100 chemistry-table additional-tables"
@@ -2203,9 +2207,15 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <div v-if="wellsWorkoverMonthlyPeriod.length === 0" class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <fonds-daily-chart
+                          v-if="wellsWorkoverDailyChart.series.length > 0 && wellsWorkoverMonthlyPeriod.length > 0"
+                          :chart-data="wellsWorkoverDailyChart"
+                          :name="'visualcenter.countWellsWorkover'"
+                          :is-yaxis-active="true"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
-                          v-if="wellsWorkoverDataForChart"
+                          v-if="wellsWorkoverDataForChart && wellsWorkoverMonthlyPeriod.length === 0"
                           :chartData="wellsWorkoverDataForChart"
                   ></visual-center3-wells>
                 </div>
