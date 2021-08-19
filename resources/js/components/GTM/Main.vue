@@ -34,7 +34,7 @@
                             <th class="align-middle" colspan="3">{{ trans('paegtm.total_production') }}</th>
                           </tr>
                           <tr>
-               в               <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                              <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
                               <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
                               <th>+/-</th>
                               <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
@@ -82,13 +82,13 @@
             </div>
             <div class="col-3 p-0 pl-2">
                 <div class="mb-2">
-                    <gtm-date-picker @dateChanged="getData" v-bind:showSettings="false"></gtm-date-picker>
+                    <gtm-date-picker @dateChanged="getData" :showSettings="false" :showPeriodTitle="true"></gtm-date-picker>
                 </div>
                 <div class="gtm-dark h-100*">
                     <table class="table text-center text-white podbor-middle-table h-100 mb-0">
                         <thead>
                         <tr>
-                            <th class="align-middle" rowspan="2" style="width: 250px;">{{ trans('paegtm.gtmType') }}</th>
+                            <th class="align-middle" rowspan="2" style="width: 180px;">{{ trans('paegtm.gtmType') }}</th>
                             <th colspan="2">{{ trans('paegtm.countThLong') }}</th>
                             <th class="align-middle" rowspan="2">{{ trans('paegtm.headway.tech') }}</th>
                             <th class="align-middle" rowspan="2">{{ trans('paegtm.headway.econom') }}</th>
@@ -246,7 +246,7 @@ export default {
                 left: 0
               },
             },
-            colors: [ '#4f81bd', '#c0504d', '#9bbb59', '#8064a2'],
+            colors: [ '#2e50e996', '#9ea4c9b3', '#2e50e9', '#9ea4c9'],
             chart: {
               background: '#272953',
               type: 'line',
@@ -254,7 +254,7 @@ export default {
               width: '10%',
             },
             stroke: {
-              width: [0, 0, 5, 5]
+              width: 3
             },
             title: {
               text: this.trans('paegtm.dynamicEnterOil'),
@@ -333,7 +333,7 @@ export default {
                       left: 0
                   },
               },
-              colors: [ '#4f81bd', '#c0504d', '#9bbb59', '#8064a2'],
+              colors: [ '#2e50e996', '#9ea4c9b3', '#2e50e9', '#9ea4c9'],
               chart: {
                   background: '#272953',
                   type: 'line',
@@ -341,7 +341,7 @@ export default {
                   width: '10%',
               },
               stroke: {
-                  width: [0, 0, 5, 5]
+                  width: 3
               },
               title: {
                   text: this.trans('paegtm.dynamicChartOil'),
@@ -464,8 +464,7 @@ export default {
                 if (data) {
                     this.chartData = data
                 }
-                this.SET_LOADING(false);
-            });
+            }).finally(() => this.SET_LOADING(false));
         },
         getData() {
             this.SET_LOADING(true);
@@ -516,9 +515,6 @@ export default {
     },
     mounted () {
         this.getData();
-        // this.changeDateStart(this.dateStart);
-        // this.changeDateEnd(this.dateEnd);
-        //this.changeDzoId(this.dzoId);
     }
 }
 </script>

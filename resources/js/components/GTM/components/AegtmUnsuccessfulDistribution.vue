@@ -297,7 +297,7 @@ Vue.component('unsuccessfful-gtm-chart', {
                     borderColor: '#272953',
                     borderWidth: 2,
                     data: [45, 55],
-                    backgroundColor: ["#2E50E9", "#F0AD81"],
+                    backgroundColor: ["#2E50E9", "#82BAFF"],
                 }
             ],
         }, {
@@ -334,7 +334,7 @@ Vue.component('fluid-shortfalls-chart', {
                     borderColor: '#272953',
                     borderWidth: 2,
                     data: [18, 0, 73,9],
-                    backgroundColor: ["#3F51B5", "#EF5350", "#82BAFF", "#F0AD81"],
+                    backgroundColor: ["#3F51B5", "#fe5c5c", "#82BAFF", "#F0AD81"],
                 }
             ],
         }, {

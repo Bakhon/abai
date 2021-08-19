@@ -155,13 +155,6 @@ class GTMController extends Controller
 
     public function getMainTableData(Request $request)
     {
-//        if ($request->filled('dzoId')) {
-//            foreach ($tableData as $key => $dzo) {
-//                if ($dzo['id'] == $request->dzoId) {
-//                    $tableData[$key]['selected'] = true;
-//                }
-//            }
-//        }
         $data = $this->getMainData($request)->groupBy('org_name');
 
         $result = [];

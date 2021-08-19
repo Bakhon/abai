@@ -4,15 +4,9 @@
             <date-picker v-if="isDatePickerShow" v-model="dateRange" is-range @input="onDateRangeChange"></date-picker>
         </div>
         <div class="row m-0">
-            <div v-bind:class="[showSettings ? 'col-5' : 'col-6']" class="p-0">
-                <div @click.stop="isDatePickerShow = !isDatePickerShow" class="calendar-filter-block d-flex align-items-center cursor-pointer">
-                    {{ dateStartString }}
-                    <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                </div>
-            </div>
-            <div v-bind:class="[showSettings ? 'col-5' : 'col-6']" class=" p-0">
-                <div @click.stop="isDatePickerShow = !isDatePickerShow" class="ml-1 calendar-filter-block d-flex align-items-center cursor-pointer">
-                    {{ dateEndString }}
+            <div v-bind:class="[showSettings ? 'col-10' : 'col-12']" class="p-0">
+                <div @click.stop="isDatePickerShow = !isDatePickerShow" class="calendar-filter-block d-flex* text-center align-items-center cursor-pointer">
+                    <span v-if="showPeriodTitle">{{ this.trans('paegtm.period')}}</span> {{ dateStartString }} - {{ dateEndString }}
                     <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
                 </div>
             </div>
@@ -31,6 +25,7 @@ import {paegtmMapActions} from '@store/helpers';
 export default {
     props: {
         showSettings: true,
+        showPeriodTitle: false,
     },
     data: function () {
         return {

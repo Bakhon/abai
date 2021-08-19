@@ -74,9 +74,7 @@
           <div class="block-header p-2">
             {{ trans("paegtm.period") }}
           </div>
-          <div class="mt-2 row m-0">
             <gtm-date-picker></gtm-date-picker>
-          </div>
         </div>
 
         <div class="block-header gtm-dark">

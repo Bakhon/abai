@@ -290,7 +290,7 @@ Vue.component('doughnut-chart', {
                     borderColor: '#272953',
                     borderWidth: 2,
                     data: [27, 73],
-                    backgroundColor: ["#4CAF50", "#EF5350"],
+                    backgroundColor: ["#13b062cc", "#fe5c5c"],
                 }
             ],
         }, {

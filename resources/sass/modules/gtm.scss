@@ -99,11 +99,17 @@
     background-color: rgba(93, 95, 127, 1);
     color: rgba(255, 255, 255, 1);
     font-size: 14px;
+    font-weight: bold;
     padding: 0.5rem;
+    border: 1px solid #454d7d !important;
+    line-height: 1.2rem;
 
     .calendar-icon {
         margin-bottom: 0.1rem;
         margin-left: 0.4rem;
+        position: absolute;
+        right: 10px;
+        top: 11px;
     }
 }
 
@@ -308,7 +314,7 @@
     }
 
     td:not(last-child) {
-        border-right: 1px solid rgba(69,77,125,1);
+        border-right: 1px solid #3B4380;
     }
 
     tr{
@@ -431,9 +437,7 @@
 }
 
 .gtm-indicator-item {
-    :not(:last-child) {
-        border-right: 1px solid rgba(69, 77, 125, 1);
-    }
+    border-right: 1px solid rgba(69, 77, 125, 1);
 
     div {
         margin: 1rem 0;
@@ -465,6 +469,28 @@
 
     .progressMax {
         color: rgba(130, 186, 255, 1);
+    }
+
+    .percent {
+        font-size: 1rem;
+    }
+
+    .triangle-indicator {
+        border: 6px solid transparent;
+        width: 6px;
+        height: 6px;
+        float: left;
+        margin: 0 5px 0 0;
+
+        &.growth {
+            border-bottom: 6px solid #009846;
+            margin-top: 3px;
+        }
+
+        &.fall {
+            border-top: 6px solid #e31e24;
+            margin-top: 10px;
+        }
     }
 }
 
@@ -654,7 +680,7 @@
     }
 
     .calendar-filter-block {
-        font-size: 0.7rem;
+        font-size: 0.8rem;
 
         .calendar-icon {
             width: 0.8rem;

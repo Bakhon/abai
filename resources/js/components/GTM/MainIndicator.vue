@@ -14,8 +14,11 @@
                         :aria-valuemax="item.progressMax">
                     </div>
                 </div>
-                <div class="d-flex justify-content-between m-0 mt-1">
-                    <div class="d-inline-block m-0 text-white dr-fw-700">{{ Math.round(item.progressPercents) }}%</div>
+                <div class="percent d-flex justify-content-between m-0 mt-1">
+                    <div class="d-inline-block m-0 text-white dr-fw-700 ">
+                        <div class="triangle-indicator" :class="item.progressPercents - 100 > 0 ? 'growth' : 'fall'"></div>
+                        {{ Math.abs(Math.round(item.progressPercents) - 100) }}%
+                    </div>
                     <div class="progressMax d-inline-block m-0">{{ new Intl.NumberFormat("ru-RU").format(item.progressMax.toFixed(1)) }}</div>
                 </div>
             </div>

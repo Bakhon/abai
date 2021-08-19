@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="col-lg-2 p-0 pl-2 pr-1">
-                <div class="gtm-dark gtm-filter p-2">
+                <div class="gtm-dark gtm-filter p-2 mb-2">
                     <v-select
                         :options="dzosForFilter"
                         label="name"
@@ -87,9 +87,7 @@
                     >
                     </v-select>
                 </div>
-                <div class="mt-2 row m-0">
-                    <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
-                </div>
+                <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
                 <div class="gtm-dark mt-2">
                     <div class="block-header text-center p-2">
                         {{ trans('paegtm.gtmType') }}
