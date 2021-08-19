@@ -333,7 +333,7 @@
                   <button
                           type="button"
                           class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
-                          data-toggle="dropdown"
+                          :data-toggle="dropdownCentralMenu"
                           @click="switchDropdownCategories('oilCondensateProduction')"
                           :class="{ 'button-tab-highlighted': dropdownMenu.oilCondensateProduction }"
                   ></button>
@@ -389,7 +389,7 @@
                   <button
                           type="button"
                           class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
-                          data-toggle="dropdown"
+                          :data-toggle="dropdownCentralMenu"
                           @click="switchDropdownCategories('oilCondensateDelivery')"
                           :class="{ 'button-tab-highlighted': dropdownMenu.oilCondensateDelivery }"
                   ></button>
@@ -470,7 +470,7 @@
                   <button
                           type="button"
                           class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
-                          data-toggle="dropdown"
+                          :data-toggle="dropdownCentralMenu"
                           @click="switchDropdownCategories('gasProduction')"
                           :class="{ 'button-tab-highlighted': dropdownMenu.gasProduction }"
                   ></button>
@@ -672,7 +672,7 @@
                   <button
                           type="button"
                           class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
-                          data-toggle="dropdown"
+                          :data-toggle="dropdownCentralMenu"
                           @click="switchDropdownCategories('waterInjection')"
                           :class="{ 'button-tab-highlighted': dropdownMenu.waterInjection }"
                   ></button>

@@ -40,6 +40,7 @@ export default {
     props: ['userId'],
     data: function () {
         return {
+            dropdownCentralMenu:'dropdown',
             dzoMapping : {
                 "КОА" : {                 
                    id: 110                   
@@ -751,12 +752,14 @@ export default {
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
         let isOneDzoSelected = this.getDzoTicker();     
-        if (!isOneDzoSelected) {       
+        if (!isOneDzoSelected) {            
             this.updateChemistryWidget();
             this.updateWellsWorkoverWidget();
             this.updateDrillingWidget();
             this.updateProductionFondWidget();
             this.updateInjectionFondWidget();
+        } else {
+            this.dropdownCentralMenu = 'No';
         };
     },   
     watch: {
