@@ -1,0 +1,44 @@
+{
+  "type": "plain",
+  "table": "drill.well_daily_drill",
+  "tabs": [
+    {
+      "title": "",
+      "blocks": [
+        [
+          {
+            "title": "drilling",
+            "items": [
+              {
+                "code": "daily_drill_progress",
+                "type": "numeric",
+                "title": "daily_drill_progress",
+                "validation": "gte:0|lte:100"
+              },
+              {
+                "code": "depth",
+                "table":"prod.bottom_hole",
+                "type": "numeric",
+                "title": "depth",
+                "validation": "gte:0"
+              },
+              {
+                "code": "name_ru",
+                "dict":"dict.well_status_type",
+                "type": "numeric",
+                "title": "well_status_type",
+                "validation": "exists:tbd.dict.well_status_type,id"
+              },
+              {
+                "code": "work_name",
+                "type": "text",
+                "title": "work_name",
+                "validation": ""
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

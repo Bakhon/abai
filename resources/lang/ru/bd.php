@@ -890,6 +890,13 @@ return [
             'scraper_income' => 'Доход скребка, м',
             'data' => 'Дата',
         ],
+        'drilling' => [
+            'drilling' => 'Бурение',
+            'daily_drill_progress' => 'Суточная проходка',
+            'depth' => 'Забой скважины',
+            'well_status_type' => 'Статус ведения работ',
+            'work_name' => 'Проводимые работы',
+        ],
             
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',
