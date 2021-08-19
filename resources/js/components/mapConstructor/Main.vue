@@ -121,7 +121,7 @@
                             </template>
                         </div>
                     </div>
-                    <div v-if="isSelected" class="main-map" @contextmenu="openMenu">
+                    <div v-if="mapInitialized" class="main-map" @contextmenu="openMenu">
                         <div id="olmap" style="width: 100%; height: 100vh"></div>
                         <div style="display: none;">
                             <div id="marker" title="Marker"></div>
@@ -135,8 +135,7 @@
         <BuildMapModal></BuildMapModal>
         <BuildMapSpecificModal></BuildMapSpecificModal>
         <ReportModal></ReportModal>
-        <ExportModal></ExportModal>
-    </div>
+        <ExportModal></ExportModal>    </div>
 </template>
 <script src="./main.js"></script>
 
