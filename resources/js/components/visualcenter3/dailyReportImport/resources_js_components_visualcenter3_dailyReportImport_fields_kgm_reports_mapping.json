@@ -1,0 +1,51 @@
+{
+    "getWaterOilDeliveryAndGasMore": {
+        "agent_upload_total_water_injection_fact": "KGM_INJ_TOTAL",
+        "oil_delivery_fact": "KGM_DELIVERY",
+        "associated_gas_delivery_fact": "KGM_TRANS",
+        "associated_gas_expenses_for_own_fact": "KGM_UTIL",
+        "ASY_D": "ASY_D",
+        "AKSH_D": "AKSH_D",
+        "NUR_D": "NUR_D"
+    },
+    "stock_of_goods_delivery_fact": "",
+    "condensate_production_fact": "",
+    "condensate_delivery_fact": "",
+    "oil_production_fact_absolute": "",
+    "oil_delivery_fact_absolute": "",
+    "production_fond": {
+        "dzo_import_field_data": {
+            "in_work_production_fond": "PRODUCING",
+            "in_idle_production_fond": "SHUT_IN",
+            "inactive_production_fond": "IDLE",
+            "developing_production_fond": "DEVELOPMENT",
+            "pending_liquidation_production_fond": "ABANDON"
+        },
+        "SHUT_IN": {
+            "otm_underground_workover": "P_WORK_W_1"
+        },
+        "SHUT_IN_downtimeReason": {
+            "prs_wait_downtime_production_wells_count": "N_DOWN_T_1",
+            "krs_downtime_production_wells_count": "P_WORK_W_2",
+            "krs_wait_downtime_production_wells_count": "N_DOWN_T_2",
+            "other_downtime_production_wells_count": "N_D_D_1",
+            "prs_downtime_production_wells_count": "P_WORK_W_1"
+        }
+    },
+    "injection_fond": {
+        "dzo_import_field_data": {
+            "in_work_injection_fond": "PRODUCING",
+            "in_idle_injection_fond": "SHUT_IN",
+            "inactive_injection_fond": "IDLE",
+            "developing_injection_fond": "DEVELOPMENT",
+            "pending_liquidation_injection_fond": "ABANDON"
+        },
+        "SHUT_IN_downtimeReason": {
+            "prs_wait_downtime_injection_wells_count": "N_DOWN_T_1",
+            "krs_downtime_injection_wells_count": "P_WORK_W_2",
+            "krs_wait_downtime_injection_wells_count": "N_DOWN_T_2",
+            "other_downtime_injection_wells_count": "N_D_D_1",
+            "prs_downtime_injection_wells_count": "P_WORK_W_1"
+        }
+    }
+}
