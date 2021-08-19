@@ -32,7 +32,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .plast-fluids-header {
   display: grid;
   column-gap: 10px;

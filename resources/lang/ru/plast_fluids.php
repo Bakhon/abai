@@ -29,4 +29,8 @@ return array (
   'data_type' => 'Тип данных',
   'number_uploaded_samples' => 'Количество загруженных проб',
   'subsoil_not_found' => 'Ничего не найдено',
+  'detailed_statistics_by_research' => 'Детальная статистика изученности по видам исследований',
+  'sample_data' => 'Данные по пробам',
+  'ready_templates' => 'Готовые шаблоны',
+  'custom_templates' => 'Произвольный шаблон',
 );

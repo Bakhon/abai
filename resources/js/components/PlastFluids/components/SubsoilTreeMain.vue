@@ -51,7 +51,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .subsoil-tree {
   border-radius: 4px;
   background: #1c1f4c;
@@ -76,17 +76,5 @@ export default {
 
 .subsoil-input-label-holder > label {
   margin-left: 10px;
-}
-
-.field-checkbox {
-  margin-bottom: 10px;
-}
-
-.input {
-  margin-top: 15px;
-}
-
-.input-bg {
-  background-color: #1f2142;
 }
 </style>

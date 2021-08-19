@@ -40,7 +40,10 @@ import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "SubsoilTreeChildren",
-  props: ["subsoil", "pickedSubsoil"],
+  props: {
+    subsoil: Object,
+    pickedSubsoil: [Array, Number],
+  },
   data() {
     return {
       checkedSubsoilChild: [],
@@ -72,8 +75,17 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .subsoil-secondary-tree {
   margin: 15px;
+}
+
+.subsoil-input-label-holder > label,
+.subsoil-input-label-holder > input {
+  cursor: pointer;
+}
+
+.subsoil-input-label-holder > label {
+  margin-left: 10px;
 }
 </style>
