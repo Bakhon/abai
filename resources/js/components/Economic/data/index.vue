@@ -1,15 +1,16 @@
 <template>
   <div class="container p-4 bg-light" style="max-width: 90vw">
-    <subtitle class="mb-2">{{ title }}</subtitle>
-
+    <cat-loader v-show="loading"/>
+    <subtitle class="mb-3 text-center">{{ title }}</subtitle>
     <select-sc-fa
         :loading="loading"
         :form="form"
         :is-forecast="isForecast"
         form-key="sc_fa"
-        @loading="SET_LOADING(true)"
-        @loaded="SET_LOADING(false)"
+        @loading="loading = true"
+        @loaded="loading = false"
         @change="getData"/>
+    
 
     <vue-table-dynamic
         v-if="form.sc_fa"
@@ -26,19 +27,19 @@
 </template>
 
 <script>
-import VueTableDynamic from 'vue-table-dynamic'
-
+import VueTableDynamic from 'vue-table-dynamic';
 import {globalloadingMutations} from '@store/helpers';
-
 import Subtitle from "../components/Subtitle";
 import SelectScFa from "../components/SelectScFa";
+import CatLoader from '@ui-kit/CatLoader';
 
 export default {
   name: "economic-data-component",
   components: {
     VueTableDynamic,
     Subtitle,
-    SelectScFa
+    SelectScFa,
+    CatLoader
   },
   props: {
     isForecast: {
@@ -53,11 +54,14 @@ export default {
     data: [],
   }),
   methods: {
-    ...globalloadingMutations(['SET_LOADING']),
+    ...globalloadingMutations(
+      ['SET_LOADING']
+    ),
 
     async getData() {
       if (!this.form.sc_fa) return
 
+      this.loading = true;
       this.SET_LOADING(true);
 
       this.data = []
@@ -66,6 +70,7 @@ export default {
 
       this.data = [...[this.headers], ...data.data]
 
+      this.loading = false;
       this.SET_LOADING(false);
     },
   },
