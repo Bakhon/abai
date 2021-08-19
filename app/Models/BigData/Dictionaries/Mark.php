@@ -7,5 +7,5 @@ use App\Models\TBDModel;
 
 class Mark extends TBDModel
 {
-    protected $table = 'dict.mark';
+    protected $table = 'dict.mark_type';
 }

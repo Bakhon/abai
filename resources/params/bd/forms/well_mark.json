@@ -3,7 +3,7 @@
   "table": "prod.mark",
   "tabs": [
     {
-      "title": "",
+      "title": "mark",
       "blocks": [
         [
           {
@@ -22,8 +22,8 @@
                 "validation": "required|after:dbeg"
               },
               {
-                "code": "name_ru",
-                "type": "dict",
+                "code": "geo",
+                "type": "dict_tree",
                 "dict": "geos",
                 "title": "geo",
                 "validation": "required|exists:tbd.dict.geo,id"
@@ -33,7 +33,7 @@
                 "type": "dict",
                 "dict": "marks",
                 "title": "mark_type",
-                "validation": "required|exists:tbd.dict.mark,id"
+                "validation": "required|exists:tbd.dict.mark_type,id"
               },
               {
                 "code": "depth",
