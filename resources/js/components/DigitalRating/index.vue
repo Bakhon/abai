@@ -38,20 +38,21 @@
       </div>
       <div class="rating-panel">
         <accordion
-            :list="objects"
-            title="digital_rating.object"
+          :list="objects"
+          title="digital_rating.object"
         />
         <accordion
-            :list="maps"
-            title="digital_rating.mapsGeologyDevelopment"
+          :list="maps"
+          title="digital_rating.mapsGeologyDevelopment"
+          @selectItem="selectPanelItem"
         />
         <accordion
-            :list="cods"
-            title="digital_rating.sectorCode"
+          :list="cods"
+          title="digital_rating.sectorCode"
         />
         <accordion
-            :list="properties"
-            title="digital_rating.property"
+          :list="properties"
+          title="digital_rating.property"
         />
       </div>
       <setting-modal
@@ -66,7 +67,7 @@
 
 <script>
 import L from 'leaflet';
-import mapsData from './json/dataMap.json';
+import mapsData from './json/test_grid.json';
 import wellsData from './json/dataWells.json';
 import 'leaflet/dist/leaflet.css';
 import BtnDropdown from "./components/BtnDropdown";
@@ -88,7 +89,7 @@ export default {
   data() {
     return {
       objects: ['Объект 1', 'Объект 2'],
-      maps: ['Карта ННТ', 'Накопленные отборы'],
+      maps: ['Скважина', 'Накопленные отборы'],
       cods: ['1', '2', '3'],
       properties: ['Значок', 'Шрифт', 'Палитра'],
       fileActions: [
@@ -103,53 +104,61 @@ export default {
       parentType: '',
       menu: mainMenu,
       mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
+      renderer: null,
     };
   },
 
   async mounted() {
     await this.initMap();
+    await this.initSectorOnMap();
   },
 
   methods: {
+    xy(x, y) {
+      let yx = L.latLng;
+      if (L.Util.isArray(x)) {
+        return yx(x[1], x[0]);
+      }
+      return yx(y, x);
+    },
     initMap() {
-      const map = L.map('map', {
+      this.map = L.map('map', {
         crs: L.CRS.Simple,
+        zoomControl: false,
         minZoom: 1,
-        maxZoom: 3,
-        zoomControl: false
+        maxZoom: 5,
       });
 
       L.control.zoom({
         position: 'bottomright'
-      }).addTo(map);
+      }).addTo(this.map);
 
       const bounds = [[0, 1500], [0,1500]];
-      map.fitBounds(bounds);
+      this.map.fitBounds(bounds);
 
-      let yx = L.latLng;
-      const xy = function (x, y) {
-        if (L.Util.isArray(x)) {
-          return yx(x[1], x[0]);
-        }
-        return yx(y, x);
-      };
+      this.map.setView( [850, 520], 1);
 
-      map.setView( [850, 520], 1);
+      this.renderer = L.canvas({ padding: 0.5 });
 
+    },
+    initSectorOnMap() {
       mapsData.forEach((el) => {
-        el.x = el.x / 100;
-        el.y = el.y / 100;
+        el.x1 = el.x1 / 100;
+        el.y1 = el.y1 / 100;
+        el.x2 = el.x2 / 100;
+        el.y2 = el.y2 / 100;
       });
 
       for(let i = 0; i < mapsData.length; i++) {
-        const coordinateStart = xy(mapsData[i]['x'], mapsData[i]['y']);
-        const coordinateEnd = xy(mapsData[i]['x'] + 1, mapsData[i]['y'] + 1);
+        const coordinateStart = this.xy(mapsData[i]['x1'], mapsData[i]['y1']);
+        const coordinateEnd = this.xy(mapsData[i]['x2'], mapsData[i]['y2']);
         let rectangle = L.rectangle([[coordinateStart], [coordinateEnd]], {
+          renderer: this.renderer,
           color: mapsData[i]['color'],
-          weight: 6,
+          weight: 3,
           fillColor: mapsData[i]['color'],
           fillOpacity: 1,
-        }).addTo(map).bindPopup(mapsData[i]['sector'].toString());
+        }).addTo(this.map).bindPopup(mapsData[i]['sector'].toString());
 
         rectangle.on('mouseover', function (e) {
           this.openPopup();
@@ -161,8 +170,25 @@ export default {
           this.onMapClick();
         })
       }
+    },
+    initWellOnMap() {
+      wellsData.forEach((el) => {
+        el.x = el.x / 100;
+        el.y = el.y / 100;
+      });
 
-      map.getBounds().pad(1);
+      for(let i = 0; i < wellsData.length; i++) {
+        const coordinate = this.xy(wellsData[i]['x'], wellsData[i]['y']);
+        const marker = L.circleMarker(coordinate,{
+          renderer: this.renderer,
+          color: '#000',
+          opacity: 1,
+          weight: 1,
+          fillColor: '#000',
+          fillOpacity: 0,
+          radius: 5,
+        }).addTo(this.map).bindPopup(wellsData[i]['well']);
+      }
     },
     onMapClick() {
       this.$modal.show('modalAtlas');
@@ -180,6 +206,11 @@ export default {
       const path = window.location.pathname.slice(3);
       if (data?.url && data.url !== path) {
         window.location.href = this.localeUrl(data.url);
+      }
+    },
+    selectPanelItem(item) {
+      if(item === 'Скважина') {
+        this.initWellOnMap();
       }
     }
   }
