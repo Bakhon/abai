@@ -1948,7 +1948,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table
                           v-if="drillingData.length"
                           class="table4 w-100 chemistry-table additional-tables"
@@ -2024,12 +2024,12 @@
                           v-else-if="drillingSelectedRow !== 'otm_wells_commissioning_from_drilling_fact' && isDrillingPeriodSelected"
                           class="name-chart-left">{{ trans("visualcenter.otmDrillingComission") }}, {{ trans("visualcenter.otmMetricSystemMeter") }}
                   </div>
-                  <otm-drilling-daily-chart
+                  <fonds-daily-chart
                           v-if="drillingDailyChart.series.length > 0 && !isDrillingPeriodSelected"
                           :chart-data="drillingDailyChart"
-                          :name="['visualcenter.countDrillingWells','visualcenter.countDrilling']"
-                          :is-yaxis-active="true"
-                  ></otm-drilling-daily-chart>
+                          :name="'visualcenter.drillingWells'"
+                          :is-yaxis-active="false"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
                           v-if="drillingDataForChart && isDrillingPeriodSelected"
                           :chartData="drillingDataForChart"

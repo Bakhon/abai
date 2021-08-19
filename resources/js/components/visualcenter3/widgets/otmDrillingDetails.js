@@ -53,7 +53,12 @@ export default {
             drillingWidgetFactSum: 0,
             drillingDailyChart: {
                 series: [],
-                labels: []
+                labels: [
+                    this.trans("visualcenter.Plan"),
+                    this.trans("visualcenter.Fact"),
+                    this.trans("visualcenter.Plan"),
+                    this.trans("visualcenter.Fact")
+                ]
             }
         };
     },
@@ -123,7 +128,14 @@ export default {
             });
 
             this.updateDrillingWidgetTable(temporaryDrillingDetails);
-            this.drillingChartData = this.getDrillingWidgetChartData(temporaryDrillingDetails);
+            if (!this.isDrillingPeriodSelected) {
+                this.drillingDailyChart.series = [];
+                for (let i in this.drillingData) {
+                    this.drillingDailyChart.series.push(this.drillingData[i].fact,this.drillingData[i].plan);
+                }
+            } else {
+                this.drillingChartData = this.getDrillingWidgetChartData(temporaryDrillingDetails);
+            }
         },
 
         getDrillingWidgetChartData(temporaryDrillingDetails) {

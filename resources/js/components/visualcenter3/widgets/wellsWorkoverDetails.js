@@ -53,7 +53,8 @@ export default {
                     this.trans("visualcenter.Plan"),
                     this.trans("visualcenter.Fact"),
                     this.trans("visualcenter.Plan"),
-                    this.trans("visualcenter.Fact")]
+                    this.trans("visualcenter.Fact")
+                ]
             },
         };
     },
@@ -120,13 +121,8 @@ export default {
             if (this.wellsWorkoverMonthlyPeriod.length > 0) {
                 this.wellsWorkoverDailyChart.series = [];
                 for (let i in this.wellsWorkoverData) {
-                    console.log('iter')
-                    console.log(this.wellsWorkoverDailyChart.series)
                     this.wellsWorkoverDailyChart.series.push(this.wellsWorkoverData[i].fact,this.wellsWorkoverData[i].plan);
                 }
-               // console.log(this.wellsWorkoverDailyChart.series);
-                // this.wellsWorkoverDailyChart.series = this.wellsWorkoverData.map(field => field.fact);
-                // this.wellsWorkoverDailyChart.series = this.wellsWorkoverDailyChart.series.concat(this.wellsWorkoverData.map(field => field.plan));
             } else {
                 this.wellsWorkoverChartData = this.getWellsWorkoverWidgetChartData(temporaryWellsWorkoverDetails);
             }
