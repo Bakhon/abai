@@ -1,0 +1,50 @@
+{
+  "type": "plain",
+  "table": "prod.mark",
+  "tabs": [
+    {
+      "title": "",
+      "blocks": [
+        [
+          {
+            "title": "main",
+            "items": [
+              {
+                "code": "dbeg",
+                "type": "date",
+                "title": "dbeg",
+                "validation": "required"
+              },
+              {
+                "code": "dend",
+                "type": "date",
+                "title": "dend",
+                "validation": "required|after:dbeg"
+              },
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "dict": "geos",
+                "title": "geo",
+                "validation": "required|exists:tbd.dict.geo,id"
+              },
+              {
+                "code": "mark_type",
+                "type": "dict",
+                "dict": "marks",
+                "title": "mark_type",
+                "validation": "required|exists:tbd.dict.mark,id"
+              },
+              {
+                "code": "depth",
+                "type": "numeric",
+                "title": "depth",
+                "validation": "required|gte:0"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
