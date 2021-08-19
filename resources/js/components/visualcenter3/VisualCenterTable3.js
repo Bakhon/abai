@@ -33,7 +33,7 @@ import {globalloadingMutations} from '@store/helpers';
 import Vue from "vue";
 
 Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
-Vue.component('wells-workover-daily-chart', require('./charts/wellsWorkoverDailyChart.vue').default);
+Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
 
 
 

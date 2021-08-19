@@ -278,11 +278,13 @@ export default {
     },
     computed: {
         productionFondDataForChart() {
-            let series = []
+            let series = {
+                fact: []
+            }
             let labels = []
             for (let i in this.productionFondChartData) {
-                series.push(this.productionFondChartData[i][this.productionFondSelectedRow])
-                labels.push(i)
+                series.fact.push(Math.round(this.productionFondChartData[i][this.productionFondSelectedRow]));
+                labels.push(i);
             }
             return {
                 series: series,

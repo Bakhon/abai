@@ -423,5 +423,8 @@ return array (
   'countOfInjectionWells' => 'Количество нагнетательных скважин, скв.',
   'countDrillingWells' => 'Количество скважин из бурения, скв.',
   'countDrillingHeading' => 'Бурение проходка, м.',
-  'countWellsWorkover' => 'Количество КРС/ПРС, скв.'
+  'countWellsWorkover' => 'Количество КРС/ПРС, скв.',
+  'countChemistry' => 'Химизация производства, тонн',
+  'countDrillingWells' => 'Количество скважин из бурения, скв.'
+  'countDrilling' => 'Бурение проходка, м.'
 );

@@ -147,9 +147,9 @@ export default {
                 .groupBy("data")
                 .map((item) => ({
                     otm_wells_commissioning_from_drilling_fact: _.round(_.sumBy(item, 'otm_wells_commissioning_from_drilling_fact'), 0),
-                    otm_wells_commissioning_from_drilling_fact_plan: _.round(_.sumBy(item, 'otm_wells_commissioning_from_drilling_plan'), 0),
+                    otm_wells_commissioning_from_drilling_plan: _.round(_.sumBy(item, 'otm_wells_commissioning_from_drilling_plan'), 0),
                     otm_drilling_fact: _.round(_.sumBy(item, 'otm_drilling_fact'), 0),
-                    otm_drilling_fact_plan: _.round(_.sumBy(item, 'otm_drilling_plan'), 0),
+                    otm_drilling_plan: _.round(_.sumBy(item, 'otm_drilling_plan'), 0),
                 })).value();
 
             this.drillingWidgetFactSum = this.getDrillingFactSum(tableData,'otm_wells_commissioning_from_drilling_fact');
@@ -160,7 +160,7 @@ export default {
             if (tableData.length > 0) {
                 let groupedDrilling = tableData[0];
                 _.forEach(this.drillingData, function(item) {
-                    item.plan = groupedDrilling[item.code + '_plan'];
+                    item.plan = groupedDrilling[item.code.replace('fact', 'plan')];
                     item.fact = groupedDrilling[item.code];
                     item.difference = item.plan - item.fact;
                 });
@@ -183,11 +183,16 @@ export default {
     },
     computed: {
         drillingDataForChart() {
-            let series = []
+            let series = {
+                plan: [],
+                fact: []
+            }
             let labels = []
+            let planFieldName = this.drillingSelectedRow.replace('fact', 'plan');
             for (let i in this.drillingChartData) {
-                series.push(this.drillingChartData[i][this.drillingSelectedRow])
-                labels.push(i)
+                series.fact.push(this.drillingChartData[i][this.drillingSelectedRow]);
+                series.plan.push(this.drillingChartData[i][planFieldName]);
+                labels.push(i);
             }
             return {
                 series: series,

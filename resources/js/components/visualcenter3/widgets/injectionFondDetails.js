@@ -268,11 +268,13 @@ export default {
     },
     computed: {
         injectionFondDataForChart() {
-            let series = []
+            let series = {
+                fact: []
+            }
             let labels = []
             for (let i in this.injectionFondChartData) {
-                series.push(this.injectionFondChartData[i][this.injectionFondSelectedRow])
-                labels.push(i)
+                series.fact.push(Math.round(this.injectionFondChartData[i][this.injectionFondSelectedRow]));
+                labels.push(i);
             }
             return {
                 series: series,

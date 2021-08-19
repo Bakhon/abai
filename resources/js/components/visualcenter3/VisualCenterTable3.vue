@@ -1632,7 +1632,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7 mh-475">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table v-if="injectionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
@@ -1794,7 +1794,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7 mh-475">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table v-if="productionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
@@ -2016,16 +2016,37 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
+                  <div v-if="isInjectionFondPeriodSelected" class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <fonds-daily-chart
+                          v-if="injectionDailyChart.series.length > 0 && !isInjectionFondPeriodSelected"
+                          :chart-data="injectionDailyChart"
+                          :name="'visualcenter.countOfInjectionWells'"
+                          :is-yaxis-active="false"
+                  ></fonds-daily-chart>
+                  <visual-center3-wells
+                          v-if="injectionFondDataForChart && isInjectionFondPeriodSelected"
+                          :chartData="injectionFondDataForChart"
+                  ></visual-center3-wells>
+
+
+
+
                   <div
-                          v-if="drillingSelectedRow === 'otm_wells_commissioning_from_drilling_fact'"
+                          v-if="drillingSelectedRow === 'otm_wells_commissioning_from_drilling_fact' && isDrillingPeriodSelected"
                           class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}
                   </div>
                   <div
-                          v-else
+                          v-else-if="drillingSelectedRow !== 'otm_wells_commissioning_from_drilling_fact' && isDrillingPeriodSelected"
                           class="name-chart-left">{{ trans("visualcenter.otmDrillingComission") }}, {{ trans("visualcenter.otmMetricSystemMeter") }}
                   </div>
+                  <otm-drilling-daily-chart
+                          v-if="drillingDailyChart.series.length > 0 && !isDrillingPeriodSelected"
+                          :chart-data="drillingDailyChart"
+                          :name="['visualcenter.countDrillingWells','visualcenter.countDrilling']"
+                          :is-yaxis-active="true"
+                  ></otm-drilling-daily-chart>
                   <visual-center3-wells
-                          v-if="drillingDataForChart"
+                          v-if="drillingDataForChart && isDrillingPeriodSelected"
                           :chartData="drillingDataForChart"
                   ></visual-center3-wells>
                 </div>
@@ -2134,7 +2155,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7 mh-475">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table
                           v-if="wellsWorkoverData.length"
                           class="table4 w-100 chemistry-table additional-tables"
@@ -2289,7 +2310,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table
                           v-if="chemistryData.length"
                           class="table4 w-100 chemistry-table additional-tables"
@@ -2338,9 +2359,15 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">Объём хим. реагента, тонны</div>
+                  <div v-if="chemistryMonthlyPeriod.length === 0" class="name-chart-left">{{ trans("visualcenter.chemVolume") }}</div>
+                  <fonds-daily-chart
+                          v-if="chemistryDailyChart.series.length > 0 && chemistryMonthlyPeriod.length > 0"
+                          :chart-data="chemistryDailyChart"
+                          :name="'visualcenter.countChemistry'"
+                          :is-yaxis-active="false"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
-                          v-if="chemistryDataForChart"
+                          v-if="chemistryDataForChart && chemistryMonthlyPeriod.length === 0"
                           :chartData="chemistryDataForChart"
                   ></visual-center3-wells>
                 </div>
@@ -2830,7 +2857,7 @@
       font-size: 16px !important;
     }
   }
-  .mh-475 {
+  .mh-495 {
     max-height: 495px;
   }
 
