@@ -3,31 +3,31 @@
         <window-head />
         <div class="windowBody">
             <div class="bodyContent">
-                <p class="bigTitle">Осложнения (проект/факт)</p>
+                <p class="bigTitle">{{ trans('digital_drilling.complications.complications_project_fact') }}</p>
                 <div class="row">
                     <div class="col-sm-12">
                         <table class="table defaultTable rastersParams">
                             <tr>
-                                <th colspan="2">Интервал бурения</th>
-                                <th>Индекс стратиграфического подразделения</th>
-                                <th colspan="2">Проходка, м</th>
-                                <th colspan="2">Размер долта, м</th>
-                                <th colspan="2">Удельный вес, г/см3 Вязкость по СПВ-5 в сек, Фильтрация см3/30 мин</th>
-                                <th colspan="2">Вид осложнения</th>
-                                <th>Характеристика фактического осложнения</th>
+                                <th colspan="2">{{ trans('digital_drilling.complications.drilling_interval') }}</th>
+                                <th>{{ trans('digital_drilling.complications.stratigraphic_subdivision_index') }}</th>
+                                <th colspan="2">{{ trans('digital_drilling.complications.driving_distance_m') }}</th>
+                                <th colspan="2">{{ trans('digital_drilling.complications.dolt_size_m') }}</th>
+                                <th colspan="2">{{ trans('digital_drilling.complications.specific_gravity') }}</th>
+                                <th colspan="2">{{ trans('digital_drilling.complications.complication_type') }}</th>
+                                <th>{{ trans('digital_drilling.complications.characteristics_actual_complication') }}</th>
                             </tr>
                             <tr>
-                                <th>Проект</th>
-                                <th>Факт</th>
+                                <th>{{ trans('digital_drilling.project') }}</th>
+                                <th>{{ trans('digital_drilling.fact') }}</th>
                                 <th></th>
-                                <th>Проект</th>
-                                <th>Факт</th>
-                                <th>Проект</th>
-                                <th>Факт</th>
-                                <th>Проект</th>
-                                <th>Факт</th>
-                                <th>Проект</th>
-                                <th>Факт</th>
+                                <th>{{ trans('digital_drilling.project') }}</th>
+                                <th>{{ trans('digital_drilling.fact') }}</th>
+                                <th>{{ trans('digital_drilling.project') }}</th>
+                                <th>{{ trans('digital_drilling.fact') }}</th>
+                                <th>{{ trans('digital_drilling.project') }}</th>
+                                <th>{{ trans('digital_drilling.fact') }}</th>
+                                <th>{{ trans('digital_drilling.project') }}</th>
+                                <th>{{ trans('digital_drilling.fact') }}</th>
                                 <th></th>
                             </tr>
                             <tr v-for="i in 15">

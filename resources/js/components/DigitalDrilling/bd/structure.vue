@@ -3,24 +3,24 @@
         <window-head @getWellID="getWellID"/>
         <div class="windowBody">
             <div class="bodyContent">
-                <p class="bigTitle left">Конструкция скважины</p>
+                <p class="bigTitle left">{{ trans('digital_drilling.structure.well_design') }}</p>
                 <div class="row">
                     <div class="col-sm-12">
                         <table class="table defaultTable">
                             <tbody>
                                 <tr>
-                                    <th>Вид обсадной трубы</th>
-                                    <th>Вид колонны</th>
-                                    <th>Интервал спуска колонны от</th>
-                                    <th>Интервал спуска колонны до</th>
-                                    <th>Боковой ствол</th>
-                                    <th>Количество труб</th>
-                                    <th>Объем залитого цемента</th>
-                                    <th>Высота подъема цемента</th>
-                                    <th>Пакер от</th>
-                                    <th>Пакер до</th>
-                                    <th>Глубина спуска колонны</th>
-                                    <th>Пакер</th>
+                                    <th>{{ trans('digital_drilling.structure.casing_type') }}</th>
+                                    <th>{{ trans('digital_drilling.structure.column_view') }}</th>
+                                    <th>{{ trans('digital_drilling.structure.column_running_interval_from') }}</th>
+                                    <th>{{ trans('digital_drilling.structure.column_running_interval_up') }}</th>
+                                    <th>{{ trans('digital_drilling.structure.side_barrel') }}</th>
+                                    <th>{{ trans('digital_drilling.structure.number_pipes') }}</th>
+                                    <th>{{ trans('digital_drilling.structure.poured_cement_volume') }}</th>
+                                    <th>{{ trans('digital_drilling.structure.cement_lifting_height') }}</th>
+                                    <th>{{ trans('digital_drilling.structure.packer_from') }}</th>
+                                    <th>{{ trans('digital_drilling.structure.packer_to') }}</th>
+                                    <th>{{ trans('digital_drilling.structure.column_running_depth') }}</th>
+                                    <th>{{ trans('digital_drilling.structure.packer') }}</th>
                                 </tr>
                                 <tr v-for="str in structure">
                                     <td>{{str.Вид_трубы}}</td>

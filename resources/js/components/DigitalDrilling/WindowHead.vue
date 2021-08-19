@@ -39,7 +39,6 @@
                     </tbody>
                 </table>
                 <p v-if="resultNot" class="not__result">{{trans(resultNot)}}</p>
-                123 {{url}}
             </div>
         </div>
     </div>

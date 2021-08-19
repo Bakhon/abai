@@ -105,7 +105,6 @@
     import menuHead from './menu'
     import Vue from 'vue';
 
-
     export default {
         name: "digital-drilling",
         components: { menuHead },

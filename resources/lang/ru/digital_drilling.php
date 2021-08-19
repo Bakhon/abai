@@ -119,7 +119,21 @@ return array (
       'date' => 'Дата',
       'geographic_identifier' => 'Географический идентификатор',
   ],
-
+  'structure' => [
+      'well_design' => 'Конструкция скважины',
+      'casing_type' => 'Вид обсадной трубы',
+      'column_view' => 'Вид колонны',
+      'column_running_interval_from' => 'Интервал спуска колонны от',
+      'column_running_interval_up' => 'Интервал спуска колонны до',
+      'side_barrel' => 'Боковой ствол',
+      'number_pipes' => 'Количество труб',
+      'poured_cement_volume' => 'Объем залитого цемента',
+      'cement_lifting_height' => 'Высота подъема цемента',
+      'packer_from' => 'Пакер от',
+      'packer_to' => 'Пакер до',
+      'column_running_depth' => 'Глубина спуска колонны',
+      'packer' => 'Пакер',
+  ],
   'gis' => [
       'open_hole_logging' => 'ГИС в открытом стволе',
       'radioactive_logging' => 'Радиоактивный каротаж',
@@ -136,6 +150,16 @@ return array (
       'conclusion_on_IC' => 'Заключение по ИК',
       'Kn' => 'Кн',
       'conclusion_on_RAK' => 'Заключение по RAK',
+  ],
+  'complications' => [
+      'complications_project_fact' => 'Осложнения (проект/факт)',
+      'drilling_interval' => 'Интервал бурения',
+      'stratigraphic_subdivision_index' => 'Индекс стратиграфического подразделения',
+      'driving_distance_m' => 'Проходка, м',
+      'dolt_size_m' => 'Размер долта, м',
+      'specific_gravity' => 'Удельный вес, г/см3 Вязкость по СПВ-5 в сек, Фильтрация см3/30 мин',
+      'complication_type' => 'Вид осложнения',
+      'characteristics_actual_complication' => 'Характеристика фактического осложнения',
   ],
 
   'project_data' => [
