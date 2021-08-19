@@ -52,6 +52,7 @@
 </template>
 
 <script>
+    import {digitalDrillingGetters} from '@store/helpers';
     export default {
         name: "structure",
         data() {
@@ -78,9 +79,12 @@
             },
         },
         computed:{
+            ...digitalDrillingGetters([
+                'isCurrentWell'
+            ]),
             well(){
-                return this.$store.getters['digitalDrilling/isCurrentWell']
-            }
+                return this.isCurrentWell
+            },
         },
     }
 </script>

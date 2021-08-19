@@ -216,6 +216,7 @@
 </template>
 
 <script>
+    import {digitalDrillingGetters} from '@store/helpers';
 
     export default {
         name: "passport",
@@ -243,9 +244,12 @@
             },
         },
         computed:{
+            ...digitalDrillingGetters([
+                'isCurrentWell'
+            ]),
             well(){
-                return this.$store.getters['digitalDrilling/isCurrentWell']
-            }
+                return this.isCurrentWell
+            },
         },
 
     }
