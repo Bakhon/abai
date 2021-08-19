@@ -13,4 +13,9 @@ class GdisCurrentValue extends TBDModel
     {
         return $this->belongsTo(Metric::class, 'metric');
     }
+
+    public function gdisCurrent()
+    {
+        return $this->belongsTo(GdisCurrent::class, 'gdis_curr');
+    }
 }

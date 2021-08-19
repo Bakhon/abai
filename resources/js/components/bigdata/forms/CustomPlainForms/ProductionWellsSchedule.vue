@@ -59,6 +59,7 @@
 import chart from "vue-apexcharts";
 import {globalloadingMutations} from '@store/helpers';
 
+const ru = require("apexcharts/dist/locales/ru.json");
 export default {
     components: {apexchart: chart},
     props: {
@@ -118,6 +119,7 @@ export default {
                 }
             }).then(({data}) => {
                 this.chartSeries = [
+                    data.ndin,
                     data.oil,
                     data.measLiq,
                     data.measWaterCut,
@@ -178,7 +180,9 @@ export default {
                     },
                     toolbar: {
                         offsetY: -10,
-                    }
+                    },
+                    locales: [ru],
+                    defaultLocale: 'ru',
                 },
                 markers: {
                     size: 2,
@@ -252,7 +256,29 @@ export default {
                                 color: '#fff',
                             }
                         },
-                    }
+                    },
+                    {
+                        seriesName: this.trans('app.ndin'),
+                        opposite: true,
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: 'rgba(69, 77, 125, 1)'
+                        },
+                        labels: {
+                            style: {
+                                colors: '#fff',
+                            }
+                        },
+                        title: {
+                            text: this.trans('app.waterCut'),
+                            style: {
+                                color: '#fff',
+                            }
+                        },
+                    },
                 ],
                 tooltip: {
                     shared: true,
@@ -261,7 +287,7 @@ export default {
                 annotations: {
                     points: this.chartPoints,
                 },
-                colors:[ 'rgba(72, 81, 95, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(33, 186, 78, 1)'],
+                colors:['rgba(33, 186, 78, 1)', 'rgba(72, 81, 95, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(33, 186, 78, 1)'],
             }
         },
     },

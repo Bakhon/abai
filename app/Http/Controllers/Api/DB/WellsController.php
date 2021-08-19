@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BigData\WellSearchResource;
 use App\Models\BigData\Dictionaries\Geo;
+use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
+use App\Models\BigData\GdisCurrent;
+use App\Models\BigData\GdisCurrentValue;
 use App\Models\BigData\WellStatus;
 use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
@@ -510,6 +513,11 @@ class WellsController extends Controller
                 'type' => 'area',
                 'data' => [],
                 ],
+            'ndin' => [
+                'name' => trans('app.ndin'),
+                'type' => 'line',
+                'data' => [],
+            ],
             'labels' => [],
             'wellStatuses' => [],
         ];
@@ -519,11 +527,16 @@ class WellsController extends Controller
         $measLiqs = MeasLiq::where('well', $wellId);
         $measWaterCuts = MeasWaterCut::where('well', $wellId);
         $wellStatuses = WellStatus::where('well', $wellId);
+        $gdisCurrent = GdisCurrent::where('well', $wellId);
+        $gdisCurrentValueResult = [];
         if ($period) {
             $dateFrom->subDays($period);
             $measLiqs->where('dbeg', '>=', $dateFrom);
             $measWaterCuts->where('dbeg', '>=', $dateFrom);
             $wellStatuses->where('dbeg', '>=', $dateFrom);
+            if ($gdisCurrent) {
+                $gdisCurrent->where('meas_date', '>=', $dateFrom);
+            }
         }
         $measLiqs = $measLiqs->orderBy('dbeg', 'asc')
             ->get()
@@ -535,6 +548,29 @@ class WellsController extends Controller
             ->orderBy('dbeg', 'asc')
             ->get()
             ->toArray();
+        if ($gdisCurrent) {
+            $gdisCurrent = $gdisCurrent
+                ->get()
+                ->toArray();
+            $gdisCurrent = array_map(function ($item) {
+                return $item['id'];
+            }, $gdisCurrent);
+            if ($gdisCurrent) {
+                $metric = Metric::where('code', 'FLVL')->first();
+                if($metric) {
+                    $gdisCurrentValue = GdisCurrentValue::where('metric', $metric->id)
+                        ->whereIn('gdis_curr', $gdisCurrent)
+                        ->with('gdisCurrent')
+                        ->get();
+                    foreach ($gdisCurrentValue as $gdisCurrentValueItem) {
+                        $gdisCurrentValueResult[] = [
+                            'value_double' => $gdisCurrentValueItem['value_double'],
+                            'meas_date' => $gdisCurrentValueItem->gdisCurrent->meas_date
+                        ];
+                    }
+                }
+            }
+        }
         foreach ($wellStatuses as $wellStatus) {
             $result['wellStatuses'][] = [
                 DateTime::createFromFormat('Y-m-d H:i:sP', $wellStatus['dbeg'])->format('Y-m-d'),
@@ -543,8 +579,7 @@ class WellsController extends Controller
             ];
         }
         foreach ($measLiqs as $measLiq) {
-            $measWaterCutVal = 0;
-            $oilVal = 0;
+            $measWaterCutVal = $oilVal = $gdisCurrentVal = 0;
             $dateTime = DateTime::createFromFormat('Y-m-d H:i:sP', $measLiq['dbeg']);
             $result['measLiq']['data'][] = $measLiq['liquid'];
             $result['labels'][] = $dateTime->format('Y-m-d');
@@ -557,8 +592,17 @@ class WellsController extends Controller
                     break;
                 }
             }
+            foreach ($gdisCurrentValueResult as $gdisCurrentValueResultItem) {
+                $dateTimeGdis = DateTime::createFromFormat('Y-m-d H:i:s',
+                    $gdisCurrentValueResultItem['meas_date'] . ' 00:00:00');
+                if ($dateTime == $dateTimeGdis) {
+                    $gdisCurrentVal = $gdisCurrentValueResultItem['value_double'];
+                    break;
+                }
+            }
             $result['measWaterCut']['data'][] = $measWaterCutVal;
             $result['oil']['data'][] = $oilVal;
+            $result['ndin']['data'][] = $gdisCurrentVal;
         }
 
         return $result;
