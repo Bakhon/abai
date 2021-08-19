@@ -66,12 +66,11 @@ export default {
       this.$emit('dateRangeChanged')
     },
     getDate(){
-      let url = 'http://127.0.0.1:8001/api/v1/object_selections/start_date/'
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/start_date/'
       axios.get(url)
           .then((response) =>{
-            let start_date = response.data.start_date.split('-')
-            this.dateRange.end = new Date(parseInt(start_date[0]), parseInt(start_date[1]) - 1, parseInt(start_date[2]))
-            this.dateRange.start = new Date(parseInt(start_date[0]), parseInt(start_date[1]) - 2, parseInt(start_date[2]))
+            this.dateRange.end = moment(response.data.start_date).toDate();
+            this.dateRange.start = this.dateRange.end.subtract(1, 'months').toDate()
             this.onDateRangeChange()
           }).catch((error) => {
         console.log(error)

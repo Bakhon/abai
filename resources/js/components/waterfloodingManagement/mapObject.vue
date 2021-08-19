@@ -220,7 +220,8 @@ export default {
     vSelect,
     WFM_modal,
     dataPicker,
-    LineChart
+    LineChart,
+    dataPickerRange
   },
   created() {
     this.getDzo();
@@ -320,7 +321,7 @@ export default {
   },
   methods: {
     getRatingObject(){
-      let url = 'http://127.0.0.1:8001/api/v1/object_selections/rating-object/'
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/rating-object/'
       axios.get(url)
           .then((response) =>{
             this.ratingObject = response.data
@@ -329,7 +330,7 @@ export default {
       })
     },
     getChooseObject(dzo, field, field_object, object_date){
-      let url = 'http://127.0.0.1:8001/api/v1/object_selections/prod-list/?dzo='+ dzo
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/prod-list/?dzo='+ dzo
           + '&field=' + field
           + '&field_object=' + field_object
           + '&start_date=' + object_date;
@@ -352,7 +353,7 @@ export default {
       })
     },
     getDzo(){
-      let url = 'http://127.0.0.1:8001/api/v1/object_selections/dzo/'
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/dzo/'
       axios.get(url)
           .then((response) =>{
             this.dzo = response.data
@@ -363,7 +364,7 @@ export default {
           });
     },
     getField(dzoId){
-      let url = 'http://127.0.0.1:8001/api/v1/object_selections/field/' + dzoId + '/'
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/field/' + dzoId + '/'
       axios.get(url)
           .then((response) =>{
             this.occurrence = response.data
@@ -374,7 +375,7 @@ export default {
       });
     },
     getFieldObject(fieldId){
-      let url = 'http://127.0.0.1:8001/api/v1/object_selections/field-object/' + fieldId + '/'
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/field-object/' + fieldId + '/'
       axios.get(url)
           .then((response) =>{
             this.object = response.data
@@ -390,7 +391,7 @@ export default {
       this.dateRangeChanged()
     },
     getGraphic(dzo, field, field_object, object_start_date, object_end_date){
-      let url = 'http://127.0.0.1:8001/api/v1/object_selections/graphic/?dzo='+ dzo
+      let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/graphic/?dzo='+ dzo
           + '&field=' + field
           + '&field_object=' + field_object
           + '&start_date=' + object_start_date
