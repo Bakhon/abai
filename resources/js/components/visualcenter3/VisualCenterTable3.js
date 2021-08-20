@@ -45,7 +45,6 @@ export default {
     props: ['userId'],
     data: function () {
         return {
-            dropdownCentralMenu:'dropdown',
             dzoMapping : {
                 "КОА" : {                 
                    id: 110                   
@@ -764,12 +763,12 @@ export default {
             await this.updateProductionFondWidget();
             await this.updateInjectionFondWidget();
         };
-        this.isSummaryShouldBeCalculated = false;
     },   
     watch: {
         bigTable: function () {
             let isOneDzoSelected = this.getDzoTicker();
             if (isOneDzoSelected) {
+                this.isSummaryShouldBeCalculated = true;
                 this.assignOneCompanyToSelectedDzo(isOneDzoSelected);
             };
             this.dzoCompanySummary = this.bigTable;
