@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div class="header text-center" style="padding-top: 40px;">{{trans(name[0])}}</div>
+        <div class="header text-center comission-header">{{trans(name[0])}}</div>
         <apexchart
                 height="230"
                 style="margin-top:0px"
                 :options="chartOptions"
                 :series="seriesComission"
         ></apexchart>
-        <div class="header text-center" style="margin-top: -20px">{{trans(name[1])}}</div>
+        <div class="header text-center drilling-header">{{trans(name[1])}}</div>
         <apexchart
                 height="230"
                 style="margin-top: -50px"
@@ -18,10 +18,16 @@
 </template>
 
 <style scoped>
-    .header {
-        height: 50px;
-        font-size: 16px;
-    }
+.header {
+    height: 50px;
+    font-size: 16px;
+}
+.comission-header {
+    padding-top: 40px;
+}
+.drilling-header {
+    margin-top: -20px
+}
 </style>
 
 
