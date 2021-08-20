@@ -417,6 +417,8 @@ return array (
     'approved' => 'Согласовано',
     'cancelled' => 'Отменено'
   ),
+  'notes' => 'Примечания',
+  'kpdModuleTitle' => 'КПД Upstream',
   'condensateDelivery' => 'Сдача конденсата',
   'notes' => 'Примечания',
   'countOfProductionWells' => 'Количество добывающих скважин, скв.',
