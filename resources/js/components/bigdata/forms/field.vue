@@ -114,6 +114,9 @@
     <template v-else-if="item.type === 'checkbox_table'">
       <BigdataCheckboxTableField :params="item" v-on:change="updateValue($event)"></BigdataCheckboxTableField>
     </template>
+    <template v-else-if="item.type === 'file'">
+      <BigdataFileUploadField :params="item" v-on:change="updateValue($event)"></BigdataFileUploadField>
+    </template>
     <div v-if="error" class="text-danger error" v-html="showError(error)"></div>
   </div>
 </template>
@@ -126,6 +129,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'vue-select/dist/vue-select.css'
 import BigdataTableField from './fields/Table'
 import BigdataCheckboxTableField from './fields/CheckboxTable'
+import BigdataFileUploadField from './fields/FileUpload'
 import {bdFormActions} from '@store/helpers'
 
 export default {
@@ -134,6 +138,7 @@ export default {
     Treeselect,
     vSelect,
     BigdataTableField,
+    BigdataFileUploadField,
     BigdataCheckboxTableField
   },
   props: [

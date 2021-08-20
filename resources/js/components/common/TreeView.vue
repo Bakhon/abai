@@ -8,7 +8,7 @@
               <label class="container">
                 <span class="bottom-border"></span>
                 <input type="checkbox" :id="node.id" name="tech_structure" value="tech_structure"
-                       class="dropdown-item" @change="onCheckboxClick(node, level)">
+                       class="dropdown-item" @change="onCheckboxClick(node, level)" :checked="isCheckedCheckbox(node, level)">
                 <span class="checkmark"></span>
               </label>
             </form>
@@ -42,6 +42,7 @@
             :currentWellId="currentWellId"
             :level="level+1"
             :nodeClickOnArrow="nodeClickOnArrow"
+            :isCheckedCheckbox="isCheckedCheckbox"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -63,6 +64,10 @@ export default {
     isShowCheckboxes: Boolean,
     isWell: Function,
     onCheckboxClick: {
+      type: Function,
+      required: false
+    },
+    isCheckedCheckbox: {
       type: Function,
       required: false
     },
