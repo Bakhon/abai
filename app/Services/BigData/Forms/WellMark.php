@@ -13,12 +13,7 @@ class WellMark extends PlainForm
     {
         $errors = [];
 
-        if (!$this->isValidDate(
-            $this->request->get('well'),
-             $this->request->get('dbeg'), 
-             'dict.well' , 
-             'drill_start_date'
-            )) 
+        if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'),'dict.well' ,'drill_start_date')) 
         {
             $errors['dbeg'] = trans('bd.validation.date');
         }
