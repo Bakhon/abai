@@ -345,7 +345,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PSAT",
                 "type": "numeric",
                 "table":"prod.gdis_complex_value",
                 "title": "pressure",
@@ -360,7 +360,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RSMD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast_model",
@@ -374,7 +374,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "FBRD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast",
@@ -389,7 +389,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "BORD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "dist",
@@ -404,7 +404,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PNT",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pronicm",
@@ -419,7 +419,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "SKFC",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "skin_f",
@@ -434,7 +434,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RPC",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pre_plast",
@@ -449,7 +449,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PVOP",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "vop",
@@ -464,7 +464,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PNOP",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "nop",
@@ -479,7 +479,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PVNK",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "vnk",
@@ -494,7 +494,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "WTCD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "hydro",
@@ -509,7 +509,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PCND",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pz",
@@ -524,7 +524,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "TMPB",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "temp",
@@ -539,7 +539,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RSRD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "rad",
@@ -554,7 +554,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code":"TET",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "tol",
@@ -569,7 +569,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "POR",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pr",
@@ -584,7 +584,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "VCL",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff",
@@ -599,7 +599,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "LQVS",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "water",
@@ -614,7 +614,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "GCS",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "system",
@@ -629,7 +629,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "WBMD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast_uwi",
@@ -643,7 +643,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "BRMD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "model_g",
@@ -657,7 +657,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RPWZ",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pres_pl",
@@ -672,7 +672,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "BPEN",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbn",
@@ -687,7 +687,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "BPBG",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbk",
@@ -702,7 +702,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "CND",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "prov",
@@ -717,7 +717,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PRCB",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff_pr",
@@ -732,7 +732,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "CHL",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "dlina",
@@ -747,7 +747,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "WWP",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "uwi_time",
@@ -761,7 +761,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PSAT",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pressure",
@@ -776,7 +776,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "MNDP",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "manometr_depth",
@@ -791,7 +791,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "WLMD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "uwi_model",
@@ -805,7 +805,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RSMD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast_model",
@@ -819,7 +819,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "FBRD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast",
@@ -833,7 +833,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "BORD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "dist",
@@ -848,7 +848,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PNT",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pronicm",
@@ -863,7 +863,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "SKFC",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "skin_f",
@@ -878,7 +878,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "BHPR",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "zab_press",
@@ -893,7 +893,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RPC",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pre_plast",
@@ -908,7 +908,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "WTCD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "hydro",
@@ -923,7 +923,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PCND",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pz",
@@ -938,7 +938,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RTA",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "temp",
@@ -953,7 +953,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "BPEN",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbn",
@@ -968,7 +968,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "BPBG",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbk",
@@ -983,7 +983,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RRA",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "priv",
@@ -998,7 +998,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "WLRD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "uwi_r",
@@ -1013,7 +1013,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "TET",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "tol",
@@ -1028,7 +1028,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "POR",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pr",
@@ -1043,7 +1043,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "VCL",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff",
@@ -1058,7 +1058,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "LQVS",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "water",
@@ -1073,7 +1073,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "GCS",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "system",
@@ -1088,7 +1088,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "WBMD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast_uwi",
@@ -1102,7 +1102,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code":"BRMD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "model_g",
@@ -1116,7 +1116,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RPWZ",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pres_pl",
@@ -1131,7 +1131,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "CND",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "prov",
@@ -1146,7 +1146,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PRCB",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff_pr",
@@ -1161,7 +1161,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "WWP",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "uwi_time",
@@ -1175,7 +1175,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PSAT",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pressure",
@@ -1190,7 +1190,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "MNDP",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "manometr_depth",
@@ -1204,7 +1204,7 @@
                   }
                 ]
               },{
-                "code": "value_string",
+                "code": "WLMD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "uwi_model",
@@ -1218,7 +1218,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RSMD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast_model",
@@ -1232,7 +1232,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "FBRD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast",
@@ -1246,7 +1246,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "BORD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "dist",
@@ -1261,7 +1261,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PNT",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pronicm",
@@ -1276,7 +1276,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "SKFC",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "skin_f",
@@ -1291,7 +1291,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "BHPR",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "zab_press",
@@ -1306,7 +1306,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RPC",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pre_plast",
@@ -1321,7 +1321,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "WTCD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "hydro",
@@ -1336,7 +1336,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PCND",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pz",
@@ -1351,7 +1351,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RTA",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "temp",
@@ -1366,7 +1366,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "TET",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "tol",
@@ -1381,7 +1381,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "POR",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pr",
@@ -1396,7 +1396,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "VCL",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff",
@@ -1411,7 +1411,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "LQVS",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "water",
@@ -1426,7 +1426,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "GCS",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "system",
@@ -1441,7 +1441,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "WBMD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast_uwi",
@@ -1455,7 +1455,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "BRMD",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "model_g",
@@ -1469,7 +1469,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "RPWZ",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pres_pl",
@@ -1484,7 +1484,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "BPEN",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbn",
@@ -1499,7 +1499,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code":"BPBG",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbk",
@@ -1514,7 +1514,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "CND",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "prov",
@@ -1529,7 +1529,7 @@
                 ]
               },
               {
-                "code": "value_string",
+                "code": "PRCB",
                 "table":"prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff_pr",
@@ -1544,7 +1544,7 @@
                 ]
               },
               {
-              "code": "value_string",
+              "code": "WWP",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "uwi_time",
@@ -1558,7 +1558,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PSAT",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pressure",
@@ -1573,7 +1573,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "MNDP",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "manometr_depth",
@@ -1587,7 +1587,7 @@
                 }
               ]
             },{
-              "code": "value_string",
+              "code": "WLMD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "uwi_model",
@@ -1601,7 +1601,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RSMD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "plast_model",
@@ -1615,7 +1615,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "FBRD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "plast",
@@ -1629,7 +1629,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BORD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "dist",
@@ -1644,7 +1644,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PNT",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pronicm",
@@ -1659,7 +1659,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "SKFC",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "skin_f",
@@ -1674,7 +1674,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BHPR",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "zab_press",
@@ -1689,7 +1689,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RPC",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pre_plast",
@@ -1704,7 +1704,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WTCD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "hydro",
@@ -1719,7 +1719,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PCND",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pz",
@@ -1734,7 +1734,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RTA",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "temp",
@@ -1749,7 +1749,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "TET",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "tol",
@@ -1764,7 +1764,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "POR",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pr",
@@ -1779,7 +1779,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "VCL",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "koeff",
@@ -1794,7 +1794,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "LQVS",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "water",
@@ -1809,7 +1809,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "GCS",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "system",
@@ -1824,7 +1824,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WBMD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "plast_uwi",
@@ -1838,7 +1838,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BRMD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "model_g",
@@ -1852,7 +1852,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RPWZ",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pres_pl",
@@ -1867,7 +1867,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BPEN",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pbn",
@@ -1882,7 +1882,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BPBG",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pbk",
@@ -1897,7 +1897,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "CND",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "prov",
@@ -1912,7 +1912,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PRCB",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "koeff_pr",
@@ -1927,7 +1927,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WWP",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "uwi_time",
@@ -1941,7 +1941,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PSAT",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pressure",
@@ -1956,7 +1956,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "MNDP",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "manometr_depth",
@@ -1970,7 +1970,7 @@
                 }
               ]
             },{
-              "code": "value_string",
+              "code": "WLMD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "uwi_model",
@@ -1984,7 +1984,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RSMD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "plast_model",
@@ -1998,7 +1998,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "FBRD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "plast",
@@ -2012,7 +2012,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BORD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "dist",
@@ -2027,7 +2027,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PNT",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pronicm",
@@ -2042,7 +2042,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "SKFC",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "skin_f",
@@ -2057,7 +2057,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BHPR",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "zab_press",
@@ -2072,7 +2072,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RPC",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pre_plast",
@@ -2087,7 +2087,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WTCD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "hydro",
@@ -2102,7 +2102,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PCND",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pz",
@@ -2117,7 +2117,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RTA",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "temp",
@@ -2132,7 +2132,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "TET",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "tol",
@@ -2147,7 +2147,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "POR",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pr",
@@ -2162,7 +2162,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "VCL",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "koeff",
@@ -2177,7 +2177,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "LQVS",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "water",
@@ -2192,7 +2192,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "GCS",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "system",
@@ -2207,7 +2207,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WBMD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "plast_uwi",
@@ -2221,7 +2221,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BRMD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "model_g",
@@ -2235,7 +2235,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RPWZ",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pres_pl",
@@ -2250,7 +2250,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BPEN",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pbn",
@@ -2265,7 +2265,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BPBG",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pbk",
@@ -2280,7 +2280,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "CND",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "prov",
@@ -2295,7 +2295,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PRCB",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "koeff_pr",
@@ -2310,7 +2310,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "MODE",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "rezhim",
@@ -2324,7 +2324,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "UNN",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "sht",
@@ -2339,7 +2339,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "ACC",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pri",
@@ -2354,7 +2354,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BPEN",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pbn",
@@ -2369,7 +2369,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BPBG",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pbk",
@@ -2384,7 +2384,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PPIP",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "zt_pre",
@@ -2399,7 +2399,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BHPR",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "zab_press",
@@ -2414,7 +2414,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "ACCC",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pri_koeff",
@@ -2429,7 +2429,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RPWZ",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pres_pl",
@@ -2444,7 +2444,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PNT",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pronicm",
@@ -2459,7 +2459,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "SKFC",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "skin_f",
@@ -2474,7 +2474,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WTCD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "hydro",
@@ -2489,7 +2489,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PCND",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pz",
@@ -2504,7 +2504,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RTA",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "temp",
@@ -2519,7 +2519,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "CND",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "prov",
@@ -2534,7 +2534,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "MODE",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "rezhim",
@@ -2548,7 +2548,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "ORSL",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "temp_pre",
@@ -2563,7 +2563,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "DLIQ",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "water_debit",
@@ -2578,7 +2578,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WATC",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "wat",
@@ -2593,7 +2593,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "OIL",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "oil_debit",
@@ -2608,7 +2608,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BHPR",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "zab_press",
@@ -2623,7 +2623,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PRCB",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "koeff_pr",
@@ -2638,7 +2638,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "HDIN",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "din",
@@ -2653,7 +2653,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PPIP",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "zt_pre",
@@ -2668,7 +2668,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PNT",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pronicm",
@@ -2683,7 +2683,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "SKFC",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "skin_f",
@@ -2698,7 +2698,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WTCD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "hydro",
@@ -2713,7 +2713,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PCND",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pz",
@@ -2728,7 +2728,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RTA",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "temp",
@@ -2743,7 +2743,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RPWZ",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pres_pl",
@@ -2758,7 +2758,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BPEN",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pbn",
@@ -2773,7 +2773,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code":"BPBG",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pbk",
@@ -2788,7 +2788,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "CND",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "prov",
@@ -2803,7 +2803,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WWP",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "uwi_time",
@@ -2817,7 +2817,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PSAT",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pressure",
@@ -2832,7 +2832,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WLMD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "uwi_model",
@@ -2846,7 +2846,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RSMD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "plast_model",
@@ -2860,7 +2860,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "FBRD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "plast",
@@ -2874,7 +2874,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BORD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "dist",
@@ -2889,7 +2889,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PNT",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pronicm",
@@ -2904,7 +2904,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "SKFC",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "skin_f",
@@ -2919,7 +2919,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BHPR",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "zab_press",
@@ -2934,7 +2934,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RPC",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pre_plast",
@@ -2949,7 +2949,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WTCD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "hydro",
@@ -2964,7 +2964,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PCND",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pz",
@@ -2979,7 +2979,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RTA",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "temp",
@@ -2994,7 +2994,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BPEN",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pbn",
@@ -3009,7 +3009,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BPBG",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pbk",
@@ -3024,7 +3024,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "ACCS",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pribor",
@@ -3038,7 +3038,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WLRD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "uwi_r",
@@ -3053,7 +3053,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "TET",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "tol",
@@ -3068,7 +3068,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "WBMD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "plast_uwi",
@@ -3082,7 +3082,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BRMD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "model_g",
@@ -3096,7 +3096,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RPWZ",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pres_pl",
@@ -3111,7 +3111,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "CND",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "prov",
@@ -3126,7 +3126,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "HUD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "artif",
@@ -3141,7 +3141,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "HRTR",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "rotor",
@@ -3156,7 +3156,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "ACCS",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "pribor",
@@ -3170,7 +3170,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "PRIN",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "per",
@@ -3184,7 +3184,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "API",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "well_perf",
@@ -3199,7 +3199,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "HBH",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "zaboi",
@@ -3214,7 +3214,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "BFP",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "buf",
@@ -3229,7 +3229,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "TMPB",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "temp",
@@ -3244,7 +3244,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RPD",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "rpl",
@@ -3259,7 +3259,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RRA",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "priv",
@@ -3274,7 +3274,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "RPA",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "plast_pr",
@@ -3289,7 +3289,7 @@
               ]
             },
             {
-              "code": "value_string",
+              "code": "STLR",
               "table":"prod.gdis_complex_value",
               "type": "numeric",
               "title": "st_lvl",
