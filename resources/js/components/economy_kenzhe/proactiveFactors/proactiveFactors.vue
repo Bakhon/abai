@@ -93,4 +93,7 @@ export default {
     }
 };
 </script>
+<style scoped>
+@import "./proactiveFactors.css";
+</style>
 

@@ -30,8 +30,9 @@ class AttachmentController extends Controller
     {
         $response = $this->service->get($attachment);
         $body = $response->getBody();
-
-        header("Content-Type:{$response->getHeader('Content-Type')[0]}");
+        foreach ($response->getHeaders() as $key => $header) {
+            header("$key:{$header[0]}");
+        }
 
         while (!$body->eof()) {
             echo Utils::readline($body);
