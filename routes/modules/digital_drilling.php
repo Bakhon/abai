@@ -4,7 +4,7 @@ Route::group(
     function () {
         Route::group(['prefix' => '/digital-drilling'], function () {
 
-            Route::group(['prefix' => '/bd'], function () {
+            Route::group(['prefix' => '/'], function () {
                 Route::get('/',                 'DigitalDrilling\BDController@home')->name('digital-drilling');
             });
 
