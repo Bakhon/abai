@@ -132,8 +132,10 @@ export default {
             if (!this.isDrillingPeriodSelected) {
                 this.drillingDailyChart.series.comission = [];
                 this.drillingDailyChart.series.drilling = [];
-                this.drillingDailyChart.series.comission.push(this.drillingData[0].plan,this.drillingData[0].fact);
-                this.drillingDailyChart.series.drilling.push(this.drillingData[1].plan,this.drillingData[1].fact);
+                let drillingComissionFact = this.drillingData[0];
+                let drillingFact = this.drillingData[1];
+                this.drillingDailyChart.series.comission.push(drillingComissionFact.plan,drillingComissionFact.fact);
+                this.drillingDailyChart.series.drilling.push(drillingFact.plan,drillingFact.fact);
             } else {
                 this.drillingChartData = this.getDrillingWidgetChartData(temporaryDrillingDetails);
             }

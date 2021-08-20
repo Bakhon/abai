@@ -120,8 +120,8 @@ export default {
             this.updateWellsWorkoverWidgetTable(temporaryWellsWorkoverDetails);
             if (this.wellsWorkoverMonthlyPeriod.length > 0) {
                 this.wellsWorkoverDailyChart.series = [];
-                for (let i in this.wellsWorkoverData) {
-                    this.wellsWorkoverDailyChart.series.push(this.wellsWorkoverData[i].fact,this.wellsWorkoverData[i].plan);
+                for (let wellsWorkover of this.wellsWorkoverData) {
+                    this.wellsWorkoverDailyChart.series.push(wellsWorkover.fact,wellsWorkover.plan);
                 }
             } else {
                 this.wellsWorkoverChartData = this.getWellsWorkoverWidgetChartData(temporaryWellsWorkoverDetails);

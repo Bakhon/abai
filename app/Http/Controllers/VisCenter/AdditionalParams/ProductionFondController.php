@@ -20,7 +20,7 @@ class ProductionFondController extends Controller
         'КБМ' => array(),
         'ЭМГ' => array(),
     );
-    public function getForDailyChartByPeriod(Request $request)
+    public function getFactForChartByDay(Request $request)
     {
         $importData = DzoImportData::query()
              ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
@@ -30,13 +30,13 @@ class ProductionFondController extends Controller
              ->with('importDowntimeReason')
              ->get()
              ->toArray();
-        $result = $this->getMergedForDailyChart($importData);
-        $formatted = $this->getFormattedForDailyChart($result,$request->workFields,$request->idleFields);
+        $result = $this->getMergedWithDowntimeReasons($importData);
+        $formatted = $this->getSplittedByDzo($result,$request->workFields,$request->idleFields);
 
         return $formatted;
     }
 
-    protected function getMergedForDailyChart($input)
+    private function getMergedWithDowntimeReasons($input)
     {
         $result = array();
         foreach($input as $item) {
@@ -51,27 +51,27 @@ class ProductionFondController extends Controller
         return $result;
     }
 
-    protected function getFormattedForDailyChart($input,$workFields,$idleFields)
+    private function getSplittedByDzo($input,$workFields,$idleFields)
     {
         $result = array();
         foreach($this->formatted as $dzoName => $dzo) {
             if ($dzoName === 'all') {
                 $result[$dzoName] = array();
-                $result[$dzoName]['work'] = $this->getSumByTypeForDailyChart($input,$workFields);
-                $result[$dzoName]['idle'] = $this->getSumByTypeForDailyChart($input,$idleFields);
+                $result[$dzoName]['work'] = $this->getDailySumByType($input,$workFields);
+                $result[$dzoName]['idle'] = $this->getDailySumByType($input,$idleFields);
             } else {
                 $result[$dzoName] = array();
                 $filtered = array_filter($input, function ($var) use ($dzoName) {
                    return ($var['dzo_name'] === $dzoName);
                 });
-                $result[$dzoName]['work'] = $this->getSumByTypeForDailyChart($filtered,$workFields);
-                $result[$dzoName]['idle'] = $this->getSumByTypeForDailyChart($filtered,$idleFields);
+                $result[$dzoName]['work'] = $this->getDailySumByType($filtered,$workFields);
+                $result[$dzoName]['idle'] = $this->getDailySumByType($filtered,$idleFields);
             }
         }
         return $result;
     }
 
-    protected function getSumByTypeForDailyChart($input,$fieldsType)
+    private function getDailySumByType($input,$fieldsType)
     {
         $result = array();
         foreach($fieldsType as $fieldName) {

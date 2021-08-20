@@ -189,11 +189,11 @@ export default {
                 productionFondDetailsHistory = this.getFoundsFilteredByDzo(productionFondDetailsHistory,this.productionFondSelectedCompany);
             }
             let compared = this.getMergedByChild(productionFondDetails,'import_downtime_reason');
-            if (!this.isProductionFondPeriodSelected) {
+            if (this.isProductionFondPeriodSelected) {
+                this.productionFondChartData = this.getProductionFondWidgetChartData(compared);
+            } else {
                 this.forDailyProductionChart = await this.getChartData(this.productionFondWorkFields,this.productionFondIdleFields,this.productionFondPeriodStart,this.productionFondPeriodEnd);
                 this.updateDailyChart(this.forDailyProductionChart,this.productionFondSelectedCompany,'isProductionIdleActive','productionDailyChart');
-            } else {
-                this.productionFondChartData = this.getProductionFondWidgetChartData(compared);
             }
             this.updateProductionFondWidgetTable(compared);
             this.updateProductionFondSum('actual',productionFondDetails);
@@ -203,13 +203,12 @@ export default {
 
         updateDailyChart(input,selectedCompany,filter,chartOutput) {
             let filtered = _.filter(input, (value, key) => key === selectedCompany);
-            if (this.fondsFilter[filter]) {
-                this[chartOutput].series = Object.values(filtered[0].idle);
-                this[chartOutput].labels = Object.keys(filtered[0].idle);
-            } else {
-                this[chartOutput].series = Object.values(filtered[0].work);
-                this[chartOutput].labels = Object.keys(filtered[0].work);
+            let factType = 'idle';
+            if (!this.fondsFilter[filter]) {
+                factType = 'work';
             }
+            this[chartOutput].series = Object.values(filtered[0][factType]);
+            this[chartOutput].labels = Object.keys(filtered[0][factType]);
         },
 
         updateProductionFondSum(type,inputData) {
