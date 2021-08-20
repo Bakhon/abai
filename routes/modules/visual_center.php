@@ -86,7 +86,7 @@ Route::group(
                     Artisan::call('receive-non-operating-email:cron');
                 });
                 Route::get('/kpd-tree', 'VisCenter\VisualCenterController@kpdTree')->name('kpd-tree');
-                Route::get('/get-fond-daily-chart', 'VisCenter\AdditionalParams\ProductionFondController@getFactForChartByDay');
+                Route::get('/get-fond-daily-chart', 'VisCenter\AdditionalParams\ProductionFondController@getDailyDataByDzo');
             }
         );
     }

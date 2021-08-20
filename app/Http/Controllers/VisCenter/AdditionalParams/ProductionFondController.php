@@ -20,7 +20,7 @@ class ProductionFondController extends Controller
         'КБМ' => array(),
         'ЭМГ' => array(),
     );
-    public function getFactForChartByDay(Request $request)
+    public function getDailyDataByDzo(Request $request)
     {
         $importData = DzoImportData::query()
              ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
@@ -31,15 +31,13 @@ class ProductionFondController extends Controller
              ->get()
              ->toArray();
         $result = $this->getMergedWithDowntimeReasons($importData);
-        $formatted = $this->getSplittedByDzo($result,$request->workFields,$request->idleFields);
-
-        return $formatted;
+        return $this->getFondsByDzo($result,$request->workFields,$request->idleFields);
     }
 
-    private function getMergedWithDowntimeReasons($input)
+    private function getMergedWithDowntimeReasons($dzoData)
     {
         $result = array();
-        foreach($input as $item) {
+        foreach($dzoData as $item) {
             if (!is_null($item['import_downtime_reason'])) {
                 $merged = array_merge($item, $item['import_downtime_reason']);
                 unset($merged['import_downtime_reason']);
@@ -51,7 +49,7 @@ class ProductionFondController extends Controller
         return $result;
     }
 
-    private function getSplittedByDzo($input,$workFields,$idleFields)
+    private function getFondsByDzo($input,$workFields,$idleFields)
     {
         $result = array();
         foreach($this->formatted as $dzoName => $dzo) {

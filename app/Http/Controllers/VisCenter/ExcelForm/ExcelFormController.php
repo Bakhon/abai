@@ -261,7 +261,7 @@ class ExcelFormController extends Controller
     {
         $client = $this->getEmailClient();
         $emailBody = "<b>Добрый день!</b> <p>Ваша заявка на изменение суточных данных в ИС ABAI. была <b>отклонена</b><br /><br />
-            <b>Детали заявки: {$request->dzo_name}</b><br />
+            <b>Детали заявки:</b><br />
             <b>Дата:</b> {$request->date}<br />
             <b>Исполнитель:</b> {$request->user_name}<br />
             <b>Причина:</b> {$request->change_reason}</p>";
