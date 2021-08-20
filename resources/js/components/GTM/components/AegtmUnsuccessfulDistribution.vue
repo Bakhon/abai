@@ -136,47 +136,18 @@
                         {{ trans('paegtm.gtmType') }}
                     </div>
                     <div class="gtm-dark text-white pl-2">
-                        <b-form-checkbox
-                            v-model="gtmTypes"
-                            value="all"
-                        >
-                            {{ trans('paegtm.all_gtm') }}
-                        </b-form-checkbox>
-
-                        <b-form-checkbox
-                            v-model="gtmTypes"
-                            value="vns"
-                        >
-                            {{ trans('paegtm.gtm_vns') }}
-                        </b-form-checkbox>
-
-                        <b-form-checkbox
-                            v-model="gtmTypes"
-                            value="grp"
-                        >
-                            {{ trans('paegtm.gtm_grp') }}
-                        </b-form-checkbox>
-
-                        <b-form-checkbox
-                            v-model="gtmTypes"
-                            value="pvlg"
-                        >
-                            {{ trans('paegtm.gtm_pvlg') }}
-                        </b-form-checkbox>
-
-                        <b-form-checkbox
-                            v-model="gtmTypes"
-                            value="pvr"
-                        >
-                            {{ trans('paegtm.gtm_pvr') }}
-                        </b-form-checkbox>
-
-                        <b-form-checkbox
-                            v-model="gtmTypes"
-                            value="gtm_"
-                        >
-                            {{ trans('paegtm.gtm_rir') }}
-                        </b-form-checkbox>
+                        <div class="form-check">
+                            <input v-model="selectAllGtms" class="form-check-input" type="checkbox" value="" id="selectAllGtms">
+                            <label class="form-check-label" for="selectAllGtms">
+                                {{ trans('paegtm.all_gtm') }}
+                            </label>
+                        </div>
+                        <div v-for="gtm in gtmTypesList" class="form-check">
+                            <input class="form-check-input"  v-model="gtmTypes" type="checkbox" :value="gtm.id" :id="'gtm_filter_' + gtm.id">
+                            <label class="form-check-label" :for="'gtm_filter_' + gtm.id">
+                                {{ gtm.name}}
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="gtm-dark mt-2 row m-0">
@@ -233,7 +204,13 @@ export default {
             accumOilProdFactData: [],
             accumOilProdPlanData: [],
             mainTableData: unsuccessfulDistributionMmg,
-
+            gtmTypesList: [
+                { id: "vns", name: this.trans('paegtm.gtm_vns') },
+                { id: "grp", name: this.trans('paegtm.gtm_grp') },
+                { id: "pvlg", name: this.trans('paegtm.gtm_pvlg') },
+                { id: "pvr", name: this.trans('paegtm.gtm_pvr') },
+                { id: "rir", name: this.trans('paegtm.gtm_rir') },
+            ],
             dzos: orgStructure,
             loaded: false,
 
@@ -250,7 +227,22 @@ export default {
         };
     },
     computed: {
+        selectAllGtms: {
+            get: function () {
+                return this.gtmTypesList ? this.gtmTypes.length == this.gtmTypesList.length : false;
+            },
+            set: function (value) {
+                let selected = [];
 
+                if (value) {
+                    this.gtmTypesList.forEach(function (gtm) {
+                        selected.push(gtm.id);
+                    });
+                }
+
+                this.gtmTypes = selected;
+            }
+        }
     },
     methods: {
         dzoFilterChanged(dzo) {

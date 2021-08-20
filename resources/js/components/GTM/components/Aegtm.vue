@@ -118,47 +118,18 @@
                         {{ trans('paegtm.gtmType') }}
                     </div>
                     <div class="gtm-dark text-white pl-2">
-                        <b-form-checkbox
-                            v-model="gtmTypes"
-                            value="all"
-                        >
-                            {{ trans('paegtm.all_gtm') }}
-                        </b-form-checkbox>
-
-                        <b-form-checkbox
-                            v-model="gtmTypes"
-                            value="vns"
-                        >
-                            {{ trans('paegtm.gtm_vns') }}
-                        </b-form-checkbox>
-
-                        <b-form-checkbox
-                            v-model="gtmTypes"
-                            value="grp"
-                        >
-                            {{ trans('paegtm.gtm_grp') }}
-                        </b-form-checkbox>
-
-                        <b-form-checkbox
-                            v-model="gtmTypes"
-                            value="pvlg"
-                        >
-                            {{ trans('paegtm.gtm_pvlg') }}
-                        </b-form-checkbox>
-
-                        <b-form-checkbox
-                            v-model="gtmTypes"
-                            value="pvr"
-                        >
-                            {{ trans('paegtm.gtm_pvr') }}
-                        </b-form-checkbox>
-
-                        <b-form-checkbox
-                            v-model="gtmTypes"
-                            value="gtm_"
-                        >
-                            {{ trans('paegtm.gtm_rir') }}
-                        </b-form-checkbox>
+                        <div class="form-check">
+                            <input v-model="selectAllGtms" class="form-check-input" type="checkbox" value="" id="selectAllGtms">
+                            <label class="form-check-label" for="selectAllGtms">
+                                {{ trans('paegtm.all_gtm') }}
+                            </label>
+                        </div>
+                        <div v-for="gtm in gtmTypesList" class="form-check">
+                            <input class="form-check-input"  v-model="gtmTypes" type="checkbox" :value="gtm.id" :id="'gtm_filter_' + gtm.id">
+                            <label class="form-check-label" :for="'gtm_filter_' + gtm.id">
+                                {{ gtm.name}}
+                            </label>
+                        </div>
                     </div>
                 </div>
                 <div class="gtm-dark mt-2 row m-0">
@@ -368,8 +339,6 @@ export default {
             dzos: orgStructure,
             loaded: false,
 
-            allGtmTypesSelected: null,
-
             dzo: null,
             oilFileds: [],
             horizonts: [],
@@ -380,34 +349,49 @@ export default {
             oilFieldsForFilter: [],
             horizontsForFilter: [],
             objectsForFilter: [],
-
         };
     },
     computed: {
-            accumOilProdData: function () {
-                return [
-                    {
-                        label: this.trans('paegtm.fact'),
-                        borderColor: "#F27E31",
-                        backgroundColor: '#F27E31',
-                        data: this.accumOilProdFactData,
-                        fill: false,
-                        showLine: true,
-                        pointRadius: 4,
-                        pointBorderColor: "#FFFFFF",
-                    },
-                    {
-                        label: this.trans('paegtm.plan'),
-                        borderColor: "#82BAFF",
-                        backgroundColor: '#82BAFF',
-                        data: this.accumOilProdPlanData,
-                        fill: false,
-                        showLine: true,
-                        pointRadius: 4,
-                        pointBorderColor: "#FFFFFF",
-                    }
-                ]
+        accumOilProdData: function () {
+            return [
+                {
+                    label: this.trans('paegtm.fact'),
+                    borderColor: "#F27E31",
+                    backgroundColor: '#F27E31',
+                    data: this.accumOilProdFactData,
+                    fill: false,
+                    showLine: true,
+                    pointRadius: 4,
+                    pointBorderColor: "#FFFFFF",
+                },
+                {
+                    label: this.trans('paegtm.plan'),
+                    borderColor: "#82BAFF",
+                    backgroundColor: '#82BAFF',
+                    data: this.accumOilProdPlanData,
+                    fill: false,
+                    showLine: true,
+                    pointRadius: 4,
+                    pointBorderColor: "#FFFFFF",
+                }
+            ]
+        },
+        selectAllGtms: {
+            get: function () {
+                return this.gtmTypesList ? this.gtmTypes.length == this.gtmTypesList.length : false;
+            },
+            set: function (value) {
+                let selected = [];
+
+                if (value) {
+                    this.gtmTypesList.forEach(function (gtm) {
+                        selected.push(gtm.id);
+                    });
+                }
+
+                this.gtmTypes = selected;
             }
+        }
     },
     methods: {
         getData() {
@@ -454,61 +438,22 @@ export default {
         },
         dzoFilterChanged(dzo) {
             this.oilFieldsForFilter = (dzo.hasOwnProperty('oilFields') && dzo.oilFields.length) ? dzo.oilFields : [];
-
-            //reset selections
             this.oilFileds = 0;
             this.horizonts = 0;
             this.objects = 0;
         },
         oilFilterChanghed(oilFiled) {
             this.horizontsForFilter = (oilFiled.hasOwnProperty('horizonts') && oilFiled.horizonts.length) ? oilFiled.horizonts : [];
-
-            //reset selections
             this.horizonts = 0;
             this.objects = 0;
         },
         horizontsFilterChanghed(horizont) {
             this.objectsForFilter = (horizont.hasOwnProperty('objects') && horizont.objects.length) ? horizont.objects : [];
-
-            //reset selections
             this.objects = 0;
         },
         objectsFilterChanghed(object) {
 
         },
-        selectGtmType() {
-            this.allGtmTypesSelected = false;
-            console.log('selected');
-        },
-        selectAllGtmTypes() {
-            // get: function () {
-            //     return this.users ? this.selected.length == this.users.length : false;
-            // },
-            // set: function (value) {
-            //     let selected = [];
-            //
-            //     if (value) {
-            //         this.users.forEach(function (user) {
-            //             selected.push(user.id);
-            //         });
-            //     }
-            //
-            //     this.gtmTypes = selected;
-            // }
-
-            //this.allGtmTypesSelected = !this.allGtmTypesSelected;
-
-            // this.gtmTypes = [];
-            //
-            // console.log(this.gtmTypes)
-            //
-            // if (this.allGtmTypesSelected) {
-            //     this.gtmTypesList.forEach(function (gtm) {
-            //         this.gtmTypes.push(gtm.id);
-            //     });
-            // }
-        }
-
     },
     mounted() {
         this.getData();

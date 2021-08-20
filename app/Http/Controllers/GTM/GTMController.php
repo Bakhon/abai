@@ -29,7 +29,7 @@ class GTMController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('can:paegtm view main')->only('index');
+        $this->middleware('can:paegtm view main')->only('index');
     }
 
     public function index()
@@ -77,9 +77,6 @@ class GTMController extends Controller
 
     public function getAllGtmByDzo(Request $request)
     {
-//        $dateStart = Carbon::createFromTimeString('2019-01-01T00:00:00.000Z');
-//        $dateEnd = Carbon::createFromTimeString('2020-12-31T23:59:59.000Z');
-
         $dateStart = $request->has('dateStart') && $request->filled('dateStart') ?
             $request->dateStart :
             '2020-01-01T00:00:00+00:00';
@@ -473,8 +470,6 @@ class GTMController extends Controller
             'data' => $vnsProdFact
         ];
 
-        //
-
         $result['series_2'][] = [
             'name' => trans('paegtm.planEd'),
             'type' => 'column',
@@ -498,8 +493,6 @@ class GTMController extends Controller
             'type' => 'line',
             'data' => $gtmProdFact
         ];
-
-//        dd($result);
 
         return response()->json($result);
     }
