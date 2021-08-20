@@ -1077,13 +1077,13 @@
                                    name="gno10"/>{{ trans('pgno.fon') }}</label>
                           </div>
                           <div class="col-2">
-                            <label class="pt-5px">{{ trans('pgno.p_buf') }}</label>
+                            <label class="pt-10px">{{ trans('pgno.p_buf') }}</label>
                           </div>
                           <div class="col-2">
-                            <label class="pt-5px">Ø{{ trans('pgno.nkt') }}</label>
+                            <label class="pt-10px">Ø{{ trans('pgno.nkt') }}</label>
                           </div>
                           <div class="col-2">
-                            <label class="pt-5px">{{ trans('pgno.h_spuska') }}</label>
+                            <label class="pt-10px">{{ trans('pgno.h_spuska') }}</label>
                           </div>
                       <div class="gear-icon" @click="openTabsModal()">
                         <img class="gear-icon-svg" src="./images/gear-icon.svg" alt="">
@@ -1095,8 +1095,8 @@
                       <div class="col-2"></div>
                       <div class="col-2"></div>
                       <div class="col-2 pl-0 pr-0">
-                        <input type="text" style="position: relative;" v-model="curveSettings.pBuff" onfocus="this.value=''"
-                               class="input-selection-options"/>{{trans('measurements.atm')}}
+                        <input type="text" v-model="curveSettings.pBuff" onfocus="this.value=''"
+                               class="input-selection-options pl-1"/> {{trans('measurements.atm')}}
                       </div>
                       <div class="col-2 pl-0 pr-0">
                         <select class="input-selection-options w-62" v-model="curveSettings.nkt"
@@ -1104,12 +1104,12 @@
                           <option v-for="(nkts, index) in nkt_choose" :value="nkts.for_calc_value" :key="index">
                             {{ nkts.show_value }}
                           </option>
-                        </select>{{trans('measurements.mm')}}
+                        </select> {{trans('measurements.mm')}}
                       </div>
                       <div class="col-2 pl-0 pr-0">
                         <input v-model="curveSettings.hPumpValue" @change="postCurveData()" type="text"
                                onfocus="this.value=''"
-                               class="input-selection-options"/>{{trans('measurements.m')}}
+                               class="input-selection-options pl-1"/> {{trans('measurements.m')}}
                       </div>
                     </div>
                     <!--selection params end-->
@@ -1119,7 +1119,7 @@
 
                     <div class="row">
                       <div class="col-4">
-                        <label style="width: 100px;" class="curve-selection-label">
+                        <label class="curve-selection-label">
                           <input value="calc_value" v-model="curveSettings.separationMethod"
                                  @change="postCurveData()" class="checkbox34" checked="true" type="radio"
                                  name="gno20" :disabled="curveSettings.expChoosen === 'ФОН'"/>
