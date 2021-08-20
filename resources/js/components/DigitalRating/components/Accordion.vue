@@ -7,12 +7,14 @@
       <div class="rating-accordion__title">
         {{ trans(title) }}
       </div>
-      <div class="rating-accordion__icon"></div>
+      <div class="rating-accordion__icon"/>
     </div>
     <transition-expand duration="100">
       <div v-show="isOpen" class="rating-accordion__body">
         <ul class="list">
-          <li v-for="(item, index) in list" :key="index">
+          <li
+            v-for="(item, index) in list" :key="index"
+            @click="$emit('selectItem', item)">
             {{ item }}
           </li>
         </ul>
