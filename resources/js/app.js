@@ -219,17 +219,12 @@ Vue.component('visual-center-daily-report', require('./components/visualcenter3/
 Vue.component('visual-center-daily-approve', require('./components/visualcenter3/importForm/dailyApprove/index.vue').default);
 Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/index.vue').default);
 
-
-Vue.component('project-data', require('./components/DigitalDrilling/ProjectData').default);
+Vue.component('digital-drilling', require('./components/DigitalDrilling/digital-drilling').default);
+Vue.component('digital-drilling-menu', require('./components/DigitalDrilling/menu').default);
 Vue.component('window-head', require('./components/DigitalDrilling/WindowHead').default);
-Vue.component('technical-task', require('./components/DigitalDrilling/ProjectData/TechnicalTask').default);
-Vue.component('geology', require('./components/DigitalDrilling/ProjectData/Geology').default);
-Vue.component('well-design', require('./components/DigitalDrilling/ProjectData/WellDesign').default);
-Vue.component('barrel-profile', require('./components/DigitalDrilling/ProjectData/BarrelProfile').default);
-Vue.component('drilling-fluids', require('./components/DigitalDrilling/ProjectData/DrillingFluids').default);
-Vue.component('well-casing', require('./components/DigitalDrilling/ProjectData/WellСasing').default);
-Vue.component('technical-casing', require('./components/DigitalDrilling/ProjectData/TechnicalCasing').default);
+
 Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
+
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 
 Vue.component('map-constructor-main', require('./components/mapConstructor/Main.vue').default);
