@@ -30,6 +30,11 @@ import wellsDetails from './dataManagers/wellsDetails';
 import injectionFondDetails from './widgets/injectionFondDetails';
 import emergency from './widgets/emergency';
 import {globalloadingMutations} from '@store/helpers';
+import Vue from "vue";
+
+Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
+Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
+
 
 
 export default {
@@ -750,11 +755,15 @@ export default {
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
-        this.updateChemistryWidget();
-        this.updateWellsWorkoverWidget();
-        this.updateDrillingWidget();
-        this.updateProductionFondWidget();
-        this.updateInjectionFondWidget();
+        let isOneDzoSelected = this.getDzoTicker();     
+        if (!isOneDzoSelected) {       
+            this.updateChemistryWidget();
+            this.updateWellsWorkoverWidget();
+            this.updateDrillingWidget();
+            await this.updateProductionFondWidget();
+            await this.updateInjectionFondWidget();
+        };
+        this.isSummaryShouldBeCalculated = false;
     },   
     watch: {
         bigTable: function () {

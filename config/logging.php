@@ -66,6 +66,12 @@ return [
             'level' => 'debug',
         ],
 
+        'calculate_corrosion_yesterday:cron' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/calculate_corrosion_yesterday.log'),
+            'level' => 'debug',
+        ],
+
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),

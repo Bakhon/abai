@@ -420,5 +420,13 @@ return array (
   'notes' => 'Примечания',
   'kpdModuleTitle' => 'КПД Upstream',
   'condensateDelivery' => 'Сдача конденсата',
-  'notes' => 'Примечания'
+  'notes' => 'Примечания',
+  'countOfProductionWells' => 'Количество добывающих скважин, скв.',
+  'countOfInjectionWells' => 'Количество нагнетательных скважин, скв.',
+  'countDrillingWells' => 'Количество скважин из бурения, скв.',
+  'countDrillingHeading' => 'Бурение проходка, м.',
+  'countWellsWorkover' => 'Количество КРС/ПРС, скв.',
+  'countChemistry' => 'Химизация производства, тонн',
+  'countDrillingWells' => 'Количество скважин из бурения, скв.',
+  'countDrilling' => 'Бурение проходка, м.'
 );
