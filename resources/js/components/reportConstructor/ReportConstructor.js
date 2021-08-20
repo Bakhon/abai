@@ -454,6 +454,7 @@ export default {
                 default:
                     this.startDate = date;
             }
+            this.endDate = this.startDate;
         },
         setStartOfYear(date) {
             this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
@@ -479,6 +480,11 @@ export default {
         },
         setEndOfMonth(date) {
             this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        clearDate() {
+            this.setDefaultDateFilter();
+            this.startDate = null;
+            this.endDate = null;
         },
         saveTemplate() {
             this.SET_LOADING(true)
