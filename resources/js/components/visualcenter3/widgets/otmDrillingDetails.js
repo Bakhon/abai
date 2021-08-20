@@ -52,12 +52,13 @@ export default {
             drillingChartData: [],
             drillingWidgetFactSum: 0,
             drillingDailyChart: {
-                series: [],
+                series: {
+                    comission: [],
+                    drilling: []
+                },
                 labels: [
                     this.trans("visualcenter.Plan"),
                     this.trans("visualcenter.Fact"),
-                    this.trans("visualcenter.Plan"),
-                    this.trans("visualcenter.Fact")
                 ]
             }
         };
@@ -129,10 +130,10 @@ export default {
 
             this.updateDrillingWidgetTable(temporaryDrillingDetails);
             if (!this.isDrillingPeriodSelected) {
-                this.drillingDailyChart.series = [];
-                for (let i in this.drillingData) {
-                    this.drillingDailyChart.series.push(this.drillingData[i].fact,this.drillingData[i].plan);
-                }
+                this.drillingDailyChart.series.comission = [];
+                this.drillingDailyChart.series.drilling = [];
+                this.drillingDailyChart.series.comission.push(this.drillingData[0].plan,this.drillingData[0].fact);
+                this.drillingDailyChart.series.drilling.push(this.drillingData[1].plan,this.drillingData[1].fact);
             } else {
                 this.drillingChartData = this.getDrillingWidgetChartData(temporaryDrillingDetails);
             }

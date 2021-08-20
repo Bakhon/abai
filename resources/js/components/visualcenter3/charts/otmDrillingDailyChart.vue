@@ -1,11 +1,18 @@
 <template>
     <div>
-        <div class="header text-center pt-5">{{trans(name)}}</div>
+        <div class="header text-center" style="padding-top: 40px;">{{trans(name[0])}}</div>
         <apexchart
-                height="460"
+                height="230"
                 style="margin-top:0px"
                 :options="chartOptions"
-                :series="series"
+                :series="seriesComission"
+        ></apexchart>
+        <div class="header text-center" style="margin-top: -20px">{{trans(name[1])}}</div>
+        <apexchart
+                height="230"
+                style="margin-top: -50px"
+                :options="chartOptions"
+                :series="seriesDrilling"
         ></apexchart>
     </div>
 </template>
@@ -57,7 +64,7 @@ export default {
                     enabled: false,
                 },
                 yaxis: {
-                    show: false,
+                    show: true,
                 },
                 chart: {
                     type: 'bar',
@@ -73,13 +80,24 @@ export default {
                 },
             };
         },
-        series() {
-            if (this.chartData.series.length === 0) {
+        seriesComission() {
+            if (this.chartData.series.comission.length === 0) {
                 return [];
             } else {
                 return [
                     {
-                        data: this.chartData.series,
+                        data: this.chartData.series.comission,
+                    },
+                ];
+            }
+        },
+        seriesDrilling() {
+            if (this.chartData.series.drilling.length === 0) {
+                return [];
+            } else {
+                return [
+                    {
+                        data: this.chartData.series.drilling,
                     },
                 ];
             }

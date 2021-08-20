@@ -2024,12 +2024,12 @@
                           v-else-if="drillingSelectedRow !== 'otm_wells_commissioning_from_drilling_fact' && isDrillingPeriodSelected"
                           class="name-chart-left">{{ trans("visualcenter.otmDrillingComission") }}, {{ trans("visualcenter.otmMetricSystemMeter") }}
                   </div>
-                  <fonds-daily-chart
-                          v-if="drillingDailyChart.series.length > 0 && !isDrillingPeriodSelected"
+                  <otm-drilling-daily-chart
+                          v-if="!isDrillingPeriodSelected"
                           :chart-data="drillingDailyChart"
-                          :name="'visualcenter.drillingWells'"
-                          :is-yaxis-active="false"
-                  ></fonds-daily-chart>
+                          :name="['visualcenter.countDrillingWells','visualcenter.countDrilling']"
+                          :is-yaxis-active="true"
+                  ></otm-drilling-daily-chart>
                   <visual-center3-wells
                           v-if="drillingDataForChart && isDrillingPeriodSelected"
                           :chartData="drillingDataForChart"
