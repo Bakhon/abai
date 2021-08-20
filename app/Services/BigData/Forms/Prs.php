@@ -8,6 +8,7 @@ use App\Traits\BigData\Forms\DepthValidationTrait;
 class Prs extends PlainForm
 {
     protected $configurationFileName = 'prs';
+    use DepthValidationTrait;
     use DateMoreThanValidationTrait;
     protected function prepareDataToSubmit()
     {

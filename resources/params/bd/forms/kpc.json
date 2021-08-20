@@ -155,14 +155,14 @@
               "code": "cnl_new",
               "type": "text",
               "title": "new_run_down_nkt",
-              "validation": "required|max:255",
+              "validation": "required|max:255|gte:0",
               "prefix": ""
             },
             {
               "code": "cnl_used",
               "type": "text",
               "title": "used_run_down_nkt",
-              "validation": "required|max:255",
+              "validation": "required|max:255|gte:0",
               "prefix": ""
             },
             {
@@ -232,25 +232,31 @@
           "title": "repair",
           "items": [
             {
-              "code": "hardware_failure_cause",
+              "code": "reason_equip_fail",
               "type": "dict",
-              "title": "hardware_failure_cause",
-              "validation": "required|exists:tbd.dict.reason,id",
-              "dict": "no_btm_reasons"
+              "title": "cause_h_failure",
+              "validation": "required|exists:tbd.dict.reason, id",
+              "dict": "reason_ref"
             },
             {
-              "code": "equipment_failure_type",
+              "code": "add_reason_equip_fail",
               "type": "dict",
-              "title": "equipment_failure_type",
-              "validation": "required|exists:",
-              "dict": "fail_reason_types"
+              "title": "add_f",
+              "validation": "required|exists:tbd.dict.reason_equip_fail, id",
+              "dict": "reason_equip_fail"
             },
             {
-              "code": "stopping_reason",
+              "code": "more_info_reason_fail",
+              "type": "text",
+              "title": "reason_type",
+              "validation": "required"
+            },
+            {
+              "code": "stop_reason",
               "type": "dict",
-              "title": "stopping_reason",
-              "validation": "required|exists:tbd.dict.reason,id",
-              "dict": "no_btm_reasons"
+              "title": "reason_stopping",
+              "validation": "required|exists:tbd.dict.reason, id",
+              "dict": "reason_rst"
             }
           ]
         }
