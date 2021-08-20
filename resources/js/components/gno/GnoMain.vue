@@ -102,7 +102,7 @@
               <div class="construction-data hperf top-border-line no-gutter col-7">
                 {{ trans('pgno.glubina_perf') }}
                 <div class="perforation-intervals">
-                  {{ trans('pgno.interval_perf') }}: <b v-for="item in hPerfRangeInfo">{{ item }}</b>
+                  {{ trans('pgno.interval_perf') }}: <b v-for="item in well.hPerfRange">{{ item }}</b>
                 </div>
               </div>
               <div v-if="!isEditing"
@@ -518,7 +518,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                           <a class="dropdown-item" href="#" @click="takePhotoOldNewWell()">Photo</a>
-                          <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
+                          <a class="dropdown-item" href="#" @click="downloadExcel('analysis')">MS Excel</a>
                         </div>
                       </div>
                     </div>
@@ -615,7 +615,7 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <a class="dropdown-item" href="#" @click="takePhoto()">Photo</a>
-                      <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
+                      <a class="dropdown-item" href="#" @click="downloadExcel('main')">MS Excel</a>
                     </div>
                   </div>
                 </div>

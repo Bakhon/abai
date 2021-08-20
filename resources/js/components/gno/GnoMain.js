@@ -26,7 +26,9 @@ export default {
   computed: {
     ...pgnoMapState([
       "calcedWell",
-      "wellAnalysis",
+      'wellAnalysis',
+      'linesAnalysis',
+      'pointsAnalysis',
       "well",
       "lines",
       "points",
@@ -267,7 +269,6 @@ export default {
       centratorsInfo: null,
       centratorsRequiredValue: null,
       centratorsRecommendedValue: null,
-      hPerfRangeInfo: null,
       nkt_choose: [
         {
           for_calc_value: 50.3,
@@ -826,6 +827,36 @@ export default {
           );
         }
       }
+    },
+    downloadExcel(menu) {
+      this.SET_LOADING(true);
+      if (menu === "analysis"){
+        var payload = {
+          shgn_settings: this.shgnSettings,
+          well: this.wellAnalysis,
+          curve_settings: this.curveSettings,
+          analysis_settings: this.analysisSettings,
+          points: this.pointsAnalysis,
+          lines: this.linesAnalysis,
+        };
+      } else {
+        var payload = {
+          shgn_settings: this.shgnSettings,
+          well: this.well,
+          curve_settings: this.curveSettings,
+          analysis_settings: this.analysisSettings,
+          points: this.points,
+          lines: this.lines,
+        };
+      }
+      
+      this.axios.post(this.apiUrl + "excel/download", payload, { responseType: "blob" }).then((response) => {
+        fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
+      }).catch(function (error) {
+        console.error('oops, something went wrong!', error);
+      }).finally(() => {
+        this.SET_LOADING(false);
+      });
     },
 
     downloadEconomicExcel() {
