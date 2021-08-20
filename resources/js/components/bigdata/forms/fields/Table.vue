@@ -10,64 +10,78 @@
          class="bd-table-field__buttons-button bd-table-field__buttons-button_remove" href="#"
          @click.prevent="deleteItem(selectedItemIndex)">{{ trans('app.delete') }}</a>
     </div>
-    <table class="table">
-      <thead>
-      <tr>
-        <th v-for="column in params.columns">
-          {{ column.title }}
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(item, index) in items" :class="{'selected': selectedItemIndex === index}"
-          @click="selectedItemIndex = index">
-        <td v-for="column in params.columns">
-          <template v-if="column.type === 'date'">
-            {{ item[column.code].text | moment().format('DD.MM.YYYY') }}
-          </template>
-          <template v-else-if="column.type === 'datetime'">
-            {{ item[column.code].text | moment().format('DD.MM.YYYY HH:MM') }}
-          </template>
-          <template v-else>
-            {{ item[column.code].text }}
-          </template>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
+    <div class="table__wrap scrollable">
+      <table class="table">
+        <thead>
+        <tr>
+          <th v-for="column in params.columns">
+            {{ column.title }}
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(item, index) in items" :class="{'selected': selectedItemIndex === index}"
+            @click="selectedItemIndex = index">
+          <td v-for="column in params.columns">
+            <template v-if="column.type === 'date'">
+              {{ item[column.code].text | moment().format('DD.MM.YYYY') }}
+            </template>
+            <template v-else-if="column.type === 'datetime'">
+              {{ item[column.code].text | moment().format('DD.MM.YYYY HH:MM') }}
+            </template>
+            <template v-else>
+              {{ item[column.code].text }}
+            </template>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
     <div v-if="isFormOpened" class="bd-popup">
       <div class="bd-popup__inner">
         <a class="bd-popup__close" href="#" @click.prevent="isFormOpened = false">{{ trans('bd.close') }}</a>
-        <div class="bd-main-block__form-block-content">
-          <div
-              v-for="column in params.columns"
+        <template v-if="params.form">
+          <BigDataPlainForm
+              :params="formParams"
+              :values="formValues"
+              :well-id="id"
+              @change="updateResults"
+              @close="isFormOpened = false"
           >
-            <label>{{ column.title }}</label>
-            <bigdata-form-field
-                v-bind:value="formValues[column.code].value"
-                v-on:update="updateField($event, column)"
-                :error="errors[column.code]"
-                :item="column"
+          </BigDataPlainForm>
+        </template>
+        <template v-else>
+          <div class="bd-main-block__form-block-content">
+            <div
+                v-for="column in params.columns"
             >
-            </bigdata-form-field>
+              <label>{{ column.title }}</label>
+              <bigdata-form-field
+                  :error="errors[column.code]"
+                  :item="column"
+                  v-bind:value="formValues[column.code].value"
+                  v-on:update="updateField($event, column)"
+              >
+              </bigdata-form-field>
+            </div>
           </div>
-        </div>
 
-        <div class="bd-popup__buttons">
-          <button class="btn btn-success" type="button" @click="saveItem">
-            {{ trans('app.save') }}
-          </button>
-          <button class="btn btn-info" type="reset" @click="isFormOpened = false">
-            {{ trans('app.cancel') }}
-          </button>
-        </div>
+          <div class="bd-popup__buttons">
+            <button class="btn btn-success" type="button" @click="saveItem">
+              {{ trans('app.save') }}
+            </button>
+            <button class="btn btn-info" type="reset" @click="isFormOpened = false">
+              {{ trans('app.cancel') }}
+            </button>
+          </div>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import forms from '../../../../json/bd/forms.json'
 
 export default {
   name: "BigdataTableField",
@@ -76,13 +90,20 @@ export default {
       type: Object,
       required: true
     },
+    id: {
+      type: Number,
+      required: true
+    },
   },
   components: {
+    BigDataPlainForm: () => import('../PlainForm'),
     BigdataFormField: () => import('../field')
   },
   data() {
     return {
+      forms: forms,
       isFormOpened: false,
+      formParams: null,
       editedItemIndex: null,
       items: [],
       errors: [],
@@ -93,12 +114,20 @@ export default {
   methods: {
     openCreateForm() {
       this.editedItemIndex = null
+
+      if (this.params.form) {
+        this.formParams = this.forms.find(form => form.code === this.params.form)
+        this.isFormOpened = true
+        return
+      }
+
       this.isFormOpened = true
       let formValues = {}
       this.params.columns.forEach(column => {
         formValues[column.code] = {value: null, text: ''}
       })
       this.formValues = formValues
+
     },
     openEditForm(index) {
       if (index === null) return
@@ -147,6 +176,9 @@ export default {
     },
     updateField(event, column) {
       this.formValues[column.code] = event
+    },
+    updateResults() {
+
     }
   }
 };
@@ -199,6 +231,10 @@ export default {
   .table {
     color: #fff;
     font-size: 14px;
+
+    &__wrap {
+      overflow-y: auto;
+    }
 
     th {
       background: #2b2e5e;

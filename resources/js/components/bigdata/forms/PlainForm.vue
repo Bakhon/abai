@@ -35,6 +35,7 @@
                       v-model="formValues[item.code]"
                       :error="errors[item.code]"
                       :item="item"
+                      :id="wellId"
                       :key="`field_${item.code}`"
                       v-on:change="validateField($event, item)"
                       v-on:input="callback($event, item)"
@@ -207,9 +208,12 @@ export default {
             this.errors = []
             this.$refs.form.reset()
             Vue.prototype.$notifySuccess('Ваша форма успешно отправлена')
-            this.formValues = {}
-            this.$emit('change')
+            this.$emit('change', {
+              id: '',
+              values: this.formValues
+            })
             this.$emit('close')
+            this.formValues = {}
           })
           .catch(error => {
 
