@@ -760,6 +760,7 @@ export default {
         this.updateDrillingWidget();
         await this.updateProductionFondWidget();
         this.updateInjectionFondWidget();
+        this.isSummaryShouldBeCalculated = false;
     },   
     watch: {
         bigTable: function () {
