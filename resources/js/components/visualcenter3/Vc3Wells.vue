@@ -24,7 +24,7 @@ export default {
     props: ["chartData"],
     data: function () {
         return {
-            chartType: 'bar'
+            chartType: 'bar',
         };
     },
     computed: {
@@ -95,7 +95,9 @@ export default {
                     foreColor: "#FFFFFF",
                 },
                 stroke: {
+                    show: true,
                     width: 2,
+                    colors: ['transparent']
                 },
                 plotOptions: {
                     bar: {
@@ -116,7 +118,7 @@ export default {
                 },
                 labels: this.chartData.labels,
                 legend: {
-                    show: false,
+                    show: true,
                     position: "bottom",
                     horizontalAlign: "right",
                 },
@@ -172,7 +174,11 @@ export default {
                 return [
                     {
                         name: this.trans("visualcenter.Fact"),
-                        data: this.chartData.series,
+                        data: this.chartData.series.fact,
+                    },
+                    {
+                        name: this.trans("visualcenter.Plan"),
+                        data: this.chartData.series.plan,
                     },
                 ];
             }
