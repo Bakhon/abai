@@ -58,6 +58,10 @@ export default {
             ],
             chemistryChartData: [],
             chemistryWidgetFactSum: 0,
+            chemistryDailyChart: {
+                series: [],
+                labels: []
+            },
         };
     },
     methods: {
@@ -121,7 +125,12 @@ export default {
             });
 
             this.updateChemistryWidgetTable(temporaryChemistryDetails);
-            this.chemistryChartData = this.getChemistryWidgetChartData(temporaryChemistryDetails);
+            if (this.chemistryMonthlyPeriod.length > 0) {
+                this.chemistryDailyChart.series = this.chemistryData.map(field => field.fact);
+                this.chemistryDailyChart.labels = this.chemistryData.map(field => field.code);
+            } else {
+                this.chemistryChartData = this.getChemistryWidgetChartData(temporaryChemistryDetails);
+            }
         },
 
         getChemistryWidgetChartData(temporaryChemistryDetails) {
@@ -188,11 +197,13 @@ export default {
     },
     computed: {
         chemistryDataForChart() {
-            let series = []
+            let series = {
+                fact: []
+            }
             let labels = []
             for (let i in this.chemistryChartData) {
-                series.push(this.chemistryChartData[i][this.chemistrySelectedRow])
-                labels.push(i)
+                series.fact.push(this.chemistryChartData[i][this.chemistrySelectedRow]);
+                labels.push(i);
             }
             return {
                 series: series,

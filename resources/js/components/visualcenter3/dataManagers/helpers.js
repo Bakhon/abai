@@ -299,7 +299,7 @@ export default {
             if (this.oilCondensateDeliveryButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
                 return this.dzoNumbers['deliveryKMG'][dzoName];
             }
-            return '1.' + index + 1;
+            return '1.' + index + '.';
         },
 
         getNumberFormat(num) {

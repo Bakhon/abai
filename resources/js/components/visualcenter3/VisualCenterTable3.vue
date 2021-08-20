@@ -1057,7 +1057,7 @@
                   <tbody>
                   <tr v-for="(item, index) in dzoSummaryForTable">
                     <td :class="`${getDzoColumnsClass(index,'difference')}`">
-                      {{getNumberByDzo(item.dzoMonth)}}
+                      {{getNumberByDzo(item.dzoMonth,index)}}
                     </td>
                     <td
                             @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth,item.dzo)}` : `${selectAllDzoCompanies()}`"
@@ -1632,7 +1632,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table v-if="injectionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
@@ -1673,9 +1673,15 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <div v-if="isInjectionFondPeriodSelected" class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <fonds-daily-chart
+                          v-if="injectionDailyChart.series.length > 0 && !isInjectionFondPeriodSelected"
+                          :chart-data="injectionDailyChart"
+                          :name="'visualcenter.countOfInjectionWells'"
+                          :is-yaxis-active="false"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
-                          v-if="injectionFondDataForChart"
+                          v-if="injectionFondDataForChart && isInjectionFondPeriodSelected"
                           :chartData="injectionFondDataForChart"
                   ></visual-center3-wells>
                 </div>
@@ -1788,7 +1794,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table v-if="productionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
@@ -1829,12 +1835,17 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
+                  <div v-if="isProductionFondPeriodSelected" class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
+                  <fonds-daily-chart
+                          v-if="productionDailyChart.series.length > 0 && !isProductionFondPeriodSelected"
+                          :chart-data="productionDailyChart"
+                          :name="'visualcenter.countOfProductionWells'"
+                          :is-yaxis-active="false"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
-                          v-if="productionFondDataForChart"
+                          v-if="productionFondDataForChart && isProductionFondPeriodSelected"
                           :chartData="productionFondDataForChart"
-                  >
-                  </visual-center3-wells>
+                  ></visual-center3-wells>
                 </div>
               </div>
             </div>
@@ -1937,7 +1948,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table
                           v-if="drillingData.length"
                           class="table4 w-100 chemistry-table additional-tables"
@@ -2006,15 +2017,21 @@
                 </div>
                 <div class="col-sm-5">
                   <div
-                          v-if="drillingSelectedRow === 'otm_wells_commissioning_from_drilling_fact'"
+                          v-if="drillingSelectedRow === 'otm_wells_commissioning_from_drilling_fact' && isDrillingPeriodSelected"
                           class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}
                   </div>
                   <div
-                          v-else
+                          v-else-if="drillingSelectedRow !== 'otm_wells_commissioning_from_drilling_fact' && isDrillingPeriodSelected"
                           class="name-chart-left">{{ trans("visualcenter.otmDrillingComission") }}, {{ trans("visualcenter.otmMetricSystemMeter") }}
                   </div>
+                  <otm-drilling-daily-chart
+                          v-if="!isDrillingPeriodSelected"
+                          :chart-data="drillingDailyChart"
+                          :name="['visualcenter.countDrillingWells','visualcenter.countDrilling']"
+                          :is-yaxis-active="true"
+                  ></otm-drilling-daily-chart>
                   <visual-center3-wells
-                          v-if="drillingDataForChart"
+                          v-if="drillingDataForChart && isDrillingPeriodSelected"
                           :chartData="drillingDataForChart"
                   ></visual-center3-wells>
                 </div>
@@ -2123,7 +2140,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table
                           v-if="wellsWorkoverData.length"
                           class="table4 w-100 chemistry-table additional-tables"
@@ -2185,7 +2202,7 @@
                         <div :class="[getIndicatorClass(item.plan,item.fact),'ml-5']">
                         </div>
                         <div class="font dynamic">
-                          {{Math.abs(formatDigitToThousand(item.difference))}}
+                          {{formatDigitToThousand(Math.abs(item.difference))}}
                           <span class="data-metrics">
                               {{item.metricSystem}}
                             </span>
@@ -2196,9 +2213,15 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <div v-if="wellsWorkoverMonthlyPeriod.length === 0" class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <fonds-daily-chart
+                          v-if="wellsWorkoverDailyChart.series.length > 0 && wellsWorkoverMonthlyPeriod.length > 0"
+                          :chart-data="wellsWorkoverDailyChart"
+                          :name="'visualcenter.countWellsWorkover'"
+                          :is-yaxis-active="true"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
-                          v-if="wellsWorkoverDataForChart"
+                          v-if="wellsWorkoverDataForChart && wellsWorkoverMonthlyPeriod.length === 0"
                           :chartData="wellsWorkoverDataForChart"
                   ></visual-center3-wells>
                 </div>
@@ -2272,7 +2295,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table
                           v-if="chemistryData.length"
                           class="table4 w-100 chemistry-table additional-tables"
@@ -2321,9 +2344,15 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">Объём хим. реагента, тонны</div>
+                  <div v-if="chemistryMonthlyPeriod.length === 0" class="name-chart-left">{{ trans("visualcenter.chemVolume") }}</div>
+                  <fonds-daily-chart
+                          v-if="chemistryDailyChart.series.length > 0 && chemistryMonthlyPeriod.length > 0"
+                          :chart-data="chemistryDailyChart"
+                          :name="'visualcenter.countChemistry'"
+                          :is-yaxis-active="false"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
-                          v-if="chemistryDataForChart"
+                          v-if="chemistryDataForChart && chemistryMonthlyPeriod.length === 0"
                           :chartData="chemistryDataForChart"
                   ></visual-center3-wells>
                 </div>
@@ -2812,6 +2841,9 @@
       padding: 5px 5px 5px 10px;
       font-size: 16px !important;
     }
+  }
+  .mh-495 {
+    max-height: 495px;
   }
 
   .vis-table-small {
