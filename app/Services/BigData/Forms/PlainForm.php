@@ -131,6 +131,10 @@ abstract class PlainForm extends BaseForm
 
             $columns = $this->getFields()->filter(
                 function ($item) {
+                    if (isset($item['depends_on'])) {
+                        return false;
+                    }
+
                     if (isset($this->params()['table_fields'])) {
                         return in_array($item['code'], $this->params()['table_fields']);
                     }
