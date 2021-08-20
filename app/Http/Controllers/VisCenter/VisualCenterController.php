@@ -33,7 +33,8 @@ class VisualCenterController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:visualcenter view main')->only('visualcenter3', 'visualcenter4', 'visualcenter5', 'visualcenter6', 'visualcenter7');
+        $this->middleware('can:visualcenter view main')->only('visualcenter4', 'visualcenter5', 'visualcenter6', 'visualcenter7');
+        $this->middleware('can:visualcenter one_dzo main')->only('visualcenter3','excelform');
     }
 
     /**
