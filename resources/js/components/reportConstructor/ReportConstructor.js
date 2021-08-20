@@ -454,7 +454,7 @@ export default {
                 default:
                     this.startDate = date;
             }
-            this.endDate = this.startDate;
+            this.endDate = this.endDate ? this.endDate : this.startDate;
         },
         setStartOfYear(date) {
             this.startDate = formatDate.getStartOfYearFormatted(date, 'datetimePickerFormat');
