@@ -247,6 +247,9 @@
             ...digitalDrillingState([
                 'currentWell'
             ]),
+            isCurrentWell () {
+                return Object.keys(this.currentWell).length != 0;
+            }
         },
 
     }

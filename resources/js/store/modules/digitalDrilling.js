@@ -9,7 +9,6 @@ const digitalDrilling = {
         },
     },
     getters: {
-        isCurrentWell: (state) => state.currentWell,
     },
     actions: {
         changeCurrentWellValue({commit}, value) {
