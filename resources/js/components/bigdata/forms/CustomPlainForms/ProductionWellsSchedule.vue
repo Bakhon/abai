@@ -65,43 +65,45 @@ export default {
     props: {
         well: {}
     },
-    data: () => ({
-        currentAnnotation: {
-            minY: 0,
-            maxY: 0
-        },
-        chartSeries: [],
-        chartPoints: [],
-        tmpChartPoints: [],
-        labels: [],
-        schedulePeriods: [
-            {
-                period: "1 неделя",
-                value: 7,
+    data: function() {
+        return {
+            currentAnnotation: {
+                minY: 0,
+                maxY: 0
             },
-            {
-                period: "1 месяц",
-                value: 30,
-            },
-            {
-                period: "3 месяца",
-                value: 90,
-            },
-            {
-                period: "6 месяцев",
-                value: 183,
-            },
-            {
-                period: "1 год",
-                value: 365,
-            },
-            {
-                period: "Все",
-                value: 0,
-            },
-        ],
-        activePeriod: 90,
-    }),
+            chartSeries: [],
+            chartPoints: [],
+            tmpChartPoints: [],
+            labels: [],
+            schedulePeriods: [
+                {
+                    period: "1 " + this.trans('bd.week'),
+                    value: 7,
+                },
+                {
+                    period: "1 " + this.trans('bd.month'),
+                    value: 30,
+                },
+                {
+                    period: "3 " + this.trans('bd.month_1'),
+                    value: 90,
+                },
+                {
+                    period: "6 " + this.trans('bd.month_2'),
+                    value: 183,
+                },
+                {
+                    period: "1 " + this.trans('bd.year'),
+                    value: 365,
+                },
+                {
+                    period: this.trans('bd.all_1'),
+                    value: 0,
+                },
+            ],
+            activePeriod: 90,
+        }
+    },
     methods: {
         ...globalloadingMutations([
             'SET_LOADING'
@@ -185,7 +187,7 @@ export default {
                     defaultLocale: 'ru',
                 },
                 markers: {
-                    size: 2,
+                    size: [1, 1.5, 2, 2.5],
                 },
                 xaxis: {
                     tickAmount: 10,
@@ -273,7 +275,7 @@ export default {
                             }
                         },
                         title: {
-                            text: this.trans('app.waterCut'),
+                            text: this.trans('app.ndin'),
                             style: {
                                 color: '#fff',
                             }
