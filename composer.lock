@@ -1974,18 +1974,6 @@
         },
         {
             "name": "laravel/framework",
-<<<<<<< HEAD
-            "version": "v6.20.30",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laravel/framework.git",
-                "reference": "a6402599a517b2f15f4ada6b3b20df33a5895e1e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/a6402599a517b2f15f4ada6b3b20df33a5895e1e",
-                "reference": "a6402599a517b2f15f4ada6b3b20df33a5895e1e",
-=======
             "version": "v6.20.31",
             "source": {
                 "type": "git",
@@ -1996,7 +1984,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/15cd96b48fb4f652ba996041cdb9a2a3b03e00f5",
                 "reference": "15cd96b48fb4f652ba996041cdb9a2a3b03e00f5",
->>>>>>> f8894302461525ce05ffe30f664f725a6b7069f3
                 "shasum": ""
             },
             "require": {
@@ -2136,11 +2123,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-<<<<<<< HEAD
-            "time": "2021-07-06T14:06:00+00:00"
-=======
             "time": "2021-08-03T14:36:18+00:00"
->>>>>>> f8894302461525ce05ffe30f664f725a6b7069f3
         },
         {
             "name": "laravel/tinker",
@@ -4340,8 +4323,6 @@
                 "source": "https://github.com/shuchkin/simplexlsx/tree/0.8.25"
             },
             "time": "2021-07-28T15:21:45+00:00"
-<<<<<<< HEAD
-=======
         },
         {
             "name": "shuchkin/simplexlsx",
@@ -4389,7 +4370,6 @@
                 "xlsx"
             ],
             "time": "2021-07-28T15:21:45+00:00"
->>>>>>> f8894302461525ce05ffe30f664f725a6b7069f3
         },
         {
             "name": "spatie/laravel-activitylog",
@@ -4465,13 +4445,6 @@
                 "spatie",
                 "user"
             ],
-<<<<<<< HEAD
-            "support": {
-                "issues": "https://github.com/spatie/laravel-activitylog/issues",
-                "source": "https://github.com/spatie/laravel-activitylog/tree/3.17.0"
-            },
-=======
->>>>>>> f8894302461525ce05ffe30f664f725a6b7069f3
             "funding": [
                 {
                     "url": "https://spatie.be/open-source/support-us",
@@ -4611,11 +4584,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Stichoza/google-translate-php/issues",
-<<<<<<< HEAD
-                "source": "https://github.com/Stichoza/google-translate-php/tree/v4.1.4"
-=======
                 "source": "https://github.com/Stichoza/google-translate-php/tree/v4.1.5"
->>>>>>> f8894302461525ce05ffe30f664f725a6b7069f3
             },
             "funding": [
                 {
@@ -10472,9 +10441,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-<<<<<<< HEAD
-    "plugin-api-version": "2.1.0"
-=======
     "plugin-api-version": "1.1.0"
->>>>>>> f8894302461525ce05ffe30f664f725a6b7069f3
 }

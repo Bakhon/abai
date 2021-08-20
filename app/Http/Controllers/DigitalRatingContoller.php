@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 class DigitalRatingContoller extends Controller
 {
-    //
 
    const WELL_STATUS_TYPE_ID = [3,4];
    const WELL_CATEGORY_TYPE_ID = 1;
@@ -24,40 +23,36 @@ class DigitalRatingContoller extends Controller
                ->whereIn('tbdi.well_status.well_status_type_id',  self::WELL_STATUS_TYPE_ID)   
                ->join('tbdi.well_category', 'tbdi.well.id', '=', 'tbdi.well_category.well_id')
                ->where('tbdi.well_category.well_category_type_id', self::WELL_CATEGORY_TYPE_ID)
+               ->join('tbdi.liquid_prod', 'tbdi.well_status.well_id', '=', 'tbdi.liquid_prod.well_id')
+               ->join('tbdi.bsw_prod', 'tbdi.liquid_prod.well_id', '=', 'tbdi.bsw_prod.well_id')
                ->select('tbdi.well.uwi', 'tbdi.well.id','tbdi.well_category.well_category_type_id','tbdi.well_status.well_status_type_id','tbdi.well_status.well_id')
-               ->groupBy('well.uwi','well.id','well_category.well_category_type_id','well_status.well_status_type_id','well_status.well_id')
+               ->selectRaw('AVG(tbdi.liquid_prod.liquid_val) as liquid_val_average')
+               ->selectRaw('AVG(tbdi.bsw_prod.bsw_val) as bsw_val_average')
+                ->whereDate('tbdi.liquid_prod.dend', '>', Carbon::now()->subDays(90))
+               ->whereDate('tbdi.bsw_prod.dend', '>', Carbon::now()->subDays(90))
+               ->groupBy('well.uwi','well.id','well_category.well_category_type_id','well_status.well_status_type_id','well_status.well_id','tbdi.liquid_prod.well_id','tbdi.bsw_prod.well_id')
                ->get();
 
-               
          foreach ($wells as $key => $item) {
             if($item->well_status_type_id == 3) {
-               $liquid_prod_sum =   DB::connection('tbd')->table('tbdi.liquid_prod')
-               ->join('tbdi.bsw_prod', 'tbdi.liquid_prod.well_id', '=', 'tbdi.bsw_prod.well_id')
-               ->select([DB::raw('AVG(tbdi.liquid_prod.liquid_val) as liquid_val_average'),DB::raw('AVG(tbdi.bsw_prod.bsw_val) as bsw_val_average'),'tbdi.liquid_prod.well_id','tbdi.bsw_prod.well_id'])
-               ->where('tbdi.liquid_prod.well_id',$item->well_id)
-               ->whereDate('tbdi.liquid_prod.dend', '>', Carbon::now()->subDays(90))
-               ->whereDate('tbdi.bsw_prod.dend', '>', Carbon::now()->subDays(90))
-               ->groupBy('tbdi.liquid_prod.well_id','tbdi.bsw_prod.well_id')
-               ->first(); 
-                  
-      
-               $param_gdis_hdin =DB::connection('tbd')->table('tbdi.current_gdis_value')
-               ->where('tbdi.current_gdis_value.well_id',$item->well_id)
-               ->where('tbdi.current_gdis_value.param_gdis_id',self::PARAM_GDIS_HDIN_id)
-               ->orderBy('tbdi.current_gdis_value.dbeg','DESC')
-               ->first(); 
-                $conclusion_gdm =DB::connection('tbd')->table('tbdi.current_gdis_value')
-               ->where('tbdi.current_gdis_value.well_id',$item->well_id)
-               ->where('tbdi.current_gdis_value.param_gdis_id',self::PARAM_GDIS_CONCLUSION_GDM_ID)
-               ->orderBy('tbdi.current_gdis_value.dbeg','DESC')
-               ->first();
+               $params_gdis = DB::connection('tbd')->select('select * from tbdi.current_gdis_value where well_id = :id AND param_gdis_id IN(:PARAM_GDIS_HDIN_id,:PARAM_GDIS_CONCLUSION_GDM_ID)  ORDER BY dbeg DESC LIMIT 2', ['id' => $item->well_id,'PARAM_GDIS_HDIN_id'=>self::PARAM_GDIS_HDIN_id,'PARAM_GDIS_CONCLUSION_GDM_ID'=>self::PARAM_GDIS_CONCLUSION_GDM_ID]);
 
-               $result = $liquid_prod_sum->liquid_val_average * (100 - $liquid_prod_sum->bsw_val_average ) / 100 *0.839;
-               $wells[$key]->result = $result;
-               $wells[$key]->bsw_val_average = $liquid_prod_sum->bsw_val_average ;
-               $wells[$key]->liquid_val_average = $liquid_prod_sum->liquid_val_average;
-               $wells[$key]->gdis_conclusion = $conclusion_gdm->gdis_conclusion;
-               $wells[$key]->param_gdis_hdin = $param_gdis_hdin->value_double;
+               foreach ($params_gdis as $param) {
+                  if($param->param_gdis_id == 217) {
+                     $param_gdis_hdin = $param->value_double;
+                  }else {
+                     $gdis_conclusion = $param->gdis_conclusion;
+                  }
+                 
+               }
+
+               $result = $item->liquid_val_average * (100 - $item->bsw_val_average ) / 100 *0.839;
+               $wells[$key]->result = number_format( $result, 2);
+               $wells[$key]->liquid_val_average  = number_format( $item->liquid_val_average, 2);
+               $wells[$key]->bsw_val_average  = number_format( $item->bsw_val_average, 2);
+               $wells[$key]->gdis_conclusion = $gdis_conclusion;
+               $wells[$key]->param_gdis_hdin = number_format( $param_gdis_hdin, 2) ;
+
             }
          }
          return $wells;                
@@ -69,7 +64,7 @@ class DigitalRatingContoller extends Controller
    public function serach_wells(Request $request){
       $sector = $request->input('sector');
       $horizon = $request->input('horizon');
-      $sectors_json_points = file_get_contents(public_path('js/json/digital-rating/sectors_points.json'), 'r');;
+      $sectors_json_points = file_get_contents(public_path('js/json/digital-rating/sectors_points.json'), 'r');
          $sectors_points= json_decode($sectors_json_points, true);
          foreach ($sectors_points as $item) {
             if($item['sector'] == $sector) {
@@ -85,7 +80,6 @@ class DigitalRatingContoller extends Controller
          $sectorY = $sector['y'];
          $radius =500;
          $neighboring_wells = [];
-         // dd($sector);
          foreach ($weels_points as $item) {
             if((($item['x'] - $sectorX)*($item['x'] - $sectorX))+(($item['y']-$sectorY)*($item['y']-$sectorY)) <= $radius*$radius){
             if($item['horizon'] == $horizon)
@@ -93,6 +87,6 @@ class DigitalRatingContoller extends Controller
             }
          };
          $wells = $this->get_wells($neighboring_wells);
-          return response()->json($wells);
+         return json_encode(json_decode($wells, false), JSON_UNESCAPED_UNICODE);
    }
 };
