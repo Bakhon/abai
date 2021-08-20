@@ -241,10 +241,10 @@
                     </div>
 
                     <div class="btn-container">
-                      <!-- <button class="" :disabled="!startDate" @click="updateStatistics()">{{
+                      <button class="" :disabled="!startDate" @click="updateStatistics()">{{
                           trans('bd.create_report')
                         }}
-                      </button> -->
+                      </button>
                       <button @click="clearDate()"> Очистить дату </button>
                       <button class="" @click="showTemplatesModal('templateSelectorModal')">{{
                           trans('bd.choose_template')
