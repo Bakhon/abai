@@ -701,7 +701,8 @@ export default {
         this.is_dynamic = true;
         this.isMaxDate = false;
         if (choosenSecDt[2] >= choosenDt[2] && choosenSecDt[1] >= choosenDt[1] && choosenSecDt[0] >= choosenDt[0] || choosenSecDt[0] > choosenDt[0]) {
-            Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+            this.notification("Дата 2 должна быть меньше чем Дата 1");
+            // Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
         } else {
             this.$store.commit("globalloading/SET_LOADING", true);
             this.$store.commit("tr/SET_DYN_MONTH_END", mm);
@@ -849,7 +850,8 @@ export default {
         this.filter = filter;
     },
     saveadd() {
-        Vue.prototype.$notifySuccess(`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
+        this.notification(`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
+        // Vue.prototype.$notifySuccess(`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
         let output = {};
         this.$refs.editTable[0].children.forEach((el) => {
             output[el.children[0].dataset.key] = el.children[0].value;
@@ -867,7 +869,8 @@ export default {
     },
     // Удаление с модалки
     deleteWell() {
-        Vue.prototype.$notifyError(`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
+        this.notification(`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
+        // Vue.prototype.$notifyError(`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
         this.$store.commit("globalloading/SET_LOADING", true);
         if (this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено") {
             this.axios
