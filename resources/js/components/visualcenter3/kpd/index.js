@@ -335,17 +335,21 @@ export default {
             },
             selectedKpd: {},
             kpdList: [],
-            kpdDecompositionB: []
+            kpdDecompositionB: [],
+            kpdType: {
+                'ceo2Decomposition': 3
+            }
         };
     },
     methods: {
         async getAllKpd() {
             let uri = this.localeUrl("/kpd-tree-catalog");
             const response = await axios.get(uri);
-            if (response.status === 200) {
-                return response.data;
+            if (response.status !== 200) {
+                return [];
             }
-            return [];
+            return response.data;
+
         },
         getProgressBarFillingColor(progress) {
             if (progress <= 70) {
@@ -402,6 +406,6 @@ export default {
         });
         this.selectedKpd = this.kpdCeoDecompositionB[0].kpd[0];
         this.kpdList = await this.getAllKpd();
-        this.kpdDecompositionB = _.filter(this.kpdList, (item) => item.type === 3);
+        this.kpdDecompositionB = _.filter(this.kpdList, (item) => item.type === this.kpdType.ceo2Decomposition);
     },
 }

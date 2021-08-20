@@ -23,7 +23,6 @@ class KpdTreeController extends Controller
 
     public function storeKpd(Request $request)
     {
-        var_dump($request->request->all());
         KpdTreeCatalog::create($request->request->all());
     }
 }

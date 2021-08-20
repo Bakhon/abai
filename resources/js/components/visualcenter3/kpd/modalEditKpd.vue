@@ -35,12 +35,12 @@
                         <div class="col-4 text-left pt-2">Полярность</div>
                         <div class="col-7 d-flex justify-content-center">
                             <div
-                                    :class="[polaritySelected.growth ? 'polarity_selected' : 'polarity_not-selected','indicator-growth px-4']"
-                                    @click="switchPolarity('growth')"
+                                    :class="[polaritySelected.isGrowth ? 'polarity_selected' : 'polarity_not-selected','indicator-growth px-4']"
+                                    @click="switchPolarity('isGrowth')"
                             ></div>
                             <div
-                                    :class="[polaritySelected.fall ? 'polarity_selected' : 'polarity_not-selected','indicator-fall px-4']"
-                                    @click="switchPolarity('fall')"
+                                    :class="[polaritySelected.isFall ? 'polarity_selected' : 'polarity_not-selected','indicator-fall px-4']"
+                                    @click="switchPolarity('isFall')"
                             ></div>
                         </div>
                     </div>
@@ -109,8 +109,8 @@ export default {
                 'Протокол КИП'
             ],
             polaritySelected: {
-                growth: false,
-                fall: false
+                isGrowth: false,
+                isFall: false
             },
             status: ''
         };
@@ -123,6 +123,7 @@ export default {
         },
         async store() {
             let uri = this.localeUrl("/kpd-tree-catalog-store");
+            this.kpd.current.polarity = this.kpd.current.polarity.replace('is','').toLowerCase();
             this.axios.post(uri, this.kpd.current).then((response) => {
                 if (response.status === 200) {
                     this.$modal.hide('modalKpdEdit')
