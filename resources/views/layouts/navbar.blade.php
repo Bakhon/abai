@@ -45,6 +45,9 @@
                             {{ trans('app.module_title') }} "@yield('module_title')"
                         @endif
                     </div>
+                    @if(Route::current()->getName() == 'proactiveFactors')
+                        <div class="header__subtitle"> - Упреждающие факторы</div>
+                    @endif
                 @endif
             @endif
         </div>
