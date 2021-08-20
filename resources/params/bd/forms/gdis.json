@@ -16,12 +16,6 @@
                 "validation": "required"
               },
               {
-                "code": "dend",
-                "type": "datetime",
-                "title": "dend",
-                "validation": "required|after:dbeg"
-              },
-              {
                 "code": "method",
                 "type": "dict",
                 "dict":"research_methods",
@@ -29,8 +23,8 @@
                 "validation": "required|exists:tbd.dict.research_method,id"
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "WWP",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "uwi_time",
                 "depends_on": [
@@ -43,11 +37,11 @@
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "PSAT",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pressure",
-                "validation":"gte:0|lte:1500",
+                "validation": "gte:0|lte:1500",
                 "depends_on": [
                   {
                     "field": "method",
@@ -58,287 +52,287 @@
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "RSMD",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast_model",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "FBRD",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "SKFC",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "skin_f",
-                "validation":"gte:-7.5|lte:100",
+                "validation": "gte:-7.5|lte:100",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "PNT",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pronicm",
-                "validation":"gte:0|lte:1000",
+                "validation": "gte:0|lte:1000",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "ELST",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "upr",
-                "validation":"gte:0",
+                "validation": "gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "CNCL",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "vyvody",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "RCM",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "recc",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "WLRD",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "uwi_r",
-                "validation":"gte:0|lte:0.5",
+                "validation": "gte:0|lte:0.5",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "TET",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "tol",
-                "validation":"gte:0",
+                "validation": "gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "POR",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pr",
-                "validation":"gte:0|lte:1",
+                "validation": "gte:0|lte:1",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "VCL",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "koeff",
-                "validation":"gte:0|lte:10",
+                "validation": "gte:0|lte:10",
                 "depends_on": [
                   {
                     "field": "method",
-                    "value": {                   
-                      "code":"IPR"
+                    "value": {
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "LQVS",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "water",
-                "validation":"gte:0|lte:1000000",
+                "validation": "gte:0|lte:1000000",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "GCS",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "system",
-                "validation":"gte:0",
+                "validation": "gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "WBMD",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "plast_uwi",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "BRMD",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "model_g",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "RPWZ",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pres_pl",
-                "validation":"gte:0|lte:2100",
+                "validation": "gte:0|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "BPEN",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbn",
-                "validation":"gte:0|lte:2100",
+                "validation": "gte:0|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "BPBG",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "pbk",
-                "validation":"gte:0|lte:2100",
+                "validation": "gte:0|lte:2100",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "CND",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "prov",
-                "validation":"gte:0",
+                "validation": "gte:0",
                 "depends_on": [
                   {
                     "field": "method",
                     "value": {
-                      "code":"IPR"
+                      "code": "IPR"
                     }
                   }
                 ]
               },
               {
-                "code": "value_string",
-                "table":"prod.gdis_complex_value",
+                "code": "WWP",
+                "table": "prod.gdis_complex_value",
                 "type": "numeric",
                 "title": "uwi_time",
                 "depends_on": [
@@ -3319,8 +3313,7 @@
                 "code": "research_target",
                 "type": "dict",
                 "dict": "research_target",
-                "title": "aim",
-                "validation": "required"
+                "title": "aim"
               },
               {
                 "code": "conclusion",
