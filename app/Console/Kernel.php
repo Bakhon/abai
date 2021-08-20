@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\ComplicationMonitoringEconomicCalculate::class,
         \App\Console\Commands\EmergencySituations::class,
         \App\Console\Commands\CalculateHydroDinamicGuUpsvYesterday::class,
+        \App\Console\Commands\CalculateGuCorrosionCron::class,
     ];
 
     /**
@@ -40,6 +41,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('monitoring-economic-calc:cron')->dailyAt('03:00')->timezone('Asia/Almaty');
         $schedule->command('create-emergency:cron')->dailyAt('08:50')->timezone('Asia/Almaty');
         $schedule->command('calculate-hydro-yesterday:cron')
+            ->dailyAt('06:00')
+            ->timezone('Asia/Almaty');
+        $schedule->command('calculate-gu-corrosion:cron')
             ->dailyAt('06:00')
             ->timezone('Asia/Almaty');
 
