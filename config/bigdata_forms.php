@@ -53,4 +53,5 @@
   'lab_research' => '\\App\\Services\\BigData\\Forms\\LabResearch',
   'well_treat' => '\\App\\Services\\BigData\\Forms\\WellTreat',
   'drilling' => '\\App\\Services\\BigData\\Forms\\Drilling',
+  'well_mark' => '\\App\\Services\\BigData\\Forms\\WellMark',
 );
