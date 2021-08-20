@@ -61,7 +61,7 @@
             }
         },
         mounted() {
-            if (this.currentWell){
+            if (this.isCurrentWell()){
                 this.getWellID(this.currentWell.id)
             }
         },
@@ -76,6 +76,9 @@
                     }
                 });
 
+            },
+            isCurrentWell () {
+                return Object.keys(this.currentWell).length != 0;
             },
         },
         computed:{

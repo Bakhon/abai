@@ -62,7 +62,7 @@
             ]),
         },
         mounted(){
-            if (this.currentWell){
+            if (this.isCurrentWell()){
                 this.searchItem = this.currentWell.Месторождение + ' ' + this.currentWell.Скважина + ' ' + this.currentWell.ДЗО
             }
             this.searchBy()
@@ -74,6 +74,10 @@
             closeSearchModal(){
                 this.search = false
             },
+            isCurrentWell () {
+                return Object.keys(this.currentWell).length != 0;
+            },
+
             searchBy(){
                 if (this.searchItem) {
                     const searchItemList = this.searchItem.split(" ");
