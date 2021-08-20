@@ -57,6 +57,8 @@
         "materialize-css": "^1.0.0-rc.2",
         "moment": "^2.29.1",
         "moment-timezone": "^0.5.33",
+        "ol": "^6.6.0",
+        "ol-ext": "^3.2.3",
         "plotly.js-locales": "^1.58.4",
         "topojson-client": "^3.1.0",
         "v-calendar": "^1.1.1",

@@ -232,6 +232,8 @@ Vue.component('technical-casing', require('./components/DigitalDrilling/ProjectD
 Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 
+Vue.component('map-constructor-main', require('./components/mapConstructor/Main.vue').default);
+
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
 Vue.prototype.$urlLink = url => urlLink(url);
