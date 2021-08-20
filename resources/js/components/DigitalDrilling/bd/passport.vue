@@ -216,7 +216,7 @@
 </template>
 
 <script>
-    import {digitalDrillingGetters} from '@store/helpers';
+    import {digitalDrillingState} from '@store/helpers';
 
     export default {
         name: "passport",
@@ -226,8 +226,8 @@
             }
         },
         mounted() {
-            if (this.well){
-                this.getWellID(this.well.id)
+            if (this.currentWell){
+                this.getWellID(this.currentWell.id)
             }
         },
         methods:{
@@ -244,12 +244,9 @@
             },
         },
         computed:{
-            ...digitalDrillingGetters([
-                'isCurrentWell'
+            ...digitalDrillingState([
+                'currentWell'
             ]),
-            well(){
-                return this.isCurrentWell
-            },
         },
 
     }

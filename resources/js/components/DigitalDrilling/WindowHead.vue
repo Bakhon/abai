@@ -45,7 +45,7 @@
 </template>
 
 <script>
-    import {digitalDrillingActions, digitalDrillingGetters} from '@store/helpers';
+    import {digitalDrillingActions, digitalDrillingState} from '@store/helpers';
     export default {
         name: "WindowHead",
         data(){
@@ -57,15 +57,14 @@
             }
         },
         computed:{
-            ...digitalDrillingGetters([
-                'isCurrentWell'
+            ...digitalDrillingState([
+                'currentWell'
             ]),
-            well(){
-                return this.isCurrentWell
-            },
         },
         mounted(){
-            this.searchItem = this.well.Месторождение + ' ' + this.well.Скважина + ' ' + this.well.ДЗО
+            if (this.currentWell){
+                this.searchItem = this.currentWell.Месторождение + ' ' + this.currentWell.Скважина + ' ' + this.currentWell.ДЗО
+            }
             this.searchBy()
         },
         methods:{
