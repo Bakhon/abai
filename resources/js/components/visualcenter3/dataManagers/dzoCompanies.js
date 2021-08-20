@@ -138,9 +138,6 @@ export default {
                     this.consolidatedData[categories[i]].current = this.consolidatedData[categories[i]].currentWithoutKMG;
                     this.consolidatedData[categories[i]].yesterday = this.consolidatedData[categories[i]].yesterdayWithoutKMG;
                 }
-               // let actual = this.consolidatedData[categories[i]].current.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
-              //  let yesterday = this.consolidatedData[categories[i]].yesterday.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
-                //this.updateProductionTotalFact(yesterday,actual,categories[i]);
             }
         },
 
