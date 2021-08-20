@@ -10,20 +10,6 @@
             "title": "",
             "items": [
               {
-                "code": "owner",
-                "type": "text",
-                "title": "autor",
-                "validation": "",
-                "is_editable": false
-              },
-              {
-                "code": "load_date",
-                "type": "date",
-                "title": "date",
-                "validation": "",
-                "is_editable": false
-              },
-              {
                 "code": "name_ru",
                 "type": "text",
                 "title": "name",
@@ -47,30 +33,41 @@
               },
               {
                 "code": "org",
-                "type": "dict",
+                "type": "dict_tree",
                 "dict": "orgs",
                 "title": "orgs",
                 "validation": "required",
                 "is_editable": true
-              }              
-            ]
-          }
-        ]
-      ]
-    },
-    {
-      "title": "doc_tag",
-      "blocks": [
-        [
-          {
-            "title": "",
-            "items": [
+              },
               {
-                "code": "name_ru",
-                "type": "dict",
-                "dict": "tags",
-                "title": "tag",
-                "validation": "required|exists:tbd.dict.tag,id"
+                "code": "tags",
+                "type": "table",
+                "title": "doc_tag",
+                "table": "prod.document_tag",
+                "parent_column": "well",
+                "columns": [
+                  {
+                    "code": "tag",
+                    "type": "dict",
+                    "title": "tag",
+                    "dict": "tag",
+                    "validation": "required|exists:tbd.dict.tag,id"
+                  },
+                  {
+                    "code": "value",
+                    "type": "text",
+                    "title": "value",
+                    "validation": "required"
+                  }
+                ]
+              },
+              {
+                "code": "file",
+                "type": "file",
+                "origin": "name_ru",
+                "title": "uploaded_files",
+                "validation": "required",
+                "is_editable": true
               }
             ]
           }

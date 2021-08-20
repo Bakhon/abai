@@ -212,7 +212,7 @@ abstract class PlainForm extends BaseForm
     public function getFormatedParams(): array
     {
         $cacheKey = 'bd_forms_' . $this->configurationFileName . '_params';
-        if (Cache::has($cacheKey)) {
+        if (!config('app.debug') && Cache::has($cacheKey)) {
             $params = Cache::get($cacheKey);
         } else {
             $params = $this->params();
@@ -316,7 +316,8 @@ abstract class PlainForm extends BaseForm
 
     protected function prepareDataToSubmit()
     {
-        $data = $this->request->except($this->tableFieldCodes);
+        $data = $this->request->except(array_merge($this->tableFieldCodes, ['files']));
+
         if (!empty($this->params()['default_values'])) {
             $data = array_merge($this->params()['default_values'], $data);
         }

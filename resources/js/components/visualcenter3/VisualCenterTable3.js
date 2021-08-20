@@ -755,11 +755,14 @@ export default {
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
-        this.updateChemistryWidget();
-        this.updateWellsWorkoverWidget();
-        this.updateDrillingWidget();
-        await this.updateProductionFondWidget();
-        this.updateInjectionFondWidget();
+        let isOneDzoSelected = this.getDzoTicker();     
+        if (!isOneDzoSelected) {       
+            this.updateChemistryWidget();
+            this.updateWellsWorkoverWidget();
+            this.updateDrillingWidget();
+            await this.updateProductionFondWidget();
+            await this.updateInjectionFondWidget();
+        };
         this.isSummaryShouldBeCalculated = false;
     },   
     watch: {

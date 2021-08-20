@@ -4,7 +4,7 @@
     name="modalAtlas"
     :draggable="false"
     :width="1400"
-    :height="800"
+    :height="650"
     :adaptive="false"
     @before-open="beforeOpen">
     <div class="modal-bign-container">
