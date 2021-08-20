@@ -14,14 +14,12 @@
 </template>
 <script>
 import {globalloadingMutations} from '@store/helpers';
-import CatLoader from '@ui-kit/CatLoader';
+
+;
 
 export default {
   props: ['value'],
-     components: {
-        CatLoader
-    },
-    data() {
+  data() {
     return {
       orgs: []
     }

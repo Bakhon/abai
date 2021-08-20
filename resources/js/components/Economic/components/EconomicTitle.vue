@@ -11,17 +11,17 @@ export default {
   props: {
     fontSize: {
       required: false,
-      type: Number,
+      type: [Number, String],
       default: 68
     },
     lineHeight: {
       required: false,
-      type: Number,
+      type: [Number, String],
       default: 82
     },
     flexGrow: {
       required: false,
-      type: Number,
+      type: [Number, String],
       default: 1
     }
   }

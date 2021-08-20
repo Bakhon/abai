@@ -224,6 +224,12 @@ return array (
   'tonWithSpace' => ' тонн',
   'meterCubicWithSpace' => ' м³/сут',
   'requiredDailyPlan' => 'Необходимый ср/сут уровень',
+  'headOfPageModule' => 'Главная страница модуля',
+  'inputForm' => 'Форма ввода',
+  'dailyReportsKMG' => 'Суточная отчетность КМГ',
+  'approvalsTable' => 'Таблица согласований',
+  'version' => 'Версия',
+  'upstreamKPI' => 'КПД Блока Upstream',
   'dzoRegions' => 
   array (
     'aturay' => 'Атырауская область',
@@ -251,6 +257,7 @@ return array (
       'dataSaved' => 'Данные успешно сохранены!',
       'dataIsNotValid' => 'В данных найдены ошибки!',
       'verifySumByDzo' => 'Ошибка! Проверьте общие суммы по параметрам.',
+      'sendedToApprove' => 'Отправлено на согласование',
     ),
     'chemistry' => 'Химизация производства, т/мес',
     'enterChemistryButton' => 'Химизация производства',
@@ -269,7 +276,6 @@ return array (
     'insertData' => 'Внесение данных',
     'dataArchieve' => 'Архив данных',
     'dateSelect' => 'Выберите дату',
-    'sendedToApprove' => 'Отправлено на согласование',
     'executor' => 'Исполнитель',
     'reason' => 'Причина',
   ),
@@ -408,5 +414,19 @@ return array (
     'param' => 'Параметр',
     'current' => 'Текущее значение',
     'new' => 'Новое значение',
+    'approved' => 'Согласовано',
+    'cancelled' => 'Отменено'
   ),
+  'notes' => 'Примечания',
+  'kpdModuleTitle' => 'КПД Upstream',
+  'condensateDelivery' => 'Сдача конденсата',
+  'notes' => 'Примечания',
+  'countOfProductionWells' => 'Количество добывающих скважин, скв.',
+  'countOfInjectionWells' => 'Количество нагнетательных скважин, скв.',
+  'countDrillingWells' => 'Количество скважин из бурения, скв.',
+  'countDrillingHeading' => 'Бурение проходка, м.',
+  'countWellsWorkover' => 'Количество КРС/ПРС, скв.',
+  'countChemistry' => 'Химизация производства, тонн',
+  'countDrillingWells' => 'Количество скважин из бурения, скв.',
+  'countDrilling' => 'Бурение проходка, м.'
 );

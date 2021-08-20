@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <div class="row main-layout pb-3">
             <div class="col-12 row mt-3 ml-1">
                 <div class="col-4"></div>
@@ -99,7 +100,14 @@
                     <span>{{trans('visualcenter.importForm.statusLabel')}}:</span>
                     <span :class="[isValidateError ? 'status-error' : '','label']">&nbsp;{{status}}</span>
                 </div>
-                <div class="col-12 mt-3 status-block status-block_little">
+                <select
+                        class="form-select col-12 mt-3 status-block status-block_little"
+                        v-if="!dzoUsers.includes(parseInt(userId))"
+                        @change="switchCompany($event)"
+                >
+                    <option v-for="company in dzoCompanies" :value="company.ticker">{{company.name}}</option>
+                </select>
+                <div v-else class="col-12 mt-3 status-block status-block_little">
                     &nbsp;
                 </div>
                 <div class="col-12 mt-3 status-block status-block_little">
@@ -193,6 +201,41 @@
                 ></v-grid>
             </div>
         </div>
+        <modal
+                class="modal-bign-wrapper"
+                name="additionalParamsReminder"
+                :width="720"
+                :height="250"
+                style="background-color: rgba(0, 0, 0, 0.1);"
+                :adaptive="true"
+        >
+            <div class="modal-bign modal-bign-container">
+                <div class="modal-bign-header">
+                    <div class="modal-bign-title modal_header">Напоминание</div>
+                    <button type="button" class="modal-bign-button" @click="$modal.hide('additionalParamsReminder')">
+                        {{trans('pgno.zakrit')}}
+                    </button>
+                </div>
+                <hr class="solid">
+                <div class="modal_header mt-2">
+                    <h2 class="text-center">Необходимо с 5 по 10 число заполнить параметры:</h2>
+                    <div class="row justify-content-center mt-4 mx-5">
+                        <div
+                                :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : '','col-12 status-block status-block_little menu__button ml-1']"
+                                @click="changeButtonVisibility()"
+                        >
+                            {{trans('visualcenter.importForm.enterChemistryButton')}}
+                        </div>
+                        <div
+                                :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : '','col-12 status-block status-block_little menu__button ml-1 mt-3']"
+                                @click="changeWellBlockVisibility()"
+                        >
+                            {{trans('visualcenter.importForm.wellWorkover')}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </modal>
     </div>
 </template>
 
@@ -398,4 +441,14 @@
         font-size: 16px;
         text-align: left;
     }
+    hr.solid {
+        border-top: 3px solid #bbb;
+    }
+    .reminder-titles {
+        margin-top: 60px;
+    }
+    select.status-block {
+        color: black;
+    }
+
 </style>

@@ -14,13 +14,13 @@ export default new Vuex.Store({
             'complicationMonitoring',
             'dzoMap',
             'fa',
-            'globalloading',
             'guMap',
             'index',
             'paegtmMap',
             'pgno',
             'techMode',
-            'tr'
+            'tr',
+            'pgno'
         ]
     })],
 });

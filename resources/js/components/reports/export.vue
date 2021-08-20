@@ -1,6 +1,6 @@
 <template>
   <div class="export-wrapper">
-    <cat-loader />
+
     <div class="col-xs-12 col-sm-12 col-md-12 row">
       <div class="col-xs-12 col-sm-4 col-md-4 mb-4">
         <label>Выберите разделы</label>
@@ -81,13 +81,10 @@
 <script>
 import moment from 'moment'
 import {globalloadingMutations} from '@store/helpers';
-import CatLoader from '@ui-kit/CatLoader';
+;
 
 export default {
   name: 'report-export',
-  components: {
-    CatLoader
-  },
   data() {
     return {
       start_date: moment().subtract(1, 'month').format('YYYY-MM-DD'),

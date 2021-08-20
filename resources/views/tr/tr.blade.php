@@ -1,6 +1,6 @@
 @extends('layouts.tr')
 @section('content')
-    <div class="col p-4 tr_page" id="app">
+    <div class="col p-4 tr_page"  >
         <a href="{{url('/')}}/ru/export" class="float-right">
         </a>
         <div class="level1-content row">

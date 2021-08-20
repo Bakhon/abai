@@ -1,6 +1,5 @@
 <template>
   <div>
-    <cat-loader v-show="isLoading"/>
     <div v-if="rows" class="table-container scrollable">
       <div class="table-container-header">
 
@@ -69,7 +68,7 @@
               @click="selectedRow = row"
           >
             <td v-for="column in columns" class="table-border element-position">
-              <p>{{ getCellValue(row, column) }}</p>
+              <p v-html="getCellValue(row, column)"></p>
             </td>
             <td v-if="!form.actions" class="table-border element-position">
               <div class="table-container-svg">
@@ -142,8 +141,8 @@
 <script>
 import forms from '../../../json/bd/forms.json'
 import BigDataPlainForm from './PlainForm'
-import {bdFormActions} from '@store/helpers'
-import CatLoader from '@ui-kit/CatLoader'
+import {bdFormActions, globalloadingMutations} from '@store/helpers'
+
 import EditHistory from '../../common/EditHistory'
 import moment from "moment";
 
@@ -161,7 +160,7 @@ export default {
   },
   components: {
     BigDataPlainForm,
-    CatLoader,
+
     EditHistory
   },
   data() {
@@ -176,7 +175,6 @@ export default {
       formValues: null,
       formParams: null,
       dictFields: {},
-      isLoading: false,
       hasFormError: false,
       history: {},
       isHistoryShowed: false,
@@ -196,11 +194,14 @@ export default {
     this.updateResults()
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     ...bdFormActions([
       'loadDict'
     ]),
     updateResults() {
-      this.isLoading = true
+      this.SET_LOADING(true)
       this.hasFormError = false
 
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.code}`)).then(({data}) => {
@@ -236,7 +237,7 @@ export default {
         this.columns = null
         this.hasFormError = true
       }).finally(() => {
-        this.isLoading = false
+        this.SET_LOADING(false)
       })
     },
     loadDictionaries() {
@@ -249,6 +250,9 @@ export default {
     },
     getDict(code) {
       return this.$store.getters['bdform/dict'](code);
+    },
+    getDictFlat(code) {
+      return this.$store.getters['bdform/dictFlat'](code);
     },
     showForm(formCode = null) {
       this.formParams = this.forms.find(form => form.code === (formCode || this.code))
@@ -290,19 +294,46 @@ export default {
           typeof this.dictFields[column.code] !== 'undefined'
           && typeof this.getDict(this.dictFields[column.code]) !== 'undefined'
       ) {
-        let dict = this.getDict(this.dictFields[column.code])
+        let dict = this.getDictFlat(this.dictFields[column.code])
 
-        let value = dict.reduce(this.findValueInDict(row[column.code]), null)
+        let value = dict.find(dictItem => dictItem.id === row[column.code])
+
+        if (!value) return null
+
+        if (this.dictFields[column.code] === 'geos') {
+          let result = [value.label]
+          while (true) {
+            if (value.parent) {
+              value = dict.find(dictItem => dictItem.id === value.parent)
+              result.push(value.label)
+              continue;
+            }
+            break;
+          }
+
+          return result.reverse().join(' / ')
+        }
+
         return value.name || value.label
 
       }
 
-      if (column.type === 'date') {
-        return moment(row[column.code]).format('DD.MM.YYYY')
+      if (row[column.code] && column.type === 'date') {
+        return moment(row[column.code]).tz('Asia/Almaty').format('DD.MM.YYYY')
       }
 
-      if (column.type === 'datetime') {
-        return moment(row[column.code]).format('DD.MM.YYYY HH:MM')
+      if (row[column.code] && column.type === 'datetime') {
+        return moment(row[column.code]).tz('Asia/Almaty').format('DD.MM.YYYY HH:MM')
+      }
+
+      if (column.type === 'checkbox') {
+        return row[column.code] ? this.trans('app.yes') : this.trans('app.no')
+      }
+
+      if (column.type === 'file') {
+        return row[column.code].map(file => {
+          return '<a href="' + this.localeUrl(`/attachments/${file.id}`) + `">${file.filename} (${file.size})</a>`
+        }).join('<br>')
       }
 
       return row[column.code]
@@ -316,13 +347,6 @@ export default {
         this.history = data
         this.isHistoryShowed = true
       })
-    },
-    findValueInDict(id) {
-      const searchFunc = (found, item) => {
-        const children = item.children || []
-        return found || (item.id === id ? item : children.reduce(searchFunc, null))
-      }
-      return searchFunc
     }
   }
 }

@@ -11,17 +11,17 @@
                         <div class="img-documents"></div>
                         <div @click="$modal.show('modalDocuments')" class="ml-1">Нормативные документы</div>
                     </div>
-                    <div class="main-buttons p-2 d-flex ml-5">
+                    <div class="main-buttons p-2 d-flex ml-4">
                         <div class="img-catalog"></div>
                         <div @click="$modal.show('modalCatalog')" class="ml-1">Каталог КПД</div>
                     </div>
-                    <div class="main-buttons p-2 d-flex ml-5">
+                    <div class="main-buttons p-2 d-flex ml-4">
                         <div class="img-export"></div>
                         <div class="ml-1">Экспорт</div>
                     </div>
                 </div>
             </div>
-            <div class="mt-3 col-12 row m-0">
+            <div class="mt-3 col-12 row m-0 ceo-table">
                 <div class="col-2 d-flex">
                     <div class="col-12 table-header kpd-main">
                         КПД CEO
@@ -29,13 +29,13 @@
                 </div>
                 <div class="col-4 d-flex">
                     <div class="col-12 table-header p-1">
-                        Карта КПД СЕО-1<br />
+                        КПД СЕО-1<br />
                         (заместитель председателя Правления)
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="col-12 table-header p-1">
-                        Карты КПД СЕО-2<br />
+                        КПД СЕО-2<br />
                         (директора департаментов)
                     </div>
                 </div>
@@ -47,8 +47,9 @@
                         </div>
                         <div class="col-12 p-2 kpd-column">
                             <div
-                                    v-for="kpd in kpdCeo"
-                                    class="col-12 p-3 kpd-ceo_item"
+                                    v-for="(kpd, index) in kpdCeo"
+                                    @mouseover="handleHover('.kpdDecomposition_'+index,kpd.childsA,kpd.childsB)"
+                                    :class="['kpdDecomposition_' + index,'col-12 p-3 kpd-ceo_item']"
                             >
                                 <div class="text-right">
                                     {{kpd.progress}}%
@@ -75,11 +76,11 @@
                         <img class="filter-icon" :src="kpdDecompositionA.img"></img>
                         <div class="ml-2 text-left"><b>{{kpdDecompositionA.manager}}</b> <br> {{kpdDecompositionA.title}}</div>
                     </div>
-                    <div class="col-12 p-4 kpd-column">
+                    <div class="col-12 p-2 kpd-column">
                         <div
                                 v-for="(kpd, index) in kpdCeoDecompositionA"
-                                class="col-12 p-4 kpd-ceo-a_item"
-                                @mouseover="getHoveredElement(index,'kpdCeoDecompositionA')"
+                                @mouseover="handleHoverA('.kpdDecompositionA_'+index,kpd.parent,kpd.childsB)"
+                                :class="[getChildClassA(index),'col-12 p-3 kpd-ceo-a_item']"
                         >
                             <div class="text-right">
                                 {{kpd.progress}}%
@@ -102,14 +103,18 @@
                 </div>
                 <div class="col-6 row m-0">
                     <div class="col-12 kpd-ceo_list-b p-0">
-                        <div v-for="master in kpdCeoDecompositionB" class="col-12 kpd-main row p-0 m-0">
+                        <div v-for="(master,masterIndex) in kpdCeoDecompositionB" class="col-12 kpd-main row p-0 m-0">
                             <div class="col-12 kpd-ceo_header-b d-flex p-4 chairmaster" @click="switchManager(master)">
                                 <img :src="master.img" class="filter-icon"></img>
                                 <div class="ml-2 text-left"><b>{{master.manager}}</b><br>{{master.title}}</div>
                             </div>
-                            <div v-for="kpd in master.kpd" class="col-12 kpd-ceo_item-b p-1 d-flex">
+                            <div
+                                    v-for="(kpd,index) in master.kpd"
+                                    :class="[getChildClassB(index,masterIndex),'col-12 kpd-ceo_item-b p-1 d-flex']"
+                                    @mouseover="handleHoverB('.kpdDecompositionB_'+masterIndex+'_'+index,kpd.parentA,kpd.parent)"
+                            >
                                 <div class="item-list_vector m-2"></div>
-                                <div class="text-left ml-4 col-8 kpd-name_b">{{kpd.name}}</div>
+                                <div class="text-left ml-4 col-8 kpd-name_b" @click="[selectedManager = master, selectedKpd = kpd,$modal.show('modalKpdPassport')]">{{kpd.name}}</div>
                                 <div class="progress progress_template mt-2 p-0 progress-ceo_b">
                                     <div
                                             :class="[getProgressBarFillingColor(kpd.progress),'progress-bar progress-bar_filling']"
@@ -129,9 +134,10 @@
                 </div>
             </div>
             <kpd-modal-documents></kpd-modal-documents>
-            <kpd-modal-catalog></kpd-modal-catalog>
+            <kpd-modal-catalog :kpd-list="kpdDecompositionB"></kpd-modal-catalog>
             <kpd-modal-map :manager-info="selectedManager"></kpd-modal-map>
             <kpd-modal-monitoring :manager-info="selectedManager"></kpd-modal-monitoring>
+            <kpd-modal-kpd-passport :manager-info="selectedManager" :kpd="selectedKpd"></kpd-modal-kpd-passport>
         </div>
     </div>
 </template>
@@ -195,7 +201,7 @@
     background-color: #009847 !important;
 }
 .kpd-ceo_list {
-    border: 1px solid #2A3A85;
+    border: 2px solid #2A3A85;
     border-bottom: 2px solid #656A8A;
     max-height: 99px;
 }
@@ -203,15 +209,15 @@
     border: 1px solid #2A3A85;
 }
 .kpd-ceo_header-b {
-    border-bottom: 2px solid #656A8A;
+    border-bottom: 4px solid #656A8A;
 }
 .kpd-ceo_item-b {
     background: #272C5C;
 }
-.chairmaster:hover, .kpd-ceo_item:hover, kpd-ceo_item-b:hover  {
+.chairmaster:hover {
     background: #3C4280;
     border-radius: 5px;
-    border: 5px solid #272953;
+    border: 2px solid #272953;
 }
 .kpd-ceo-a_item:hover {
     background: #3C4280;
@@ -221,6 +227,9 @@
 }
 .kpd-ceo_item {
     margin-top: 5rem;
+}
+.kpd-ceo_item:hover {
+    background: #3C4280;
 }
 .kpd-ceo-a_item {
     margin-top: 3rem;
@@ -245,10 +254,15 @@
 .kpd-name_b {
     font-size: 14px;
 }
-.main-buttons:hover {
+.main-buttons:hover, .kpd-name_b:hover {
     background: #3A4280;
 }
 .filter-icon {
     width: 45px;
+}
+.hover {
+    background: #3C4280;
+    border-radius: 5px;
+    border: 2px solid #272953;
 }
 </style>

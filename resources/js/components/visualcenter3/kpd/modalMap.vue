@@ -5,13 +5,13 @@
                 name="modalMap"
                 draggable=".modal-bign-header"
                 :width="1500"
-                :height="800"
+                :height="700"
                 style="background: transparent;"
                 :adaptive="true"
         >
             <div class="modal-bign modal-bign-container">
                 <div class="modal-bign-header">
-                    <div class="modal-bign-title modal_header">{{kpd.name}}</div>
+                    <div class="modal-bign-title modal_header">{{kpd.name}} {{managerInfo.title}} ({{managerInfo.manager}}) на {{currentYear}} г.</div>
                     <button type="button" class="modal-bign-button" @click="$modal.hide('modalMap')">
                         {{trans('pgno.zakrit')}}
                     </button>
@@ -22,10 +22,10 @@
                                 v-for="(filter,index) in filters"
                                 :class="[selectedFilter === filter ? 'filter_selected' : '',
                                     index === 0 ? 'ml-2' : 'ml-5',
-                                    'd-flex']"
+                                    'd-flex main-buttons p-2']"
                                 @click="handleFilter(index)"
                         >
-                            <img :src="filter.icon" class="mt-2 filter-icon"></img>
+                            <img :src="filter.icon" class="filter-icon"></img>
                             <div class="ml-2">{{filter.name}}</div>
                         </div>
                     </div>
@@ -42,10 +42,27 @@
                 </div>
                 <table class="modal_table mt-2">
                     <tr>
-                        <th class="p-3" v-for="header in kpd.table.headers">{{header}}</th>
+                        <th class="p-3">№ п/п</th>
+                        <th class="p-3">Наименование КПД</th>
+                        <th class="p-3">Единица измерения</th>
+                        <th class="p-3">Вес</th>
+                        <th class="p-3">
+                            <span>Порог</span><br>
+                            <span>(50%)</span>
+                        </th>
+                        <th class="p-3">
+                            <span>Цель</span><br>
+                            <span>(100%)</span>
+                        </th>
+                        <th class="p-3">
+                            <span>Вызов</span><br>
+                            <span>(125%)</span>
+                        </th>
+                        <th class="p-3">ФИО ответственного за КПД</th>
+                        <th class="p-3">Согласование</th>
                     </tr>
                     <tr v-for="row in kpd.table.body">
-                        <td class="p-1" v-for="column in row">{{column}}</td>
+                        <td v-for="(column,index) in row" :class="index === 1 ? 'p-2' : 'p-1'">{{column}}</td>
                         <td class="p-1">
                             <select class="filter_select p-1">
                                 <option
@@ -164,15 +181,16 @@ export default {
             ],
             selectedUnit: null,
             selectedKpd: null,
+            currentYear: new Date().getFullYear(),
             kpd: {
-                'name': 'Карта КПД заместителя председателя правления по разведке и добыче (Марабаев Ж.Н.) на 2021 год',
+                'name': 'КПД',
                 'table': {
                     'headers': [
                         '№ п/п',
                         'Наименование КПД',
                         'Единица измерения',
                         'Вес',
-                        'Порог (50%)',
+                        "Порог\n(50%)",
                         'Цель (100%)',
                         'Вызов (125%)',
                         'ФИО ответственного за КПД',
@@ -286,6 +304,9 @@ export default {
     tr td {
         border: 1px solid #545580;
         height: 30px;
+        &:nth-child(2) {
+            text-align:left;
+        }
     }
     tr:nth-child(even) {
         background: #272953;
@@ -314,11 +335,13 @@ export default {
     background: url(/img/kpd-tree/monitoring.png) no-repeat;
     height: 25px;
     width: 35px;
+    margin-top: -5px;
 }
 .img-export {
     background: url(/img/kpd-tree/export.png) no-repeat;
     height: 25px;
     width: 25px;
+    margin-top: -5px;
 }
 .filter_select {
     background: #1A1D46;
@@ -333,5 +356,11 @@ export default {
 }
 .manager-about {
     margin-top: -15px;
+}
+.main-buttons {
+    line-height: 10px;
+}
+.main-buttons:hover {
+    background: #3A4280;
 }
 </style>

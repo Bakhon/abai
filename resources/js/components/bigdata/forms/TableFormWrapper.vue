@@ -1,17 +1,48 @@
 <template>
   <div class="bd-main-block">
-    <cat-loader v-show="isloading"/>
     <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
-    <div class="bd-main-block__date">
-      <template v-if="formParams && formParams.filter">
-        <template v-for="filterItem in formParams.filter">
-          <span class="bd-main-block__date-title">{{ filterItem.title }}:</span>
-          <div class="bd-main-block__date-input">
+    <div class="bd-main-block__filter">
+      <template v-if="filter">
+        <template v-if="formParams && formParams.filter">
+          <template v-for="filterItem in formParams.filter">
+            <span class="bd-main-block__filter-title">{{ filterItem.title }}:</span>
+            <div
+                v-if="filterItem.type === 'date'"
+                class="bd-main-block__filter-input bd-main-block__filter-input_date"
+            >
+              <datetime
+                  v-model="filter[filterItem.code]"
+                  :flow="['year', 'month', 'date']"
+                  :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                  :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
+                  auto
+                  input-class="form-control"
+                  type="date"
+                  value-zone="Asia/Almaty"
+                  zone="Asia/Almaty"
+              >
+              </datetime>
+            </div>
+            <div
+                v-else-if="filterItem.type === 'dict'"
+                class="bd-main-block__filter-input"
+            >
+              <bigdata-form-field
+                  v-model="filter[filterItem.code]"
+                  :item="filterItem"
+              >
+              </bigdata-form-field>
+            </div>
+          </template>
+        </template>
+        <template v-else>
+          <span class="bd-main-block__filter-title">{{ trans('bd.date') }}:</span>
+          <div class="bd-main-block__filter-input">
             <datetime
-                v-model="filter[filterItem.code]"
+                v-model="filter['date']"
                 :flow="['year', 'month', 'date']"
                 :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                 :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
@@ -24,23 +55,6 @@
             </datetime>
           </div>
         </template>
-      </template>
-      <template v-else>
-        <span class="bd-main-block__date-title">{{ trans('bd.date') }}:</span>
-        <div class="bd-main-block__date-input">
-          <datetime
-              v-model="filter['date']"
-              :flow="['year', 'month', 'date']"
-              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-              :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
-              auto
-              input-class="form-control"
-              type="date"
-              value-zone="Asia/Almaty"
-              zone="Asia/Almaty"
-          >
-          </datetime>
-        </div>
       </template>
     </div>
     <div class="bd-main-block__body">
@@ -55,9 +69,9 @@ import moment from 'moment'
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import {bTreeView} from 'bootstrap-vue-treeview'
-import {bdFormActions, bdFormState} from '@store/helpers'
+import {bdFormActions, bdFormState, globalloadingMutations} from '@store/helpers'
 import BigDataTableForm from './TableForm'
-import CatLoader from "@ui-kit/CatLoader";
+import BigdataFormField from './field'
 
 Vue.use(Datetime)
 
@@ -80,7 +94,7 @@ export default {
   components: {
     bTreeView,
     BigDataTableForm,
-    CatLoader
+    BigdataFormField
   },
   computed: {
     ...bdFormState([
@@ -89,18 +103,18 @@ export default {
   },
   data() {
     return {
-      isloading: false,
-      filter: {
-        date: moment().toISOString()
-      }
+      filter: null
     }
   },
   watch: {
     params() {
       this.init()
     },
-    filter() {
-      this.init()
+    filter: {
+      handler(val) {
+        this.init()
+      },
+      deep: true
     }
   },
   mounted() {
@@ -110,6 +124,9 @@ export default {
     ...bdFormActions([
       'updateForm'
     ]),
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     filterForm(item, isSelected) {
       if (isSelected) {
         if (item.data.type === 'org') return false
@@ -117,17 +134,29 @@ export default {
         this.type = item.data.type
       }
     },
-    init() {
-      this.isloading = true
-      this.updateForm(this.params.code).then(data => {
-        this.isloading = false
+    initFilter() {
+      if (this.filter) return
 
-        if (this.formParams && this.formParams.filter) {
-          this.formParams.filter.forEach(item => {
-            if (!this.filter[item.code]) {
-              this.filter[item.code] = item.default
-            }
-          })
+      if (!this.formParams.filter) {
+        this.filter = {date: moment().toISOString()}
+        return
+      }
+
+      let filter = {}
+      this.formParams.filter.forEach(filterItem => {
+        filter[filterItem.code] = filterItem.type === 'date' ? moment().toISOString() : null
+      })
+
+      this.filter = filter
+
+    },
+    init() {
+      this.SET_LOADING(true)
+      this.updateForm(this.params.code).then(data => {
+        this.SET_LOADING(false)
+
+        if (this.formParams) {
+          this.initFilter()
         }
       })
     },
@@ -307,7 +336,7 @@ body.fixed {
 <style lang="scss">
 .bd-main-block {
 
-  &__date {
+  &__filter {
     align-items: center;
     display: flex;
     margin-bottom: 10px;
@@ -318,16 +347,19 @@ body.fixed {
     }
 
     &-input {
+      margin-right: 15px;
       position: relative;
 
-      &:after {
-        background: url(/img/bd/calendar.svg) no-repeat;
-        content: "";
-        height: 28px;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 28px;
+      &_date {
+        &:after {
+          background: url(/img/bd/calendar.svg) no-repeat;
+          content: "";
+          height: 28px;
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 28px;
+        }
       }
 
       input[type="text"] {
@@ -339,6 +371,10 @@ body.fixed {
         font-weight: bold;
         height: 28px;
         width: 124px;
+      }
+
+      .v-select {
+        width: 300px;
       }
     }
 
