@@ -15,7 +15,7 @@
             "title": "repair",
             "items": [
               {
-                "code": "request_date",
+              "code": "request_date",
               "type":"date",
               "title":"request_date",
               "validation": "nullable|date|before_or_equal:today"
@@ -27,7 +27,7 @@
               "validation": "nullable|date|before_or_equal:today"
             },
             {
-              "code": "work_type",
+              "code": "repair_work_type",
               "type": "dict",
               "title": "work_type",
               "validation": "required|exists:tbd.dict.repair_work_type,id",
@@ -101,7 +101,7 @@
               "dict": "brigades"
             },
             {
-              "code": "brigade_master",
+              "code": "brigadier",
               "type": "dict",
               "title": "brigade_master",
               "validation": "required|exists:tbd.dict.brigadier,id",
@@ -136,7 +136,7 @@
               "code": "dend",
               "type": "datetime",
               "title": "work_end_date",
-              "validation": "nullable|date|before_or_equal:today"
+              "validation": "required|nullable|date|after:dbeg"
             },
             {
               "code": "work_list",
