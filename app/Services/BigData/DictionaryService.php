@@ -51,6 +51,7 @@ use App\Models\BigData\Dictionaries\Zone;
 use App\Models\BigData\Dictionaries\ResearchMethod;
 use App\Models\BigData\Dictionaries\ResearchTarget;
 use App\Models\BigData\Dictionaries\GdisConclusion;
+use App\Models\BigData\Dictionaries\Mark;
 use App\Models\BigData\Dictionaries\ReasonEquipFail;
 use App\Models\BigData\Dictionaries\ChemicalReagentType;
 use App\TybeNom;
@@ -245,6 +246,10 @@ class DictionaryService
         ],
         'gdis_conclusion' => [
             'class' => GdisConclusion::class,
+            'name_field' => 'name_ru'
+        ],
+        'marks' => [
+            'class' => Mark::class,
             'name_field' => 'name_ru'
         ],
         'reason_equip_fail' => [

@@ -53,4 +53,5 @@
   'production_wells_schedule' => '\\App\\Services\\BigData\\Forms\\ProductionWellsSchedule',
   'lab_research' => '\\App\\Services\\BigData\\Forms\\LabResearch',
   'well_treat' => '\\App\\Services\\BigData\\Forms\\WellTreat',
+  'well_mark' => '\\App\\Services\\BigData\\Forms\\WellMark',
 );

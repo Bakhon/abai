@@ -77,7 +77,8 @@ export default {
                 plan: 0,
                 fact: 0,
                 opekPlan: 0
-            }
+            },
+            isSummaryShouldBeCalculated: true
         };
     },
     methods: {
@@ -137,9 +138,6 @@ export default {
                     this.consolidatedData[categories[i]].current = this.consolidatedData[categories[i]].currentWithoutKMG;
                     this.consolidatedData[categories[i]].yesterday = this.consolidatedData[categories[i]].yesterdayWithoutKMG;
                 }
-                let actual = this.consolidatedData[categories[i]].current.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
-                let yesterday = this.consolidatedData[categories[i]].yesterday.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
-                this.updateProductionTotalFact(yesterday,actual,categories[i]);
             }
         },
 
@@ -182,7 +180,7 @@ export default {
             this.totalSummary.fact = summary.fact;
             summary = this.getFormatted(summary);
             this.dzoCompaniesSummary = summary;
-            if (this.isConsolidatedCategoryActive()) {
+            if (this.isConsolidatedCategoryActive() && this.isSummaryShouldBeCalculated) {
                 this.updateProductionTotalFact(filteredByCompaniesYesterday,actualFilteredSummary,this.selectedView);
                 this.isOpecFilterActive = true;
             }
