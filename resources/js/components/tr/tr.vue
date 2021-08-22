@@ -197,7 +197,7 @@
                                     value="Статус"
                                   >
                                     <option v-for="(f, k) in statusFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_status') : f }}
+                                      {{ f }}
                                     </option>
                                   </select>
                                 </div>
@@ -240,7 +240,7 @@
                                   </select>
                                 </div>
 
-                                <div style="margin-left: 7px; cursor: pointer;">
+                                <!-- <div style="margin-left: 7px; cursor: pointer;">
                                   <select
                                     class="select_mod form-control"
                                     style="background: #334296 !important"
@@ -251,8 +251,26 @@
                                       {{ f === undefined ? trans('tr.choose_well') : f }}
                                     </option>
                                   </select>
-                                </div>
+                                </div> -->
                                 
+                                <div class="filters__item">
+                                  <multiselect
+                                    v-model="wellFilter"
+                                    :options="wellFilters"
+                                    value="Скважина"
+                                    :multiple="true"
+                                    :close-on-select="false" 
+                                    :clear-on-select="false"
+                                    select-label=""
+                                    deselect-label=""
+                                    select-group-label=""
+                                    deselect-group-label=""
+                                    selected-label=""
+                                  />
+                                </div>
+
+
+
                                   <a
                                     
                                     style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
@@ -623,12 +641,12 @@
                   <td rowspan="4" class="th">{{trans('tr.ngdu_field')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.well_number')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.well_type')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.horizon')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.object')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.block')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.u_horizon')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.u_object')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.u_block')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.r_feed_loop')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.outer_diameter_producing_casing')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.inner_diameter_producing_casing')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table">{{trans('tr.inner_diameter_producing_casing')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.outer_diameter_nkt')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.inner_diameter_nkt')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.choke_diameter')}}</td>
@@ -6421,6 +6439,9 @@
               </tbody>
             </table>
           </div>
+          <div>
+            <button v-on:click="dropAllFilters">Сбросить все фильтры</button>
+          </div>
           <div class="overflow-auto">
             
             <paginate
@@ -6787,6 +6808,11 @@ table::-webkit-scrollbar-corner {
   color: #fff;
   text-align: center;
 }
+.fix_colunn_full_table {
+  min-width: 85px;
+
+}
+
     .table-outer{
       &::v-deep{
         .pagination {
