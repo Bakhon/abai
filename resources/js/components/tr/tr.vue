@@ -646,7 +646,7 @@
                   <td rowspan="4" class="th">{{trans('tr.u_block')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.r_feed_loop')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.outer_diameter_producing_casing')}}</td>
-                  <td rowspan="4" class="th fix_colunn_full_table">{{trans('tr.inner_diameter_producing_casing')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_lg">{{trans('tr.inner_diameter_producing_casing')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.outer_diameter_nkt')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.inner_diameter_nkt')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.choke_diameter')}}</td>
@@ -662,11 +662,11 @@
                     {{trans('tr.pump_frequency_or_speed')}}
                   </td>
                   <td rowspan="4" class="th">{{trans('tr.h_pump_set')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.p_buffer')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.p_buffer')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.p_linear')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.p_layer')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.h_dynamic')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.annular_pressure')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.p_layer')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.h_dynamic')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.annular_pressure')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.p_intake')}}</td>
                   <td class="colspan th" colspan="5">
                     {{trans('tr.previous_month_data')}}
@@ -6808,9 +6808,11 @@ table::-webkit-scrollbar-corner {
   color: #fff;
   text-align: center;
 }
-.fix_colunn_full_table {
+.fix_colunn_full_table_lg {
   min-width: 85px;
-
+}
+.fix_colunn_full_table_sm {
+  min-width: 48px;
 }
 
     .table-outer{
