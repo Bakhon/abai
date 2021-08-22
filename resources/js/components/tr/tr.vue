@@ -657,10 +657,8 @@
                   <td rowspan="4" class="th">{{trans('tr.sk_type')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.swing_number')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.stroke_length')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.q_theor')}}</td>
-                  <td rowspan="4" class="th">
-                    {{trans('tr.pump_frequency_or_speed')}}
-                  </td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.q_theor')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_blg">{{trans('tr.pump_frequency_or_speed')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.h_pump_set')}}</td>
                   <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.p_buffer')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.p_linear')}}</td>
@@ -675,9 +673,9 @@
                   <td rowspan="4" class="th">
                     <span>{{trans('tr.state_at_the_end_of_the_month')}}</span>
                   </td>
-                  <td rowspan="4" class="th">{{trans('tr.p_saturation')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.t_layer')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.t_mouth')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.p_saturation')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.t_layer')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.t_mouth')}}</td>
                   <td class="colspan th" colspan="4">{{trans('tr.grp')}}</td>
                   <td rowspan="4" class="th">
                     <span>{{trans('tr.oil_viscosity_in_reservoir_conditions')}}</span>
@@ -691,8 +689,8 @@
                   <td rowspan="4" class="th">{{trans('tr.water_density')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.h_up_perf_md')}}</td>
                   <td rowspan="4" class="th">k</td>
-                  <td rowspan="4" class="th">КН</td>
-                  <td rowspan="4" class="th">{{trans('tr.pi')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">КН</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_lg">{{trans('tr.pi')}}</td>
                   <td class="colspan th" colspan="14">
                     {{trans('tr.calculation_of_technological_potential_from_IDN')}}
                   </td>
@@ -747,16 +745,16 @@
                   <td class="colspan th" colspan="14">{{trans('tr.intended_mode')}}</td>
                 </tr>
                 <tr class="headerColumn notsticky" style="background: #333975">
-                  <td rowspan="3" class="th"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.water_cut')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.h_dyn')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.k_prod')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_nm"><span>{{trans('tr.k_prod')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.q_oil')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.water_cut')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.gas_factor')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.gas_factor')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.skin')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.jd_fact')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.grp_date')}}</span></td>
@@ -779,7 +777,7 @@
                   <td class="colspan th" colspan="2">{{trans('tr.errors')}}</td>
                   <td class="colspan th" colspan="2">{{trans('tr.warnings')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.apv_t_rab')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.apv_t_nak')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.apv_t_nak')}}</span></td>
                   <td class="colspan th" colspan="3">{{trans('tr.isolation_works')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.choke_diameter')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.q_oil')}}</span></td>
@@ -808,7 +806,7 @@
                   </td>
                 </tr>
                 <tr class="headerColumn notsticky" style="background: #333975">
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th">
                     <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
@@ -841,7 +839,7 @@
                     <span>{{trans('tr.first_warning')}}</span>
                   </td>
                   <td rowspan="2" class="th"><span>{{trans('tr.spend')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.water_cut')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
@@ -1376,7 +1374,7 @@
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('curr_bh')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('pump_fillage')" class="th">
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
@@ -6677,6 +6675,9 @@ tr:nth-child(even) {
 .table .th {
   position: sticky;
   background: rgb(51, 57, 117);
+  border-right: 2px solid #454d55;
+  border-left: 2px solid #454d55;
+  
 }
 .table tr:first-child .th {
   top: -1px;
@@ -6812,7 +6813,13 @@ table::-webkit-scrollbar-corner {
   min-width: 85px;
 }
 .fix_colunn_full_table_sm {
-  min-width: 48px;
+  min-width: 51px;
+}
+.fix_colunn_full_table_nm {
+  min-width: 70px;
+}
+.fix_colunn_full_table_blg {
+  min-width: 106px;
 }
 
     .table-outer{

@@ -862,6 +862,8 @@ tr:nth-child(even) {
 .table .th {
     position: sticky;
     background: rgb(51, 57, 117);
+    border-right: 2px solid #454d55;
+    border-left: 2px solid #454d55;
 }
 .table tr:first-child .th {
     top: -1px;
