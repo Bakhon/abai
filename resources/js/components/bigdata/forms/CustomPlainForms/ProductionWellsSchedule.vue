@@ -8,14 +8,24 @@
             <div class="d-flex justify-content-between align-items-center text-white p-2">
                 <div class="d-flex">
                     <div>
-                        <div class="input-border">
-                            <img class="pr-1" src="/img/icons/search.svg" alt="">
-                            <input class="search-input" type="text" placeholder="Поиск скважины" />
-                        </div>
+                        <form class="search-form d-flex align-items-center">
+                            <v-select
+                                class="flex-fill"
+                                :filterable="false"
+                                :options="options"
+                                placeholder="Поиск скважины"
+                                @input="selectWell"
+                                @search="onSearch"
+                            >
+                                <template slot="option" slot-scope="option">
+                                    <span>{{ option.name }}</span>
+                                </template>
+                            </v-select>
+                        </form>
                     </div>
-                    <div class="d-flex align-items-center pl-3">
-                        <div>Скважина: {{ well.wellInfo.uwi }}</div>
-                        <img src="/img/icons/close.svg" alt="">
+                    <div v-for="well in wells" class="d-flex align-items-center pl-2 ml-1 wells-list-item">
+                        <div>Скважина: {{ well.name }}</div>
+                        <img class="cursor-pointer" @click.stop="removeWellSchedule(well)" src="/img/icons/close.svg" alt="">
                     </div>
                     <div class="d-flex align-items-center pl-3">
                         <img class="pr-1" src="/img/icons/page_to_form.svg" alt="">
@@ -24,7 +34,7 @@
                 </div>
                 <div class="d-flex">
                     <div class="checkbox-inline">
-                        <input id="show_events" type="checkbox" :checked="true" @change="toggleShowEvents">
+                        <input id="show_events" type="checkbox" :checked="isShowEvents" @change="toggleShowEvents">
                         <label for="show_events" class="pl-1">{{ trans('bd.show_events') }}</label>
                     </div>
                     <div class="checkbox-inline pl-3">
@@ -33,269 +43,78 @@
                     </div>
                 </div>
             </div>
-            <div class="row content-block m-0 mt-2 mx-2 p-0 rounded-top text-white">
-                <div class="col-3">Период:</div>
-                <div class="col-6 d-flex justify-content-between">
-                    <div v-for="period in schedulePeriods"
-                         :class="{'active': period.value === activePeriod,
-                          'cursor-pointer': period.value !== activePeriod}"
-                         @click="changePeriod(period.value)"
-                    >{{ period.period }}</div>
-                </div>
-                <div class="col-3"></div>
-            </div>
-            <div class="content-block content-block-scrollable m-2 p-2 rounded-bottom">
-                <apexchart
-                    ref="chart"
-                    :options="chartOptions"
-                    :series="chartSeries"
-                    :height="745"
-                    type="line"/>
+            <div class="content-block-scrollable">
+                <ProductionWellsScheduleItem
+                    v-for="(well, index) in wells"
+                    :well="well"
+                    :key="index"
+                    :isShowEvents="isShowEvents"
+                />
             </div>
         </div>
     </div>
 </template>
 <script>
-import chart from "vue-apexcharts";
-import {globalloadingMutations} from '@store/helpers';
+import ProductionWellsScheduleItem from "./ProductionWellsScheduleItem";
+import vSelect from 'vue-select'
+import axios from "axios";
 
-const ru = require("apexcharts/dist/locales/ru.json");
 export default {
-    components: {apexchart: chart},
+    components: {
+        vSelect,
+        ProductionWellsScheduleItem
+    },
     props: {
-        well: {}
+        mainWell: {}
     },
     data: function() {
         return {
-            currentAnnotation: {
-                minY: 0,
-                maxY: 0
-            },
-            chartSeries: [],
-            chartPoints: [],
-            tmpChartPoints: [],
-            labels: [],
-            schedulePeriods: [
-                {
-                    period: "1 " + this.trans('bd.week'),
-                    value: 7,
-                },
-                {
-                    period: "1 " + this.trans('bd.month'),
-                    value: 30,
-                },
-                {
-                    period: "3 " + this.trans('bd.month_1'),
-                    value: 90,
-                },
-                {
-                    period: "6 " + this.trans('bd.month_2'),
-                    value: 183,
-                },
-                {
-                    period: "1 " + this.trans('bd.year'),
-                    value: 365,
-                },
-                {
-                    period: this.trans('bd.all_1'),
-                    value: 0,
-                },
-            ],
-            activePeriod: 90,
+            wells: [],
+            options: [],
+            isShowEvents: true
         }
     },
     methods: {
-        ...globalloadingMutations([
-            'SET_LOADING'
-        ]),
-        changePeriod(value) {
-            this.activePeriod = value;
-            this.getSchuduleData();
-        },
-        getSchuduleData() {
-            this.SET_LOADING(true);
-            this.axios.get(this.localeUrl('api/bigdata/wells/production-wells-schedule-data'), {
-                params: {
-                    wellId: this.well.id,
-                    period: this.activePeriod,
-                }
-            }).then(({data}) => {
-                this.chartSeries = [
-                    data.ndin,
-                    data.oil,
-                    data.measLiq,
-                    data.measWaterCut,
-                ];
-                if (data.wellStatuses) {
-                    this.chartPoints = [];
-                    data.wellStatuses.forEach(status => {
-                        this.chartPoints.push({
-                            x: status[0],
-                            y: 0,
-                            marker: {
-                                size: 10,
-                                fillColor: '#fff'
-                            },
-                            label: {
-                                text: status[2],
-                                style: {
-                                    color: '#000'
-                                }
-                            }
-                        });
-                    });
-                }
-                this.labels = data.labels;
-            }).finally(() => {
-                this.SET_LOADING(false);
-            });
-        },
         toggleShowEvents() {
-            if (this.chartPoints.length > 0) {
-                this.tmpChartPoints = this.chartPoints;
-                this.chartPoints = [];
-            } else {
-                this.chartPoints = this.tmpChartPoints;
+            this.isShowEvents = !this.isShowEvents;
+        },
+        onSearch(search, loading) {
+            if (search.length) {
+                loading(true);
+                this.search(loading, search, this);
             }
         },
+        search: _.debounce((loading, search, vm) => {
+                axios.get(vm.localeUrl('/api/bigdata/wells/search'),
+                    {
+                        params: {
+                            query: escape(search),
+                            selectedUserDzo: vm.selectedUserDzo,
+                        }
+                    })
+                    .then(({data}) => {
+                        vm.options = data.items;
+                        loading(false);
+                    })
+            },
+            350
+        ),
+        selectWell(well) {
+            this.options = [];
+            this.wells.push(well)
+        },
+        removeWellSchedule(well) {
+            this.wells.splice(
+                this.wells.indexOf(well), 1
+            );
+        }
     },
     mounted() {
-        this.getSchuduleData();
-    },
-    computed: {
-        chartOptions() {
-            return {
-                labels: this.labels,
-                stroke: {
-                    width: 1.5,
-                    curve: 'smooth'
-                },
-                legend: {
-                    position: 'right',
-                },
-                chart: {
-                    stacked: true,
-                    foreColor: '#FFFFFF',
-                    selection: {
-                        enabled: true,
-                        type: 'x',
-                    },
-                    toolbar: {
-                        offsetY: -10,
-                    },
-                    locales: [ru],
-                    defaultLocale: 'ru',
-                },
-                markers: {
-                    size: [1, 1.5, 2, 2.5],
-                },
-                xaxis: {
-                    tickAmount: 10,
-                },
-                yaxis: [
-                    {
-                        seriesName: this.trans('app.liquid'),
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#fff',
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.liquid'),
-                            style: {
-                                color: '#fff',
-                            }
-                        },
-                    },
-                    {
-                        seriesName: this.trans('app.waterCut'),
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#fff',
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.waterCut'),
-                            style: {
-                                color: '#fff',
-                            }
-                        },
-                    },
-                    {
-                        seriesName: this.trans('app.oil'),
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#fff',
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.oil'),
-                            style: {
-                                color: '#fff',
-                            }
-                        },
-                    },
-                    {
-                        seriesName: this.trans('app.ndin'),
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#fff',
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.ndin'),
-                            style: {
-                                color: '#fff',
-                            }
-                        },
-                    },
-                ],
-                tooltip: {
-                    shared: true,
-                    intersect: false,
-                },
-                annotations: {
-                    points: this.chartPoints,
-                },
-                colors:['rgba(33, 186, 78, 1)', 'rgba(72, 81, 95, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(33, 186, 78, 1)'],
-            }
-        },
-    },
+        this.wells.push(this.mainWell);
+    }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .main-block {
     background-color: rgba(51, 57, 117, 0.33);
 }
@@ -311,22 +130,8 @@ export default {
     border: none;
 }
 
-.content-block {
-    background-color: rgba(39, 41, 83, 1);
-    line-height: 2rem;
-}
-
-.content-block-scrollable {
-    height: 70vh;
-    overflow-y: scroll;
-}
-
 .arrow-back {
     transform: rotate(90deg);
-}
-
-.active {
-    border-bottom: 2px solid rgba(46, 80, 233, 1);
 }
 
 ::-webkit-scrollbar {
@@ -349,10 +154,55 @@ export default {
 ::-webkit-scrollbar-corner {
     background: #20274F;
 }
-</style>
-<style>
 
-.apexcharts-legend {
-    justify-content: center !important;
+.search-form {
+    .v-select {
+        background: url(/img/bd/search.svg) 20px 45% #272953 no-repeat;
+        border: 1px solid #3b4a84;
+        min-width: 12rem;
+
+        .vs__search {
+            font-family: Roboto, sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 0;
+            padding-left: 45px;
+        }
+
+        .vs__selected {
+            font-family: Roboto, sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 0;
+            padding-left: 45px;
+        }
+
+        .vs__actions {
+            padding: 0 5px;
+
+            .vs__clear, .vs__open-indicator {
+                display: none;
+            }
+
+            .vs__spinner, .vs__spinner:after {
+                border-color: rgba(238, 238, 238, 0.7);
+                border-left-color: rgba(170, 170, 170, 0.7);
+            }
+        }
+
+        .vs__dropdown-toggle {
+            border: none;
+        }
+    }
+}
+
+.content-block-scrollable {
+    height: 70vh;
+    overflow-y: scroll;
+}
+
+.wells-list-item {
+    border-radius: 10px;
+    border: 1px solid #3b4a84;
 }
 </style>

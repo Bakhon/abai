@@ -2,7 +2,7 @@
     <div>
         <ProductionWellsSchedule
             v-if="isScheduleVisible"
-            :well="well"
+            :mainWell="{id: well.id, name: well.wellInfo.uwi}"
              @changeScheduleVisible="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(true)"
         ></ProductionWellsSchedule>
         <div v-else class="main-block w-100 px-2 py-3">
