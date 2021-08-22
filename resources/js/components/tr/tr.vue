@@ -653,7 +653,7 @@
                   <td rowspan="4" class="th">{{trans('tr.h_water_permeability')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.h_water_permeability_extension')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.operation_method')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.pump_type')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_blg">{{trans('tr.pump_type')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.sk_type')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.swing_number')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.stroke_length')}}</td>
@@ -739,7 +739,7 @@
                   <td rowspan="4" class="th">
                     <span>{{trans('tr.last_gtm_date')}}</span>
                   </td>
-                  <td rowspan="4" class="th">
+                  <td rowspan="4" class="th fix_column_first_warn">
                     <span>{{trans('tr.last_gtm_type')}}</span>
                   </td>
                   <td class="colspan th" colspan="14">{{trans('tr.intended_mode')}}</td>
@@ -780,11 +780,11 @@
                   <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.apv_t_nak')}}</span></td>
                   <td class="colspan th" colspan="3">{{trans('tr.isolation_works')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.choke_diameter')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.q_oil')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.q_gas')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_nm"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_nm"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_nm"><span>{{trans('tr.q_gas')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.water_cut')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.gas_factor')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_nm"><span>{{trans('tr.gas_factor')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.work_days')}}</span></td>
                   <td rowspan="3" class="th">
                     <span>{{trans('tr.planned_monthly_oil')}}</span>
@@ -801,7 +801,7 @@
                   <td class="colspan th" colspan="2">
                     <span>{{trans('tr.regime_changes')}}</span>
                   </td>
-                  <td rowspan="3" class="th">
+                  <td rowspan="3" class="th fix_colunn_full_table_blg">
                     <span>{{trans('tr.tr_measure_to_ensure')}}</span>
                   </td>
                 </tr>
@@ -810,39 +810,39 @@
                   <td rowspan="2" class="th">
                     <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.q_oil_gain')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th">
                     <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.q_oil_gain')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th">
                     <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.q_oil_gain')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th">
                     <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.q_oil_gain')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.error_quantity')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.first_error')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_blg"><span>{{trans('tr.first_error')}}</span></td>
                   <td rowspan="2" class="th">
                     <span>{{trans('tr.warning_quantity')}}</span>
                   </td>
-                  <td rowspan="2" class="th">
+                  <td rowspan="2" class="th fix_column_first_warn">
                     <span>{{trans('tr.first_warning')}}</span>
                   </td>
                   <td rowspan="2" class="th"><span>{{trans('tr.spend')}}</span></td>
                   <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.water_cut')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                 </tr>
                 <tr></tr>
                 <tr
@@ -1299,13 +1299,13 @@
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('gp_grp_q_liq_cas_d_corr')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('gp_grp_q_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('gp_grp_q_oil_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('gp_total_inc_perc')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
@@ -6820,6 +6820,9 @@ table::-webkit-scrollbar-corner {
 }
 .fix_colunn_full_table_blg {
   min-width: 106px;
+}
+.fix_column_first_warn {
+  min-width: 188px;
 }
 
     .table-outer{
