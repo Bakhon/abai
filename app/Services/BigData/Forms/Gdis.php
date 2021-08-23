@@ -87,6 +87,14 @@ class Gdis extends PlainForm
         );
     }
 
+    protected function checkFormPermission(string $action)
+    {
+        if (auth()->user()->cannot("bigdata {$action} {$this->configurationFileName}")) {
+            throw new \Exception("You don't have permissions");
+        }
+    }
+
+
     protected function submitData(){
         $this->tableFields = $this->getFields()
                 ->filter(
@@ -125,9 +133,8 @@ class Gdis extends PlainForm
         $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
         if (!empty($data['id'])) {
-            if (auth()->user()->cannot("bigdata update {$this->configurationFileName}")) {
-                throw new \Exception("You don't have permissions");
-            }
+            $this->checkFormPermission('create');
+            
             $id = $data['id'];
             unset($data['id']);
 
@@ -156,17 +163,16 @@ class Gdis extends PlainForm
                             ]
                         );
                 } else {
-                    insertData($metricId,$value);
+                    this->insertData($metricId,$value);
                 }
             }
             } else {
-                if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
-                    throw new \Exception("You don't have permissions");
-                }
+                $this->checkFormPermission('create');
+            
                 $id = $dbQuery->insertGetId($data);
 
                 foreach ($gdisComplexValues as $metricId => $value) {
-                    insertData($metricId,$value);
+                    this->insertData($metricId,$value);
                 }
             }
 
