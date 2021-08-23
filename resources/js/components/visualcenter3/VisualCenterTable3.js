@@ -759,14 +759,13 @@ export default {
         this.oneDzoSelected = this.getDzoTicker();
         if (this.oneDzoSelected) {
             this.isOneDzoSelected=true;
-            this.updateChemistryWidget();
-            this.updateWellsWorkoverWidget();
-            this.updateDrillingWidget();
-            await this.updateProductionFondWidget();
-            await this.updateInjectionFondWidget();
-        }   else {
-            this.isSummaryShouldBeCalculated = false;
-        };
+        };       
+        this.updateChemistryWidget();
+        this.updateWellsWorkoverWidget();
+        this.updateDrillingWidget();
+        await this.updateProductionFondWidget();
+        await this.updateInjectionFondWidget();
+        this.isSummaryShouldBeCalculated = false;
     },   
     watch: {
         bigTable: function () {
