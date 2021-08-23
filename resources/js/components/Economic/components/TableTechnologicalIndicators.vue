@@ -7,11 +7,11 @@
     <div class="mt-3 text-center border-grey">
       <div class="d-flex bg-header" style="font-weight: 600">
         <div class="py-2 px-3 border-grey text-center flex-300px">
-          Показатели
+          {{ trans('economic_reference.indicators') }}
         </div>
 
         <div class="py-2 px-3 border-grey text-center flex-150px">
-          Ед. изм
+          {{ trans('economic_reference.unit_of_measurement_short') }}
         </div>
 
         <div v-for="price in reverseOilPrices"
@@ -91,47 +91,47 @@ export default {
     tableData() {
       return [
         {
-          title: 'Добыча нефти',
-          dimension: 'тыс. т/год',
+          title: this.trans('economic_reference.oil_production'),
+          dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
           values: this.filteredData.map(item =>
               (+item.oil.original_value_optimized / 1000).toFixed(2)
           )
         },
         {
-          title: 'Добыча от ГТМ',
-          dimension: 'тыс. т/год',
+          title: this.trans('economic_reference.production_from_gtm'),
+          dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
           values: this.filteredData.map(item => '')
         },
         {
           title: 'в т.ч. от ВНС',
-          dimension: 'тыс. т/год',
+          dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
           values: this.filteredData.map(item => '')
         },
         {
           title: 'в т.ч. от ГТМ',
-          dimension: 'тыс. т/год',
+          dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
           values: this.filteredData.map(item => '')
         },
         {
-          title: 'Добыча жидкости',
-          dimension: 'тыс. м3/год',
+          title: this.trans('economic_reference.liquid_production'),
+          dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.cubic_meter_per_year')}`,
           values: this.filteredData.map(item =>
               (+item.liquid.original_value_optimized / 1000).toFixed(2)
           )
         },
         {
-          title: 'Объем закачки',
-          dimension: 'тыс. м3/год',
+          title: this.trans('economic_reference.injection_volume'),
+          dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.cubic_meter_per_year')}`,
           values: this.filteredData.map(item => '')
         },
         {
-          title: 'Действующий фонд скважин',
-          dimension: 'скв.',
+          title: this.trans('economic_reference.active_well_stock'),
+          dimension: this.trans('economic_reference.wells_count_short'),
           values: this.filteredData.map(item => item.uwi_count.original_value_optimized)
         },
         {
-          title: 'Остановка нерентабельных скважин',
-          dimension: 'скв.',
+          title: this.trans('economic_reference.shutdown_unprofitable_wells'),
+          dimension: this.trans('economic_reference.wells_count_short'),
           values: this.filteredData.map(item => {
             let cat1 = +item.uwi_count_profitless_cat_1.original_value_optimized
 
@@ -141,8 +141,8 @@ export default {
           })
         },
         {
-          title: 'Потери добычи из-за остановки',
-          dimension: 'тыс. т',
+          title: this.trans('economic_reference.loss_production_due_to_shutdown'),
+          dimension: this.trans('economic_reference.thousand_tons'),
           values: this.filteredData.map(item => {
             let cat1 = +item.oil_profitless_cat_1.original_value_optimized
 
@@ -152,8 +152,8 @@ export default {
           })
         },
         {
-          title: 'Количество ПРС',
-          dimension: 'рем/год',
+          title: this.trans('economic_reference.count_prs'),
+          dimension: `${this.trans('economic_reference.rem_short')}/${this.trans('economic_reference.year')}`,
           values: this.filteredData.map(item => +item.prs.original_value_optimized)
         },
         {
@@ -163,33 +163,33 @@ export default {
         },
         {
           title: 'Количество бригад КРС',
-          dimension: 'рем/год',
+          dimension: `${this.trans('economic_reference.rem_short')}/${this.trans('economic_reference.year')}`,
           values: this.filteredData.map(item => '')
         },
         {
           title: 'Количество ГТМ по видам',
-          dimension: 'скв.',
+          dimension: this.trans('economic_reference.wells_count_short'),
           values: this.filteredData.map(item => ''),
           bold: true
         },
         {
           title: 'ВНС+ВНС с ГРП',
-          dimension: 'скв.',
+          dimension: this.trans('economic_reference.wells_count_short'),
           values: this.filteredData.map(item => '')
         },
         {
           title: 'РИР',
-          dimension: 'скв.',
+          dimension: this.trans('economic_reference.wells_count_short'),
           values: this.filteredData.map(item => '')
         },
         {
           title: 'Углубление',
-          dimension: 'скв.',
+          dimension: this.trans('economic_reference.wells_count_short'),
           values: this.filteredData.map(item => '')
         },
         {
           title: 'Ввод из бездействия',
-          dimension: 'скв.',
+          dimension: this.trans('economic_reference.wells_count_short'),
           values: this.filteredData.map(item => '')
         }
       ]
