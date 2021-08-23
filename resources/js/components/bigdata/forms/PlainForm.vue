@@ -199,10 +199,6 @@ export default {
         }
       }
 
-      console.log(this.formValuesToSubmit)
-      console.log(files)
-      console.log({...this.formValuesToSubmit, ...files})
-
       this
           .submitForm({
             code: this.params.code,

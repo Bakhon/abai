@@ -42,74 +42,7 @@ class Gis extends PlainForm
         DB::connection('tbd')->beginTransaction();
 
         try {
-            $this->tableFields = $this->getFields()
-                ->filter(
-                    function ($item) {
-                        return $item['type'] === 'table' && empty($item['form']);
-                    }
-                );
-
-            $this->tableFieldCodes = $this->tableFields
-                ->pluck('code')
-                ->toArray();
-
-            $data = $this->prepareDataToSubmit();
-
-            unset($data['documents']);
-            unset($data['gis_method_type']);
-
-            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-            if (!empty($data['id'])) {
-                if (auth()->user()->cannot("bigdata update {$this->configurationFileName}")) {
-                    throw new \Exception("You don't have permissions");
-                }
-                $id = $data['id'];
-                unset($data['id']);
-
-                $dbQuery = $dbQuery->where('id', $id);
-
-                $this->originalData = $dbQuery->first();
-                $dbQuery->update($data);
-
-                $this->submittedData['fields'] = $data;
-                $this->submittedData['id'] = $id;
-            } else {
-                if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
-                    throw new \Exception("You don't have permissions");
-                }
-                $id = $dbQuery->insertGetId($data);
-
-                if (!empty($this->request->documents)) {
-                    foreach ($this->request->documents as $documentId) {
-                        DB::connection('tbd')
-                            ->table('prod.gis_file')
-                            ->insert(
-                                [
-                                    'file_type' => 4,
-                                    'document' => $documentId,
-                                    'gis' => $id
-                                ]
-                            );
-                    }
-                }
-
-                if (!empty($this->request->gis_method_type)) {
-                    $methods = (array)$this->request->gis_method_type;
-                    foreach ($methods as $method) {
-                        DB::connection('tbd')
-                            ->table('prod.gis_method_link')
-                            ->insert(
-                                [
-                                    'method' => $method,
-                                    'gis' => $id
-                                ]
-                            );
-                    }
-                }
-            }
-
-            $this->insertInnerTable($id);
+            $this->submitForm();
 
             DB::connection('tbd')->commit();
             return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
@@ -117,5 +50,86 @@ class Gis extends PlainForm
             DB::connection('tbd')->rollBack();
             throw new SubmitFormException($e->getMessage());
         }
+    }
+
+    private function insertDocuments(int $id)
+    {
+        if (!empty($this->request->documents)) {
+            foreach ($this->request->documents as $documentId) {
+                DB::connection('tbd')
+                    ->table('prod.gis_file')
+                    ->insert(
+                        [
+                            'file_type' => 4,
+                            'document' => $documentId,
+                            'gis' => $id
+                        ]
+                    );
+            }
+        }
+    }
+
+    private function insertMethodTypes(int $id)
+    {
+        if (!empty($this->request->gis_method_type)) {
+            $methods = (array)$this->request->gis_method_type;
+            foreach ($methods as $method) {
+                DB::connection('tbd')
+                    ->table('prod.gis_method_link')
+                    ->insert(
+                        [
+                            'method' => $method,
+                            'gis' => $id
+                        ]
+                    );
+            }
+        }
+    }
+
+    private function submitForm()
+    {
+        $this->tableFields = $this->getFields()
+            ->filter(
+                function ($item) {
+                    return $item['type'] === 'table' && empty($item['form']);
+                }
+            );
+
+        $this->tableFieldCodes = $this->tableFields
+            ->pluck('code')
+            ->toArray();
+
+        $data = $this->prepareDataToSubmit();
+
+        unset($data['documents']);
+        unset($data['gis_method_type']);
+
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+
+        if (!empty($data['id'])) {
+            if (auth()->user()->cannot("bigdata update {$this->configurationFileName}")) {
+                throw new \Exception("You don't have permissions");
+            }
+            $id = $data['id'];
+            unset($data['id']);
+
+            $dbQuery = $dbQuery->where('id', $id);
+
+            $this->originalData = $dbQuery->first();
+            $dbQuery->update($data);
+
+            $this->submittedData['fields'] = $data;
+            $this->submittedData['id'] = $id;
+        } else {
+            if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
+                throw new \Exception("You don't have permissions");
+            }
+            $id = $dbQuery->insertGetId($data);
+
+            $this->insertDocuments($id);
+            $this->insertMethodTypes($id);
+        }
+
+        $this->insertInnerTable($id);
     }
 }
