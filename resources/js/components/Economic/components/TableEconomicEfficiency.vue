@@ -140,8 +140,8 @@ export default {
 
     chartLabels() {
       return [
-        ...[Math.floor(+this.oilPrices[this.oilPrices.length - 1] / 1.5)],
-        ...this.oilPrices,
+        ...[Math.floor(+this.oilPrices[0] / 1.5)],
+        ...this.oilPrices.map(oilPrice => (+oilPrice).toLocaleString()),
         ...[Math.ceil(+this.oilPrices[this.oilPrices.length - 1] * 1.5)]
       ]
     },
