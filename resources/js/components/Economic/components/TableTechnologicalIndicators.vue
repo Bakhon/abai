@@ -100,7 +100,7 @@ export default {
         {
           title: this.trans('economic_reference.production_from_gtm'),
           dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
-          values: this.filteredData.map(item => '')
+          values: this.filteredData.map(item => (+item.gtm_oil / 1000).toFixed(2))
         },
         {
           title: 'в т.ч. от ВНС',

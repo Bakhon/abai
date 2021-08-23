@@ -18,7 +18,7 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v11';
+    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v11_gtm_optimize';
     const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_test_v9_3';
     const DATA_SOURCE_DATE = '2021/01/01';
 
@@ -30,6 +30,11 @@ class EconomicOptimizationController extends Controller
         "coef_cost_WR_payroll",
         "dollar_rate",
         "oil_price",
+        "gtm_oil",
+        "gtm_liquid",
+        "gtm_cost",
+        "gtm_operating_profit_12m",
+        "gtms",
     ];
 
     const OPTIMIZED_COLUMNS = [
