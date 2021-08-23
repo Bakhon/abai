@@ -11,7 +11,7 @@
     },
     {
       "code": "daily_drill_progress",
-      "type": "numeric",
+      "type": "float",
       "title": "daily_drill_progress",
       "validation": "gte:0|lte:100",
       "is_editable": true
@@ -19,7 +19,7 @@
     {
       "code": "depth",
       "table":"prod.bottom_hole",
-      "type": "numeric",
+      "type": "float",
       "title": "depth",
       "validation": "gte:0",
       "is_editable": false
@@ -27,71 +27,82 @@
     {
       "code": "well_status_type",
       "dict":"well_statuses",
-      "type": "numeric",
+      "type": "dict",
       "title": "well_status_type",
+      "is_editable": true,
       "validation": "exists:tbd.dict.well_status_type,id"
     },
     {
       "code": "work_name",
       "type": "text",
       "title": "work_name",
-      "validation": ""
+      "validation": "",
+      "is_editable": true
     },
     {
       "code":"liquid_density",
-      "type":"numeric",
+      "type":"float",
       "title":"liquid_density",
-      "validation":"required|numeric|gt:0|lte:10" 
+      "validation":"required|numeric|gt:0|lte:10",
+      "is_editable": true 
      },
      {
        "code":"liquid_crust",
-       "type":"numeric",
+       "type":"float",
        "title":"liquid_crust",
-       "validation":"required|numeric|gt:0|lte:10" 
+       "validation":"required|numeric|gt:0|lte:10",
+       "is_editable": true 
       },
       {
        "code":"liquid_viscosity",
-       "type":"numeric",
+       "type":"float",
        "title":"liquid_viscosity",
-       "validation":"required|numeric|gt:0|lte:100" 
+       "validation":"required|numeric|gt:0|lte:100",
+       "is_editable": true 
       },
       {
        "code":"liquid_ph",
-       "type":"numeric",
+       "type":"float",
        "title":"liquid_ph",
-       "validation":"required|numeric|gt:0|lte:15" 
+       "validation":"required|numeric|gt:0|lte:15",
+       "is_editable": true
       },
       {
        "code":"luquid_water_yield",
-       "type":"numeric",
+       "type":"float",
        "title":"liquid_water_yield",
-       "validation":"required|numeric|gt:0|lte:100" 
+       "validation":"required|numeric|gt:0|lte:100",
+       "is_editable": true 
       },
       {
         "code":"drill_chisel",
         "type":"dict",
         "title":"chisel",
         "validation":"required|exists:tbd.dict.drill_chisel,id",
-        "dict":"drill_chisels"
+        "dict":"drill_chisels",
+        "is_editable": true
       },
       {
         "code":"diameter",
-        "type":"numeric",
+        "type":"float",
         "title":"diameter",
-        "validation":"required|numeric|gt:0|lte:1000" 
+        "validation":"required|gt:0|lte:1000" ,
+        "is_editable": true
       },
       {
         "code":"drill_column_type",
         "type":"dict",
         "title":"drill_column_type",
         "validation":"required|exists:tbd.dict.drill_column_type,id",
-        "dict":"drill_column_types"
+        "dict":"drill_column_types",
+        "is_editable": true
       },
       {
         "code":"value",
-        "type":"numeric",
+        "type":"float",
         "title":"value",
-        "validation":"required|numeric"
+        "validation":"required",
+        "is_editable": true
       }    
   ]
 }
