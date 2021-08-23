@@ -99,6 +99,25 @@ class WaterMeasurementController extends CrudController
                     ]
                 ],
 
+                'zu' => [
+                    'title' => trans('monitoring.zu.zu'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => Gu::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+
                 'hydrocarbonate_ion' => [
                     'title' => 'НСО3-',
                     'type' => 'numeric',
