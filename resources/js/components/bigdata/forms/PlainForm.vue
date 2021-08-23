@@ -4,7 +4,7 @@
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
-    <form class="bd-main-block__form" style="width: 100%" ref="form">
+    <form v-if="formParams" ref="form" class="bd-main-block__form" style="width: 100%">
       <div class="bd-main-block__form-tabs-header">
         <template v-for="(tab, index) in formParams.tabs">
           <div
@@ -35,6 +35,7 @@
                       v-model="formValues[item.code]"
                       :error="errors[item.code]"
                       :item="item"
+                      :id="wellId"
                       :key="`field_${item.code}`"
                       v-on:change="validateField($event, item)"
                       v-on:input="callback($event, item)"
@@ -62,7 +63,7 @@
 import Vue from "vue";
 import BigdataFormField from './field'
 import BigdataPlainFormResults from './PlainFormResults'
-import {bdFormActions, bdFormState, globalloadingMutations} from '@store/helpers'
+import {bdFormActions, globalloadingMutations} from '@store/helpers'
 import axios from "axios";
 
 
@@ -88,6 +89,7 @@ export default {
   },
   data() {
     return {
+      formParams: null,
       errors: {},
       activeTab: 0,
       formValues: {},
@@ -95,9 +97,6 @@ export default {
     }
   },
   computed: {
-    ...bdFormState([
-      'formParams'
-    ]),
     formFields() {
       if (!this.formParams || !this.formParams.tabs) return []
 
@@ -155,6 +154,9 @@ export default {
     init() {
       this.activeTab = 0
       this.updateForm(this.params.code)
+          .then(data => {
+            this.formParams = data
+          })
           .catch(error => {
             Vue.prototype.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
           })
@@ -203,13 +205,16 @@ export default {
             wellId: this.wellId,
             values: {...this.formValuesToSubmit, ...files}
           })
-          .then(data => {
+          .then(response => {
             this.errors = []
             this.$refs.form.reset()
             Vue.prototype.$notifySuccess('Ваша форма успешно отправлена')
-            this.formValues = {}
-            this.$emit('change')
+            this.$emit('change', {
+              id: response.data.id,
+              values: this.formValues
+            })
             this.$emit('close')
+            this.formValues = {}
           })
           .catch(error => {
 

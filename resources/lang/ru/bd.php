@@ -377,18 +377,19 @@ return [
             'Ohmm' => 'БМК / MLL, Ohmm',
             'h' => 'ГК / GR, UR / h',
             'c' => 'НГК / NGR, C / c',
-            'm'=> 'АК / DT, US / m',
+            'm' => 'АК / DT, US / m',
             'g' => 'ГГКп / DEN, G / C3',
             'nphi' => 'Водосодержание / NPHI, %',
-            'phit_den'=> 'КПггк / PHIT_DEN, %',
+            'phit_den' => 'КПггк / PHIT_DEN, %',
             'phit_son' => 'КПак / PHIT_SON, %',
             'phit' => 'КПобщ / PHIT, %',
             'phie' => 'КПэф / PHIE, %',
             'vsh' => 'КГЛ / VSH, %',
             'factor' => 'Кнасыщ / Saturation factor, %',
-            'typeofsaturation'=>'Тип насыщения / Type of saturation, %',
-            'lithology' => 'Литология / Lithology'
-
+            'typeofsaturation' => 'Тип насыщения / Type of saturation, %',
+            'lithology' => 'Литология / Lithology',
+            'files_gis' => 'Файлы ГИС',
+            'scan_doc' => 'Сканированный документ'
         ],
         'well_incl' => [
             'title' => 'Инклинометрия скважины',
