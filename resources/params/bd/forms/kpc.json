@@ -206,6 +206,20 @@
               "validation":""
             },
             {
+              "code": "status",
+              "type": "dict",
+              "title": "status_before_selected_date",
+              "validation": "required|exists:tbd.dict.well_status,id",
+              "dict": "well_status"
+            },
+            {
+              "code": "category",
+              "type": "dict",
+              "title": "well_previous_category",
+              "validation": "required|exists:tbd.dict.well_category,id",
+              "dict": "well_statuses"
+            },
+            {
               "code": "well_status",
               "type": "dict",
               "title": "condition",

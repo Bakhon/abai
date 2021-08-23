@@ -55,6 +55,7 @@ use App\Models\BigData\Dictionaries\Mark;
 use App\Models\BigData\Dictionaries\ReasonEquipFail;
 use App\Models\BigData\Dictionaries\ChemicalReagentType;
 use App\Models\BigData\Dictionaries\TechStateCasing;
+use App\Models\BigData\Dictionaries\WellStatusDict;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -267,6 +268,10 @@ class DictionaryService
         ],
         'tech_state_casings' => [
             'class' => TechStateCasing::class,
+            'name_field' => 'name_ru'
+        ],
+        'well_status' => [
+            'class' => WellStatusDict::class,
             'name_field' => 'name_ru'
         ],
         
