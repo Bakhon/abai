@@ -74,6 +74,7 @@ export default {
                     id: 0
                 },
             },
+            oneDzoSelected: '',
             isOneDzoSelected: false,
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
             quantityRange: '',
@@ -754,22 +755,24 @@ export default {
         this.buttonDailyTab = "button-tab-highlighted";
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
-        this.selectedDzoCompanies = this.getAllDzoCompanies();
-        let isOneDzoSelected = this.getDzoTicker();     
-        if (!isOneDzoSelected) {
+        this.selectedDzoCompanies = this.getAllDzoCompanies();        
+        this.oneDzoSelected = this.getDzoTicker(); 
+        console.log(this.oneDzoSelected);    
+        if (this.oneDzoSelected) {
+            this.isOneDzoSelected=true;
             this.updateChemistryWidget();
             this.updateWellsWorkoverWidget();
             this.updateDrillingWidget();
             await this.updateProductionFondWidget();
             await this.updateInjectionFondWidget();
+        }   else {
+            this.isSummaryShouldBeCalculated = false;
         };
     },   
     watch: {
-        bigTable: function () {
-            let isOneDzoSelected = this.getDzoTicker();
-            if (isOneDzoSelected) {
-                this.isSummaryShouldBeCalculated = true;
-                this.assignOneCompanyToSelectedDzo(isOneDzoSelected);
+        bigTable: function () {          
+            if (this.isOneDzoSelected) {                
+                this.assignOneCompanyToSelectedDzo(this.oneDzoSelected);
             };
             this.dzoCompanySummary = this.bigTable;
             if (this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0) {
