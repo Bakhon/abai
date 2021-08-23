@@ -546,8 +546,4 @@ class VisualCenterController extends Controller
     {
         return view('visualcenter.daily_approve');
     }
-    public function kpdTree()
-    {
-        return view('visualcenter.kpd_tree');
-    }
 }
