@@ -266,7 +266,10 @@
                 "form": "well_document",
                 "title": "files",
                 "table_fields": [
-                  "name_ru"
+                  {
+                    "code": "name_ru",
+                    "title": "scan_doc"
+                  }
                 ]
               }
             ]

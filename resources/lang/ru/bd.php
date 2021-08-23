@@ -385,7 +385,8 @@ return [
             'factor' => 'Кнасыщ / Saturation factor, %',
             'typeofsaturation' => 'Тип насыщения / Type of saturation, %',
             'lithology' => 'Литология / Lithology',
-            'files_gis' => 'Файлы ГИС'
+            'files_gis' => 'Файлы ГИС',
+            'scan_doc' => 'Сканированный документ'
         ],
         'well_incl' => [
             'title' => 'Инклинометрия скважины',

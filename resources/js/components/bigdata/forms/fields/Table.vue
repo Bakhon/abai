@@ -3,39 +3,63 @@
     <div class="bd-table-field__buttons">
       <a class="bd-table-field__buttons-button bd-table-field__buttons-button_add" href="#"
          @click.prevent="openCreateForm">{{ trans('app.create') }}</a>
-      <a :class="{'bd-table-field__buttons-button_disabled': selectedItemIndex === null}"
+      <a :class="{'bd-table-field__buttons-button_disabled': selectedRowIndex === null}"
          class="bd-table-field__buttons-button bd-table-field__buttons-button_edit" href="#"
-         @click.prevent="openEditForm(selectedItemIndex)">{{ trans('app.edit') }}</a>
-      <a :class="{'bd-table-field__buttons-button_disabled': selectedItemIndex === null}"
+         @click.prevent="openEditForm(selectedRowIndex)">{{ trans('app.edit') }}</a>
+      <a :class="{'bd-table-field__buttons-button_disabled': selectedRowIndex === null}"
          class="bd-table-field__buttons-button bd-table-field__buttons-button_remove" href="#"
-         @click.prevent="deleteItem(selectedItemIndex)">{{ trans('app.delete') }}</a>
+         @click.prevent="deleteItem(selectedRowIndex)">{{ trans('app.delete') }}</a>
     </div>
     <div class="table__wrap scrollable">
-      <table class="table">
-        <thead>
-        <tr>
-          <th v-for="column in params.columns">
-            {{ column.title }}
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(item, index) in items" :class="{'selected': selectedItemIndex === index}"
-            @click="selectedItemIndex = index">
-          <td v-for="column in params.columns">
-            <template v-if="column.type === 'date'">
-              {{ item[column.code].text | moment().format('DD.MM.YYYY') }}
-            </template>
-            <template v-else-if="column.type === 'datetime'">
-              {{ item[column.code].text | moment().format('DD.MM.YYYY HH:MM') }}
-            </template>
-            <template v-else>
-              {{ item[column.code].text }}
-            </template>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <template v-if="params.form">
+        <table class="table">
+          <thead>
+          <tr>
+            <th v-for="field in params.table_fields">
+              {{ field.title }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr
+              v-for="(row, index) in tableRows"
+              :class="{'selected': selectedRowIndex === index}"
+              @click="selectedRowIndex = index"
+          >
+            <td v-for="column in params.table_fields">
+              {{ row.values[column.code] }}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </template>
+      <template v-else>
+        <table class="table">
+          <thead>
+          <tr>
+            <th v-for="column in params.columns">
+              {{ column.title }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(item, index) in items" :class="{'selected': selectedRowIndex === index}"
+              @click="selectedRowIndex = index">
+            <td v-for="column in params.columns">
+              <template v-if="column.type === 'date'">
+                {{ item[column.code].text | moment().format('DD.MM.YYYY') }}
+              </template>
+              <template v-else-if="column.type === 'datetime'">
+                {{ item[column.code].text | moment().format('DD.MM.YYYY HH:MM') }}
+              </template>
+              <template v-else>
+                {{ item[column.code].text }}
+              </template>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </template>
     </div>
     <div v-if="isFormOpened" class="bd-popup">
       <div class="bd-popup__inner">
@@ -108,7 +132,8 @@ export default {
       items: [],
       errors: [],
       formValues: {},
-      selectedItemIndex: null
+      selectedRowIndex: null,
+      tableRows: []
     }
   },
   methods: {
@@ -144,7 +169,7 @@ export default {
     saveItem() {
 
       this.isFormOpened = false
-      this.selectedItemIndex = null
+      this.selectedRowIndex = null
 
       if (this.editedItemIndex !== null) {
         this.$set(this.items, this.editedItemIndex, this.formValues)
@@ -157,7 +182,7 @@ export default {
     deleteItem(index) {
       if (index === null) return
       this.items.splice(index, 1)
-      this.selectedItemIndex = null
+      this.selectedRowIndex = null
 
       this.updateParentField()
     },
@@ -177,8 +202,8 @@ export default {
     updateField(event, column) {
       this.formValues[column.code] = event
     },
-    updateResults() {
-
+    updateResults(event) {
+      this.tableRows.push(event)
     }
   }
 };
