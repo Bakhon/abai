@@ -41,108 +41,7 @@ class Gdis extends PlainForm
         DB::connection('tbd')->beginTransaction();
 
         try {
-            $this->tableFields = $this->getFields()
-                ->filter(
-                    function ($item) {
-                        return $item['type'] === 'table';
-                    }
-                );
-
-            $this->tableFieldCodes = $this->tableFields
-                ->pluck('code')
-                ->toArray();
-
-            $metrics = DB::connection('tbd')
-                ->table('dict.metric')
-                ->select('id', 'name_ru', 'code')
-                ->get();
-
-            $tmpData = $this->prepareDataToSubmit();
-            $gdisComplexValueFieldsCodes = $this->getFields()->filter(function ($field) {
-                return !empty($field['table']) && $field['table'] === 'prod.gdis_complex_value';
-            })->pluck('code')->unique()->toArray();
-
-            $data = $gdisComplexValues = [];
-            foreach ($tmpData as $key => $value) {
-                if (in_array($key, $gdisComplexValueFieldsCodes)) {
-                    $metric = $metrics->where('code', $key)->first();
-                    if (empty($metric)) {
-                        continue;
-                    }
-                    $gdisComplexValues[$metric->id] = $value;
-                } else {
-                    $data[$key] = $value;
-                }
-            }
-
-            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-            if (!empty($data['id'])) {
-                if (auth()->user()->cannot("bigdata update {$this->configurationFileName}")) {
-                    throw new \Exception("You don't have permissions");
-                }
-                $id = $data['id'];
-                unset($data['id']);
-
-                $dbQuery = $dbQuery->where('id', $id);
-
-                $this->originalData = $dbQuery->first();
-                $dbQuery->update($data);
-
-                $this->submittedData['fields'] = $data;
-                $this->submittedData['id'] = $id;
-
-                foreach ($gdisComplexValues as $metricId => $value) {
-                    $gdisComplexValue = DB::connection('tbd')
-                        ->table('prod.gdis_complex_value')
-                        ->where('gdis_complex', $id)
-                        ->where('metric', $metricId)
-                        ->first();
-
-                    if (!empty($gdisComplexValue)) {
-                        DB::connection('tbd')
-                            ->table('prod.gdis_complex_value')
-                            ->where('id', $gdisComplexValue->id)
-                            ->update(
-                                [
-                                    'value_string' => $value
-                                ]
-                            );
-                    } else {
-                        DB::connection('tbd')
-                            ->table('prod.gdis_complex_value')
-                            ->insert(
-                                [
-                                    'gdis_complex' => $id,
-                                    'metric' => $metricId,
-                                    'value_string' => $value
-                                ]
-                            );
-                    }
-                }
-            } else {
-                if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
-                    throw new \Exception("You don't have permissions");
-                }
-                $id = $dbQuery->insertGetId($data);
-
-                foreach ($gdisComplexValues as $metricId => $value) {
-                    DB::connection('tbd')
-                        ->table('prod.gdis_complex_value')
-                        ->insert(
-                            [
-                                'gdis_complex' => $id,
-                                'metric' => $metricId,
-                                'value_string' => $value
-                            ]
-                        );
-                }
-            }
-
-            $this->insertInnerTable($id);
-
-            DB::connection('tbd')->commit();
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
+            submitData();
         } catch (\Exception $e) {
             DB::connection('tbd')->rollBack();
             throw new SubmitFormException($e->getMessage());
@@ -174,5 +73,110 @@ class Gdis extends PlainForm
 
             return $row;
         });
+    }
+
+    protected function submitData(){
+        $this->tableFields = $this->getFields()
+                ->filter(
+                    function ($item) {
+                        return $item['type'] === 'table';
+                    }
+                );
+
+        $this->tableFieldCodes = $this->tableFields
+            ->pluck('code')
+            ->toArray();
+
+        $metrics = DB::connection('tbd')
+            ->table('dict.metric')
+            ->select('id', 'name_ru', 'code')
+            ->get();
+
+        $tmpData = $this->prepareDataToSubmit();
+        $gdisComplexValueFieldsCodes = $this->getFields()->filter(function ($field) {
+            return !empty($field['table']) && $field['table'] === 'prod.gdis_complex_value';
+        })->pluck('code')->unique()->toArray();
+
+        $data = $gdisComplexValues = [];
+        foreach ($tmpData as $key => $value) {
+            if (in_array($key, $gdisComplexValueFieldsCodes)) {
+                $metric = $metrics->where('code', $key)->first();
+                if (empty($metric)) {
+                    continue;
+                }
+                $gdisComplexValues[$metric->id] = $value;
+            } else {
+                $data[$key] = $value;
+            }
+        }
+
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+
+        if (!empty($data['id'])) {
+            if (auth()->user()->cannot("bigdata update {$this->configurationFileName}")) {
+                throw new \Exception("You don't have permissions");
+            }
+            $id = $data['id'];
+            unset($data['id']);
+
+            $dbQuery = $dbQuery->where('id', $id);
+
+            $this->originalData = $dbQuery->first();
+            $dbQuery->update($data);
+
+            $this->submittedData['fields'] = $data;
+            $this->submittedData['id'] = $id;
+
+            foreach ($gdisComplexValues as $metricId => $value) {
+                $gdisComplexValue = DB::connection('tbd')
+                    ->table('prod.gdis_complex_value')
+                    ->where('gdis_complex', $id)
+                    ->where('metric', $metricId)
+                    ->first();
+
+                if (!empty($gdisComplexValue)) {
+                    DB::connection('tbd')
+                        ->table('prod.gdis_complex_value')
+                        ->where('id', $gdisComplexValue->id)
+                        ->update(
+                            [
+                                'value_string' => $value
+                            ]
+                        );
+                } else {
+                    DB::connection('tbd')
+                        ->table('prod.gdis_complex_value')
+                        ->insert(
+                            [
+                                'gdis_complex' => $id,
+                                'metric' => $metricId,
+                                'value_string' => $value
+                            ]
+                        );
+                }
+            }
+            } else {
+                if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
+                    throw new \Exception("You don't have permissions");
+                }
+                $id = $dbQuery->insertGetId($data);
+
+                foreach ($gdisComplexValues as $metricId => $value) {
+                    DB::connection('tbd')
+                        ->table('prod.gdis_complex_value')
+                        ->insert(
+                            [
+                                'gdis_complex' => $id,
+                                'metric' => $metricId,
+                                'value_string' => $value
+                            ]
+                        );
+                }
+            }
+
+        $this->insertInnerTable($id);
+
+        DB::connection('tbd')->commit();
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 }
