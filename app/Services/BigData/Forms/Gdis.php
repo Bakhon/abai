@@ -41,67 +41,24 @@ class Gdis extends PlainForm
         DB::connection('tbd')->beginTransaction();
 
         try {
-            submitData();
+            $id = $this->submitData();
+
+            DB::connection('tbd')->commit();
+            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
         } catch (\Exception $e) {
             DB::connection('tbd')->rollBack();
             throw new SubmitFormException($e->getMessage());
         }
     }
 
-    protected function formatRows(Collection $rows)
+    protected function submitData()
     {
-        $rowIds = $rows->pluck('id')->toArray();
-
-        $gdisComplexValues = DB::connection('tbd')
-            ->table('prod.gdis_complex_value as g')
-            ->select('g.gdis_complex', 'm.code', 'g.value_string')
-            ->whereIn('gdis_complex', $rowIds)
-            ->join('dict.metric as m', 'm.id', 'g.metric')
-            ->get();
-
-        return $rows->map(function ($row) use ($gdisComplexValues) {
-            if (isset($row->dend)) {
-                if (Carbon::parse($row->dend) > Carbon::parse('01-01-3000')) {
-                    $row->dend = null;
-                }
-            }
-
-            $rowGdisComplexValues = $gdisComplexValues->where('gdis_complex', $row->id);
-            foreach ($rowGdisComplexValues as $value) {
-                $row->{$value->code} = $value->value_string;
-            }
-
-            return $row;
-        });
-    }
-
-    protected function insertData($metricId,$value){
-        DB::connection('tbd')
-        ->table('prod.gdis_complex_value')
-        ->insert(
-            [
-                'gdis_complex' => $id,
-                'metric' => $metricId,
-                'value_string' => $value
-            ]
-        );
-    }
-
-    protected function checkFormPermission(string $action)
-    {
-        if (auth()->user()->cannot("bigdata {$action} {$this->configurationFileName}")) {
-            throw new \Exception("You don't have permissions");
-        }
-    }
-
-
-    protected function submitData(){
         $this->tableFields = $this->getFields()
-                ->filter(
-                    function ($item) {
-                        return $item['type'] === 'table';
-                    }
-                );
+            ->filter(
+                function ($item) {
+                    return $item['type'] === 'table';
+                }
+            );
 
         $this->tableFieldCodes = $this->tableFields
             ->pluck('code')
@@ -134,7 +91,7 @@ class Gdis extends PlainForm
 
         if (!empty($data['id'])) {
             $this->checkFormPermission('create');
-            
+
             $id = $data['id'];
             unset($data['id']);
 
@@ -163,22 +120,62 @@ class Gdis extends PlainForm
                             ]
                         );
                 } else {
-                    this->insertData($metricId,$value);
+                    $this->insertComplexValue($id, $metricId, $value);
                 }
             }
-            } else {
-                $this->checkFormPermission('create');
-            
-                $id = $dbQuery->insertGetId($data);
+        } else {
+            $this->checkFormPermission('create');
 
-                foreach ($gdisComplexValues as $metricId => $value) {
-                    this->insertData($metricId,$value);
-                }
+            $id = $dbQuery->insertGetId($data);
+
+            foreach ($gdisComplexValues as $metricId => $value) {
+                $this->insertComplexValue($id, $metricId, $value);
             }
+        }
 
         $this->insertInnerTable($id);
 
-        DB::connection('tbd')->commit();
-        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
+        return $id;
     }
+
+    protected function insertComplexValue(int $id, int $metricId, $value)
+    {
+        DB::connection('tbd')
+            ->table('prod.gdis_complex_value')
+            ->insert(
+                [
+                    'gdis_complex' => $id,
+                    'metric' => $metricId,
+                    'value_string' => $value
+                ]
+            );
+    }
+
+    protected function formatRows(Collection $rows)
+    {
+        $rowIds = $rows->pluck('id')->toArray();
+
+        $gdisComplexValues = DB::connection('tbd')
+            ->table('prod.gdis_complex_value as g')
+            ->select('g.gdis_complex', 'm.code', 'g.value_string')
+            ->whereIn('gdis_complex', $rowIds)
+            ->join('dict.metric as m', 'm.id', 'g.metric')
+            ->get();
+
+        return $rows->map(function ($row) use ($gdisComplexValues) {
+            if (isset($row->dend)) {
+                if (Carbon::parse($row->dend) > Carbon::parse('01-01-3000')) {
+                    $row->dend = null;
+                }
+            }
+
+            $rowGdisComplexValues = $gdisComplexValues->where('gdis_complex', $row->id);
+            foreach ($rowGdisComplexValues as $value) {
+                $row->{$value->code} = $value->value_string;
+            }
+
+            return $row;
+        });
+    }
+
 }
