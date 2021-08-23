@@ -52,40 +52,6 @@ class Gis extends PlainForm
         }
     }
 
-    private function insertDocuments(int $id)
-    {
-        if (!empty($this->request->documents)) {
-            foreach ($this->request->documents as $documentId) {
-                DB::connection('tbd')
-                    ->table('prod.gis_file')
-                    ->insert(
-                        [
-                            'file_type' => 4,
-                            'document' => $documentId,
-                            'gis' => $id
-                        ]
-                    );
-            }
-        }
-    }
-
-    private function insertMethodTypes(int $id)
-    {
-        if (!empty($this->request->gis_method_type)) {
-            $methods = (array)$this->request->gis_method_type;
-            foreach ($methods as $method) {
-                DB::connection('tbd')
-                    ->table('prod.gis_method_link')
-                    ->insert(
-                        [
-                            'method' => $method,
-                            'gis' => $id
-                        ]
-                    );
-            }
-        }
-    }
-
     private function submitForm()
     {
         $this->tableFields = $this->getFields()
@@ -131,5 +97,39 @@ class Gis extends PlainForm
         }
 
         $this->insertInnerTable($id);
+    }
+
+    private function insertDocuments(int $id)
+    {
+        if (!empty($this->request->documents)) {
+            foreach ($this->request->documents as $documentId) {
+                DB::connection('tbd')
+                    ->table('prod.gis_file')
+                    ->insert(
+                        [
+                            'file_type' => 4,
+                            'document' => $documentId,
+                            'gis' => $id
+                        ]
+                    );
+            }
+        }
+    }
+
+    private function insertMethodTypes(int $id)
+    {
+        if (!empty($this->request->gis_method_type)) {
+            $methods = (array)$this->request->gis_method_type;
+            foreach ($methods as $method) {
+                DB::connection('tbd')
+                    ->table('prod.gis_method_link')
+                    ->insert(
+                        [
+                            'method' => $method,
+                            'gis' => $id
+                        ]
+                    );
+            }
+        }
     }
 }
