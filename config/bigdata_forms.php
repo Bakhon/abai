@@ -40,6 +40,7 @@
   'daily_reports_water_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsWaterProduction',
   'well_document' => '\\App\\Services\\BigData\\Forms\\WellDocument',
   'gis_type' => '\\App\\Services\\BigData\\Forms\\GisType',
+  'gdis' => '\\App\\Services\\BigData\\Forms\\Gdis',
   'daily_reports_oil_sale' => '\\App\\Services\\BigData\\Forms\\DailyReportsOilSale',
   'daily_reports_gas_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsGasProduction',
   'daily_reports_water_upload' => '\\App\\Services\\BigData\\Forms\\DailyReportsWaterUpload',
