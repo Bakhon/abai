@@ -129,12 +129,8 @@ abstract class PlainForm extends BaseForm
     public function getResults(int $wellId): JsonResponse
     {
         try {
-            $query = DB::connection('tbd')
-                ->table($this->params()['table'])
-                ->where('well', $wellId)
-                ->orderBy('id', 'desc');
 
-            $rows = $query->get();
+            $rows = $this->getResultsQuery($wellId);
 
             if (!empty($this->params()['sort'])) {
                 foreach ($this->params()['sort'] as $sort) {
@@ -178,6 +174,16 @@ abstract class PlainForm extends BaseForm
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
+    }
+
+    protected function getResultsQuery(int $wellId): Collection
+    {
+        $query = DB::connection('tbd')
+            ->table($this->params()['table'])
+            ->where('well', $wellId)
+            ->orderBy('id', 'desc');
+
+        return $query->get();
     }
 
     public function getCalculatedFields(int $wellId, array $values): array

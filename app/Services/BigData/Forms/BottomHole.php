@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class BottomHole extends PlainForm
@@ -15,14 +16,32 @@ class BottomHole extends PlainForm
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
 
+    protected function getResultsQuery(int $wellId): Collection
+    {
+        $bottomHole = $this->getBottomHole();
+
+        $query = DB::connection('tbd')
+            ->table($this->params()['table'])
+            ->where('well', $wellId)
+            ->where('bottom_hole_type', $bottomHole->id)
+            ->orderBy('id', 'desc');
+
+        return $query->get();
+    }
+
+    private function getBottomHole(): ?\stdClass
+    {
+        return DB::connection('tbd')
+            ->table('dict.bottom_hole_type')
+            ->where('code', 'TD')
+            ->first();
+    }
+
     protected function prepareDataToSubmit()
     {
         $data = $this->request->except($this->tableFieldCodes);
 
-        $bottomHole = DB::connection('tbd')
-            ->table('dict.bottom_hole_type')
-            ->where('code', 'TD')
-            ->first();
+        $bottomHole = $this->getBottomHole();
 
         $data['bottom_hole_type'] = $bottomHole->id;
         return $data;
