@@ -14,12 +14,12 @@ class Kpc extends PlainForm
     {
         $data = $this->request->except($this->tableFieldCodes);
 
-        $prs = DB::connection('tbd')
+        $kpc = DB::connection('tbd')
             ->table('dict.well_repair_type')
             ->where('code', 'CWO')
             ->first();
 
-        $data['repair_type'] = $prs->id;
+        $data['repair_type'] = $kpc->id;
         return $data;
     }
 
@@ -27,14 +27,6 @@ class Kpc extends PlainForm
     {
         $errors = [];
 
-        if (!$this->isValidDateDbeg(
-            $this->request->get('well'),
-            $this->request->get('dbeg'), 
-            'dict.well' , 
-            'drill_start_date'
-        )){
-            $errors['dbeg'] = trans('bd.validation.date');
-        }
         if (!$this->isValidDepth($this->request->get('well'), $this->request->get('td'))) {
             $errors['td'] = trans('bd.validation.depth');
         }

@@ -193,11 +193,11 @@
               "prefix": ""
             },
             {
-              "code": "machine_technical_condition",
+              "code": "tech_state",
               "type": "dict",
               "title": "machine_technical_condition",
-              "validation": "required|exists:",
-              "dict": "wells_tech_conditions"
+              "validation": "required|exists:dict.tech_state_casing,id",
+              "dict": "tech_state_casings"
             },
             {
               "code": "no_change_tech_state",
@@ -206,7 +206,7 @@
               "validation":""
             },
             {
-              "code": "condition",
+              "code": "well_status",
               "type": "dict",
               "title": "condition",
               "validation": "required|exists:tbd.dict.well_status_type,id",
@@ -235,14 +235,14 @@
               "code": "reason_equip_fail",
               "type": "dict",
               "title": "cause_h_failure",
-              "validation": "required|exists:tbd.dict.reason, id",
+              "validation": "required|exists:tbd.dict.reason,id",
               "dict": "reason_ref"
             },
             {
               "code": "add_reason_equip_fail",
               "type": "dict",
               "title": "add_f",
-              "validation": "required|exists:tbd.dict.reason_equip_fail, id",
+              "validation": "required|exists:tbd.dict.reason_equip_fail,id",
               "dict": "reason_equip_fail"
             },
             {
@@ -255,7 +255,7 @@
               "code": "stop_reason",
               "type": "dict",
               "title": "reason_stopping",
-              "validation": "required|exists:tbd.dict.reason, id",
+              "validation": "required|exists:tbd.dict.reason,id",
               "dict": "reason_rst"
             }
           ]

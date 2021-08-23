@@ -50,6 +50,7 @@ use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
 use App\Models\BigData\Dictionaries\ReasonEquipFail;
 use App\Models\BigData\Dictionaries\ChemicalReagentType;
+use App\Models\BigData\Dictionaries\TechStateCasing;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -114,7 +115,7 @@ class DictionaryService
         ],
         'wells_tech_conditions' => [
             'class' => TechConditionOfWells::class,
-            'name_field' => ''
+            'name_field' => 'name_ru'
         ],
         'pump_types' => [
             'class' => PumpType::class,
@@ -300,7 +301,6 @@ class DictionaryService
                 case 'reason_rst':
                     $dict = $this->getReasonTypeRstDict();
                     break;        
-                    break;
                 case 'reason_type_rtr':
                     $dict = $this->getReasonTypeRtrDict();
                     break;
