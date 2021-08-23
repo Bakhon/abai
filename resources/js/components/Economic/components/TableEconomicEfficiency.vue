@@ -168,7 +168,7 @@ export default {
 .apexcharts-custom-legend >>> .apexcharts-legend-series::before {
   content: "";
   width: 40px;
-  margin-right: -25px;
+  margin-right: -26px;
 }
 
 .apexcharts-custom-legend >>> .apexcharts-legend-series[rel='1']::before {
