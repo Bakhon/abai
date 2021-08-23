@@ -178,9 +178,11 @@ export default {
           })
         },
         {
-          title: 'Расходы на персонал (ФОТ)',
+          title: 'Расходы на персонал (ФОТ), млн. тенге',
           pp2020: '',
-          values: this.filteredData.map(item => '')
+          values: this.filteredData.map(item =>
+              (+item.Fixed_noWRpayroll_expenditures.original_value_optimized / 1000000).toFixed(2)
+          )
         },
         {
           title: 'КВЛ, млн. тенге',
