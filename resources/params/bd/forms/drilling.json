@@ -18,7 +18,6 @@
     },
     {
       "code": "depth",
-      "table":"prod.bottom_hole",
       "type": "float",
       "title": "depth",
       "validation": "gte:0",
