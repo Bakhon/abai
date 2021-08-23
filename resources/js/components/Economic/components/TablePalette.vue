@@ -13,12 +13,12 @@
         </div>
 
         <div class="py-3 border-grey d-flex align-items-center justify-content-center flex-150px">
-          ПП-2020
+          {{ trans('economic_reference.pp_2020') }}
         </div>
 
         <div class="flex-grow-1">
           <div class="py-3 border-grey text-center">
-            Литимизированная производственная программа, при цене на нефть,
+            {{ trans('economic_reference.lithimized_production_program_with_oil_prices') }}
             {{ trans('economic_reference.dollar_per_bar') }}
           </div>
 
@@ -154,20 +154,20 @@ export default {
     tableData() {
       return [
         {
-          title: 'Номер программы',
+          title: this.trans('economic_reference.program_number'),
           pp2020: '',
           values: this.filteredData.map((item, index) => this.convertToRoman(index + 1)),
           color: '#81B9FE'
         },
         {
-          title: 'Добыча, тыс. тонн',
+          title: `${this.trans('economic_reference.production')}, ${this.trans('economic_reference.thousand_tons')}`,
           pp2020: '',
           values: this.filteredData.map(item =>
               (+item.oil.original_value_optimized / 1000).toFixed(2)
           )
         },
         {
-          title: 'Остановка НРС',
+          title: this.trans('economic_reference.stop_nrs'),
           pp2020: '',
           values: this.filteredData.map(item => {
             let cat1 = +item.uwi_count_profitless_cat_1.original_value_optimized
@@ -178,7 +178,7 @@ export default {
           })
         },
         {
-          title: 'Расходы на персонал (ФОТ), млн. тенге',
+          title: `${this.trans('economic_reference.personnel_costs_payroll')}, ${this.trans('economic_reference.million_tenge')}`,
           pp2020: '',
           values: this.filteredData.map(item =>
               (+item.Fixed_noWRpayroll_expenditures.original_value_optimized / 1000000).toFixed(2)

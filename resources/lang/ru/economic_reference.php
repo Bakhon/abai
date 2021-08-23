@@ -246,4 +246,9 @@ return array (
   'loss_production_due_to_shutdown' => 'Потери добычи из-за остановки',
   'production_from_gtm' => 'Добыча от ГТМ',
   'rem_short' => 'рем',
+  'pp_2020' => 'ПП-2020',
+  'lithimized_production_program_with_oil_prices' => 'Литимизированная производственная программа, при цене на нефть',
+  'program_number' => 'Номер программы',
+  'stop_nrs' => 'Остановка НРС',
+  'personnel_costs_payroll' => 'Расходы на персонал (ФОТ)',
 );
