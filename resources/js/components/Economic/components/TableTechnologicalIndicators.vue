@@ -169,7 +169,15 @@ export default {
         {
           title: 'Количество ГТМ по видам',
           dimension: this.trans('economic_reference.wells_count_short'),
-          values: this.filteredData.map(item => ''),
+          values: this.filteredData.map(item => {
+            let gtmsCount = 0
+
+            for (const [month, gtms] of Object.entries(JSON.parse(item.gtms))) {
+              gtms.forEach(gtm => gtmsCount += gtm[1])
+            }
+
+            return gtmsCount
+          }),
           bold: true
         },
         {

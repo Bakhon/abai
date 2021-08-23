@@ -136,11 +136,41 @@ export default {
       })
     },
 
+    chartColors() {
+      const colors = [
+        '#34558C',
+        '#9C7300',
+        '#666666',
+        '#A3480E',
+        '#374AB4',
+        '#79B44E',
+        '#82BAFF',
+        '#FFC607',
+        '#A9A9A9',
+        '#F37F31',
+        '#436DB0',
+        '#81B9FE',
+        '#374AB4',
+        '#436B2A',
+      ]
+
+      let result = []
+
+      colors.forEach(color => {
+        result.push(color)
+
+        result.push(color)
+      })
+
+      return result
+    },
+
     chartOptions() {
       return {
         stroke: {
           width: 4,
           curve: 'straight',
+          dashArray: this.chartSeries.map((item, index) => index % 2 === 0 ? 0 : 5)
         },
         chart: {
           foreColor: '#FFFFFF',
@@ -206,22 +236,7 @@ export default {
             colors: ['#fff']
           },
         },
-        colors: [
-          '#34558C',
-          '#9C7300',
-          '#666666',
-          '#A3480E',
-          '#374AB4',
-          '#79B44E',
-          '#82BAFF',
-          '#FFC607',
-          '#A9A9A9',
-          '#F37F31',
-          '#436DB0',
-          '#81B9FE',
-          '#374AB4',
-          '#436B2A',
-        ],
+        colors: this.chartColors
       }
     },
   }
