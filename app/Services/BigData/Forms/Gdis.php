@@ -75,6 +75,18 @@ class Gdis extends PlainForm
         });
     }
 
+    protected function insertData($metricId,$value){
+        DB::connection('tbd')
+        ->table('prod.gdis_complex_value')
+        ->insert(
+            [
+                'gdis_complex' => $id,
+                'metric' => $metricId,
+                'value_string' => $value
+            ]
+        );
+    }
+
     protected function submitData(){
         $this->tableFields = $this->getFields()
                 ->filter(
@@ -144,15 +156,7 @@ class Gdis extends PlainForm
                             ]
                         );
                 } else {
-                    DB::connection('tbd')
-                        ->table('prod.gdis_complex_value')
-                        ->insert(
-                            [
-                                'gdis_complex' => $id,
-                                'metric' => $metricId,
-                                'value_string' => $value
-                            ]
-                        );
+                    insertData($metricId,$value);
                 }
             }
             } else {
@@ -162,15 +166,7 @@ class Gdis extends PlainForm
                 $id = $dbQuery->insertGetId($data);
 
                 foreach ($gdisComplexValues as $metricId => $value) {
-                    DB::connection('tbd')
-                        ->table('prod.gdis_complex_value')
-                        ->insert(
-                            [
-                                'gdis_complex' => $id,
-                                'metric' => $metricId,
-                                'value_string' => $value
-                            ]
-                        );
+                    insertData($metricId,$value);
                 }
             }
 
