@@ -1,0 +1,70 @@
+{
+  "type": "table",
+  "table_type": "wells",
+  "columns": [
+    {
+      "title": "id",
+      "code": "id",
+      "type": "integer",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "org",
+      "code": "name_ru",
+      "type": "dict",
+      "dict":"orgs",
+      "is_editable": false,
+      "validation":"exists:tbd.dict.org,id"
+    },
+    {
+      "title": "company",
+      "code": "contractor",
+      "type": "dict",
+      "dict":"companies",
+      "is_editable": false,
+      "validation":"exists:tbd.dict.company,id"
+    },
+    {
+      "title": "machine_type",
+      "code": "machine_type",
+      "table":"prod.report_org_daily_repair",
+      "type": "dict",
+      "dict":"machine_types",
+      "is_editable": true,
+      "validation":"required|exists:tbd.dict.machine_type,id"
+    },
+    {
+      "title": "well",
+      "code": "well",
+      "type": "dict",
+      "dict":"well",
+      "is_editable": false,
+      "validation":"exists:tbd.dict.well,id"
+    },
+    {
+      "title": "geo",
+      "code": "geo",
+      "type": "dict",
+      "dict":"geos",
+      "is_editable": false,
+      "validation":"exists:tbd.dict.geo,id"
+    },
+    {
+      "title": "repair_work_type",
+      "code": "repair_work_type",
+      "type": "dict",
+      "dict":"repair_work_types",
+      "is_editable": false,
+      "validation":"exists:tbd.dict.geo,id"
+    },
+    {
+      "title": "work_done",
+      "code": "work_done",
+      "type": "text",
+      "table":"prod.report_org_daily_repair",
+      "is_editable": true,
+      "validation":"required"
+    }
+  ]
+}
