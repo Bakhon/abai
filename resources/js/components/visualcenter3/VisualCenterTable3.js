@@ -757,9 +757,7 @@ export default {
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
         this.oneDzoSelected = this.getDzoTicker();
-        if (this.oneDzoSelected) {
-            this.isOneDzoSelected=this.oneDzoSelected.length > 0;
-        };       
+        this.isOneDzoSelected=this.oneDzoSelected.length > 0;
         this.updateChemistryWidget();
         this.updateWellsWorkoverWidget();
         this.updateDrillingWidget();
