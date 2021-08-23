@@ -11,7 +11,7 @@
     },
     {
       "title": "org",
-      "code": "name_ru",
+      "code": "org",
       "type": "dict",
       "dict":"orgs",
       "is_editable": false,
@@ -28,7 +28,6 @@
     {
       "title": "machine_type",
       "code": "machine_type",
-      "table":"prod.report_org_daily_repair",
       "type": "dict",
       "dict":"machine_types",
       "is_editable": true,
@@ -38,7 +37,7 @@
       "title": "well",
       "code": "well",
       "type": "dict",
-      "dict":"well",
+      "dict":"wells",
       "is_editable": false,
       "validation":"exists:tbd.dict.well,id"
     },
@@ -62,7 +61,6 @@
       "title": "work_done",
       "code": "work_done",
       "type": "text",
-      "table":"prod.report_org_daily_repair",
       "is_editable": true,
       "validation":"required"
     }
