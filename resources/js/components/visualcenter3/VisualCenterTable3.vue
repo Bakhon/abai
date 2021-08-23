@@ -332,10 +332,9 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('oilCondensateProduction')"
-                          :class="{ 'button-tab-highlighted': dropdownMenu.oilCondensateProduction }"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.oilCondensateProduction}]"
                   ></button>
                   <div>
                     <ul
@@ -388,10 +387,9 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('oilCondensateDelivery')"
-                          :class="{ 'button-tab-highlighted': dropdownMenu.oilCondensateDelivery }"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.oilCondensateDelivery}]"                          
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
@@ -469,10 +467,9 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('gasProduction')"
-                          :class="{ 'button-tab-highlighted': dropdownMenu.gasProduction }"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.gasProduction}]"                         
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
@@ -671,10 +668,9 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('waterInjection')"
-                          :class="{ 'button-tab-highlighted': dropdownMenu.waterInjection }"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.waterInjection}]"
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
@@ -3271,4 +3267,7 @@
   .dropdown-splitter {
     background: #C4DEF2;
   }
+  .visualcenter-button-disable {
+    display: none;
+}
 </style>
