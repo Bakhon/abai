@@ -114,7 +114,7 @@ export default {
     tableData() {
       return [
         {
-          title: `${this.trans('economic_reference.at_export_price')} - ${this.scenario.oil_price}$/bbl`,
+          title: `${this.trans('economic_reference.at_export_price')} - ${+this.scenario.oil_price}$/bbl`,
           uwiCount: this.trans('economic_reference.units'),
           prsCount: this.trans('economic_reference.units'),
           prsPerUwi: this.trans('economic_reference.units'),
@@ -198,17 +198,6 @@ export default {
         },
         {
           title: this.trans('economic_reference.profitless_cat_1'),
-          uwiCount: +this.scenario.uwi_count_profitless_cat_1.original_value_optimized,
-          prsCount: +this.scenario.prs_profitless_cat_1.original_value_optimized,
-          prsPerUwi: this.calcPrsPerUwi(this.scenario.prs_profitless_cat_1.original_value_optimized, this.scenario.uwi_count_profitless_cat_1.original_value_optimized),
-          liquid: this.calcLiquid(this.scenario.liquid_profitless_cat_1.original_value_optimized, this.scenario.oil_profitless_cat_1.original_value_optimized),
-          avgQn: this.calcAvgQn(this.scenario.oil_profitless_cat_1.original_value_optimized, this.scenario.days_worked_profitless_cat_1.original_value_optimized),
-          oil: this.calcOil(this.scenario.oil_profitless_cat_1.original_value_optimized),
-          number: '',
-          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_1.original_value_optimized)
-        },
-        {
-          title: this.trans('economic_reference.profitless_cat_2'),
           uwiCount: +this.scenario.uwi_count_profitless_cat_2.original_value_optimized,
           prsCount: +this.scenario.prs_profitless_cat_2.original_value_optimized,
           prsPerUwi: this.calcPrsPerUwi(this.scenario.prs_profitless_cat_2.original_value_optimized, this.scenario.uwi_count_profitless_cat_2.original_value_optimized),
@@ -217,6 +206,17 @@ export default {
           oil: this.calcOil(this.scenario.oil_profitless_cat_2.original_value_optimized),
           number: '',
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_2.original_value_optimized)
+        },
+        {
+          title: this.trans('economic_reference.profitless_cat_2'),
+          uwiCount: +this.scenario.uwi_count_profitless_cat_1.original_value_optimized,
+          prsCount: +this.scenario.prs_profitless_cat_1.original_value_optimized,
+          prsPerUwi: this.calcPrsPerUwi(this.scenario.prs_profitless_cat_1.original_value_optimized, this.scenario.uwi_count_profitless_cat_1.original_value_optimized),
+          liquid: this.calcLiquid(this.scenario.liquid_profitless_cat_1.original_value_optimized, this.scenario.oil_profitless_cat_1.original_value_optimized),
+          avgQn: this.calcAvgQn(this.scenario.oil_profitless_cat_1.original_value_optimized, this.scenario.days_worked_profitless_cat_1.original_value_optimized),
+          oil: this.calcOil(this.scenario.oil_profitless_cat_1.original_value_optimized),
+          number: '',
+          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_1.original_value_optimized)
         },
       ]
     },
