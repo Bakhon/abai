@@ -332,10 +332,9 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('oilCondensateProduction')"
-                          :class="{ 'button-tab-highlighted': dropdownMenu.oilCondensateProduction }"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.oilCondensateProduction}]"
                   ></button>
                   <div>
                     <ul
@@ -388,10 +387,9 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('oilCondensateDelivery')"
-                          :class="{ 'button-tab-highlighted': dropdownMenu.oilCondensateDelivery }"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.oilCondensateDelivery}]"                          
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
@@ -469,10 +467,9 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('gasProduction')"
-                          :class="{ 'button-tab-highlighted': dropdownMenu.gasProduction }"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.gasProduction}]"                         
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
@@ -671,10 +668,9 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('waterInjection')"
-                          :class="{ 'button-tab-highlighted': dropdownMenu.waterInjection }"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.waterInjection}]"
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
@@ -1057,7 +1053,7 @@
                   <tbody>
                   <tr v-for="(item, index) in dzoSummaryForTable">
                     <td :class="`${getDzoColumnsClass(index,'difference')}`">
-                      {{getNumberByDzo(item.dzoMonth)}}
+                      {{getNumberByDzo(item.dzoMonth,index)}}
                     </td>
                     <td
                             @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth,item.dzo)}` : `${selectAllDzoCompanies()}`"
@@ -1632,7 +1628,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table v-if="injectionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
@@ -1673,9 +1669,15 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <div v-if="isInjectionFondPeriodSelected" class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <fonds-daily-chart
+                          v-if="injectionDailyChart.series.length > 0 && !isInjectionFondPeriodSelected"
+                          :chart-data="injectionDailyChart"
+                          :name="'visualcenter.countOfInjectionWells'"
+                          :is-yaxis-active="false"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
-                          v-if="injectionFondDataForChart"
+                          v-if="injectionFondDataForChart && isInjectionFondPeriodSelected"
                           :chartData="injectionFondDataForChart"
                   ></visual-center3-wells>
                 </div>
@@ -1788,7 +1790,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table v-if="productionFondData.length" class="table4 w-100 chemistry-table additional-tables">
                     <thead>
                     <tr>
@@ -1829,12 +1831,17 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
+                  <div v-if="isProductionFondPeriodSelected" class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
+                  <fonds-daily-chart
+                          v-if="productionDailyChart.series.length > 0 && !isProductionFondPeriodSelected"
+                          :chart-data="productionDailyChart"
+                          :name="'visualcenter.countOfProductionWells'"
+                          :is-yaxis-active="false"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
-                          v-if="productionFondDataForChart"
+                          v-if="productionFondDataForChart && isProductionFondPeriodSelected"
                           :chartData="productionFondDataForChart"
-                  >
-                  </visual-center3-wells>
+                  ></visual-center3-wells>
                 </div>
               </div>
             </div>
@@ -1937,7 +1944,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table
                           v-if="drillingData.length"
                           class="table4 w-100 chemistry-table additional-tables"
@@ -2006,15 +2013,21 @@
                 </div>
                 <div class="col-sm-5">
                   <div
-                          v-if="drillingSelectedRow === 'otm_wells_commissioning_from_drilling_fact'"
+                          v-if="drillingSelectedRow === 'otm_wells_commissioning_from_drilling_fact' && isDrillingPeriodSelected"
                           class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}
                   </div>
                   <div
-                          v-else
+                          v-else-if="drillingSelectedRow !== 'otm_wells_commissioning_from_drilling_fact' && isDrillingPeriodSelected"
                           class="name-chart-left">{{ trans("visualcenter.otmDrillingComission") }}, {{ trans("visualcenter.otmMetricSystemMeter") }}
                   </div>
+                  <otm-drilling-daily-chart
+                          v-if="!isDrillingPeriodSelected"
+                          :chart-data="drillingDailyChart"
+                          :name="['visualcenter.countDrillingWells','visualcenter.countDrilling']"
+                          :is-yaxis-active="true"
+                  ></otm-drilling-daily-chart>
                   <visual-center3-wells
-                          v-if="drillingDataForChart"
+                          v-if="drillingDataForChart && isDrillingPeriodSelected"
                           :chartData="drillingDataForChart"
                   ></visual-center3-wells>
                 </div>
@@ -2040,19 +2053,21 @@
               <div class="container-fluid">
                 <div class="row p-0 emergency-table__header">
                   <span class="col-1 p-2 pl-5">{{ trans("visualcenter.date") }}</span>
-                  <span class="col-11 p-2 pl-3">{{ trans("visualcenter.notes") }}</span>
+                  <span class="col-2 p-2 pl-3">Дата заполнения</span>
+                  <span class="col-9 p-2 pl-3">{{ trans("visualcenter.notes") }}</span>
                 </div>
                 <div
                         class="row emergency-view"
                         v-for="(item, index) in emergencyHistory"
                 >
                   <div class="col-12 d-flex emergency-title p-0">
-                    <span class="col-1">{{item.date}}</span>
+                    <span :class="[item.approved ? 'emergency-resolved' : 'not-resolved' ,'col-1']">{{item.date}}</span>
                     <span class="col-11">{{item.title}}</span>
                   </div>
                   <div class="col-12 d-flex emergency-description p-2">
                     <span class="col-1"></span>
-                    <span class="col-11">{{item.description}}</span>
+                    <span class="col-2">{{item.approve_date}}</span>
+                    <span class="col-9">{{item.description}}</span>
                   </div>
                 </div>
               </div>
@@ -2123,7 +2138,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table
                           v-if="wellsWorkoverData.length"
                           class="table4 w-100 chemistry-table additional-tables"
@@ -2185,7 +2200,7 @@
                         <div :class="[getIndicatorClass(item.plan,item.fact),'ml-5']">
                         </div>
                         <div class="font dynamic">
-                          {{Math.abs(formatDigitToThousand(item.difference))}}
+                          {{formatDigitToThousand(Math.abs(item.difference))}}
                           <span class="data-metrics">
                               {{item.metricSystem}}
                             </span>
@@ -2196,9 +2211,15 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <div v-if="wellsWorkoverMonthlyPeriod.length === 0" class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <fonds-daily-chart
+                          v-if="wellsWorkoverDailyChart.series.length > 0 && wellsWorkoverMonthlyPeriod.length > 0"
+                          :chart-data="wellsWorkoverDailyChart"
+                          :name="'visualcenter.countWellsWorkover'"
+                          :is-yaxis-active="true"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
-                          v-if="wellsWorkoverDataForChart"
+                          v-if="wellsWorkoverDataForChart && wellsWorkoverMonthlyPeriod.length === 0"
                           :chartData="wellsWorkoverDataForChart"
                   ></visual-center3-wells>
                 </div>
@@ -2272,7 +2293,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-4 col-sm-7">
+                <div class="vis-table px-4 col-sm-7 mh-495">
                   <table
                           v-if="chemistryData.length"
                           class="table4 w-100 chemistry-table additional-tables"
@@ -2321,9 +2342,15 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">Объём хим. реагента, тонны</div>
+                  <div v-if="chemistryMonthlyPeriod.length === 0" class="name-chart-left">{{ trans("visualcenter.chemVolume") }}</div>
+                  <fonds-daily-chart
+                          v-if="chemistryDailyChart.series.length > 0 && chemistryMonthlyPeriod.length > 0"
+                          :chart-data="chemistryDailyChart"
+                          :name="'visualcenter.countChemistry'"
+                          :is-yaxis-active="false"
+                  ></fonds-daily-chart>
                   <visual-center3-wells
-                          v-if="chemistryDataForChart"
+                          v-if="chemistryDataForChart && chemistryMonthlyPeriod.length === 0"
                           :chartData="chemistryDataForChart"
                   ></visual-center3-wells>
                 </div>
@@ -2813,6 +2840,9 @@
       font-size: 16px !important;
     }
   }
+  .mh-495 {
+    max-height: 495px;
+  }
 
   .vis-table-small {
     max-width: 46% !important;
@@ -3195,15 +3225,15 @@
   .emergency-view {
     .emergency-title {
       font-size: 16px;
-      span:first-child {
-        background: #353EA1;
-      }
       span:last-child {
         background: #4C537E;
       }
     }
     .emergency-description {
       background: #313561;
+    }
+    .not-resolved {
+      background: #353EA1;
     }
   }
   .category-button_border {
@@ -3232,11 +3262,17 @@
     background: #2E50E9;
     border-bottom: 0.5px solid #272953;
     font-size: 17px;
-    span:first-child {
+    span{
       border-right: 0.5px solid #272953;
     }
   }
   .dropdown-splitter {
     background: #C4DEF2;
   }
+  .emergency-resolved {
+    background: #009847;
+  }
+  .visualcenter-button-disable {
+    display: none;
+}
 </style>

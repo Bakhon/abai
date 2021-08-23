@@ -13,6 +13,9 @@ export const pgnoActions = {
     setCurveSettings({ commit }, payload) {
         commit("UPDATE_CURVE_SETTINGS", payload);
     },
+    setAnalysisSettings({ commit }, payload) {
+        commit("UPDATE_ANALYSIS_SETTINGS", payload);
+    },
     updateWell({ commit }, payload) {
         commit("SET_LINES", payload.linesAnalysis)
         commit("SET_POINTS", payload.pointsAnalysis)

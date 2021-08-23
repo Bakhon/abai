@@ -3,7 +3,7 @@
         <tbody>
         <tr>
             <th rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.drilling_fluids.solution_name')}}</th>
-            <th rowspan="2" colspan="4" class="align-middle">И{{trans('digital_drilling.drilling_fluids.wellbore_interval')}}</th>
+            <th rowspan="2" colspan="4" class="align-middle">{{trans('digital_drilling.drilling_fluids.wellbore_interval')}}</th>
             <th colspan="2"></th>
             <th colspan="24">{{trans('digital_drilling.drilling_fluids.mud_parameters')}}</th>
         </tr>

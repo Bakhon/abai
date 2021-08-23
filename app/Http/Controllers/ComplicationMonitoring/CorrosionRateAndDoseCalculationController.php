@@ -48,7 +48,7 @@ class CorrosionRateAndDoseCalculationController extends Controller
         {
             if ($pCO2 / $pH2S >= 20) 
             {
-                $x = 7.96 - 2320 / ($t + 273);
+                $x = 7.96 - 2320 / ($temperature + 273);
                 $y = $temperature * 5.55 * pow(10, -3);
                 $z = 0.67 * log10($co2);
                 $omega = $x - $y + $z;
@@ -65,7 +65,7 @@ class CorrosionRateAndDoseCalculationController extends Controller
 
         if ($corrosion_rate_a > 0.125) 
         {
-            if ($conH2S < 17) 
+            if ($conH2S_frac < 17) 
             {
                 $dose_a = 14.177 * log($corrosion_rate_a) + 35.222;
                 if($dose_a > 0 && $dose_a < 20)
@@ -75,7 +75,7 @@ class CorrosionRateAndDoseCalculationController extends Controller
             } 
             else 
             {
-                if ($conH2S > 17) 
+                if ($conH2S_frac > 17) 
                 {
                     $dose_a = 13.137 * log($corrosion_rate_a) + 26.859;
                     if($dose_a > 0 && $dose_a < 20)
