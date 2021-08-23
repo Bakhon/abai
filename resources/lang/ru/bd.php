@@ -924,6 +924,7 @@ return [
     'year' => 'год',
     'year_1' => 'Год',
     'all' => 'все',
+    'all_1' => 'Все',
     'sure_you_want_to_copy' => 'Вы точно хотите скопировать данные из ячейки?',
     'geo_in_abai_system' => 'Месторождения в системе ABAI',
     'dd_mm_yyyy' => 'дд.мм.гггг',
@@ -938,5 +939,7 @@ return [
     'choose_start_year' => 'Выберите начальный год',
     'choose_end_year' => 'Выберите конечный год',
     'wells' => 'Скважины',
-    'select_company' => 'Выберите компанию'
+    'select_company' => 'Выберите компанию',
+    'show_events' => 'Показывать события',
+    'show_full_history' => 'Показывать всю историю'
 ];
