@@ -758,7 +758,7 @@ export default {
         this.selectedDzoCompanies = this.getAllDzoCompanies();
         this.oneDzoSelected = this.getDzoTicker();
         if (this.oneDzoSelected) {
-            this.isOneDzoSelected=true;
+            this.isOneDzoSelected=this.oneDzoSelected.length > 0;
         };       
         this.updateChemistryWidget();
         this.updateWellsWorkoverWidget();
