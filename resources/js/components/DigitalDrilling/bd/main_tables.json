@@ -36,7 +36,7 @@
     "id": 5,
     "component": {
       "name": "main-table",
-      "template": "<drilling-fluids></drilling-fluids>"
+      "template": "<pd-drilling-fluids></pd-drilling-fluids>"
     }
   },
   {

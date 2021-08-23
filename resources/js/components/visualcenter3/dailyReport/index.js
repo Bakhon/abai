@@ -505,18 +505,18 @@ export default {
             let result = [];
             let pkiSummary = _.cloneDeep(companyTemplate);
             _.forEach(_.cloneDeep(summary), function(item,index) {
-                 let updatedByMultiplier = self.getCalculatedByMultiplier(item,self.participationMultiplier[item.dzo],item.dzo,index);
-                 updatedByMultiplier.number = '1.' + index + '.';
-                 result.push(updatedByMultiplier);
-                 if (item.dzo === 'КГМ') {
-                     let updatedBranch = self.getCalculatedByMultiplier(item,self.participationMultiplier['КГМД'],'КГМД',index);
-                     pkiSummary = self.getUpdatedPKI(pkiSummary,updatedBranch);
-                     result.push(updatedBranch);
-                 }
-                 if (['ПКК','ТП'].includes(item.dzo)) {
-                     updatedByMultiplier.number = '';
-                     pkiSummary = self.getUpdatedPKI(pkiSummary,updatedByMultiplier);
-                 }
+                let updatedByMultiplier = self.getCalculatedByMultiplier(item,self.participationMultiplier[item.dzo],item.dzo,index);
+                updatedByMultiplier.number = '1.' + index + '.';
+                result.push(updatedByMultiplier);
+                if (item.dzo === 'КГМ') {
+                    let updatedBranch = self.getCalculatedByMultiplier(item,self.participationMultiplier['КГМД'],'КГМД',index);
+                    pkiSummary = self.getUpdatedPKI(pkiSummary,updatedBranch);
+                    result.push(updatedBranch);
+                }
+                if (['ПКК','ТП'].includes(item.dzo)) {
+                    updatedByMultiplier.number = '';
+                    pkiSummary = self.getUpdatedPKI(pkiSummary,updatedByMultiplier);
+                }
             });
             pkiSummary = this.getByDifference(pkiSummary);
             pkiSummary.number = '1.5.';
@@ -594,8 +594,8 @@ export default {
                 format = function(s, c) {
                     return s.replace(/{(\w+)}/g,
                         function(m, p) {
-                        return c[p];
-                    })
+                            return c[p];
+                        })
                 }
             if (!table.nodeType) {
                 table = document.getElementById(table);
@@ -732,7 +732,7 @@ export default {
             $('#decreaseReason').css('left', event.screenX - 20);
         },
         mouseLeave() {
-           this.isModalActive = false;
+            this.isModalActive = false;
         },
         ...globalloadingMutations([
             'SET_LOADING'

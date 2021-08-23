@@ -125,6 +125,24 @@ export const globalloadingState = arrNames => ({
     ]),
 });
 
+export const digitalDrillingActions = arrNames => ({
+    ...mapActions('digitalDrilling', [
+        ...arrNames,
+    ]),
+});
+
+export const digitalDrillingGetters = arrNames => ({
+    ...mapGetters('digitalDrilling', [
+        ...arrNames,
+    ]),
+});
+
+export const digitalDrillingState = arrNames => ({
+    ...mapState('digitalDrilling', [
+        ...arrNames,
+    ]),
+});
+
 export const globalloadingMutations = arrNames => ({
     ...mapMutations('globalloading', [
         ...arrNames,

@@ -377,18 +377,19 @@ return [
             'Ohmm' => 'БМК / MLL, Ohmm',
             'h' => 'ГК / GR, UR / h',
             'c' => 'НГК / NGR, C / c',
-            'm'=> 'АК / DT, US / m',
+            'm' => 'АК / DT, US / m',
             'g' => 'ГГКп / DEN, G / C3',
             'nphi' => 'Водосодержание / NPHI, %',
-            'phit_den'=> 'КПггк / PHIT_DEN, %',
+            'phit_den' => 'КПггк / PHIT_DEN, %',
             'phit_son' => 'КПак / PHIT_SON, %',
             'phit' => 'КПобщ / PHIT, %',
             'phie' => 'КПэф / PHIE, %',
             'vsh' => 'КГЛ / VSH, %',
             'factor' => 'Кнасыщ / Saturation factor, %',
-            'typeofsaturation'=>'Тип насыщения / Type of saturation, %',
-            'lithology' => 'Литология / Lithology'
-
+            'typeofsaturation' => 'Тип насыщения / Type of saturation, %',
+            'lithology' => 'Литология / Lithology',
+            'files_gis' => 'Файлы ГИС',
+            'scan_doc' => 'Сканированный документ'
         ],
         'well_incl' => [
             'title' => 'Инклинометрия скважины',
@@ -992,6 +993,7 @@ return [
     'year' => 'год',
     'year_1' => 'Год',
     'all' => 'все',
+    'all_1' => 'Все',
     'sure_you_want_to_copy' => 'Вы точно хотите скопировать данные из ячейки?',
     'geo_in_abai_system' => 'Месторождения в системе ABAI',
     'dd_mm_yyyy' => 'дд.мм.гггг',
@@ -1006,5 +1008,7 @@ return [
     'choose_start_year' => 'Выберите начальный год',
     'choose_end_year' => 'Выберите конечный год',
     'wells' => 'Скважины',
-    'select_company' => 'Выберите компанию'
+    'select_company' => 'Выберите компанию',
+    'show_events' => 'Показывать события',
+    'show_full_history' => 'Показывать всю историю'
 ];

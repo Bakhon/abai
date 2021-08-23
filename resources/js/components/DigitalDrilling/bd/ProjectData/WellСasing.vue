@@ -72,5 +72,7 @@
 </script>
 
 <style scoped>
-
+th, td{
+    padding: 0.53rem;
+}
 </style>
