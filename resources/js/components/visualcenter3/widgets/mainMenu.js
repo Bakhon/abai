@@ -194,7 +194,7 @@ export default {
             }
         },
 
-        assignOneCompanyToSelectedDzo(oneDzoNameSelected) {            
+        assignOneCompanyToSelectedDzo(oneDzoNameSelected) {
             if (oneDzoNameSelected == 'ОМГ') {
                 oneDzoNameSelected = [oneDzoNameSelected, 'ОМГК'];
             }

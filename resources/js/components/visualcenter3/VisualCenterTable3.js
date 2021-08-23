@@ -756,8 +756,7 @@ export default {
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
-        this.oneDzoSelected = this.getDzoTicker(); 
-        console.log(this.oneDzoSelected);    
+        this.oneDzoSelected = this.getDzoTicker();
         if (this.oneDzoSelected) {
             this.isOneDzoSelected=true;
             this.updateChemistryWidget();
