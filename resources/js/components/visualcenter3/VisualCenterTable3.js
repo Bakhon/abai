@@ -755,7 +755,7 @@ export default {
         this.buttonDailyTab = "button-tab-highlighted";
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
-        this.selectedDzoCompanies = this.getAllDzoCompanies();        
+        this.selectedDzoCompanies = this.getAllDzoCompanies();
         this.oneDzoSelected = this.getDzoTicker(); 
         console.log(this.oneDzoSelected);    
         if (this.oneDzoSelected) {
@@ -770,7 +770,7 @@ export default {
         };
     },   
     watch: {
-        bigTable: function () {          
+        bigTable: function () {
             if (this.isOneDzoSelected) {                
                 this.assignOneCompanyToSelectedDzo(this.oneDzoSelected);
             };
