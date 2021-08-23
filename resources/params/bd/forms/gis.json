@@ -1,8 +1,7 @@
 {
   "table": "prod.gis",
   "default_values": {
-    "gis_type.id": 1,
-    "dict.gis_type_code" : "BLL"
+    "gis_type": 1
   },
   "sort": [
     {
@@ -68,7 +67,7 @@
             "title": "",
             "items": [
               {
-                "code": "gis_type",
+                "code": "gis_method_type",
                 "type": "dict",
                 "dict": "gis_method_types",
                 "title": "gis_methods",
@@ -261,7 +260,7 @@
             "title": "",
             "items": [
               {
-                "code": "files",
+                "code": "documents",
                 "type": "table",
                 "form": "well_document",
                 "title": "files",

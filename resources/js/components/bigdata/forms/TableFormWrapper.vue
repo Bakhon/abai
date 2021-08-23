@@ -398,6 +398,7 @@ body.fixed {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
   left: 0;
+  overflow-y: auto;
   position: fixed;
   top: 0;
   width: 100%;

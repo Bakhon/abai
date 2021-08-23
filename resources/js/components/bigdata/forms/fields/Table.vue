@@ -1,5 +1,8 @@
 <template>
-  <div class="bd-table-field">
+  <div
+      :class="{'bd-table-field_form': params.form}"
+      class="bd-table-field"
+  >
     <div class="bd-table-field__buttons">
       <a class="bd-table-field__buttons-button bd-table-field__buttons-button_add" href="#"
          @click.prevent="openCreateForm">{{ trans('app.create') }}</a>
@@ -204,12 +207,20 @@ export default {
     },
     updateResults(event) {
       this.tableRows.push(event)
+
+      this.$emit('change', this.tableRows.map(row => row.id))
+
     }
   }
 };
 </script>
 <style lang="scss">
 .bd-table-field {
+
+  &_form {
+    min-height: 500px;
+  }
+
   &__buttons {
     align-items: center;
     display: flex;
