@@ -165,6 +165,9 @@ export default {
   watch: {
     value(newValue) {
       this.formatedValue = this.getFormatedValue(newValue)
+    },
+    dict(newValue) {
+      this.formatedValue = this.getFormatedValue(this.value)
     }
   },
   mounted() {
@@ -196,9 +199,11 @@ export default {
     },
     getFormatedValue(value) {
       if (this.item.type === 'dict') {
+
         if (this.dict === null) return {}
 
         let selected = this.dict.find(item => item.id === value) || {id: null, name: null}
+
         return {
           id: selected.id,
           name: selected.name,

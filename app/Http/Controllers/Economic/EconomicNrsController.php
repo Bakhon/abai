@@ -24,7 +24,7 @@ class EconomicNrsController extends Controller
     const INTERVAL_LAST_MONTH = '2020-12-01T00:00:00/2021-01-01T00:00:00';
     const INTERVAL_LAST_2_MONTHS = '2020-11-01T00:00:00/2021-01-01T00:00:00';
 
-    const DATA_SOURCE = 'economic_2020v18_test';
+    const DATA_SOURCE = 'economic_nrs_total_v3';
 
     const GRANULARITY_DAILY_FORMAT = 'yyyy-MM-dd';
     const GRANULARITY_MONTHLY_FORMAT = 'MM-yyyy';
