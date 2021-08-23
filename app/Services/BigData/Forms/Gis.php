@@ -73,9 +73,8 @@ class Gis extends PlainForm
         $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
         if (!empty($data['id'])) {
-            if (auth()->user()->cannot("bigdata update {$this->configurationFileName}")) {
-                throw new \Exception("You don't have permissions");
-            }
+            $this->checkFormPermission('update');
+
             $id = $data['id'];
             unset($data['id']);
 
@@ -87,9 +86,8 @@ class Gis extends PlainForm
             $this->submittedData['fields'] = $data;
             $this->submittedData['id'] = $id;
         } else {
-            if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
-                throw new \Exception("You don't have permissions");
-            }
+            $this->checkFormPermission('create');
+
             $id = $dbQuery->insertGetId($data);
 
             $this->insertDocuments($id);
