@@ -109,10 +109,6 @@ Route::group(
                 Route::get('attachments/{attachment}', 'AttachmentController@get');
 
 
-
-                /*Digital Rating*/
-                Route::get('/digital-rating/serach_wells', 'DigitalRatingContoller@serach_wells')->name('serach_wells');   
-                /*Digital Rating END*/
             }
         );
         Auth::routes(

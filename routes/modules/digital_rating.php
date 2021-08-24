@@ -12,6 +12,6 @@ Route::group(
             Route::get('/reports', function () {
                 return view('digital_rating.reports');
             })->name('digital-rating-report');
-
+            Route::get('/digital-rating/serach_wells', 'DigitalRatingContoller@serach_wells')->name('serach_wells');   
         });
     });

@@ -35,7 +35,11 @@ class DigitalRatingContoller extends Controller
 
          foreach ($wells as $key => $item) {
             if($item->well_status_type_id == 3) {
-               $params_gdis = DB::connection('tbd')->select('select * from tbdi.current_gdis_value where well_id = :id AND param_gdis_id IN(:PARAM_GDIS_HDIN_id,:PARAM_GDIS_CONCLUSION_GDM_ID)  ORDER BY dbeg DESC LIMIT 2', ['id' => $item->well_id,'PARAM_GDIS_HDIN_id'=>self::PARAM_GDIS_HDIN_id,'PARAM_GDIS_CONCLUSION_GDM_ID'=>self::PARAM_GDIS_CONCLUSION_GDM_ID]);
+               $params_gdis = DB::connection('tbd')->select('select * from tbdi.current_gdis_value 
+               where well_id = :id AND param_gdis_id IN(:PARAM_GDIS_HDIN_id,:PARAM_GDIS_CONCLUSION_GDM_ID) 
+               ORDER BY dbeg DESC LIMIT 2', 
+               ['id' => $item->well_id,'PARAM_GDIS_HDIN_id'=>self::PARAM_GDIS_HDIN_id,
+               'PARAM_GDIS_CONCLUSION_GDM_ID'=>self::PARAM_GDIS_CONCLUSION_GDM_ID]);
 
                foreach ($params_gdis as $param) {
                   if($param->param_gdis_id == 217) {
