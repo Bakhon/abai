@@ -809,7 +809,7 @@ export default {
           : this.scenario.prs.original_value
 
       return uwi_count
-          ? (prs * 1000 / uwi_count).toFixed(fractionDigits)
+          ? (prs / uwi_count).toFixed(fractionDigits)
           : 0
     },
 

@@ -163,7 +163,7 @@ export default {
           title: `${this.trans('economic_reference.production')}, ${this.trans('economic_reference.thousand_tons')}`,
           pp2020: '',
           values: this.filteredData.map(item =>
-              (+item.oil.original_value_optimized / 1000).toFixed(2)
+              +(+item.oil.original_value_optimized / 1000).toFixed(2)
           )
         },
         {
@@ -181,7 +181,7 @@ export default {
           title: `${this.trans('economic_reference.personnel_costs_payroll')}, ${this.trans('economic_reference.million_tenge')}`,
           pp2020: '',
           values: this.filteredData.map(item =>
-              (+item.Fixed_noWRpayroll_expenditures.original_value_optimized / 1000000).toFixed(2)
+              +(+item.Fixed_noWRpayroll_expenditures.original_value_optimized / 1000000).toFixed(2)
           )
         },
         {
