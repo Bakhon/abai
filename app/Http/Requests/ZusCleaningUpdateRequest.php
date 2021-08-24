@@ -14,9 +14,13 @@ class ZusCleaningUpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'gu_id' => 'nullable|numeric',
             'zu_id' => 'nullable|numeric',
             'date' => 'nullable|date',
             'number_of_failures' => 'nullable|numeric',
+            'failure_reason' => 'nullable||string',
+            'repair_period' => 'nullable|string',
+
         ];
     }
 }

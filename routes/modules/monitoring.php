@@ -241,6 +241,7 @@ Route::group(
 
                 Route::get('zu-cleanings/list', 'ComplicationMonitoring\ZusCleaningController@list')->name('zu-cleanings.list');
                 Route::get('zu-cleanings/history/{zu_cleaning}', 'ComplicationMonitoring\ZusCleaningController@history')->name('zu-cleanings.history');
+                Route::get('zu-cleanings/export', 'ComplicationMonitoring\ZusCleaningController@export')->name('zu-cleanings.export');
                 Route::resource('zu-cleanings', 'ComplicationMonitoring\ZusCleaningController');
             }
         );

@@ -25,6 +25,13 @@ class ZusCleaningFilter extends BaseFilter
                 ->addSelect(DB::raw('lpad(zus.name, 10, 0) AS zus_name'))
                 ->orderBy('zus_name', $isDescending ? 'desc' : 'asc');
                 break;
+            case 'gu_id':
+                $this->query
+                ->select('zu_cleanings.*')
+                ->leftJoin('gus', 'gus.id', 'zu_cleanings.gu_id')
+                ->addSelect(DB::raw('lpad(zus.name, 10, 0) AS zus_name'))
+                ->orderBy('gus_name', $isDescending ? 'desc' : 'asc');
+                break;    
             default:
                 $this->query->orderBy($field, $isDescending ? 'desc' : 'asc');
         }

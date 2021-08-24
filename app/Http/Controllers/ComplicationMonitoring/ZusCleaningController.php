@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 use App\Http\Resources\ZusCleaningListResource;
+use App\Models\ComplicationMonitoring\Gu;
 use Illuminate\Support\Facades\Storage;
 
 class ZusCleaningController extends CrudController
@@ -32,6 +33,24 @@ class ZusCleaningController extends CrudController
             ],
             'title' => trans('monitoring.zu_cleanings.title'),
             'fields' => [               
+                'gu_id' => [
+                    'title' => trans('monitoring.gu.gu'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => Gu::whereHas('zu_cleanings')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],   
                 'zu_id' => [
                     'title' => trans('monitoring.zu.zu'),
                     'type' => 'select',
@@ -57,7 +76,16 @@ class ZusCleaningController extends CrudController
                 'number_of_failures' => [
                     'title' => trans('monitoring.zu_cleanings.number_of_failures'),
                     'type' => 'numeric',
+                ],
+                'failure_reason' => [
+                    'title' => trans('monitoring.zu_cleanings.failure_reason'),
+                    'type' => 'string',
                 ],        
+                'repair_period' => [
+                    'title' => trans('monitoring.zu_cleanings.repair_period'),
+                    'type' => 'string',
+                ],
+        
             ]
         ];
 
