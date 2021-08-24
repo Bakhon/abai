@@ -300,7 +300,7 @@ export default {
 
         if (!value) return null
 
-        if (this.dictFields[column.code] === 'geos') {
+        if (column.type === 'dict_tree') {
           let result = [value.label]
           while (true) {
             if (value.parent) {
