@@ -1,18 +1,41 @@
 <template>
-  <div>
-    <div class="maps-development" v-for="item in objects">
-      <div class="maps-development__title">
-        {{ item }}
-      </div>
-      <div class="maps-development__wrapper">
-        <div class="maps-development__item" v-for="map in maps" :key="map">
-          <img
-            class="maps-development__item-img"
-            :src="`/img/digital-rating/${map}.svg`" alt=""
-          >
-        </div>
+  <div class="maps-development">
+    <div class="maps-development__title">
+      {{ objectTitle }}
+    </div>
+    <div class="maps-development__wrapper">
+      <div
+        class="maps-development__item cursor-pointer"
+        v-for="map in maps" :key="map"
+        @click="handleClickMap(map)"
+      >
+        <img
+          class="maps-development__item-img"
+          :src="`/img/digital-rating/${map}.svg`" alt=""
+        />
       </div>
     </div>
+    <modal
+      class="modal-bign-wrapper"
+      name="mapModal"
+      :draggable="false"
+      :width="1000"
+      :height="600"
+      :adaptive="false">
+      <div class="modal-bign-container">
+        <div class="modal-bign-header justify-content-end">
+          <button type="button" class="modal-bign-button" @click="close">
+            {{ trans('pgno.zakrit') }}
+          </button>
+        </div>
+        <div class="maps-development__item maps-development__item-full">
+          <img
+            class="maps-development__item-img"
+            :src="`/img/digital-rating/${mapFull}.svg`" alt=""
+          />
+        </div>
+      </div>
+    </modal>
   </div>
 </template>
 
@@ -21,8 +44,18 @@ export default {
   name: "Maps",
   data() {
     return {
-      objects: ['Объект 1', 'Объект 2', 'Объект 3'],
+      objectTitle: 'Объект 1',
       maps: ['map1', 'map2', 'map3', 'map4'],
+      mapFull: ''
+    }
+  },
+  methods: {
+    handleClickMap(map) {
+      this.$modal.show('mapModal');
+      this.mapFull = map;
+    },
+    close() {
+      this.$modal.hide('mapModal');
     }
   }
 }
@@ -66,6 +99,11 @@ export default {
     position: absolute;
     right: 10px;
     top: 10px;
+  }
+
+  &-full {
+    width: 100%;
+    height: calc(100% - 40px);
   }
 }
 </style>

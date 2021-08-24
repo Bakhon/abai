@@ -53,10 +53,10 @@
         <component :is="currentTabComponent"></component>
         <div class="modal__footer mb-10px">
           <button type="button" class="btn-button btn-button--thm-blue mr-20px minw-200">
-            {{ trans('digital_rating.markCandidate') }}
+            <span>{{ trans('digital_rating.markCandidate') }}</span>
           </button>
           <button type="button" class="btn-button btn-button--thm-green minw-200">
-            {{ trans('digital_rating.agreeCandidate') }}
+            <span>{{ trans('digital_rating.agreeCandidate') }}</span>
           </button>
         </div>
       </div>
