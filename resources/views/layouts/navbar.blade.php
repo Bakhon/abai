@@ -45,11 +45,21 @@
                             {{ trans('app.module_title') }} "@yield('module_title')"
                         @endif
                     </div>
+                    @if(Route::current()->getName() == 'proactiveFactors')
+                        <div class="header__subtitle"> - Упреждающие факторы</div>
+                    @endif
                 @endif
             @endif
         </div>
 
         <div class="form-inline my-2 my-lg-0">
+            <li class="nav-item2 mr-2">
+                @hasSection('module_support_email')
+                    <a target="_blank" href="mailto:@yield('module_support_email')">
+                        <i class="fas fa-envelope fa-lg d-block"></i>
+                    </a>
+                @endif
+            </li>
             <li class="nav-item2 mr-5">
                 <div class="nav-lang">
                     <a href="#" class="nav-lang__select">

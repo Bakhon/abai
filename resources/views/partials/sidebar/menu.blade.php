@@ -214,43 +214,8 @@
                         </li>
                     @endif
 
-                    @if(auth()->user()->can('monitoring view pipes map'))
-                        <li class="left-menu-li">
-                            <a href="{{route('maps.gu')}}">
-                                {{ trans('monitoring.tech_map') }}
-                            </a>
-                        </li>
-                    @endif
+            @include('partials.sidebar.monitoring_menu')
 
-                    @if(auth()->user()->can('monitoring view pipes map'))
-                        <li class="left-menu-li">
-                            <a href="{{route('map-history.index')}}">
-                                {{ trans('monitoring.map-history.menu') }}
-                            </a>
-                        </li>
-                    @endif
-
-                    <li class="left-menu-li">
-                        <a href="{{route('facilities')}}">
-                            {{ trans('monitoring.tech_map_prototype') }}
-                        </a>
-                    </li>
-                    @if(auth()->user()->can('monitoring list lost_profits'))
-                    <li class="left-menu-li">
-                        <a href="{{route('lost-profits.index')}}">
-                            {{ trans('monitoring.lost_profits_title') }}
-                        </a>
-                    </li>
-                    @endif
-                    @if(auth()->user()->can('monitoring list economical_effect'))
-                    <li class="left-menu-li">
-                        <a href="{{route('economical-effect.index')}}">
-                            {{ trans('monitoring.economical_effect_title') }}
-                        </a>
-                    </li>
-                    @endif
-                </ul>
-            </li>
             @if(auth()->user()->can('economic view main'))
                 <li class="left-menu-li">
                     <div>{{ trans('economic_reference.economic_module') }}</div>
@@ -276,3 +241,23 @@
         </div>
     </div>
 </div>
+
+@if(auth()->user()->can('digitalDrilling view main'))
+    <div class="dropright">
+        <div data-toggle="dropdown">
+            <a href="#" class="bg-dark-new list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <img src="/img/digital-drilling/daily-raport.png" width="25" height="25" class="companyLogo">
+                    <span class="menu-collapsed companyName d-none"></span>
+                </div>
+            </a>
+        </div>
+        <div class="dropdown-menu">
+            <div class="move-menu">
+                <li class="left-menu-li">
+                    <a href="{{route('digital-drilling-daily-report')}}">Суточный рапорт</a>
+                </li>
+            </div>
+        </div>
+    </div>
+@endif

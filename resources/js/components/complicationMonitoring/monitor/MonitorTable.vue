@@ -1,312 +1,34 @@
 <template>
   <div>
-
-    <modal class="modal-bign-wrapper" name="corrosion" :width="1200" :height="800" :adaptive="true">
-      <div class="modal-bign modal-bign-container">
-        <div class="modal-bign-header">
-          <h1>{{ trans('monitoring.corrosion_simulator') }}</h1>
-          <button type="button" class="modal-bign-button" @click="$modal.hide('corrosion')">
-            {{ trans('monitoring.close') }}
-          </button>
-        </div>
-        <div class="container-fluid economicModal" style="width: 100%; height: calc(100% - 40px); overflow-y: auto;">
-          <div class="row corrosion">
-            <div class="col-12">
-              <h4>{{ trans('monitoring.environment_conditions') }}</h4>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td>H2S {{ trans('monitoring.in_water') }}</td>
-                  <td v-if="wmLastH2S">{{ wmLastH2S.hydrogen_sulfide }} мг/л</td>
-                </tr>
-                <tr>
-                  <td>CO2 {{ trans('monitoring.in_water') }}</td>
-                  <td v-if="wmLastCO2">{{ wmLastCO2.carbon_dioxide }} мг/л</td>
-                </tr>
-                <tr>
-                  <td>H2S {{ trans('monitoring.in_gas') }}</td>
-                  <td v-if="oilGas">{{ oilGas.hydrogen_sulfide_in_gas }} ppm</td>
-                </tr>
-                <tr>
-                  <td>H2S {{ trans('monitoring.in_gas') }}</td>
-                  <td v-if="oilGas">{{ oilGas.carbon_dioxide_in_gas }} %</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td>{{ trans('monitoring.partial_pressure') }} рH2S</td>
-                  <td>{{ result.pH2S_kPa }} кПа</td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.partial_pressure') }} рCO2</td>
-                  <td>{{ result.pCO2_kPa }} кПа</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td>{{ trans('monitoring.environment_in_communication_point') }} А</td>
-                  <td>{{ result.environment_point_A }}</td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.environment_in_point') }} E</td>
-                  <td>{{ result.environment_point_E }}</td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.environment_in_point') }} F</td>
-                  <td>{{ result.environment_point_F }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <br>
-
-          <div class="row corrosion">
-            <div class="col-12">
-              <h4>{{ trans('monitoring.fluid_parameters') }}</h4>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td colspan="2"><h5>{{ trans('monitoring.gu.gu') }}, {{ trans('monitoring.point') }} А</h5></td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.pressure') }}</td>
-                  <td v-if="ngdu">{{ ngdu.surge_tank_pressure }} {{ trans('monitoring.units.bar') }}</td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.temperature') }}</td>
-                  <td>25 С</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} Е</h5></td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.pressure') }}</td>
-                  <td v-if="ngdu">{{ ngdu.pump_discharge_pressure }} {{ trans('monitoring.units.bar') }}</td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.temperature') }}</td>
-                  <td>{{ result.t_final_celsius_point_E }} С</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} F</h5></td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.pressure') }}</td>
-                  <td>{{ result.final_pressure_bar_point_F }} {{ trans('monitoring.units.bar') }}</td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.temperature') }}</td>
-                  <td>{{ result.t_final_celsius_point_F }} C</td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.stream_velocity') }}</td>
-                  <td>{{ result.flow_velocity_meter_per_sec }} {{ trans('monitoring.units.m_s') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <br>
-          <div class="row corrosion">
-            <div class="col-12">
-              <h4>{{ trans('monitoring.corrosion_name') }}</h4>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td colspan="2"><h5>{{ trans('monitoring.gu.gu') }}, {{ trans('monitoring.point') }} A</h5></td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.fact_common_corrosion_speed') }} ({{ trans('monitoring.test_coupons') }}),
-                    {{ trans('monitoring.units.v_kor_fact') }}
-                  </td>
-                  <td v-if="corrosionVelocity">{{ corrosionVelocity.toFixed(2) }}
-                    {{ trans('monitoring.units.mm_year') }}
-                  </td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.calc_common_corrosion_speed') }}, {{ trans('monitoring.units.v_kor') }} (А)
-                  </td>
-                  <td>{{ result.corrosion_rate_mm_per_y_point_A }} {{ trans('monitoring.units.mm_year') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} E</h5></td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.calc_common_corrosion_speed') }}, {{ trans('monitoring.units.v_kor') }} (Е)
-                  </td>
-                  <td>{{ result.corrosion_rate_mm_per_y_point_E }} {{ trans('monitoring.units.mm_year') }}</td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.calc_local_corrosion_speed') }} ({{ trans('monitoring.test_coupons') }}),
-                    {{ trans('monitoring.units.v_kor') }} (Е)
-                  </td>
-                  <td>{{ result.papavinasam_corrosion_mm_per_y_point_E }} {{ trans('monitoring.units.mm_year') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} F</h5></td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.calc_common_corrosion_speed') }}, {{ trans('monitoring.units.v_kor') }} (F)
-                  </td>
-                  <td>{{ result.corrosion_rate_mm_per_y_point_F }} {{ trans('monitoring.units.mm_year') }}</td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.calc_local_corrosion_speed') }} ({{ trans('monitoring.test_coupons') }}),
-                    {{ trans('monitoring.units.v_kor') }} (F)
-                  </td>
-                  <td>{{ result.papavinasam_corrosion_mm_per_y_point_F }} {{ trans('monitoring.units.mm_year') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <br>
-          <div class="row corrosion">
-            <div class="col-12">
-              <h4>{{ trans('monitoring.corrosion_inhibitor') }}</h4>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td colspan="2"><h5>{{ trans('monitoring.gu.gu') }}, {{ trans('monitoring.point') }} A</h5></td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.recommended_dosage') }}</td>
-                  <td v-if="result">{{ result.dose_mg_per_l_point_A }} {{ trans('monitoring.units.mg_l') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} E</h5></td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.recommended_dosage') }}</td>
-                  <td v-if="result">{{ result.dose_mg_per_l_point_E }} {{ trans('monitoring.units.mg_l') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} F</h5></td>
-                </tr>
-                <tr>
-                  <td>{{ trans('monitoring.recommended_dosage') }}</td>
-                  <td v-if="result">{{ result.dose_mg_per_l_point_F }} {{ trans('monitoring.units.mg_l') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td>{{ trans('monitoring.max_recommended_dosage') }}</td>
-                  <td v-if="result">{{ result.max_dose }} {{ trans('monitoring.units.mg_l') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td>{{ trans('monitoring.fact_dosage') }}</td>
-                  <td v-if="current_dosage">{{ current_dosage }} {{ trans('monitoring.units.mg_l') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="col-4">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr>
-                  <td>{{ trans('monitoring.plan_dosage') }}</td>
-                  <td v-if="plan_dosage">{{ plan_dosage }} {{ trans('monitoring.units.mg_l') }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </modal>
-
     <div class="row monitor">
       <div class="col-2 monitor__charts">
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.action_substance_of_co2') }}</p>
-          <monitor-chart
+          <chart
               :title="trans('monitoring.action_substance_of_co2')"
               :measurement="trans('measurements.mg/dm3')"
-              :data="chart1Data"/>
+              :data="chartDtCarbonDioxide"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.action_substance_of_h2s') }}</p>
-          <monitor-chart
+          <chart
               :title="trans('monitoring.action_substance_of_h2s')"
               :measurement="trans('measurements.mg/dm3')"
-              :data="chart2Data"/>
+              :data="chartDtHydrogenSulfide"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_corrosion_speed') }}</p>
-          <monitor-chart
+          <chart
               :title="trans('monitoring.actual_corrosion_speed')"
               :measurement="trans('measurements.mm/g')"
-              :data="chart3Data"/>
+              :data="chartCorrosion"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_inhibitor_level') }}</p>
-          <monitor-chart
+          <chart
               :title="trans('monitoring.actual_inhibitor_level')"
               :measurement="trans('measurements.g/m3')"
-              :data="chart4Data"/>
+              :data="chartIngibitor"/>
         </div>
       </div>
       <div class="col-8 monitor__schema">
@@ -315,24 +37,10 @@
             <img :src="schemaImage">
             <ul class="string1">
               <li class="nav-string">
-                <span class="before">{{ trans('monitoring.units.p_kon') }}</span>
-                <input type="text" class="square2" readonly v-model="final_pressure"/>
-                <span class="after">{{ trans('monitoring.units.bar') }}</span>
               </li>
               <li class="nav-string">
-                <span class="before">{{ trans('monitoring.units.t_kon') }}</span>
-                <input
-                    readonly
-                    type="text"
-                    class="square2"
-                    v-model="t_final_celsius_point_F"
-                />
-                <span class="after">C</span>
               </li>
               <li class="nav-string">
-                <span class="before">{{ trans('monitoring.units.v_kor') }}(F)</span>
-                <input type="text" class="square2" readonly v-model="corF"/>
-                <span class="after">{{ trans('monitoring.units.mm_g') }}</span>
               </li>
             </ul>
             <div class="kormas">
@@ -383,9 +91,6 @@
               </li>
 
               <li class="nav-string">
-                <span class="before">{{ trans('monitoring.units.v_kor') }}(E)</span>
-                <input type="text" class="square2" readonly v-model="corE"/>
-                <span class="after">{{ trans('monitoring.units.mm_g') }}</span>
               </li>
             </ul>
             <ul class="string6 vertical">
@@ -471,7 +176,7 @@
         <div class="monitor__right-block monitor__right-block_radial">
           <p class="monitor__right-block-title">{{ trans('monitoring.ik_recommend') }}</p>
           <div class="radial">
-            <monitor-chart-radialbar></monitor-chart-radialbar>
+            <chart-radial-bar/>
           </div>
           <div class="signalizator">
             <div class="signalizator-gus" v-if="problemGus.length > 0">
@@ -482,10 +187,10 @@
                   @click.prevent="chooseProblemGu(gu.id)"
                   class="badge"
                   :class="{
-                                        'badge-success': gu.diff <= 5,
-                                        'badge-warning': gu.diff > 5 && gu.diff <= 10,
-                                        'badge-danger': gu.diff > 10
-                                    }"
+                      'badge-success': gu.diff <= 5,
+                      'badge-warning': gu.diff > 5 && gu.diff <= 10,
+                      'badge-danger': gu.diff > 10
+                  }"
               >
                 {{ gu.name }}
               </a>
@@ -506,9 +211,6 @@
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-info" @click="pushBtn2" :disabled="!dose">
-          {{ trans('monitoring.corrosion_simulator') }}
-        </button>
         <div class="monitor__right-block monitor__right-block_calendar">
           <div class="media">
             <calendar
@@ -531,7 +233,10 @@ import Vue from "vue";
 import Calendar from "v-calendar/lib/components/calendar.umd"
 import DatePicker from "v-calendar/lib/components/date-picker.umd"
 import VueTableDynamic from 'vue-table-dynamic'
-import moment from 'moment'
+import moment from 'moment';
+import chart from './chart';
+import chartRadialBar from './MonitorChartRadialBar';
+import {globalloadingMutations} from '@store/helpers';
 
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
@@ -540,7 +245,9 @@ export default {
   components: {
     Calendar,
     DatePicker,
-    VueTableDynamic
+    VueTableDynamic,
+    chart,
+    chartRadialBar
   },
   props: {
     gu: {
@@ -590,10 +297,10 @@ export default {
       corF: null,
       dose: 0,
       result: {},
-      chart1Data: null,
-      chart2Data: null,
-      chart3Data: null,
-      chart4Data: null,
+      chartDtCarbonDioxide: null,
+      chartDtHydrogenSulfide: null,
+      chartCorrosion: null,
+      chartIngibitor: null,
       problemGus: [],
       validation: [
         {
@@ -628,7 +335,6 @@ export default {
   },
   computed: {
     schemaImage() {
-      console.log(this.currentLang)
       if (this.currentLang === 'kz') return '/img/monitor/schema_kz.svg'
       return '/img/monitor/schema.svg'
     }
@@ -641,15 +347,17 @@ export default {
       } else {
         console.log("No data");
       }
-    });
-    this.axios.get(this.localeUrl("/getguproblems")).then((response) => {
-      let data = response.data;
-      if (data) {
-        this.problemGus = data.problemGus;
-      } else {
-        console.log("No data");
-      }
-    });
+    })
+
+    this.axios.get(this.localeUrl("/getguproblems"))
+        .then((response) => {
+          let data = response.data;
+          if (data) {
+            this.problemGus = data.problemGus;
+          } else {
+            console.log("No data");
+          }
+        })
   },
   mounted: function () {
     this.$nextTick(function () {
@@ -657,6 +365,9 @@ export default {
     })
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     chooseProblemGu(gu_id) {
       this.localGu = gu_id
       this.chooseGu()
@@ -666,6 +377,7 @@ export default {
     },
     chooseGu() {
       this.dose = 0;
+      this.SET_LOADING(true);
       this.axios
           .post(this.localeUrl("/getgudata"), {
             gu_id: this.localGu
@@ -673,10 +385,10 @@ export default {
           .then((response) => {
             let data = response.data;
             if (data) {
-              this.chart1Data = data.chart1
-              this.chart2Data = data.chart2
-              this.chart3Data = data.chart3
-              this.chart4Data = data.chart4
+              this.chartDtCarbonDioxide = data.chartDtCarbonDioxide
+              this.chartDtHydrogenSulfide = data.chartDtHydrogenSulfide
+              this.chartCorrosion = data.chartCorrosion
+              this.chartIngibitor = data.chartIngibitor
 
               this.kormass = data.kormass
               this.pipe = data.pipe
@@ -686,6 +398,9 @@ export default {
             } else {
               console.log("No data");
             }
+          })
+          .finally(() => {
+            this.SET_LOADING(false);
           });
     },
     resetData() {
@@ -719,7 +434,8 @@ export default {
 
       this.resetData();
 
-      this.$emit("chart5", this.dose)
+      this.$emit("chart5", this.dose);
+      this.SET_LOADING(true);
       this.axios
           .post(this.localeUrl("/getgudatabyday"), {
             gu_id: this.localGu,
@@ -770,11 +486,15 @@ export default {
             } else {
               console.log("No data");
             }
+          })
+          .finally(() => {
+            this.SET_LOADING(false);
           });
+      ;
     },
     validateData() {
       this.validationErrors = [];
-      
+
       this.validation.forEach((rule) => {
         let ruleKeys = rule.key.split('.');
 
@@ -805,53 +525,25 @@ export default {
     },
     calc() {
       this.axios
-          .post(this.localeUrl("/corrosion"), {
+          .post(this.localeUrl("/corrosion-dosage"), {
             gu_id: this.localGu,
-            WC: this.ngdu.bsw,
-            GOR1: this.constantsValues[0].value,
-            sigma: this.constantsValues[1].value,
-            do: this.pipe.outside_diameter,
-            roughness: this.pipe.roughness,
-            l: this.pipe.length,
-            thickness: this.pipe.thickness,
-            P: this.ngdu.pump_discharge_pressure,
-            t_heater: this.ngdu.heater_output_temperature,
-            t_inlet_heater: this.ngdu.heater_inlet_temperature,
+            t_heater_inlet: this.ngdu.heater_inlet_temperature,
             conH2S: this.wmLastH2S.hydrogen_sulfide,
             conCO2: this.wmLastCO2.carbon_dioxide,
-            q_l: this.ngdu.daily_fluid_production,
-            H2O: this.ngdu.bsw,
-            HCO3: this.wmLastHCO3.hydrocarbonate_ion,
-            Cl: this.wmLastCl.chlorum_ion,
-            SO4: this.wmLastSO4.sulphate_ion,
-            q_g_sib: this.ngdu.daily_gas_production_in_sib,
             P_bufer: this.ngdu.surge_tank_pressure,
-            rhol: this.wmLastH2S.density,
-            rho_o: this.oilGas.water_density_at_20,
-            rhog: this.oilGas.gas_density_at_20,
-            mul: this.oilGas.oil_viscosity_at_20,
-            mug: this.oilGas.gas_viscosity_at_20,
-            q_o: this.ngdu.daily_oil_production,
             current_dosage: this.current_dosage
           })
           .then((response) => {
             let data = response.data;
             if (data) {
               this.corA = data.corrosion_rate_mm_per_y_point_A
-              this.corE = data.corrosion_rate_mm_per_y_point_E
-              this.corF = data.corrosion_rate_mm_per_y_point_F
-              this.dose = data.max_dose;
+              this.dose = data.dose_mg_per_l_point_A;
               this.result = data
-              this.t_final_celsius_point_F = data.t_final_celsius_point_F.toFixed(1)
-              this.final_pressure = data.final_pressure_bar_point_F.toFixed(2)
-              this.$emit("chart5", data.max_dose)
+              this.$emit("chart5", data.dose_mg_per_l_point_A)
             } else {
               console.log("No data")
             }
           });
-    },
-    pushBtn2() {
-      this.$modal.show("corrosion");
     }
   }
 };

@@ -1,13 +1,11 @@
 <template>
   <div class="position-relative">
-    <cat-loader v-show="loading"/>
-
     <div class="row">
       <div class="col-9 pr-2">
         <div class="row text-white text-wrap flex-nowrap mb-10px">
           <div
               v-for="(header, index) in calculatedHeaders"
-              :key="index"
+              :key="`calculated_${index}`"
               class="p-3 bg-blue-dark position-relative">
             <divider v-if="index"/>
 
@@ -29,7 +27,7 @@
             <div v-if="form.scenario_id"
                  class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
-                {{ 100 + header.percent }} %
+                {{ (100 + header.percent).toFixed(2) }} %
               </div>
 
               <div>{{ header.baseValue }}</div>
@@ -50,7 +48,7 @@
 
           <div
               v-for="(header, index) in remoteHeaders"
-              :key="index"
+              :key="`remote_${index}`"
               class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column position-relative">
             <economic-title
                 font-size="58"
@@ -95,11 +93,14 @@
         <tables
             v-if="!loading"
             :scenario="scenario"
-            :oil-prices="scenarioVariations.oil_prices"
-            :res="res"/>
+            :scenario-variations="scenarioVariations"
+            :res="res"
+            @updateTab="updateTab"/>
       </div>
 
-      <div class="col-3 pr-0">
+      <div
+          :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right:0'"
+          class="col-3">
         <div class="bg-main1 text-white text-wrap p-3 mb-10px">
           <subtitle>
             {{ trans('economic_reference.production_wells_fund') }}
@@ -139,7 +140,7 @@
           <div
               v-for="(subBlock, subBlockIndex) in block"
               :key="subBlock.title"
-              :class="subBlockIndex % 2 === 1 ? '' : 'px-0'"
+              :class="subBlockIndex % 2 === 1 ? '' : 'pl-0 pr-2'"
               class="col-6 d-flex flex-column position-relative">
             <divider v-if="subBlockIndex % 2 === 1"/>
 
@@ -323,7 +324,8 @@
 <script>
 const fileDownload = require("js-file-download");
 
-import CatLoader from '@ui-kit/CatLoader'
+import {globalloadingMutations, globalloadingState} from '@store/helpers';
+
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
 import EconomicTitle from "./components/EconomicTitle";
@@ -339,6 +341,7 @@ const optimizedColumns = [
   'Revenue_local',
   'Revenue_export',
   'Overall_expenditures',
+  'Overall_expenditures_full',
   'operating_profit_12m',
   'oil',
   'liquid',
@@ -351,6 +354,7 @@ const optimizedColumns = [
 
 const optimizedOtherColumns = [
   'Overall_expenditures',
+  'Overall_expenditures_full',
   'operating_profit_12m',
 ];
 
@@ -404,9 +408,9 @@ optimizedColumns.forEach(column => {
 })
 
 export default {
-  name: "economic-nrs",
+  name: "economic-optimization",
   components: {
-    CatLoader,
+
     Divider,
     EconomicCol,
     EconomicTitle,
@@ -433,9 +437,11 @@ export default {
       }
     },
     res: economicRes,
-    loading: true,
+    isVisibleWellChanges: false
   }),
   computed: {
+    ...globalloadingState(['loading']),
+
     calculatedHeaders() {
       return [
         {
@@ -447,10 +453,10 @@ export default {
         },
         {
           name: this.trans('economic_reference.costs'),
-          baseValue: this.scenario.Overall_expenditures.value[0],
-          value: this.scenario.Overall_expenditures[this.scenarioValueKey][0],
-          dimension: this.scenario.Overall_expenditures[this.scenarioValueKey][1],
-          percent: this.scenario.Overall_expenditures.percent
+          baseValue: this.scenario.Overall_expenditures_full.value[0],
+          value: this.scenario.Overall_expenditures_full[this.scenarioValueKey][0],
+          dimension: this.scenario.Overall_expenditures_full[this.scenarioValueKey][1],
+          percent: this.scenario.Overall_expenditures_full.percent
         },
         {
           name: this.trans('economic_reference.operating_profit'),
@@ -704,8 +710,10 @@ export default {
     }
   },
   methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
     async getData() {
-      this.loading = true
+      this.SET_LOADING(true);
 
       try {
         const {data} = await this.axios.get(this.localeUrl('/economic/optimization/get-data'), {params: this.form})
@@ -717,7 +725,7 @@ export default {
         console.log(e)
       }
 
-      this.loading = false
+      this.SET_LOADING(false);
     },
 
     selectScenario() {
@@ -805,6 +813,10 @@ export default {
       return uwi_count
           ? (prs * 1000 / uwi_count).toFixed(fractionDigits)
           : 0
+    },
+
+    updateTab(index){
+      this.isVisibleWellChanges = index === 3
     }
   }
 };

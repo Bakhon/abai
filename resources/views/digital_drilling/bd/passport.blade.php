@@ -56,7 +56,7 @@
                         </table>
                         <table class="table firstTable">
                             <tr>
-                                <th colspan="2">Конструкция скважины</th>
+                                <th colspan="2">Информация по эксплуатационной колонне</th>
                             </tr>
                             <tr>
                                 <td colspan="1">Диаметр экспл.колонны</td>

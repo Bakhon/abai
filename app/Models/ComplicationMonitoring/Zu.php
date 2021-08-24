@@ -69,5 +69,10 @@ class Zu extends Model
     public function zu_cleanings()
     {
         return $this->hasMany(ZusCLeaning::class);
+    }    
+
+    public function omgngdu_zu()
+    {
+        return $this->hasMany(OmgNGDUZu::class);
     }
 }

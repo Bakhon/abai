@@ -1,6 +1,6 @@
 <template>
   <div class="export-wrapper">
-    <cat-loader v-show="loading"/>
+
     <div class="col-xs-12 col-sm-12 col-md-12 row">
       <div class="col-xs-12 col-sm-4 col-md-4 mb-4">
         <label>Выберите разделы</label>
@@ -80,13 +80,11 @@
 </template>
 <script>
 import moment from 'moment'
-import CatLoader from '@ui-kit/CatLoader'
+import {globalloadingMutations} from '@store/helpers';
+;
 
 export default {
   name: 'report-export',
-  components: {
-    CatLoader
-  },
   data() {
     return {
       start_date: moment().subtract(1, 'month').format('YYYY-MM-DD'),
@@ -120,29 +118,32 @@ export default {
         }
       ],
       selectedSections: [
-          'omgca',
-          'omguhe',
-          'corrosion',
-          'omgngdu',
-          'watermeasurement',
-          'oilgas',
+        'omgca',
+        'omguhe',
+        'corrosion',
+        'omgngdu',
+        'watermeasurement',
+        'oilgas',
       ],
       allSelected: true
     }
   },
   watch: {
     allSelected(val) {
-      if(val) {
+      if (val) {
         this.selectedSections = this.sections.map(section => section.code)
-      }
-      else {
+      } else {
         this.selectedSections = []
       }
     }
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+
     exportExcel() {
-      this.loading = true
+      this.SET_LOADING(true)
       this.axios.get('/ru/monitor/reports/generate', {
         params: {
           start_date: this.formatDate(this.start_date),
@@ -153,11 +154,11 @@ export default {
         let interval = setInterval(() => {
           this.axios.get('/ru/jobs/status', {params: {id: response.data.id}}).then((response) => {
             if (response.data.job.status === 'finished') {
-              this.loading = false
+              this.SET_LOADING(false)
               clearInterval(interval)
               document.location.href = response.data.job.output.filename
             } else if (response.data.job.status === 'failed') {
-              this.loading = false
+              this.SET_LOADING(false)
               clearInterval(interval)
               alert('Ошибка экспорта')
             }

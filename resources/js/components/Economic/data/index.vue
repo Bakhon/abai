@@ -1,42 +1,43 @@
 <template>
-  <div class="container-fluid">
-    <cat-loader v-show="loading"/>
+  <div class="container p-4 bg-light" style="max-width: 90vw">
+    <subtitle class="mb-2">{{ title }}</subtitle>
 
-    <div class="row justify-content-between">
-      <select-sc-fa
-          :loading="loading"
-          :form="form"
-          :is-forecast="isForecast"
-          form-key="sc_fa"
-          @loading="loading = true"
-          @loaded="loading = false"
-          @change="getData"/>
+    <select-sc-fa
+        :loading="loading"
+        :form="form"
+        :is-forecast="isForecast"
+        form-key="sc_fa"
+        @loading="SET_LOADING(true)"
+        @loaded="SET_LOADING(false)"
+        @change="getData"/>
 
-      <vue-table-dynamic
-          v-if="form.sc_fa"
-          ref="table"
-          :params="params"
-          class="height-fit-content">
-        <a :slot="`column-${columnEditIndex}`"
-           slot-scope="{ props }"
-           :href="props.cellData">
-          {{ trans('app.edit') }}
-        </a>
-      </vue-table-dynamic>
-    </div>
+    <vue-table-dynamic
+        v-if="form.sc_fa"
+        ref="table"
+        :params="params"
+        class="height-fit-content">
+      <a :slot="`column-${columnEditIndex}`"
+         slot-scope="{ props }"
+         :href="props.cellData">
+        {{ trans('app.edit') }}
+      </a>
+    </vue-table-dynamic>
   </div>
 </template>
 
 <script>
 import VueTableDynamic from 'vue-table-dynamic'
-import CatLoader from "@ui-kit/CatLoader";
+
+import {globalloadingMutations} from '@store/helpers';
+
+import Subtitle from "../components/Subtitle";
 import SelectScFa from "../components/SelectScFa";
 
 export default {
   name: "economic-data-component",
   components: {
     VueTableDynamic,
-    CatLoader,
+    Subtitle,
     SelectScFa
   },
   props: {
@@ -50,21 +51,22 @@ export default {
       sc_fa: null
     },
     data: [],
-    loading: false
   }),
   methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
     async getData() {
       if (!this.form.sc_fa) return
 
-      this.loading = true
+      this.SET_LOADING(true);
 
       this.data = []
 
-      const {data} = await this.axios.get(this.localeUrl('/eco_refs_costs'), {params: this.form})
+      const {data} = await this.axios.get(this.localeUrl('module_economy/eco_refs_costs'), {params: this.form})
 
       this.data = [...[this.headers], ...data.data]
 
-      this.loading = false
+      this.SET_LOADING(false);
     },
   },
   computed: {
@@ -129,6 +131,12 @@ export default {
         {value: 'edit'},
         {value: 'id_of_add'}
       ]
+    },
+
+    title() {
+      return this.isForecast
+          ? this.trans('economic_reference.eco_refs_scenario')
+          : this.trans('economic_reference.eco_refs_cost')
     },
   }
 };

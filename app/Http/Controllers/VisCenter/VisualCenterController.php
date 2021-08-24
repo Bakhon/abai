@@ -33,7 +33,8 @@ class VisualCenterController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:visualcenter view main')->only('visualcenter3', 'visualcenter4', 'visualcenter5', 'visualcenter6', 'visualcenter7');
+        $this->middleware('can:visualcenter view main')->only('visualcenter4', 'visualcenter5', 'visualcenter6', 'visualcenter7');
+        $this->middleware('can:visualcenter one_dzo main')->only('visualcenter3','excelform');
     }
 
     /**
@@ -332,6 +333,7 @@ class VisualCenterController extends Controller
         $factDataByPeriod = DzoImportData::query()
             ->whereDate('date','>', $startPeriod)
             ->whereDate('date','<=', $endPeriod)
+            ->whereNull('is_corrected')
             ->with('importDowntimeReason')
             ->with('importDecreaseReason')
             ->get()
@@ -409,6 +411,7 @@ class VisualCenterController extends Controller
     {
         return DzoImportData::query()
             ->select('date','dzo_name','otm_drilling_fact','otm_wells_commissioning_from_drilling_fact')
+            ->whereNull('is_corrected')
             ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
             ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
             ->get()
@@ -423,6 +426,7 @@ class VisualCenterController extends Controller
             ->select($fields)
             ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
             ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
+            ->whereNull('is_corrected')
             ->with('importDowntimeReason')
             ->get()
             ->toArray();
@@ -441,25 +445,35 @@ class VisualCenterController extends Controller
             ->select()
             ->whereDate('date', '>=', $startPeriod)
             ->whereDate('date', '<=', $endPeriod)
+            ->whereNull('is_corrected')
             ->with('importDecreaseReason')
             ->get()
             ->toArray();
     }
     public function getEmergencyHistory(Request $request)
     {
-        return EmergencyHistory::query()
-            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description')
-            ->whereMonth('date', $request->currentMonth)
+        $emergencySituations = EmergencyHistory::query()
+            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description','approved','approve_date')
             ->where('type',1)
-            ->orderBy('date', 'desc')
-            ->take(10)
+            ->orderBy('id', 'desc')
+            ->take(10);
+
+        if (!empty($request->dzoName)){
+        return $emergencySituations->where('description','like', "%".$request->dzoName."%")
+            ->get()
+            ->toArray();              
+        } 
+
+        return $emergencySituations
             ->get()
             ->toArray();
+                
     }
     public function getHistoricalProductionByDzo(Request $request)
     {
         $factByDzo = DzoImportData::query()
             ->where('dzo_name', $request->dzoName)
+            ->whereNull('is_corrected')
             ->orderBy('date', 'desc')
             ->with('importDowntimeReason')
             ->with('importDecreaseReason')
@@ -526,5 +540,9 @@ class VisualCenterController extends Controller
             echo 'No data '.$nameOfRepairsValue;
         }
     }
-}
 
+    public function dailyApprove()
+    {
+        return view('visualcenter.daily_approve');
+    }
+}

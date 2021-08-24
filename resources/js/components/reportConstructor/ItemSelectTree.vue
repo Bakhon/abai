@@ -15,6 +15,7 @@
             :onCheckboxClick="onCheckboxClick"
             :level="level+1"
             :nodeClickOnArrow="true"
+            :isCheckedCheckbox="isCheckedCheckbox"
         ></tree-view>
       </div>
     </div>
@@ -38,6 +39,7 @@ export default {
     itemType: Number,
     isShowCheckboxes: Boolean,
     onCheckboxClick: Function,
+    isCheckedCheckbox: Function,
   },
   mounted() {
     this.init()
@@ -76,7 +78,6 @@ export default {
 
     },
     nodeClick(node) {
-      this.$parent.setCurrentStructure(node.structureId, node.type)
       this.isLoading = true
       return this.axios.get(this.baseUrl + "get_children_of_item", {
         params: {

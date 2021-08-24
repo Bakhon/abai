@@ -102,7 +102,7 @@
         ></vertical-indicators>
       </div>
     </div>
-    <cat-loader />
+
   </div>
 </template>
 <script src="./VisualCenterTable6.js"></script>

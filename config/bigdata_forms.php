@@ -38,6 +38,9 @@
   'geo_structure' => '\\App\\Services\\BigData\\Forms\\GeoStructure',
   'daily_reports_oil_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsOilProduction',
   'daily_reports_water_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsWaterProduction',
+  'well_document' => '\\App\\Services\\BigData\\Forms\\WellDocument',
+  'gis_type' => '\\App\\Services\\BigData\\Forms\\GisType',
+  'gdis' => '\\App\\Services\\BigData\\Forms\\Gdis',
   'daily_reports_oil_sale' => '\\App\\Services\\BigData\\Forms\\DailyReportsOilSale',
   'daily_reports_gas_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsGasProduction',
   'daily_reports_water_upload' => '\\App\\Services\\BigData\\Forms\\DailyReportsWaterUpload',
@@ -48,5 +51,7 @@
   'well_perf_other' => '\\App\\Services\\BigData\\Forms\\WellPerfOther',
   'daily_reports_fluid_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsFluidProd',
   'production_wells_schedule' => '\\App\\Services\\BigData\\Forms\\ProductionWellsSchedule',
-  'gis_type' => '\\App\\Services\\BigData\\Forms\\GisType',
+  'lab_research' => '\\App\\Services\\BigData\\Forms\\LabResearch',
+  'well_treat' => '\\App\\Services\\BigData\\Forms\\WellTreat',
+  'well_mark' => '\\App\\Services\\BigData\\Forms\\WellMark',
 );

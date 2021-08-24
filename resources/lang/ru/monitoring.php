@@ -304,7 +304,6 @@ return array (
     'deleting_error' => 'Ошибка при удалении Скважины',
     'name' => 'Имя Скважины',
     'well' => 'Скважина',
-    'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
     'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ Скважина',
   ),
   'gu' => 
@@ -387,7 +386,7 @@ return array (
     ),
     'menu' => 'ОМГ НГДУ Скважина',
     'title' => 'База данных ОМГ НГДУ Скважина',
-    'create_title' => 'Ввод данных ОМГ НГДУ ЗУ - Скважина',
+    'create_title' => 'Ввод данных ОМГ НГДУ Скважина',
     'edit_title' => 'Редактирование данных ОМГ НГДУ Скважина',
   ),
   'hydro_calculcation' => 
@@ -548,6 +547,9 @@ return array (
     'title' => 'База данных по узлам учета',
     'diameter' => 'Диаметр',
   ),
+  'lost_profits_title' => 'Мониторинг упущенной выгоды',
+  'lost_profits' => 'Суточная упущенная выгода, тыс. тенге/сут',
+  'lost_profits_sum' => 'Накопленная упущенная выгода, тыс. тенге',
   'map-history' => 
   array (
     'action' => 'Действие',
@@ -679,5 +681,63 @@ return array (
   'zu_cleanigs' => 
   array (
     'create_title' => 'Ввод данных по очисткам ЗУ',
+  'economical_effect_title' => 'Экономический эффект',
+  'economical_effect' => 'Суточный экономический эффект, тыс. тенге/сут',
+  'economical_effect_sum' => 'Накопленный экономический эффект, тыс. тенге',
+  'no_data' => 'Нет данных',
+  'monitoring_module' => 'Модуль "Мониторинг осложнений"',
+  'agzu' => 
+  array (
+    'title' => 'База данных по АГЗУ',
+    'method_of_measurement' => 'Метод измерения',
+    'number_of_connected_wells' => 'Количество подключаемых скважин',
   ),
-);
+  'buffer_tank' => 
+  array (
+    'model' => 'Модель',
+    'date_of_exploitation' => 'Дата ввода в эксплуатацию',
+    'current_state' => 'Текущее состояние',
+    'date_of_repair' => 'Дата ремонта',
+    'type_of_repair' => 'Вид ремонта',
+    'title' => 'База данных по буферным емкостям',
+    'name' => 'Наименование',
+    'type' => 'Тип',
+    'volume' => 'Объем, м3',
+    'external_and_internal_inspection' => 'Наружный и внутренний осмотр',
+    'hydraulic_test' => 'Гидравлическое испытание',
+  ),
+  'metering_units' => 
+  array (
+    'title' => 'База данных по узлам учета',
+    'diameter' => 'Диаметр',
+  ),
+  'ovens' => 
+  array (
+    'title' => 'База данных по печам',
+    'cipher' => 'Шифр',
+    'rated_heat_output' => 'Номинальная тепловая мощность, МВт (Гкал/ч)',
+  ),
+  'pumps' => 
+  array (
+    'title' => 'База данных по насосам',
+    'number' => 'Номер',
+    'perfomance' => 'Производительность, м3/час',
+    'power' => 'Мощность насоса, кВт',
+  ),
+  'sib' => 
+  array (
+    'title' => 'База данных по СИБ',
+  ),
+  'gu_equipment' => 'Паспортизация оборудования для ГУ',
+  'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
+  'omgngdu_zu' => 
+  array (
+    'fields' => 
+    array (
+      'fact_data' => 'Фактические данные ОМГ НГДУ ЗУ',
+    ),
+    'title' => 'База данных ОМГ НГДУ ЗУ',
+    'menu' => 'ОМГ НГДУ ЗУ',
+    'create_title' => 'Ввод данных ОМГ НГДУ ЗУ',
+  ),
+));

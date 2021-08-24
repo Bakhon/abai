@@ -19,7 +19,7 @@ class EcoRefsPrepElectPrsBrigCostController extends Controller
 
             $ecorefselectprsbrigcost = EcoRefsPrepElectPrsBrigCost::latest()->with('scfa')->with('company')->paginate(5);
 
-            return view('ecorefselectprsbrigcost.index',compact('ecorefselectprsbrigcost'))
+            return view('economy_kenzhe/ecorefselectprsbrigcost.index',compact('ecorefselectprsbrigcost'))
                 ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -32,7 +32,7 @@ class EcoRefsPrepElectPrsBrigCostController extends Controller
     {
         $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
-        return view('ecorefselectprsbrigcost.create',compact('sc_fa', 'company'));
+        return view('economy_kenzhe/ecorefselectprsbrigcost.create',compact('sc_fa', 'company'));
     }
 
     /**
@@ -80,7 +80,7 @@ class EcoRefsPrepElectPrsBrigCostController extends Controller
         $row = EcoRefsPrepElectPrsBrigCost::find($id);
         $company = EcoRefsCompaniesId::get();
 
-        return view('ecorefselectprsbrigcost.edit',compact('sc_fa', 'row', 'company'));
+        return view('economy_kenzhe/ecorefselectprsbrigcost.edit',compact('sc_fa', 'row', 'company'));
     }
 
     /**

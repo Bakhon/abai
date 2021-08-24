@@ -2,6 +2,7 @@ import moment from "moment";
 import dzoCompaniesNameMapping from "../dzo_companies_consolidated_name_mapping.json"
 import companiesListWithKMG from "../dzo_companies_initial_consolidated_withkmg.json";
 import companiesListWithoutKMG from "../dzo_companies_initial_consolidated_withoutkmg.json";
+import mainMenuConfiguration from "../main_menu_configuration.json";
 
 export default {
     data: function () {
@@ -114,7 +115,8 @@ export default {
                 ]
             },
             oilCondensateFilters: {
-                'isWithoutKMGFilterActive': true
+                'isWithoutKMGFilterActive': true,
+                'isCondensateOnly': false
             },
             nkoMapping: {
                 'formula': (value) => Math.round(((value - value * 0.019) * 241 / 1428) / 2)
@@ -162,7 +164,8 @@ export default {
                         'oilFact': 0
                     }
                 }
-            }
+            },
+            condensateCompanies: ['ОМГК','АГ']
         };
     },
     methods: {
@@ -178,24 +181,36 @@ export default {
         switchFilterConsolidatedOilCondensate(parentButton,childButton,filterName) {
             this.oilCondensateFilters[filterName] = !this.oilCondensateFilters[filterName];
             this.chartOutput = this.consolidatedData.chartWithParticipation;
+            this.dzoCompanySummary = _.cloneDeep(this.consolidatedData.withParticipation);
+            this.yesterdaySummary = _.cloneDeep(this.consolidatedData.yesterdayWithParticipation);
+            this.changeDzoCompaniesList(companiesListWithKMG);
             if (!this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                this.chartOutput = this.consolidatedData.chartWithoutParticipation;
-            }
-            if (this.oilCondensateFilters[filterName]) {
-                this.dzoCompanySummary = this.consolidatedData.withParticipation;
-                this.yesterdaySummary = this.consolidatedData.yesterdayWithParticipation;
-                this.changeDzoCompaniesList(companiesListWithKMG);
-            } else {
-                this.dzoCompanySummary = this.consolidatedData.withoutParticipation;
-                this.yesterdaySummary = this.consolidatedData.yesterdayWithoutParticipation;
+                this.chartOutput = _.cloneDeep(this.consolidatedData.chartWithoutParticipation);
+                this.dzoCompanySummary = _.cloneDeep(this.consolidatedData.withoutParticipation);
+                this.yesterdaySummary = _.cloneDeep(this.consolidatedData.yesterdayWithoutParticipation);
                 this.changeDzoCompaniesList(companiesListWithoutKMG);
             }
-            this.selectAllDzoCompanies();
+            this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
+            _.forEach(this.dzoCompanies, function (dzo) {
+                _.set(dzo, 'selected', true);
+            });
+            this.selectDzoCompanies();
             let elementOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
             this.switchButtonOptions(elementOptions);
+            if (this.oilCondensateFilters.isCondensateOnly) {
+               this.updateByCondensateOnly();
+            }
             this.calculateDzoCompaniesSummary();
         },
-
+        updateByCondensateOnly() {
+            this.dzoCompanySummary = _.filter(this.dzoCompanySummary, (company) => this.condensateCompanies.includes(company.dzoMonth));
+            this.yesterdaySummary = _.filter(this.dzoCompanySummary, (company) => this.condensateCompanies.includes(company.dzoMonth));
+            _.forEach(this.dzoCompanies, (dzo) => {
+                if (!this.condensateCompanies.includes(dzo.ticker)) {
+                    dzo.selected = false;
+                }
+            });
+        },
         updateConsolidatedOilCondensate(periodStart,periodEnd,periodName,summary) {
             let self = this;
             let filteredByCompanies = this.getFilteredCompaniesList(_.cloneDeep(this.productionTableData));
@@ -205,7 +220,6 @@ export default {
             let actualUpdatedByOpek = this.getUpdatedByOpekPlan(summary,filteredByPeriod);
             let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(actualUpdatedByOpek),filteredByPeriod,filteredInitial);
             let dataWithoutKMGParticipation = this.getUpdatedByDzoOptionsWithoutKMG(_.cloneDeep(actualUpdatedByOpek),filteredByPeriod,filteredInitial);
-
             this.updateConsolidatedData(dataWithKMGParticipation,dataWithoutKMGParticipation,periodStart,periodEnd,periodName);
             let output = this.consolidatedData.withParticipation;
             this.chartOutput = this.consolidatedData.chartWithParticipation;
@@ -343,6 +357,9 @@ export default {
                     item.factMonth = self.dzoMultiplier['НКО'](null,item.factMonth,null);
                     item.opekPlan = self.dzoMultiplier['НКО'](null,item.opekPlan,null);
                     item.planMonth = self.dzoMultiplier['НКО'](null,item.planMonth,null);
+                }
+                if (item.opekPlan === null || item.opekPlan === 0) {
+                    item.opekPlan = item.planMonth;
                 }
             });
 

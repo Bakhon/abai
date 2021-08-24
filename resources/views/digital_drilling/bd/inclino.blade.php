@@ -37,6 +37,11 @@
                         </table>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <img src="/img/digital-drilling/inclino.png" alt="" class="inclino-img">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

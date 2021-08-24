@@ -45,6 +45,10 @@ class RolesController extends Controller
             'name' => 'paegtm',
             'title' => 'Модуль Подбор ГТМ'
         ],
+        [
+            'name' => 'digitalDrilling',
+            'title' => 'Модуль Цифровое бурение'
+        ],
     ];
 
     static protected $fieldCodes = [
@@ -57,6 +61,7 @@ class RolesController extends Controller
         'view history' => 'Просмотр истории',
         'view' => 'Просмотр',
         'load_las' => 'Загрузка las',
+        'one_dzo' => 'Только Дашборды "Добыча" и "Форма ввода" для одного ДЗО',
     ];
 
     public function index()
