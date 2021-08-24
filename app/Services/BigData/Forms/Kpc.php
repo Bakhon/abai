@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
+
+use Illuminate\Support\Facades\DB;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
 class Kpc extends PlainForm

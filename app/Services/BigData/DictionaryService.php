@@ -508,12 +508,11 @@ class DictionaryService
     private function getReasonTypeRefDict()
     {
         $items = DB::connection('tbd')
-        ->table('prod.well_workover as p')
+        ->table('dict.reason as r')
         ->select('r.id', 'r.name_ru as name')
         ->where('rt.code', 'REF')
         ->distinct()
         ->orderBy('name', 'asc')
-        ->join('dict.reason as r', 'p.reason_equip_fail', 'r.id')
         ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
         ->get()
         ->map(
@@ -529,12 +528,11 @@ class DictionaryService
     private function getReasonTypeRstDict()
     {
         $items = DB::connection('tbd')
-            ->table('prod.well_workover as p')
+            ->table('dict.reason as r')
             ->select('r.id', 'r.name_ru as name')
             ->where('rt.code', 'RST')
             ->distinct()
             ->orderBy('name', 'asc')
-            ->join('dict.reason as r', 'p.stop_reason', 'r.id')
             ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
             ->get()
             ->map(
@@ -542,19 +540,18 @@ class DictionaryService
                     return (array)$item;
                 }
             )
-            ->toArray();
+                ->toArray();
 
         return $items;
     }     
     private function getReasonTypeRtrDict()
     {
         $items = DB::connection('tbd')
-            ->table('prod.well_treatment as p')
+            ->table('dict.reason as r')
             ->select('r.id', 'r.name_ru as name')
             ->where('rt.code', 'RTR')
             ->distinct()
             ->orderBy('name', 'asc')
-            ->join('dict.reason as r', 'p.reason', 'r.id')
             ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
             ->get()
             ->map(
@@ -562,7 +559,7 @@ class DictionaryService
                     return (array)$item;
                 }
             )
-            ->toArray();
+                ->toArray();
 
         return $items;
     }     

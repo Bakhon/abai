@@ -18,7 +18,7 @@
               "code": "request_date",
               "type":"date",
               "title":"request_date",
-              "validation": "nullable|date|before_or_equal:today"
+              "validation": "required|nullable|date|before_or_equal:today"
             },
             {
               "code":"expected_date",
@@ -64,7 +64,7 @@
               "code": "dbeg",
               "type": "datetime",
               "title": "work_start_date",
-              "validation": "nullable|date|before_or_equal:today"
+              "validation": "required|nullable|date|before_or_equal:today"
             },
             {
               "code": "repair_work_type",
@@ -77,7 +77,7 @@
               "code": "work_plan",
               "type": "text",
               "title": "planned_works_list",
-              "validation": "required|max:255",
+              "validation": "max:255",
               "prefix": ""
             },
             {
@@ -97,14 +97,14 @@
               "code": "brigade",
               "type": "dict",
               "title": "brigade",
-              "validation": "required|exists:tbd.dict.brigade,id",
+              "validation": "exists:tbd.dict.brigade,id",
               "dict": "brigades"
             },
             {
               "code": "brigadier",
               "type": "dict",
               "title": "brigade_master",
-              "validation": "required|exists:tbd.dict.brigadier,id",
+              "validation": "exists:tbd.dict.brigadier,id",
               "dict": "brigadiers"
             },
             {
@@ -142,7 +142,7 @@
               "code": "work_list",
               "type": "text",
               "title": "done_work_description",
-              "validation": "required|max:255",
+              "validation": "max:255",
               "prefix": ""
             },
             {
@@ -153,23 +153,23 @@
             },
             {
               "code": "cnl_new",
-              "type": "text",
+              "type": "numeric",
               "title": "new_run_down_nkt",
-              "validation": "required|max:255|gte:0",
+              "validation": "numeric|max:255|gte:0",
               "prefix": ""
             },
             {
               "code": "cnl_used",
-              "type": "text",
+              "type": "numeric",
               "title": "used_run_down_nkt",
-              "validation": "required|max:255|gte:0",
+              "validation": "numeric|max:255|gte:0",
               "prefix": ""
             },
             {
               "code": "td",
-              "type": "text",
+              "type": "numeric",
               "title": "actual_bottomhole_m",
-              "validation": "required|max:255",
+              "validation": "numeric|max:255",
               "prefix": ""
             },
             {
@@ -182,21 +182,21 @@
               "code": "no_slaughter_reason",
               "type": "dict",
               "title": "no_slaughter_reason",
-              "validation": "required|exists:tbd.dict.reason,id",
+              "validation": "exists:tbd.dict.reason,id",
               "dict": "no_btm_reasons"
             },
             {
               "code": "hud",
               "type": "text",
               "title": "artificial_slaughter_m",
-              "validation": "required|max:255",
+              "validation": "max:255",
               "prefix": ""
             },
             {
               "code": "tech_state",
               "type": "dict",
               "title": "machine_technical_condition",
-              "validation": "required|exists:dict.tech_state_casing,id",
+              "validation": "exists:tbd.dict.tech_state_casing,id",
               "dict": "tech_state_casings"
             },
             {
@@ -206,24 +206,26 @@
               "validation":""
             },
             {
-              "code": "status",
+              "code": "name_ru",
               "type": "dict",
               "title": "status_before_selected_date",
-              "validation": "required|exists:tbd.dict.well_status,id",
-              "dict": "well_status"
+              "validation": "exists:tbd.dict.well_status,id",
+              "dict": "well_status",
+              "is_editable":false
             },
             {
-              "code": "category",
+              "code": "name_ru",
               "type": "dict",
               "title": "well_previous_category",
-              "validation": "required|exists:tbd.dict.well_category,id",
-              "dict": "well_statuses"
+              "validation": "exists:tbd.dict.well_category_type,id",
+              "dict": "well_categories",
+              "is_editable":false
             },
             {
               "code": "well_status",
               "type": "dict",
               "title": "condition",
-              "validation": "required|exists:tbd.dict.well_status_type,id",
+              "validation": "exists:tbd.dict.well_status_type,id",
               "dict": "well_statuses"
             },
             {
