@@ -103,7 +103,7 @@ class WaterMeasurementController extends CrudController
                     'title' => trans('monitoring.zu.zu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => Gu::whereHas('watermeasurement')
+                        'values' => Zu::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
