@@ -52,7 +52,7 @@
                         {{ __('economic_reference.upload')}}
                     </button>
 
-                    <a href="/technical_forecast_new.xlsx"
+                    <a href="/technical_forecast.xlsx"
                        class="btn btn-primary float-right"
                        download>
                         {{ __('economic_reference.download_example')}}
