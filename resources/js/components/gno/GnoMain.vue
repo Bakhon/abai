@@ -1241,7 +1241,6 @@
         </div>
       </div>
     </div>
-    <notifications position="top"></notifications>
   </div>
 </template>
 <script src="./GnoMain.js"></script>

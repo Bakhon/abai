@@ -370,8 +370,6 @@
   <button type="button" class="submit_button" @click="onSubmitParams()">
     {{ trans('pgno.primenit_korrektirovki') }}
   </button>
-  <notifications position="top"></notifications>
-
   <modal name="modalTable" :draggable="true" :width="1000" :height="550"
          :adaptive="true">
     <div class="modal-bign modal-bign-container">

@@ -181,7 +181,6 @@
             <div class="tr_icons_block">
               <modal name="add_well" :width="1600" :height="220"  :adaptive="true" style="z-index:9900000; ">
                 <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
-                  <notifications position="top"></notifications>
                   <div>
                         <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
                             <h5>{{trans('tr.well_add')}}</h5>
@@ -6442,8 +6441,6 @@
         </div>
       </div>
     </div>
-    <notifications position="top"></notifications>
-
   </div>
 </template>
 <script src="./tr.js"></script>
