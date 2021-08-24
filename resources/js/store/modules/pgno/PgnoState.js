@@ -23,6 +23,8 @@ export const pgnoState = {
         centralizer_range: {},
         
         isEditing: false,
-        isIntervals: false
+        isIntervals: false,
+        kPodSettings: {},
+        settingsMode: 'setWell',
     }
 }

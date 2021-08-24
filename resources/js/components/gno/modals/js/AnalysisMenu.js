@@ -6,7 +6,6 @@ import Vue from 'vue';
 Vue.prototype.$eventBus = new Vue();
 export default {
     components: {Plotly},
-    props: ['analysisTrigger', 'isYoungAge'],
     data: function () {
         return {
             apiUrl: process.env.MIX_PGNO_API_URL,
@@ -82,11 +81,6 @@ export default {
             },
             data: [],
             chartOptions: {}
-        }
-    },
-    watch: {
-        analysisTrigger: function () {
-            this.updateGraph()
         }
     },
     computed: {
