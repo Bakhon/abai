@@ -1004,25 +1004,12 @@ body {
         display: none;
       }
 
-      // @media(max-width: 1035px) {
-      //   .start-date-container {
-      //     display: flex;
-      //     justify-content: flex-start;
-      //     margin-right: 30px;
-      //   }
-      // }
-
       @media(min-width: 1035px) {
         .start-date-container {
           display: flex;
           margin-right: 30px;
         }
       }
-
-      // .end-date-container {
-      //   display: flex;
-      //   justify-content: flex-start;
-      // }
     }
 
     .date-picker {

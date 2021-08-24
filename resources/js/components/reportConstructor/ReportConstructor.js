@@ -188,8 +188,10 @@ export default {
                 this.validateStatisticsParams()
             } catch (e) {
                 this.showToast(e.name, e.message, 'danger', 10000)
+                this.SET_LOADING(false)
                 return
             }
+
             let params = this.getStatisticsRequestParams()
             this.axios.post(this.baseUrl + "get_statistics", JSON.stringify(params), {
                 responseType: 'json',
