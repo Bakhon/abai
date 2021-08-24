@@ -45,10 +45,15 @@
         {{ trans("plast_fluids.sections") }}
       </div>
       <div class="tree-box box-border">
-        <MonitoringTreeMenu :templates="templates" />
+        <ul class="trees">
+          <MonitoringTreeMenu
+            v-for="template in templates"
+            :key="template.name"
+            :template="template"
+          />
+        </ul>
       </div>
     </div>
-    <div class="menu"></div>
   </div>
 </template>
 
@@ -61,22 +66,16 @@ import { getDownloadTemplates } from "../services/templateService";
 import { convertTemplateData } from "../helpers";
 
 export default {
-  name: "LeftBlock",
+  name: "MonitoringLeftBlock",
   data() {
     return {
+      templates: [],
       options: [
         { label: "option 1", value: 1 },
         { label: "option 2", value: 2 },
         { label: "option 3", value: 3 },
       ],
-      templates: [],
     };
-  },
-  components: {
-    Dropdown,
-    Button,
-    Icon,
-    MonitoringTreeMenu,
   },
   methods: {
     async getTemplates() {
@@ -87,14 +86,23 @@ export default {
   mounted() {
     this.getTemplates();
   },
+  components: {
+    Dropdown,
+    Button,
+    Icon,
+    MonitoringTreeMenu,
+  },
 };
 </script>
 
-<style>
+<style scoped>
 .menu_wrapper {
-  width: calc((350 / (1457+15+350) * 100%));
+  width: 360px;
+  flex-shrink: 0;
+  height: 100%;
   background-color: #272953;
-  margin-right: 15px;
+  display: flex;
+  flex-flow: column;
 }
 
 .collapse-left__sidebar {
@@ -108,8 +116,29 @@ export default {
   margin: 10px;
 }
 
-.sectors > div {
+.sectors {
+  flex-grow: 2;
+  overflow-y: auto;
+  margin-bottom: 170px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #272953;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #656a8a;
+}
+
+.sectors-svg {
   height: 50px;
+}
+
+.sectors > div {
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -124,119 +153,11 @@ export default {
   margin-right: 5px;
 }
 
-ul,
-li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
 label {
   font-weight: normal;
 }
 
 .trees {
   margin-left: 10px;
-}
-
-.trees li {
-  border-left: dotted 1px #bcbec0;
-  padding: 1px 0 1px 25px;
-  position: relative;
-}
-
-.trees li > label {
-  position: relative;
-  left: -11px;
-}
-
-.trees li:before {
-  content: "";
-  width: 13px;
-  height: 1px;
-  border-bottom: dotted 1px #bcbec0;
-  position: absolute;
-  top: 10px;
-  left: 0;
-}
-
-.trees li:last-child:after {
-  position: absolute;
-  width: 2px;
-  height: 13px;
-  background: #fff;
-  left: -1px;
-  bottom: 0px;
-}
-
-.trees li input {
-  margin-right: 5px;
-  margin-left: 5px;
-}
-
-.trees li.has-child > ul {
-  display: none;
-}
-
-.trees li.has-child > input {
-  opacity: 0;
-  position: absolute;
-  left: -14px;
-  z-index: 9999;
-  width: 22px;
-  height: 22px;
-  top: -5px;
-}
-
-.trees li.has-child > input + .tree-control {
-  position: absolute;
-  left: -4px;
-  top: 6px;
-  width: 8px;
-  height: 8px;
-  line-height: 8px;
-  z-index: 2;
-  display: inline-block;
-  color: #fff;
-  border-radius: 3px;
-}
-
-.trees li.has-child > input + .tree-control:after {
-  font-family: "FontAwesome";
-  content: "";
-  font-size: 8px;
-  color: #183955;
-  position: absolute;
-  left: 1px;
-}
-
-.trees li.has-child > input:checked + .tree-control:after {
-  font-family: "FontAwesome";
-  content: "";
-  font-size: 8px;
-  color: #183955;
-  position: absolute;
-  left: 1px;
-}
-
-.trees li.has-child > input:checked ~ ul {
-  display: block;
-}
-
-.trees ul li.has-child:last-child {
-  border-left: none;
-}
-
-.trees ul li.has-child:nth-last-child(2):after {
-  content: "";
-  width: 1px;
-  height: 5px;
-  border-left: dotted 1px #bcbec0;
-  position: absolute;
-  bottom: -5px;
-  left: -1px;
-}
-
-.tree-alt li {
-  padding: 4px 0;
 }
 </style>
