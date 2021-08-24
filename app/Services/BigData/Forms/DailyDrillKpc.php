@@ -7,8 +7,12 @@ namespace App\Services\BigData\Forms;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class DailyDrillKpc extends TableForm
-{
+class DailyDrillKpc extends DailyReports
+{   
+    const CITS = 0;
+    const GS = 1;
+    const ALL = 2;
+    protected $metricCode = 'CWO';
     protected $configurationFileName = 'daily_drill_kpc';
 
     protected function prepareDataToSubmit()
@@ -24,70 +28,35 @@ class DailyDrillKpc extends TableForm
         return $data;
     }
 
-    public function getRows(array $params = []): array
-    {
-        $filter = json_decode($this->request->get('filter'));
-        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
-
-        $tables = $this->getFields()->pluck('table')->filter()->unique();
-        $rowData = $this->fetchRowData(
-            $tables,
-            $wells->pluck('id')->toArray(),
-            Carbon::parse($this->request->get('date'))
-        );
-
-        $wells->transform(
-            function ($item) use ($rowData) {
-                $result = [];
-
-                foreach ($this->getFields() as $field) {
-                    $fieldValue = $this->getFieldValue($field, $rowData, $item);
-                    if (!empty($fieldValue)) {
-                        $result[$field['code']] = $fieldValue;
-                    }
-                }
-                return $result;
-            }
-        );
-
-        $this->addLimits($wells);
-
-        return [
-            'rows' => $wells->toArray()
-        ];
-    }
-
-    protected function saveSingleFieldInDB(array $params): void
-    {
-        $column = $this->getFieldByCode($params['field']);
-
-        $item = $this->getFieldRow($column, $params['wellId'], $params['date']);
-
-        if (empty($item)) {
-            $data = [
-                'well' => $params['wellId'],
-                $column['column'] => $params['value'],
-                'dbeg' => $params['date']->toDateTimeString()
-            ];
-
-            if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $val) {
-                    $data[$key] = $val;
-                }
-            }
-
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->insert($data);
-        } else {
-            DB::connection('tbd')
-                ->table($column['table'])
-                ->where('id', $item->id)
-                ->update(
-                    [
-                        $column['column'] => $params['value']
-                    ]
-                );
+    protected function getData($filter): array {
+        $data = parent::getReports($filter);
+        $result = [];
+        $plan = $data->sum('plan');
+        $fact = $data->sum('fact');
+        switch ($filter->period) {
+            case self::DAY:
+                $result['plan'] = ['value' => $plan];
+                $result['fact'] = $result['daily_fact_cits'] = ['value' => $fact];
+                break;
+            case self::MONTH:
+                $result['month_plan'] = ['value' => $plan];
+                $result['month_fact'] = $result['month_fact_cits'] = ['value' => $fact];
+                break;
+            case self::YEAR:
+                $result['year_plan'] = ['value' => $plan];
+                $result['year_fact'] = $result['year_fact_cits'] = ['value' => $fact];
+                break;
         }
+
+        if ($filter->optionId === self::GS) {
+            $result['fact'] = ['value' => 0];
+            $result['month_fact'] = ['value' => 0];
+            $result['year_fact'] = ['value' => 0];
+        }
+        $result['daily_fact_gs'] = ['value' => 0];
+        $result['month_fact_gs'] = ['value' => 0];
+        $result['year_fact_gs'] = ['value' => 0];
+
+        return $result;
     }
 }
