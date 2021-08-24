@@ -16,6 +16,7 @@ export default {
 
             let uri = this.localeUrl("/get-emergency-history");
             const response = await axios.get(uri,{params:queryOptions});
+            console.log(response.data)
             if (response.status === 200) {
                 return response.data;
             }
