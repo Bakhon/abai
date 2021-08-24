@@ -20,7 +20,13 @@ class BDController extends Controller
                 'inclino',
                 'inclinoGraph',
                 'projectData',
+                'home'
             ]);
+    }
+
+    public function home()
+    {
+        return view('digital_drilling.index');
     }
 
     public function index()

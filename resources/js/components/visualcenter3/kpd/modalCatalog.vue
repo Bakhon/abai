@@ -12,16 +12,29 @@
             <div class="modal-bign modal-bign-container">
                 <div class="modal-bign-header">
                     <div class="modal-bign-title modal_header">{{catalog.name}}</div>
-                    <button type="button" class="modal-bign-button" @click="$modal.hide('modalCatalog')">
-                        {{trans('pgno.zakrit')}}
-                    </button>
+                    <div class="btn-toolbar">
+                        <button type="button" class="modal-button_add mr-2" @click="$modal.show('modalKpdEdit')">
+                            {{trans('kpd_tree.add')}}
+                        </button>
+                        <button type="button" class="modal-bign-button" @click="$modal.hide('modalCatalog')">
+                            {{trans('pgno.zakrit')}}
+                        </button>
+                    </div>
                 </div>
                 <table class="modal_table">
                     <tr>
                         <th class="p-4" v-for="header in catalog.table.headers">{{header}}</th>
                     </tr>
-                    <tr v-for="row in catalog.table.body">
-                        <td class="p-1" v-for="column in row">{{column}}</td>
+                    <tr v-if="kpdList.length > 0" v-for="row in kpdList">
+                        <td class="p-1">{{row.name}}</td>
+                        <td class="p-1">{{row.description}}</td>
+                        <td class="p-1">{{row.unit}}</td>
+                        <td class="p-1">{{row.polarity}}</td>
+                        <td class="p-1">{{row.formula}}</td>
+                        <td class="p-1">{{row.variables}}</td>
+                        <td class="p-1">{{row.source}}</td>
+                        <td class="p-1">{{row.responsible}}</td>
+                        <td class="p-1">{{row.functions}}</td>
                     </tr>
                 </table>
                 <div align="center" class="bottom-buttons col-12 row">
@@ -30,6 +43,7 @@
                 </div>
             </div>
         </modal>
+        <kpd-modal-kpd-edit></kpd-modal-kpd-edit>
     </div>
 </template>
 
@@ -51,16 +65,11 @@ export default {
                         'Ответственные за достоверность',
                         'Функции'
                     ],
-                    'body': []
                 }
             },
         };
     },
-    async mounted() {
-        for (let i=0;i<13;i++) {
-            this.catalog.table.body.push(Array(9).fill(''));
-        }
-    }
+    props: ['kpdList'],
 }
 
 
@@ -100,5 +109,15 @@ export default {
     position: absolute;
     bottom: 0;
     justify-content: center;
+}
+.modal-button_add {
+    border: none;
+    outline: none;
+    background: #2d995b;
+    color: white;
+    font-weight: normal;
+    font-size: 16px;
+    width: 100px;
+    border-radius: 8px;
 }
 </style>

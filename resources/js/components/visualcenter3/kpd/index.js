@@ -6,6 +6,7 @@ Vue.component('kpd-modal-catalog', require('./modalCatalog.vue').default);
 Vue.component('kpd-modal-map', require('./modalMap.vue').default);
 Vue.component('kpd-modal-monitoring', require('./modalMonitoring.vue').default);
 Vue.component('kpd-modal-kpd-passport', require('./modalKpdPassport.vue').default);
+Vue.component('kpd-modal-kpd-edit', require('./modalEditKpd.vue').default);
 
 export default {
     data: function () {
@@ -332,10 +333,24 @@ export default {
             selectedManager: {
                 concordants: []
             },
-            selectedKpd: {}
+            selectedKpd: {},
+            kpdList: [],
+            kpdDecompositionB: [],
+            kpdType: {
+                'ceo2Decomposition': 3
+            }
         };
     },
     methods: {
+        async getAllKpd() {
+            let uri = this.localeUrl("/kpd-tree-catalog");
+            const response = await axios.get(uri);
+            if (response.status !== 200) {
+                return [];
+            }
+            return response.data;
+
+        },
         getProgressBarFillingColor(progress) {
             if (progress <= 70) {
                 return 'progress-bar_filling__medium';
@@ -382,7 +397,7 @@ export default {
             });
         },
     },
-    created() {
+    async created() {
         this.selectedManager = this.kpdDecompositionA;
         _.forEach(this.kpdCeoDecompositionB, (master) => {
             _.forEach(master.kpd, (kpd) => {
@@ -390,5 +405,7 @@ export default {
             });
         });
         this.selectedKpd = this.kpdCeoDecompositionB[0].kpd[0];
+        this.kpdList = await this.getAllKpd();
+        this.kpdDecompositionB = _.filter(this.kpdList, (item) => item.type === this.kpdType.ceo2Decomposition);
     },
 }
