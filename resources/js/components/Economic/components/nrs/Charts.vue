@@ -11,17 +11,13 @@
           @click.native="activeTab = index"/>
     </div>
 
-    <div
-        v-for="(tab, index) in tabs"
-        v-show="activeTab === index"
-        :key="tab"
-        class="mt-3 w-100">
+    <div class="mt-3 w-100">
       <h5 class="subtitle text-wrap">
-        {{ tab }}
+        {{ tabs[activeTab] }}
       </h5>
 
       <chart-with-profitability
-          v-if="index === 0"
+          v-if="activeTab === 0"
           :data="charts.profitability"
           :paused-data="charts.pausedProfitability"
           :granularity="granularity"
@@ -32,7 +28,7 @@
           class="bg-economic-chart"/>
 
       <chart-with-oil-production
-          v-if="index === 1"
+          v-if="activeTab === 1"
           :data="charts.oilProduction"
           :granularity="granularity"
           :profitability="profitability"
@@ -43,7 +39,7 @@
           class="bg-economic-chart"/>
 
       <chart-with-operating-profit-top
-          v-else-if="index === 2"
+          v-else-if="activeTab === 2"
           :data="charts.operatingProfitTop"
           :granularity="granularity"
           :profitability="profitability"
@@ -52,23 +48,43 @@
           class="bg-economic-chart"/>
 
       <chart-with-liquid-production
-          v-else-if="index === 3"
+          v-else-if="activeTab === 3"
           :data="charts.liquidProduction"
           :granularity="granularity"
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
           class="bg-economic-chart"/>
+
+      <table-uwi-per-month
+          v-else-if="activeTab === 4"
+          :data="charts.uwiPerMonth"
+          property="NetBack_bf_pr_exp"
+          class="bg-economic-chart"/>
+
+      <table-uwi-per-month
+          v-else-if="activeTab === 5"
+          :data="charts.uwiPerMonth"
+          property="Overall_expenditures"
+          class="bg-economic-chart"/>
+
+      <table-uwi-per-month
+          v-else-if="activeTab === 6"
+          :data="charts.uwiPerMonth"
+          property="Operating_profit"
+          class="bg-economic-chart"/>
     </div>
   </div>
 </template>
 
 <script>
-import ChartButton from "./ChartButton";
+import ChartButton from "../ChartButton";
 import ChartWithProfitability from "./ChartWithProfitability";
 import ChartWithOilProduction from "./ChartWithOilProduction";
 import ChartWithOperatingProfitTop from "./ChartWithOperatingProfitTop";
 import ChartWithLiquidProduction from "./ChartWithLiquidProduction";
+import TableUwiPerMonth from "./TableUwiPerMonth";
+
 
 export default {
   name: "Charts",
@@ -78,6 +94,7 @@ export default {
     ChartWithOilProduction,
     ChartWithOperatingProfitTop,
     ChartWithLiquidProduction,
+    TableUwiPerMonth,
   },
   props: {
     charts: {
@@ -115,6 +132,9 @@ export default {
         this.trans('economic_reference.distribution_oil_production_by_profitability'),
         this.trans('economic_reference.rating_top_10_wells_by_profitability'),
         this.trans('economic_reference.distribution_liquid_production_by_profitability'),
+        'Таблица "Выручка"',
+        'Таблица "Расходы"',
+        'Таблица "Операционная прибыль"',
       ]
     },
 
