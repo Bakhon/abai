@@ -2,11 +2,11 @@
   <div class="plast-fluids-header">
     <a :href="localeUrl('/pf-upload-monitoring/')">
       <img src="/img/PlastFluids/upload.svg" alt="upload data" width="20px" />
-      <p>Загрузка данных</p>
+      <p>{{ trans("plast_fluids.data_upload") }}</p>
     </a>
     <a :href="localeUrl('/pf-data-analysis/')">
       <img src="/img/PlastFluids/analyze.svg" alt="analyze data" width="20px" />
-      <p>Анализ данных</p>
+      <p>{{ trans("plast_fluids.data_analysis") }}</p>
     </a>
     <a :href="localeUrl('/pf-standart-separation-flash/')">
       <img
@@ -14,11 +14,11 @@
         alt="download data"
         width="20px"
       />
-      <p>Выгрузка данных</p>
+      <p>{{ trans("plast_fluids.data_download") }}</p>
     </a>
     <a>
       <img src="" alt="" width="20px" />
-      <p>Выгрузка данных</p>
+      <p>{{ trans("plast_fluids.data_download") }}</p>
     </a>
   </div>
 </template>

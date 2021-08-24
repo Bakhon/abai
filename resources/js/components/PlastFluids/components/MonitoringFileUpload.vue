@@ -1,140 +1,220 @@
 <template>
-  <div class="upload_wrapper">
-    <div class="file_upload">
-      <div class="file_upload_title">
-        {{ trans("plast_fluids.download_file") }}
-        <Dropdown
-          style="margin-top: 10px;"
-          block
-          class="w-100 mb-2"
-          button-text="Выбрать формат загрузки"
-          :options="[
-            { label: 'option 1', value: 1 },
-            { label: 'option 2', value: 2 },
-            { label: 'option 3', value: 3 },
-          ]"
+  <div class="file-upload">
+    <p>{{ trans("plast_fluids.download_file") }}</p>
+    <div class="file-input-block">
+      <Dropdown
+        style="padding: 10px; margin: 0;"
+        block
+        class="w-100 mb-2"
+        button-text="Выбрать формат загрузки"
+        :options="[
+          { label: 'option 1', value: 1 },
+          { label: 'option 2', value: 2 },
+          { label: 'option 3', value: 3 },
+        ]"
+      />
+      <div class="file_service">
+        <input
+          type="file"
+          name="excel files"
+          @change="handleFileChange($event.target.files[0])"
+          :accept="formats"
         />
-        <div class="file_service">
-          <div class="upload_border"></div>
-          <button class="btn-common upload_file">
-            {{ trans("plast_fluids.download_package") }}
-          </button>
-          <button class="btn-common exchange_file">
-            {{ trans("plast_fluids.replace_package") }}
-          </button>
+        <div v-if="state === 'initial'">
+          <div class="file-service-text">
+            <img src="/img/PlastFluids/file.svg" alt="upload file" />
+            <p>
+              Выберите файл
+            </p>
+          </div>
+          <p>
+            или<br />
+            перетащите сюда файл
+          </p>
+        </div>
+        <div v-if="state === 'file chosen'">
+          <p class="file-name">{{ file.name }}</p>
+        </div>
+        <div v-if="state === 'uploading'">
+          Загружаем файл...
         </div>
       </div>
-    </div>
-    <div class="upload_status">
-      <div class="upload_status_title">
-        {{ trans("plast_fluids.download_log") }}
+      <div class="buttons-holder">
+        <button @click="handleFileUpload">
+          {{ trans("plast_fluids.download_package") }}
+        </button>
+        <input
+          id="change-file-button"
+          type="file"
+          style="display: none;"
+          @change="handleFileChange($event.target.files[0])"
+        />
+        <label for="change-file-button">{{
+          trans("plast_fluids.replace_package")
+        }}</label>
       </div>
-      <div class="log_status"></div>
-      <button class="btn-common download_log">
-        Скачать лог загрузки
-      </button>
     </div>
   </div>
 </template>
 
 <script>
+import { uploadTemplate } from "../services/templateService";
 import Dropdown from "../../geology/components/dropdowns/dropdown";
+import { mapMutations } from "vuex";
 
 export default {
-  name: "MonitoringFileUploadBlock",
+  name: "MonitoringFileUpload",
   components: {
     Dropdown,
+  },
+  inject: ["name"],
+  data() {
+    return {
+      formats: ["xls", "xlsx"],
+      file: null,
+      state: "initial",
+    };
+  },
+  methods: {
+    ...mapMutations("plastFluidsLocal", [
+      "SET_FILE_LOG",
+      "SET_REPORT_DUPLICATED_STATUS",
+    ]),
+    async handleFileUpload() {
+      const PostData = new FormData();
+      PostData.append("user", this.name);
+      PostData.append("file", this.file);
+      const log = await uploadTemplate(PostData);
+      const {
+        Template,
+        "report is duplicated": duplicated,
+        status,
+        ...rest
+      } = log;
+      this.SET_FILE_LOG(rest);
+      this.SET_REPORT_DUPLICATED_STATUS(duplicated === "True" ? true : false);
+    },
+    handleFileChange(file) {
+      this.file = file;
+      this.state = "file chosen";
+    },
   },
 };
 </script>
 
-<style>
-.file_upload {
-  background-color: #363b68;
-  width: 445px;
-  height: 333px;
+<style scoped>
+.file-upload {
+  background-color: #272953;
+  width: 100%;
+  height: 373px;
+  padding: 0 11px;
+  margin-bottom: 10px;
 }
 
-.upload_status {
-  background-color: #363b68;
-  margin-top: 15px;
-  width: 445px;
-  height: 491px;
-}
-
-.file_upload_title {
+.file-upload > p {
+  margin: 20px 0 16px 4px;
   font-size: 20px;
-  font-style: normal;
   font-weight: 700;
   line-height: 24px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: aliceblue;
-  margin-left: 17px;
-  margin-top: 25px;
+  color: #fff;
 }
 
-.upload_status_title {
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: aliceblue;
-  margin-left: 17px;
-  margin-top: 25px;
+.file-input-block {
+  margin-bottom: 13px;
+  border-radius: 4px;
+  background: rgba(49, 53, 96, 0.6);
+  border: 1px solid #454d7d;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-height: 300px;
+  padding: 0 10px;
 }
 
 .file_service {
-  margin-top: 11px;
-  width: 422px;
-  height: 260px;
-  background-color: #272953;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  border-radius: 4px;
+  border: 1px dashed #e2e6ea;
+  width: 100%;
+  height: 190px;
+  margin-bottom: 14px;
 }
 
-.upload_border {
+.file_service > input {
+  z-index: 10;
+  opacity: 0;
   width: 100%;
   height: 100%;
-  border: 1px dashed;
-  border-radius: 10px;
+  position: absolute;
+  cursor: pointer;
 }
 
-.log_status {
-  margin-top: 11px;
-  margin-left: 12px;
-  width: 421px;
-  height: 367px;
-  background-color: #272953;
-}
-
-.btn-common {
-  height: 32px;
-  background-color: #3366ff;
+.file_service > div {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
   font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 24px;
-  letter-spacing: 0em;
-  text-align: center;
-  color: aliceblue;
-  border-radius: 4px;
+  color: #fff;
 }
-.upload_file {
-  width: 132px;
-  margin-top: 218px;
-  margin-left: 74px;
+
+.file_service > div > p {
+  opacity: 0.5;
+  margin: 0;
+  text-align: center;
+}
+
+.file-service-text {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.file-service-text > p {
+  margin: 0;
+  margin-left: 8px;
+}
+
+.file-name {
+  color: #fff;
+  font-size: 14px;
+}
+
+.buttons-holder {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 14px;
+}
+
+.buttons-holder > button,
+label {
+  background: #3366ff;
+  font-size: 14px;
+  color: #fff;
+  line-height: 24px;
+  text-align: center;
+  padding: 10px 14px 8px 14px;
+  border-radius: 4px;
+  border: none;
+}
+
+.buttons-holder > button {
+  margin-right: 5px;
+}
+
+.buttons-holder > label {
+  margin-left: 5px;
+  margin-bottom: 0;
+  cursor: pointer;
 }
 
 .exchange_file {
   width: 132px;
   margin-top: 218px;
   margin-right: 74px;
-}
-
-.download_log {
-  width: 183px;
-  margin-top: 12px;
-  margin-left: 131px;
 }
 </style>
