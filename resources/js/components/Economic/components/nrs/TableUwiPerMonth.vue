@@ -40,7 +40,7 @@ export default {
         rowHeight: 50,
         columnWidth: this.tableHeaders.map((col, index) => ({
           column: index,
-          width: index > 0 ? 75 : 80
+          width: 80
         }))
       }
     },
