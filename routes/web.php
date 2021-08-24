@@ -99,16 +99,12 @@ Route::group(
 
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
                 Route::get('/paegtm/accum_oil_prod_data', 'GTM\GTMController@getAccumOilProd')->name('gtm');
-                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');        
-
                 Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name(
                     'gtm'
                 );
 
                 Route::post('attachments', 'AttachmentController@upload');
                 Route::get('attachments/{attachment}', 'AttachmentController@get');
-
-
             }
         );
         Auth::routes(
