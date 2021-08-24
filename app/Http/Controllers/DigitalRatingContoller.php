@@ -6,16 +6,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+
 class DigitalRatingContoller extends Controller
 {
-
    const WELL_STATUS_TYPE_ID = [3,4];
    const WELL_CATEGORY_TYPE_ID = 1;
    const PARAM_GDIS_HDIN_ID = 217;
    const PARAM_GDIS_CONCLUSION_GDM_ID = 5000000587;
+
    public function get_wells(array $neighboring_wells) : object  
    {
-
          foreach ($neighboring_wells as $item) {
             $well_uwi[] = $item['well'];
          }
@@ -49,7 +49,6 @@ class DigitalRatingContoller extends Controller
                   }else {
                      $gdis_conclusion = $param->gdis_conclusion;
                   }
-                 
                }
 
                $result = $item->liquid_val_average * (100 - $item->bsw_val_average ) / 100 *0.839;
@@ -62,7 +61,6 @@ class DigitalRatingContoller extends Controller
             }
          }
          return $wells;                
-         
    }
 
  
@@ -70,6 +68,7 @@ class DigitalRatingContoller extends Controller
    {
       $sector = $request->input('sector');
       $horizon = $request->input('horizon');
+
       $sectors_json_points = file_get_contents(public_path('js/json/digital-rating/sectors_points.json'), 'r');
          $sectors_points= json_decode($sectors_json_points, true);
          foreach ($sectors_points as $item) {
@@ -81,19 +80,20 @@ class DigitalRatingContoller extends Controller
       $weels_json_points = file_get_contents(public_path('js/json/digital-rating/wells_points.json'), 'r');
       $weels_points= json_decode($weels_json_points, true);
 
+      $sectorX  = $sector['x'];
+      $sectorY = $sector['y'];
+      $radius =500;
+      $neighboring_wells = [];
 
-         $sectorX  = $sector['x'];
-         $sectorY = $sector['y'];
-         $radius =500;
-         $neighboring_wells = [];
-         foreach ($weels_points as $item) {
-            if((($item['x'] - $sectorX)*($item['x'] - $sectorX))+(($item['y']-$sectorY)*($item['y']-$sectorY)) <= $radius*$radius){
-            if($item['horizon'] == $horizon)
-               $neighboring_wells[] = $item;
-            }
-         };
-         $wells = $this->get_wells($neighboring_wells);
-         $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
-         return response()->json($wells,200,$headers,JSON_UNESCAPED_UNICODE);
+      foreach ($weels_points as $item) {
+         if((($item['x'] - $sectorX)*($item['x'] - $sectorX))+(($item['y']-$sectorY)*($item['y']-$sectorY)) <= $radius*$radius){
+         if($item['horizon'] == $horizon)
+            $neighboring_wells[] = $item;
+         }
+      };
+      
+      $wells = $this->get_wells($neighboring_wells);
+      $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
+      return response()->json($wells,200,$headers,JSON_UNESCAPED_UNICODE);
    }
 };
