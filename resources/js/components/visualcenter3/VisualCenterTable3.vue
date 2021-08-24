@@ -2052,10 +2052,10 @@
               </div>
               <div class="container-fluid">
                 <div class="row p-0 emergency-table__header">
-                  <span class="col-2 p-2 pl-5">{{ trans("visualcenter.date") }} Инцидента</span>
-                  <span class="col-2 p-2 pl-5">ДЗО</span>
-                  <span class="col-6 p-2 pl-5">Инцидент</span>
-                  <span class="col-2 p-2 pl-3">Дата заполнения</span>
+                  <span class="col-2 p-2 pl-5">{{ trans("visualcenter.emergencyDate") }}</span>
+                  <span class="col-2 p-2 pl-5">{{ trans("visualcenter.dzo") }}</span>
+                  <span class="col-6 p-2 pl-5">{{ trans("visualcenter.emergency") }}</span>
+                  <span class="col-2 p-2 pl-3">{{ trans("visualcenter.resolvingDate") }}</span>
                 </div>
                 <div
                         class="row emergency-view"
