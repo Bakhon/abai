@@ -132,9 +132,9 @@ export default {
         this.trans('economic_reference.distribution_oil_production_by_profitability'),
         this.trans('economic_reference.rating_top_10_wells_by_profitability'),
         this.trans('economic_reference.distribution_liquid_production_by_profitability'),
-        'Таблица "Выручка"',
-        'Таблица "Расходы"',
-        'Таблица "Операционная прибыль"',
+        this.trans('economic_reference.Revenue'),
+        this.trans('economic_reference.costs'),
+        this.trans('economic_reference.operating_profit'),
       ]
     },
 
