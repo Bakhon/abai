@@ -259,4 +259,6 @@ return array (
   'curvePotencialPointHover' => '"<b>Potential mode</b><br>" + "Qж = %{x:.1f} м³/сут<br>" + "Qн = %{text:.1f} т/сут<br>" + "Pзаб = %{y:.1f} атм<extra></extra>"',
   'curveMainLineName' => 'Кривая притока (пользователь)',
   'curveAnalysisLineName' => 'Кривая притока (анализ)',
+  'inclinometriaWell' => 'Inclinometry for :wellNumber',
+  'kpodWarning' => 'Тек Кпод = :kpod, рекомендуем проверить входные данные ТР',
 );

@@ -118,11 +118,6 @@
     ],
     "forms": [
       "well_block",
-      "fluid_production",
-      "gas_production",
-      "water_production",
-      "water_inj",
-      "well_treat",      
       "gis_type"
     ]
   },
