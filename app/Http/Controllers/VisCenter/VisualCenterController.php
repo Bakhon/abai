@@ -453,10 +453,9 @@ class VisualCenterController extends Controller
     public function getEmergencyHistory(Request $request)
     {
         $emergencySituations = EmergencyHistory::query()
-            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description')
-            ->whereMonth('date', $request->currentMonth)
+            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description','approved','approve_date')
             ->where('type',1)
-            ->orderBy('date', 'desc')
+            ->orderBy('id', 'desc')
             ->take(10);
 
         if (!empty($request->dzoName)){
@@ -545,9 +544,5 @@ class VisualCenterController extends Controller
     public function dailyApprove()
     {
         return view('visualcenter.daily_approve');
-    }
-    public function kpdTree()
-    {
-        return view('visualcenter.kpd_tree');
     }
 }

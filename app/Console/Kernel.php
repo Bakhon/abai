@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\EmergencySituations::class,
         \App\Console\Commands\CalculateHydroDinamicGuUpsvYesterday::class,
         \App\Console\Commands\CalculateGuCorrosionCron::class,
+        \App\Console\Commands\FinalizeEmergencySituation::class,
     ];
 
     /**
@@ -46,7 +47,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('calculate-gu-corrosion:cron')
             ->dailyAt('06:00')
             ->timezone('Asia/Almaty');
-
+        $schedule->command('finalize-emergency:cron')->everySixHours()->timezone('Asia/Almaty');
     }
 
     /**

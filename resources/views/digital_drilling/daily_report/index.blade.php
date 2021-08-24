@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="/css/digital_drilling.css">
     <div class="row digital_drilling">
         <div class="col-sm-12 centerBlock">
-            @include('digital_drilling.layouts.menu')
+            {{--@include('digital_drilling.layouts.menu')--}}
         </div>
         <daily-raport />
     </div>

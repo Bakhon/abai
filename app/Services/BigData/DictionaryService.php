@@ -50,6 +50,12 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\ResearchMethod;
+use App\Models\BigData\Dictionaries\ResearchTarget;
+use App\Models\BigData\Dictionaries\GdisConclusion;
+use App\Models\BigData\Dictionaries\Mark;
+use App\Models\BigData\Dictionaries\ReasonEquipFail;
+use App\Models\BigData\Dictionaries\ChemicalReagentType;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -232,8 +238,36 @@ class DictionaryService
             'class' => TreatType::class,
             'name_field' => 'name_ru'
         ],
+        'research_methods' => [
+            'class' => ResearchMethod::class,
+            'name_field' => 'name_ru'
+        ],
+        'research_target' => [
+            'class' => ResearchTarget::class,
+            'name_field' => 'name_ru'
+        ],
+        'gdis_conclusion' => [
+            'class' => GdisConclusion::class,
+            'name_field' => 'name_ru'
+        ],
+        'marks' => [
+            'class' => Mark::class,
+            'name_field' => 'name_ru'
+        ],
+        'reason_equip_fail' => [
+            'class' => ReasonEquipFail::class,
+            'name_field' => 'name_ru'
+        ],
         'chemical_reagent_types' => [
             'class' => ChemicalReagentType::class,
+            'name_field' => 'name_ru'
+        ],
+        'well_prs_repair_types' => [
+            'class' => WellPrsRepairType::class,
+            'name_field' => 'name_ru'
+        ],
+        'tech_state_casings' => [
+            'class' => TechStateCasing::class,
             'name_field' => 'name_ru'
         ],
         'plan_gis_type' => [
@@ -284,6 +318,13 @@ class DictionaryService
                     break;
                 case 'geo_type_hrz':
                     $dict = $this->getGeoHorizonDict();
+                    break;
+                case 'reason_ref':
+                    $dict = $this->getReasonTypeRefDict();
+                    break;
+                case 'reason_rst':
+                    $dict = $this->getReasonTypeRstDict();
+                    break;
                     break;
                 case 'reason_type_rtr':
                     $dict = $this->getReasonTypeRtrDict();
@@ -454,6 +495,47 @@ class DictionaryService
                     $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }
             )
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+        return $items;
+    }
+    private function getReasonTypeRefDict()
+    {
+        $items = DB::connection('tbd')
+        ->table('prod.well_workover as p')
+        ->select('r.id', 'r.name_ru as name')
+        ->where('rt.code', 'REF')
+        ->distinct()
+        ->orderBy('name', 'asc')
+        ->join('dict.reason as r', 'p.reason_equip_fail', 'r.id')
+        ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
+        ->get()
+        ->map(
+            function ($item) {
+                return (array)$item;
+            }
+        )
+            ->toArray();
+
+        return $items;
+    }
+
+    private function getReasonTypeRstDict()
+    {
+        $items = DB::connection('tbd')
+            ->table('prod.well_workover as p')
+            ->select('r.id', 'r.name_ru as name')
+            ->where('rt.code', 'RST')
+            ->distinct()
+            ->orderBy('name', 'asc')
+            ->join('dict.reason as r', 'p.stop_reason', 'r.id')
+            ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
             ->get()
             ->map(
                 function ($item) {

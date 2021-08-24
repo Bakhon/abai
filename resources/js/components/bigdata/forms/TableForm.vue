@@ -183,7 +183,7 @@
 import Vue from "vue";
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
-import {bdFormActions, bdFormState, globalloadingMutations} from '@store/helpers'
+import {bdFormActions, globalloadingMutations} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
 import upperFirst from 'lodash/upperFirst'
@@ -243,6 +243,7 @@ export default {
       rowHistoryColumns: [],
       rowHistoryGraph: null,
       oldFilter: null,
+      formParams: null,
       formError: null
     }
   },
@@ -261,15 +262,17 @@ export default {
     },
   },
   computed: {
-    ...bdFormState([
-      'formParams'
-    ]),
     visibleColumns() {
       return this.formParams.columns.filter(column => column.type !== 'hidden' && column.visible !== false)
     }
   },
   mounted() {
-    this.updateTableData()
+    this.updateForm(this.params.code)
+        .then(data => {
+          this.formParams = data
+          this.$emit('initialized')
+          this.updateTableData()
+        })
   },
   methods: {
     ...bdFormActions([
@@ -440,10 +443,6 @@ export default {
               resolve(result)
             })
       })
-    },
-    changePage(page = 1) {
-      this.currentPage = page
-      this.updateForm()
     },
     showError(err) {
       return err.join('<br>')

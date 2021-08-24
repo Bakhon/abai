@@ -236,16 +236,12 @@ class ExcelFormController extends Controller
         $updateOptions = array(
             $request->currentApproverField => true
         );
-        if ($request->isFinalApprove === 'true') {
-           $this->sendApproveEmailToDzo($request->request,$client);
-           DzoImportField::where('dzo_import_data_id',$request->actualId)->delete();
-           DzoImportDecreaseReason::where('dzo_import_data_id',$request->actualId)->delete();
-           DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
-           DzoImportData::where('id',$request->actualId)->delete();
-           $updateOptions['is_corrected'] = null;
-        } else {
-            $this->sendEmailToMaster($request->request, $client, 'mainMaster');
-        }
+        $this->sendApproveEmailToDzo($request->request,$client);
+        DzoImportField::where('dzo_import_data_id',$request->actualId)->delete();
+        DzoImportDecreaseReason::where('dzo_import_data_id',$request->actualId)->delete();
+        DzoImportDowntimeReason::where('dzo_import_data_id',$request->actualId)->delete();
+        DzoImportData::where('id',$request->actualId)->delete();
+        $updateOptions['is_corrected'] = null;
 
         DzoImportData::query()
             ->where('id', $request->currentId)
@@ -265,7 +261,7 @@ class ExcelFormController extends Controller
     {
         $client = $this->getEmailClient();
         $emailBody = "<b>Добрый день!</b> <p>Ваша заявка на изменение суточных данных в ИС ABAI. была <b>отклонена</b><br /><br />
-            <b>Детали заявки: {$request->dzo_name}</b><br />
+            <b>Детали заявки:</b><br />
             <b>Дата:</b> {$request->date}<br />
             <b>Исполнитель:</b> {$request->user_name}<br />
             <b>Причина:</b> {$request->change_reason}</p>";
