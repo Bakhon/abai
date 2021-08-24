@@ -87,16 +87,16 @@ export default {
               uwi_count: scenario.uwi_count_optimize,
               cat_1: scenario.percent_stop_cat_1,
               cat_2: scenario.percent_stop_cat_2,
-              oil: scenario.oil.original_value_optimized,
-              operating_profit_12m: (operating_profit_12m / dimension).toFixed(2),
+              oil: +scenario.oil.original_value_optimized,
+              operating_profit_12m: (+operating_profit_12m / dimension).toFixed(2),
             })
 
             seriesGtm.push({
               uwi_count: scenario.uwi_count_optimize,
               cat_1: scenario.percent_stop_cat_1,
               cat_2: scenario.percent_stop_cat_2,
-              oil: scenario.oil.original_value_optimized + scenario.gtm_oil,
-              operating_profit_12m: ((operating_profit_12m + (+scenario.gtm_operating_profit_12m)) / dimension).toFixed(2),
+              oil: +scenario.oil.original_value_optimized + (+scenario.gtm_oil),
+              operating_profit_12m: ((+operating_profit_12m + (+scenario.gtm_operating_profit_12m)) / dimension).toFixed(2),
             })
           })
 

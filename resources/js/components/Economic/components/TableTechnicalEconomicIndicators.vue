@@ -175,6 +175,16 @@ export default {
           color: '#AC7550',
         },
         {
+          index: '1.1',
+          title: this.trans('economic_reference.liquid_production'),
+          dimension: this.trans('economic_reference.thousand_tons'),
+          values: this.reverseOilPrices.map((oilPrice, index) =>
+              +this.oilPriceScenarios[index].liquid.original_value_optimized / 1000
+          ),
+          budget2020: this.budget2020Map,
+          color: '#313560',
+        },
+        {
           index: '2',
           title: this.trans('economic_reference.total_oil_sales'),
           dimension: this.trans('economic_reference.thousand_tons'),

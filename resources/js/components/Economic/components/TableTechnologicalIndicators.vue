@@ -173,7 +173,7 @@ export default {
             let gtmsCount = 0
 
             for (const [month, gtms] of Object.entries(JSON.parse(item.gtms))) {
-              gtms.forEach(gtm => gtmsCount += gtm[1])
+              gtms.forEach(gtm => gtmsCount += (+gtm.amount))
             }
 
             return gtmsCount
