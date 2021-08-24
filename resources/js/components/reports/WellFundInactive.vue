@@ -1,6 +1,6 @@
 <template>
   <div class="filter-container">
-    <cat-loader />
+
     <org-selector v-model="org"></org-selector>
     <div class="form-group1 filter-group select">
       <select
@@ -71,14 +71,13 @@ import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from '../common/FormatDate.js'
 import OrgSelector from "./OrgSelector";
 import {globalloadingMutations} from '@store/helpers';
-import CatLoader from '@ui-kit/CatLoader';
+;
 
 Vue.use(Datetime)
 
 export default {
   components: {
-    OrgSelector,
-    CatLoader
+    OrgSelector
   },
 
   data() {

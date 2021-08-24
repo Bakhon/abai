@@ -29,6 +29,12 @@ import productionFondDetails from './widgets/productionFondDetails';
 import wellsDetails from './dataManagers/wellsDetails';
 import injectionFondDetails from './widgets/injectionFondDetails';
 import emergency from './widgets/emergency';
+import {globalloadingMutations} from '@store/helpers';
+import Vue from "vue";
+
+Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
+Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
+
 
 
 export default {
@@ -68,6 +74,7 @@ export default {
                     id: 0
                 },
             },
+            oneDzoSelected: '',
             isOneDzoSelected: false,
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
             quantityRange: '',
@@ -95,8 +102,6 @@ export default {
             bigTable: [],
             starts: [""],
             series: ["", ""],
-            planMonthSumm: "",
-            factMonthSumm: "",
             timestampToday: "",
             timestampEnd: "",
             isPricesChartLoading: false,
@@ -159,6 +164,9 @@ export default {
         ...dzoMapActions([
             'getYearlyPlan'
         ]),
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
 
         async getDzoYearlyPlan() {
             await this.getYearlyPlan();
@@ -217,7 +225,7 @@ export default {
         },
 
         async processProductionData(metricName,chartSecondaryName) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             let productionData = await this.getProductionDataByPeriod();
             if (productionData && Object.keys(productionData).length > 0) {
                 if (this.isFirstLoading) {
@@ -230,7 +238,7 @@ export default {
                 }
                 await this.processProductionDataByCompanies(productionData,metricName,chartSecondaryName);
             }
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         },
 
         async calculateInitialCategories(productionData,metricName,chartSecondaryName) {
@@ -268,9 +276,9 @@ export default {
                 let companies = _.map(todayProduction, 'dzo_name');
                 let difference = _.differenceWith(this.companies, companies, _.isEqual);
                 if (difference.length > 0) {
-                    this.$store.commit('globalloading/SET_LOADING', true);
+                    this.SET_LOADING(true);
                     let missingCompanies = await this.getMissedCompanies(difference);
-                    this.$store.commit('globalloading/SET_LOADING', false);
+                    this.SET_LOADING(false);
                     let merged = response.data.concat(missingCompanies);
                     return merged;
                 }
@@ -521,25 +529,6 @@ export default {
                 gasRestriction.push({gasRestriction: item.gasRestriction});
             });
 
-            var planMonthSumm = _.reduce(
-                planMonth,
-                function (memo, item) {
-                    return memo + item.planMonth;
-                },
-                0
-            );
-
-            var factMonthSumm = _.reduce(
-                factMonth,
-                function (memo, item) {
-                    return memo + item.factMonth;
-                },
-                0
-            );
-
-            this.planMonthSumm = planMonthSumm;
-            this.factMonthSumm = factMonthSumm;
-
             var bigTable = _.zipWith(
                 opec,
                 impulses,
@@ -720,7 +709,7 @@ export default {
         emergency
     ],
     async mounted() {
-        this.$store.commit('globalloading/SET_LOADING', true);
+        this.SET_LOADING(true);
         this.getOpecDataForYear();
 
         if (window.location.host === 'dashboard') {
@@ -767,17 +756,19 @@ export default {
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
+        this.oneDzoSelected = this.getDzoTicker();
+        this.isOneDzoSelected=this.oneDzoSelected.length > 0;
         this.updateChemistryWidget();
         this.updateWellsWorkoverWidget();
         this.updateDrillingWidget();
-        this.updateProductionFondWidget();
-        this.updateInjectionFondWidget();
+        await this.updateProductionFondWidget();
+        await this.updateInjectionFondWidget();
+        this.isSummaryShouldBeCalculated = false;
     },   
     watch: {
         bigTable: function () {
-            let isOneDzoSelected = this.getDzoTicker();
-            if (isOneDzoSelected) {
-                this.assignOneCompanyToSelectedDzo(isOneDzoSelected);
+            if (this.isOneDzoSelected) {                
+                this.assignOneCompanyToSelectedDzo(this.oneDzoSelected);
             };
             this.dzoCompanySummary = this.bigTable;
             if (this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0) {

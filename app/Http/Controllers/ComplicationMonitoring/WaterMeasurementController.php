@@ -13,6 +13,9 @@ use App\Models\ComplicationMonitoring\ConstantsValue;
 use App\Models\ComplicationMonitoring\Corrosion;
 use App\Models\ComplicationMonitoring\GuKormass;
 use App\Models\ComplicationMonitoring\Kormass;
+use App\Models\ComplicationMonitoring\ManualGu;
+use App\Models\ComplicationMonitoring\ManualWell;
+use App\Models\ComplicationMonitoring\ManualZu;
 use App\Models\ComplicationMonitoring\OmgUHE;
 use App\Models\ComplicationMonitoring\Pipe;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
@@ -82,6 +85,25 @@ class WaterMeasurementController extends CrudController
                     'type' => 'select',
                     'filter' => [
                         'values' => Gu::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+
+                'zu' => [
+                    'title' => trans('monitoring.zu.zu'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => Zu::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -503,50 +525,20 @@ class WaterMeasurementController extends CrudController
             ->orderByRaw('lpad(name, 10, 0) asc')
             ->get();
 
-        return response()->json(
-            [
-                'code' => 200,
-                'message' => 'success',
-                'data' => $gu
-            ]
-        );
-    }
+        $guManual = ManualGu::query()
+            ->where('cdng_id', $request->cdng_id)
+            ->select('name', 'id', 'cdng_id')
+            //dirty hack for alphanumeric sort but other solutions doesn't work
+            ->orderByRaw('lpad(name, 10, 0) asc')
+            ->get();
 
-    public function getZu(Request $request): \Symfony\Component\HttpFoundation\Response
-    {
-        $zu = Zu::where('gu_id', $request->gu_id)->get();
-
-        return response()->json(
-            [
-                'code' => 200,
-                'message' => 'success',
-                'data' => $zu
-            ]
-        );
-    }
-
-    public function getGuRelations(Request $request): \Symfony\Component\HttpFoundation\Response
-    {
-        $gu = Gu::with('zus', 'wells')->find($request->gu_id);
+        $gu = $gu->merge($guManual);
 
         return response()->json(
             [
                 'code' => 200,
                 'message' => 'success',
                 'data' => $gu
-            ]
-        );
-    }
-
-    public function getZuRelations(Request $request): \Symfony\Component\HttpFoundation\Response
-    {
-        $zu = Zu::with('wells', 'gu')->find($request->zu_id);
-
-        return response()->json(
-            [
-                'code' => 200,
-                'message' => 'success',
-                'data' => $zu
             ]
         );
     }
@@ -577,22 +569,12 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getAllZu(): \Symfony\Component\HttpFoundation\Response
-    {
-        $zus = Zu::get();
-
-        return response()->json(
-            [
-                'code' => 200,
-                'message' => 'success',
-                'data' => $zus
-            ]
-        );
-    }
-
     public function getWell(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $wells = Well::where('zu_id', $request->zu_id)->get();
+        $wellManual = ManualWell::where('zu_id', $request->zu_id)->get();
+
+        $wells = $wells->merge($wellManual);
 
         return response()->json(
             [
@@ -606,6 +588,9 @@ class WaterMeasurementController extends CrudController
     public function getAllWell(): \Symfony\Component\HttpFoundation\Response
     {
         $wells = Well::get();
+        $wellManual = ManualWell::get();
+
+        $wells = $wells->merge($wellManual);
 
         return response()->json(
             [
@@ -623,6 +608,15 @@ class WaterMeasurementController extends CrudController
         $cdng = Cdng::orderBy('name')->get();
         $ngdu = Ngdu::orderBy('name')->get();
         $gus = Gu::orderBy('name')->get();
+
+        $wellsManual = ManualWell::orderBy('name')->get();
+        $zusManual = ManualZu::orderBy('name')->get();
+        $gusManual = ManualGu::orderBy('name')->get();
+
+
+        $wells = $wells->merge($wellsManual);
+        $zus = $zus->merge($zusManual);
+        $gus = $gus->merge($gusManual);
 
         return response()->json(
             [
@@ -709,23 +703,6 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getAllGu(): \Symfony\Component\HttpFoundation\Response
-    {
-        $gus = Gu::query()
-            ->select('name', 'id', 'cdng_id')
-            //dirty hack for alphanumeric sort but other solutions doesn't work
-            ->orderByRaw('lpad(name, 10, 0) asc')
-            ->get();
-
-        return response()->json(
-            [
-                'code' => 200,
-                'message' => 'success',
-                'data' => $gus
-            ]
-        );
-    }
-
     public function getGuData(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $wm = WaterMeasurement::query()
@@ -789,10 +766,10 @@ class WaterMeasurementController extends CrudController
             [
                 'code' => 200,
                 'message' => 'success',
-                'chart1' => $chartDtCarbonDioxide,
-                'chart2' => $chartDtHydrogenSulfide,
-                'chart3' => $chartCorrosion,
-                'chart4' => $chartIngibitor,
+                'chartDtCarbonDioxide' => $chartDtCarbonDioxide,
+                'chartDtHydrogenSulfide' => $chartDtHydrogenSulfide,
+                'chartCorrosion' => $chartCorrosion,
+                'chartIngibitor' => $chartIngibitor,
                 'kormass' => $kormass,
                 'pipe' => $pipe,
                 'pipeab' => $pipeAB,

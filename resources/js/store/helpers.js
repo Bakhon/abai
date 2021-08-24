@@ -92,6 +92,18 @@ export const paegtmMapGetters = arrNames => ({
 
 
 // pgno Map //
+export const pgnoMapState = arrNames => ({
+    ...mapState('pgno', [
+        ...arrNames,
+    ]),
+});
+
+export const pgnoMapGetters = arrNames => ({
+    ...mapGetters('pgno', [
+        ...arrNames,
+    ]),
+});
+
 export const pgnoMapMutations = arrNames => ({
     ...mapMutations('pgno', [
         ...arrNames,
@@ -109,6 +121,24 @@ export const pgnoMapActions = arrNames => ({
 // global loading //
 export const globalloadingState = arrNames => ({
     ...mapState('globalloading', [
+        ...arrNames,
+    ]),
+});
+
+export const digitalDrillingActions = arrNames => ({
+    ...mapActions('digitalDrilling', [
+        ...arrNames,
+    ]),
+});
+
+export const digitalDrillingGetters = arrNames => ({
+    ...mapGetters('digitalDrilling', [
+        ...arrNames,
+    ]),
+});
+
+export const digitalDrillingState = arrNames => ({
+    ...mapState('digitalDrilling', [
         ...arrNames,
     ]),
 });

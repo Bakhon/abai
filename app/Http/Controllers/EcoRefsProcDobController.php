@@ -19,7 +19,7 @@ class EcoRefsProcDobController extends Controller
 
             $ecorefsprocdob = EcoRefsProcDob::latest()->with('scfa')->with('company')->paginate(5);
 
-            return view('ecorefsprocdob.index',compact('ecorefsprocdob'))
+            return view('economy_kenzhe/ecorefsprocdob.index',compact('ecorefsprocdob'))
                 ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -32,7 +32,7 @@ class EcoRefsProcDobController extends Controller
     {
         $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
-        return view('ecorefsprocdob.create',compact('sc_fa', 'company'));
+        return view('economy_kenzhe/ecorefsprocdob.create',compact('sc_fa', 'company'));
     }
 
     /**
@@ -78,7 +78,7 @@ class EcoRefsProcDobController extends Controller
         $row = EcoRefsProcDob::find($id);
         $company = EcoRefsCompaniesId::get();
 
-        return view('ecorefsprocdob.edit',compact('sc_fa', 'row', 'company'));
+        return view('economy_kenzhe/ecorefsprocdob.edit',compact('sc_fa', 'row', 'company'));
     }
 
     /**

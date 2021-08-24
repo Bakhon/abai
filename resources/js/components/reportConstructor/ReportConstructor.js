@@ -5,7 +5,7 @@ import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from "../common/FormatDate";
 import download from "downloadjs";
 import {globalloadingMutations} from '@store/helpers';
-import CatLoader from '@ui-kit/CatLoader';
+
 
 Vue.use(Datetime)
 Vue.use(bTreeView)
@@ -14,9 +14,6 @@ export default {
     props: [
         'params'
     ],
-    components: {
-        CatLoader
-    },
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
@@ -51,6 +48,13 @@ export default {
             endDate: null,
             dateFlow: ['year', 'month', 'date'],
             maxDepthOfSelectedAttributes: null,
+            templates: [],
+            newTemplateName: "",
+            storableParameters: [
+                "startDate", "endDate", "selectedObjects",
+                "activeTab", "activeButtonId", "currentStructureType",
+                "currentItemType", "currentOption", "attributesByHeader"
+            ]
         }
     },
     mounted: function () {
@@ -186,8 +190,8 @@ export default {
                 this.showToast(e.name, e.message, 'danger', 10000)
                 return
             }
-            let jsonData = this._getStatisticsRequestParams()
-            this.axios.post(this.baseUrl + "get_statistics", jsonData, {
+            let params = this.getStatisticsRequestParams()
+            this.axios.post(this.baseUrl + "get_statistics", JSON.stringify(params), {
                 responseType: 'json',
                 headers: {
                     'Content-Type': 'application/json'
@@ -259,13 +263,13 @@ export default {
             }
             return field in this.attributeDescriptions["formulas"]
         },
-        _getStatisticsRequestParams() {
-            return JSON.stringify({
+        getStatisticsRequestParams() {
+            return {
                 "fields": this.getSelectedAttributes(),
                 "selectedObjects": this.selectedObjects,
                 "structureType": this.currentStructureType,
                 "dates": this.getDates()
-            })
+            }
         },
         getDates() {
             let dates = []
@@ -319,10 +323,10 @@ export default {
                 this.showToast(e.name, e.message, 'danger', 10000)
                 return
             }
-            let jsonData = this._getStatisticsRequestParams()
+            let params = this.getStatisticsRequestParams()
             this.axios.post(
                 this.baseUrl + 'get_excel/',
-                jsonData,
+                JSON.stringify(params),
                 {
                     headers: {
                         'Content-Type': 'application/json'
@@ -407,7 +411,7 @@ export default {
             return attribute.maxChildrenNumber
         },
         getOptionName() {
-            return this.currentOption && this.currentOption.name ? this.currentOption.name : 'Выбор объекта'; 
+            return this.currentOption && this.currentOption.name ? this.currentOption.name : 'Выбор объекта';
         },
         onMenuClick(currentStructureType) {
             this.currentStructureType = currentStructureType;
@@ -419,7 +423,7 @@ export default {
             this.currentItemType = structureType.id;
         },
         onYearClick() {
-            if(this.currentDatePickerFilter === 'year') {
+            if (this.currentDatePickerFilter === 'year') {
                 this.setDefaultDateFilter();
                 return;
             }
@@ -427,7 +431,7 @@ export default {
             this.dateFlow = ['year'];
         },
         onMonthClick() {
-            if(this.currentDatePickerFilter === 'month') {
+            if (this.currentDatePickerFilter === 'month') {
                 this.setDefaultDateFilter();
                 return;
             }
@@ -439,15 +443,15 @@ export default {
             this.dateFlow = ['year', 'month', 'date'];
         },
         onStartDatePickerClick(date) {
-            if(!date) return;
-            switch(this.currentDatePickerFilter) {
+            if (!date) return;
+            switch (this.currentDatePickerFilter) {
                 case "year":
                     this.setStartOfYear(date);
                     break;
-                case "month": 
+                case "month":
                     this.setStartOfMonth(date);
                     break;
-                default: 
+                default:
                     this.startDate = date;
             }
         },
@@ -458,15 +462,15 @@ export default {
             this.startDate = formatDate.getFirstDayOfMonthFormatted(date, 'datetimePickerFormat');
         },
         onEndDatePickerClick(date) {
-            if(!date) return;
-            switch(this.currentDatePickerFilter) {
+            if (!date) return;
+            switch (this.currentDatePickerFilter) {
                 case "year":
                     this.setEndOfYear(date);
                     break;
-                case "month": 
+                case "month":
                     this.setEndOfMonth(date);
                     break;
-                default: 
+                default:
                     this.endDate = date;
             }
         },
@@ -476,5 +480,63 @@ export default {
         setEndOfMonth(date) {
             this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
         },
+        saveTemplate() {
+            this.SET_LOADING(true)
+            let params = {
+                name: this.newTemplateName,
+                template: JSON.stringify(this.composeTemplate())
+            }
+            this.axios.post(this.localeUrl('/bigdata/report-constructor/save-template/'), JSON.stringify(params))
+                .then((response) => {
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+                .finally(() => {
+                    this.SET_LOADING(false)
+                });
+        },
+        composeTemplate() {
+            let template = {}
+            for (let parameter of this.storableParameters) {
+                template[parameter] = this[parameter]
+            }
+            return template
+        },
+        showTemplatesModal(modal) {
+            this.showModal(modal)
+            this.loadTemplates()
+        },
+        showModal(modal) {
+            this.$modal.show(modal)
+        },
+        loadTemplates() {
+            this.SET_LOADING(true)
+            this.axios.get(this.localeUrl('/bigdata/report-constructor/get-templates/'))
+                .then((response) => {
+                    this.templates = response.data
+                }).catch((error) => {
+                console.log(error)
+            }).finally(() => {
+                this.SET_LOADING(false)
+            });
+        },
+        closeModal(modal) {
+            this.$modal.hide(modal)
+        },
+        loadTemplate(index) {
+            let template = JSON.parse(this.templates[index].template)
+            for (let parameter of this.storableParameters) {
+                this[parameter] = template[parameter]
+            }
+        },
+        isCheckedCheckbox(currentNode, level) {
+            for (let node of this.selectedObjects) {
+                if (currentNode.id === node.id && level === node.level) {
+                    return true
+                }
+            }
+            return false
+        }
     }
 }

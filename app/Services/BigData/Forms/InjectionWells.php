@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
+
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use Illuminate\Support\Facades\DB;
 
@@ -29,7 +30,13 @@ class InjectionWells extends PlainForm
     {
         $errors = [];
 
-        if (!$this->isValidDateDbeg($this->request->get('well'),$this->request->get('dbeg'), 'prod.tech_mode_inj', 'dend')){
+        if (!$this->isValidDateDbeg(
+            $this->request->get('well'),
+            $this->request->get('dbeg'),
+            'prod.tech_mode_inj',
+            'dend',
+            $this->request->get('id')
+        )) {
             $errors['dbeg'] = trans('bd.validation.dbeg');
         }
 

@@ -1,7 +1,6 @@
 <template>
   <div class="all-contents">
     <div class="row well-cart__wrapper">
-      <cat-loader v-show="loading"/>
       <div
           :class="{'left-column_folded': isLeftColumnFolded}"
           class="left-column"
@@ -88,7 +87,11 @@
             </div>
             <div v-if="wellUwi" class="mid-col__main_row">
               <div v-if="activeFormComponentName">
-                  <div :is="activeFormComponentName" :changeColumnsVisible="(value) => changeColumnsVisible(value)"></div>
+                  <div
+                      :is="activeFormComponentName"
+                      :well="well"
+                      :changeColumnsVisible="(value) => changeColumnsVisible(value)"
+                  ></div>
               </div>
               <div v-else-if="activeFormCode" class="col table-wrapper">
                 <BigDataPlainFormResult :code="activeFormCode" :well-id="this.well.id"></BigDataPlainFormResult>
@@ -223,7 +226,8 @@ import moment from 'moment'
 import WellCartTree from './WellCartTree'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import CatLoader from '@ui-kit/CatLoader'
+import {globalloadingMutations} from '@store/helpers';
+
 
 const requireComponent = require.context('../bigdata/forms/CustomPlainForms', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
@@ -243,8 +247,7 @@ export default {
   components: {
     BigDataPlainFormResult,
     vSelect,
-    WellCartTree,
-    CatLoader
+    WellCartTree
   },
   data() {
     return {
@@ -370,7 +373,8 @@ export default {
     this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
       this.formsStructure = data.tree
     })
-    this.axios.get(this.localeUrl('/user_organizations')).then(({data}) => {
+    this.axios.get(this.localeUrl('/user_organizations'), {params: {'only_main': true}})
+        .then(({data}) => {
         if (typeof data !== 'undefined' &&
             typeof data.organizations !== 'undefined' &&
             data.organizations.length > 0) {
@@ -379,6 +383,9 @@ export default {
     })
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     onColumnFoldingEvent(method) {
       if (method === 'left') {
         this.isLeftColumnFolded = !this.isLeftColumnFolded;
@@ -413,7 +420,7 @@ export default {
         350
     ),
     selectWell(well) {
-      this.loading = true
+      this.SET_LOADING(true);
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
         try {
           this.well.id = data.wellInfo.id
@@ -446,10 +453,10 @@ export default {
             this.wellSaptialObjectBottomY = spatialObjectBottom[1]
           }
         } catch (e) {
-          this.loading = false
+            this.SET_LOADING(false);
         }
         this.setTableData()
-        this.loading = false
+          this.SET_LOADING(false);
       })
     },
     setTableData() {
@@ -1909,7 +1916,7 @@ h4 {
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 9px) !important;
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 24px) !important;
     }
 
   }
@@ -1958,7 +1965,7 @@ h4 {
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 9px);
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 24px);
     }
 
     .scrollable {
