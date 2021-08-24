@@ -429,4 +429,7 @@ return array (
   'countChemistry' => 'Химизация производства, тонн',
   'countDrillingWells' => 'Количество скважин из бурения, скв.',
   'countDrilling' => 'Бурение проходка, м.'
+  'emergency' => 'Инцидент',
+  'emergencyDate' => 'Дата инцидента',
+  'resolvingDate' => 'Дата заполнения'
 );
