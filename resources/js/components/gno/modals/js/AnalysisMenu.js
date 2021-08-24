@@ -11,6 +11,22 @@ export default {
         return {
             apiUrl: process.env.MIX_PGNO_API_URL,
             name: "analysis-menu",
+            settings: {
+                analysisOld: [
+                    "analysisOldPres",
+                    "analysisOldHdyn",
+                    "analysisOldBhp",
+                    "analysisOldQlAsma",
+                    "analysisOldWctAsma",
+                    "analysisOldGorAsma",],
+                analysisNew: [
+                    "analysisNewPres",
+                    "analysisNewPi",
+                    "analysisNewBhp",
+                ],
+                nearDist: 1000,
+                hasGrp: false,
+            },
             layout: {
                 shapes: [{
                     type: 'line',
@@ -83,7 +99,6 @@ export default {
             'pointsAnalysis',
             'shgnSettings',
             'curveSettings',
-            'analysisSettings'
         ]),
         ...pgnoMapGetters([
         ]),
@@ -94,7 +109,8 @@ export default {
             ]),
         ...pgnoMapActions([
             "postAnalysis",
-            "updateWell"
+            "updateWell",
+            "setAnalysisSettings"
         ]),
         async updateGraph() {
             this.SET_LOADING(true);
@@ -104,11 +120,9 @@ export default {
                 "shgn_settings": this.shgnSettings,
                 "well": this.well,
                 "curve_settings": this.curveSettings,
-                "analysis_settings": this.analysisSettings,
+                "analysis_settings": this.settings,
               }
             await this.postAnalysis(payload)
-            console.log("ANALYSIS MENU WAITED")
-            console.log(this.lines)
             this.data = [ 
               {
                 name: this.trans("pgno.curveMainLineName"),
@@ -173,6 +187,7 @@ export default {
             payload.linesAnalysis = this.linesAnalysis
             payload.pointsAnalysis = this.pointsAnalysis
             this.updateWell(payload)
+            this.setAnalysisSettings(this.settings)
             this.$emit('clicked', "settings")
         },
         openNearWellsModal() {
