@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 class DigitalRatingContoller extends Controller
 {
 
@@ -12,7 +13,8 @@ class DigitalRatingContoller extends Controller
    const WELL_CATEGORY_TYPE_ID = 1;
    const PARAM_GDIS_HDIN_id = 217;
    const PARAM_GDIS_CONCLUSION_GDM_ID = 5000000587;
-   public function get_wells($neighboring_wells) {
+   public function get_wells(array $neighboring_wells) : object  
+   {
 
          foreach ($neighboring_wells as $item) {
             $well_uwi[] = $item['well'];
@@ -60,12 +62,12 @@ class DigitalRatingContoller extends Controller
             }
          }
          return $wells;                
-       
          
    }
 
  
-   public function serach_wells(Request $request){
+   public function search_wells(Request $request):JsonResponse
+   {
       $sector = $request->input('sector');
       $horizon = $request->input('horizon');
       $sectors_json_points = file_get_contents(public_path('js/json/digital-rating/sectors_points.json'), 'r');
@@ -91,6 +93,7 @@ class DigitalRatingContoller extends Controller
             }
          };
          $wells = $this->get_wells($neighboring_wells);
-         return json_encode(json_decode($wells, false), JSON_UNESCAPED_UNICODE);
+         $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
+         return response()->json($wells,200,$headers,JSON_UNESCAPED_UNICODE);
    }
 };
