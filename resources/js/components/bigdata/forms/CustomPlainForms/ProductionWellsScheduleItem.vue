@@ -34,6 +34,7 @@ export default {
     },
     data: function() {
         return {
+            title: '',
             chartSeries: [],
             chartPoints: [],
             tmpChartPoints: [],
@@ -116,10 +117,14 @@ export default {
     },
     mounted() {
         this.getSchuduleData();
+        this.title = this.well.name;
     },
     computed: {
         chartOptions() {
             return {
+                title: {
+                    text: this.title
+                },
                 labels: this.labels,
                 stroke: {
                     width: 1.5,
@@ -130,6 +135,7 @@ export default {
                 },
                 chart: {
                     stacked: true,
+                    background: 'rgba(39, 41, 83, 1)',
                     foreColor: '#FFFFFF',
                     selection: {
                         enabled: true,
