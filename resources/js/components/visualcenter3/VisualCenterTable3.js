@@ -238,7 +238,6 @@ export default {
                 }
                 await this.processProductionDataByCompanies(productionData,metricName,chartSecondaryName);
             }
-            this.isSummaryShouldBeCalculated = false;
             this.SET_LOADING(false);
         },
 
