@@ -1,14 +1,16 @@
 <template>
-  <modal
-    class="modal-bign-wrapper"
-    name="modalSetting"
-    :draggable="false"
-    :width="1000"
-    :height="500"
-    :adaptive="true"
-    @click.self="close">
-    <div class="modal-bign-container p-20px">
-      <div class="modal-bign-header mb-20px">
+  <b-modal
+    size="xl"
+    header-bg-variant="main1"
+    body-bg-variant="main1"
+    header-text-variant="light"
+    footer-bg-variant="main1"
+    centered
+    id="modalSetting"
+    :ok-only="true"
+  >
+    <template #modal-header="{ close }">
+      <div class="d-flex justify-content-between w-100">
         <div class="modal-bign-title">
           <i class="fas fa-cog" style="font-size: 20px;"/>
           {{ trans('profile.tabs.settings') }}
@@ -17,6 +19,8 @@
           {{ trans('pgno.zakrit') }}
         </button>
       </div>
+    </template>
+    <div class="text-white">
       <form>
         <div class="d-flex justify-content-between mb-20px">
           <div class="setting-form__select">
@@ -83,6 +87,8 @@
           />
         </div>
       </form>
+    </div>
+    <template #modal-footer>
       <div class="modal__footer">
         <button type="button" class="btn-button btn-button--thm-blue mr-20px minw-300">
           {{ trans('digital_rating.applyDefault') }}
@@ -91,8 +97,8 @@
           {{ trans('digital_rating.applyCorrectionsMade') }}
         </button>
       </div>
-    </div>
-  </modal>
+    </template>
+  </b-modal>
 </template>
 
 <script>
