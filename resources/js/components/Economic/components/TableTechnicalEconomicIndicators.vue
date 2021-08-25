@@ -140,8 +140,6 @@ export default {
 
       let key = 'original_value_optimized'
 
-      // return +scenario.Revenue_export[key] * 10 / (+scenario.Revenue_export[key])
-
       return 1000 * (+scenario.Revenue_export[key] / (+scenario.production_export[key] * (+this.scenario.dollar_rate) * 7.2))
     },
 
@@ -173,16 +171,6 @@ export default {
           ),
           budget2020: this.budget2020Map,
           color: '#AC7550',
-        },
-        {
-          index: '1.1',
-          title: this.trans('economic_reference.liquid_production'),
-          dimension: this.trans('economic_reference.thousand_tons'),
-          values: this.reverseOilPrices.map((oilPrice, index) =>
-              +this.oilPriceScenarios[index].liquid.original_value_optimized / 1000
-          ),
-          budget2020: this.budget2020Map,
-          color: '#313560',
         },
         {
           index: '2',
