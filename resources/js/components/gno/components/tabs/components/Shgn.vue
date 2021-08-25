@@ -349,10 +349,10 @@
       <div class="flex__item__block__sixth__block">
         <div class="block__text__5">{{ trans('pgno.dav_nasos_minim') }}</div>
         <input v-model="settings.pintakeMin" class="shgn-input block__6__input" type="text">
-        <div class="measurements-shgn-1">{{ trans('measurements.m') }}</div>
+        <div class="measurements-shgn-1">{{ trans('measurements.atm') }}</div>
         <div class="block__text__6">{{ trans('pgno.gs_nasos_maks') }}</div>
         <input v-model="settings.gasMax" class="shgn-input block__7__input" type="text">
-        <div class="measurements-shgn-2">{{ trans('measurements.m') }}</div>
+        <div class="measurements-shgn-2">{{ trans('measurements.percent') }}</div>
       </div>
 
     </div>

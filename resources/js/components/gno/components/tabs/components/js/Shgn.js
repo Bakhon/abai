@@ -149,7 +149,7 @@ export default {
 			this.$modal.show('modalTable3')
 		},
 		isStupColumnsNumber(val) {
-			this.settings.stupColumns === val && this.settings.rodsTypes.length < val
+			return (Number(this.settings.stupColumns) === val && this.settings.rodsTypes.length < val)
 		},
 
 		onSubmitParams(mode) {
