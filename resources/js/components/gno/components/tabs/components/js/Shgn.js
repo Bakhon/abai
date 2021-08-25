@@ -8,6 +8,7 @@ export default {
 	components: {
 		Multiselect,
 	  },
+	props: {"calcKpodTrigger": Boolean},
 	data: function()  {
 		return {
 			settings: {},
@@ -110,8 +111,9 @@ export default {
       'well',
       'lines',
       'points',
-	  'shgnSettings',
-	  'curveSettings'
+	  	'shgnSettings',
+	  	'curveSettings',
+			'kPodSettings'
     ]),
 		...pgnoMapGetters([
       'steelMarkStore',
@@ -119,8 +121,18 @@ export default {
 	},
 	methods: {
 		...pgnoMapActions([
+			'setKpodSettings',
 			'setShgnSettings',
 		  ]),
+		setNotify(message, title, type) {
+				this.$bvToast.toast(message, {
+					title: title,
+					variant: type,
+					solid: true,
+					toaster: "b-toaster-top-center",
+					autoHideDelay: 8000,
+				});
+		},
 		onClick() {
 			this.$modal.show('modalTable')
 			this.isModal = true;
@@ -136,14 +148,31 @@ export default {
 		onClickI2() {
 			this.$modal.show('modalTable3')
 		},
-		onSubmitParams() {
+		isStupColumnsNumber(val) {
+			this.settings.stupColumns === val && this.settings.rodsTypes.length < val
+		},
+
+		onSubmitParams(mode) {
+			for (let i of [1,2,3]){
+				if (this.isStupColumnsNumber(i)) {
+						this.setNotify("Укажите необходимые диаметры штанг", "Warning", "warning")
+						return
+				}
+			}			
+			this.$store.commit('pgno/SET_SETTINGS_MODE', mode)
 			this.setShgnSettings(this.settings)
+			this.setKpodSettings(this.kPodSettings)
 			this.$emit('on-submit-params');
 			this.$modal.show('tabs');
 		},
 		calKpod(){
-			if (this.ql) {
-				this.kpodCalced = this.ql / (1440 * 3.14 * this.pumpType ** 2 * this.strokeLen * (this.spm / 4000000))
+			if (this.kPodSettings.ql) {
+				this.kpodCalced = this.kPodSettings.ql / (1440 * 3.14 * this.kPodSettings.pumpType ** 2 * this.kPodSettings.strokeLen * (this.kPodSettings.spm / 4000000))
+				if (this.kpodCalced < 0.4 || this.kpodCalced > 0.9) {
+					var message = this.trans('pgno.kpodWarning', {kpod: this.kpodCalced.toFixed(2)}) 
+					this.setNotify(message, "Warning", "warning")
+				}
+
 				this.$store.commit('pgno/UPDATE_KPOD_CALCED', this.kpodCalced) 
 			}
 		},
@@ -159,11 +188,6 @@ export default {
 		this.settings =this.shgnSettings
 		this.settings.steelMark = this.steelMarkStore
 		this.steelMarks = this.steelMarksTypes[this.settings.corrosion]
-		this.pumpType = this.well.pumpType
-		this.spm = this.well.spm
-		this.strokeLen = this.well.strokeLen
-		this.ql = this.curveSettings.qLInput
 		this.calKpod()
-
 	}
 }

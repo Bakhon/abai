@@ -60,7 +60,7 @@ import { pgnoMapState, pgnoMapGetters, pgnoMapMutations, pgnoMapActions } from '
 import {globalloadingMutations} from '@store/helpers';
 
 export default {
-  props: ["wellNumber", "field", "wellIncl"],
+  props: ["wellNumber", "field"],
   components: {
     Plotly
   },

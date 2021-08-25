@@ -17,6 +17,18 @@
 body {
     color: white!important;
 }
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #272953;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #656a8a;
+}
 /*Выбор скважины*/
 
 .choose-well-block {
@@ -82,18 +94,12 @@ body {
     font-size: 14px;
 }
 
-.select-well:hover{
-    border: 1px solid transparent;
-}
-
-.select-well:invalid:focus {
-    background: red;
-}
-
 input.new-well-grp-checkbox {
-    margin-top: 2px;
+    margin-top: 6px;
     position: relative;
     float: right;
+    border: 1px solid rgba(184, 194, 204, 1);
+    border-radius: 0.243rem;
 }
 /*Charts*/
 .apexcharts-menu-item {
@@ -307,8 +313,8 @@ td {
 
 .nno-icon {
     position: absolute;
-    top: -25px;
-    right: -25px;
+    top: -30px;
+    right: 355px;
 }
 
 .nno-icon svg {
@@ -446,6 +452,11 @@ span.open, span.closer {
     position: absolute;
     margin-left: 175px;
     margin-top: 5px;
+}
+.download-button-excel-gno {
+    position: absolute;
+    margin-left: 175px;
+    margin-top: -40px;
 }
 
 .potential-analysis-button {
@@ -625,7 +636,7 @@ span.open, span.closer {
     outline: none !important;
     box-shadow: none;
     border: none;
-    margin-top: 155px;
+    margin-top: 125px;
     margin-left: 10px;
     line-height: 14px;
     vertical-align: middle;
@@ -650,6 +661,7 @@ span.open, span.closer {
     border: none !important;
     outline: none !important;
     color: white;
+    margin-left: 350px;
 }
 
 .button-nno:hover {
@@ -690,13 +702,14 @@ span.open, span.closer {
 
 .select-well {
     outline: none;
-    width: 95px;
-    height: 24px;
+    width: 100%;
     color: white;
     box-sizing: border-box;
     -moz-appearance: none;
     -webkit-appearance: none;
+    padding-left: 5px;
     margin-top: -2px;
+    border: none;
     margin-right: 1px;
     appearance: none;
     background: #494aa5 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>") no-repeat right 5px top 50%;
@@ -728,8 +741,25 @@ span.open, span.closer {
     box-sizing: border-box;
     border-radius: 2px;
     line-height: 25px !important;
-    padding-right: 5px;
-    padding-left: 5px;
+    margin-top: 5px;
+}
+
+.w-62 {
+    width: 62px;
+    font-size: 11px;
+}
+
+.input-selection-options {
+    width: 57px;
+    margin-bottom: 10px;
+    background: #494AA5;
+    border: 1px solid #272953;
+    outline: none;
+    height: 22px;
+    color: white;
+    box-sizing: border-box;
+    border-radius: 2px;
+    line-height: 25px !important;
     margin-top: 5px;
 }
 
@@ -751,7 +781,29 @@ span.open, span.closer {
     float: left;
 }
 
+.well-number-input {
+    border: 1px solid rgba(34, 36, 82, 1);
+    background: rgba(76, 190, 237, 0.278431);
+    outline: none;
+    width: 100%;
+    color: white;
+    padding-left: 5px;
+    line-height: 25px !important;
+}
+
 .shgn-input {
+    border: 1px solid rgba(34, 36, 82, 1);
+    background: rgba(76, 190, 237, 0.278431);
+    outline: none;
+    width: 57px;
+    height: 20px;
+    color: white;
+    padding-right: 5px;
+    padding-left: 5px;
+    line-height: 25px !important;
+}
+
+.sep-input {
     border: 1px solid rgba(34, 36, 82, 1);
     background: rgba(76, 190, 237, 0.278431);
     outline: none;
@@ -788,6 +840,12 @@ input[type="radio"] {
     color: #237DEB;
 }
 
+input[type="text"]:enabled.well-number-input {
+    background: #494AA5;
+    outline: none;
+    border: 0;
+}
+
 input[type="radio"]:not(:checked) {
     border: 1px solid #FF0000;
 }
@@ -805,6 +863,19 @@ input[type="text"]:disabled.shgn-input {
 }
 
 input[type="text"]:enabled.shgn-input {
+    background: #494AA5;
+    outline: none;
+    border: 0;
+}
+
+input[type="text"]:disabled.sep-input {
+    background:rgba(50, 51, 112, 1);
+    color: #928f8f;
+    outline: none;
+    border: 0;
+}
+
+input[type="text"]:enabled.sep-input {
     background: #494AA5;
     outline: none;
     border: 0;

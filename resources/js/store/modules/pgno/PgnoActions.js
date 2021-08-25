@@ -13,18 +13,23 @@ export const pgnoActions = {
     setCurveSettings({ commit }, payload) {
         commit("UPDATE_CURVE_SETTINGS", payload);
     },
+    setAnalysisSettings({ commit }, payload) {
+        commit("UPDATE_ANALYSIS_SETTINGS", payload);
+    },
     updateWell({ commit }, payload) {
         commit("SET_LINES", payload.linesAnalysis)
         commit("SET_POINTS", payload.pointsAnalysis)
     },
-
+    setKpodSettings({ commit }, payload){
+        commit("SET_KPOD_SETTINGS", payload)
+    },
     setEditing({ commit }, payload){
         commit("SET_EDITING", payload)
     },
     setIntervals({ commit }, payload){
         commit("SET_INTERVALS", payload)
     },
-    async setDefault({ commit }) {
+    async setDefault({ commit }, payload) {
         commit("CLEAR", {})
         commit("SET_POST_RESPONSE_DATA", {})
         commit("SET_WELL", {})
@@ -50,7 +55,8 @@ export const pgnoActions = {
             nearDist: 1000,
             hasGrp: false,
         })
-        commit("UPDATE_SHGN_SETTINGS", {
+        if (payload === "setWell") {
+            commit("UPDATE_SHGN_SETTINGS", {
                 spmMin: 3,
                 spmMax: 8,
                 strokeLenMin: 2.5,
@@ -71,6 +77,8 @@ export const pgnoActions = {
                 kPodMode: true,
                 kPodCalced: null,
             })
+        }
+        
         return
     },
     async getWell({ commit }, payload) {
