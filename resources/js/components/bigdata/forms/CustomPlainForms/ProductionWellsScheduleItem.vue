@@ -90,7 +90,6 @@ export default {
                     data.oil,
                     data.measWaterCut,
                 ];
-                console.log(this.$refs.chart);
                 if (data.wellStatuses) {
                     this.chartPoints = [];
                     data.wellStatuses.forEach(status => {
