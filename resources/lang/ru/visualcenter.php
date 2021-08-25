@@ -224,7 +224,13 @@ return array (
   'tonWithSpace' => ' тонн',
   'meterCubicWithSpace' => ' м³/сут',
   'requiredDailyPlan' => 'Необходимый ср/сут уровень',
-  'dzoRegions' => 
+  'headOfPageModule' => 'Главная страница модуля',
+  'inputForm' => 'Форма ввода',
+  'dailyReportsKMG' => 'Суточная отчетность КМГ',
+  'approvalsTable' => 'Таблица согласований',
+  'version' => 'Версия',
+  'upstreamKPI' => 'КПД Блока Upstream',
+  'dzoRegions' =>
   array (
     'aturay' => 'Атырауская область',
     'actubinsk' => 'Актюбинская область',
@@ -238,19 +244,20 @@ return array (
   'saveButton' => 'Сохранить',
   'errors' => 'Ошибки',
   'validateButton' => 'Провести проверку данных',
-  'importForm' => 
+  'importForm' =>
   array (
-    'errorList' => 
+    'errorList' =>
     array (
       'incorrectDocumentFormat' => 'Неверный формат Excel документа',
     ),
-    'status' => 
+    'status' =>
     array (
       'waitForData' => 'Ожидание входящих данных..',
       'dataValid' => 'Данные успешно проверены.',
       'dataSaved' => 'Данные успешно сохранены!',
       'dataIsNotValid' => 'В данных найдены ошибки!',
       'verifySumByDzo' => 'Ошибка! Проверьте общие суммы по параметрам.',
+      'sendedToApprove' => 'Отправлено на согласование',
     ),
     'chemistry' => 'Химизация производства, т/мес',
     'enterChemistryButton' => 'Химизация производства',
@@ -269,7 +276,6 @@ return array (
     'insertData' => 'Внесение данных',
     'dataArchieve' => 'Архив данных',
     'dateSelect' => 'Выберите дату',
-    'sendedToApprove' => 'Отправлено на согласование',
     'executor' => 'Исполнитель',
     'reason' => 'Причина',
   ),
@@ -304,9 +310,9 @@ return array (
   'buy' => 'Покупка',
   'chemVolume' => 'Объём хим. реагента, тонны',
   'nrs' => 'Нерентабельные скважины',
-  'chartOptions' => 
+  'chartOptions' =>
   array (
-    'monthNames' => 
+    'monthNames' =>
     array (
       'january' => 'Январь',
       'february' => 'Февраль',
@@ -333,7 +339,7 @@ return array (
   'indicatorFall' => 'Снижение',
   'oilCondensateProduction' => 'Добыча нефти и конденсата',
   'withoutKmgParticipation' => 'Без учета доли участия КМГ',
-  'consolidatedDzoNameMapping' => 
+  'consolidatedDzoNameMapping' =>
   array (
     'OMG' => 'АО "Озенмунайгаз"  (нефть) (100%)',
     'OMGK' => 'АО "Озенмунайгаз"  (конденсат) (100%)',
@@ -356,7 +362,7 @@ return array (
     'NKOS' => '"Норт Каспиан Оперейтинг Компани н.в." (на долю Самрук Казына - 8,44%)',
     'PKK' => 'АО "ПетроКазахстан Кумколь Ресорсиз"',
   ),
-  'consolidatedDzoNameMappingWithoutKMG' => 
+  'consolidatedDzoNameMappingWithoutKMG' =>
   array (
     'OMG' => 'АО "Озенмунайгаз" (нефть)',
     'OMGK' => 'АО "Озенмунайгаз" (конденсат)',
@@ -395,7 +401,7 @@ return array (
   'gasOperatingAssets' => 'операц. активы',
   'injectionArtesianWater' => 'Закачка артезианской воды',
   'dynamicArtesianWater' => 'Динамика закачки артезианской воды',
-  'dailyApprove' => 
+  'dailyApprove' =>
   array (
     'title' => 'Таблица согласований операционных активов',
     'toApprove' => 'Необходимо согласовать',
@@ -411,4 +417,19 @@ return array (
     'approved' => 'Согласовано',
     'cancelled' => 'Отменено'
   ),
+  'notes' => 'Примечания',
+  'kpdModuleTitle' => 'КПД Upstream',
+  'condensateDelivery' => 'Сдача конденсата',
+  'notes' => 'Примечания',
+  'countOfProductionWells' => 'Количество добывающих скважин, скв.',
+  'countOfInjectionWells' => 'Количество нагнетательных скважин, скв.',
+  'countDrillingWells' => 'Количество скважин из бурения, скв.',
+  'countDrillingHeading' => 'Бурение проходка, м.',
+  'countWellsWorkover' => 'Количество КРС/ПРС, скв.',
+  'countChemistry' => 'Химизация производства, тонн',
+  'countDrillingWells' => 'Количество скважин из бурения, скв.',
+  'countDrilling' => 'Бурение проходка, м.',
+  'emergency' => 'Инцидент',
+  'emergencyDate' => 'Дата инцидента',
+  'resolvingDate' => 'Дата заполнения'
 );

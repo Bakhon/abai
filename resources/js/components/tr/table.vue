@@ -348,7 +348,7 @@
             <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{ row_index + 1 }}</td>
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}" :colspan="getRowWidthSpan(row)">{{row.field}} </td>
-                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.rus_wellname}} </td>
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}" v-if="!isActiveClass(row)">{{row.rus_wellname}} </td>
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`well_type`), 'activ': isActiveClass(row)}" td class="fixcol">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].well_type[1][0] !== '0'}" :style="`background :${getColor(
@@ -860,7 +860,7 @@ tr:nth-child(even) {
     z-index: 3000;
 }
 .table.table tr:not(.notsticky) .th:nth-child(-n + 3) {
-  z-index: 4010;
+  z-index: 4000;
 }
 .table tr:nth-child(2) .th {
     top: 22px;

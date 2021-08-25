@@ -72,7 +72,12 @@ export default {
                 isOperating: [],
                 isNonOperating: []
             },
-            dzoSummaryForTable: []
+            dzoSummaryForTable: [],
+            totalSummary: {
+                plan: 0,
+                fact: 0,
+                opekPlan: 0
+            },
         };
     },
     methods: {
@@ -132,13 +137,10 @@ export default {
                     this.consolidatedData[categories[i]].current = this.consolidatedData[categories[i]].currentWithoutKMG;
                     this.consolidatedData[categories[i]].yesterday = this.consolidatedData[categories[i]].yesterdayWithoutKMG;
                 }
-                let actual = this.consolidatedData[categories[i]].current.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
-                let yesterday = this.consolidatedData[categories[i]].yesterday.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
-                this.updateProductionTotalFact(yesterday,actual,categories[i]);
             }
         },
 
-        calculateDzoCompaniesSummary() {
+        calculateDzoCompaniesSummary(isWithoutRefresh) {
             let emptyDzo = [];
             this.dzoSummaryForTable = _.cloneDeep(this.dzoCompanySummary).filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             let chartOutput = this.getFilteredForChartBySelectedCompanies();
@@ -172,10 +174,12 @@ export default {
                     summary.opekPlan = parseInt(summary.opekPlan) + parseInt(company.opekPlan);
                 }
             });
+            this.totalSummary.plan = summary.plan;
+            this.totalSummary.opekPlan = summary.opekPlan;
+            this.totalSummary.fact = summary.fact;
             summary = this.getFormatted(summary);
-
             this.dzoCompaniesSummary = summary;
-            if (this.isConsolidatedCategoryActive()) {
+            if (this.isConsolidatedCategoryActive() && !isWithoutRefresh) {
                 this.updateProductionTotalFact(filteredByCompaniesYesterday,actualFilteredSummary,this.selectedView);
                 this.isOpecFilterActive = true;
             }
@@ -242,16 +246,16 @@ export default {
                 this.selectedDzoCompanies = [companyTicker];
                 this.calculateSecondaryCategories();
                 this.switchDzoCompaniesVisibility(companyTicker, 'ticker');
-                this.selectDzoCompany();
+                this.selectDzoCompany(true);
             }
         },
 
-        selectDzoCompany() {
+        selectDzoCompany(isWithoutRefresh) {
             this.disableDzoRegions();
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.buttonDzoDropdown = this.highlightedButton;
             this.calculateSecondaryCategories();
-            this.calculateDzoCompaniesSummary();
+            this.calculateDzoCompaniesSummary(isWithoutRefresh);
         },
 
         getDzoFactSummary(summaryData) {

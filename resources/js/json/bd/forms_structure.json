@@ -6,7 +6,8 @@
     "type": "dir",
     "isVisible": true,
     "forms": [
-      "well_design"
+      "well_design",
+      "production_program"
     ]
   },
   {
@@ -16,6 +17,7 @@
     "type": "dir",
     "isVisible": true,
     "forms": [
+      "gis",
       "well_incl",
       "daily_drill",
       "well_constr"
@@ -52,6 +54,7 @@
           "well_category",
           "well_zone",
           "well_tech",
+          "tech_state",
           "distribution_substation",
           "joint_wells"
         ]
@@ -95,9 +98,10 @@
         "type": "dir",
         "isVisible": true,
         "forms": [
-          "gis",
           "bottom_hole",
-          "bottom_hole_artificial"
+          "bottom_hole_artificial",
+          "lab_research",
+          "well_mark"
         ]
       },
       {
@@ -113,15 +117,8 @@
       }
     ],
     "forms": [
-      "well_perf",
-      "gtm_register",
       "well_block",
-      "fluid_production",
-      "gas_production",
-      "water_production",
-      "tech_state",
-      "production_program",
-      "water_inj"
+      "gis_type"
     ]
   },
   {
@@ -137,6 +134,36 @@
       "daily_reports_oil_sale",
       "daily_reports_gas_prod",
       "daily_reports_water_upload"
+    ]
+  },
+  {
+    "code": "gtm_registers",
+    "name": "ГТМ",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "gtm_register"
+    ]
+  },
+  {
+    "code": "well_documents",
+    "name": "Документы скважины",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "well_document"
+    ]
+  },
+  {
+    "code": "well_perfs",
+    "name": "Интервалы перфорации",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "forms": [
+      "well_perf"
     ]
   }
 ]

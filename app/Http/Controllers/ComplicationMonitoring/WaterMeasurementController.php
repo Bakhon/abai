@@ -99,6 +99,25 @@ class WaterMeasurementController extends CrudController
                     ]
                 ],
 
+                'zu' => [
+                    'title' => trans('monitoring.zu.zu'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => Zu::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+
                 'hydrocarbonate_ion' => [
                     'title' => 'НСО3-',
                     'type' => 'numeric',
@@ -747,10 +766,10 @@ class WaterMeasurementController extends CrudController
             [
                 'code' => 200,
                 'message' => 'success',
-                'chart1' => $chartDtCarbonDioxide,
-                'chart2' => $chartDtHydrogenSulfide,
-                'chart3' => $chartCorrosion,
-                'chart4' => $chartIngibitor,
+                'chartDtCarbonDioxide' => $chartDtCarbonDioxide,
+                'chartDtHydrogenSulfide' => $chartDtHydrogenSulfide,
+                'chartCorrosion' => $chartCorrosion,
+                'chartIngibitor' => $chartIngibitor,
                 'kormass' => $kormass,
                 'pipe' => $pipe,
                 'pipeab' => $pipeAB,

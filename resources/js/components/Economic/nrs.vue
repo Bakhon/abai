@@ -173,6 +173,8 @@
 <script>
 const fileDownload = require("js-file-download");
 
+import {globalloadingMutations, globalloadingState} from '@store/helpers';
+
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
 import Charts from "./components/Charts";
@@ -279,7 +281,6 @@ const economicRes = {
 export default {
   name: "economic-nrs",
   components: {
-
     Divider,
     EconomicCol,
     Charts,
@@ -298,14 +299,15 @@ export default {
       org_id: null,
       field_id: null,
       interval_start: '2020-01-01T00:00:00.000Z',
-      interval_end: '2021-01-01T00:00:00.000Z',
+      interval_end: '2021-09-01T00:00:00.000Z',
       granularity: GRANULARITY_DAY,
       profitability: PROFITABILITY_FULL,
     },
     res: economicRes,
-    loading: true
   }),
   computed: {
+    ...globalloadingState(['loading']),
+
     blocks() {
       return [
         [
@@ -348,8 +350,10 @@ export default {
     },
   },
   methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
     async getData() {
-      this.loading = true
+      this.SET_LOADING(true);
 
       try {
         const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-data'), {params: this.form})
@@ -361,21 +365,21 @@ export default {
         console.log(e)
       }
 
-      this.loading = false
+      this.SET_LOADING(false);
     },
 
     async exportData() {
-      try {
-        this.loading = true
+      this.SET_LOADING(true);
 
+      try {
         const {data} = await this.axios.post(this.localeUrl('/economic/nrs/export-data'), this.form)
 
         this.exportFromExcelJob(data)
       } catch (e) {
-        this.loading = false
-
         console.log(e)
       }
+
+      this.SET_LOADING(false);
     },
 
     exportFromExcelJob({id}) {
@@ -386,13 +390,13 @@ export default {
           case 'finished':
             clearInterval(interval)
 
-            this.loading = false
+            this.SET_LOADING(false);
 
             return window.open(data.job.output.filename, '_blank')
           case 'failed':
             clearInterval(interval)
 
-            this.loading = false
+            this.SET_LOADING(false);
 
             return alert('Export error')
         }
