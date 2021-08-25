@@ -9,6 +9,11 @@
           :class="index ? 'ml-2' : ''"
           class="col"
           @click.native="activeTab = index"/>
+
+      <chart-button
+          :text="trans('economic_reference.matrix')"
+          class="ml-2 col"
+          @click.native="openMatrix"/>
     </div>
 
     <div class="mt-3 w-100">
@@ -141,6 +146,11 @@ export default {
 
       return data
     },
+  },
+  methods: {
+    openMatrix() {
+      window.open(this.localeUrl('/economic/nrs/wells'), '_blank')
+    }
   }
 }
 </script>
