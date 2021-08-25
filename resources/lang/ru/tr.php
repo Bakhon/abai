@@ -302,4 +302,7 @@ return array (
   'swings/min' => 'кач/мин',
   'pipe_pressure' => 'Ртр',
   'change_regime' => 'Изменения к режиму',
+  'reset_all_filter' => 'Сбросить все фильтры',
+  'all_well' => 'Все скважины',
+  'selected' => 'Выбрано'
 );

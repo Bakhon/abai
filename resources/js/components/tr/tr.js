@@ -6,13 +6,17 @@ import TrFullTable from "./tablefull";
 import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
 import {fields} from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
+import TrMultiselectmodal from "./TrMultiselectmodal.vue";
 import CatLoader from "@ui-kit/CatLoader";
 import Multiselect from 'vue-multiselect';
 
 import Paginate from 'vuejs-paginate';
 import moment from 'moment';
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css'
 
 Vue.component('paginate', Paginate);
+Vue.component('v-select', vSelect)
 
 Vue.use(NotifyPlugin);
 export default {
@@ -26,6 +30,7 @@ export default {
     TrFullTable,
     SearchFormRefresh,
     TrMultiselect,
+    TrMultiselectmodal,
     Multiselect,
   },
   computed: {
@@ -265,7 +270,7 @@ export default {
       lonelywell: [],
       render: 0,
       searchStringModel: "",
-      wellFilter: undefined,
+      wellFilter: [],
       isDeleted: false,
       isSaved: false,
       isDateNormal: true,

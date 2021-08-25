@@ -227,8 +227,17 @@ table {
 .well_form_fil.well_form_fil {
   background: #333975;
   width: 165px;
-  height: calc(100vh - 562px);
+  height: calc(100vh - 355px) !important;
   overflow-y: scroll;
+}
+.Well_modal_form_fil.Well_modal_form_fil {
+  background: #333975;
+  width: 150px;
+  height: calc(100vh - 550px);
+  overflow-y: scroll;
+}
+.modal_filter {
+  width: 180px;
 }
 .external_well_type_filter  {
   width: 251px;
@@ -281,3 +290,23 @@ body {
   border-top: 2px solid rgb(145, 145, 145);
   font-size: 11px;
 }
+.style-chooser .vs__search::placeholder {
+}
+.style-chooser .vs__dropdown-toggle {
+}
+.style-chooser .vs__dropdown-menu {
+  background: #334296;
+  border: none;
+  color: #394066;
+  text-transform: lowercase;
+  font-variant: small-caps;
+}
+
+.style-chooser .vs__clear,
+.style-chooser .vs__open-indicator {
+  fill: #394066;
+}
+.style-chooser .vs__searchable {
+  width: 2px;
+}
+

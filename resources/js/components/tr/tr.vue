@@ -175,11 +175,18 @@
           <div class="tech" style="margin-left: 14px; color: white">
             <h5>{{trans('tr.tr_to')}} {{ dt }}</h5>
             
-          </div>          
-          <a v-show="false" v-if="isEdit"></a>
+          </div>   
 
+          
+               
+          <a v-show="false" v-if="isEdit"></a>
+            
             <div class="tr_icons_block">
-              <modal name="add_well" :width="1600" :height="220"  :adaptive="true" style="z-index:9900000; ">
+              <button v-on:click="dropAllFilters" class="reset_all_filters"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+</svg>{{trans('tr.reset_all_filter')}}</button>
+              <modal name="add_well" :width="1600" :height="400"  :adaptive="true" style="z-index:9900000; ">
                 <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
                   <notifications position="top"></notifications>
                   <div>
@@ -187,7 +194,6 @@
                             <h5>{{trans('tr.well_add')}}</h5>
                             <button type="button" class="modal-bign-button" @click="closeModal('add_well')">{{trans('tr.close')}}</button>
                         </div>
-                        
                         <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
                                 <div style="margin-left: 7px;">
                                   <select
@@ -239,41 +245,34 @@
                                     </option>
                                   </select>
                                 </div>
-
-                                <!-- <div style="margin-left: 7px; cursor: pointer;">
-                                  <select
-                                    class="select_mod form-control"
-                                    style="background: #334296 !important"
-                                    v-model="wellFilter"
-                                    value="Скважина"
-                                  >
-                                    <option v-for="(f, k) in wellFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_well') : f }}
-                                    </option>
-                                  </select>
-                                </div> -->
-                                
-                                <div class="filters__item">
-                                  <multiselect
-                                    v-model="wellFilter"
-                                    :options="wellFilters"
-                                    value="Скважина"
-                                    :multiple="true"
-                                    :close-on-select="false" 
-                                    :clear-on-select="false"
-                                    select-label=""
-                                    deselect-label=""
-                                    select-group-label=""
-                                    deselect-group-label=""
-                                    selected-label=""
-                                  />
-                                </div>
-
-
+                
+                                  <div v-if="wellFilter.length > 0" class="title-multi-select">{{trans('tr.add')}} {{ wellFilter.length }} скважин</div>
+                                  <div v-else class="title-multi-select">Выберите скважину</div>
+                                  <div class="dropdown_modal">
+                                    <b-dropdown  toggle-class="drop-filter-custom" >
+                                      <template #button-content class="outer_button_filter">        
+                                    
+                                      </template>
+                                        <b-dropdown-form class="modal_filter" >
+                                          <b-form-group
+                                            label=""
+                                            v-slot="{ ariaDescribedby }"
+                                            @submit.stop.prevent
+                                            class="Well_modal_form_fil"
+                                          >
+                                            <b-form-checkbox-group
+                                            v-model="wellFilter"
+                                            :options="wellFilters"
+                                            :aria-describedby="ariaDescribedby"                                  
+                                          >
+                                          </b-form-checkbox-group>
+                                          </b-form-group>
+                                        </b-dropdown-form>
+                                    </b-dropdown>
+                                  </div>
 
                                   <a
-                                    
-                                    style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                    class="add_button_modal"
                                     v-if="!isShowAdd"
                                     @click="addWellData"
                                     @click.prevent="showWells"
@@ -349,7 +348,7 @@
                   </div>
                   <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
 
-                        <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="isShowAdd" :key="render">
+                        <table class="table table-bordered table-dark table-responsive trtable modal_table" style="font-size: 12px; background: #454D7D; color: #fff; ;" v-if="isShowAdd" :key="render">
                         <thead>
                           <tr >
                             <td scope="col">{{trans('tr.field')}}</td>
@@ -6437,9 +6436,7 @@
               </tbody>
             </table>
           </div>
-          <div>
-            <button v-on:click="dropAllFilters">Сбросить все фильтры</button>
-          </div>
+          
           <div class="overflow-auto">
             
             <paginate
@@ -6823,6 +6820,29 @@ table::-webkit-scrollbar-corner {
 }
 .fix_column_first_warn {
   min-width: 188px;
+}
+.reset_all_filters {
+  background: #333975;
+  color: white;
+  border: none;
+}
+.title-multi-select {
+    color: #fff;
+    padding-left: 36px;
+    padding-top: 4px;
+}
+.dropdown_modal {
+  padding-left: 7px;
+    padding-top: 5px;
+}
+.add_button_modal {
+      margin-left: 78px; 
+  cursor: pointer; 
+  color:white; 
+  margin-top: 5px;
+}
+.modal_table {
+  height: 240px !important;
 }
 
     .table-outer{
