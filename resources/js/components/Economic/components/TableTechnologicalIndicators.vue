@@ -89,7 +89,29 @@ export default {
     },
 
     tableData() {
-      return [
+      let gtms = Object.keys(this.gtms)
+
+      let gtmsAmount = gtms.map(gtmId => {
+        return {
+          title: this.gtms[gtmId].name,
+          dimension: this.trans('economic_reference.wells_count_short'),
+          values: this.filteredData.map(item => this.gtms[gtmId].amount[item.oil_price] || 0)
+        }
+      })
+
+      let gtmsOil = gtms.map(gtmId => {
+        return {
+          title: this.gtms[gtmId].name,
+          dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
+          values: this.filteredData.map(item => {
+            let oil = this.gtms[gtmId].oil_total[item.oil_price] || 0
+
+            return (+oil / 1000).toFixed(2)
+          })
+        }
+      })
+
+      let data = [
         {
           title: this.trans('economic_reference.oil_production'),
           dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
@@ -102,105 +124,117 @@ export default {
           dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
           values: this.filteredData.map(item => (+item.gtm_oil / 1000).toFixed(2))
         },
-        {
-          title: 'в т.ч. от ВНС',
-          dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
-          values: this.filteredData.map(item => '')
-        },
-        {
-          title: 'в т.ч. от ГТМ',
-          dimension: `${this.trans('economic_reference.thousand_tons')}/${this.trans('economic_reference.year')}`,
-          values: this.filteredData.map(item => '')
-        },
-        {
-          title: this.trans('economic_reference.liquid_production'),
-          dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.cubic_meter_per_year')}`,
-          values: this.filteredData.map(item =>
-              (+item.liquid.original_value_optimized / 1000).toFixed(2)
-          )
-        },
-        {
-          title: this.trans('economic_reference.injection_volume'),
-          dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.cubic_meter_per_year')}`,
-          values: this.filteredData.map(item => '')
-        },
-        {
-          title: this.trans('economic_reference.active_well_stock'),
-          dimension: this.trans('economic_reference.wells_count_short'),
-          values: this.filteredData.map(item => item.uwi_count.original_value_optimized)
-        },
-        {
-          title: this.trans('economic_reference.shutdown_unprofitable_wells'),
-          dimension: this.trans('economic_reference.wells_count_short'),
-          values: this.filteredData.map(item => {
-            let cat1 = +item.uwi_count_profitless_cat_1.original_value_optimized
+      ]
 
-            let cat2 = +item.uwi_count_profitless_cat_2.original_value_optimized
+      return [
+        ...data,
+        ...gtmsOil,
+        ...[
+          {
+            title: this.trans('economic_reference.liquid_production'),
+            dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.cubic_meter_per_year')}`,
+            values: this.filteredData.map(item =>
+                (+item.liquid.original_value_optimized / 1000).toFixed(2)
+            )
+          },
+          {
+            title: this.trans('economic_reference.injection_volume'),
+            dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.cubic_meter_per_year')}`,
+            values: this.filteredData.map(item => '')
+          },
+          {
+            title: this.trans('economic_reference.active_well_stock'),
+            dimension: this.trans('economic_reference.wells_count_short'),
+            values: this.filteredData.map(item => item.uwi_count.original_value_optimized)
+          },
+          {
+            title: this.trans('economic_reference.shutdown_unprofitable_wells'),
+            dimension: this.trans('economic_reference.wells_count_short'),
+            values: this.filteredData.map(item => {
+              let cat1 = +item.uwi_count_profitless_cat_1.original_value_optimized
 
-            return cat1 + cat2
-          })
-        },
-        {
-          title: this.trans('economic_reference.loss_production_due_to_shutdown'),
-          dimension: this.trans('economic_reference.thousand_tons'),
-          values: this.filteredData.map(item => {
-            let cat1 = +item.oil_profitless_cat_1.original_value_optimized
+              let cat2 = +item.uwi_count_profitless_cat_2.original_value_optimized
 
-            let cat2 = +item.oil_profitless_cat_2.original_value_optimized
+              return cat1 + cat2
+            })
+          },
+          {
+            title: this.trans('economic_reference.loss_production_due_to_shutdown'),
+            dimension: this.trans('economic_reference.thousand_tons'),
+            values: this.filteredData.map(item => {
+              let cat1 = +item.oil_profitless_cat_1.original_value_optimized
 
-            return ((cat1 + cat2) / 1000).toFixed(2)
-          })
-        },
-        {
-          title: this.trans('economic_reference.count_prs'),
-          dimension: `${this.trans('economic_reference.rem_short')}/${this.trans('economic_reference.year')}`,
-          values: this.filteredData.map(item => +item.prs.original_value_optimized)
-        },
-        {
-          title: 'Количество бригад ПРС',
-          dimension: '',
-          values: this.filteredData.map(item => '')
-        },
-        {
-          title: 'Количество бригад КРС',
-          dimension: `${this.trans('economic_reference.rem_short')}/${this.trans('economic_reference.year')}`,
-          values: this.filteredData.map(item => '')
-        },
-        {
-          title: 'Количество ГТМ по видам',
-          dimension: this.trans('economic_reference.wells_count_short'),
-          values: this.filteredData.map(item => {
-            let gtmsCount = 0
+              let cat2 = +item.oil_profitless_cat_2.original_value_optimized
 
-            for (const [month, gtms] of Object.entries(JSON.parse(item.gtms))) {
-              gtms.forEach(gtm => gtmsCount += (+gtm.amount))
+              return ((cat1 + cat2) / 1000).toFixed(2)
+            })
+          },
+          {
+            title: this.trans('economic_reference.count_prs'),
+            dimension: `${this.trans('economic_reference.rem_short')}/${this.trans('economic_reference.year')}`,
+            values: this.filteredData.map(item => +item.prs.original_value_optimized)
+          },
+          {
+            title: 'Количество бригад ПРС',
+            dimension: '',
+            values: this.filteredData.map(item => '')
+          },
+          {
+            title: 'Количество бригад КРС',
+            dimension: `${this.trans('economic_reference.rem_short')}/${this.trans('economic_reference.year')}`,
+            values: this.filteredData.map(item => '')
+          },
+          {
+            title: 'Количество ГТМ по видам',
+            dimension: this.trans('economic_reference.wells_count_short'),
+            values: this.filteredData.map(item => {
+              let gtmsCount = 0
+
+              for (const [month, gtms] of Object.entries(JSON.parse(item.gtms))) {
+                gtms.forEach(gtm => gtmsCount += (+gtm.amount))
+              }
+
+              return gtmsCount
+            }),
+            bold: true
+          },
+        ],
+        ...gtmsAmount
+      ]
+    },
+
+    gtms() {
+      let data = {}
+
+      this.filteredData.forEach(item => {
+        for (const [month, gtms] of Object.entries(JSON.parse(item.gtms))) {
+          gtms.forEach(gtm => {
+            let name = `GTM_${gtm.id}`
+
+            if (!data.hasOwnProperty(gtm.id)) {
+              data[gtm.id] = {
+                name: name,
+                amount: {},
+                oil_total: {}
+              }
             }
 
-            return gtmsCount
-          }),
-          bold: true
-        },
-        {
-          title: 'ВНС+ВНС с ГРП',
-          dimension: this.trans('economic_reference.wells_count_short'),
-          values: this.filteredData.map(item => '')
-        },
-        {
-          title: 'РИР',
-          dimension: this.trans('economic_reference.wells_count_short'),
-          values: this.filteredData.map(item => '')
-        },
-        {
-          title: 'Углубление',
-          dimension: this.trans('economic_reference.wells_count_short'),
-          values: this.filteredData.map(item => '')
-        },
-        {
-          title: 'Ввод из бездействия',
-          dimension: this.trans('economic_reference.wells_count_short'),
-          values: this.filteredData.map(item => '')
+            if (!data[gtm.id].amount.hasOwnProperty(item.oil_price)) {
+              data[gtm.id].amount[item.oil_price] = 0
+            }
+
+            if (!data[gtm.id].oil_total.hasOwnProperty(item.oil_price)) {
+              data[gtm.id].oil_total[item.oil_price] = 0
+            }
+
+            data[gtm.id].amount[item.oil_price] += gtm.amount
+
+            data[gtm.id].oil_total[item.oil_price] += gtm.oil_total
+          })
         }
-      ]
+      })
+
+      return data
     },
   },
 }
