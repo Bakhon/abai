@@ -20,7 +20,9 @@ export default new Vuex.Store({
             'pgno',
             'plastFluids',
             'techMode',
-            'tr'
+            'tr',
+            'digitalDrilling',
+            'pgno'
         ]
     })],
 });

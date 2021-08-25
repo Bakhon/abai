@@ -97,7 +97,7 @@ export default {
             return updatedData;
         },
 
-        switchWidget(widgetName) {
+        async switchWidget(widgetName) {
             this.SET_LOADING(true);
             _.forEach(this.tableMapping, function (item) {
                 _.set(item, 'class', 'hide-company-list');
@@ -108,7 +108,12 @@ export default {
             this.updateChemistryWidget();
             this.updateWellsWorkoverWidget();
             this.updateDrillingWidget();
-            this.updateProductionFondWidget();
+            if (widgetName === 'productionWells') {
+                await this.updateProductionFondWidget();
+            }
+            if (widgetName === 'injectionWells') {
+                await this.updateInjectionFondWidget();
+            }
             this.SET_LOADING(false);
         },
 

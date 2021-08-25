@@ -3,7 +3,7 @@ Route::group(
     ['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()],
     function () {
         Route::group(
-            ['prefix' => 'module_economy'],
+            ['middleware' => 'auth','prefix' => 'module_economy'],
             function () {
                 Route::get('/', 'EconomyKenzhe\MainController@index');
                 Route::get('/company', 'EconomyKenzhe\MainController@company')->name('company');
