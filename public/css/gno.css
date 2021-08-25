@@ -453,6 +453,11 @@ span.open, span.closer {
     margin-left: 175px;
     margin-top: 5px;
 }
+.download-button-excel-gno {
+    position: absolute;
+    margin-left: 175px;
+    margin-top: -40px;
+}
 
 .potential-analysis-button {
     margin-top: 10px;
@@ -3091,8 +3096,8 @@ input.radio-q-liq {
 
 .measurements-shgn-1 {
     position: absolute;
-    right: 505px;
-    top: 5px;
+    right: 490px;
+    top: 6px;
 }
 
 .measurements-shgn-2 {

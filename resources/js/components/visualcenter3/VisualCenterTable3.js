@@ -763,7 +763,6 @@ export default {
         this.updateDrillingWidget();
         await this.updateProductionFondWidget();
         await this.updateInjectionFondWidget();
-        this.isSummaryShouldBeCalculated = false;
     },   
     watch: {
         bigTable: function () {

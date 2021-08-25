@@ -163,7 +163,6 @@ export default {
         this.dls.push(value['dls'])
         this.dlsColor.push(value['dls_color'])
       }
-      console.log(this.hPump)
       var indexHpump = this.closestVal(this.hPump, this.zChart)
       var pointZ = this.zChart[indexHpump]
       var pointX = this.xChart[indexHpump]

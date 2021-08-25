@@ -20,14 +20,16 @@ export const pgnoActions = {
         commit("SET_LINES", payload.linesAnalysis)
         commit("SET_POINTS", payload.pointsAnalysis)
     },
-
+    setKpodSettings({ commit }, payload){
+        commit("SET_KPOD_SETTINGS", payload)
+    },
     setEditing({ commit }, payload){
         commit("SET_EDITING", payload)
     },
     setIntervals({ commit }, payload){
         commit("SET_INTERVALS", payload)
     },
-    async setDefault({ commit }) {
+    async setDefault({ commit }, payload) {
         commit("CLEAR", {})
         commit("SET_POST_RESPONSE_DATA", {})
         commit("SET_WELL", {})
@@ -53,13 +55,14 @@ export const pgnoActions = {
             nearDist: 1000,
             hasGrp: false,
         })
-        commit("UPDATE_SHGN_SETTINGS", {
+        if (payload === "setWell") {
+            commit("UPDATE_SHGN_SETTINGS", {
                 spmMin: 3,
                 spmMax: 8,
                 strokeLenMin: 2.5,
                 strokeLenMax: 3,
                 kpodMin: 0.6,
-                pintakeMin: 30,
+                pintakeMin: 20,
                 gasMax: 10,
                 inclStep: 10,
                 groupPosad: 2,
@@ -70,10 +73,12 @@ export const pgnoActions = {
                 rodsTypes: ["19", "22"],
                 komponovka: ["hvostovik"],
                 stupColumns: "2",
-                steelMark: ["С (API)", "D (API)", "15Х2ГМФ-D-sup"],
+                steelMark: ["D (API)", "15Х2ГМФ-D-sup"],
                 kPodMode: true,
                 kPodCalced: null,
             })
+        }
+        
         return
     },
     async getWell({ commit }, payload) {

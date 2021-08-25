@@ -19,7 +19,7 @@
       </ul>
 
     <div v-if="currentTab == 1">
-        <shgn @on-submit-params="onPushParams()" :qLInput="qLInput" :strokeLenDev="strokeLenDev" :spm="spm" :pumpType="pumpType"></shgn>
+        <shgn @on-submit-params="onPushParams()" :calcKpodTrigger="calcKpodTrigger"></shgn>
     </div>
 
     <div v-if="currentTab == 2">
@@ -49,10 +49,7 @@ import Develop from './components/Develop.vue'
 import Fon from './components/Fon.vue'
 export default {
     components: { Shgn, Ecn, Fon, Develop, Economic },
-    props: {"qLInput": Number,
-            "strokeLenDev": Number, 
-            "spm": Number,
-            "pumpType": Number},
+    props: {"calcKpodTrigger": Boolean},
     data: function() {
         return {
             currentTab: 1,
