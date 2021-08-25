@@ -128,7 +128,6 @@ export default {
         this.trans('economic_reference.table_porcupine'),
         this.trans('economic_reference.technological_indicators'),
         this.trans('economic_reference.palette'),
-        this.trans('economic_reference.table_chess'),
       ]
     }
   },
