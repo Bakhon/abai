@@ -38,4 +38,55 @@ class Kpc extends PlainForm
 
         return $errors;
     }
+
+
+    public function getPreviousStatus(int $wellId, array $values): array
+    {
+        if (empty($values['dbeg'])) {
+            return [];
+        }
+
+        $result = DB::connection('tbd')
+            ->table('prod.well_workover as wb')
+            ->select('b.name_ru as status')
+            ->where('wb.dbeg', '<=', Carbon::parse($values['dbeg'])->timezone('Asia/Almaty')->endOfDay())
+            ->where('wb.well', $wellId)
+            ->leftJoin('dict.well_status_type as b', 'b.id', 'wb.status')
+            ->orderBy('wb.dbeg', 'desc')
+            ->limit(1)
+            ->first();
+        
+        if (empty($result)) {
+            return [];
+        }
+
+        return [
+            'status' => $result->status
+        ];
+    }
+    
+    public function getPreviousCategory(int $wellId, array $values): array
+    {
+        if (empty($values['dbeg'])) {
+            return [];
+        }
+
+        $result = DB::connection('tbd')
+            ->table('prod.well_workover as wb')
+            ->select('b.name_ru as category')
+            ->where('wb.dbeg', '<=', Carbon::parse($values['dbeg'])->timezone('Asia/Almaty')->endOfDay())
+            ->where('wb.well', $wellId)
+            ->leftJoin('dict.well_category_type as b', 'b.id', 'wb.category')
+            ->orderBy('wb.dbeg', 'desc')
+            ->limit(1)
+            ->first();
+        
+        if (empty($result)) {
+            return [];
+        }
+
+        return [
+            'status' => $result->category
+        ];
+    }
 }

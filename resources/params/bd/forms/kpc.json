@@ -200,7 +200,7 @@
               "is_editable": true
             },
             {
-              "code": "no_slaughter_reason",
+              "code": "no_btm_reason",
               "type": "dict",
               "title": "no_slaughter_reason",
               "validation": "exists:tbd.dict.reason,id",
@@ -233,7 +233,7 @@
             {
               "code": "status",
               "table": "prod.well_status",
-              "type":"text",
+              "type":"calc",
               "title": "status_before_selected_date",
               "validation": "exists:tbd.dict.well_status_type,id",
               "is_editable": false
@@ -241,7 +241,7 @@
             {
               "code": "category",
               "table": "prod.well_category",
-              "type":"text",
+              "type":"calc",
               "title": "well_previous_category",
               "validation": "exists:tbd.dict.well_category_type,id",
               "is_editable": false

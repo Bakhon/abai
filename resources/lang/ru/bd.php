@@ -103,7 +103,7 @@ return [
             'used_run_down_nkt' => 'Кол-во спущенных НКТ, б/у',
             'actual_bottomhole_m' => 'Фактический забой, м',
             'no_slaughter' => 'Забой отсутствует',
-            'no_slaughter_reason' => 'Причина отсутсивия забоя',
+            'no_slaughter_reason' => 'Причина отсутствия забоя',
             'artificial_slaughter_m' => 'Искусственный забой, м',
             'machine_technical_condition' => 'Техническое состояние скважин',
             'not_change_technical_condition' => 'Не менять техническое состояние',
