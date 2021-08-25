@@ -175,17 +175,17 @@ export default {
             values: this.filteredData.map(item => +item.prs.original_value_optimized)
           },
           {
-            title: 'Количество бригад ПРС',
+            title: this.trans('economic_reference.number_prs_brigades'),
             dimension: '',
             values: this.filteredData.map(item => '')
           },
           {
-            title: 'Количество бригад КРС',
+            title: this.trans('economic_reference.number_krs_brigades'),
             dimension: `${this.trans('economic_reference.rem_short')}/${this.trans('economic_reference.year')}`,
             values: this.filteredData.map(item => '')
           },
           {
-            title: 'Количество ГТМ по видам',
+            title: this.trans('economic_reference.number_gtms_by_type'),
             dimension: this.trans('economic_reference.wells_count_short'),
             values: this.filteredData.map(item => {
               let gtmsCount = 0
@@ -225,7 +225,7 @@ export default {
 
             data[gtm.id].amount[item.oil_price] += gtm.amount
 
-            data[gtm.id].oil_total[item.oil_price] += gtm.oil_total
+            data[gtm.id].oil_total[item.oil_price] += gtm.oil_total * gtm.amount
           })
         }
       })
