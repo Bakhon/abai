@@ -47,7 +47,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('calculate-gu-corrosion:cron')
             ->dailyAt('06:00')
             ->timezone('Asia/Almaty');
-        $schedule->command('finalize-emergency:cron')->dailyAt('15:00')->timezone('Asia/Almaty');
+        $schedule->command('finalize-emergency:cron')->dailyAt('12:00')->timezone('Asia/Almaty');
         $schedule->command('finalize-emergency:cron')->dailyAt('21:00')->timezone('Asia/Almaty');
     }
 

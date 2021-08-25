@@ -2052,20 +2052,20 @@
               </div>
               <div class="container-fluid">
                 <div class="row p-0 emergency-table__header">
-                  <span class="col-2 p-2 pl-5">{{ trans("visualcenter.emergencyDate") }}</span>
-                  <span class="col-2 p-2 pl-5">{{ trans("visualcenter.dzo") }}</span>
-                  <span class="col-6 p-2 pl-5">{{ trans("visualcenter.emergency") }}</span>
-                  <span class="col-2 p-2 pl-3">{{ trans("visualcenter.resolvingDate") }}</span>
+                  <span class="col-3 p-2">{{ trans("visualcenter.emergencyDate") }}</span>
+                  <span class="col-3 p-2">{{ trans("visualcenter.dzo") }}</span>
+                  <span class="col-3 p-2">{{ trans("visualcenter.emergency") }}</span>
+                  <span class="col-3 p-2">{{ trans("visualcenter.resolvingDate") }}</span>
                 </div>
                 <div
                         class="row emergency-view"
                         v-for="(item, index) in emergencyHistory"
                 >
                   <div class="col-12 d-flex emergency-title p-0">
-                    <span :class="[item.approved ? 'emergency-resolved' : '' ,'col-2']">{{item.date}}</span>
-                    <span class="col-2">{{item.description}}</span>
-                    <span class="col-6">{{item.title}}</span>
-                    <span class="col-2">{{item.approve_date}}</span>
+                    <span :class="[item.approved ? 'emergency-resolved' : '' ,'col-3']">{{item.date}}</span>
+                    <span class="col-3">{{item.description}}</span>
+                    <span class="col-3">{{item.title}}</span>
+                    <span class="col-3">{{item.approve_date}}</span>
                   </div>
                 </div>
               </div>
@@ -3263,6 +3263,7 @@
     font-size: 17px;
     span{
       border-right: 0.5px solid #272953;
+      text-align:center;
     }
   }
   .dropdown-splitter {
