@@ -69,9 +69,7 @@ const bdform = {
         dict: (state) => code => state.dicts[code],
         dictFlat: (state) => code => {
             let dict = {children: Object.values(state.dicts[code])}
-            console.log(dict)
             let flatten = (children, getChildren, level, parent) => {
-                console.log(parent)
                 return Array.prototype.concat.apply(
                     children.map(x => ({...x, level: level || 1, parent: parent || null})),
                     children.map(x => flatten(getChildren(x) || [], getChildren, (level || 1) + 1, x.id))
