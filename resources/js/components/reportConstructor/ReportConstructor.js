@@ -299,6 +299,7 @@ export default {
         updateSelectedNodes(node, level) {
             if (typeof this.selectedObjectsIndex[node.id] === 'undefined') {
                 node.level = level
+                node.isChecked = true;
                 this.selectedObjects.push(node)
                 this.selectedObjectsIndex[node.id] = this.selectedObjects.length-1;
             } else {

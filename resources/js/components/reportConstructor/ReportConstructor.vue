@@ -122,8 +122,8 @@
                       :isShowCheckboxes="true"
                       :onCheckboxClick="updateSelectedNodes"
                       :currentOption="currentOption"
-                      :markedNodes="markedNodes[currentStructureType]"
                       :isSelectUntilWells="isSelectUntilWells"
+                      :selectedObjects="selectedObjects"
                   >
                   </report-constructor-item-select-tree>
                 </template>

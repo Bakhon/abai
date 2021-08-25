@@ -15,11 +15,10 @@
             :onCheckboxClick="onCheckboxClick"
             :level="level+1"
             :nodeClickOnArrow="true"
-            :markedNodes="markedNodes[currentOption.name]"
-            :structureType="structureType"
             :renderComponent="renderComponent"
             :updateThisComponent="updateThisComponent"
             :isSelectUntilWells="isSelectUntilWells"
+            :selectedObjects="selectedObjects"
         ></tree-view>
       </div>
     </div>
@@ -47,6 +46,7 @@ export default {
     markedNodes: Object,
     isSelectUntilWells: Boolean,
     currentOption: Object,
+    selectedObjects: Array,
   },
   mounted() {
     this.init();
@@ -59,9 +59,6 @@ export default {
   methods: {
     init() {
       this.getInitialItems().then(items => this.items = items);
-      if(this.currentOption && !this.markedNodes[this.currentOption.name]) {
-        this.markedNodes[this.currentOption.name] = {};
-      }
     },
     getInitialItems() {
       this.isLoading = true
