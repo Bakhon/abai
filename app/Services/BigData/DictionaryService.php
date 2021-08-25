@@ -321,14 +321,17 @@ class DictionaryService
                     $dict = $this->getGeoHorizonDict();
                     break; 
                 case 'reason_ref':
-                    $dict = $this->getReasonTypeRefDict();
+                    $dict = $this->getReasonTypeDict('REF');
                     break; 
                 case 'reason_rst':
-                    $dict = $this->getReasonTypeRstDict();
+                    $dict = $this->getReasonTypeDict('RST');
                     break;        
                 case 'reason_type_rtr':
-                    $dict = $this->getReasonTypeRtrDict();
+                    $dict = $this->getReasonTypeDict('RTR');
                     break;
+                case 'reason_rls':
+                    $dict = $this->getReasonTypeDict('RLS');
+                    break; 
                 default:
                     throw new DictionaryNotFound();
             }
@@ -505,51 +508,13 @@ class DictionaryService
 
         return $items;
     }     
-    private function getReasonTypeRefDict()
-    {
-        $items = DB::connection('tbd')
-        ->table('dict.reason as r')
-        ->select('r.id', 'r.name_ru as name')
-        ->where('rt.code', 'REF')
-        ->distinct()
-        ->orderBy('name', 'asc')
-        ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
-        ->get()
-        ->map(
-            function ($item) {
-                return (array)$item;
-            }
-        )
-            ->toArray();
-
-        return $items;
-    }
     
-    private function getReasonTypeRstDict()
+    private function getReasonTypeDict($type)
     {
         $items = DB::connection('tbd')
             ->table('dict.reason as r')
             ->select('r.id', 'r.name_ru as name')
-            ->where('rt.code', 'RST')
-            ->distinct()
-            ->orderBy('name', 'asc')
-            ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
-            ->get()
-            ->map(
-                function ($item) {
-                    return (array)$item;
-                }
-            )
-                ->toArray();
-
-        return $items;
-    }     
-    private function getReasonTypeRtrDict()
-    {
-        $items = DB::connection('tbd')
-            ->table('dict.reason as r')
-            ->select('r.id', 'r.name_ru as name')
-            ->where('rt.code', 'RTR')
+            ->where('rt.code', $type)
             ->distinct()
             ->orderBy('name', 'asc')
             ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
