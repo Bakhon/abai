@@ -31,6 +31,7 @@ import injectionFondDetails from './widgets/injectionFondDetails';
 import emergency from './widgets/emergency';
 import {globalloadingMutations} from '@store/helpers';
 import Vue from "vue";
+import backendProductionParams from './productionParams/index';
 
 Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
 Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
@@ -227,6 +228,8 @@ export default {
         async processProductionData(metricName,chartSecondaryName) {
             this.SET_LOADING(true);
             let productionData = await this.getProductionDataByPeriod();
+            console.log('productionData')
+            console.log(productionData);
             if (productionData && Object.keys(productionData).length > 0) {
                 if (this.isFirstLoading) {
                     await this.calculateInitialCategories(productionData,metricName,chartSecondaryName);
@@ -706,63 +709,65 @@ export default {
         wellsDetails,
         productionFondDetails,
         injectionFondDetails,
-        emergency
+        emergency,
+        backendProductionParams
     ],
     async mounted() {
-        this.SET_LOADING(true);
-        this.getOpecDataForYear();
-
-        if (window.location.host === 'dashboard') {
-            this.range = {
-                start: moment().startOf('day').subtract(1, "days").format(),
-                end: moment().endOf('day').subtract(1, "days").format(),
-                formatInput: true,
-            };
-        } else {
-            this.range = {
-                start: moment().startOf('day').subtract(1, "days").format(),
-                end: moment().endOf('day').subtract(1, "days").format(),
-                formatInput: true,
-            };
-        }
-        localStorage.setItem("changeButton", "Yes");
-        var nowDate = new Date().toLocaleDateString();
-        this.timeSelect = nowDate;
-        this.timestampToday = new Date(this.range.start).getTime();
-        this.timestampEnd = new Date(this.range.end).getTime();
-
-        this.selectedYear = this.year;
-        this.updateDzoMenu();
-        localStorage.setItem("selectedPeriod", "undefined");
-        this.getCurrencyNow(this.timeSelect);
-        this.updatePrices(this.period);
-        this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
-        this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
-        this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
-        this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
-        this.chemistryDetails = await this.getChemistryByMonth();
-        this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
-        this.drillingDetails = await this.getDrillingByMonth();
-        this.emergencyHistory = await this.getEmergencyByMonth();
-
-        this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
-        this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
-        this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-        this.sortDzoList();
+        // this.SET_LOADING(true);
+        //
+        // this.SET_LOADING(false);
+        // this.getOpecDataForYear();
+        //
+        // if (window.location.host === 'dashboard') {
+        //     this.range = {
+        //         start: moment().startOf('day').subtract(1, "days").format(),
+        //         end: moment().endOf('day').subtract(1, "days").format(),
+        //         formatInput: true,
+        //     };
+        // } else {
+        //     this.range = {
+        //         start: moment().startOf('day').subtract(1, "days").format(),
+        //         end: moment().endOf('day').subtract(1, "days").format(),
+        //         formatInput: true,
+        //     };
+        // }
+        // localStorage.setItem("changeButton", "Yes");
+        // this.timeSelect = new Date().toLocaleDateString();
+        // this.timestampToday = new Date(this.range.start).getTime();
+        // this.timestampEnd = new Date(this.range.end).getTime();
+        //
+        // this.selectedYear = this.year;
+        // this.updateDzoMenu();
+        // localStorage.setItem("selectedPeriod", "undefined");
+        // this.getCurrencyNow(this.timeSelect);
+        // this.updatePrices(this.period);
+        // this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
+        // this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
+        // this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
+        // this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
+        // this.chemistryDetails = await this.getChemistryByMonth();
+        // this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
+        // this.drillingDetails = await this.getDrillingByMonth();
+        // this.emergencyHistory = await this.getEmergencyByMonth();
+        //
+        // this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
+        // this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
+        // this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
+        // this.sortDzoList();
         this.changeDate();
-        this.changeMenu2();
-
-        this.buttonDailyTab = "button-tab-highlighted";
-        this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
-        this.getDzoYearlyPlan();
-        this.selectedDzoCompanies = this.getAllDzoCompanies();
-        this.oneDzoSelected = this.getDzoTicker();
-        this.isOneDzoSelected=this.oneDzoSelected.length > 0;
-        this.updateChemistryWidget();
-        this.updateWellsWorkoverWidget();
-        this.updateDrillingWidget();
-        await this.updateProductionFondWidget();
-        await this.updateInjectionFondWidget();
+        // this.changeMenu2();
+        //
+        // this.buttonDailyTab = "button-tab-highlighted";
+        // this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
+        // this.getDzoYearlyPlan();
+        // this.selectedDzoCompanies = this.getAllDzoCompanies();
+        // this.oneDzoSelected = this.getDzoTicker();
+        // this.isOneDzoSelected=this.oneDzoSelected.length > 0;
+        // this.updateChemistryWidget();
+        // this.updateWellsWorkoverWidget();
+        // this.updateDrillingWidget();
+        // await this.updateProductionFondWidget();
+        // await this.updateInjectionFondWidget();
     },   
     watch: {
         bigTable: function () {
