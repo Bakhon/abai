@@ -115,16 +115,16 @@ export default {
             return yx(y, x);
         },
         onMapClick() {
-            this.$modal.show('modalAtlas');
+            this.$bvModal.show('modalAtlas');
         },
         closeAtlasModal() {
-            this.$modal.hide('modalAtlas');
+            this.$bvModal.hide('modalAtlas');
         },
         openSettingModal() {
-            this.$modal.show('modalSetting');
+            this.$bvModal.show('modalSetting');
         },
         closeSettingModal() {
-            this.$modal.hide('modalSetting');
+            this.$bvModal.hide('modalSetting');
         },
         menuClick(data) {
             const path = window.location.pathname.slice(3);

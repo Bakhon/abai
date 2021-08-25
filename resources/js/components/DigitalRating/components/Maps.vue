@@ -15,27 +15,30 @@
         />
       </div>
     </div>
-    <modal
-      class="modal-bign-wrapper"
-      name="mapModal"
-      :draggable="false"
-      :width="1000"
-      :height="600"
-      :adaptive="false">
-      <div class="modal-bign-container">
-        <div class="modal-bign-header justify-content-end">
+    <b-modal
+      size="xl"
+      header-bg-variant="main1"
+      body-bg-variant="main1"
+      header-text-variant="light"
+      footer-bg-variant="main1"
+      centered
+      id="mapModal"
+      hide-footer
+    >
+      <template #modal-header="{close}">
+        <div class="d-flex justify-content-end w-100">
           <button type="button" class="modal-bign-button" @click="close">
             {{ trans('pgno.zakrit') }}
           </button>
         </div>
-        <div class="maps-development__item maps-development__item-full">
-          <img
-            class="maps-development__item-img"
-            :src="`/img/digital-rating/${mapFull}.svg`" alt=""
-          />
-        </div>
+      </template>
+      <div class="maps-development__item maps-development__item-full">
+        <img
+          class="maps-development__item-img"
+          :src="`/img/digital-rating/${mapFull}.svg`" alt=""
+        />
       </div>
-    </modal>
+    </b-modal>
   </div>
 </template>
 
@@ -51,11 +54,11 @@ export default {
   },
   methods: {
     handleClickMap(map) {
-      this.$modal.show('mapModal');
+      this.$bvModal.show('mapModal');
       this.mapFull = map;
     },
     close() {
-      this.$modal.hide('mapModal');
+      this.$bvModal.hide('mapModal');
     }
   }
 }
