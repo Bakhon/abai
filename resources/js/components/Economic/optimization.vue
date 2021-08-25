@@ -1,7 +1,5 @@
 <template>
   <div class="position-relative">
-    <cat-loader v-show="loading"/>
-
     <div class="row">
       <div class="col-9 pr-2">
         <div class="row text-white text-wrap flex-nowrap mb-10px">
@@ -326,7 +324,8 @@
 <script>
 const fileDownload = require("js-file-download");
 
-import CatLoader from '@ui-kit/CatLoader'
+import {globalloadingMutations, globalloadingState} from '@store/helpers';
+
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
 import EconomicTitle from "./components/EconomicTitle";
@@ -411,7 +410,7 @@ optimizedColumns.forEach(column => {
 export default {
   name: "economic-optimization",
   components: {
-    CatLoader,
+
     Divider,
     EconomicCol,
     EconomicTitle,
@@ -438,10 +437,11 @@ export default {
       }
     },
     res: economicRes,
-    loading: true,
     isVisibleWellChanges: false
   }),
   computed: {
+    ...globalloadingState(['loading']),
+
     calculatedHeaders() {
       return [
         {
@@ -710,8 +710,10 @@ export default {
     }
   },
   methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
     async getData() {
-      this.loading = true
+      this.SET_LOADING(true);
 
       try {
         const {data} = await this.axios.get(this.localeUrl('/economic/optimization/get-data'), {params: this.form})
@@ -723,7 +725,7 @@ export default {
         console.log(e)
       }
 
-      this.loading = false
+      this.SET_LOADING(false);
     },
 
     selectScenario() {

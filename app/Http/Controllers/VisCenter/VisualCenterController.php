@@ -33,7 +33,8 @@ class VisualCenterController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:visualcenter view main')->only('visualcenter3', 'visualcenter4', 'visualcenter5', 'visualcenter6', 'visualcenter7');
+        $this->middleware('can:visualcenter view main')->only('visualcenter4', 'visualcenter5', 'visualcenter6', 'visualcenter7');
+        $this->middleware('can:visualcenter one_dzo main')->only('visualcenter3','excelform');
     }
 
     /**
@@ -451,14 +452,22 @@ class VisualCenterController extends Controller
     }
     public function getEmergencyHistory(Request $request)
     {
-        return EmergencyHistory::query()
-            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description')
-            ->whereMonth('date', $request->currentMonth)
+        $emergencySituations = EmergencyHistory::query()
+            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description','approved',DB::raw('DATE_FORMAT(approve_date,"%d.%m.%Y %H:%i:%s") as approve_date'))
             ->where('type',1)
-            ->orderBy('date', 'desc')
-            ->take(10)
+            ->orderBy('id', 'desc')
+            ->take(10);
+
+        if (!empty($request->dzoName)){
+        return $emergencySituations->where('description','like', "%".$request->dzoName."%")
+            ->get()
+            ->toArray();              
+        } 
+
+        return $emergencySituations
             ->get()
             ->toArray();
+                
     }
     public function getHistoricalProductionByDzo(Request $request)
     {
@@ -536,9 +545,4 @@ class VisualCenterController extends Controller
     {
         return view('visualcenter.daily_approve');
     }
-    public function kpdTree()
-    {
-        return view('visualcenter.kpd_tree');
-    }
 }
-

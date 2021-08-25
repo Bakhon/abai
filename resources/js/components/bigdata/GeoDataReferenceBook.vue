@@ -1,6 +1,5 @@
 <template>
   <div class="container container-main">
-    <cat-loader/>
     <template v-for="referenceBook in referenceBooks">
       <div class="row">
         <label class="section-text">Добавить данные в справочник: {{ referenceBook.description }}</label>

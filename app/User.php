@@ -68,6 +68,11 @@ class User extends Authenticatable
         return $this->belongsToMany(\App\Models\BigdataReport::class);
     }
 
+    public function reportTemplates()
+    {
+        return $this->belongsToMany(\App\Models\ReportTemplate::class);
+    }
+
     public function getOrganizations()
     {
         if($this->org_id) {
@@ -82,6 +87,23 @@ class User extends Authenticatable
     }
 
     public function getUserOrganizations(StructureService $structureService): array
+    {
+        $orgs = [];
+        if($this->org_structure) {
+            $orgIds = array_map(function ($item) {
+                return substr($item, strpos($item, ":") + 1);
+            }, $this->org_structure);
+            $orgs = \App\Models\BigData\Dictionaries\Org::query()
+                ->select(['id', 'name_ru as name'])
+                ->whereIn('id', $orgIds)
+                ->get()
+                ->toArray();
+        }
+
+        return $orgs;
+    }
+
+    public function getUserAllOrganizations(StructureService $structureService): array
     {
         if($this->org_structure) {
             $orgIds = array_map(function ($item) {

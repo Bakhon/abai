@@ -3,8 +3,8 @@
     class="modal-bign-wrapper"
     name="modalAtlas"
     :draggable="false"
-    :width="1200"
-    :height="800"
+    :width="1400"
+    :height="650"
     :adaptive="false"
     @before-open="beforeOpen">
     <div class="modal-bign-container">

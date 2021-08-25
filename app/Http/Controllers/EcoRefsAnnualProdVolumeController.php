@@ -17,7 +17,7 @@ class EcoRefsAnnualProdVolumeController extends Controller
     {
         $ecorefsannualprodvolume = EcoRefsAnnualProdVolume::latest()->with('scfa')->paginate(5);
 
-        return view('ecorefsannualprodvolume.index',compact('ecorefsannualprodvolume'))
+        return view('economy_kenzhe/ecorefsannualprodvolume.index',compact('ecorefsannualprodvolume'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
        //
     }
@@ -30,7 +30,7 @@ class EcoRefsAnnualProdVolumeController extends Controller
     public function create()
     {
         $sc_fa = EcoRefsScFa::get();
-        return view('ecorefsannualprodvolume.create',compact('sc_fa'));
+        return view('economy_kenzhe/ecorefsannualprodvolume.create',compact('sc_fa'));
     }
 
     /**
@@ -74,7 +74,7 @@ class EcoRefsAnnualProdVolumeController extends Controller
     {
         $row = EcoRefsAnnualProdVolume::find($id);
         $sc_fa = EcoRefsScFa::get();
-        return view('ecorefsannualprodvolume.edit',compact('row', 'sc_fa'));
+        return view('economy_kenzhe/ecorefsannualprodvolume.edit',compact('row', 'sc_fa'));
     }
 
     /**
