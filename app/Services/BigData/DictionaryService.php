@@ -18,6 +18,7 @@ use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
+use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
 use App\Models\BigData\Dictionaries\GeoRockType;
@@ -38,6 +39,8 @@ use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\ReasonEquipFail;
 use App\Models\BigData\Dictionaries\RepairWorkType;
+use App\Models\BigData\Dictionaries\ResearchMethod;
+use App\Models\BigData\Dictionaries\ResearchTarget;
 use App\Models\BigData\Dictionaries\SaturationType;
 use App\Models\BigData\Dictionaries\Tag;
 use App\Models\BigData\Dictionaries\Tech;
@@ -51,12 +54,6 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
-use App\Models\BigData\Dictionaries\ResearchMethod;
-use App\Models\BigData\Dictionaries\ResearchTarget;
-use App\Models\BigData\Dictionaries\GdisConclusion;
-use App\Models\BigData\Dictionaries\Mark;
-use App\Models\BigData\Dictionaries\ReasonEquipFail;
-use App\Models\BigData\Dictionaries\ChemicalReagentType;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -375,14 +372,14 @@ class DictionaryService
     {
         $dict = collect($this->getFlatten($this->get($dict)));
         $value = $dict->where('id', $id)->first();
+        if (empty($value)) {
+            return '';
+        }
+
         $path = [$value['label']];
-        while (true) {
-            if (isset($value['parent'])) {
-                $value = $dict->where('id', $value['parent'])->first();
-                $path[] = $value['label'];
-                continue;
-            }
-            break;
+        while (isset($value['parent'])) {
+            $value = $dict->where('id', $value['parent'])->first();
+            $path[] = $value['label'];
         }
         return implode(' / ', array_reverse($path));
     }
