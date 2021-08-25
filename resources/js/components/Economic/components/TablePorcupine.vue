@@ -156,11 +156,7 @@ export default {
 
       let result = []
 
-      colors.forEach(color => {
-        result.push(color)
-
-        result.push(color)
-      })
+      colors.forEach(color => result.push(color, color))
 
       return result
     },
