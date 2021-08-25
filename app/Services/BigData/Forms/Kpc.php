@@ -86,7 +86,7 @@ class Kpc extends PlainForm
         }
 
         return [
-            'status' => $result->category
+            'category' => $result->category
         ];
     }
 }
