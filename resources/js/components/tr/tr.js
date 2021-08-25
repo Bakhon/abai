@@ -11,8 +11,11 @@ import Multiselect from 'vue-multiselect';
 
 import Paginate from 'vuejs-paginate';
 import moment from 'moment';
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css'
 
 Vue.component('paginate', Paginate);
+Vue.component('v-select', vSelect)
 
 Vue.use(NotifyPlugin);
 export default {
@@ -111,8 +114,6 @@ export default {
     fieldFilters() {
       let filters = [];
       this.allWells.forEach((el) => {
-        // const el_horizon = this.getStringOrFirstItem(el, "horizon");
-        // const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
         if (
           filters.indexOf(el.field) === -1 &&
           (!this.wellStatusFilter ||
@@ -265,7 +266,7 @@ export default {
       lonelywell: [],
       render: 0,
       searchStringModel: "",
-      wellFilter: undefined,
+      wellFilter: [],
       isDeleted: false,
       isSaved: false,
       isDateNormal: true,
@@ -297,6 +298,7 @@ export default {
       editSearchLink: "techregime_edit_page/",
       isMaxDate: true,
       isActiveHorizonFilterr: false,
+      editedAddWells: [],
     };
   },
   methods: {
@@ -470,6 +472,7 @@ export default {
         this.$store.commit("tr/SET_PAGENUMBER", 1);
         this.isActiveHorizonFilter();
         this.chooseAxios();
+        this.isActiveHorizonFilter();
     },
     chooseAxios() {
         if (this.isDynamic) {
@@ -628,7 +631,7 @@ export default {
         this.isDeleted = false;
         this.isSaved = false;
         this.wellStatusFilter = undefined;
-        this.statusFilter = undefined;
+        this.statusFilter = "Не сохранено";
         this.typeWellFilter = undefined;
         this.wellFilter = undefined;
         this.fieldFilter = undefined;
@@ -652,6 +655,32 @@ export default {
       else{
         this.isShowAdd = this.isShowAdd;
       }
+    },
+    editAddWell(row, rowId) {
+      console.log(row.horizon);
+      var horizon = {"well":row.rus_wellname, "horizon":row.horizon}
+      this.axios
+            .post(
+                this.postApiUrl + "techregime/get_density_params_by_horizon/",
+                horizon, {
+                  row:row,
+                }
+            )
+            .then((response) => {
+              if (response.data) {
+                  this.lonelywell = [
+                      ...this.lonelywell.slice(0, rowId),
+                      response.data.data[0],
+                      ...this.lonelywell.slice(rowId + 1),
+                  ];
+                  this.editedAddWells = this.editedAddWells.filter(
+                      (item) => item.well !== response.data.data[0].well
+                  );
+                  this.editedAddWells = [...this.editedAddWells, response.data.data[0]];
+              } else {
+                  console.log("No data");
+              }
+          });
     },
     editable() {
         this.$store.commit("globalloading/SET_LOADING", true);
@@ -702,7 +731,6 @@ export default {
         this.isMaxDate = false;
         if (choosenSecDt[2] >= choosenDt[2] && choosenSecDt[1] >= choosenDt[1] && choosenSecDt[0] >= choosenDt[0] || choosenSecDt[0] > choosenDt[0]) {
             this.notification("Дата 2 должна быть меньше чем Дата 1");
-            // Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
         } else {
             this.$store.commit("globalloading/SET_LOADING", true);
             this.$store.commit("tr/SET_DYN_MONTH_END", mm);
@@ -811,10 +839,11 @@ export default {
     },
     isActiveHorizonFilter() {
         if (this.selectHorizon === null) {
-            return this.isActiveHorizonFilterr = false;
+             this.isActiveHorizonFilterr = false;
         } else {
-            return this.isActiveHorizonFilterr = true;
+             this.isActiveHorizonFilterr = true;
         }
+        return this.isActiveHorizonFilterr
 
     },
     isNoActiveHorizonFilter() {
@@ -851,7 +880,6 @@ export default {
     },
     saveadd() {
         this.notification(`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
-        // Vue.prototype.$notifySuccess(`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
         let output = {};
         this.$refs.editTable[0].children.forEach((el) => {
             output[el.children[0].dataset.key] = el.children[0].value;
@@ -859,7 +887,7 @@ export default {
         this.axios
             .post(
                 this.postApiUrl + "techregime/new_wells/add_well/",
-                output,
+                this.lonelywell,
             )
             .then((response) => {
                 this.wellAdd();
@@ -870,20 +898,15 @@ export default {
     // Удаление с модалки
     deleteWell() {
         this.notification(`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
-        // Vue.prototype.$notifyError(`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
         this.$store.commit("globalloading/SET_LOADING", true);
-        if (this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено") {
             this.axios
-                .get(
-                    this.postApiUrl + "techregime/new_wells/delete_well/" +
-                    this.lonelywell[0].well).then((res) => {
+                .post(
+                    this.postApiUrl + "techregime/new_wells/delete_well/",
+                    this.lonelywell).then((res) => {
                 console.log(res.data)
                 this.wellAdd();
                 this.reRender();
             })
-        } else {
-            return console.log("error")
-        }
     },
     // Поиск по скважине
     searchWell() {
