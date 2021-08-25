@@ -46,7 +46,6 @@ class EconomicNrsController extends Controller
         'sum_year_top_by_operating_profit' => '$builderSumYearTopByOperatingProfit',
         'oil_production' => '$builderOilProduction',
         'production_expenditures' => '$builderProductionExpenditures',
-        'uwi_per_month' => '$builderUwiPerMonth',
     ];
 
     const DOLLAR_RATES_URL = 'https://www.nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut/report';
