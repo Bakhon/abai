@@ -55,24 +55,6 @@
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
           class="bg-economic-chart"/>
-
-      <table-uwi-per-month
-          v-else-if="activeTab === 4"
-          :data="charts.uwiPerMonth"
-          property="NetBack_bf_pr_exp"
-          class="bg-economic-chart"/>
-
-      <table-uwi-per-month
-          v-else-if="activeTab === 5"
-          :data="charts.uwiPerMonth"
-          property="Overall_expenditures"
-          class="bg-economic-chart"/>
-
-      <table-uwi-per-month
-          v-else-if="activeTab === 6"
-          :data="charts.uwiPerMonth"
-          property="Operating_profit"
-          class="bg-economic-chart"/>
     </div>
   </div>
 </template>
@@ -83,8 +65,6 @@ import ChartWithProfitability from "./ChartWithProfitability";
 import ChartWithOilProduction from "./ChartWithOilProduction";
 import ChartWithOperatingProfitTop from "./ChartWithOperatingProfitTop";
 import ChartWithLiquidProduction from "./ChartWithLiquidProduction";
-import TableUwiPerMonth from "./TableUwiPerMonth";
-
 
 export default {
   name: "Charts",
@@ -94,7 +74,6 @@ export default {
     ChartWithOilProduction,
     ChartWithOperatingProfitTop,
     ChartWithLiquidProduction,
-    TableUwiPerMonth,
   },
   props: {
     charts: {
@@ -132,9 +111,6 @@ export default {
         this.trans('economic_reference.distribution_oil_production_by_profitability'),
         this.trans('economic_reference.rating_top_10_wells_by_profitability'),
         this.trans('economic_reference.distribution_liquid_production_by_profitability'),
-        this.trans('economic_reference.Revenue'),
-        this.trans('economic_reference.costs'),
-        this.trans('economic_reference.operating_profit'),
       ]
     },
 

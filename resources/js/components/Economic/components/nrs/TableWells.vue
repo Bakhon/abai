@@ -3,13 +3,22 @@
     <vue-table-dynamic
         ref="table"
         :params="tableParams"
-        class="height-fit-content height-unset"/>
+        class="height-fit-content height-unset">
+      <template
+          v-for="(date, index) in data.dates"
+          :slot="`column-${index+1}`"
+          slot-scope="{ props }">
+        <div :style="isColorful ? `color: ${props.cellData.color}` : ''">
+          {{ props.cellData.label }}
+        </div>
+      </template>
+    </vue-table-dynamic>
   </div>
 </template>
 
 <script>
 export default {
-  name: "TableUwiPerMonth",
+  name: "TableWells",
   props: {
     data: {
       required: true,
@@ -18,6 +27,10 @@ export default {
     property: {
       required: true,
       type: String
+    },
+    isColorful: {
+      required: false,
+      type: Boolean
     }
   },
   computed: {
@@ -40,23 +53,31 @@ export default {
         rowHeight: 50,
         columnWidth: this.tableHeaders.map((col, index) => ({
           column: index,
-          width: 80
+          width: index > 0 ? 90 : 100
         }))
       }
     },
 
     tableData() {
+      let dimension = this.trans('economic_reference.thousand')
+
       return this.uwis.map(uwi => {
         let data = [uwi]
 
         let well = this.data.uwis[uwi]
 
         this.data.dates.forEach(date => {
-          data.push(
-              well[this.property].hasOwnProperty(date)
-                  ? `${well[this.property][date][0]} ${well[this.property][date][1]}`
-                  : ''
-          )
+          let value = well[this.property].hasOwnProperty(date)
+              ? +well[this.property][date]
+              : ''
+
+          let label = value
+              ? `${(value / 1000).toFixed(1)} ${dimension}`
+              : value
+
+          let color = value && value > 0 ? '#13B062' : '#AB130E'
+
+          data.push({label: label, value: value, color: color})
         })
 
         return data
