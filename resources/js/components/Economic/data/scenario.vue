@@ -45,15 +45,14 @@
 import {globalloadingMutations} from '@store/helpers';
 import ScenarioForm from "../components/ScenarioForm";
 import DeleteButton from "../components/DeleteButton";
-import CatLoader from '@ui-kit/CatLoader';
 
 export default {
   name: "economic-data-scenario-component",
   components: {
 
     ScenarioForm,
-    DeleteButton,
-    CatLoader
+    DeleteButton
+
   },
   data: () => ({
     data: [],

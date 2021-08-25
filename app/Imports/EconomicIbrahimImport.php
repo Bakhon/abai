@@ -9,6 +9,7 @@ use App\Models\Refs\EcoRefsScFa;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReading
 {
@@ -72,7 +73,7 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
         return new EcoRefsCost([
             "sc_fa" => $this->scFaId,
             "company_id" => $companyId,
-            "date" => gmdate("Y-m-d", (($row[self::COLUMNS['date']]- 25569) * 86400)),
+            "date" => Date::excelToDateTimeObject($row[self::COLUMNS['date']]),
             "variable" => round($row[self::COLUMNS['variable']], 2),
             "variable_processing" => round($row[self::COLUMNS['variable_processing']], 2),
             "fix_noWRpayroll" => round($row[self::COLUMNS['fix_noWRpayroll']], 2),
