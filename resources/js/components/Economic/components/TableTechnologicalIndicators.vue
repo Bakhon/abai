@@ -212,11 +212,7 @@ export default {
             let name = `GTM_${gtm.id}`
 
             if (!data.hasOwnProperty(gtm.id)) {
-              data[gtm.id] = {
-                name: name,
-                amount: {},
-                oil_total: {}
-              }
+              data[gtm.id] = {name: name, amount: {}, oil_total: {}}
             }
 
             if (!data[gtm.id].amount.hasOwnProperty(item.oil_price)) {
