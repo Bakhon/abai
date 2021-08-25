@@ -62,7 +62,7 @@ export const pgnoActions = {
                 strokeLenMin: 2.5,
                 strokeLenMax: 3,
                 kpodMin: 0.6,
-                pintakeMin: 30,
+                pintakeMin: 20,
                 gasMax: 10,
                 inclStep: 10,
                 groupPosad: 2,
@@ -73,7 +73,7 @@ export const pgnoActions = {
                 rodsTypes: ["19", "22"],
                 komponovka: ["hvostovik"],
                 stupColumns: "2",
-                steelMark: ["С (API)", "D (API)", "15Х2ГМФ-D-sup"],
+                steelMark: ["D (API)", "15Х2ГМФ-D-sup"],
                 kPodMode: true,
                 kPodCalced: null,
             })

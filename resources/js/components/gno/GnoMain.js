@@ -319,7 +319,7 @@ export default {
       this.curveSettings.hDynInput = well.hDyn.toFixed(0);
       this.curveSettings.pAnnularInput = well.pAnnular.toFixed(0);
       this.curveSettings.pManomInput = well.pIntake.toFixed(0);
-      this.curveSettings.hPumpManomInput = well.hPumpSet.toFixed(0);
+      
       this.curveSettings.whpInput = well.whp.toFixed(0);
       this.curveSettings.expChoosen = well.expMeth;
       this.curveSettings.pBuff = well.whp.toFixed(0);
@@ -393,6 +393,7 @@ export default {
       }
       this.curveSettings.targetButton = "ql";
       this.curveSettings.nkt = this.well.tubId;
+      this.curveSettings.hPumpManomInput = this.well.hPumpSet.toFixed(0);
       this.skType = this.well.skType;
       this.horizon = this.well.horizon;
       if (this.well.wellError === "no_well_data") {
@@ -881,6 +882,6 @@ export default {
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
     });
-    this.setDefault("setWell");
+    // this.setDefault("setWell");
   },
 };
