@@ -362,17 +362,7 @@ export default {
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
         getTooltip:  ({object}) => {
           if (object) {
-            console.log('object', object);
-            if (object.well_id) {
-              console.log('object.well_id true', object.well_id);
-            }
-
-            if (object.last_omgngdu) {
-              console.log('object.last_omgngdu true', object.last_omgngdu);
-            }
-
             if (object.last_omgngdu && object.last_omgngdu.well_id) {
-              console.log('show wellToolTip');
               return {
                 html: this.getObjectTooltipHtml(object, 'wellToolTip')
               }
@@ -432,8 +422,6 @@ export default {
     getObjectTooltipHtml(object, type){
       this.objectHovered = object;
 
-      console.log('type', type)
-      console.log('this.$refs[type]', this.$refs[type]);
       return this.$refs[type].$el.outerHTML;
     },
     getPipeTooltipHtml(pipe, paramKey) {
