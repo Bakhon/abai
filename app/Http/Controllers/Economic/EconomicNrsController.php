@@ -141,15 +141,16 @@ class EconomicNrsController extends Controller
 
         $builderUwiPerMonth = $this
             ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::MONTH)
+            ->query(self::DATA_SOURCE, Granularity::DAY)
             ->interval($intervalMonths)
             ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
-                $extBuilder->timeFormat(self::GRANULARITY_MONTHLY_FORMAT);
+                $extBuilder->timeFormat(self::GRANULARITY_DAILY_FORMAT);
             })
             ->select("uwi")
             ->sum("Operating_profit")
             ->sum("Overall_expenditures")
-            ->sum("NetBack_bf_pr_exp");
+            ->sum("NetBack_bf_pr_exp")
+            ->where('org_id2','=', '5.000001017E9');
 
         $builderProductionExpenditures = $this
             ->druidClient
