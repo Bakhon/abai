@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\VisCenter\DataForKGM\Daily;
+namespace App\Models\VisCenter\InboundIntegration\KGM\Daily;
 
 use App\Models\TBDModel;
 
