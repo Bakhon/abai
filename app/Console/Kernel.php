@@ -48,6 +48,9 @@ class Kernel extends ConsoleKernel
             ->dailyAt('06:00')
             ->timezone('Asia/Almaty');
         $schedule->command('finalize-emergency:cron')->everySixHours()->timezone('Asia/Almaty');
+        $schedule->command('parse_omg_ngdu_well_data:cron')
+            ->dailyAt('07:00')
+            ->timezone('Asia/Almaty');
     }
 
     /**
