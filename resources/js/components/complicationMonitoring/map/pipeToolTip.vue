@@ -56,20 +56,15 @@
 </template>
 
 <script>
+import getValueOrNoData from '~/mixins/getValueOrNoData';
+
 export default {
   name: "pipeToolTip",
   props: {
     pipe: Object,
     paramKey: String
   },
-  methods: {
-    getValueOrNoData(param) {
-      return (typeof param == 'undefined' || !param) ? this.trans('monitoring.no_data') : param;
-    },
-  }
+  mixins: [getValueOrNoData]
 }
 </script>
 
-<style scoped>
-
-</style>
