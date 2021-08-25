@@ -262,4 +262,7 @@ return array (
   'export_course' => '(экспорт - $/баррель, внутренний рынок - тенге/тонна)',
   'matrix' => 'Матрица',
   'kvl' => 'КВЛ',
+  'number_prs_brigades' => 'Количество бригад ПРС',
+  'number_krs_brigades' => 'Количество бригад КРС',
+  'number_gtms_by_type' => 'Количество ГТМ по видам',
 );
