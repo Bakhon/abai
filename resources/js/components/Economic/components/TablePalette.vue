@@ -185,7 +185,7 @@ export default {
           )
         },
         {
-          title: 'КВЛ, млн. тенге',
+          title: `${this.trans('economic_reference.kvl')}, ${this.trans('economic_reference.million_tenge')}`,
           pp2020: '',
           values: this.filteredData.map(item => '')
         },
