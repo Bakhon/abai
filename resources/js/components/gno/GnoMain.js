@@ -25,7 +25,6 @@ export default {
   props: ["params"],
   computed: {
     ...pgnoMapState([
-      "settingsMode",
       "calcedWell",
       'wellAnalysis',
       'linesAnalysis',
@@ -33,12 +32,12 @@ export default {
       "well",
       "lines",
       "points",
-      "shgnSettings",
       "analysisSettings",
       "centralizer_range",
     ]),
     ...pgnoMapGetters([
-      'curveSettingsStore'
+      'curveSettingsStore',
+      'shgnSettings'
     ])
   },
   data: function () {
@@ -347,7 +346,7 @@ export default {
       this.SET_LOADING(true);
       this.isVisibleChart = true;
       this.calcKpodTrigger = true;
-      this.setDefault(this.settingsMode);
+      this.setDefault();
       if (["JET", "ASA"].includes(this.field)) {
         this.ao = 'АО "ММГ"';
       } else if (["UZN", "KMB"].includes(this.field)) {
@@ -882,6 +881,7 @@ export default {
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
     });
-    // this.setDefault("setWell");
+    this.setDefault();
   },
 };
+  

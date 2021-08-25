@@ -43,6 +43,9 @@ export const pgnoMutations = {
     UPDATE_SHGN_SETTINGS(state, val) {
         state.shgnSettings = val
     },
+    UPDATE_DEFAULT_SHGN_SETTINGS(state, val) {
+        state.shgnSettingsDefault = val
+    },
     UPDATE_CURVE_SETTINGS(state, val) {
         state.curveSettings = val
     },
