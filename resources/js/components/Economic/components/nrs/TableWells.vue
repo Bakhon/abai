@@ -59,6 +59,7 @@ export default {
         pageSizes: [12, 24, 48],
         headerHeight: 80,
         rowHeight: 50,
+        fixed: 0,
         columnWidth: this.tableHeaders.map((col, index) => ({
           column: index,
           width: index > 0 ? 90 : 100
