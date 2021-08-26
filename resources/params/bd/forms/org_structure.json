@@ -26,13 +26,13 @@
               "code": "dbeg",
               "type": "date",
               "title": "dbeg",
-              "validation": "required|date|before:dend"
+              "validation": "required|date"
               },
               {
               "code": "dend",
               "type": "date",
               "title": "dend",
-              "validation": "required|date"
+                "validation": "nullable|date|after:dbeg"
               }
             ]
           }

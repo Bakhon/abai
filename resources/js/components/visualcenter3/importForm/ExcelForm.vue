@@ -70,7 +70,7 @@
                     </el-date-picker>
                 </div>
                 <div
-                        :class="[isUserNameCompleted && isChangeReasonCompleted ? '' : 'menu__button_disabled','col-12 status-block status-block_little menu__button mt-3']"
+                        :class="[isUserNameCompleted && isChangeReasonCompleted && !isDataSended ? '' : 'menu__button_disabled','col-12 status-block status-block_little menu__button mt-3']"
                         @click="sendToApprove"
                 >
                     {{trans('visualcenter.importForm.approve')}}

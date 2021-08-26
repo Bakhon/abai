@@ -23,11 +23,12 @@
         </div>
     </div>
 
-    <div class="row justify-content-center" style="margin-top: 75px;">
+    <div class="row justify-content-center mt-5">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header ecorefs-header">
                     <a class="btn btn-success" href="{{ route('ecorefsdiscontcoefbar.create') }}">+</a>
+                    <div class="ecorefs-title">{{__('economic_reference.eco_refs_discont_coef_bar')}}</div>
                 </div>
                 <div class="card-body">
                     @if ($message = Session::get('success'))
@@ -40,10 +41,10 @@
                         <tr>
                             <th>#</th>
                             <th>Сценарий/Факт:</th>
-                            <th style="width: 180px;">Компания:</th>
+                            <th style="width: 220px;">Компания:</th>
                             <th style="width: 180px;">Направление:</th>
                             <th style="width: 200px;">Маршрут:</th>
-                            <th style="width: 110px;">Дата:</th>
+                            <th style="width: 150px;">Дата:</th>
                             <th>Коэффициент баррелизации:</th>
                             <th>Дисконт ($/баррель):</th>
                             <th>Стоимость нефти (экспорт - $/баррель, внутренний рынок - тенге/тонна):</th>
@@ -65,7 +66,7 @@
                                         <a class="btn btn-primary" href="{{ route('ecorefsdiscontcoefbar.edit',$item->id) }}">{{__('app.edit')}}</a>
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"  class="btn btn-danger" style="margin-top: 7px;">{{__('app.delete')}}</button>
+                                        <button type="submit"  class="btn btn-danger mt-2">{{__('app.delete')}}</button>
                                     </form>
                                 </td>
                             </tr>
@@ -78,3 +79,7 @@
     </div>
 
 @endsection
+
+<style>
+    @import "../../css/ecorefs.css";
+</style>

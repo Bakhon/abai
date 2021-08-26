@@ -99,6 +99,7 @@ Vue.component('economic-data-gtm-component', require('./components/Economic/data
 Vue.component('tech-data-component', require('./components/technical_forecast/data/index.vue').default);
 
 Vue.component('economic-nrs', require('./components/Economic/nrs.vue').default);
+Vue.component('economic-nrs-wells', require('./components/Economic/wells.vue').default);
 Vue.component('economic-optimization', require('./components/Economic/optimization.vue').default);
 Vue.component('gno-table', require('./components/gno/GnoMain.vue').default);
 Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue').default);

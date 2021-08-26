@@ -111,8 +111,8 @@
                                 >
                                     <span class="col-3 table_body">{{fieldName}}</span>
                                     <span class="col-5 table_body">{{names[field]}}</span>
-                                    <span class="col-2 table_body child-actual">{{fieldValue.actualDetail}}</span>
-                                    <span class="col-2 table_body child-current">{{fieldValue.currentDetail}}</span>
+                                    <span class="col-2 table_body">{{fieldValue.actualDetail}}</span>
+                                    <span class="col-2 table_body">{{fieldValue.currentDetail}}</span>
                                 </div>
                             </div>
                         </div>
@@ -200,12 +200,6 @@
         &:nth-child(odd){
             background: white;
         }
-    }
-    .child-actual {
-        margin-left: -25px;
-    }
-    .child-current {
-        margin-left: 15px;
     }
     .menu__button {
         font-weight: 500;

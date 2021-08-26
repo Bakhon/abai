@@ -321,7 +321,10 @@ abstract class TableForm extends BaseForm
         }
 
         if (!empty($params['merge_columns'])) {
-            $params['complicated_header'] = $this->tableHeaderService->getHeader($params);
+            $params['complicated_header'] = $this->tableHeaderService->getHeader(
+                $params['columns'],
+                $params['merge_columns']
+            );
         }
 
         return $params;

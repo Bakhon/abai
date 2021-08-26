@@ -15,7 +15,7 @@
           <li
             v-for="(item, index) in list" :key="index"
             @click="$emit('selectItem', item)">
-            {{ item }}
+            {{ item.title || item }}
           </li>
         </ul>
       </div>
@@ -41,7 +41,6 @@ export default {
   data() {
     return {
       isOpen: true,
-      objects: ['Объект 1', 'Объект 2'],
     }
   },
 
