@@ -350,7 +350,6 @@ export default {
                 } else {
                     console.log("No data");
                     this.wells = data.data;
-                    this.allWells = data.data;
                 }
                 if (month < 10) {
                     this.dt = "01" + ".0" + month + "." + year;
@@ -799,11 +798,8 @@ export default {
                 this.$store.commit("globalloading/SET_LOADING", false);
                 let data = response.data;
                 if (data) {
-                    // this.isSearched = false;
                     this.$store.commit("tr/SET_SORTPARAM", "");
-                    // this.$store.commit("tr/SET_SEARCH", "");
                     this.sortParam = "";
-                    // this.searchString = "";
                     this.allWells = data.data;
                 } else {
                     console.log("No data");
@@ -948,7 +944,6 @@ export default {
                 let data = response.data;
                 if (data) {
                     this.wells = data.data;
-                    this.allWells = data.data;
                 } else {
                     this.wells = [];
                     this.notification(this.trans('tr.no_well_toaster'));
