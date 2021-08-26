@@ -16,15 +16,15 @@ use App\Models\ComplicationMonitoring\ReverseCalculation;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use Illuminate\Support\Facades\Session;
 
-class ManualReverseCalc extends CrudController
+class ManualHydroCalc extends CrudController
 {
-    protected $modelName = 'manual_reverse_calculation';
+    protected $modelName = 'manual_hydro_calculation';
 
     public function index () {
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'list' => route('manual_reverse_calculation.list'),
+                'list' => route('manual_hydro_calculation.list'),
             ],
             'title' => trans('monitoring.manual_reverse_calculation.table_title'),
             'fields' => [
@@ -123,7 +123,7 @@ class ManualReverseCalc extends CrudController
         $params['links']['calc']['link'] = route($this->modelName.'.calculate');
         $params['links']['date'] = true;
 
-        return view('complicationMonitoring.manual_reverse_calc.index', compact('params'));
+        return view('complicationMonitoring.manual_hydro_calc.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
@@ -152,8 +152,6 @@ class ManualReverseCalc extends CrudController
 
         foreach ($pipes as $key => $pipe) {
             if ($pipe->between_points == 'well-zu') {
-                $pipe->load('well');
-
                 $query = OmgNGDUWell::where('well_id', $pipe->well_id);
 
                 if (isset($input['date'])) {

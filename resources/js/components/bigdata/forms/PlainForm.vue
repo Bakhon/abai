@@ -1,6 +1,5 @@
 <template>
   <div class="bd-main-block">
-    <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
@@ -158,7 +157,7 @@ export default {
             this.formParams = data
           })
           .catch(error => {
-            Vue.prototype.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
+            this.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
           })
 
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${this.wellId}`)).then(({data}) => {
@@ -208,7 +207,7 @@ export default {
           .then(response => {
             this.errors = []
             this.$refs.form.reset()
-            Vue.prototype.$notifySuccess('Ваша форма успешно отправлена')
+            this.$notifySuccess('Ваша форма успешно отправлена')
             this.$emit('change', {
               id: response.data.id,
               values: this.formValues
@@ -219,7 +218,7 @@ export default {
           .catch(error => {
 
             if (error.response.status === 500) {
-              Vue.prototype.$notifyError(error.response.data.message)
+              this.$notifyError(error.response.data.message)
               return false
             }
 
@@ -227,7 +226,7 @@ export default {
 
               this.errors = error.response.data.errors
 
-              Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
+              this.$notifyWarning('Некоторые поля заполнены некорректно')
 
               for (const [tabIndex, tab] of Object.entries(this.formParams.tabs)) {
                 for (const blocks of tab.blocks) {

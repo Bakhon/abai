@@ -1,18 +1,44 @@
 <template>
-  <div>
-    <div class="maps-development" v-for="item in objects">
-      <div class="maps-development__title">
-        {{ item }}
-      </div>
-      <div class="maps-development__wrapper">
-        <div class="maps-development__item" v-for="map in maps" :key="map">
-          <img
-            class="maps-development__item-img"
-            :src="`/img/digital-rating/${map}.svg`" alt=""
-          >
-        </div>
+  <div class="maps-development">
+    <div class="maps-development__title">
+      {{ objectTitle }}
+    </div>
+    <div class="maps-development__wrapper">
+      <div
+        class="maps-development__item cursor-pointer"
+        v-for="map in maps" :key="map"
+        @click="handleClickMap(map)"
+      >
+        <img
+          class="maps-development__item-img"
+          :src="`/img/digital-rating/${map}.svg`" alt=""
+        />
       </div>
     </div>
+    <b-modal
+      size="xl"
+      header-bg-variant="main1"
+      body-bg-variant="main1"
+      header-text-variant="light"
+      footer-bg-variant="main1"
+      centered
+      id="mapModal"
+      hide-footer
+    >
+      <template #modal-header="{close}">
+        <div class="d-flex justify-content-end w-100">
+          <button type="button" class="modal-bign-button" @click="close">
+            {{ trans('pgno.zakrit') }}
+          </button>
+        </div>
+      </template>
+      <div class="maps-development__item maps-development__item-full">
+        <img
+          class="maps-development__item-img"
+          :src="`/img/digital-rating/${mapFull}.svg`" alt=""
+        />
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -21,8 +47,18 @@ export default {
   name: "Maps",
   data() {
     return {
-      objects: ['Объект 1', 'Объект 2', 'Объект 3'],
+      objectTitle: 'Объект 1',
       maps: ['map1', 'map2', 'map3', 'map4'],
+      mapFull: ''
+    }
+  },
+  methods: {
+    handleClickMap(map) {
+      this.$bvModal.show('mapModal');
+      this.mapFull = map;
+    },
+    close() {
+      this.$bvModal.hide('mapModal');
     }
   }
 }
@@ -66,6 +102,11 @@ export default {
     position: absolute;
     right: 10px;
     top: 10px;
+  }
+
+  &-full {
+    width: 100%;
+    height: calc(100% - 40px);
   }
 }
 </style>

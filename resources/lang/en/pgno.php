@@ -225,6 +225,8 @@ return array (
   'stem' => 'Stem',
   'p_min' => 'Pmin',
   'k_pod' => 'Кпод',
+  'kPodCalced' => 'Кпод (расч.)',
+  'kPodUser' => 'Кпод (польз.)',
   'gas_in_pump' => 'gas in pump',
   'daily_consumption' => 'Daily consumption',
   'ure' => 'УРЭ',

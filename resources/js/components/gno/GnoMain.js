@@ -540,9 +540,9 @@ export default {
                   this.wDay = data.checks["w_day"].toFixed(0);
                   this.ure = data.checks["ure"].toFixed(1);
                   if (this.shgnSettings.kPodMode) {
-                    this.kPodText = "Кпод (а)"
+                    this.kPodText = this.trans("pgno.kPodCalced")
                   } else {
-                    this.kPodText = "Кпод (п)"
+                    this.kPodText = this.trans("pgno.kPodUser")
                   }
                   if (data.checks["load_limit_check"]["type"] === "warning") {
                     var message = `${this.trans("pgno.load_warning")} ${data.checks["load_limit_check"]["value"]} ${this.trans("measurements.percent")}`;
