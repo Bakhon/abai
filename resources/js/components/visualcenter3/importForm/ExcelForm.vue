@@ -12,9 +12,7 @@
                     {{trans('visualcenter.importForm.insertData')}}
                 </div>
                 <div
-                        :class="[isArchiveActive ? 'category-button_border category-button' : '',
-                        dzoUsers.includes(parseInt(userId)) ? 'menu__button_disabled' : '',
-                        ' col-2 category-button']"
+                        :class="[isArchiveActive ? 'category-button_border category-button' : '',' col-2 category-button']"
                         @click="changeCategory"
                 >
                     <div class="archieve-icon"></div>

@@ -332,10 +332,9 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('oilCondensateProduction')"
-                          :class="{ 'button-tab-highlighted': dropdownMenu.oilCondensateProduction }"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.oilCondensateProduction}]"
                   ></button>
                   <div>
                     <ul
@@ -388,10 +387,9 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('oilCondensateDelivery')"
-                          :class="{ 'button-tab-highlighted': dropdownMenu.oilCondensateDelivery }"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.oilCondensateDelivery}]"                          
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
@@ -469,10 +467,9 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('gasProduction')"
-                          :class="{ 'button-tab-highlighted': dropdownMenu.gasProduction }"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.gasProduction}]"                         
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
@@ -671,10 +668,9 @@
                   </div>
                   <button
                           type="button"
-                          class="btn btn-primary dropdown-toggle position-button-vc col-2 m-0"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('waterInjection')"
-                          :class="{ 'button-tab-highlighted': dropdownMenu.waterInjection }"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.waterInjection}]"
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
@@ -2056,20 +2052,20 @@
               </div>
               <div class="container-fluid">
                 <div class="row p-0 emergency-table__header">
-                  <span class="col-1 p-2 pl-5">{{ trans("visualcenter.date") }}</span>
-                  <span class="col-11 p-2 pl-3">{{ trans("visualcenter.notes") }}</span>
+                  <span class="col-3 p-2">{{ trans("visualcenter.emergencyDate") }}</span>
+                  <span class="col-3 p-2">{{ trans("visualcenter.dzo") }}</span>
+                  <span class="col-3 p-2">{{ trans("visualcenter.emergency") }}</span>
+                  <span class="col-3 p-2">{{ trans("visualcenter.resolvingDate") }}</span>
                 </div>
                 <div
                         class="row emergency-view"
                         v-for="(item, index) in emergencyHistory"
                 >
                   <div class="col-12 d-flex emergency-title p-0">
-                    <span class="col-1">{{item.date}}</span>
-                    <span class="col-11">{{item.title}}</span>
-                  </div>
-                  <div class="col-12 d-flex emergency-description p-2">
-                    <span class="col-1"></span>
-                    <span class="col-11">{{item.description}}</span>
+                    <span :class="[item.approved ? 'emergency-resolved' : '' ,'col-3']">{{item.date}}</span>
+                    <span class="col-3">{{item.description}}</span>
+                    <span class="col-3">{{item.title}}</span>
+                    <span class="col-3">{{item.approve_date}}</span>
                   </div>
                 </div>
               </div>
@@ -3227,11 +3223,12 @@
   .emergency-view {
     .emergency-title {
       font-size: 16px;
-      span:first-child {
-        background: #353EA1;
+      text-align: center;
+      span {
+        border: 1px solid #4C537E;
       }
-      span:last-child {
-        background: #4C537E;
+      span:nth-child(3) {
+        text-align:left;
       }
     }
     .emergency-description {
@@ -3264,11 +3261,18 @@
     background: #2E50E9;
     border-bottom: 0.5px solid #272953;
     font-size: 17px;
-    span:first-child {
+    span{
       border-right: 0.5px solid #272953;
+      text-align:center;
     }
   }
   .dropdown-splitter {
     background: #C4DEF2;
   }
+  .emergency-resolved {
+    background: #009847;
+  }
+  .visualcenter-button-disable {
+    display: none;
+}
 </style>
