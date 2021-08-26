@@ -350,6 +350,7 @@ export default {
                 } else {
                     console.log("No data");
                     this.wells = data.data;
+                    this.allWells = data.data;
                 }
                 if (month < 10) {
                     this.dt = "01" + ".0" + month + "." + year;
@@ -632,7 +633,7 @@ export default {
         this.wellStatusFilter = undefined;
         this.statusFilter = "Не сохранено";
         this.typeWellFilter = undefined;
-        this.wellFilter = undefined;
+        this.wellFilter = [];
         this.fieldFilter = undefined;
     },
     onChangePage(newVal) {
@@ -688,9 +689,6 @@ export default {
         this.isShowSecond = true;
         this.isShowFirst = false;
         this.axiosEdit();
-    },
-    closeModal(modalName) {
-      this.$modal.hide(modalName)
     },
     sortBy(type) {
         this.$store.commit("tr/SET_SORTTYPE", this.isSortType);
@@ -801,11 +799,11 @@ export default {
                 this.$store.commit("globalloading/SET_LOADING", false);
                 let data = response.data;
                 if (data) {
-                    this.isSearched = true;
+                    // this.isSearched = false;
                     this.$store.commit("tr/SET_SORTPARAM", "");
-                    this.$store.commit("tr/SET_SEARCH", "");
+                    // this.$store.commit("tr/SET_SEARCH", "");
                     this.sortParam = "";
-                    this.searchString = "";
+                    // this.searchString = "";
                     this.allWells = data.data;
                 } else {
                     console.log("No data");
@@ -865,6 +863,7 @@ export default {
         this.isShowAdd = false;
         this.isDeleted = false;
         this.isSaved = false;
+        this.loadPage();
         this.reRender();
     },
     addpush() {
@@ -889,6 +888,7 @@ export default {
                 this.lonelywell,
             )
             .then((response) => {
+                this.loadPage();
                 this.wellAdd();
                 this.reRender();
                 console.log('good')
@@ -903,6 +903,7 @@ export default {
                     this.postApiUrl + "techregime/new_wells/delete_well/",
                     this.lonelywell).then((res) => {
                 console.log(res.data)
+                this.loadPage();
                 this.wellAdd();
                 this.reRender();
             })
@@ -947,6 +948,7 @@ export default {
                 let data = response.data;
                 if (data) {
                     this.wells = data.data;
+                    this.allWells = data.data;
                 } else {
                     this.wells = [];
                     this.notification(this.trans('tr.no_well_toaster'));
