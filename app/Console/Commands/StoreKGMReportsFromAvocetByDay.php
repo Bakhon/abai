@@ -233,6 +233,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
             ->where('dzo_name', '=', self::DZO_NAME)
             ->where('date', '=', $this->yesterdayDate)
             ->get()->toArray();
+            
 
         if (count($lastDataOil) === 0) {
             $dzoImportFieldData->save();
@@ -247,7 +248,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
             return;
         } 
         
-        if (($lastDataOil['oil_production_fact'] != 0) || ($lastDataOil['oil_delivery_fact'] != 0)) {
+        if (($lastDataOil['oil_production_fact'] != 0) && ($lastDataOil['oil_delivery_fact'] != 0)) {
             echo "No update needed";
             return;
         }
