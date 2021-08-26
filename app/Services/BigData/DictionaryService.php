@@ -37,6 +37,7 @@ use App\Models\BigData\Dictionaries\PackerType;
 use App\Models\BigData\Dictionaries\PatronType;
 use App\Models\BigData\Dictionaries\PerforatorType;
 use App\Models\BigData\Dictionaries\PerfType;
+use App\Models\BigData\Dictionaries\PlanGISType;
 use App\Models\BigData\Dictionaries\ProcedTypePlanGDIS;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\ReasonEquipFail;
@@ -269,6 +270,10 @@ class DictionaryService
         'tech_state_casings' => [
             'class' => TechStateCasing::class,
             'name_field' => 'name_ru'
+        ],
+        'plan_gis_type' => [
+            'class' => PlanGISType::class,
+            'name_field' => 'name'
         ],
         'proced_type_plan_gdis' => [
             'class' => ProcedTypePlanGDIS::class,
