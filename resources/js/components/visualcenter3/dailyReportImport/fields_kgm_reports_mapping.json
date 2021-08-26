@@ -16,8 +16,8 @@
     "production_fond": {
         "dzo_import_field_data": {
             "in_work_production_fond": "PRODUCING",
-            "in_idle_production_fond": "SHUT_IN",
-            "inactive_production_fond": "IDLE",
+            "in_idle_production_fond": "IDLE",
+            "inactive_production_fond": "SHUT_IN",
             "developing_production_fond": "DEVELOPMENT",
             "pending_liquidation_production_fond": "ABANDON"
         },
@@ -35,8 +35,8 @@
     "injection_fond": {
         "dzo_import_field_data": {
             "in_work_injection_fond": "PRODUCING",
-            "in_idle_injection_fond": "SHUT_IN",
-            "inactive_injection_fond": "IDLE",
+            "in_idle_injection_fond": "IDLE",
+            "inactive_injection_fond": "SHUT_IN",
             "developing_injection_fond": "DEVELOPMENT",
             "pending_liquidation_injection_fond": "ABANDON"
         },
