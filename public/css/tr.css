@@ -224,16 +224,16 @@ width: 251px;
 .external_well_filter {
 width: 192px;
 }
-.well_form_fil.well_form_fil {
+.well_form_fil {
   background: #333975;
   width: 165px;
-  height: calc(100vh - 355px) !important;
+  height: calc(100vh - 355px);
   overflow-y: scroll;
 }
 .well_modal_form_fil.well_modal_form_fil {
   background: #333975;
   width: 150px;
-  height: calc(100vh - 550px);
+  height: calc(100vh - 550px) !important;
   overflow-y: scroll;
 }
 .modal_filter {
