@@ -296,10 +296,12 @@ class EconomicNrsController extends Controller
 
         $dataWithPausedProfitability['dt'] = array_keys($dataWithPausedProfitability['dt']);
 
-        $monthsCount = count($result[self::BUILDERS['sum_month_operating_profit_and_count_uwi']]);
+        $monthOperatingProfitAndCountUwi = $result[self::BUILDERS['sum_month_operating_profit_and_count_uwi']];
 
-        $lastMonth = $result[self::BUILDERS['sum_month_operating_profit_and_count_uwi']][$monthsCount - 1];
-        $prevMonth = $result[self::BUILDERS['sum_month_operating_profit_and_count_uwi']][$monthsCount - 2];
+        $monthsCount = count($monthOperatingProfitAndCountUwi);
+
+        $lastMonth = $monthOperatingProfitAndCountUwi[$monthsCount - 1];
+        $prevMonth = $monthOperatingProfitAndCountUwi[$monthsCount - 2];
 
         $resLastMonth = [
             'Operating_profit' => [
@@ -318,12 +320,14 @@ class EconomicNrsController extends Controller
             ]
         ];
 
-        $monthsCount = count($result[self::BUILDERS['production_expenditures']]);
+        $productionExpenditures = $result[self::BUILDERS['production_expenditures']];
+
+        $monthsCount = count($productionExpenditures);
 
         foreach ($sumKeys as $sumKey) {
-            $lastMonth = $result[self::BUILDERS['production_expenditures']][$monthsCount - 1][$sumKey];
+            $lastMonth = $productionExpenditures[$monthsCount - 1][$sumKey];
 
-            $prevMonth = $result[self::BUILDERS['production_expenditures']][$monthsCount - 2][$sumKey];
+            $prevMonth = $productionExpenditures[$monthsCount - 2][$sumKey];
 
             $resLastMonth[$sumKey] = [
                 'sum' => [
