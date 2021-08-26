@@ -20,7 +20,7 @@
         </div>
 
         <div class="border-grey flex-200px">
-          <div class="p-3" style="line-height: 14px">
+          <div class="p-3 line-height-14px">
             {{ trans('economic_reference.approved_budget_2020') }}
           </div>
 
@@ -41,15 +41,15 @@
           </div>
 
           <div class="d-flex">
-            <div class="p-2 flex-grow-1">
-              {{ (+baseScenario.oil_price).toLocaleString() }}
-              {{ trans('economic_reference.dollar_per_bar') }}
+            <div class="p-2 flex-grow-1 line-height-14px" style="white-space: pre-line"
+            > {{ (+baseScenario.oil_price).toLocaleString() }} {{ trans('economic_reference.dollar_per_bar') }}
+              {{ trans('economic_reference.basic').toLocaleLowerCase() }}
             </div>
 
             <div v-for="(price, index) in reverseOilPrices"
                  :key="index"
                  :class="index % 2 === 0 ? 'border-grey-left' : ''"
-                 class="p-2 flex-grow-1">
+                 class="p-2 flex-grow-1 d-flex align-items-center justify-content-center">
               {{ (+price).toLocaleString() }}
               {{ trans('economic_reference.dollar_per_bar') }}
             </div>
@@ -418,5 +418,9 @@ export default {
 
 .flex-320px {
   flex: 0 0 320px;
+}
+
+.line-height-14px {
+  line-height: 14px;
 }
 </style>
