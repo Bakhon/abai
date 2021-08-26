@@ -7,7 +7,7 @@ import SettingModal from "./components/SettingModal";
 import WellAtlasModal from "./components/WellAtlasModal";
 import Accordion from "./components/Accordion";
 import mainMenu from "../GTM/mock-data/main_menu.json";
-
+import { cods, maps, properties, objects, fileActions, mapActions } from './json/data';
 export default {
     name: "Sections",
 
@@ -20,19 +20,12 @@ export default {
 
     data() {
         return {
-            objects: ['Объект 1', 'Объект 2'],
-            maps: ['Скважина', 'Накопленные отборы'],
-            cods: ['1', '2', '3'],
-            properties: ['Значок', 'Шрифт', 'Палитра'],
-            fileActions: [
-                { title: 'digital_rating.import', icon: 'upload', type: 'import'  },
-                { title: 'digital_rating.export', icon: 'download', type: 'export' },
-                { title: 'digital_rating.save', icon: 'save', type: 'save' }
-            ],
-            mapsActions: [
-                { title: 'digital_rating.uploadCustomMaps', icon: 'share', type: 'upload' },
-                { title: 'digital_rating.importPlannedWells', icon: 'upload', type: 'importWells' }
-            ],
+            objects: objects,
+            maps: maps,
+            cods: cods,
+            properties: properties,
+            fileActions: fileActions,
+            mapsActions: mapActions,
             parentType: '',
             menu: mainMenu,
             map: null,
@@ -41,7 +34,7 @@ export default {
             bounds: [[0, 15000], [0,15000]],
             center: [85000, 52000],
             zoom: -5,
-            minZoom: -10,
+            minZoom: -6,
             maxZoom: 1,
             renderer: L.canvas({ padding: 0.5 }),
         };
@@ -122,16 +115,16 @@ export default {
             return yx(y, x);
         },
         onMapClick() {
-            this.$modal.show('modalAtlas');
+            this.$bvModal.show('modalAtlas');
         },
         closeAtlasModal() {
-            this.$modal.hide('modalAtlas');
+            this.$bvModal.hide('modalAtlas');
         },
         openSettingModal() {
-            this.$modal.show('modalSetting');
+            this.$bvModal.show('modalSetting');
         },
         closeSettingModal() {
-            this.$modal.hide('modalSetting');
+            this.$bvModal.hide('modalSetting');
         },
         menuClick(data) {
             const path = window.location.pathname.slice(3);

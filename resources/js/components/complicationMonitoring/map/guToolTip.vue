@@ -4,7 +4,7 @@
       {{ gu.name }}
     </p>
     <p>
-      {{ trans('monitoring.gu.fields.date') }} : {{ getValueOrNoData(gu.last_omgngdu.date) }}
+      {{ trans('app.date') }} : {{ getValueOrNoData(gu.last_omgngdu.date) }}
     </p>
     <p>
       {{ trans('monitoring.gu.fields.daily_fluid_production') }} :
@@ -37,23 +37,30 @@
       {{ trans('monitoring.gu.fields.surge_tank_pressure') }} :
       {{ getValueOrNoData(gu.last_omgngdu.surge_tank_pressure) }} {{ trans('measurements.pressure_bar') }}
     </p>
+    <p>
+      {{ trans('monitoring.omgngdu_well.fields.sg_oil') }} :
+      {{ getValueOrNoData(gu.last_omgngdu.sg_oil) }}
+    </p>
+    <p>
+      {{ trans('monitoring.omgngdu_well.fields.sg_gas') }} :
+      {{ getValueOrNoData(gu.last_omgngdu.sg_gas) }}
+    </p>
+    <p>
+      {{ trans('monitoring.omgngdu_well.fields.sg_water') }} :
+      {{ getValueOrNoData(gu.last_omgngdu.sg_water) }}
+    </p>
   </div>
 </template>
 
 <script>
+import getValueOrNoData from '~/mixins/getValueOrNoData';
+
 export default {
   name: "guToolTip",
   props: {
     gu: Object,
   },
-  methods: {
-    getValueOrNoData(param) {
-      return (typeof param == 'undefined' || !param) ? this.trans('monitoring.no_data') : param;
-    },
-  }
+  mixins: [getValueOrNoData]
 }
 </script>
 
-<style scoped>
-
-</style>

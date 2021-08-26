@@ -51,15 +51,13 @@ class FinalizeEmergencySituation extends Command
 
     private function processSituation($situation)
     {
-        $dzoName = explode(" - ", $situation->description)[1];
-        if ($dzoName === 'ПККР') {
-            $dzoName = 'ПКК';
-        }
         $dzoRecord = DzoImportData::query()
             ->select('date')
-            ->where('dzo_name',$dzoName)
+            ->select('date')
+            ->where('dzo_name',$situation->description)
             ->whereDate('date',$situation->date)
             ->first();
+
         if (!is_null($dzoRecord)) {
             $this->resolveSituation($dzoRecord->date,$situation->id);
         }

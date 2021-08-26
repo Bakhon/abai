@@ -1,6 +1,5 @@
 <template>
   <div class="bd-main-block">
-    <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
@@ -15,7 +14,7 @@
             >
               <datetime
                   v-model="filter[filterItem.code]"
-                  :flow="['year', 'month', 'date']"
+                  :flow="['year', 'month']"
                   :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                   :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
                   auto
@@ -135,6 +134,7 @@ export default {
     },
     initFilter() {
       if (this.filter) return
+      if (!this.formParams) return
 
       if (!this.formParams.filter) {
         this.filter = {date: moment().toISOString()}
@@ -143,14 +143,16 @@ export default {
 
       let filter = {}
       this.formParams.filter.forEach(filterItem => {
-        filter[filterItem.code] = filterItem.type === 'date' ? moment().toISOString() : null
+        filter[filterItem.code] = filterItem.type === 'date' ? moment(filterItem.default || null).toISOString() : null
       })
 
       this.filter = filter
 
     },
     init(formParams) {
-      this.formParams = formParams
+      if (formParams) {
+        this.formParams = formParams
+      }
       this.initFilter()
     },
   },

@@ -6,7 +6,6 @@ import Vue from 'vue';
 Vue.prototype.$eventBus = new Vue();
 export default {
     components: {Plotly},
-    props: ['analysisTrigger', 'isYoungAge'],
     data: function () {
         return {
             apiUrl: process.env.MIX_PGNO_API_URL,
@@ -84,11 +83,6 @@ export default {
             chartOptions: {}
         }
     },
-    watch: {
-        analysisTrigger: function () {
-            this.updateGraph()
-        }
-    },
     computed: {
         ...pgnoMapState([
             'well',
@@ -97,10 +91,10 @@ export default {
             'wellAnalysis',
             'linesAnalysis',
             'pointsAnalysis',
-            'shgnSettings',
             'curveSettings',
         ]),
         ...pgnoMapGetters([
+            'shgnSettings'
         ]),
     },
     methods: {

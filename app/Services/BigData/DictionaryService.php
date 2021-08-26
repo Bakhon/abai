@@ -295,6 +295,45 @@ class DictionaryService
         $this->cache = $cache;
     }
 
+    public function getWithPermissions(string $dict)
+    {
+        $dictionary = $this->get($dict);
+        if ($dict === 'orgs') {
+            return $this->getOrgDictionaryWithPermissions($dictionary);
+        }
+        return $dictionary;
+    }
+
+    private function getOrgDictionaryWithPermissions($dictionary)
+    {
+        $userSelectedTreeItems = collect(auth()->user()->org_structure)
+            ->filter(function ($item) {
+                list($type, $id) = explode(':', $item);
+                return $type === 'org';
+            })
+            ->map(function ($item) {
+                list($type, $id) = explode(':', $item);
+                return $id;
+            })
+            ->toArray();
+        $tree = $this->fillTree($dictionary, [], $userSelectedTreeItems);
+        return $tree;
+    }
+
+    public function fillTree($branch, $tree, $userSelectedTreeItems): array
+    {
+        foreach ($branch as $item) {
+            if (in_array($item['id'], $userSelectedTreeItems)) {
+                $tree[] = $item;
+                continue;
+            }
+            if (!empty($item['children'])) {
+                $tree = $this->fillTree($item['children'], $tree, $userSelectedTreeItems);
+            }
+        }
+        return $tree;
+    }
+
     public function get(string $dict)
     {
         $cacheKey = 'bd_dict_' . $dict;
@@ -370,6 +409,22 @@ class DictionaryService
         }
 
         return null;
+    }
+
+    public function getFullPath(string $dict, int $id): ?string
+    {
+        $dict = collect($this->getFlatten($this->get($dict)));
+        $value = $dict->where('id', $id)->first();
+        if (empty($value)) {
+            return '';
+        }
+
+        $path = [$value['label']];
+        while (isset($value['parent'])) {
+            $value = $dict->where('id', $value['parent'])->first();
+            $path[] = $value['label'];
+        }
+        return implode(' / ', array_reverse($path));
     }
 
     private function getPlainDict(string $dict): array
@@ -504,22 +559,23 @@ class DictionaryService
 
         return $items;
     }
+
     private function getReasonTypeRefDict()
     {
         $items = DB::connection('tbd')
-        ->table('prod.well_workover as p')
-        ->select('r.id', 'r.name_ru as name')
-        ->where('rt.code', 'REF')
-        ->distinct()
-        ->orderBy('name', 'asc')
-        ->join('dict.reason as r', 'p.reason_equip_fail', 'r.id')
-        ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
-        ->get()
-        ->map(
-            function ($item) {
-                return (array)$item;
-            }
-        )
+            ->table('prod.well_workover as p')
+            ->select('r.id', 'r.name_ru as name')
+            ->where('rt.code', 'REF')
+            ->distinct()
+            ->orderBy('name', 'asc')
+            ->join('dict.reason as r', 'p.reason_equip_fail', 'r.id')
+            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
             ->toArray();
 
         return $items;
@@ -534,7 +590,7 @@ class DictionaryService
             ->distinct()
             ->orderBy('name', 'asc')
             ->join('dict.reason as r', 'p.stop_reason', 'r.id')
-            ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
+            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
             ->get()
             ->map(
                 function ($item) {
@@ -545,6 +601,7 @@ class DictionaryService
 
         return $items;
     }
+
     private function getReasonTypeRtrDict()
     {
         $items = DB::connection('tbd')
@@ -554,7 +611,7 @@ class DictionaryService
             ->distinct()
             ->orderBy('name', 'asc')
             ->join('dict.reason as r', 'p.reason', 'r.id')
-            ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
+            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
             ->get()
             ->map(
                 function ($item) {

@@ -9,6 +9,7 @@ use App\Models\Refs\EcoRefsScFa;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReading
 {
@@ -26,16 +27,17 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
         'company' => 0,
         'date' => 1,
         'variable' => 2,
-        'fix_noWRpayroll' => 3,
-        'fix_payroll' => 4,
-        'fix_nopayroll' => 5,
-        'fix' => 6,
-        'gaoverheads' => 7,
-        'wr_nopayroll' => 8,
-        'wr_payroll' => 9,
-        'wo' => 10,
-        'net_back' => 11,
-        'amort' => 12,
+        'variable_processing' => 3,
+        'fix_noWRpayroll' => 4,
+        'fix_payroll' => 5,
+        'fix_nopayroll' => 6,
+        'fix' => 7,
+        'gaoverheads' => 8,
+        'wr_nopayroll' => 9,
+        'wr_payroll' => 10,
+        'wo' => 11,
+        'net_back' => 12,
+        'amort' => 13,
     ];
 
     function __construct(int $userId, string $fileName, bool $isForecast)
@@ -71,8 +73,9 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
         return new EcoRefsCost([
             "sc_fa" => $this->scFaId,
             "company_id" => $companyId,
-            "date" => gmdate("Y-m-d", (($row[self::COLUMNS['date']]- 25569) * 86400)),
+            "date" => Date::excelToDateTimeObject($row[self::COLUMNS['date']]),
             "variable" => round($row[self::COLUMNS['variable']], 2),
+            "variable_processing" => round($row[self::COLUMNS['variable_processing']], 2),
             "fix_noWRpayroll" => round($row[self::COLUMNS['fix_noWRpayroll']], 2),
             "fix_payroll" => round($row[self::COLUMNS['fix_payroll']], 2),
             "fix_nopayroll" => round($row[self::COLUMNS['fix_nopayroll']], 2),

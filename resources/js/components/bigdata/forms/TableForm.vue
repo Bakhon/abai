@@ -270,7 +270,7 @@ export default {
     this.updateForm(this.params.code)
         .then(data => {
           this.formParams = data
-          this.$emit('initialized')
+          this.$emit('initialized', data)
           this.updateTableData()
         })
   },
