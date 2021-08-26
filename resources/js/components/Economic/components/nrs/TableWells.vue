@@ -12,6 +12,14 @@
           {{ props.cellData.label }}
         </div>
       </template>
+
+      <template
+          :slot="`column-${data.dates.length+1}`"
+          slot-scope="{ props }">
+        <div :style="isColorful ? `color: ${props.cellData.color}` : ''">
+          {{ props.cellData.label }}
+        </div>
+      </template>
     </vue-table-dynamic>
   </div>
 </template>
@@ -59,32 +67,42 @@ export default {
     },
 
     tableData() {
-
       return this.uwis.map(uwi => {
         let data = [uwi]
 
         let well = this.data.uwis[uwi]
+
+        let wellSum = 0
 
         this.data.dates.forEach(date => {
           let value = well[this.property].hasOwnProperty(date)
               ? +well[this.property][date]
               : ''
 
-          let label = value
-              ? (value / 1000).toFixed(1)
-              : value
+          if (value) {
+            wellSum += value
+          }
 
-          let color = value && value > 0 ? '#13B062' : '#AB130E'
-
-          data.push({label: label, value: value, color: color})
+          data.push({value: value, label: this.getLabel(value), color: this.getColor(value)})
         })
+
+        data.push({value: wellSum, label: this.getLabel(wellSum), color: this.getColor(wellSum)})
 
         return data
       })
     },
 
     tableHeaders() {
-      return [...['UWI'], ...this.data.dates]
+      return [...['UWI'], ...this.data.dates, ...[this.trans('economic_reference.total')]]
+    },
+  },
+  methods: {
+    getColor(value) {
+      return value && value > 0 ? '#13B062' : '#AB130E'
+    },
+
+    getLabel(value) {
+      return value ? (+(value / 1000).toFixed(1)).toLocaleString() : value
     },
   }
 }
