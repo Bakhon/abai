@@ -107,7 +107,7 @@
       "id": 5,
       "component": {
         "name": "main-table",
-        "template": "<well-fastening></well-fastening>"
+        "template": "<well-fastening-1></well-fastening-1>"
       }
     }
   ],

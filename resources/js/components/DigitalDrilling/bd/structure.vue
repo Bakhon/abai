@@ -69,8 +69,8 @@
             getWellID(id){
                 this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/structure/'+id + '/').then((response) => {
                     let data = response.data;
+                    this.structure = data;
                     if (data) {
-                        this.structure = data;
                     } else {
                         console.log('No data');
                     }

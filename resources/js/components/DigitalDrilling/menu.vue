@@ -19,7 +19,6 @@
                     <a class="dropdown-item" v-for="page in pages.project" @click="changePage(page)"><img :src="page.img" alt="">{{ trans(page.name) }}</a>
                     <a class="dropdown-item"><img src="/img/digital-drilling/menu24.svg" alt="">{{ trans('digital_drilling.menu12') }}</a>
                     <a class="dropdown-item"><img src="/img/digital-drilling/menu25.svg" alt="">{{ trans('digital_drilling.menu13') }}</a>
-                    <a class="dropdown-item"><img src="/img/digital-drilling/menu16.svg" alt="">{{ trans('digital_drilling.menu14') }}</a>
                 </div>
             </div>
         </div>
