@@ -119,7 +119,7 @@ export default {
 .sectors {
   flex-grow: 2;
   overflow-y: auto;
-  margin-bottom: 170px;
+  margin-bottom: 15px;
 }
 
 ::-webkit-scrollbar {

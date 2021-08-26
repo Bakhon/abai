@@ -16,10 +16,6 @@
       />
       <p>{{ trans("plast_fluids.data_download") }}</p>
     </a>
-    <a>
-      <img src="" alt="" width="20px" />
-      <p>{{ trans("plast_fluids.data_download") }}</p>
-    </a>
   </div>
 </template>
 
@@ -36,7 +32,7 @@ export default {
 .plast-fluids-header {
   display: grid;
   column-gap: 10px;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   margin: 0 0 10px 0;
 }
 
