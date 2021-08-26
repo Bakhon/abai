@@ -68,23 +68,22 @@ class StoreKGMReportsFromAvocetByDay extends Command
             }
         }
 
-        $arr["operating_production_fond"] = ['in_work_production_fond','in_idle_production_fond','developing_production_fond','inactive_injection_fond'];
-        $arr["active_production_fond"] = ['in_work_production_fond','in_idle_production_fond'];
-        $arr["operating_injection_fond"] = ['in_work_injection_fond','in_idle_injection_fond','developing_injection_fond','inactive_injection_fond'];
-        $arr["active_injection_fond"] = ['in_work_injection_fond','in_idle_injection_fond'];
+        $fieldsForSumFond["operating_production_fond"] = ['in_work_production_fond','in_idle_production_fond','developing_production_fond','inactive_injection_fond'];
+        $fieldsForSumFond["active_production_fond"] = ['in_work_production_fond','in_idle_production_fond'];
+        $fieldsForSumFond["operating_injection_fond"] = ['in_work_injection_fond','in_idle_injection_fond','developing_injection_fond','inactive_injection_fond'];
+        $fieldsForSumFond["active_injection_fond"] = ['in_work_injection_fond','in_idle_injection_fond'];
 
-        $sumArray=[];
         $filter=[];
         foreach ($dzoImportFieldData->getAttributes() as $k1 => $valueFond) {
-            foreach ($arr as $k2 => $fildName) {
-                foreach ($fildName as $k3 => $fildName2) {              
-                    if ($k1==$fildName2) {           
-                    $filter[$k2][$k1] = $valueFond;                    
-                    $dzoImportFieldData->$k2 = array_sum($filter[$k2]);                   
-                    }                  
-                }  
-            }            
-        }      
+            foreach ($fieldsForSumFond as $k2 => $fildName) {
+                foreach ($fildName as $k3 => $fildName2) {
+                    if ($k1==$fildName2) {
+                    $filter[$k2][$k1] = $valueFond;
+                    $dzoImportFieldData->$k2 = array_sum($filter[$k2]);
+                    }
+                }
+            }
+        }
         return $dzoImportFieldData;
     }
 
