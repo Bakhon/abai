@@ -29,13 +29,13 @@
                 </div>
                 <div class="col-4 d-flex">
                     <div class="col-12 table-header p-1">
-                        Карта КПД СЕО-1<br />
+                        КПД СЕО-1<br />
                         (заместитель председателя Правления)
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="col-12 table-header p-1">
-                        Карты КПД СЕО-2<br />
+                        КПД СЕО-2<br />
                         (директора департаментов)
                     </div>
                 </div>
@@ -134,7 +134,7 @@
                 </div>
             </div>
             <kpd-modal-documents></kpd-modal-documents>
-            <kpd-modal-catalog></kpd-modal-catalog>
+            <kpd-modal-catalog :kpd-list="kpdDecompositionB"></kpd-modal-catalog>
             <kpd-modal-map :manager-info="selectedManager"></kpd-modal-map>
             <kpd-modal-monitoring :manager-info="selectedManager"></kpd-modal-monitoring>
             <kpd-modal-kpd-passport :manager-info="selectedManager" :kpd="selectedKpd"></kpd-modal-kpd-passport>

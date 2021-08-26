@@ -57,7 +57,7 @@ class EconomicalEffectController extends CrudController
                     'type' => 'numeric',
                 ],
                 'recommended_inhibitor_injection' => [
-                    'title' => trans('monitoring.ik_recommend'),
+                    'title' => trans('monitoring.actual_inhibitor_level'),
                     'type' => 'numeric',
                 ],
                 'difference' => [

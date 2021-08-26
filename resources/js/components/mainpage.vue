@@ -123,7 +123,13 @@ export default {
           name: this.trans('economic_reference.economic_module_short'),
           icon: "nrs.svg",
           url: this.localeUrl('/economic/nrs')
-        }
+        },
+        {
+          name: 'Цифровое бурение',
+          icon: 'digital-drilling.svg',
+
+          url: this.localeUrl('/digital-drilling/')
+        },
       ],
         childMenuCollapseList: [
             {

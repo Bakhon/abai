@@ -12,7 +12,7 @@
             <div class="modal-bign modal-bign-container">
                 <div class="modal-bign-header">
                     <div class="modal-bign-title modal_header">Паспорт и целевые значения КПД</div>
-                    <button type="button" class="modal-bign-button" @click="$modal.hide('modalMap')">
+                    <button type="button" class="modal-bign-button" @click="$modal.hide('modalKpdPassport')">
                         {{trans('pgno.zakrit')}}
                     </button>
                 </div>

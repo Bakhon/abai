@@ -33,10 +33,10 @@ class EcoRefsMacroController extends Controller
             ]
         ];
 
-        $ecorefsmacro = EcoRefsMacro::latest()->with('scfa')->paginate(5);
+        $ecorefsmacro = EcoRefsMacro::orderBy('id','desc')->latest()->with('scfa')->paginate(5);
 
         $ecorefsmacroPages = view('economy_kenzhe/ecorefsmacro.index',compact('ecorefsmacro'))
-            ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);
+            ->with('starting_row_number', (request()->input('page', 1) - 1) * 8);
 
         return $ecorefsmacroPages;
        //

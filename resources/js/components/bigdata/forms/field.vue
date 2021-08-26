@@ -1,5 +1,7 @@
 <template>
-  <div class="bd-form-field">
+  <div
+      :class="`bd-form-field bd-form-field_${item.type}`"
+  >
     <template v-if="['text', 'numeric'].indexOf(item.type) > -1">
       <input
           :type="item.type === 'numeric' ? 'number' : 'text'"
@@ -106,13 +108,16 @@
       </datetime>
     </template>
     <template v-else-if="item.type === 'table'">
-      <BigdataTableField :params="item" v-on:change="updateValue($event)"></BigdataTableField>
+      <BigdataTableField :id="id" :params="item" v-on:change="updateValue($event)"></BigdataTableField>
     </template>
     <template v-else-if="item.type === 'calc'">
       <label>{{ value }}</label>
     </template>
     <template v-else-if="item.type === 'checkbox_table'">
       <BigdataCheckboxTableField :params="item" v-on:change="updateValue($event)"></BigdataCheckboxTableField>
+    </template>
+    <template v-else-if="item.type === 'file'">
+      <BigdataFileUploadField :params="item" v-on:change="updateValue($event)"></BigdataFileUploadField>
     </template>
     <div v-if="error" class="text-danger error" v-html="showError(error)"></div>
   </div>
@@ -126,6 +131,7 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'vue-select/dist/vue-select.css'
 import BigdataTableField from './fields/Table'
 import BigdataCheckboxTableField from './fields/CheckboxTable'
+import BigdataFileUploadField from './fields/FileUpload'
 import {bdFormActions} from '@store/helpers'
 
 export default {
@@ -134,9 +140,11 @@ export default {
     Treeselect,
     vSelect,
     BigdataTableField,
+    BigdataFileUploadField,
     BigdataCheckboxTableField
   },
   props: [
+    'id',
     'item',
     'value',
     'error'
@@ -157,6 +165,9 @@ export default {
   watch: {
     value(newValue) {
       this.formatedValue = this.getFormatedValue(newValue)
+    },
+    dict(newValue) {
+      this.formatedValue = this.getFormatedValue(this.value)
     }
   },
   mounted() {
@@ -188,9 +199,11 @@ export default {
     },
     getFormatedValue(value) {
       if (this.item.type === 'dict') {
+
         if (this.dict === null) return {}
 
         let selected = this.dict.find(item => item.id === value) || {id: null, name: null}
+
         return {
           id: selected.id,
           name: selected.name,
@@ -231,6 +244,10 @@ export default {
 <style lang="scss">
 .bd-form-field {
   max-width: 600px;
+
+  &_table {
+    max-width: 100%;
+  }
 
 
   input.form-control {
