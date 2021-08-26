@@ -51,7 +51,7 @@ class ExcelFormController extends Controller
     {
         $date = Carbon::yesterday('Asia/Almaty');
 
-        if ($request->boolean('isCorrected') === true) {
+        if ($request->boolean('isCorrected')) {
             $date = Carbon::parse($request->date)->addDays(1);
         }
 
