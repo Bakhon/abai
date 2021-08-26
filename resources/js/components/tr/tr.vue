@@ -177,10 +177,10 @@
           </div>   
           <a v-show="false" v-if="isEdit"></a>
             <div class="tr_icons_block">
-              <button v-on:click="dropAllFilters" class="reset_all_filters"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- <button v-on:click="dropAllFilters" class="reset_all_filters"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 <path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
-</svg>{{trans('tr.reset_filters')}}</button>
+</svg>{{trans('tr.reset_filters')}}</button> -->
               <modal name="add_well" :width="1600" :height="400"  :adaptive="true" style="z-index:9900000; ">
                 <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
                   <notifications position="top"></notifications>
