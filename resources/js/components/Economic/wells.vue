@@ -1,21 +1,23 @@
 <template>
   <div>
-    <div class="p-3 bg-main1 mb-3 mx-auto" style="max-width: 400px">
-      <div>
+    <div class="p-3 bg-main1 mb-3 mx-auto">
+      <div class="d-flex">
         <select-interval
             :form="form"
-            class="mb-3"
+            class="ml-3"
+            style="width: 400px"
             @change="getData"/>
 
         <select-organization
             :form="form"
-            class="mb-3"
+            class="ml-3"
             @change="getData"/>
 
         <select-field
             v-if="form.org_id"
             :org_id="form.org_id"
             :form="form"
+            class="ml-3"
             @change="getData"/>
       </div>
 
@@ -83,10 +85,12 @@ export default {
     ...globalloadingState(['loading']),
 
     tabs() {
+      let dimension = `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge')}`
+
       return [
-        this.trans('economic_reference.Revenue'),
-        this.trans('economic_reference.costs'),
-        this.trans('economic_reference.operating_profit'),
+        `${this.trans('economic_reference.Revenue')}, ${dimension}`,
+        `${this.trans('economic_reference.costs')}, ${dimension}`,
+        `${this.trans('economic_reference.operating_profit')}, ${dimension}`,
       ]
     },
   },

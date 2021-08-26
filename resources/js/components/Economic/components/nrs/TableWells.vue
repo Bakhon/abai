@@ -59,7 +59,6 @@ export default {
     },
 
     tableData() {
-      let dimension = this.trans('economic_reference.thousand')
 
       return this.uwis.map(uwi => {
         let data = [uwi]
@@ -72,7 +71,7 @@ export default {
               : ''
 
           let label = value
-              ? `${(value / 1000).toFixed(1)} ${dimension}`
+              ? (value / 1000).toFixed(1)
               : value
 
           let color = value && value > 0 ? '#13B062' : '#AB130E'
