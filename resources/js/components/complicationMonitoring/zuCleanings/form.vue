@@ -58,12 +58,26 @@
           <textarea v-model="formFields.reason" type="text" name="reason" class="form-control" placeholder="">
         </textarea>
         </div>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-4">       
+        <div class="form-label-group">
+          <label>{{ trans('monitoring.zu_cleanings.failure_reason') }}</label>
+          <textarea v-model="formFields.reason" type="text" name="reason" class="form-control" placeholder="">
+        </textarea>
+        </div>
+    </div>    
+    <div class="col-xs-12 col-sm-4 col-md-4">       
+        <div class="form-label-group">
+          <label>{{ trans('monitoring.zu_cleanings.repair_period') }}</label>
+          <textarea v-model="formFields.reason" type="text" name="reason" class="form-control" placeholder="">
+        </textarea>
+        </div>
+    </div>    
       <div class="col-xs-12 col-sm-12 col-md-12 text-center">
         <button type="submit" :disabled="!formFields.date" @click.prevent="submitForm" class="btn btn-success">
           {{ trans('app.save') }}
         </button>
       </div>
-    </div>
     </div>
 </template>
 

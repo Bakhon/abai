@@ -82,10 +82,8 @@ return array (
   'calc_local_corrosion_speed' => 'Есептік жергілікті коррозия жылдамдығы',
   'table' => 
   array (
-    'export_excel' => 'Еxcel-ге шығару',
     'reset_filter' => 'Фильтрді ауыстыру',
     'export_error' => 'Экспорт қателігі',
-    'management' => 'Басқару',
   ),
   'selection_node' => 'Алу торабы',
   'omgca' => 
