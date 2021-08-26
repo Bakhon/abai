@@ -83,5 +83,32 @@ export default {
                 return (item.dzo_name === dzoName);
             })
         },
+
+        async getChartData(workFields,idleFields,periodStart,periodEnd) {
+            let uri = this.localeUrl("/get-fond-daily-chart");
+            let queryOptions = {
+                startPeriod: periodStart,
+                endPeriod: periodEnd,
+                workFields: workFields,
+                idleFields: idleFields
+            };
+            const response = await axios.get(uri,{params:queryOptions});
+            if (response.status !== 200) {
+                return {};
+            }
+            return response.data;
+        },
+
+        getSumOfFond(input,workFields,idleFields,filter) {
+            let fonds = workFields;
+            if (this.fondsFilter[filter]) {
+                fonds = idleFields;
+            }
+            let result = {};
+            _.forEach(fonds, (fondName) => {
+                result[fondName] = _.sumBy(input,fondName);
+            });
+            return result;
+        },
     }
 }

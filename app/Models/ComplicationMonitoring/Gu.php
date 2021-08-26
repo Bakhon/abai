@@ -66,9 +66,11 @@ class Gu extends Model
             'bsw',
             'pump_discharge_pressure',
             'heater_output_temperature',
-            'editable',
             'daily_gas_production_in_sib',
-            'surge_tank_pressure'
+            'surge_tank_pressure',
+            'sg_oil',
+            'sg_gas',
+            'sg_water'
         );
     }
 
