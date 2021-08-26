@@ -200,6 +200,11 @@ Route::group(
                 Route::get('/reverse-calc', 'ComplicationMonitoring\ReverseCalculationController@index')->name('reverse_calculation.index');
                 Route::get('/reverse-calc/calculate', 'ComplicationMonitoring\ReverseCalculationController@calculate')->name('reverse_calculation.calculate');
 
+                Route::get('/manual-reverse-calc/list', 'ComplicationMonitoring\ManualReverseCalc@list')->name('manual_reverse_calculation.list');
+                Route::get('/manual-reverse-calc', 'ComplicationMonitoring\ManualReverseCalc@index')->name('manual_reverse_calculation.index');
+                Route::get('/manual-reverse-calc/calculate', 'ComplicationMonitoring\ManualReverseCalc@calculate')->name('manual_reverse_calculation.calculate');
+                Route::get('/manual-reverse-calc/test', 'ComplicationMonitoring\ManualReverseCalc@getPrepairedData');
+
                 Route::get('economical-effect/list', 'ComplicationMonitoring\EconomicalEffectController@list')->name(
                     'economical_effect.list'
                 );

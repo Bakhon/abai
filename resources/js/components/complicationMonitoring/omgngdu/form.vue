@@ -198,7 +198,6 @@ import {Datetime} from 'vue-datetime'
 import moment from 'moment'
 import 'vue-datetime/dist/vue-datetime.css'
 import {globalloadingMutations} from '@store/helpers';
-;
 
 Vue.use(Datetime)
 

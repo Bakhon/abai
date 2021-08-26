@@ -656,6 +656,7 @@ export default {
     },
     onCreate(option) {
       //pipe start point
+      console.log('option', option);
       if (option.editMode == 'pipe') {
         this.startNewPipe(option);
       } else {
@@ -668,6 +669,7 @@ export default {
         between_points: option.mapObject.type == 'zu' ? 'zu-gu' : 'well-zu',
         name: '',
         coords: [],
+        start_point: option.mapObject.object.name
       };
 
       if (option.mapObject.type == 'zu') {
@@ -1183,6 +1185,7 @@ export default {
             this.pipeObject.gu_id = info.object.gu_id;
           }
 
+          this.pipeObject.end_point =  info.object.name;
           this.pipeObject.ngdu_id = info.object.ngdu_id;
 
           this.renderPipe();
