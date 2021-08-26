@@ -453,7 +453,7 @@ class VisualCenterController extends Controller
     public function getEmergencyHistory(Request $request)
     {
         $emergencySituations = EmergencyHistory::query()
-            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description','approved','approve_date')
+            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description','approved',DB::raw('DATE_FORMAT(approve_date,"%d.%m.%Y %H:%i:%s") as approve_date'))
             ->where('type',1)
             ->orderBy('id', 'desc')
             ->take(10);
