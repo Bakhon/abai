@@ -398,27 +398,27 @@ class EconomicNrsController extends Controller
             $builder->where('dpz', '=', $dpz);
         }
 
-        $result = $builder->groupBy()->data();
+        $wells = $builder->groupBy()->data();
 
-        $data = ['dates' => [], 'uwis' => []];
+        $wellsByDates = ['dates' => [], 'uwis' => []];
 
-        foreach ($result as &$item) {
-            $uwi = $item['uwi'];
+        foreach ($wells as &$well) {
+            $uwi = $well['uwi'];
 
-            $date = $item['dt'];
+            $date = $well['dt'];
 
-            $data['dates'][$date] = 1;
+            $wellsByDates['dates'][$date] = 1;
 
-            $data['uwis'][$uwi]['NetBack_bf_pr_exp'][$date] = $item['NetBack_bf_pr_exp'];
+            $wellsByDates['uwis'][$uwi]['NetBack_bf_pr_exp'][$date] = $well['NetBack_bf_pr_exp'];
 
-            $data['uwis'][$uwi]['Overall_expenditures'][$date] = $item['Overall_expenditures'];
+            $wellsByDates['uwis'][$uwi]['Overall_expenditures'][$date] = $well['Overall_expenditures'];
 
-            $data['uwis'][$uwi]['Operating_profit'][$date] =$item['Operating_profit'];
+            $wellsByDates['uwis'][$uwi]['Operating_profit'][$date] = $well['Operating_profit'];
         }
 
-        $data['dates'] = array_keys($data['dates']);
+        $wellsByDates['dates'] = array_keys($wellsByDates['dates']);
 
-        return $data;
+        return $wellsByDates;
     }
 
     public function exportData(EconomicNrsDataRequest $request)
