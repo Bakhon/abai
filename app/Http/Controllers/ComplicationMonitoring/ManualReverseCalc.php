@@ -152,7 +152,7 @@ class ManualReverseCalc extends CrudController
 
         foreach ($pipes as $key => $pipe) {
             if ($pipe->between_points == 'well-zu') {
-//                $pipe->load('well');
+                $pipe->load('well');
 
                 $query = OmgNGDUWell::where('well_id', $pipe->well_id);
 
