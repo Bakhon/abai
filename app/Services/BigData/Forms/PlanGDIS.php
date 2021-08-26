@@ -46,14 +46,14 @@ class PlanGDIS extends TableForm
             ];
             $columns[] = [
                 'code' => "date_{$date->format('m_Y')}_well_count",
-                'title' => 'скваж.',
+                'title' => trans('bd.forms.plan_g_d_i_s.well'),
                 'parent_column' => 'date_' . $date->format('m_Y'),
                 'type' => 'integer',
                 'is_editable' => true
             ];
             $columns[] = [
                 'code' => "date_{$date->format('m_Y')}_measure",
-                'title' => 'замер.',
+                'title' => trans('bd.forms.plan_g_d_i_s.measure'),
                 'parent_column' => 'date_' . $date->format('m_Y'),
                 'type' => 'integer',
                 'is_editable' => true
