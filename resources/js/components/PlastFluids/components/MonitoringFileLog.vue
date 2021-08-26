@@ -1,9 +1,25 @@
 <template>
   <div class="upload-status-log">
     <p class="upload-status-title">{{ trans("plast_fluids.download_log") }}</p>
-    <div class="log"></div>
+    <div class="log" ref="logDiv">
+      <template v-for="(sheetlog, ind) in fileLog">
+        <div v-if="sheetlog[1].length" :key="ind">
+          <p>{{ sheetlog[0] }}</p>
+          <div class="row-log">
+            <p v-for="(rowlog, index) in sheetlog[1]" :key="index">
+              {{ rowlog[Object.keys(rowlog)[0]] }}
+            </p>
+          </div>
+        </div>
+      </template>
+    </div>
     <div class="download-log-button">
-      <button>
+      <button
+        @click="downloadLog"
+        class="log-button"
+        :disabled="!fileLog"
+        :class="{ disabled: !fileLog }"
+      >
         Скачать лог загрузки
       </button>
     </div>
@@ -17,6 +33,19 @@ export default {
   name: "MonitoringFileLog",
   computed: {
     ...mapState("plastFluidsLocal", ["fileLog", "reportDuplicated"]),
+  },
+  methods: {
+    downloadLog() {
+      const blob = new Blob(
+        [`<html><body>${this.$refs.logDiv.outerHTML}</body></html>`],
+        { type: "text/html" }
+      );
+      let link = document.createElement("a");
+
+      link.download = this.trans("plast_fluids.download_log");
+      link.href = URL.createObjectURL(blob);
+      link.click();
+    },
   },
 };
 </script>
@@ -42,8 +71,24 @@ export default {
   background-color: #313560;
   border-radius: 4px;
   height: 100%;
-  flex: 1 1 auto;
+  flex: 1 1 0;
   padding: 14px;
+  overflow-y: auto;
+}
+
+.log > div {
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.log > div > p {
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.row-log > p {
+  font-size: 14px;
+  margin: 8px 0;
 }
 
 .download-log-button {
@@ -55,7 +100,7 @@ export default {
   margin: 14px 0;
 }
 
-.download-log-button > button {
+.log-button {
   height: 100%;
   background-color: #3366ff;
   font-size: 14px;
@@ -65,5 +110,24 @@ export default {
   border-radius: 4px;
   padding: 6px 18px;
   border: none;
+}
+
+.disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #272953;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #656a8a;
 }
 </style>

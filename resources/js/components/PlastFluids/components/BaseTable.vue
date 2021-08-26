@@ -21,10 +21,12 @@
                     <img
                       src="/img/PlastFluids/tableFilterArrow.svg"
                       alt="filter new first"
+                      @click="emitArrowFilter(heading.key, 'up')"
                     />
                     <img
                       src="/img/PlastFluids/tableFilterArrow.svg"
                       alt="filter old first"
+                      @click="emitArrowFilter(heading.key, 'down')"
                     />
                   </div>
                 </div>
@@ -91,10 +93,19 @@ export default {
       perPage: 30,
     };
   },
-  computed: {
-    dataItems() {
-      return this.items.slice(0, this.perPage);
+  watch: {
+    perPage: {
+      handler(val) {
+        this.$emit("show-items-per-page", Number(val));
+      },
     },
+  },
+  methods: {
+    emitArrowFilter(key, type) {
+      this.$emit("sort-by-arrow-filter", { key, type });
+    },
+  },
+  computed: {
     computedFields() {
       const keys = this.fields.map((field) => field.key);
       return keys;
@@ -114,6 +125,7 @@ td {
 table {
   width: 100%;
   position: relative;
+  font-size: 12px;
 }
 
 th {
@@ -163,7 +175,6 @@ td {
 
 .table-header-cell > p {
   margin: 0 10px;
-  font-size: 12px;
   text-align: center;
 }
 

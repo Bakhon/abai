@@ -6,6 +6,8 @@
     <BaseTable
       :fields="fields"
       :items="computedTableData"
+      @sort-by-arrow-filter="sortByKey"
+      @show-items-per-page="showItemsPerPage"
       pagination
       filter
       sticky
@@ -28,31 +30,31 @@ export default {
       fields: [
         {
           key: "upload_datetime",
-          name: "Дата загрузки",
+          name: this.trans("plast_fluids.upload_date"),
         },
         {
           key: "author",
-          name: "Автор загрузки",
+          name: this.trans("plast_fluids.download_author"),
         },
         {
           key: "subsoil_user",
-          name: "Недропользователь",
+          name: this.trans("plast_fluids.subsurface_user"),
         },
         {
           key: "oil_field",
-          name: "Месторождение",
+          name: this.trans("plast_fluids.field"),
         },
         {
           key: "selection_date_start",
-          name: "Дата отбора начало",
+          name: this.trans("plast_fluids.selection_date_start"),
         },
         {
           key: "selection_date_end",
-          name: "Дата отбора конец",
+          name: this.trans("plast_fluids.selection_date_end"),
         },
         {
           key: "template_type",
-          name: "Тип данных",
+          name: this.trans("plast_fluids.data_type"),
         },
       ],
       items: [],
@@ -81,10 +83,26 @@ export default {
     },
   },
   methods: {
-    async handleTemplateHistory() {
+    showItemsPerPage(val) {
+      this.tableDataFilterOptions = {
+        ...this.tableDataFilterOptions,
+        row_on_page: val,
+      };
+      this.handleTemplateHistory();
+    },
+    sortByKey({ key, type }) {
+      const copyTableDataFilterOptions = {
+        ...this.tableDataFilterOptions,
+        [key]: type === "up" ? "Up" : "Down",
+      };
+      this.handleTemplateHistory(copyTableDataFilterOptions);
+    },
+    async handleTemplateHistory(
+      tableDataFilters = this.tableDataFilterOptions
+    ) {
       const postData = new FormData();
-      for (let key in this.tableDataFilterOptions) {
-        postData.append(key, this.tableDataFilterOptions[key]);
+      for (let key in tableDataFilters) {
+        postData.append(key, tableDataFilters[key]);
       }
       const responseData = await getTemplateHistory(postData);
       this.items = responseData.data;

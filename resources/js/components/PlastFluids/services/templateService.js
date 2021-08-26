@@ -34,7 +34,9 @@ export const uploadTemplate = async (postData) => {
     );
     return response.data;
   } catch (error) {
-    return error.response.data;
+    if (error.response.status === 409 && error.response.data.Template)
+      return error.response.data;
+    throw error;
   }
 };
 
