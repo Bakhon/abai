@@ -9,19 +9,20 @@
           :class="index ? 'ml-2' : ''"
           class="col"
           @click.native="activeTab = index"/>
+
+      <chart-button
+          :text="trans('economic_reference.matrix')"
+          class="ml-2 col"
+          @click.native="openMatrix"/>
     </div>
 
-    <div
-        v-for="(tab, index) in tabs"
-        v-show="activeTab === index"
-        :key="tab"
-        class="mt-3 w-100">
+    <div class="mt-3 w-100">
       <h5 class="subtitle text-wrap">
-        {{ tab }}
+        {{ tabs[activeTab] }}
       </h5>
 
       <chart-with-profitability
-          v-if="index === 0"
+          v-if="activeTab === 0"
           :data="charts.profitability"
           :paused-data="charts.pausedProfitability"
           :granularity="granularity"
@@ -32,7 +33,7 @@
           class="bg-economic-chart"/>
 
       <chart-with-oil-production
-          v-if="index === 1"
+          v-if="activeTab === 1"
           :data="charts.oilProduction"
           :granularity="granularity"
           :profitability="profitability"
@@ -43,7 +44,7 @@
           class="bg-economic-chart"/>
 
       <chart-with-operating-profit-top
-          v-else-if="index === 2"
+          v-else-if="activeTab === 2"
           :data="charts.operatingProfitTop"
           :granularity="granularity"
           :profitability="profitability"
@@ -52,7 +53,7 @@
           class="bg-economic-chart"/>
 
       <chart-with-liquid-production
-          v-else-if="index === 3"
+          v-else-if="activeTab === 3"
           :data="charts.liquidProduction"
           :granularity="granularity"
           :profitability="profitability"
@@ -64,7 +65,7 @@
 </template>
 
 <script>
-import ChartButton from "./ChartButton";
+import ChartButton from "../ChartButton";
 import ChartWithProfitability from "./ChartWithProfitability";
 import ChartWithOilProduction from "./ChartWithOilProduction";
 import ChartWithOperatingProfitTop from "./ChartWithOperatingProfitTop";
@@ -145,6 +146,11 @@ export default {
 
       return data
     },
+  },
+  methods: {
+    openMatrix() {
+      window.open(this.localeUrl('/economic/nrs/wells'), '_blank')
+    }
   }
 }
 </script>

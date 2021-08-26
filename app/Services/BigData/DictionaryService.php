@@ -19,6 +19,7 @@ use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
 use App\Models\BigData\Dictionaries\GdisConclusion;
+use App\Models\BigData\Dictionaries\ExplTypePlanGDIS;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
 use App\Models\BigData\Dictionaries\GeoRockType;
@@ -37,6 +38,7 @@ use App\Models\BigData\Dictionaries\PatronType;
 use App\Models\BigData\Dictionaries\PerforatorType;
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Dictionaries\PlanGISType;
+use App\Models\BigData\Dictionaries\ProcedTypePlanGDIS;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\ReasonEquipFail;
 use App\Models\BigData\Dictionaries\RepairWorkType;
@@ -272,6 +274,10 @@ class DictionaryService
         'plan_gis_type' => [
             'class' => PlanGISType::class,
             'name_field' => 'name'
+        ],
+        'proced_type_plan_gdis' => [
+            'class' => ProcedTypePlanGDIS::class,
+            'name_field' => 'name'
         ]
     ];
 
@@ -283,6 +289,11 @@ class DictionaryService
         'techs' => [
             'class' => Tech::class,
             'name_field' => 'name_ru'
+        ],
+        'expl_type_plan_gdis' => [
+            'class' => ExplTypePlanGDIS::class,
+            'name_field' => 'name',
+            'parent_field' => 'parent_id'
         ]
     ];
 
@@ -450,9 +461,10 @@ class DictionaryService
     {
         $dictClass = self::TREE_DICTIONARIES[$dict]['class'];
         $nameField = self::TREE_DICTIONARIES[$dict]['name_field'] ?? 'name';
+        $parentField = self::TREE_DICTIONARIES[$dict]['parent_field'] ?? 'parent';
 
         $items = $dictClass::query()
-            ->select('id', 'parent')
+            ->select('id', "$parentField as parent")
             ->selectRaw("$nameField as label")
             ->orderBy('parent', 'asc')
             ->orderBy($nameField, 'asc')

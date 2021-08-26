@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\EconomicNrsDataRequest;
+use App\Http\Requests\Economic\EconomicNrsWellsRequest;
 use App\Jobs\ExportEconomicDataToExcel;
 use App\Models\OilRate;
 use App\Models\Refs\Org;
@@ -19,10 +20,6 @@ class EconomicNrsController extends Controller
 {
     protected $druidClient;
     protected $structureService;
-
-    const INTERVAL_LAST_YEAR = '2020-01-01T00:00:00/2021-01-01T00:00:00';
-    const INTERVAL_LAST_MONTH = '2020-12-01T00:00:00/2021-01-01T00:00:00';
-    const INTERVAL_LAST_2_MONTHS = '2020-11-01T00:00:00/2021-01-01T00:00:00';
 
     const DATA_SOURCE = 'economic_nrs_total_v3';
 
@@ -43,19 +40,19 @@ class EconomicNrsController extends Controller
 
     const OPERATING_PROFIT_TOP_LIMIT = 10;
 
-    const BUILDER_SUM_OPERATING_PROFIT_AND_PRS1_LAST_YEAR = 'builder1';
-    const BUILDER_SUM_OPERATING_PROFIT_AND_COUNT_UWI_LAST_2_MONTHS = 'builder2';
-    const BUILDER_SUM_OPERATING_PROFIT_TOP_LAST_YEAR = 'builder7';
-    const BUILDER_OIL_PRODUCTION = 'builder8';
-    const BUILDER_SUM_LAST_2_MONTHS = 'builder9';
+    const BUILDERS = [
+        'sum_year_operating_profit_and_prs' => '$builderSumYearOperatingProfitAndPrs',
+        'sum_month_operating_profit_and_count_uwi' => '$builderSumMonthOperatingProfitAndCountUwi',
+        'sum_year_top_by_operating_profit' => '$builderSumYearTopByOperatingProfit',
+        'oil_production' => '$builderOilProduction',
+        'production_expenditures' => '$builderProductionExpenditures',
+    ];
 
     const DOLLAR_RATES_URL = 'https://www.nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut/report';
 
     public function __construct(DruidClient $druidClient, StructureService $structureService)
     {
-        $this
-            ->middleware('can:economic view main')
-            ->only('index', 'getData', 'exportData');
+        $this->middleware('can:economic view main');
 
         $this->druidClient = $druidClient;
 
@@ -65,6 +62,11 @@ class EconomicNrsController extends Controller
     public function index()
     {
         return view('economic.nrs');
+    }
+
+    public function indexWells()
+    {
+        return view('economic.nrs_wells');
     }
 
     public function getData(EconomicNrsDataRequest $request): array
@@ -92,14 +94,14 @@ class EconomicNrsController extends Controller
         $profitabilityType = $request->profitability;
         list($profitabilities, $profitless) = self::getProfitabilities($profitabilityType);
 
-        $builder1 = $this
+        $builderSumYearOperatingProfitAndPrs = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
             ->interval($intervalYear)
             ->longSum("prs1")
             ->sum("Operating_profit");
 
-        $builder2 = $this
+        $builderSumMonthOperatingProfitAndCountUwi = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
             ->interval($intervalMonths)
@@ -107,8 +109,8 @@ class EconomicNrsController extends Controller
             ->distinctCount('uwi');
 
         $buildersProfitability = [
-            $builder1,
-            $builder2,
+            $builderSumYearOperatingProfitAndPrs,
+            $builderSumMonthOperatingProfitAndCountUwi,
         ];
 
         foreach ($buildersProfitability as &$builder) {
@@ -116,7 +118,7 @@ class EconomicNrsController extends Controller
             $builder->where($profitabilityType, '=', $profitless);
         }
 
-        $builder7 = $this
+        $builderSumYearTopByOperatingProfit = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
             ->interval($intervalMonths)
@@ -126,7 +128,7 @@ class EconomicNrsController extends Controller
             ->where('status', '=', self::STATUS_ACTIVE)
             ->orderBy('Operating_profit', 'desc');
 
-        $builder8 = $this
+        $builderOilProduction = $this
             ->druidClient
             ->query(self::DATA_SOURCE, $granularity)
             ->interval($intervalMonths)
@@ -140,7 +142,7 @@ class EconomicNrsController extends Controller
             ->count('uwi')
             ->where('status', '=', self::STATUS_ACTIVE);
 
-        $builder9 = $this
+        $builderProductionExpenditures = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
             ->interval($intervalMonths);
@@ -155,7 +157,7 @@ class EconomicNrsController extends Controller
         ];
 
         foreach ($sumKeys as $sumKey) {
-            $builder9->sum($sumKey);
+            $builderProductionExpenditures->sum($sumKey);
         }
 
         $buildersProfitabilityCount = [];
@@ -179,13 +181,12 @@ class EconomicNrsController extends Controller
                 ->whereIn($column, $profitabilities);
         }
 
-
         $builders = [
-            self::BUILDER_SUM_OPERATING_PROFIT_AND_PRS1_LAST_YEAR => $builder1,
-            self::BUILDER_SUM_OPERATING_PROFIT_AND_COUNT_UWI_LAST_2_MONTHS => $builder2,
-            self::BUILDER_SUM_OPERATING_PROFIT_TOP_LAST_YEAR => $builder7,
-            self::BUILDER_OIL_PRODUCTION => $builder8,
-            self::BUILDER_SUM_LAST_2_MONTHS => $builder9,
+            self::BUILDERS['sum_month_operating_profit_and_count_uwi'] => $builderSumMonthOperatingProfitAndCountUwi,
+            self::BUILDERS['sum_year_operating_profit_and_prs'] => $builderSumYearOperatingProfitAndPrs,
+            self::BUILDERS['sum_year_top_by_operating_profit'] => $builderSumYearTopByOperatingProfit,
+            self::BUILDERS['oil_production'] => $builderOilProduction,
+            self::BUILDERS['production_expenditures'] => $builderProductionExpenditures,
         ];
 
         foreach ($buildersProfitabilityCount as $key => $builder) {
@@ -210,9 +211,9 @@ class EconomicNrsController extends Controller
 
         foreach ($builders as $key => &$builder) {
             $timeseries = [
-                self::BUILDER_SUM_OPERATING_PROFIT_AND_COUNT_UWI_LAST_2_MONTHS,
-                self::BUILDER_SUM_OPERATING_PROFIT_AND_PRS1_LAST_YEAR,
-                self::BUILDER_SUM_LAST_2_MONTHS
+                self::BUILDERS['sum_month_operating_profit_and_count_uwi'],
+                self::BUILDERS['sum_year_operating_profit_and_prs'],
+                self::BUILDERS['production_expenditures'],
             ];
 
             $result[$key] = in_array($key, $timeseries)
@@ -236,29 +237,29 @@ class EconomicNrsController extends Controller
         ];
 
         $operatingProfitTopHighest = array_slice(
-            $result[self::BUILDER_SUM_OPERATING_PROFIT_TOP_LAST_YEAR],
+            $result[self::BUILDERS['sum_year_top_by_operating_profit']],
             0,
             self::OPERATING_PROFIT_TOP_LIMIT
         );
 
         $operatingProfitTopLowest = array_reverse(array_slice(
-            $result[self::BUILDER_SUM_OPERATING_PROFIT_TOP_LAST_YEAR],
+            $result[self::BUILDERS['sum_year_top_by_operating_profit']],
             -self::OPERATING_PROFIT_TOP_LIMIT,
             self::OPERATING_PROFIT_TOP_LIMIT
         ));
 
-        $result[self::BUILDER_SUM_OPERATING_PROFIT_TOP_LAST_YEAR] = array_merge(
+        $result[self::BUILDERS['sum_year_top_by_operating_profit']] = array_merge(
             $operatingProfitTopLowest,
             $operatingProfitTopHighest
         );
 
-        foreach ($result[self::BUILDER_SUM_OPERATING_PROFIT_TOP_LAST_YEAR] as &$item) {
+        foreach ($result[self::BUILDERS['sum_year_top_by_operating_profit']] as &$item) {
             $dataWithOperatingProfitTop['uwi'][] = $item['uwi'];
 
             $dataWithOperatingProfitTop['Operating_profit'][] = $item['Operating_profit'] / 1000;
         }
 
-        foreach ($result[self::BUILDER_OIL_PRODUCTION] as &$item) {
+        foreach ($result[self::BUILDERS['oil_production']] as &$item) {
             $dataWithOilProduction['dt'][$item['dt']] = 1;
 
             $dataWithOilProduction[$item[$profitabilityType]][] = $item['oil'] / 1000;
@@ -295,10 +296,12 @@ class EconomicNrsController extends Controller
 
         $dataWithPausedProfitability['dt'] = array_keys($dataWithPausedProfitability['dt']);
 
-        $monthsCount = count($result[self::BUILDER_SUM_OPERATING_PROFIT_AND_COUNT_UWI_LAST_2_MONTHS]);
+        $monthOperatingProfitAndCountUwi = $result[self::BUILDERS['sum_month_operating_profit_and_count_uwi']];
 
-        $lastMonth = $result[self::BUILDER_SUM_OPERATING_PROFIT_AND_COUNT_UWI_LAST_2_MONTHS][$monthsCount - 1];
-        $prevMonth = $result[self::BUILDER_SUM_OPERATING_PROFIT_AND_COUNT_UWI_LAST_2_MONTHS][$monthsCount - 2];
+        $monthsCount = count($monthOperatingProfitAndCountUwi);
+
+        $lastMonth = $monthOperatingProfitAndCountUwi[$monthsCount - 1];
+        $prevMonth = $monthOperatingProfitAndCountUwi[$monthsCount - 2];
 
         $resLastMonth = [
             'Operating_profit' => [
@@ -317,12 +320,14 @@ class EconomicNrsController extends Controller
             ]
         ];
 
-        $monthsCount = count($result[self::BUILDER_SUM_LAST_2_MONTHS]);
+        $productionExpenditures = $result[self::BUILDERS['production_expenditures']];
+
+        $monthsCount = count($productionExpenditures);
 
         foreach ($sumKeys as $sumKey) {
-            $lastMonth = $result[self::BUILDER_SUM_LAST_2_MONTHS][$monthsCount - 1][$sumKey];
+            $lastMonth = $productionExpenditures[$monthsCount - 1][$sumKey];
 
-            $prevMonth = $result[self::BUILDER_SUM_LAST_2_MONTHS][$monthsCount - 2][$sumKey];
+            $prevMonth = $productionExpenditures[$monthsCount - 2][$sumKey];
 
             $resLastMonth[$sumKey] = [
                 'sum' => [
@@ -333,16 +338,17 @@ class EconomicNrsController extends Controller
             ];
         }
 
+
         return [
             'lastYear' => [
                 'Operating_profit' => [
                     'sum' => [
-                        'value' => self::formatMoney($result[self::BUILDER_SUM_OPERATING_PROFIT_AND_PRS1_LAST_YEAR][0]["Operating_profit"])
+                        'value' => self::formatMoney($result[self::BUILDERS['sum_year_operating_profit_and_prs']][0]["Operating_profit"])
                     ],
                 ],
                 'prs1' => [
                     'count' => [
-                        'value' => round($result[self::BUILDER_SUM_OPERATING_PROFIT_AND_PRS1_LAST_YEAR][0]["prs1"])
+                        'value' => round($result[self::BUILDERS['sum_year_operating_profit_and_prs']][0]["prs1"])
                     ]
                 ]
             ],
@@ -357,6 +363,66 @@ class EconomicNrsController extends Controller
             'oilPrices' => self::getOilPrices($intervalMonthsStart, $intervalMonthsEnd),
             'dollarRates' => self::getDollarRates($intervalMonthsStart, $intervalMonthsEnd),
         ];
+    }
+
+    public function getWells(EconomicNrsWellsRequest $request): array
+    {
+        $org = self::getOrg($request->org_id, $this->structureService);
+
+        $dpz = $request->field_id
+            ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
+            : null;
+
+        /** @var Carbon $intervalStart */
+        /** @var Carbon $intervalEnd */
+        list($intervalStart, $intervalEnd) = self::calcIntervalMonthsStartEnd(
+            $request->interval_start,
+            $request->interval_end
+        );
+
+        $interval = self::formatInterval($intervalStart->copy(), $intervalEnd->copy());
+
+        $builder = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::DAY)
+            ->interval($interval)
+            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) {
+                $extBuilder->timeFormat(self::GRANULARITY_DAILY_FORMAT);
+            })
+            ->select("uwi")
+            ->sum("Operating_profit")
+            ->sum("Overall_expenditures")
+            ->sum("NetBack_bf_pr_exp");
+
+        if ($org->druid_id) {
+            $builder->where('org_id2', '=', $org->druid_id);
+        }
+
+        if ($dpz) {
+            $builder->where('dpz', '=', $dpz);
+        }
+
+        $wells = $builder->groupBy()->data();
+
+        $wellsByDates = ['dates' => [], 'uwis' => []];
+
+        foreach ($wells as &$well) {
+            $uwi = $well['uwi'];
+
+            $date = $well['dt'];
+
+            $wellsByDates['dates'][$date] = 1;
+
+            $wellsByDates['uwis'][$uwi]['NetBack_bf_pr_exp'][$date] = $well['NetBack_bf_pr_exp'];
+
+            $wellsByDates['uwis'][$uwi]['Overall_expenditures'][$date] = $well['Overall_expenditures'];
+
+            $wellsByDates['uwis'][$uwi]['Operating_profit'][$date] = $well['Operating_profit'];
+        }
+
+        $wellsByDates['dates'] = array_keys($wellsByDates['dates']);
+
+        return $wellsByDates;
     }
 
     public function exportData(EconomicNrsDataRequest $request)

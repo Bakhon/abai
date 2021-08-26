@@ -54,10 +54,10 @@
                   <a :href="row[column.code].href">{{ row[column.code].name }}</a>
                 </template>
                 <template v-else-if="column.type === 'label'">
-                  <label>{{ row[column.code].name }}</label>
+                  <label v-html="row[column.code].name"></label>
                 </template>
                 <template v-else-if="column.type === 'calc'">
-                  <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                  <span class="value" v-html="row[column.code] ? row[column.code].value : ''"></span>
                 </template>
                 <template v-else-if="column.type === 'copy'">
                   <input
@@ -298,6 +298,12 @@ export default {
             this.rows = data.rows
             if (data.columns) {
               this.formParams.columns = data.columns
+            }
+            if (data.merge_columns) {
+              this.formParams.merge_columns = data.merge_columns
+            }
+            if (data.complicated_header) {
+              this.formParams.complicated_header = data.complicated_header
             }
             this.recalculateCells()
             this.loadEditHistory()
@@ -627,7 +633,7 @@ body.fixed {
       width: 100%;
     }
 
-    th {
+    thead {
       position: sticky;
       top: 0;
       z-index: 10;

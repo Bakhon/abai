@@ -974,6 +974,12 @@ return [
             'scraper_income' => 'Доход скребка, м',
             'data' => 'Дата',
         ],
+        'plan_g_d_i_s' => [
+            'date' => 'Дата с',
+            'date_to' => 'Дата по',
+            'well' => 'скваж.',
+            'measure' => 'замер.',
+        ],
         'plan_g_i_s' => [
             'name' => 'Наименование',
             'total_period' => 'Всего за период',
