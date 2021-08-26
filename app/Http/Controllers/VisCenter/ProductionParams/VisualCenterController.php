@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\DB;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\VisCenter\ExcelForm\DzoImportDowntimeReason;
 use App\Models\DzoPlan;
+use App\Traits\VisualCenter\OilCondensateConsolidated;
 use Carbon\Carbon;
 
 class VisualCenterController extends Controller
 {
+    use OilCondensateConsolidated;
     private $periodStart = '';
     private $periodEnd = '';
     private $periodRange = 0;
@@ -22,13 +24,13 @@ class VisualCenterController extends Controller
     private $filter = '';
     private $planFields = array('dzo');
     private $factFields = array('dzo_name');
-    private $chartData = array(
-        'series' => array(),
-        'labels' => array()
-    );
+    private $chartData = array();
+    private $tableData = array();
     private $factField = '';
     private $planField = '';
     private $opekField = '';
+    private $factCondensateField = '';
+    private $planCondensateField = '';
     private $isOpek = false;
     private $categoryMapping = array (
         'oilCondensateProduction' => array (
@@ -114,16 +116,18 @@ class VisualCenterController extends Controller
         $currentPeriodDzoPlan = $this->getDzoPlan($this->periodStart,$this->periodEnd);
         $historicalDzoFact = $this->getDzoFact($this->historicalPeriodStart,$this->historicalPeriodEnd);
         $historicalDzoPlan = $this->getDzoPlan($this->historicalPeriodStart,$this->historicalPeriodEnd);
-        $chartDataByDates = $this->getChartData($currentPeriodDzoFact,$currentPeriodDzoPlan);
-        //todo разбить на series и labels
-        dd($chartDataByDates);
+        if ($this->periodRange > 0) {
+            $this->chartData = $this->getChartData($currentPeriodDzoFact,$currentPeriodDzoPlan);
+        }
+        $this->tableData = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan);
+        dd($this->tableData);
     }
 
     private function refreshRequestParams($params)
     {
         $this->periodStart = Carbon::parse($params->get('periodStart'))->startOfDay();
         $this->periodEnd = Carbon::parse($params->get('periodEnd'))->endOfDay();
-        $this->periodRange = $params->get('periodRange');
+        $this->periodRange = (int)$params->get('periodRange');
         $this->historicalPeriodStart = Carbon::parse($params->get('historicalPeriodStart'))->startOfDay();
         $this->historicalPeriodEnd = Carbon::parse($params->get('historicalPeriodEnd'))->endOfDay();
         $this->dzoName = $params->get('dzoName');
@@ -147,7 +151,10 @@ class VisualCenterController extends Controller
         $this->planField = $this->$selectedCategory['planField'];
         $this->isOpek = $this->category === 'oilCondensateProduction' || $this->category === 'oilCondensateDelivery';
         if ($this->isOpek) {
+            $condensateCategory = $this->categoryMapping[$this->category][2];
             $this->opekField = $this->$selectedCategory['opekField'];
+            $this->factCondensateField = $this->$condensateCategory['factField'];
+            $this->planCondensateField = $this->$condensateCategory['planField'];
         }
     }
 
@@ -182,8 +189,9 @@ class VisualCenterController extends Controller
         $groupedFact = $fact->groupBy('date');
         $sum = array();
         foreach($groupedFact as $date => $dailyFact) {
+            $sum[$date]['time'] = Carbon::parse($date)->format('d.m.Y');
             $sum[$date]['fact'] = array_sum(array_column($dailyFact->toArray(),$this->factField));
-            $monthStartDate = Carbon::parse($date)->firstOfMonth()->format('d.m.Y');
+            $monthStartDate = Carbon::parse($date)->copy()->firstOfMonth()->format('d.m.Y');
             $planRecords = $plan->where('dates',$monthStartDate);
             $sum[$date]['plan'] = array_sum(array_column($planRecords->toArray(),$this->planField));
             if ($this->isOpek) {
@@ -191,5 +199,13 @@ class VisualCenterController extends Controller
             }
         }
         return $sum;
+    }
+    private function getTableData($fact,$plan)
+    {
+        $tableData = '';
+        if ($this->category === 'oilCondensateProduction' || $this->category === 'oilCondensateDelivery') {
+            $tableData = $this->getDataByConsolidatedCategory($fact,$plan);
+        }
+        return $tableData;
     }
 }
