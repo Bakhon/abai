@@ -268,7 +268,7 @@ class DictionaryService
             'class' => TechStateCasing::class,
             'name_field' => 'name_ru'
         ],
-        
+
     ];
 
     const TREE_DICTIONARIES = [
@@ -289,6 +289,45 @@ class DictionaryService
     public function __construct(Repository $cache)
     {
         $this->cache = $cache;
+    }
+
+    public function getWithPermissions(string $dict)
+    {
+        $dictionary = $this->get($dict);
+        if ($dict === 'orgs') {
+            return $this->getOrgDictionaryWithPermissions($dictionary);
+        }
+        return $dictionary;
+    }
+
+    private function getOrgDictionaryWithPermissions($dictionary)
+    {
+        $userSelectedTreeItems = collect(auth()->user()->org_structure)
+            ->filter(function ($item) {
+                list($type, $id) = explode(':', $item);
+                return $type === 'org';
+            })
+            ->map(function ($item) {
+                list($type, $id) = explode(':', $item);
+                return $id;
+            })
+            ->toArray();
+        $tree = $this->fillTree($dictionary, [], $userSelectedTreeItems);
+        return $tree;
+    }
+
+    public function fillTree($branch, $tree, $userSelectedTreeItems): array
+    {
+        foreach ($branch as $item) {
+            if (in_array($item['id'], $userSelectedTreeItems)) {
+                $tree[] = $item;
+                continue;
+            }
+            if (!empty($item['children'])) {
+                $tree = $this->fillTree($item['children'], $tree, $userSelectedTreeItems);
+            }
+        }
+        return $tree;
     }
 
     public function get(string $dict)
@@ -313,13 +352,13 @@ class DictionaryService
                     break;
                 case 'geo_type_hrz':
                     $dict = $this->getGeoHorizonDict();
-                    break; 
+                    break;
                 case 'reason_ref':
                     $dict = $this->getReasonTypeRefDict();
-                    break; 
+                    break;
                 case 'reason_rst':
                     $dict = $this->getReasonTypeRstDict();
-                    break;        
+                    break;
                     break;
                 case 'reason_type_rtr':
                     $dict = $this->getReasonTypeRtrDict();
@@ -515,28 +554,29 @@ class DictionaryService
             ->toArray();
 
         return $items;
-    }     
+    }
+
     private function getReasonTypeRefDict()
     {
         $items = DB::connection('tbd')
-        ->table('prod.well_workover as p')
-        ->select('r.id', 'r.name_ru as name')
-        ->where('rt.code', 'REF')
-        ->distinct()
-        ->orderBy('name', 'asc')
-        ->join('dict.reason as r', 'p.reason_equip_fail', 'r.id')
-        ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
-        ->get()
-        ->map(
-            function ($item) {
-                return (array)$item;
-            }
-        )
+            ->table('prod.well_workover as p')
+            ->select('r.id', 'r.name_ru as name')
+            ->where('rt.code', 'REF')
+            ->distinct()
+            ->orderBy('name', 'asc')
+            ->join('dict.reason as r', 'p.reason_equip_fail', 'r.id')
+            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
             ->toArray();
 
         return $items;
     }
-    
+
     private function getReasonTypeRstDict()
     {
         $items = DB::connection('tbd')
@@ -546,7 +586,7 @@ class DictionaryService
             ->distinct()
             ->orderBy('name', 'asc')
             ->join('dict.reason as r', 'p.stop_reason', 'r.id')
-            ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
+            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
             ->get()
             ->map(
                 function ($item) {
@@ -556,7 +596,8 @@ class DictionaryService
             ->toArray();
 
         return $items;
-    }     
+    }
+
     private function getReasonTypeRtrDict()
     {
         $items = DB::connection('tbd')
@@ -566,7 +607,7 @@ class DictionaryService
             ->distinct()
             ->orderBy('name', 'asc')
             ->join('dict.reason as r', 'p.reason', 'r.id')
-            ->join('dict.reason_type as rt', 'r.reason_type','rt.id')
+            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
             ->get()
             ->map(
                 function ($item) {
@@ -576,5 +617,5 @@ class DictionaryService
             ->toArray();
 
         return $items;
-    }     
+    }
 }
