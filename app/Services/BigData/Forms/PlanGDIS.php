@@ -95,27 +95,7 @@ class PlanGDIS extends TableForm
             ];
             if (!empty($item['rows'])) {
                 foreach ($item['rows'] as $treeRow) {
-                    $row = [
-                        'id' => $this->request->get('id'),
-                        'value' => ['name' => $treeRow->name]
-                    ];
-                    foreach ($dates as $date) {
-                        $rowData = $data
-                            ->where('month', $date->month)
-                            ->where('year', $date->year)
-                            ->where('expl_type_proced_type_plan_gdis', $treeRow->id)
-                            ->first();
-
-                        $row["date_{$date->format('m_Y')}_well_count"] = [
-                            'value' => $rowData ? $rowData->well_count : 0,
-                            'params' => ['expl_proced_type' => $treeRow->id]
-                        ];
-                        $row["date_{$date->format('m_Y')}_measure"] = [
-                            'value' => $rowData ? $rowData->measure : 0,
-                            'params' => ['expl_proced_type' => $treeRow->id]
-                        ];
-                    }
-                    $rows[] = $row;
+                    $rows[] = $this->addRow($treeRow, $dates, $data);
                 }
             }
 
@@ -124,6 +104,31 @@ class PlanGDIS extends TableForm
             }
             $this->fillRowsTree($item['children'], $rows, $dates, $data, $level + 1);
         }
+    }
+
+    private function addRow(\stdClass $treeRow, array $dates, Collection $data): array
+    {
+        $row = [
+            'id' => $this->request->get('id'),
+            'value' => ['name' => $treeRow->name]
+        ];
+        foreach ($dates as $date) {
+            $rowData = $data
+                ->where('month', $date->month)
+                ->where('year', $date->year)
+                ->where('expl_type_proced_type_plan_gdis', $treeRow->id)
+                ->first();
+
+            $row["date_{$date->format('m_Y')}_well_count"] = [
+                'value' => $rowData ? $rowData->well_count : 0,
+                'params' => ['expl_proced_type' => $treeRow->id]
+            ];
+            $row["date_{$date->format('m_Y')}_measure"] = [
+                'value' => $rowData ? $rowData->measure : 0,
+                'params' => ['expl_proced_type' => $treeRow->id]
+            ];
+        }
+        return $row;
     }
 
     private function getExplTree()
