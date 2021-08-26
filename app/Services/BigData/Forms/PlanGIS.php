@@ -163,7 +163,7 @@ class PlanGIS extends TableForm
             ->join(' + ');
     }
 
-    private function getRowData(\stdClass $filter, \stdClass $org, Collection $orgChildren): array
+    private function getRowData(\stdClass $filter, Org $org, Collection $orgChildren): array
     {
         $plans = DB::connection('tbd')
             ->table('prod.plan_gis')
@@ -185,30 +185,44 @@ class PlanGIS extends TableForm
             $dateTo = Carbon::parse($filter->date_to);
 
             while ($date < $dateTo) {
-                foreach ($orgChildren as $child) {
-                    $plan = $plans->where('month', $date->format('n'))
-                        ->where('year', $date->format('Y'))
-                        ->where('org', $child->id)
-                        ->where('plan_gis_type', $gisType['id'])
-                        ->first();
-
-                    $row["date_{$date->format('n_Y')}_" . $child->id] = ['value' => $plan ? $plan->count : null];
-                }
-
-                $plan = $plans->where('month', $date->format('n'))
-                    ->where('year', $date->format('Y'))
-                    ->where('org', $org->id)
-                    ->where('plan_gis_type', $gisType['id'])
-                    ->first();
-
-                $row["date_{$date->format('n_Y')}_" . $org->id] = ['value' => $plan ? $plan->count : null];
-
+                $row = array_merge(
+                    $row,
+                    $this->getPlansByDateAndOrg($org, $orgChildren, $plans, $date, $gisType['id'])
+                );
                 $date->addMonth();
             }
 
             $rows[] = $row;
         }
         return $rows;
+    }
+
+    private function getPlansByDateAndOrg(
+        Org $org,
+        Collection $orgChildren,
+        Collection $plans,
+        Carbon $date,
+        int $gisTypeId
+    ) {
+        $row = [];
+        foreach ($orgChildren as $child) {
+            $plan = $plans->where('month', $date->format('n'))
+                ->where('year', $date->format('Y'))
+                ->where('org', $child->id)
+                ->where('plan_gis_type', $gisTypeId)
+                ->first();
+
+            $row["date_{$date->format('n_Y')}_" . $child->id] = ['value' => $plan ? $plan->count : null];
+        }
+
+        $plan = $plans->where('month', $date->format('n'))
+            ->where('year', $date->format('Y'))
+            ->where('org', $org->id)
+            ->where('plan_gis_type', $gisTypeId)
+            ->first();
+
+        $row["date_{$date->format('n_Y')}_" . $org->id] = ['value' => $plan ? $plan->count : null];
+        return $row;
     }
 
     protected function saveSingleFieldInDB(array $params): void
