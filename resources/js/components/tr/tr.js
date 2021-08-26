@@ -515,6 +515,7 @@ export default {
                 } else {
                     console.log("No data");
                 }
+                this.isPermission = this.params.includes(this.permissionName);
             });
         // Пагинация таблицы
         this.axiosPage(this.pageNumberLink);
