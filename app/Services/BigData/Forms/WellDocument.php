@@ -126,6 +126,42 @@ class WellDocument extends PlainForm
 
                 $this->submittedData['fields'] = $data;
                 $this->submittedData['id'] = $id;
+
+                $existedFiles = DB::connection('tbd')
+                    ->table('prod.document_file')
+                    ->where('document', $id)
+                    ->get()
+                    ->map(function ($file) {
+                        return $file->file;
+                    })
+                    ->toArray();
+
+                foreach ($existedFiles as $existedFile) {
+                    if (in_array($existedFile, $files)) {
+                        continue;
+                    }
+                    DB::connection('tbd')
+                        ->table('prod.document_file')
+                        ->where('document', $id)
+                        ->where('file', $existedFile)
+                        ->delete();
+                }
+
+                if (!empty($files)) {
+                    foreach ($files as $file) {
+                        if (in_array($file, $existedFiles)) {
+                            continue;
+                        }
+                        DB::connection('tbd')
+                            ->table('prod.document_file')
+                            ->insert(
+                                [
+                                    'document' => $id,
+                                    'file' => $file
+                                ]
+                            );
+                    }
+                }
             } else {
                 if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
                     throw new \Exception("You don't have permissions");
@@ -141,7 +177,6 @@ class WellDocument extends PlainForm
                         ]
                     );
 
-                $files = json_decode($files);
                 if (!empty($files)) {
                     foreach ($files as $file) {
                         DB::connection('tbd')

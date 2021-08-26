@@ -43,6 +43,10 @@ export default {
       type: Object,
       required: true
     },
+    existedFiles: {
+      type: Array,
+      required: false
+    },
   },
   components: {
     VueUploadComponent
@@ -53,6 +57,13 @@ export default {
       fileInputName: 'file_input_' + Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5),
       files: []
     }
+  },
+  mounted() {
+    this.files = this.existedFiles.map(file => {
+      file.name = file.filename
+      file.exists = true
+      return file
+    })
   },
   watch: {
     files(val) {
