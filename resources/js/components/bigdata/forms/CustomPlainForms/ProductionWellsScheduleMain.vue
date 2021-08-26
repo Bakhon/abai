@@ -1,7 +1,10 @@
 <template>
     <div>
-        <ProductionWellsSchedule v-if="isScheduleVisible"
-             @changeScheduleVisible="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(true)"></ProductionWellsSchedule>
+        <ProductionWellsSchedule
+            v-if="isScheduleVisible"
+            :mainWell="{id: well.id, name: well.wellInfo.uwi}"
+             @changeScheduleVisible="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(true)"
+        ></ProductionWellsSchedule>
         <div v-else class="main-block w-100 px-2 py-3">
             <div class="d-flex justify-content-between">
                 <div>
@@ -174,6 +177,7 @@ import ProductionWellsSchedule from "./ProductionWellsSchedule";
 export default {
     components: {ProductionWellsSchedule},
     props: {
+        well: {},
         changeColumnsVisible: Function
     },
     data() {

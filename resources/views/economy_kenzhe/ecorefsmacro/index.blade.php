@@ -23,11 +23,12 @@
         </div>
     </div>
 
-    <div class="row justify-content-center" style="margin-top: 75px;">
+    <div class="row justify-content-center mt-5">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header ecorefs-header">
                     <a class="btn btn-success" href="{{ route('ecorefsmacro.create') }}">+</a>
+                    <div class="ecorefs-title">{{__('economic_reference.eco_refs_macro')}}</div>
                 </div>
                 <div class="card-body">
                     @if ($message = Session::get('success'))
@@ -61,7 +62,7 @@
                                         <a class="btn btn-primary" href="{{ route('ecorefsmacro.edit',$item->id) }}">{{__('app.edit')}}</a>
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" style="margin-top: 7px;">{{__('app.delete')}}</button>
+                                        <button type="submit" class="btn btn-danger mt-2">{{__('app.delete')}}</button>
                                     </form>
                                 </td>
                             </tr>
@@ -76,7 +77,5 @@
 @endsection
 
 <style>
-    .container-main {
-        overflow-x: auto;
-    }
+    @import "../../css/ecorefs.css";
 </style>

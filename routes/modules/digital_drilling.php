@@ -2,7 +2,7 @@
 Route::group(
     ['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()],
     function () {
-        Route::group(['prefix' => '/digital-drilling'], function () {
+        Route::group(['middleware' => 'auth', 'prefix' => '/digital-drilling'], function () {
 
             Route::group(['prefix' => '/'], function () {
                 Route::get('/',                 'DigitalDrilling\BDController@home')->name('digital-drilling');
