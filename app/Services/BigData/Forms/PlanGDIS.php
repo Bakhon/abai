@@ -81,13 +81,12 @@ class PlanGDIS extends TableForm
             ->get();
 
         $tree = $this->getExplTree();
-        $rows = [];
-        $this->fillRowsTree($tree, $rows, $dates, $data);
-        return $rows;
+        return $this->generateRowsTree($tree, $dates, $data);
     }
 
-    private function fillRowsTree(array $tree, array &$rows, array $dates, Collection $data, $level = 0)
+    private function generateRowsTree(array $tree, array $dates, Collection $data, $level = 0)
     {
+        $rows = [];
         $num = 1;
         foreach ($tree as $item) {
             $rows[] = [
@@ -102,8 +101,9 @@ class PlanGDIS extends TableForm
             if (empty($item['children'])) {
                 continue;
             }
-            $this->fillRowsTree($item['children'], $rows, $dates, $data, $level + 1);
+            $rows = array_merge($rows, $this->generateRowsTree($item['children'], $dates, $data, $level + 1));
         }
+        return $rows;
     }
 
     private function addRow(\stdClass $treeRow, array $dates, Collection $data): array
@@ -141,20 +141,23 @@ class PlanGDIS extends TableForm
             ->select('expl_type_plan_gdis', 'proced_type_plan_gdis', 'p.name', 'e.id')
             ->get()
             ->groupBy('expl_type_plan_gdis');
-        $this->fillExplTree($explTypes, $procedTypes);
+        $explTypes = $this->generateExplTree($explTypes, $procedTypes);
         return $explTypes;
     }
 
-    private function fillExplTree(&$tree, $procedTypes)
+    private function generateExplTree($tree, $procedTypes)
     {
+        $result = [];
         foreach ($tree as $key => $item) {
+            $result[$key] = $item;
             if ($procedTypes->get($item['id'])) {
-                $tree[$key]['rows'] = $procedTypes->get($item['id'])->toArray();
+                $result[$key]['rows'] = $procedTypes->get($item['id'])->toArray();
             }
             if (!empty($item['children'])) {
-                $this->fillExplTree($tree[$key]['children'], $procedTypes);
+                $result[$key]['children'] = $this->generateExplTree($tree[$key]['children'], $procedTypes);
             }
         }
+        return $result;
     }
 
     protected function saveSingleFieldInDB(array $params): void
