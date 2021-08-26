@@ -144,7 +144,8 @@
     </b-modal>
 
     <div v-show="false">
-      <gu-tool-tip ref="guToolTip" :gu="guHovered" />
+      <gu-tool-tip ref="guToolTip" :gu="objectHovered" />
+      <well-tool-tip ref="wellToolTip" :well="objectHovered" />
       <pipe-tool-tip ref="pipeToolTip"  :pipe="pipeHovered" :paramKey="pipeHoveredParameter" />
     </div>
   </div>
@@ -166,6 +167,7 @@ import axios from "axios";
 import moment from "moment";
 import guToolTip from "./guToolTip";
 import pipeToolTip from "./pipeToolTip";
+import wellToolTip from "./wellToolTip";
 import pipeLongInfo from "./pipeLongInfo";
 import wellOmgNgduForm from "./wellOmgNgduForm";
 import guOmgNgduForm from "./guOmgNgduForm"
@@ -182,6 +184,7 @@ export default {
     objectForm,
     guToolTip,
     pipeToolTip,
+    wellToolTip,
     mapLegend,
     pipeLongInfo,
     wellOmgNgduForm,
@@ -241,7 +244,7 @@ export default {
         },
       ],
       referentValue: 10,
-      guHovered: null,
+      objectHovered: null,
       pipeHovered: null,
       pipeHoveredParameter: null,
       selectedPipe: null,
@@ -359,9 +362,15 @@ export default {
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
         getTooltip:  ({object}) => {
           if (object) {
+            if (object.last_omgngdu && object.last_omgngdu.well_id) {
+              return {
+                html: this.getObjectTooltipHtml(object, 'wellToolTip')
+              }
+            }
+
             if (object.cdng_id && object.last_omgngdu) {
               return {
-                html: this.getGuTooltipHtml(object)
+                html: this.getObjectTooltipHtml(object, 'guToolTip')
               }
             }
 
@@ -410,10 +419,10 @@ export default {
 
       return null;
     },
-    getGuTooltipHtml(gu) {
-      this.guHovered = gu;
+    getObjectTooltipHtml(object, type){
+      this.objectHovered = object;
 
-      return this.$refs.guToolTip.$el.outerHTML;
+      return this.$refs[type].$el.outerHTML;
     },
     getPipeTooltipHtml(pipe, paramKey) {
       this.pipeHovered = pipe;
