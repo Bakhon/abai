@@ -86,8 +86,8 @@ export default {
             }).then(({data}) => {
                 this.chartSeries = [
                     data.ndin,
-                    data.oil,
                     data.measLiq,
+                    data.oil,
                     data.measWaterCut,
                 ];
                 if (data.wellStatuses) {
@@ -134,7 +134,6 @@ export default {
                     position: 'right',
                 },
                 chart: {
-                    stacked: true,
                     background: 'rgba(39, 41, 83, 1)',
                     foreColor: '#FFFFFF',
                     selection: {
@@ -155,7 +154,27 @@ export default {
                 },
                 yaxis: [
                     {
-                        seriesName: this.trans('app.liquid'),
+                        opposite: true,
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: 'rgba(69, 77, 125, 1)'
+                        },
+                        labels: {
+                            style: {
+                                colors: '#fff',
+                            }
+                        },
+                        title: {
+                            text: this.trans('app.ndin'),
+                            style: {
+                                color: '#fff',
+                            }
+                        },
+                    },
+                    {
                         opposite: true,
                         axisTicks: {
                             show: true,
@@ -177,29 +196,6 @@ export default {
                         },
                     },
                     {
-                        seriesName: this.trans('app.waterCut'),
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#fff',
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.waterCut'),
-                            style: {
-                                color: '#fff',
-                            }
-                        },
-                    },
-                    {
-                        seriesName: this.trans('app.oil'),
                         opposite: true,
                         axisTicks: {
                             show: true,
@@ -221,7 +217,6 @@ export default {
                         },
                     },
                     {
-                        seriesName: this.trans('app.ndin'),
                         opposite: true,
                         axisTicks: {
                             show: true,
@@ -236,7 +231,7 @@ export default {
                             }
                         },
                         title: {
-                            text: this.trans('app.ndin'),
+                            text: this.trans('app.waterCut'),
                             style: {
                                 color: '#fff',
                             }
@@ -250,7 +245,7 @@ export default {
                 annotations: {
                     points: this.chartPoints,
                 },
-                colors:['rgba(33, 186, 78, 1)', 'rgba(72, 81, 95, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(33, 186, 78, 1)'],
+                colors:['rgba(33, 186, 78, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(72, 81, 95, 1)', 'rgba(33, 186, 78, 1)'],
             }
         },
     },
