@@ -363,15 +363,13 @@
 			<input v-model="settings.inclStep" class="shgn-input block__1__input" type="text"></div>
       <div class="measurements-shgn-3">{{ trans('measurements.m')}}</div>
     </div>
-				<button type="button" class="submit_button" @click="onSubmitParams('setAlways')">
+				<button type="button" class="submit_button" @click="onSubmitParams('getDefault')">
                         {{trans('pgno.primenit_default')}}
                 </button>
 
-  <button type="button" class="submit_button" @click="onSubmitParams('setWell')">
+  <button type="button" class="submit_button" @click="onSubmitParams('getTemp')">
     {{ trans('pgno.primenit_korrektirovki') }}
   </button>
-  <notifications position="top"></notifications>
-
   <modal name="modalTable" :draggable="true" :width="1000" :height="550"
          :adaptive="true">
     <div class="modal-bign modal-bign-container">

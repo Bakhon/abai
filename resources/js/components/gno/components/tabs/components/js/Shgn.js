@@ -1,6 +1,7 @@
 import NotifyPlugin from "vue-easy-notify";
 import Multiselect from "vue-multiselect";
 import { pgnoMapState, pgnoMapGetters, pgnoMapMutations, pgnoMapActions } from '@store/helpers';
+import _ from 'lodash';
 
 Vue.use(NotifyPlugin);
 
@@ -101,8 +102,6 @@ export default {
 					"АЦ28ХГНЗФТ (О)"
 				]
 			},
-	
-			
 			kPodMode: true,
 		}
 	},
@@ -111,18 +110,20 @@ export default {
       'well',
       'lines',
       'points',
-	  	'shgnSettings',
 	  	'curveSettings',
-			'kPodSettings'
+			'kPodSettings',
+			'settingsMode'
     ]),
 		...pgnoMapGetters([
       'steelMarkStore',
+			'shgnSettings'
     ]),
 	},
 	methods: {
 		...pgnoMapActions([
 			'setKpodSettings',
 			'setShgnSettings',
+			'setDefaultShgnSettings'
 		  ]),
 		setNotify(message, title, type) {
 				this.$bvToast.toast(message, {
@@ -160,7 +161,11 @@ export default {
 				}
 			}			
 			this.$store.commit('pgno/SET_SETTINGS_MODE', mode)
-			this.setShgnSettings(this.settings)
+			if (mode === "getDefault"){
+				this.setDefaultShgnSettings(this.settings)
+			} else {
+				this.setShgnSettings(this.settings)
+			}
 			this.setKpodSettings(this.kPodSettings)
 			this.$emit('on-submit-params');
 			this.$modal.show('tabs');
@@ -181,11 +186,9 @@ export default {
 			this.settings.steelMark = this.steelMarkStore
 			this.steelMarks = this.steelMarksTypes[this.settings.corrosion]
 		}
-
-
 	},
 	created: function() {
-		this.settings =this.shgnSettings
+		this.settings = _.cloneDeep(this.shgnSettings)
 		this.settings.steelMark = this.steelMarkStore
 		this.steelMarks = this.steelMarksTypes[this.settings.corrosion]
 		this.calKpod()
