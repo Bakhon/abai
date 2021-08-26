@@ -509,7 +509,7 @@ class DictionaryService
         return $items;
     }     
     
-    private function getReasonTypeDict($type)
+    private function getReasonTypeDict(string $type)
     {
         $items = DB::connection('tbd')
             ->table('dict.reason as r')
