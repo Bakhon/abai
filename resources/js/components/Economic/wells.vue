@@ -1,23 +1,22 @@
 <template>
   <div>
-    <div class="p-3 bg-main1 mb-3 mx-auto">
+    <div class="p-3 bg-main1 mb-3 mx-auto max-width-88vw">
       <div class="d-flex">
         <select-interval
             :form="form"
-            class="ml-3"
-            style="width: 400px"
+            class="col"
             @change="getData"/>
 
         <select-organization
             :form="form"
-            class="ml-3"
+            class="col ml-2"
             @change="getData"/>
 
         <select-field
             v-if="form.org_id"
             :org_id="form.org_id"
             :form="form"
-            class="ml-3"
+            class="col ml-2"
             @change="getData"/>
       </div>
 
@@ -33,7 +32,7 @@
       </div>
     </div>
 
-    <div v-if="res" class="mx-auto" style="max-width: 88vw">
+    <div v-if="res" class="mx-auto max-width-88vw">
       <table-wells
           v-if="activeTab === 0"
           :data="res"
@@ -118,5 +117,11 @@ export default {
 };
 </script>
 <style scoped>
+.max-width-88vw {
+  max-width: 88vw;
+}
 
+.flex-33 {
+  flex: 1 0 33%;
+}
 </style>
