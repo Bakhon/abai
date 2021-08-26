@@ -110,12 +110,24 @@ export default {
 
       this.filteredData.forEach(item => {
         if (!data.hasOwnProperty(item.uwi)) {
-          data[item.uwi] = {oilPrices: {}}
+          data[item.uwi] = {oilPrices: {}, cat1: 0, cat2: 0, profitable: 0}
         }
 
         data[item.uwi].oilPrices[item.oil_price] = {
           operating_profit_12m: item.operating_profit_12m,
           profitability_12m: item.profitability_12m
+        }
+
+        switch (item.profitability_12m) {
+          case 'profitable':
+            data[item.uwi].profitable += 1
+            break
+          case 'profitless_cat_1':
+            data[item.uwi].cat1 += 1
+            break
+          case 'profitless_cat_2':
+            data[item.uwi].cat2 += 1
+            break
         }
       })
 
@@ -123,7 +135,24 @@ export default {
     },
 
     tableDataKeys() {
-      return Object.keys(this.tableData)
+      let data = this.tableData
+
+      let keys = Object.keys(data)
+          .sort(function (prev, next) {
+            if (data[prev].cat1 < data[next].cat1) {
+              return 1
+            }
+
+            if (data[prev].cat1 === data[next].cat1) {
+              return 0
+            }
+
+            return -1
+          })
+      // .sort((prev, next) => data[prev].profitable < data[next].profitable ? 1 : 0)
+      // .sort((prev, next) => data[prev].profitable < data[next].profitable ? 1 :0)
+
+      return keys
     },
 
     tableDataChunks() {

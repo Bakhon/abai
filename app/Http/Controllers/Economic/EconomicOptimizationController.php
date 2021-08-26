@@ -18,7 +18,7 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v12_gtm_optimize';
+    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v12_gtm_optimize_v1';
     const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_test_v9_3';
     const DATA_SOURCE_DATE = '2021/01/01';
 
@@ -218,8 +218,10 @@ class EconomicOptimizationController extends Controller
         return $builder
             ->select($columns)
             ->doubleSum('operating_profit_12m')
-            ->orderBy('oil_price')
             ->orderBy('dollar_rate')
+            ->orderBy('uwi')
+            ->orderBy('profitability_12m')
+            ->orderBy('oil_price')
             ->orderBy('operating_profit_12m')
             ->groupBy($columns)
             ->data();
