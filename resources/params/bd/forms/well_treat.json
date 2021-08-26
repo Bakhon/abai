@@ -1,5 +1,6 @@
 {
   "type": "table",
+  "table_type": "wells",
   "filter": [
     {
       "code": "treat_type",
@@ -23,28 +24,28 @@
     {
       "title": "volume",
       "code": "volume",
-      "type": "numeric",
+      "type": "float",
       "validation": "required|gte:0",
       "is_editable": true
     },
     {
       "title": "pretreat_pressure",
       "code": "pretreat_pressure",
-      "type": "numeric",
+      "type": "float",
       "validation": "gte:0",
       "is_editable": true
     },
     {
       "title": "posttreat_pressure",
       "code": "posttreat_pressure",
-      "type": "numeric",
+      "type": "float",
       "validation": "gte:0",
       "is_editable": true
     },
     {
       "title": "temperature",
       "code": "temperature",
-      "type": "numeric",
+      "type": "float",
       "validation": "gte:0",
       "is_editable": true
     },
@@ -58,14 +59,14 @@
     {
       "title": "pretreat_buff_pressure",
       "code": "pretreat_buff_pressure",
-      "type": "numeric",
+      "type": "float",
       "validation": "gte:0",
       "is_editable": true
     },
     {
       "title": "posttreat_buff_pressure",
       "code": "posttreat_buff_pressure",
-      "type": "numeric",
+      "type": "float",
       "validation": "gte:0",
       "is_editable": true
     },
@@ -86,7 +87,7 @@
     {
       "title": "scraper_income",
       "code": "scraper_income",
-      "type": "numeric",
+      "type": "float",
       "validation": "required|gte:0",
       "is_editable": true
     },
