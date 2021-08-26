@@ -312,12 +312,11 @@ class DictionaryService
                 return $id;
             })
             ->toArray();
-        $tree = [];
-        $this->fillTree($dictionary, $tree, $userSelectedTreeItems);
+        $tree = $this->fillTree($dictionary, [], $userSelectedTreeItems);
         return $tree;
     }
 
-    public function fillTree($branch, &$tree, $userSelectedTreeItems): void
+    public function fillTree($branch, $tree, $userSelectedTreeItems): array
     {
         foreach ($branch as $item) {
             if (in_array($item['id'], $userSelectedTreeItems)) {
@@ -325,9 +324,10 @@ class DictionaryService
                 continue;
             }
             if (!empty($item['children'])) {
-                $this->fillTree($item['children'], $tree, $userSelectedTreeItems);
+                $tree = $this->fillTree($item['children'], $tree, $userSelectedTreeItems);
             }
         }
+        return $tree;
     }
 
     public function get(string $dict)
