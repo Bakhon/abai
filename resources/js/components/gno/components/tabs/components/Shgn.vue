@@ -59,14 +59,14 @@
         <div class="block4">
           <div class="title__block__pump__1__flex">
 
-            <select class="input-box-gno k-pod" v-model="pumpType" @change="calKpod()">
+            <select class="input-box-gno k-pod" v-model="kPodSettings.pumpType" @change="calKpod()">
               <option v-for="dm in diametersShgn" :key="dm.value" :value="dm.pumpType">
                 {{ dm.value }}
               </option>
             </select>
-            <input type="text" class="input-box-gno podbor-kpod-block-1" v-model="strokeLen" @change="calKpod()">
-            <input type="text" class="input-box-gno podbor-kpod-block-2" v-model="spm" @change="calKpod()">
-            <input type="text" class="input-box-gno podbor-kpod-block-3" v-model="ql" @change="calKpod()">
+            <input type="text" class="input-box-gno podbor-kpod-block-1" v-model="kPodSettings.strokeLen" @change="calKpod()">
+            <input type="text" class="input-box-gno podbor-kpod-block-2" v-model="kPodSettings.spm" @change="calKpod()">
+            <input type="text" class="input-box-gno podbor-kpod-block-3" v-model="kPodSettings.ql" @change="calKpod()">
 
           </div>
         </div>
@@ -349,10 +349,10 @@
       <div class="flex__item__block__sixth__block">
         <div class="block__text__5">{{ trans('pgno.dav_nasos_minim') }}</div>
         <input v-model="settings.pintakeMin" class="shgn-input block__6__input" type="text">
-        <div class="measurements-shgn-1">{{ trans('measurements.m') }}</div>
+        <div class="measurements-shgn-1">{{ trans('measurements.atm') }}</div>
         <div class="block__text__6">{{ trans('pgno.gs_nasos_maks') }}</div>
         <input v-model="settings.gasMax" class="shgn-input block__7__input" type="text">
-        <div class="measurements-shgn-2">{{ trans('measurements.m') }}</div>
+        <div class="measurements-shgn-2">{{ trans('measurements.percent') }}</div>
       </div>
 
     </div>
@@ -363,15 +363,13 @@
 			<input v-model="settings.inclStep" class="shgn-input block__1__input" type="text"></div>
       <div class="measurements-shgn-3">{{ trans('measurements.m')}}</div>
     </div>
-				<button type="button" class="submit_button" @click="onSubmitParams()">
+				<button type="button" class="submit_button" @click="onSubmitParams('getDefault')">
                         {{trans('pgno.primenit_default')}}
                 </button>
 
-  <button type="button" class="submit_button" @click="onSubmitParams()">
+  <button type="button" class="submit_button" @click="onSubmitParams('getTemp')">
     {{ trans('pgno.primenit_korrektirovki') }}
   </button>
-  <notifications position="top"></notifications>
-
   <modal name="modalTable" :draggable="true" :width="1000" :height="550"
          :adaptive="true">
     <div class="modal-bign modal-bign-container">

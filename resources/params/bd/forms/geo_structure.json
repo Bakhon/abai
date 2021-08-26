@@ -1,11 +1,6 @@
 {
   "type": "plain",
   "table": "prod.well_geo",
-  "available_actions": [
-    "update",
-    "view history",
-    "delete"
-  ],
   "sort": [
     {
       "field": "dbeg",

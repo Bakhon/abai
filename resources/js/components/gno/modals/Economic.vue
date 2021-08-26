@@ -187,24 +187,17 @@ export default {
       this.expAnalysisData.qoilEcn = this.qOilEcn
 
       await this.EconomParam()
-      console.log("AWAITED")
       this.$refs.ecoChart.updateSeries([{data: [Math.round(this.expAnalysisData.qoilShgn), Math.round(this.expAnalysisData.nnoShgn), Math.round(this.expAnalysisData.shgnParam / 1000), Math.round(this.expAnalysisData.shgnNpv / 1000000)]},
       {data:[Math.round(this.expAnalysisData.qoilEcn), Math.round(this.expAnalysisData.nnoEcn), Math.round(this.expAnalysisData.ecnParam / 1000), Math.round(this.expAnalysisData.ecnNpv / 1000000)]}])
       this.setEconomic(this.expAnalysisData)
     },
-    async EconomParam() {    
-      console.log("STARTED")
-
+    async EconomParam() {
       let nnoDayUp = moment("2020-11-01", 'YYYY-MM-DD').toDate();
       let nnoDayFrom = moment("2021-01-17", 'YYYY-MM-DD').toDate();
-
       let date_diff = (nnoDayUp - nnoDayFrom) / (1000 * 3600 * 24);
-
       if (date_diff < 365) {
         date_diff = 365;
       }
-      console.log("TEST ECO2")
-      console.log(this.expAnalysisData.prsShgn,this.expAnalysisData['prsShgn'])
 
       if (this.expAnalysisData.prsShgn != 0 && this.expAnalysisData.prsEcn != 0) {
         await this.EconomCalc(1);
@@ -291,8 +284,6 @@ export default {
         this.expAnalysisData.nnoEcn = 365
         this.expAnalysisData.qoilEcn = this.qOilEcn
         this.expAnalysisData.prsEcn = 0
-        console.log(this.expAnalysisData)
-        console.log("NNO calced")
       })
     },
   },

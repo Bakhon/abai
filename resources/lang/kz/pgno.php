@@ -225,6 +225,8 @@ return array (
   'stem' => 'Штанг',
   'p_min' => 'Рмин',
   'k_pod' => 'Кпод',
+  'kPodCalced' => 'Кпод (расч.)',
+  'kPodUser' => 'Кпод (польз.)',
   'gas_in_pump' => 'газа в нас.',
   'daily_consumption' => 'Сут. энергопот.',
   'ure' => 'УРЭ',
@@ -259,4 +261,6 @@ return array (
   'curvePotencialPointHover' => '"<b>Потенциалдық  режим</b><br>" + "Qж = %{x:.1f} м³/сут<br>" + "Qн = %{text:.1f} т/сут<br>" + "Pзаб = %{y:.1f} атм<extra></extra>"',
   'curveMainLineName' => 'Кривая притока (пользователь)',
   'curveAnalysisLineName' => 'Кривая притока (анализ)',
+  'inclinometriaWell' => 'Инклинометрия скважины :wellNumber',
+  'kpodWarning' => 'Тек Кпод = :kpod, рекомендуем проверить входные данные ТР',
 );
