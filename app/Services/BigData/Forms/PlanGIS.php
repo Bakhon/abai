@@ -7,6 +7,7 @@ namespace App\Services\BigData\Forms;
 use App\Models\BigData\Dictionaries\Org;
 use App\Services\BigData\DictionaryService;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class PlanGIS extends TableForm
@@ -35,53 +36,7 @@ class PlanGIS extends TableForm
 
         $columns = $this->getColumns($filter, $org, $orgChildren);
 
-        $plans = DB::connection('tbd')
-            ->table('prod.plan_gis')
-            ->whereIn('org', array_merge([$org->id], $orgChildren->pluck('id')->toArray()))
-            ->get();
-
-        $dictionaryService = app()->make(DictionaryService::class);
-        $gisTypes = $dictionaryService->get('plan_gis_type');
-
-        $rows = [];
-        foreach ($gisTypes as $gisType) {
-            $row = [
-                'id' => $gisType['id'],
-                'num' => ['value' => $gisType['id']],
-                'name' => ['value' => $gisType['name']]
-            ];
-
-            $date = Carbon::parse($filter->date);
-            $dateTo = Carbon::parse($filter->date_to);
-
-            while (true) {
-                foreach ($orgChildren as $child) {
-                    $plan = $plans->where('month', $date->format('n'))
-                        ->where('year', $date->format('Y'))
-                        ->where('org', $child->id)
-                        ->where('plan_gis_type', $gisType['id'])
-                        ->first();
-
-                    $row["date_{$date->format('n_Y')}_" . $child->id] = ['value' => $plan ? $plan->count : null];
-                }
-
-                $plan = $plans->where('month', $date->format('n'))
-                    ->where('year', $date->format('Y'))
-                    ->where('org', $org->id)
-                    ->where('plan_gis_type', $gisType['id'])
-                    ->first();
-
-                $row["date_{$date->format('n_Y')}_" . $org->id] = ['value' => $plan ? $plan->count : null];
-
-                $date->addMonth();
-                if ($date >= $dateTo) {
-                    break;
-                }
-            }
-
-            $rows[] = $row;
-        }
-
+        $rows = $this->getRowData($filter, $org, $orgChildren);
 
         return [
             'columns' => $columns['columns'],
@@ -206,6 +161,54 @@ class PlanGIS extends TableForm
                 return '$' . $code . '$';
             })
             ->join(' + ');
+    }
+
+    private function getRowData(\stdClass $filter, \stdClass $org, Collection $orgChildren): array
+    {
+        $plans = DB::connection('tbd')
+            ->table('prod.plan_gis')
+            ->whereIn('org', array_merge([$org->id], $orgChildren->pluck('id')->toArray()))
+            ->get();
+
+        $dictionaryService = app()->make(DictionaryService::class);
+        $gisTypes = $dictionaryService->get('plan_gis_type');
+
+        $rows = [];
+        foreach ($gisTypes as $gisType) {
+            $row = [
+                'id' => $gisType['id'],
+                'num' => ['value' => $gisType['id']],
+                'name' => ['value' => $gisType['name']]
+            ];
+
+            $date = Carbon::parse($filter->date);
+            $dateTo = Carbon::parse($filter->date_to);
+
+            while ($date < $dateTo) {
+                foreach ($orgChildren as $child) {
+                    $plan = $plans->where('month', $date->format('n'))
+                        ->where('year', $date->format('Y'))
+                        ->where('org', $child->id)
+                        ->where('plan_gis_type', $gisType['id'])
+                        ->first();
+
+                    $row["date_{$date->format('n_Y')}_" . $child->id] = ['value' => $plan ? $plan->count : null];
+                }
+
+                $plan = $plans->where('month', $date->format('n'))
+                    ->where('year', $date->format('Y'))
+                    ->where('org', $org->id)
+                    ->where('plan_gis_type', $gisType['id'])
+                    ->first();
+
+                $row["date_{$date->format('n_Y')}_" . $org->id] = ['value' => $plan ? $plan->count : null];
+
+                $date->addMonth();
+            }
+
+            $rows[] = $row;
+        }
+        return $rows;
     }
 
     protected function saveSingleFieldInDB(array $params): void
