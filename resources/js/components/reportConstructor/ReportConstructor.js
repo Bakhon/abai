@@ -47,14 +47,12 @@ export default {
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
-            selectedObjects: [],
+            selectedObjects: {'org':{}, 'geo':{}, 'tech':{}},
             startDate: null,
             endDate: null,
             dateFlow: ['year', 'month', 'date'],
-            markedNodes: {'org':{}, 'geo':{}, 'tech':{}},
             maxDepthOfSelectedAttributes: null,
             isSelectUntilWells: false,
-            selectedObjectsIndex: {},
         }
     },
     mounted: function () {
@@ -188,6 +186,7 @@ export default {
                 this.validateStatisticsParams()
             } catch (e) {
                 this.showToast(e.name, e.message, 'danger', 10000)
+                this.SET_LOADING(false)
                 return
             }
             let jsonData = this._getStatisticsRequestParams()
@@ -206,7 +205,7 @@ export default {
 
         },
         validateStatisticsParams() {
-            if (this.selectedObjects.length === 0) {
+            if (this.getSelectedObjects().length === 0) {
                 throw new Error("Не выбраны объекты для отображения")
             }
             if (this.getSelectedAttributes().length === 0) {
@@ -266,10 +265,36 @@ export default {
         _getStatisticsRequestParams() {
             return JSON.stringify({
                 "fields": this.getSelectedAttributes(),
-                "selectedObjects": this.selectedObjects,
+                "selectedObjects": this.getSelectedObjects(),
                 "structureType": this.currentStructureType,
                 "dates": this.getDates()
             })
+        },
+        getSelectedObjects() {
+            let result = [];
+            for(let structureType in this.selectedObjects) {
+                for(let option in this.selectedObjects[structureType]) {
+                    for(let node of this.selectedObjects[structureType][option]) {
+                        if(node.isChecked) {
+                            result.push(node);
+                        }
+                        result = result.concat(this.getSelectedChildren(node));
+                    }
+                }
+            }
+            return result;
+        },
+        getSelectedChildren(node) {
+            if(!node || !('children' in node)) return [];
+            let result = [];
+
+            for(let child of node.children) {
+                if(child.isChecked) {
+                    result.push(child);
+                }
+                result = result.concat(this.getSelectedChildren(child));
+            }
+            return result;
         },
         getDates() {
             let dates = []
@@ -295,17 +320,6 @@ export default {
                 }
             }
             return columns
-        },
-        updateSelectedNodes(node, level) {
-            if (typeof this.selectedObjectsIndex[node.id] === 'undefined') {
-                node.level = level
-                node.isChecked = true;
-                this.selectedObjects.push(node)
-                this.selectedObjectsIndex[node.id] = this.selectedObjects.length-1;
-            } else {
-                this.selectedObjects.splice(this.selectedObjectsIndex[node.id])
-                this.selectedObjectsIndex[node.id] = undefined;
-            }
         },
         getStatisticsFile() {
             this.SET_LOADING(true)

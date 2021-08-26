@@ -1,9 +1,9 @@
 <template>
   <div class="bd-forms col-12 p-0 pl-2 h-100">
     <div class="blueblock h-100 m-0">
-      <div class="wells-select-block m-0 p-3">
+      <div class="wells-select-block m-0 p-3" v-if="renderComponent">
         <tree-view
-            v-for="(treeData, index) in items"
+            v-for="(treeData, index) in selectedObjects[currentOption.name]"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :key="`${index}-${treeData.id}`"
             :node="treeData"
@@ -12,7 +12,6 @@
             :get-initial-items="getInitialItems"
             :isShowCheckboxes="isShowCheckboxes"
             :isWell="isWell"
-            :onCheckboxClick="onCheckboxClick"
             :level="level+1"
             :nodeClickOnArrow="true"
             :renderComponent="renderComponent"
@@ -33,7 +32,6 @@ export default {
   data() {
     return {
       baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
-      items: null,
       level: 0,
       renderComponent: 1,
     }
@@ -42,13 +40,11 @@ export default {
     structureType: String,
     itemType: Number,
     isShowCheckboxes: Boolean,
-    onCheckboxClick: Function,
-    markedNodes: Object,
     isSelectUntilWells: Boolean,
     currentOption: Object,
-    selectedObjects: Array,
+    selectedObjects: Object,
   },
-  mounted() {
+  beforeMount() {
     this.init();
   },
   watch: {
@@ -57,8 +53,14 @@ export default {
     }
   },
   methods: {
-    init() {
-      this.getInitialItems().then(items => this.items = items);
+    init: async function() {
+      if(!this.selectedObjects[this.currentOption.name]) {
+        this.getInitialItems().then((items) => {
+          this.selectedObjects[this.currentOption.name] = items;
+        }).then(() => {
+          this.updateThisComponent();
+        });
+      }
     },
     getInitialItems() {
       this.isLoading = true

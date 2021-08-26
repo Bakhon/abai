@@ -39,7 +39,6 @@
             :get-initial-items="getInitialItems"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :isShowCheckboxes="isShowCheckboxes"
-            :onCheckboxClick="onCheckboxClick"
             :isWell="isWell"
             :currentWellId="currentWellId"
             :level="level+1"
@@ -71,17 +70,9 @@ export default {
     isNodeOnBottomLevelOfHierarchy: Function,
     isShowCheckboxes: Boolean,
     isWell: Function,
-    selectedObjects: Array,
-    onCheckboxClick: {
-      type: Function,
-      required: false
-    },
+    selectedObjects: Object,
     currentWellId: {
       type: Number,
-      required: false
-    },
-    markedNodes: {
-      type: Object,
       required: false
     },
     renderComponent: {
@@ -119,30 +110,29 @@ export default {
         await this.getWells(this);
       }
 
-      console.log(this.node)
       this.$forceUpdate()
     },
     onClick: async function () {
       this.node.isChecked = !this.node.isChecked;
 
-      await this.loadChildren(this.node).then(() => {
-        this.updateNode(this.node, this.level);
-      }).then(() => {
+      this.isLoading = true;
+      this.loadChildren(this.node)
+      .then(() => {
         if(this.node.isChecked) {
           if(this.isSelectUntilWells) {
             this.updateWellOfNode(this.node, this.level);
           }else {
-            this.updateChildren(this.node, this.level);
+            this.updateNextLevelNode(this.node, this.level);
           }
         }else {
-          this.updateNode(this.node, this.level);
+          this.updateChildren(this.node, this.level, false);
         }
       }).finally(() => {
+        this.isLoading = false;
         this.updateThisComponent();
       });
 
       this.node.level = this.level;
-      this.selectedObjects.push(this.node);
     },
     loadChildren: async function(node) {
       if(this.isWell(node)) return;
@@ -158,20 +148,20 @@ export default {
         this.loadChildren(node.children[idx]);
       }
     },
-    updateNode: async function(node, level) {
-      if(!node?.children) return;
-      for(let child of node.children) {
-        child.isChecked = false;
-        this.updateNode(child, level+1);
-      }
-      this.updateThisComponent();
-    },
-    updateChildren: async function(node, level) {
+    updateNextLevelNode: async function(node, level) {
       if(!node?.children) return;
       for(let child of node.children) {
         child.isChecked = this.node.isChecked;
-        node.level = level;
-        this.selectedObjects.push(node);
+        child.level = level+1;
+      }
+      this.updateThisComponent();
+    },
+    updateChildren: async function(node, level, val) {
+      if(!node?.children) return;
+      for(let child of node.children) {
+        child.isChecked = val;
+        child.level = level+1;
+        this.updateChildren(child, level+1, val);
       }
       this.updateThisComponent();
     },
@@ -180,7 +170,7 @@ export default {
       for(let child of node.children) {
         if(this.isWell(child)) {
           child.isChecked = this.node.isChecked;
-          this.onCheckboxClick(child, level+1);
+          child.level = level+1;
         }
         this.updateWellOfNode(child, level+1);
       }
