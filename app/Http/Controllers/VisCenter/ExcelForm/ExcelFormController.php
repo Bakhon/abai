@@ -50,7 +50,7 @@ class ExcelFormController extends Controller
     public function getDzoCurrentData(Request $request)
     {
         $date = Carbon::yesterday('Asia/Almaty');
-        if ($request->isCorrected === 'true') {
+        if ((int)$request->isCorrected === 1) {
             $date = Carbon::parse($request->date)->addDays(1);
         }
 

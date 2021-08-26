@@ -24,7 +24,7 @@ export default {
             this.SET_LOADING(true);
             let queryOptions = {
                 'dzoName': this.selectedDzo.ticker,
-                'isCorrected': true,
+                'isCorrected': 1,
                 'date': this.period
             };
             this.todayData = await this.getDzoTodayData(queryOptions);
