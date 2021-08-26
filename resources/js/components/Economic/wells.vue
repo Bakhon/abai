@@ -120,8 +120,4 @@ export default {
 .max-width-88vw {
   max-width: 88vw;
 }
-
-.flex-33 {
-  flex: 1 0 33%;
-}
 </style>
