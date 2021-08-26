@@ -132,8 +132,8 @@ export default {
                 window.location.href = this.localeUrl(data.url);
             }
         },
-        async selectPanelItem(item) {
-            if(item === 'Скважина') {
+        async selectPanelItem(type, item) {
+            if(type === 'map' && item?.id === 1) {
                 this.initWellOnMap();
             } else {
                 document.location.reload();

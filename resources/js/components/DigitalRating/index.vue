@@ -44,7 +44,7 @@
         <accordion
           :list="maps"
           title="digital_rating.mapsGeologyDevelopment"
-          @selectItem="selectPanelItem"
+          @selectItem="(item) => selectPanelItem('map', item)"
         />
         <accordion
           :list="cods"
@@ -59,6 +59,7 @@
         @close="closeSettingModal"
       />
       <well-atlas-modal
+        ref="atlasModal"
         @close="closeAtlasModal"
       />
     </div>

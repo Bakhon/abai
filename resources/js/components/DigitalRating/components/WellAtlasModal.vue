@@ -9,6 +9,7 @@
     modal-class="long-modal"
     id="modalAtlas"
     :ok-only="true"
+    @hide="close"
   >
     <template #modal-header="{close}">
       <div class="d-flex justify-content-end w-100">
@@ -130,10 +131,8 @@ export default {
     handleSelectTab(tab) {
       this.currentTab = tab;
     },
-    beforeOpen(e) {
-      this.currentTab = 'overview';
-    },
     close() {
+      this.currentTab = 'overview';
       this.$emit('close');
     }
   }
