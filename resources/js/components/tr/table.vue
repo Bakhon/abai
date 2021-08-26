@@ -888,8 +888,6 @@ tr:nth-child(even) {
     top: 88px;
     z-index: 3000;
 }
-
-
 .trtablerow {
     position: relative;
 }

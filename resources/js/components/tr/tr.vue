@@ -173,19 +173,14 @@
       <div class="maintable-level2" style="position: relative">
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px; color: white">
-            <h5>{{trans('tr.tr_to')}} {{ dt }}</h5>
-            
+            <h5>{{trans('tr.tr_to')}} {{ dt }}</h5>          
           </div>   
-
-          
-               
           <a v-show="false" v-if="isEdit"></a>
-            
             <div class="tr_icons_block">
               <button v-on:click="dropAllFilters" class="reset_all_filters"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 <path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
-</svg>{{trans('tr.reset_all_filter')}}</button>
+</svg>{{trans('tr.reset_filters')}}</button>
               <modal name="add_well" :width="1600" :height="400"  :adaptive="true" style="z-index:9900000; ">
                 <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
                   <notifications position="top"></notifications>
@@ -258,7 +253,7 @@
                                             label=""
                                             v-slot="{ ariaDescribedby }"
                                             @submit.stop.prevent
-                                            class="Well_modal_form_fil"
+                                            class="well_modal_form_fil"
                                           >
                                             <b-form-checkbox-group
                                             v-model="wellFilter"
@@ -270,7 +265,6 @@
                                         </b-dropdown-form>
                                     </b-dropdown>
                                   </div>
-
                                   <a
                                     class="add_button_modal"
                                     v-if="!isShowAdd"
@@ -287,11 +281,11 @@
                                     </svg>
                                   {{trans('tr.add')}}</a>
 
-                                  <a
-                                    
+                                  <a                                   
                                     style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
                                     v-if="isShowAdd"
                                     @click="showWells"
+                                    @click.prevent="reRender"
                                     ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                       <path d="M17.6567 17.6575L6.34294 6.34383" 
                                         stroke="white" stroke-width="1.4" stroke-linecap="round"/>
@@ -382,7 +376,7 @@
                             <td><input data-key="field" :value="row.field" class="input_edit_modal"></td>
                             <td><input data-key="well_status_last_day" :value="row.well_status_last_day" class="input_edit_modal"></td>
                             <td><input data-key="rus_wellname" :value="row.rus_wellname" class="input_edit_modal"></td>
-                            <td><b-form-select data-key="horizon" :value="row.horizon" :options="horizonFilterData" class="select_edit"></b-form-select></td>
+                            <td><b-form-select data-key="horizon" v-model="row.horizon"  :options="horizonFilterData" @change="editAddWell(row, row_index)" class="select_edit"></b-form-select></td>
                             <td><input data-key="object" :value="row.object" class="input_edit_modal"></td>
                             <td><input data-key="exp_meth" :value="row.exp_meth" class="input_edit_modal"></td>
                             <td><input data-key="type_text" :value="row.type_text" class="input_edit_modal"></td>

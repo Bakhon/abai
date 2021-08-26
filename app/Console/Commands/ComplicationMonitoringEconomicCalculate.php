@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\ComplicationMonitoring\CorrosionRateAndDoseCalculationController;
 use App\Http\Controllers\ComplicationMonitoring\OmgNGDUController;
-use App\Http\Controllers\ComplicationMonitoring\WaterMeasurementController;
-use App\Http\Controllers\DruidController;
 use App\Http\Requests\POSTCaller;
 use App\Models\ComplicationMonitoring\EconomicalEffect;
 use App\Models\ComplicationMonitoring\LostProfits;
@@ -35,16 +34,14 @@ class ComplicationMonitoringEconomicCalculate extends Command
         $currentDosage = OmgUHE::whereNotNull('current_dosage')->get();
 
         foreach($currentDosage as $item){
-            $guData = $this->getGuData($item->gu_id);
             $guDataByDay = $this->getGuDataByDay($item->date, $item->gu_id);
 
-            if ($guDataByDay->oilGas &&
-                $guData->pipe &&
+            if ($guDataByDay->oilGas  &&
                 $guDataByDay->ngdu &&
                 $guDataByDay->ngdu->surge_tank_pressure &&
                 $guDataByDay->ngdu->pump_discharge_pressure)
             {
-                $corrosion = $this->calculateCorrosion($item, $guData, $guDataByDay);
+                $corrosion = $this->calculateCorrosion($item, $guDataByDay);
 
                 $this->insertIntoTable($guDataByDay, $corrosion, $item, "economical_effect", "economical_effects");
                 $this->insertIntoTable($guDataByDay, $corrosion, $item, "lost_profits", "lost_profits");
@@ -53,22 +50,6 @@ class ComplicationMonitoringEconomicCalculate extends Command
         
         $this->calculateTotal("lost_profits", "lost_profits", "lost_profits_sum");
         $this->calculateTotal("economical_effects", "economical_effect", "economical_effect_sum");
-    }
-
-    public function getGuData(string $guId): object
-    {
-        $post = new POSTCaller(
-            WaterMeasurementController::class,
-            'getGuData',
-            Request::class,
-            [
-                'gu_id' => $guId
-            ]
-        );
-        
-        $guData = $post->call()->getData();
-
-        return $guData;
     }
 
     public function getGuDataByDay(string $date, string $guId): object
@@ -88,41 +69,20 @@ class ComplicationMonitoringEconomicCalculate extends Command
         return $guDataByDay;
     }
 
-    public function calculateCorrosion(object $item, object $guData, object $guDataByDay): object 
+    public function calculateCorrosion(object $item, object $guDataByDay): object 
     {
         $data = [
             "gu_id" => $item->gu_id,
-            "WC" => $guDataByDay->ngdu->bsw,
-            "GOR1" => $guData->constantsValues[0]->value,
-            "sigma" => $guData->constantsValues[1]->value,
-            "do" => $guData->pipe->outside_diameter,
-            "roughness" => $guData->pipe->roughness,
-            "l" => $guData->pipe->length,
-            "thickness" => $guData->pipe->thickness,
-            "P" => $guDataByDay->ngdu->pump_discharge_pressure,
-            "t_heater" => $guDataByDay->ngdu->heater_output_temperature,
             "conH2S" => $guDataByDay->wmLastH2S->hydrogen_sulfide,
             "conCO2" => $guDataByDay->wmLastCO2->carbon_dioxide,
-            "t_inlet_heater" => $guDataByDay->ngdu->heater_inlet_temperature,
-            "q_l" => $guDataByDay->ngdu->daily_fluid_production,
-            "H2O" => $guDataByDay->ngdu->bsw,
-            "HCO3" => $guDataByDay->wmLastHCO3->hydrocarbonate_ion,
-            "Cl" => $guDataByDay->wmLastCl->chlorum_ion,
-            "SO4" => $guDataByDay->wmLastSO4->sulphate_ion,
-            "q_g_sib" => $guDataByDay->ngdu->daily_gas_production_in_sib,
+            "t_heater_inlet" => $guDataByDay->ngdu->heater_inlet_temperature,
             "P_bufer" => $guDataByDay->ngdu->surge_tank_pressure,
-            "rhol" => $guDataByDay->wmLastH2S->density,
-            "rho_o" => $guDataByDay->oilGas->water_density_at_20,
-            "rhog" => $guDataByDay->oilGas->gas_density_at_20,
-            "mul" => $guDataByDay->oilGas->oil_viscosity_at_20,
-            "mug" => $guDataByDay->oilGas->gas_viscosity_at_20,
-            "q_o" => $guDataByDay->ngdu->daily_oil_production,
             "current_dosage" => $item->current_dosage
         ];
 
         $post = new POSTCaller(
-            DruidController::class,
-            'corrosion',
+            CorrosionRateAndDoseCalculationController::class,
+            'calculate',
             Request::class,
             $data
         );
@@ -138,10 +98,10 @@ class ComplicationMonitoringEconomicCalculate extends Command
             'date' => $item->date,
             'сorrosion' => $corrosion->corrosion_rate_mm_per_y_point_A,
             'actual_inhibitor_injection' => $column == "lost_profits" ? $item->current_dosage : $guDataByDay->ca->plan_dosage,
-            'recommended_inhibitor_injection' => $corrosion->dose_mg_per_l_point_A,
-            'difference' => $column == "lost_profits" ? $item->current_dosage - $corrosion->dose_mg_per_l_point_A : $guDataByDay->ca->plan_dosage - $corrosion->dose_mg_per_l_point_A,
+            'recommended_inhibitor_injection' => $column == "lost_profits" ? $corrosion->dose_mg_per_l_point_A : $item->current_dosage,
+            'difference' => $column == "lost_profits" ? $item->current_dosage - $corrosion->dose_mg_per_l_point_A : $guDataByDay->ca->plan_dosage - $item->current_dosage,
             'inhibitor_price' => $this->inhibitorPrice,
-            $column == "lost_profits" ? "lost_profits" : "economical_effect" => $column == "lost_profits" ? $this->lostProfitsCalculate($item, $corrosion, $guDataByDay) : $this->economicalEffectCalculate($corrosion, $guDataByDay)
+            $column == "lost_profits" ? "lost_profits" : "economical_effect" => $column == "lost_profits" ? $this->lostProfitsCalculate($item, $corrosion, $guDataByDay) : $this->economicalEffectCalculate($item, $guDataByDay)
         ]);
     }
 
@@ -168,9 +128,9 @@ class ComplicationMonitoringEconomicCalculate extends Command
         return $result;
     }
 
-    public function economicalEffectCalculate(object $corrosion, object $guDataByDay): float
+    public function economicalEffectCalculate(object $item, object $guDataByDay): float
     {
-        $result = ($guDataByDay->ca->plan_dosage/1000 - $corrosion->dose_mg_per_l_point_A/1000) * $this->inhibitorPrice * $guDataByDay->ca->q_v * 2.74 / 1000;
+        $result = ($guDataByDay->ca->plan_dosage/1000 - $item->current_dosage/1000) * $this->inhibitorPrice * $guDataByDay->ca->q_v * 2.74 / 1000;
 
         return $result;
     }

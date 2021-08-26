@@ -934,9 +934,8 @@
                             <td colspan="2">
                                 <input type="text">
                             </td>
-                            <td colspan="5">
-                                {{trans('digital_drilling.daily_raport.pump_type_SL3NB')}}
-                            </td>
+                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №1</td>
+                            <td colspan="2"><input type="text"></td>
                         </tr>
                         <tr>
                             <td>
@@ -1105,7 +1104,10 @@
                             <td colspan="2"><input type="text"></td>
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
-                            <td colspan="5">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}}</td>
+                            <td colspan="3">
+                                {{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №2
+                            </td>
+                            <td colspan="2"><input type="text"></td>
                         </tr>
                         <tr>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.operating_hours_vibrating_sieve')}} №2</td>
@@ -1179,11 +1181,231 @@
                             <td><input type="text"></td>
                         </tr>
                         <tr>
+                            <td colspan="3"></td>
+                            <td colspan="2"></td>
+                            <td colspan="3"></td>
+                            <td></td>
+                            <td></td>
+                            <td v-for="i in 8"><input type="text"></td>
+                        </tr>
+                        <tr v-if="!pump[0].active">
+                            <td v-for="i in 14"><input type="text"></td>
+                            <td colspan="5">Добавить еще <span class="add" @click="addPump">+</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="pump" v-if="pump[0].active">
+                    <tbody>
+                        <!-- N3 -->
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №3 <span class="add"  @click="deletePump(0)">-</span></td>
+                            <td colspan="2"><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
+                            <td><input type="text"></td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td>{{trans('digital_drilling.daily_raport.coef_floor')}}</td>
+                            <td><input type="text"></td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td rowspan="4" class="align-middle">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"></td>
+                            <td colspan="3"></td>
+                            <td></td>
+                            <td></td>
+                            <td v-for="i in 8"><input type="text"></td>
+                        </tr>
+                        <tr v-if="!pump[1].active">
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"></td>
+                            <td colspan="3"></td>
+                            <td></td>
+                            <td></td>
+                            <td v-for="i in 4"><input type="text"></td>
+                            <td colspan="5">Добавить еще <span class="add" @click="addPump">+</span></td>
+                        </tr>
+                        <!-- end N3 -->
+                    </tbody>
+                </table>
+                <table class="pump" v-if="pump[1].active">
+                    <tbody>
+                        <!-- N4 -->
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №4 <span class="add" @click="deletePump(1)">-</span></td>
+                            <td colspan="2"><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
+                            <td><input type="text"></td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td>{{trans('digital_drilling.daily_raport.coef_floor')}}</td>
+                            <td><input type="text"></td>
+                            <td colspan="2">{{trans('digital_drilling.daily_raport.density_g_cm')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td rowspan="4" class="align-middle">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.stroke_min')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.pressure_atm')}}</td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td><input type="text"></td>
+                            <td colspan="2"><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input type="text"></td>
+                            <td colspan="2"></td>
+                            <td colspan="3"></td>
+                            <td></td>
+                            <td></td>
+                            <td v-for="i in 8"><input type="text"></td>
+                        </tr>
+                        <!-- end N4 -->
+                    </tbody>
+                </table>
+                <table >
+                    <tbody>
+                        <tr>
                             <td colspan="3"><input type="text"></td>
                             <td><input type="text"></td>
                             <td><input type="text"></td>
                             <td colspan="7">{{trans('digital_drilling.daily_raport.total_length_drill_string_kelly')}}</td>
                             <td colspan="2">0.00</td>
+                            <td><input type="text"></td>
                             <td><input type="text"></td>
                             <td><input type="text"></td>
                             <td><input type="text"></td>
@@ -1668,6 +1890,16 @@
         name: "DailyRaport",
         data(){
             return{
+                pump:[
+                    {
+                        number: 3,
+                        active: false
+                    },
+                    {
+                        number: 4,
+                        active: false
+                    },
+                ],
                 Expenses: [
                     {operation1: 'digital_drilling.daily_raport.drilling', operation2: 'digital_drilling.daily_raport.organiz_simple'},
                     {operation1: 'digital_drilling.daily_raport.build_up', operation2: 'digital_drilling.daily_raport.repair_after_21'},
@@ -1690,10 +1922,40 @@
                     {operation1: '', operation2: ''},
                 ]
             }
+        },
+        methods: {
+            addPump(){
+                if (!this.pump[0].active){
+                    this.pump[0].active = true
+                } else{
+                    this.pump[1].active = true
+                }
+            },
+            deletePump(index){
+                this.pump[index].active = false
+            }
         }
     }
 </script>
 
 <style scoped>
-
+.pump td{
+    width: 7.35%!important
+}
+.pump td:last-child input{
+    width: 106px!important;
+}
+.pump td:first-child input{
+    width: 610px!important;
+}
+.add{
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 20px;
+    font-size: 25px;
+    background-color: #0b2a52
+}
+.add:hover{
+    opacity: 0.5;
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="gno-page-wrapper">
-    <div v-if="serviceOffline">
+    <div v-if="!isServiceOnline">
       <img :src="404"/>
     </div>
     <div v-else>
@@ -19,9 +19,9 @@
               </div>
 
               <div class="choosing-well-data  col-7">{{ trans('pgno.mestorozhdenie') }}</div>
-              <div class="choosing-well-data left-border-line right-block-data  col-5">
+              <div class="choosing-well-data left-border-line right-block-data col-5 pl-0 pr-0">
                 <select class="select-well" v-model="field">
-                  <option v-for="org in this.orgs" :value="org.short_name" :key="org.id">
+                  <option v-for="org in this.organizations" :value="org.short_name" :key="org.id">
                     {{ org.full_name }}
                   </option>
                 </select>
@@ -29,17 +29,26 @@
               <div class="choosing-well-data top-border-line  col-7">
                 {{ trans('pgno.well') }} №
               </div>
-              <div class="choosing-well-data left-border-line top-border-line right-block-data  col-5">
+              <div class="choosing-well-data left-border-line top-border-line right-block-data  col-5 pl-0 pr-0 pt-0">
                 <input v-model="wellNumber" onfocus="this.value=''" type="text" @change="getWellData(wellNumber)"
-                       class="shgn-input"/>
+                       class="well-number-input"/>
               </div>
               <div class="choosing-well-data top-border-line  col-7">
-                {{ trans('pgno.new_well') }}
-                <input :checked="well.newWell" v-model="well.newWell" class="new-well-grp-checkbox" type="checkbox"/>
+                <div class="row">
+                  <div class="col-9">{{ trans('pgno.new_well') }}</div>
+                  <div class="col-3 pr-1">
+                    <input :checked="well.newWell" v-model="well.newWell" class="new-well-grp-checkbox" type="checkbox"/>
+                  </div>
+                </div>
               </div>
               <div class="choosing-well-data left-border-line top-border-line right-block-data  col-5">
-                {{ trans('pgno.grp') }}
-                <input class="new-well-grp-checkbox" v-model="analysisSettings.hasGrp" :disabled="!well.newWell" type="checkbox"/>
+                <div class="row">
+                  <div class="col-9">{{ trans('pgno.grp') }}</div>
+                  <div class="col-3 pr-1">
+                    <input class="new-well-grp-checkbox" v-model="analysisSettings.hasGrp" :disabled="!well.newWell" type="checkbox"/>
+                  </div>
+                </div>
+
               </div>
 
               <div class="choosing-well-data top-border-line  col-7">{{ trans('pgno.horizon') }}</div>
@@ -102,7 +111,7 @@
               <div class="construction-data hperf top-border-line no-gutter col-7">
                 {{ trans('pgno.glubina_perf') }}
                 <div class="perforation-intervals">
-                  {{ trans('pgno.interval_perf') }}: <b v-for="item in hPerfRangeInfo">{{ item }}</b>
+                  {{ trans('pgno.interval_perf') }}: <b v-for="item in well.hPerfRange">{{ item }}</b>
                 </div>
               </div>
               <div v-if="!isEditing"
@@ -452,7 +461,7 @@
                      style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
-                    <div class="modal-bign-title">{{ trans('pgno.inclinometria') }}</div>
+                    <div class="modal-bign-title">{{ trans('pgno.inclinometriaWell', {wellNumber : wellNumber}) }}</div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalIncl')">
                       {{ trans('pgno.zakrit') }}
@@ -478,7 +487,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <tabs @onPushParams="closeTabsModal()"></tabs>
+                    <tabs @onPushParams="closeTabsModal()" :calcKpodTrigger="calcKpodTrigger"></tabs>
                   </div>
                 </div>
               </modal>
@@ -495,7 +504,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <prs-crs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field"></prs-crs>
+                    <prs-crs :wellNumber="wellNumber" :field="field"></prs-crs>
                   </div>
                 </div>
               </modal>
@@ -505,7 +514,7 @@
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-                      {{ trans('pgno.analis_potenciala') }}
+                      {{ trans('pgno.analis_potenciala') }} {{ wellNumber }}
                     </div>
 
                     <div class="download-button-excel">
@@ -518,7 +527,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                           <a class="dropdown-item" href="#" @click="takePhotoOldNewWell()">Photo</a>
-                          <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
+                          <a class="dropdown-item" href="#" @click="downloadExcel('analysis')">MS Excel</a>
                         </div>
                       </div>
                     </div>
@@ -526,7 +535,7 @@
                       {{ trans('pgno.zakrit') }}
                     </button>
                   </div>
-                  <pgno-analysis @clicked="closeAnalysisModal" :analysisTrigger="analysisTrigger"></pgno-analysis>
+                  <pgno-analysis @clicked="closeAnalysisModal"></pgno-analysis>
                 </div>
               </modal>
 
@@ -534,7 +543,7 @@
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-                      {{ trans('pgno.analis_potenciala') }}
+                      {{ trans('pgno.analis_potenciala') }} 
                     </div>
                     <button type="button" class="modal-bign-button" @click="closeModal('modalNearWells')">
                       {{ trans('pgno.zakrit') }}
@@ -615,7 +624,7 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <a class="dropdown-item" href="#" @click="takePhoto()">Photo</a>
-                      <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
+                      <a class="dropdown-item" href="#" @click="downloadExcel('main')">MS Excel</a>
                     </div>
                   </div>
                 </div>
@@ -627,42 +636,46 @@
                 <div class="gno-shgn-block-title">
                   {{ trans('pgno.komponovka_shgn') }}
                 </div>
+                <div class="download-button-excel-gno">
+                  <div class="dropdown">
+                    <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                      <img src="./images/download.svg" alt="">
+                      {{ trans('pgno.download') }}
+                      <img src="./images/bottom-arrow.svg" alt="">
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#" @click="downloadExcel('gno')">MS Excel</a>
+                    </div>
+                  </div>
+                </div>
                 <div class="composition-shgn-block">
                   <div class="image-rods-data col-3">
                     <div class="shgn-rod image-text-1">{{ trans('pgno.eks_kolonna') }} {{
-                        this.casID
                       }}{{ trans('measurements.mm') }}
                     </div>
                     <div class="shgn-rod image-text-2">{{ trans('pgno.nkt') }} {{
-                        this.tubOD
                       }}{{ trans('measurements.mm') }}
                     </div>
                     <div class="shgn-rod image-text-3">{{ trans('pgno.shtangi') }} {{
-                        this.shgnS1D
-                      }}{{ trans('measurements.mm') }} 0-{{ this.shgnS1L }}{{ trans('measurements.m') }}
+                      }}{{ trans('measurements.mm') }} 0-{{  }}{{ trans('measurements.m') }}
                     </div>
                     <div class="shgn-rod image-text-4">
-                      {{ trans('pgno.shtangi') }} {{ this.shgnS2D }}{{ trans('measurements.mm') }} {{ this.shgnS1L }}-{{
-                        this.shgnS1L * 1 + this.shgnS2L * 1
+                      {{ trans('pgno.shtangi') }} {{  }}{{ trans('measurements.mm') }} {{  }}-{{
                       }}{{ trans('measurements.m') }}
                     </div>
                     <div class="shgn-rod image-text-5">
-                      {{ trans('pgno.shtangi') }} {{ this.shgnS1D }}{{ trans('measurements.mm') }}
-                      {{ this.shgnS1L * 1 + this.shgnS2L * 1 }}-{{
-                        this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1
-                      }}{{ trans('measurements.m') }}
+                      {{ trans('pgno.shtangi') }} {{  }}{{ trans('measurements.mm') }}
+                      {{  }}-{{ }}{{ trans('measurements.m') }}
                     </div>
                     <div class="shgn-rod image-text-6">{{ trans('pgno.nasos') }} {{
-                        this.shgnPumpType
                       }}{{ trans('measurements.mm') }}
                     </div>
                     <div class="shgn-rod image-text-7">
-                      {{ trans('pgno.interval_perf') }} <br> {{ this.hPerf }}-{{
-                        this.hPerf * 1 + this.hPerfND * 1
+                      {{ trans('pgno.interval_perf') }} <br> {{ }}-{{
                       }}{{ trans('measurements.m') }}
                     </div>
                     <div class="shgn-rod image-text-8">{{ trans('pgno.tekushii_zaboi') }} {{
-                        this.curr
                       }}{{ trans('measurements.m') }}
                     </div>
                     <img class="rods-image"
@@ -733,7 +746,7 @@
                             <td class="shgn-table-td">{{ curveSettings.hPumpValue }} {{ trans('measurements.m') }}</td>
                           </tr>
                           <tr class="highlight-tr">
-                            <td class="shgn-table-td">{{ trans('pgno.k_pod') }}</td>
+                            <td class="shgn-table-td">{{ kPodText }}</td>
                             <td class="shgn-table-td">{{ kPod }}</td>
                           </tr>
                         </table>
@@ -806,8 +819,8 @@
 
                     <div class="сentralizers-block">
                       <h6 class="main-title-centralizers"><b>{{ trans('pgno.interval_centrators') }}:</b></h6>
-                      <h6 class="centralizers-title">{{ trans('pgno.required') }}: <b
-                          v-for="item in centratorsRequiredValue">{{ item }}</b></h6>
+                      <h6 class="centralizers-title">{{ centratorsType }}: 
+                        <b v-for="item in centratorsRequiredValue">{{ item }}</b></h6>
                     </div>
                     <button class="button-pdf col-12" >
                       {{ trans('pgno.sozdanie_otcheta') }}
@@ -1044,60 +1057,63 @@
                   </div>
                   <div class="select-params">
                     <!--selection pararms begin -->
-                    <div class="selection-params row pt-2">
-                      <div class="col-2 pr-0 pt-3">
-                        <label class="fs-16">
-                          <input class="curve-select-option" value="ШГН"
-                                 v-model="curveSettings.expChoosen" @change="postCurveData()"
-                                 :checked="curveSettings.expChoosen === 'ШГН'" type="radio"
-                                 name="gno10"/>{{ trans('pgno.shgn') }}</label>
+                    <div class="selection-params row pt-0">
+                          <div class="col-2">
+                            <label class="fs-16 mb-0 pt-3">
+                              <input class="curve-select-option" value="ШГН"
+                                     v-model="curveSettings.expChoosen" @change="postCurveData()"
+                                     :checked="curveSettings.expChoosen === 'ШГН'" type="radio"
+                                     name="gno10"/>{{ trans('pgno.shgn') }}
+                            </label>
+                          </div>
+                          <div class="col-2">
+                            <label class="fs-16 mb-0 pt-3">
+                              <input class="curve-select-option" value="ЭЦН"
+                                     v-model="curveSettings.expChoosen" @change="postCurveData()"
+                                     :checked="curveSettings.expChoosen === 'ЭЦН'" type="radio"
+                                     name="gno10"/>{{ trans('pgno.ecn') }}</label>
+                          </div>
+                          <div class="col-2">
+                            <label class="fs-16 mb-0 pt-3">
+                            <input class="curve-select-option" value="ФОН"
+                                   v-model="curveSettings.expChoosen" @change="postCurveData()"
+                                   :checked="curveSettings.expChoosen === 'ФОН'" type="radio"
+                                   name="gno10"/>{{ trans('pgno.fon') }}</label>
+                          </div>
+                          <div class="col-2">
+                            <label class="pt-10px">{{ trans('pgno.p_buf') }}</label>
+                          </div>
+                          <div class="col-2">
+                            <label class="pt-10px">Ø{{ trans('pgno.nkt') }}</label>
+                          </div>
+                          <div class="col-2">
+                            <label class="pt-10px">{{ trans('pgno.h_spuska') }}</label>
+                          </div>
+                      <div class="gear-icon" @click="openTabsModal()">
+                        <img class="gear-icon-svg" src="./images/gear-icon.svg" alt="">
                       </div>
-                      <div class="col-2 pr-0 pt-3">
-                        <label class="fs-16">
-                          <input class="curve-select-option" value="ЭЦН"
-                                 v-model="curveSettings.expChoosen" @change="postCurveData()"
-                                 :checked="curveSettings.expChoosen === 'ЭЦН'" type="radio"
-                                 name="gno10"/>{{ trans('pgno.ecn') }}</label>
-                      </div>
-                      <div class="col-2 pr-0 pt-3">
-                        <label class="fs-16">
-                          <input class="curve-select-option" value="ФОН"
-                                 v-model="curveSettings.expChoosen" @change="postCurveData()"
-                                 :checked="curveSettings.expChoosen === 'ФОН'" type="radio"
-                                 name="gno10"/>{{ trans('pgno.fon') }}</label>
-                      </div>
+                    </div>
 
-
-                      <div class="left-border-line col-2">
-                        <label>{{ trans('pgno.p_buf') }}</label>
+                    <div class="selection-params row pt-0">
+                      <div class="col-2"></div>
+                      <div class="col-2"></div>
+                      <div class="col-2"></div>
+                      <div class="col-2 pl-0 pr-0">
                         <input type="text" v-model="curveSettings.pBuff" onfocus="this.value=''"
-                               class="input-selection-options calc-1"/>
-                        <div class="label-measurements calc-txt-1">{{trans('measurements.atm')}}</div>
+                               class="input-selection-options pl-1"/> {{trans('measurements.atm')}}
                       </div>
-
-                      <div class="col-2">
-                        <label>Ø{{ trans('pgno.nkt') }}</label>
-                        <select class="input-selection-options calc-2" v-model="curveSettings.nkt"
+                      <div class="col-2 pl-0 pr-0">
+                        <select class="input-selection-options w-62" v-model="curveSettings.nkt"
                                 @change="postCurveData()">
                           <option v-for="(nkts, index) in nkt_choose" :value="nkts.for_calc_value" :key="index">
                             {{ nkts.show_value }}
                           </option>
-                        </select>
-                        <div class="label-measurements calc-txt-2">{{trans('measurements.mm')}}</div>
+                        </select> {{trans('measurements.mm')}}
                       </div>
-
-                      <div class="col-2 pr-0" >
-                        <div><label>{{ trans('pgno.h_spuska') }}</label></div>
-
+                      <div class="col-2 pl-0 pr-0">
                         <input v-model="curveSettings.hPumpValue" @change="postCurveData()" type="text"
                                onfocus="this.value=''"
-                               class="input-selection-options calc-3"/>
-                        {{trans('measurements.m')}}
-                      </div>
-
-
-                      <div class="gear-icon" @click="openTabsModal()">
-                        <img class="gear-icon-svg" src="./images/gear-icon.svg" alt="">
+                               class="input-selection-options pl-1"/> {{trans('measurements.m')}}
                       </div>
                     </div>
                     <!--selection params end-->
@@ -1105,10 +1121,9 @@
                       <div class="title-sep">{{ trans('pgno.total_separation') }}</div>
                     </div>
 
-                    <div class="row" style="padding-top: 3px;">
-
+                    <div class="row">
                       <div class="col-4">
-                        <label style="width: 100px;" class="curve-selection-label">
+                        <label class="curve-selection-label">
                           <input value="calc_value" v-model="curveSettings.separationMethod"
                                  @change="postCurveData()" class="checkbox34" checked="true" type="radio"
                                  name="gno20" :disabled="curveSettings.expChoosen === 'ФОН'"/>
@@ -1133,7 +1148,7 @@
                                  @change="postCurveData()" value="input_value" checked="true" type="radio"
                                  name="gno20" :disabled="curveSettings.expChoosen === 'ФОН'"/>
                           <input v-model="curveSettings.es" @change="postCurveData()" type="text"
-                                 onfocus="this.value=''" class="shgn-input"
+                                 onfocus="this.value=''" class="sep-input"
                                  :disabled="curveSettings.expChoosen === 'ФОН' ||
                                  curveSettings.separationMethod !='input_value'"/>
                         </label>
@@ -1148,7 +1163,7 @@
                         <input v-model="curveSettings.mechanicalSeparationValue" @change="postCurveData()"
                                type="text" style="margin-left: 3px; margin-bottom: 0px;"
                                :disabled="curveSettings.separationMethod ==='input_value' || curveSettings.expChoosen === 'ФОН' ||  curveSettings.mechanicalSeparation === false"
-                               onfocus="this.value=''" class="shgn-input"/>
+                               onfocus="this.value=''" class="sep-input"/>
                         {{trans('measurements.percent')}}
                       </div>
                     </div>
@@ -1199,7 +1214,7 @@
                           {{trans('measurements.atm')}}
                         </div>
                       </div>
-                      <div class="col-4 pdo-bottom-cell pt-3">
+                      <div class="left-border-line col-4 pdo-bottom-cell pt-3">
                         <label class="curve-selection-label">
                           <input v-model="curveSettings.targetButton" class="curve-select-option" value="pin" type="radio"
                                  :disabled="curveSettings.expChoosen === 'ФОН'"

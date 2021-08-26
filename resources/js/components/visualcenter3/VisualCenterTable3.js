@@ -30,6 +30,11 @@ import wellsDetails from './dataManagers/wellsDetails';
 import injectionFondDetails from './widgets/injectionFondDetails';
 import emergency from './widgets/emergency';
 import {globalloadingMutations} from '@store/helpers';
+import Vue from "vue";
+
+Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
+Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
+
 
 
 export default {
@@ -69,6 +74,7 @@ export default {
                     id: 0
                 },
             },
+            oneDzoSelected: '',
             isOneDzoSelected: false,
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
             quantityRange: '',
@@ -750,20 +756,18 @@ export default {
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
-        let isOneDzoSelected = this.getDzoTicker();     
-        if (!isOneDzoSelected) {       
-            this.updateChemistryWidget();
-            this.updateWellsWorkoverWidget();
-            this.updateDrillingWidget();
-            this.updateProductionFondWidget();
-            this.updateInjectionFondWidget();
-        };
+        this.oneDzoSelected = this.getDzoTicker();
+        this.isOneDzoSelected=this.oneDzoSelected.length > 0;
+        this.updateChemistryWidget();
+        this.updateWellsWorkoverWidget();
+        this.updateDrillingWidget();
+        await this.updateProductionFondWidget();
+        await this.updateInjectionFondWidget();
     },   
     watch: {
         bigTable: function () {
-            let isOneDzoSelected = this.getDzoTicker();
-            if (isOneDzoSelected) {
-                this.assignOneCompanyToSelectedDzo(isOneDzoSelected);
+            if (this.isOneDzoSelected) {                
+                this.assignOneCompanyToSelectedDzo(this.oneDzoSelected);
             };
             this.dzoCompanySummary = this.bigTable;
             if (this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0) {

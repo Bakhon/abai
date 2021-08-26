@@ -26,179 +26,77 @@ export default {
   computed: {
     ...pgnoMapState([
       "calcedWell",
-      "wellAnalysis",
+      'wellAnalysis',
+      'linesAnalysis',
+      'pointsAnalysis',
       "well",
       "lines",
       "points",
-      "shgnSettings",
       "analysisSettings",
       "centralizer_range",
     ]),
     ...pgnoMapGetters([
-      'curveSettingsStore'
+      'curveSettingsStore',
+      'shgnSettings'
     ])
   },
-  data: function() {
+  data: function () {
     return {
       apiUrl: process.env.MIX_PGNO_API_URL,
       updateCurveTrigger: true,
-      analysisTrigger: true,
-      bhpTargetValue: null,
-      pintakeTargetValue: null,
-
-      devBlockDmPumps: null,
-      devBlockNumSwings: null,
 
       devBlockRatedFeed: null,
       devBlockFrequency: null,
 
       steel: null,
-      freegasCel: null,
       techmodeDate: null,
       404: require("./images/404.svg"),
       isSkError: false,
-      nearDist: 1000,
-      perms: this.params,
       isEditing: false,
-      permissionName: "podborGno edit main",
       activeRightTabName: "technological-mode",
       curveSettings: {},
       lines_analysis: {},
       points_analysis: {},
-      bhpPot: null,
-      qlPot: null,
-      pinPot: null,
       isVisibleChart: true,
-      stroke_len: null,
-      qOil: null,
       shgnPumpType: null,
       shgnSPM: null,
       shgnLen: null,
-      shgnS1D: null,
-      shgnS2D: null,
-      shgnS1L: null,
-      shgnS2L: null,
-      shgnTNL: null,
-      hPerfND: null,
-      type: String,
-      required: true,
       wellNumber: null,
-      isYoungAge: false,
-      x: null,
-      y: null,
-      wctOkr: null,
-      expMeth: null,
-      tseh: null,
-      gu: null,
-      casOD: null,
-      casID: null,
-      hPerf: null,
-      udl: null,
-      pumpType: null,
-      hPumpSet: null,
-      tubOD: null,
-      tubID: null,
-      stopDate: null,
-      PBubblePoint: null,
-      gor: null,
-      tRes: null,
-      viscOilRc: null,
-      viscWaterRc: null,
-      densOil: null,
-      densWater: null,
-      qO: null,
-      wct: null,
-      bhp: null,
-      pRes: null,
-      hDyn: null,
-      pAnnular: null,
-      whp: null,
-      lineP: null,
-      piInput: null,
-      pplInput: null,
-      pResInput: null,
-      qLInput: null,
-      wctInput: null,
-      gorInput: null,
-      bhpInput: null,
-      hDynInput: null,
-      pAnnularInput: null,
-      pManomInput: null,
-      hPumpManomInput: null,
-      whpInput: null,
-      hPumpValue: null,
       curveSelect: "pi",
-      curveValue: "",
       curveQselect: null,
-      curr: null,
       expChoose: null,
       targetButton: "ql",
-      bhpCurveButton: "",
-      qL: null,
       qlTargetValue: null,
       bhpCelValue: null,
       piCelValue: null,
-      expID: null,
-      CelValue: null,
-      isAnalysisBoxValue1: true,
-      isAnalysisBoxValue2: true,
-      isAnalysisBoxValue3: true,
-      isAnalysisBoxValue4: true,
-      isAnalysisBoxValue5: true,
-      isAnalysisBoxValue6: true,
-      isAnalysisBoxValue7: true,
-      isAnalysisBoxValue8: true,
-      isAnalysisBoxValue9: true,
-      nk_fields: [
-        {
-          short_name: "UZN",
-          full_name: "Узень",
-          id: 0,
-        },
-        {
-          short_name: "KMB",
-          full_name: "Карамандыбас",
-          id: 1,
-        },
-        {
-          short_name: "JET",
-          full_name: "Жетыбай",
-          id: 2,
-        },
-        {
-          short_name: "ASA",
-          full_name: "Асар",
-          id: 3,
-        },
-      ],
-      omg_fields: [
-        {
-          short_name: "UZN",
-          full_name: "Узень",
-        },
-        {
-          short_name: "KMB",
-          full_name: "Карамандыбас",
-        },
-      ],
-      mmg_fields: [
-        {
-          short_name: "JET",
-          full_name: "Жетыбай",
-        },
-        {
-          short_name: "ASA",
-          full_name: "Асар",
-        },
-      ],
+      fieldsByOrgId: {
+        "АО «ОзенМунайГаз»": [
+          {
+            short_name: "UZN",
+            full_name: "Узень",
+            id: 1,
+          },
+          {
+            short_name: "KMB",
+            full_name: "Карамандыбас",
+            id: 2,
+          },
+        ],
+        "АО «Мангистаумунайгаз»": [
+          {
+            short_name: "JET",
+            full_name: "Жетыбай",
+            id: 3,
+          },
+          {
+            short_name: "ASA",
+            full_name: "Асар",
+            id: 4,
+          },
+        ],
+      },
       shgnTubOD: null,
-      menu: "MainMenu",
-      ngdu: null,
-      sk: null,
       hasGrp: false,
-      newData: null,
-      strokeLenDev: null,
-      spmDev: "1/мин",
       expAnalysisData: {
         NNO1: null,
         NNO2: null,
@@ -227,47 +125,15 @@ export default {
       param_eco: null,
       param_org: null,
       param_fact: null,
-      welldata: null,
-      field: null,
-      wellIncl: null,
-      dataNNO: "2020-11-01",
-      nearWells: [],
-      windowWidth: null,
 
-      wellOkr: null,
-      piOkr: null,
-      khOkr: null,
-      skinOkr: null,
-      presOkr: null,
-      stanokKachalka: null,
-      freq: "Число качаний",
-      dNasosa: "Диаметр насоса",
-      hasStrokeLength: false,
-      krsTable: [],
-      numberRepairs: null,
-      numberNNO: null,
-      langUrl: "",
-      sep_meth: "input_value",
-      nat_sep: true,
-      mech_sep: null,
-      es: null,
-      mechanicalSeparationValue: 50,
-      pBuf: 4,
+      field: null,
+      windowWidth: null,
       ao: null,
-      orgs: null,
+      organizations: [],
       nkt: null,
-      liftValue: "ШГН",
-      stepValue: 10,
-      strokeLenMin: null,
-      strokeLenMax: null,
-      spmMin: null,
-      spmMax: null,
-      kpodMin: null,
-      groupPosad: null,
-      centratorsInfo: null,
+
       centratorsRequiredValue: null,
       centratorsRecommendedValue: null,
-      hPerfRangeInfo: null,
       nkt_choose: [
         {
           for_calc_value: 50.3,
@@ -294,12 +160,10 @@ export default {
           show_value: "114x7",
         },
       ],
-      hPumpFromIncl: null,
-      isButtonHpump: false,
-      postdata: null,
+
       inflowCurveTitle: this.trans("pgno.krivaya_pritoka"),
       podborGnoTitle: this.trans("pgno.podbor_gno"),
-      serviceOffline: false,
+      isServiceOnline: true,
       isIntervals: false,
       skTypes: null,
       horizons: null,
@@ -309,6 +173,9 @@ export default {
       spm: null,
       qLforKpod: null,
       pumpTypeforKpod: null,
+      calcKpodTrigger: true,
+      shgnResult: {},
+      centratorsType: String
     };
   },
   watch: {
@@ -325,27 +192,25 @@ export default {
       }
     },
   },
-  beforeCreate: function() {
+  beforeCreate: function () {
     this.apiUrl = process.env.MIX_PGNO_API_URL;
     this.axios.get("/ru/organizations").then(({ data }) => {
-      if (data.organizations.length == 0) {
-        this.organization = "НК КазМунайГаз";
-      } else {
-        this.organization = data.organizations[0]["name"];
-      }
-      if (this.organization == "АО «ОзенМунайГаз»") {
-        this.orgs = this.omg_fields;
-      } else if (this.organization == "НК КазМунайГаз") {
-        this.orgs = this.nk_fields;
-      } else if (this.organization == "АО «Мангистаумунайгаз»") {
-        this.orgs = this.mmg_fields;
-      }
-    });
+      console.log(this.fieldsByOrgId)
+      var orgs = data.organizations
+      if (orgs.length === 0) {
+        this.orgs = [...this.fieldsByOrgId["АО «ОзенМунайГаз»"], ...this.fieldsByOrgId["АО «Мангистаумунайгаз»"]]
+      } 
+      for (let orgName in this.fieldsByOrgId) {
+        if (orgs.some(org => org['name'] === orgName)) {
+          this.organizations = [...this.organizations, ...this.fieldsByOrgId[orgName]]
+          }
+        }
+      }),
 
     this.axios.get(this.apiUrl + "status/").then((response) => {
-      if (response.status !== 200) {
-        this.serviceOffline = true;
-      }
+      this.isServiceOnline = true;
+    }).catch((error) => {
+      this.isServiceOnline = false
     });
 
     this.axios.get(this.apiUrl + "lastdate/").then((response) => {
@@ -354,6 +219,15 @@ export default {
 
     this.axios.get(this.apiUrl + "sk_types").then((response) => {
       this.skTypes = response.data;
+      this.skTypes.sort(function (a, b) {
+        if (a.sk_name > b.sk_name) {
+          return 1;
+        }
+        if (a.sk_name < b.sk_name) {
+          return -1;
+        }
+        return 0;
+      });
     });
     this.axios.get(this.apiUrl + "horizons").then((response) => {
       this.horizons = response.data;
@@ -361,7 +235,6 @@ export default {
   },
   mounted() {
     this.windowWidth = window.innerWidth;
-
     if (this.windowWidth <= 1300 && this.windowWidth > 991) {
       this.activeRightTabName = "devices";
     }
@@ -369,6 +242,7 @@ export default {
   methods: {
     ...globalloadingMutations(["SET_LOADING"]),
     ...pgnoMapActions([
+      "setKpodSettings",
       "setDefault",
       "getWell",
       "postWell",
@@ -384,6 +258,55 @@ export default {
         autoHideDelay: 8000,
       });
     },
+    raiseTargetNotify() {
+      if (this.points.qlPotencial < this.curveSettings.qlTargetValue && this.targetButton == "ql") {
+        this.setNotify(this.trans("pgno.notify_cel_rezhim_more_perf"), "Error", "danger");
+        return true;
+      } else if (this.points.bhpPotencial > this.curveSettings.bhpTargetValue && this.targetButton == "bhp") {
+        this.setNotify(this.trans("pgno.notify_cel_rezhim_more_perf"), "Error", "danger");
+        return true;
+      } else if (this.points.pintakePotencial > this.curveSettings.pintakeTargetValue && this.targetButton == "pin") {
+        this.setNotify(this.trans("pgno.notify_cel_rezhim_more_perf"), "Error", "danger");
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isNktExist(val) {
+      const found = this.nkt_choose.some(
+        (el) => el.for_calc_value === this.curveSettings.nkt
+      );
+      if (!found) {
+        let type
+        let title
+        if (val === "get") {
+          type = "warning";
+          title = "Warning";
+        } 
+        if (val === "pgno") {
+          title = "Error";
+          type = "danger";
+        }
+        this.setNotify(this.trans("pgno.check_nkt_notify"), title, type);
+      }
+      return found
+    },
+    editPage() {
+      if (!this.wellNumber) {
+        this.setNotify("Выберите скважину", "Error", "danger");
+        return
+      }
+      if (this.isEditing) {
+        this.well.skType = this.skType
+        this.well.horizon = this.horizon
+      }
+      this.isEditing = !this.isEditing
+    },
+    isSkExist(skType) {
+      return this.skTypes.some(function (sk) {
+        return sk.sk_name === skType;
+      });
+    },
     setCurveData(well, points) {
       this.curveSettings.pResInput = well.pRes.toFixed(0);
       this.curveSettings.piInput = well.pi.toFixed(2);
@@ -395,7 +318,7 @@ export default {
       this.curveSettings.hDynInput = well.hDyn.toFixed(0);
       this.curveSettings.pAnnularInput = well.pAnnular.toFixed(0);
       this.curveSettings.pManomInput = well.pIntake.toFixed(0);
-      this.curveSettings.hPumpManomInput = well.hPumpSet.toFixed(0);
+      
       this.curveSettings.whpInput = well.whp.toFixed(0);
       this.curveSettings.expChoosen = well.expMeth;
       this.curveSettings.pBuff = well.whp.toFixed(0);
@@ -406,7 +329,7 @@ export default {
       this.curveSettings.mechanicalSeparationValue = well.mechanicalSeparationValue;
       this.curveSettings.naturalSeparation = well.naturalSeparation;
 
-      if (well.newWell || well.wellError==="no_well_data"){
+      if (well.newWell || well.wellError === "no_well_data") {
         this.curveSettings.qlTargetValue = 0
         this.curveSettings.bhpTargetValue = 0
         this.curveSettings.pintakeTargetValue = 0
@@ -418,17 +341,11 @@ export default {
       }
 
     },
-
-    skExist(skType) {
-      return this.skTypes.some(function(sk) {
-        return sk.sk_name === skType;
-      }); 
-    },
-
     async getWellData(wellnumber) {
       this.isIntervals = true;
       this.SET_LOADING(true);
       this.isVisibleChart = true;
+      this.calcKpodTrigger = true;
       this.setDefault();
       if (["JET", "ASA"].includes(this.field)) {
         this.ao = 'АО "ММГ"';
@@ -442,6 +359,11 @@ export default {
       await this.getWell(url);
       this.curveSettings.separationMethod = this.well.separationMethod;
       if (this.well.expMeth === "ШГН") {
+        var kpod = this.well.qL / (1440 * 3.14 * this.well.pumpType ** 2 * this.well.strokeLen * (this.well.spm / 4000000))
+			  if (kpod < 0.4 || kpod > 0.9) {
+				  var message = this.trans('pgno.kpodWarning', {kpod: kpod.toFixed(2)}) 
+				  this.setNotify(message, "Warning", "warning")
+			  }
         this.curveSelect = "hdyn";
         this.mech_sep = false;
       } else if (this.well.expMeth === "ЭЦН") {
@@ -470,26 +392,24 @@ export default {
       }
       this.curveSettings.targetButton = "ql";
       this.curveSettings.nkt = this.well.tubId;
+      this.curveSettings.hPumpManomInput = this.well.hPumpSet.toFixed(0);
       this.skType = this.well.skType;
       this.horizon = this.well.horizon;
-      if (this.well.wellError==="no_well_data"){
+      if (this.well.wellError === "no_well_data") {
         this.setNotify(this.trans('pgno.notify_well_doesnt_exist'), "Error", 'danger')
-      } else if (!this.well.newWell && !this.skExist(this.skType)) {
+      } else if (!this.well.newWell && !this.isSkExist(this.skType)) {
         this.setNotify(this.trans("pgno.notify_error_sk"), "Warning", "warning");
-        this.nktExist("get")
+        this.isNktExist("get")
       }
       this.setCurveSettings(this.curveSettings);
       this.updateCurveTrigger = !this.updateCurveTrigger;
       this.SET_LOADING(false);
     },
-    editPage() {
-      if (this.isEditing) {
-        this.well.skType = this.skType
-        this.well.horizon = this.horizon
-      }
-      this.isEditing = !this.isEditing
-    },
     async postCurveData() {
+      if (!this.wellNumber) {
+        this.setNotify("Выберите скважину", "Error", "danger");
+        return
+      }
       this.isVisibleChart = true;
       this.SET_LOADING(true);
       if (this.well.casOd < 127) {
@@ -527,7 +447,7 @@ export default {
         analysis_settings: this.analysisSettings,
       };
       var isPostSuccess = await this.postWell(payload);
-      if (!isPostSuccess){
+      if (!isPostSuccess) {
         this.curveSettings.es = this.curveSettings.es * 100
         this.SET_LOADING(false);
         return
@@ -551,139 +471,14 @@ export default {
       this.updateCurveTrigger = !this.updateCurveTrigger;
       this.SET_LOADING(false);
     },
-    raiseTargetNotify() {
-      if (
-        this.points.qlPotencial < this.curveSettings.qlTargetValue &&
-        this.targetButton == "ql"
-      ) {
-        this.setNotify(
-          this.trans("pgno.notify_cel_rezhim_more_perf"),
-          "Error",
-          "danger"
-        );
-        return true;
-      } else if (
-        this.points.bhpPotencial > this.curveSettings.bhpTargetValue &&
-        this.targetButton == "bhp"
-      ) {
-        this.setNotify(
-          this.trans("pgno.notify_cel_rezhim_more_perf"),
-          "Error",
-          "danger"
-        );
-        return true;
-      } else if (
-        this.points.pintakePotencial > this.curveSettings.pintakeTargetValue &&
-        this.targetButton == "pin"
-      ) {
-        this.setNotify(
-          this.trans("pgno.notify_cel_rezhim_more_perf"),
-          "Error",
-          "danger"
-        );
-        return true;
-      } else {
-        return false;
-      }
-    },
-    openEcoModal() {
-      if (this.well.casOd < 127) {
-        this.setNotify(this.trans("pgno.notify_ek_127"), "Error", "danger");
-      }
-
-      if (this.curveSettings.qlTargetValue < 28) {
-        this.setNotify(
-          this.trans("pgno.notify_uecn_not_recommended"),
-          "Warning",
-          "warning"
-        );
-      }
-
-      if (this.curveSettings.qlTargetValue > 106) {
-        this.setNotify(
-          this.trans("pgno.notify_shgn_restrict_potencial"),
-          "Warning",
-          "warning"
-        );
-      }
-      this.$modal.show("modalExpAnalysis");
-    },
-    openPrsModal() {
-      this.$modal.show("modal-prs");
-    },
-    closeModal(modalName) {
-      this.$modal.hide(modalName);
-    },
-    openInclinometryModal() {
-      if (this.well.newWell) {
-        this.setNotify(this.trans("pgno.notify_no_incl"), "Warning", "warning");
-      } else if (!this.wellNumber) {
-        this.setNotify("Выберите скважину", "Warning", "warning");
-      } else {
-        this.$modal.show("modalIncl");
-      }
-    },
-    closeAnalysisModal() {
-      this.updateCurveTrigger = !this.updateCurveTrigger;
-      this.setCurveData(this.wellAnalysis, this.points);
-      this.$modal.hide("analysisMenu");
-    },
-    openEcoTableModal() {
-      this.$modal.hide("modalExpAnalysis");
-      this.$modal.show("tablePGNO");
-    },
-    closeEcoTableModal() {
-      this.$modal.hide("tablePGNO");
-      this.$modal.show("modalExpAnalysis");
-    },
-    closeInclModal() {
-      this.$modal.hide("modalIncl");
-      this.curveSettings.hPumpValue = this.curveSettingsStore.hPumpValue;
-      this.postCurveData();
-      
-    },
-    openAnalysisModal() {
-      this.$modal.show('analysisMenu');
-    },
-    closeAnalysisModal() {
-      this.updateCurveTrigger = !this.updateCurveTrigger
-      this.setCurveData(this.wellAnalysis, this.points)
-      this.$modal.hide("analysisMenu");
-    },
-
-    openTabsModal() {
-      if (this.well.qL && this.curveSettings.qLInput !== 0) {
-        this.qLforKpod = this.curveSettings.qLInput;
-        this.pumpTypeforKpod = this.curveSettings.pumpType;
-      }
-      this.$modal.show("modalTabs");
-    },
-    closeTabsModal() {
-      this.$modal.hide("modalTabs");
-      this.postCurveData();
-    },
-    nktExist(val) {
-      const found = this.nkt_choose.some(
-        (el) => el.for_calc_value === this.curveSettings.nkt
-      );
-      if (!found) {
-        let type
-        let title
-        if (val === "get") {
-          type = "warning";
-          title = "Warning";
-        } else if (val === "pgno") {
-          title = "Error";
-          type = "danger";
-        }
-        this.setNotify(this.trans("pgno.check_nkt_notify"), title, type);
-      }
-      return found
-    },
     onPgnoClick() {
-      var nktError = this.nktExist("pgno")
+      if (!this.wellNumber) {
+        this.setNotify("Выберите скважину", "Error", "danger");
+        return
+      }
+      var nktError = this.isNktExist("pgno")
       var errorCheck = this.raiseTargetNotify();
-      if (!this.skExist(this.skType)) {
+      if (!this.isSkExist(this.skType)) {
         this.setNotify(this.trans("pgno.notify_error_sk"), "Error", "danger");
       } else if (errorCheck || nktError) {
         if (this.curveSettings.expChoosen == "ШГН") {
@@ -700,6 +495,7 @@ export default {
               .post(this.apiUrl + "shgn", payload)
               .then((response) => {
                 let data = response.data;
+                this.shgnResult = data
                 if (!this.well.newWell) {
                   this.fetchBlockCentrators();
                 } else {
@@ -729,15 +525,10 @@ export default {
                     "warning"
                   );
                 } else {
-                  this.setNotify(
-                    this.trans("pgno.notify_shgn_under_contstruction"),
-                    "Warning",
-                    "warning"
-                  );
                   this.shgnPumpType = data.kPodData["pump_type"]
 
                   this.freegasCel = this.points.freegasCelValue.toFixed(1),
-                  this.qoilShgnTable = this.points.qoCelValue.toFixed(1);
+                    this.qoilShgnTable = this.points.qoCelValue.toFixed(1);
                   this.construction = data.construction;
                   this.shgnSPM = data.kPodData["spm_calc"].toFixed(1);
                   this.shgnLen = data.kPodData["stroke_lens"].toFixed(1);
@@ -745,15 +536,16 @@ export default {
                   this.skPmax = data.checks["sk_pmax"];
                   this.skMn2 = data.checks["sk_mn2"];
                   this.steel = data.checks["steel"];
-                  this.pElectricity = (
-                    data.checks["p_electricity"] / 1000
-                  ).toFixed(0);
+                  this.pElectricity = (data.checks["p_electricity"] / 1000).toFixed(0);
                   this.wDay = data.checks["w_day"].toFixed(0);
                   this.ure = data.checks["ure"].toFixed(1);
+                  if (this.shgnSettings.kPodMode) {
+                    this.kPodText = this.trans("pgno.kPodCalced")
+                  } else {
+                    this.kPodText = this.trans("pgno.kPodUser")
+                  }
                   if (data.checks["load_limit_check"]["type"] === "warning") {
-                    var message = `${this.trans("pgno.load_warning")} ${
-                      data.checks["load_limit_check"]["value"]
-                    } ${this.trans("measurements.percent")}`;
+                    var message = `${this.trans("pgno.load_warning")} ${data.checks["load_limit_check"]["value"]} ${this.trans("measurements.percent")}`;
                     this.setNotify(message, "Warning", "warning");
                   } else if (
                     data.checks["load_limit_check"]["type"] === "error"
@@ -827,28 +619,6 @@ export default {
         }
       }
     },
-
-    downloadEconomicExcel() {
-      this.SET_LOADING(true);
-      let req = [
-        this.expAnalysisData.npvTable1,
-        this.expAnalysisData.npvTable2,
-      ];
-      this.axios
-        .post(this.apiUrl + "economic/download", req, { responseType: "blob" })
-        .then((response) => {
-          fileDownload(
-            response.data,
-            "ЭКОНОМИКА_" + this.field + "_" + this.wellNumber + ".xlsx"
-          );
-        })
-        .catch(function(error) {
-          console.error("oops, something went wrong!", error);
-        })
-        .finally(() => {
-          this.SET_LOADING(false);
-        });
-    },
     async fetchBlockCentrators() {
       var payload = {};
       var stepValue;
@@ -865,9 +635,181 @@ export default {
         calculateMethod: this.stepCalc,
       };
       await this.getInclinometry(payload);
-      this.centratorsRequiredValue = this.centralizer_range["red"];
+      this.centratorsType = this.trans('pgno.required')
+      if (this.centralizer_range === "NoIncl") {
+        this.centratorsRequiredValue = "Нет данных"
+      } else if (!this.centralizer_range["red"]) {
+        this.centratorsType = this.trans('pgno.recommended')
+        this.centratorsRequiredValue = this.centralizer_range["yellow"];
+      } else {
+        this.centratorsRequiredValue = this.centralizer_range["red"];
+      }
     },
-    setActiveRightTabName: function(e, val) {
+
+    closeModal(modalName) {
+      this.$modal.hide(modalName);
+    },
+    openEcoModal() {
+      if (!this.wellNumber) {
+        this.setNotify("Выберите скважину", "Error", "danger");
+        return
+      }
+      if (this.well.casOd < 127) {
+        this.setNotify(this.trans("pgno.notify_ek_127"), "Error", "danger");
+      }
+
+      if (this.curveSettings.qlTargetValue < 28) {
+        this.setNotify(
+          this.trans("pgno.notify_uecn_not_recommended"),
+          "Warning",
+          "warning"
+        );
+      }
+
+      if (this.curveSettings.qlTargetValue > 106) {
+        this.setNotify(
+          this.trans("pgno.notify_shgn_restrict_potencial"),
+          "Warning",
+          "warning"
+        );
+      }
+      this.$modal.show("modalExpAnalysis");
+    },
+    openPrsModal() {
+      if (!this.wellNumber) {
+        this.setNotify("Выберите скважину", "Error", "danger");
+        return
+      }
+      this.$modal.show("modal-prs");
+    },
+    openInclinometryModal() {
+      if (!this.wellNumber) {
+        this.setNotify("Выберите скважину", "Error", "danger");
+        return
+      }
+      if (this.well.newWell) {
+        this.setNotify(this.trans("pgno.notify_no_incl"), "Warning", "warning");
+      } else if (!this.wellNumber) {
+        this.setNotify("Выберите скважину", "Warning", "warning");
+      } else {
+        this.$modal.show("modalIncl");
+      }
+    },
+    closeInclModal() {
+      this.$modal.hide("modalIncl");
+      this.curveSettings.hPumpValue = this.curveSettingsStore.hPumpValue;
+      this.postCurveData();
+
+    },
+    openAnalysisModal() {
+      if (!this.wellNumber) {
+        this.setNotify("Выберите скважину", "Error", "danger");
+        return
+      }
+      this.$modal.show('analysisMenu');
+    },
+    closeAnalysisModal() {
+      this.updateCurveTrigger = !this.updateCurveTrigger;
+      this.setCurveData(this.wellAnalysis, this.points);
+      this.$modal.hide("analysisMenu");
+    },
+    openEcoTableModal() {
+      this.$modal.hide("modalExpAnalysis");
+      this.$modal.show("tablePGNO");
+    },
+    closeEcoTableModal() {
+      this.$modal.hide("tablePGNO");
+      this.$modal.show("modalExpAnalysis");
+    },
+    openTabsModal() {
+      if (!this.wellNumber) {
+        this.setNotify("Выберите скважину", "Error", "danger");
+        return
+      }
+      if (this.calcKpodTrigger) {
+        var payload = {
+          pumpType: this.well.pumpType,
+          spm: this.well.spm,
+          strokeLen: this.well.strokeLen,
+          ql: this.curveSettings.qLInput,
+        }
+        this.setKpodSettings(payload)
+      }
+      this.$modal.show("modalTabs");
+    },
+    closeTabsModal() {
+      this.$modal.hide("modalTabs");
+      this.postCurveData();
+      this.calcKpodTrigger = false
+    },
+    downloadExcel(menu) {
+      this.SET_LOADING(true);
+      if (menu === "analysis") {
+        var payload = {
+          shgn_settings: this.shgnSettings,
+          well: this.wellAnalysis,
+          curve_settings: this.curveSettings,
+          analysis_settings: this.analysisSettings,
+          points: this.pointsAnalysis,
+          lines: this.linesAnalysis,
+        };
+        var url = this.apiUrl + "excel/download"
+        var filename = "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx"
+      } else if (menu === "main") {
+        var payload = {
+          shgn_settings: this.shgnSettings,
+          well: this.well,
+          curve_settings: this.curveSettings,
+          analysis_settings: this.analysisSettings,
+          points: this.points,
+          lines: this.lines,
+        };
+        var url = this.apiUrl + "excel/download"
+        var filename = "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx"
+      } else if (menu === "gno") {
+        this.shgnResult.centralizer_range = this.centralizer_range
+        var payload = {
+          shgn_settings: this.shgnSettings,
+          well: this.well,
+          curve_settings: this.curveSettings,
+          analysis_settings: this.analysisSettings,
+          points: this.points,
+          result: this.shgnResult,
+        };
+        var url = this.apiUrl + "shgn/download"
+        var filename = "ПГНО_" + this.field + "_" + this.wellNumber + "_ШГН.xlsx"
+      }
+      this.axios.post(url, payload, { responseType: "blob" }).then((response) => {
+        fileDownload(response.data, filename)
+      }).catch(function (error) {
+        console.error('oops, something went wrong!', error);
+      }).finally(() => {
+        this.SET_LOADING(false);
+      });
+    },
+    downloadEconomicExcel() {
+      this.SET_LOADING(true);
+      let req = [
+        this.expAnalysisData.npvTable1,
+        this.expAnalysisData.npvTable2,
+      ];
+      this.axios
+        .post(this.apiUrl + "economic/download", req, { responseType: "blob" })
+        .then((response) => {
+          fileDownload(
+            response.data,
+            "ЭКОНОМИКА_" + this.field + "_" + this.wellNumber + ".xlsx"
+          );
+        })
+        .catch(function (error) {
+          console.error("oops, something went wrong!", error);
+        })
+        .finally(() => {
+          this.SET_LOADING(false);
+        });
+    },
+
+    setActiveRightTabName: function (e, val) {
       if (
         val === this.activeRightTabName &&
         (this.windowWidth > 1300 || this.windowWidth <= 991)
@@ -900,14 +842,14 @@ export default {
 
       htmlToImage
         .toPng(this.$refs["gno-chart"])
-        .then(function(dataUrl) {
+        .then(function (dataUrl) {
           let link = document.createElement("a");
           link.setAttribute("href", dataUrl);
           link.setAttribute("download", "download");
           link.click();
           link.remove();
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.error("oops, something went wrong!", error);
         })
         .finally(() => {
@@ -919,14 +861,14 @@ export default {
 
       htmlToImage
         .toPng(this.$refs["gno-chart-new-old-well"])
-        .then(function(dataUrl) {
+        .then(function (dataUrl) {
           let link = document.createElement("a");
           link.setAttribute("href", dataUrl);
           link.setAttribute("download", "download");
           link.click();
           link.remove();
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.error("oops, something went wrong!", error);
         })
         .finally(() => {
@@ -934,6 +876,7 @@ export default {
         });
     },
   },
+
   created() {
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
@@ -941,3 +884,4 @@ export default {
     this.setDefault();
   },
 };
+  

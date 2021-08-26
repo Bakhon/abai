@@ -48,6 +48,10 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\ResearchMethod;
+use App\Models\BigData\Dictionaries\ResearchTarget;
+use App\Models\BigData\Dictionaries\GdisConclusion;
+use App\Models\BigData\Dictionaries\Mark;
 use App\Models\BigData\Dictionaries\ReasonEquipFail;
 use App\Models\BigData\Dictionaries\ChemicalReagentType;
 use App\TybeNom;
@@ -230,6 +234,22 @@ class DictionaryService
         ],
         'treat_type' => [
             'class' => TreatType::class,
+            'name_field' => 'name_ru'
+        ],
+        'research_methods' => [
+            'class' => ResearchMethod::class,
+            'name_field' => 'name_ru'
+        ],
+        'research_target' => [
+            'class' => ResearchTarget::class,
+            'name_field' => 'name_ru'
+        ],
+        'gdis_conclusion' => [
+            'class' => GdisConclusion::class,
+            'name_field' => 'name_ru'
+        ],
+        'marks' => [
+            'class' => Mark::class,
             'name_field' => 'name_ru'
         ],
         'reason_equip_fail' => [

@@ -6,13 +6,13 @@
       "code": "date",
       "title": "date",
       "type": "date",
-      "default": "first day of january this year"
+      "default": "first day of this month"
     },
     {
       "code": "date_to",
       "title": "date_to",
       "type": "date",
-      "default": "last day of december this year"
+      "default": "last day of this month"
     }
   ],
   "columns": [
