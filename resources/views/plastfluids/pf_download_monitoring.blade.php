@@ -1,7 +1,7 @@
 @extends('layouts.pf')
 @section('content')
     <div>
-        <pf-standart-separation-flash></pf-standart-separation-flash>
+        <pf-download-monitoring></pf-download-monitoring>
     </div>
 @endsection
 

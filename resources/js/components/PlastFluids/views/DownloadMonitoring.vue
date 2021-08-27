@@ -277,7 +277,7 @@ import Button from "../../geology/components/buttons/Button";
 import Icon from "../../geology/components/icons/AwIcon";
 
 export default {
-  name: "UploadMonitoring",
+  name: "DownloadMonitoring",
   components: {
     dropdown,
     Button,
@@ -670,16 +670,6 @@ tr:nth-child(even) {
 
 tr:nth-child(even) {
   background-color: #454d7d52;
-}
-.table_header {
-  background-color: #333975;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 14px;
-  letter-spacing: 0em;
-  text-align: center;
-  color: aliceblue;
 }
 
 .file_upload {
