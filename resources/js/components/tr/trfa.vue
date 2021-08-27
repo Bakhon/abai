@@ -156,8 +156,6 @@
             style="margin-left: 10px;"
           />
         </div>
-
-        <notifications position="top"></notifications>
       </div>
       <div class="sec_nav">
         <div class="" v-if="chartShow === 'bar'">
@@ -199,8 +197,7 @@
 <script>
 import NotifyPlugin from "vue-easy-notify";
 import "vue-easy-notify/dist/vue-easy-notify.css";
-import { VueMomentLib } from "vue-moment-lib";
-import moment from "moment";
+import {VueMomentLib} from "vue-moment-lib";
 import Vue from "vue";
 import BigNumbers from "./BigNumbers.vue";
 import ClearIcon from "@ui-kit/ClearIcon.vue";

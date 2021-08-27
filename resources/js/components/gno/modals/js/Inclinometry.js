@@ -105,7 +105,6 @@ export default {
   computed: {
     ...pgnoMapState([
       'well',
-      'shgnSettings',
       'curveSettings',
       'analysisSettings',
       'inclinometry',
@@ -113,7 +112,7 @@ export default {
       'centralizer_range',
     ]),
     ...pgnoMapGetters([
-      'hPumpIncl'
+      'shgnSettings'
     ]),
   },
   methods: {

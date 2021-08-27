@@ -59,8 +59,8 @@ class ZuOtvodyImport implements ToCollection, WithColumnLimit, WithCalculatedFor
                 $message = 'Не найдена ЗУ '. $row[self::COLUMNS['zu']];
                 $this->command->error($message);
             }
-
-
         }
+
+        $this->command->info('Import finished');
     }
 }
