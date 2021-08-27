@@ -27,7 +27,7 @@
     </p>
     <p>
       {{ trans('monitoring.omgngdu_well.fields.temperature') }} :
-      {{ getValueOrNoData(well.last_omgngdu.temperature) }} {{ trans('measurements.celsius') }}
+      {{ getValueOrNoData(well.last_omgngdu.temperature_well) }} {{ trans('measurements.celsius') }}
     </p>
     <p>
       {{ trans('monitoring.omgngdu_well.fields.gas_factor') }} :
