@@ -84,7 +84,7 @@ export default {
       return this.reverseOilPrices.map(oilPrice => {
         return scenarios
             .filter(scenario => scenario.oil_price === oilPrice)
-            .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
+            .reduce((prev, current) => (+prev.Operating_profit_scenario > +current.Operating_profit_scenario) ? prev : current)
       })
     },
 

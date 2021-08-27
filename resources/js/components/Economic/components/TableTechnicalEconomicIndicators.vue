@@ -130,8 +130,11 @@ export default {
 
       let key = 'original_value_optimized'
 
-      return +scenario.Overall_expenditures[key]
-          / (+scenario.production_local[key] + (+scenario.production_export[key]))
+      let denominator = +scenario.production_local[key] + (+scenario.production_export[key])
+
+      return denominator ?
+          +scenario.Overall_expenditures_scenario / denominator
+          : 0
     },
 
     oilSaleValue(index = null, scenario = null) {
@@ -151,7 +154,11 @@ export default {
 
       let key = 'original_value_optimized'
 
-      return 1000 * (+scenario.Revenue_export[key] / (+scenario.production_export[key] * (+this.scenario.dollar_rate) * 7.2))
+      let denominator = (+scenario.production_export[key] * (+this.scenario.dollar_rate) * 7.2)
+
+      return denominator
+          ? 1000 * (+scenario.Revenue_export[key] / denominator)
+          : 0
     },
 
     oilSalePriceLocalValue(index = null, scenario = null) {
@@ -161,7 +168,9 @@ export default {
 
       let key = 'original_value_optimized'
 
-      return +scenario.Revenue_local[key] / +scenario.production_local[key]
+      return +scenario.production_local[key]
+          ? +scenario.Revenue_local[key] / +scenario.production_local[key]
+          : 0
     },
   },
   computed: {
@@ -322,9 +331,9 @@ export default {
           title: this.trans('economic_reference.total_expenses'),
           dimension: '$ / bbl',
           values: [
-            ...[+this.baseScenario.Overall_expenditures.original_value_optimized / 1000000],
+            ...[+this.baseScenario.Overall_expenditures_scenario / 1000000],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                +this.oilPriceScenarios[index].Overall_expenditures.original_value_optimized / 1000000
+                +this.oilPriceScenarios[index].Overall_expenditures_scenario / 1000000
             )
           ],
           budget2020: this.budget2020Map,
@@ -361,7 +370,7 @@ export default {
                   scenario.coef_cost_WR_payroll === this.scenario.coef_cost_WR_payroll &&
                   scenario.coef_Fixed_nopayroll === this.scenario.coef_Fixed_nopayroll
               )
-              .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
+              .reduce((prev, current) => (+prev.Operating_profit_scenario > +current.Operating_profit_scenario) ? prev : current)
       )
     },
 

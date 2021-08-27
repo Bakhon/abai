@@ -51,7 +51,7 @@ export default {
                       scenario.coef_cost_WR_payroll === this.scenario.coef_cost_WR_payroll &&
                       scenario.coef_Fixed_nopayroll === this.scenario.coef_Fixed_nopayroll
               )
-              .reduce((prev, current) => (+prev.operating_profit_12m_optimize > +current.operating_profit_12m_optimize) ? prev : current)
+              .reduce((prev, current) => (+prev.Operating_profit_scenario > +current.Operating_profit_scenario) ? prev : current)
       )
     },
 
@@ -70,22 +70,22 @@ export default {
         {
           name: `${this.trans('economic_reference.costs')} ${this.trans('economic_reference.before_optimization')}`,
           type: 'line',
-          data: this.chartData.map(x => x ? +x.Overall_expenditures.original_value : null)
+          data: this.chartData.map(x => x ? +x.Overall_expenditures_scenario.original_value : null)
         },
         {
           name: `${this.trans('economic_reference.costs')} ${this.trans('economic_reference.after_optimization')}`,
           type: 'line',
-          data: this.chartData.map(x => x ? +x.Overall_expenditures.original_value_optimized : null)
+          data: this.chartData.map(x => x ? +x.Overall_expenditures_scenario.original_value_optimized : null)
         },
         {
           name: `${this.trans('economic_reference.operating_profit_loss')} ${this.trans('economic_reference.before_optimization')}`,
           type: 'bar',
-          data: this.chartData.map(x => x ? +x.operating_profit_12m.original_value : null)
+          data: this.chartData.map(x => x ? +x.Operating_profit_scenario.original_value : null)
         },
         {
           name: `${this.trans('economic_reference.operating_profit_loss')} ${this.trans('economic_reference.after_optimization')}`,
           type: 'bar',
-          data: this.chartData.map(x => x ? +x.operating_profit_12m.original_value_optimized : null)
+          data: this.chartData.map(x => x ? +x.Operating_profit_scenario.original_value_optimized : null)
         },
       ]
     },

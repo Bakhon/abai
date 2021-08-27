@@ -79,7 +79,7 @@ export default {
           let seriesGtm = []
 
           retentionScenarios.forEach(scenario => {
-            let operating_profit_12m = +scenario.operating_profit_12m.original_value_optimized
+            let operating_profit = +scenario.Operating_profit_scenario.original_value_optimized
 
             let dimension = 1000000000
 
@@ -88,7 +88,7 @@ export default {
               cat_1: scenario.percent_stop_cat_1,
               cat_2: scenario.percent_stop_cat_2,
               oil: +scenario.oil.original_value_optimized,
-              operating_profit_12m: (+operating_profit_12m / dimension).toFixed(2),
+              operating_profit: (+operating_profit / dimension).toFixed(2),
             })
 
             seriesGtm.push({
@@ -96,7 +96,7 @@ export default {
               cat_1: scenario.percent_stop_cat_1,
               cat_2: scenario.percent_stop_cat_2,
               oil: +scenario.oil.original_value_optimized + (+scenario.gtm_oil),
-              operating_profit_12m: ((+operating_profit_12m + (+scenario.gtm_operating_profit_12m)) / dimension).toFixed(2),
+              operating_profit: ((+operating_profit + (+scenario.gtm_operating_profit_12m)) / dimension).toFixed(2),
             })
           })
 
@@ -128,7 +128,7 @@ export default {
           type: 'line',
           data: item.series.map(item => {
             return {
-              y: item.operating_profit_12m,
+              y: item.operating_profit,
               x: item.oil
             }
           })
