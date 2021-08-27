@@ -18,7 +18,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
     private $yesterdayDate = ''; 
     private $fieldsMapping = '';    
 
-    private function lastRecordKGM()
+    private function getlastRecord()
     {
         return DzoImportData::query()->select('*')
             ->where('dzo_name', '=', self::DZO_NAME)
@@ -32,17 +32,16 @@ class StoreKGMReportsFromAvocetByDay extends Command
         $this->yesterdayDate=Carbon::yesterday();
         $pathToJsonFieldsMapping = resource_path() . "/js/components/visualcenter3/dailyReportImport/fields_kgm_reports_mapping.json";
         $this->fieldsMapping = json_decode(file_get_contents($pathToJsonFieldsMapping), true);  
-        $dzoImportFieldData = new DzoImportData();
         $dzoImportFieldFonds = new FondsForKGM;
-        $dzoImportFieldDowntimeReason = new DzoImportDowntimeReason();
-        $this->getDzoImportFieldData($dzoImportFieldData, $dzoImportFieldFonds);
-        $this->getDowntimeReasonFields($dzoImportFieldDowntimeReason, $dzoImportFieldFonds);
+        $dzoImportFieldData = $this->getDzoImportFieldData($dzoImportFieldFonds);
+         $dzoImportFieldDowntimeReason = $this->getDowntimeReasonFields($dzoImportFieldFonds);
         $this->saveKGMReportsFromAvocetByDay($dzoImportFieldData, $dzoImportFieldDowntimeReason);
     }
 
-    private function getDzoImportFieldData($dzoImportFieldData, $dzoImportFieldFonds)
-    {        
-        $this->getFields($this->fieldsMapping['getWaterOilDeliveryAndGasMore'], $dzoImportFieldData, 'getWaterOilDeliveryAndGasMore');
+    private function getDzoImportFieldData($dzoImportFieldFonds)
+    {
+        $dzoImportFieldData = new DzoImportData();
+        $this->updateFields($this->fieldsMapping['getWaterOilDeliveryAndGasMore'], $dzoImportFieldData, 'getWaterOilDeliveryAndGasMore');
 
         $dzoImportFieldData->date = $this->yesterdayDate;
         $dzoImportFieldData->dzo_name = self::DZO_NAME;
@@ -56,16 +55,16 @@ class StoreKGMReportsFromAvocetByDay extends Command
         $dzoImportFieldData->otm_well_workover_fact = $this->getWellsWorkover($dzoImportFieldData, $dzoImportFieldFonds);
         
         $fieldForFilter=[
-            ['getFields','production_fond','dzo_import_field_data','dzo_import_field_data'],
-            ['getFields','production_fond','SHUT_IN','SHUT_IN'],
-            ['getFieldsInjection','injection_fond','dzo_import_field_data','dzo_import_field_data']
+            ['updateFields','production_fond','dzo_import_field_data','dzo_import_field_data'],
+            ['updateFields','production_fond','SHUT_IN','SHUT_IN'],
+            ['updateFieldsInjection','injection_fond','dzo_import_field_data','dzo_import_field_data']
         ]; 
 
         for ($i = 0; $i < 3; $i++) {
-            if (isset($this->fieldsMapping[$fieldForFilter[$i][1]][$fieldForFilter[$i][2]])) {
-                $function = $fieldForFilter[$i][0];
-                $this->$function($this->fieldsMapping[$fieldForFilter[$i][1]][$fieldForFilter[$i][2]], $dzoImportFieldData, $fieldForFilter[$i][3], '');
-            }
+            $functionName = $fieldForFilter[$i][0];
+            $fondName = $this->fieldsMapping[$fieldForFilter[$i][1]];
+            $groupOfFields =$fondName[$fieldForFilter[$i][2]];
+                $this->$functionName($groupOfFields, $dzoImportFieldData, $fieldForFilter[$i][3], '');
         }
 
         $fieldsForSumFond["operating_production_fond"] = ['in_work_production_fond','in_idle_production_fond','developing_production_fond','inactive_injection_fond'];
@@ -74,12 +73,12 @@ class StoreKGMReportsFromAvocetByDay extends Command
         $fieldsForSumFond["active_injection_fond"] = ['in_work_injection_fond','in_idle_injection_fond'];
 
         $filter=[];
-        foreach ($dzoImportFieldData->getAttributes() as $k1 => $valueFond) {
-            foreach ($fieldsForSumFond as $k2 => $fildName) {
-                foreach ($fildName as $k3 => $fildName2) {
-                    if ($k1==$fildName2) {
-                    $filter[$k2][$k1] = $valueFond;
-                    $dzoImportFieldData->$k2 = array_sum($filter[$k2]);
+        foreach ($dzoImportFieldData->getAttributes() as $fondsAllFieldsName => $valueFond) {
+            foreach ($fieldsForSumFond as $groupNameOfFonds => $fieldNameInGroupNameOfFondsArray) {
+                foreach ($fieldNameInGroupNameOfFondsArray as $key => $fieldNameInGroupNameOfFonds) {                    
+                    if ($fondsAllFieldsName==$fieldNameInGroupNameOfFonds) {
+                        $filter[$groupNameOfFonds][$fondsAllFieldsName] = $valueFond;
+                        $dzoImportFieldData->$groupNameOfFonds = array_sum($filter[$groupNameOfFonds]);
                     }
                 }
             }
@@ -97,18 +96,19 @@ class StoreKGMReportsFromAvocetByDay extends Command
       
     }
 
-    private function getDowntimeReasonFields($dzoImportFieldDowntimeReason, $dzoImportFieldFonds)
+    private function getDowntimeReasonFields($dzoImportFieldFonds)
     {
+        $dzoImportFieldDowntimeReason = new DzoImportDowntimeReason();
         $fonds = $this->getDataByType($dzoImportFieldFonds);
         $dzoImportFieldDowntimeReason->well_survey_downtime_production_wells_count = $this->getCountByDowntimeWells($fonds, 'PRODUCTION');
         $dzoImportFieldDowntimeReason->well_survey_downtime_injection_wells_count = $this->getCountByDowntimeWells($fonds, 'INJECTION');        
 
         if (isset($this->fieldsMapping['production_fond']['SHUT_IN_downtimeReason'])) {
-            $this->getFields($this->fieldsMapping['production_fond']['SHUT_IN_downtimeReason'], $dzoImportFieldDowntimeReason, 'SHUT_IN_downtimeReason', '');
+            $this->updateFields($this->fieldsMapping['production_fond']['SHUT_IN_downtimeReason'], $dzoImportFieldDowntimeReason, 'SHUT_IN_downtimeReason', '');
         }
 
         if (isset($this->fieldsMapping['injection_fond']['SHUT_IN_downtimeReason'])) {
-            $this->getFieldsInjection($this->fieldsMapping['injection_fond']['SHUT_IN_downtimeReason'], $dzoImportFieldDowntimeReason, 'SHUT_IN_downtimeReason', '');
+            $this->updateFieldsInjection($this->fieldsMapping['injection_fond']['SHUT_IN_downtimeReason'], $dzoImportFieldDowntimeReason, 'SHUT_IN_downtimeReason', '');
         }
         return $dzoImportFieldDowntimeReason;
     }
@@ -194,7 +194,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
         return $data;
     }
 
-    private function getFieldsInjection($fieldsMapping,$dzoImportFieldData, $groupOfFieldNames)
+    private function updateFieldsInjection($fieldsMapping,$dzoImportFieldData, $groupOfFieldNames)
     {
         foreach ($fieldsMapping as $field_name => $field) {
 
@@ -206,10 +206,9 @@ class StoreKGMReportsFromAvocetByDay extends Command
                 $dzoImportFieldData->$field_name = $this->getCountOfFonds('SHUT_IN', 'INJECTION');
             }
         }
-        return $dzoImportFieldData;
     }
 
-    private function getFields($fieldsMapping, $dzoImportFieldData, $groupOfFieldNames)
+    private function updateFields($fieldsMapping, $dzoImportFieldData, $groupOfFieldNames)
     {
         foreach ($fieldsMapping as $field_name => $field) {
 
@@ -223,8 +222,6 @@ class StoreKGMReportsFromAvocetByDay extends Command
                 $dzoImportFieldData->$field_name = $this->getCountOfFonds('SHUT_IN', 'PRODUCTION');
             }
         }
-
-        return $dzoImportFieldData;
     }
 
     private function saveKGMReportsFromAvocetByDay($dzoImportFieldData, $dzoImportFieldDowntimeReason)
@@ -237,7 +234,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
 
         if (count($lastDataOil) === 0) {
             $dzoImportFieldData->save();
-            $dzoImportFieldDowntimeReason->dzo_import_data_id = $this->lastRecordKGM();
+            $dzoImportFieldDowntimeReason->dzo_import_data_id = $this->getlastRecord();
             $dzoImportFieldDowntimeReason->save();
             echo "Data haven't been written";
             return;
