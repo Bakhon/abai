@@ -132,17 +132,17 @@ class StoreKGMReportsFromAvocetByDay extends Command
         );
         $pathOfClasses = "\App\Models\VisCenter\InboundIntegration\KGM\Daily";
         foreach ($column_names as $key => $value) {
-                $class = $pathOfClasses . "\\" . $value;
-                $data = $this->getDataByType(new $class);
+            $class = $pathOfClasses . "\\" . $value;
+            $data = $this->getDataByType(new $class);
 
-                if (empty($data)) {
-                    return 0;
-                }
-                foreach ($data as $rowNum => $row) {
-                    if ($row['legacy_id'] == $fieldName) {
-                        return $this->getFactBy($row, $fieldName);
-                    }
-                }
+            if (empty($data)) {
+                return 0;
+            }
+            foreach ($data as $rowNum => $row) {
+                if ($row['legacy_id'] == $fieldName) {
+                    return $this->getFactBy($row, $fieldName);
+                 }
+            }
         }
     }
 
