@@ -4,6 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Utils;
+use GuzzleHttp\RequestOptions;
 
 class AttachmentService
 {
@@ -24,6 +25,31 @@ class AttachmentService
             'stream' => true,
             'sink' => 'STDOUT'
         ]);
+    }
+
+    public function getInfo(array $fileIds)
+    {
+        $files = $this->request('get-files-info', [], 'POST', [], [
+            RequestOptions::JSON => $fileIds
+        ])->getBody()->getContents();
+
+        return collect(json_decode($files))->map(function ($file) {
+            $file->size = $this->formatFilesize($file->size);
+            return $file;
+        });
+    }
+
+    public function upload(array $files, array $query)
+    {
+        /** @var \Illuminate\Http\UploadedFile[] $files */
+        foreach ($files as $file) {
+            $result[] = [
+                'name' => 'files',
+                'contents' => Utils::tryFopen($file->path(), 'r'),
+                'filename' => $file->getClientOriginalName()
+            ];
+        }
+        return $this->request('upload/', $result, 'POST', $query)->getBody()->getContents();
     }
 
     private function request(
@@ -48,16 +74,10 @@ class AttachmentService
         return $this->client->request($method, $route, $options);
     }
 
-    public function upload(array $files, array $query)
+    private function formatFilesize(int $bytes)
     {
-        /** @var \Illuminate\Http\UploadedFile[] $files */
-        foreach ($files as $file) {
-            $result[] = [
-                'name' => 'files',
-                'contents' => Utils::tryFopen($file->path(), 'r'),
-                'filename' => $file->getClientOriginalName()
-            ];
-        }
-        return $this->request('upload/', $result, 'POST', $query)->getBody()->getContents();
+        $size = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return round($bytes / pow(1024, $factor)) . $size[$factor];
     }
 }

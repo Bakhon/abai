@@ -77,9 +77,8 @@ abstract class PlainForm extends BaseForm
             $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
             if (!empty($data['id'])) {
-                if (auth()->user()->cannot("bigdata update {$this->configurationFileName}")) {
-                    throw new \Exception("You don't have permissions");
-                }
+                $this->checkFormPermission('update');
+
                 $id = $data['id'];
                 unset($data['id']);
 
@@ -91,9 +90,8 @@ abstract class PlainForm extends BaseForm
                 $this->submittedData['fields'] = $data;
                 $this->submittedData['id'] = $id;
             } else {
-                if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
-                    throw new \Exception("You don't have permissions");
-                }
+                $this->checkFormPermission('create');
+
                 $id = $dbQuery->insertGetId($data);
             }
 
@@ -104,6 +102,27 @@ abstract class PlainForm extends BaseForm
         } catch (\Exception $e) {
             DB::connection('tbd')->rollBack();
             throw new SubmitFormException($e->getMessage());
+        }
+    }
+
+    protected function prepareDataToSubmit()
+    {
+        $data = $this->request->except(array_merge($this->tableFieldCodes, ['files']));
+
+        if (!empty($this->params()['default_values'])) {
+            $data = array_merge($this->params()['default_values'], $data);
+        }
+        if (array_key_exists('dend', $data) && empty($data['dend'])) {
+            $data['dend'] = Well::DEFAULT_END_DATE;
+        }
+
+        return $data;
+    }
+
+    protected function checkFormPermission(string $action)
+    {
+        if (auth()->user()->cannot("bigdata {$action} {$this->configurationFileName}")) {
+            throw new \Exception("You don't have permissions");
         }
     }
 
@@ -131,6 +150,10 @@ abstract class PlainForm extends BaseForm
 
             $columns = $this->getFields()->filter(
                 function ($item) {
+                    if (isset($item['depends_on'])) {
+                        return false;
+                    }
+
                     if (isset($this->params()['table_fields'])) {
                         return in_array($item['code'], $this->params()['table_fields']);
                     }
@@ -212,7 +235,7 @@ abstract class PlainForm extends BaseForm
     public function getFormatedParams(): array
     {
         $cacheKey = 'bd_forms_' . $this->configurationFileName . '_params';
-        if (Cache::has($cacheKey)) {
+        if (!config('app.debug') && Cache::has($cacheKey)) {
             $params = Cache::get($cacheKey);
         } else {
             $params = $this->params();
@@ -312,19 +335,6 @@ abstract class PlainForm extends BaseForm
             $this->originalData,
             $this->submittedData
         );
-    }
-
-    protected function prepareDataToSubmit()
-    {
-        $data = $this->request->except($this->tableFieldCodes);
-        if (!empty($this->params()['default_values'])) {
-            $data = array_merge($this->params()['default_values'], $data);
-        }
-        if (array_key_exists('dend', $data) && empty($data['dend'])) {
-            $data['dend'] = Well::DEFAULT_END_DATE;
-        }
-
-        return $data;
     }
 
 }

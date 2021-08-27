@@ -68,7 +68,7 @@
               @click="selectedRow = row"
           >
             <td v-for="column in columns" class="table-border element-position">
-              <p>{{ getCellValue(row, column) }}</p>
+              <p v-html="getCellValue(row, column)"></p>
             </td>
             <td v-if="!form.actions" class="table-border element-position">
               <div class="table-container-svg">
@@ -141,7 +141,7 @@
 <script>
 import forms from '../../../json/bd/forms.json'
 import BigDataPlainForm from './PlainForm'
-import {bdFormActions} from '@store/helpers'
+import {bdFormActions, globalloadingMutations} from '@store/helpers'
 
 import EditHistory from '../../common/EditHistory'
 import moment from "moment";
@@ -175,7 +175,6 @@ export default {
       formValues: null,
       formParams: null,
       dictFields: {},
-      isLoading: false,
       hasFormError: false,
       history: {},
       isHistoryShowed: false,
@@ -195,11 +194,14 @@ export default {
     this.updateResults()
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     ...bdFormActions([
       'loadDict'
     ]),
     updateResults() {
-      this.isLoading = true
+      this.SET_LOADING(true)
       this.hasFormError = false
 
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.code}`)).then(({data}) => {
@@ -235,7 +237,7 @@ export default {
         this.columns = null
         this.hasFormError = true
       }).finally(() => {
-        this.isLoading = false
+        this.SET_LOADING(false)
       })
     },
     loadDictionaries() {
@@ -298,7 +300,7 @@ export default {
 
         if (!value) return null
 
-        if (this.dictFields[column.code] === 'geos') {
+        if (column.type === 'dict_tree') {
           let result = [value.label]
           while (true) {
             if (value.parent) {
@@ -326,6 +328,12 @@ export default {
 
       if (column.type === 'checkbox') {
         return row[column.code] ? this.trans('app.yes') : this.trans('app.no')
+      }
+
+      if (column.type === 'file') {
+        return row[column.code].map(file => {
+          return '<a href="' + this.localeUrl(`/attachments/${file.id}`) + `">${file.filename} (${file.size})</a>`
+        }).join('<br>')
       }
 
       return row[column.code]
