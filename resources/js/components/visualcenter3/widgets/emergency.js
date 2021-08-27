@@ -10,11 +10,13 @@ export default {
     methods: {
         async getEmergencyByMonth() {
             let queryOptions = {
-                'currentMonth': this.currentMonth
+                'currentMonth': this.currentMonth,
+                'dzoName': this.getDzoTicker()
             };
 
             let uri = this.localeUrl("/get-emergency-history");
             const response = await axios.get(uri,{params:queryOptions});
+
             if (response.status === 200) {
                 return response.data;
             }

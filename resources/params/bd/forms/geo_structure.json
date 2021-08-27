@@ -1,17 +1,15 @@
 {
   "type": "plain",
   "table": "prod.well_geo",
-  "available_actions": [
-    "update",
-    "view history",
-    "delete"
-  ],
   "sort": [
     {
       "field": "dbeg",
       "order": "desc"
     }
   ],
+  "default_values": {
+    "dend": "3333-12-31 00:00:00+06"
+  },
   "tabs": [
     {
       "title": "title",
@@ -37,7 +35,7 @@
                 "code": "dend",
                 "type": "date",
                 "title": "dend",
-                "validation": "required|date|after:dbeg"
+                "validation": "nullable|date|after:dbeg"
               }
             ]
           }

@@ -2,7 +2,8 @@
 Route::group(
     ['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()],
     function () {
-        Route::group(['prefix' => '/digital-rating'], function () {
+        Route::group(
+            ['middleware' => 'auth', 'prefix' => '/digital-rating'], function () {
 
             Route::get('/', function () {
                 return view('digital_rating.home');
@@ -11,6 +12,7 @@ Route::group(
             Route::get('/reports', function () {
                 return view('digital_rating.reports');
             })->name('digital-rating-report');
-
+            
+            Route::get('/search_wells', 'DigitalRatingContoller@search_wells')->name('search_wells');   
         });
     });

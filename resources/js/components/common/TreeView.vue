@@ -10,7 +10,7 @@
                 <input type="checkbox"
                       v-if="!!renderComponent"
                       :checked="isChecked()"
-                      class="dropdown-item" @change="onClick()">
+                      class="dropdown-item" @change="onCheckboxClick()">
                 <span class="checkmark"></span>
               </label>
             </form>
@@ -46,6 +46,8 @@
             :renderComponent="renderComponent"
             :updateThisComponent="updateThisComponent"
             :selectedObjects="selectedObjects"
+            :isCheckedCheckbox="isCheckedCheckbox"
+            :isSelectUntilWells="isSelectUntilWells"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -60,10 +62,8 @@ export default {
   props: {
     node: Object,
     level: Number,
-    markedNodes: Object,
     renderComponent: Number,
     updateThisComponent: Function,
-    isSelectUntilWells: Boolean,
     handleClick: Function,
     getWells: Function,
     getInitialItems: Function,
@@ -75,20 +75,20 @@ export default {
       type: Number,
       required: false
     },
-    renderComponent: {
-      type: Number,
-      required: false
-    },
-    updateThisComponent: {
+    isCheckedCheckbox: {
       type: Function,
       required: false
     },
+    currentWellId: {
+      type: Number,
+      required: false
+    },
     isSelectUntilWells: Boolean,
-    nodeClickOnArrow: false
+    nodeClickOnArrow: false,
   },
   created() {
     if(!this.isShowCheckboxes) return;
-    if(typeof this.node.isChecked === 'undefined') {
+    if(!('isChecked' in this.node)) {
       this.node.isChecked = false;
     }
   },
@@ -110,29 +110,31 @@ export default {
         await this.getWells(this);
       }
 
+      this.updateThisComponent();
       this.$forceUpdate()
     },
-    onClick: async function () {
-      this.node.isChecked = !this.node.isChecked;
+    onCheckboxClick: async function () {
+      let node = this.node;
+      node.isChecked = !node.isChecked;
 
       this.isLoading = true;
-      this.loadChildren(this.node)
+      this.loadChildren(node)
       .then(() => {
-        if(this.node.isChecked) {
+        if(node.isChecked) {
           if(this.isSelectUntilWells) {
-            this.updateWellOfNode(this.node, this.level);
+            this.updateWellOfNode(node, this.level, true);
           }else {
-            this.updateNextLevelNode(this.node, this.level);
+            this.updateNextLevelOfNode(node, this.level);
           }
         }else {
-          this.updateChildren(this.node, this.level, false);
+          this.updateChildren(node, this.level, false);
         }
       }).finally(() => {
-        this.isLoading = false;
         this.updateThisComponent();
+        this.isLoading = false;
       });
 
-      this.node.level = this.level;
+      node.level = this.level;
     },
     loadChildren: async function(node) {
       if(this.isWell(node)) return;
@@ -147,8 +149,7 @@ export default {
       for(let idx in node.children) {
         this.loadChildren(node.children[idx]);
       }
-    },
-    updateNextLevelNode: async function(node, level) {
+    },updateNextLevelOfNode: async function(node, level) {
       if(!node?.children) return;
       for(let child of node.children) {
         child.isChecked = this.node.isChecked;
@@ -165,14 +166,14 @@ export default {
       }
       this.updateThisComponent();
     },
-    updateWellOfNode: async function(node, level) {
+    updateWellOfNode: async function(node, level, val) {
       if(!node?.children) return;
       for(let child of node.children) {
         if(this.isWell(child)) {
-          child.isChecked = this.node.isChecked;
+          child.isChecked = val;
           child.level = level+1;
         }
-        this.updateWellOfNode(child, level+1);
+        this.updateWellOfNode(child, level+1, val);
       }
       this.updateThisComponent();
     },

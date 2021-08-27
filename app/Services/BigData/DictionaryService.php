@@ -8,14 +8,17 @@ use App\Models\BigData\Dictionaries\Block;
 use App\Models\BigData\Dictionaries\Brigade;
 use App\Models\BigData\Dictionaries\Brigadier;
 use App\Models\BigData\Dictionaries\CasingType;
+use App\Models\BigData\Dictionaries\ChemicalReagentType;
 use App\Models\BigData\Dictionaries\Company;
 use App\Models\BigData\Dictionaries\CoordSystem;
 use App\Models\BigData\Dictionaries\Device;
+use App\Models\BigData\Dictionaries\DocumentType;
 use App\Models\BigData\Dictionaries\DrillChisel;
 use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
+use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
 use App\Models\BigData\Dictionaries\GeoRockType;
@@ -26,6 +29,7 @@ use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\IsoMaterialType;
 use App\Models\BigData\Dictionaries\LabResearchType;
+use App\Models\BigData\Dictionaries\Mark;
 use App\Models\BigData\Dictionaries\NoBtmReason;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\PackerType;
@@ -33,11 +37,16 @@ use App\Models\BigData\Dictionaries\PatronType;
 use App\Models\BigData\Dictionaries\PerforatorType;
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Dictionaries\PumpType;
+use App\Models\BigData\Dictionaries\ReasonEquipFail;
 use App\Models\BigData\Dictionaries\RepairWorkType;
+use App\Models\BigData\Dictionaries\ResearchMethod;
+use App\Models\BigData\Dictionaries\ResearchTarget;
 use App\Models\BigData\Dictionaries\SaturationType;
+use App\Models\BigData\Dictionaries\Tag;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateType;
+use App\Models\BigData\Dictionaries\TreatType;
 use App\Models\BigData\Dictionaries\Well;
 use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\WellCategory;
@@ -211,10 +220,55 @@ class DictionaryService
             'class' => GisMethod::class,
             'name_field' => 'name_ru'
         ],
+        'document_types' => [
+            'class' => DocumentType::class,
+            'name_field' => 'name_ru'
+        ],
+        'tag' => [
+            'class' => Tag::class,
+            'name_field' => 'name_ru'
+        ],
         'lab_research_type' => [
             'class' => LabResearchType::class,
             'name_field' => 'name_ru'
-        ]
+        ],
+        'treat_type' => [
+            'class' => TreatType::class,
+            'name_field' => 'name_ru'
+        ],
+        'research_methods' => [
+            'class' => ResearchMethod::class,
+            'name_field' => 'name_ru'
+        ],
+        'research_target' => [
+            'class' => ResearchTarget::class,
+            'name_field' => 'name_ru'
+        ],
+        'gdis_conclusion' => [
+            'class' => GdisConclusion::class,
+            'name_field' => 'name_ru'
+        ],
+        'marks' => [
+            'class' => Mark::class,
+            'name_field' => 'name_ru'
+        ],
+        'reason_equip_fail' => [
+            'class' => ReasonEquipFail::class,
+            'name_field' => 'name_ru'
+        ],
+        'chemical_reagent_types' => [
+            'class' => ChemicalReagentType::class,
+            'name_field' => 'name_ru'
+        ],
+        'well_prs_repair_types' => [
+            'class' => WellPrsRepairType::class,
+            'name_field' => 'name_ru'
+        ],
+        'tech_state_casings' => [
+            'class' => TechStateCasing::class,
+            'name_field' => 'name_ru'
+        ],
+
     ];
 
     const TREE_DICTIONARIES = [
@@ -235,6 +289,45 @@ class DictionaryService
     public function __construct(Repository $cache)
     {
         $this->cache = $cache;
+    }
+
+    public function getWithPermissions(string $dict)
+    {
+        $dictionary = $this->get($dict);
+        if ($dict === 'orgs') {
+            return $this->getOrgDictionaryWithPermissions($dictionary);
+        }
+        return $dictionary;
+    }
+
+    private function getOrgDictionaryWithPermissions($dictionary)
+    {
+        $userSelectedTreeItems = collect(auth()->user()->org_structure)
+            ->filter(function ($item) {
+                list($type, $id) = explode(':', $item);
+                return $type === 'org';
+            })
+            ->map(function ($item) {
+                list($type, $id) = explode(':', $item);
+                return $id;
+            })
+            ->toArray();
+        $tree = $this->fillTree($dictionary, [], $userSelectedTreeItems);
+        return $tree;
+    }
+
+    public function fillTree($branch, $tree, $userSelectedTreeItems): array
+    {
+        foreach ($branch as $item) {
+            if (in_array($item['id'], $userSelectedTreeItems)) {
+                $tree[] = $item;
+                continue;
+            }
+            if (!empty($item['children'])) {
+                $tree = $this->fillTree($item['children'], $tree, $userSelectedTreeItems);
+            }
+        }
+        return $tree;
     }
 
     public function get(string $dict)
@@ -259,7 +352,17 @@ class DictionaryService
                     break;
                 case 'geo_type_hrz':
                     $dict = $this->getGeoHorizonDict();
-                    break;    
+                    break;
+                case 'reason_ref':
+                    $dict = $this->getReasonTypeRefDict();
+                    break;
+                case 'reason_rst':
+                    $dict = $this->getReasonTypeRstDict();
+                    break;
+                    break;
+                case 'reason_type_rtr':
+                    $dict = $this->getReasonTypeRtrDict();
+                    break;
                 default:
                     throw new DictionaryNotFound();
             }
@@ -269,19 +372,55 @@ class DictionaryService
         return $dict;
     }
 
-    public function getDictValueById(string $dict, string $type, int $id)
+    public function getFlatten(array $dict)
+    {
+        $result = [];
+        foreach ($dict as $dictItem) {
+            if (isset($dictItem['children'])) {
+                $result = array_merge($result, $this->getFlatten($dictItem['children']));
+                unset($dictItem['children']);
+            }
+            $result[] = $dictItem;
+        }
+        return $result;
+    }
+
+    public function getDictValueById(string $dict, string $type, int $id): ?string
     {
         $dict = $this->get($dict);
-        if ($type === 'dict') {
+        if ($type === 'dict_tree') {
+            $dict = $this->getFlatten($dict);
             foreach ($dict as $item) {
                 if ($item['id'] === $id) {
-                    return $item['name'];
+                    return $item['label'];
                 }
+            }
+            return null;
+        }
+
+        foreach ($dict as $item) {
+            if ($item['id'] === $id) {
+                return $item['name'];
             }
         }
 
-        if ($type === 'dict_tree') {
+        return null;
+    }
+
+    public function getFullPath(string $dict, int $id): ?string
+    {
+        $dict = collect($this->getFlatten($this->get($dict)));
+        $value = $dict->where('id', $id)->first();
+        if (empty($value)) {
+            return '';
         }
+
+        $path = [$value['label']];
+        while (isset($value['parent'])) {
+            $value = $dict->where('id', $value['parent'])->first();
+            $path[] = $value['label'];
+        }
+        return implode(' / ', array_reverse($path));
     }
 
     private function getPlainDict(string $dict): array
@@ -406,6 +545,69 @@ class DictionaryService
                     $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }
             )
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+        return $items;
+    }
+
+    private function getReasonTypeRefDict()
+    {
+        $items = DB::connection('tbd')
+            ->table('prod.well_workover as p')
+            ->select('r.id', 'r.name_ru as name')
+            ->where('rt.code', 'REF')
+            ->distinct()
+            ->orderBy('name', 'asc')
+            ->join('dict.reason as r', 'p.reason_equip_fail', 'r.id')
+            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+        return $items;
+    }
+
+    private function getReasonTypeRstDict()
+    {
+        $items = DB::connection('tbd')
+            ->table('prod.well_workover as p')
+            ->select('r.id', 'r.name_ru as name')
+            ->where('rt.code', 'RST')
+            ->distinct()
+            ->orderBy('name', 'asc')
+            ->join('dict.reason as r', 'p.stop_reason', 'r.id')
+            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+        return $items;
+    }
+
+    private function getReasonTypeRtrDict()
+    {
+        $items = DB::connection('tbd')
+            ->table('prod.well_treatment as p')
+            ->select('r.id', 'r.name_ru as name')
+            ->where('rt.code', 'RTR')
+            ->distinct()
+            ->orderBy('name', 'asc')
+            ->join('dict.reason as r', 'p.reason', 'r.id')
+            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
             ->get()
             ->map(
                 function ($item) {

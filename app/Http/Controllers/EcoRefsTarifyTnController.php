@@ -2,18 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Refs\EcoRefsScFa;
+use App\Http\Requests\EcoRefs\TarifyTn\EcoRefsTarifyTnRequest;   
+use App\Http\Requests\EcoRefs\TarifyTn\ImportExcelEcoRefsTarifyTnRequest;   
+use App\Http\Requests\EcoRefs\TarifyTn\UpdateEcoRefsTarifyTnRequest;   
+use App\Imports\EcoRefsTarifyTnImport; 
 use App\Models\EcoRefsCompaniesId;
-use App\Models\EcoRefsBranchId;
 use App\Models\EcoRefsDirectionId;
-use App\Models\EcoRefsRouteTnId;
-use App\Models\EcoRefsTarifyTn;
-use App\Models\EcoRefsExc;
 use App\Models\EcoRefsRoutesId;
+use App\Models\EcoRefsBranchId;
+use App\Models\EcoRefsRouteTnId;
+use App\Models\EcoRefsExc;
+use App\Models\EcoRefsTarifyTn;
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
+use App\Http\Resources\EcoRefsTarifyTnListResource;   
+use Illuminate\Http\RedirectResponse;                                 
+use Illuminate\Support\Facades\DB;                                    
+use Illuminate\View\View;                                             
+use Maatwebsite\Excel\Facades\Excel;  
 
 class EcoRefsTarifyTnController extends Controller
 {
+    protected $modelName = 'ecorefstarifytn';
+
     /**
      * Display a listing of the resource.
      *
@@ -21,11 +32,18 @@ class EcoRefsTarifyTnController extends Controller
      */
     public function index()
     {
+            $params = [
+                'links' => [
+                    'list' => route('ecorefstarifytn.list'),
+                ]
+            ];
 
-            $ecorefstarifytn = EcoRefsTarifyTn::latest()->with('scfa')->with('branch')->with('company')->with('direction')->with('route')->with('routetn')->with('exc')->paginate(5);
+            $ecorefstarifytn = EcoRefsTarifyTn::orderBy('id','desc')->with('scfa')->with('branch')->with('company')->with('direction')->with('route')->with('routetn')->with('exc')->paginate(10);
 
-            return view('ecorefstarifytn.index',compact('ecorefstarifytn'))
-                ->with('i', (request()->input('page', 1) - 1) * 5);
+            $ecorefstarifytnPages = view('economy_kenzhe/ecorefstarifytn.index',compact('ecorefstarifytn'))
+                ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);
+
+            return $ecorefstarifytnPages;
     }
 
     /**
@@ -42,7 +60,7 @@ class EcoRefsTarifyTnController extends Controller
         $route = EcoRefsRoutesId::get();
         $routetn = EcoRefsRouteTnId::get();
         $exc = EcoRefsExc::get();
-        return view('ecorefstarifytn.create',compact('sc_fa', 'branch', 'company', 'direction', 'route', 'routetn', 'exc'));
+        return view('economy_kenzhe/ecorefstarifytn.create',compact('sc_fa', 'branch', 'company', 'direction', 'route', 'routetn', 'exc'));
     }
 
     /**
@@ -98,7 +116,7 @@ class EcoRefsTarifyTnController extends Controller
             $routetn = EcoRefsRouteTnId::get();
             $exc = EcoRefsExc::get();
 
-            return view('ecorefstarifytn.edit',compact('row', 'sc_fa', 'branch', 'company', 'direction', 'route', 'routetn', 'exc'));
+            return view('economy_kenzhe/ecorefstarifytn.edit',compact('row', 'sc_fa', 'branch', 'company', 'direction', 'route', 'routetn', 'exc'));
     }
 
     /**
@@ -108,7 +126,7 @@ class EcoRefsTarifyTnController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateEcoRefsTarifyTnRequest $request, $id)
 
     {
         $EcoRefsTarifyTn=EcoRefsTarifyTn::find($id);
@@ -141,5 +159,44 @@ class EcoRefsTarifyTnController extends Controller
         $row->delete();
 
         return redirect()->route('ecorefstarifytn.index')->with('success',__('app.deleted'));
+    }
+
+    public function list(EcoRefsTarifyTnRequest $request)
+    {
+        parent::list($request);
+
+        $query = EcoRefsTarifyTn::query()
+            ->whereScFa($request->sc_fa)
+            ->with(['scfa', 'company', 'direction', 'route', 'branch', 'routetn', 'exc'])
+            ->get();
+
+        $ecorefstarifytn = $this
+            ->getFilteredQuery($request->validated(), $query)
+            ->paginate(25);
+
+        return response()->json(json_decode(EcoRefsTarifyTnListResource::collection($ecorefstarifytn)->toJson()));
+    }
+
+    public function uploadExcel(): View
+    {
+        return view('economy_kenzhe/ecorefstarifytn.import_excel');
+    }
+
+    public function importExcel(ImportExcelEcoRefsTarifyTnRequest $request): RedirectResponse
+    {
+        DB::transaction(function () use ($request) {
+            $fileName = pathinfo(
+                $request->file->getClientOriginalName(),
+                PATHINFO_FILENAME
+            );
+
+            $import = new EcoRefsTarifyTnImport(
+                $fileName,
+            );
+
+            Excel::import($import, $request->file);
+        });
+
+        return back()->with('success', __('app.success'));
     }
 }

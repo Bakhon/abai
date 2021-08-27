@@ -1000,27 +1000,23 @@
         </tr>
       </table>
     </div>
-    <notifications position="top"></notifications>
-    <cat-loader />
   </div>
 </template>
 <script>
 import NotifyPlugin from "vue-easy-notify";
 import "vue-easy-notify/dist/vue-easy-notify.css";
-import { VueMomentLib } from "vue-moment-lib";
-import moment from "moment";
+import {VueMomentLib} from "vue-moment-lib";
 import Vue from "vue";
 import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
-import columnSortable from 'vue-column-sortable'
-import { fields } from "./constants.js";
+import {fields} from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
-import CatLoader from "@ui-kit/CatLoader";
+
 
 Vue.use(NotifyPlugin, VueMomentLib);
 export default {
   name: "FaPage",
   components: {
-    CatLoader,
+
     SearchFormRefresh,
     TrMultiselect,
   },
@@ -1642,9 +1638,10 @@ table::-webkit-scrollbar-corner {
   background: #333975;
 }
 .fadropmenu {
-width: calc(100% - 1px);
-background: #1627c4; 
-margin-top: 4px;
+  width: calc(100% - 1px);
+  background: #333975; 
+  margin-top: 4px;
+  z-index: 4876;
 }
 .button_form.button_form {
   background: #333975;
@@ -1689,6 +1686,7 @@ background: #272953;
 color: white;
 border: none;
 padding-right: 8px;
+padding-top: 4px;
 }
 .fatable {
 position: relative;

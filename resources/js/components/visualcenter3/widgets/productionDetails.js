@@ -97,8 +97,8 @@ export default {
             return updatedData;
         },
 
-        switchWidget(widgetName) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+        async switchWidget(widgetName) {
+            this.SET_LOADING(true);
             _.forEach(this.tableMapping, function (item) {
                 _.set(item, 'class', 'hide-company-list');
                 _.set(item, 'hover', '');
@@ -108,8 +108,13 @@ export default {
             this.updateChemistryWidget();
             this.updateWellsWorkoverWidget();
             this.updateDrillingWidget();
-            this.updateProductionFondWidget();
-            this.$store.commit('globalloading/SET_LOADING', false);
+            if (widgetName === 'productionWells') {
+                await this.updateProductionFondWidget();
+            }
+            if (widgetName === 'injectionWells') {
+                await this.updateInjectionFondWidget();
+            }
+            this.SET_LOADING(false);
         },
 
         getOrderedByAsc(data) {

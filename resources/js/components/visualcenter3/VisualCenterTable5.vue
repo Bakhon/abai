@@ -412,7 +412,7 @@
         ></vertical-indicators>
       </div>
     </div>
-    <cat-loader />
+
   </div>
 </template>
 <script src="./VisualCenterTable5.js"></script>

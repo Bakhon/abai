@@ -84,7 +84,6 @@
             </select>
           </div>
         </div>
-        <notifications position="top"></notifications>
       </div>
       <div class="sec_nav">
           <div
@@ -102,21 +101,20 @@
         </div>      
         </div>
     </div>
-    <cat-loader />
+
   </div>
 </template>
 <script>
-import TrMultiselect from "./TrMultiselect.vue";
 import VueApexCharts from "vue-apexcharts";
 import trHelper from '~/mixins/trHelper';
-import CatLoader from "@ui-kit/CatLoader";
+
 import moment from "moment";
 
 
 export default {
   name: "Trfa",
   components: {
-    CatLoader,
+
     "apexchart": VueApexCharts
   },
   mixins: [trHelper],

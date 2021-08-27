@@ -40,7 +40,7 @@ class OmgNGDUWellController extends CrudController
             ],
             'fields' => [
                 'zu' => [
-                    'title' => trans('monitoring.gu.gu'),
+                    'title' => trans('monitoring.zu.zu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => Zu::whereHas('omgngdu_well')
@@ -208,7 +208,7 @@ class OmgNGDUWellController extends CrudController
      */
     public function edit(OmgNGDUWell $omgngdu_well): \Illuminate\View\View
     {
-        $omgngdu_well->load('zu.gu');
+        $omgngdu_well->load('zu', 'well');
         $validationParams = $this->getValidationParams('omgngdu_well');
         return view('omgngdu_well.edit', compact('omgngdu_well', 'validationParams'));
     }
@@ -255,13 +255,6 @@ class OmgNGDUWellController extends CrudController
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new OmgNGDUWellFilter($query, $filter))->filter();
-    }
-
-    public function getWellsValidationParams (): \Symfony\Component\HttpFoundation\Response
-    {
-        $validationParams = $this->getValidationParams('omgngdu_well');
-
-        return response()->json($validationParams);
     }
 
     public function getOmgNgdu (Request $request): \Symfony\Component\HttpFoundation\Response

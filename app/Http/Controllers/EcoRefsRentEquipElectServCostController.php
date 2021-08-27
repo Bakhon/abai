@@ -21,7 +21,7 @@ class EcoRefsRentEquipElectServCostController extends Controller
 
             $ecorefsrentequipelectservcost = EcoRefsRentEquipElectServCost::latest()->with('scfa')->with('company')->with('equip')->paginate(5);
 
-            return view('ecorefsrentequipelectservcost.index',compact('ecorefsrentequipelectservcost'))
+            return view('economy_kenzhe/ecorefsrentequipelectservcost.index',compact('ecorefsrentequipelectservcost'))
                 ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -35,7 +35,7 @@ class EcoRefsRentEquipElectServCostController extends Controller
         $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
         $equip = EcoRefsEquipId::get();
-        return view('ecorefsrentequipelectservcost.create',compact('sc_fa', 'company', 'equip'));
+        return view('economy_kenzhe/ecorefsrentequipelectservcost.create',compact('sc_fa', 'company', 'equip'));
     }
 
     /**
@@ -86,7 +86,7 @@ class EcoRefsRentEquipElectServCostController extends Controller
         $company = EcoRefsCompaniesId::get();
         $equip = EcoRefsEquipId::get();
 
-        return view('ecorefsrentequipelectservcost.edit',compact('sc_fa', 'row', 'company', 'equip'));
+        return view('economy_kenzhe/ecorefsrentequipelectservcost.edit',compact('sc_fa', 'row', 'company', 'equip'));
     }
 
     /**

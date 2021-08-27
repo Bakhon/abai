@@ -1,6 +1,6 @@
 <template>
   <div class="filter-container">
-    <cat-loader/>
+
 
     <div class="form-group1 filter-group select">
       <select
@@ -105,7 +105,7 @@ import {Datetime} from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from '../common/FormatDate.js'
 import {globalloadingMutations} from '@store/helpers';
-import CatLoader from '@ui-kit/CatLoader';
+;
 
 Vue.use(Datetime)
 
@@ -115,9 +115,6 @@ export default {
       type: Object,
       required: true
     }
-  },
-  components: {
-    CatLoader
   },
   data() {
 

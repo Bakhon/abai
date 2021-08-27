@@ -52,10 +52,15 @@
 }
 
 .modal__footer {
-  position: absolute;
   width: 100%;
-  bottom: 20px;
   display: flex;
   justify-content: center;
 }
 
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-footer {
+  border-top: none;
+}

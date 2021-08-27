@@ -156,8 +156,6 @@
             style="margin-left: 10px;"
           />
         </div>
-
-        <notifications position="top"></notifications>
       </div>
       <div class="sec_nav">
         <div class="" v-if="chartShow === 'bar'">
@@ -193,28 +191,27 @@
       </div>
     </div>
     <big-numbers :list="filteredWellsBar" />
-    <cat-loader />
+
   </div>
 </template>
 <script>
 import NotifyPlugin from "vue-easy-notify";
 import "vue-easy-notify/dist/vue-easy-notify.css";
-import { VueMomentLib } from "vue-moment-lib";
-import moment from "moment";
+import {VueMomentLib} from "vue-moment-lib";
 import Vue from "vue";
 import BigNumbers from "./BigNumbers.vue";
 import ClearIcon from "@ui-kit/ClearIcon.vue";
 import TrMultiselect from "./TrMultiselect.vue";
 import trHelper from '~/mixins/trHelper';
 import VueApexCharts from "vue-apexcharts";
-import CatLoader from "@ui-kit/CatLoader";
+
 
 Vue.use(NotifyPlugin, VueMomentLib);
 
 export default {
   name: "Trfa",
   components: {
-    CatLoader,
+
     ClearIcon,
     BigNumbers,
     TrMultiselect,

@@ -15,7 +15,7 @@ class ExcelFormChemistryController extends Controller
         $dzoName = $request->request->get('dzoName');
 
         $dzoChemistryData = DzoImportChemistry::query()
-            ->whereMonth('date',$currentMonthNumber)
+            ->whereMonth('date',$currentMonthNumber - 1)
             ->where('dzo_name',$dzoName)
             ->first();
 
@@ -27,7 +27,7 @@ class ExcelFormChemistryController extends Controller
         $currentMonthNumber = Carbon::now('Asia/Almaty')->month;
         $dzoName = $request->request->get('dzo_name');
 
-        $currentChemistryRecord = DzoImportChemistry::whereMonth('date', $currentMonthNumber)->where('dzo_name', $dzoName)->first();
+        $currentChemistryRecord = DzoImportChemistry::whereMonth('date', $currentMonthNumber - 1)->where('dzo_name', $dzoName)->first();
         if (!is_null($currentChemistryRecord)) {
             $currentChemistryRecord->delete();
         }

@@ -18,6 +18,8 @@
             :updateThisComponent="updateThisComponent"
             :isSelectUntilWells="isSelectUntilWells"
             :selectedObjects="selectedObjects"
+            :isCheckedCheckbox="isCheckedCheckbox"
+            :onCheckboxClick="onCheckboxClick"
         ></tree-view>
       </div>
     </div>
@@ -43,6 +45,7 @@ export default {
     isSelectUntilWells: Boolean,
     currentOption: Object,
     selectedObjects: Object,
+    isCheckedCheckbox: Function,
   },
   beforeMount() {
     this.init();
@@ -137,6 +140,74 @@ export default {
       }).finally(() => {
         child.isLoading = false;
       })
+    },
+    onCheckboxClick: async function (content) {
+      let node = content.node;
+
+      this.isLoading = true;
+      this.loadChildren(node)
+      .then(() => {
+        if(node.isChecked) {
+          if(this.isSelectUntilWells) {
+            this.updateWellOfNode(node, node.level, true);
+          }else {
+            this.updateNextLevelOfNode(node, node.level);
+          }
+        }else {
+          this.updateChildren(node, node.level, false);
+        }
+      }).finally(() => {
+        this.updateThisComponent();
+        this.isLoading = false;
+      });
+
+      node.level = level;
+    },
+    loadChildren: async function(node) {
+      if(this.isWell(node)) return;
+      if(typeof node.children === 'undefined') {
+        await this.handleClick(node);
+      }
+      if(!this.isHaveChildren(node)) {
+        await this.getWells(node);
+        this.updateThisComponent();
+      }
+      
+      for(let idx in node.children) {
+        this.loadChildren(node.children[idx]);
+      }
+    },updateNextLevelOfNode: async function(node, level) {
+      if(!node?.children) return;
+      for(let child of node.children) {
+        child.isChecked = this.node.isChecked;
+        child.level = level+1;
+      }
+      this.updateThisComponent();
+    },
+    updateChildren: async function(node, level, val) {
+      if(!node?.children) return;
+      for(let child of node.children) {
+        child.isChecked = val;
+        child.level = level+1;
+        this.updateChildren(child, level+1, val);
+      }
+      this.updateThisComponent();
+    },
+    updateWellOfNode: async function(node, level, val) {
+      if(!node?.children) return;
+      for(let child of node.children) {
+        if(this.isWell(child)) {
+          child.isChecked = val;
+          child.level = level+1;
+        }
+        this.updateWellOfNode(child, level+1, val);
+      }
+      this.updateThisComponent();
+    },
+    isHaveChildren(node) {
+      return typeof node !== 'undefined' && 
+             typeof node.children !== 'undefined' && 
+             !this.isNodeOnBottomLevelOfHierarchy(node);
     },
   },
 }

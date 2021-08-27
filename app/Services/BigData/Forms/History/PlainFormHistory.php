@@ -58,13 +58,18 @@ class PlainFormHistory
 
             $oldValue = $originalData->$key ?? '';
 
-            if (in_array($formField['type'], ['dict', 'dict_tree'])) {
+            if ($value && $formField['type'] === 'dict') {
                 $oldValue = !empty($oldValue) ? $dictService->getDictValueById(
                     $formField['dict'],
                     $formField['type'],
                     $oldValue
                 ) : '';
                 $value = $dictService->getDictValueById($formField['dict'], $formField['type'], $value);
+            }
+
+            if ($value && $formField['type'] === 'dict_tree') {
+                $oldValue = !empty($oldValue) ? $dictService->getFullPath($formField['dict'], $oldValue) : '';
+                $value = $dictService->getFullPath($formField['dict'], $value);
             }
 
             if ($formField['type'] === 'date') {

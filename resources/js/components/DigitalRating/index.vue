@@ -38,20 +38,21 @@
       </div>
       <div class="rating-panel">
         <accordion
-            :list="objects"
-            title="digital_rating.object"
+          :list="objects"
+          title="digital_rating.object"
         />
         <accordion
-            :list="maps"
-            title="digital_rating.mapsGeologyDevelopment"
+          :list="maps"
+          title="digital_rating.mapsGeologyDevelopment"
+          @selectItem="selectPanelItem"
         />
         <accordion
-            :list="cods"
-            title="digital_rating.sectorCode"
+          :list="cods"
+          title="digital_rating.sectorCode"
         />
         <accordion
-            :list="properties"
-            title="digital_rating.property"
+          :list="properties"
+          title="digital_rating.property"
         />
       </div>
       <setting-modal
@@ -64,125 +65,7 @@
   </div>
 </template>
 
-<script>
-import L from 'leaflet';
-import mapsData from './json/dataMap.json';
-import 'leaflet/dist/leaflet.css';
-import BtnDropdown from "./components/BtnDropdown";
-import SettingModal from "./components/SettingModal";
-import WellAtlasModal from "./components/WellAtlasModal";
-import Accordion from "./components/Accordion";
-import mainMenu from "../GTM/mock-data/main_menu.json";
-
-export default {
-  name: "Sections",
-
-  components: {
-    BtnDropdown,
-    SettingModal,
-    WellAtlasModal,
-    Accordion
-  },
-
-  data() {
-    return {
-      objects: ['Объект 1', 'Объект 2'],
-      maps: ['Карта ННТ', 'Накопленные отборы'],
-      cods: ['1', '2', '3'],
-      properties: ['Значок', 'Шрифт', 'Палитра'],
-      fileActions: [
-        { title: 'digital_rating.import', icon: 'upload', type: 'import'  },
-        { title: 'digital_rating.export', icon: 'download', type: 'export' },
-        { title: 'digital_rating.save', icon: 'save', type: 'save' }
-      ],
-      mapsActions: [
-        { title: 'digital_rating.uploadCustomMaps', icon: 'share', type: 'upload' },
-        { title: 'digital_rating.importPlannedWells', icon: 'upload', type: 'importWells' }
-      ],
-      parentType: '',
-      menu: mainMenu,
-    };
-  },
-
-  async mounted() {
-    await this.initMap();
-  },
-
-  methods: {
-    initMap() {
-      const map = L.map('map', {
-        crs: L.CRS.Simple,
-        minZoom: 1,
-        maxZoom: 3,
-        zoomControl: false
-      });
-
-      L.control.zoom({
-        position: 'bottomright'
-      }).addTo(map);
-
-      const bounds = [[0, 1500], [0,1500]];
-      map.fitBounds(bounds);
-
-      let yx = L.latLng;
-      const xy = function (x, y) {
-        if (L.Util.isArray(x)) {
-          return yx(x[1], x[0]);
-        }
-        return yx(y, x);
-      };
-
-      map.setView( [850, 520], 1);
-
-      mapsData.forEach((el) => {
-        el.x = el.x / 100;
-        el.y = el.y / 100;
-      });
-
-      L.latLng([ mapsData[0]['x'], mapsData[0]['y'] ]);
-
-      for(let i = 0; i < mapsData.length; i++) {
-        const coordinateStart = xy(mapsData[i]['x'], mapsData[i]['y']);
-        const coordinateEnd = xy(mapsData[i]['x'] + 1, mapsData[i]['y'] + 1);
-        let marker = L.rectangle([[coordinateStart], [coordinateEnd]], {
-          color: mapsData[i]['color'],
-          weight: 6,
-          fillColor: mapsData[i]['color'],
-          fillOpacity: 1,
-        }).addTo(map).bindPopup(mapsData[i]['sector'].toString());
-        marker.on('mouseover', function (e) {
-          this.openPopup();
-        });
-        marker.on('mouseout', function (e) {
-          this.closePopup();
-        });
-        marker.on('click', (e) => {
-          this.onMapClick();
-        })
-      }
-      map.getBounds().pad(1);
-    },
-    onMapClick() {
-      this.$modal.show('modalAtlas');
-    },
-    closeAtlasModal() {
-      this.$modal.hide('modalAtlas');
-    },
-    openSettingModal() {
-      this.$modal.show('modalSetting');
-    },
-    closeSettingModal() {
-      this.$modal.hide('modalSetting');
-    },
-    menuClick(data) {
-      const path = window.location.pathname.slice(3);
-      if (data?.url && data.url !== path) {
-        window.location.href = this.localeUrl(data.url);
-      }
-    }
-  }
-}
-</script>
+<script src="./Section.js"></script>
 
 <style lang="scss" scoped>
 .rating-sections {

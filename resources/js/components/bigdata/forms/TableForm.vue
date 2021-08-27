@@ -1,6 +1,5 @@
 <template>
   <form @submit.prevent="" ref="form" class="bd-main-block__form scrollable" style="width: 100%">
-    <cat-loader v-show="isloading"/>
     <div class="table-page">
       <template v-if="formParams">
         <p v-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
@@ -21,11 +20,24 @@
           </div>
           <table v-if="rows.length" class="table">
             <thead>
-            <tr>
-              <th v-for="column in visibleColumns">
-                {{ column.title }}
-              </th>
-            </tr>
+            <template v-if="formParams.complicated_header">
+              <tr v-for="row in formParams.complicated_header">
+                <th
+                    v-for="column in row"
+                    :colspan="column.colspan"
+                    :rowspan="column.rowspan"
+                >
+                  {{ column.title }}
+                </th>
+              </tr>
+            </template>
+            <template v-else>
+              <tr>
+                <th v-for="column in visibleColumns">
+                  {{ column.title }}
+                </th>
+              </tr>
+            </template>
             </thead>
             <tbody>
             <tr v-for="(row, rowIndex) in rows">
@@ -68,7 +80,6 @@
                   <div v-if="isCellEdited(row, column)" class="input-wrap">
                     <datetime
                         v-model="row[column.code].value"
-                        :disabled="isLoading"
                         :flow="['year', 'month', 'date']"
                         :phrases="{ok: '', cancel: ''}"
                         auto
@@ -169,12 +180,12 @@
 import Vue from "vue";
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
-import {bdFormActions, bdFormState} from '@store/helpers'
+import {bdFormActions, globalloadingMutations} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import CatLoader from "@ui-kit/CatLoader";
+
 
 const requireComponent = require.context('./CustomColumns', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
@@ -210,8 +221,7 @@ export default {
   },
   components: {
     BigDataHistory,
-    RowHistoryGraph,
-    CatLoader
+    RowHistoryGraph
   },
   data() {
     return {
@@ -225,11 +235,12 @@ export default {
         row: null,
         column: null
       },
-      isloading: false,
       history: {},
       rowHistory: null,
       rowHistoryColumns: [],
       rowHistoryGraph: null,
+      oldFilter: null,
+      formParams: null
     }
   },
   watch: {
@@ -239,27 +250,38 @@ export default {
     id() {
       this.updateTableData()
     },
+    filter: {
+      deep: true,
+      handler(val) {
+        this.updateTableData()
+      }
+    },
   },
   computed: {
-    ...bdFormState([
-      'formParams'
-    ]),
     visibleColumns() {
       return this.formParams.columns.filter(column => column.type !== 'hidden' && column.visible !== false)
     }
   },
   mounted() {
-    this.updateTableData()
+    this.updateForm(this.params.code)
+        .then(data => {
+          this.formParams = data
+          this.$emit('initialized', data)
+          this.updateTableData()
+        })
   },
   methods: {
     ...bdFormActions([
       'updateForm'
     ]),
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     updateTableData() {
 
       if (!this.filter || !this.id || !this.type) return
 
-      this.isloading = true
+      this.SET_LOADING(true)
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/rows`), {
         params: {
           filter: this.filter,
@@ -276,7 +298,7 @@ export default {
             this.loadEditHistory()
           })
           .finally(() => {
-            this.isloading = false
+            this.SET_LOADING(false)
           })
 
     },
@@ -369,7 +391,7 @@ export default {
           if (row[column.code].params) {
             data['params'] = row[column.code].params
           }
-          this.isloading = true
+          this.SET_LOADING(true)
           this.axios
               .patch(this.localeUrl(`/api/bigdata/forms/${this.params.code}/save/${column.code}`), data)
               .then(({data}) => {
@@ -414,10 +436,6 @@ export default {
             })
       })
     },
-    changePage(page = 1) {
-      this.currentPage = page
-      this.updateForm()
-    },
     showError(err) {
       return err.join('<br>')
     },
@@ -426,7 +444,7 @@ export default {
       document.body.classList.remove('fixed')
     },
     showHistoricalDataForRow(row, column) {
-      this.isloading = true
+      this.SET_LOADING(true)
       document.body.classList.add('fixed')
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/row-history`), {
         params: {
@@ -443,11 +461,11 @@ export default {
         })
 
         this.rowHistoryColumns = columns
-        this.isloading = false
+        this.SET_LOADING(false)
       })
     },
     showHistoryGraphDataForRow(row, column) {
-      this.isloading = true
+      this.SET_LOADING(true)
       document.body.classList.add('fixed')
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/row-history-graph`), {
         params: {
@@ -456,7 +474,7 @@ export default {
           date: this.filter.date
         }
       }).then(({data}) => {
-        this.isloading = false
+        this.SET_LOADING(false)
         this.rowHistoryGraph = data
       })
     },
@@ -468,7 +486,7 @@ export default {
       })
           .then(result => {
             if (result === true) {
-              this.isloading = true
+              this.SET_LOADING(true)
               this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/copy`), {
                 params: {
                   well_id: row.id,
@@ -476,7 +494,7 @@ export default {
                   date: this.filter.date
                 }
               }).then(({data}) => {
-                this.isloading = false
+                this.SET_LOADING(false)
                 this.rowHistoryGraph = data
 
                 row[column.copy.to].value = row[column.copy.from].value

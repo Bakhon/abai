@@ -22,7 +22,7 @@
 </head>
 <body>
 <div class="row">
-    <div id="app"></div>
+    <div  ></div>
     <div class="container">
         <div class=" align-items-center">
             <div class="align-items-sm-center" style="

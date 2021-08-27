@@ -19,7 +19,7 @@ class AddPermissionsToLabResearchForm extends Migration
         DB::table('permission_sections')->insert(
             [
                 'code' => 'lab_research',
-                'title' => 'bd.forms.lab_research.title',
+                'title_trans' => 'bd.forms.lab_research.title',
                 'module' => 'bigdata'
             ]
         );
