@@ -34,7 +34,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
         $this->fieldsMapping = json_decode(file_get_contents($pathToJsonFieldsMapping), true);  
         $dzoImportFieldFonds = new FondsForKGM;
         $dzoImportFieldData = $this->getDzoImportFieldData($dzoImportFieldFonds);
-         $dzoImportFieldDowntimeReason = $this->getDowntimeReasonFields($dzoImportFieldFonds);
+        $dzoImportFieldDowntimeReason = $this->getDowntimeReasonFields($dzoImportFieldFonds);
         $this->saveKGMReportsFromAvocetByDay($dzoImportFieldData, $dzoImportFieldDowntimeReason);
     }
 
@@ -64,7 +64,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
             $functionName = $fieldForFilter[$i][0];
             $fondName = $this->fieldsMapping[$fieldForFilter[$i][1]];
             $groupOfFields =$fondName[$fieldForFilter[$i][2]];
-                $this->$functionName($groupOfFields, $dzoImportFieldData, $fieldForFilter[$i][3], '');
+            $this->$functionName($groupOfFields, $dzoImportFieldData, $fieldForFilter[$i][3], '');
         }
 
         $fieldsForSumFond["operating_production_fond"] = ['in_work_production_fond','in_idle_production_fond','developing_production_fond','inactive_injection_fond'];
@@ -156,13 +156,13 @@ class StoreKGMReportsFromAvocetByDay extends Command
         }
     }
 
-    private function getCountBy($statusOrCategory2Column, $status, $type)
+    private function getCountBy($fieldKey, $status, $type)
     {   $data = $this->getDataByType(new FondsForKGM);
         $summ = [];
 
         foreach ($data as $rowNum => $row) {
             if (($row['type'] == $type)
-                && ($row[$statusOrCategory2Column] == $status)) {
+                && ($row[$fieldKey] == $status)) {
                 $summ[] = array_merge($row);
             }
         }
