@@ -1,0 +1,210 @@
+{
+  "type": "table",
+  "table_type": "wells",
+  "columns": [
+    {
+      "title": "id",
+      "code": "id",
+      "type": "integer",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "org",
+      "code": "org_name",
+      "type": "dict",
+      "dict":"orgs",
+      "is_editable": false,
+      "validation":"exists:tbd.dict.org,id"
+    },
+    {
+      "title": "plan",
+      "code": "plan",
+      "type": "float",
+      "is_editable": true,
+      "validation": "numeric",
+      "validate_deviation": true
+    },
+    {
+      "title": "fact",
+      "code": "fact",
+      "type": "float",
+      "is_editable": true,
+      "validation": "numeric",
+      "validate_deviation": true
+    },
+    {
+      "title": "daily_fact_cits",
+      "code": "daily_fact_cits",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "daily_fact_gs",
+      "code": "daily_fact_gs",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "daily_deviation",
+      "code": "daily_deviation",
+      "type": "calc",
+      "formula": "$fact$ - $plan$",
+      "is_editable": false
+    },
+    {
+      "title": "cits_gs_daily_deviation",
+      "code": "cits_gs_daily_deviation",
+      "type": "calc",
+      "formula": "$daily_fact_cits$ - $daily_fact_gs$",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "month_plan",
+      "code": "month_plan",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "month_fact",
+      "code": "month_fact",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "month_fact_cits",
+      "code": "month_fact_cits",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "month_fact_gs",
+      "code": "month_fact_gs",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "month_deviation",
+      "code": "month_deviation",
+      "type": "calc",
+      "visible": false,
+      "formula": "$month_fact$ - $month_plan$",
+      "is_editable": false
+    },
+    {
+      "title": "cits_gs_month_deviation",
+      "code": "cits_gs_month_deviation",
+      "type": "calc",
+      "formula": "$month_fact_cits$ - $month_fact_gs$",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "year_plan",
+      "code": "year_plan",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "year_fact",
+      "code": "year_fact",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "year_fact_cits",
+      "code": "year_fact_cits",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "year_fact_gs",
+      "code": "year_fact_gs",
+      "type": "float",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "year_deviation",
+      "code": "year_deviation",
+      "type": "calc",
+      "visible": false,
+      "formula": "$year_fact$ - $year_plan$",
+      "is_editable": false
+    },
+    {
+      "title": "cits_gs_year_deviation",
+      "code": "cits_gs_year_deviation",
+      "type": "calc",
+      "formula": "$year_fact_cits$ - $year_fact_gs$",
+      "visible": false,
+      "is_editable": false
+    },
+    {
+      "title": "company",
+      "code": "contractor",
+      "type": "dict",
+      "dict":"companies",
+      "is_editable": false,
+      "validation":"exists:tbd.dict.company,id"
+    },
+    {
+      "title": "machine_type",
+      "code": "machine_type",
+      "type": "dict",
+      "dict":"machine_types",
+      "is_editable": true,
+      "validation":"required|exists:tbd.dict.machine_type,id"
+    },
+    {
+      "title": "well",
+      "code": "well",
+      "type": "dict",
+      "dict":"wells",
+      "is_editable": false,
+      "validation":"exists:tbd.dict.well,id"
+    },
+    {
+      "title": "geo",
+      "code": "geo",
+      "type": "dict",
+      "dict":"geos",
+      "is_editable": false,
+      "validation":"exists:tbd.dict.geo,id"
+    },
+    {
+      "title": "repair_work_type",
+      "code": "repair_work_type",
+      "type": "dict",
+      "dict":"repair_work_types",
+      "is_editable": false,
+      "validation":"exists:tbd.dict.geo,id"
+    },
+    {
+      "title": "work_done",
+      "code": "work_done",
+      "type": "text",
+      "is_editable": true,
+      "validation":"required"
+    }
+  ],
+  "custom_columns": [
+    {
+      "type": "select",
+      "values": [
+        "ЦИТС",
+        "ГС",
+        "ЦИТС/ГС"
+      ],
+      "component_name": "DailyReportsSelect"
+    }
+  ]
+}
