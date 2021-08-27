@@ -22,6 +22,6 @@
 @section('module_title', 'Карточка скважины')
 @section('content')
     <div  >
-        <well_card></well_card>
+        <well-card></well-card>
     </div>
 @endsection
