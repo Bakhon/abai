@@ -40,6 +40,12 @@ return array (
       'result_not' => 'Совпадений не найдено'
   ],
 
+  'report_generation' => [
+      'project' => [
+        'vertical_installation_interval' => 'Интервал установки погружных насосов по вертикали, м',
+      ],
+  ],
+
   'default' => [
       'well' => 'скважин',
       'in_drilling' => 'В бурении',
@@ -76,7 +82,7 @@ return array (
       'contract_number' => 'Номер договора',
       'drilling_summary' => 'Сводка по бурению',
       'drilling_start' => 'Начало бурения',
-      'drilling_end' => 'Общая проходка',
+      'drilling_end' => 'Окончание бурения',
       'total_penetration' => 'Общая проходка',
       'production_casing_information' => 'Информация по эксплуатационной колонне',
       'column_diameter' => 'Диаметр экспл.колонны',
