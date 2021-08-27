@@ -137,22 +137,11 @@ export default {
     tableDataKeys() {
       let data = this.tableData
 
-      let keys = Object.keys(data)
-          .sort(function (prev, next) {
-            if (data[prev].cat1 < data[next].cat1) {
-              return 1
-            }
-
-            if (data[prev].cat1 === data[next].cat1) {
-              return 0
-            }
-
-            return -1
-          })
-      // .sort((prev, next) => data[prev].profitable < data[next].profitable ? 1 : 0)
-      // .sort((prev, next) => data[prev].profitable < data[next].profitable ? 1 :0)
-
-      return keys
+      return Object.keys(data).sort(function (prev, next) {
+        return (data[next].cat1 - data[prev].cat1)
+            || (data[next].cat2 - data[prev].cat2)
+            || (data[prev].profitable - data[next].profitable)
+      })
     },
 
     tableDataChunks() {
