@@ -5,6 +5,7 @@ const plastFluids = {
     pickedSubsoilChildRadio: "",
     pickedSubsoil: [],
     currentSubsoilChildren: [],
+    currentPage: "",
   },
 
   mutations: {
@@ -18,6 +19,9 @@ const plastFluids = {
     SET_CURRENT_SUBSOIL_CHILDREN(state, payload) {
       state.currentSubsoilChildren = payload;
     },
+    SET_CURRENT_PAGE(state, payload) {
+      state.currentPage = payload;
+    }
   },
 };
 

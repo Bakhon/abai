@@ -40,7 +40,7 @@
         "bootstrap-vue": "^2.21.2",
         "bootstrap-vue-treeview": "^1.0.8",
         "chart.js": "^2.9.4",
-        "d3": "^3.5.17",
+        "d3": "^7.0.0",
         "d3-scale": "^4.0.0",
         "dependencies": "0.0.1",
         "downloadjs": "^1.4.7",

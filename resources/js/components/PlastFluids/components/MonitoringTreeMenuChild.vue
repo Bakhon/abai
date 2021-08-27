@@ -11,7 +11,7 @@
     <img
       v-show="hovered"
       class="download-icon"
-      src="/img/PlastFluids/upload.svg"
+      src="/img/PlastFluids/data_upload.svg"
       alt="download template"
     />
   </li>
