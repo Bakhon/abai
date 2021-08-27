@@ -44,6 +44,7 @@
               class="sector-form__input"
               v-model="sectorNumber"
               @blur="handleBlur"
+              @keypress="restrictChars($event)"
             />
           </div>
           <div class="sector-form__item">
@@ -55,6 +56,7 @@
               class="sector-form__input"
               v-model="horizonNumber"
               @blur="handleBlur"
+              @keypress="restrictChars($event)"
             />
           </div>
         </div>
@@ -81,6 +83,7 @@ import Scheme from "./Scheme";
 import Indicators from "./Indicators";
 import History from "./History";
 import { digitalRatingMutations, digitalRatingActions } from "@store/helpers";
+import Restricts from '../../../mixins/restricts';
 
 export default {
   name: "WellAtlasModal",
@@ -92,6 +95,8 @@ export default {
     Indicators,
     History,
   },
+
+  mixins: [Restricts],
 
   data() {
     return {
