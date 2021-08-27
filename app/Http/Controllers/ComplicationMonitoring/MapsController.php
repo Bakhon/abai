@@ -92,6 +92,7 @@ class MapsController extends Controller
             ->whereHas('ngdu')
             ->whereNotNull('lat')
             ->whereNotNull('lon')
+            ->WithLastOmgngdu()
             ->get();
 
         $wellManualPoints = ManualWell::query()
@@ -100,6 +101,7 @@ class MapsController extends Controller
             ->whereHas('ngdu')
             ->whereNotNull('lat')
             ->whereNotNull('lon')
+            ->WithLastOmgngdu()
             ->get();
 
         $zuPoints = Zu::query()

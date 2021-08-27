@@ -54,6 +54,13 @@ Route::group(
                 Route::get('/mobileform/values', 'Api\DB\MobileFormsController@getMobileFormValues');
 
                 Route::resource('wells', 'bd\WellsController', ['as' => 'bigdata']);
+
+                Route::post('/report-constructor/save-template', 'bd\DBController@saveTemplate')->name(
+                    'reports.constructor.save.template'
+                );
+                Route::get('/report-constructor/get-templates', 'bd\DBController@getTemplates')->name(
+                    'reports.constructor.get.templates'
+                );
             }
         );
     }
@@ -95,6 +102,7 @@ Route::group(
                 Route::delete('forms/{form}/{row}', 'Api\DB\FormsController@delete');
 
                 Route::get('wells/search', 'Api\DB\WellsController@search');
+                Route::get('wells/production-wells-schedule-data', 'Api\DB\WellsController@getProductionWellsScheduleData');
                 Route::get('wells/tree', 'Api\DB\WellsController@getStructureTree');
                 Route::get('wells/{well}', 'Api\DB\WellsController@get');
                 Route::get('wells/{well}/wellInfo', 'Api\DB\WellsController@wellInfo');

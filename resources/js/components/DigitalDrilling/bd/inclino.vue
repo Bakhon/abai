@@ -1,0 +1,49 @@
+<template>
+    <div class="digitalDrillingWindow">
+        <window-head />
+        <div class="windowBody">
+            <div class="bodyContent">
+                <p class="bigTitle left">{{ trans('digital_drilling.inclino.inclinometry') }}</p>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table defaultTable">
+                            <tbody>
+                                <tr>
+                                    <th>{{ trans('digital_drilling.inclino.well') }}</th>
+                                    <th>{{ trans('digital_drilling.inclino.appliance') }}</th>
+                                    <th>{{ trans('digital_drilling.inclino.source') }}</th>
+                                    <th>{{ trans('digital_drilling.inclino.true_vertical_depth') }}</th>
+                                    <th>{{ trans('digital_drilling.inclino.date') }}</th>
+                                    <th>{{ trans('digital_drilling.inclino.geographic_identifier') }}</th>
+                                </tr>
+                                <tr v-for="i in 10">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <img src="/img/digital-drilling/inclino.png" alt="" class="inclino-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "inclino"
+    }
+</script>
+
+<style scoped>
+
+</style>

@@ -1,6 +1,5 @@
 <template>
   <div class="bd-main-block">
-    <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
@@ -15,7 +14,7 @@
             >
               <datetime
                   v-model="filter[filterItem.code]"
-                  :flow="['year', 'month', 'date']"
+                  :flow="['year', 'month']"
                   :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                   :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
                   auto
@@ -58,7 +57,14 @@
       </template>
     </div>
     <div class="bd-main-block__body">
-      <BigDataTableForm :id="id" :filter="filter" :params="params" :type="type"></BigDataTableForm>
+      <BigDataTableForm
+          :id="id"
+          :filter="filter"
+          :params="params"
+          :type="type"
+          @initialized="init"
+      >
+      </BigDataTableForm>
     </div>
   </div>
 </template>
@@ -69,7 +75,7 @@ import moment from 'moment'
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import {bTreeView} from 'bootstrap-vue-treeview'
-import {bdFormActions, bdFormState, globalloadingMutations} from '@store/helpers'
+import {globalloadingMutations} from '@store/helpers'
 import BigDataTableForm from './TableForm'
 import BigdataFormField from './field'
 
@@ -96,11 +102,6 @@ export default {
     BigDataTableForm,
     BigdataFormField
   },
-  computed: {
-    ...bdFormState([
-      'formParams'
-    ]),
-  },
   data() {
     return {
       filter: null
@@ -121,9 +122,6 @@ export default {
     this.init()
   },
   methods: {
-    ...bdFormActions([
-      'updateForm'
-    ]),
     ...globalloadingMutations([
       'SET_LOADING'
     ]),
@@ -136,6 +134,7 @@ export default {
     },
     initFilter() {
       if (this.filter) return
+      if (!this.formParams) return
 
       if (!this.formParams.filter) {
         this.filter = {date: moment().toISOString()}
@@ -144,21 +143,17 @@ export default {
 
       let filter = {}
       this.formParams.filter.forEach(filterItem => {
-        filter[filterItem.code] = filterItem.type === 'date' ? moment().toISOString() : null
+        filter[filterItem.code] = filterItem.type === 'date' ? moment(filterItem.default || null).toISOString() : null
       })
 
       this.filter = filter
 
     },
-    init() {
-      this.SET_LOADING(true)
-      this.updateForm(this.params.code).then(data => {
-        this.SET_LOADING(false)
-
-        if (this.formParams) {
-          this.initFilter()
-        }
-      })
+    init(formParams) {
+      if (formParams) {
+        this.formParams = formParams
+      }
+      this.initFilter()
     },
   },
 };
@@ -405,7 +400,7 @@ body.fixed {
   background: rgba(0, 0, 0, 0.7);
   height: 100%;
   left: 0;
-  overflow: auto;
+  overflow-y: auto;
   position: fixed;
   top: 0;
   width: 100%;

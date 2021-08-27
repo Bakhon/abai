@@ -66,6 +66,18 @@ return [
             'level' => 'debug',
         ],
 
+        'calculate_corrosion_yesterday:cron' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/calculate_corrosion_yesterday.log'),
+            'level' => 'debug',
+        ],
+
+        'parse_omg_ngdu_well_data:cron' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/parse_omg_ngdu_well.log'),
+            'level' => 'debug',
+        ],
+
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),

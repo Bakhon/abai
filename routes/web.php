@@ -39,6 +39,8 @@ Route::group(
                 Route::get('/economic/nrs', 'Economic\EconomicNrsController@index')->name('economic_nrs');
                 Route::get('/economic/nrs/get-data', "Economic\EconomicNrsController@getData");
                 Route::post('/economic/nrs/export-data', "Economic\EconomicNrsController@exportData");
+                Route::get('/economic/nrs/wells', 'Economic\EconomicNrsController@indexWells');
+                Route::get('/economic/nrs/get-wells', "Economic\EconomicNrsController@getWells");
                 Route::get('/economic/optimization', 'Economic\EconomicOptimizationController@index')->name('economic_optimization');
                 Route::get('/economic/optimization/get-data', 'Economic\EconomicOptimizationController@getData');
 
@@ -53,7 +55,15 @@ Route::group(
                 Route::get('/dob', 'DruidController@dob')->name('dob');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
 
-                //gno economic               
+                Route::get('eco-refs-gtm/get-data', 'Refs\EcoRefsGtmController@getData');
+                Route::get('eco-refs-gtm/upload-excel', 'Refs\EcoRefsGtmController@uploadExcel')->name('eco-refs-gtm-upload');
+                Route::post('eco-refs-gtm/import-excel', 'Refs\EcoRefsGtmController@importExcel')->name('eco-refs-gtm-import');
+                Route::resource('eco-refs-gtm', 'Refs\EcoRefsGtmController');
+
+                Route::get('eco-refs-gtm-value/get-data', 'Refs\EcoRefsGtmValueController@getData');
+                Route::post('eco-refs-gtm-value/import-excel', 'Refs\EcoRefsGtmValueController@importExcel')->name('eco-refs-gtm-value-import');
+                Route::resource('eco-refs-gtm-value', 'Refs\EcoRefsGtmValueController');
+
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
                 Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
 

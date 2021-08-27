@@ -6,10 +6,10 @@ namespace App\Services\BigData;
 
 class TableFormHeaderService
 {
-    public function getHeader(array $params): array
+    public function getHeader(array $columns, array $mergeColumns): array
     {
         $complicatedHeader = [];
-        foreach ($params['columns'] as $column) {
+        foreach ($columns as $column) {
             if ((isset($column['visible']) && $column['visible'] === false) || $column['type'] === 'hidden') {
                 continue;
             }
@@ -19,7 +19,7 @@ class TableFormHeaderService
                     'title' => $column['title']
                 ];
             } else {
-                $tree = $this->getHeaderColumnTree($params, $column);
+                $tree = $this->getHeaderColumnTree($mergeColumns, $column);
                 $complicatedHeader = $this->mergeColumns($complicatedHeader, $tree);
             }
         }
@@ -31,7 +31,7 @@ class TableFormHeaderService
         return $complicatedHeader;
     }
 
-    private function getHeaderColumnTree(array $params, array $column, array $child = []): array
+    private function getHeaderColumnTree(array $mergeColumns, array $column, array $child = []): array
     {
         $col = [
             'code' => $column['code'],
@@ -44,12 +44,12 @@ class TableFormHeaderService
             return $col;
         }
 
-        $parent = $params['merge_columns'][$column['parent_column']];
+        $parent = $mergeColumns[$column['parent_column']];
         if (empty($parent)) {
             return $col;
         }
 
-        return $this->getHeaderColumnTree($params, $parent, $col);
+        return $this->getHeaderColumnTree($mergeColumns, $parent, $col);
     }
 
     private function mergeColumns(array $complicatedHeader, array $tree): array
