@@ -131,7 +131,8 @@ export default {
       for(let idx in node.children) {
         this.loadChildren(node.children[idx]);
       }
-    },updateNextLevelOfNode: async function(node, level) {
+    },
+    updateNextLevelOfNode: async function(node, level) {
       if(!node?.children) return;
       for(let child of node.children) {
         child.isChecked = this.node.isChecked;
