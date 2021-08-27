@@ -577,12 +577,11 @@ class DictionaryService
     
     private function getReasonTypeDict(string $type){
         $items = DB::connection('tbd')
-        ->table('prod.well_treatment as p')
+        ->table('dict.reason as r')
         ->select('r.id', 'r.name_ru as name')
         ->where('rt.code', $type)
         ->distinct()
         ->orderBy('name', 'asc')
-        ->join('dict.reason as r', 'p.reason', 'r.id')
         ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
         ->get()
         ->map(
