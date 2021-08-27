@@ -43,6 +43,7 @@
               type="text"
               class="sector-form__input"
               v-model="sectorNumber"
+              @blur="handleBlur"
             />
           </div>
           <div class="sector-form__item">
@@ -53,6 +54,7 @@
               type="text"
               class="sector-form__input"
               v-model="horizonNumber"
+              @blur="handleBlur"
             />
           </div>
         </div>
@@ -78,6 +80,7 @@ import Maps from './Maps';
 import Scheme from "./Scheme";
 import Indicators from "./Indicators";
 import History from "./History";
+import { digitalRatingMutations, digitalRatingActions } from "@store/helpers";
 
 export default {
   name: "WellAtlasModal",
@@ -92,8 +95,6 @@ export default {
 
   data() {
     return {
-      sectorNumber: '',
-      horizonNumber: '',
       currentTab: 'overview',
       isVisibleAtlas: false,
       tabs: [
@@ -122,18 +123,47 @@ export default {
   },
 
   computed: {
+    sectorNumber: {
+      get() {
+        return this.$store.state.digitalRating.sectorNumber;
+      },
+      set(val) {
+        this.SET_SECTOR(val);
+      }
+    },
+    horizonNumber: {
+      get() {
+        return this.$store.state.digitalRating.horizonNumber;
+      },
+      set(val) {
+        this.SET_HORIZON(val);
+      },
+    },
     currentTabComponent() {
       return this.currentTab.toLowerCase();
     }
   },
 
   methods: {
+    ...digitalRatingActions([
+      'fetchIndicators'
+    ]),
+    ...digitalRatingMutations([
+      'SET_SECTOR',
+      'SET_HORIZON'
+    ]),
+    fetchData() {
+      this.fetchIndicators({});
+    },
     handleSelectTab(tab) {
       this.currentTab = tab;
     },
     close() {
       this.currentTab = 'overview';
       this.$emit('close');
+    },
+    handleBlur() {
+      this.fetchData();
     }
   }
 }
@@ -168,10 +198,12 @@ export default {
   &__input {
     background: #1F2142;
     border: none;
-    outline: none;
     padding: 5px 10px;
     color: #fff;
     width: 100px;
+    &:focus {
+      outline: 1px solid #6c72ad;
+    }
   }
 }
 </style>

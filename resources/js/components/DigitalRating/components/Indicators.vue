@@ -1,59 +1,65 @@
 <template>
   <div class="rating-indicators">
-    <div class="d-flex mb-20px">
+    <div class="d-flex align-items-start mb-20px">
       <table class="table text-center text-white rating-table w-50 mb-0">
         <thead>
-        <tr>
-          <th class="align-middle" v-for="col in colsIndicator" :key="col.name">
-            {{ col.title }}
-          </th>
-        </tr>
+          <tr>
+            <th class="align-middle" v-for="col in colsIndicator" :key="col.name">
+              {{ col.title }}
+            </th>
+          </tr>
         </thead>
-        <tbody>
-        <tr v-for="(item, index) in indicators" :key="index">
-          <td v-for="(col, colIdx) in colsIndicator" :key="colIdx">
-            <span>{{ item[col.name] }}</span>
-          </td>
-        </tr>
+        <tbody v-if="getIndicators && getIndicators.length">
+          <tr v-for="(item, index) in getIndicators" :key="index">
+            <td v-for="(col, colIdx) in colsIndicator" :key="colIdx">
+              <span>{{ item[col.name] }}</span>
+            </td>
+          </tr>
         </tbody>
+        <div v-else class="warning-empty">
+          <p>{{ trans('app.thereIsNoData') }}</p>
+        </div>
       </table>
       <Plotly
-              :data="data"
-              :layout="layout"
-              :display-mode-bar="false"
-              :displaylogo="false"
+        :data="data"
+        :layout="layout"
+        :display-mode-bar="false"
+        :displaylogo="false"
+        class="w-50"
       />
     </div>
-    <div class="d-flex">
+    <div class="d-flex align-items-start">
       <table class="table text-center text-white rating-table w-50 mb-0">
         <thead>
-        <tr>
-          <th class="align-middle" v-for="col in secondColsIndicators" :key="col.name">
-            {{ col.title }}
-          </th>
-        </tr>
+          <tr>
+            <th class="align-middle" v-for="col in secondColsIndicators" :key="col.name">
+              {{ col.title }}
+            </th>
+          </tr>
         </thead>
         <tbody>
-        <tr v-for="(item, index) in secondIndicators" :key="index">
-          <td v-for="(col, colIdx) in secondColsIndicators" :key="colIdx">
-            <span>{{ item[col.name] }}</span>
-          </td>
-        </tr>
+          <tr v-for="(item, index) in secondIndicators" :key="index">
+            <td v-for="(col, colIdx) in secondColsIndicators" :key="colIdx">
+              <span>{{ item[col.name] }}</span>
+            </td>
+          </tr>
         </tbody>
       </table>
       <Plotly
-              :data="data"
-              :layout="layout"
-              :display-mode-bar="false"
-              :displaylogo="false"
+        :data="data"
+        :layout="layout"
+        :display-mode-bar="false"
+        :displaylogo="false"
+        class="w-50"
       />
     </div>
   </div>
 </template>
 
 <script>
-  import { indicators, secondIndicators } from '../json/data';
+  import { secondIndicators } from '../json/data';
   import { Plotly } from 'vue-plotly';
+  import { digitalRatingState, digitalRatingActions } from '@store/helpers';
 
   export default {
     name: "Indicators",
@@ -63,7 +69,6 @@
     },
     data() {
       return {
-        indicators: indicators,
         secondIndicators: secondIndicators,
         data:[
           {
@@ -112,28 +117,44 @@
       }
     },
 
+    created() {
+
+    },
+
+    methods: {
+      ...digitalRatingActions([
+          'fetchIndicators'
+      ]),
+    },
+
     computed: {
+      ...digitalRatingState([
+        'indicators',
+      ]),
+      getIndicators() {
+        return this.indicators;
+      },
       colsIndicator() {
         return [
           {
             title: this.trans('digital_rating.wellNumber'),
-            name: 'number'
+            name: 'uwi'
           },
           {
             title: this.trans('digital_rating.liquidFlowRate'),
-            name: 'liquid'
+            name: 'liquid_val_average'
           },
           {
             title: `${this.trans('digital_rating.waterCut')}, %`,
-            name: 'water'
+            name: 'bsw_val_average'
           },
           {
             title: `${this.trans('digital_rating.oilFlowRate')}, ${this.trans('digital_rating.tonDay')}`,
-            name: 'oil'
+            name: 'result'
           },
           {
             title: `${this.trans('digital_rating.dynamicLevel')}, м`,
-            name: 'level'
+            name: 'param_gdis_hdin'
           }
         ]
       },
@@ -175,5 +196,11 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
+  }
+  .warning-empty {
+    position: absolute;
+    width: 50%;
+    margin-top: 20px;
+    font-size: 20px;
   }
 </style>

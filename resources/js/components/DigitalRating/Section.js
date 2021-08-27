@@ -8,6 +8,8 @@ import WellAtlasModal from "./components/WellAtlasModal";
 import Accordion from "./components/Accordion";
 import mainMenu from "../GTM/mock-data/main_menu.json";
 import { cods, maps, properties, objects, fileActions, mapActions } from './json/data';
+import { digitalRatingMutations } from '@store/helpers';
+
 export default {
     name: "Sections",
 
@@ -46,6 +48,8 @@ export default {
     },
 
     methods: {
+        ...digitalRatingMutations(['SET_SECTOR']),
+
         initMap() {
             this.map = L.map('map', {
                 crs: L.CRS.Simple,
@@ -77,7 +81,7 @@ export default {
                     this.closePopup();
                 });
                 this.rectangle.on('click', (e) => {
-                    this.onMapClick();
+                    this.onMapClick(mapsData[i]['sector']);
                 })
             }
         },
@@ -114,7 +118,8 @@ export default {
             }
             return yx(y, x);
         },
-        onMapClick() {
+        onMapClick(sector) {
+            this.SET_SECTOR(sector);
             this.$bvModal.show('modalAtlas');
         },
         closeAtlasModal() {
