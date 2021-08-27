@@ -132,7 +132,6 @@ class StoreKGMReportsFromAvocetByDay extends Command
         );
         $pathOfClasses = "\App\Models\VisCenter\InboundIntegration\KGM\Daily";
         foreach ($column_names as $key => $value) {
-            if ($fieldName == $key) {
                 $class = $pathOfClasses . "\\" . $value;
                 $data = $this->getDataByType(new $class);
 
@@ -144,7 +143,6 @@ class StoreKGMReportsFromAvocetByDay extends Command
                         return $this->getFactBy($row, $fieldName);
                     }
                 }
-            }
         }
     }
 
