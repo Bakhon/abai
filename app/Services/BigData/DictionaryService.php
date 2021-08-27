@@ -57,6 +57,8 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\WellPrsRepairType;
+use App\Models\BigData\Dictionaries\TechStateCasing;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -369,14 +371,14 @@ class DictionaryService
                     $dict = $this->getGeoHorizonDict();
                     break;
                 case 'reason_ref':
-                    $dict = $this->getReasonTypeRefDict();
+                    $dict = $this->getReasonTypeDict('REF');
                     break;
                 case 'reason_rst':
-                    $dict = $this->getReasonTypeRstDict();
+                    $dict = $this->getReasonTypeDict('RST');
                     break;
                     break;
                 case 'reason_type_rtr':
-                    $dict = $this->getReasonTypeRtrDict();
+                    $dict = $this->getReasonTypeDict('RTR');
                     break;
                 default:
                     throw new DictionaryNotFound();
@@ -614,12 +616,12 @@ class DictionaryService
         return $items;
     }
 
-    private function getReasonTypeRtrDict()
+    private function getReasonTypeDict(string $type)
     {
         $items = DB::connection('tbd')
             ->table('prod.well_treatment as p')
             ->select('r.id', 'r.name_ru as name')
-            ->where('rt.code', 'RTR')
+            ->where('rt.code', $type)
             ->distinct()
             ->orderBy('name', 'asc')
             ->join('dict.reason as r', 'p.reason', 'r.id')
@@ -631,6 +633,7 @@ class DictionaryService
                 }
             )
             ->toArray();
+
 
         return $items;
     }
