@@ -787,12 +787,12 @@ export default {
       }
 
       let liquid = optimized
-          ? this.scenario.liquid.original_value_optimized
-          : this.scenario.liquid.original_value
+          ? +this.scenario.liquid.original_value_optimized
+          : +this.scenario.liquid.original_value
 
       let oil = optimized
-          ? this.scenario.oil.original_value_optimized
-          : this.scenario.oil.original_value
+          ? +this.scenario.oil.original_value_optimized
+          : +this.scenario.oil.original_value
 
       // TODO: посмотреть более точную формулу
       return liquid
@@ -806,12 +806,12 @@ export default {
       }
 
       let days_worked = optimized
-          ? this.scenario.days_worked.original_value_optimized
-          : this.scenario.days_worked.original_value
+          ? +this.scenario.days_worked.original_value_optimized
+          : +this.scenario.days_worked.original_value
 
       let oil = optimized
-          ? this.scenario.oil.original_value_optimized
-          : this.scenario.oil.original_value
+          ? +this.scenario.oil.original_value_optimized
+          : +this.scenario.oil.original_value
 
       return days_worked
           ? (oil / days_worked).toFixed(2)
@@ -824,12 +824,12 @@ export default {
       }
 
       let days_worked = optimized
-          ? this.scenario.days_worked.original_value_optimized
-          : this.scenario.days_worked.original_value
+          ? +this.scenario.days_worked.original_value_optimized
+          : +this.scenario.days_worked.original_value
 
       let liquid = optimized
-          ? this.scenario.liquid.original_value_optimized
-          : this.scenario.liquid.original_value
+          ? +this.scenario.liquid.original_value_optimized
+          : +this.scenario.liquid.original_value
 
       return days_worked
           ? (liquid / days_worked).toFixed(fractionDigits)
@@ -842,12 +842,12 @@ export default {
       }
 
       let uwi_count = optimized
-          ? this.scenario.uwi_count.original_value_optimized
-          : this.scenario.uwi_count.original_value
+          ? +this.scenario.uwi_count.original_value_optimized
+          : +this.scenario.uwi_count.original_value
 
       let prs = optimized
-          ? this.scenario.prs.original_value_optimized
-          : this.scenario.prs.original_value
+          ? +this.scenario.prs.original_value_optimized
+          : +this.scenario.prs.original_value
 
       return uwi_count
           ? (prs / uwi_count).toFixed(fractionDigits)

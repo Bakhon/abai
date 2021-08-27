@@ -70,22 +70,22 @@ export default {
         {
           name: `${this.trans('economic_reference.costs')} ${this.trans('economic_reference.before_optimization')}`,
           type: 'line',
-          data: this.chartData.map(x => x ? +x.Overall_expenditures_scenario.original_value : null)
+          data: this.chartData.map(x => x ? +x.Overall_expenditures.original_value : null)
         },
         {
           name: `${this.trans('economic_reference.costs')} ${this.trans('economic_reference.after_optimization')}`,
           type: 'line',
-          data: this.chartData.map(x => x ? +x.Overall_expenditures_scenario.original_value_optimized : null)
+          data: this.chartData.map(x => x ? +x.Overall_expenditures.original_value_optimized : null)
         },
         {
           name: `${this.trans('economic_reference.operating_profit_loss')} ${this.trans('economic_reference.before_optimization')}`,
           type: 'bar',
-          data: this.chartData.map(x => x ? +x.Operating_profit_scenario.original_value : null)
+          data: this.chartData.map(x => x ? +x.Operating_profit.original_value : null)
         },
         {
           name: `${this.trans('economic_reference.operating_profit_loss')} ${this.trans('economic_reference.after_optimization')}`,
           type: 'bar',
-          data: this.chartData.map(x => x ? +x.Operating_profit_scenario.original_value_optimized : null)
+          data: this.chartData.map(x => x ? +x.Operating_profit.original_value_optimized : null)
         },
       ]
     },
