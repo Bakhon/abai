@@ -211,6 +211,9 @@ import WFM_modal from './modal'
 import dataPicker from './DatePicker'
 import dataPickerRange from "./dataPickerRange"
 import VueApexCharts from 'vue-apexcharts'
+import {waterfloodingManagementMapGetters} from '@store/helpers';
+
+
 
 export default {
   components: {
@@ -278,7 +281,7 @@ export default {
         yaxis: [
           {
             min: 0,
-            seriesName: 'Column A',
+            seriesName: 'Left',
             showAlways: true,
             title: {
               text: ["Добыча жидкости, закачка – м3,"," нефти – т"],
@@ -292,10 +295,10 @@ export default {
               }
             }
           },{
-            seriesName: 'Column A',
+            seriesName: 'Left',
             show: false
           },{
-            seriesName: 'Column A',
+            seriesName: 'Left',
             show: false
           },{
             min: 0,
@@ -307,7 +310,7 @@ export default {
               }
             },
             opposite: true,
-            seriesName: 'Line C',
+            seriesName: 'Right',
             axisTicks: {
               show: true
             },
@@ -315,7 +318,7 @@ export default {
               show: true,
             },
             title: {
-              text: "Line",
+              text: "Обводненность %",
               style: {
                 color: '#fff'
               }
@@ -457,7 +460,7 @@ export default {
       })
     },
     getDate: function () {
-      let dateString = moment(this.$store.getters['waterfloodingManagement/chooseObjectDate']).format('DD.MM.YYYY')
+      let dateString = moment(this.chooseObjectDate).format('DD.MM.YYYY')
       this.getChooseObject(this.defaultDzo.id, this.defaultOccurrence.id, this.defaultObject.id, dateString )
     },
     dateRangeChanged: function(){
@@ -481,6 +484,9 @@ export default {
     }
   },
   computed: {
+    ...waterfloodingManagementMapGetters([
+      'chooseObjectDate'
+    ]),
     getHalfWindowWidth(){
       return window.innerWidth / 2 - 100;
     },
