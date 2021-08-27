@@ -108,7 +108,7 @@
       </datetime>
     </template>
     <template v-else-if="item.type === 'table'">
-      <BigdataTableField :id="id" :params="item" v-on:change="updateValue($event)"></BigdataTableField>
+      <BigdataTableField :id="id" :params="item" :values="value" v-on:change="updateValue($event)"></BigdataTableField>
     </template>
     <template v-else-if="item.type === 'calc'">
       <label>{{ value }}</label>

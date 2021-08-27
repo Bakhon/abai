@@ -113,6 +113,10 @@ import forms from '../../../../json/bd/forms.json'
 export default {
   name: "BigdataTableField",
   props: {
+    values: {
+      type: Array,
+      required: true
+    },
     params: {
       type: Object,
       required: true
@@ -120,7 +124,7 @@ export default {
     id: {
       type: Number,
       required: true
-    },
+    }
   },
   components: {
     BigDataPlainForm: () => import('../PlainForm'),
@@ -138,6 +142,17 @@ export default {
       selectedRowIndex: null,
       tableRows: []
     }
+  },
+  mounted() {
+    this.items = this.values.map(value => {
+      let obj = {}
+      for (let i in value) {
+        obj[i] = {
+          value: value[i]
+        }
+      }
+      return obj
+    })
   },
   methods: {
     openCreateForm() {

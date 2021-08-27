@@ -108,6 +108,7 @@
       "title": "events",
       "code": "events",
       "type": "form",
+      "form": "tech_events",
       "is_editable": false
     }
   ]

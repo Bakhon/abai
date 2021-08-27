@@ -14,7 +14,7 @@ class TechWaterWell extends TableForm
     public function getRows(array $params = []): array
     {
         $filter = json_decode($this->request->get('filter'));
-        $params['filter']['well_category'] = ['WTR'];
+        //$params['filter']['well_category'] = ['WTR'];
         $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
 
         $tables = $this->getFields()->pluck('table')->filter()->unique();
@@ -59,6 +59,18 @@ class TechWaterWell extends TableForm
                             $result[$field['code']] = [
                                 'value' => $value
                             ];
+                            break;
+                        case 'events':
+                            $events = DB::connection('tbd')
+                                ->table('prod.tech_mode_event')
+                                ->select('id', 'event_type', 'plan_month')
+                                ->where('well', $item->id)
+                                ->get();
+
+                            $result[$field['code']] = [
+                                'value' => $events
+                            ];
+
                             break;
                         default:
                             $fieldValue = $this->getFieldValue($field, $rowData, $item);
