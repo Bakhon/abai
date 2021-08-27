@@ -822,7 +822,7 @@ return [
         'report_constructor' => [
             'menu' => 'Конструктор отчетов',
         ],
-        'well_cart' => [
+        'well_card' => [
             'menu' => 'Карточка скважины',
         ],
         'production_wells_schedule' => [
