@@ -37,7 +37,7 @@
 
 <script>
 import chart from "vue-apexcharts";
-import {chartInitMixin} from "../mixins/chartMixin";
+import {chartInitMixin} from "../../mixins/chartMixin";
 
 const ru = require("apexcharts/dist/locales/ru.json");
 

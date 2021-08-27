@@ -85,7 +85,8 @@ class Well extends Model
             'bsw',
             'gas_factor',
             'pressure',
-            'temperature',
+            'temperature_well',
+            'temperature_zu',
             'sg_oil',
             'sg_gas',
             'sg_water'

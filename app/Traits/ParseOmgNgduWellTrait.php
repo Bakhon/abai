@@ -78,7 +78,7 @@ trait ParseOmgNgduWellTrait
                 $omgngdu->daily_oil_production = $row->neft_t;
                 $omgngdu->bsw = isset($guData[$gu->name]) ? $guData[$gu->name]['bsw'] : $row->vlash;
                 $omgngdu->gas_factor = isset($guData[$gu->name]) ? $guData[$gu->name]['gas'] : $row->gaz;
-                $omgngdu->temperature = $row->tempn;
+                $omgngdu->temperature_zu = $row->tempn;
                 $omgngdu->sg_oil = isset($guData[$gu->name]) ? $guData[$gu->name]['sg_oil'] : 0.86;
                 $omgngdu->sg_gas = 0.75;
                 $omgngdu->sg_water = 1.03;
