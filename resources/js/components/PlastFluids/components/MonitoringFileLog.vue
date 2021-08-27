@@ -2,6 +2,9 @@
   <div class="upload-status-log">
     <p class="upload-status-title">{{ trans("plast_fluids.download_log") }}</p>
     <div class="log" ref="logDiv">
+      <div v-if="reportDuplicated">
+        <p>{{ trans("plast_fluids.report_duplicated") }}</p>
+      </div>
       <template v-for="(sheetlog, ind) in fileLog">
         <div v-if="sheetlog[1].length" :key="ind">
           <p>{{ sheetlog[0] }}</p>
@@ -20,7 +23,7 @@
         :disabled="!fileLog"
         :class="{ disabled: !fileLog }"
       >
-        Скачать лог загрузки
+        {{ trans("plast_fluids.download_status_log") }}
       </button>
     </div>
   </div>

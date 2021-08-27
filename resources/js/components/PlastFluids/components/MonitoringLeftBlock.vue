@@ -1,32 +1,32 @@
 <template>
-  <div class="menu_wrapper">
+  <div class="menu_wrapper" :class="{ narrow: collapsed }">
     <div class="sidebar-top d-flex align-items-start w-100">
-      <button class="collapse-left__sidebar">
-        <Icon name="arrowLeft" />
+      <button @click="collapsed = !collapsed" class="collapse-left__sidebar">
+        <Icon class="smooth" :class="{ swap: collapsed }" name="arrowLeft" />
       </button>
-      <div class="dropdown__sidebar w-100">
+      <div class="dropdown__sidebar w-100" :class="{ hide: collapsed }">
         <Dropdown
           block
           class="w-100 mb-2"
-          button-text="Недропользователь"
+          :button-text="trans('plast_fluids.subsurface_user')"
           :options="options"
         />
         <Dropdown
           block
           class="w-100 mb-2"
-          button-text="Месторождения"
+          :button-text="trans('plast_fluids.field')"
           :options="options"
         />
         <Dropdown
           block
           class="w-100 mb-2"
-          button-text="Горизонт"
+          :button-text="trans('plast_fluids.horizon')"
           :options="options"
         />
       </div>
     </div>
     <div class="sectors">
-      <div class="sectors-svg">
+      <div class="sectors-svg" :class="{ hide: collapsed }">
         <svg
           width="17"
           height="18"
@@ -44,7 +44,7 @@
 
         {{ trans("plast_fluids.sections") }}
       </div>
-      <div class="tree-box box-border">
+      <div class="tree-box box-border" :class="{ hide: collapsed }">
         <ul class="trees">
           <MonitoringTreeMenu
             v-for="template in templates"
@@ -69,6 +69,7 @@ export default {
   name: "MonitoringLeftBlock",
   data() {
     return {
+      collapsed: false,
       templates: [],
       options: [
         { label: "option 1", value: 1 },
@@ -103,6 +104,7 @@ export default {
   background-color: #272953;
   display: flex;
   flex-flow: column;
+  transition: 0.3s ease;
 }
 
 .collapse-left__sidebar {
@@ -159,5 +161,21 @@ label {
 
 .trees {
   margin-left: 10px;
+}
+
+.smooth {
+  transition: 0.3s ease;
+}
+
+.swap {
+  transform: rotate(180deg);
+}
+
+.narrow {
+  width: 30px;
+}
+
+.hide {
+  display: none;
 }
 </style>

@@ -46,14 +46,14 @@
     </div>
     <div v-if="pagination" class="table-pagination-container">
       <div class="per-page-select-div">
-        <p>Показать первые</p>
+        <p>{{ trans("plast_fluids.show_first") }}</p>
         <select v-model="perPage" name="per-page-select" id="per-page-select">
-          <option disabled value="">Выбрать</option>
+          <option disabled value="">{{ trans("plast_fluids.choose") }}</option>
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="30">30</option>
         </select>
-        <p>данных на странице</p>
+        <p>{{ trans("plast_fluids.data_on_page") }}</p>
       </div>
       <div class="pagination">
         <div class="arrow-icons-holder">

@@ -51,7 +51,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .subsoil-tree {
   border-radius: 4px;
   background: #1c1f4c;

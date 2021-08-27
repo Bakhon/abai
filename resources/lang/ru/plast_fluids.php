@@ -39,4 +39,9 @@ return array (
   'uploading_file' => 'Загружаем файл',
   'something_went_wrong' => 'Что-то пошло не так, попробуйте позже',
   'incorrect_file_format' => 'Неверный формат файла',
+  'choose' => 'Выбрать',
+  'show_first' => 'Показать первые',
+  'data_on_page' => 'данных на странице',
+  'report_duplicated' => 'Такой шаблон уже загружен',
+  'horizon' => 'Горизонт',
 );
