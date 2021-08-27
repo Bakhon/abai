@@ -110,7 +110,6 @@ export default {
         await this.getWells(this);
       }
 
-      this.updateThisComponent();
       this.$forceUpdate()
     },
     onCheckboxClick: async function () {
