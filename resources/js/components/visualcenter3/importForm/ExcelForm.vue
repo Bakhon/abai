@@ -12,9 +12,7 @@
                     {{trans('visualcenter.importForm.insertData')}}
                 </div>
                 <div
-                        :class="[isArchiveActive ? 'category-button_border category-button' : '',
-                        dzoUsers.includes(parseInt(userId)) ? 'menu__button_disabled' : '',
-                        ' col-2 category-button']"
+                        :class="[isArchiveActive ? 'category-button_border category-button' : '',' col-2 category-button']"
                         @click="changeCategory"
                 >
                     <div class="archieve-icon"></div>
@@ -72,7 +70,7 @@
                     </el-date-picker>
                 </div>
                 <div
-                        :class="[isUserNameCompleted && isChangeReasonCompleted ? '' : 'menu__button_disabled','col-12 status-block status-block_little menu__button mt-3']"
+                        :class="[isUserNameCompleted && isChangeReasonCompleted && !isDataSended ? '' : 'menu__button_disabled','col-12 status-block status-block_little menu__button mt-3']"
                         @click="sendToApprove"
                 >
                     {{trans('visualcenter.importForm.approve')}}

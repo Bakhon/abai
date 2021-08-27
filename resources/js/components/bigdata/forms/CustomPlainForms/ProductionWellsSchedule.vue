@@ -4,18 +4,28 @@
             <img class="arrow-back pr-3" src="/img/icons/arrow.svg" @click.stop="$emit('changeScheduleVisible')">
             <div>График оперативной информации</div>
         </div>
-        <div class="main-block text-white pb-2">
-            <div class="d-flex justify-content-between align-items-center p-2">
+        <div class="main-block pb-2">
+            <div class="d-flex justify-content-between align-items-center text-white p-2">
                 <div class="d-flex">
                     <div>
-                        <div class="input-border">
-                            <img class="pr-1" src="/img/icons/search.svg" alt="">
-                            <input class="search-input" type="text" placeholder="Поиск скважины" />
-                        </div>
+                        <form class="search-form d-flex align-items-center">
+                            <v-select
+                                class="flex-fill"
+                                :filterable="false"
+                                :options="options"
+                                placeholder="Поиск скважины"
+                                @input="selectWell"
+                                @search="onSearch"
+                            >
+                                <template slot="option" slot-scope="option">
+                                    <span>{{ option.name }}</span>
+                                </template>
+                            </v-select>
+                        </form>
                     </div>
-                    <div class="d-flex align-items-center pl-3">
-                        <div>Скважина: KAL_8224</div>
-                        <img src="/img/icons/close.svg" alt="">
+                    <div v-for="well in wells" class="d-flex align-items-center pl-2 ml-1 wells-list-item">
+                        <div>Скважина: {{ well.name }}</div>
+                        <img class="cursor-pointer" @click.stop="removeWellSchedule(well)" src="/img/icons/close.svg" alt="">
                     </div>
                     <div class="d-flex align-items-center pl-3">
                         <img class="pr-1" src="/img/icons/page_to_form.svg" alt="">
@@ -23,148 +33,88 @@
                     </div>
                 </div>
                 <div class="d-flex">
-                    <div class="d-flex align-items-center">
-                        <input type="checkbox">
-                        <div class="pl-1">Показывать события</div>
+                    <div class="checkbox-inline">
+                        <input id="show_events" type="checkbox" :checked="isShowEvents" @change="toggleShowEvents">
+                        <label for="show_events" class="pl-1">{{ trans('bd.show_events') }}</label>
                     </div>
-                    <div class="d-flex align-items-center pl-3">
-                        <input type="checkbox">
-                        <div class="pl-1">Показывать всю историю</div>
+                    <div class="checkbox-inline pl-3">
+                        <input id="show_full_history" type="checkbox">
+                        <label for="show_full_history" class="pl-1">{{ trans('bd.show_full_history') }}</label>
                     </div>
                 </div>
             </div>
-            <div class="row content-block m-0 mt-2 mx-2 p-0 rounded-top">
-                <div class="col-3">Период:</div>
-                <div class="col-6 d-flex justify-content-between">
-                    <div>1 неделя</div>
-                    <div>1 месяц</div>
-                    <div>3 месяца</div>
-                    <div>6 месяцев</div>
-                    <div>1 год</div>
-                    <div>Все</div>
-                </div>
-                <div class="col-3"></div>
-            </div>
-            <div class="content-block content-block-scrollable m-2 p-2 rounded-bottom">
-                <apexchart
-                    ref="chart"
-                    :options="chartOptions"
-                    :series="chartSeries"
-                    :height="745"
-                    type="line"/>
-                <apexchart
-                    ref="chart"
-                    :options="chartOptions"
-                    :series="chartSeries"
-                    :height="745"
-                    type="line"/>
+            <div class="content-block-scrollable">
+                <ProductionWellsScheduleItem
+                    v-for="(well, index) in wells"
+                    :well="well"
+                    :key="index"
+                    :isShowEvents="isShowEvents"
+                />
             </div>
         </div>
     </div>
 </template>
 <script>
-import {GRANULARITY_DAY} from "../../../Economic/components/SelectGranularity";
-import chart from "vue-apexcharts";
+import ProductionWellsScheduleItem from "./ProductionWellsScheduleItem";
+import vSelect from 'vue-select'
+import axios from "axios";
 
 export default {
-    components: {apexchart: chart},
-    data: () => ({
-        currentAnnotation: {
-            minY: 0,
-            maxY: 0
+    components: {
+        vSelect,
+        ProductionWellsScheduleItem
+    },
+    props: {
+        mainWell: {}
+    },
+    data: function() {
+        return {
+            wells: [],
+            options: [],
+            isShowEvents: true
+        }
+    },
+    methods: {
+        toggleShowEvents() {
+            this.isShowEvents = !this.isShowEvents;
         },
-    }),
-    computed: {
-        chartSeries() {
-            return [
-                {
-                    name: "Жидкость",
-                    type: "area",
-                    data: [100, 800, 900, 1400, 1200, 2100, 2900,
-                        100, 800, 900, 1400, 1200, 2100, 2900,
-                        100, 800, 900, 1400, 1200, 2100, 2900,
-                        100, 800, 900, 1400, 1200, 2100, 2900],
-                },
-                {
-                    name: "Нефть",
-                    type: "area",
-                    data: [50, 300, 400, 300, 200, 500, 550,
-                        50, 300, 400, 300, 200, 500, 550,
-                        50, 300, 400, 300, 200, 500, 550,
-                        50, 300, 400, 300, 200, 500, 550],
-                },
-                {
-                    name: "Обводненность",
-                    type: "area",
-                    data: [800, 700, 700, 1000, 450, 2000, 1400,
-                        800, 700, 700, 1000, 450, 2000, 1400,
-                        800, 700, 700, 1000, 450, 2000, 1400,
-                        800, 700, 700, 1000, 450, 2000, 1400],
-                },
-                {
-                    name: "Н дин",
-                    type: "area",
-                    data: [500, 900, 400, 400, 800, 1800, 1500,
-                        500, 900, 400, 400, 800, 1800, 1500,
-                        500, 900, 400, 400, 800, 1800, 1500,
-                        500, 900, 400, 400, 800, 1800, 1500],
-                },
-            ];
-        },
-        chartOptions() {
-            return {
-                labels: ["22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель","26 Апрель", "3 Май",
-                    "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь", "14 Июль",
-                    "22 Март", "29 Март", "5 Апрель", "12 Апрель", "19 Апрель","26 Апрель", "3 Май",
-                    "10 Май", "17 Май", "24 Май", "31 Май", "7 Июнь", "14 Июнь", "14 Июль"],
-                stroke: {
-                    width: 4,
-                    curve: 'smooth'
-                },
-                legend: {
-                    position: 'right',
-                },
-                chart: {
-                    stacked: true,
-                    foreColor: '#FFFFFF',
-                    selection: {
-                        enabled: true,
-                        type: 'x',
-                    },
-                    toolbar: {
-                        offsetY: -10,
-                    }
-                },
-                markers: {
-                    size: 0
-                },
-                xaxis: {
-                    type: this.granularity === GRANULARITY_DAY
-                        ? 'datetime'
-                        : 'date'
-                },
-                yaxis: {
-                    opposite: true,
-                    labels: {
-                        formatter(val) {
-                            return Math.round(val);
-                        },
-                    },
-                    title: {
-                        text: this.title,
-                    },
-                    min: 0
-                },
-                tooltip: {
-                    shared: true,
-                    intersect: false,
-                }
+        onSearch(search, loading) {
+            if (search.length) {
+                loading(true);
+                this.search(loading, search, this);
             }
         },
+        search: _.debounce((loading, search, vm) => {
+                axios.get(vm.localeUrl('/api/bigdata/wells/search'),
+                    {
+                        params: {
+                            query: escape(search),
+                            selectedUserDzo: vm.selectedUserDzo,
+                        }
+                    })
+                    .then(({data}) => {
+                        vm.options = data.items;
+                        loading(false);
+                    })
+            },
+            350
+        ),
+        selectWell(well) {
+            this.options = [];
+            this.wells.push(well)
+        },
+        removeWellSchedule(well) {
+            this.wells.splice(
+                this.wells.indexOf(well), 1
+            );
+        }
     },
+    mounted() {
+        this.wells.push(this.mainWell);
+    }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .main-block {
     background-color: rgba(51, 57, 117, 0.33);
 }
@@ -180,9 +130,70 @@ export default {
     border: none;
 }
 
-.content-block {
-    background-color: rgba(39, 41, 83, 1);
-    line-height: 2rem;
+.arrow-back {
+    transform: rotate(90deg);
+}
+
+::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #40467E;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #656A8A;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #656A8A;
+}
+
+::-webkit-scrollbar-corner {
+    background: #20274F;
+}
+
+.search-form {
+    .v-select {
+        background: url(/img/bd/search.svg) 20px 45% #272953 no-repeat;
+        border: 1px solid #3b4a84;
+        min-width: 12rem;
+
+        .vs__search {
+            font-family: Roboto, sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 0;
+            padding-left: 45px;
+        }
+
+        .vs__selected {
+            font-family: Roboto, sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            margin-top: 0;
+            padding-left: 45px;
+        }
+
+        .vs__actions {
+            padding: 0 5px;
+
+            .vs__clear, .vs__open-indicator {
+                display: none;
+            }
+
+            .vs__spinner, .vs__spinner:after {
+                border-color: rgba(238, 238, 238, 0.7);
+                border-left-color: rgba(170, 170, 170, 0.7);
+            }
+        }
+
+        .vs__dropdown-toggle {
+            border: none;
+        }
+    }
 }
 
 .content-block-scrollable {
@@ -190,13 +201,8 @@ export default {
     overflow-y: scroll;
 }
 
-.arrow-back {
-    transform: rotate(90deg);
-}
-</style>
-<style>
-
-.apexcharts-legend {
-    justify-content: center !important;
+.wells-list-item {
+    border-radius: 10px;
+    border: 1px solid #3b4a84;
 }
 </style>

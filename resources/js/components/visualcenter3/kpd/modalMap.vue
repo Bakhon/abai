@@ -42,10 +42,27 @@
                 </div>
                 <table class="modal_table mt-2">
                     <tr>
-                        <th class="p-3" v-for="header in kpd.table.headers">{{header}}</th>
+                        <th class="p-3">№ п/п</th>
+                        <th class="p-3">Наименование КПД</th>
+                        <th class="p-3">Единица измерения</th>
+                        <th class="p-3">Вес</th>
+                        <th class="p-3">
+                            <span>Порог</span><br>
+                            <span>(50%)</span>
+                        </th>
+                        <th class="p-3">
+                            <span>Цель</span><br>
+                            <span>(100%)</span>
+                        </th>
+                        <th class="p-3">
+                            <span>Вызов</span><br>
+                            <span>(125%)</span>
+                        </th>
+                        <th class="p-3">ФИО ответственного за КПД</th>
+                        <th class="p-3">Согласование</th>
                     </tr>
                     <tr v-for="row in kpd.table.body">
-                        <td class="p-1" v-for="column in row">{{column}}</td>
+                        <td v-for="(column,index) in row" :class="index === 1 ? 'p-2' : 'p-1'">{{column}}</td>
                         <td class="p-1">
                             <select class="filter_select p-1">
                                 <option
@@ -166,14 +183,14 @@ export default {
             selectedKpd: null,
             currentYear: new Date().getFullYear(),
             kpd: {
-                'name': 'Карта КПД',
+                'name': 'КПД',
                 'table': {
                     'headers': [
                         '№ п/п',
                         'Наименование КПД',
                         'Единица измерения',
                         'Вес',
-                        'Порог (50%)',
+                        "Порог\n(50%)",
                         'Цель (100%)',
                         'Вызов (125%)',
                         'ФИО ответственного за КПД',
@@ -287,6 +304,9 @@ export default {
     tr td {
         border: 1px solid #545580;
         height: 30px;
+        &:nth-child(2) {
+            text-align:left;
+        }
     }
     tr:nth-child(even) {
         background: #272953;

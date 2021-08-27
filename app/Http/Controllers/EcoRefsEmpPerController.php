@@ -34,7 +34,7 @@ class EcoRefsEmpPerController extends Controller
                 'list' => route('ecorefsempper.list'),
             ]
         ];
-        $ecorefsempper = EcoRefsEmpPer::latest()->with('scfa')->paginate(5);
+        $ecorefsempper = EcoRefsEmpPer::orderBy('id','desc')->with('scfa')->paginate(10);
 
         $ecorefsempperPages = view('economy_kenzhe/ecorefsempper.index',compact('ecorefsempper'))
             ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);
