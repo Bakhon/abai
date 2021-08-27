@@ -157,7 +157,7 @@
     Vue.component('w-deepening', require('./project/deepening').default);
     Vue.component('w-deepening-params', require('./project/deepening-params').default);
     Vue.component('w-deepening-graph', require('./project/deepening-graph').default);
-    Vue.component('well-fastening-1', require('./project/well-fastening').default);
+    Vue.component('well-fastening-project', require('./project/well-fastening').default);
     Vue.component('fastening', require('./project/fastening').default);
     Vue.component('fastening-page2', require('./project/fastening-page2').default);
     Vue.component('fastening-page3', require('./project/fastening-page3').default);
