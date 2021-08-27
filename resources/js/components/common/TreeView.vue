@@ -45,9 +45,9 @@
             :nodeClickOnArrow="nodeClickOnArrow"
             :renderComponent="renderComponent"
             :updateThisComponent="updateThisComponent"
-            :selectedObjects="selectedObjects"
             :isCheckedCheckbox="isCheckedCheckbox"
             :isSelectUntilWells="isSelectUntilWells"
+            :onClick="onClick"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -70,7 +70,7 @@ export default {
     isNodeOnBottomLevelOfHierarchy: Function,
     isShowCheckboxes: Boolean,
     isWell: Function,
-    selectedObjects: Object,
+    onClick: Function,
     currentWellId: {
       type: Number,
       required: false
@@ -113,27 +113,7 @@ export default {
       this.$forceUpdate()
     },
     onCheckboxClick: async function () {
-      let node = this.node;
-      node.isChecked = !node.isChecked;
-
-      this.isLoading = true;
-      this.loadChildren(node)
-      .then(() => {
-        if(node.isChecked) {
-          if(this.isSelectUntilWells) {
-            this.updateWellOfNode(node, this.level, true);
-          }else {
-            this.updateNextLevelOfNode(node, this.level);
-          }
-        }else {
-          this.updateChildren(node, this.level, false);
-        }
-      }).finally(() => {
-        this.updateThisComponent();
-        this.isLoading = false;
-      });
-
-      node.level = this.level;
+      this.onClick(this);
     },
     loadChildren: async function(node) {
       if(this.isWell(node)) return;
@@ -142,6 +122,9 @@ export default {
       }
       if(!this.isHaveChildren(node)) {
         await this.getWells(node);
+        if(this.isSelectUntilWells) {
+          this.updateWellOfNode(this.node, this.level, this.node.isChecked);
+        }
         this.updateThisComponent();
       }
       

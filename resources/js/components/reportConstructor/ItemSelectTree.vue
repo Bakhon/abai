@@ -19,7 +19,7 @@
             :isSelectUntilWells="isSelectUntilWells"
             :selectedObjects="selectedObjects"
             :isCheckedCheckbox="isCheckedCheckbox"
-            :onCheckboxClick="onCheckboxClick"
+            :onClick="onClick"
         ></tree-view>
       </div>
     </div>
@@ -140,7 +140,30 @@ export default {
       }).finally(() => {
         child.isLoading = false;
       })
-    }
+    },
+    onClick: async function (content) {
+      let node = content.node;
+      node.isChecked = !node.isChecked;
+
+      content.isLoading = true;
+      content.loadChildren(node)
+      .then(() => {
+        if(node.isChecked) {
+          if(content.isSelectUntilWells) {
+            content.updateWellOfNode(node, content.level, true);
+          }else {
+            content.updateNextLevelOfNode(node, content.level);
+          }
+        }else {
+          content.updateChildren(node, content.level, false);
+        }
+      }).finally(() => {
+        content.updateThisComponent();
+        content.isLoading = false;
+      });
+
+      node.level = content.level;
+    },
   },
 }
 </script>
