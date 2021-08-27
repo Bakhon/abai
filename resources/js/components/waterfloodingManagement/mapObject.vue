@@ -182,15 +182,12 @@
           </div>
         </div>
         <div class="choose-object-into2">
-          <div class="row  m-0 p-0" >
-            <LineChart
-                :chartdata="datacollection"
-                :width="getHalfWindowWidth"
-                :options="options"
-                :height="250"
-            >
-            </LineChart>
-          </div>
+          <apexchart
+              type="line"
+              height="250"
+              :options="chartOptions"
+              :series="series"/>
+
         </div>
       </div>
     </div>
@@ -212,17 +209,17 @@ import vSelect from 'vue-select'
 import mainMenu from './main_menu.json'
 import WFM_modal from './modal'
 import dataPicker from './DatePicker'
-import LineChart from './LineChart'
-import dataPickerRange from "./dataPickerRange";
+import dataPickerRange from "./dataPickerRange"
+import VueApexCharts from 'vue-apexcharts'
 
 export default {
   components: {
     vSelect,
     WFM_modal,
     dataPicker,
-    LineChart,
-    dataPickerRange
-  },
+    dataPickerRange,
+    "apexchart": VueApexCharts,
+ },
   created() {
     this.getDzo();
     this.getGraphic(1,1,1, '17.03.2021', '17.04.2021' )
@@ -230,70 +227,103 @@ export default {
   },
   data: function () {
     return {
-      r_object: {},
-      options: {
-        responsive: true,
-        elements: {
-          point:{
-            radius: 0
+      series: [],
+      chartOptions: {
+        legend: {
+          show: true,
+          labels: {
+            colors: '#fff',
+            useSeriesColors: false
           },
         },
-        legend: {
-          position:'bottom',
-          labels: {
-            fill: "#f00",
-            fontColor: "#fff",
-            fontSize: 14,
-            useLineStyle: true,
+        chart: {
+          height: 350,
+          background: '#272953',
+          type: 'line',
+        },
+        colors: ['#3366FF', '#EFBD74', '#6EBB71', '#02a6f2'],
+        markers: {
+          size: [0, 0, 0, 0],
+        },
+        title:{
+          style: {
+            colors: '#ffffff'
           }
         },
-        scales: {
-          xAxes: [{
-            ticks: {
-              fontColor: "#fff",
+        tooltip: {
+          shared: false,
+          intersect: true,
+        },
+        grid: {
+          borderColor: '#3C4270',
+          strokeDashArray: 0,
+          xaxis: {
+            lines: {
+              show: true,
+            }
+          },
+          yaxis: {
+            lines: {
+              show: true,
+            }
+          },
+        },
+        xaxis: {
+          labels: {
+            style: {
+              colors: '#fff'
+            }
+          }
+        },
+        yaxis: [
+          {
+            min: 0,
+            seriesName: 'Column A',
+            showAlways: true,
+            title: {
+              text: ["Добыча жидкости, закачка – м3,"," нефти – т"],
+              style: {
+                color: '#fff'
+              }
             },
-          }],
-          yAxes: [{
-            display: true,
-            position: 'left',
-            type: "linear",
-            scaleLabel: {
-              fontColor: '#fff',
-              fontSize: 9,
-              display: true,
-              labelString: "Добыча жидкости, закачка – м3, нефти – т",
-              beginAtZero: true,
-            },
-            ticks: {
-              fontColor: "#fff",
-            },
-            id: "left_side"
+            labels: {
+              style: {
+                colors: '#fff'
+              }
+            }
           },{
-            scaleLabel: {
-              fontColor: '#fff',
-              display: true,
-              labelString: 'Обводненность, %',
-              beginAtZero: true,
+            seriesName: 'Column A',
+            show: false
+          },{
+            seriesName: 'Column A',
+            show: false
+          },{
+            min: 0,
+            max: 100,
+            showAlways: true,
+            labels: {
+              style: {
+                colors: '#fff'
+              }
             },
-            display: true,
-            type: "linear",
-            position:"right",
-            gridLines: {
-              display: false
+            opposite: true,
+            seriesName: 'Line C',
+            axisTicks: {
+              show: true
             },
-
-            ticks: {
-              fontColor: "#fff",
-              beginAtZero: true,
-              steps: 10,
-              stepValue: 5,
-              max: 100
+            axisBorder: {
+              show: true,
             },
-            id: "right_side"
-          }]
-
-        }
+            title: {
+              text: "Line",
+              style: {
+                color: '#fff'
+              }
+            }
+          }
+        ],
       },
+      r_object: {},
       ratingObject: [],
       windowWidth: 0,
       datacollection: null,
@@ -398,38 +428,29 @@ export default {
           + '&end_date=' + object_end_date;
       axios.get(url)
           .then((response) =>{
-            this.datacollection = {
-              labels: response.data.labels,
-              datasets: [
-                {
-                  borderColor: '#3366FF',
-                  label: 'Закачка, м3/сут.',
-                  data: response.data.sum_inj_water_vol,
-                  yAxisID:'left_side',
-                },
-                {
-                  borderColor: "#EFBD74",
-                  color: '#fff',
-                  label: 'Q нефти, т/сут.',
-                  backgroundColor: '#efbd7466',
-                  data: response.data.sum_oil_mass,
-                  yAxisID:'left_side'
-                },
-                {
-                  borderColor: "#6EBB71",
-                  label: 'Q жидкости, т/сут.',
-                  backgroundColor: '#6ebb7199',
-                  data: response.data.data_set,
-                  yAxisID:'left_side'
-                },
-                {
-                  borderColor: '#02a6f2',
-                  label: 'Обводненность',
-                  data: response.data.sum_water_cut_vol,
-                  borderDash: [10, 5],
-                  yAxisID:'right_side',
-                }
-              ]
+            this.series = [
+              {name:"Закачка, м3/сут.", data:[]},
+              {name:"Q нефти, т/сут.", data:[]},
+              { name:"Q жидкости, т/сут.", data:[]},
+              { name:"Обводненность", data:[]}
+            ]
+            for(let i = 0; i < response.data.labels.length; i++){
+              this.series[0].data.push({
+                x: response.data.labels[i],
+                y: response.data.sum_inj_water_vol[i]
+              })
+              this.series[1].data.push({
+                x: response.data.labels[i],
+                y: response.data.sum_oil_mass[i]
+              })
+              this.series[2].data.push({
+                x: response.data.labels[i],
+                y: response.data.data_set[i]
+              })
+              this.series[3].data.push({
+                x: response.data.labels[i],
+                y: response.data.sum_water_cut_vol[i]
+              })
             }
           }).catch((error) => {
         console.log(error)
