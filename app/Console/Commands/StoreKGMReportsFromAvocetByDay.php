@@ -99,9 +99,8 @@ class StoreKGMReportsFromAvocetByDay extends Command
     private function getDowntimeReasonFields($dzoImportFieldFonds)
     {
         $dzoImportFieldDowntimeReason = new DzoImportDowntimeReason();
-        $fonds = $this->getDataByType($dzoImportFieldFonds);
-        $dzoImportFieldDowntimeReason->well_survey_downtime_production_wells_count = $this->getCountByDowntimeWells($fonds, 'PRODUCTION');
-        $dzoImportFieldDowntimeReason->well_survey_downtime_injection_wells_count = $this->getCountByDowntimeWells($fonds, 'INJECTION');        
+        $dzoImportFieldDowntimeReason->well_survey_downtime_production_wells_count = $this->getCountBy('category2', 'Исследование', 'PRODUCTION');
+        $dzoImportFieldDowntimeReason->well_survey_downtime_injection_wells_count = $this->getCountBy('category2', 'Исследование', 'INJECTION');        
 
         if (isset($this->fieldsMapping['production_fond']['SHUT_IN_downtimeReason'])) {
             $this->updateFields($this->fieldsMapping['production_fond']['SHUT_IN_downtimeReason'], $dzoImportFieldDowntimeReason, 'SHUT_IN_downtimeReason', '');
@@ -157,27 +156,13 @@ class StoreKGMReportsFromAvocetByDay extends Command
         }
     }
 
-    private function getCountOfFonds($status, $type)
-    {
-
-        $data = $this->getDataByType(new FondsForKGM);
+    private function getCountBy($statusOrCategory2Column, $status, $type)
+    {   $data = $this->getDataByType(new FondsForKGM);
         $summ = [];
 
         foreach ($data as $rowNum => $row) {
-            if (($row['type'] == $type) && ($row['status'] == $status)) {
-                $summ[] = array_merge($row);
-            }
-        }
-        return count($summ);
-    }
-
-    private function getCountByDowntimeWells($data, $fieldName)
-    {
-        $summ = [];
-
-        foreach ($data as $rowNum => $row) {
-            if (($row['type'] == $fieldName)
-                && ($row['category2'] == 'Исследование')) {
+            if (($row['type'] == $type)
+                && ($row[$statusOrCategory2Column] == $status)) {
                 $summ[] = array_merge($row);
             }
         }
@@ -199,11 +184,11 @@ class StoreKGMReportsFromAvocetByDay extends Command
         foreach ($fieldsMapping as $field_name => $field) {
 
             if ($groupOfFieldNames == 'dzo_import_field_data') {
-                $dzoImportFieldData->$field_name = $this->getCountOfFonds($field, 'INJECTION');
+                $dzoImportFieldData->$field_name = $this->getCountBy('status', $field, 'INJECTION');
             }
 
             if ($groupOfFieldNames == 'SHUT_IN_downtimeReason') {
-                $dzoImportFieldData->$field_name = $this->getCountOfFonds('SHUT_IN', 'INJECTION');
+                $dzoImportFieldData->$field_name = $this->getCountBy('status', 'SHUT_IN', 'INJECTION');
             }
         }
     }
@@ -216,10 +201,10 @@ class StoreKGMReportsFromAvocetByDay extends Command
                 $dzoImportFieldData->$field_name = $this->getWaterOilDeliveryAndGasMore($field);
             }
             if ($groupOfFieldNames == 'dzo_import_field_data') {
-                $dzoImportFieldData->$field_name = $this->getCountOfFonds($field, 'PRODUCTION');
+                $dzoImportFieldData->$field_name = $this->getCountBy('status', $field, 'PRODUCTION');
             }
             if (($groupOfFieldNames == 'SHUT_IN') || ($groupOfFieldNames == 'SHUT_IN_downtimeReason')) {
-                $dzoImportFieldData->$field_name = $this->getCountOfFonds('SHUT_IN', 'PRODUCTION');
+                $dzoImportFieldData->$field_name = $this->getCountBy('status', 'SHUT_IN', 'PRODUCTION');
             }
         }
     }
