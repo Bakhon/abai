@@ -4,17 +4,15 @@
         ref="table"
         :params="tableParams"
         class="height-fit-content height-unset">
-      <template
-          v-for="(date, index) in data.dates"
-          :slot="`column-${index+1}`"
-          slot-scope="{ props }">
+      <template :slot="`column-1`" slot-scope="{ props }">
         <div :style="isColorful ? `color: ${props.cellData.color}` : ''">
           {{ props.cellData.label }}
         </div>
       </template>
 
       <template
-          :slot="`column-${data.dates.length+1}`"
+          v-for="(date, index) in data.dates"
+          :slot="`column-${index+2}`"
           slot-scope="{ props }">
         <div :style="isColorful ? `color: ${props.cellData.color}` : ''">
           {{ props.cellData.label }}
@@ -59,7 +57,7 @@ export default {
         pageSizes: [12, 24, 48],
         headerHeight: 80,
         rowHeight: 50,
-        fixed: 0,
+        fixed: 1,
         columnWidth: this.tableHeaders.map((col, index) => ({
           column: index,
           width: index > 0 ? 90 : 100
@@ -69,7 +67,7 @@ export default {
 
     tableData() {
       return this.uwis.map(uwi => {
-        let data = [uwi]
+        let tableRow = []
 
         let well = this.data.uwis[uwi]
 
@@ -84,17 +82,27 @@ export default {
             wellSum += value
           }
 
-          data.push({value: value, label: this.getLabel(value), color: this.getColor(value)})
+          tableRow.push({
+            value: value,
+            label: this.getLabel(value),
+            color: this.getColor(value)
+          })
         })
 
-        data.push({value: wellSum, label: this.getLabel(wellSum), color: this.getColor(wellSum)})
+        tableRow.unshift({
+          value: wellSum,
+          label: this.getLabel(wellSum),
+          color: this.getColor(wellSum)
+        })
 
-        return data
+        tableRow.unshift(uwi)
+
+        return tableRow
       })
     },
 
     tableHeaders() {
-      return [...['UWI'], ...this.data.dates, ...[this.trans('economic_reference.total')]]
+      return [...['UWI', this.trans('economic_reference.total')], ...this.data.dates]
     },
   },
   methods: {
