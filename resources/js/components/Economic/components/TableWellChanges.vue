@@ -106,32 +106,32 @@ export default {
     },
 
     tableData() {
-      let data = {}
+      let wells = {}
 
-      this.filteredData.forEach(item => {
-        if (!data.hasOwnProperty(item.uwi)) {
-          data[item.uwi] = {oilPrices: {}, cat1: 0, cat2: 0, profitable: 0}
+      this.filteredData.forEach(well => {
+        if (!wells.hasOwnProperty(well.uwi)) {
+          wells[well.uwi] = {oilPrices: {}, cat1: 0, cat2: 0, profitable: 0}
         }
 
-        data[item.uwi].oilPrices[item.oil_price] = {
-          operating_profit_12m: item.operating_profit_12m,
-          profitability_12m: item.profitability_12m
+        wells[well.uwi].oilPrices[well.oil_price] = {
+          operating_profit_12m: well.operating_profit_12m,
+          profitability_12m: well.profitability_12m
         }
 
-        switch (item.profitability_12m) {
+        switch (well.profitability_12m) {
           case 'profitable':
-            data[item.uwi].profitable += 1
+            wells[well.uwi].profitable += 1
             break
           case 'profitless_cat_1':
-            data[item.uwi].cat1 += 1
+            wells[well.uwi].cat1 += 1
             break
           case 'profitless_cat_2':
-            data[item.uwi].cat2 += 1
+            wells[well.uwi].cat2 += 1
             break
         }
       })
 
-      return data
+      return wells
     },
 
     tableDataKeys() {
