@@ -48,14 +48,6 @@ export default {
     Subtitle
   },
   props: {
-    org: {
-      required: true,
-      type: Object
-    },
-    scenarios: {
-      required: true,
-      type: Array
-    },
     scenario: {
       required: true,
       type: Object
