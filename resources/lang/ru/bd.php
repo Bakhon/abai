@@ -104,7 +104,7 @@ return [
             'used_run_down_nkt' => 'Кол-во спущенных НКТ, б/у',
             'actual_bottomhole_m' => 'Фактический забой, м',
             'no_slaughter' => 'Забой отсутствует',
-            'no_slaughter_reason' => 'Причина отсутсивия забоя',
+            'no_slaughter_reason' => 'Причина отсутствия забоя',
             'artificial_slaughter_m' => 'Искусственный забой, м',
             'machine_technical_condition' => 'Техническое состояние скважин',
             'not_change_technical_condition' => 'Не менять техническое состояние',
@@ -113,9 +113,11 @@ return [
             'new_state' => 'Новое состояние',
             'condition' => 'Состояние',
             'not_change_state' => 'Не менять состояние',
-            'hardware_failure_cause' => 'Основная причина отказа оборудования',
-            'equipment_failure_type' => 'Вид причины отказа оборудования',
-            'stopping_reason' => 'Причина остановки'
+            'cause_h_failure' => 'Основная причина отказа оборудования',
+            'add_f' => 'Детальная причина отказа',
+            'reason_type' => 'Дополнительная информация',
+            'reason_stopping' => 'Причина остановки',
+            'well_previous_category' => 'Категория до выбранной даты'
         ],
         'injection_wells' => [
             'title' => 'Тех.Режим - Нагнетательные скважины',
@@ -190,7 +192,9 @@ return [
             'owt_of_plan' => 'Вне плана',
             'do_not_chenge_teckh_condition' => 'Не менять техническое состояние',
             'do_not_chenge_condition' => 'Не менять состояние',
-            'gtm_duplicate' => 'Дублировать в ГТМ'
+            'gtm_duplicate' => 'Дублировать в ГТМ',
+            'on_our_own' => 'Собственными силами',
+
 
         ],
         'gas_well' => [
@@ -822,7 +826,7 @@ return [
         'report_constructor' => [
             'menu' => 'Конструктор отчетов',
         ],
-        'well_cart' => [
+        'well_card' => [
             'menu' => 'Карточка скважины',
         ],
         'production_wells_schedule' => [

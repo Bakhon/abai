@@ -1,7 +1,7 @@
 <template>
   <div>
     <subtitle font-size="18" style="line-height: 26px">
-      <div>{{ trans('economic_reference.table_economic_efficiency_title') }}</div>
+      {{ trans('economic_reference.table_economic_efficiency_title') }}
     </subtitle>
 
     <apexchart
@@ -9,6 +9,7 @@
         :options="chartOptions"
         :series="chartSeries"
         type="line"
+        class="apexcharts-custom-legend"
         style="color: #000"/>
   </div>
 </template>
@@ -140,8 +141,8 @@ export default {
 
     chartLabels() {
       return [
-        ...[Math.floor(+this.oilPrices[this.oilPrices.length - 1] / 1.5)],
-        ...this.oilPrices,
+        ...[Math.floor(+this.oilPrices[0] / 1.5)],
+        ...this.oilPrices.map(oilPrice => (+oilPrice).toLocaleString()),
         ...[Math.ceil(+this.oilPrices[this.oilPrices.length - 1] * 1.5)]
       ]
     },
@@ -160,5 +161,37 @@ export default {
 </script>
 
 <style scoped>
+.apexcharts-custom-legend >>> .apexcharts-legend-marker {
+  margin-right: 20px;
+}
 
+.apexcharts-custom-legend >>> .apexcharts-legend-series::before {
+  content: "";
+  width: 40px;
+  margin-right: -26px;
+}
+
+.apexcharts-custom-legend >>> .apexcharts-legend-series[rel='1']::before {
+  border: 2px solid #F27E31;
+}
+
+.apexcharts-custom-legend >>> .apexcharts-legend-series[rel='2']::before {
+  border: 2px solid #82BAFF;
+}
+
+.apexcharts-custom-legend >>> .apexcharts-legend-series[rel='3']::before {
+  border: 2px dotted #F27E31;
+}
+
+.apexcharts-custom-legend >>> .apexcharts-legend-series[rel='4']::before {
+  border: 2px dotted #82BAFF;
+}
+
+.apexcharts-custom-legend >>> .apexcharts-legend-series[rel='5']::before {
+  border: 6px solid #C4C4C4;
+}
+
+.apexcharts-custom-legend >>> .apexcharts-legend-series[rel='6']::before {
+  border: 6px solid #147050;
+}
 </style>

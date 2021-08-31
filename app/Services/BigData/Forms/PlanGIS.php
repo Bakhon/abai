@@ -42,10 +42,8 @@ class PlanGIS extends TableForm
             'columns' => $columns['columns'],
             'merge_columns' => $columns['merge_columns'],
             'complicated_header' => $this->tableHeaderService->getHeader(
-                [
-                    'columns' => $columns['columns'],
-                    'merge_columns' => $columns['merge_columns']
-                ]
+                $columns['columns'],
+                $columns['merge_columns']
             ),
             'rows' => $rows
         ];
