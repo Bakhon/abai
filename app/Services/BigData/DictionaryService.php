@@ -123,7 +123,7 @@ class DictionaryService
         ],
         'wells_tech_conditions' => [
             'class' => TechConditionOfWells::class,
-            'name_field' => ''
+            'name_field' => 'name_ru'
         ],
         'pump_types' => [
             'class' => PumpType::class,
@@ -271,7 +271,7 @@ class DictionaryService
         ],
         'tech_state_casings' => [
             'class' => TechStateCasing::class,
-            'name_field' => 'name_ru'
+            'name_field' => 'name_ru'     
         ],
         'plan_gis_type' => [
             'class' => PlanGISType::class,
@@ -375,11 +375,13 @@ class DictionaryService
                     break;
                 case 'reason_rst':
                     $dict = $this->getReasonTypeDict('RST');
-                    break;
-                    break;
+                    break;        
                 case 'reason_type_rtr':
                     $dict = $this->getReasonTypeDict('RTR');
                     break;
+                case 'reason_rls':
+                    $dict = $this->getReasonTypeDict('RLS');
+                    break; 
                 default:
                     throw new DictionaryNotFound();
             }
@@ -571,10 +573,10 @@ class DictionaryService
             )
             ->toArray();
 
-        return $items;
-    }
-                  
+        return $items;                  
 
+    }     
+    
     private function getReasonTypeDict(string $type){
         $items = DB::connection('tbd')
         ->table('dict.reason as r')
@@ -591,4 +593,5 @@ class DictionaryService
         )
         ->toArray();
     }
+  
 }

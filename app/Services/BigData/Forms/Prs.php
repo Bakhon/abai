@@ -6,9 +6,11 @@ namespace App\Services\BigData\Forms;
 use Illuminate\Support\Facades\DB;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
+
 class Prs extends PlainForm
 {
     protected $configurationFileName = 'prs';
+    use DepthValidationTrait;
     use DateMoreThanValidationTrait;
     use DepthValidationTrait;
     protected function prepareDataToSubmit()
