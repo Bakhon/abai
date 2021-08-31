@@ -135,12 +135,12 @@ export default {
     },
 
     tableDataKeys() {
-      let data = this.tableData
+      let wells = this.tableData
 
-      return Object.keys(data).sort(function (prev, next) {
-        return (data[next].cat1 - data[prev].cat1)
-            || (data[next].cat2 - data[prev].cat2)
-            || (data[prev].profitable - data[next].profitable)
+      return Object.keys(wells).sort(function (prev, next) {
+        return (wells[next].cat1 - wells[prev].cat1)
+            || (wells[next].cat2 - wells[prev].cat2)
+            || (wells[prev].profitable - wells[next].profitable)
       })
     },
 
