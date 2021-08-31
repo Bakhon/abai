@@ -6,7 +6,9 @@ use App\Filters\ManualReverseCalculationFilter;
 use App\Http\Controllers\CrudController;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\ManualHydroCalcPrepareListResource;
+use App\Http\Resources\ManualHydroCalculatedListResource;
 use App\Jobs\ReverseCalculateHydroDynamics;
+use App\Models\ComplicationMonitoring\ManualHydroCalcResult;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use Illuminate\Database\Eloquent\Collection;
@@ -131,10 +133,10 @@ class ManualHydroCalc extends CrudController
         $input = $request->validated();
         $points = null;
 
-//        if (isset($input['date'])) {
-//            $points = $this->getCalculatedData($input['date']);
-//            $list = json_decode(HydroCalcCalculatedListResource::collection($points)->toJson());
-//        }
+        if (isset($input['date'])) {
+            $points = $this->getCalculatedData($input['date']);
+            $list = json_decode(ManualHydroCalculatedListResource::collection($points)->toJson());
+        }
 
         if (!$points || !$points->total()) {
             $prepairedData = $this->getPrepairedData($input);
@@ -224,5 +226,13 @@ class ManualHydroCalc extends CrudController
         $items = $items instanceof Collection ? $items : Collection::make($items);
 
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
+
+    public function getCalculatedData(string $date)
+    {
+        return ManualHydroCalcResult::with('oilPipe.pipeType')
+            ->where('date', $date)
+            ->orderBy('id')
+            ->paginate(25);
     }
 }

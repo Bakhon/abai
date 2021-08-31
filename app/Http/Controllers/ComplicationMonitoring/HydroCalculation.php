@@ -173,7 +173,7 @@ class HydroCalculation extends Controller
 
         if (isset($input['date'])) {
             $points = $this->getCalculatedData($input['date']);
-            $list = json_decode(HydroCalcCalculatedListResource::collection($points)->toJson());
+            $list = json_decode(HydroCalculatedListResource::collection($points)->toJson());
         }
 
         if (!$points || !$points->total()) {
