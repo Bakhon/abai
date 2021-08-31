@@ -340,9 +340,6 @@ const optimizedColumns = [
   'Revenue_total',
   'Revenue_local',
   'Revenue_export',
-  'Overall_expenditures',
-  'Overall_expenditures_full',
-  'operating_profit_12m',
   'oil',
   'liquid',
   'prs',
@@ -350,12 +347,16 @@ const optimizedColumns = [
   'days_worked',
   'production_export',
   'production_local',
-];
-
-const optimizedOtherColumns = [
+  'Fixed_noWRpayroll_expenditures',
   'Overall_expenditures',
   'Overall_expenditures_full',
-  'operating_profit_12m',
+  'Operating_profit',
+];
+
+const optimizedScenarioColumns = [
+  'Overall_expenditures',
+  'Overall_expenditures_full',
+  'Operating_profit',
 ];
 
 let economicRes = {
@@ -382,22 +383,61 @@ let economicRes = {
   }
 }
 
-let columnVariations = (column) => {
-  if (optimizedOtherColumns.includes(column)) {
-    return [column]
+let columnPairs = (column) => {
+  if (optimizedScenarioColumns.includes(column)) {
+    return [
+      {
+        original: column,
+        optimized: `${column}_scenario`
+      },
+      {
+        original: `${column}_profitable`,
+        optimized: `${column}_scenario_profitable`
+      },
+      {
+        original: `${column}_profitless_cat_1`,
+        optimized: `${column}_scenario_profitless_cat_1`
+      },
+      {
+        original: `${column}_profitless_cat_2`,
+        optimized: `${column}_scenario_profitless_cat_2`
+      },
+    ]
   }
 
   return [
-    column,
-    column + '_profitable',
-    column + '_profitless_cat_1',
-    column + '_profitless_cat_2',
-  ];
+    {
+      original: column,
+      optimized: `${column}_optimized`
+    },
+    {
+      original: `${column}_profitable`,
+      optimized: `${column}_profitable_optimized`
+    },
+    {
+      original: `${column}_profitless_cat_1`,
+      optimized: `${column}_profitless_cat_1_optimized`
+    },
+    {
+      original: `${column}_profitless_cat_2`,
+      optimized: `${column}_profitless_cat_2_optimized`
+    },
+  ]
+}
+
+let columnVariations = (column) => {
+  let pairs = columnPairs(column)
+
+  let variations = []
+
+  pairs.forEach(pair => variations.push(pair.original, pair.optimized))
+
+  return variations
 }
 
 optimizedColumns.forEach(column => {
-  columnVariations(column).forEach(columnVariation => {
-    economicRes.scenarios[0][columnVariation] = {
+  columnPairs(column).forEach(pair => {
+    economicRes.scenarios[0][pair.original] = {
       value: [0, ''],
       value_optimized: [0, ''],
       percent: 0,
@@ -410,7 +450,6 @@ optimizedColumns.forEach(column => {
 export default {
   name: "economic-optimization",
   components: {
-
     Divider,
     EconomicCol,
     EconomicTitle,
@@ -460,10 +499,10 @@ export default {
         },
         {
           name: this.trans('economic_reference.operating_profit'),
-          baseValue: this.scenario.operating_profit_12m.value[0],
-          value: this.scenario.operating_profit_12m[this.scenarioValueKey][0],
-          dimension: this.scenario.operating_profit_12m[this.scenarioValueKey][1],
-          percent: this.scenario.operating_profit_12m.percent
+          baseValue: this.scenario.Operating_profit.value[0],
+          value: this.scenario.Operating_profit[this.scenarioValueKey][0],
+          dimension: this.scenario.Operating_profit[this.scenarioValueKey][1],
+          percent: this.scenario.Operating_profit.percent
         }
       ]
     },
@@ -748,12 +787,12 @@ export default {
       }
 
       let liquid = optimized
-          ? this.scenario.liquid.original_value_optimized
-          : this.scenario.liquid.original_value
+          ? +this.scenario.liquid.original_value_optimized
+          : +this.scenario.liquid.original_value
 
       let oil = optimized
-          ? this.scenario.oil.original_value_optimized
-          : this.scenario.oil.original_value
+          ? +this.scenario.oil.original_value_optimized
+          : +this.scenario.oil.original_value
 
       // TODO: посмотреть более точную формулу
       return liquid
@@ -767,12 +806,12 @@ export default {
       }
 
       let days_worked = optimized
-          ? this.scenario.days_worked.original_value_optimized
-          : this.scenario.days_worked.original_value
+          ? +this.scenario.days_worked.original_value_optimized
+          : +this.scenario.days_worked.original_value
 
       let oil = optimized
-          ? this.scenario.oil.original_value_optimized
-          : this.scenario.oil.original_value
+          ? +this.scenario.oil.original_value_optimized
+          : +this.scenario.oil.original_value
 
       return days_worked
           ? (oil / days_worked).toFixed(2)
@@ -785,12 +824,12 @@ export default {
       }
 
       let days_worked = optimized
-          ? this.scenario.days_worked.original_value_optimized
-          : this.scenario.days_worked.original_value
+          ? +this.scenario.days_worked.original_value_optimized
+          : +this.scenario.days_worked.original_value
 
       let liquid = optimized
-          ? this.scenario.liquid.original_value_optimized
-          : this.scenario.liquid.original_value
+          ? +this.scenario.liquid.original_value_optimized
+          : +this.scenario.liquid.original_value
 
       return days_worked
           ? (liquid / days_worked).toFixed(fractionDigits)
@@ -803,12 +842,12 @@ export default {
       }
 
       let uwi_count = optimized
-          ? this.scenario.uwi_count.original_value_optimized
-          : this.scenario.uwi_count.original_value
+          ? +this.scenario.uwi_count.original_value_optimized
+          : +this.scenario.uwi_count.original_value
 
       let prs = optimized
-          ? this.scenario.prs.original_value_optimized
-          : this.scenario.prs.original_value
+          ? +this.scenario.prs.original_value_optimized
+          : +this.scenario.prs.original_value
 
       return uwi_count
           ? (prs / uwi_count).toFixed(fractionDigits)
