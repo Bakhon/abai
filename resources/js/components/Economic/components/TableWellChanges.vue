@@ -1,7 +1,7 @@
 <template>
   <div>
     <subtitle font-size="18" style="line-height: 26px">
-      <div>{{ trans('economic_reference.table_well_changes') }}</div>
+      {{ trans('economic_reference.table_well_changes') }}
     </subtitle>
 
     <div id="table-well-changes" class="mt-3 overflow-auto customScroll d-flex">

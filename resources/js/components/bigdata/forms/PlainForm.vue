@@ -33,6 +33,7 @@
                   <bigdata-form-field
                       v-model="formValues[item.code]"
                       :error="errors[item.code]"
+                      :form="params"
                       :item="item"
                       :id="wellId"
                       :key="`field_${item.code}`"
