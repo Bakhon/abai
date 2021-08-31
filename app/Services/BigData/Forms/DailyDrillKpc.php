@@ -56,7 +56,11 @@ class DailyDrillKpc extends DailyReports
         $result['daily_fact_gs'] = ['value' => 0];
         $result['month_fact_gs'] = ['value' => 0];
         $result['year_fact_gs'] = ['value' => 0];
-
+        $result['contractor'] = $this->request->get('contractor');
+        $result['machine_type'] = $this->request->get('machine_type');
+        $result['work_done'] = $this->request->get('work_done');
+        $result['repair_work_type'] = $this->request->get('repair_work_type');
+        $result['geo'] = $this->request->get('geo');
         return $result;
     }
 }
