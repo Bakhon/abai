@@ -2,6 +2,9 @@
   <form @submit.prevent="" ref="form" class="bd-main-block__form scrollable" style="width: 100%">
     <div class="table-page">
       <template v-if="formParams">
+        <p v-if="formError" class="table__message">
+          {{ formError }}
+        </p>
         <p v-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
           {{ trans('bd.select_ngdu') }}
         </p>
@@ -51,10 +54,10 @@
                   <a :href="row[column.code].href">{{ row[column.code].name }}</a>
                 </template>
                 <template v-else-if="column.type === 'label'">
-                  <label>{{ row[column.code].name }}</label>
+                  <label v-html="row[column.code].name"></label>
                 </template>
                 <template v-else-if="column.type === 'calc'">
-                  <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                  <span class="value" v-html="row[column.code] ? row[column.code].value : ''"></span>
                 </template>
                 <template v-else-if="column.type === 'copy'">
                   <input
@@ -240,7 +243,8 @@ export default {
       rowHistoryColumns: [],
       rowHistoryGraph: null,
       oldFilter: null,
-      formParams: null
+      formParams: null,
+      formError: null
     }
   },
   watch: {
@@ -279,6 +283,7 @@ export default {
     ]),
     updateTableData() {
 
+      this.formError = null
       if (!this.filter || !this.id || !this.type) return
 
       this.SET_LOADING(true)
@@ -294,8 +299,17 @@ export default {
             if (data.columns) {
               this.formParams.columns = data.columns
             }
+            if (data.merge_columns) {
+              this.formParams.merge_columns = data.merge_columns
+            }
+            if (data.complicated_header) {
+              this.formParams.complicated_header = data.complicated_header
+            }
             this.recalculateCells()
             this.loadEditHistory()
+          })
+          .catch(error => {
+            this.formError = error.response.data.message
           })
           .finally(() => {
             this.SET_LOADING(false)
@@ -619,7 +633,7 @@ body.fixed {
       width: 100%;
     }
 
-    th {
+    thead {
       position: sticky;
       top: 0;
       z-index: 10;
