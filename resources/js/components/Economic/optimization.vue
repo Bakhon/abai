@@ -739,8 +739,8 @@ export default {
           : 0
     },
 
-    updateTab(index) {
-      this.isVisibleWellChanges = index === 3
+    updateTab(tab){
+      this.isVisibleWellChanges = tab === 'well_changes'
     }
   }
 };

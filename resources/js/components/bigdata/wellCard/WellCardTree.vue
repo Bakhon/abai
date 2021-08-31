@@ -10,13 +10,13 @@
     <div v-if="data.children || data.forms" class="directory">
       <div class="custom-directory">
         <ul id="myUL" v-if="isDirOpened">
-          <well-cart-tree
+          <well-card-tree
               v-for="(child, index) in data.children"
               :data="child"
               :key="`dir_${index}`"
               :activeFormCode="activeFormCode"
               :switch-form-by-code="switchFormByCode">
-          </well-cart-tree>
+          </well-card-tree>
           <li
               v-for="(form, index) in data.forms"
               :key="`form_${index}`"
@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: "well-cart-tree",
+  name: "well-card-tree",
   props: {
     data: Object,
     activeFormCode: String,
