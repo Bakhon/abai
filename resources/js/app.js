@@ -99,6 +99,7 @@ Vue.component('economic-data-gtm-component', require('./components/Economic/data
 Vue.component('tech-data-component', require('./components/technical_forecast/data/index.vue').default);
 
 Vue.component('economic-nrs', require('./components/Economic/nrs.vue').default);
+Vue.component('economic-nrs-wells', require('./components/Economic/wells.vue').default);
 Vue.component('economic-optimization', require('./components/Economic/optimization.vue').default);
 Vue.component('gno-table', require('./components/gno/GnoMain.vue').default);
 Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue').default);
@@ -171,7 +172,7 @@ Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue'
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
-Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
+Vue.component('well-card', require('./components/bigdata/wellCard/wellCard.vue').default);
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);

@@ -19,6 +19,7 @@ use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
 use App\Models\BigData\Dictionaries\GdisConclusion;
+use App\Models\BigData\Dictionaries\ExplTypePlanGDIS;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
 use App\Models\BigData\Dictionaries\GeoRockType;
@@ -36,6 +37,8 @@ use App\Models\BigData\Dictionaries\PackerType;
 use App\Models\BigData\Dictionaries\PatronType;
 use App\Models\BigData\Dictionaries\PerforatorType;
 use App\Models\BigData\Dictionaries\PerfType;
+use App\Models\BigData\Dictionaries\PlanGISType;
+use App\Models\BigData\Dictionaries\ProcedTypePlanGDIS;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\ReasonEquipFail;
 use App\Models\BigData\Dictionaries\RepairWorkType;
@@ -54,6 +57,8 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\WellPrsRepairType;
+use App\Models\BigData\Dictionaries\TechStateCasing;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -118,7 +123,7 @@ class DictionaryService
         ],
         'wells_tech_conditions' => [
             'class' => TechConditionOfWells::class,
-            'name_field' => ''
+            'name_field' => 'name_ru'
         ],
         'pump_types' => [
             'class' => PumpType::class,
@@ -266,9 +271,16 @@ class DictionaryService
         ],
         'tech_state_casings' => [
             'class' => TechStateCasing::class,
-            'name_field' => 'name_ru'
+            'name_field' => 'name_ru'     
         ],
-
+        'plan_gis_type' => [
+            'class' => PlanGISType::class,
+            'name_field' => 'name'
+        ],
+        'proced_type_plan_gdis' => [
+            'class' => ProcedTypePlanGDIS::class,
+            'name_field' => 'name'
+        ]
     ];
 
     const TREE_DICTIONARIES = [
@@ -279,6 +291,11 @@ class DictionaryService
         'techs' => [
             'class' => Tech::class,
             'name_field' => 'name_ru'
+        ],
+        'expl_type_plan_gdis' => [
+            'class' => ExplTypePlanGDIS::class,
+            'name_field' => 'name',
+            'parent_field' => 'parent_id'
         ]
     ];
 
@@ -354,15 +371,17 @@ class DictionaryService
                     $dict = $this->getGeoHorizonDict();
                     break;
                 case 'reason_ref':
-                    $dict = $this->getReasonTypeRefDict();
+                    $dict = $this->getReasonTypeDict('REF');
                     break;
                 case 'reason_rst':
-                    $dict = $this->getReasonTypeRstDict();
-                    break;
-                    break;
+                    $dict = $this->getReasonTypeDict('RST');
+                    break;        
                 case 'reason_type_rtr':
-                    $dict = $this->getReasonTypeRtrDict();
+                    $dict = $this->getReasonTypeDict('RTR');
                     break;
+                case 'reason_rls':
+                    $dict = $this->getReasonTypeDict('RLS');
+                    break; 
                 default:
                     throw new DictionaryNotFound();
             }
@@ -446,9 +465,10 @@ class DictionaryService
     {
         $dictClass = self::TREE_DICTIONARIES[$dict]['class'];
         $nameField = self::TREE_DICTIONARIES[$dict]['name_field'] ?? 'name';
+        $parentField = self::TREE_DICTIONARIES[$dict]['parent_field'] ?? 'parent';
 
         $items = $dictClass::query()
-            ->select('id', 'parent')
+            ->select('id', "$parentField as parent")
             ->selectRaw("$nameField as label")
             ->orderBy('parent', 'asc')
             ->orderBy($nameField, 'asc')
@@ -553,69 +573,25 @@ class DictionaryService
             )
             ->toArray();
 
-        return $items;
-    }
+        return $items;                  
 
-    private function getReasonTypeRefDict()
-    {
+    }     
+    
+    private function getReasonTypeDict(string $type){
         $items = DB::connection('tbd')
-            ->table('prod.well_workover as p')
-            ->select('r.id', 'r.name_ru as name')
-            ->where('rt.code', 'REF')
-            ->distinct()
-            ->orderBy('name', 'asc')
-            ->join('dict.reason as r', 'p.reason_equip_fail', 'r.id')
-            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
-            ->get()
-            ->map(
-                function ($item) {
-                    return (array)$item;
-                }
-            )
-            ->toArray();
-
-        return $items;
+        ->table('dict.reason as r')
+        ->select('r.id', 'r.name_ru as name')
+        ->where('rt.code', $type)
+        ->distinct()
+        ->orderBy('name', 'asc')
+        ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
+        ->get()
+        ->map(
+            function ($item) {
+                return (array)$item;
+            }
+        )
+        ->toArray();
     }
-
-    private function getReasonTypeRstDict()
-    {
-        $items = DB::connection('tbd')
-            ->table('prod.well_workover as p')
-            ->select('r.id', 'r.name_ru as name')
-            ->where('rt.code', 'RST')
-            ->distinct()
-            ->orderBy('name', 'asc')
-            ->join('dict.reason as r', 'p.stop_reason', 'r.id')
-            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
-            ->get()
-            ->map(
-                function ($item) {
-                    return (array)$item;
-                }
-            )
-            ->toArray();
-
-        return $items;
-    }
-
-    private function getReasonTypeRtrDict()
-    {
-        $items = DB::connection('tbd')
-            ->table('prod.well_treatment as p')
-            ->select('r.id', 'r.name_ru as name')
-            ->where('rt.code', 'RTR')
-            ->distinct()
-            ->orderBy('name', 'asc')
-            ->join('dict.reason as r', 'p.reason', 'r.id')
-            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
-            ->get()
-            ->map(
-                function ($item) {
-                    return (array)$item;
-                }
-            )
-            ->toArray();
-
-        return $items;
-    }
+  
 }

@@ -8,7 +8,7 @@
 
 <script>
 import chart from "vue-apexcharts";
-import {chartInitMixin} from "../mixins/chartMixin";
+import {chartInitMixin} from "../../mixins/chartMixin";
 
 export default {
   name: 'ChartWithLiquidProduction',
