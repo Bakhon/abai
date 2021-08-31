@@ -1,6 +1,5 @@
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import mapsData from './json/test_grid.json';
 import wellsData from './json/dataWells.json';
 import BtnDropdown from "./components/BtnDropdown";
 import SettingModal from "./components/SettingModal";
@@ -8,7 +7,7 @@ import WellAtlasModal from "./components/WellAtlasModal";
 import Accordion from "./components/Accordion";
 import mainMenu from "../GTM/mock-data/main_menu.json";
 import { cods, maps, properties, objects, fileActions, mapActions } from './json/data';
-import { digitalRatingMutations } from '@store/helpers';
+import { digitalRatingState, digitalRatingMutations } from '@store/helpers';
 
 export default {
     name: "Sections",
@@ -36,8 +35,8 @@ export default {
             bounds: [[0, 15000], [0,15000]],
             center: [85000, 52000],
             zoom: -5,
-            minZoom: -6,
-            maxZoom: 1,
+            minZoom: -7,
+            maxZoom: 2,
             renderer: L.canvas({ padding: 0.5 }),
         };
     },
@@ -47,8 +46,12 @@ export default {
         await this.initSectorOnMap();
     },
 
+    computed: {
+        ...digitalRatingState(['horizonNumber'])
+    },
+
     methods: {
-        ...digitalRatingMutations(['SET_SECTOR']),
+        ...digitalRatingMutations(['SET_SECTOR', 'SET_HORIZON']),
 
         initMap() {
             this.map = L.map('map', {
@@ -64,15 +67,17 @@ export default {
             this.map.setView( this.center, this.zoom);
         },
 
-        initSectorOnMap() {
-            for (let i = 0; i < mapsData.length; i++) {
-                this.rectangle = L.rectangle(this.getBounds(mapsData[i]), {
+        async initSectorOnMap() {
+            const maps = await import(`./json/grid_${this.horizonNumber}.json`).then(module => module.default);
+            if(maps?.length === 0) return;
+            for (let i = 0; i < maps.length; i++) {
+                this.rectangle = L.rectangle(this.getBounds(maps[i]), {
                     renderer: this.renderer,
-                    color: mapsData[i]['color'],
+                    color: maps[i]['color'],
                     weight: 3,
-                    fillColor: mapsData[i]['color'],
+                    fillColor: maps[i]['color'],
                     fillOpacity: 1,
-                }).addTo(this.map).bindPopup(mapsData[i]['sector'].toString());
+                }).addTo(this.map).bindPopup(maps[i]['sector'].toString());
 
                 this.rectangle.on('mouseover', function (e) {
                     this.openPopup();
@@ -81,7 +86,7 @@ export default {
                     this.closePopup();
                 });
                 this.rectangle.on('click', (e) => {
-                    this.onMapClick(mapsData[i]['sector']);
+                    this.onMapClick(maps[i]['sector']);
                 })
             }
         },
@@ -141,7 +146,12 @@ export default {
             if(type === 'map' && item?.id === 1) {
                 this.initWellOnMap();
             } else {
-                document.location.reload();
+                this.map.remove();
+                this.SET_HORIZON(item?.id);
+                setTimeout(async() => {
+                    this.initMap();
+                    await this.initSectorOnMap();
+                }, 0);
             }
         }
     },

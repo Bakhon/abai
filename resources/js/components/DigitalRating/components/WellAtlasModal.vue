@@ -82,7 +82,7 @@ import Maps from './Maps';
 import Scheme from "./Scheme";
 import Indicators from "./Indicators";
 import History from "./History";
-import { digitalRatingMutations, digitalRatingActions } from "@store/helpers";
+import { digitalRatingState, digitalRatingMutations, digitalRatingActions } from "@store/helpers";
 import Restricts from '../../../mixins/restricts';
 
 export default {
@@ -128,17 +128,21 @@ export default {
   },
 
   computed: {
-    sectorNumber: {
+    ...digitalRatingState([
+      'sectorNumber',
+      'horizonNumber'
+    ]),
+    sector: {
       get() {
-        return this.$store.state.digitalRating.sectorNumber;
+        return this.sectorNumber;
       },
       set(val) {
         this.SET_SECTOR(val);
       }
     },
-    horizonNumber: {
+    horizon: {
       get() {
-        return this.$store.state.digitalRating.horizonNumber;
+        return this.horizonNumber;
       },
       set(val) {
         this.SET_HORIZON(val);

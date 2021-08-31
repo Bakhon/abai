@@ -40,6 +40,7 @@
         <accordion
           :list="objects"
           title="digital_rating.object"
+          @selectItem="(item) => selectPanelItem('horizon', item)"
         />
         <accordion
           :list="maps"

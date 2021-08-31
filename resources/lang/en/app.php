@@ -19,5 +19,4 @@ return array (
   'yes' => 'Yes',
   'no' => 'No',
   'download' => 'Скачать',
-  'thereIsNoData' => 'Нет данных',
 );

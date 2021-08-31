@@ -9,8 +9,8 @@
             </th>
           </tr>
         </thead>
-        <tbody v-if="getIndicators && getIndicators.length">
-          <tr v-for="(item, index) in getIndicators" :key="index">
+        <tbody v-if="indicators && indicators.length">
+          <tr v-for="(item, index) in indicators" :key="index">
             <td v-for="(col, colIdx) in colsIndicator" :key="colIdx">
               <span>{{ item[col.name] }}</span>
             </td>
@@ -117,10 +117,6 @@
       }
     },
 
-    created() {
-
-    },
-
     methods: {
       ...digitalRatingActions([
           'fetchIndicators'
@@ -131,9 +127,6 @@
       ...digitalRatingState([
         'indicators',
       ]),
-      getIndicators() {
-        return this.indicators;
-      },
       colsIndicator() {
         return [
           {
