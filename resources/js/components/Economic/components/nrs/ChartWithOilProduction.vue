@@ -10,7 +10,7 @@
 const ru = require("apexcharts/dist/locales/ru.json");
 
 import chart from "vue-apexcharts";
-import {chartInitMixin} from "../mixins/chartMixin";
+import {chartInitMixin} from "../../mixins/chartMixin";
 
 export default {
   name: 'ChartWithOilProduction',

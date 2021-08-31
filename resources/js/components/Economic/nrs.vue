@@ -177,7 +177,7 @@ import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
-import Charts from "./components/Charts";
+import Charts from "./components/nrs/Charts";
 import EconomicTitle from "./components/EconomicTitle";
 import Subtitle from "./components/Subtitle";
 import PercentBadge from "./components/PercentBadge";

@@ -1,18 +1,23 @@
 <template>
-  <modal
-    class="modal-bign-wrapper"
-    name="modalAtlas"
-    :draggable="false"
-    :width="1400"
-    :height="650"
-    :adaptive="false"
-    @before-open="beforeOpen">
-    <div class="modal-bign-container">
-      <div class="modal-bign-header justify-content-end">
+  <b-modal
+    size="xl"
+    header-bg-variant="main1"
+    body-bg-variant="main1"
+    header-text-variant="light"
+    footer-bg-variant="main1"
+    centered
+    modal-class="long-modal"
+    id="modalAtlas"
+    :ok-only="true"
+  >
+    <template #modal-header="{close}">
+      <div class="d-flex justify-content-end w-100">
         <button type="button" class="modal-bign-button" @click="close">
           {{ trans('pgno.zakrit') }}
         </button>
       </div>
+    </template>
+    <div class="text-white">
       <div class="rating-tabs">
         <template v-for="(tab, tabIdx) in tabs">
           <div
@@ -51,17 +56,19 @@
           </div>
         </div>
         <component :is="currentTabComponent"></component>
-        <div class="modal__footer mb-10px">
-          <button type="button" class="btn-button btn-button--thm-blue mr-20px minw-200">
-            {{ trans('digital_rating.markCandidate') }}
-          </button>
-          <button type="button" class="btn-button btn-button--thm-green minw-200">
-            {{ trans('digital_rating.agreeCandidate') }}
-          </button>
-        </div>
       </div>
     </div>
-  </modal>
+    <template #modal-footer>
+      <div class="modal__footer mb-10px">
+        <button type="button" class="btn-button btn-button--thm-blue mr-20px minw-200">
+          <span>{{ trans('digital_rating.markCandidate') }}</span>
+        </button>
+        <button type="button" class="btn-button btn-button--thm-green minw-200">
+          <span>{{ trans('digital_rating.agreeCandidate') }}</span>
+        </button>
+      </div>
+    </template>
+  </b-modal>
 </template>
 
 <script>

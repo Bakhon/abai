@@ -91,10 +91,10 @@ export default {
             'wellAnalysis',
             'linesAnalysis',
             'pointsAnalysis',
-            'shgnSettings',
             'curveSettings',
         ]),
         ...pgnoMapGetters([
+            'shgnSettings'
         ]),
     },
     methods: {

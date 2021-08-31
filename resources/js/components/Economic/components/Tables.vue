@@ -5,7 +5,7 @@
           v-for="(tab, index) in tabs"
           :key="index"
           :text="tab"
-          :active="activeTab === index"
+          :active="activeIndex === index"
           :class="index ? 'ml-2' : ''"
           class="px-2 d-flex align-items-center"
           @click.native="selectTab(index)"/>
@@ -13,7 +13,7 @@
 
     <div class="mt-3 w-100">
       <table-specific-indicators
-          v-if="activeTab === 0"
+          v-if="activeTab === 'specific-indicators'"
           :org="res.org"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
@@ -21,7 +21,7 @@
           class="text-white"/>
 
       <table-technical-economic-indicators
-          v-else-if="activeTab === 1"
+          v-else-if="activeTab === 'technical-economic-indicators'"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
@@ -29,14 +29,14 @@
           class="text-white"/>
 
       <table-oil-price-options
-          v-else-if="activeTab === 2"
+          v-else-if="activeTab === 'oil-price-options'"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
           class="text-white"/>
 
       <table-well-changes
-          v-else-if="activeTab === 3"
+          v-else-if="activeTab === 'well-changes'"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
@@ -46,28 +46,28 @@
           class="text-white"/>
 
       <table-economic-efficiency
-          v-else-if="activeTab === 4"
+          v-else-if="activeTab === 'economic-efficiency'"
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
 
       <table-porcupine
-          v-else-if="activeTab === 5"
+          v-else-if="activeTab === 'porcupine'"
           :scenarios="res.scenarios"
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
           class="text-white"/>
 
       <table-technological-indicators
-          v-else-if="activeTab === 6"
+          v-else-if="activeTab === 'technological-indicators'"
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
 
       <table-palette
-          v-else-if="activeTab === 7"
+          v-else-if="activeTab === 'palette'"
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
@@ -115,7 +115,8 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 0,
+    activeIndex: 0,
+    activeTab: 'specific-indicators',
   }),
   computed: {
     tabs() {
@@ -133,10 +134,33 @@ export default {
   },
   methods: {
     selectTab(index) {
-      this.activeTab = index
+      this.activeIndex = index
+
+      this.activeTab = this.mapActiveTab(index)
 
       this.$emit('updateTab', index)
     },
+
+    mapActiveTab(index) {
+      switch (index) {
+        case 0:
+          return 'specific-indicators'
+        case 1:
+          return 'technical-economic-indicators'
+        case 2:
+          return 'oil-price-options'
+        case 3:
+          return 'well-changes'
+        case 4:
+          return 'economic-efficiency'
+        case 5:
+          return 'porcupine'
+        case 6:
+          return 'technological-indicators'
+        case 7:
+          return 'palette'
+      }
+    }
   }
 }
 </script>
