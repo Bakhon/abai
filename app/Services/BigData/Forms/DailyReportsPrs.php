@@ -17,6 +17,7 @@ class DailyReportsPrs extends DailyReports
         $result = [];
         $plan = $data->sum('plan');
         $fact = $data->sum('fact');
+        $data = $data->get('machine_type');
         switch ($filter->period) {
             case self::DAY:
                 $result['plan'] = ['value' => $plan];
@@ -40,7 +41,7 @@ class DailyReportsPrs extends DailyReports
         $result['daily_fact_gs'] = ['value' => 0];
         $result['month_fact_gs'] = ['value' => 0];
         $result['year_fact_gs'] = ['value' => 0];
-
+        $result['machine_type'] = $this->request->get('machine_type');
         return $result;
     }
 
