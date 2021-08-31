@@ -1,8 +1,17 @@
 <template>
   <div class="position-relative">
     <div class="row">
-      <div class="col-9 pr-2">
-        <div class="row text-white text-wrap flex-nowrap mb-10px">
+      <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
+        <select-scenario-variations
+            v-if="scenarioVariation.isFullScreen"
+            :scenario-variation="scenarioVariation"
+            :scenario-variations="scenarioVariations"
+            class="row p-3"
+            is-inline/>
+
+
+        <div v-else
+             class="row text-white text-wrap flex-nowrap mb-10px">
           <div
               v-for="(header, index) in calculatedHeaders"
               :key="`calculated_${index}`"
@@ -98,9 +107,9 @@
             @updateTab="updateTab"/>
       </div>
 
-      <div
-          :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right:0'"
-          class="col-3">
+      <div v-show="!scenarioVariation.isFullScreen"
+           :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right:0'"
+           class="col-3">
         <div class="bg-main1 text-white text-wrap p-3 mb-10px">
           <subtitle>
             {{ trans('economic_reference.production_wells_fund') }}
@@ -220,97 +229,10 @@
             </option>
           </select>
 
-          <div v-if="form.scenario_id">
-            <div>
-              <label for="oil_price">
-                {{ trans('economic_reference.oil_price') }}
-              </label>
-
-              <select
-                  v-model="scenarioVariation.oil_price"
-                  id="oil_price"
-                  class="mb-3 form-control text-white border-0 bg-dark-blue">
-                <option
-                    v-for="item in scenarioVariations.oil_prices"
-                    :key="item"
-                    :value="item">
-                  {{ item }}
-                </option>
-              </select>
-            </div>
-
-            <div>
-              <label for="dollar_rate">
-                {{ trans('economic_reference.course_prices') }}
-              </label>
-
-              <select
-                  v-model="scenarioVariation.dollar_rate"
-                  id="dollar_rate"
-                  class="mb-3 form-control text-white border-0 bg-dark-blue">
-                <option
-                    v-for="item in scenarioVariations.dollar_rates"
-                    :key="item"
-                    :value="item">
-                  {{ item }}
-                </option>
-              </select>
-            </div>
-
-            <div>
-              <label for="salary_percent">
-                {{ trans('economic_reference.salary_optimization') }}
-              </label>
-
-              <select
-                  v-model="scenarioVariation.salary_percent"
-                  id="salary_percent"
-                  class="mb-3 form-control text-white border-0 bg-dark-blue">
-                <option
-                    v-for="item in scenarioVariations.salary_percents"
-                    :key="item.value"
-                    :value="item.value">
-                  {{ item.label }}
-                </option>
-              </select>
-            </div>
-
-            <div>
-              <label for="retention_percent">
-                {{ trans('economic_reference.retention_percents') }}
-              </label>
-
-              <select
-                  v-model="scenarioVariation.retention_percent"
-                  id="retention_percent"
-                  class="mb-3 form-control text-white border-0 bg-dark-blue">
-                <option
-                    v-for="item in scenarioVariations.retention_percents"
-                    :key="item.value"
-                    :value="item.value">
-                  {{ item.label }}
-                </option>
-              </select>
-            </div>
-
-            <div>
-              <label for="optimization_percent">
-                {{ trans('economic_reference.stop_unprofitable_fund') }}
-              </label>
-
-              <select
-                  v-model="scenarioVariation.optimization_percent"
-                  id="optimization_percent"
-                  class="mb-3 form-control text-white border-0 bg-dark-blue">
-                <option
-                    v-for="item in scenarioVariations.optimization_percents"
-                    :key="item.label"
-                    :value="item.value">
-                  {{ item.label }}
-                </option>
-              </select>
-            </div>
-          </div>
+          <select-scenario-variations
+              v-if="form.scenario_id"
+              :scenario-variation="scenarioVariation"
+              :scenario-variations="scenarioVariations"/>
 
           <button class="btn btn-primary mt-4 py-2 w-100 border-0 bg-export">
             {{ trans('economic_reference.export_excel') }}
@@ -334,6 +256,7 @@ import PercentBadge from "./components/PercentBadge";
 import PercentBadgeIcon from "./components/PercentBadgeIcon";
 import PercentProgress from "./components/PercentProgress";
 import SelectOrganization from "./components/SelectOrganization";
+import SelectScenarioVariations from "./components/SelectScenarioVariations";
 import Tables from "./components/Tables";
 
 const optimizedColumns = [
@@ -458,6 +381,7 @@ export default {
     PercentBadgeIcon,
     PercentProgress,
     SelectOrganization,
+    SelectScenarioVariations,
     Tables,
   },
   data: () => ({
@@ -473,7 +397,8 @@ export default {
       optimization_percent: {
         cat_1: null,
         cat_2: null,
-      }
+      },
+      isFullScreen: false
     },
     res: economicRes,
     isVisibleWellChanges: false
