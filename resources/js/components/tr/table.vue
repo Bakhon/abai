@@ -716,7 +716,7 @@
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_events[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].planned_events[1][0])}`"> </span>
-                    <span v-if="row.planned_events[0]!=null">{{Math.round(row.planned_events[0]*10)/10}}</span>
+                    <span v-if="row.planned_events[0] != null">{{row.planned_events[0]}}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                         {{ wells[row_index].planned_events[1][1]}}
                     </span>

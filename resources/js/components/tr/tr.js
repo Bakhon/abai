@@ -12,6 +12,7 @@ import Paginate from 'vuejs-paginate';
 import moment from 'moment';
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
+import { utcFormat } from 'd3';
 
 Vue.component('paginate', Paginate);
 Vue.component('v-select', vSelect)
@@ -130,7 +131,7 @@ export default {
           filters = [...filters, el.field];
         }
       });
-      return [undefined, ...filters];
+      return [null, ...filters];
   },  
       wellStatusFilters() {
         let filters = [];
@@ -153,7 +154,7 @@ export default {
             filters = [...filters, el.well_status_last_day];
           }
         });
-        return [undefined, ...filters];
+        return [null, ...filters];
     },  
     statusFilters() {
       let filters = [];
@@ -199,7 +200,7 @@ export default {
             filters = [...filters, el.type_text];
           }
         });
-        return [undefined, ...filters];
+        return [null, ...filters];
     },   
     wellFilters() {
         let filters = [];
@@ -222,7 +223,7 @@ export default {
             filters = [...filters, el.rus_wellname];
           }
         });
-        return [undefined, ...filters];
+        return [null, ...filters];
     },          
   },
   beforeCreate: function () {},
@@ -255,11 +256,11 @@ export default {
       selectYear: null,
       month: null,
       isFullTable: false,
-      fieldFilter: undefined,
+      fieldFilter: null,
       allWells: [],
-      wellStatusFilter: undefined,
+      wellStatusFilter: null,
       statusFilter: "Не сохранено",
-      typeWellFilter: undefined,
+      typeWellFilter: null,
       filteredWellData: [],
       lonelywell: [],
       render: 0,
@@ -377,7 +378,7 @@ export default {
                     console.log("No data");
                 }
             });
-        this.axiosPage(this.pageNumberLink);
+        this.numberOfPage(this.pageNumberLink);
     },
     getPageData() {
         if (this.isDynamic) {
@@ -423,7 +424,7 @@ export default {
     clickCallback(pageNum) {
         this.$store.commit("globalloading/SET_LOADING", true);
         this.$store.commit("tr/SET_PAGENUMBER", pageNum);
-        this.chooseAxios();
+        this.pushFilter();
     },
     dropAllFilters() {
       this.$store.commit("globalloading/SET_LOADING", true),
@@ -437,7 +438,7 @@ export default {
       this.$store.commit("tr/SET_PAGENUMBER", 1);
       this.pageNumber = 1;
       this.isNoActiveHorizonFilter();
-      this.chooseAxios();
+      this.pushFilter();
     },
     dropFilter(x) {
         this.$store.commit("globalloading/SET_LOADING", true),
@@ -460,7 +461,7 @@ export default {
         this.$store.commit("tr/SET_PAGENUMBER", 1);
         this.pageNumber = 1;
         this.isNoActiveHorizonFilter();
-        this.chooseAxios();
+        this.pushFilter();
     },
     chooseFilter() {
         this.$store.commit("globalloading/SET_LOADING", true),
@@ -469,19 +470,18 @@ export default {
         this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
         this.$store.commit("tr/SET_PAGENUMBER", 1);
         this.isActiveHorizonFilter();
-        this.chooseAxios();
+        this.pushFilter();
         this.isActiveHorizonFilter();
     },
-    chooseAxios() {
+    pushFilter() {
         if (this.isDynamic) {
             this.axiosDynamicFilterRequest();
         } else if (this.isEdit) {
             this.axiosEdit();
         } else {
-            this.axiosFilterRequest();
+            this.filterRequest();
         }
     },
-    // Режим редактирования
     axiosEdit() {
         this.axios
             .post(
@@ -497,10 +497,8 @@ export default {
                     console.log("No data");
                 }
             });
-        // Пагинация редактирования
-        this.axiosPage(this.editPageNumberLink);
+        this.numberOfPage(this.editPageNumberLink);
     },
-    // Режим динамического формирования
     axiosDynamicFilterRequest() {
         this.axios
             .post(
@@ -517,11 +515,9 @@ export default {
                 }
                 this.isPermission = this.params.includes(this.permissionName);
             });
-        // Пагинация таблицы
-        this.axiosPage(this.pageNumberLink);
+        this.numberOfPage(this.pageNumberLink);
     },
-    // Пагинация таблицы
-    axiosPage(link) {
+    numberOfPage(link) {
         this.axios
             .post(
                 this.postApiUrl + link,
@@ -536,8 +532,7 @@ export default {
                 }
             });
     },
-    // Режим месячного формирования
-    axiosFilterRequest() {
+    filterRequest() {
         this.axios
             .post(
                 this.postApiUrl + this.searchLink,
@@ -552,7 +547,7 @@ export default {
                     console.log("No data");
                 }
             });
-        this.axiosPage(this.pageNumberLink);
+        this.numberOfPage(this.pageNumberLink);
     },
     editrow(row, rowId) {
         this.$store.commit("globalloading/SET_LOADING", false);
@@ -629,16 +624,16 @@ export default {
         this.isShowAdd = false;
         this.isDeleted = false;
         this.isSaved = false;
-        this.wellStatusFilter = undefined;
+        this.wellStatusFilter = null;
         this.statusFilter = "Не сохранено";
-        this.typeWellFilter = undefined;
+        this.typeWellFilter = null;
         this.wellFilter = [];
-        this.fieldFilter = undefined;
+        this.fieldFilter = null;
     },
     onChangePage(newVal) {
         this.$store.commit("globalloading/SET_LOADING", true);
         this.$store.commit("tr/SET_PAGENUMBER", parseInt(newVal));
-        this.chooseAxios();
+        this.pushFilter();
     },
     showWells() {
       if(this.lonelywell[0].is_saved === "Сохранено"){
@@ -692,18 +687,13 @@ export default {
     sortBy(type) {
         this.$store.commit("tr/SET_SORTTYPE", this.isSortType);
         this.$store.commit("tr/SET_SORTPARAM", type);
-        let {isSortType} = this;
-        if (this.isSortType === true) {
-            this.isSortType = false;
-        } else {
-            this.isSortType = true;
-        }
+        this.isSortType != this.isSortType;
         if (this.isDynamic) {
             this.axiosDynamicFilterRequest();
         } else if (this.isEdit) {
             this.axiosEdit();
         } else {
-            this.axiosFilterRequest();
+            this.filterRequest();
         }
     },
     onChangeMonth(event) {
@@ -776,7 +766,7 @@ export default {
         this.$store.commit("tr/SET_IS_DYNAMIC", "false");
         this.isDynamic = false;
         this.$store.commit("globalloading/SET_LOADING", true);
-        this.axiosFilterRequest();
+        this.filterRequest();
         if (this.month < 10) {
             this.dt = "01" + ".0" + this.month + "." + this.selectYear;
         } else {
@@ -890,7 +880,6 @@ export default {
                 console.log('good')
             })
     },
-    // Удаление с модалки
     deleteWell() {
         this.notification(`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
         this.$store.commit("globalloading/SET_LOADING", true);
@@ -904,7 +893,6 @@ export default {
                 this.reRender();
             })
     },
-    // Поиск по скважине
     searchWell() {
         this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
         this.$store.commit("globalloading/SET_LOADING", true);
@@ -914,11 +902,11 @@ export default {
             : "";
         this.$store.commit("tr/SET_SEARCH", this.searchString);
         if (this.isEdit) {
-            this.axiosSearch(this.editSearchLink);
-            this.axiosPage(this.editPageNumberLink);
+            this.search(this.editSearchLink);
+            this.numberOfPage(this.editPageNumberLink);
         } else {
-            this.axiosSearch(this.searchLink);
-            this.axiosPage(this.pageNumberLink);
+            this.search(this.searchLink);
+            this.numberOfPage(this.pageNumberLink);
         }
     },
     notification(val) {
@@ -930,8 +918,7 @@ export default {
         variant: 'danger',
       });
     },
-    // API поиска простого ТР
-    axiosSearch(link) {
+    search(link) {
         this.axios
             .post(
                 this.postApiUrl + link,
