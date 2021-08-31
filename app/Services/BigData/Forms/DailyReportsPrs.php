@@ -41,7 +41,10 @@ class DailyReportsPrs extends DailyReports
         $result['daily_fact_gs'] = ['value' => 0];
         $result['month_fact_gs'] = ['value' => 0];
         $result['year_fact_gs'] = ['value' => 0];
-        $result['machine_type'] = $this->request->get('machine_type');
+        $result['machine_type'] = ['value'=>$this->request->get('machine_type')];
+        $result['contractor'] = ['value'=>$this->request->get('contractor')];
+        $result['work_done'] = ['value'=>$this->request->get('work_done')];
+        $result['repair_work_type'] = ['value'=>$this->request->get('repair_work_type')];
         return $result;
     }
 
