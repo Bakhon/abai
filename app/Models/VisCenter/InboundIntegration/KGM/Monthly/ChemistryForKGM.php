@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\VisCenter;
+namespace App\Models\VisCenter\InboundIntegration\KGM\Monthly;
 
 use App\Models\TBDModel;
 
