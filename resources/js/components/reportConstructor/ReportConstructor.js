@@ -49,7 +49,6 @@ export default {
             endDate: null,
             dateFlow: ['year', 'month', 'date'],
             maxDepthOfSelectedAttributes: null,
-            isSelectUntilWells: false,
             templates: [],
             newTemplateName: "",
             storableParameters: [

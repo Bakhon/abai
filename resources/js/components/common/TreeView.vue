@@ -46,7 +46,6 @@
             :renderComponent="renderComponent"
             :updateThisComponent="updateThisComponent"
             :isCheckedCheckbox="isCheckedCheckbox"
-            :isSelectUntilWells="isSelectUntilWells"
             :onClick="onClick"
       ></node>
     </ul>
@@ -83,7 +82,6 @@ export default {
       type: Number,
       required: false
     },
-    isSelectUntilWells: Boolean,
     nodeClickOnArrow: false,
   },
   created() {
@@ -103,13 +101,14 @@ export default {
         return
       }
       if (this.nodeClickOnArrow && !this.node.children) {
-          await this.handleClick(this.node);
+        await this.handleClick(this.node);
       }
       if(!this.isHaveChildren(this.node)) {
         this.isLoading = true;
         await this.getWells(this);
       }
 
+      this.updateChildren(this.node, this.level, this.node.isChecked);
       this.$forceUpdate()
     },
     onCheckboxClick: async function () {
@@ -122,23 +121,12 @@ export default {
       }
       if(!this.isHaveChildren(node)) {
         await this.getWells(node);
-        if(this.isSelectUntilWells) {
-          this.updateWellOfNode(this.node, this.level, this.node.isChecked);
-        }
         this.updateThisComponent();
       }
       
       for(let idx in node.children) {
         this.loadChildren(node.children[idx]);
       }
-    },
-    updateNextLevelOfNode: async function(node, level) {
-      if(!node?.children) return;
-      for(let child of node.children) {
-        child.isChecked = this.node.isChecked;
-        child.level = level+1;
-      }
-      this.updateThisComponent();
     },
     updateChildren: async function(node, level, val) {
       if(!node?.children) return;
@@ -147,18 +135,6 @@ export default {
         child.level = level+1;
         this.updateChildren(child, level+1, val);
       }
-      this.updateThisComponent();
-    },
-    updateWellOfNode: async function(node, level, val) {
-      if(!node?.children) return;
-      for(let child of node.children) {
-        if(this.isWell(child)) {
-          child.isChecked = val;
-          child.level = level+1;
-        }
-        this.updateWellOfNode(child, level+1, val);
-      }
-      this.updateThisComponent();
     },
     isHaveChildren(node) {
       return typeof node !== 'undefined' && 

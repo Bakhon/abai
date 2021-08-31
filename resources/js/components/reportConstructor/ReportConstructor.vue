@@ -139,10 +139,6 @@
               </input>
             </form>
           </div>
-          <div class="col right-section-select-area">
-            <input type="checkbox" v-model="isSelectUntilWells"/>
-            {{ trans('bd.wells') }}
-          </div>
         </div>
         <div class="row">
           <div class="table-wrapper col">
@@ -167,7 +163,6 @@
                       :itemType="currentItemType"
                       :isShowCheckboxes="true"
                       :currentOption="currentOption"
-                      :isSelectUntilWells="isSelectUntilWells"
                       :selectedObjects="selectedObjects[currentStructureType]"
                       :isCheckedCheckbox="isCheckedCheckbox"
                       ref="itemSelectTree"
@@ -884,28 +879,6 @@ body {
         border-radius: 6px;
         border: 0px;
       }
-    }
-  }
-
-  .right-section-select-area {
-    margin: 20px 10px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 19px;
-
-    input[type="checkbox"] {
-      height: 15px;
-      width: 15px;
-      background-color: white;
-      border-radius: 3.5px;
-      margin-bottom: auto;
-      margin-top: auto;
-      margin-right: 5px;
-      cursor: pointer;
     }
   }
 

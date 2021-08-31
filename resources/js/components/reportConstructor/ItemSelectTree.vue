@@ -16,7 +16,6 @@
             :nodeClickOnArrow="true"
             :renderComponent="renderComponent"
             :updateThisComponent="updateThisComponent"
-            :isSelectUntilWells="isSelectUntilWells"
             :selectedObjects="selectedObjects"
             :isCheckedCheckbox="isCheckedCheckbox"
             :onClick="onClick"
@@ -42,7 +41,6 @@ export default {
     structureType: String,
     itemType: Number,
     isShowCheckboxes: Boolean,
-    isSelectUntilWells: Boolean,
     currentOption: Object,
     selectedObjects: Object,
     isCheckedCheckbox: Function,
@@ -148,15 +146,7 @@ export default {
       content.isLoading = true;
       content.loadChildren(node)
       .then(() => {
-        if(node.isChecked) {
-          if(content.isSelectUntilWells) {
-            content.updateWellOfNode(node, content.level, true);
-          }else {
-            content.updateNextLevelOfNode(node, content.level);
-          }
-        }else {
-          content.updateChildren(node, content.level, false);
-        }
+        content.updateChildren(node, content.level, node.isChecked);
       }).finally(() => {
         content.updateThisComponent();
         content.isLoading = false;
