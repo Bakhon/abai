@@ -61,7 +61,7 @@ export default {
   mounted() {
     this.files = this.existedFiles.map(file => {
       file.name = file.filename
-      file.exists = true
+      file.isExist = true
       return file
     })
   },
