@@ -2,6 +2,9 @@
   <form @submit.prevent="" ref="form" class="bd-main-block__form scrollable" style="width: 100%">
     <div class="table-page">
       <template v-if="formParams">
+        <p v-if="formError" class="table__message">
+          {{ formError }}
+        </p>
         <p v-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
           {{ trans('bd.select_ngdu') }}
         </p>
@@ -240,7 +243,8 @@ export default {
       rowHistoryColumns: [],
       rowHistoryGraph: null,
       oldFilter: null,
-      formParams: null
+      formParams: null,
+      formError: null
     }
   },
   watch: {
@@ -279,6 +283,7 @@ export default {
     ]),
     updateTableData() {
 
+      this.formError = null
       if (!this.filter || !this.id || !this.type) return
 
       this.SET_LOADING(true)
@@ -302,6 +307,9 @@ export default {
             }
             this.recalculateCells()
             this.loadEditHistory()
+          })
+          .catch(error => {
+            this.formError = error.response.data.message
           })
           .finally(() => {
             this.SET_LOADING(false)
