@@ -20,6 +20,23 @@ import Subtitle from "./Subtitle";
 
 const ru = require("apexcharts/dist/locales/ru.json");
 
+const COLORS = [
+  '#34558C',
+  '#9C7300',
+  '#666666',
+  '#A3480E',
+  '#374AB4',
+  '#79B44E',
+  '#82BAFF',
+  '#FFC607',
+  '#A9A9A9',
+  '#F37F31',
+  '#436DB0',
+  '#81B9FE',
+  '#374AB4',
+  '#436B2A',
+]
+
 export default {
   name: "TablePorcupine",
   components: {
@@ -137,26 +154,9 @@ export default {
     },
 
     chartColors() {
-      const colors = [
-        '#34558C',
-        '#9C7300',
-        '#666666',
-        '#A3480E',
-        '#374AB4',
-        '#79B44E',
-        '#82BAFF',
-        '#FFC607',
-        '#A9A9A9',
-        '#F37F31',
-        '#436DB0',
-        '#81B9FE',
-        '#374AB4',
-        '#436B2A',
-      ]
-
       let result = []
 
-      colors.forEach(color => result.push(color, color))
+      COLORS.forEach(color => result.push(color, color))
 
       return result
     },
