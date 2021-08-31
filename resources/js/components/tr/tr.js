@@ -826,15 +826,6 @@ export default {
             return true
         }
     },
-    // isActiveHorizonFilter() {
-    //     if (this.selectHorizon === null) {
-    //          this.isActiveHorizonFilterr = false;
-    //     } else {
-    //          this.isActiveHorizonFilterr = true;
-    //     }
-    //     return this.isActiveHorizonFilterr
-
-    // },
     isActiveFilter(obj) {
       if (obj.length > 0) {
         return false
@@ -844,13 +835,7 @@ export default {
       
 
   },
-    // isNoActiveHorizonFilter() {
-    //     if (this.selectHorizon === null) {
-    //         return this.isActiveHorizonFilterr = true;
-    //     } else {
-    //         return this.isActiveHorizonFilterr = false;
-    //     }
-    // },
+
     getRowWidthSpan(row) {
         return row.rus_wellname ? 0 : 2;
 
