@@ -436,7 +436,6 @@ export default {
       this.$store.commit("tr/SET_WELLNAME", []);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
       this.pageNumber = 1;
-      this.isNoActiveHorizonFilter();
       this.chooseAxios();
     },
     dropFilter(x) {
@@ -459,7 +458,6 @@ export default {
         };
         this.$store.commit("tr/SET_PAGENUMBER", 1);
         this.pageNumber = 1;
-        this.isNoActiveHorizonFilter();
         this.chooseAxios();
     },
     chooseFilter() {
@@ -468,9 +466,7 @@ export default {
         this.$store.commit("tr/SET_SEARCH", this.searchString);
         this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
         this.$store.commit("tr/SET_PAGENUMBER", 1);
-        this.isActiveHorizonFilter();
         this.chooseAxios();
-        this.isActiveHorizonFilter();
     },
     chooseAxios() {
         if (this.isDynamic) {
@@ -830,22 +826,31 @@ export default {
             return true
         }
     },
-    isActiveHorizonFilter() {
-        if (this.selectHorizon === null) {
-             this.isActiveHorizonFilterr = false;
-        } else {
-             this.isActiveHorizonFilterr = true;
-        }
-        return this.isActiveHorizonFilterr
+    // isActiveHorizonFilter() {
+    //     if (this.selectHorizon === null) {
+    //          this.isActiveHorizonFilterr = false;
+    //     } else {
+    //          this.isActiveHorizonFilterr = true;
+    //     }
+    //     return this.isActiveHorizonFilterr
 
-    },
-    isNoActiveHorizonFilter() {
-        if (this.selectHorizon === null) {
-            return this.isActiveHorizonFilterr = true;
-        } else {
-            return this.isActiveHorizonFilterr = false;
-        }
-    },
+    // },
+    isActiveFilter(obj) {
+      if (obj.length > 0) {
+        return false
+      } else {
+        return true
+      }
+      
+
+  },
+    // isNoActiveHorizonFilter() {
+    //     if (this.selectHorizon === null) {
+    //         return this.isActiveHorizonFilterr = true;
+    //     } else {
+    //         return this.isActiveHorizonFilterr = false;
+    //     }
+    // },
     getRowWidthSpan(row) {
         return row.rus_wellname ? 0 : 2;
 

@@ -69,7 +69,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter icon_filter" v-if="isActiveFilter(selectField)"></i><i class="fas fa-filter icon_filter_active" v-if="!isActiveFilter(selectField)"></i>
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -103,7 +103,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter icon_filter" v-if="isActiveFilter(selectWellName)"></i><i class="fas fa-filter icon_filter_active" v-if="!isActiveFilter(selectWellName)"></i>
                           </template>
                             <b-dropdown-form class="external_well_filter">
                               <b-form-group
@@ -137,7 +137,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter icon_filter" v-if="isActiveFilter(selectWellType)"></i><i class="fas fa-filter icon_filter_active" v-if="!isActiveFilter(selectWellType)"></i>
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -171,7 +171,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter icon_filter" v-if="isActiveFilter(selectHorizon)"></i><i class="fas fa-filter icon_filter_active" v-if="!isActiveFilter(selectHorizon)"></i>
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -205,7 +205,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter icon_filter" v-if="isActiveFilter(selectObject)"></i><i class="fas fa-filter icon_filter_active" v-if="!isActiveFilter(selectObject)"></i>
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -239,7 +239,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter icon_filter" v-if="isActiveFilter(selectBlock)"></i><i class="fas fa-filter icon_filter_active" v-if="!isActiveFilter(selectBlock)"></i>
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -278,7 +278,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter icon_filter" v-if="isActiveFilter(selectExpMeth)"></i><i class="fas fa-filter icon_filter_active" v-if="!isActiveFilter(selectExpMeth)"></i>
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -819,6 +819,13 @@ export default {
         chooseFilter() {
              this.$emit('filter');
         },
+        isActiveFilter(obj) {
+            if (obj.length > 0) {
+                return false
+            } else {
+                return true
+            }
+        },
         getRowWidthSpan (row) {
             return row.rus_wellname ? 0 : 2;
 
@@ -828,6 +835,7 @@ export default {
             this.wells[row_index] &&
             this.wells[row_index][value][1][0] !== '0';
         },
+        
         isActiveClass (row) {
             if (row.rus_wellname) {
                 return false
