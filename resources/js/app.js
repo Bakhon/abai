@@ -158,8 +158,8 @@ Vue.component('geo-mapping-form', require('./components/bigdata/mapping/form.vue
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
 Vue.component('corrosion-form', require('./components/complicationMonitoring/corrosion/form.vue').default);
-Vue.component('map-history', require('./components/complicationMonitoring/map/mapHistory.vue').default);
-Vue.component('gu-map', require('./components/complicationMonitoring/map/map.vue').default);
+Vue.component('map-history', require('./components/complicationMonitoring/techMap/mapHistory.vue').default);
+Vue.component('tech-map', require('./components/complicationMonitoring/techMap/map.vue').default);
 Vue.component('field-settings', require('./components/settings/fields.vue').default);
 
 Vue.component('fa-table', require('./components/tr/fa.vue').default);

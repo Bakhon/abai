@@ -20,7 +20,7 @@ use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\ComplicationMonitoring\Well;
 use App\Services\DruidService;
 
-class MapsController extends Controller
+class TechMapController extends Controller
 {
     protected $mapService;
     protected $modelNameSpace = 'App\\Models\\ComplicationMonitoring\\';
@@ -34,7 +34,7 @@ class MapsController extends Controller
 
     public function guMap()
     {
-        return view('maps.gu_map');
+        return view('complicationMonitoring.tech_map.index');
     }
 
     public function getMapCenter()
@@ -556,10 +556,7 @@ class MapsController extends Controller
         }
 
         $pipe = $id >= 100000 ? ManualOilPipe::find($id) : OilPipe::find($id);
-
-//        dd($pipe);
-
-//        PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
+        PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
         $pipe->delete();
 
         return response()->json(

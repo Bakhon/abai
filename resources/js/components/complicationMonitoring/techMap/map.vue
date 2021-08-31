@@ -1,6 +1,6 @@
 <template>
-  <div class="gu-map">
-    <div class="gu-map__controls">
+  <div class="tech-map">
+    <div class="tech-map__controls">
       <h1>{{ trans('monitoring.map.title') }}</h1>
       <div v-if="guPoints" class="d-flex">
         <v-select
@@ -14,7 +14,7 @@
         </v-select>
       </div>
 
-      <div class="gu-map__filters mt-15px">
+      <div class="tech-map__filters mt-15px">
         <v-select
             v-model="activeFilter"
             :options="mapFilters"
@@ -26,7 +26,7 @@
         </v-select>
       </div>
 
-      <div class="gu-map__datetime-picker mt-15px" v-show="activeFilter">
+      <div class="tech-map__datetime-picker mt-15px" v-show="activeFilter">
         <datetime
             type="date"
             v-model="selectedDate"
@@ -42,7 +42,7 @@
         </datetime>
       </div>
 
-      <div class="gu-map__filter_input mt-15px" v-if="activeFilter == 'pressure' || activeFilter == 'temperature'">
+      <div class="tech-map__filter_input mt-15px" v-if="activeFilter == 'pressure' || activeFilter == 'temperature'">
         <b-form-input
             v-model="referentValue"
             @input="mapRedraw"
@@ -176,7 +176,7 @@ import turfLength from '@turf/length';
 import { lineString as turfLineString} from "@turf/helpers";
 
 export default {
-  name: "gu-map",
+  name: "tech-map",
   components: {
     vSelect,
     mapPipeForm,
@@ -261,7 +261,6 @@ export default {
       'zuPoints',
       'wellPoints',
       'guPoints',
-      'guPointsIndexes',
       'mapCenter',
       'ngdus',
       'cdngs'
@@ -665,7 +664,6 @@ export default {
     },
     onCreate(option) {
       //pipe start point
-      console.log('option', option);
       if (option.editMode == 'pipe') {
         this.startNewPipe(option);
       } else {
@@ -876,7 +874,7 @@ export default {
     },
     async storePipe() {
       this.SET_LOADING(true);
-      return this.axios.post(this.localeUrl("/gu-map/pipe"), {pipe: this.pipeObject}).then((response) => {
+      return this.axios.post(this.localeUrl("/tech-map/pipe"), {pipe: this.pipeObject}).then((response) => {
         if (response.data.status == 'success') {
           this.pipes.push(response.data.pipe);
         }
@@ -974,7 +972,7 @@ export default {
     },
     async updatePipe() {
       this.SET_LOADING(true);
-      return this.axios.put(this.localeUrl("/gu-map/pipe/" + this.pipeObject.id), {pipe: this.pipeObject}).then((response) => {
+      return this.axios.put(this.localeUrl("/tech-map/pipe/" + this.pipeObject.id), {pipe: this.pipeObject}).then((response) => {
         if (response.data.status == 'success') {
           let pipeIndex = this.pipes.findIndex((pipeItem) => {
             return pipeItem.id == this.pipeObject.id;
@@ -1067,7 +1065,7 @@ export default {
     },
     async deletePipe() {
       this.SET_LOADING(true);
-      return this.axios.delete(this.localeUrl("/gu-map/pipe/" + this.pipeObject.id))
+      return this.axios.delete(this.localeUrl("/tech-map/pipe/" + this.pipeObject.id))
           .then((response) => {
             if (response.data.status == 'success') {
               this.pipes.splice(this.pipeObject.index, 1);
@@ -1115,12 +1113,6 @@ export default {
     centerTo(point = null) {
       if (point == null) {
         return false;
-      }
-
-      //if point is id of gu
-      if (!(typeof point === 'object')) {
-        let index = this.guPointsIndexes.indexOf(point);
-        point = this.guPoints[index];
       }
 
       this.deck.setProps({
@@ -1196,6 +1188,7 @@ export default {
 
           this.pipeObject.end_point =  info.object.name;
           this.pipeObject.ngdu_id = info.object.ngdu_id;
+          this.pipeObject.name = this.pipeObject.start_point + '-' + this.pipeObject.end_point;
 
           this.renderPipe();
           this.$bvModal.show('object-modal');
@@ -1321,7 +1314,7 @@ h1 {
   color: #fff;
 }
 
-.gu-map {
+.tech-map {
   position: relative;
   height: calc(100vh - 96px);
   width: 100%;
