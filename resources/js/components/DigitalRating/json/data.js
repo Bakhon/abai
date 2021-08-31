@@ -43,9 +43,9 @@ const histories = [
     }
 ]
 
-const indicators = [
+const indicatorList = [
     {
-        number: 'UZN_0001',
+        uwi: 'UZN_0001',
         liquid: 32,
         water: 45,
         oil: '14,8',
@@ -110,51 +110,51 @@ const maps = [
 
 const objects = [
     {
-        id: 1,
+        id: 13,
         title: '13 горизонт'
     },
     {
-        id: 2,
+        id: 14,
         title: '14 горизонт'
     },
     {
-        id: 3,
+        id: 15,
         title: '15 горизонт'
     },
     {
-        id: 4,
+        id: 16,
         title: '16 горизонт'
     },
     {
-        id: 5,
+        id: 17,
         title: '17 горизонт'
     },
     {
-        id: 6,
+        id: 18,
         title: '18 горизонт'
     },
     {
-        id: 7,
+        id: 19,
         title: '19 горизонт'
     },
     {
-        id: 8,
+        id: 20,
         title: '20 горизонт'
     },
     {
-        id: 9,
+        id: 21,
         title: '21 горизонт'
     },
     {
-        id: 10,
+        id: 22,
         title: '22 горизонт'
     },
     {
-        id: 11,
+        id: 23,
         title: '23 горизонт'
     },
     {
-        id: 12,
+        id: 24,
         title: '24 горизонт'
     }
 ]
@@ -175,7 +175,6 @@ const mapActions = [
 export {
     overviews,
     histories,
-    indicators,
     secondIndicators,
     cods,
     maps,
