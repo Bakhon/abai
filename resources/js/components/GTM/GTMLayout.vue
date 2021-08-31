@@ -62,10 +62,5 @@ export default {
             this.changeDisplayMainComponent(false);
         },
     },
-    computed: {
-      isShadowBlockShow() {
-          return this.$store.state.isShadowBlockShow;
-      },
-    },
 }
 </script>
