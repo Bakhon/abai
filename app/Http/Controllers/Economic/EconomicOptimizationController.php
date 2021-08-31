@@ -19,7 +19,7 @@ class EconomicOptimizationController extends Controller
     protected $structureService;
 
     const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v12_gtm_optimize_v1';
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v3';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v4';
     const DATA_SOURCE_DATE = '2021/01/01';
 
     const SCENARIO_COLUMNS = [
@@ -212,12 +212,13 @@ class EconomicOptimizationController extends Controller
             "dollar_rate",
             'profitability_12m',
             "scenario_id",
-            "rank",
         ];
 
         return $builder
             ->select($columns)
             ->doubleSum('Operating_profit_12m')
+            ->doubleSum('oil_12m')
+            ->doubleSum('liquid_12m')
             ->groupBy($columns)
             ->data();
     }

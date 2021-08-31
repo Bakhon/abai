@@ -1,14 +1,16 @@
 <template>
   <div>
-    <subtitle font-size="18" style="line-height: 26px">
-      {{ trans('economic_reference.table_well_treemap') }}
-    </subtitle>
+    <div v-for="chart in charts" :key="chart.key">
+      <subtitle font-size="18" style="line-height: 26px">
+        {{ chart.title }}
+      </subtitle>
 
-    <apexchart
-        :options="chartOptions"
-        :series="chartSeries"
-        type="treemap"
-        style="color: #000"/>
+      <apexchart
+          :options="chartOptions"
+          :series="chartSeries[chart.key]"
+          type="treemap"
+          style="color: #000"/>
+    </div>
   </div>
 </template>
 
@@ -17,7 +19,9 @@ import chart from "vue-apexcharts";
 
 import Subtitle from "./Subtitle";
 
-const ru = require("apexcharts/dist/locales/ru.json");
+const RU = require("apexcharts/dist/locales/ru.json");
+
+const WELL_KEYS = ['oil_12m', 'liquid_12m', 'Operating_profit_12m']
 
 export default {
   name: "TableWellTreeMap",
@@ -70,7 +74,7 @@ export default {
         },
         chart: {
           foreColor: '#FFFFFF',
-          locales: [ru],
+          locales: [RU],
           defaultLocale: 'ru',
           events: {
             dataPointSelection: (event, chartContext, config) => this.selectPoint(config)
@@ -80,21 +84,39 @@ export default {
     },
 
     chartSeries() {
+      let series = {}
+
+      WELL_KEYS.forEach(key => series[key] = [{data: []}])
+
+      this.filteredData.forEach(well => {
+        WELL_KEYS.forEach(key => {
+          series[key][0].data.push({x: well.uwi, y: well[key]})
+        })
+      })
+
+      return series
+    },
+
+    charts() {
       return [
         {
-          data: this.filteredData.map(well => {
-            return {
-              x: well.uwi,
-              y: well.Operating_profit_12m,
-            }
-          })
-        }
+          title: this.trans('economic_reference.operating_profit'),
+          key: 'Operating_profit_12m'
+        },
+        {
+          title: this.trans('economic_reference.liquid_production'),
+          key: 'liquid_12m'
+        },
+        {
+          title: this.trans('economic_reference.oil_production'),
+          key: 'oil_12m'
+        },
       ]
-    },
+    }
   },
   methods: {
     selectPoint({seriesIndex, dataPointIndex}) {
-      let uwi = this.chartSeries[seriesIndex].data[dataPointIndex].x
+      let uwi = this.chartSeries.oil_12m[seriesIndex].data[dataPointIndex].x
 
       let index = this.selectedWells.findIndex(well => well === uwi)
 
