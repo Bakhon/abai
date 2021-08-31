@@ -87,6 +87,7 @@
                   :error="errors[column.code]"
                   :item="column"
                   v-bind:value="formValues[column.code].value"
+                  v-on:change="validateField($event, column)"
                   v-on:update="updateField($event, column)"
               >
               </bigdata-form-field>
@@ -94,7 +95,11 @@
           </div>
 
           <div class="bd-popup__buttons">
-            <button class="btn btn-success" type="button" @click="saveItem">
+            <button
+                class="btn btn-success"
+                type="button"
+                @click="saveItem"
+            >
               {{ trans('app.save') }}
             </button>
             <button class="btn btn-info" type="reset" @click="isFormOpened = false">
@@ -109,11 +114,17 @@
 
 <script>
 import forms from '../../../../json/bd/forms.json'
+import Vue from "vue";
+import axios from "axios";
 
 export default {
   name: "BigdataTableField",
   props: {
     params: {
+      type: Object,
+      required: true
+    },
+    form: {
       type: Object,
       required: true
     },
@@ -133,7 +144,7 @@ export default {
       formParams: null,
       editedItemIndex: null,
       items: [],
-      errors: [],
+      errors: {},
       formValues: {},
       selectedRowIndex: null,
       tableRows: []
@@ -210,7 +221,28 @@ export default {
 
       this.$emit('change', this.tableRows.map(row => row.id))
 
-    }
+    },
+    validateField: _.debounce(function (e, formItem) {
+          this.$nextTick(() => {
+
+            let data = {}
+            for (let i in this.formValues) {
+              data[i] = this.formValues[i].value
+            }
+
+            axios.post(
+                this.localeUrl(`/api/bigdata/forms/${this.form.code}/validate/${this.params.code}/${formItem.code}`),
+                data
+            ).then(data => {
+              Vue.set(this.errors, formItem.code, null)
+            }).catch(error => {
+              Vue.set(this.errors, formItem.code, error.response.data.errors)
+            })
+
+          })
+        },
+        350
+    )
   }
 };
 </script>
