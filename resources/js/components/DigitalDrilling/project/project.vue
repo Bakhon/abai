@@ -150,7 +150,7 @@
             return{
                 main_tables: [
                     {
-                        "name":  "digital_drilling.project1.data_input",
+                        "name":  "digital_drilling.project_data.data_input",
                         "id": 1,
                         "component": {
                             "name": "main-table",
@@ -158,7 +158,7 @@
                         }
                     },
                     {
-                        "name": "digital_drilling.project1.visualization",
+                        "name": "digital_drilling.project_data.visualization",
                         "id": 2,
                         "component": {
                             "name": "main-table",
@@ -167,7 +167,7 @@
                     },
                 ],
                 mainTable:  {
-                                "name":  "digital_drilling.project1.data_input",
+                                "name":  "digital_drilling.project_data.data_input",
                                 "id": 1,
                                 "component": {
                                     "name": "main-table",

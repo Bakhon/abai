@@ -786,7 +786,7 @@
             return{
                 main_tables: [
                     {
-                        "name":  "digital_drilling.project1.casing_strings_OK",
+                        "name":  "digital_drilling.project_data.casing_strings_OK",
                         "id": 1,
                         "component": {
                             "name": "main-table",
@@ -794,7 +794,7 @@
                         }
                     },
                     {
-                        "name": "digital_drilling.project1.casing_running_mode",
+                        "name": "digital_drilling.project_data.casing_running_mode",
                         "id": 2,
                         "component": {
                             "name": "main-table",
@@ -802,7 +802,7 @@
                         }
                     },
                     {
-                        "name":  "digital_drilling.project1.casing_pressure_testing",
+                        "name":  "digital_drilling.project_data.casing_pressure_testing",
                         "id": 1,
                         "component": {
                             "name": "main-table",
@@ -810,7 +810,7 @@
                         }
                     },
                     {
-                        "name": "digital_drilling.project1.casing_strings_overpressure",
+                        "name": "digital_drilling.project_data.casing_strings_overpressure",
                         "id": 2,
                         "component": {
                             "name": "main-table",
@@ -818,7 +818,7 @@
                         }
                     },
                     {
-                        "name":  "digital_drilling.project1.cementing_fluid_characteristics",
+                        "name":  "digital_drilling.project_data.cementing_fluid_characteristics",
                         "id": 1,
                         "component": {
                             "name": "main-table",
@@ -826,7 +826,7 @@
                         }
                     },
                     {
-                        "name": "digital_drilling.project1.cementing_component_composition",
+                        "name": "digital_drilling.project_data.cementing_component_composition",
                         "id": 2,
                         "component": {
                             "name": "main-table",
@@ -834,7 +834,7 @@
                         }
                     },
                     {
-                        "name": "digital_drilling.project1.cementing_technological_operations",
+                        "name": "digital_drilling.project_data.cementing_technological_operations",
                         "id": 2,
                         "component": {
                             "name": "main-table",
@@ -843,7 +843,7 @@
                     },
                 ],
                 mainTable:   {
-                    "name":  "digital_drilling.project1.casing_strings_OK",
+                    "name":  "digital_drilling.project_data.casing_strings_OK",
                     "id": 1,
                     "component": {
                         "name": "main-table",

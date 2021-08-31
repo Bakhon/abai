@@ -150,7 +150,7 @@
             return{
                 main_tables: [
                     {
-                        "name":  "digital_drilling.project1.selection_OK",
+                        "name":  "digital_drilling.project_data.selection_OK",
                         "id": 1,
                         "component": {
                             "name": "main-table",
@@ -158,7 +158,7 @@
                         }
                     },
                     {
-                        "name": "digital_drilling.project1.pressure_graph",
+                        "name": "digital_drilling.project_data.pressure_graph",
                         "id": 2,
                         "component": {
                             "name": "main-table",
@@ -167,7 +167,7 @@
                     },
                 ],
                 mainTable:   {
-                    "name":  "digital_drilling.project1.selection_OK",
+                    "name":  "digital_drilling.project_data.selection_OK",
                     "id": 1,
                     "component": {
                         "name": "main-table",

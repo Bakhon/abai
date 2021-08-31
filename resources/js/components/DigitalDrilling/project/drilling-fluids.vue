@@ -411,7 +411,7 @@
             return{
                 main_tables: [
                     {
-                        "name":  "digital_drilling.project1.geological_data",
+                        "name":  "digital_drilling.project_data.geological_data",
                         "id": 1,
                         "component": {
                             "name": "main-table",
@@ -419,7 +419,7 @@
                         }
                     },
                     {
-                        "name": "digital_drilling.project1.BR_parameters",
+                        "name": "digital_drilling.project_data.BR_parameters",
                         "id": 2,
                         "component": {
                             "name": "main-table",
@@ -427,7 +427,7 @@
                         }
                     },
                     {
-                        "name": "digital_drilling.project1.BR_component",
+                        "name": "digital_drilling.project_data.BR_component",
                         "id": 2,
                         "component": {
                             "name": "main-table",
@@ -436,7 +436,7 @@
                     },
                 ],
                 mainTable:  {
-                    "name":  "digital_drilling.project1.geological_data",
+                    "name":  "digital_drilling.project_data.geological_data",
                     "id": 1,
                     "component": {
                         "name": "main-table",

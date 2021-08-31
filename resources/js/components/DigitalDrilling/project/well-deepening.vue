@@ -506,7 +506,7 @@
             return{
                 main_tables: [
                     {
-                        "name":  "digital_drilling.project1.BHA_selection",
+                        "name":  "digital_drilling.project_data.BHA_selection",
                         "id": 1,
                         "component": {
                             "name": "main-table",
@@ -514,7 +514,7 @@
                         }
                     },
                     {
-                        "name": "digital_drilling.project1.drilling_parameters_modes",
+                        "name": "digital_drilling.project_data.drilling_parameters_modes",
                         "id": 2,
                         "component": {
                             "name": "main-table",
@@ -522,7 +522,7 @@
                         }
                     },
                     {
-                        "name": "digital_drilling.project1.visualization",
+                        "name": "digital_drilling.project_data.visualization",
                         "id": 2,
                         "component": {
                             "name": "main-table",
@@ -531,7 +531,7 @@
                     },
                 ],
                 mainTable:   {
-                    "name":  "digital_drilling.project1.BHA_selection",
+                    "name":  "digital_drilling.project_data.BHA_selection",
                     "id": 1,
                     "component": {
                         "name": "main-table",

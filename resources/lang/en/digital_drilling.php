@@ -177,7 +177,7 @@ return array (
         'technical_casing' => 'Casing tooling',
         'casing' => 'Casing'
     ],
-    'project1' => [
+    'project_data' => [
         'data_input' => 'Data input',
         'visualization' => 'Visualization',
         'selection_OK' => 'Casing selection (catalog)',
