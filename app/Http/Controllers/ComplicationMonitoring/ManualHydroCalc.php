@@ -3,20 +3,12 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\ManualReverseCalculationFilter;
-use App\Filters\ReverseCalculationFilter;
-use App\Http\Requests\IndexTableRequest;
 use App\Http\Controllers\CrudController;
-use App\Http\Resources\HydroCalcCalculatedListResource;
-use App\Http\Resources\HydroCalcPrepareListResource;
+use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\ManualHydroCalcPrepareListResource;
-use App\Http\Resources\ReverseCalculationResource;
 use App\Jobs\ReverseCalculateHydroDynamics;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
-use App\Models\ComplicationMonitoring\OilPipe;
-use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
-use App\Models\ComplicationMonitoring\ReverseCalculation;
-use App\Models\ComplicationMonitoring\TrunklinePoint;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
