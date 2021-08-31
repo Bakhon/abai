@@ -218,9 +218,6 @@ class EconomicOptimizationController extends Controller
         return $builder
             ->select($columns)
             ->doubleSum('operating_profit_12m')
-            ->orderBy('oil_price')
-            ->orderBy('dollar_rate')
-            ->orderBy('operating_profit_12m')
             ->groupBy($columns)
             ->data();
     }
