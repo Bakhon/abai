@@ -8,6 +8,9 @@ return array (
   'create' => 'Добавить',
   'date' => 'Дата',
   'liquid' => 'Жидкость',
+  'waterCut' => 'Обводненность',
+  'oil' => 'Нефть',
+  'ndin' => 'Н дин',
   'action' => 'Управление',
   'edit' => 'Редактировать',
   'delete' => 'Удалить',
@@ -57,4 +60,5 @@ return array (
   ),
   'module_title' => 'Модуль',
   'download' => 'Скачать',
+  'thereIsNoData' => 'Нет данных',
 );

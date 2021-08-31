@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
-use App\Traits\BigData\Forms\DepthValidationTrait;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
+use App\Traits\BigData\Forms\DepthValidationTrait;
 
 class WellPerf extends PlainForm
 {
@@ -30,5 +30,29 @@ class WellPerf extends PlainForm
         }
 
         return $errors;
+    }
+
+    public function getFormByRow(array $row): array
+    {
+        $form = 'well_perf_other';
+        switch ($row['perf_type']) {
+            case 1:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                $form = 'well_perf_shot';
+                break;
+            case 13:
+                $form = 'well_perf_drill_packer';
+                break;
+            case 12:
+                $form = 'well_perf_stab';
+                break;
+            case 7:
+                $form = 'well_perf_bridge_plug';
+                break;
+        }
+        return ['form' => $form];
     }
 }

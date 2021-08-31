@@ -84,7 +84,6 @@
             </select>
           </div>
         </div>
-        <notifications position="top"></notifications>
       </div>
       <div class="sec_nav">
           <div
@@ -106,7 +105,6 @@
   </div>
 </template>
 <script>
-import TrMultiselect from "./TrMultiselect.vue";
 import VueApexCharts from "vue-apexcharts";
 import trHelper from '~/mixins/trHelper';
 

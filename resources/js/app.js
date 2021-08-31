@@ -99,13 +99,16 @@ Vue.component('economic-data-gtm-component', require('./components/Economic/data
 Vue.component('tech-data-component', require('./components/technical_forecast/data/index.vue').default);
 
 Vue.component('economic-nrs', require('./components/Economic/nrs.vue').default);
+Vue.component('economic-nrs-wells', require('./components/Economic/wells.vue').default);
 Vue.component('economic-optimization', require('./components/Economic/optimization.vue').default);
-Vue.component('gno-table', require('./components/gno/Table.vue').default);
-Vue.component('shgn-img', require('./components/gno/components/ShgnImg.vue').default);
-Vue.component('inclinometria', require('./components/gno/components/Inclinometria.vue').default);
-Vue.component('prs-crs', require('./components/gno/components/PrsCrs.vue').default);
-Vue.component('inflow-curve', require('./components/gno/components/InflowCurve.vue').default);
-Vue.component('economic', require('./components/gno/components/Economic.vue').default);
+Vue.component('gno-table', require('./components/gno/GnoMain.vue').default);
+Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue').default);
+Vue.component('prs-crs', require('./components/gno/modals/PrsCrs.vue').default);
+Vue.component('inflow-curve', require('./components/gno/modals/InflowCurve.vue').default);
+Vue.component('economic', require('./components/gno/modals/Economic.vue').default);
+Vue.component('economic-table', require('./components/gno/modals/EconomicTable.vue').default);
+Vue.component('near-wells-table', require('./components/gno/modals/NearWellsTable.vue').default);
+Vue.component('pgno-analysis', require('./components/gno/modals/AnalysisMenu.vue').default);
 Vue.component('monitor-table', require('./components/complicationMonitoring/monitor/MonitorTable.vue').default);
 Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/complicationMonitoring/omgca/form.vue').default);
@@ -169,7 +172,7 @@ Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue'
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
-Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
+Vue.component('well-card', require('./components/bigdata/wellCard/wellCard.vue').default);
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
@@ -217,18 +220,15 @@ Vue.component('visual-center-daily-report', require('./components/visualcenter3/
 Vue.component('visual-center-daily-approve', require('./components/visualcenter3/importForm/dailyApprove/index.vue').default);
 Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/index.vue').default);
 
-
-Vue.component('project-data', require('./components/DigitalDrilling/ProjectData').default);
+Vue.component('digital-drilling', require('./components/DigitalDrilling/digital-drilling').default);
+Vue.component('digital-drilling-menu', require('./components/DigitalDrilling/menu').default);
 Vue.component('window-head', require('./components/DigitalDrilling/WindowHead').default);
-Vue.component('technical-task', require('./components/DigitalDrilling/ProjectData/TechnicalTask').default);
-Vue.component('geology', require('./components/DigitalDrilling/ProjectData/Geology').default);
-Vue.component('well-design', require('./components/DigitalDrilling/ProjectData/WellDesign').default);
-Vue.component('barrel-profile', require('./components/DigitalDrilling/ProjectData/BarrelProfile').default);
-Vue.component('drilling-fluids', require('./components/DigitalDrilling/ProjectData/DrillingFluids').default);
-Vue.component('well-casing', require('./components/DigitalDrilling/ProjectData/WellСasing').default);
-Vue.component('technical-casing', require('./components/DigitalDrilling/ProjectData/TechnicalCasing').default);
+
 Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
+
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
+
+Vue.component('map-constructor-main', require('./components/mapConstructor/Main.vue').default);
 
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
