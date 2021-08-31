@@ -4,29 +4,25 @@
       <button @click="collapsed = !collapsed" class="collapse-left__sidebar">
         <Icon class="smooth" :class="{ swap: collapsed }" name="arrowLeft" />
       </button>
-      <div class="dropdown__sidebar w-100" :class="{ hide: collapsed }">
+      <div v-show="!collapsed" class="dropdown__sidebar w-100">
         <Dropdown
-          block
-          class="w-100 mb-2"
-          :button-text="trans('plast_fluids.subsurface_user')"
-          :options="options"
+          :items="subsoils"
+          :placeholder="trans('plast_fluids.subsurface_user')"
+          :initialValue="currentSubsoil[0].owner_name"
+          dropKey="owner_name"
+          @dropdown-select="updateCurrentSubsoil"
         />
         <Dropdown
-          block
-          class="w-100 mb-2"
-          :button-text="trans('plast_fluids.field')"
-          :options="options"
-        />
-        <Dropdown
-          block
-          class="w-100 mb-2"
-          :button-text="trans('plast_fluids.horizon')"
-          :options="options"
+          :items="subsoilFields"
+          :placeholder="trans('plast_fluids.field')"
+          :initialValue="currentSubsoilField[0].field_name"
+          dropKey="field_name"
+          @dropdown-select="(value) => SET_CURRENT_SUBSOIL_FIELD(value)"
         />
       </div>
     </div>
     <div class="sectors">
-      <div class="sectors-svg" :class="{ hide: collapsed }">
+      <div v-show="!collapsed" class="sectors-svg">
         <svg
           width="17"
           height="18"
@@ -44,7 +40,7 @@
 
         {{ trans("plast_fluids.sections") }}
       </div>
-      <div class="tree-box box-border" :class="{ hide: collapsed }">
+      <div v-show="!collapsed" class="tree-box box-border">
         <ul class="trees">
           <MonitoringTreeMenu
             v-for="template in templates"
@@ -54,16 +50,18 @@
         </ul>
       </div>
     </div>
+    <p v-show="collapsed" class="vertical-text">Выбор раздела</p>
   </div>
 </template>
 
 <script>
-import Dropdown from "../../geology/components/dropdowns/dropdown";
+import Dropdown from "./Dropdown.vue";
 import Button from "../../geology/components/buttons/Button";
 import Icon from "../../geology/components/icons/AwIcon";
 import MonitoringTreeMenu from "./MonitoringTreeMenu.vue";
 import { getDownloadTemplates } from "../services/templateService";
 import { convertTemplateData } from "../helpers";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "MonitoringLeftBlock",
@@ -71,14 +69,28 @@ export default {
     return {
       collapsed: false,
       templates: [],
-      options: [
-        { label: "option 1", value: 1 },
-        { label: "option 2", value: 2 },
-        { label: "option 3", value: 3 },
-      ],
     };
   },
+  computed: {
+    ...mapState("plastFluids", [
+      "subsoils",
+      "subsoilFields",
+      "currentSubsoil",
+      "currentSubsoilField",
+    ]),
+  },
   methods: {
+    ...mapMutations("plastFluids", [
+      "SET_CURRENT_SUBSOIL",
+      "SET_CURRENT_SUBSOIL_FIELD",
+    ]),
+    updateCurrentSubsoil(value) {
+      this.SET_CURRENT_SUBSOIL(value);
+      this.SET_CURRENT_SUBSOIL_FIELD("");
+    },
+    updateCurrentSubsoilField(value) {
+      this.SET_CURRENT_SUBSOIL_FIELD(value);
+    },
     async getTemplates() {
       const data = await getDownloadTemplates();
       this.templates = convertTemplateData(data, this.currentLang);
@@ -173,9 +185,18 @@ label {
 
 .narrow {
   width: 30px;
+  justify-content: center;
+  position: relative;
 }
 
-.hide {
-  display: none;
+.vertical-text {
+  position: absolute;
+  transition: 0.3s ease-in-out;
+  top: 50%;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  margin: 0;
+  font-size: 16px;
+  color: #fff;
 }
 </style>

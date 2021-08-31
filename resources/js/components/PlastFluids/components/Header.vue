@@ -56,7 +56,7 @@ export default {
         location.reload();
         return;
       }
-      location.pathname = this.localeUrl(url);
+      location.href = location.origin + this.localeUrl(url);
     },
     goBack() {
       history.back();

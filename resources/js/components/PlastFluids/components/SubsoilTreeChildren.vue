@@ -1,73 +1,89 @@
 <template>
   <div class="subsoil-secondary-tree">
-    <div
-      class="subsoil-input-label-holder"
-      v-show="pickedSubsoil == subsoil.owner_id"
-    >
+    <div v-show="pickedSubsoil">
       <input
-        v-if="hasChild"
         type="checkbox"
         :name="subsoil.field_name"
         :id="subsoil.field_name"
-        :value="subsoil.field_id"
-        v-model="checkedSubsoilChild"
-        @click="clearCheckboxArray"
-      />
-      <input
-        v-else
-        type="radio"
-        :name="subsoil.field_name"
-        :id="subsoil.field_name"
-        :value="subsoil.field_id"
-        v-model="pickedSubsoilChild"
+        :value="subsoil"
+        v-model="computedCheckedField"
+        @click="$emit('clear-checked-field')"
       />
       <label :for="subsoil.field_name">{{ subsoil.field_name }}</label>
     </div>
 
-    <div v-show="pickedSubsoil" v-if="hasChild">
-      <SubsoilTreeChildren
-        v-for="child in subsoil.childNodes"
-        :key="child.field_id"
-        :subsoil="child"
-        :pickedSubsoil="hasChild ? checkedSubsoilChild[0] : pickedSubsoilChild"
-      ></SubsoilTreeChildren>
+    <div
+      v-show="checkedField[0].field_name == subsoil.field_name"
+      v-if="hasChild"
+      class="subsoil-secondary-tree"
+    >
+      <div
+        v-for="horizon in checkedField[0].horizons"
+        :key="horizon.horizon_id"
+      >
+        <input
+          type="radio"
+          :name="horizon.horizon_name"
+          :id="horizon.horizon_name"
+          :value="horizon"
+          v-model="pickedSubsoilHorizon"
+        />
+        <label :for="horizon.horizon_name">{{ horizon.horizon_name }}</label>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import _ from "lodash";
 
 export default {
   name: "SubsoilTreeChildren",
-  props: ["subsoil", "pickedSubsoil"],
-  data() {
-    return {
-      checkedSubsoilChild: [],
-    };
+  props: {
+    checkedField: Array,
+    subsoil: Object,
+    pickedSubsoil: Object,
   },
   computed: {
-    ...mapState("plastFluids", ["pickedSubsoilChildRadio"]),
+    ...mapState("plastFluids", [
+      "currentSubsoilField",
+      "currentSubsoilHorizon",
+    ]),
     hasChild() {
-      return this.subsoil.childNodes && this.subsoil.childNodes.length;
+      return (
+        this.checkedField[0]?.horizons && this.checkedField[0]?.horizons.length
+      );
     },
-    pickedSubsoilChild: {
+    computedCheckedField: {
       get() {
-        return this.pickedSubsoilChildRadio;
+        return this.checkedField;
       },
       set(value) {
-        this.SET_PICKED_SUBSOIL_CHILD_RADIO(value);
+        this.$emit("set-checked-field", value[value.length - 1]);
+        this.SET_CURRENT_SUBSOIL_HORIZON("");
+      },
+    },
+    pickedSubsoilHorizon: {
+      get() {
+        return this.currentSubsoilHorizon;
+      },
+      set(value) {
+        this.SET_CURRENT_SUBSOIL_HORIZON(value);
       },
     },
   },
   methods: {
-    ...mapMutations("plastFluids", ["SET_PICKED_SUBSOIL_CHILD_RADIO"]),
-    clearCheckboxArray() {
-      this.checkedSubsoilChild = [];
-    },
+    ...mapMutations("plastFluids", [
+      "SET_CURRENT_SUBSOIL_HORIZON",
+      "SET_CURRENT_SUBSOIL_FIELD",
+    ]),
   },
   beforeDestroy() {
-    this.SET_PICKED_SUBSOIL_CHILD_RADIO("");
+    this.SET_CURRENT_SUBSOIL_FIELD("");
+  },
+  mounted() {
+    this.computedCheckedField = _.cloneDeep(this.currentSubsoilField) ?? "";
   },
 };
 </script>
