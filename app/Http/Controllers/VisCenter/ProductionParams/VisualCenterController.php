@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
-use App\Models\VisCenter\ExcelForm\DzoImportDowntimeReason;
 use App\Models\DzoPlan;
 use App\Traits\VisualCenter\OilCondensateConsolidated;
 use Carbon\Carbon;
@@ -23,10 +22,15 @@ class VisualCenterController extends Controller
     private $category = '';
     private $filter = '';
     private $planFields = array('dzo');
-    private $factFields = array('dzo_name');
+    private $factFields = array('dzo_name','id');
     private $chartData = array();
-    private $tableData = array();
+    private $tableData = array(
+        'current' => array(),
+        'historical' => array()
+    );
     private $factField = '';
+    private $additionalFactField = '';
+    private $additionalPlanField = '';
     private $planField = '';
     private $opekField = '';
     private $factCondensateField = '';
@@ -36,7 +40,8 @@ class VisualCenterController extends Controller
         'oilCondensateProduction' => array (
             'oilProductionMapping',
             'oilDeliveryMapping',
-            'condensateProductionMapping'
+            'condensateProductionMapping',
+            'condensateDeliveryMapping'
         )
     );
     //oil
@@ -119,8 +124,13 @@ class VisualCenterController extends Controller
         if ($this->periodRange > 0) {
             $this->chartData = $this->getChartData($currentPeriodDzoFact,$currentPeriodDzoPlan);
         }
-        $this->tableData = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan);
-        return $this->tableData;
+        $this->tableData['current'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan);
+        $this->tableData['historical'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan);
+        return array(
+            'tableData' => $this->tableData['current'],
+            'chartData' => $this->chartData,
+            'historicalTableData' => $this->tableData['historical']
+        );
     }
 
     private function refreshRequestParams($params)
@@ -155,6 +165,9 @@ class VisualCenterController extends Controller
             $this->opekField = $this->$selectedCategory['opekField'];
             $this->factCondensateField = $this->$condensateCategory['factField'];
             $this->planCondensateField = $this->$condensateCategory['planField'];
+            $condensateAdittionalCategory = $this->categoryMapping[$this->category][3];
+            $this->factAdditionalCondensateField = $this->$condensateAdittionalCategory['factField'];
+            $this->planAdditionalCondensateField = $this->$condensateAdittionalCategory['planField'];
         }
     }
 
@@ -169,7 +182,7 @@ class VisualCenterController extends Controller
         if (!is_null($this->dzoName)) {
             $query->where('dzo_name', $this->dzoName);
         }
-        return $query->orderBy('date', 'asc')->with('importDowntimeReason')->get();
+        return $query->orderBy('date', 'asc')->with('importDecreaseReason')->get();
     }
     private function getDzoPlan($startDate,$endDate)
     {
@@ -202,7 +215,7 @@ class VisualCenterController extends Controller
     }
     private function getTableData($fact,$plan)
     {
-        $tableData = '';
+        $tableData = array();
         if ($this->category === 'oilCondensateProduction' || $this->category === 'oilCondensateDelivery') {
             $tableData = $this->getDataByConsolidatedCategory($fact,$plan);
         }

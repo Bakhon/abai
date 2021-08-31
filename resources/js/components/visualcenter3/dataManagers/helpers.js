@@ -266,7 +266,7 @@ export default {
         },
 
         getProductionTableClass() {
-            let classes = 'table4';
+            let classes = 'table4 production-table';
             if (!this.isOilResidueActive) {
                 classes += ' w-100';
             }
