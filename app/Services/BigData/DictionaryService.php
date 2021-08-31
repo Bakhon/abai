@@ -57,6 +57,7 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\WellPrsRepairType;
 use App\Models\BigData\Dictionaries\TechStateCasing;
 use App\TybeNom;
 use Carbon\Carbon;
@@ -371,7 +372,7 @@ class DictionaryService
                     break;
                 case 'reason_ref':
                     $dict = $this->getReasonTypeDict('REF');
-                    break; 
+                    break;
                 case 'reason_rst':
                     $dict = $this->getReasonTypeDict('RST');
                     break;        
@@ -572,7 +573,8 @@ class DictionaryService
             )
             ->toArray();
 
-        return $items;
+        return $items;                  
+
     }     
     
     private function getReasonTypeDict(string $type){

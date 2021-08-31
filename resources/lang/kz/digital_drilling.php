@@ -86,7 +86,7 @@ return array (
       'technical_casing' => 'Техническая оснастка обсадных колонн',
       'casing' => 'Обсадная колонна'
   ],
-  'project1' => [
+  'project_data' => [
       'data_input' => 'Ввод данных',
       'visualization' => 'Визуализация',
       'selection_OK' => 'Подбор ОК(каталог)',
