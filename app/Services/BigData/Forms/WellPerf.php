@@ -18,15 +18,15 @@ class WellPerf extends PlainForm
         $errors = [];
 
         if (!$this->isValidDepth($this->request->get('well'),$this->request->get('depth'))) {
-            $errors['depth'][] = trans('bd.validation.depth');
+            $errors['depth'] = trans('bd.validation.depth');
         }
 
         if (!$this->isValidDepth($this->request->get('well'),$this->request->get('base'))) {
-            $errors['base'][] = trans('bd.validation.depth');
+            $errors['base'] = trans('bd.validation.depth');
         }
 
         if (!$this->isValidDate($this->request->get('well'), $this->request->get('perf_date'), 'dict.well' , 'drill_end_date')) {
-            $errors['perf_date'][] = trans('bd.validation.perf_date');
+            $errors['perf_date'] = trans('bd.validation.perf_date');
         }
 
         return $errors;
