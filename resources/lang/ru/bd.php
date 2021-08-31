@@ -192,7 +192,9 @@ return [
             'owt_of_plan' => 'Вне плана',
             'do_not_chenge_teckh_condition' => 'Не менять техническое состояние',
             'do_not_chenge_condition' => 'Не менять состояние',
-            'gtm_duplicate' => 'Дублировать в ГТМ'
+            'gtm_duplicate' => 'Дублировать в ГТМ',
+            'on_our_own' => 'Собственными силами',
+
 
         ],
         'gas_well' => [
@@ -824,7 +826,7 @@ return [
         'report_constructor' => [
             'menu' => 'Конструктор отчетов',
         ],
-        'well_cart' => [
+        'well_card' => [
             'menu' => 'Карточка скважины',
         ],
         'production_wells_schedule' => [

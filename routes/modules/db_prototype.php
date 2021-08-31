@@ -8,7 +8,7 @@ Route::group(
             function () {
                 Route::get('/', 'bd\DBController@bigdata')->name('bigdata');
                 Route::get('/las', 'bd\DBController@las')->name('las');
-                Route::get('/well-cart', 'bd\DBController@well_cart')->name('bigdata.well_cart');
+                Route::get('/well-card', 'bd\DBController@well_card')->name('bigdata.well_card');
                 Route::get('/report-constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
                 Route::get('/field-list', 'bd\DBController@field_list')->name('field_list');

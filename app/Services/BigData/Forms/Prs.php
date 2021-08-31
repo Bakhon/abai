@@ -12,6 +12,7 @@ class Prs extends PlainForm
     protected $configurationFileName = 'prs';
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
+    use DepthValidationTrait;
     protected function prepareDataToSubmit()
     {
         $data = $this->request->except($this->tableFieldCodes);
@@ -30,14 +31,7 @@ class Prs extends PlainForm
     {
         $errors = [];
 
-        if (!$this->isValidDateDbeg(
-            $this->request->get('well'),
-            $this->request->get('dbeg'), 
-            'dict.well' , 
-            'drill_start_date'
-        )){
-            $errors['dbeg'] = trans('bd.validation.date');
-        }
+        
         if (!$this->isValidDepth($this->request->get('well'), $this->request->get('actual_bh'))) {
             $errors['actual_bh'] = trans('bd.validation.depth');
         }

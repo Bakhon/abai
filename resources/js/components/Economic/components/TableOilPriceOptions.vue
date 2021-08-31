@@ -114,7 +114,7 @@ export default {
     tableData() {
       return [
         {
-          title: `${this.trans('economic_reference.at_export_price')} - ${this.scenario.oil_price}$/bbl`,
+          title: `${this.trans('economic_reference.at_export_price')} - ${+this.scenario.oil_price}$/bbl`,
           uwiCount: this.trans('economic_reference.units'),
           prsCount: this.trans('economic_reference.units'),
           prsPerUwi: this.trans('economic_reference.units'),
