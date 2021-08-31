@@ -811,12 +811,12 @@ export default {
           : this.scenario.prs.original_value
 
       return uwi_count
-          ? (prs * 1000 / uwi_count).toFixed(fractionDigits)
+          ? (prs / uwi_count).toFixed(fractionDigits)
           : 0
     },
 
-    updateTab(index){
-      this.isVisibleWellChanges = index === 3
+    updateTab(tab){
+      this.isVisibleWellChanges = tab === 'well_changes'
     }
   }
 };
