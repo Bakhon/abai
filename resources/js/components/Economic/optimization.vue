@@ -361,7 +361,7 @@ export default {
       isFullScreen: false
     },
     res: economicRes,
-    isVisibleWellChanges: false,
+    isVisibleWellChanges: false
   }),
   computed: {
     ...globalloadingState(['loading']),
