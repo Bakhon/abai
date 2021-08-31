@@ -194,7 +194,7 @@
     Vue.component('deepening-gidro', require('./analytics/deepening-gidro').default);
     Vue.component('deepening-sorting', require('./analytics/deepening-sorting').default);
     Vue.component('deepening-selection', require('./analytics/deepening-selection').default);
-    Vue.component('well-fastening', require('./analytics/well-fastening').default);
+    Vue.component('analytics-fastening', require('./analytics/analytics-fastening').default);
     Vue.component('fastening-first', require('./analytics/fastening-first').default);
     Vue.component('fastening-second', require('./analytics/fastening-second').default);
     Vue.component('fastening-third', require('./analytics/fastening-third').default);
