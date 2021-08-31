@@ -55,4 +55,6 @@
   'well_treat' => '\\App\\Services\\BigData\\Forms\\WellTreat',
   'drilling' => '\\App\\Services\\BigData\\Forms\\Drilling',
   'well_mark' => '\\App\\Services\\BigData\\Forms\\WellMark',
+  'plan_g_d_i_s' => '\\App\\Services\\BigData\\Forms\\PlanGDIS',
+  'plan_g_i_s' => '\\App\\Services\\BigData\\Forms\\PlanGIS',
 );

@@ -183,7 +183,6 @@
 </svg>{{trans('tr.reset_filters')}}</button> -->
               <modal name="add_well" :width="1600" :height="600"  :adaptive="true" style="z-index:9900000; ">
                 <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
-                  <notifications position="top"></notifications>
                   <div>
                         <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
                             <h5>{{trans('tr.well_add')}}</h5>
@@ -373,29 +372,29 @@
                           <tr v-for="(row, row_index) in lonelywell" 
                             :key="row_index"
                             ref="editTable">
-                            <td><input data-key="field" :value="row.field" class="input_edit_modal"></td>
-                            <td><input data-key="well_status_last_day" :value="row.well_status_last_day" class="input_edit_modal"></td>
-                            <td><input data-key="rus_wellname" :value="row.rus_wellname" class="input_edit_modal"></td>
+                            <td><input data-key="field" v-model="row.field" class="input_edit_modal"></td>
+                            <td><input data-key="well_status_last_day" v-model="row.well_status_last_day" class="input_edit_modal"></td>
+                            <td><input data-key="rus_wellname" v-model="row.rus_wellname" class="input_edit_modal"></td>
                             <td><b-form-select data-key="horizon" v-model="row.horizon"  :options="horizonFilterData" @change="editAddWell(row, row_index)" class="select_edit"></b-form-select></td>
-                            <td><input data-key="object" :value="row.object" class="input_edit_modal"></td>
-                            <td><input data-key="exp_meth" :value="row.exp_meth" class="input_edit_modal"></td>
-                            <td><input data-key="type_text" :value="row.type_text" class="input_edit_modal"></td>
-                            <td><input data-key="block" :value="row.block" class="input_edit_modal"></td>
-                            <td><input data-key="cas_OD" :value="row.cas_OD" class="input_edit_modal"></td>
-                            <td><input data-key="cas_ID" :value="row.cas_ID" class="input_edit_modal"></td>
-                            <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md" class="input_edit_modal"></td>
-                            <td><input data-key="pump_type" :value="row.pump_type" class="input_edit_modal"></td>
-                            <td><input data-key="type_sr" :value="row.type_sr" class="input_edit_modal"></td>
-                            <td><input data-key="whp" :value="row.whp" class="input_edit_modal"></td>
-                            <td><input data-key="line_p" :value="row.line_p" class="input_edit_modal"></td>
-                            <td><input data-key="p_res" :value="row.p_res" class="input_edit_modal"></td>
-                            <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit_modal"></td>
-                            <td><input data-key="p_annular" :value="row.p_annular" class="input_edit_modal"></td>
-                            <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit_modal"></td>
-                            <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit_modal"></td>
-                            <td><input data-key="h_perf" :value="row.h_perf" class="input_edit_modal"></td>
-                            <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit_modal"></td>
-                            <td v-show="false"><input data-key="well" :value="row.well" class="input_edit_modal"></td>
+                            <td><input data-key="object" v-model="row.object" class="input_edit_modal"></td>
+                            <td><input data-key="exp_meth" v-model="row.exp_meth" class="input_edit_modal"></td>
+                            <td><input data-key="type_text" v-model="row.type_text" class="input_edit_modal"></td>
+                            <td><input data-key="block" v-model="row.block" class="input_edit_modal"></td>
+                            <td><input data-key="cas_OD" v-model="row.cas_OD" class="input_edit_modal"></td>
+                            <td><input data-key="cas_ID" v-model="row.cas_ID" class="input_edit_modal"></td>
+                            <td><input data-key="h_up_perf_md" v-model="row.h_up_perf_md" class="input_edit_modal"></td>
+                            <td><input data-key="pump_type" v-model="row.pump_type" class="input_edit_modal"></td>
+                            <td><input data-key="type_sr" v-model="row.type_sr" class="input_edit_modal"></td>
+                            <td><input data-key="whp" v-model="row.whp" class="input_edit_modal"></td>
+                            <td><input data-key="line_p" v-model="row.line_p" class="input_edit_modal"></td>
+                            <td><input data-key="p_res" v-model="row.p_res" class="input_edit_modal"></td>
+                            <td><input data-key="h_dyn" v-model="row.h_dyn" class="input_edit_modal"></td>
+                            <td><input data-key="p_annular" v-model="row.p_annular" class="input_edit_modal"></td>
+                            <td><input data-key="dens_oil" v-model="row.dens_oil" class="input_edit_modal"></td>
+                            <td><input data-key="dens_liq" v-model="row.dens_liq" class="input_edit_modal"></td>
+                            <td><input data-key="h_perf" v-model="row.h_perf" class="input_edit_modal"></td>
+                            <td><input data-key="bhp_meter" v-model="row.bhp_meter" class="input_edit_modal"></td>
+                            <td v-show="false"><input data-key="well" v-model="row.well" class="input_edit_modal"></td>
 
                           </tr>
                         </tbody>
@@ -6452,8 +6451,6 @@
         </div>
       </div>
     </div>
-    <notifications position="top"></notifications>
-
   </div>
 </template>
 <script src="./tr.js"></script>

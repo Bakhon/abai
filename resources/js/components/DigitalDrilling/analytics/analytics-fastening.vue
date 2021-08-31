@@ -26,7 +26,7 @@
 
 <script>
     export default {
-        name: "well-fastening",
+        name: "analytics-fastening",
         data(){
             return{
                 main_tables: [
