@@ -88,8 +88,8 @@ export default {
             },
             {
               name: 'Карточка скважины',
-              icon: 'well_cart.svg',
-              url: this.localeUrl('/bigdata/well-cart'),
+              icon: 'well_card.svg',
+              url: this.localeUrl('/bigdata/well-card'),
             },
           ]
         },

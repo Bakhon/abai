@@ -22,6 +22,7 @@ return [
     'exit' => 'Выход',
     'select_dzo' => 'Выберите ДЗО из списка',
     'select_ngdu' => 'Выберите НГДУ из списка',
+    'select_dzo_ngdu' => 'Выберите ДЗО или НГДУ из списка',
     'nothing_found' => 'Ничего не найдено',
     'actions' => 'Действия',
     'forms' => [
@@ -103,7 +104,7 @@ return [
             'used_run_down_nkt' => 'Кол-во спущенных НКТ, б/у',
             'actual_bottomhole_m' => 'Фактический забой, м',
             'no_slaughter' => 'Забой отсутствует',
-            'no_slaughter_reason' => 'Причина отсутсивия забоя',
+            'no_slaughter_reason' => 'Причина отсутствия забоя',
             'artificial_slaughter_m' => 'Искусственный забой, м',
             'machine_technical_condition' => 'Техническое состояние скважин',
             'not_change_technical_condition' => 'Не менять техническое состояние',
@@ -112,9 +113,11 @@ return [
             'new_state' => 'Новое состояние',
             'condition' => 'Состояние',
             'not_change_state' => 'Не менять состояние',
-            'hardware_failure_cause' => 'Основная причина отказа оборудования',
-            'equipment_failure_type' => 'Вид причины отказа оборудования',
-            'stopping_reason' => 'Причина остановки'
+            'cause_h_failure' => 'Основная причина отказа оборудования',
+            'add_f' => 'Детальная причина отказа',
+            'reason_type' => 'Дополнительная информация',
+            'reason_stopping' => 'Причина остановки',
+            'well_previous_category' => 'Категория до выбранной даты'
         ],
         'injection_wells' => [
             'title' => 'Тех.Режим - Нагнетательные скважины',
@@ -821,7 +824,7 @@ return [
         'report_constructor' => [
             'menu' => 'Конструктор отчетов',
         ],
-        'well_cart' => [
+        'well_card' => [
             'menu' => 'Карточка скважины',
         ],
         'production_wells_schedule' => [
@@ -973,7 +976,19 @@ return [
             'scraper_income' => 'Доход скребка, м',
             'data' => 'Дата',
         ],
-            
+        'plan_g_d_i_s' => [
+            'date' => 'Дата с',
+            'date_to' => 'Дата по',
+            'well' => 'скваж.',
+            'measure' => 'замер.',
+        ],
+        'plan_g_i_s' => [
+            'name' => 'Наименование',
+            'total_period' => 'Всего за период',
+            'total' => 'Всего',
+            'date' => 'Дата с',
+            'date_to' => 'Дата по',
+        ]
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',
     'list' => 'Просмотр списка',

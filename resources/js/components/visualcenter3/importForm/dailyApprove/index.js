@@ -16,7 +16,9 @@ export default {
                 'change_reason',
                 'dzo_import_data_id',
                 'is_approved_by_first_master',
-                'is_approved_by_second_master'
+                'is_approved_by_second_master',
+                'created_at',
+                'updated_at'
             ],
             dzoCompanies: {
                 'ЭМГ': 'АО "Эмбамунайгаз"',

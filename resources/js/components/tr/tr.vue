@@ -173,21 +173,21 @@
       <div class="maintable-level2" style="position: relative">
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px; color: white">
-            <h5>{{trans('tr.tr_to')}} {{ dt }}</h5>
-            
-          </div>          
+            <h5>{{trans('tr.tr_to')}} {{ dt }}</h5>          
+          </div>   
           <a v-show="false" v-if="isEdit"></a>
-
             <div class="tr_icons_block">
-              <modal name="add_well" :width="1600" :height="220"  :adaptive="true" style="z-index:9900000; ">
+              <!-- <button v-on:click="dropAllFilters" class="reset_all_filters"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+</svg>{{trans('tr.reset_filters')}}</button> -->
+              <modal name="add_well" :width="1600" :height="600"  :adaptive="true" style="z-index:9900000; ">
                 <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
-                  <notifications position="top"></notifications>
                   <div>
                         <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
                             <h5>{{trans('tr.well_add')}}</h5>
                             <button type="button" class="modal-bign-button" @click="closeModal('add_well')">{{trans('tr.close')}}</button>
                         </div>
-                        
                         <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
                                 <div style="margin-left: 7px;">
                                   <select
@@ -197,7 +197,7 @@
                                     value="Статус"
                                   >
                                     <option v-for="(f, k) in statusFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_status') : f }}
+                                      {{ f }}
                                     </option>
                                   </select>
                                 </div>
@@ -239,23 +239,33 @@
                                     </option>
                                   </select>
                                 </div>
-
-                                <div style="margin-left: 7px; cursor: pointer;">
-                                  <select
-                                    class="select_mod form-control"
-                                    style="background: #334296 !important"
-                                    v-model="wellFilter"
-                                    value="Скважина"
-                                  >
-                                    <option v-for="(f, k) in wellFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_well') : f }}
-                                    </option>
-                                  </select>
-                                </div>
-                                
-                                  <a
+                
+                                  <div v-if="wellFilter.length > 0" class="title-multi-select">{{trans('tr.add')}} {{ wellFilter.length }} скважин</div>
+                                  <div v-else class="title-multi-select">Выберите скважину</div>
+                                  <div class="dropdown_modal">
+                                    <b-dropdown  toggle-class="drop-filter-custom" >
+                                      <template #button-content class="outer_button_filter">        
                                     
-                                    style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                      </template>
+                                        <b-dropdown-form class="modal_filter" >
+                                          <b-form-group
+                                            label=""
+                                            v-slot="{ ariaDescribedby }"
+                                            @submit.stop.prevent
+                                            class="well_modal_form_fil"
+                                          >
+                                            <b-form-checkbox-group
+                                            v-model="wellFilter"
+                                            :options="wellFilters"
+                                            :aria-describedby="ariaDescribedby"                                  
+                                          >
+                                          </b-form-checkbox-group>
+                                          </b-form-group>
+                                        </b-dropdown-form>
+                                    </b-dropdown>
+                                  </div>
+                                  <a
+                                    class="add_button_modal"
                                     v-if="!isShowAdd"
                                     @click="addWellData"
                                     @click.prevent="showWells"
@@ -270,11 +280,11 @@
                                     </svg>
                                   {{trans('tr.add')}}</a>
 
-                                  <a
-                                    
+                                  <a                                   
                                     style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
                                     v-if="isShowAdd"
                                     @click="showWells"
+                                    @click.prevent="reRender"
                                     ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                       <path d="M17.6567 17.6575L6.34294 6.34383" 
                                         stroke="white" stroke-width="1.4" stroke-linecap="round"/>
@@ -331,7 +341,7 @@
                   </div>
                   <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
 
-                        <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="isShowAdd" :key="render">
+                        <table class="table table-bordered table-dark table-responsive trtable modal_table" style="font-size: 12px; background: #454D7D; color: #fff; ;" v-if="isShowAdd" :key="render">
                         <thead>
                           <tr >
                             <td scope="col">{{trans('tr.field')}}</td>
@@ -362,29 +372,29 @@
                           <tr v-for="(row, row_index) in lonelywell" 
                             :key="row_index"
                             ref="editTable">
-                            <td><input data-key="field" :value="row.field" class="input_edit_modal"></td>
-                            <td><input data-key="well_status_last_day" :value="row.well_status_last_day" class="input_edit_modal"></td>
-                            <td><input data-key="rus_wellname" :value="row.rus_wellname" class="input_edit_modal"></td>
-                            <td><b-form-select data-key="horizon" :value="row.horizon" :options="horizonFilterData" class="select_edit"></b-form-select></td>
-                            <td><input data-key="object" :value="row.object" class="input_edit_modal"></td>
-                            <td><input data-key="exp_meth" :value="row.exp_meth" class="input_edit_modal"></td>
-                            <td><input data-key="type_text" :value="row.type_text" class="input_edit_modal"></td>
-                            <td><input data-key="block" :value="row.block" class="input_edit_modal"></td>
-                            <td><input data-key="cas_OD" :value="row.cas_OD" class="input_edit_modal"></td>
-                            <td><input data-key="cas_ID" :value="row.cas_ID" class="input_edit_modal"></td>
-                            <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md" class="input_edit_modal"></td>
-                            <td><input data-key="pump_type" :value="row.pump_type" class="input_edit_modal"></td>
-                            <td><input data-key="type_sr" :value="row.type_sr" class="input_edit_modal"></td>
-                            <td><input data-key="whp" :value="row.whp" class="input_edit_modal"></td>
-                            <td><input data-key="line_p" :value="row.line_p" class="input_edit_modal"></td>
-                            <td><input data-key="p_res" :value="row.p_res" class="input_edit_modal"></td>
-                            <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit_modal"></td>
-                            <td><input data-key="p_annular" :value="row.p_annular" class="input_edit_modal"></td>
-                            <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit_modal"></td>
-                            <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit_modal"></td>
-                            <td><input data-key="h_perf" :value="row.h_perf" class="input_edit_modal"></td>
-                            <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit_modal"></td>
-                            <td v-show="false"><input data-key="well" :value="row.well" class="input_edit_modal"></td>
+                            <td><input data-key="field" v-model="row.field" class="input_edit_modal"></td>
+                            <td><input data-key="well_status_last_day" v-model="row.well_status_last_day" class="input_edit_modal"></td>
+                            <td><input data-key="rus_wellname" v-model="row.rus_wellname" class="input_edit_modal"></td>
+                            <td><b-form-select data-key="horizon" v-model="row.horizon"  :options="horizonFilterData" @change="editAddWell(row, row_index)" class="select_edit"></b-form-select></td>
+                            <td><input data-key="object" v-model="row.object" class="input_edit_modal"></td>
+                            <td><input data-key="exp_meth" v-model="row.exp_meth" class="input_edit_modal"></td>
+                            <td><input data-key="type_text" v-model="row.type_text" class="input_edit_modal"></td>
+                            <td><input data-key="block" v-model="row.block" class="input_edit_modal"></td>
+                            <td><input data-key="cas_OD" v-model="row.cas_OD" class="input_edit_modal"></td>
+                            <td><input data-key="cas_ID" v-model="row.cas_ID" class="input_edit_modal"></td>
+                            <td><input data-key="h_up_perf_md" v-model="row.h_up_perf_md" class="input_edit_modal"></td>
+                            <td><input data-key="pump_type" v-model="row.pump_type" class="input_edit_modal"></td>
+                            <td><input data-key="type_sr" v-model="row.type_sr" class="input_edit_modal"></td>
+                            <td><input data-key="whp" v-model="row.whp" class="input_edit_modal"></td>
+                            <td><input data-key="line_p" v-model="row.line_p" class="input_edit_modal"></td>
+                            <td><input data-key="p_res" v-model="row.p_res" class="input_edit_modal"></td>
+                            <td><input data-key="h_dyn" v-model="row.h_dyn" class="input_edit_modal"></td>
+                            <td><input data-key="p_annular" v-model="row.p_annular" class="input_edit_modal"></td>
+                            <td><input data-key="dens_oil" v-model="row.dens_oil" class="input_edit_modal"></td>
+                            <td><input data-key="dens_liq" v-model="row.dens_liq" class="input_edit_modal"></td>
+                            <td><input data-key="h_perf" v-model="row.h_perf" class="input_edit_modal"></td>
+                            <td><input data-key="bhp_meter" v-model="row.bhp_meter" class="input_edit_modal"></td>
+                            <td v-show="false"><input data-key="well" v-model="row.well" class="input_edit_modal"></td>
 
                           </tr>
                         </tbody>
@@ -623,32 +633,30 @@
                   <td rowspan="4" class="th">{{trans('tr.ngdu_field')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.well_number')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.well_type')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.horizon')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.object')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.block')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.u_horizon')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.u_object')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.u_block')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.r_feed_loop')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.outer_diameter_producing_casing')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.inner_diameter_producing_casing')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_lg">{{trans('tr.inner_diameter_producing_casing')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.outer_diameter_nkt')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.inner_diameter_nkt')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.choke_diameter')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.h_water_permeability')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.h_water_permeability_extension')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.operation_method')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.pump_type')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_blg">{{trans('tr.pump_type')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.sk_type')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.swing_number')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.stroke_length')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.q_theor')}}</td>
-                  <td rowspan="4" class="th">
-                    {{trans('tr.pump_frequency_or_speed')}}
-                  </td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.q_theor')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_blg">{{trans('tr.pump_frequency_or_speed')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.h_pump_set')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.p_buffer')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.p_buffer')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.p_linear')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.p_layer')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.h_dynamic')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.annular_pressure')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.p_layer')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.h_dynamic')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.annular_pressure')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.p_intake')}}</td>
                   <td class="colspan th" colspan="5">
                     {{trans('tr.previous_month_data')}}
@@ -657,9 +665,9 @@
                   <td rowspan="4" class="th">
                     <span>{{trans('tr.state_at_the_end_of_the_month')}}</span>
                   </td>
-                  <td rowspan="4" class="th">{{trans('tr.p_saturation')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.t_layer')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.t_mouth')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.p_saturation')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.t_layer')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">{{trans('tr.t_mouth')}}</td>
                   <td class="colspan th" colspan="4">{{trans('tr.grp')}}</td>
                   <td rowspan="4" class="th">
                     <span>{{trans('tr.oil_viscosity_in_reservoir_conditions')}}</span>
@@ -673,8 +681,8 @@
                   <td rowspan="4" class="th">{{trans('tr.water_density')}}</td>
                   <td rowspan="4" class="th">{{trans('tr.h_up_perf_md')}}</td>
                   <td rowspan="4" class="th">k</td>
-                  <td rowspan="4" class="th">КН</td>
-                  <td rowspan="4" class="th">{{trans('tr.pi')}}</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_sm">КН</td>
+                  <td rowspan="4" class="th fix_colunn_full_table_lg">{{trans('tr.pi')}}</td>
                   <td class="colspan th" colspan="14">
                     {{trans('tr.calculation_of_technological_potential_from_IDN')}}
                   </td>
@@ -723,22 +731,22 @@
                   <td rowspan="4" class="th">
                     <span>{{trans('tr.last_gtm_date')}}</span>
                   </td>
-                  <td rowspan="4" class="th">
+                  <td rowspan="4" class="th fix_column_first_warn">
                     <span>{{trans('tr.last_gtm_type')}}</span>
                   </td>
                   <td class="colspan th" colspan="14">{{trans('tr.intended_mode')}}</td>
                 </tr>
                 <tr class="headerColumn notsticky" style="background: #333975">
-                  <td rowspan="3" class="th"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.water_cut')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.h_dyn')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.k_prod')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_nm"><span>{{trans('tr.k_prod')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.q_oil')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.water_cut')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.gas_factor')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.gas_factor')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.skin')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.jd_fact')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.grp_date')}}</span></td>
@@ -761,14 +769,14 @@
                   <td class="colspan th" colspan="2">{{trans('tr.errors')}}</td>
                   <td class="colspan th" colspan="2">{{trans('tr.warnings')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.apv_t_rab')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.apv_t_nak')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_sm"><span>{{trans('tr.apv_t_nak')}}</span></td>
                   <td class="colspan th" colspan="3">{{trans('tr.isolation_works')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.choke_diameter')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.q_oil')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.q_gas')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_nm"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_nm"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_nm"><span>{{trans('tr.q_gas')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.water_cut')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.gas_factor')}}</span></td>
+                  <td rowspan="3" class="th fix_colunn_full_table_nm"><span>{{trans('tr.gas_factor')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.work_days')}}</span></td>
                   <td rowspan="3" class="th">
                     <span>{{trans('tr.planned_monthly_oil')}}</span>
@@ -785,48 +793,48 @@
                   <td class="colspan th" colspan="2">
                     <span>{{trans('tr.regime_changes')}}</span>
                   </td>
-                  <td rowspan="3" class="th">
+                  <td rowspan="3" class="th fix_colunn_full_table_blg">
                     <span>{{trans('tr.tr_measure_to_ensure')}}</span>
                   </td>
                 </tr>
                 <tr class="headerColumn notsticky" style="background: #333975">
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th">
                     <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.q_oil_gain')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th">
                     <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.q_oil_gain')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th">
                     <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.q_oil_gain')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th">
                     <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.q_oil_gain')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.error_quantity')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.first_error')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_blg"><span>{{trans('tr.first_error')}}</span></td>
                   <td rowspan="2" class="th">
                     <span>{{trans('tr.warning_quantity')}}</span>
                   </td>
-                  <td rowspan="2" class="th">
+                  <td rowspan="2" class="th fix_column_first_warn">
                     <span>{{trans('tr.first_warning')}}</span>
                   </td>
                   <td rowspan="2" class="th"><span>{{trans('tr.spend')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th"><span>{{trans('tr.water_cut')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
                 </tr>
                 <tr></tr>
                 <tr
@@ -1283,13 +1291,13 @@
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('gp_grp_q_liq_cas_d_corr')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('gp_grp_q_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('gp_grp_q_oil_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('gp_total_inc_perc')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
@@ -1358,7 +1366,7 @@
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('curr_bh')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('pump_fillage')" class="th">
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
@@ -6421,6 +6429,7 @@
               </tbody>
             </table>
           </div>
+          
           <div class="overflow-auto">
             
             <paginate
@@ -6442,8 +6451,6 @@
         </div>
       </div>
     </div>
-    <notifications position="top"></notifications>
-
   </div>
 </template>
 <script src="./tr.js"></script>
@@ -6656,6 +6663,9 @@ tr:nth-child(even) {
 .table .th {
   position: sticky;
   background: rgb(51, 57, 117);
+  border-right: 2px solid #454d55;
+  border-left: 2px solid #454d55;
+  
 }
 .table tr:first-child .th {
   top: -1px;
@@ -6787,6 +6797,45 @@ table::-webkit-scrollbar-corner {
   color: #fff;
   text-align: center;
 }
+.fix_colunn_full_table_lg {
+  min-width: 85px;
+}
+.fix_colunn_full_table_sm {
+  min-width: 51px;
+}
+.fix_colunn_full_table_nm {
+  min-width: 70px;
+}
+.fix_colunn_full_table_blg {
+  min-width: 106px;
+}
+.fix_column_first_warn {
+  min-width: 188px;
+}
+.reset_all_filters {
+  background: #333975;
+  color: white;
+  border: none;
+}
+.title-multi-select {
+    color: #fff;
+    padding-left: 36px;
+    padding-top: 4px;
+}
+.dropdown_modal {
+  padding-left: 7px;
+    padding-top: 5px;
+}
+.add_button_modal {
+      margin-left: 78px; 
+  cursor: pointer; 
+  color:white; 
+  margin-top: 5px;
+}
+.modal_table {
+  height: 240px !important;
+}
+
     .table-outer{
       &::v-deep{
         .pagination {
