@@ -154,10 +154,10 @@ export default {
 
       let key = 'original_value_optimized'
 
-      let denominator = (+scenario.production_export[key] * (+this.scenario.dollar_rate) * 7.2)
+      let denominator = +scenario.production_export[key] * +this.scenario.dollar_rate
 
       return denominator
-          ? 1000 * (+scenario.Revenue_export[key] / denominator)
+          ? 1000 * (+scenario.Revenue_export[key] / (denominator * +this.scenario.Barrel_ratio_export_scenario))
           : 0
     },
 

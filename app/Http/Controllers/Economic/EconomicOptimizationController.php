@@ -35,6 +35,7 @@ class EconomicOptimizationController extends Controller
         "gtm_cost",
         "gtm_operating_profit_12m",
         "gtms",
+        "Barrel_ratio_export_scenario"
     ];
 
     const OPTIMIZED_COLUMNS = [
