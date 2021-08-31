@@ -179,50 +179,50 @@
               <div class="vertical-centered">
                   <div class="row date-container">
                     <div class="col">
-                    <div class="row start-date-container mb-2">
-                      <label class="col">{{ trans('bd.start_date') }}</label>
-                      <template>
-                        <datetime
-                            type="date"
-                            v-bind:value="startDate"
-                            v-on:input="onStartDatePickerClick($event)"
-                            class="col start-date"
-                            value-zone="Asia/Almaty"
-                            zone="Asia/Almaty"
-                            :title="trans('bd.choose_start_date')"
-                            :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-                            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                            :max-datetime="endDate"
-                            :week-start="1"
-                            :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
-                            auto
-                            :flow="dateFlow"
-                        >
-                        </datetime>
-                      </template>
-                    </div>
-                    <div class="row end-date-container mb-2">
-                      <label class="col">{{ trans('bd.end_date') }}</label>
-                      <template>
-                        <datetime
-                            type="date"
-                            v-bind:value="endDate"
-                            v-on:input="onEndDatePickerClick($event)"
-                            class="end-date"
-                            value-zone="Asia/Almaty"
-                            zone="Asia/Almaty"
-                            :title="trans('bd.choose_end_date')"
-                            :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-                            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                            :min-datetime="startDate"
-                            :week-start="1"
-                            :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
-                            auto
-                            :flow="dateFlow"
-                        >
-                        </datetime>
-                      </template>
-                    </div>
+                      <div class="row start-date-container mb-2">
+                        <label class="col">{{ trans('bd.start_date') }}</label>
+                        <template>
+                          <datetime
+                              type="date"
+                              v-bind:value="startDate"
+                              v-on:input="onStartDatePickerClick($event)"
+                              class="col start-date"
+                              value-zone="Asia/Almaty"
+                              zone="Asia/Almaty"
+                              :title="trans('bd.choose_start_date')"
+                              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                              :max-datetime="endDate"
+                              :week-start="1"
+                              :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+                              auto
+                              :flow="dateFlow"
+                          >
+                          </datetime>
+                        </template>
+                      </div>
+                      <div class="row end-date-container mb-2">
+                        <label class="col">{{ trans('bd.end_date') }}</label>
+                        <template>
+                          <datetime
+                              type="date"
+                              v-bind:value="endDate"
+                              v-on:input="onEndDatePickerClick($event)"
+                              class="end-date"
+                              value-zone="Asia/Almaty"
+                              zone="Asia/Almaty"
+                              :title="trans('bd.choose_end_date')"
+                              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                              :min-datetime="startDate"
+                              :week-start="1"
+                              :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+                              auto
+                              :flow="dateFlow"
+                          >
+                          </datetime>
+                        </template>
+                      </div>
                     </div>
                     <div class="col date-picker inline-flex">
                       <button
@@ -241,10 +241,6 @@
                     </div>
 
                     <div class="btn-container">
-                      <button class="" :disabled="!startDate" @click="updateStatistics()">{{
-                          trans('bd.create_report')
-                        }}
-                      </button>
                       <button @click="clearDate()"> Очистить дату </button>
                       <button class="" @click="showTemplatesModal('templateSelectorModal')">{{
                           trans('bd.choose_template')
@@ -371,6 +367,9 @@
               </div>
               <div class="row">
                 <div class="btn-container">
+                  <button class="" :disabled="!startDate" @click="updateStatistics()">
+                    {{trans('bd.create_report')}}
+                  </button>
                   <button @click="getStatisticsFile()">Скачать отчет</button>
                   <button @click="showModal('newTemplateNameModal')">Сохранить как шаблон</button>
                 </div>
