@@ -134,7 +134,7 @@
                 };
 
                 let datasets = [planChartOptions,factChartOptions,planOpecChartOptions];
-                if (chartSummary.isFilterTargetPlanActive && !chartSummary.isOilResidueActive) {
+                if (chartSummary.isFilterTargetPlanActive) {
                     datasets = [planChartOptions,factChartOptions,planOpecChartOptions,monthlyPlan];
                 }
 
@@ -205,12 +205,10 @@
                         fillStyle: style.borderColor,
                     };
                 });
-                if (!chartSummary.isOilResidueActive) {
-                    labels.push({
-                        text: this.trans("visualcenter.deviation"),
-                        fillStyle: fillPattern,
-                    });
-                }
+                labels.push({
+                    text: this.trans("visualcenter.deviation"),
+                    fillStyle: fillPattern,
+                });
                 return labels;
             },
 

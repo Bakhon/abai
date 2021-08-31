@@ -754,7 +754,7 @@ export default {
         // this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
         // this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
         // this.sortDzoList();
-        this.changeDate();
+        //this.changeDate();
         // this.changeMenu2();
         //
         // this.buttonDailyTab = "button-tab-highlighted";

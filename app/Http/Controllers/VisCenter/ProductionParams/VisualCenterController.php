@@ -120,7 +120,7 @@ class VisualCenterController extends Controller
             $this->chartData = $this->getChartData($currentPeriodDzoFact,$currentPeriodDzoPlan);
         }
         $this->tableData = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan);
-        dd($this->tableData);
+        return $this->tableData;
     }
 
     private function refreshRequestParams($params)
