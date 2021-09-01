@@ -88,7 +88,7 @@
                     @endif
                     @if(auth()->user()->can('monitoring list manual_hydro_calculation'))
                         <li class="left-menu-li">
-                            <a href="{{route('manual-hydro-calc.index')}}">
+                            <a href="{{route('manual_hydro_calculation.index')}}">
                                 {{ trans('monitoring.manual_hydro_calculation.table_title') }}
                             </a>
                         </li>
