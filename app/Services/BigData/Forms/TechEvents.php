@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Exceptions\BigData\SubmitFormException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class TechEvents extends PlainForm
@@ -21,14 +22,13 @@ class TechEvents extends PlainForm
 
             DB::connection('tbd')->commit();
             return [];
-            //return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
         } catch (\Exception $e) {
             DB::connection('tbd')->rollBack();
             throw new SubmitFormException($e->getMessage());
         }
     }
 
-    private function removeOldEvents()
+    private function removeOldEvents(): void
     {
         $existedEventIds = DB::connection('tbd')
             ->table('prod.tech_mode_event')
@@ -57,7 +57,7 @@ class TechEvents extends PlainForm
         }
     }
 
-    private function getEventsToUpdate()
+    private function getEventsToUpdate(): Collection
     {
         return collect($this->request->events)->filter(function ($event) {
             return !empty($event['id']);
@@ -80,14 +80,14 @@ class TechEvents extends PlainForm
         }
     }
 
-    private function getEventsToAdd()
+    private function getEventsToAdd(): Collection
     {
         return collect($this->request->events)->filter(function ($event) {
             return empty($event['id']);
         });
     }
 
-    private function updateEvents()
+    private function updateEvents(): void
     {
         $events = $this->getEventsToUpdate();
         foreach ($events as $event) {
