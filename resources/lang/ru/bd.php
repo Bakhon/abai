@@ -194,8 +194,9 @@ return [
             'do_not_chenge_condition' => 'Не менять состояние',
             'gtm_duplicate' => 'Дублировать в ГТМ',
             'on_our_own' => 'Собственными силами',
-
-
+            'gtm_type' => 'Вид ГТМ',
+            'status_before_selected_date' => 'Статус до выбранной даты',
+            'well_previous_category' => 'Категория до выбранной даты'
         ],
         'gas_well' => [
             'title' => 'Тех. режим - газовые скважины',

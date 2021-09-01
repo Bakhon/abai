@@ -61,7 +61,21 @@
               {
                 "code": "gtm_dublicate",
                 "type": "checkbox",
-                "title": "dublicate_to_gtm"
+                "title": "dublicate_to_gtm",
+                "is_editable": true
+              },
+              {
+                "code": "gtm_type",
+                "type": "dict",
+                "title": "gtm_type",
+                "validation": "exists:tbd.dict.gtm_type,id",
+                "dict": "gtm_types",
+                "depends_on": [
+                  {
+                    "field": "gtm_duplicate",
+                    "value": true
+                  }
+                ]
               }
             ]
           }
@@ -97,7 +111,7 @@
                 "code": "out_of_plan",
                 "type": "checkbox",
                 "title": "owt_of_plan",
-                "validation": "required"
+                "validation": ""
               },
               {
                 "code": "cnl_new",
@@ -113,9 +127,9 @@
               },
               {
                 "code": "td",
-                "type": "text",
+                "type": "numeric",
                 "title": "actual_bh",
-                "validation": ""
+                "validation": "lte:10000"
               },
               {
                 "code": "tech_state",
@@ -129,6 +143,18 @@
                 "type": "checkbox",
                 "title": "do_not_chenge_teckh_condition"
                 
+              },
+              {
+                "code": "well_previous_status_type",
+                "type":"calc",
+                "title": "status_before_selected_date",
+                "is_editable": false
+              },
+              {
+                "code": "well_previous_category",
+                "type":"calc",
+                "title": "well_previous_category",
+                "is_editable": false
               },
               {
                 "code": "well_status",
@@ -173,13 +199,6 @@
                 "type": "text",
                 "title": "reason_type",
                 "validation": "required"
-              },
-              {
-                "code": "stop_reason",
-                "type": "dict",
-                "title": "reason_stopping",
-                "validation": "required|exists:tbd.dict.reason,id",
-                "dict": "reason_rst"
               }
             ]
           }
