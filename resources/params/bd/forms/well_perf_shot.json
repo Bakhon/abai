@@ -91,13 +91,14 @@
                 "dict": "perf_types",
                 "title": "perf_t",
                 "table": "prod.well_perf_interval",
+                "parent_column": "well_perf",
                 "columns": [
                   {
-                    "code": "horizon",
-                    "type": "dict_tree",
+                    "code": "geo",
+                    "type": "dict",
                     "title": "horizon",
-                    "dict": "geos",
-                    "validation": "required|exists:tbd.dict.org,id"
+                    "dict": "geo_type_hrz",
+                    "validation": "required|exists:tbd.dict.geo,id"
                   },
                   {
                     "code": "top",
