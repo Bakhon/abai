@@ -11,6 +11,7 @@ use App\Models\Paegtm\DzoAegtm;
 use App\Services\DruidService;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class GTMController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:paegtm view main')->only('index');
+        //$this->middleware('can:paegtm view main')->only('index');
     }
 
     public function index()
@@ -75,6 +76,10 @@ class GTMController extends Controller
         return response()->json($result);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getAllGtmByDzo(Request $request)
     {
         $dateStart = $request->has('dateStart') && $request->filled('dateStart') ?
@@ -132,7 +137,11 @@ class GTMController extends Controller
         return response()->json($res);
     }
 
-    public function getMainData(Request $request)
+    /**
+     * @param Request $request
+     * @return Builder[]|Collection
+     */
+    public function getMainData(Request $request): Collection
     {
         $query = DzoAegtm::query();
 
@@ -142,15 +151,19 @@ class GTMController extends Controller
 
         $query->when($request->filled('dateStart') && $request->filled('dateEnd'), function ($q) use ($request) {
             return $q->whereBetween('date', [
-                request('dateStart', '2021-01-01 00:00:00'),
-                request('dateEnd', '2021-01-01 00:00:00'),
+                $request->input('dateStart', '2021-01-01 00:00:00'),
+                $request->input('dateEnd', '2021-01-01 00:00:00'),
             ]);
         });
 
         return $query->orderBy('date', 'ASC')->get();
     }
 
-    public function getMainTableData(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getMainTableData(Request $request): JsonResponse
     {
         $data = $this->getMainData($request)->groupBy('org_name');
 
@@ -212,7 +225,11 @@ class GTMController extends Controller
         return response()->json($result);
     }
 
-    public function getMainIndicatorData(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getMainIndicatorData(Request $request): JsonResponse
     {
         $data = $this->getMainData($request);
 
@@ -295,7 +312,11 @@ class GTMController extends Controller
         return response()->json($result);
     }
 
-    public function getAdditionalIndicatorData(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAdditionalIndicatorData(Request $request): JsonResponse
     {
         $data = $this->getMainData($request);
 
@@ -321,7 +342,11 @@ class GTMController extends Controller
         return response()->json($result);
     }
 
-    public function getGtmInfo(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getGtmInfo(Request $request): JsonResponse
     {
         $data = $this->getMainData($request);
 
@@ -425,7 +450,11 @@ class GTMController extends Controller
         return response()->json($result);
     }
 
-    public function getChartData(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getChartData(Request $request): JsonResponse
     {
         $data = $this->getMainData($request);
 
