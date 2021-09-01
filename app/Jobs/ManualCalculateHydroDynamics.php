@@ -130,18 +130,17 @@ class ManualCalculateHydroDynamics implements ShouldQueue
      */
     public function handle()
     {
+        if (!isset($this->input['date'])) {
+            return;
+        }
+
         $query = ManualOilPipe::query()
             ->with('firstCoords', 'lastCoords');
 
-
-        if (isset($this->input['date'])) {
-            $date = $this->input['date'];
-            $query = $query->with(['gu.omgngdu' => function ($q) use ($date) {
-                $q->where('date', $date);
-            }]);
-        } else {
-            $query = $query->with('gu.lastOmgngdu');
-        }
+        $date = $this->input['date'];
+        $query = $query->with(['gu.omgngdu' => function ($q) use ($date) {
+            $q->where('date', $date);
+        }]);
 
         $pipes = $this
             ->getFilteredQuery($this->input, $query)
@@ -165,33 +164,36 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         $filePath = 'public/export/' . $fileName;
         Excel::store(new ManualCalculateExport($data), $filePath);
 
-        if (isset($this->input['date'])) {
+        $fileurl = env('KMG_SERVER_URL') . Storage::url($filePath);
+        $url = env('MANUAL_CALC_SERVICE_URL') . 'url_file/?url=' . $fileurl;
 
-            $fileurl = env('KMG_SERVER_URL') . Storage::url($filePath);
-            $url = env('MANUAL_CALC_SERVICE_URL') . 'url_file/?url=' . $fileurl;
+        $client = new \GuzzleHttp\Client();
 
-            $client = new \GuzzleHttp\Client();
+        $request = $this->calcRequest($client, $url);
 
-            try {
-                $request = $client->post(
-                    $url,
-                    [
-                        'content-type' => 'application/json'
-                    ]
-                );
-            } catch (GuzzleHttp\Exception\ClientException $e) {
-                $response = $e->getResponse();
-                $responseBodyAsString = $response->getBody()->getContents();
+        $data = json_decode($request->getBody()->getContents())[0]->data;
+        $this->storeShortResult($data);
 
-                $this->setOutput(
-                    [
-                        'error' => $responseBodyAsString
-                    ]
-                );
-            }
+    }
 
-            $data = json_decode($request->getBody()->getContents())[0]->data;
-            $this->storeShortResult($data);
+    public function calcRequest($client, string $url)
+    {
+        try {
+            return $client->post(
+                $url,
+                [
+                    'content-type' => 'application/json'
+                ]
+            );
+        } catch (GuzzleHttp\Exception\ClientException $e) {
+            $response = $e->getResponse();
+            $responseBodyAsString = $response->getBody()->getContents();
+
+            $this->setOutput(
+                [
+                    'error' => $responseBodyAsString
+                ]
+            );
         }
     }
 
@@ -221,7 +223,8 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         }
     }
 
-    public function returnError (ManualOilPipe $pipe) {
+    public function returnError(ManualOilPipe $pipe)
+    {
         $message = $pipe->start_point . ' ' . trans('monitoring.hydro_calculation.message.no-omgdu-data');
 
         if (isset($input['date'])) {
@@ -235,7 +238,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         );
     }
 
-    public function loadRelations (Collection $pipes)
+    public function loadRelations(Collection $pipes)
     {
         foreach ($pipes as $key => $pipe) {
             if ($pipe->between_points != 'well-zu') {
