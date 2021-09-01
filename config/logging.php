@@ -66,12 +66,6 @@ return [
             'level' => 'debug',
         ],
 
-        'manual_calculate_hydro_yesterday:cron' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/manual_calculate_hydro_yesterday.log'),
-            'level' => 'debug',
-        ],
-
         'calculate_corrosion_yesterday:cron' => [
             'driver' => 'single',
             'path' => storage_path('logs/calculate_corrosion_yesterday.log'),
