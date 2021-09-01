@@ -2,7 +2,7 @@
     <div class="col m-0 p-0">
         <div>
             <div class="row m-0 text-left">
-                <div class="col-4 p-1" v-for="(menuItem, i) in menu"
+                <div class="col-3 p-1" v-for="(menuItem, i) in menu"
                      :class="[menuItem.parentType]"
                      @mouseover.prevent.stop="menuItemMouseOver(i)"
                      @mouseout.prevent.stop="menuItemMouseLeave()">
@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div
-                        class="position-absolute w-100 p-0 pr-2 pt-5 z-index-1 menu-list"
+                        class="position-absolute w-100 p-0 pr-2 pt-5 z-index-999 menu-list"
                         :class="{'d-none': currentItemId !== i}"
                     >
                         <div class="main-menu-font text-left menu-item-bg menu-border d-flex pl-2" v-for="child in menuItem.children">
@@ -29,7 +29,7 @@
                                         child.component ? 'cursor-pointer text-white' : 'text-not-link'
                                     ]"
                                     v-html="child.name"
-                                    @click="menuClick(child.component)"
+                                    @click="menuClick(child)"
                                 ></a>
                             </div>
                         </div>
@@ -40,15 +40,15 @@
     </div>
 </template>
 <script>
-import mainMenu from './main_menu.json'
 import {paegtmMapActions} from '@store/helpers';
 export default {
     props: {
         parentType: String,
+        mainMenu: Array,
     },
     data: function () {
         return {
-            menu: mainMenu,
+            menu: this.mainMenu,
             menuArrowUp: '/img/GTM/icon_menu_arrow_up.svg',
             menuArrowDown: '/img/GTM/icon_menu_arrow_down.svg',
             currentItemId: -1

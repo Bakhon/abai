@@ -16,7 +16,7 @@ class EcoRefsDirectionController extends Controller
     {
         $ecorefsdirection = EcoRefsDirectionId::latest()->paginate(5);
 
-        return view('ecorefsdirection.index',compact('ecorefsdirection'))
+        return view('economy_kenzhe/ecorefsdirection.index',compact('ecorefsdirection'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     
     }
@@ -28,7 +28,7 @@ class EcoRefsDirectionController extends Controller
      */
     public function create()
     {
-        return view('ecorefsdirection.create');
+        return view('economy_kenzhe/ecorefsdirection.create');
     }
 
     /**
@@ -69,7 +69,7 @@ class EcoRefsDirectionController extends Controller
     public function edit($id)
     {
         $EcoRefsDirection = EcoRefsDirectionId::find($id);
-        return view('ecorefsdirection.edit',compact('EcoRefsDirection'));
+        return view('economy_kenzhe/ecorefsdirection.edit',compact('EcoRefsDirection'));
      }
 
     /**

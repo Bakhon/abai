@@ -1,0 +1,133 @@
+@import "geologyImports/colors";
+@import "geologyImports/AwMain";
+@import "geologyImports/components/aw-tree/aw-tree";
+
+.rect {
+  background: var(--a-accent-darken-100);
+  padding: 6px;
+}
+
+.toolBlock__auto-height {
+  .tool-block__body {
+    height: calc((100vh / 3) - 120px) !important;
+    min-height: 200px;
+  }
+}
+
+.customScroll {
+  &::-webkit-scrollbar {
+    width: .5em;
+    height: .5em;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--a-gray);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--a-accent-darken-200);
+  }
+}
+
+.a-btn {
+  font-size: 16px;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+
+  &, svg {
+    transition: 300ms all ease-in-out;
+  }
+
+  span, div {
+    line-height: inherit;
+
+  }
+
+  @each $align in ((center, center), (left, flex-start), (right, flex-end)) {
+    $alignClass: nth($align, 1);
+    &.#{"" + $alignClass} {
+      text-align: #{nth($align, 1)};
+      justify-content: nth($align, 2);
+    }
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &.narrow {
+    padding: 7px;
+
+    svg {
+      width: 14px;
+      height: auto;
+    }
+  }
+
+  &.small {
+    padding: 4px 7px;
+    font-size: 11px;
+  }
+
+  &.big {
+    padding: 10px 17px;
+    font-size: 20px;
+  }
+}
+
+.aw-table {
+  border-collapse: collapse;
+
+  &:not(.no-padding) {
+    th, td {
+      padding: 11px 12px;
+    }
+  }
+
+  th, td {
+    border: 1px solid #545580;
+    color: #fff;
+    padding: 2px 3px;
+  }
+
+  thead {
+    tr {
+      td, th {
+        background-color: #334295;
+
+        &:nth-child(even) {
+          background-color: #313973;
+        }
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      background-color: #454D7D;
+
+      &:nth-child(even) {
+        background-color: #363B68;
+      }
+    }
+  }
+}
+
+.aw-scale-fade-side {
+  &-enter, &-enter-active,&-leave-active {
+    transition: 300ms all;
+  }
+  &-enter-active{
+    transition-delay: 200ms;
+  }
+  &-enter, &-leave-to {
+    opacity: 0;
+    transform: scale(.8);
+  }
+}

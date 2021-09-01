@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Infrastructure\History;
+use App\Models\BigData\Well;
 use App\Services\BigData\FieldLimitsService;
+use App\Services\BigData\TableFormHeaderService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -19,10 +21,18 @@ use Illuminate\Support\Facades\DB;
 abstract class TableForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'table_form.json';
+    protected $tableHeaderService;
 
     abstract public function getRows(array $params = []): array;
 
-    abstract protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void;
+    abstract protected function saveSingleFieldInDB(array $params): void;
+
+    public function __construct(Request $request)
+    {
+        $this->tableHeaderService = app()->make(TableFormHeaderService::class);
+        parent::__construct($request);
+    }
+
 
     public static function getLimitsCacheKey(array $field, CarbonImmutable $yesterday)
     {
@@ -50,18 +60,20 @@ abstract class TableForm extends BaseForm
 
         $copyRow = $rowData[$columnFrom['table']]->get($wellId)->first();
         $copyValue = $copyRow->{$columnFrom['column']};
-        $this->saveSingleFieldInDB(
-            $column['code'],
-            $wellId,
-            Carbon::parse($copyRow->dbeg ?? $date)->timezone('Asia/Almaty'),
-            1
-        );
-        $this->saveSingleFieldInDB(
-            $columnTo['code'],
-            $wellId,
-            Carbon::parse($date)->timezone('Asia/Almaty'),
-            $copyValue
-        );
+        $saveParams = [
+            'field' => $column['code'],
+            'wellId' => $wellId,
+            'date' => Carbon::parse($copyRow->dbeg ?? $date)->timezone('Asia/Almaty'),
+            'value' => 1,
+        ];
+        $this->saveSingleFieldInDB($saveParams);
+        $saveParams = [
+            'field' => $columnTo['code'],
+            'wellId' => $wellId,
+            'date' => Carbon::parse($date)->timezone('Asia/Almaty'),
+            'value' => $copyValue,
+        ];
+        $this->saveSingleFieldInDB($saveParams);
 
 
         return [];
@@ -70,23 +82,27 @@ abstract class TableForm extends BaseForm
     public function saveSingleField(string $field)
     {
         $this->validateSingleField($field);
-        $this->saveSingleFieldInDB(
-            $field,
-            $this->request->get('well_id'),
-            Carbon::parse($this->request->get('date')),
-            $this->request->get($field)
-        );
+        $saveParams = [
+            'field' => $field,
+            'wellId' => $this->request->get('well_id'),
+            'date' => Carbon::parse($this->request->get('date')),
+            'value' => $this->request->get($field),
+        ];
+        $this->saveSingleFieldInDB($saveParams);
         $this->saveHistory($field, $this->request->get($field));
 
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function getFormatedParams(): array
+    public function getFormInfo(): array
     {
+        $params = $this->params();
+        $params = $this->mapParams($params);
+
         return [
-            'params' => $this->params(),
+            'params' => $params,
             'fields' => $this->getFields()->pluck('', 'code')->toArray(),
-            'filterTree' => $this->getFilterTree()
+            'available_actions' => $this->getAvailableActions()
         ];
     }
 
@@ -103,6 +119,7 @@ abstract class TableForm extends BaseForm
     protected function getFieldValue(array $field, array $rowData, Model $item): ?array
     {
         $result = $this->getCustomFieldValue($field, $rowData, $item);
+
         if (is_null($result)) {
             if ($field['type'] === 'link') {
                 $result = [
@@ -146,9 +163,7 @@ abstract class TableForm extends BaseForm
 
         $row = $collection->get($item->id);
         if (!empty($fieldParams['additional_filter'])) {
-            foreach ($fieldParams['additional_filter'] as $key => $value) {
-                $row = $row->where($key, '=', $value);
-            }
+            $row = $this->addAdditionalFilters($row, $fieldParams);
         }
         $row = $row->first();
 
@@ -282,19 +297,83 @@ abstract class TableForm extends BaseForm
                             $field
                         );
                     }
-                    $row[$field['code']]['limits'] = $fieldLimits[$row['uwi']['id']] ?? null;
+                    $row[$field['code']]['limits'] = isset($row['id']) ? ($fieldLimits[$row['id']] ?? null) : null;
                 }
                 return $row;
             }
         );
     }
 
-    protected function getFilterTree(): array
+    protected function mapParams(array $params)
     {
-        return $this->combineOrgWithTechData();
+        if (!empty($params['filter'])) {
+            $params['filter'] = array_map(
+                function ($item) {
+                    if ($item['type'] === 'date' && !empty($item['default'])) {
+                        $item['default'] = Carbon::createFromTimestamp(strtotime($item['default']))->timezone(
+                            'Asia/Almaty'
+                        );
+                    }
+                    return $item;
+                },
+                $params['filter']
+            );
+        }
+
+        if (!empty($params['merge_columns'])) {
+            $params['complicated_header'] = $this->tableHeaderService->getHeader(
+                $params['columns'],
+                $params['merge_columns']
+            );
+        }
+
+        return $params;
     }
 
-    private function saveHistory(string $field, $value): void
+    protected function getWells(int $id, string $type, \stdClass $filter, array $params): Collection
+    {
+        $wellsQuery = Well::query()
+            ->with('techs', 'geo')
+            ->select('id', 'uwi')
+            ->orderBy('uwi')
+            ->active(Carbon::parse($filter->date));
+
+
+        if ($type === 'tech') {
+            $tech = Tech::find($id);
+            $wellsQuery->whereHas(
+                'techs',
+                function ($query) use ($tech, $filter) {
+                    return $query
+                        ->where('dict.tech.id', $tech->id)
+                        ->whereDate('dict.tech.dbeg', '<=', $filter->date)
+                        ->whereDate('dict.tech.dend', '>=', $filter->date);
+                }
+            );
+        } else {
+            $wellsQuery->where('id', $id);
+        }
+
+        if (isset($params['filter']['well_category'])) {
+            $wellsQuery->whereHas(
+                'category',
+                function ($query) use ($params) {
+                    return $query
+                        ->select('dict.well_category_type.id')
+                        ->from('dict.well_category_type')
+                        ->whereIn('code', $params['filter']['well_category']);
+                }
+            );
+        }
+
+        if (isset($params['filter']['row_id'])) {
+            $wellsQuery->where('id', $params['filter']['row_id']);
+        }
+
+        return $wellsQuery->get();
+    }
+
+    protected function saveHistory(string $field, $value)
     {
         History::create(
             [
@@ -309,7 +388,7 @@ abstract class TableForm extends BaseForm
         );
     }
 
-    protected function getFieldRow(array $column, int $wellId, Carbon $date): \stdClass
+    protected function getFieldRow(array $column, int $wellId, Carbon $date)
     {
         $query = DB::connection('tbd')
             ->table($column['table'])
@@ -323,174 +402,30 @@ abstract class TableForm extends BaseForm
             );
 
         if (!empty($column['additional_filter'])) {
-            foreach ($column['additional_filter'] as $key => $value) {
-                $query->where($key, '=', $value);
-            }
+            $query = $this->addAdditionalFilters($query, $column);
         }
 
         return $query->first();
     }
 
-    private function getOrgStructure(): array
+    private function addAdditionalFilters($query, array $field)
     {
-        $orgData = [];
-        if (Cache::has('bd_org_with_wells')) {
-            return Cache::get('bd_org_with_wells');
-        }
-
-        $orgs = Org::query()
-            ->with('type')
-            ->get();
-
-        foreach ($orgs as $org) {
-            $orgData[$org->id] = [
-                'id' => $org->id,
-                'name' => $org->name_ru,
-                'type' => 'org',
-                'parent_id' => $org->parent
-            ];
-        }
-
-        usort(
-            $orgData,
-            function ($a, $b) {
-                return strnatcasecmp($a['name'], $b['name']);
-            }
-        );
-
-        Cache::put('bd_org_with_wells', $orgData, now()->addDay());
-
-        return $orgData;
-    }
-
-    private function getTechStructure(): array
-    {
-        $cacheKey = 'bd_tech_with_wells_' . $this->request->get('date');
-        $techData = [];
-        if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
-
-        $techs = Tech::query()
-            ->whereIn('tech_type', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU, Tech::TYPE_AGZU, Tech::TYPE_SPGU])
-            ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
-            ->where('dend', '>=', Carbon::parse($this->request->get('date')))
-            ->with(
-                [
-                    'wells' =>
-                        function ($query) {
-                            $query->active(Carbon::parse($this->request->get('date')));
-                        }
-                ]
-            )
-            ->get();
-
-        $techIds = $techs->pluck('id')->toArray();
-
-        foreach ($techs as $tech) {
-            $techData[$tech->id] = [
-                'id' => $tech->id,
-                'name' => $tech->name_ru,
-                'type' => 'tech',
-                'wells' => $tech->wells->pluck('id')->toArray(),
-                'parent_id' => in_array($tech->parent, $techIds) ? $tech->parent : null
-            ];
-        }
-
-        uasort(
-            $techData,
-            function ($a, $b) {
-                return strnatcasecmp($a['name'], $b['name']);
-            }
-        );
-
-        $result = $this->generateTree($techData);
-        $result = $this->clearTechStructure($result);
-
-        Cache::put($cacheKey, $result, now()->addDay());
-        return $result;
-    }
-
-    protected function combineOrgWithTechData(): array
-    {
-        $cacheKey = 'bd_org_tech_' . $this->request->get('date');
-        if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
-
-        $orgStructures = $this->getOrgStructure();
-        $techStructure = $this->getTechStructure();
-
-        $orgTechs = DB::connection('tbd')
-            ->table('prod.org_tech')
-            ->select('org', 'tech')
-            ->get()
-            ->mapToGroups(
-                function ($item, $key) {
-                    return [
-                        $item->org => $item->tech
-                    ];
+        if (!empty($field['additional_filter'])) {
+            foreach ($field['additional_filter'] as $key => $value) {
+                if (is_array($value)) {
+                    $entityQuery = DB::connection('tbd')->table($value['table']);
+                    foreach ($value['fields'] as $fieldName => $fieldValue) {
+                        $entityQuery->where($fieldName, $fieldValue);
+                    }
+                    $entity = $entityQuery->first();
+                    if (!empty($entity)) {
+                        $query->where($key, $entity->id);
+                    }
+                    continue;
                 }
-            )
-            ->toArray();
-
-        foreach ($orgStructures as &$org) {
-            foreach ($techStructure as $keyTech => $tech) {
-                if (isset($orgTechs[$org['id']]) && in_array($tech['id'], $orgTechs[$org['id']])) {
-                    $org['children'][] = $tech;
-                }
+                $query->where($key, $value);
             }
         }
-        unset($org);
-
-        $result = $this->generateTree($orgStructures);
-        Cache::put($cacheKey, $result, now()->addDay());
-
-        return $result;
+        return $query;
     }
-
-    private function generateTree($items): array
-    {
-        $new = [];
-        foreach ($items as $item) {
-            $new[$item['parent_id']][] = $item;
-        }
-        return $this->createTree($new, $new[null]);
-    }
-
-    private function createTree(&$list, $parent): array
-    {
-        $tree = array();
-        foreach ($parent as $k => $l) {
-            if (isset($list[$l['id']])) {
-                if (!empty($l['children'])) {
-                    $l['children'] = array_merge($this->createTree($list, $list[$l['id']]), $l['children']);
-                } else {
-                    $l['children'] = $this->createTree($list, $list[$l['id']]);
-                }
-            }
-            $tree[] = $l;
-        }
-        return $tree;
-    }
-
-    private function clearTechStructure(array $result): array
-    {
-        foreach ($result as $key => $tech) {
-            if (!empty($tech['children'])) {
-                unset($result[$key]['wells']);
-                $result[$key]['children'] = $this->clearTechStructure($result[$key]['children']);
-                continue;
-            }
-
-            if (empty($tech['wells'])) {
-                unset($result[$key]);
-                continue;
-            }
-
-            unset($result[$key]['wells']);
-        }
-        return $result;
-    }
-
 }

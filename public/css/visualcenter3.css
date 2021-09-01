@@ -159,16 +159,8 @@ body {
     padding: 1rem 1.5rem !important;
 }
 
-.table4 td {
-    overflow: hidden;
-    /* line-height: 44px; */
-    min-width: 5.3em;
-    padding: 0px 0px 10px 10px;
-}
-
 .table7 td {
     overflow: hidden;
-    /* line-height: 44px; */
     min-width: 5.3em;
     padding: 0px 0px 10px 10px;
 
@@ -193,13 +185,6 @@ body {
     line-height: 33.4em;
 }
 
-.table4 {
-    max-width: 1510px!important;
-    overflow: hidden;
-    overflow-x: auto;
-    border-spacing: 0px!important;
-}
-
 .table5 td {
     border-right: 10px solid #0F1430;
     padding: 10px!important;
@@ -209,14 +194,14 @@ td:last-of-type {
     border-right: unset!important;
 }
 
-.txt4 {
+.secondaryTitle {
     font-family: "Bold";
     font-size: 34px;
     font-weight: 550;
 }
 
 @media (max-width:814px) {
-    .txt4 {
+    .secondaryTitle {
         font-size: 18px;
     }
     .number {
@@ -259,6 +244,7 @@ td:last-of-type {
     overflow: hidden;
     border-radius: 10px;
     cursor: pointer;
+    border: 1px solid transparent;
 }
 
 .icon-all {
@@ -678,7 +664,7 @@ td.small-td {
 
 
 .dropdown4 a {
-    color: #373435;
+    color: black;
     font-weight: normal!important;
     font-size: 1.1em;
     margin-left: 10%;
@@ -1026,6 +1012,8 @@ a.dropdown-link-vc3 {
 
 .button1-vc-inner {
     display: inline-block;
+    width: 90%;
+    text-align: center;
 }
 
 ul.dropdown-menu-vc {
@@ -1033,7 +1021,7 @@ ul.dropdown-menu-vc {
 }
 
 @media (max-width:1368px) {
-    .txt4 {
+    .secondaryTitle {
         font-size: 20px;
     }
     .number {
@@ -1072,4 +1060,8 @@ ul.dropdown-menu-vc {
         max-height: 76%
     }
 
+}
+
+.button2.no-hover:hover {
+    background: #333975;
 }

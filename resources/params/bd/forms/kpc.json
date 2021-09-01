@@ -1,45 +1,56 @@
 {
   "table": "prod.well_workover",
+  "sort": [
+    {
+      "field": "request_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "request",
       "blocks": [
         [
-        {
-          "title": "repair",
-          "items": [
-            {
-              "code":"request_date",
+          {
+            "title": "repair",
+            "items": [
+              {
+              "code": "request_date",
               "type":"date",
               "title":"request_date",
-              "validation": "nullable|date|before_or_equal:today"
+              "is_editable": true,
+              "validation": "required|nullable|date|before_or_equal:today"
             },
             {
               "code":"expected_date",
               "type":"date",
               "title":"planned_date",
-              "validation": "nullable|date|before_or_equal:today"
+              "validation": "nullable|date|before_or_equal:today",
+              "is_editable": true
             },
             {
-              "code": "work_type",
+              "code": "repair_work_type",
               "type": "dict",
               "title": "work_type",
               "validation": "required|exists:tbd.dict.repair_work_type,id",
-              "dict": "repair_work_types"
+              "dict": "repair_work_types",
+              "is_editable": true
             },
             {
               "code": "gtm_type",
               "type": "dict",
               "title": "gtm_type",
               "validation": "required|exists:tbd.dict.gtm_type,id",
-              "dict": "gtm_types"
+              "dict": "gtm_types",
+              "is_editable": true
             },
             {
               "code":"work_plan",
               "type":"text",
               "title":"planing_work_list",
               "validation": "nullable|date|before_or_equal:today",
-              "prefix": ""
+              "prefix": "",
+              "is_editable": true
             }
           ]
         }
@@ -58,60 +69,69 @@
               "code": "dbeg",
               "type": "datetime",
               "title": "work_start_date",
-              "validation": "nullable|date|before_or_equal:today"
+              "validation": "required|nullable|date|before_or_equal:today",
+              "is_editable": true
             },
             {
               "code": "repair_work_type",
               "type": "dict",
               "title": "repair_work_type",
               "validation": "required|exists:tbd.dict.repair_work_type,id",
-              "dict": "repair_work_types"
+              "dict": "repair_work_types",
+              "is_editable": true
             },
             {
               "code": "work_plan",
               "type": "text",
               "title": "planned_works_list",
-              "validation": "required|max:255",
-              "prefix": ""
+              "validation": "max:255",
+              "prefix": "",
+              "is_editable": true
             },
             {
               "code": "by_ourselves",
               "type": "checkbox",
               "title": "on_our_own",
-              "validation":""
+              "validation":"",
+              "is_editable": true
             },
             {
               "code": "contractor",
               "type": "dict",
               "title": "contractor",
               "validation": "required|exists:tbd.dict.company,id",
-              "dict": "companies"
+              "dict": "companies",
+              "is_editable": true
             },
             {
               "code": "brigade",
               "type": "dict",
               "title": "brigade",
-              "validation": "required|exists:tbd.dict.brigade,id",
-              "dict": "brigades"
+              "validation": "exists:tbd.dict.brigade,id",
+              "dict": "brigades",
+              "is_editable": true
             },
             {
-              "code": "brigade_master",
+              "code": "brigadier",
               "type": "dict",
               "title": "brigade_master",
-              "validation": "required|exists:tbd.dict.brigadier,id",
-              "dict": "brigadiers"
+              "validation": "exists:tbd.dict.brigadier,id",
+              "dict": "brigadiers",
+              "is_editable": true
             },
             {
               "code": "gtm_duplicate",
               "type": "checkbox",
               "title": "duplicate_in_gts",
-              "validation":""
+              "validation":"",
+              "is_editable": true
             },
             {
               "code": "pit",
               "type": "checkbox",
               "title": "opi",
-              "validation":""
+              "validation":"",
+              "is_editable": true
             }    
           ]
         }
@@ -130,87 +150,116 @@
               "code": "dend",
               "type": "datetime",
               "title": "work_end_date",
-              "validation": "nullable|date|before_or_equal:today"
+              "validation": "required|nullable|date|after:dbeg",
+              "is_editable": true
             },
             {
               "code": "work_list",
               "type": "text",
               "title": "done_work_description",
-              "validation": "required|max:255",
-              "prefix": ""
+              "validation": "max:255",
+              "prefix": "",
+              "is_editable": true
             },
             {
               "code": "out_of_plan",
               "type": "checkbox",
               "title": "out_of_plan",
-              "validation":""
+              "validation":"",
+              "is_editable": true
             },
             {
               "code": "cnl_new",
-              "type": "text",
+              "type": "numeric",
               "title": "new_run_down_nkt",
-              "validation": "required|max:255",
-              "prefix": ""
+              "validation": "numeric|max:255|gte:0",
+              "prefix": "",
+              "is_editable": true
             },
             {
               "code": "cnl_used",
-              "type": "text",
+              "type": "numeric",
               "title": "used_run_down_nkt",
-              "validation": "required|max:255",
-              "prefix": ""
+              "validation": "numeric|max:255|gte:0",
+              "prefix": "",
+              "is_editable": true
             },
             {
               "code": "td",
-              "type": "text",
+              "type": "numeric",
               "title": "actual_bottomhole_m",
-              "validation": "required|max:255",
-              "prefix": ""
+              "validation": "numeric|max:255",
+              "prefix": "",
+              "is_editable": true
             },
             {
               "code": "no_btm",
               "type": "checkbox",
               "title": "no_slaughter",
-              "validation":""
+              "validation":"",
+              "is_editable": true
             },
             {
-              "code": "no_slaughter_reason",
+              "code": "no_btm_reason",
               "type": "dict",
               "title": "no_slaughter_reason",
-              "validation": "required|exists:tbd.dict.reason,id",
-              "dict": "no_btm_reasons"
+              "validation": "exists:tbd.dict.reason,id",
+              "dict": "reason_rls",
+              "is_editable": true
             },
             {
               "code": "hud",
               "type": "text",
               "title": "artificial_slaughter_m",
-              "validation": "required|max:255",
-              "prefix": ""
+              "validation": "max:255",
+              "prefix": "",
+              "is_editable": true
             },
             {
-              "code": "machine_technical_condition",
+              "code": "tech_state",
               "type": "dict",
               "title": "machine_technical_condition",
-              "validation": "required|exists:",
-              "dict": "wells_tech_conditions"
+              "validation": "exists:tbd.dict.tech_state_casing,id",
+              "dict": "tech_state_casings",
+              "is_editable": true
             },
             {
               "code": "no_change_tech_state",
               "type": "checkbox",
               "title": "not_change_technical_condition",
-              "validation":""
+              "validation":"",
+              "is_editable": true
             },
             {
-              "code": "condition",
+              "code": "status",
+              "table": "prod.well_status",
+              "type":"calc",
+              "title": "status_before_selected_date",
+              "validation": "exists:tbd.dict.well_status_type,id",
+              "is_editable": false
+            },
+            {
+              "code": "category",
+              "table": "prod.well_category",
+              "type":"calc",
+              "title": "well_previous_category",
+              "validation": "exists:tbd.dict.well_category_type,id",
+              "is_editable": false
+            },
+            {
+              "code": "well_status",
               "type": "dict",
               "title": "condition",
-              "validation": "required|exists:tbd.dict.well_status_type,id",
-              "dict": "well_statuses"
+              "validation": "exists:tbd.dict.well_status_type,id",
+              "dict": "well_statuses",
+              "is_editable": true
             },
             {
               "code": "no_change_state",
               "type": "checkbox",
               "title": "not_change_technical_condition",
-              "validation":""
+              "validation":"",
+              "is_editable": true
             }
           ]
         }
@@ -226,25 +275,31 @@
           "title": "repair",
           "items": [
             {
-              "code": "hardware_failure_cause",
+              "code": "reason_equip_fail",
               "type": "dict",
-              "title": "hardware_failure_cause",
+              "title": "cause_h_failure",
               "validation": "required|exists:tbd.dict.reason,id",
-              "dict": "no_btm_reasons"
+              "dict": "reason_ref"
             },
             {
-              "code": "equipment_failure_type",
+              "code": "add_reason_equip_fail",
               "type": "dict",
-              "title": "equipment_failure_type",
-              "validation": "required|exists:",
-              "dict": "fail_reason_types"
+              "title": "add_f",
+              "validation": "required|exists:tbd.dict.reason_equip_fail,id",
+              "dict": "reason_equip_fail"
             },
             {
-              "code": "stopping_reason",
+              "code": "more_info_reason_fail",
+              "type": "text",
+              "title": "reason_type",
+              "validation": "required"
+            },
+            {
+              "code": "stop_reason",
               "type": "dict",
-              "title": "stopping_reason",
+              "title": "reason_stopping",
               "validation": "required|exists:tbd.dict.reason,id",
-              "dict": "no_btm_reasons"
+              "dict": "reason_rst"
             }
           ]
         }

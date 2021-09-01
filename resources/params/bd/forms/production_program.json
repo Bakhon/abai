@@ -1,0 +1,20 @@
+{
+  "type": "table",
+  "table_type": "plan",
+  "filter": [
+    {
+      "code": "date",
+      "title": "date",
+      "type": "date",
+      "default": "first day of this month"
+    },
+    {
+      "code": "date_to",
+      "title": "date_to",
+      "type": "date",
+      "default": "last day of this month"
+    }
+  ],
+  "columns": [
+  ]
+}

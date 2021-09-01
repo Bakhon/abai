@@ -1,26 +1,12 @@
 <template>
   <div class="filter-container">
-    <cat-loader v-show="isLoading"/>
-    <div class="form-group1 filter-group select">
-      <select
-          class="form-control filter-input select"
-          id="companySelect"
-          :disabled="isLoading"
-          v-model="org"
-      >
-        <option disabled value="">Выберите компанию</option>
-        <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
-        <option value="КБМ">АО «Каражанбасмунай»</option>
-        <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-        <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-        <option value="ММГ">АО «Мангистаумунайгаз»</option>
-      </select>
-    </div>
+
+    <org-selector v-model="org"></org-selector>
     <div class="form-group1 filter-group select">
       <select
           class="form-control filter-input select"
           id="categorySelect"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           v-model="category"
       >
         <option disabled value="">Выберите категорию</option>
@@ -41,7 +27,7 @@
           input-class="form-control filter-input"
           format="dd LLLL yyyy"
           :phrases="{ok: '', cancel: ''}"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           auto
           :flow="['year', 'month', 'date']"
       >
@@ -50,12 +36,12 @@
     </div>
 
     <div class="form-group3 result-link">
-      <a v-if="resultLink !== null && !isLoading" :href="resultLink" target="_blank"
+      <a v-if="resultLink !== null && !$store.state.globalloading.loading" :href="resultLink" target="_blank"
          class="download-report text-center">Скачать отчёт</a>
     </div>
 
     <div class="form-group4">
-      <button :disabled="!org || !end_date || isLoading"
+      <button :disabled="!org || !end_date || $store.state.globalloading.loading"
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -82,12 +68,17 @@
 import Vue from "vue";
 import {Datetime} from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
-import {formatDate} from './FormatDate.js'
+import {formatDate} from '../common/FormatDate.js'
+import OrgSelector from "./OrgSelector";
+import {globalloadingMutations} from '@store/helpers';
+;
 
 Vue.use(Datetime)
 
 export default {
-  components: {},
+  components: {
+    OrgSelector
+  },
 
   data() {
 
@@ -100,12 +91,16 @@ export default {
     }
 
   },
-  methods: {
+      methods: {
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
+
     createDownloadLink(response) {
       this.resultLink = response.data.report_link
     },
     updateData() {
-      let uri = "http://172.20.103.187:8082/generic/";
+      let uri = process.env.MIX_MICROSERVICE_PREDEFINED_REPORTS + "/generic/";
       let data = {
         type: 'inactive_fund_stat',
         period: 'days',
@@ -117,7 +112,7 @@ export default {
 
       let json_data = JSON.stringify(data);
 
-      this.isLoading = true;
+      this.SET_LOADING(true);
 
       this.axios.post(uri, json_data, {
         responseType: 'json',
@@ -133,7 +128,7 @@ export default {
             }
           })
           .catch((error) => console.log(error))
-          .finally(() => this.isLoading = false);
+          .finally(() => this.SET_LOADING(false));
     },
     onChange(event) {
       this.org = event.target.value;

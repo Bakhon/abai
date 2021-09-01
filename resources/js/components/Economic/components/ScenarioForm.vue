@@ -1,7 +1,5 @@
 <template>
   <div>
-    <cat-loader v-show="loading"/>
-
     <h5 class="text-secondary">
       {{ trans('economic_reference.name') }}
     </h5>
@@ -14,10 +12,10 @@
     </div>
 
     <h5 class="text-secondary mt-3">
-      {{ trans('economic_reference.scenario') }}
+      {{ trans('economic_reference.select_scenario_data') }}
     </h5>
 
-    <select-sc-fa :form="form" forecast/>
+    <select-sc-fa :form="form" is-forecast/>
 
     <div v-if="form.sc_fa_id">
       <h5 class="text-secondary mt-3">
@@ -96,7 +94,7 @@
 </template>
 
 <script>
-import CatLoader from "../../ui-kit/CatLoader";
+
 import SelectScFa from "./SelectScFa";
 import AddButton from "./AddButton";
 import DeleteButton from "./DeleteButton";
@@ -107,7 +105,7 @@ import {EcoRefsScenarioModel} from "../models/EcoRefsScenarioModel";
 export default {
   name: "ScenarioForm",
   components: {
-    CatLoader,
+
     SelectScFa,
     AddButton,
     DeleteButton,
@@ -142,7 +140,7 @@ export default {
       this.loading = true
 
       try {
-        const {data} = await this.axios.post(this.localeUrl('/eco_refs_scenario'), this.form)
+        const {data} = await this.axios.post(this.localeUrl('/module_economy/eco_refs_scenario'), this.form)
 
         this.$emit('created', data.data)
 

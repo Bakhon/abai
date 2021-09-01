@@ -62,8 +62,20 @@
                         <td>{{ trans('monitoring.omgngdu.fields.heater_inlet_temperature') }}</td>
                         <td>{{$omgngdu_well->temperature}}</td>
                     </tr>
+                    <tr>
+                        <td>{{ trans('monitoring.omgngdu_well.fields.sg_oil') }}</td>
+                        <td>{{$omgngdu_well->sg_oil}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ trans('monitoring.omgngdu_well.fields.sg_gas') }}</td>
+                        <td>{{$omgngdu_well->sg_gas}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ trans('monitoring.omgngdu_well.fields.sg_water') }}</td>
+                        <td>{{$omgngdu_well->sg_water}}</td>
+                    </tr>
                 </table>
-                <a class="btn btn-primary" href="{{ route('omgngdu_well.index') }}">{{__('app.back')}}</a>
+                <a class="btn btn-primary" href="{{ route('omgngdu-well.index') }}">{{__('app.back')}}</a>
             </div>
         </div>
     </div>

@@ -1,110 +1,148 @@
 <template>
-  <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
-    <cat-loader v-show="isloading"/>
+  <form @submit.prevent="" ref="form" class="bd-main-block__form scrollable" style="width: 100%">
     <div class="table-page">
-      <p v-if="!tech" class="table__message">{{ trans('bd.select_dzo') }}</p>
-      <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
-      <div v-else class="table-wrap scrollable">
-        <table v-if="rows.length" class="table">
-          <thead>
-          <tr>
-            <th v-for="column in visibleColumns">
-              {{ column.title }}
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(row, rowIndex) in rows">
-            <td
-                v-for="column in visibleColumns"
-                :class="{'editable': column.is_editable}"
-                @dblclick="editCell(row, column)"
-            >
-              <template v-if="column.type === 'link'">
-                <a :href="row[column.code].href">{{ row[column.code].name }}</a>
-              </template>
-              <template v-else-if="column.type === 'calc'">
-                <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
-              </template>
-              <template v-else-if="column.type === 'copy'">
-                <input
-                    v-model="row[column.code].value"
-                    :disabled="row[column.code].value"
-                    type="checkbox"
-                    @change="copyValues(row, column, rowIndex)">
-              </template>
-              <template v-else-if="column.type === 'history_graph'">
-                <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">
+      <template v-if="formParams">
+        <p v-if="formError" class="table__message">
+          {{ formError }}
+        </p>
+        <p v-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
+          {{ trans('bd.select_ngdu') }}
+        </p>
+        <p v-else-if="!id" class="table__message">
+          {{ trans('bd.select_dzo') }}
+        </p>
+        <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
+        <div v-else class="table-wrap scrollable">
+          <div v-for="custom_column in formParams.custom_columns">
+            <div :is="custom_column.component_name"
+                 :column="custom_column"
+                 :allColumns="formParams.columns"
+                 :updateTableData="updateTableData"
+                 :filter="filter">
+            </div>
+          </div>
+          <table v-if="rows.length" class="table">
+            <thead>
+            <template v-if="formParams.complicated_header">
+              <tr v-for="row in formParams.complicated_header">
+                <th
+                    v-for="column in row"
+                    :colspan="column.colspan"
+                    :rowspan="column.rowspan"
+                >
+                  {{ column.title }}
+                </th>
+              </tr>
+            </template>
+            <template v-else>
+              <tr>
+                <th v-for="column in visibleColumns">
+                  {{ column.title }}
+                </th>
+              </tr>
+            </template>
+            </thead>
+            <tbody>
+            <tr v-for="(row, rowIndex) in rows">
+
+              <td
+                  v-for="column in visibleColumns"
+                  :class="{'editable': formParams && formParams.available_actions.includes('update') && column.is_editable}"
+                  @dblclick="editCell(row, column)"
+              >
+                <template v-if="column.type === 'link'">
+                  <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+                </template>
+                <template v-else-if="column.type === 'label'">
+                  <label v-html="row[column.code].name"></label>
+                </template>
+                <template v-else-if="column.type === 'calc'">
+                  <span class="value" v-html="row[column.code] ? row[column.code].value : ''"></span>
+                </template>
+                <template v-else-if="column.type === 'copy'">
+                  <input
+                      v-model="row[column.code].value"
+                      :disabled="row[column.code].value"
+                      type="checkbox"
+                      @change="copyValues(row, column, rowIndex)">
+                </template>
+                <template v-else-if="column.type === 'history_graph'">
+                  <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                  <span v-if="row[column.code] && row[column.code].date" class="date">
+                    <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
-                </a>
-              </template>
-              <template v-else-if="column.type === 'history'">
-                <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
-              </template>
-              <template v-else-if="column.type === 'date'">
-                <div v-if="isCellEdited(row, column)" class="input-wrap">
-                  <datetime
-                      v-model="row[column.code].value"
-                      :disabled="isLoading"
-                      :flow="['year', 'month', 'date']"
-                      :phrases="{ok: '', cancel: ''}"
-                      auto
-                      format="dd LLLL yyyy"
-                      input-class="form-control"
-                      type="date"
-                      value-zone="Asia/Almaty"
-                      zone="Asia/Almaty"
-                  >
-                  </datetime>
-                  <button type="button" @click.prevent="saveCell(row, column)">OK</button>
-                  <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                </div>
-                <template v-else-if="row[column.code]">
+                  </a>
+                </template>
+                <template v-else-if="column.type === 'history'">
+                  <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
+                </template>
+                <template v-else-if="column.type === 'date'">
+                  <div v-if="isCellEdited(row, column)" class="input-wrap">
+                    <datetime
+                        v-model="row[column.code].value"
+                        :flow="['year', 'month', 'date']"
+                        :phrases="{ok: '', cancel: ''}"
+                        auto
+                        format="dd LLLL yyyy"
+                        input-class="form-control"
+                        type="date"
+                        value-zone="Asia/Almaty"
+                        zone="Asia/Almaty"
+                    >
+                    </datetime>
+                    <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                    <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                  </div>
+                  <template v-else-if="row[column.code]">
                       <span class="value">
                         {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
                       </span>
+                  </template>
                 </template>
-              </template>
-              <template v-else-if="column.type === 'dict'">
+                <template v-else-if="column.type === 'dict'">
                     <span class="value">
                       {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
                     </span>
-              </template>
-              <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
-                <div v-if="isCellEdited(row, column)" class="input-wrap">
-                  <input v-model="row[column.code].value" class="form-control" type="text">
-                  <button type="button" @click.prevent="saveCell(row, column)">OK</button>
-                  <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                </div>
-                <template v-else-if="row[column.code]">
+                </template>
+                <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
+                  <div v-if="isCellEdited(row, column)" class="input-wrap">
+                    <input
+                        v-model="row[column.code].value"
+                        class="form-control"
+                        type="text"
+                        @keyup.enter.stop.prevent="saveCell(row, column)">
+                    <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                    <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                  </div>
+                  <template v-else-if="row[column.code]">
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                  <span v-if="row[column.code] && row[column.code].date" class="date">
+                    <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
+                  </template>
                 </template>
-              </template>
-              <template v-if="typeof history[row.uwi.id][column.code] !== 'undefined'">
-                <a :id="`history_${row.uwi.id}_${column.code}`" class="icon-history"></a>
-                <b-popover :target="`history_${row.uwi.id}_${column.code}`" custom-class="history-popover"
-                           placement="top" triggers="hover">
-                  <div v-for="(value, time) in history[row.uwi.id][column.code]">
-                    <em>{{ time }}</em><br>
-                    <b>{{ value.value }}</b> ({{ value.user }})
-                  </div>
-                </b-popover>
-              </template>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+                <template
+                    v-if="formParams.available_actions.includes('view history') && history[row.id] && history[row.id][column.code]">
+                  <a :id="`history_${row.id}_${column.code}`" class="icon-history"></a>
+                  <b-popover :target="`history_${row.id}_${column.code}`" custom-class="history-popover"
+                             placement="top" triggers="hover">
+                    <div v-for="(value, time) in history[row.id][column.code]">
+                      <em>{{ time }}</em><br>
+                      <b>{{ value.value }}</b> ({{ value.user }})
+                    </div>
+                  </b-popover>
+                </template>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
     </div>
     <div v-if="rowHistory" class="bd-popup">
       <div class="bd-popup__inner">
@@ -145,11 +183,27 @@
 import Vue from "vue";
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
-import {bdFormActions, bdFormState} from '@store/helpers'
+import {bdFormActions, globalloadingMutations} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
+import upperFirst from 'lodash/upperFirst'
+import camelCase from 'lodash/camelCase'
 
-Vue.use(Datetime)
+
+const requireComponent = require.context('./CustomColumns', true, /\.vue$/i);
+requireComponent.keys().forEach(fileName => {
+  const componentConfig = requireComponent(fileName)
+  const componentName = upperFirst(
+      camelCase(
+          fileName
+              .split('/')
+              .pop()
+              .replace(/\.\w+$/, '')
+      )
+  );
+  Vue.component(componentName, componentConfig.default || componentConfig);
+});
+Vue.use(Datetime);
 
 export default {
   name: "BigDataTableForm",
@@ -158,11 +212,14 @@ export default {
       type: Object,
       required: true
     },
-    tech: {
+    id: {
       type: Number
     },
-    date: {
+    type: {
       type: String
+    },
+    filter: {
+      type: Object
     }
   },
   components: {
@@ -181,60 +238,81 @@ export default {
         row: null,
         column: null
       },
-      isloading: false,
       history: {},
       rowHistory: null,
       rowHistoryColumns: [],
       rowHistoryGraph: null,
+      oldFilter: null,
+      formParams: null,
+      formError: null
     }
   },
   watch: {
     date() {
-      this.updateRows()
+      this.updateTableData()
     },
-    tech() {
-      this.updateRows()
+    id() {
+      this.updateTableData()
+    },
+    filter: {
+      deep: true,
+      handler(val) {
+        this.updateTableData()
+      }
     },
   },
   computed: {
-    ...bdFormState([
-      'formParams'
-    ]),
     visibleColumns() {
-      return this.formParams.columns.filter(column => column.type !== 'hidden')
+      return this.formParams.columns.filter(column => column.type !== 'hidden' && column.visible !== false)
     }
   },
   mounted() {
+    this.updateForm(this.params.code)
+        .then(data => {
+          this.formParams = data
+          this.$emit('initialized', data)
+          this.updateTableData()
+        })
   },
   methods: {
     ...bdFormActions([
       'updateForm'
     ]),
-    filterForm(item, isSelected) {
-      if (isSelected) {
-        if (item.data.type === 'org') return false
-        this.tech = item.data.id
-        this.updateRows()
-      }
-    },
-    updateRows() {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+    updateTableData() {
 
-      if (!this.date || !this.tech) return
+      this.formError = null
+      if (!this.filter || !this.id || !this.type) return
 
-      this.isloading = true
+      this.SET_LOADING(true)
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/rows`), {
         params: {
-          date: this.date,
-          tech: this.tech
+          filter: this.filter,
+          id: this.id,
+          type: this.type
         }
       })
           .then(({data}) => {
-            this.rows = data
+            this.rows = data.rows
+            if (data.columns) {
+              this.formParams.columns = data.columns
+            }
+            if (data.merge_columns) {
+              this.formParams.merge_columns = data.merge_columns
+            }
+            if (data.complicated_header) {
+              this.formParams.complicated_header = data.complicated_header
+            }
             this.recalculateCells()
             this.loadEditHistory()
           })
+          .catch(error => {
+            this.formError = error.response.data.message
+          })
           .finally(() => {
-            this.isloading = false
+            this.SET_LOADING(false)
           })
 
     },
@@ -243,12 +321,12 @@ export default {
 
         this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/history`), {
           params: {
-            date: this.date,
-            id: row.uwi.id
+            date: this.filter.date,
+            id: row.id
           }
         }).then(({data}) => {
 
-          this.$set(this.history, row.uwi.id, data)
+          this.$set(this.history, row.id, data)
         })
 
       })
@@ -301,6 +379,9 @@ export default {
       return formula
     },
     editCell(row, column) {
+
+      if (!this.formParams.available_actions.includes('update')) return
+
       this.editableCell.row = row
       this.editableCell.column = column
     },
@@ -312,17 +393,19 @@ export default {
       return true
     },
     async saveCell(row, column) {
-
       this.checkLimits(row, column).then(result => {
         if (result === true) {
 
           let data = {
-            well_id: row.uwi.id,
-            date: this.date,
+            well_id: row.id,
+            date: this.filter.date,
           }
           data[column.code] = row[column.code].value
-          this.isloading = true
 
+          if (row[column.code].params) {
+            data['params'] = row[column.code].params
+          }
+          this.SET_LOADING(true)
           this.axios
               .patch(this.localeUrl(`/api/bigdata/forms/${this.params.code}/save/${column.code}`), data)
               .then(({data}) => {
@@ -331,15 +414,11 @@ export default {
                   row: null,
                   cell: null
                 }
-                this.recalculateCells()
+                this.updateTableData()
               })
               .catch(error => {
                 Vue.set(this.errors, column.code, error.response.data.errors)
               })
-              .finally(() => {
-                this.isloading = false
-              })
-
         } else {
           this.editableCell = {
             row: null,
@@ -371,10 +450,6 @@ export default {
             })
       })
     },
-    changePage(page = 1) {
-      this.currentPage = page
-      this.updateForm()
-    },
     showError(err) {
       return err.join('<br>')
     },
@@ -383,13 +458,13 @@ export default {
       document.body.classList.remove('fixed')
     },
     showHistoricalDataForRow(row, column) {
-      this.isloading = true
+      this.SET_LOADING(true)
       document.body.classList.add('fixed')
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/row-history`), {
         params: {
-          well_id: row.uwi.id,
+          well_id: row.id,
           column: column.code,
-          date: this.date
+          date: this.filter.date
         }
       }).then(({data}) => {
         this.rowHistory = data
@@ -400,20 +475,20 @@ export default {
         })
 
         this.rowHistoryColumns = columns
-        this.isloading = false
+        this.SET_LOADING(false)
       })
     },
     showHistoryGraphDataForRow(row, column) {
-      this.isloading = true
+      this.SET_LOADING(true)
       document.body.classList.add('fixed')
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/row-history-graph`), {
         params: {
-          well_id: row.uwi.id,
+          well_id: row.id,
           column: column.code,
-          date: this.date
+          date: this.filter.date
         }
       }).then(({data}) => {
-        this.isloading = false
+        this.SET_LOADING(false)
         this.rowHistoryGraph = data
       })
     },
@@ -425,15 +500,15 @@ export default {
       })
           .then(result => {
             if (result === true) {
-              this.isloading = true
+              this.SET_LOADING(true)
               this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/copy`), {
                 params: {
-                  well_id: row.uwi.id,
+                  well_id: row.id,
                   column: column.code,
-                  date: this.date
+                  date: this.filter.date
                 }
               }).then(({data}) => {
-                this.isloading = false
+                this.SET_LOADING(false)
                 this.rowHistoryGraph = data
 
                 row[column.copy.to].value = row[column.copy.from].value
@@ -445,7 +520,6 @@ export default {
               })
             }
           })
-
     }
   },
 };
@@ -559,7 +633,7 @@ body.fixed {
       width: 100%;
     }
 
-    th {
+    thead {
       position: sticky;
       top: 0;
       z-index: 10;

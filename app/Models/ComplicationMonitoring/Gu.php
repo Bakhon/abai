@@ -66,9 +66,11 @@ class Gu extends Model
             'bsw',
             'pump_discharge_pressure',
             'heater_output_temperature',
-            'editable',
             'daily_gas_production_in_sib',
-            'surge_tank_pressure'
+            'surge_tank_pressure',
+            'sg_oil',
+            'sg_gas',
+            'sg_water'
         );
     }
 
@@ -111,7 +113,7 @@ class Gu extends Model
 
     public function oilPipes()
     {
-        return $this->hasMany(OilPipe::class);
+        return $this->setConnection('tbd_cmon')->hasMany(OilPipe::class);
     }
 
     public function zuPipes()
@@ -132,5 +134,35 @@ class Gu extends Model
     public function lost_profits()
     {
         return $this->hasMany(LostProfits::class);
+    }
+
+    public function buffer_tank()
+    {
+        return $this->hasMany(BufferTank::class);
+    }
+
+    public function pumps()
+    {
+        return $this->hasMany(Pump::class);
+    }
+
+    public function ovens()
+    {
+        return $this->hasMany(Oven::class);
+    }
+
+    public function agzu()
+    {
+        return $this->hasMany(Agzu::class);
+    }
+
+    public function sib()
+    {
+        return $this->hasMany(Sib::class);
+    }
+
+    public function metering_units()
+    {
+        return $this->hasMany(MeteringUnits::class);
     }
 }

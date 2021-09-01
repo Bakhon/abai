@@ -20,7 +20,7 @@ class DictionariesController extends Controller
     public function get(string $dict)
     {
         try {
-            $result = $this->service->get($dict);
+            $result = $this->service->getWithPermissions($dict);
             return $result;
         } catch (DictionaryNotFound $e) {
             return response()->json([], \Illuminate\Http\Response::HTTP_NOT_FOUND);

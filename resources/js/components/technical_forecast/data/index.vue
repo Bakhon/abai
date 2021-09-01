@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid economic-wrap">
-    <cat-loader v-show="loading"/>
 
     <div class="row justify-content-between">
       <select-source
@@ -20,19 +19,16 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
-import CatLoader from "../../ui-kit/CatLoader";
-import SelectSource from "./../components/SelectSource";
 
-Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
+import {globalloadingMutations, globalloadingState} from '@store/helpers';
+
+import SelectSource from "./../components/SelectSource";
 
 export default {
   name: "tech-data-component",
   components: {
     VueTableDynamic,
-    CatLoader,
     SelectSource
   },
   data: () => ({
@@ -68,11 +64,12 @@ export default {
         {column: 12, width: 80},
       ]
     },
-    loading: true
   }),
   methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
     async getData() {
-      this.loading = true
+      this.SET_LOADING(true);
 
       this.params.data = []
 
@@ -80,8 +77,11 @@ export default {
 
       this.params.data = data.data
 
-      this.loading = false
+      this.SET_LOADING(false);
     },
+  },
+  computed: {
+    ...globalloadingState(['loading']),
   }
 };
 </script>

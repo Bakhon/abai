@@ -1,0 +1,57 @@
+{
+  "type": "plain",
+  "table": "prod.lab_research",
+  "tabs": [
+    {
+      "title": "main",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "research_date",
+                "type": "date",
+                "title": "date",
+                "validation": "required|date"
+              },
+              {
+                "code": "research_type",
+                "type": "dict",
+                "dict": "lab_research_type",
+                "title": "research_type",
+                "validation": "required|exists:tbd.dict.lab_research_type,id"
+              },
+              {
+                "code": "option_1",
+                "type": "numeric",
+                "title": "option_1",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "option_2",
+                "type": "numeric",
+                "title": "option_2",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "AEF"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

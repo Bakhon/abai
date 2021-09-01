@@ -2,15 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EcoRefs\DiscontCoefBar\EcoRefsDiscontCoefBarRequest;     
+use App\Http\Requests\EcoRefs\DiscontCoefBar\ImportExcelEcoRefsDiscontCoefBarRequest;     
+use App\Http\Requests\EcoRefs\DiscontCoefBar\UpdateEcoRefsDiscontCoefBarRequest;
+use App\Imports\EcoRefsDiscontCoefBarImport;       
 use App\Models\EcoRefsCompaniesId;
-use App\Models\Refs\EcoRefsScFa;
 use App\Models\EcoRefsDirectionId;
-use App\Models\EcoRefsDiscontCoefBar;
 use App\Models\EcoRefsRoutesId;
+use App\Models\EcoRefsDiscontCoefBar;
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
+use App\Http\Resources\EcoRefsDiscontCoefBarListResource;  
+use Illuminate\Http\RedirectResponse;                                 
+use Illuminate\Support\Facades\DB;                                    
+use Illuminate\View\View;                                             
+use Maatwebsite\Excel\Facades\Excel;  
 
 class EcoRefsDiscontCoefBarController extends Controller
 {
+    protected $modelName = 'ecorefsdiscontcoefbar';
+
     /**
      * Display a listing of the resource.
      *
@@ -18,11 +29,18 @@ class EcoRefsDiscontCoefBarController extends Controller
      */
     public function index()
     {
+        $params = [
+            'links' => [
+                'list' => route('ecorefsdiscontcoefbar.list'),
+            ]
+        ];
+        
+        $ecorefsdiscontcoefbar = EcoRefsDiscontCoefBar::orderBy('id','desc')->with('scfa')->with('company')->with('direction')->with('route')->paginate(10);
 
-            $ecorefsdiscontcoefbar = EcoRefsDiscontCoefBar::latest()->with('scfa')->with('company')->with('direction')->with('route')->paginate(5);
+        $ecorefsdiscontcoefbarPages = view('economy_kenzhe/ecorefsdiscontcoefbar.index',compact('ecorefsdiscontcoefbar'))
+            ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);
 
-            return view('ecorefsdiscontcoefbar.index',compact('ecorefsdiscontcoefbar'))
-                ->with('i', (request()->input('page', 1) - 1) * 5);
+        return $ecorefsdiscontcoefbarPages;
     }
 
     /**
@@ -36,7 +54,7 @@ class EcoRefsDiscontCoefBarController extends Controller
         $company = EcoRefsCompaniesId::get();
         $direction = EcoRefsDirectionId::get();
         $route = EcoRefsRoutesId::get();
-        return view('ecorefsdiscontcoefbar.create',compact('sc_fa', 'company', 'direction', 'route'));
+        return view('economy_kenzhe/ecorefsdiscontcoefbar.create',compact('sc_fa', 'company', 'direction', 'route'));
     }
 
     /**
@@ -88,7 +106,7 @@ class EcoRefsDiscontCoefBarController extends Controller
         $direction = EcoRefsDirectionId::get();
         $route = EcoRefsRoutesId::get();
 
-        return view('ecorefsdiscontcoefbar.edit',compact('sc_fa', 'row', 'company', 'direction', 'route'));
+        return view('economy_kenzhe/ecorefsdiscontcoefbar.edit',compact('sc_fa', 'row', 'company', 'direction', 'route'));
 
     }
 
@@ -99,7 +117,7 @@ class EcoRefsDiscontCoefBarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateEcoRefsDiscontCoefBarRequest $request, $id)
     {
         $EcoRefsDiscontCoefBar=EcoRefsDiscontCoefBar::find($id);
         $request->validate([
@@ -132,4 +150,45 @@ class EcoRefsDiscontCoefBarController extends Controller
 
         return redirect()->route('ecorefsdiscontcoefbar.index')->with('success',__('app.deleted'));
     }
+
+    public function list(EcoRefsDiscontCoefBarRequest $request)
+    {
+        parent::list($request);
+
+        $query = EcoRefsDiscontCoefBar::query()
+            ->whereScFa($request->sc_fa)
+            ->with(['scfa', 'company', 'direction', 'route'])
+            ->get();
+
+        $ecorefsdiscontcoefbar = $this
+            ->getFilteredQuery($request->validated(), $query)
+            ->paginate(25);
+
+        return response()->json(json_decode(EcoRefsDiscontCoefBarListResource::collection($ecorefsdiscontcoefbar)->toJson()));
+    }
+
+    public function uploadExcel(): View
+    {
+        return view('economy_kenzhe/ecorefsdiscontcoefbar.import_excel');
+    }
+
+    public function importExcel(ImportExcelEcoRefsDiscontCoefBarRequest $request): RedirectResponse
+    {
+        DB::transaction(function () use ($request) {
+            $fileName = pathinfo(
+                $request->file->getClientOriginalName(),
+                PATHINFO_FILENAME
+            );
+
+            $import = new EcoRefsDiscontCoefBarImport(
+                $fileName,
+            );
+
+            Excel::import($import, $request->file);
+        });
+
+        return back()->with('success', __('app.success'));
+    }
 }
+
+

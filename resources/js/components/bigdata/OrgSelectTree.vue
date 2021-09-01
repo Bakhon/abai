@@ -21,7 +21,6 @@
 <script>
 import forms from '../../json/bd/forms.json'
 import moment from "moment";
-import {bdFormActions} from '@store/helpers'
 import BigDataTableForm from "./forms/TableForm";
 
 export default {
@@ -52,21 +51,21 @@ export default {
     this.init()
   },
   methods: {
-    ...bdFormActions([
-      'updateForm'
-    ]),
     init() {
-      this.updateForm(this.activeForm.code).then(data => {
-        this.filterTree = data.filterTree
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/tree`)).then(data => {
+        this.filterTree = data.data
       })
     },
     nodeClick(node) {
-      this.$emit('wellIdChange', node.id)
+      this.$emit('idChange', {
+        id: node.id,
+        type: node.type
+      })
     },
-    isNodeOnBottomLevelOfHierarchy: function(node) {
+    isNodeOnBottomLevelOfHierarchy: function (node) {
       return node.type !== 'org'
     },
-    isWell: function(node){
+    isWell: function (node) {
       return (typeof node.type !== 'undefined' && node.type === 'well')
     },
     getWells: function (child) {

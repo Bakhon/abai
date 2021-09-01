@@ -27,8 +27,11 @@ import moment from "moment";
 import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
 import InputDataOperations from "./dataManagers/inputDataOperations";
+import Archieve from "./dataManagers/archieve";
+;
+import {globalloadingMutations} from '@store/helpers';
 
-const defaultDzoTicker = "КТМ";
+const defaultDzoTicker = "ЭМГ";
 
 export default {
     data: function () {
@@ -172,14 +175,18 @@ export default {
                         'agent_upload_waste_water_injection_fact'],
                     'formula': (value) => value * 1000
                 }
-            }
+            },
+            dzoUsers: []
         };
     },
     props: ['userId'],
     async mounted() {
+        this.SET_LOADING(true);
+        this.dzoUsers = Object.keys(this.dzoMapping).map(k => this.dzoMapping[k].id);
         let currentDayNumber = moment().date();
         if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
             this.isChemistryButtonVisible = true;
+            this.$modal.show('additionalParamsReminder');
         }
         this.selectedDzo.ticker = this.getDzoTicker();
         if (!this.selectedDzo.ticker) {
@@ -197,6 +204,7 @@ export default {
         this.setTableFormat();
         await this.updateCurrentData();
         this.addListeners();
+        this.SET_LOADING(false);
     },
     methods: {
         addColumnsToGrid() {
@@ -220,9 +228,9 @@ export default {
             let dzoTicker = '';
             let self = this;
             _.forEach(Object.keys(this.dzoMapping), function(key) {
-               if (parseInt(self.dzoMapping[key].id) === parseInt(self.userId)) {
-                   dzoTicker = key;
-               }
+                if (parseInt(self.dzoMapping[key].id) === parseInt(self.userId)) {
+                    dzoTicker = key;
+                }
             });
             return dzoTicker;
         },
@@ -270,7 +278,7 @@ export default {
         },
         storeWellWorkoverData() {
             this.wellWorkover['dzo_name'] = this.selectedDzo.ticker;
-            this.wellWorkover['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
+            this.wellWorkover['date'] = moment().subtract(1, 'months').format("YYYY-MM-DD HH:mm:ss");
             let uri = this.localeUrl("/dzo-excel-otm");
 
             this.axios.post(uri, this.wellWorkover).then((response) => {
@@ -284,7 +292,7 @@ export default {
         },
         storeChemistryData() {
             this.chemistryData['dzo_name'] = this.selectedDzo.ticker;
-            this.chemistryData['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
+            this.chemistryData['date'] = moment().subtract(1, 'months').format("YYYY-MM-DD HH:mm:ss");
 
             let uri = this.localeUrl("/dzo-chemistry-excel-form");
 
@@ -326,6 +334,9 @@ export default {
                 this.status = this.trans("visualcenter.importForm.status.dataValid");
             } else {
                 this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
+            }
+            if (this.dzoFieldsMapping[this.selectedDzo.ticker] && !this.isValidSummary(this.dzoFieldsMapping[this.selectedDzo.ticker])) {
+                this.status = this.trans("visualcenter.importForm.status.verifySumByDzo");
             }
         },
         processTableData() {
@@ -399,7 +410,7 @@ export default {
             return true;
         },
         isNumber(inputData) {
-             return !isNaN(parseFloat(inputData)) && parseFloat(inputData) >= 0 && !this.isContainsLetter(inputData);
+            return !isNaN(parseFloat(inputData)) && parseFloat(inputData) >= 0 && !this.isContainsLetter(inputData);
         },
         isContainsLetter(inputData) {
             let regExp = /[a-zA-Zа-яА-Я]/g;
@@ -425,18 +436,17 @@ export default {
             return parseFloat(cellValue);
         },
         async handleSave() {
-            await this.storeData();
+            let uri = this.localeUrl("/dzo-excel-form");
+            this.excelData['date'] = this.currentDateDetailed;
+            await this.storeData(uri);
             this.isDataReady = !this.isDataReady;
         },
-        storeData() {
+        storeData(uri) {
             this.excelData['dzo_name'] = this.selectedDzo.ticker;
-            this.excelData['date'] = this.currentDateDetailed;
             let troubledCompanies = Object.keys(this.factorOptions);
             if (troubledCompanies.includes(this.selectedDzo.ticker)) {
                 this.updateTroubledCompaniesByFactorOptions();
             }
-
-            let uri = this.localeUrl("/dzo-excel-form");
 
             this.axios.post(uri, this.excelData).then((response) => {
                 if (response.status === 200) {
@@ -462,9 +472,12 @@ export default {
                 });
             }
         },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
     },
     components: {
-        VGrid,
+        VGrid
     },
-    mixins: [Visual,TodayDzoData,InputDataOperations],
+    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve],
 };

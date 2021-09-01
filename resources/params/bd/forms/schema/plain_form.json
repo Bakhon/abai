@@ -36,7 +36,10 @@
                             "table",
                             "radio",
                             "checkbox",
-                            "calc"
+                            "checkbox_table",
+                            "calc",
+                            "label",
+                            "file"
                           ]
                         },
                         "title": {
@@ -76,7 +79,10 @@
                                 "numeric",
                                 "table",
                                 "checkbox",
-                                "calc"
+                                "checkbox_table",
+                                "calc",
+                                "label",
+                                "file"
                               ]
                             }
                           }

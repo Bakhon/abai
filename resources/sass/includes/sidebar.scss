@@ -1,5 +1,5 @@
 #sidebar-container2{
-  z-index: 4000;
+  z-index: 99;
 
   .left-panel{
     min-height: calc(100vh - 78px);
@@ -60,5 +60,9 @@
 
   .move-menu {
     margin-left: 15px;
+  }
+
+  .vc3_min-width {
+    min-width: 180px;
   }
 }

@@ -19,7 +19,7 @@ class EcoRefsServiceTimeController extends Controller
 
             $ecorefsservicetime = EcoRefsServiceTime::latest()->with('company')->with('equip')->paginate(5);
 
-            return view('ecorefsservicetime.index',compact('ecorefsservicetime'))
+            return view('economy_kenzhe/ecorefsservicetime.index',compact('ecorefsservicetime'))
                 ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -32,7 +32,7 @@ class EcoRefsServiceTimeController extends Controller
     {
         $company = EcoRefsCompaniesId::get();
         $equip = EcoRefsEquipId::get();
-        return view('ecorefsservicetime.create',compact('company', 'equip'));
+        return view('economy_kenzhe/ecorefsservicetime.create',compact('company', 'equip'));
     }
 
     /**
@@ -77,7 +77,7 @@ class EcoRefsServiceTimeController extends Controller
         $company = EcoRefsCompaniesId::get();
         $equip = EcoRefsEquipId::get();
 
-        return view('ecorefsservicetime.edit',compact('row', 'company', 'equip'));
+        return view('economy_kenzhe/ecorefsservicetime.edit',compact('row', 'company', 'equip'));
 
     }
 

@@ -4,23 +4,43 @@
   "actions": [
     {
       "action": "create",
-      "title": "Подключить к узлу",
+      "title": "connect",
       "form": "well_tech_connect"
     },
     {
       "action": "edit",
-      "title": "Сменить отвод",
+      "title": "change_tap",
       "form": "well_tech_change_tap"
     },
     {
       "action": "edit",
-      "title": "Изменить данные подключения к узлу",
+      "title": "change_connection",
       "form": "well_tech_change_tech"
     },
     {
-      "action": "edit",
-      "title": "Отменить подключение к узлу",
-      "form": "well_tech_connect"
+      "action": "delete",
+      "title": "cancel_connection"
+    },
+    {
+      "action": "create",
+      "title": "disconnect",
+      "form": "well_tech_disconnect"
+    },
+    {
+      "action": "create",
+      "title": "change_disconnect",
+      "form": "well_tech_change_disconnect"
+    },
+    {
+      "action": "create",
+      "title": "cancel_disconnect",
+      "form": "well_tech_cancel_disconnect"
+    }
+  ],
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
     }
   ],
   "tabs": [
@@ -33,9 +53,9 @@
             "items": [
               {
                 "code": "tech",
-                "type": "dict",
-                "title": "tech",
-                "validation": "required"
+                "type": "dict_tree",
+                "dict": "techs",
+                "title": ""
               },
               {
                 "code": "tap",
@@ -50,7 +70,8 @@
               {
                 "code": "dend",
                 "type": "date",
-                "title": "date_end"
+                "title": "date_end",
+                "validation": "after:dbeg"
               }
             ]
           }

@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 class AddPipePermissionsToRolePermissions extends Migration
 {
@@ -28,18 +28,23 @@ class AddPipePermissionsToRolePermissions extends Migration
      */
     public function up()
     {
-        $permissionIds = Permission::whereIn('name', $this->permissions)->pluck('id');
-        $role = Role::where('guard_name', 'map-admin')->first();
+        foreach ($this->permissions as $permission) {
+            $ids[] = DB::table('permissions')->insertGetId(
+                [
+                    'name' => $permission,
+                    'guard_name' => 'web'
+                ]
+            );
+        }
 
-        DB::table('role_has_permissions')
-            ->whereIn('permission_id', $permissionIds)
-            ->delete();
+        foreach ($ids as $id) {
 
-        foreach ($permissionIds as $permissionId) {
-            DB::table('role_has_permissions')->insert([
-                'permission_id' => $permissionId,
-                'role_id' => $role->id
-            ]);
+            DB::table('role_has_permissions')->insert(
+                [
+                    'permission_id' => $id,
+                    'role_id' => 1
+                ]
+            );
         }
     }
 
@@ -54,5 +59,7 @@ class AddPipePermissionsToRolePermissions extends Migration
         DB::table('role_has_permissions')
             ->whereIn('permission_id', $permissionIds)
             ->delete();
+
+        Permission::whereIn('name', $this->permissions)->delete();
     }
 }

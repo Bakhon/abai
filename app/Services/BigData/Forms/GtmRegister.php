@@ -3,8 +3,9 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
-
+use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Exceptions\BigData\SubmitFormException;
+use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +18,7 @@ class GtmRegister extends PlainForm
         DB::beginTransaction();
 
         try {
-            $formFields = $this->request->except('well_status_type');
+            $formFields = $this->request->except('well_status_type', 'own_forces');
 
             $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
@@ -40,6 +41,11 @@ class GtmRegister extends PlainForm
 
     private function updateWellStatus()
     {
+        if (!$this->request->get('dend') || !$this->request->get('well_status_type')) {
+            return;
+        }
+
+
         DB::connection('tbd')
             ->table('prod.well_status')
             ->where('well', $this->request->get('well'))
@@ -55,7 +61,7 @@ class GtmRegister extends PlainForm
                     'well' => $this->request->get('well'),
                     'status' => $this->request->get('well_status_type'),
                     'dbeg' => $this->request->get('dend'),
-                    'dend' => '3333-12-31 00:00:00+06',
+                    'dend' => Well::DEFAULT_END_DATE,
                 ]
             );
     }
@@ -100,6 +106,19 @@ class GtmRegister extends PlainForm
         }
 
         return $result;
+    }
+
+    use DateMoreThanValidationTrait;
+
+    protected function getCustomValidationErrors(): array
+    {
+        $errors = [];
+
+        if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'), 'dict.well' , 'drill_start_date')){
+            $errors['dbeg'] = trans('bd.validation.drill_date');
+        }
+
+        return $errors;
     }
 
 }

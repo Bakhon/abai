@@ -12,6 +12,10 @@
             :get-initial-items="getInitialItems"
             :isShowCheckboxes="isShowCheckboxes"
             :isWell="isWell"
+            :onCheckboxClick="onCheckboxClick"
+            :level="level+1"
+            :nodeClickOnArrow="true"
+            :isCheckedCheckbox="isCheckedCheckbox"
         ></tree-view>
       </div>
     </div>
@@ -27,12 +31,15 @@ export default {
     return {
       baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
       items: null,
+      level: 0
     }
   },
   props: {
     structureType: String,
     itemType: Number,
     isShowCheckboxes: Boolean,
+    onCheckboxClick: Function,
+    isCheckedCheckbox: Function,
   },
   mounted() {
     this.init()
@@ -70,9 +77,7 @@ export default {
       });
 
     },
-    async nodeClick(node) {
-      this.$parent.currentStructureId = node.structureId
-      this.$parent.setCurrentStructureId(node.structureId)
+    nodeClick(node) {
       this.isLoading = true
       return this.axios.get(this.baseUrl + "get_children_of_item", {
         params: {
@@ -85,11 +90,10 @@ export default {
         }
       }).then((response) => {
         if (response.data) {
-          return response.data
+          node.children = response.data
         } else {
           console.log("No data");
         }
-        this.isLoading = false;
       }).finally(() => {
         this.isLoading = false;
       })
@@ -113,16 +117,10 @@ export default {
         }
       }).then((response) => {
         if (response.data) {
-          let wellChildren = []
-          response.data.forEach((well) => {
-            well.type = 'well'
-            wellChildren.push(well);
-          });
-          node.children = wellChildren
+          node.children = response.data
         } else {
           console.log("No data");
         }
-        child.isLoading = false;
       }).finally(() => {
         child.isLoading = false;
       })

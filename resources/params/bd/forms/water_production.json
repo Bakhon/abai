@@ -1,0 +1,48 @@
+{
+  "type": "table",
+  "columns": [
+    {
+      "title": "uwi_number",
+      "code": "uwi",
+      "type": "link",
+      "is_editable": false
+    },
+    {
+      "title": "worktime",
+      "code": "worktime",
+      "table": "prod.well_status",
+      "column": "well_status_type_id",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "water_debit",
+      "code": "water_debit",
+      "table": "prod.meas_water_prod",
+      "column": "water_prod_val",
+      "type": "float",
+      "is_editable": true,
+      "validation": "numeric|gte:0|lte:10000000",
+      "validate_deviation": true
+    },
+    {
+      "title": "water_val",
+      "code": "water_val",
+      "type": "calc",
+      "formula": "$water_debit$ * $worktime$",
+      "is_editable": false
+    },
+    {
+      "title": "measure_last_month",
+      "code": "measure_last_month",
+      "type": "history",
+      "fields": [
+        {
+          "water_debit": {},
+          "worktime": {}
+        }
+      ],
+      "is_editable": false
+    }
+  ]
+}

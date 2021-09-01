@@ -1,22 +1,7 @@
 <template>
   <div class="filter-container">
-    <cat-loader v-show="isLoading"/>
-    <div class="form-group1 filter-group select">
-      <select
-          class="form-control filter-input select"
-          id="companySelect"
-          :disabled="isLoading"
-          v-model="org"
-      >
-        <option disabled value="">Выберите компанию</option>
-        <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
-        <option value="КБМ">АО «Каражанбасмунай»</option>
-        <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-        <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-        <option value="ММГ">АО «Мангистаумунайгаз»</option>
-      </select>
-    </div>
 
+    <org-selector v-model="org"></org-selector>
     <div class="form-group2 filter-group">
       <label for="start_date">Выберите начальную дату</label>
       <datetime
@@ -28,7 +13,7 @@
           input-class="form-control filter-input"
           format="LLLL yyyy"
           :phrases="{ok: '', cancel: ''}"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           auto
           :flow="['year', 'month']"
       >
@@ -46,7 +31,7 @@
           input-class="form-control filter-input"
           format="LLLL yyyy"
           :phrases="{ok: '', cancel: ''}"
-          :disabled="isLoading"
+          :disabled="$store.state.globalloading.loading"
           auto
           :flow="['year', 'month']"
       >
@@ -55,7 +40,8 @@
     </div>
 
     <div class="form-group3 result-link text-center">
-      <a v-if="resultLink !== null && !isLoading" :href="resultLink" target="_blank" class="download-report">Скачать
+      <a v-if="resultLink !== null && !$store.state.globalloading.loading" :href="resultLink" target="_blank"
+         class="download-report">Скачать
         отчёт</a>
     </div>
 
@@ -86,13 +72,17 @@
 import Vue from "vue";
 import {Datetime} from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
-import {formatDate} from './FormatDate.js'
+import {formatDate} from '../common/FormatDate.js'
+import OrgSelector from './OrgSelector'
+import {globalloadingMutations} from '@store/helpers';
+;
 
 Vue.use(Datetime)
 
 export default {
-  components: {},
-
+  components: {
+    OrgSelector
+  },
   data() {
 
     return {
@@ -105,13 +95,17 @@ export default {
 
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+
     createDownloadLink(response) {
       this.resultLink = response.data.report_link
     },
     updateData() {
-      this.isLoading = true;
+      this.SET_LOADING(true);
 
-      let uri = "http://172.20.103.187:8082/monthly/production/";
+      let uri = process.env.MIX_MICROSERVICE_PREDEFINED_REPORTS + "/monthly/production/";
       let data = {
         dzo: this.org,
         period: 'monthly',
@@ -134,7 +128,7 @@ export default {
             }
           })
           .catch((error) => console.log(error))
-          .finally(() => this.isLoading = false);
+          .finally(() => this.SET_LOADING(false));
     },
     onChange(event) {
       this.org = event.target.value;
@@ -146,7 +140,7 @@ export default {
       this.year = event.target.value;
     },
     isMandatoryParametersFilled() {
-      return (this.org && this.startDate && this.endDate && !this.isLoading)
+      return (this.org && this.startDate && this.endDate && !this.$store.state.globalloading.loading)
     },
   },
 }

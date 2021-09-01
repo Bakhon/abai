@@ -51,7 +51,8 @@
     "shutdown_explanation_reasons": "landing",
     "opec_explanation_reasons": "opec2",
     "other_explanation_reasons": "otheraccidents",
-    "restriction_kto_explanation_reasons": "restrictions"
+    "restriction_kto_explanation_reasons": "restrictions",
+    "gas_restriction_explanation_reasons": "gasRestriction"
   },
   "otm_drilling_fact":"otm_burenie_prohodka_fact",
   "plan_otm_burenie_prohodka":"otm_burenie_prohodka_plan",
@@ -74,5 +75,10 @@
   "oil_production_fact":"oil_fact",
   "plan_oil_opek":"oil_opek_plan",
   "plan_oil":"oil_plan",
-  "stock_of_goods_delivery_fact":"tovarnyi_ostatok_nefti_today"
+  "stock_of_goods_delivery_fact":"tovarnyi_ostatok_nefti_today",
+  "plan_oil_delivery_opek":"plan_oil_dlv_opek",
+  "plan_poput_gas":"plan_poput_gas",
+  "plan_prirod_gas": "plan_prirod_gas",
+  "plan_poput_gas_burn": "plan_poput_gas_burn",
+  "associated_gas_flaring_fact": "associated_gas_flaring_fact"
 }

@@ -24,13 +24,17 @@ use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use Carbon\Carbon;
 use App\Models\VisCenter\ExcelForm\DzoImportOtm;
 use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
+use App\Models\VisCenter\EmergencyHistory;
+use App\Models\VisCenter\InboundIntegration\KGM\Monthly\ChemistryForKGM;
+use App\Models\VisCenter\InboundIntegration\KGM\Monthly\RepairsForKGM;
 
 class VisualCenterController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('can:visualcenter view main')->only('visualcenter3', 'visualcenter4', 'visualcenter5', 'visualcenter6', 'visualcenter7');
+        $this->middleware('can:visualcenter view main')->only('visualcenter4', 'visualcenter5', 'visualcenter6', 'visualcenter7');
+        $this->middleware('can:visualcenter one_dzo main')->only('visualcenter3','excelform');
     }
 
     /**
@@ -103,7 +107,7 @@ class VisualCenterController extends Controller
               ->toArray();
           return response()->json($dzoMonthlyPlans);
         }
-        
+
     public function getDzoYearlyPlan() {
         $dzoYearlyPlan = DZOyear::query()
             ->where('date',date("Y"))
@@ -175,11 +179,6 @@ class VisualCenterController extends Controller
     public function visualcenter3GetDataStaff(Request $request)
     {
         return response()->json(DZOstaff::all());
-    }
-
-    public function visualcenter3GetDataAccident(Request $request)
-    {
-        return response()->json(ImportFormsDZOyear::all('date','tb_accident_total')->where('date', '=', $request->year)->where('tb_accident_total', '>', '0'));
     }
 
     public function visualcenter3GetData(Request $request)
@@ -334,6 +333,7 @@ class VisualCenterController extends Controller
         $factDataByPeriod = DzoImportData::query()
             ->whereDate('date','>', $startPeriod)
             ->whereDate('date','<=', $endPeriod)
+            ->whereNull('is_corrected')
             ->with('importDowntimeReason')
             ->with('importDecreaseReason')
             ->get()
@@ -405,5 +405,144 @@ class VisualCenterController extends Controller
             unset($planRecord[$item]);
         }
         return $planRecord;
+    }
+
+    public function getDrillingDetails(Request $request)
+    {
+        return DzoImportData::query()
+            ->select('date','dzo_name','otm_drilling_fact','otm_wells_commissioning_from_drilling_fact')
+            ->whereNull('is_corrected')
+            ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
+            ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
+            ->get()
+            ->toArray();
+    }
+
+    public function getFondDetails(Request $request)
+    {
+        $fields = $request->fields;
+        array_push($fields, "date", "dzo_name", "id");
+        return DzoImportData::query()
+            ->select($fields)
+            ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
+            ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
+            ->whereNull('is_corrected')
+            ->with('importDowntimeReason')
+            ->get()
+            ->toArray();
+    }
+
+    public function dailyReport()
+    {
+        return view('visualcenter.dailyreport');
+    }
+
+    public function getProductionDetailsForYear()
+    {
+        $startPeriod = Carbon::now()->startOfYear();
+        $endPeriod = Carbon::now()->endOfDay();
+        return DzoImportData::query()
+            ->select()
+            ->whereDate('date', '>=', $startPeriod)
+            ->whereDate('date', '<=', $endPeriod)
+            ->whereNull('is_corrected')
+            ->with('importDecreaseReason')
+            ->get()
+            ->toArray();
+    }
+    public function getEmergencyHistory(Request $request)
+    {
+        $emergencySituations = EmergencyHistory::query()
+            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description','approved',DB::raw('DATE_FORMAT(approve_date,"%d.%m.%Y %H:%i:%s") as approve_date'))
+            ->where('type',1)
+            ->orderBy('id', 'desc')
+            ->take(10);
+
+        if (!empty($request->dzoName)){
+        return $emergencySituations->where('description','like', "%".$request->dzoName."%")
+            ->get()
+            ->toArray();              
+        } 
+
+        return $emergencySituations
+            ->get()
+            ->toArray();
+                
+    }
+    public function getHistoricalProductionByDzo(Request $request)
+    {
+        $factByDzo = DzoImportData::query()
+            ->where('dzo_name', $request->dzoName)
+            ->whereNull('is_corrected')
+            ->orderBy('date', 'desc')
+            ->with('importDowntimeReason')
+            ->with('importDecreaseReason')
+            ->first()
+            ->toArray();
+        $factDate = Carbon::parse($factByDzo['date'])->firstOfMonth();
+        $planByDzo = DzoPlan::query()
+            ->whereDate('date', $factDate)
+            ->where('dzo', $request->dzoName)
+            ->first()
+            ->toArray();
+        $planByDzo = $this->deleteDuplicateFields($planByDzo);
+        $comparedData[] = array_merge($factByDzo,$planByDzo);
+        return response()->json($comparedData);
+    }
+
+    public function storeKGMChemistryAndRepairsByMonth(Request $request)
+    {
+        $date = $request->date;
+        $dzoName='КГМ';
+
+        $DzoImportChemistry = new DzoImportChemistry();        
+        $DzoImportChemistry->dzo_name = $dzoName;
+        $DzoImportChemistry->date = $date;
+        $DzoImportChemistry->demulsifier = $this->getKGMChemistry('DEMULSIFICATOR', $date);
+        $DzoImportChemistry->bactericide = $this->getKGMChemistry('BACTERICIDE', $date);
+        $DzoImportChemistry->corrosion_inhibitor = $this->getKGMChemistry('COR_ING', $date);
+        $DzoImportChemistry->scale_inhibitor = $this->getKGMChemistry('SALT_INHIB', $date);        
+
+        $DzoImportRepairs = new DzoImportOtm();
+        $DzoImportRepairs->dzo_name = $dzoName;
+        $DzoImportRepairs->date = $date;
+        $DzoImportRepairs->otm_underground_workover = $this->getKGMRepairs('ПРС%', $date);
+        $DzoImportRepairs->otm_well_workover_fact = $this->getKGMRepairs('КРС%', $date);    
+        
+        $DzoImportChemistry->save();
+        $DzoImportRepairs->save();
+        return 'Save';
+    }
+
+    private function getKGMChemistry($nameOfChemistryValue, $date)
+    {
+        $chemistry = ChemistryForKGM::query()->select('*')
+            ->where('start_datetime', $date)
+            ->where('legacy_id', $nameOfChemistryValue)
+            ->get()->toArray();
+        if (!is_null($chemistry)) {
+            return $chemistry['0']['inj_fact_mass'];
+        } else {
+            echo 'No data '.$nameOfChemistryValue;
+        }
+    }
+
+    private function getKGMRepairs($nameOfRepairsValue, $date)
+    {
+        $month = date('m', strtotime($date));
+        $repairs = RepairsForKGM::query()->select('*')          
+            ->where('end_datetime','LIKE','2021-'.$month.'%')
+            ->where('workover','LIKE', $nameOfRepairsValue)
+            ->get()->toArray();      
+        if (!is_null($repairs)) {
+           return count($repairs);
+        } else {
+            echo 'No data '.$nameOfRepairsValue;
+        }
+    }
+
+    public function dailyApprove()
+    {
+        return view('visualcenter.daily_approve');
     }
 }

@@ -1,0 +1,46 @@
+{
+  "type": "plain",
+  "table": "prod.well_geo",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
+  "default_values": {
+    "dend": "3333-12-31 00:00:00+06"
+  },
+  "tabs": [
+    {
+      "title": "title",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "geo",
+                "type": "dict_tree",
+                "dict": "geos",
+                "title": "geo",
+                "is_editable": "false"
+              },
+              {
+                "code": "dbeg",
+                "type": "date",
+                "title": "dbeg",
+                "validation": "required|date"
+              },
+              {
+                "code": "dend",
+                "type": "date",
+                "title": "dend",
+                "validation": "nullable|date|after:dbeg"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

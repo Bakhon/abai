@@ -49,9 +49,6 @@ class OmgNGDUController extends CrudController
                 trans('monitoring.omgngdu.fields.fact_data') => 10,
             ],
             'fields' => [
-
-
-
                 'gu' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
@@ -180,7 +177,14 @@ class OmgNGDUController extends CrudController
         $omgngdu->cruser_id = auth()->id();
         $omgngdu->save();
 
-        return redirect()->route('omgngdu.index')->with('success', __('app.created'));
+        Session::flash('message', __('app.created'));
+
+        return response()->json(
+            [
+                'status' => config('response.status.success'),
+                'message' => __('app.created')
+            ]
+        );
     }
 
     /**
@@ -216,10 +220,11 @@ class OmgNGDUController extends CrudController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(OmgNGDU $omgngdu)
+    public function edit(Request $request, OmgNGDU $omgngdu)
     {
         $validationParams = $this->getValidationParams('omgngdu');
-        $omgngdu->editable = 0;
+        $omgngdu->editable = $request->session()->get('from_hydro_calc') ? 1 : 0;
+
         return view('omgngdu.edit', compact('omgngdu', 'validationParams'));
     }
 
@@ -235,7 +240,21 @@ class OmgNGDUController extends CrudController
         $this->validateFields($request, 'omgngdu');
 
         $omgngdu->update($request->validated());
-        return redirect()->route('omgngdu.index')->with('success', __('app.updated'));
+
+        if ($request->session()->get('from_hydro_calc')) {
+            $request->session()->forget('from_hydro_calc');
+            $request->session()->flash('hydro_calc_date', $omgngdu->date);
+            return redirect()->route('hydro_calculation.index')->with('success', __('app.updated'));
+        }
+
+        Session::flash('message', __('app.created'));
+
+        return response()->json(
+            [
+                'status' => config('response.status.success'),
+                'message' => __('app.updated')
+            ]
+        );
     }
 
     /**
@@ -436,5 +455,16 @@ class OmgNGDUController extends CrudController
         } else {
             return $lastBackgroundCorrosion;
         }
+    }
+
+    public function getOmgNgdu (Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $date = $request->input('date');
+        $gu_id = $request->input('gu_id');
+
+        $omgngdu = OmgNGDU::where('gu_id', $gu_id)
+            ->where('date', $date)->first();
+
+        return response()->json($omgngdu);
     }
 }
