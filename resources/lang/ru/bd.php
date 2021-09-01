@@ -95,7 +95,7 @@ return [
             'contractor' => 'Подрядчик',
             'brigade' => 'Бригада',
             'brigade_master' => 'Мастер бригады',
-            'duplicate_in_gts' => 'Дублировать в ГТС',
+            'duplicate_in_gts' => 'Дублировать в ГТМ',
             'opi' => 'ОПИ',
             'work_end_date' => 'Дата окончания работ',
             'done_work_description' => 'Описание проделанных работ',
