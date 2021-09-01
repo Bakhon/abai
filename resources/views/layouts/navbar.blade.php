@@ -48,6 +48,9 @@
                     @if(Route::current()->getName() == 'proactiveFactors')
                         <div class="header__subtitle"> - Упреждающие факторы</div>
                     @endif
+                    @if(Route::current()->getName() == 'companyValuation')
+                        <div class="header__subtitle"> - Оценка стоимости компании</div>
+                    @endif
                 @endif
             @endif
         </div>
