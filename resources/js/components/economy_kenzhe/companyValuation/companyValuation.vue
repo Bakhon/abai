@@ -49,41 +49,9 @@
               </div>
             </div>
           </div>
-
           <proactive-factors-select-filter
-            v-bind:selectFilter="selectFilterCompany"
-          ></proactive-factors-select-filter>
-
-          <proactive-factors-select-filter
-            v-bind:selectFilter="selectFilterVersionBp"
-          ></proactive-factors-select-filter>
-
-          <proactive-factors-select-filter
-            v-bind:selectFilter="selectFilterPriceBrent"
-          ></proactive-factors-select-filter>
-
-          <proactive-factors-select-filter
-            v-bind:selectFilter="selectFilterPriceInnerMarket"
-          ></proactive-factors-select-filter>
-
-          <proactive-factors-select-filter
-            v-bind:selectFilter="selectFilterCurrency"
-          ></proactive-factors-select-filter>
-
-          <proactive-factors-select-filter
-            v-bind:selectFilter="selectFilterCapex"
-          ></proactive-factors-select-filter>
-
-          <proactive-factors-select-filter
-            v-bind:selectFilter="selectFilterGetOil"
-          ></proactive-factors-select-filter>
-
-          <proactive-factors-select-filter
-            v-bind:selectFilter="selectFilterExportSalesPercentage"
-          ></proactive-factors-select-filter>
-
-          <proactive-factors-select-filter
-            v-bind:selectFilter="costAllocationBase"
+            v-for="(selectFilter,index) in selectFilterAll" :key="index"
+            v-bind:selectFilter="selectFilter"
           ></proactive-factors-select-filter>
           <button type="button" class="btn btn-primary btn_color mt-2 w-100">
             {{ trans("economy_pf.applySettings") }}
@@ -114,15 +82,7 @@ export default {
     return {
       chartSettings: chartSettings,
       companyData: "",
-      selectFilterCompany: selectFilterCompany,
-      selectFilterVersionBp: selectFilterVersionBp,
-      selectFilterPriceBrent: selectFilterPriceBrent,
-      selectFilterPriceInnerMarket: selectFilterPriceInnerMarket,
-      selectFilterCurrency: selectFilterCurrency,
-      selectFilterCapex: selectFilterCapex,
-      selectFilterGetOil: selectFilterGetOil,
-      selectFilterExportSalesPercentage: selectFilterExportSalesPercentage,
-      costAllocationBase: costAllocationBase,
+      selectFilterAll: [selectFilterCompany, selectFilterVersionBp, selectFilterPriceBrent, selectFilterPriceInnerMarket, selectFilterCurrency, selectFilterCapex, selectFilterGetOil, selectFilterExportSalesPercentage, costAllocationBase],
     };
   },
       mounted(){    
