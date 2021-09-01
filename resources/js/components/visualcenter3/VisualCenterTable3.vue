@@ -17,7 +17,7 @@
                               {{ formatDigitToThousand(backendSummary.oilProductionFact) }}
                             </div>
                             <div
-                                    v-if="!buttonDailyTab && !isOneDateSelected"
+                                    v-if="!buttonDailyTab && backendPeriodRange !== 0"
                                     class="unit-vc ml-2"
                             >
                               {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}
@@ -67,8 +67,8 @@
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="isOneDateSelected"> {{ backendHistoricalPeriodEnd.format('DD.MM.YYYY') }}</span>
-                              <span v-else> {{ backendHistoricalPeriodStart }} - {{ backendHistoricalPeriodEnd }}</span>
+                              <span v-if="backendPeriodRange === 0"> {{ backendHistoricalPeriodEnd.format('DD.MM.YYYY') }}</span>
+                              <span v-else> {{ backendHistoricalPeriodStart.format('DD.MM.YYYY') }} - {{ backendHistoricalPeriodEnd.format('DD.MM.YYYY') }}</span>
                             </div>
                           </div>
                         </div>
@@ -80,10 +80,10 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ formatDigitToThousand(productionSummary.oilCondensateDeliveryButton.actual.oilFact) }}
+                              {{ formatDigitToThousand(backendSummary.oilDeliveryFact) }}
                             </div>
                             <div
-                                    v-if="!buttonDailyTab && !isOneDateSelected"
+                                    v-if="!buttonDailyTab && backendPeriodRange !== 0"
                                     class="unit-vc ml-2"
                             >
                               {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}
@@ -104,42 +104,36 @@
                             <div
                                     class="progress-bar"
                                     role="progressbar"
-                                    :style="{width: productionSummary.oilCondensateDeliveryButton.actual.progress + '%'}"
-                                    :aria-valuenow="productionSummary.oilCondensateDeliveryButton.actual.oilFact"
+                                    :style="{width: getBackendProgress(backendSummary.oilDeliveryFact,backendSummary.oilDeliveryPlan) + '%'}"
+                                    :aria-valuenow="backendSummary.oilDeliveryFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="productionSummary.oilCondensateDeliveryButton.actual.oilPlan"
+                                    :aria-valuemax="backendSummary.oilDeliveryPlan"
                             ></div>
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="productionSummary.oilCondensateDeliveryButton.actual.oilFact">
-                              {{getDiffProcentLastBigN(
-                                productionSummary.oilCondensateDeliveryButton.actual.oilFact,
-                                productionSummary.oilCondensateDeliveryButton.actual.oilPlan)
-                              }}%
+                            <div
+                                    v-if="backendSummary.oilDeliveryFact"
+                                    class="percent-header col-5 col-md-6"
+                            >
+                              {{ getDiffProcentLastBigN(backendSummary.oilDeliveryFact,backendSummary.oilDeliveryPlan)}}%
                             </div>
-                            <div class="plan-header col-6" v-if="productionSummary.oilCondensateDeliveryButton.actual.oilPlan">
-                              {{ formatDigitToThousand(productionSummary.oilCondensateDeliveryButton.actual.oilPlan) }}
+                            <div class="plan-header col-6" v-if="backendSummary.oilDeliveryPlan">
+                              {{ formatDigitToThousand(backendSummary.oilDeliveryPlan) }}
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(
-                                              productionSummary.oilCondensateDeliveryButton.actual.oilFact,
-                                              productionSummary.oilCondensateDeliveryButton.yesterday.oilFact)
-                                            }`"
+                                    :class="`${getGrowthIndicatorByDifference(backendSummary.oilDeliveryFact,backendHistoricalSummaryFact.oilDeliveryFact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDifferencePercentBetweenLastValues(
-                                productionSummary.oilCondensateDeliveryButton.yesterday.oilFact,
-                                productionSummary.oilCondensateDeliveryButton.actual.oilFact))
-                              }}%
+                              {{ Math.abs(getDifferencePercentBetweenLastValues(backendHistoricalSummaryFact.oilDeliveryFact,backendSummary.oilDeliveryFact))}}%
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
-                              <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                              <span v-if="backendPeriodRange === 0"> {{ backendHistoricalPeriodEnd.format('DD.MM.YYYY') }}</span>
+                              <span v-else> {{ backendHistoricalPeriodStart.format('DD.MM.YYYY') }} - {{ backendHistoricalPeriodEnd.format('DD.MM.YYYY') }}</span>
                             </div>
                           </div>
                         </div>
@@ -312,12 +306,7 @@
                     <div class="icon-all icons1"></div>
                     <div
                             class="txt5"
-                            @click="switchCategory(
-                                    'oilCondensateProductionButton',
-                                    'oil_plan',
-                                    'oil_fact',
-                                    trans('visualcenter.tonWithSpace'),
-                                    trans('visualcenter.oilCondensateProduction'))"
+                            @click="backendSwitchCategory('oilCondensateProduction','oilCondensateProductionButton')"
                     >
                       {{ trans("visualcenter.oilCondensateProduction") }}
                     </div>
@@ -367,12 +356,7 @@
                       <div class="icon-all icons2"></div>
                       <div
                               class="txt5"
-                              @click="switchCategory(
-                                      'oilCondensateDeliveryButton',
-                                      'oil_dlv_plan',
-                                      'oil_dlv_fact',
-                                      trans('visualcenter.tonWithSpace'),
-                                      trans('visualcenter.oilCondensateDelivery'))"
+                              @click="backendSwitchCategory('oilCondensateDelivery','oilCondensateDeliveryButton')"
                       >
                         {{ trans("visualcenter.oilCondensateDelivery") }}
                       </div>
@@ -836,7 +820,7 @@
               <div class="col-8 col-lg px-1">
                 <div
                         :class="[`${buttonDailyTab}`,'button2']"
-                        @click="changeMenu2('daily')"
+                        @click="backendSwitchView('day')"
                 >
                   {{ trans("visualcenter.daily") }}
                 </div>
@@ -844,7 +828,7 @@
               <div class="col-8 col-lg px-1">
                 <div
                         :class="[`${buttonMonthlyTab}`,'button2']"
-                        @click="changeMenu2('monthly')"
+                        @click="backendSwitchView('month')"
                 >
                   {{ trans("visualcenter.monthBegin") }}
                 </div>
@@ -855,7 +839,7 @@
                 <div :class="[`${buttonYearlyTab}`,'button2 d-flex']">
                   <div
                           class="button1-vc-inner"
-                          @click="changeMenu2('yearly')"
+                          @click="backendSwitchView('year')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -933,37 +917,37 @@
                   <tr>
                     <th>№</th>
                     <th>{{ trans("visualcenter.dzo") }}</th>
-<!--                    <th v-if="buttonMonthlyTab && !isOilResidueActive" >-->
-<!--                      {{ trans("visualcenter.dzoMonthlyPlan") }}-->
-<!--                      <div v-if="currentDzoList !== 'daily'">-->
-<!--                        {{ getThousandMetricNameByCategorySelected() }}-->
-<!--                      </div>-->
-<!--                      <div v-if="currentDzoList === 'daily'">-->
-<!--                        {{ getMetricNameByCategorySelected() }}-->
-<!--                      </div>-->
-<!--                      <div v-if="isOpecFilterActive && !isConsolidatedCategoryActive()">-->
-<!--                        {{ trans("visualcenter.dzoOpec") }}-->
-<!--                      </div>-->
-<!--                    </th>-->
-<!--                    <th v-if="buttonYearlyTab && !isOilResidueActive">-->
-<!--                      {{ trans("visualcenter.dzoYearlyPlan") }}-->
-<!--                      <div v-if="currentDzoList !== 'daily'">-->
-<!--                        {{ getThousandMetricNameByCategorySelected() }}-->
-<!--                      </div>-->
-<!--                      <div v-if="currentDzoList === 'daily'">-->
-<!--                        {{ getMetricNameByCategorySelected() }}-->
-<!--                      </div>-->
-<!--                      <div v-if="isOpecFilterActive && !isConsolidatedCategoryActive()">-->
-<!--                        {{ trans("visualcenter.dzoOpec") }}-->
-<!--                      </div>-->
-<!--                    </th>-->
-                    <th>
-                      {{ trans("visualcenter.plan") }},
-                      <div v-if="backendSelectedView !== 'daily' || backendPeriodRange > 1">
-                        {{ getThousandMetricNameByCategorySelected() }}
+                    <th v-if="buttonMonthlyTab" >
+                      {{ trans("visualcenter.dzoMonthlyPlan") }}
+                      <div v-if="backendPeriodRange === 0">
+                        {{ getMetricNameByCategorySelected() }}
                       </div>
                       <div v-else>
+                        {{ getThousandMetricNameByCategorySelected() }}
+                      </div>
+                      <div v-if="isOpecFilterActive">
+                        {{ trans("visualcenter.dzoOpec") }}
+                      </div>
+                    </th>
+                    <th v-if="buttonYearlyTab">
+                      {{ trans("visualcenter.dzoYearlyPlan") }}
+                      <div v-if="backendPeriodRange === 0">
                         {{ getMetricNameByCategorySelected() }}
+                      </div>
+                      <div v-else>
+                        {{ getThousandMetricNameByCategorySelected() }}
+                      </div>
+                      <div v-if="isOpecFilterActive">
+                        {{ trans("visualcenter.dzoOpec") }}
+                      </div>
+                    </th>
+                    <th>
+                      {{ trans("visualcenter.plan") }},
+                      <div v-if="backendPeriodRange === 0">
+                        {{ getMetricNameByCategorySelected() }}
+                      </div>
+                      <div v-else>
+                        {{ getThousandMetricNameByCategorySelected() }}
                       </div>
                     </th>
                     <th>
@@ -1013,26 +997,26 @@
 <!--                      <br>-->
 <!--                      {{ getThousandMetricNameByCategorySelected() }}-->
 <!--                    </th>-->
-                    <th v-if="exactDateSelected">
+                    <th v-if="backendPeriodRange === 0">
                       {{ trans("visualcenter.dzoOpec") }}
                     </th>
-                    <th v-if="exactDateSelected">
+                    <th v-if="backendPeriodRange === 0">
                       {{ trans("visualcenter.dzoImpulses") }}
                     </th>
-                    <th v-if="exactDateSelected">
+                    <th v-if="backendPeriodRange === 0">
                       {{ trans("visualcenter.dzoLanding") }}
                     </th>
-                    <th v-if="exactDateSelected">
+                    <th v-if="backendPeriodRange === 0">
                       {{ trans("visualcenter.dzoAlarmFirst") }}<br>
                       {{ trans("visualcenter.dzoAlarmSecond") }}
                     </th>
-                    <th v-if="exactDateSelected">
+                    <th v-if="backendPeriodRange === 0">
                       {{ trans("visualcenter.dzoRestrictions") }}
                     </th>
-                    <th v-if="exactDateSelected">
+                    <th v-if="backendPeriodRange === 0">
                       {{ trans("visualcenter.dzoOthers") }}
                     </th>
-                    <th v-if="exactDateSelected">
+                    <th v-if="backendPeriodRange === 0">
                       {{ trans("visualcenter.gasRestriction") }}
                     </th>
                   </tr>
@@ -1046,35 +1030,43 @@
                             @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth,item.dzo)}` : `${selectAllDzoCompanies()}`"
                             :class="[index % 2 === 0 ? 'tdStyle' : '','cursor-pointer']"
                     >
-                      <span v-if="!isConsolidatedCategoryActive() || isOilResidueActive">
-                        {{ getNameDzoFull(item.name) }}
-                        <img src="/img/icons/link.svg" />
-                      </span>
-                      <span v-else-if="isConsolidatedCategoryActive() && !oilCondensateFilters.isWithoutKMGFilterActive">
-                        {{ getDzoName(item.name,dzoNameMappingWithoutKMG) }}
-                        <img src="/img/icons/link.svg" />
-                      </span>
-                      <span v-else :class="getDzoNameFormatting(item.name)">
+                      <span
+                              v-if="isConsolidatedCategoryActive()"
+                              :class="backendMarginMapping[backendSelectedCategory] &&
+                                backendMarginMapping[backendSelectedCategory].includes(index) ? 'troubled-companies' : ''
+                              "
+                      >
                         {{ getDzoName(item.name,dzoNameMapping) }}
+<!--                        {{ getNameDzoFull(item.name) }}-->
                         <img src="/img/icons/link.svg" />
                       </span>
+<!--                      <span>-->
+<!--                        {{ getDzoName(item.name,dzoNameMappingWithoutKMG) }}-->
+<!--                        <img src="/img/icons/link.svg" />-->
+<!--                      </span>-->
+<!--                      <span v-else :class="getDzoNameFormatting(item.name)">-->
+<!--                        {{ getDzoName(item.name,dzoNameMapping) }}-->
+<!--                        <img src="/img/icons/link.svg" />-->
+<!--                      </span>-->
                     </td>
-<!--                    <td-->
-<!--                            v-if="buttonYearlyTab && !isOilResidueActive"-->
-<!--                            :class="`${getDzoColumnsClass(index,'monthlyPlan')}`"-->
-<!--                    >-->
-<!--                      <div class="font">-->
+                    <td
+                            v-if="buttonYearlyTab"
+                            :class="`${getDzoColumnsClass(index,'monthlyPlan')}`"
+                    >
+                      <div class="font">
+                        periodPlanYear
 <!--                        {{ formatDigitToThousand(item.periodPlan) }}-->
-<!--                      </div>-->
-<!--                    </td>-->
-<!--                    <td-->
-<!--                            v-if="buttonMonthlyTab && !isOilResidueActive"-->
-<!--                            :class="`${getDzoColumnsClass(index,'yearlyPlan')}`"-->
-<!--                    >-->
-<!--                      <div class="font">-->
+                      </div>
+                    </td>
+                    <td
+                            v-if="buttonMonthlyTab"
+                            :class="`${getDzoColumnsClass(index,'yearlyPlan')}`"
+                    >
+                      <div class="font">
+                        periodPlanMonth
 <!--                        {{ formatDigitToThousand(item.periodPlan) }}-->
-<!--                      </div>-->
-<!--                    </td>-->
+                      </div>
+                    </td>
                     <td :class="`${getDzoColumnsClass(index,'plan')}`">
                       <div class="font">
                         {{ formatDigitToThousand(item.plan) }}
@@ -1168,7 +1160,7 @@
 <!--                      </div>-->
 <!--                    </td>-->
                     <td
-                            v-if="backendSelectedView === 'daily'"
+                            v-if="backendPeriodRange === 0"
                             :class="isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
@@ -1176,7 +1168,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="backendSelectedView === 'daily'"
+                            v-if="backendPeriodRange === 0"
                             :class="isConsolidatedCategoryActive() ?
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
@@ -1184,7 +1176,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="backendSelectedView === 'daily'"
+                            v-if="backendPeriodRange === 0"
                             :class="isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
@@ -1192,7 +1184,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="backendSelectedView === 'daily'"
+                            v-if="backendPeriodRange === 0"
                             :class="isConsolidatedCategoryActive() ?
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
@@ -1200,7 +1192,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="backendSelectedView === 'daily'"
+                            v-if="backendPeriodRange === 0"
                             :class="isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
@@ -1208,7 +1200,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="backendSelectedView === 'daily'"
+                            v-if="backendPeriodRange === 0"
                             :class="isConsolidatedCategoryActive() ?
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
@@ -1216,7 +1208,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="backendSelectedView === 'daily'"
+                            v-if="backendPeriodRange === 0"
                             :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
@@ -1231,38 +1223,30 @@
                     </td>
 
                     <td
-                            v-if="buttonYearlyTab && !isOilResidueActive"
+                            v-if="buttonYearlyTab"
                             :class="
                           index % 2 === 0 ? `${getLighterClass(index)}` : 'tdStyle3-total'
                         "
                     >
                       <div class="font">
-<!--                        {{dzoCompaniesSummary.periodPlan}}-->
+                        yearlyplan
+<!--                        {{formatDigitToThousand(backendSummaryYearlyPlan)}}-->
                       </div>
                     </td>
 
                     <td
-                            v-if="buttonMonthlyTab && !isOilResidueActive"
-                            :class="index % 2 === 0 ? `${getLighterClass(index)}` : 'tdStyle3-total'"
-                    >
-                      <div class="font">
-<!--                        {{dzoCompaniesSummary.periodPlan}}-->
-                      </div>
-                    </td>
-
-                    <td
-                            v-if="(buttonMonthlyTab || buttonYearlyTab) && !isOilResidueActive"
+                            v-else-if="buttonMonthlyTab"
                             :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
                     >
                       <div class="font">
-                        {{formatDigitToThousand(backendSummaryPlan)}}
+                        monthlyplan
+<!--                        {{formatDigitToThousand(backendSummaryMonthlyPlan)}}-->
                         <div class="right">
                           {{ trans("visualcenter.thousand") }} {{ metricName }}
                         </div>
                       </div>
                     </td>
                     <td
-                            v-else-if="!isOilResidueActive"
                             :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
                     >
                       <div class="font">
@@ -1273,7 +1257,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="isConsolidatedCategoryActive() && !isOilResidueActive"
+                            v-if="isConsolidatedCategoryActive()"
                             :class="currentDzoList === 'daily' ?
                             getDarkerClass(index) : getLighterClass(index)"
                     >
@@ -1284,20 +1268,19 @@
                         </div>
                       </div>
                     </td>
+<!--                    <td-->
+<!--                            v-if="buttonMonthlyTab || buttonYearlyTab"-->
+<!--                            :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"-->
+<!--                    >-->
+<!--                      <div class="font">-->
+<!--                        {{formatDigitToThousand(backendSummaryFact)}}-->
+<!--                        <div class="right">-->
+<!--                          {{ trans("visualcenter.thousand") }} {{ metricName }}-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </td>-->
                     <td
-                            v-if="buttonMonthlyTab || buttonYearlyTab"
-                            :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
-                    >
-                      <div class="font">
-                        {{formatDigitToThousand(backendSummaryFact)}}
-                        <div class="right">
-                          {{ trans("visualcenter.thousand") }} {{ metricName }}
-                        </div>
-                      </div>
-                    </td>
-                    <td
-                            v-else
-                            :class="(currentDzoList === 'daily' && isConsolidatedCategoryActive()) || isOilResidueActive ?
+                            :class="backendPeriodRange === 0 && isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
                     >
                       <div class="font">
@@ -1338,16 +1321,16 @@
 <!--                      </div>-->
 <!--                    </td>-->
                     <td
-                            v-if="isFilterTargetPlanActive && !isOilResidueActive"
+                            v-if="isFilterTargetPlanActive"
                             :class="`${getColorClassBySelectedPeriod(index)}`"
                     >
-                      <div class="font">
+                      <div class="font">targetPlan
 <!--                        {{dzoCompaniesSummary.targetPlan}}-->
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive() && !isOilResidueActive"
-                            :class="currentDzoList === 'daily' ?
+                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive()"
+                            :class="backendPeriodRange === 0 ?
                             getLighterClass(index) : getDarkerClass(index)"
                     >
                       <div
@@ -1372,40 +1355,40 @@
 <!--                    </td>-->
 
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
+                            :class="isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
-                            v-if="exactDateSelected"
+                            v-if="backendPeriodRange === 0"
                     >
                     </td>
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
+                            :class="isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
-                            v-if="exactDateSelected"
+                            v-if="backendPeriodRange === 0"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
+                            :class="isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
-                            v-if="exactDateSelected"
+                            v-if="backendPeriodRange === 0"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
+                            :class="isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
-                            v-if="exactDateSelected"
+                            v-if="backendPeriodRange === 0"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
+                            :class="isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
-                            v-if="exactDateSelected"
+                            v-if="backendPeriodRange === 0"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
+                            :class="isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
-                            v-if="exactDateSelected"
+                            v-if="backendPeriodRange === 0"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
+                            :class="isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
-                            v-if="exactDateSelected"
+                            v-if="backendPeriodRange === 0"
                     ></td>
                   </tr>
                   </tbody>

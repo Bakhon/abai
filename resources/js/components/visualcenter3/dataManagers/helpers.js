@@ -255,6 +255,11 @@ export default {
         },
 
         getDzoName(acronym,mapping) {
+            if (!mapping[acronym]) {
+                console.log(mapping)
+                return acronym;
+            }
+            // console.log(mapping[acronym]);
             return this.trans(mapping[acronym]);
         },
 

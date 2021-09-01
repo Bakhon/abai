@@ -7,12 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\DzoPlan;
-use App\Traits\VisualCenter\OilCondensateConsolidated;
+use App\Http\Resources\VisualCenter\OilCondensateConsolidated;
 use Carbon\Carbon;
 
 class VisualCenterController extends Controller
 {
-    use OilCondensateConsolidated;
     private $periodStart = '';
     private $periodEnd = '';
     private $periodRange = 0;
@@ -21,115 +20,93 @@ class VisualCenterController extends Controller
     private $dzoName = '';
     private $category = '';
     private $filter = '';
-    private $planFields = array('dzo');
-    private $factFields = array('dzo_name','id');
     private $chartData = array();
     private $tableData = array(
-        'current' => array(),
-        'historical' => array()
-    );
-    private $factField = '';
-    private $additionalFactField = '';
-    private $additionalPlanField = '';
-    private $planField = '';
-    private $opekField = '';
-    private $factCondensateField = '';
-    private $planCondensateField = '';
-    private $isOpek = false;
-    private $categoryMapping = array (
-        'oilCondensateProduction' => array (
-            'oilProductionMapping',
-            'oilDeliveryMapping',
-            'condensateProductionMapping',
-            'condensateDeliveryMapping'
+        'current' => array(
+            'oilCondensateProduction' => array(),
+            'oilCondensateProductionWithoutKMG' => array(),
+            'oilCondensateDelivery' => array(),
+            'oilCondensateDeliveryWithoutKMG' => array(),
+            'oilCondensateDeliveryOilResidue' => array(),
+            'gasProduction' => array(),
+            'naturalGasProduction' => array(),
+            'associatedGasProduction' => array(),
+            'flaringGas' => array(),
+            'naturalGasDelivery' => array(),
+            'expensesForOwnNaturalGas' => array(),
+            'associatedGasDelivery' => array(),
+            'expensesForOwnAssociatedGas' => array(),
+            'waterInjection' => array(),
+            'seawaterInjection' => array(),
+            'wasteWaterInjection' => array(),
+            'artezianWaterInjection' => array()
+        ),
+        'historical' => array(
+            'oilCondensateProduction' => array(),
+            'oilCondensateProductionWithoutKMG' => array(),
+            'oilCondensateDelivery' => array(),
+            'oilCondensateDeliveryWithoutKMG' => array(),
+            'gasProduction' => array()
         )
     );
-    //oil
-    private $oilProductionMapping = array (
-        'factField' => 'oil_production_fact',
-        'planField' => 'plan_oil',
-        'opekField' => 'plan_oil_opek',
-    );
-    private $oilDeliveryMapping = array (
-        'factField' => 'oil_delivery_fact',
-        'planField' => 'plan_oil_dlv',
-        'opekField' => 'plan_oil_dlv_opek',
-    );
-    //condensate
-    private $condensateProductionMapping = array (
-        'factField' => 'condensate_production_fact',
-        'planField' => 'plan_kondensat',
-    );
-    private $condensateDeliveryMapping = array (
-        'factField' => 'condensate_delivery_fact',
-        'planField' => 'plan_kondensat_dlv',
-    );
-    //stock of goods
-    private $goodStockMapping = array (
-        'factField' => 'stock_of_goods_delivery_fact'
-    );
-    //natural gas
-    private $naturalGasMapping = array (
-        'factField' => 'natural_gas_production_fact',
-        'planField' => 'plan_prirod_gas',
-    );
-    private $naturalGasDeliveryMapping = array (
-        'factField' => 'natural_gas_delivery_fact',
-        'planField' => 'plan_prirod_gas_dlv',
-    );
-    private $naturalGasExpensesMapping = array (
-        'factField' => 'natural_gas_expenses_for_own_fact',
-        'planField' => 'plan_prirod_gas_raskhod',
-    );
-    //associated gas
-    private $associatedGasMapping = array (
-        'factField' => 'associated_gas_production_fact',
-        'planField' => 'plan_poput_gas',
-    );
-    private $associatedFlaringGasMapping = array (
-        'factField' => 'associated_gas_flaring_fact',
-        'planField' => 'plan_poput_gas_burn',
-    );
-
-    private $associatedGasDeliveryMapping = array (
-        'factField' => 'associated_gas_delivery_fact',
-        'planField' => 'plan_poput_gas_dlv',
-    );
-    private $associatedGasExpensesMapping = array (
-        'factField' => 'associated_gas_expenses_for_own_fact',
-        'planField' => 'plan_poput_gas_raskhod',
-    );
-    //water
-    private $seaWaterInjectionMapping = array (
-        'factField' => 'agent_upload_seawater_injection_fact',
-        'planField' => 'plan_liq_ocean',
-    );
-    private $wasteWaterInjectionMapping = array (
-        'factField' => 'agent_upload_waste_water_injection_fact',
-        'planField' => 'plan_liq_waste',
-    );
-    private $artezianWaterInjectionMapping = array (
-        'factField' => 'agent_upload_albsenomanian_water_injection_fact',
-        'planField' => 'plan_liq_albsen',
-    );
+    private $isOpek = false;
+    protected $factFields = [
+        'id',
+        'dzo_name',
+        'oil_production_fact',
+        'oil_delivery_fact',
+        'condensate_production_fact',
+        'condensate_delivery_fact',
+        'stock_of_goods_delivery_fact',
+        'natural_gas_production_fact',
+        'natural_gas_delivery_fact',
+        'natural_gas_expenses_for_own_fact',
+        'associated_gas_production_fact',
+        'associated_gas_flaring_fact',
+        'associated_gas_delivery_fact',
+        'associated_gas_expenses_for_own_fact',
+        'agent_upload_seawater_injection_fact',
+        'agent_upload_waste_water_injection_fact',
+        'agent_upload_albsenomanian_water_injection_fact'
+    ];
+    protected $planFields = [
+        'dzo',
+        'plan_oil',
+        'plan_oil_opek',
+        'plan_oil_dlv',
+        'plan_oil_dlv_opek',
+        'plan_kondensat',
+        'plan_kondensat_dlv',
+        'plan_prirod_gas',
+        'plan_prirod_gas_dlv',
+        'plan_prirod_gas_raskhod',
+        'plan_poput_gas',
+        'plan_poput_gas_burn',
+        'plan_poput_gas_dlv',
+        'plan_poput_gas_raskhod',
+        'plan_liq_ocean',
+        'plan_liq_waste',
+        'plan_liq_albsen'
+    ];
 
     public function getProductionParamsByCategory(Request $request)
     {
+        $this->chartData = $this->tableData;
         $this->refreshRequestParams($request->request);
-        $this->refreshFields();
         $currentPeriodDzoFact = $this->getDzoFact($this->periodStart,$this->periodEnd);
         $currentPeriodDzoPlan = $this->getDzoPlan($this->periodStart,$this->periodEnd);
         $historicalDzoFact = $this->getDzoFact($this->historicalPeriodStart,$this->historicalPeriodEnd);
         $historicalDzoPlan = $this->getDzoPlan($this->historicalPeriodStart,$this->historicalPeriodEnd);
         if ($this->periodRange > 0) {
-            $this->chartData = $this->getChartData($currentPeriodDzoFact,$currentPeriodDzoPlan);
+            //$this->chartData = $this->getChartData($currentPeriodDzoFact,$currentPeriodDzoPlan);
         }
-        $this->tableData['current'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan);
-        $this->tableData['historical'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan);
+        $this->tableData['current']['oilCondensateProduction'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateProduction');
+        $this->tableData['historical']['oilCondensateProduction'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan,'oilCondensateProduction');
+        $this->tableData['current']['oilCondensateDelivery'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDelivery');
+        $this->tableData['historical']['oilCondensateDelivery'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan,'oilCondensateProduction');
         return array(
-            'tableData' => $this->tableData['current'],
+            'tableData' => $this->tableData,
             'chartData' => $this->chartData,
-            'historicalTableData' => $this->tableData['historical']
         );
     }
 
@@ -143,39 +120,12 @@ class VisualCenterController extends Controller
         $this->dzoName = $params->get('dzoName');
         $this->category = $params->get('category');
         $this->filter = $params->get('filter');
-    }
-
-    private function refreshFields()
-    {
-        $categories = $this->categoryMapping[$this->category];
-        foreach($categories as $fields) {
-            array_push($this->planFields, $this->$fields['planField']);
-            if (isset($this->$fields['opekField'])) {
-                array_push($this->planFields, $this->$fields['opekField']);
-            }
-            array_push($this->factFields, $this->$fields['factField']);
-        }
-
-        $selectedCategory = $categories[0];
-        $this->factField = $this->$selectedCategory['factField'];
-        $this->planField = $this->$selectedCategory['planField'];
         $this->isOpek = $this->category === 'oilCondensateProduction' || $this->category === 'oilCondensateDelivery';
-        if ($this->isOpek) {
-            $condensateCategory = $this->categoryMapping[$this->category][2];
-            $this->opekField = $this->$selectedCategory['opekField'];
-            $this->factCondensateField = $this->$condensateCategory['factField'];
-            $this->planCondensateField = $this->$condensateCategory['planField'];
-            $condensateAdittionalCategory = $this->categoryMapping[$this->category][3];
-            $this->factAdditionalCondensateField = $this->$condensateAdittionalCategory['factField'];
-            $this->planAdditionalCondensateField = $this->$condensateAdittionalCategory['planField'];
-        }
     }
 
     private function getDzoFact($startDate,$endDate)
     {
         $query = DzoImportData::query()
-             ->select($this->factFields)
-             ->addSelect(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'))
              ->whereDate('date', '>=', $startDate)
              ->whereDate('date', '<=', $endDate)
              ->whereNull('is_corrected');
@@ -187,8 +137,6 @@ class VisualCenterController extends Controller
     private function getDzoPlan($startDate,$endDate)
     {
         $query = DzoPlan::query()
-            ->select($this->planFields)
-            ->addSelect(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as dates'))
             ->whereDate('date', '>=', $startDate->firstOfMonth()->startOfDay())
             ->whereDate('date', '<=', $endDate->firstOfMonth()->startOfDay());
         if (!is_null($this->dzoName)) {
@@ -213,11 +161,12 @@ class VisualCenterController extends Controller
         }
         return $sum;
     }
-    private function getTableData($fact,$plan)
+    private function getTableData($fact,$plan,$type)
     {
+        $oilCondensateConsolidated = new OilCondensateConsolidated();
         $tableData = array();
-        if ($this->category === 'oilCondensateProduction' || $this->category === 'oilCondensateDelivery') {
-            $tableData = $this->getDataByConsolidatedCategory($fact,$plan);
+        if ($type === 'oilCondensateProduction' || $type === 'oilCondensateDelivery') {
+            $tableData = $oilCondensateConsolidated->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,$type);
         }
         return $tableData;
     }
