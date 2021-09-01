@@ -91,8 +91,8 @@ export default {
     }
   },
   methods: {
-    selectPoint({seriesIndex, dataPointIndex}) {
-      let uwi = this.chartSeries.oil_12m[seriesIndex].data[dataPointIndex].x
+    selectPoint(key, {seriesIndex, dataPointIndex}) {
+      let uwi = this.chartSeries[key][seriesIndex].data[dataPointIndex].x
 
       let index = this.selectedWells.findIndex(well => well === uwi)
 
@@ -126,7 +126,7 @@ export default {
           locales: [RU],
           defaultLocale: 'ru',
           events: {
-            dataPointSelection: (event, chartContext, config) => this.selectPoint(config)
+            dataPointSelection: (event, chartContext, config) => this.selectPoint(key, config)
           }
         },
       }
