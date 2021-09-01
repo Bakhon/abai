@@ -179,7 +179,7 @@
 
         @if(auth()->user()->can('monitoring view pipes map'))
             <li class="left-menu-li">
-                <a href="{{route('maps.gu')}}">
+                <a href="{{route('tech-map.index')}}">
                     {{ trans('monitoring.tech_map') }}
                 </a>
             </li>

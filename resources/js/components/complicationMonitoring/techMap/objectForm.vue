@@ -16,21 +16,6 @@
     </b-form-group>
 
     <b-form-group
-        v-if="editMode == 'gu'"
-        :label="trans('monitoring.cdng')"
-        label-for="cdng">
-      <b-form-select
-          id="cdng"
-          v-model="object.cdng_id"
-          :options="cdngOptions"
-      ></b-form-select>
-
-      <b-form-invalid-feedback id="input-live-feedback" :state="!($v.object.cdng_id.$dirty && !$v.object.cdng_id.required)">
-        {{ trans('validation.required', {attribute: trans('monitoring.cdng')}) }}
-      </b-form-invalid-feedback>
-    </b-form-group>
-
-    <b-form-group
         :label="trans('monitoring.ngdu')"
         label-for="ngdus">
       <b-form-select
@@ -46,6 +31,23 @@
     </b-form-group>
 
     <b-form-group
+        v-if="editMode == 'gu'"
+        :label="trans('monitoring.cdng')"
+        label-for="cdng">
+      <b-form-select
+          id="cdng"
+          v-model="object.cdng_id"
+          :options="cdngOptions"
+          @input="onSelectCdng"
+      ></b-form-select>
+
+      <b-form-invalid-feedback id="input-live-feedback"
+                               :state="!($v.object.cdng_id.$dirty && !$v.object.cdng_id.required)">
+        {{ trans('validation.required', {attribute: trans('monitoring.cdng')}) }}
+      </b-form-invalid-feedback>
+    </b-form-group>
+
+    <b-form-group
         v-if="editMode != 'gu'"
         :label="trans('monitoring.gu.gu')"
         label-for="gus">
@@ -53,6 +55,7 @@
           id="gus"
           v-model="object.gu_id"
           :options="guOptions"
+          @input="onSelectGu"
       ></b-form-select>
 
       <b-form-invalid-feedback id="input-live-feedback" :state="!($v.object.gu_id.$dirty && !$v.object.gu_id.required)">
@@ -68,6 +71,7 @@
           id="zus"
           v-model="object.zu_id"
           :options="zuOptions"
+          @input="onSelectZu"
       ></b-form-select>
 
       <b-form-invalid-feedback id="input-live-feedback" :state="!($v.object.zu_id.$dirty && !$v.object.zu_id.required)">
@@ -192,8 +196,15 @@ export default {
     ]),
     zuOptions: function () {
       let options = [];
+
       this.zuPoints.forEach((item) => {
-        if (item.gu_id) {
+        if (!item.gu_id) {
+          return;
+        }
+
+        if (_.isUndefined(this.object.gu_id) ||
+            item.gu_id == this.object.gu_id
+        ) {
           options.push(
               {value: item.id, text: item.name}
           );
@@ -205,9 +216,13 @@ export default {
     guOptions: function () {
       let options = [];
       this.guPoints.forEach((item) => {
-        options.push(
-            {value: item.id, text: item.name}
-        );
+        if (_.isUndefined(this.object.ngdu_id) ||
+            item.ngdu_id == this.object.ngdu_id
+        ) {
+          options.push(
+              {value: item.id, text: item.name}
+          );
+        }
       });
 
       return options;
@@ -225,9 +240,13 @@ export default {
     cdngOptions: function () {
       let options = [];
       this.cdngs.forEach((item) => {
-        options.push(
-            { value: item.id, text: item.name }
-        );
+        if (_.isUndefined(this.object.ngdu_id) ||
+            item.ngdu_id == this.object.ngdu_id
+        ) {
+          options.push(
+              {value: item.id, text: item.name}
+          );
+        }
       });
 
       return options;
@@ -242,7 +261,7 @@ export default {
           return this.trans('monitoring.well.name');
       }
     },
-    guParams () {
+    guParams() {
       if (!this.object.last_omgngdu) {
         return blankGuParams;
       }
@@ -271,7 +290,34 @@ export default {
       this.$v.$touch();
 
       return this.$v.$invalid;
-    }
+    },
+    onSelectCdng() {
+      if (!_.isUndefined(this.object.cdng_id)) {
+        this.object.ngdu_id = this.cdngs.find((cdng) => {
+          return cdng.id == this.object.cdng_id;
+        }).ngdu_id;
+      }
+    },
+    onSelectGu() {
+      if (!_.isUndefined(this.object.gu_id)) {
+        let gu =  this.guPoints.find((guPoint) => {
+          return guPoint.id == this.object.gu_id;
+        });
+
+        this.object.ngdu_id = gu.ngdu_id;
+        this.object.cdng_id = gu.cdng_id;
+      }
+    },
+    onSelectZu() {
+      if (!_.isUndefined(this.object.zu_id)) {
+        let zu =  this.zuPoints.find((zuPoint) => {
+          return zuPoint.id == this.object.zu_id;
+        });
+
+        this.object.gu_id = zu.gu_id;
+        this.onSelectGu();
+      }
+    },
   }
 }
 </script>
