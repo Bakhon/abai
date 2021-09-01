@@ -16,7 +16,7 @@
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <omgngdu-well-form :is-editing="true" :omgngdu-well-prop='@json($omgngdu_well)' :validation-params='@json($validationParams)'></omgngdu-well-form>
+                        <omgngdu-well-form  :omgngdu-well-prop='@json($omgngdu_well)' :validation-params='@json($validationParams)'></omgngdu-well-form>
                     </div>
                 </form>
             </div>
