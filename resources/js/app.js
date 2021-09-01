@@ -172,7 +172,7 @@ Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue'
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
-Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
+Vue.component('well-card', require('./components/bigdata/wellCard/wellCard.vue').default);
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);

@@ -13,8 +13,10 @@ export default {
             },
             changeReason: '',
             userName: '',
+            userPosition: '',
             isUserNameCompleted: false,
             isChangeReasonCompleted: false,
+            isUserPositionCompleted: false,
             isDataSended: false
         };
     },
@@ -40,6 +42,7 @@ export default {
                 this.excelData['is_approved'] = false;
                 this.excelData['date'] = moment(this.period).format("YYYY-MM-DD HH:mm:ss");
                 this.excelData['user_name'] = this.userName;
+                this.excelData['user_position'] = this.userPosition;
                 this.excelData['change_reason'] = this.changeReason;
                 this.excelData['toList'] = ['firstMaster','secondMaster','mainMaster'];
                 await this.storeData(uri);
@@ -77,6 +80,10 @@ export default {
         changeReasonState() {
             this.isChangeReasonCompleted = this.changeReason.length > 3;
             return this.isChangeReasonCompleted;
+        },
+        userPositionState() {
+            this.isUserPositionCompleted = this.userPosition.length > 1;
+            return this.isUserPositionCompleted;
         },
     }
 }
