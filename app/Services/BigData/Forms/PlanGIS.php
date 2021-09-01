@@ -73,7 +73,7 @@ class PlanGIS extends TableForm
         while (true) {
             $mergeColumns['date_' . $date->format('n_Y')] = [
                 'code' => 'date_' . $date->format('n_Y'),
-                'title' => $date->format('F Y')
+                'title' => trans('app.months.' . $date->format('n')) . ' ' . $date->format('Y')
             ];
 
             $childCodes = [];
