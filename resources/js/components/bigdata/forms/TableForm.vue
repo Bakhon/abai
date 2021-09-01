@@ -186,7 +186,6 @@
             :params="innerFormParams"
             :values="innerFormValues"
             :well-id="innerFormWellId"
-            @change="updateResults"
             @close="isInnerFormOpened = false"
         >
         </BigDataPlainForm>
@@ -550,9 +549,6 @@ export default {
       this.innerFormWellId = row.id
       this.innerFormValues = {}
       this.innerFormValues[column.code] = row[column.code].value
-    },
-    updateResults(data) {
-      console.log(data)
     }
   },
 };
