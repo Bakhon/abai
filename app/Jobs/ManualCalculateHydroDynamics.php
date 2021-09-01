@@ -190,7 +190,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             'columnNames' => $this->columnNames
         ];
 
-        $fileName = 'manual_calc_input.xlsx';
+        $fileName = 'pipeline_calc_input.xlsx';
         $filePath = 'public/export/' . $fileName;
         Excel::store(new ManualCalculateExport($data), $filePath);
 
