@@ -6,8 +6,8 @@ use App\Filters\HydroCalcFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
-use App\Http\Resources\HydroCalcCalculatedListResource;
 use App\Http\Resources\HydroCalcPrepareListResource;
+use App\Http\Resources\HydroCalculatedListResource;
 use App\Jobs\CalculateHydroDynamics;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\OmgNGDU;
@@ -173,7 +173,7 @@ class HydroCalculation extends Controller
 
         if (isset($input['date'])) {
             $points = $this->getCalculatedData($input['date']);
-            $list = json_decode(HydroCalcCalculatedListResource::collection($points)->toJson());
+            $list = json_decode(HydroCalculatedListResource::collection($points)->toJson());
         }
 
         if (!$points || !$points->total()) {

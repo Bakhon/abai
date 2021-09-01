@@ -1,6 +1,6 @@
 <template>
   <div class="all-contents">
-    <div class="row well-cart__wrapper">
+    <div class="row well-card__wrapper">
       <div
           :class="{'left-column_folded': isLeftColumnFolded}"
           class="left-column"
@@ -28,13 +28,13 @@
             </div>
             <div class="directory text-white pt-0 mt-0">
               <ul id="myUL">
-                <well-cart-tree
+                <well-card-tree
                     v-for="(item, index) in formsStructure"
                     :key="index"
                     :active-form-code="activeFormCode"
                     :data="item"
                     :switch-form-by-code="switchFormByCode">
-                </well-cart-tree>
+                </well-card-tree>
               </ul>
             </div>
           </div>
@@ -53,7 +53,7 @@
             <div class="row">
               <div class="col-4">
                 <button class="transparent-select">
-                  Скважина: <span v-if="wellUwi">{{ wellUwi.name }}</span>
+                  Скважина: <span v-if="wellUwi">{{ wellUwi }}</span>
                   <svg fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round"
                           stroke-width="1.6"/>
@@ -71,7 +71,6 @@
                   </select>
                   <v-select
                       class="flex-fill"
-                      v-model="wellUwi"
                       :filterable="false"
                       :options="options"
                       placeholder="Номер скважины"
@@ -117,7 +116,7 @@
                       <div class="title">Основное</div>
                       <p>Номер скважины:
                         <span v-if="wellUwi">
-                          {{ wellUwi.name }}
+                          {{ wellUwi }}
                         </span>
                       </p>
                       <p>Категория скважины:
@@ -126,8 +125,8 @@
                         </span>
                       </p>
                       <div class="title">Привязка</div>
+                      <p>Оргструктура: <span v-if="wellOrgName">{{ wellOrgName }}</span></p>
                       <div class="title">Координаты устья</div>
-                      <p>Оргструктура: <span></span></p>
                       <p>Координаты устья X:
                         <span v-if="wellSaptialObjectX">{{ wellSaptialObjectX }}</span>
                       </p>
@@ -136,11 +135,11 @@
                           {{ wellSaptialObjectY }}
                         </span></p>
                       <div class="title">Координаты забоя</div>
-                      <p>Координаты устья X:
+                      <p>Координаты забоя X:
                         <span v-if="wellSaptialObjectBottomX">
                             {{ wellSaptialObjectBottomX }}
                         </span></p>
-                      <p>Координаты устья Y:
+                      <p>Координаты забоя Y:
                         <span v-if="wellSaptialObjectBottomY">
                             {{ wellSaptialObjectBottomY }}
                           </span></p>
@@ -219,17 +218,17 @@
 
 <script>
 import Vue from "vue";
-import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
+import BigDataPlainFormResult from '../forms/PlainFormResults'
 import vSelect from 'vue-select'
 import axios from 'axios'
 import moment from 'moment'
-import WellCartTree from './WellCartTree'
+import WellCardTree from './WellCardTree'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 import {globalloadingMutations} from '@store/helpers';
 
 
-const requireComponent = require.context('../bigdata/forms/CustomPlainForms', true, /\.vue$/i);
+const requireComponent = require.context('../forms/CustomPlainForms', true, /\.vue$/i);
 requireComponent.keys().forEach(fileName => {
   const componentConfig = requireComponent(fileName)
   const componentName = upperFirst(
@@ -247,7 +246,7 @@ export default {
   components: {
     BigDataPlainFormResult,
     vSelect,
-    WellCartTree
+    WellCardTree
   },
   data() {
     return {
@@ -436,7 +435,7 @@ export default {
           }
           this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
           this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
-          this.wellOrgName = this.getMultipleValues(data.org, 'name_ru')
+          this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
           this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
           if (data.spatial_object.coord_point != null) {
             let spatialObject
@@ -467,7 +466,9 @@ export default {
               this.tableData[i].data += this.tableData[i].neigbor_1
             }
             if (this.tableData[i].neigbor_2 != null) {
-              this.tableData[i].data += ' - '
+              if(this.tableData[i].neigbor_1 != null) {
+                this.tableData[i].data += ' - '
+              }
               this.tableData[i].data += this.tableData[i].neigbor_2
             }
           } catch (e) {
@@ -948,8 +949,7 @@ $leftColumnWidth: 385px;
 $leftColumnFoldedWidth: 84px;
 $rightColumnWidth: 348px;
 $rightColumnFoldedWidth: 84px;
-
-.well-cart {
+.well-card {
   &__wrapper {
     height: calc(100vh - 90px);
   }
@@ -1226,7 +1226,7 @@ h4 {
     font-size: 14px;
     line-height: 17px;
     border-bottom: 1px solid #2D43B4;
-    padding-bottom: 8px;
+    padding-top: 8px;
   }
 
   p {
@@ -2130,5 +2130,4 @@ h4 {
     border: 1px solid transparent;
     box-shadow: inset 0 0px 0px 1px #ccc;
 }
-
 </style>

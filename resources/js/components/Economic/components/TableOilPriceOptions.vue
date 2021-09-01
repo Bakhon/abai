@@ -1,6 +1,6 @@
 <template>
   <div>
-    <subtitle font-size="18" style="line-height: 26px">
+    <subtitle font-size="18" class="line-height-26px">
       <div>{{ trans('economic_reference.table_oil_price_options_title') }}</div>
       <div>“{{ org.name }}”</div>
     </subtitle>
@@ -25,7 +25,7 @@
              :key="key.value"
              :class="index ? 'p-3' : 'px-3 py-1'"
              :style="`flex: ${key.flexGrow} 0 ${key.flexWidth}`"
-             class="border-grey text-center">
+             class="border-grey text-center line-height-14px d-flex align-items-center justify-content-center">
           {{
             typeof item[key.value] === 'string'
                 ? item[key.value]
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <subtitle font-size="18" style="line-height: 26px" class="mt-3">
+    <subtitle font-size="18" class="line-height-26px mt-3">
       {{ trans('economic_reference.cat_1_trips') }}: {{ scenario.percent_stop_cat_1 * 100 }}%,
       {{ trans('economic_reference.cat_2_trips') }}: {{ scenario.percent_stop_cat_2 * 100 }}%
     </subtitle>
@@ -49,7 +49,7 @@
              :key="key.value"
              :class="index ? 'p-3' : 'px-3 py-1'"
              :style="`flex: ${key.flexGrow} 0 ${key.flexWidth}`"
-             class="border-grey text-center">
+             class="border-grey text-center line-height-14px">
           {{
             typeof item[key.value] === 'string'
                 ? item[key.value]
@@ -102,19 +102,27 @@ export default {
           : +oil / +days_worked
     },
 
-    calcRevenueTotal(revenue_total) {
-      return +revenue_total / 1000000000
+    calcRevenueTotal(value) {
+      return +value / 1000000000
     },
 
-    calcOil(oil) {
-      return +oil / 1000
+    calcOil(value) {
+      return +value / 1000
+    },
+
+    calcOverallExpenditures(value) {
+      return +value / 1000000000
+    },
+
+    calcOperatingProfit(value) {
+      return +value / 1000000000
     },
   },
   computed: {
     tableData() {
       return [
         {
-          title: `${this.trans('economic_reference.at_export_price')} - ${this.scenario.oil_price}$/bbl`,
+          title: `${this.trans('economic_reference.at_export_price')} ${+this.scenario.oil_price}$/bbl`,
           uwiCount: this.trans('economic_reference.units'),
           prsCount: this.trans('economic_reference.units'),
           prsPerUwi: this.trans('economic_reference.units'),
@@ -123,6 +131,8 @@ export default {
           oil: this.trans('economic_reference.thousand_tons'),
           number: this.trans('economic_reference.people_short'),
           revenueTotal: `${this.trans('economic_reference.billion')} ${this.trans('economic_reference.tenge')}`,
+          overallExpenditures: `${this.trans('economic_reference.billion')} ${this.trans('economic_reference.tenge')}`,
+          operatingProfit: `${this.trans('economic_reference.billion')} ${this.trans('economic_reference.tenge')}`,
           color: '#151E70',
         },
         {
@@ -134,7 +144,9 @@ export default {
           avgQn: this.calcAvgQn(this.scenario.oil.original_value, this.scenario.days_worked.original_value),
           oil: this.calcOil(this.scenario.oil.original_value),
           number: '',
-          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total.original_value)
+          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total.original_value),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures.original_value),
+          operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit.original_value),
         },
         {
           title: this.trans('economic_reference.profitable'),
@@ -145,7 +157,9 @@ export default {
           avgQn: this.calcAvgQn(this.scenario.oil_profitable.original_value, this.scenario.days_worked_profitable.original_value),
           oil: this.calcOil(this.scenario.oil_profitable.original_value),
           number: '',
-          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitable.original_value)
+          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitable.original_value),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_profitable.original_value),
+          operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_profitable.original_value),
         },
         {
           title: this.trans('economic_reference.profitless_cat_1'),
@@ -156,7 +170,9 @@ export default {
           avgQn: this.calcAvgQn(this.scenario.oil_profitless_cat_1.original_value, this.scenario.days_worked_profitless_cat_1.original_value),
           oil: this.calcOil(this.scenario.oil_profitless_cat_1.original_value),
           number: '',
-          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_1.original_value)
+          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_1.original_value),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_profitless_cat_1.original_value),
+          operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_profitless_cat_1.original_value),
         },
         {
           title: this.trans('economic_reference.profitless_cat_2'),
@@ -167,7 +183,9 @@ export default {
           avgQn: this.calcAvgQn(this.scenario.oil_profitless_cat_2.original_value, this.scenario.days_worked_profitless_cat_2.original_value),
           oil: this.calcOil(this.scenario.oil_profitless_cat_2.original_value),
           number: '',
-          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_2.original_value)
+          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_2.original_value),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_profitless_cat_2.original_value),
+          operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_profitless_cat_2.original_value),
         },
       ]
     },
@@ -183,7 +201,9 @@ export default {
           avgQn: this.calcAvgQn(this.scenario.oil.original_value_optimized, this.scenario.days_worked.original_value_optimized),
           oil: this.calcOil(this.scenario.oil.original_value_optimized),
           number: '',
-          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total.original_value_optimized)
+          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total.original_value_optimized),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_scenario),
+          operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario),
         },
         {
           title: this.trans('economic_reference.profitable'),
@@ -194,7 +214,9 @@ export default {
           avgQn: this.calcAvgQn(this.scenario.oil_profitable.original_value_optimized, this.scenario.days_worked_profitable.original_value_optimized),
           oil: this.calcOil(this.scenario.oil_profitable.original_value_optimized),
           number: '',
-          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitable.original_value_optimized)
+          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitable.original_value_optimized),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_scenario_profitable),
+          operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario_profitable),
         },
         {
           title: this.trans('economic_reference.profitless_cat_1'),
@@ -205,7 +227,9 @@ export default {
           avgQn: this.calcAvgQn(this.scenario.oil_profitless_cat_1.original_value_optimized, this.scenario.days_worked_profitless_cat_1.original_value_optimized),
           oil: this.calcOil(this.scenario.oil_profitless_cat_1.original_value_optimized),
           number: '',
-          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_1.original_value_optimized)
+          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_1.original_value_optimized),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_scenario_profitless_cat_1),
+          operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario_profitless_cat_1),
         },
         {
           title: this.trans('economic_reference.profitless_cat_2'),
@@ -216,7 +240,9 @@ export default {
           avgQn: this.calcAvgQn(this.scenario.oil_profitless_cat_2.original_value_optimized, this.scenario.days_worked_profitless_cat_2.original_value_optimized),
           oil: this.calcOil(this.scenario.oil_profitless_cat_2.original_value_optimized),
           number: '',
-          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_2.original_value_optimized)
+          revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_2.original_value_optimized),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_scenario_profitless_cat_2),
+          operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario_profitless_cat_2),
         },
       ]
     },
@@ -226,19 +252,19 @@ export default {
         {
           title: this.trans('economic_reference.indicators'),
           value: 'title',
-          flexWidth: '300px',
-          flexGrow: 1,
+          flexWidth: '180px',
+          flexGrow: 0,
         },
         {
           title: this.trans('economic_reference.wells_count'),
           value: 'uwiCount',
-          flexWidth: '120px',
+          flexWidth: '100px',
           flexGrow: 0,
         },
         {
           title: this.trans('economic_reference.prs_count'),
           value: 'prsCount',
-          flexWidth: '120px',
+          flexWidth: '100px',
           flexGrow: 0,
         },
         {
@@ -256,13 +282,13 @@ export default {
         {
           title: this.trans('economic_reference.avg_qn'),
           value: 'avgQn',
-          flexWidth: '120px',
+          flexWidth: '100px',
           flexGrow: 0,
         },
         {
           title: this.trans('economic_reference.production'),
           value: 'oil',
-          flexWidth: '120px',
+          flexWidth: '115px',
           flexGrow: 0,
         },
         {
@@ -277,6 +303,18 @@ export default {
           flexWidth: '120px',
           flexGrow: 0,
         },
+        {
+          title: this.trans('economic_reference.costs'),
+          value: 'overallExpenditures',
+          flexWidth: '120px',
+          flexGrow: 0,
+        },
+        {
+          title: this.trans('economic_reference.operating_profit'),
+          value: 'operatingProfit',
+          flexWidth: '120px',
+          flexGrow: 1,
+        },
       ]
     },
   },
@@ -290,5 +328,13 @@ export default {
 
 .bg-header {
   background: #333975;
+}
+
+.line-height-14px {
+  line-height: 14px;
+}
+
+.line-height-26px {
+  line-height: 26px;
 }
 </style>
