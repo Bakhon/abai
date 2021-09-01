@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Exports\ManualCalculateExport;
 use App\Exports\PipeLineCalcExport;
 use App\Filters\ManualHydroCalculationFilter;
 use App\Imports\HydroCalcResultImport;
@@ -139,48 +140,55 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         $query = ManualOilPipe::query()
             ->with('firstCoords', 'lastCoords');
 
+
+        if (isset($this->input['date'])) {
+            $date = $this->input['date'];
+            $query = $query->with(['gu.omgngdu' => function ($q) use ($date) {
+                $q->where('date', $date);
+            }]);
+        } else {
+            $query = $query->with('gu.lastOmgngdu');
+        }
+
         $pipes = $this
             ->getFilteredQuery($this->input, $query)
             ->whereNotNull('start_point')
             ->whereNotNull('end_point')
+            ->orderBy('gu_id')
             ->get();
 
         $pipes->load('pipeType');
 
         foreach ($pipes as $key => $pipe) {
-            if ($pipe->between_points == 'well-zu') {
-                $query = OmgNGDUWell::where('well_id', $pipe->well_id);
+            if ($pipe->between_points != 'well-zu') {
+                continue;
+            }
+
+            $query = OmgNGDUWell::where('well_id', $pipe->well_id);
+
+            if (isset($this->input['date'])) {
+                $query = $query->where('date', $this->input['date']);
+            }
+
+            $pipe->omgngdu = $query->orderBy('date', 'desc')->first();
+
+            if (!$pipe->omgngdu) {
+
+                $message = $pipe->start_point . ' ' . trans('monitoring.hydro_calculation.message.no-omgdu-data');
 
                 if (isset($input['date'])) {
-                    $query = $query->where('date', $input['date']);
+                    $message .= ' на ' . $input['date'];
                 }
 
-                $pipe->omgngdu = $query->orderBy('date', 'desc')->first();
+                $this->setOutput(
+                    [
+                        'error' => $message
+                    ]
+                );
 
-                if ($pipe->between_points == 'well-zu' && !$pipe->omgngdu) {
-
-                    $message = $pipe->start_point . ' ' . trans('monitoring.hydro_calculation.message.no-omgdu-data');
-
-                    if (isset($input['date'])) {
-                        $message .= ' на ' . $input['date'];
-                    }
-
-                    if (isset($this->input['cron']) AND $this->input['cron']) {
-                        Log::channel('manual_calculate_hydro_yesterday:cron')->error($message);
-                    } else {
-                        $this->setOutput(
-                            [
-                                'error' => $message
-                            ]
-                        );
-                    }
-
-                    break;
-                }
+                return;
             }
         }
-
-        dd($pipes);
 
         $data = [
             'pipes' => $pipes,
@@ -189,12 +197,12 @@ class ManualCalculateHydroDynamics implements ShouldQueue
 
         $fileName = 'manual_calc_input.xlsx';
         $filePath = 'public/export/' . $fileName;
-        Excel::store(new PipeLineCalcExport($data), $filePath);
+        Excel::store(new ManualCalculateExport($data), $filePath);
 
-        if (!$isErrors and isset($this->input['date'])) {
+        if (isset($this->input['date'])) {
 
             $fileurl = env('KMG_SERVER_URL') . Storage::url($filePath);
-            $url = env('HYDRO_CALC_SERVICE_URL') . 'url_file/?url=' . $fileurl;
+            $url = env('MANUAL_CALC_SERVICE_URL') . 'url_file/?url=' . $fileurl;
 
             $client = new \GuzzleHttp\Client();
 
@@ -228,10 +236,6 @@ class ManualCalculateHydroDynamics implements ShouldQueue
                 array_unshift($long->data, $long->columns);
                 $this->storeLongResult($long->data);
             }
-        }
-
-        if (isset($this->input['cron']) AND $this->input['cron']) {
-            Log::channel('calculate_hydro_yesterday:cron')->info('Расчет на '.$this->input['date'].' успешно завершен.');
         }
     }
 

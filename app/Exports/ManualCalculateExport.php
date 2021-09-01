@@ -16,7 +16,7 @@ class ManualCalculateExport implements FromView, ShouldAutoSize
 
     public function view(): View
     {
-        return view('exports.manual_calculate_export.blade', [
+        return view('exports.manual_calculate_export', [
             'data' => $this->data
         ]);
     }

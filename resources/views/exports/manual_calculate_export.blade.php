@@ -1,38 +1,50 @@
 <table style="width: 100%;">
     <thead>
     <tr>
-        @foreach($data['columnNames'] as $item)
-            <th style="border: 1px solid black; height: 20px">{{ $item }}</th>
+        @foreach($data['columnNames'] as $column)
+            <th style="border: 1px solid black; height: 20px">{{ $column }}</th>
         @endforeach
     </tr>
     </thead>
     <tbody>
-    @foreach($data['pipes'] as $key => $item)
-        @if($item->omgngdu OR $item->trunkline_end_point)
-            <tr>
-                <td>{{ $item->id }}</td>
-                <td>{{ $item->pipeType->outside_diameter }}</td>
-                <td>{{ $item->pipeType->thickness  }}</td>
-                <td>{{ $item->lastCoords->m_distance }}</td>
-                <td>{{ $item->omgngdu ? $item->omgngdu->daily_fluid_production : ''}}</td>
-                <td>{{ $item->omgngdu ? $item->omgngdu->bsw : ''}}</td>
-                <td>{{ $item->gu ? 0 : ''}}</td>
-                <td>{{ $item->omgngdu ? $item->omgngdu->pump_discharge_pressure + 1: ''}}</td>
+    @foreach($data['pipes'] as $key => $pipe)
+        <tr>
+            <td>{{ $pipe->id }}</td>
+            <td>{{ $pipe->pipeType->outside_diameter }}</td>
+            <td>{{ $pipe->pipeType->thickness  }}</td>
+            <td>{{ $pipe->lastCoords->m_distance }}</td>
+            <td>{{ $pipe->omgngdu->daily_fluid_production ?? null }}</td>
+            <td>{{ $pipe->omgngdu->bsw ?? null }}</td>
+            <td>{{ $pipe->omgngdu->gas_factor ?? null }}</td>
+
+            @if($pipe->omgngdu && !($pipe->gu->omgngdu[0]->surge_tank_pressure ?? null) )
+                <td>{{ $pipe->omgngdu->pressure }}</td>
+            @else
                 <td></td>
-                <td>{{ $item->omgngdu ? $item->omgngdu->heater_output_temperature : '' }}</td>
+            @endif
+
+            @if ($pipe->between_points == 'zu-gu' AND ($pipe->gu->omgngdu[0]->surge_tank_pressure ?? null) )
+                <td>{{ $pipe->gu->omgngdu[0]->surge_tank_pressure * 0.9678 + 1}}</td>
+            @else
                 <td></td>
-                <td>{{ $item->name }}</td>
-                <td>{{ $item->trunkline_end_point->name }}</td>
-                <td>{{ $item->oilPipe->name }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>{{ $item->oilPipe->lastCoords->elevation - $item->oilPipe->firstCoords->elevation}}</td>
-            </tr>
-        @endif
+            @endif
+
+            <td>{{ $pipe->omgngdu->temperature_well ?? null }}
+            <td></td>
+            <td>{{ $pipe->start_point }}</td>
+            <td>{{ $pipe->end_point }}</td>
+            <td>{{ $pipe->name }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ $pipe->lastCoords->elevation - $pipe->firstCoords->elevation}}</td>
+            <td>{{ $pipe->omgngdu->sg_oil ?? null }}</td>
+            <td>{{ $pipe->omgngdu->sg_gas ?? null }}</td>
+            <td>{{ $pipe->omgngdu->sg_water ?? null }}</td>
+        </tr>
     @endforeach
     </tbody>
 </table>
