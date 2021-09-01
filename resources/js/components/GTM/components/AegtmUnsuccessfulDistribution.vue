@@ -54,35 +54,47 @@
                 </table>
 
                 <div class="row">
-                    <div class="col-4 d-none d-lg-block pr-1">
-                        <div class="chart-wrapper mb-2 p-3">
+                    <div class="col-4 d-none d-lg-block pr-0">
+                        <div class="chart-wrapper mb-2">
                             <div class="block-header pb-0 pl-2 text-center">
                                 {{ trans('paegtm.distribution_of_unsuccessful_gtm') }}
                             </div>
                             <div class="p-1 pl-2">
-                                <unsuccessfful-gtm-chart :height="280"></unsuccessfful-gtm-chart>
+                              <apexchart
+                                  type="donut" :height="280"
+                                  :options="donutChart1"
+                                  :series="series"
+                              ></apexchart>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-4 d-none d-lg-block pl-2 pr-2">
-                        <div class="chart-wrapper mb-2 p-3">
+                    <div class="col-4 d-none d-lg-block pl-1 pr-1">
+                        <div class="chart-wrapper mb-2">
                             <div class="block-header pb-0 pl-2 text-center">
                                 {{ trans('paegtm.liquid_failure') }}
                             </div>
                             <div class="p-1 pl-2">
-                                <fluid-shortfalls-chart :height="280"></fluid-shortfalls-chart>
+                              <apexchart
+                                  type="donut" :height="280"
+                                  :options="donutChart2"
+                                  :series="series1"
+                              ></apexchart>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-4 d-none d-lg-block pl-1">
-                        <div class="chart-wrapper mb-2 p-3">
+                    <div class="col-4 d-none d-lg-block pl-0">
+                        <div class="chart-wrapper mb-2">
                             <div class="block-header pb-0 pl-2 text-center">
                                 {{ trans('paegtm.failure_water_cut_achieve') }}
                             </div>
-                            <div class="p-1 pl-2">
-                                <water-cut-failures-chart :height="280"></water-cut-failures-chart>
+                            <div class="p-1 pl-2 pr-3">
+                              <apexchart
+                                  type="donut" :height="280"
+                                  :options="donutChart3"
+                                  :series="series2"
+                              ></apexchart>
                             </div>
                         </div>
                     </div>
@@ -94,7 +106,7 @@
                         :options="dzosForFilter"
                         label="name"
                         :placeholder="this.trans('paegtm.select_dzo')"
-                        @input="dzoFilterChanged"
+                        @input="filterSelect('dzo', $event, dzosForFilter)"
                         v-model="dzo"
                     >
                     </v-select>
@@ -102,7 +114,7 @@
                         :options="oilFieldsForFilter"
                         label="name"
                         :placeholder="this.trans('paegtm.select_oil_field')"
-                        @input="oilFilterChanghed"
+                        @input="filterSelect('oil', $event, oilFieldsForFilter)"
                         v-model="oilFileds"
                         :disabled="!oilFieldsForFilter.length"
                     >
@@ -112,7 +124,7 @@
                         :options="horizontsForFilter"
                         label="name"
                         :placeholder="'Выберите горизонт'"
-                        @input="horizontsFilterChanghed"
+                        @input="filterSelect('horizon', $event, horizontsForFilter)"
                         v-model="horizonts"
                         :disabled="!horizontsForFilter.length"
                     >
@@ -122,7 +134,7 @@
                         :options="objectsForFilter"
                         label="name"
                         :placeholder="this.trans('paegtm.select_object')"
-                        @input="objectsFilterChanghed"
+                        @input="filterSelect('objects', $event, objectsForFilter)"
                         v-model="objects"
                         :disabled="!objectsForFilter.length"
                     >
@@ -185,202 +197,4 @@
     </div>
 </template>
 
-<script>
-import Vue from "vue";
-import VueChartJs from 'vue-chartjs'
-import vSelect from 'vue-select'
-import 'vue-select/dist/vue-select.css'
-import unsuccessfulDistributionMmg from '../mock-data/unsuccessful_distribution_mmg.json'
-import orgStructure from '../mock-data/org_structure.json'
-
-export default {
-    components: {
-        vSelect
-    },
-    data: function () {
-        return {
-            comparisonIndicators: [],
-            accumOilProdLabels: [],
-            accumOilProdFactData: [],
-            accumOilProdPlanData: [],
-            mainTableData: unsuccessfulDistributionMmg,
-            gtmTypesList: [
-                { id: "vns", name: this.trans('paegtm.gtm_vns') },
-                { id: "grp", name: this.trans('paegtm.gtm_grp') },
-                { id: "pvlg", name: this.trans('paegtm.gtm_pvlg') },
-                { id: "pvr", name: this.trans('paegtm.gtm_pvr') },
-                { id: "rir", name: this.trans('paegtm.gtm_rir') },
-            ],
-            dzos: orgStructure,
-            loaded: false,
-
-            dzo: null,
-            oilFileds: [],
-            horizonts: [],
-            objects: [],
-            gtmTypes : [],
-
-            dzosForFilter: [],
-            oilFieldsForFilter: [],
-            horizontsForFilter: [],
-            objectsForFilter: [],
-        };
-    },
-    computed: {
-        selectAllGtms: {
-            get: function () {
-                return this.gtmTypesList ? this.gtmTypes.length == this.gtmTypesList.length : false;
-            },
-            set: function (value) {
-                let selected = [];
-
-                if (value) {
-                    this.gtmTypesList.forEach(function (gtm) {
-                        selected.push(gtm.id);
-                    });
-                }
-
-                this.gtmTypes = selected;
-            }
-        }
-    },
-    methods: {
-        dzoFilterChanged(dzo) {
-            this.oilFieldsForFilter = (dzo.hasOwnProperty('oilFields') && dzo.oilFields.length) ? dzo.oilFields : [];
-
-            //reset selections
-            this.oilFileds = 0;
-            this.horizonts = 0;
-            this.objects = 0;
-        },
-        oilFilterChanghed(oilFiled) {
-            this.horizontsForFilter = (oilFiled.hasOwnProperty('horizonts') && oilFiled.horizonts.length) ? oilFiled.horizonts : [];
-
-            //reset selections
-            this.horizonts = 0;
-            this.objects = 0;
-        },
-        horizontsFilterChanghed(horizont) {
-            this.objectsForFilter = (horizont.hasOwnProperty('objects') && horizont.objects.length) ? horizont.objects : [];
-
-            //reset selections
-            this.objects = 0;
-        },
-        objectsFilterChanghed(object) {
-
-        },
-    },
-    mounted() {
-        this.dzosForFilter = this.dzos;
-    },
-}
-
-Vue.component('unsuccessfful-gtm-chart', {
-    extends: VueChartJs.Doughnut,
-    mounted () {
-        this.renderChart({
-            labels: [
-                this.trans('paegtm.by_liquid'),
-                this.trans('paegtm.by_water_cut'),
-            ],
-            datasets: [
-                {
-                    hoverBackgroundColor: '#ccc',
-                    borderColor: '#272953',
-                    borderWidth: 2,
-                    data: [45, 55],
-                    backgroundColor: ["#2E50E9", "#82BAFF"],
-                }
-            ],
-        }, {
-            cutoutPercentage: 80,
-            legend: {
-                display: true,
-                position: 'bottom',
-                labels: {
-                    fontColor: '#FFF',
-                    fontSize: 14,
-                    fontFamily: 'Harmonia-sans',
-                    fontStyle: '700',
-                    borderRadius: 100,
-                    padding: 30,
-                },
-            }
-        })
-    }
-});
-
-Vue.component('fluid-shortfalls-chart', {
-    extends: VueChartJs.Doughnut,
-    mounted () {
-        this.renderChart({
-            labels: [
-                this.trans('paegtm.rpl'),
-                this.trans('paegtm.p_zab'),
-                this.trans('paegtm.kh_mb'),
-                this.trans('paegtm.s_kin'),
-            ],
-            datasets: [
-                {
-                    hoverBackgroundColor: '#ccc',
-                    borderColor: '#272953',
-                    borderWidth: 2,
-                    data: [18, 0, 73,9],
-                    backgroundColor: ["#3F51B5", "#fe5c5c", "#82BAFF", "#F0AD81"],
-                }
-            ],
-        }, {
-            cutoutPercentage: 80,
-            legend: {
-                display: true,
-                position: 'bottom',
-                labels: {
-                    fontColor: '#FFF',
-                    fontSize: 14,
-                    fontFamily: 'Harmonia-sans',
-                    fontStyle: '700',
-                    borderRadius: 100,
-                    padding: 30,
-                },
-            },
-        })
-    }
-});
-
-Vue.component('water-cut-failures-chart', {
-    extends: VueChartJs.Doughnut,
-    mounted () {
-        this.renderChart({
-            labels: [
-                this.trans('paegtm.development_of_reserves'),
-                this.trans('paegtm.influence_of_ppd'),
-                this.trans('paegtm.neck'),
-                this.trans('paegtm.zkts'),
-            ],
-            datasets: [
-                {
-                    hoverBackgroundColor: '#ccc',
-                    borderColor: '#272953',
-                    borderWidth: 2,
-                    data: [36, 11, 27,26],
-                    backgroundColor: ["#3F51B5", "#EF5350", "#82BAFF", "#F0AD81"],
-                }
-            ],
-        }, {
-            cutoutPercentage: 80,
-            legend: {
-                display: true,
-                position: 'bottom',
-                labels: {
-                    fontColor: '#FFF',
-                    fontSize: 14,
-                    fontFamily: 'Harmonia-sans',
-                    fontStyle: '700',
-                    borderRadius: 100,
-                    padding: 30,
-                },
-            }
-        })
-    }
-});
-</script>
+<script src="./js/AegtmUnsuccesssfulDistribution.js"></script>

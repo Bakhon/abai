@@ -1,3 +1,4 @@
+<script src="../../../store/helpers.js"></script>
 <template>
     <div>
         <div class="position-absolute r-100">
@@ -20,7 +21,8 @@
 </template>
 <script>
 
-import {paegtmMapActions} from '@store/helpers';
+import { paegtmMapActions } from '@store/helpers';
+import { paegtmMapState } from "../../../store/helpers";
 
 export default {
     props: {
@@ -31,12 +33,16 @@ export default {
         return {
             isDatePickerShow: false,
             dateRange: {
-                start: new Date(this.$store.state.paegtmMap.dateStart),
-                end: new Date(this.$store.state.paegtmMap.dateEnd),
+                start: this.dateStart,
+                end: this.dateEnd,
             },
         }
     },
     computed: {
+        ...paegtmMapState([
+          'dateStart',
+          'dateEnd'
+        ]),
         dateStartString: function () {
             if (this.dateRange.start) {
                 return this.dateRange.start.toLocaleDateString();
@@ -59,6 +65,6 @@ export default {
             this.changeDateEnd(this.dateRange.end);
             this.$emit('dateChanged')
         }
-    }
+    },
 }
 </script>
