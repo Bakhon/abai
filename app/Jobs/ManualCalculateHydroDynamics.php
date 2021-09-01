@@ -11,6 +11,7 @@ use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -59,10 +60,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         'SGwater'
     ];
 
-    const ID = 0;
-    const POINTS_OR_SEGMENT = 0;
-
-    protected $hydroCalcLongSchema = [
+    protected $longSchema = [
         'distance' => 1,
         'dout' => 2,
         'wt' => 3,
@@ -93,7 +91,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         'comment' => 28
     ];
 
-    protected $hydroCalcShortSchema = [
+    protected $shortSchema = [
         'length' => 3,
         'qliq' => 4,
         'bsw' => 5,
@@ -154,35 +152,8 @@ class ManualCalculateHydroDynamics implements ShouldQueue
 
         $pipes->load('pipeType');
 
-        foreach ($pipes as $key => $pipe) {
-            if ($pipe->between_points != 'well-zu') {
-                continue;
-            }
-
-            $query = OmgNGDUWell::where('well_id', $pipe->well_id);
-
-            if (isset($this->input['date'])) {
-                $query = $query->where('date', $this->input['date']);
-            }
-
-            $pipe->omgngdu = $query->orderBy('date', 'desc')->first();
-
-            if (!$pipe->omgngdu) {
-
-                $message = $pipe->start_point . ' ' . trans('monitoring.hydro_calculation.message.no-omgdu-data');
-
-                if (isset($input['date'])) {
-                    $message .= ' на ' . $input['date'];
-                }
-
-                $this->setOutput(
-                    [
-                        'error' => $message
-                    ]
-                );
-
-                return;
-            }
+        if (!$this->loadRelations($pipes)) {
+            return;
         }
 
         $data = [
@@ -232,21 +203,61 @@ class ManualCalculateHydroDynamics implements ShouldQueue
     protected function storeShortResult(array $data): void
     {
         foreach ($data as $row) {
-            $pipeName = $row[$this->hydroCalcShortSchema['name']];
+            $pipeName = $row[$this->shortSchema['name']];
             $pipe = ManualOilPipe::where('name', $pipeName)->first();
 
-            $manualHydroCalcResult = ManualHydroCalcResult::firstOrCreate(
+            $calcResult = ManualHydroCalcResult::firstOrCreate(
                 [
                     'date' => Carbon::parse($this->input['date'])->format('Y-m-d'),
                     'oil_pipe_id' => $pipe->id,
                 ]
             );
 
-            foreach ($this->hydroCalcShortSchema as $param => $index) {
-                $manualHydroCalcResult->$param = $row[$index];
+            foreach ($this->shortSchema as $param => $index) {
+                $calcResult->$param = $row[$index];
             }
 
-            $manualHydroCalcResult->save();
+            $calcResult->save();
         }
+    }
+
+    public function returnError (ManualOilPipe $pipe) {
+        $message = $pipe->start_point . ' ' . trans('monitoring.hydro_calculation.message.no-omgdu-data');
+
+        if (isset($input['date'])) {
+            $message .= ' на ' . $input['date'];
+        }
+
+        $this->setOutput(
+            [
+                'error' => $message
+            ]
+        );
+    }
+
+    public function loadRelations (Collection $pipes)
+    {
+        foreach ($pipes as $key => $pipe) {
+            if ($pipe->between_points != 'well-zu') {
+                continue;
+            }
+
+            $query = OmgNGDUWell::where('well_id', $pipe->well_id);
+
+            if (isset($this->input['date'])) {
+                $query = $query->where('date', $this->input['date']);
+            }
+
+            $pipe->omgngdu = $query->orderBy('date', 'desc')->first();
+
+            if ($pipe->omgngdu) {
+                continue;
+            }
+
+            $this->returnError($pipe);
+            return false;
+        }
+
+        return true;
     }
 }
