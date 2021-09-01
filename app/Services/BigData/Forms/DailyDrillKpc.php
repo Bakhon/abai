@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use Carbon\Carbon;
+use App\Models\BigData\Dictionaries\Org;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
-class DailyDrillKpc extends DailyReports
+class DailyDrillKpc extends TableForm
 {   
-    const CITS = 0;
-    const GS = 1;
-    const ALL = 2;
-    protected $metricCode = 'CWO';
+    
     protected $configurationFileName = 'daily_drill_kpc';
 
     protected function prepareDataToSubmit()
@@ -28,39 +28,107 @@ class DailyDrillKpc extends DailyReports
         return $data;
     }
 
-    protected function getData($filter): array {
-        $data = parent::getReports($filter);
-        $result = [];
-        $plan = $data->sum('plan');
-        $fact = $data->sum('fact');
-        switch ($filter->period) {
-            case self::DAY:
-                $result['plan'] = ['value' => $plan];
-                $result['fact'] = $result['daily_fact_cits'] = ['value' => $fact];
-                break;
-            case self::MONTH:
-                $result['month_plan'] = ['value' => $plan];
-                $result['month_fact'] = $result['month_fact_cits'] = ['value' => $fact];
-                break;
-            case self::YEAR:
-                $result['year_plan'] = ['value' => $plan];
-                $result['year_fact'] = $result['year_fact_cits'] = ['value' => $fact];
-                break;
-        }
-
-        if ($filter->optionId === self::GS) {
-            $result['fact'] = ['value' => 0];
-            $result['month_fact'] = ['value' => 0];
-            $result['year_fact'] = ['value' => 0];
-        }
-        $result['daily_fact_gs'] = ['value' => 0];
-        $result['month_fact_gs'] = ['value' => 0];
-        $result['year_fact_gs'] = ['value' => 0];
-        $result['contractor'] = $this->request->get('contractor');
-        $result['machine_type'] = $this->request->get('machine_type');
-        $result['work_done'] = $this->request->get('work_done');
-        $result['repair_work_type'] = $this->request->get('repair_work_type');
-        $result['geo'] = $this->request->get('geo');
-        return $result;
+    protected function saveSingleFieldInDB(array $params): void
+    {
+        list($company, $machine_type, $well , $geo , $repair_work_type , $work_done) = explode('_', $params['field']);
+        $result = [
+                    'id' => $this->request->get('id')
+                ];
+                $filter = json_decode($this->request->get('filter'));
+                if ($this->request->get('id')) {
+                    $org = Org::find($this->request->get('id'));
+                    if (!$org) {
+                         ['rows' => []];
+                    }
+                    $result['org'] = ['value' => $org->name_ru];
+                }
+                $company = DB::connection('tbd')
+                ->table('prod.well_workover as pw')
+                ->select('pw.contractor')
+                ->leftJoin('prod.report_org_daily_repair as pp', 'pw.id', 'pp.workover')
+                ->leftJoin('dict.company as dc', 'pw.contractor', 'dc.id')           
+                ->first();
+                $result['contractor'] = ['value' => $company->contractor];
+            $well = DB::connection('tbd')
+            ->table('prod.well_workover as pw')
+            ->select('dw.uwi')
+            ->leftJoin('dict.well as dw', 'pw.well', 'dw.id')           
+            ->first();
+            $result['well'] = ['value' => $well->uwi]; 
+            
+            $geo = DB::connection('tbd')
+            ->table('prod.well_workover as pw')
+            ->select('g.name_ru')
+            ->leftJoin('prod.well_geo as pg', 'pw.well', 'pg.well')   
+            ->leftJoin('dict.geo as g', 'pg.geo', 'g.id')                   
+            ->first();
+            $result['geo'] = ['value' => $geo->name_ru]; 
+    
+            $repair_work_type = DB::connection('tbd')
+            ->table('prod.well_workover as pw')
+            ->select('pw.repair_work_type')
+            ->leftJoin('dict.repair_work_type as dw', 'pw.repair_work_type', 'dw.id')           
+            ->first();
+            $result['repair_work_type'] = ['value' => $repair_work_type->repair_work_type]; 
+        
+            DB::connection('tbd')
+                ->table('prod.well_workover')
+                ->insert(
+                    [
+                        'org' => $org,
+                        'contractor' => $company,
+                        'well' => $well,
+                        'geo' => $geo,
+                        'repair_work_type' => $repair_work_type
+                    ]
+                );
+        
     }
+   
+
+    
+    public function getRows(array $params = []): array
+    {
+        $result = [
+            'id' => $this->request->get('id')
+        ];
+        $filter = json_decode($this->request->get('filter'));
+        if ($this->request->get('id')) {
+            $org = Org::find($this->request->get('id'));
+            if (!$org) {
+                return ['rows' => []];
+            }
+            $result['org'] = ['value' => $org->name_ru];
+        }
+        $filter->optionId = $filter->optionId ?? 0;
+        $company = DB::connection('tbd')
+            ->table('prod.well_workover as pw')
+            ->select('pw.contractor')
+            ->leftJoin('prod.report_org_daily_repair as pp', 'pw.id', 'pp.workover')
+            ->leftJoin('dict.company as dc', 'pw.contractor', 'dc.id')           
+            ->first();
+            $result['contractor'] = ['value' => $company->contractor];
+        $well = DB::connection('tbd')
+        ->table('prod.well_workover as pw')
+        ->select('dw.uwi')
+        ->leftJoin('dict.well as dw', 'pw.well', 'dw.id')           
+        ->first();
+        $result['well'] = ['value' => $well->uwi]; 
+        
+        $geo = DB::connection('tbd')
+        ->table('prod.well_workover as pw')
+        ->select('g.name_ru')
+        ->leftJoin('prod.well_geo as pg', 'pw.well', 'pg.well')   
+        ->leftJoin('dict.geo as g', 'pg.geo', 'g.id')                   
+        ->first();
+        $result['geo'] = ['value' => $geo->name_ru]; 
+
+        $repair_work_type = DB::connection('tbd')
+        ->table('prod.well_workover as pw')
+        ->select('pw.repair_work_type')
+        ->leftJoin('dict.repair_work_type as dw', 'pw.repair_work_type', 'dw.id')           
+        ->first();
+        $result['repair_work_type'] = ['value' => $repair_work_type->repair_work_type]; 
+        return ['rows' => [$result]];
+    }   
 }
