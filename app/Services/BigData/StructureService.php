@@ -233,7 +233,9 @@ class StructureService
                 if (!$showWells) {
                     unset($result[$key]['wells']);
                 }
-                $result[$key]['children'] = $this->clearTechStructure($result[$key]['children'], $showWells);
+                $result[$key]['children'] = array_values(
+                    $this->clearTechStructure($result[$key]['children'], $showWells)
+                );
                 continue;
             }
 
@@ -265,9 +267,12 @@ class StructureService
             return;
         }
         if (in_array($child['id'], self::$childrenIds)) {
-            self::$childrenIds = array_merge(self::$childrenIds, array_map(function ($item) {
-                return $item['id'];
-            }, $child['children']));
+            self::$childrenIds = array_merge(
+                self::$childrenIds,
+                array_map(function ($item) {
+                    return $item['id'];
+                }, $child['children'])
+            );
         }
         foreach ($child['children'] as $childrenItem) {
             self::getChildsRecursive($childrenItem);

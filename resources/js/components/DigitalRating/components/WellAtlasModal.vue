@@ -9,6 +9,7 @@
     modal-class="long-modal"
     id="modalAtlas"
     :ok-only="true"
+    @hide="close"
   >
     <template #modal-header="{close}">
       <div class="d-flex justify-content-end w-100">
@@ -42,6 +43,8 @@
               type="text"
               class="sector-form__input"
               v-model="sectorNumber"
+              @blur="handleBlur"
+              @keypress="restrictChars($event)"
             />
           </div>
           <div class="sector-form__item">
@@ -52,6 +55,8 @@
               type="text"
               class="sector-form__input"
               v-model="horizonNumber"
+              @blur="handleBlur"
+              @keypress="restrictChars($event)"
             />
           </div>
         </div>
@@ -77,6 +82,8 @@ import Maps from './Maps';
 import Scheme from "./Scheme";
 import Indicators from "./Indicators";
 import History from "./History";
+import { digitalRatingState, digitalRatingMutations, digitalRatingActions } from "@store/helpers";
+import Restricts from '../../../mixins/restricts';
 
 export default {
   name: "WellAtlasModal",
@@ -89,10 +96,10 @@ export default {
     History,
   },
 
+  mixins: [Restricts],
+
   data() {
     return {
-      sectorNumber: '',
-      horizonNumber: '',
       currentTab: 'overview',
       isVisibleAtlas: false,
       tabs: [
@@ -121,20 +128,51 @@ export default {
   },
 
   computed: {
+    ...digitalRatingState([
+      'sectorNumber',
+      'horizonNumber'
+    ]),
+    sector: {
+      get() {
+        return this.sectorNumber;
+      },
+      set(val) {
+        this.SET_SECTOR(val);
+      }
+    },
+    horizon: {
+      get() {
+        return this.horizonNumber;
+      },
+      set(val) {
+        this.SET_HORIZON(val);
+      },
+    },
     currentTabComponent() {
       return this.currentTab.toLowerCase();
     }
   },
 
   methods: {
+    ...digitalRatingActions([
+      'fetchIndicators'
+    ]),
+    ...digitalRatingMutations([
+      'SET_SECTOR',
+      'SET_HORIZON'
+    ]),
+    fetchData() {
+      this.fetchIndicators({});
+    },
     handleSelectTab(tab) {
       this.currentTab = tab;
     },
-    beforeOpen(e) {
-      this.currentTab = 'overview';
-    },
     close() {
+      this.currentTab = 'overview';
       this.$emit('close');
+    },
+    handleBlur() {
+      this.fetchData();
     }
   }
 }
@@ -169,10 +207,12 @@ export default {
   &__input {
     background: #1F2142;
     border: none;
-    outline: none;
     padding: 5px 10px;
     color: #fff;
     width: 100px;
+    &:focus {
+      outline: 1px solid #6c72ad;
+    }
   }
 }
 </style>

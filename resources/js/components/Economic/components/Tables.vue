@@ -2,18 +2,18 @@
   <div class="row p-3 bg-main1 position-relative">
     <div class="d-flex">
       <chart-button
-          v-for="(tab, index) in tabs"
+          v-for="(tab, index) in Object.keys(tabs)"
           :key="index"
-          :text="tab"
-          :active="activeTab === index"
+          :text="tabs[tab]"
+          :active="activeTab === tab"
           :class="index ? 'ml-2' : ''"
           class="px-2 d-flex align-items-center"
-          @click.native="selectTab(index)"/>
+          @click.native="selectTab(tab)"/>
     </div>
 
     <div class="mt-3 w-100">
       <table-specific-indicators
-          v-if="activeTab === 0"
+          v-if="activeTab === 'specific_indicators'"
           :org="res.org"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
@@ -21,7 +21,7 @@
           class="text-white"/>
 
       <table-technical-economic-indicators
-          v-if="activeTab === 1"
+          v-else-if="activeTab === 'technical_economic_indicators'"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
@@ -29,14 +29,14 @@
           class="text-white"/>
 
       <table-oil-price-options
-          v-else-if="activeTab === 2"
+          v-else-if="activeTab === 'oil_price_options'"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
           class="text-white"/>
 
       <table-well-changes
-          v-else-if="activeTab === 3"
+          v-else-if="activeTab === 'well_changes'"
           :org="res.org"
           :scenarios="res.scenarios"
           :scenario="scenario"
@@ -46,17 +46,31 @@
           class="text-white"/>
 
       <table-economic-efficiency
-          v-else-if="activeTab === 4"
+          v-else-if="activeTab === 'economic_efficiency'"
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
 
       <table-porcupine
-          v-else-if="activeTab === 5"
+          v-else-if="activeTab === 'porcupine'"
           :scenarios="res.scenarios"
           :scenario="scenario"
           :scenario-variations="scenarioVariations"
+          class="text-white"/>
+
+      <table-technological-indicators
+          v-else-if="activeTab === 'technological_indicators'"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :oil-prices="scenarioVariations.oil_prices"
+          class="text-white"/>
+
+      <table-palette
+          v-else-if="activeTab === 'palette'"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
     </div>
   </div>
@@ -70,6 +84,8 @@ import TableOilPriceOptions from "./TableOilPriceOptions";
 import TableWellChanges from "./TableWellChanges";
 import TableEconomicEfficiency from "./TableEconomicEfficiency";
 import TablePorcupine from "./TablePorcupine";
+import TableTechnologicalIndicators from "./TableTechnologicalIndicators";
+import TablePalette from "./TablePalette";
 
 export default {
   name: "Tables",
@@ -81,6 +97,8 @@ export default {
     TableWellChanges,
     TableEconomicEfficiency,
     TablePorcupine,
+    TableTechnologicalIndicators,
+    TablePalette,
   },
   props: {
     scenario: {
@@ -97,25 +115,27 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 0,
+    activeTab: 'specific_indicators',
   }),
   computed: {
     tabs() {
-      return [
-        this.trans('economic_reference.specific_indicators'),
-        this.trans('economic_reference.technical_economic_indicators'),
-        this.trans('economic_reference.oil_price_options'),
-        this.trans('economic_reference.table_well_changes'),
-        this.trans('economic_reference.economic_efficiency'),
-        this.trans('economic_reference.table_porcupine'),
-      ]
+      return {
+        specific_indicators: this.trans('economic_reference.specific_indicators'),
+        technical_economic_indicators: this.trans('economic_reference.technical_economic_indicators'),
+        oil_price_options: this.trans('economic_reference.oil_price_options'),
+        well_changes: this.trans('economic_reference.table_well_changes'),
+        economic_efficiency: this.trans('economic_reference.economic_efficiency'),
+        porcupine: this.trans('economic_reference.table_porcupine'),
+        technological_indicators: this.trans('economic_reference.technological_indicators'),
+        palette: this.trans('economic_reference.palette'),
+      }
     }
   },
   methods: {
-    selectTab(index) {
-      this.activeTab = index
+    selectTab(tab) {
+      this.activeTab = tab
 
-      this.$emit('updateTab', index)
+      this.$emit('updateTab', tab)
     },
   }
 }

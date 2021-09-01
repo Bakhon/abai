@@ -52,14 +52,13 @@ class FinalizeEmergencySituation extends Command
     private function processSituation($situation)
     {
         $dzoRecord = DzoImportData::query()
-            ->select('date')
-            ->select('date')
+            ->select('created_at')
             ->where('dzo_name',$situation->description)
-            ->whereDate('date',$situation->date)
+            ->whereDate('date',Carbon::parse($situation->date)->subDays(1))
             ->first();
 
         if (!is_null($dzoRecord)) {
-            $this->resolveSituation($dzoRecord->date,$situation->id);
+            $this->resolveSituation($dzoRecord->created_at,$situation->id);
         }
     }
 

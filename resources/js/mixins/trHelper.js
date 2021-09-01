@@ -3,10 +3,10 @@ const trHelper = {
         return {
             textForms: {
                 fields: [
-                    'tr.field_e',
-                    'tr.field_ya',
-                    'tr.field_i',
-                    'tr.field_ya',
+                    'tr.full_version',
+                    'tr.full_version',
+                    'tr.full_version',
+                    'tr.full_version',
                 ],
                 expMethods: [
                     'tr.way',
