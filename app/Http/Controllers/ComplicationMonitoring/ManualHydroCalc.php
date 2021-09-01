@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
+use App\Filters\ManualHydroCalculationFilter;
 use App\Filters\ManualReverseCalculationFilter;
 use App\Http\Controllers\CrudController;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\ManualHydroCalcPrepareListResource;
 use App\Http\Resources\ManualHydroCalculatedListResource;
-use App\Jobs\ReverseCalculateHydroDynamics;
+use App\Jobs\ManualCalculateHydroDynamics;
 use App\Models\ComplicationMonitoring\ManualHydroCalcResult;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
@@ -123,6 +124,7 @@ class ManualHydroCalc extends CrudController
 
         $params['links']['calc']['link'] = route($this->modelName.'.calculate');
         $params['links']['date'] = true;
+        $params['selected_date'] = session('manual_hydro_calc_date');
 
         return view('complicationMonitoring.manual_hydro_calc.index', compact('params'));
     }
@@ -199,12 +201,12 @@ class ManualHydroCalc extends CrudController
 
     protected function getFilteredQuery($filter, $query = null)
     {
-        return (new ManualReverseCalculationFilter($query, $filter))->filter();
+        return (new ManualHydroCalculationFilter($query, $filter))->filter();
     }
 
     public function calculate(IndexTableRequest $request)
     {
-        $job = new ReverseCalculateHydroDynamics($request->validated());
+        $job = new ManualCalculateHydroDynamics($request->validated());
         $this->dispatch($job);
 
         return response()->json(

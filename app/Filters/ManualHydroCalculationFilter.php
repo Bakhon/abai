@@ -3,7 +3,7 @@
 
 namespace App\Filters;
 
-class ManualReverseCalculationFilter extends BaseFilter
+class ManualHydroCalculationFilter extends BaseFilter
 {
     protected function sort(string $field, bool $isDescending)
     {
