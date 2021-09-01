@@ -370,7 +370,7 @@ class DictionaryService
                     $dict = $this->getGeoHorizonDict();
                     break;
                 case 'reason_ref':
-                    $dict = $this->getReasonTypeDict('REF');
+                    $dict = $this->getReasonTypeDict("REF");
                     break; 
                 case 'reason_rst':
                     $dict = $this->getReasonTypeDict('RST');
@@ -577,19 +577,21 @@ class DictionaryService
     
     private function getReasonTypeDict(string $type){
         $items = DB::connection('tbd')
-        ->table('dict.reason as r')
-        ->select('r.id', 'r.name_ru as name')
-        ->where('rt.code', $type)
-        ->distinct()
-        ->orderBy('name', 'asc')
-        ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
-        ->get()
-        ->map(
-            function ($item) {
-                return (array)$item;
-            }
-        )
-        ->toArray();
-    }
+            ->table('dict.reason as r')
+            ->select('r.id', 'r.name_ru as name')
+            ->where('rt.code', $type)
+            ->distinct()
+            ->orderBy('name', 'asc')
+            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+        return $items;
   
-}
+    }
+}    
