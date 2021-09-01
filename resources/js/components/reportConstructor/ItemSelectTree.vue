@@ -7,6 +7,7 @@
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :key="`${index}-${treeData.id}`"
             :node="treeData"
+            :parent="treeData"
             :handle-click="nodeClick"
             :get-wells="getWells"
             :get-initial-items="getInitialItems"
@@ -144,15 +145,31 @@ export default {
       node.isChecked = !node.isChecked;
 
       content.isLoading = true;
-      content.loadChildren(node)
+      content.updateChildren(node, content.level, node.isChecked)
       .then(() => {
-        content.updateChildren(node, content.level, node.isChecked);
-      }).finally(() => {
         content.updateThisComponent();
         content.isLoading = false;
       });
 
       node.level = content.level;
+    },
+    loadChildren: async function(node) {
+      if(this.isWell(node)) return;
+      if(typeof node.children === 'undefined') {
+        await this.nodeClick(node);
+      }
+      if(!this.isHaveChildren(node)) {
+        await this.getWells(node);
+      }
+      
+      for(let idx in node.children) {
+        this.loadChildren(node.children[idx]);
+      }
+    },
+    isHaveChildren(node) {
+      return typeof node !== 'undefined' && 
+             typeof node.children !== 'undefined' && 
+             !this.isNodeOnBottomLevelOfHierarchy(node);
     },
   },
 }

@@ -273,7 +273,7 @@ export default {
                 "dates": this.getDates()
             }
         },
-        getSelectedObjects() {
+        async getSelectedObjects() {
             let result = [];
             for(let structureType in this.selectedObjects) {
                 for(let option in this.selectedObjects[structureType]) {
@@ -281,11 +281,33 @@ export default {
                         if(node.isChecked) {
                             result.push(node);
                         }
+                        await this.loadChildrenOfNode(node);
                         result = result.concat(this.getSelectedChildren(node));
                     }
                 }
             }
+            console.log(result);
             return result;
+        },
+        loadChildrenOfNode(node) {
+            this.SET_LOADING(true);
+            this.$refs.itemSelectTree.loadChildren(node)
+            .then(() => {
+                this.updateChildrenOfNode(node, node.level);
+            }).finally(() => {
+                this.SET_LOADING(false);
+            });
+        },
+        updateChildrenOfNode(node, level) {
+            if(!node?.children) return;
+            for(let child of node.children) {
+                if(!('isChecked' in child)) {
+                    child.isChecked = node.isChecked;
+                    child.level = level+1;
+                }
+                
+                this.updateChildrenOfNode(child, level+1);
+            }
         },
         getSelectedChildren(node) {
             if(!node || !('children' in node)) return [];

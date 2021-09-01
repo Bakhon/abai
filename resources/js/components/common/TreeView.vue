@@ -9,7 +9,7 @@
                 <span class="bottom-border"></span>
                 <input type="checkbox"
                       v-if="!!renderComponent"
-                      :checked="isChecked()"
+                      :checked="node.isChecked"
                       class="dropdown-item" @change="onCheckboxClick()">
                 <span class="checkmark"></span>
               </label>
@@ -33,6 +33,7 @@
       <node
             v-for="(child, index) in node.children"
             :node="child"
+            :parent="node"
             :key="`${index}-${child.id}-${node.id}`"
             :handle-click="handleClick"
             :get-wells="getWells"
@@ -60,6 +61,7 @@ export default {
   name: "node",
   props: {
     node: Object,
+    parent: Object,
     level: Number,
     renderComponent: Number,
     updateThisComponent: Function,
@@ -87,7 +89,7 @@ export default {
   created() {
     if(!this.isShowCheckboxes) return;
     if(!('isChecked' in this.node)) {
-      this.node.isChecked = false;
+      this.node.isChecked = this.parent.isChecked;
     }
   },
   model: {
@@ -108,25 +110,10 @@ export default {
         await this.getWells(this);
       }
 
-      this.updateChildren(this.node, this.level, this.node.isChecked);
       this.$forceUpdate()
     },
     onCheckboxClick: async function () {
       this.onClick(this);
-    },
-    loadChildren: async function(node) {
-      if(this.isWell(node)) return;
-      if(typeof node.children === 'undefined') {
-        await this.handleClick(node);
-      }
-      if(!this.isHaveChildren(node)) {
-        await this.getWells(node);
-        this.updateThisComponent();
-      }
-      
-      for(let idx in node.children) {
-        this.loadChildren(node.children[idx]);
-      }
     },
     updateChildren: async function(node, level, val) {
       if(!node?.children) return;
@@ -141,9 +128,6 @@ export default {
              typeof node.children !== 'undefined' && 
              !this.isNodeOnBottomLevelOfHierarchy(node);
     },
-    isChecked() {
-      return this.node.isChecked;
-    }
   },
   data: function () {
     return {
