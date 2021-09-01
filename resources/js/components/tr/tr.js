@@ -826,15 +826,6 @@ export default {
             return true
         }
     },
-    isActiveFilter(obj) {
-      if (obj.length > 0) {
-        return false
-      } else {
-        return true
-      }
-      
-
-  },
 
     getRowWidthSpan(row) {
         return row.rus_wellname ? 0 : 2;
