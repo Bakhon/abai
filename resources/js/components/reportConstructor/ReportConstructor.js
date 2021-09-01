@@ -188,8 +188,10 @@ export default {
                 this.validateStatisticsParams()
             } catch (e) {
                 this.showToast(e.name, e.message, 'danger', 10000)
+                this.SET_LOADING(false)
                 return
             }
+
             let params = this.getStatisticsRequestParams()
             this.axios.post(this.baseUrl + "get_statistics", JSON.stringify(params), {
                 responseType: 'json',
@@ -479,6 +481,11 @@ export default {
         },
         setEndOfMonth(date) {
             this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
+        },
+        clearDate() {
+            this.setDefaultDateFilter();
+            this.startDate = null;
+            this.endDate = null;
         },
         saveTemplate() {
             this.SET_LOADING(true)
