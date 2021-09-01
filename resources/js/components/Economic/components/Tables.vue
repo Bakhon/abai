@@ -126,7 +126,6 @@ export default {
   computed: {
     tabs() {
       return {
-        well_treemap: this.trans('economic_reference.table_well_treemap'),
         specific_indicators: this.trans('economic_reference.specific_indicators'),
         technical_economic_indicators: this.trans('economic_reference.technical_economic_indicators'),
         oil_price_options: this.trans('economic_reference.oil_price_options'),
@@ -135,6 +134,7 @@ export default {
         porcupine: this.trans('economic_reference.table_porcupine'),
         technological_indicators: this.trans('economic_reference.technological_indicators'),
         palette: this.trans('economic_reference.palette'),
+        well_treemap: this.trans('economic_reference.table_well_treemap'),
       }
     }
   },
