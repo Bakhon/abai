@@ -5,7 +5,10 @@
     </div>
     <div class="central-wrapper">
       <MonitoringLeftBlock />
-      <MonitoringDataTable />
+      <MonitoringDataTable
+        :currentSubsoil="currentSubsoil[0]"
+        :currentSubsoilField="currentSubsoilField[0]"
+      />
       <MonitoringFileUploadAndLog />
     </div>
   </div>
@@ -40,7 +43,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("plastFluids", ["pickedSubsoilChildRadio"]),
+    ...mapState("plastFluids", ["currentSubsoil", "currentSubsoilField"]),
   },
 };
 </script>

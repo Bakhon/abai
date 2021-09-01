@@ -57,17 +57,10 @@
           </div>
           <template v-if="currentSubsoil[0]">
             <div class="subsoil-secondary-tree-holder">
-              <template v-if="filteredSubsoilChildren.length">
-                <SubsoilTreeChildren
-                  v-for="subsoilChild in filteredSubsoilChildren"
-                  :key="subsoilChild.field_id"
-                  :subsoil="subsoilChild"
-                  :checkedField="checkedField"
-                  @clear-checked-field="clearCheckboxArray"
-                  @set-checked-field="setCheckedField"
-                  :pickedSubsoil="currentSubsoil[0]"
-                />
-              </template>
+              <SubsoilTreeChildren
+                v-if="filteredSubsoilChildren.length"
+                :treeData="filteredSubsoilChildren"
+              />
               <div v-else class="subsoil-not-found">
                 <p>{{ trans("plast_fluids.subsoil_not_found") }}</p>
               </div>
@@ -116,11 +109,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("plastFluids", [
-      "currentSubsoil",
-      "subsoils",
-      "subsoilFields",
-    ]),
+    ...mapState("plastFluids", ["currentSubsoil", "subsoils", "subsoilFields"]),
     filteredSubsoilUsers() {
       return handleSearch(this.subsoils, this.subsoilUserSearch);
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="dropdown">
     <button @click.stop="isOpen = !isOpen">
-      <span>{{ selected || placeholder }}</span>
+      <span>{{ selectedValue || placeholder }}</span>
       <img src="/img/PlastFluids/backArrow.svg" />
     </button>
     <div v-show="isOpen" v-click-outside="closeDropdown">
@@ -23,12 +23,14 @@ export default {
     items: Array,
     placeholder: String,
     dropKey: String,
-    initialValue: String,
+    selectedValue: {
+      type: String,
+      default: null,
+    },
   },
   data() {
     return {
       isOpen: false,
-      selected: this.initialValue || null,
     };
   },
   methods: {
@@ -37,7 +39,6 @@ export default {
     },
     handleSelect(item) {
       this.closeDropdown();
-      this.selected = item[this.dropKey];
       this.$emit("dropdown-select", item);
     },
   },

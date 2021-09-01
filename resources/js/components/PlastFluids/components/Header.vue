@@ -44,22 +44,24 @@ export default {
           localeName: "data_download",
         },
       ],
+      currentPage: "",
     };
   },
   computed: {
-    ...mapState("plastFluids", ["currentPage"]),
+    ...mapState("plastFluids", ["prevPage"]),
   },
   methods: {
-    ...mapMutations("plastFluids", ["SET_CURRENT_PAGE"]),
+    ...mapMutations("plastFluids", ["SET_PREV_PAGE"]),
     routeTo(url) {
-      if (this.localeUrl(url) === location.pathname) {
-        location.reload();
+      const { reload, pathname, origin } = location;
+      if (this.localeUrl(url) === pathname) {
+        reload();
         return;
       }
-      location.href = location.origin + this.localeUrl(url);
+      location.href = origin + this.localeUrl(url);
     },
     goBack() {
-      history.back();
+      location.href = document.referrer;
     },
     urlIncludes(url) {
       const { pathname } = location;
@@ -70,10 +72,10 @@ export default {
       while (this.headings.length > i) {
         const _includes = this.urlIncludes(this.headings[i].url);
         if (!_includes) {
-          this.SET_CURRENT_PAGE("");
+          this.currentPage = "";
           return;
         }
-        this.SET_CURRENT_PAGE(this.headings[i].url);
+        this.currentPage = this.headings[i].url;
         break;
       }
     },

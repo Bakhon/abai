@@ -11,7 +11,6 @@
                 :style="sticky ? 'position: sticky; top: -1px;' : ''"
               >
                 <div class="table-header-cell" v-if="filter">
-                  <img src="/img/PlastFluids/search.svg" alt="search" />
                   <img
                     src="/img/PlastFluids/filterIcon.svg"
                     alt="filter items"
@@ -61,12 +60,9 @@
           <img src="/img/PlastFluids/backArrow.svg" alt="previous page" />
         </div>
         <div class="pagination-page-buttons">
-          <a href="#">1</a>
-          <a class="active" href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">4</a>
-          <a href="#">5</a>
-          <a href="#">6</a>
+          <a v-for="(page, index) in computedPagesCount" :key="index">{{
+            page
+          }}</a>
         </div>
         <div class="flipped-icons arrow-icons-holder">
           <img src="/img/PlastFluids/backArrow.svg" alt="next page" />
@@ -84,6 +80,8 @@ export default {
     filter: Boolean,
     pagination: Boolean,
     sticky: Boolean,
+    allPageCount: Number,
+    currentPage: Number,
     fields: Array,
     items: Array,
     handlePageChange: Function,
@@ -106,6 +104,9 @@ export default {
     },
   },
   computed: {
+    computedPagesCount() {
+      return [...Array(6).keys()].map((i) => i + 1);
+    },
     computedFields() {
       const keys = this.fields.map((field) => field.key);
       return keys;

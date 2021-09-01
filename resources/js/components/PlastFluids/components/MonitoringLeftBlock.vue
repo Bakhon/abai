@@ -8,16 +8,18 @@
         <Dropdown
           :items="subsoils"
           :placeholder="trans('plast_fluids.subsurface_user')"
-          :initialValue="currentSubsoil[0].owner_name"
+          :selectedValue="currentSubsoil[0] ? currentSubsoil[0].owner_name : ''"
           dropKey="owner_name"
           @dropdown-select="updateCurrentSubsoil"
         />
         <Dropdown
           :items="subsoilFields"
           :placeholder="trans('plast_fluids.field')"
-          :initialValue="currentSubsoilField[0].field_name"
+          :selectedValue="
+            currentSubsoilField[0] ? currentSubsoilField[0].field_name : ''
+          "
           dropKey="field_name"
-          @dropdown-select="(value) => SET_CURRENT_SUBSOIL_FIELD(value)"
+          @dropdown-select="updateCurrentSubsoilField"
         />
       </div>
     </div>
@@ -83,10 +85,12 @@ export default {
     ...mapMutations("plastFluids", [
       "SET_CURRENT_SUBSOIL",
       "SET_CURRENT_SUBSOIL_FIELD",
+      "SET_SUBSOIL_FIELDS",
     ]),
     updateCurrentSubsoil(value) {
       this.SET_CURRENT_SUBSOIL(value);
-      this.SET_CURRENT_SUBSOIL_FIELD("");
+      this.SET_CURRENT_SUBSOIL_FIELD({});
+      this.SET_SUBSOIL_FIELDS(value.fields);
     },
     updateCurrentSubsoilField(value) {
       this.SET_CURRENT_SUBSOIL_FIELD(value);

@@ -1,23 +1,24 @@
+import Vue from "vue";
+
 const plastFluids = {
   namespaced: true,
 
   state: {
     currentSubsoilHorizon: "",
-    currentSubsoilField: "",
+    currentSubsoilField: [],
     currentSubsoil: [],
     subsoils: [],
     subsoilFields: [],
-    currentPage: "",
   },
 
   mutations: {
     SET_CURRENT_SUBSOIL(state, payload) {
       state.currentSubsoil = [];
-      state.currentSubsoil = [payload];
+      Vue.set(state.currentSubsoil, 0, payload);
     },
     SET_CURRENT_SUBSOIL_FIELD(state, payload) {
       state.currentSubsoilField = [];
-      state.currentSubsoilField = [payload];
+      Vue.set(state.currentSubsoilField, 0, payload);
     },
     SET_CURRENT_SUBSOIL_HORIZON(state, payload) {
       state.currentSubsoilHorizon = payload;
@@ -27,9 +28,6 @@ const plastFluids = {
     },
     SET_SUBSOIL_FIELDS(state, payload) {
       state.subsoilFields = payload;
-    },
-    SET_CURRENT_PAGE(state, payload) {
-      state.currentPage = payload;
     },
   },
 };

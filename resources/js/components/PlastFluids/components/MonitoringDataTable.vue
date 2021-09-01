@@ -5,7 +5,9 @@
     </p>
     <BaseTable
       :fields="fields"
-      :items="computedTableData"
+      :items="items"
+      :allPageCount="allPageCount"
+      :currentPage="currentPage"
       @sort-by-arrow-filter="sortByKey"
       @show-items-per-page="showItemsPerPage"
       pagination
@@ -18,12 +20,15 @@
 <script>
 import BaseTable from "./BaseTable.vue";
 import { getTemplateHistory } from "../services/templateService";
-import moment from "moment";
 
 export default {
   name: "MonitoringDataTable",
   components: {
     BaseTable,
+  },
+  props: {
+    currentSubsoil: Object,
+    currentSubsoilField: Object,
   },
   data() {
     return {
@@ -59,7 +64,10 @@ export default {
       ],
       items: [],
       currentPage: 1,
+      allPageCount: 1,
       tableDataFilterOptions: {
+        owner: this.currentSubsoil?.owner_name || "all",
+        field: this.currentSubsoilField?.field_name || "all",
         row_on_page: 30,
         page_number: 1,
         author: "None",
@@ -73,13 +81,21 @@ export default {
       },
     };
   },
-  computed: {
-    computedTableData() {
-      const data = this.items.map((item) => ({
-        ...item,
-        upload_datetime: moment(item.upload_datetime).format("YYYY-MM-DD"),
-      }));
-      return data;
+  watch: {
+    currentSubsoil(value) {
+      this.tableDataFilterOptions = {
+        ...this.tableDataFilterOptions,
+        owner: value?.owner_name || "all",
+        field: "all",
+      };
+      this.handleTemplateHistory();
+    },
+    currentSubsoilField(value) {
+      this.tableDataFilterOptions = {
+        ...this.tableDataFilterOptions,
+        field: value?.field_name || "all",
+      };
+      this.handleTemplateHistory();
     },
   },
   methods: {
@@ -105,6 +121,7 @@ export default {
         postData.append(key, tableDataFilters[key]);
       }
       const responseData = await getTemplateHistory(postData);
+      this.allPageCount = responseData.pages_count;
       this.items = responseData.data;
     },
   },
