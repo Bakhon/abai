@@ -6,7 +6,7 @@
       </subtitle>
 
       <apexchart
-          :options="chartOptions"
+          :options="chartOptions(chart.key)"
           :series="chartSeries[chart.key]"
           type="treemap"
           style="color: #000"/>
@@ -50,48 +50,24 @@ export default {
       )
     },
 
-    chartColors() {
-      return this.filteredData.map(well => {
-        if (this.selectedWells.includes(well.uwi)) {
-          return '#8125B0'
-        }
-
-        return +well.Operating_profit_12m > 0 ? '#13B062' : '#AB130E'
-      })
-    },
-
-    chartOptions() {
-      return {
-        legend: {
-          show: false
-        },
-        colors: this.chartColors,
-        plotOptions: {
-          treemap: {
-            distributed: true,
-            enableShades: false,
-          }
-        },
-        chart: {
-          foreColor: '#FFFFFF',
-          locales: [RU],
-          defaultLocale: 'ru',
-          events: {
-            dataPointSelection: (event, chartContext, config) => this.selectPoint(config)
-          }
-        },
-      }
-    },
 
     chartSeries() {
       let series = {}
 
-      WELL_KEYS.forEach(key => series[key] = [{data: []}])
+      WELL_KEYS.forEach(key => {
+        let data = []
 
-      this.filteredData.forEach(well => {
-        WELL_KEYS.forEach(key => {
-          series[key][0].data.push({x: well.uwi, y: well[key]})
+        let colors = []
+
+        this.filteredData.sort((prev, next) => +next[key] - +prev[key]).forEach(well => {
+          let value = +well[key]
+
+          colors.push(this.getColor(well))
+
+          data.push({x: well.uwi, y: value})
         })
+
+        series[key] = [{data: data, colors: colors}]
       })
 
       return series
@@ -123,7 +99,38 @@ export default {
       index === -1
           ? this.selectedWells.push(uwi)
           : this.selectedWells.splice(index, 1);
-    }
+    },
+
+    getColor(well) {
+      if (this.selectedWells.includes(well.uwi)) {
+        return '#8125B0'
+      }
+
+      return +well.Operating_profit_12m > 0 ? '#13B062' : '#AB130E'
+    },
+
+    chartOptions(key) {
+      return {
+        legend: {
+          show: false
+        },
+        colors: this.chartSeries[key][0].colors,
+        plotOptions: {
+          treemap: {
+            distributed: true,
+            enableShades: false,
+          }
+        },
+        chart: {
+          foreColor: '#FFFFFF',
+          locales: [RU],
+          defaultLocale: 'ru',
+          events: {
+            dataPointSelection: (event, chartContext, config) => this.selectPoint(config)
+          }
+        },
+      }
+    },
   }
 }
 </script>
