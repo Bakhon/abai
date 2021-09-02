@@ -48,14 +48,6 @@ export default {
     Subtitle
   },
   props: {
-    org: {
-      required: true,
-      type: Object
-    },
-    scenarios: {
-      required: true,
-      type: Array
-    },
     scenario: {
       required: true,
       type: Object
@@ -69,9 +61,6 @@ export default {
       type: Array
     },
   },
-  mounted() {
-    this.scrollToChanges()
-  },
   methods: {
     getColor({profitability_12m}) {
       if (profitability_12m === 'profitable') {
@@ -81,23 +70,6 @@ export default {
       return profitability_12m === 'profitless_cat_1'
           ? '#8D2540'
           : '#F7BB2E'
-    },
-
-    scrollToChanges() {
-      let table = document.getElementById('table-well-changes')
-
-      if (!table) return
-
-      let index = this.filteredData.findIndex((item, index, data) =>
-          index &&
-          item.oil_price === data[index - 1].oil_price &&
-          item.profitability_12m === 'profitable' &&
-          data[index - 1].profitability_12m !== 'profitable'
-      )
-
-      if (index === -1) return
-
-      table.scrollLeft = this.columnWidth * index / this.chunkStep - this.columnWidth * 4
     },
   },
   computed: {

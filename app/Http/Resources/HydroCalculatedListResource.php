@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-class HydroCalcCalculatedListResource extends CrudListResource
+class HydroCalculatedListResource extends CrudListResource
 {
     /**
      * Transform the resource into an array.
