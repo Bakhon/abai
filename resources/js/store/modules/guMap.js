@@ -7,7 +7,6 @@ const guMap = {
         zuPoints: [],
         wellPoints: [],
         guPoints: [],
-        guPointsIndexes: [],
         pipeTypes: [],
         mapCenter: {},
         ngdus: [],
@@ -23,9 +22,6 @@ const guMap = {
         },
         SET_GU_POINTS(state, payload) {
             state.guPoints = payload;
-        },
-        SET_GU_POINT_INDEX(state, payload) {
-            state.guPointsIndexes[payload.index] = payload.id;
         },
         SET_MAP_CENTER(state, value) {
             state.mapCenter = value;
@@ -47,9 +43,6 @@ const guMap = {
         },
         ADD_ZU_POINT(state, zuPoint) {
             state.zuPoints.push(zuPoint);
-        },
-        ADD_GU_POINT_INDEX(state, id) {
-            state.guPointsIndexes.push(id);
         },
         UPDATE_GU_POINT(state, payload) {
             Vue.set(state.guPoints, [payload.index], payload.gu)
@@ -73,8 +66,8 @@ const guMap = {
     },
 
     actions: {
-        async getMapData({dispatch, commit}, gu) {
-            return await axios.get(this._vm.localeUrl("/gu-map/mapdata"), {params: {gu: gu}}).then((response) => {
+        async getMapData({commit}, gu) {
+            return await axios.get(this._vm.localeUrl("/tech-map/mapdata"), {params: {gu: gu}}).then((response) => {
                 commit('SET_ZU_POINTS', response.data.zuPoints);
                 commit('SET_WELL_POINTS', response.data.wellPoints);
                 commit('SET_GU_POINTS', response.data.guPoints);
@@ -85,22 +78,14 @@ const guMap = {
                     latitude: response.data.center[1],
                     longitude: response.data.center[0]
                 });
-                dispatch('indexingGuPoints');
                 return response.data.pipes;
             })
         },
 
-        indexingGuPoints({state, commit}) {
-            state.guPoints.forEach((gu, index) => {
-                commit('SET_GU_POINT_INDEX', {index: index, id: gu.id});
-            });
-        },
-
         storeGu({state, commit}, objectData) {
-            return axios.post(this._vm.localeUrl("/gu-map/gu"), {gu: objectData}).then((response) => {
+            return axios.post(this._vm.localeUrl("/tech-map/gu"), {gu: objectData}).then((response) => {
                 if (response.data.status == 'success') {
                     commit('ADD_GU_POINT', response.data.gu);
-                    commit('ADD_GU_POINT_INDEX', response.data.gu.id);
                 }
 
                 return response.data;
@@ -108,7 +93,7 @@ const guMap = {
         },
 
         storeZu({commit}, objectData) {
-            return axios.post(this._vm.localeUrl("/gu-map/zu"), {zu: objectData}).then((response) => {
+            return axios.post(this._vm.localeUrl("/tech-map/zu"), {zu: objectData}).then((response) => {
                 if (response.data.status == 'success') {
                     commit('ADD_ZU_POINT', response.data.zu);
                 }
@@ -118,7 +103,7 @@ const guMap = {
         },
 
         storeWell({commit}, objectData) {
-            return axios.post(this._vm.localeUrl("/gu-map/well"), {well: objectData}).then((response) => {
+            return axios.post(this._vm.localeUrl("/tech-map/well"), {well: objectData}).then((response) => {
                 if (response.data.status == 'success') {
                     commit('ADD_WELL_POINT', response.data.well);
                 }
@@ -128,7 +113,7 @@ const guMap = {
         },
 
         updateGu({state, commit}, gu) {
-            return axios.put(this._vm.localeUrl("/gu-map/gu/" + gu.id), {gu: gu}).then((response) => {
+            return axios.put(this._vm.localeUrl("/tech-map/gu/" + gu.id), {gu: gu}).then((response) => {
                 if (response.data.status == 'success') {
                     let guIndex = state.guPoints.findIndex((guPoint) => {
                         return guPoint.id == gu.id;
@@ -141,7 +126,7 @@ const guMap = {
         },
 
         updateZu({state, commit}, zu) {
-            return axios.put(this._vm.localeUrl("/gu-map/zu/" + zu.id), {zu: zu}).then((response) => {
+            return axios.put(this._vm.localeUrl("/tech-map/zu/" + zu.id), {zu: zu}).then((response) => {
                 if (response.data.status == 'success') {
                     let zuIndex = state.zuPoints.findIndex((zuPoint) => {
                         return zuPoint.id == zu.id;
@@ -154,7 +139,7 @@ const guMap = {
         },
 
         updateWell({state, commit}, well) {
-            return axios.put(this._vm.localeUrl("/gu-map/well/" + well.id), {well: well}).then((response) => {
+            return axios.put(this._vm.localeUrl("/tech-map/well/" + well.id), {well: well}).then((response) => {
                 if (response.data.status == 'success') {
                     let wellIndex = state.zuPoints.findIndex((wellPoint) => {
                         return wellPoint.id == well.id;
@@ -167,7 +152,7 @@ const guMap = {
         },
 
         deleteGu({commit}, gu) {
-            return axios.delete(this._vm.localeUrl("/gu-map/gu/" + gu.id)).then((response) => {
+            return axios.delete(this._vm.localeUrl("/tech-map/gu/" + gu.id)).then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_GU', gu.index);
                 }
@@ -176,7 +161,7 @@ const guMap = {
             });
         },
         deleteZu({commit}, zu) {
-            return axios.delete(this._vm.localeUrl("/gu-map/zu/" + zu.id)).then((response) => {
+            return axios.delete(this._vm.localeUrl("/tech-map/zu/" + zu.id)).then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_ZU', zu.index);
                 }
@@ -185,7 +170,7 @@ const guMap = {
             });
         },
         deleteWell({commit}, well) {
-            return axios.delete(this._vm.localeUrl("/gu-map/well/" + well.id)).then((response) => {
+            return axios.delete(this._vm.localeUrl("/tech-map/well/" + well.id)).then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_WELL', well.index);
                 }
@@ -211,7 +196,7 @@ const guMap = {
         },
 
         async getHydroReverseCalc ({commit}, date) {
-            return await axios.get(this._vm.localeUrl("/gu-map/hydro-reverse-calc"), {params: {date: date}}).then((response) => {
+            return await axios.get(this._vm.localeUrl("/tech-map/hydro-reverse-calc"), {params: {date: date}}).then((response) => {
                 return response.data.pipes;
             })
         },

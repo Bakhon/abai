@@ -139,7 +139,7 @@
                         <span v-if="wellSaptialObjectBottomX">
                             {{ wellSaptialObjectBottomX }}
                         </span></p>
-                      <p>Координаты устья Y:
+                      <p>Координаты забоя Y:
                         <span v-if="wellSaptialObjectBottomY">
                             {{ wellSaptialObjectBottomY }}
                           </span></p>
@@ -435,7 +435,7 @@ export default {
           }
           this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
           this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
-          this.wellOrgName = this.getMultipleValues(data.org, 'name_ru')
+          this.wellOrgName = this.getMultipleValues(data.org.reverse(), 'name_ru')
           this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
           if (data.spatial_object.coord_point != null) {
             let spatialObject
