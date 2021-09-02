@@ -175,9 +175,7 @@ return array (
       'drilling_fluids' => 'Буровые растворы',
       'well_casing' => 'Крепление скважины',
       'technical_casing' => 'Техническая оснастка обсадных колонн',
-      'casing' => 'Обсадная колонна'
-  ],
-  'project_data' => [
+      'casing' => 'Обсадная колонна',
       'data_input' => 'Ввод данных',
       'visualization' => 'Визуализация',
       'selection_OK' => 'Подбор ОК(каталог)',
