@@ -10,7 +10,7 @@
     },
     {
       "code": "date",
-      "title": "date",
+      "title": "data",
       "type": "date"
     }
   ],
@@ -92,13 +92,6 @@
       "code": "scraper_income",
       "type": "float",
       "validation": "required|gte:0",
-      "is_editable": true
-    },
-    {
-      "title": "data",
-      "code": "data",
-      "type": "date",
-      "validation": "",
       "is_editable": true
     }
   ]
