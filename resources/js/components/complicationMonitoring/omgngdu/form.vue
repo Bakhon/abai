@@ -253,10 +253,10 @@ export default {
       return null
     },
     requestUrl () {
-      return this.isEditing ? this.localeUrl("/omgngdu/" + this.omgngdu.id) : this.localeUrl("/omgngdu");
+      return this.omgngdu.id ? this.localeUrl("/omgngdu/" + this.omgngdu.id) : this.localeUrl("/omgngdu");
     },
     requestMethod () {
-      return this.isEditing ? "put" : "post";
+      return this.omgngdu.id ? "put" : "post";
     }
   },
   beforeCreate: function () {

@@ -86,6 +86,13 @@
                             </a>
                         </li>
                     @endif
+                    @if(auth()->user()->can('monitoring list manual_hydro_calculation'))
+                        <li class="left-menu-li">
+                            <a href="{{route('manual_hydro_calculation.index')}}">
+                                {{ trans('monitoring.manual_hydro_calculation.menu') }}
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </li>
         @endif
