@@ -42,7 +42,7 @@
           <div class="col container-col_color m-0">
             <div class="contro-panel-col_height">
               <div class="contro-panel-col_text">
-                {{ this.trans("economy_pf.controlPanelCompanyValuation") }}
+                {{ trans("economy_pf.controlPanelCompanyValuation") }}
               </div>
             </div>
           </div>
@@ -59,6 +59,10 @@
   </div>
 </template>
 <script>
+Vue.component('main-factors-chart', require('./charts/mainFactorsChart.vue').default);
+Vue.component('cash-flow-dynamics-chart', require('./charts/cashFlowDynamicsChart.vue').default);
+Vue.component('sensitivity-npv-chart', require('./charts/sensitivityNpvChart.vue').default);
+
 import chartSettings from './charts/chart_settings.json';
 import selectFilterCompany from "../proactiveFactors/selectFilterData/company.json";
 import selectFilterVersionBp from "../proactiveFactors/selectFilterData/versionBp.json";

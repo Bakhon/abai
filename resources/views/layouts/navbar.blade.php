@@ -46,10 +46,10 @@
                         @endif
                     </div>
                     @if(Route::current()->getName() == 'proactiveFactors')
-                        <div class="header__subtitle"> - Упреждающие факторы</div>
+                        <div class="header__subtitle"> - {{ trans('economy_pf.proactiveFactors') }} </div>
                     @endif
                     @if(Route::current()->getName() == 'companyValuation')
-                        <div class="header__subtitle"> - Оценка стоимости компании</div>
+                        <div class="header__subtitle"> - {{ trans('economy_pf.valuationOfTheCompany') }} </div>
                     @endif
                 @endif
             @endif

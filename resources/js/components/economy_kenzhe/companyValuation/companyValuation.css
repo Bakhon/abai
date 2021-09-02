@@ -33,16 +33,12 @@
 .btn.btn_color {
   background-color: #293688;
   border: none;
-}  
-
-.chart-one, .chart-two, .chart-three
-{
 }
 
 .economics-table-color, .economics-table-color td, .economics-table-color th  {
-border: 1px solid #33396f!important;
-color: #fff; }
-
+  border: 1px solid #33396f!important;
+  color: #fff; 
+}
 
 .economics-table-color {
   background: #323370; 

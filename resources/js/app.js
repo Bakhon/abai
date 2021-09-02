@@ -207,9 +207,6 @@ Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiv
 Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
 Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
 Vue.component('company-valuation', require('./components/economy_kenzhe/companyValuation/companyValuation.vue').default);
-Vue.component('main-factors-chart', require('./components/economy_kenzhe/companyValuation/charts/mainFactorsChart.vue').default);
-Vue.component('cash-flow-dynamics-chart', require('./components/economy_kenzhe/companyValuation/charts/cashFlowDynamicsChart.vue').default);
-Vue.component('sensitivity-npv-chart', require('./components/economy_kenzhe/companyValuation/charts/sensitivityNpvChart.vue').default);
 
 Vue.component('page-petrophysics', require('./components/geology/petrophysics/PagePetrophysics.vue').default);
 Vue.component('page-core', require('./components/geology/core/PageCore.vue').default);
