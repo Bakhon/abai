@@ -43,7 +43,7 @@ export default {
       return Object.keys(this.data.uwis)
     },
 
-    tableData() {
+    wells() {
       return this.uwis.map(uwi => {
         let well = {uwi: uwi}
 
@@ -53,21 +53,30 @@ export default {
       })
     },
 
+    sortedWells() {
+      return WELL_KEYS.map(key => {
+        return {
+          key: key,
+          wells: this.wells.sort((prev, next) => +next[key] - +prev[key])
+        }
+      })
+    },
+
     chartSeries() {
       let series = {}
 
-      WELL_KEYS.forEach(key => {
+      this.sortedWells.forEach(item => {
         let data = []
 
         let colors = []
 
-        this.tableData.sort((prev, next) => +next[key] - +prev[key]).forEach(well => {
+        item.wells.forEach(well => {
           colors.push(this.getColor(well))
 
-          data.push({x: well.uwi, y: +well[key]})
+          data.push({x: well.uwi, y: +well[item.key]})
         })
 
-        series[key] = [{data: data, colors: colors}]
+        series[item.key] = [{data: data, colors: colors}]
       })
 
       return series
