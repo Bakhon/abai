@@ -4,9 +4,15 @@
         ref="table"
         :params="tableParams"
         class="height-fit-content height-unset">
+      <template :slot="`column-1`" slot-scope="{ props }">
+        <div :style="isColorful ? `color: ${props.cellData.color}` : ''">
+          {{ props.cellData.label }}
+        </div>
+      </template>
+
       <template
           v-for="(date, index) in data.dates"
-          :slot="`column-${index+1}`"
+          :slot="`column-${index+2}`"
           slot-scope="{ props }">
         <div :style="isColorful ? `color: ${props.cellData.color}` : ''">
           {{ props.cellData.label }}
@@ -51,6 +57,7 @@ export default {
         pageSizes: [12, 24, 48],
         headerHeight: 80,
         rowHeight: 50,
+        fixed: 1,
         columnWidth: this.tableHeaders.map((col, index) => ({
           column: index,
           width: index > 0 ? 90 : 100
@@ -59,32 +66,52 @@ export default {
     },
 
     tableData() {
-
       return this.uwis.map(uwi => {
-        let data = [uwi]
+        let tableRow = []
 
         let well = this.data.uwis[uwi]
+
+        let wellSum = 0
 
         this.data.dates.forEach(date => {
           let value = well[this.property].hasOwnProperty(date)
               ? +well[this.property][date]
               : ''
 
-          let label = value
-              ? (value / 1000).toFixed(1)
-              : value
+          if (value) {
+            wellSum += value
+          }
 
-          let color = value && value > 0 ? '#13B062' : '#AB130E'
-
-          data.push({label: label, value: value, color: color})
+          tableRow.push({
+            value: value,
+            label: this.getLabel(value),
+            color: this.getColor(value)
+          })
         })
 
-        return data
+        tableRow.unshift({
+          value: wellSum,
+          label: this.getLabel(wellSum),
+          color: this.getColor(wellSum)
+        })
+
+        tableRow.unshift(uwi)
+
+        return tableRow
       })
     },
 
     tableHeaders() {
-      return [...['UWI'], ...this.data.dates]
+      return [...['UWI', this.trans('economic_reference.total')], ...this.data.dates]
+    },
+  },
+  methods: {
+    getColor(value) {
+      return value && value > 0 ? '#13B062' : '#AB130E'
+    },
+
+    getLabel(value) {
+      return value ? (+(value / 1000).toFixed(1)).toLocaleString() : value
     },
   }
 }

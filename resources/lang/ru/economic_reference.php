@@ -265,4 +265,6 @@ return array (
   'number_prs_brigades' => 'Количество бригад ПРС',
   'number_krs_brigades' => 'Количество бригад КРС',
   'number_gtms_by_type' => 'Количество ГТМ по видам',
+  'full_screen' => 'Полноэкранный режим',
+  'table_well_treemap' => 'Таблица «Тримап»',
 );

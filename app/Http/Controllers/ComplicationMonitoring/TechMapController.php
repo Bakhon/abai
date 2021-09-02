@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
+use App\Http\Controllers\Controller;
+use App\Models\ComplicationMonitoring\Cdng;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\ManualGu;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
 use App\Models\ComplicationMonitoring\ManualWell;
 use App\Models\ComplicationMonitoring\ManualZu;
-use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\ComplicationMonitoring\OilPipe;
-use App\Http\Controllers\Controller;
-use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\Ngdu;
+use App\Models\ComplicationMonitoring\OilPipe;
+use App\Models\ComplicationMonitoring\PipeCoord;
+use App\Models\ComplicationMonitoring\PipeType;
+use App\Models\ComplicationMonitoring\Well;
+use App\Models\ComplicationMonitoring\Zu;
+use App\Services\DruidService;
+use App\Services\MapService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Services\MapService;
-use App\Models\ComplicationMonitoring\Gu;
-use App\Models\ComplicationMonitoring\Zu;
-use App\Models\ComplicationMonitoring\Cdng;
-use App\Models\ComplicationMonitoring\Well;
-use App\Services\DruidService;
 
-class MapsController extends Controller
+class TechMapController extends Controller
 {
     protected $mapService;
     protected $modelNameSpace = 'App\\Models\\ComplicationMonitoring\\';
@@ -34,7 +34,7 @@ class MapsController extends Controller
 
     public function guMap()
     {
-        return view('maps.gu_map');
+        return view('complicationMonitoring.tech_map.index');
     }
 
     public function getMapCenter()
@@ -556,10 +556,7 @@ class MapsController extends Controller
         }
 
         $pipe = $id >= 100000 ? ManualOilPipe::find($id) : OilPipe::find($id);
-
-//        dd($pipe);
-
-//        PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
+        PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
         $pipe->delete();
 
         return response()->json(

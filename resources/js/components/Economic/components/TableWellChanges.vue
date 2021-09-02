@@ -48,14 +48,6 @@ export default {
     Subtitle
   },
   props: {
-    org: {
-      required: true,
-      type: Object
-    },
-    scenarios: {
-      required: true,
-      type: Array
-    },
     scenario: {
       required: true,
       type: Object
@@ -69,9 +61,6 @@ export default {
       type: Array
     },
   },
-  mounted() {
-    this.scrollToChanges()
-  },
   methods: {
     getColor({profitability_12m}) {
       if (profitability_12m === 'profitable') {
@@ -82,23 +71,6 @@ export default {
           ? '#8D2540'
           : '#F7BB2E'
     },
-
-    scrollToChanges() {
-      let table = document.getElementById('table-well-changes')
-
-      if (!table) return
-
-      let index = this.filteredData.findIndex((item, index, data) =>
-          index &&
-          item.oil_price === data[index - 1].oil_price &&
-          item.profitability_12m === 'profitable' &&
-          data[index - 1].profitability_12m !== 'profitable'
-      )
-
-      if (index === -1) return
-
-      table.scrollLeft = this.columnWidth * index / this.chunkStep - this.columnWidth * 4
-    },
   },
   computed: {
     filteredData() {
@@ -106,24 +78,42 @@ export default {
     },
 
     tableData() {
-      let data = {}
+      let wells = {}
 
-      this.filteredData.forEach(item => {
-        if (!data.hasOwnProperty(item.uwi)) {
-          data[item.uwi] = {oilPrices: {}}
+      this.filteredData.forEach(well => {
+        if (!wells.hasOwnProperty(well.uwi)) {
+          wells[well.uwi] = {oilPrices: {}, cat1: 0, cat2: 0, profitable: 0}
         }
 
-        data[item.uwi].oilPrices[item.oil_price] = {
-          operating_profit_12m: item.operating_profit_12m,
-          profitability_12m: item.profitability_12m
+        wells[well.uwi].oilPrices[well.oil_price] = {
+          operating_profit_12m: well.operating_profit_12m,
+          profitability_12m: well.profitability_12m
+        }
+
+        switch (well.profitability_12m) {
+          case 'profitable':
+            wells[well.uwi].profitable += 1
+            break
+          case 'profitless_cat_1':
+            wells[well.uwi].cat1 += 1
+            break
+          case 'profitless_cat_2':
+            wells[well.uwi].cat2 += 1
+            break
         }
       })
 
-      return data
+      return wells
     },
 
     tableDataKeys() {
-      return Object.keys(this.tableData)
+      let wells = this.tableData
+
+      return Object.keys(wells).sort(function (prev, next) {
+        return (wells[next].cat1 - wells[prev].cat1)
+            || (wells[next].cat2 - wells[prev].cat2)
+            || (wells[prev].profitable - wells[next].profitable)
+      })
     },
 
     tableDataChunks() {
