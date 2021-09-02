@@ -3,7 +3,7 @@
         <window-head />
         <div class="windowBody">
             <div class="bodyContent">
-                <p class="bigTitle left">Буровые растворы</p>
+                <p class="bigTitle left">{{ trans('digital_drilling.project_data.drilling_fluids') }}</p>
                 <div class="dropdown">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                         {{ trans(mainTable.name) }} <i class="fas fa-chevron-down"></i>
