@@ -127,8 +127,7 @@ class WellDocument extends PlainForm
                 $this->submittedData['fields'] = $data;
                 $this->submittedData['id'] = $id;
 
-                $this->updateFiles($id);
-
+                $this->updateFiles($id, $files);
             } else {
                 if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
                     throw new \Exception("You don't have permissions");
@@ -172,9 +171,8 @@ class WellDocument extends PlainForm
         return $attachmentService->getInfo($fileIds);
     }
 
-    private function updateFiles(int $id)
+    private function updateFiles(int $id, array $files)
     {
-
         $existedFiles = DB::connection('tbd')
             ->table('prod.document_file')
             ->where('document', $id)
@@ -195,20 +193,22 @@ class WellDocument extends PlainForm
                 ->delete();
         }
 
-        if (!empty($files)) {
-            foreach ($files as $file) {
-                if (in_array($file, $existedFiles)) {
-                    continue;
-                }
-                DB::connection('tbd')
-                    ->table('prod.document_file')
-                    ->insert(
-                        [
-                            'document' => $id,
-                            'file' => $file
-                        ]
-                    );
+        if (empty($files)) {
+            return;
+        }
+
+        foreach ($files as $file) {
+            if (in_array($file, $existedFiles)) {
+                continue;
             }
+            DB::connection('tbd')
+                ->table('prod.document_file')
+                ->insert(
+                    [
+                        'document' => $id,
+                        'file' => $file
+                    ]
+                );
         }
     }
 }
