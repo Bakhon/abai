@@ -62,8 +62,8 @@ Route::group(
                 Route::post('/dzo-excel-otm', 'VisCenter\ExcelForm\ExcelFormOtmController@store');
                 Route::get('/get-dzo-current-chemistry', 'VisCenter\ExcelForm\ExcelFormChemistryController@getDzoCurrentChemistry');
                 Route::get('/get-dzo-current-otm', 'VisCenter\ExcelForm\ExcelFormOtmController@getDzoCurrentOtm');
-                Route::get('hive-data-from-avocet', function() {
-                    Artisan::call('hive-data-from-avocet:cron');
+                Route::get('store-kgm-reports-from-avocet', function() {
+                    Artisan::call('store-kgm-reports-from-avocet:cron');
                 });
                 Route::post('dzo-excel-form', 'VisCenter\ExcelForm\ExcelFormController@store');
                 Route::post('dzo-chemistry-excel-form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
@@ -85,7 +85,10 @@ Route::group(
                 Route::get('get-non-operating-dzo', function() {
                     Artisan::call('receive-non-operating-email:cron');
                 });
-                Route::get('/kpd-tree', 'VisCenter\VisualCenterController@kpdTree')->name('kpd-tree');
+                Route::get('/kpd-tree', 'VisCenter\Kpd\KpdTreeController@kpdTree')->name('kpd-tree');
+                Route::get('/kpd-tree-catalog', 'VisCenter\Kpd\KpdTreeController@getAll');
+                Route::post('/kpd-tree-catalog-store', 'VisCenter\Kpd\KpdTreeController@storeKpd');
+                Route::get('/get-fond-daily-chart', 'VisCenter\AdditionalParams\ProductionFondController@getDailyDataByDzo');
             }
         );
     }

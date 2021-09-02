@@ -23,6 +23,10 @@ class OmgNGDUZu extends Model
 
     public function getDailyWaterProductionAttribute()
     {
-        return round (($this->daily_fluid_production * $this->bsw)/100 , 2);
+        if ($this->daily_fluid_production != null AND $this->bsw != null) {
+            return round (($this->daily_fluid_production *  $this->bsw)/100 , 2);
+        }
+
+        return null;
     }
 }

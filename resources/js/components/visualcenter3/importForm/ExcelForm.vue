@@ -12,9 +12,7 @@
                     {{trans('visualcenter.importForm.insertData')}}
                 </div>
                 <div
-                        :class="[isArchiveActive ? 'category-button_border category-button' : '',
-                        dzoUsers.includes(parseInt(userId)) ? 'menu__button_disabled' : '',
-                        ' col-2 category-button']"
+                        :class="[isArchiveActive ? 'category-button_border category-button' : '',' col-2 category-button']"
                         @click="changeCategory"
                 >
                     <div class="archieve-icon"></div>
@@ -72,7 +70,7 @@
                     </el-date-picker>
                 </div>
                 <div
-                        :class="[isUserNameCompleted && isChangeReasonCompleted ? '' : 'menu__button_disabled','col-12 status-block status-block_little menu__button mt-3']"
+                        :class="[isUserNameCompleted && isChangeReasonCompleted && isUserPositionCompleted && !isDataSended ? '' : 'menu__button_disabled','col-12 status-block status-block_little menu__button mt-3']"
                         @click="sendToApprove"
                 >
                     {{trans('visualcenter.importForm.approve')}}
@@ -86,12 +84,19 @@
                         :placeholder="trans('visualcenter.importForm.executor')"
                         :state="nameState"
                 ></b-form-input>
+                <b-form-input
+                        size="sm"
+                        class="mt-1"
+                        v-model="userPosition"
+                        :placeholder="trans('visualcenter.importForm.position')"
+                        :state="userPositionState"
+                ></b-form-input>
                 <b-form-textarea
                         class="mt-1"
                         id="textarea"
                         v-model="changeReason"
                         :placeholder="trans('visualcenter.importForm.reason')"
-                        rows="3"
+                        rows="2"
                         :state="changeReasonState"
                 ></b-form-textarea>
             </div>

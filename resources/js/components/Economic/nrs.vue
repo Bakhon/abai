@@ -177,7 +177,7 @@ import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
-import Charts from "./components/Charts";
+import Charts from "./components/nrs/Charts";
 import EconomicTitle from "./components/EconomicTitle";
 import Subtitle from "./components/Subtitle";
 import PercentBadge from "./components/PercentBadge";
@@ -299,7 +299,7 @@ export default {
       org_id: null,
       field_id: null,
       interval_start: '2020-01-01T00:00:00.000Z',
-      interval_end: '2021-01-01T00:00:00.000Z',
+      interval_end: '2021-09-01T00:00:00.000Z',
       granularity: GRANULARITY_DAY,
       profitability: PROFITABILITY_FULL,
     },

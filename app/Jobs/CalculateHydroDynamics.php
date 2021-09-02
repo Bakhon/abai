@@ -14,11 +14,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class CalculateHydroDynamics implements ShouldQueue
 {
@@ -170,7 +170,7 @@ class CalculateHydroDynamics implements ShouldQueue
         }
 
         if ($isErrors) {
-            if (!empty($this->input['cron'])) {
+            if (isset($this->input['cron']) AND $this->input['cron']) {
                 Log::channel('calculate_hydro_yesterday:cron')->error('Нет данных по ОМГ НГДУ');
             } else {
                 $this->setOutput(
@@ -231,7 +231,7 @@ class CalculateHydroDynamics implements ShouldQueue
             }
         }
 
-        if ($this->input['cron']) {
+        if (isset($this->input['cron']) AND $this->input['cron']) {
             Log::channel('calculate_hydro_yesterday:cron')->info('Расчет на '.$this->input['date'].' успешно завершен.');
         }
 
