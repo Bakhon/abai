@@ -12,7 +12,6 @@ import Paginate from 'vuejs-paginate';
 import moment from 'moment';
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
-import { utcFormat } from 'd3';
 
 Vue.component('paginate', Paginate);
 Vue.component('v-select', vSelect)
@@ -131,7 +130,7 @@ export default {
           filters = [...filters, el.field];
         }
       });
-      return [null, ...filters];
+      return [undefined, ...filters];
   },  
       wellStatusFilters() {
         let filters = [];
@@ -154,7 +153,7 @@ export default {
             filters = [...filters, el.well_status_last_day];
           }
         });
-        return [null, ...filters];
+        return [undefined, ...filters];
     },  
     statusFilters() {
       let filters = [];
@@ -200,7 +199,7 @@ export default {
             filters = [...filters, el.type_text];
           }
         });
-        return [null, ...filters];
+        return [undefined, ...filters];
     },   
     wellFilters() {
         let filters = [];
@@ -223,7 +222,7 @@ export default {
             filters = [...filters, el.rus_wellname];
           }
         });
-        return [null, ...filters];
+        return [undefined, ...filters];
     },          
   },
   beforeCreate: function () {},
@@ -256,11 +255,11 @@ export default {
       selectYear: null,
       month: null,
       isFullTable: false,
-      fieldFilter: null,
+      fieldFilter: undefined,
       allWells: [],
-      wellStatusFilter: null,
+      wellStatusFilter: undefined,
       statusFilter: "Не сохранено",
-      typeWellFilter: null,
+      typeWellFilter: undefined,
       filteredWellData: [],
       lonelywell: [],
       render: 0,
@@ -298,6 +297,7 @@ export default {
       isMaxDate: true,
       isActiveHorizonFilterr: false,
       editedAddWells: [],
+      checkAllFilters: false,
     };
   },
   methods: {
@@ -378,7 +378,7 @@ export default {
                     console.log("No data");
                 }
             });
-        this.numberOfPage(this.pageNumberLink);
+        this.pageInfo(this.pageNumberLink);
     },
     getPageData() {
         if (this.isDynamic) {
@@ -424,7 +424,7 @@ export default {
     clickCallback(pageNum) {
         this.$store.commit("globalloading/SET_LOADING", true);
         this.$store.commit("tr/SET_PAGENUMBER", pageNum);
-        this.pushFilter();
+        this.pushChooseParameter();
     },
     dropAllFilters() {
       this.$store.commit("globalloading/SET_LOADING", true),
@@ -437,8 +437,15 @@ export default {
       this.$store.commit("tr/SET_WELLNAME", []);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
       this.pageNumber = 1;
-      this.isNoActiveHorizonFilter();
-      this.pushFilter();
+      this.pushChooseParameter();
+    },
+    checkFilter() {
+      if (this.$store.state.tr.field.length === 0 && this.$store.state.tr.horizon.length === 0 && this.$store.state.tr.wellType.length === 0 && this.$store.state.tr.object.length === 0 && this.$store.state.tr.block.length === 0 && this.$store.state.tr.expMeth.length === 0) {
+        this.checkAllFilters = false;
+      }
+      else {
+        this.checkAllFilters = true;
+      }
     },
     dropFilter(x) {
         this.$store.commit("globalloading/SET_LOADING", true),
@@ -460,8 +467,7 @@ export default {
         };
         this.$store.commit("tr/SET_PAGENUMBER", 1);
         this.pageNumber = 1;
-        this.isNoActiveHorizonFilter();
-        this.pushFilter();
+        this.pushChooseParameter();
     },
     chooseFilter() {
         this.$store.commit("globalloading/SET_LOADING", true),
@@ -469,18 +475,17 @@ export default {
         this.$store.commit("tr/SET_SEARCH", this.searchString);
         this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
         this.$store.commit("tr/SET_PAGENUMBER", 1);
-        this.isActiveHorizonFilter();
-        this.pushFilter();
-        this.isActiveHorizonFilter();
+        this.pushChooseParameter();
     },
-    pushFilter() {
+    pushChooseParameter() {
         if (this.isDynamic) {
-            this.axiosDynamicFilterRequest();
+            this.formingDynamicTR();
         } else if (this.isEdit) {
             this.axiosEdit();
         } else {
-            this.filterRequest();
+            this.requestFilter();
         }
+        this.checkFilter();
     },
     axiosEdit() {
         this.axios
@@ -497,9 +502,9 @@ export default {
                     console.log("No data");
                 }
             });
-        this.numberOfPage(this.editPageNumberLink);
+        this.pageInfo(this.editPageNumberLink);
     },
-    axiosDynamicFilterRequest() {
+    formingDynamicTR() {
         this.axios
             .post(
                 this.postApiUrl + "techregime_dynamic_totals/",
@@ -515,9 +520,9 @@ export default {
                 }
                 this.isPermission = this.params.includes(this.permissionName);
             });
-        this.numberOfPage(this.pageNumberLink);
+        this.pageInfo(this.pageNumberLink);
     },
-    numberOfPage(link) {
+    pageInfo(link) {
         this.axios
             .post(
                 this.postApiUrl + link,
@@ -532,7 +537,8 @@ export default {
                 }
             });
     },
-    filterRequest() {
+    // Режим месячного формирования
+    requestFilter() {
         this.axios
             .post(
                 this.postApiUrl + this.searchLink,
@@ -547,7 +553,7 @@ export default {
                     console.log("No data");
                 }
             });
-        this.numberOfPage(this.pageNumberLink);
+        this.pageInfo(this.pageNumberLink);
     },
     editrow(row, rowId) {
         this.$store.commit("globalloading/SET_LOADING", false);
@@ -624,16 +630,16 @@ export default {
         this.isShowAdd = false;
         this.isDeleted = false;
         this.isSaved = false;
-        this.wellStatusFilter = null;
+        this.wellStatusFilter = undefined;
         this.statusFilter = "Не сохранено";
-        this.typeWellFilter = null;
+        this.typeWellFilter = undefined;
         this.wellFilter = [];
-        this.fieldFilter = null;
+        this.fieldFilter = undefined;
     },
     onChangePage(newVal) {
         this.$store.commit("globalloading/SET_LOADING", true);
         this.$store.commit("tr/SET_PAGENUMBER", parseInt(newVal));
-        this.pushFilter();
+        this.pushChooseParameter();
     },
     showWells() {
       if(this.lonelywell[0].is_saved === "Сохранено"){
@@ -687,13 +693,14 @@ export default {
     sortBy(type) {
         this.$store.commit("tr/SET_SORTTYPE", this.isSortType);
         this.$store.commit("tr/SET_SORTPARAM", type);
+        let {isSortType} = this;
         this.isSortType != this.isSortType;
         if (this.isDynamic) {
-            this.axiosDynamicFilterRequest();
+            this.formingDynamicTR();
         } else if (this.isEdit) {
             this.axiosEdit();
         } else {
-            this.filterRequest();
+            this.requestFilter();
         }
     },
     onChangeMonth(event) {
@@ -738,7 +745,7 @@ export default {
             this.$store.commit("tr/SET_SORTPARAM", "");
             this.$store.commit("tr/SET_IS_DYNAMIC", true);
             this.isDynamic = true;
-            this.axiosDynamicFilterRequest();
+            this.formingDynamicTR();
             this.isSearched = false;
             this.isDateFix = false;
             this.$store.commit("tr/SET_IS_DYNAMIC", "true");
@@ -766,7 +773,7 @@ export default {
         this.$store.commit("tr/SET_IS_DYNAMIC", "false");
         this.isDynamic = false;
         this.$store.commit("globalloading/SET_LOADING", true);
-        this.filterRequest();
+        this.requestFilter();
         if (this.month < 10) {
             this.dt = "01" + ".0" + this.month + "." + this.selectYear;
         } else {
@@ -820,22 +827,7 @@ export default {
             return true
         }
     },
-    isActiveHorizonFilter() {
-        if (this.selectHorizon === null) {
-             this.isActiveHorizonFilterr = false;
-        } else {
-             this.isActiveHorizonFilterr = true;
-        }
-        return this.isActiveHorizonFilterr
 
-    },
-    isNoActiveHorizonFilter() {
-        if (this.selectHorizon === null) {
-            return this.isActiveHorizonFilterr = true;
-        } else {
-            return this.isActiveHorizonFilterr = false;
-        }
-    },
     getRowWidthSpan(row) {
         return row.rus_wellname ? 0 : 2;
 
@@ -902,11 +894,11 @@ export default {
             : "";
         this.$store.commit("tr/SET_SEARCH", this.searchString);
         if (this.isEdit) {
-            this.search(this.editSearchLink);
-            this.numberOfPage(this.editPageNumberLink);
+            this.defaultSearch(this.editSearchLink);
+            this.pageInfo(this.editPageNumberLink);
         } else {
-            this.search(this.searchLink);
-            this.numberOfPage(this.pageNumberLink);
+            this.defaultSearch(this.searchLink);
+            this.pageInfo(this.pageNumberLink);
         }
     },
     notification(val) {
@@ -918,7 +910,7 @@ export default {
         variant: 'danger',
       });
     },
-    search(link) {
+    defaultSearch(link) {
         this.axios
             .post(
                 this.postApiUrl + link,
