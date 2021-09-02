@@ -145,7 +145,7 @@ export default {
           oil: this.calcOil(this.scenario.oil.original_value),
           number: '',
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total.original_value),
-          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures.original_value),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full.original_value),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit.original_value),
         },
         {
@@ -158,7 +158,7 @@ export default {
           oil: this.calcOil(this.scenario.oil_profitable.original_value),
           number: '',
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitable.original_value),
-          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_profitable.original_value),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_profitable.original_value),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_profitable.original_value),
         },
         {
@@ -171,7 +171,7 @@ export default {
           oil: this.calcOil(this.scenario.oil_profitless_cat_1.original_value),
           number: '',
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_1.original_value),
-          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_profitless_cat_1.original_value),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_profitless_cat_1.original_value),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_profitless_cat_1.original_value),
         },
         {
@@ -184,7 +184,7 @@ export default {
           oil: this.calcOil(this.scenario.oil_profitless_cat_2.original_value),
           number: '',
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_2.original_value),
-          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_profitless_cat_2.original_value),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_profitless_cat_2.original_value),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_profitless_cat_2.original_value),
         },
       ]
@@ -202,7 +202,7 @@ export default {
           oil: this.calcOil(this.scenario.oil.original_value_optimized),
           number: '',
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total.original_value_optimized),
-          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_scenario),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_scenario),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario),
         },
         {
@@ -215,7 +215,7 @@ export default {
           oil: this.calcOil(this.scenario.oil_profitable.original_value_optimized),
           number: '',
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitable.original_value_optimized),
-          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_scenario_profitable),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_scenario_profitable),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario_profitable),
         },
         {
@@ -228,7 +228,7 @@ export default {
           oil: this.calcOil(this.scenario.oil_profitless_cat_1.original_value_optimized),
           number: '',
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_1.original_value_optimized),
-          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_scenario_profitless_cat_1),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_scenario_profitless_cat_1),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario_profitless_cat_1),
         },
         {
@@ -241,7 +241,7 @@ export default {
           oil: this.calcOil(this.scenario.oil_profitless_cat_2.original_value_optimized),
           number: '',
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_2.original_value_optimized),
-          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_scenario_profitless_cat_2),
+          overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_scenario_profitless_cat_2),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario_profitless_cat_2),
         },
       ]
