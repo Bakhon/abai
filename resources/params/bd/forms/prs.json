@@ -48,14 +48,14 @@
                 "code": "brigadier",
                 "type": "dict",
                 "title": "brigade",
-                "validation": "required|exists:tbd.dict.brigade,id",
+                "validation": "exists:tbd.dict.brigade,id",
                 "dict": "brigades"
               },
               {
                 "code": "full_name",
                 "type": "dict",
                 "title": "brigade_master",
-                "validation": "required|exists:tbd.dict.brigadier,id",
+                "validation": "exists:tbd.dict.brigadier,id",
                 "dict": "brigadiers"
               },
               {
