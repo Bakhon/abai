@@ -15,11 +15,13 @@ class VisualCenterController extends Controller
     private $periodStart = '';
     private $periodEnd = '';
     private $periodRange = 0;
+    private $periodType = 'day';
     private $historicalPeriodStart = '';
     private $historicalPeriodEnd = '';
     private $dzoName = '';
     private $category = '';
     private $filter = '';
+    private $yearlyPlan = array();
     private $chartData = array();
     private $tableData = array(
         'current' => array(
@@ -93,6 +95,7 @@ class VisualCenterController extends Controller
     {
         $this->chartData = $this->tableData;
         $this->refreshRequestParams($request->request);
+        $this->yearlyPlan = $this->getYearlyPlan();
         $currentPeriodDzoFact = $this->getDzoFact($this->periodStart,$this->periodEnd);
         $currentPeriodDzoPlan = $this->getDzoPlan($this->periodStart,$this->periodEnd);
         $historicalDzoFact = $this->getDzoFact($this->historicalPeriodStart,$this->historicalPeriodEnd);
@@ -100,6 +103,7 @@ class VisualCenterController extends Controller
         if ($this->periodRange > 0) {
             //$this->chartData = $this->getChartData($currentPeriodDzoFact,$currentPeriodDzoPlan);
         }
+
         $this->tableData['current']['oilCondensateProduction'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateProduction');
         $this->tableData['historical']['oilCondensateProduction'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan,'oilCondensateProduction');
         $this->tableData['current']['oilCondensateDelivery'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDelivery');
@@ -115,6 +119,7 @@ class VisualCenterController extends Controller
         $this->periodStart = Carbon::parse($params->get('periodStart'))->startOfDay();
         $this->periodEnd = Carbon::parse($params->get('periodEnd'))->endOfDay();
         $this->periodRange = (int)$params->get('periodRange');
+        $this->periodType = $params->get('periodType');
         $this->historicalPeriodStart = Carbon::parse($params->get('historicalPeriodStart'))->startOfDay();
         $this->historicalPeriodEnd = Carbon::parse($params->get('historicalPeriodEnd'))->endOfDay();
         $this->dzoName = $params->get('dzoName');
@@ -166,8 +171,18 @@ class VisualCenterController extends Controller
         $oilCondensateConsolidated = new OilCondensateConsolidated();
         $tableData = array();
         if ($type === 'oilCondensateProduction' || $type === 'oilCondensateDelivery') {
-            $tableData = $oilCondensateConsolidated->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,$type);
+            $tableData = $oilCondensateConsolidated->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,$type,$this->yearlyPlan,$this->periodType);
         }
         return $tableData;
+    }
+
+    private function getYearlyPlan()
+    {
+        $query = DzoPlan::query()
+            ->whereYear('date', $this->periodStart->year);
+        if (!is_null($this->dzoName)) {
+            $query->where('dzo_name', $this->dzoName);
+        }
+        return $query->orderBy('date', 'asc')->get();
     }
 }

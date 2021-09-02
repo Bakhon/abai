@@ -26,7 +26,7 @@ export default {
             if (num == null) {
                 return 0;
             }
-            if (this.quantityRange < 2) {
+            if (this.backendPeriodRange === 0) {
                 this.thousand = '';
                 return new Intl.NumberFormat("ru-RU").format(Math.round(num));
             } else {
@@ -323,6 +323,14 @@ export default {
                 return 'triangle fall-indicator-production-data';
             }
             return 'triangle growth-indicator-production-data';
+        },
+
+        getHighlightClassForSummary(isEven) {
+            if (isEven) {
+                return 'tdStyle3';
+            } else {
+                return 'tdStyleLight3';
+            }
         }
     },
     computed: {

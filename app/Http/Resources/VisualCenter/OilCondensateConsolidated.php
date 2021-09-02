@@ -71,15 +71,22 @@ class OilCondensateConsolidated {
         ),
     );
 
-    public function getDataByConsolidatedCategory($factData,$planData,$periodRange,$type)
+    public function getDataByConsolidatedCategory($factData,$planData,$periodRange,$type,$yearlyPlan,$periodType)
     {
         $summary = array();
         $groupedFact = $factData->groupBy('dzo_name');
         $pkiSumm = array (
             'fact' => 0,
             'plan' => 0,
-            'opek' => 0
+            'opek' => 0,
+            'monthlyPlan' => 0
         );
+        if ($periodType === 'month') {
+            $pkiSumm['monthlyPlan'] = 0;
+        }
+        if ($periodType === 'year') {
+            $pkiSumm['yearlyPlan'] = 0;
+        }
         if ($periodRange === 0) {
             $groupedFact = $this->getUpdatedByMissingCompanies($groupedFact);
         }
@@ -94,16 +101,15 @@ class OilCondensateConsolidated {
             }
 
             $filteredPlan = $planData->filter(function($item) use($dzoName,$factDates) {
-                return in_array(Carbon::parse($item->date)->format('d.m.Y'),$factDates) && $item->dzo === $dzoName;
+                return in_array(Carbon::parse($item->date)->firstOfMonth()->format('d.m.Y'),$factDates) && $item->dzo === $dzoName;
             })->toArray();
-
-            $dzo = $dzoName;
-            if ($dzo === 'ПКК') {
-                $dzo = 'ПККР';
-            } elseif ($dzo === 'ПКИ') {
+            if (count($filteredPlan) === 0) {
                 continue;
             }
-            $updated = $this->getUpdatedByTroubledCompanies($dzo,$dzoFact,$filteredPlan,$pkiSumm,$type);
+            if ($dzoName === 'ПКИ') {
+                continue;
+            }
+            $updated = $this->getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,$pkiSumm,$type,$periodType,$yearlyPlan);
             if (count($updated) > 0) {
                 $summary = array_merge($summary,$updated);
             }
@@ -115,6 +121,7 @@ class OilCondensateConsolidated {
               'fact' => $pkiSumm['fact'],
               'plan' => $pkiSumm['plan'],
               'opek' => $pkiSumm['opek'],
+              'monthlyPlan' => $pkiSumm['monthlyPlan']
         ));
         $sorted = $this->getSortedById($summary,$type);
         return $sorted;
@@ -142,32 +149,29 @@ class OilCondensateConsolidated {
              ->first();
     }
 
-    private function getUpdatedByTroubledCompanies($dzo,$dzoFact,$filteredPlan,&$pkiSumm,$type)
+    private function getUpdatedByTroubledCompanies($dzo,$dzoFact,$filteredPlan,&$pkiSumm,$type,$periodType,$yearlyPlan)
     {
+        $filteredYearlyPlan = $yearlyPlan->where('dzo',$dzo);
+        if ($dzo === 'ПКК') {
+            $dzo = 'ПККР';
+        }
         if (!array_key_exists($dzo,$this->consolidatedNumberMapping[$type])) {
             return [];
         }
+        $daysInMonth = Carbon::parse($dzoFact[0]['date'])->daysInMonth;
         $summary = array();
         $plan = array_sum(array_column($filteredPlan,$this->consolidatedFieldsMapping[$type]['plan']));
 
-      //  $deliveryPlan = array_sum(array_column($filteredPlan,$this->consolidatedFieldsMapping['oilDelivery']['plan']));
         $opek = array_sum(array_column($filteredPlan,$this->consolidatedFieldsMapping[$type]['opek']));
-      //  $deliveryOpek = array_sum(array_column($filteredPlan,$this->consolidatedFieldsMapping['oilDelivery']['opek']));
         if (is_null($opek) || $opek === 0) {
             $opek = $plan;
         }
-        //if (is_null($deliveryOpek)) {
-      //      $deliveryOpek = $deliveryPlan;
-     //   }
         $companySummary = array(
            'id' => $this->consolidatedNumberMapping[$type][$dzo],
            'name' => $dzo,
            'fact' => array_sum(array_column($dzoFact,$this->consolidatedFieldsMapping[$type]['fact'])),
-          // 'oilDeliveryFact' => array_sum(array_column($dzoFact,$this->consolidatedFieldsMapping['oilDelivery']['fact'])),
            'plan' => $plan,
-        //   'oilDeliveryPlan' => $deliveryPlan,
            'opek' => $opek,
-        //   'deliveryOpek' => $deliveryOpek,
            'opec_explanation_reasons' => $this->getAccidentDescription($dzoFact,'opec_explanation_reasons'),
            'impulse_explanation_reasons' => $this->getAccidentDescription($dzoFact,'impulse_explanation_reasons'),
            'shutdown_explanation_reasons' => $this->getAccidentDescription($dzoFact,'shutdown_explanation_reasons'),
@@ -176,14 +180,23 @@ class OilCondensateConsolidated {
            'gas_restriction_explanation_reasons' => $this->getAccidentDescription($dzoFact,'gas_restriction_explanation_reasons'),
            'other_explanation_reasons' => $this->getAccidentDescription($dzoFact,'other_explanation_reasons'),
         );
+        if ($periodType === 'month') {
+            $companySummary['monthlyPlan'] = array_column($filteredPlan,$this->consolidatedFieldsMapping[$type]['plan'])[0] * $daysInMonth;
+        }
+        if ($periodType === 'year') {
+            $companySummary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$this->consolidatedFieldsMapping[$type]['plan']);
+        }
 
         if ($dzo === 'АГ') {
             $companySummary['fact'] = array_sum(array_column($dzoFact,$this->consolidatedFieldsMapping[$type]['condensateFact']));
             $companySummary['plan'] = array_sum(array_column($filteredPlan,$this->consolidatedFieldsMapping[$type]['condensatePlan']));
             $companySummary['opek'] = array_sum(array_column($filteredPlan,$this->consolidatedFieldsMapping[$type]['condensateOpek']));
-           // $companySummary['oilDeliveryFact'] = array_sum(array_column($dzoFact,$this->consolidatedFieldsMapping['condensateDelivery']['fact']));
-          //  $companySummary['oilDeliveryPlan'] = array_sum(array_column($filteredPlan,$this->consolidatedFieldsMapping['condensateDelivery']['plan']));
-          //  $companySummary['deliveryOpek'] = array_sum(array_column($filteredPlan,$this->consolidatedFieldsMapping['condensateDelivery']['opek']));
+            if ($periodType === 'month') {
+                $companySummary['monthlyPlan'] = array_column($filteredPlan,$this->consolidatedFieldsMapping[$type]['condensatePlan'])[0] * $daysInMonth;
+            }
+            if ($periodType === 'year') {
+                $companySummary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$this->consolidatedFieldsMapping[$type]['condensatePlan']);
+            }
         } elseif ($dzo === 'ОМГ') {
             $condensateSummary = $companySummary;
             $condensateSummary['id'] = $this->consolidatedNumberMapping[$type]['ОМГК'];
@@ -191,85 +204,118 @@ class OilCondensateConsolidated {
             $condensateSummary['fact'] = array_sum(array_column($dzoFact,$this->consolidatedFieldsMapping[$type]['condensateFact']));
             $condensateSummary['plan'] = array_sum(array_column($filteredPlan,$this->consolidatedFieldsMapping[$type]['condensatePlan']));
             $condensateSummary['opek'] = array_sum(array_column($filteredPlan,$this->consolidatedFieldsMapping[$type]['condensateOpek']));
-           // $condensateSummary['oilDeliveryFact'] = array_sum(array_column($dzoFact,$this->consolidatedFieldsMapping['condensateDelivery']['fact']));
-         //   $condensateSummary['oilDeliveryPlan'] = array_sum(array_column($filteredPlan,$this->consolidatedFieldsMapping['condensateDelivery']['fact']));
-          //  $condensateSummary['deliveryOpek'] = array_sum(array_column($filteredPlan,$this->consolidatedFieldsMapping['condensateDelivery']['opek']));
+            if ($periodType === 'month') {
+                $condensateSummary['monthlyPlan'] = array_column($filteredPlan,$this->consolidatedFieldsMapping[$type]['condensatePlan'])[0] * $daysInMonth;
+            }
+            if ($periodType === 'year') {
+                $condensateSummary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$this->consolidatedFieldsMapping[$type]['condensatePlan']);
+            }
             array_push($summary,$condensateSummary);
         } elseif ($dzo === 'КГМ') {
             $condensateSummary = $companySummary;
             $condensateSummary['id'] = $this->consolidatedNumberMapping[$type]['КГМКМГ'];
             $condensateSummary['name'] = 'КГМКМГ';
             $condensateSummary['fact'] *= 0.5 * 0.33;
-            //$condensateSummary['oilDeliveryFact'] *= 0.5 * 0.33;
             $condensateSummary['plan'] *= 0.5 * 0.33;
-          //  $condensateSummary['oilDeliveryPlan'] *= 0.5 * 0.33;
+            if ($periodType === 'month') {
+                $condensateSummary['monthlyPlan'] *= 0.5 * 0.33;
+            }
+            if ($periodType === 'year') {
+                $condensateSummary['yearlyPlan'] *= 0.5 * 0.33;
+            }
             $condensateSummary['opek'] *= 0.5 * 0.33;
-         //   $condensateSummary['deliveryOpek'] *= 0.5 * 0.33;
             $pkiSumm['fact'] += $condensateSummary['fact'];
             $pkiSumm['plan'] += $condensateSummary['plan'];
-           // $pkiSumm['oilDeliveryFact'] += $condensateSummary['oilDeliveryFact'];
-          //  $pkiSumm['oilDeliveryPlan'] += $condensateSummary['oilDeliveryPlan'];
             $pkiSumm['opek'] += $condensateSummary['opek'];
-         //   $pkiSumm['deliveryOpek'] += $condensateSummary['deliveryOpek'];
+            if ($periodType === 'month') {
+                $pkiSumm['monthlyPlan'] += $condensateSummary['monthlyPlan'];
+            }
+            if ($periodType === 'year') {
+                $pkiSumm['yearlyPlan'] += $condensateSummary['yearlyPlan'];
+            }
             array_push($summary,$condensateSummary);
         } elseif ($dzo === 'ПККР') {
              $companySummary['fact'] *= 0.33;
              $companySummary['plan'] *= 0.33;
-          //   $companySummary['oilDeliveryFact'] *= 0.33;
-          //   $companySummary['oilDeliveryPlan'] *= 0.33;
              $companySummary['opek'] *= 0.33;
-          //   $companySummary['deliveryOpek'] *= 0.33;
+             if ($periodType === 'month') {
+                $companySummary['monthlyPlan'] *= 0.33;
+             }
+             if ($periodType === 'year') {
+                $companySummary['yearlyPlan'] *= 0.33;
+             }
              $pkiSumm['fact'] += $companySummary['fact'];
              $pkiSumm['plan'] += $companySummary['plan'];
-           //  $pkiSumm['oilDeliveryFact'] += $companySummary['oilDeliveryFact'];
-         //    $pkiSumm['oilDeliveryPlan'] += $companySummary['oilDeliveryPlan'];
              $pkiSumm['opek'] += $companySummary['opek'];
-          //   $pkiSumm['deliveryOpek'] += $companySummary['deliveryOpek'];
+             if ($periodType === 'month') {
+                $pkiSumm['monthlyPlan'] += $companySummary['monthlyPlan'];
+             }
+             if ($periodType === 'year') {
+                $pkiSumm['yearlyPlan'] += $companySummary['yearlyPlan'];
+             }
          } elseif ($dzo === 'ТП') {
              $companySummary['fact'] *= 0.5 * 0.33;
              $companySummary['plan'] *= 0.5 * 0.33;
-           //  $companySummary['oilDeliveryFact'] *= 0.5 * 0.33;
-          //   $companySummary['oilDeliveryPlan'] *= 0.5 * 0.33;
              $companySummary['opek'] *= 0.5 * 0.33;
-         //    $companySummary['deliveryOpek'] *= 0.5 * 0.33;
+             if ($periodType === 'month') {
+                $companySummary['monthlyPlan'] *= 0.5 * 0.33;
+             }
+             if ($periodType === 'year') {
+                $companySummary['yearlyPlan'] *= 0.5 * 0.33;
+             }
              $pkiSumm['fact'] += $companySummary['fact'];
              $pkiSumm['plan'] += $companySummary['plan'];
-          //   $pkiSumm['oilDeliveryFact'] += $companySummary['oilDeliveryFact'];
-        //     $pkiSumm['oilDeliveryPlan'] += $companySummary['oilDeliveryPlan'];
              $pkiSumm['opek'] += $companySummary['opek'];
-           //  $pkiSumm['deliveryOpek'] += $companySummary['deliveryOpek'];
+             if ($periodType === 'month') {
+                $pkiSumm['monthlyPlan'] += $companySummary['monthlyPlan'];
+             }
+             if ($periodType === 'year') {
+                $pkiSumm['yearlyPlan'] += $companySummary['yearlyPlan'];
+             }
          }
          if (in_array($dzo, array('ММГ','КБМ','КОА','КГМ'))) {
             $companySummary['fact'] *= 0.5;
             $companySummary['plan'] *= 0.5;
-         //   $companySummary['oilDeliveryFact'] *= 0.5;
-         //   $companySummary['oilDeliveryPlan'] *= 0.5;
             $companySummary['opek'] *= 0.5;
-          //  $companySummary['deliveryOpek'] *= 0.5;
+            if ($periodType === 'month') {
+                $companySummary['monthlyPlan'] *= 0.5;
+            }
+            if ($periodType === 'year') {
+                $companySummary['yearlyPlan'] *= 0.5;
+            }
          }
          if ($dzo === 'ТШО') {
             $companySummary['fact'] *= 0.2;
             $companySummary['plan'] *= 0.2;
-          //  $companySummary['oilDeliveryFact'] *= 0.2;
-          //  $companySummary['oilDeliveryPlan'] *= 0.2;
             $companySummary['opek'] *= 0.2;
-        //    $companySummary['deliveryOpek'] *= 0.2;
+            if ($periodType === 'month') {
+                $companySummary['monthlyPlan'] *= 0.2;
+            }
+            if ($periodType === 'year') {
+                $companySummary['yearlyPlan'] *= 0.2;
+            }
          }
          if ($dzo === 'КПО') {
             $companySummary['fact'] *= 0.1;
             $companySummary['plan'] *= 0.1;
-          //  $companySummary['oilDeliveryFact'] *= 0.1;
-         //   $companySummary['oilDeliveryPlan'] *= 0.1;
             $companySummary['opek'] *= 0.1;
-         //   $companySummary['deliveryOpek'] *= 0.1;
+            if ($periodType === 'month') {
+                $companySummary['monthlyPlan'] *= 0.1;
+            }
+            if ($periodType === 'year') {
+                $companySummary['yearlyPlan'] *= 0.1;
+            }
          }
          if ($dzo === 'НКО') {
             $companySummary['fact'] = (($companySummary['fact'] - $companySummary['fact'] * 0.019) * 241 / 1428) / 2;
             $companySummary['plan'] = (($companySummary['plan'] - $companySummary['plan'] * 0.019) * 241 / 1428) / 2;
-         //   $companySummary['oilDeliveryFact'] = (($companySummary['oilDeliveryFact'] - $companySummary['oilDeliveryFact'] * 0.019) * 241 / 1428) / 2;
-         //   $companySummary['oilDeliveryPlan'] = (($companySummary['oilDeliveryPlan'] - $companySummary['oilDeliveryPlan'] * 0.019) * 241 / 1428) / 2;
             $companySummary['opek'] = (($companySummary['opek'] - $companySummary['opek'] * 0.019) * 241 / 1428) / 2;
-          //  $companySummary['deliveryOpek'] = (($companySummary['deliveryOpek'] - $companySummary['deliveryOpek'] * 0.019) * 241 / 1428) / 2;
+            if ($periodType === 'month') {
+                $companySummary['monthlyPlan'] = (($companySummary['monthlyPlan'] - $companySummary['monthlyPlan'] * 0.019) * 241 / 1428) / 2;
+            }
+            if ($periodType === 'year') {
+                $companySummary['yearlyPlan'] = (($companySummary['yearlyPlan'] - $companySummary['yearlyPlan'] * 0.019) * 241 / 1428) / 2;
+            }
          }
          array_push($summary,$companySummary);
          return $summary;
@@ -296,5 +342,14 @@ class OilCondensateConsolidated {
             }
         }
         return $accidentDescription;
+    }
+
+    private function getYearlyPlanBy($yearlyPlan,$fieldName)
+    {
+        $summary = 0;
+        foreach($yearlyPlan as $monthly) {
+            $summary += $monthly[$fieldName] * Carbon::parse($monthly['date'])->daysInMonth;
+        }
+        return $summary;
     }
 }
