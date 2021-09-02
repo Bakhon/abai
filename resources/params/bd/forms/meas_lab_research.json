@@ -1,0 +1,53 @@
+{
+  "type": "table",
+  "filter": [
+    {
+      "code": "research_type",
+      "type": "dict",
+      "dict": "lab_research_type",
+      "title": "research_type"
+    },
+    {
+      "code": "date",
+      "title": "date",
+      "type": "date",
+      "default": "today"
+    }
+  ],
+  "columns": [
+    {
+      "title": "uwi_number",
+      "code": "uwi",
+      "type": "link",
+      "is_editable": false
+    },
+    {
+      "code": "option_1",
+      "type": "float",
+      "title": "option_1",
+      "is_editable": true,
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "PVTD"
+          }
+        }
+      ]
+    },
+    {
+      "code": "option_2",
+      "type": "float",
+      "title": "option_2",
+      "is_editable": true,
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "PVTD"
+          }
+        }
+      ]
+    }
+  ]
+}
