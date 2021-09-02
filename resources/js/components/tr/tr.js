@@ -130,7 +130,7 @@ export default {
           filters = [...filters, el.field];
         }
       });
-      return [undefined, ...filters];
+      return [null, ...filters];
   },  
       wellStatusFilters() {
         let filters = [];
@@ -153,7 +153,7 @@ export default {
             filters = [...filters, el.well_status_last_day];
           }
         });
-        return [undefined, ...filters];
+        return [null, ...filters];
     },  
     statusFilters() {
       let filters = [];
@@ -199,7 +199,7 @@ export default {
             filters = [...filters, el.type_text];
           }
         });
-        return [undefined, ...filters];
+        return [null, ...filters];
     },   
     wellFilters() {
         let filters = [];
@@ -222,7 +222,7 @@ export default {
             filters = [...filters, el.rus_wellname];
           }
         });
-        return [undefined, ...filters];
+        return [null, ...filters];
     },          
   },
   beforeCreate: function () {},
@@ -255,11 +255,11 @@ export default {
       selectYear: null,
       month: null,
       isFullTable: false,
-      fieldFilter: undefined,
+      fieldFilter: null,
       allWells: [],
-      wellStatusFilter: undefined,
+      wellStatusFilter: null,
       statusFilter: "Не сохранено",
-      typeWellFilter: undefined,
+      typeWellFilter: null,
       filteredWellData: [],
       lonelywell: [],
       render: 0,
@@ -630,11 +630,11 @@ export default {
         this.isShowAdd = false;
         this.isDeleted = false;
         this.isSaved = false;
-        this.wellStatusFilter = undefined;
+        this.wellStatusFilter = null;
         this.statusFilter = "Не сохранено";
-        this.typeWellFilter = undefined;
+        this.typeWellFilter = null;
         this.wellFilter = [];
-        this.fieldFilter = undefined;
+        this.fieldFilter = null;
     },
     onChangePage(newVal) {
         this.$store.commit("globalloading/SET_LOADING", true);

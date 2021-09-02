@@ -209,7 +209,7 @@
                                     value="Месторождение"
                                   >
                                     <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_field') : f }}
+                                      {{ f === null ? trans('tr.choose_field') : f }}
                                     </option>
                                   </select>
                                 </div>
@@ -222,7 +222,7 @@
                                     value="Тип скв"
                                   >
                                     <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_well_type') : f }}
+                                      {{ f === null ? trans('tr.choose_well_type') : f }}
                                     </option>
                                   </select>
                                 </div>
@@ -235,7 +235,7 @@
                                     value="Состояние"
                                   >
                                     <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_state') : f }}
+                                      {{ f === null ? trans('tr.choose_state') : f }}
                                     </option>
                                   </select>
                                 </div>
@@ -5946,7 +5946,7 @@
                   </td>
 
                   <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ Math.round(row.planned_gas*10)/10 }}</td>
-                  <td v-if="isEdit">{{ Math.round(row.planned_gas*10)/10 }}</td>
+                  <td v-if="isEdit"><input v-model="row.planned_gas" @change="editrow(row, row_index)" :disabled="!isEdit" class="input_edit"></td>
 
                   <td
                     v-if="!isEdit"
