@@ -23,6 +23,147 @@
                 "validation": "required|exists:tbd.dict.lab_research_type,id"
               },
               {
+                "code": "research_date",
+                "table": "prod.pvt_data",
+                "type": "date",
+                "title": "research_date",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "research_type",
+                "table": "prod.pvt_data",
+                "type": "dict",
+                "title": "research_type",
+                "dict": "lab_research_type",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "oil_viscosity",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "oil",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "water_viscosity",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "water",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "volume_coef",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "volume",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "oil_density",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "r_oil",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "water_density",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "r_water",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "gas_pressure",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "pnac",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "gas_factor",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "gf",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "temp_pl",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "tpl",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
                 "code": "option_1",
                 "type": "numeric",
                 "title": "option_1",
