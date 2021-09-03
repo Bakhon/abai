@@ -117,6 +117,10 @@ export default {
         },
         async backendSwitchView(view) {
             this.SET_LOADING(true);
+            this.buttonDailyTab = "";
+            this.buttonMonthlyTab = "";
+            this.buttonYearlyTab = "";
+            this.buttonPeriodTab = "";
             this.backendSelectedView = view;
             if (view === 'period') {
                 this.backendPeriodStart = moment(this.backendDatePickerModel.start, 'DD.MM.YYYY').startOf('day');
@@ -137,11 +141,30 @@ export default {
             this.backendPeriodRange = this.backendPeriodEnd.diff(this.backendPeriodStart, 'days');
             this.backendHistoricalPeriodEnd = this.backendPeriodStart.clone().subtract(1,'days').endOf('day');
             this.backendHistoricalPeriodStart = this.backendHistoricalPeriodEnd.clone().subtract(this.backendPeriodRange,'days');
+            this.backendSwitchSelectedButton(view);
             this.backendProductionParams = await this.backendGetProductionParamsByCategory(true);
             this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
             this.SET_LOADING(false);
         },
+
+        backendSwitchSelectedButton(view) {
+            if (view !== 'year') {
+                this.isFilterTargetPlanActive = false;
+            }
+            if (view === 'day') {
+                this.buttonDailyTab = this.highlightedButton;
+            } else if (view === 'month') {
+                this.buttonMonthlyTab = this.highlightedButton;
+            } else if (view === 'year') {
+                this.buttonYearlyTab = this.highlightedButton;
+            } else if(view === 'period') {
+                this.buttonPeriodTab = this.highlightedButton;
+            }
+        },
+
         backendSwitchCategory(category,parent) {
+            let isWithoutKmg = ['oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG'].includes(category);
+            let shouldRecalculateSummary = false;
             for (let item in this.backendMenu) {
                 if (item === category) {
                     continue;
@@ -149,20 +172,24 @@ export default {
                 this.backendMenu[item] = false;
             }
             this.backendMenu[parent] = true;
-            if (!['oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG'].includes(category)) {
+            if (!isWithoutKmg) {
                 this.backendMenu[category] = !this.backendMenu[category];
             } else {
                 this.backendMenu['oilCondensateProductionWithoutKMG'] = !this.backendMenu[category];
                 this.backendMenu['oilCondensateDeliveryWithoutKMG'] = !this.backendMenu[category];
             }
+            if (isWithoutKmg && this.backendMenu[category]) {
+                shouldRecalculateSummary = true;
+            }
             if (category === this.backendSelectedCategory) {
+
                 this.backendSelectedCategory = this.backendPreviousCategory;
             } else {
                 this.backendPreviousCategory = parent;
                 this.backendSelectedCategory = category;
             }
             this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
-            if (category.toLowerCase().includes('withoutkmg')) {
+            if (shouldRecalculateSummary) {
                 this.backendUpdateSummaryFact('oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG');
             } else {
                 this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');

@@ -311,7 +311,9 @@
                   <button
                           type="button"
                           data-toggle="dropdown"
-                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.oilCondensateProduction}]"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0',
+                            {'button-tab-highlighted': backendMenu.oilCondensateProductionWithoutKMG || backendMenu.oilCondensateProductionCondensateOnly}
+                          ]"
                   ></button>
                   <div>
                     <ul
@@ -360,7 +362,9 @@
                   <button
                           type="button"
                           data-toggle="dropdown"
-                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.oilCondensateDelivery}]"                          
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0',
+                            {'button-tab-highlighted': backendMenu.oilCondensateDeliveryWithoutKMG || backendMenu.oilCondensateDeliveryOilResidue || backendMenu.oilCondensateDeliveryCondensateOnly}
+                          ]"
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
@@ -900,7 +904,7 @@
                   <tr>
                     <th>№</th>
                     <th>{{ trans("visualcenter.dzo") }}</th>
-                    <th v-if="buttonMonthlyTab && !backendMenu.oilCondensateDeliveryOilResidue" >
+                    <th v-if="buttonMonthlyTab && !backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoMonthlyPlan") }}
                       <div v-if="backendPeriodRange === 0">
                         {{ getMetricNameByCategorySelected() }}
@@ -963,18 +967,18 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-<!--                    <th>-->
-<!--                      {{ trans("visualcenter.dzoDifference") }}-->
-<!--                      <div>-->
-<!--                        {{ trans("visualcenter.dzoOpec") }},-->
-<!--                      </div>-->
-<!--                      <div v-if="backendPeriodRange !== 0">-->
-<!--                        {{ getThousandMetricNameByCategorySelected() }}-->
-<!--                      </div>-->
-<!--                      <div v-else>-->
-<!--                        {{ getMetricNameByCategorySelected() }}-->
-<!--                      </div>-->
-<!--                    </th>-->
+                    <th v-if="!backendMenu.oilCondensateDeliveryOilResidue">
+                      {{ trans("visualcenter.dzoDifference") }}
+                      <div>
+                        {{ trans("visualcenter.dzoOpec") }},
+                      </div>
+                      <div v-if="backendPeriodRange !== 0">
+                        {{ getThousandMetricNameByCategorySelected() }}
+                      </div>
+                      <div v-else>
+                        {{ getMetricNameByCategorySelected() }}
+                      </div>
+                    </th>
 <!--                    <th v-if="isFilterTargetPlanActive && !isOilResidueActive">-->
 <!--                      {{ trans("visualcenter.dzoTargetPlan") }}-->
 <!--                      <br>-->

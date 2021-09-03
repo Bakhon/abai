@@ -193,6 +193,7 @@ class OilCondensateConsolidatedWithoutKmg {
         array_push($summary,$companySummary);
         return $summary;
     }
+
     private function getAccidentDescription($dzoFact,$fieldName)
     {
         $accidentDescription = '';
@@ -202,6 +203,29 @@ class OilCondensateConsolidatedWithoutKmg {
             }
         }
         return $accidentDescription;
+    }
+
+    private function getYearlyPlanBy($yearlyPlan,$fieldName)
+    {
+        $summary = 0;
+        foreach($yearlyPlan as $monthly) {
+            $summary += $monthly[$fieldName] * Carbon::parse($monthly['date'])->daysInMonth;
+        }
+        return $summary;
+    }
+
+    private function getCurrentPlanForYear($filteredPlan,$fieldName,$type)
+    {
+        $summaryPlan = 0;
+        foreach($filteredPlan as $monthlyPlan) {
+            if (Carbon::parse($monthlyPlan['date'])->month < Carbon::now()->month) {
+                $summaryPlan += $monthlyPlan[$this->consolidatedFieldsMapping[$type][$fieldName]] * Carbon::parse($monthlyPlan['date'])->daysInMonth;
+            }
+            if (Carbon::parse($monthlyPlan['date'])->month === Carbon::now()->month) {
+                $summaryPlan += $monthlyPlan[$this->consolidatedFieldsMapping[$type][$fieldName]] * Carbon::now()->day - 1;
+            }
+        }
+        return $summaryPlan;
     }
 
     private function getSortedById($data,$type)
