@@ -7,7 +7,7 @@
       @click="routeTo(`/${heading.url}`)"
     >
       <img
-        @click.stop="goBack"
+        @click.stop="goToMainPage"
         class="back-button"
         v-if="currentPage === heading.url"
         src="/img/PlastFluids/backArrow.svg"
@@ -24,8 +24,6 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-
 export default {
   name: "Header",
   data() {
@@ -47,11 +45,7 @@ export default {
       currentPage: "",
     };
   },
-  computed: {
-    ...mapState("plastFluids", ["prevPage"]),
-  },
   methods: {
-    ...mapMutations("plastFluids", ["SET_PREV_PAGE"]),
     routeTo(url) {
       const { reload, pathname, origin } = location;
       if (this.localeUrl(url) === pathname) {
@@ -60,8 +54,8 @@ export default {
       }
       location.href = origin + this.localeUrl(url);
     },
-    goBack() {
-      location.href = document.referrer;
+    goToMainPage() {
+      location.href = location.origin + this.localeUrl("/pf");
     },
     urlIncludes(url) {
       const { pathname } = location;
@@ -73,7 +67,8 @@ export default {
         const _includes = this.urlIncludes(this.headings[i].url);
         if (!_includes) {
           this.currentPage = "";
-          return;
+          i++;
+          continue;
         }
         this.currentPage = this.headings[i].url;
         break;
