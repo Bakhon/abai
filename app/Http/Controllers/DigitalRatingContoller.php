@@ -30,7 +30,7 @@ class DigitalRatingContoller extends Controller
                ->select('tbdi.well.uwi', 'tbdi.well.id','tbdi.well_category.well_category_type_id','tbdi.well_status.well_status_type_id','tbdi.well_status.well_id')
                ->selectRaw('AVG(tbdi.liquid_prod.liquid_val) as liquid_val_average')
                ->selectRaw('AVG(tbdi.bsw_prod.bsw_val) as bsw_val_average')
-                ->whereDate('tbdi.liquid_prod.dend', '>', Carbon::now()->subDays(90))
+               ->whereDate('tbdi.liquid_prod.dend', '>', Carbon::now()->subDays(90))
                ->whereDate('tbdi.bsw_prod.dend', '>', Carbon::now()->subDays(90))
                ->groupBy('well.uwi','well.id','well_category.well_category_type_id','well_status.well_status_type_id','well_status.well_id','tbdi.liquid_prod.well_id','tbdi.bsw_prod.well_id')
                ->get();
@@ -67,19 +67,20 @@ class DigitalRatingContoller extends Controller
  
    public function search_wells(Request $request):JsonResponse
    {
-      $sector = $request->input('sector');
+     
+      $sector_number = $request->input('sector');
       $horizon = $request->input('horizon');
-      $sectors_json_points = file_get_contents(public_path('js/json/digital-rating/sectors_points.json'), 'r');
+      $sectors_json_points = file_get_contents(public_path('js/json/digital-rating/horizon/grid_'.$horizon.'.json'), 'r');
          $sectors_points= json_decode($sectors_json_points, true);
          foreach ($sectors_points as $item) {
-            if($item['sector'] == $sector) {
+            if($item['sector'] == $sector_number) {
                $sector = $item;
             }
          }
       $weels_json_points = file_get_contents(public_path('js/json/digital-rating/wells_points.json'), 'r');
       $weels_points= json_decode($weels_json_points, true);
-         $sectorX  = $sector['x'];
-         $sectorY = $sector['y'];
+         $sectorX  = $sector['x1'];
+         $sectorY = $sector['y1'];
          $radius =500;
          $neighboring_wells = [];
          foreach ($weels_points as $item) {
@@ -89,7 +90,9 @@ class DigitalRatingContoller extends Controller
             }
          };
          $wells = $this->get_wells($neighboring_wells);
+         
          $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
          return response()->json($wells,200,$headers,JSON_UNESCAPED_UNICODE);
    }
+  
 };
