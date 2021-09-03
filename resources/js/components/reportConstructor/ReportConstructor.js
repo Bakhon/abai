@@ -273,29 +273,27 @@ export default {
                 "dates": this.getDates()
             }
         },
-        async getSelectedObjects() {
-            let result = [];
+        getSelectedObjects() {
+            let selectedObjects = [];
             for(let structureType in this.selectedObjects) {
                 for(let option in this.selectedObjects[structureType]) {
                     for(let node of this.selectedObjects[structureType][option]) {
                         if(node.isChecked) {
-                            result.push(node);
+                            this.loadChildrenOfNode(node)
+                            .then(() => {
+                                selectedObjects.push(node);
+                            });
                         }
-                        await this.loadChildrenOfNode(node);
-                        result = result.concat(this.getSelectedChildren(node));
+                        selectedObjects = selectedObjects.concat(this.getSelectedChildren(node));
                     }
                 }
             }
-            console.log(result);
-            return result;
+            return selectedObjects;
         },
         loadChildrenOfNode(node) {
-            this.SET_LOADING(true);
             this.$refs.itemSelectTree.loadChildren(node)
             .then(() => {
                 this.updateChildrenOfNode(node, node.level);
-            }).finally(() => {
-                this.SET_LOADING(false);
             });
         },
         updateChildrenOfNode(node, level) {
@@ -311,15 +309,15 @@ export default {
         },
         getSelectedChildren(node) {
             if(!node || !('children' in node)) return [];
-            let result = [];
+            let selectedChildren = [];
 
             for(let child of node.children) {
                 if(child.isChecked) {
-                    result.push(child);
+                    selectedChildren.push(child);
                 }
-                result = result.concat(this.getSelectedChildren(child));
+                selectedChildren = selectedChildren.concat(this.getSelectedChildren(child));
             }
-            return result;
+            return selectedChildren;
         },
         getDates() {
             let dates = []
