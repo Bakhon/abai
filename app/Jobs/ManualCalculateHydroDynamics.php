@@ -227,7 +227,9 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             );
 
             foreach ($this->shortSchema as $param => $index) {
-                $calcResult->$param = $row[$index];
+                if ($param != 'name') {
+                    $calcResult->$param = $row[$index];
+                }
             }
 
             $calcResult->save();
