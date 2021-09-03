@@ -279,10 +279,8 @@ export default {
                 for(let option in this.selectedObjects[structureType]) {
                     for(let node of this.selectedObjects[structureType][option]) {
                         if(node.isChecked) {
-                            this.loadChildrenOfNode(node)
-                            .then(() => {
-                                selectedObjects.push(node);
-                            });
+                            this.loadChildrenOfNode(node);
+                            selectedObjects.push(node);
                         }
                         selectedObjects = selectedObjects.concat(this.getSelectedChildren(node));
                     }
