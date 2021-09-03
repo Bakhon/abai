@@ -51,7 +51,6 @@
     'well_perf_other' => '\\App\\Services\\BigData\\Forms\\WellPerfOther',
     'daily_reports_fluid_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsFluidProd',
     'production_wells_schedule' => '\\App\\Services\\BigData\\Forms\\ProductionWellsSchedule',
-    'lab_research' => '\\App\\Services\\BigData\\Forms\\LabResearch',
     'well_treat' => '\\App\\Services\\BigData\\Forms\\WellTreat',
     'well_mark' => '\\App\\Services\\BigData\\Forms\\WellMark',
     'plan_g_d_i_s' => '\\App\\Services\\BigData\\Forms\\PlanGDIS',
