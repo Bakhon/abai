@@ -165,7 +165,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         Excel::store(new ManualCalculateExport($data), $filePath);
 
         $fileurl = env('KMG_SERVER_URL') . Storage::url($filePath);
-        $url = env('MANUAL_CALC_SERVICE_URL') . 'url_file/?url=' . $fileurl;
+        $url = env('MANUAL_CALC_SERVICE_URL') . 'docs/?url=' . $fileurl;
 
         $client = new \GuzzleHttp\Client();
 
