@@ -888,7 +888,7 @@ return [
             'treat_type' => 'Вид обработки',
             'ch_reagent_type' => 'Хим.реагент',
             'scraper_income' => 'Доход скребка, м',
-            'data' => 'Дата',
+            'date' => 'Дата',
         ],
             
     ],
