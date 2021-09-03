@@ -71,16 +71,10 @@ export default {
 
         let well = this.data.uwis[uwi]
 
-        let wellSum = 0
-
         this.data.dates.forEach(date => {
           let value = well[this.property].hasOwnProperty(date)
               ? +well[this.property][date]
               : ''
-
-          if (value) {
-            wellSum += value
-          }
 
           tableRow.push({
             value: value,
@@ -90,9 +84,9 @@ export default {
         })
 
         tableRow.unshift({
-          value: wellSum,
-          label: this.getLabel(wellSum),
-          color: this.getColor(wellSum)
+          value: +well[this.property]['sum'],
+          label: this.getLabel(+well[this.property]['sum']),
+          color: this.getColor(+well[this.property]['sum'])
         })
 
         tableRow.unshift(uwi)
