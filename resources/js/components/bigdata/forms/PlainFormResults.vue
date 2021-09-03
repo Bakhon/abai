@@ -209,7 +209,7 @@ export default {
         data.params.tabs.forEach(tab => {
           tab.blocks.forEach(blocks => {
             blocks.forEach(block => {
-
+              if (!block.items) return
               block.items
                   .filter(item => ['dict', 'dict_tree'].includes(item.type))
                   .map(item => {

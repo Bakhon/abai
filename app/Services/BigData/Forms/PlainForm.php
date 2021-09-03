@@ -38,6 +38,9 @@ abstract class PlainForm extends BaseForm
         foreach ($this->params()['tabs'] as $tab) {
             foreach ($tab['blocks'] as $block) {
                 foreach ($block as $subBlock) {
+                    if (empty($subBlock['items'])) {
+                        continue;
+                    }
                     foreach ($subBlock['items'] as $item) {
                         $fields[] = $item;
                     }
@@ -257,6 +260,7 @@ abstract class PlainForm extends BaseForm
         foreach ($params['tabs'] as &$tab) {
             foreach ($tab['blocks'] as &$block) {
                 foreach ($block as &$subBlock) {
+                    if (empty($subBlock['items'])) continue;
                     foreach ($subBlock['items'] as &$item) {
                         if (empty($item['depends_on'])) {
                             continue;
