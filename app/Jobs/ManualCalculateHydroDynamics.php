@@ -157,7 +157,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
 
         $calcUrl = env('HYDRO_CALC_SERVICE_URL');
         foreach ($pipes as $pipe) {
-            if ($pipe->between_points == 'zu-gu' AND ($pipe->gu->omgngdu[0]->surge_tank_pressure ?? null)) {
+            if ($pipe->between_points == 'zu-gu' and ($pipe->gu->omgngdu[0]->surge_tank_pressure ?? null)) {
                 $calcUrl = env('MANUAL_CALC_SERVICE_URL');
                 break;
             }
@@ -179,9 +179,12 @@ class ManualCalculateHydroDynamics implements ShouldQueue
 
         $request = $this->calcRequest($client, $url);
 
-        $data = json_decode($request->getBody()->getContents())[0]->data;
-        $this->storeShortResult($data);
+        $data = json_decode($request->getBody()->getContents());
+        $short = $data->short->data;
 
+        if ($short) {
+            $this->storeShortResult($short);
+        }
     }
 
     public function calcRequest($client, string $url)
