@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <div v-if="res" class="mx-auto max-width-88vw">
+    <div v-if="!loading && res" class="mx-auto max-width-88vw">
       <table-wells
           v-if="activeTab === 'revenue'"
           :data="res"
@@ -86,7 +86,7 @@ export default {
       interval_end: '2021-02-01T00:00:00.000Z',
     },
     res: null,
-    activeTab: 'revenue'
+    activeTab: 'treemap'
   }),
   computed: {
     ...globalloadingState(['loading']),
@@ -95,10 +95,10 @@ export default {
       let dimension = `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge')}`
 
       return {
+        treemap: this.trans('economic_reference.table_well_treemap'),
         revenue: `${this.trans('economic_reference.Revenue')}, ${dimension}`,
         costs: `${this.trans('economic_reference.costs')}, ${dimension}`,
         operating_profit: `${this.trans('economic_reference.operating_profit')}, ${dimension}`,
-        treemap: this.trans('economic_reference.table_well_treemap')
       }
     },
   },
