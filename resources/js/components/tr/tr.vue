@@ -177,10 +177,10 @@
           </div>   
           <a v-show="false" v-if="isEdit"></a>
             <div class="tr_icons_block">
-              <!-- <button v-on:click="dropAllFilters" class="reset_all_filters"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <button v-if="checkAllFilters" v-on:click="dropAllFilters" class="reset_all_filters"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 <path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
-</svg>{{trans('tr.reset_filters')}}</button> -->
+</svg>{{trans('tr.reset_filters')}}</button>
               <modal name="add_well" :width="1600" :height="600"  :adaptive="true" style="z-index:9900000; ">
                 <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
                   <div>
@@ -209,7 +209,7 @@
                                     value="Месторождение"
                                   >
                                     <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_field') : f }}
+                                      {{ f === null ? trans('tr.choose_field') : f }}
                                     </option>
                                   </select>
                                 </div>
@@ -222,7 +222,7 @@
                                     value="Тип скв"
                                   >
                                     <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_well_type') : f }}
+                                      {{ f === null ? trans('tr.choose_well_type') : f }}
                                     </option>
                                   </select>
                                 </div>
@@ -235,7 +235,7 @@
                                     value="Состояние"
                                   >
                                     <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_state') : f }}
+                                      {{ f === null ? trans('tr.choose_state') : f }}
                                     </option>
                                   </select>
                                 </div>
@@ -849,7 +849,7 @@
                       <div>
                         <b-dropdown id="dropdownFilterCustom" no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectField.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -883,7 +883,7 @@
                       <div>
                         <b-dropdown id="dropdownFilterCustom" no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectWellName.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                           <b-dropdown-form class="external_well_filter">
                             <b-form-group
@@ -917,7 +917,7 @@
                       <div class="outer_button_filter" >
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content >        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectWellType.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -951,7 +951,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" v-if="!isActiveHorizonFilterr"></i><i class="fas fa-filter icon_filter_active" v-if="isActiveHorizonFilterr"></i>
+                            <i class="fas fa-filter" :class="selectHorizon.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -985,7 +985,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectObject.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -1019,7 +1019,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectBlock.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -1077,7 +1077,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectExpMeth.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -5946,7 +5946,7 @@
                   </td>
 
                   <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ Math.round(row.planned_gas*10)/10 }}</td>
-                  <td v-if="isEdit">{{ Math.round(row.planned_gas*10)/10 }}</td>
+                  <td v-if="isEdit"><input v-model="row.planned_gas" @change="editrow(row, row_index)" :disabled="!isEdit" class="input_edit"></td>
 
                   <td
                     v-if="!isEdit"

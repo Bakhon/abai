@@ -516,6 +516,8 @@ export default {
     },
     copyValues(row, column, rowIndex) {
 
+      if (!row[column.copy.from].value) return
+
       this.$bvModal.msgBoxConfirm(this.trans('bd.sure_you_want_to_copy'), {
         okTitle: this.trans('app.yes'),
         cancelTitle: this.trans('app.no'),

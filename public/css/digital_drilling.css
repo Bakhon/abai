@@ -1366,6 +1366,7 @@ th.verticalText {
 }
 .dropdown-item{
     cursor: pointer;
+    white-space: pre-wrap;
 }
 .digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable tr td.green {
     background: #92D050;

@@ -37,8 +37,6 @@
 
       <table-well-changes
           v-else-if="activeTab === 'well_changes'"
-          :org="res.org"
-          :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           :data="res.wellChanges"
@@ -72,6 +70,12 @@
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
+
+      <table-well-tree-map
+          v-else-if="activeTab === 'well_treemap'"
+          :scenario="scenario"
+          :data="res.wellChanges"
+          class="text-white"/>
     </div>
   </div>
 </template>
@@ -86,6 +90,7 @@ import TableEconomicEfficiency from "./TableEconomicEfficiency";
 import TablePorcupine from "./TablePorcupine";
 import TableTechnologicalIndicators from "./TableTechnologicalIndicators";
 import TablePalette from "./TablePalette";
+import TableWellTreeMap from "./TableWellTreeMap";
 
 export default {
   name: "Tables",
@@ -99,6 +104,7 @@ export default {
     TablePorcupine,
     TableTechnologicalIndicators,
     TablePalette,
+    TableWellTreeMap
   },
   props: {
     scenario: {
@@ -128,6 +134,7 @@ export default {
         porcupine: this.trans('economic_reference.table_porcupine'),
         technological_indicators: this.trans('economic_reference.technological_indicators'),
         palette: this.trans('economic_reference.palette'),
+        well_treemap: this.trans('economic_reference.table_well_treemap'),
       }
     }
   },
