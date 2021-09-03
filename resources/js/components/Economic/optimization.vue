@@ -506,7 +506,8 @@ export default {
             value: this.avgLiquidValue(),
             dimension: this.trans('economic_reference.cubic_meter_per_day'),
             percent: this.avgLiquidPercent,
-            reverse: true,
+            reverse: false,
+            reversePercent: true
           },
         ],
       ]
