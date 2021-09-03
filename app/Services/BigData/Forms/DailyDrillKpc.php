@@ -9,6 +9,8 @@ use App\Models\BigData\Dictionaries\Org;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use App\Services\BigData\DictionaryService;
+use Illuminate\Support\Collection;
 
 class DailyDrillKpc extends TableForm
 {   
@@ -89,19 +91,50 @@ class DailyDrillKpc extends TableForm
     
     public function getRows(array $params = []): array
     {
-        $id = $this->request->get('id');
-        
-        $result = [
-            'id' => $id
-        ];
-       
-        if ($id) {
-            $org = Org::find($id);
-            if (!$org) {
-                return ['rows' => []];
-            }            
-            $result['org'] = ['value' => $org->name_ru];           
+        $filter = json_decode($this->request->get('filter'));
+        if (empty($filter->date)) {
+            return ['rows' => []];
         }
+
+        if ($this->request->get('type') !== 'org') {
+            throw new \Exception(trans('bd.select_dzo_ngdu'));
+        }
+
+        $org = Org::find($this->request->get('id'));
+        
+        $orgChildren = $org->children()->get();
+        $wells = $org->wells()->get();
+        $result['org'] = ['value' => $org->name_ru];  
+        $result['well'] = ['value' => $wells]; 
+        $result['org_ch'] = ['value' => $orgChildren];      
+        // $columns = $this->getColumns($filter, $org, $orgChildren);
+
+        // $rows = $this->getRowData($filter, $org, $orgChildren);
+
+        // return [
+        //     'columns' => $columns['columns'],
+        //     'merge_columns' => $columns['merge_columns'],
+        //     'complicated_header' => $this->tableHeaderService->getHeader(
+        //         $columns['columns'],
+        //         $columns['merge_columns']
+        //     ),
+        //     'rows' => $rows
+        // ];
+        // $id = $this->request->get('id');
+        
+        // $result = [
+        //     'id' => $id
+        // ];
+       
+        // if ($id) {
+        //     $org = Org::find($id);
+        //     if (!$org) {
+        //         return ['rows' => []];
+        //     }            
+        //     $wells = $org->wells()->get();
+        //     $result['org'] = ['value' => $org->name_ru];  
+        //     $result['well'] = ['value' => $wells];         
+        // }
         // $filter->optionId = $filter->optionId ?? 0;
         $company = DB::connection('tbd')
             ->table('prod.well_workover as pw')
@@ -117,20 +150,21 @@ class DailyDrillKpc extends TableForm
         ->leftJoin('prod.report_org_daily_repair as pr', 'pw.id' , 'pr.workover')     
         ->leftJoin('dict.well as dw', 'pw.well', 'dw.id')           
         ->get();
-        $result['well'] = ['value' => $well->keyBy('uwi')]; 
+        // $result['well'] = ['value' => $well->keyBy('uwi')]; 
         
         $geo = DB::connection('tbd')
         ->table('prod.well_workover as pw')
         ->select('g.name_ru')
         ->leftJoin('prod.well_geo as pg', 'pw.well', 'pg.well')   
         ->leftJoin('dict.geo as g', 'pg.geo', 'g.id')                   
-        ->get();
+        ->first();
         $result['geo'] = ['value' => $geo->name_ru]; 
 
         $repair_work_type = DB::connection('tbd')
         ->table('prod.well_workover as pw')
         ->select('pw.repair_work_type')
-        ->leftJoin('dict.repair_work_type as dw', 'pw.repair_work_type', 'dw.id')           
+        ->leftJoin('dict.repair_work_type as dw', 'pw.repair_work_type', 'dw.id')  
+        ->leftJoin('prod.report_org_daily_repair as pr', 'pw.id' , 'pr.workover')           
         ->first();
         $result['repair_work_type'] = ['value' => $repair_work_type->repair_work_type]; 
         $machine_type = DB::connection('tbd')
