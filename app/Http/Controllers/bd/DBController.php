@@ -33,9 +33,9 @@ class DBController extends Controller
     }
 
 
-    public function well_cart()
+    public function well_card()
     {
-        return view('reports.well_cart');
+        return view('bigdata.well_card.index');
     }
 
     public function field_list()

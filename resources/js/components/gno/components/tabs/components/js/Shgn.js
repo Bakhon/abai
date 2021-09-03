@@ -177,8 +177,8 @@ export default {
 					var message = this.trans('pgno.kpodWarning', {kpod: this.kpodCalced.toFixed(2)}) 
 					this.setNotify(message, "Warning", "warning")
 				}
-
 				this.$store.commit('pgno/UPDATE_KPOD_CALCED', this.kpodCalced) 
+				this.settings.kPodCalced = this.kpodCalced
 			}
 		},
 		onChangeCorrosion(e) {
