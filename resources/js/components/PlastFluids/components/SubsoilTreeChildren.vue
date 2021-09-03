@@ -21,9 +21,8 @@
         >
           <input
             type="radio"
-            :name="horizon.horizon_name"
             :id="horizon.horizon_name"
-            :value="horizon"
+            :value="horizon.horizon_name"
             v-model="pickedSubsoilHorizon"
           />
           <label :for="horizon.horizon_name">{{ horizon.horizon_name }}</label>
@@ -41,22 +40,20 @@ export default {
   props: {
     treeData: Array,
   },
-  data() {
-    return {
-      checkedField: [],
-    };
-  },
-  watch: {
-    checkedField(value) {
-      this.SET_CURRENT_SUBSOIL_HORIZON("");
-      this.SET_CURRENT_SUBSOIL_FIELD(value[value.length - 1]);
-    },
-  },
   computed: {
     ...mapState("plastFluids", [
       "currentSubsoilField",
       "currentSubsoilHorizon",
     ]),
+    checkedField: {
+      get() {
+        return this.currentSubsoilField;
+      },
+      set(value) {
+        this.SET_CURRENT_SUBSOIL_HORIZON("");
+        this.SET_CURRENT_SUBSOIL_FIELD(value[value.length - 1]);
+      },
+    },
     hasChild() {
       return (
         this.checkedField[0]?.horizons && this.checkedField[0]?.horizons.length
@@ -81,9 +78,6 @@ export default {
   beforeDestroy() {
     this.SET_CURRENT_SUBSOIL_FIELD({});
     this.SET_SUBSOIL_FIELDS([]);
-  },
-  mounted() {
-    this.checkedField = this.currentSubsoilField;
   },
 };
 </script>
