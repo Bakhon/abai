@@ -6,8 +6,8 @@
           <thead>
             <tr>
               <th
-                v-for="heading in fields"
-                :key="heading.key"
+                v-for="(heading, index) in fields"
+                :key="index"
                 :style="sticky ? 'position: sticky; top: -1px;' : ''"
               >
                 <div class="table-header-cell" v-if="filter">
@@ -15,30 +15,49 @@
                     src="/img/PlastFluids/filterIcon.svg"
                     alt="filter items"
                   />
-                  <p>{{ heading.name }}</p>
+                  <p>{{ isObjectArray ? heading.name : heading }}</p>
                   <div>
                     <img
                       src="/img/PlastFluids/tableFilterArrow.svg"
                       alt="filter new first"
-                      @click="emitArrowFilter(heading.key, 'up')"
+                      @click="
+                        emitArrowFilter(
+                          isObjectArray ? heading.key : heading,
+                          'up'
+                        )
+                      "
                     />
                     <img
                       src="/img/PlastFluids/tableFilterArrow.svg"
                       alt="filter old first"
-                      @click="emitArrowFilter(heading.key, 'down')"
+                      @click="
+                        emitArrowFilter(
+                          isObjectArray ? heading.key : heading,
+                          'down'
+                        )
+                      "
                     />
                   </div>
                 </div>
-                <p v-else>{{ heading.name }}</p>
+                <p v-else>{{ isObjectArray ? heading.name : heading }}</p>
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in items" :key="item.id">
-              <td v-for="fieldKey in computedFields" :key="fieldKey">
-                {{ item[fieldKey] }}
-              </td>
-            </tr>
+            <template v-if="isObjectArray">
+              <tr v-for="item in items" :key="item.id">
+                <td v-for="fieldKey in fieldKeys" :key="fieldKey">
+                  {{ item[fieldKey] }}
+                </td>
+              </tr>
+            </template>
+            <template v-else>
+              <tr v-for="(item, index) in items" :key="index">
+                <td v-for="(itemTD, ind) in item" :key="ind">
+                  {{ itemTD }}
+                </td>
+              </tr>
+            </template>
           </tbody>
         </table>
       </div>
@@ -105,11 +124,16 @@ export default {
   },
   computed: {
     computedPagesCount() {
-      return [...Array(6).keys()].map((i) => i + 1);
+      return [
+        ...Array(this.allPageCount > 6 ? this.allPageCount : 6).keys(),
+      ].map((i) => i + 1);
     },
-    computedFields() {
+    fieldKeys() {
       const keys = this.fields.map((field) => field.key);
       return keys;
+    },
+    isObjectArray() {
+      return this.fields.some((field) => typeof field === "object");
     },
   },
 };
@@ -131,7 +155,6 @@ table {
 
 th {
   background: #333975;
-  max-width: 200px;
   white-space: nowrap;
 }
 

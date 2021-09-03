@@ -51,3 +51,29 @@ export const getTemplateHistory = async (postData) => {
     console.log(error);
   }
 };
+
+export const getUploadTemplates = async () => {
+  try {
+    const response = await axios.get(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/templates/download-report-templates`
+    );
+    return response.data.report;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getTemplateData = async (
+  payload,
+  url = "/number-reservoir-oil-samples"
+) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/reports${url}`,
+      payload
+    );
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

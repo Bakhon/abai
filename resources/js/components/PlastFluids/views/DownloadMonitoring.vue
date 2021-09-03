@@ -1,348 +1,46 @@
 <template>
   <div class="wrapper">
-    <div class="top_wrapper">
-      <div class="select_wrapper_left">
-        <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12.6099 2.85938V5.74349H15.494C15.494 4.15096 14.2024 2.85938 12.6099 2.85938Z" fill="white"/>
-          <path d="M12.1761 9.06145C13.7686 9.06145 15.0602 7.77043 15.0602 6.17733H12.1761V3.29321C10.5836 3.29321 9.29199 4.58423 9.29199 6.17733C9.        29199 7.77043 10.5836 9.06145 12.1761 9.06145Z" fill="white"/>
-          <path d="M3.63239 7.55103H2.50732V8.56528H3.63239V7.55103Z" fill="white"/>
-          <path d="M5.31257 5.19556H4.1875V8.56514H5.31257V5.19556Z" fill="white"/>
-          <path d="M6.99226 3.48315H5.86719V8.5651H6.99226V3.48315Z" fill="white"/>
-          <path d="M8.67243 6.72461H7.54736V8.56466H8.67243V6.72461Z" fill="white"/>
-          <path d="M5.9235 16.8749H4.92218V18H13.0789V16.8749H12.0776L11.6839 14.0966H17.0011C17.5534 14.0966 18.0011 13.6489 18.0011 13.0966V1C18.0011 0.447716 17.5534 0 17.0011 0H1C0.447717 0 0 0.447715 0 1V13.0971C0 13.6494 0.447715 14.0971 1 14.0971H6.31727L5.9235 16.8749ZM7.05982 16.8749L7.1442 16.2815L10.745 15.49L10.9413 16.8749H7.05982ZM10.5863 14.3728L7.31296 15.0928L7.45415 14.0966H10.5475L10.5863 14.3728ZM16.8761 1.12507V11.0459H1.12507V1.12507H16.8761ZM1.12507 12.171H16.8761V12.9715H1.12507V12.171Z" fill="white"/>
-        </svg>
-
-        <select class="select_left">
-          <option>{{ trans("plast_fluids.downloads_monitoring") }}</option>
-        </select>
-      </div>
-      <div class="select_wrapper_right">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M7.33434 2.2999C6.61637 2.2999 6.03434 2.88193 6.03434 3.5999V7.99993C6.03434 8.38653 5.72094 8.69993 5.33434 8.69993C4.94774 8.69993 4.63434 8.38653 4.63434 7.99993V3.5999C4.63434 2.10873 5.84317 0.899902 7.33434 0.899902H16.4049C17.896 0.899902 19.1049 2.10873 19.1049 3.5999V12.6704C19.1049 14.1616 17.8961 15.3704 16.4049 15.3704H12.0004C11.6138 15.3704 11.3004 15.057 11.3004 14.6704C11.3004 14.2838 11.6138 13.9704 12.0004 13.9704H16.4049C17.1229 13.9704 17.7049 13.3884 17.7049 12.6704V3.5999C17.7049 2.88193 17.1229 2.2999 16.4049 2.2999H7.33434ZM5.33434 10.236C5.72094 10.236 6.03434 10.5494 6.03434 10.936V13.9705H9.06927C9.45587 13.9705 9.76927 14.2839 9.76927 14.6705C9.76927 15.0571 9.45587 15.3705 9.06927 15.3705H6.03434V18.4049C6.03434 18.7915 5.72094 19.1049 5.33434 19.1049C4.94774 19.1049 4.63434 18.7915 4.63434 18.4049V15.3705H1.60039C1.21379 15.3705 0.900391 15.0571 0.900391 14.6705C0.900391 14.2839 1.21379 13.9705 1.60039 13.9705H4.63434V10.936C4.63434 10.5494 4.94774 10.236 5.33434 10.236Z" fill="white"/>
-        </svg>
-
-        <select class="select_right">
-          <option>{{ trans("plast_fluids.creating_new_download_templates") }}</option>
-        </select>
-      </div>
+    <div class="top-wrapper">
+      <Header />
     </div>
-    <div class="central_wrapper">
-      <div class="menu_wrapper">
-        <div class="sidebar-top d-flex align-items-start w-100">
-          <button class="collapse-left__sidebar">
-            <Icon name="arrowLeft"/>
-          </button>
-          <div class="dropdown__sidebar w-100">
-            <dropdown block class="w-100 mb-2"  button-text="Недропользователь" :options="[
-              {label: 'option 1', value: 1},
-              {label: 'option 2', value: 2},
-              {label: 'option 3', value: 3}
-            ]" />
-            <dropdown block class="w-100 mb-2"  button-text="Месторождения" :options="[
-              {label: 'option 1', value: 1},
-              {label: 'option 2', value: 2},
-              {label: 'option 3', value: 3}
-            ]" />
-            <dropdown block class="w-100 mb-2"  button-text="Горизонт" :options="[
-              {label: 'option 1', value: 1},
-              {label: 'option 2', value: 2},
-              {label: 'option 3', value: 3}
-            ]" />
-          </div>
-        </div>
-        <div class="sectors">
-          <div class="sectors-svg">
-            <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5.33671 12.6923V12.5423H5.18671H3.52294V9.15H8.05965V12.5423H6.39588H6.24588V12.6923V17V17.15H6.39588H10.628H10.778V17V12.6923V12.5423H10.628H8.96424V9.15H13.5009V12.5423H11.8372H11.6872V12.6923V17V17.15H11.8372H16.0693H16.2193V17V12.6923V12.5423H16.0693H14.4055V8.38462V8.23462H14.2555H8.96424V5.45769H10.628H10.778V5.30769V1V0.85H10.628H6.39588H6.24588V1V5.30769V5.45769H6.39588H8.05965V8.23462H2.76835H2.61835V8.38462V12.5423H0.95459H0.80459V12.6923V17V17.15H0.95459H5.18671H5.33671V17V12.6923ZM15.3147 13.4577V16.2346H12.5918V13.4577H15.3147ZM7.15047 4.54231V1.76538H9.87341V4.54231H7.15047ZM9.87341 13.4577V16.2346H7.15047V13.4577H9.87341ZM4.43212 16.2346H1.70918V13.4577H4.43212V16.2346Z" fill="#3366FF" stroke="#3366FF" stroke-width="0.3"/>
-            </svg>
-
-            {{ trans("plast_fluids.sections") }}
-          </div>
-          <div class="tree-box box-border">
-            <ul class="trees">
-              <li class="has-child">
-                <input id="tree-controll1" type="checkbox" checked><span class="tree-control"></span>
-                <label>
-                  <i style="color: #3366FF" class="fa fa-folder light-blue"></i> PVT пластовой нефти
-                </label>
-                <ul>
-                  <li @click="test ='componentvue2' ">
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> Стандартная сепарация Flash
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> Диф. разгазирование DLE
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> Ступенчатая сепарация SEP
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> При постоянном составе CCE
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> Зависимость вязкости P и T
-                    </label>
-                  </li>
-                </ul>
-              </li>
-              <li class="has-child">
-                <input type="checkbox" checked><span class="tree-control"></span>
-                <label>
-                  <i style="color: #3366FF" class="fa fa-folder orange"></i> PVT пластового газа (ГК)
-                </label>
-                <ul>
-                  <li>
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> Шаблон пластовый газ
-                    </label>
-                  </li>
-                </ul>
-              </li>
-              <li class="has-child">
-                <input id="tree-controll1" type="checkbox" checked><span class="tree-control"></span>
-                <label>
-                  <i style="color: #3366FF" class="fa fa-folder light-blue"></i> Свойства устьевых проб
-                </label>
-                <ul>
-                  <li>
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> ФХА нефти (конденсата)
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> Разгонка ИТК
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> Состав устьевых проб газа
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> ФХА воды
-                    </label>
-                  </li>
-                </ul>
-              </li>
-              <li class="has-child">
-                <input id="tree-controll1" type="checkbox" checked><span class="tree-control"></span>
-                <label>
-                  <i style="color: #3366FF" class="fa fa-folder light-blue"></i> Свойства флюидов по горизонтам
-                </label>
-                <ul>
-                  <li>
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> Пластовая нефть
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> Пластовый газ ГК
-                    </label>
-                  </li>
-                  <li>
-                    <label>
-                      <i style="color: #999DC0" class="fa fa-file "></i> Пластовая вода
-                    </label>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="menu"></div>
-      </div>
-      <div class="monitoring_wrapper">
-        <div class="monitoring_select">
-          <div>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14 6L8 12L14 18" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-            {{ trans("plast_fluids.downloads_monitoring") }}
-          </div>
-        </div>
-        <div class="service_wrapper">
-          <div class="table_div">
-            <b-table bordered striped :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" style="color: #fff"></b-table>
-            <b-row>
-              <b-col sm="5" md="6" class="my-1">
-                <b-form-group
-                    label="Показать первые"
-                    label-for="per-page-select"
-                    label-cols-sm="6"
-                    label-cols-md="4"
-                    label-cols-lg="4"
-                    label-align-sm="right"
-                    label-size="sm"
-                    class="mb-0"
-                >
-                  <b-form-select
-                      id="per-page-select"
-                      v-model="perPage"
-                      :options="pageOptions"
-                      size="sm"
-                  ></b-form-select>
-                </b-form-group>
-              </b-col>
-              <div style="margin-left: 180px;" class="pagination">
-                <a href="#">&laquo;</a>
-                <a href="#">1</a>
-                <a class="active" href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">6</a>
-                <a href="#">&raquo;</a>
-              </div>
-            </b-row>
-          </div>
-        </div>
-        <div class="create_pattern">
-          <div>
-            {{ trans("plast_fluids.downloads_monitoring") }}
-          </div>
-          <div class="tables_wrapper">
-            <div class="ready_patterns">
-              <p>Готовые шаблоны: Стандартная сепарация Flash</p>
-              <table class="table">
-                <tr>
-                  <th>Поле 1</th>
-                </tr>
-                <tr>
-                  <td>Поле 2</td>
-                </tr>
-                <tr>
-                  <td>Поле 3</td>
-                </tr>
-                <tr>
-                  <td>Поле 4</td>
-                </tr>
-                <tr>
-                  <td>Поле 5</td>
-                </tr>
-              </table>
-            </div>
-            <div class="arrows">
-              <div class="right_arrow">
-                <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1L9 9L1 17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="left_arrow">
-                <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9 1L1 9L9 17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-            </div>
-            <div class="arbitrary_pattern">
-              <p>Произвольный шаблон</p>
-              <table class="table">
-                <tr>
-                  <th>Поле 1</th>
-                </tr>
-                <tr>
-                  <td>Поле 2</td>
-                </tr>
-                <tr>
-                  <td>Поле 3</td>f
-                </tr>
-                <tr>
-                  <td>Поле 4</td>
-                </tr>
-                <tr>
-                  <td>Поле 5</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="central-wrapper">
+      <MonitoringLeftBlock :templates="templates" />
+      <MonitoringDownloadTable />
     </div>
   </div>
 </template>
 
 <script>
-import dropdown from "../../geology/components/dropdowns/dropdown";
-import Button from "../../geology/components/buttons/Button";
-import Icon from "../../geology/components/icons/AwIcon";
+import Header from "../components/Header.vue";
+import MonitoringLeftBlock from "../components/MonitoringLeftBlock.vue";
+import MonitoringDownloadTable from "../components/MonitoringDownloadTable.vue";
+import { getUploadTemplates } from "../services/templateService";
+import { convertTemplateData } from "../helpers";
 
 export default {
   name: "DownloadMonitoring",
   components: {
-    dropdown,
-    Button,
-    Icon,
+    Header,
+    MonitoringLeftBlock,
+    MonitoringDownloadTable,
   },
-  el: '#app',
   data() {
     return {
-      info: null,
-      test: "componentvue",
-      fields: [
-        {
-          label: 'Дата загрузки',
-          key: "uploadDate",
-          sortable: true
-        },
-        {
-          label: 'Автор загрузки',
-          key: "uploadAuthor",
-          sortable: true
-        },
-        {
-          label: 'Недропользователь',
-          key: "subsoilUser",
-          sortable: true
-        },
-        {
-          label: 'Месторождение',
-          key: "fields",
-          sortable: true
-        },
-        {
-          label: 'Дата отбора начало',
-          key: "selectionDateStart",
-          sortable: true
-        },
-        {
-          label: 'Дата отбора конец',
-          key: "selectionDateEnd",
-          sortable: true
-        },
-        {
-          label: 'Тип данных',
-          key: "dataType",
-          sortable: true
-        }
-      ],
-      items: [
-        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
-        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
-        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
-        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
-        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
-        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
-        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
-        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
-        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
-        { uploadDate: '27-04-1999', uploadAuthor: 'Aset', subsoilUser: 'ASet', fields: 'AsetOil', selectionDateStart: '27-04', selectionDateEnd: '30-04', dataType: '.json' },
-      ],
+      templates: [],
       currentPage: 1,
       perPage: 15,
       pageOptions: [15, 20, 25, { value: 100, text: "Показать больше" }],
-    }
+    };
   },
-
+  methods: {
+    async getTemplates() {
+      const data = await getUploadTemplates();
+      this.templates = convertTemplateData(data, this.currentLang);
+    },
+  },
+  mounted() {
+    this.getTemplates();
+  },
 };
 </script>
 
@@ -350,15 +48,22 @@ export default {
 :root {
   box-sizing: border-box;
 }
+
 *,
 ::before,
 ::after {
   box-sizing: inherit;
 }
-a{
+
+a {
   text-decoration: none;
   color: #fff;
 }
+
+.top-wrapper {
+  width: 100%;
+}
+
 .wrapper {
   margin: 0px;
   padding: 0px;
@@ -366,401 +71,10 @@ a{
   height: 100%;
   border: none;
 }
-.top_wrapper {
+
+.central-wrapper {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   width: 100%;
-}
-
-.select_wrapper_left {
-  width: 100%;
-  height: 40px;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  margin-right: 7.5px;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  padding: 0px 25px;
-  background-color: #2e50e9;
-}
-.select_wrapper_right {
-  width: 100%;
-  height: 40px;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  margin-left: 7.5px;
-  display: flex;
-  align-items: center;
-  padding: 0px 25px;
-  flex-direction: row;
-  background-color: #333975;
-}
-.top_wrapper select {
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 19px;
-  letter-spacing: 0em;
-  text-align: left;
-  width: 100%;
-  height: 100%;
-  color: aliceblue;
-  border: none;
-}
-.select_left {
-  background-color: #2e50e9;
-}
-.select_right {
-  background-color: #333975;
-}
-.central_wrapper {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: calc(100% - 55px);
-}
-.menu_wrapper {
-  width: calc((350 / (1457+15+350) * 100%));
-  background-color: #272953;
-  margin-right: 15px;
-}
-
-.collapse-left__sidebar{
-  border: none;
-  background: var(--a-accent);
-  padding: 14px 6px;
-  border-radius: 0 10px 10px 0;
-}
-
-.dropdown__sidebar{
-  margin: 10px;
-}
-
-.sectors > div {
-  height: 50px;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 19px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: white;
-  padding-top: 15px;
-  padding-left: 15px;
-}
-.sectors-svg>svg{
-  margin-right: 5px;
-}
-
-ul,
-li {
-  list-style: none;
-  margin: 0;
-  padding: 0
-}
-label{font-weight:normal}
-
-.trees {
-  margin-left: 10px;
-}
-
-.trees li {
-  border-left: dotted 1px #bcbec0;
-  padding: 1px 0 1px 25px;
-  position: relative
-}
-
-.trees li > label {
-  position: relative;
-  left: -11px
-}
-
-.trees li:before {
-  content: "";
-  width: 13px;
-  height: 1px;
-  border-bottom: dotted 1px #bcbec0;
-  position: absolute;
-  top: 10px;
-  left: 0
-}
-
-.trees li:last-child:after {
-  position: absolute;
-  width: 2px;
-  height: 13px;
-  background: #fff;
-  left: -1px;
-  bottom: 0px;
-}
-
-.trees li input {
-  margin-right: 5px;
-  margin-left: 5px
-}
-
-.trees li.has-child > ul {
-  display: none
-}
-
-.trees li.has-child > input {
-  opacity: 0;
-  position: absolute;
-  left: -14px;
-  z-index: 9999;
-  width: 22px;
-  height: 22px;
-  top: -5px
-}
-
-.trees li.has-child > input + .tree-control {
-  position: absolute;
-  left: -4px;
-  top: 6px;
-  width: 8px;
-  height: 8px;
-  line-height: 8px;
-  z-index: 2;
-  display: inline-block;
-  color: #fff;
-  border-radius: 3px;
-}
-
-.trees li.has-child > input + .tree-control:after {
-  font-family: 'FontAwesome';
-  content: "";
-  font-size: 8px;
-  color: #183955;
-  position: absolute;
-  left: 1px
-}
-
-.trees li.has-child > input:checked + .tree-control:after {
-  font-family: 'FontAwesome';
-  content: "";
-  font-size: 8px;
-  color: #183955;
-  position: absolute;
-  left: 1px
-}
-
-.trees li.has-child > input:checked ~ ul {
-  display: block
-}
-
-.trees ul li.has-child:last-child {
-  border-left: none
-}
-
-.trees ul li.has-child:nth-last-child(2):after {
-  content: "";
-  width: 1px;
-  height: 5px;
-  border-left: dotted 1px #bcbec0;
-  position: absolute;
-  bottom: -5px;
-  left: -1px
-}
-
-.tree-alt li {
-  padding: 4px 0
-}
-
-.monitoring_wrapper {
-  width: calc((1457 / (1457+15+350) * 100%));
-  background-color: #272953;
-  display: flex;
-  flex-direction: column;
-}
-.service_wrapper {
-  display: flex;
-  flex-direction: row;
-}
-.upload_wrapper {
-  display: flex;
-  flex-direction: column;
-  max-width: 445px;
-  width: 445px;
-  margin-top: 15px;
-  margin-right: 15px;
-}
-
-.monitoring_select > div {
-  padding-top: 20px;
-  padding-left: 25px;
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 26px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: aliceblue;
-}
-.table_div {
-  width: 100%;
-  height: 100%;
-  margin: 15px;
-}
-table,
-th,
-td {
-  border: 1px solid #454d7d;
-  background: #333975;
-}
-th,
-td {
-  padding: 15px;
-}
-
-.create_pattern{
-  background: #272953;
-  display: block;
-  color: #fff;
-  padding: 20px;
-  font-size: 18px;
-}
-
-.tables_wrapper{
-  background: rgba(31, 33, 66, 0.5);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-}
-
-.table{
-  color: #fff;
-  text-align: center;
-  width: 100%;
-}
-
-.ready_patterns, .arbitrary_pattern{
-  width: 45%;
-}
-
-tr:nth-child(even) {
-  background-color: #2B2E5E;
-}
-
-.right_arrow, .left_arrow{
-  background: #3A4280;
-  padding: 20px;
-  border-radius: 5px;
-  margin-bottom: 15px;
-}
-
-#per-page-select{
-  width: 20%;
-  background: #1F2142;
-  border-color: #454FA1;
-  color: #fff;
-}
-
-.pagination{
-  background: none;
-}
-.pagination>a{
-  color: #fff;
-  opacity: 0.5;
-  padding: 6px 14px;
-  float: right;
-}
-
-tr:nth-child(even) {
-  background-color: #454d7d52;
-}
-
-.file_upload {
-  background-color: #363b68;
-  width: 445px;
-  height: 333px;
-}
-
-.upload_status {
-  background-color: #363b68;
-  margin-top: 15px;
-  width: 445px;
-  height: 491px;
-}
-
-.file_upload_title {
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: aliceblue;
-  margin-left: 17px;
-  margin-top: 25px;
-}
-
-.upload_status_title {
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: aliceblue;
-  margin-left: 17px;
-  margin-top: 25px;
-}
-
-.file_service {
-  margin-top: 11px;
-  width: 422px;
-  height: 260px;
-  background-color: #272953;
-}
-
-.upload_border{
-  width: 100%;
-  height: 100%;
-  border: 1px dashed;
-  border-radius: 10px;
-}
-
-.log_status {
-  margin-top: 11px;
-  margin-left: 12px;
-  width: 421px;
-  height: 367px;
-  background-color: #272953;
-}
-
-.btn-common {
-  height: 32px;
-  background-color: #3366ff;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 24px;
-  letter-spacing: 0em;
-  text-align: center;
-  color: aliceblue;
-  border-radius: 4px;
-}
-.upload_file {
-  width: 132px;
-  margin-top: 218px;
-  margin-left: 74px;
-}
-
-.exchange_file {
-
-
-  width: 132px;
-  margin-top: 218px;
-  margin-right: 74px;
-}
-
-.download_log {
-
-  width: 183px;
-  margin-top: 12px;
-  margin-left: 131px;
+  height: calc(100vh - 143px);
 }
 </style>
