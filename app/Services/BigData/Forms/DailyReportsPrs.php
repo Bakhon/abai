@@ -85,31 +85,55 @@ class DailyReportsPrs extends TableForm
     
     public function getRows(array $params = []): array
     {
-        $result = [
-            'id' => $this->request->get('id')
-        ];
+        
         $filter = json_decode($this->request->get('filter'));
-        if ($this->request->get('id')) {
-            $org = Org::find($this->request->get('id'));
-            if (!$org) {
-                return ['rows' => []];
-            }
-            $result['org'] = ['value' => $org->name_ru];
+        if (empty($filter->date)) {
+            return ['rows' => []];
         }
-        $filter->optionId = $filter->optionId ?? 0;
-        $company = DB::connection('tbd')
-            ->table('prod.well_workover as pw')
+
+        if ($this->request->get('type') !== 'org') {
+            throw new \Exception(trans('bd.select_dzo_ngdu'));
+        }
+
+        $org = Org::find($this->request->get('id'));
+        $contractor = DB::connection('tbd')
+            ->table('prod.report_org_daily_repair as pp')
             ->select('pw.contractor')
-            ->leftJoin('prod.report_org_daily_repair as pp', 'pw.id', 'pp.workover')
-            ->leftJoin('dict.company as dc', 'pw.contractor', 'dc.id')           
-            ->first();
-            $result['contractor'] = ['value' => $company->contractor];
+            ->leftJoin('prod.well_workover as pw', 'pw.id', 'pp.workover')
+            ->leftJoin('dict.company as dc', 'pw.contractor', 'dc.id')    
+            ->where('pp.org','=', $org->id)     
+            ->get();
+            $result['contractor'] = ['value' => $contractor];
+        $orgChildren = $org->children()->get();
+        $wells = $org->wells()->get();
+        $result['org'] = ['value' => $org->name_ru];  
+        $result['well'] = ['value' => $wells->keyBy('uwi')]; 
+        $result['org_ch'] = ['value' => $orgChildren];      
+        
+        // $company = DB::connection('tbd')
+        //     ->table('prod.well_workover as pw')
+        //     ->select('pw.contractor')
+        //     ->leftJoin('prod.report_org_daily_repair as pp', 'pw.id', 'pp.workover')
+        //     ->leftJoin('dict.company as dc', 'pw.contractor', 'dc.id')     
+        //     ->first();
+        //     $result['contractor'] = ['value' => $company->contractor];
+          
         $well = DB::connection('tbd')
-        ->table('prod.well_workover as pw')
-        ->select('dw.uwi')
-        ->leftJoin('dict.well as dw', 'pw.well', 'dw.id')           
-        ->first();
-        $result['well'] = ['value' => $well->uwi]; 
+        ->table('prod.report_org_daily_repair as pp')
+            ->select('pw.well')
+            ->leftJoin('prod.well_workover as pw', 'pw.id', 'pp.workover')
+            ->leftJoin('dict.well as dc', 'pw.well', 'dc.id')    
+            ->where('pp.org','=', $org->id)     
+            ->get();
+        // $result['well'] = ['value' => $well->keyBy('uwi')]; 
+        // $geo0 = DB::connection('tbd')
+        // ->table('prod.report_org_daily_repair as pp')
+        //     ->select('dc.geo')
+        //     ->leftJoin('prod.well_workover as pw', 'pw.id', 'pp.workover')
+        //     ->leftJoin('prod.well_geo as pg', 'pw.well', 'pg.well') 
+        //     ->leftJoin('dict.geo as g', 'pg.geo', 'g.id')      
+        //     ->where('pp.org','=', $org->id)     
+        //     ->get();
         
         $geo = DB::connection('tbd')
         ->table('prod.well_workover as pw')
@@ -118,13 +142,33 @@ class DailyReportsPrs extends TableForm
         ->leftJoin('dict.geo as g', 'pg.geo', 'g.id')                   
         ->first();
         $result['geo'] = ['value' => $geo->name_ru]; 
-
+        $repair_work_type0 = DB::connection('tbd')
+        ->table('prod.report_org_daily_repair as pp')
+            ->select('pw.repair_work_type')
+            ->leftJoin('prod.well_workover as pw', 'pw.id', 'pp.workover')
+            ->leftJoin('dict.repair_work_type as dw', 'pw.repair_work_type', 'dw.id')      
+            ->where('pp.org','=', $org->id)     
+            ->get();
         $repair_work_type = DB::connection('tbd')
         ->table('prod.well_workover as pw')
         ->select('pw.repair_work_type')
-        ->leftJoin('dict.repair_work_type as dw', 'pw.repair_work_type', 'dw.id')           
+        ->leftJoin('dict.repair_work_type as dw', 'pw.repair_work_type', 'dw.id')  
+        ->leftJoin('prod.report_org_daily_repair as pr', 'pw.id' , 'pr.workover')           
         ->first();
         $result['repair_work_type'] = ['value' => $repair_work_type->repair_work_type]; 
+        $machine_type = DB::connection('tbd')
+        ->table('prod.well_workover as pw')
+        ->select('pr.machine_type')
+        ->leftJoin('prod.report_org_daily_repair as pr', 'pw.id' , 'pr.workover')
+        ->leftJoin('dict.machine_type as dw', 'pr.machine_type', 'dw.id')           
+        ->first();
+        $result['machine_type'] = ['value' => $machine_type->machine_type];
+        $work_done = DB::connection('tbd')
+        ->table('prod.well_workover as pw')
+        ->select('pr.work_done')
+        ->leftJoin('prod.report_org_daily_repair as pr', 'pw.id' , 'pr.workover')          
+        ->first();
+        $result['work_done'] = ['value' => $work_done->work_done];
         return ['rows' => [$result]];
     }   
    
