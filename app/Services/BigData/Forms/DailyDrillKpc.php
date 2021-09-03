@@ -91,6 +91,23 @@ class DailyDrillKpc extends TableForm
     
     public function getRows(array $params = []): array
     {
+        // return ['rows' => [
+        //     [
+        //         'org' => '123',
+        //         'well' => 'well',
+        //         'org_ch' => 'org',
+        //     ],
+        //     [
+        //         'org' => '123',
+        //         'well' => 'well',
+        //         'org_ch' => 'org',
+        //     ],
+        //     [
+        //         'org' => '123',
+        //         'well' => 'well',
+        //         'org_ch' => 'org',
+        //     ]
+        // ]];
         $filter = json_decode($this->request->get('filter'));
         if (empty($filter->date)) {
             return ['rows' => []];
@@ -101,56 +118,44 @@ class DailyDrillKpc extends TableForm
         }
 
         $org = Org::find($this->request->get('id'));
-        
+        $contractor = DB::connection('tbd')
+            ->table('prod.report_org_daily_repair as pp')
+            ->select('pw.contractor')
+            ->leftJoin('prod.well_workover as pw', 'pw.id', 'pp.workover')
+            ->leftJoin('dict.company as dc', 'pw.contractor', 'dc.id')    
+            ->where('pp.org','=', $org->id)     
+            ->get();
+            $result['contractor'] = ['value' => $contractor];
         $orgChildren = $org->children()->get();
         $wells = $org->wells()->get();
         $result['org'] = ['value' => $org->name_ru];  
-        $result['well'] = ['value' => $wells]; 
+        $result['well'] = ['value' => $wells->keyBy('uwi')]; 
         $result['org_ch'] = ['value' => $orgChildren];      
-        // $columns = $this->getColumns($filter, $org, $orgChildren);
-
-        // $rows = $this->getRowData($filter, $org, $orgChildren);
-
-        // return [
-        //     'columns' => $columns['columns'],
-        //     'merge_columns' => $columns['merge_columns'],
-        //     'complicated_header' => $this->tableHeaderService->getHeader(
-        //         $columns['columns'],
-        //         $columns['merge_columns']
-        //     ),
-        //     'rows' => $rows
-        // ];
-        // $id = $this->request->get('id');
         
-        // $result = [
-        //     'id' => $id
-        // ];
-       
-        // if ($id) {
-        //     $org = Org::find($id);
-        //     if (!$org) {
-        //         return ['rows' => []];
-        //     }            
-        //     $wells = $org->wells()->get();
-        //     $result['org'] = ['value' => $org->name_ru];  
-        //     $result['well'] = ['value' => $wells];         
-        // }
-        // $filter->optionId = $filter->optionId ?? 0;
-        $company = DB::connection('tbd')
-            ->table('prod.well_workover as pw')
-            ->select('pw.contractor')
-            ->leftJoin('prod.report_org_daily_repair as pp', 'pw.id', 'pp.workover')
-            ->leftJoin('dict.company as dc', 'pw.contractor', 'dc.id')     
-            ->first();
-            $result['contractor'] = ['value' => $company->contractor];
+        // $company = DB::connection('tbd')
+        //     ->table('prod.well_workover as pw')
+        //     ->select('pw.contractor')
+        //     ->leftJoin('prod.report_org_daily_repair as pp', 'pw.id', 'pp.workover')
+        //     ->leftJoin('dict.company as dc', 'pw.contractor', 'dc.id')     
+        //     ->first();
+        //     $result['contractor'] = ['value' => $company->contractor];
           
         $well = DB::connection('tbd')
-        ->table('prod.well_workover as pw')
-        ->select('dw.uwi')
-        ->leftJoin('prod.report_org_daily_repair as pr', 'pw.id' , 'pr.workover')     
-        ->leftJoin('dict.well as dw', 'pw.well', 'dw.id')           
-        ->get();
+        ->table('prod.report_org_daily_repair as pp')
+            ->select('pw.well')
+            ->leftJoin('prod.well_workover as pw', 'pw.id', 'pp.workover')
+            ->leftJoin('dict.well as dc', 'pw.well', 'dc.id')    
+            ->where('pp.org','=', $org->id)     
+            ->get();
         // $result['well'] = ['value' => $well->keyBy('uwi')]; 
+        $geo0 = DB::connection('tbd')
+        ->table('prod.report_org_daily_repair as pp')
+            ->select('dc.geo')
+            ->leftJoin('prod.well_workover as pw', 'pw.id', 'pp.workover')
+            ->leftJoin('prod.well_geo as pg', 'pw.well', 'pg.well') 
+            ->leftJoin('dict.geo as g', 'pg.geo', 'g.id')      
+            ->where('pp.org','=', $org->id)     
+            ->get();
         
         $geo = DB::connection('tbd')
         ->table('prod.well_workover as pw')
@@ -159,7 +164,13 @@ class DailyDrillKpc extends TableForm
         ->leftJoin('dict.geo as g', 'pg.geo', 'g.id')                   
         ->first();
         $result['geo'] = ['value' => $geo->name_ru]; 
-
+        $repair_work_type0 = DB::connection('tbd')
+        ->table('prod.report_org_daily_repair as pp')
+            ->select('pw.repair_work_type')
+            ->leftJoin('prod.well_workover as pw', 'pw.id', 'pp.workover')
+            ->leftJoin('dict.repair_work_type', 'pw.repair_work_type', 'dw.id')      
+            ->where('pp.org','=', $org->id)     
+            ->get();
         $repair_work_type = DB::connection('tbd')
         ->table('prod.well_workover as pw')
         ->select('pw.repair_work_type')
