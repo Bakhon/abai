@@ -43,10 +43,25 @@ export default {
             lastSelectedCategory: 'oilCondensateProductionButton',
             oilResidueChartName: this.trans('visualcenter.ostatokNefti'),
             dropdownMenu: {
-                'oilCondensateProduction': false,
+                'oilCondensateProduction': true,
+                'oilCondensateProductionWithoutKMG': false,
+                'oilCondensateProductionCondensateOnly': false,
                 'oilCondensateDelivery': false,
+                'oilCondensateDeliveryWithoutKMG': false,
+                'oilCondensateDeliveryOilResidue': false,
+                'oilCondensateDeliveryCondensateOnly': false,
                 'gasProduction': false,
-                'waterInjection': false
+                'naturalGasProduction': false,
+                'associatedGasProduction': false,
+                'flaringGas': false,
+                'naturalGasDelivery': false,
+                'expensesForOwnNaturalGas': false,
+                'associatedGasDelivery': false,
+                'expensesForOwnAssociatedGas': false,
+                'waterInjection': false,
+                'seawaterInjection': false,
+                'wasteWaterInjection': false,
+                'artezianWaterInjection': false
             }
         };
     },
@@ -217,7 +232,7 @@ export default {
 
         switchDropdownCategories(category) {
             this.dropdownMenu = _.mapValues(this.dropdownMenu, () => false);
-            this.dropdownMenu[category] = true;
+            this.dropdownMenu[category] = !this.dropdownMenu[category];
         },
     },
 }

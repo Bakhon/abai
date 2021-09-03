@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\DzoPlan;
 use App\Http\Resources\VisualCenter\OilCondensateConsolidated;
+use App\Http\Resources\VisualCenter\OilCondensateConsolidatedWithoutKmg;
+use App\Http\Resources\VisualCenter\OilCondensateConsolidatedOilResidue;
 use Carbon\Carbon;
 
 class VisualCenterController extends Controller
@@ -27,9 +29,11 @@ class VisualCenterController extends Controller
         'current' => array(
             'oilCondensateProduction' => array(),
             'oilCondensateProductionWithoutKMG' => array(),
+            'oilCondensateProductionCondensateOnly' => array(),
             'oilCondensateDelivery' => array(),
             'oilCondensateDeliveryWithoutKMG' => array(),
             'oilCondensateDeliveryOilResidue' => array(),
+            'oilCondensateDeliveryCondensateOnly' => array(),
             'gasProduction' => array(),
             'naturalGasProduction' => array(),
             'associatedGasProduction' => array(),
@@ -108,6 +112,13 @@ class VisualCenterController extends Controller
         $this->tableData['historical']['oilCondensateProduction'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan,'oilCondensateProduction');
         $this->tableData['current']['oilCondensateDelivery'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDelivery');
         $this->tableData['historical']['oilCondensateDelivery'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan,'oilCondensateProduction');
+
+        $this->tableData['current']['oilCondensateProductionWithoutKMG'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateProductionWithoutKMG');
+        $this->tableData['historical']['oilCondensateProductionWithoutKMG'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan,'oilCondensateProductionWithoutKMG');
+        $this->tableData['current']['oilCondensateDeliveryWithoutKMG'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDeliveryWithoutKMG');
+        $this->tableData['historical']['oilCondensateDeliveryWithoutKMG'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan,'oilCondensateDeliveryWithoutKMG');
+        $this->tableData['current']['oilCondensateDeliveryOilResidue'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDeliveryOilResidue');
+
         return array(
             'tableData' => $this->tableData,
             'chartData' => $this->chartData,
@@ -169,9 +180,17 @@ class VisualCenterController extends Controller
     private function getTableData($fact,$plan,$type)
     {
         $oilCondensateConsolidated = new OilCondensateConsolidated();
+        $oilCondensateConsolidatedWithoutKmg = new OilCondensateConsolidatedWithoutKmg();
+        $oilCondensateConsolidatedOilResidue = new OilCondensateConsolidatedOilResidue();
         $tableData = array();
         if ($type === 'oilCondensateProduction' || $type === 'oilCondensateDelivery') {
             $tableData = $oilCondensateConsolidated->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,$type,$this->yearlyPlan,$this->periodType);
+        }
+        if ($type === 'oilCondensateProductionWithoutKMG' || $type === 'oilCondensateDeliveryWithoutKMG') {
+            $tableData = $oilCondensateConsolidatedWithoutKmg->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,$type,$this->yearlyPlan,$this->periodType);
+        }
+        if ($type === 'oilCondensateDeliveryOilResidue') {
+            $tableData = $oilCondensateConsolidatedOilResidue->getDataByOilResidueCategory($fact,$this->periodRange);
         }
         return $tableData;
     }

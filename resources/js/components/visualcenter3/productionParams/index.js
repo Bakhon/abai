@@ -53,6 +53,35 @@ export default {
                 formatInput: true,
             },
             backendDisabledDate: moment().subtract(1,'days').format(),
+            backendMenu: {
+                'oilCondensateProduction': true,
+                'oilCondensateProductionWithoutKMG': false,
+                'oilCondensateProductionCondensateOnly': false,
+                'oilCondensateDelivery': false,
+                'oilCondensateDeliveryWithoutKMG': false,
+                'oilCondensateDeliveryOilResidue': false,
+                'oilCondensateDeliveryCondensateOnly': false,
+                'gasProduction': false,
+                'naturalGasProduction': false,
+                'associatedGasProduction': false,
+                'flaringGas': false,
+                'naturalGasDelivery': false,
+                'expensesForOwnNaturalGas': false,
+                'associatedGasDelivery': false,
+                'expensesForOwnAssociatedGas': false,
+                'waterInjection': false,
+                'seawaterInjection': false,
+                'wasteWaterInjection': false,
+                'artezianWaterInjection': false
+            },
+            backendFlagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
+                '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +
+                '</svg>',
+            backendFlagOff: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"> \n' +
+                '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
+                '</svg>',
+            backendPreviousCategory: 'oilCondensateProduction',
+            backendParentMenu: ['oilCondensateProduction','oilCondensateDelivery','gasProduction','waterInjection']
         }
     },
     methods: {
@@ -75,23 +104,19 @@ export default {
             }
             return response.data;
         },
-        backendUpdateSummaryFact() {
-            this.backendSummary.oilProductionFact = _.sumBy(this.backendProductionParams.tableData.current.oilCondensateProduction,'fact');
-            this.backendSummary.oilProductionPlan = _.sumBy(this.backendProductionParams.tableData.current.oilCondensateProduction,'plan');
-            this.backendSummary.oilDeliveryFact = _.sumBy(this.backendProductionParams.tableData.current.oilCondensateDelivery,'fact');
-            this.backendSummary.oilDeliveryPlan = _.sumBy(this.backendProductionParams.tableData.current.oilCondensateDelivery,'plan');
-            this.backendHistoricalSummaryFact.oilProductionFact = _.sumBy(this.backendProductionParams.tableData.historical.oilCondensateProduction,'fact');
-            this.backendHistoricalSummaryFact.oilDeliveryFact = _.sumBy(this.backendProductionParams.tableData.historical.oilCondensateDelivery,'fact');
+        backendUpdateSummaryFact(productionName,deliveryName) {
+            this.backendSummary.oilProductionFact = _.sumBy(this.backendProductionParams.tableData.current[productionName],'fact');
+            this.backendSummary.oilProductionPlan = _.sumBy(this.backendProductionParams.tableData.current[productionName],'plan');
+            this.backendSummary.oilDeliveryFact = _.sumBy(this.backendProductionParams.tableData.current[deliveryName],'fact');
+            this.backendSummary.oilDeliveryPlan = _.sumBy(this.backendProductionParams.tableData.current[deliveryName],'plan');
+            this.backendHistoricalSummaryFact.oilProductionFact = _.sumBy(this.backendProductionParams.tableData.historical[productionName],'fact');
+            this.backendHistoricalSummaryFact.oilDeliveryFact = _.sumBy(this.backendProductionParams.tableData.historical[deliveryName],'fact');
         },
         getBackendProgress(fact,plan) {
             return (fact / plan) * 100;
         },
         async backendSwitchView(view) {
             this.SET_LOADING(true);
-            this.buttonDailyTab = "";
-            this.buttonMonthlyTab = "";
-            this.buttonYearlyTab = "";
-            this.buttonPeriodTab = "";
             this.backendSelectedView = view;
             if (view === 'period') {
                 this.backendPeriodStart = moment(this.backendDatePickerModel.start, 'DD.MM.YYYY').startOf('day');
@@ -103,38 +128,46 @@ export default {
             if (view === 'day') {
                 this.backendPeriodStart = this.backendPeriodStart.subtract(1,'days');
             }
-            if (view === 'month' && this.backendPeriodStart.date() < 3) {
+            if (view === 'month' && moment().date() < 3) {
                 this.backendPeriodStart = this.backendPeriodStart.subtract(3,'days');
+            }
+            if (view !== 'year') {
+                this.isFilterTargetPlanActive = false;
             }
             this.backendPeriodRange = this.backendPeriodEnd.diff(this.backendPeriodStart, 'days');
             this.backendHistoricalPeriodEnd = this.backendPeriodStart.clone().subtract(1,'days').endOf('day');
             this.backendHistoricalPeriodStart = this.backendHistoricalPeriodEnd.clone().subtract(this.backendPeriodRange,'days');
-            this.backendSwitchSelectedButton(view);
             this.backendProductionParams = await this.backendGetProductionParamsByCategory(true);
             this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
             this.SET_LOADING(false);
         },
-        backendSwitchSelectedButton(view) {
-            if (view !== 'year') {
-                this.isFilterTargetPlanActive = false;
+        backendSwitchCategory(category,parent) {
+            for (let item in this.backendMenu) {
+                if (item === category) {
+                    continue;
+                }
+                this.backendMenu[item] = false;
             }
-            if (view === 'day') {
-                this.buttonDailyTab = this.highlightedButton;
-            } else if (view === 'month') {
-                this.buttonMonthlyTab = this.highlightedButton;
-            } else if (view === 'year') {
-                this.buttonYearlyTab = this.highlightedButton;
-            } else if(view === 'period') {
-                this.buttonPeriodTab = this.highlightedButton;
+            this.backendMenu[parent] = true;
+            if (!['oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG'].includes(category)) {
+                this.backendMenu[category] = !this.backendMenu[category];
+            } else {
+                this.backendMenu['oilCondensateProductionWithoutKMG'] = !this.backendMenu[category];
+                this.backendMenu['oilCondensateDeliveryWithoutKMG'] = !this.backendMenu[category];
+            }
+            if (category === this.backendSelectedCategory) {
+                this.backendSelectedCategory = this.backendPreviousCategory;
+            } else {
+                this.backendPreviousCategory = parent;
+                this.backendSelectedCategory = category;
+            }
+            this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
+            if (category.toLowerCase().includes('withoutkmg')) {
+                this.backendUpdateSummaryFact('oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG');
+            } else {
+                this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
             }
         },
-        backendSwitchCategory(category,button) {
-            this.oilCondensateProductionButton = "";
-            this.oilCondensateDeliveryButton = "";
-            this[button] = "button-tab-highlighted";
-            this.backendSelectedCategory = category;
-            this.backendProductionTableData = this.backendProductionParams.tableData.current[category];
-        }
     },
     computed: {
         backendSummaryYearlyPlan() {
@@ -166,7 +199,7 @@ export default {
     async mounted() {
         this.SET_LOADING(true);
         this.backendProductionParams = await this.backendGetProductionParamsByCategory();
-        this.backendUpdateSummaryFact();
+        this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
         this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
         this.SET_LOADING(false);
     }

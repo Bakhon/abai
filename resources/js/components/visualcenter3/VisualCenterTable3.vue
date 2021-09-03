@@ -299,11 +299,11 @@
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
                 <div class="button1 d-flex">
-                  <div :class="[`${oilCondensateProductionButton}`, 'col-10 category-button_border']">
+                  <div :class="[backendMenu.oilCondensateProduction ? 'button-tab-highlighted' : '', 'col-10 category-button_border']">
                     <div class="icon-all icons1"></div>
                     <div
                             class="txt5"
-                            @click="backendSwitchCategory('oilCondensateProduction','oilCondensateProductionButton')"
+                            @click="backendSwitchCategory('oilCondensateProduction')"
                     >
                       {{ trans("visualcenter.oilCondensateProduction") }}
                     </div>
@@ -311,7 +311,6 @@
                   <button
                           type="button"
                           data-toggle="dropdown"
-                          @click="switchDropdownCategories('oilCondensateProduction')"
                           :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.oilCondensateProduction}]"
                   ></button>
                   <div>
@@ -320,11 +319,11 @@
                     >
                       <li
                               class="center-li row px-4"
-                              @click="switchFilterConsolidatedOilCondensate('oilCondensateProductionButton','withoutKmgParticipation','isWithoutKMGFilterActive')"
+                              @click="backendSwitchCategory('oilCondensateProductionWithoutKMG','oilCondensateProduction')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('oilCondensateProductionButton','withoutKmgParticipation')}`"
+                                v-html="backendMenu.oilCondensateProductionWithoutKMG ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a class="col-9 p-0 ml-3 mt-2">
                           {{trans("visualcenter.withoutKmgParticipation")}}
@@ -333,11 +332,11 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchFilterConsolidatedOilCondensate('oilCondensateProductionButton','condensateOnly','isCondensateOnly')"
+                              @click="backendSwitchCategory('oilCondensateProductionCondensateOnly','oilCondensateProduction')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('oilCondensateProductionButton','condensateOnly')}`"
+                                v-html="backendMenu.oilCondensateProductionCondensateOnly ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a class="col-9 mt-1 p-0 ml-3">
                           {{trans("visualcenter.getgk")}}
@@ -349,7 +348,7 @@
               </div>
               <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
                 <div class="button1 d-flex">
-                  <div :class="[`${oilCondensateDeliveryButton}`, 'col-10 category-button_border']">
+                  <div :class="[backendMenu.oilCondensateDelivery ? 'button-tab-highlighted' : '', 'col-10 category-button_border']">
                       <div class="icon-all icons2"></div>
                       <div
                               class="txt5"
@@ -361,18 +360,17 @@
                   <button
                           type="button"
                           data-toggle="dropdown"
-                          @click="switchDropdownCategories('oilCondensateDelivery')"
                           :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.oilCondensateDelivery}]"                          
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
                       <li
                               class="center-li row px-4"
-                              @click="switchFilterConsolidatedOilCondensate('oilCondensateDeliveryButton','withoutKmgParticipation','isWithoutKMGFilterActive')"
+                              @click="backendSwitchCategory('oilCondensateDeliveryWithoutKMG','oilCondensateDelivery')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('oilCondensateDeliveryButton','withoutKmgParticipation')}`"
+                                v-html="backendMenu.oilCondensateDeliveryWithoutKMG ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a class="col-9 p-0 ml-3 mt-2">
                           {{trans("visualcenter.withoutKmgParticipation")}}
@@ -381,34 +379,24 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchMainMenu('oilCondensateDeliveryButton','oilResidue')"
+                              @click="backendSwitchCategory('oilCondensateDeliveryOilResidue','oilCondensateDelivery')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('oilCondensateDeliveryButton','oilResidue')}`"
+                                v-html="backendMenu.oilCondensateDeliveryOilResidue ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
-                        <a
-                                class="col-9 p-0 ml-3 mt-2"
-                                @click="
-                                    updateProductionData(
-                                      'tovarnyi_ostatok_nefti_prev_day',
-                                      'tovarnyi_ostatok_nefti_today',
-                                      `${oilChartHeadName}`,
-                                      ' тонн',
-                                      trans('visualcenter.ostatokNefti')
-                                    )"
-                        >
+                        <a class="col-9 p-0 ml-3 mt-2">
                           {{trans("visualcenter.ostatokNefti")}}
                         </a>
                       </li>
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchFilterConsolidatedOilCondensate('oilCondensateDeliveryButton','condensateOnly','isCondensateOnly')"
+                              @click="backendSwitchCategory('oilCondensateDeliveryCondensateOnly','oilCondensateDelivery')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('oilCondensateDeliveryButton','condensateOnly')}`"
+                                v-html="backendMenu.oilCondensateDeliveryCondensateOnly ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a class="col-9 mt-1 p-0 ml-3">
                           {{trans("visualcenter.getgk")}}
@@ -912,7 +900,7 @@
                   <tr>
                     <th>№</th>
                     <th>{{ trans("visualcenter.dzo") }}</th>
-                    <th v-if="buttonMonthlyTab" >
+                    <th v-if="buttonMonthlyTab && !backendMenu.oilCondensateDeliveryOilResidue" >
                       {{ trans("visualcenter.dzoMonthlyPlan") }}
                       <div v-if="backendPeriodRange === 0">
                         {{ getMetricNameByCategorySelected() }}
@@ -924,7 +912,7 @@
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
-                    <th v-if="buttonYearlyTab">
+                    <th v-if="buttonYearlyTab && !backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoYearlyPlan") }}
                       <div v-if="backendPeriodRange === 0">
                         {{ getMetricNameByCategorySelected() }}
@@ -936,7 +924,7 @@
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
-                    <th>
+                    <th v-if="!backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.plan") }},
                       <div v-if="backendPeriodRange === 0">
                         {{ getMetricNameByCategorySelected() }}
@@ -945,7 +933,7 @@
                         {{ getThousandMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th>
+                    <th v-if="!backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.plan") }}
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
@@ -966,7 +954,7 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th v-if="!isOilResidueActive">
+                    <th v-if="!backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoDifference") }}
                       <div v-if="backendPeriodRange !== 0">
                         {{ getThousandMetricNameByCategorySelected() }}
@@ -975,43 +963,43 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th>
-                      {{ trans("visualcenter.dzoDifference") }}
-                      <div>
-                        {{ trans("visualcenter.dzoOpec") }},
-                      </div>
-                      <div v-if="backendPeriodRange !== 0">
-                        {{ getThousandMetricNameByCategorySelected() }}
-                      </div>
-                      <div v-else>
-                        {{ getMetricNameByCategorySelected() }}
-                      </div>
-                    </th>
+<!--                    <th>-->
+<!--                      {{ trans("visualcenter.dzoDifference") }}-->
+<!--                      <div>-->
+<!--                        {{ trans("visualcenter.dzoOpec") }},-->
+<!--                      </div>-->
+<!--                      <div v-if="backendPeriodRange !== 0">-->
+<!--                        {{ getThousandMetricNameByCategorySelected() }}-->
+<!--                      </div>-->
+<!--                      <div v-else>-->
+<!--                        {{ getMetricNameByCategorySelected() }}-->
+<!--                      </div>-->
+<!--                    </th>-->
 <!--                    <th v-if="isFilterTargetPlanActive && !isOilResidueActive">-->
 <!--                      {{ trans("visualcenter.dzoTargetPlan") }}-->
 <!--                      <br>-->
 <!--                      {{ getThousandMetricNameByCategorySelected() }}-->
 <!--                    </th>-->
-                    <th v-if="backendPeriodRange === 0">
+                    <th v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoOpec") }}
                     </th>
-                    <th v-if="backendPeriodRange === 0">
+                    <th v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoImpulses") }}
                     </th>
-                    <th v-if="backendPeriodRange === 0">
+                    <th v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoLanding") }}
                     </th>
-                    <th v-if="backendPeriodRange === 0">
+                    <th v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoAlarmFirst") }}<br>
                       {{ trans("visualcenter.dzoAlarmSecond") }}
                     </th>
-                    <th v-if="backendPeriodRange === 0">
+                    <th v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoRestrictions") }}
                     </th>
-                    <th v-if="backendPeriodRange === 0">
+                    <th v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoOthers") }}
                     </th>
-                    <th v-if="backendPeriodRange === 0">
+                    <th v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.gasRestriction") }}
                     </th>
                   </tr>
@@ -1045,7 +1033,7 @@
 <!--                      </span>-->
                     </td>
                     <td
-                            v-if="buttonYearlyTab"
+                            v-if="buttonYearlyTab && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="`${getDzoColumnsClass(index,'monthlyPlan')}`"
                     >
                       <div class="font">
@@ -1053,19 +1041,25 @@
                       </div>
                     </td>
                     <td
-                            v-if="buttonMonthlyTab"
+                            v-if="buttonMonthlyTab && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="`${getDzoColumnsClass(index,'yearlyPlan')}`"
                     >
                       <div class="font">
                         {{ formatDigitToThousand(item.monthlyPlan) }}
                       </div>
                     </td>
-                    <td :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')">
+                    <td
+                            v-if="!backendMenu.oilCondensateDeliveryOilResidue"
+                            :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
+                    >
                       <div class="font">
                         {{ formatDigitToThousand(item.plan) }}
                       </div>
                     </td>
-                    <td :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'companyName')">
+                    <td
+                            v-if="!backendMenu.oilCondensateDeliveryOilResidue"
+                            :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'companyName')"
+                    >
                       <div class="font">
                         {{ formatDigitToThousand(item.opek) }}
                       </div>
@@ -1087,6 +1081,7 @@
 <!--                      </div>-->
 <!--                    </td>-->
                     <td
+                            v-if="!backendMenu.oilCondensateDeliveryOilResidue"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'percent')">
                       <div
@@ -1130,6 +1125,7 @@
 <!--                      </div>-->
 <!--                    </td>-->
                     <td
+                            v-if="!backendMenu.oilCondensateDeliveryOilResidue"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')"
                     >
@@ -1153,7 +1149,7 @@
 <!--                      </div>-->
 <!--                    </td>-->
                     <td
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
@@ -1161,7 +1157,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="isConsolidatedCategoryActive() ?
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
@@ -1169,7 +1165,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
@@ -1177,7 +1173,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="isConsolidatedCategoryActive() ?
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
@@ -1185,7 +1181,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
@@ -1193,7 +1189,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="isConsolidatedCategoryActive() ?
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
@@ -1201,7 +1197,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
@@ -1216,7 +1212,7 @@
                     </td>
 
                     <td
-                            v-if="buttonYearlyTab"
+                            v-if="buttonYearlyTab && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="getHighlightClassForSummary(false)"
                     >
                       <div class="font">
@@ -1225,7 +1221,7 @@
                     </td>
 
                     <td
-                            v-if="buttonMonthlyTab"
+                            v-if="buttonMonthlyTab && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="getHighlightClassForSummary(false)"
                     >
                       <div class="font">
@@ -1236,6 +1232,7 @@
                       </div>
                     </td>
                     <td
+                            v-if="!backendMenu.oilCondensateDeliveryOilResidue"
                             :class="buttonYearlyTab || buttonMonthlyTab ? getHighlightClassForSummary(true) : getHighlightClassForSummary(false)"
                     >
                       <div class="font">
@@ -1246,7 +1243,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="isConsolidatedCategoryActive()"
+                            v-if="isConsolidatedCategoryActive() && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="buttonYearlyTab || buttonMonthlyTab ? getHighlightClassForSummary(false) : getHighlightClassForSummary(true)"
                     >
                       <div class="font">
@@ -1268,6 +1265,7 @@
                       </div>
                     </td>
                     <td
+                            v-if="!backendMenu.oilCondensateDeliveryOilResidue"
                             :class="buttonYearlyTab || buttonMonthlyTab ? getHighlightClassForSummary(false) : getHighlightClassForSummary(true)"
                     >
                       <div
@@ -1298,7 +1296,7 @@
 <!--                      </div>-->
 <!--                    </td>-->
                     <td
-                            v-if="isFilterTargetPlanActive"
+                            v-if="isFilterTargetPlanActive && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="`${getColorClassBySelectedPeriod(index)}`"
                     >
                       <div class="font">targetPlan
@@ -1306,7 +1304,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive()"
+                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive() && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="backendPeriodRange === 0 ?
                             getLighterClass(index) : getDarkerClass(index)"
                     >
@@ -1334,38 +1332,38 @@
                     <td
                             :class="isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     >
                     </td>
                     <td
                             :class="isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     ></td>
                     <td
                             :class="isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     ></td>
                     <td
                             :class="isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     ></td>
                     <td
                             :class="isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     ></td>
                     <td
                             :class="isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     ></td>
                     <td
                             :class="isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
-                            v-if="backendPeriodRange === 0"
+                            v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     ></td>
                   </tr>
                   </tbody>
