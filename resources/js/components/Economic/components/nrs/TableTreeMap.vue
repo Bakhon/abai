@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white">
+  <div>
     <div v-for="chart in charts"
          :key="chart.title"
          :id="chart.title">

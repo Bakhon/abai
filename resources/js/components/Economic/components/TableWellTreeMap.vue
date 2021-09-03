@@ -1,34 +1,31 @@
 <template>
   <div>
-    <div v-for="chart in charts" :key="chart.key">
-      <subtitle font-size="18" style="line-height: 26px">
-        {{ chart.title }}
-      </subtitle>
-
-      <apexchart
-          :options="chartOptions(chart.key)"
-          :series="chartSeries[chart.key]"
-          type="treemap"
-          style="color: #000"/>
+    <div v-for="chart in charts"
+         :key="chart.title"
+         :id="chart.title">
     </div>
   </div>
 </template>
 
 <script>
-import chart from "vue-apexcharts";
+async function loadScript(path) {
+  return new Promise((resolve) => {
+    let script = document.createElement('script')
 
-import Subtitle from "./Subtitle";
+    script.onload = () => resolve()
 
-const RU = require("apexcharts/dist/locales/ru.json");
+    script.async = true
 
-const WELL_KEYS = ['oil_12m', 'liquid_12m', 'Operating_profit_12m']
+    script.src = path
+
+    document.head.appendChild(script)
+  })
+}
+
+const SELECTED_COLOR = "#8125B0"
 
 export default {
   name: "TableWellTreeMap",
-  components: {
-    Subtitle,
-    apexchart: chart,
-  },
   props: {
     scenario: {
       required: true,
@@ -40,7 +37,7 @@ export default {
     },
   },
   data: () => ({
-    selectedWells: []
+    chartTrees: []
   }),
   computed: {
     filteredData() {
@@ -50,24 +47,30 @@ export default {
       )
     },
 
-
     chartSeries() {
       let series = {}
 
-      WELL_KEYS.forEach(key => {
+      this.charts.forEach(chart => {
         let data = []
 
-        let colors = []
+        this.filteredData.forEach(well => {
+          let value = +well[chart.key]
 
-        this.filteredData.sort((prev, next) => +next[key] - +prev[key]).forEach(well => {
-          let value = +well[key]
+          if (chart.hasOwnProperty('positive') && value < 0) return
 
-          colors.push(this.getColor(well))
+          if (chart.hasOwnProperty('negative') && value >= 0) return
 
-          data.push({x: well.uwi, y: value})
+          let color = this.getColor(well)
+
+          data.push({
+            name: well.uwi,
+            value: Math.abs(value),
+            fill: this.stoppedWells.includes(well.uwi) ? SELECTED_COLOR : color,
+            fillOriginal: color
+          })
         })
 
-        series[key] = [{data: data, colors: colors}]
+        series[chart.title] = data
       })
 
       return series
@@ -76,8 +79,14 @@ export default {
     charts() {
       return [
         {
-          title: this.trans('economic_reference.operating_profit'),
-          key: 'Operating_profit_12m'
+          title: this.trans('economic_reference.operating_profit') + '+',
+          key: 'Operating_profit_12m',
+          positive: true
+        },
+        {
+          title: this.trans('economic_reference.operating_profit') + '-',
+          key: 'Operating_profit_12m',
+          negative: true
         },
         {
           title: this.trans('economic_reference.liquid_production'),
@@ -88,48 +97,98 @@ export default {
           key: 'oil_12m'
         },
       ]
+    },
+
+    stoppedWells() {
+      return JSON.parse(this.scenario.uwi_stop)
     }
   },
+  async mounted() {
+    await loadScript('/anychart/anychart-core.min.js')
+
+    await loadScript('/anychart/anychart-treemap.min.js')
+
+    this.plotCharts()
+  },
   methods: {
-    selectPoint(key, {seriesIndex, dataPointIndex}) {
-      let uwi = this.chartSeries[key][seriesIndex].data[dataPointIndex].x
+    selectPoint(event, index) {
+      let well = this.chartTrees[index].getChildAt(0).getChildAt(event.pointIndex - 1)
 
-      let index = this.selectedWells.findIndex(well => well === uwi)
+      let currentColor = well.get('fill')
 
-      index === -1
-          ? this.selectedWells.push(uwi)
-          : this.selectedWells.splice(index, 1);
+      let originalColor = well.get('fillOriginal')
+
+      let newColor = currentColor === originalColor ? SELECTED_COLOR : originalColor
+
+      well.set('fill', newColor)
+
+      this.chartTrees.forEach((tree, treeIndex) => {
+        if (index === treeIndex) return
+
+        let item = tree.search('name', well.get('name'))
+
+        if (!item) return
+
+        item.set("fill", newColor)
+      })
+    },
+
+    selectStoppedWells() {
+      let wells = JSON.parse(this.scenario.uwi_stop)
+
+      wells.forEach(well => {
+        this.chartTrees.forEach(tree => {
+          let item = tree.search('name', well)
+
+          if (!item) return
+
+          item.set("fill", SELECTED_COLOR)
+        })
+      })
     },
 
     getColor(well) {
-      if (this.selectedWells.includes(well.uwi)) {
-        return '#8125B0'
-      }
-
       return +well.Operating_profit_12m > 0 ? '#13B062' : '#AB130E'
     },
 
-    chartOptions(key) {
-      return {
-        legend: {
-          show: false
-        },
-        colors: this.chartSeries[key][0].colors,
-        plotOptions: {
-          treemap: {
-            distributed: true,
-            enableShades: false,
-          }
-        },
-        chart: {
-          foreColor: '#FFFFFF',
-          locales: [RU],
-          defaultLocale: 'ru',
-          events: {
-            dataPointSelection: (event, chartContext, config) => this.selectPoint(key, config)
-          }
-        },
-      }
+    plotCharts() {
+      this.charts.forEach((chart, index) => {
+        this.chartTrees[index] = anychart.data.tree([{
+          name: chart.title,
+          children: this.chartSeries[chart.title]
+        }], "as-tree")
+
+        let treemap = anychart.treeMap(this.chartTrees[index])
+
+        treemap.listen("pointDblClick", (event) => this.selectPoint(event, index))
+
+        treemap.labels().useHtml(true);
+
+        treemap.labels().format(function () {
+          return `<span style="color: #fff; font-weight: bold"> ${this.name} </span>`
+        });
+
+        treemap.container(chart.title)
+
+        treemap.hovered().fill('')
+
+        treemap.selected().fill('')
+
+        treemap.draw()
+      })
+    },
+  },
+  watch: {
+    'scenario.percent_stop_cat_1'(newVal) {
+      console.log(newVal)
+
+      this.selectStoppedWells()
+    },
+
+    'scenario.percent_stop_cat_2'(newVal) {
+      console.log(newVal)
+
+      this.selectStoppedWells()
     },
   }
 }

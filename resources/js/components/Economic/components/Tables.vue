@@ -11,7 +11,7 @@
           @click.native="selectTab(tab)"/>
     </div>
 
-    <div class="mt-3 w-100">
+    <div class="mt-3 w-100 overflow-auto">
       <table-specific-indicators
           v-if="activeTab === 'specific_indicators'"
           :org="res.org"
@@ -74,6 +74,7 @@
       <table-well-tree-map
           v-else-if="activeTab === 'well_treemap'"
           :scenario="scenario"
+          :key="scenarioUniqueKey"
           :data="res.wellChanges"
           class="text-white"/>
     </div>
@@ -136,6 +137,13 @@ export default {
         palette: this.trans('economic_reference.palette'),
         well_treemap: this.trans('economic_reference.table_well_treemap'),
       }
+    },
+
+    scenarioUniqueKey() {
+      return `${this.scenario.dollar_rate},
+          ${this.scenario.oil_price},
+          ${this.scenario.coef_Fixed_nopayroll},
+          ${this.scenario.coef_cost_WR_payroll}`
     }
   },
   methods: {
