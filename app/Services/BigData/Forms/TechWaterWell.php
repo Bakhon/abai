@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class TechWaterWell extends TableForm
 {
     protected $configurationFileName = 'tech_water_well';
+    protected $waterMeasurements;
 
     public function getRows(array $params = []): array
     {
         $filter = json_decode($this->request->get('filter'));
-        $params['filter']['well_category'] = ['WTR'];
+        //$params['filter']['well_category'] = ['WTR'];
         $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
 
         $tables = $this->getFields()->pluck('table')->filter()->unique();
@@ -24,7 +26,7 @@ class TechWaterWell extends TableForm
             Carbon::parse($this->request->get('date'))
         );
 
-        $waterMeasurements = DB::connection('tbd')
+        $this->waterMeasurements = DB::connection('tbd')
             ->table('prod.meas_water_prod')
             ->whereIn('well', $wells->pluck('id')->toArray())
             ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
@@ -39,44 +41,13 @@ class TechWaterWell extends TableForm
             });
 
         $wells->transform(
-            function ($item) use ($rowData, $waterMeasurements) {
+            function ($item) use ($rowData) {
                 $result = [];
 
                 foreach ($this->getFields() as $field) {
-                    switch ($field['code']) {
-                        case 'avg_water_prev_month':
-                            $measurement = $waterMeasurements->get($item->id);
-                            $value = !empty($measurement) ? $measurement['avg'] : null;
-
-                            $result[$field['code']] = [
-                                'value' => $value
-                            ];
-                            break;
-                        case 'sum_water_prev_month':
-                            $measurement = $waterMeasurements->get($item->id);
-                            $value = !empty($measurement) ? $measurement['sum'] : null;
-
-                            $result[$field['code']] = [
-                                'value' => $value
-                            ];
-                            break;
-                        case 'events':
-                            $events = DB::connection('tbd')
-                                ->table('prod.tech_mode_event')
-                                ->select('id', 'event_type', 'plan_month')
-                                ->where('well', $item->id)
-                                ->get();
-
-                            $result[$field['code']] = [
-                                'value' => $events
-                            ];
-
-                            break;
-                        default:
-                            $fieldValue = $this->getFieldValue($field, $rowData, $item);
-                            if (!empty($fieldValue)) {
-                                $result[$field['code']] = $fieldValue;
-                            }
+                    $value = $this->getFieldValue($field, $rowData, $item);
+                    if (!empty($value)) {
+                        $result[$field['code']] = $value;
                     }
                 }
 
@@ -90,6 +61,27 @@ class TechWaterWell extends TableForm
         return [
             'rows' => $wells->toArray()
         ];
+    }
+
+    protected function getCustomFieldValue(array $field, array $rowData, Model $item): ?array
+    {
+        switch ($field['code']) {
+            case 'avg_water_prev_month':
+                $measurement = $this->waterMeasurements->get($item->id);
+                return !empty($measurement) ? $measurement['avg'] : null;
+            case 'sum_water_prev_month':
+                $measurement = $this->waterMeasurements->get($item->id);
+                return !empty($measurement) ? $measurement['sum'] : null;
+            case 'events':
+                return DB::connection('tbd')
+                    ->table('prod.tech_mode_event')
+                    ->select('id', 'event_type', 'plan_month')
+                    ->where('well', $item->id)
+                    ->get()
+                    ->toArray();
+            default:
+                return null;
+        }
     }
 
     protected function saveSingleFieldInDB(array $params): void
