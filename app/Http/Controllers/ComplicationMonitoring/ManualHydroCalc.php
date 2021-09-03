@@ -170,6 +170,11 @@ class ManualHydroCalc extends CrudController
         $alerts = [];
 
         foreach ($pipes as $key => $pipe) {
+            if (!$pipe->lastCoords) {
+                unset($pipes[$key]);
+                continue;
+            }
+
             if ($pipe->between_points == 'well-zu') {
                 $query = OmgNGDUWell::where('well_id', $pipe->well_id);
 
