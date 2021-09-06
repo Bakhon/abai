@@ -1,5 +1,5 @@
 <template>
-  <div class="row p-3 bg-main1 position-relative overflow-auto">
+  <div class="row p-3 bg-main1 position-relative overflow-auto customScroll">
     <div class="d-flex">
       <chart-button
           v-for="(tab, index) in Object.keys(tabs)"
