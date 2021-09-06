@@ -9,7 +9,8 @@ class TechnicalDataForecastRequest extends FormRequest
     public function rules()
     {
         return [
-            'source_id' => 'required|integer|min:1',
+            'source_id' => 'nullable|integer|min:1',
+            'gu_id' => 'nullable|integer|min:1',
         ];
     }
 }
