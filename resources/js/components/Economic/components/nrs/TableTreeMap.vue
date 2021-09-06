@@ -4,7 +4,7 @@
         :form="form"
         form-key="ngdu"
         class="mb-3"
-        @change="form.cdng_id = null"/>
+        @change="updateForm('cdng_id')"/>
 
     <select-tech-structure
         v-if="form.ngdu_id"
@@ -12,16 +12,17 @@
         :fetch-params="{ngdu_id: form.ngdu_id}"
         form-key="cdng"
         class="mb-3"
-        @change="form.gu_id = null"/>
+        @change="updateForm('gu_id')"/>
 
     <select-tech-structure
         v-if="form.cdng_id"
         :form="form"
         :fetch-params="{cdng_id: form.cdng_id}"
         form-key="gu"
-        class="mb-3"/>
+        class="mb-3"
+        @change="getWells"/>
 
-    <div v-for="chart in charts"
+    <div v-for="chart in loading ? [] : charts"
          :key="chart.title"
          :id="chart.title">
     </div>
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-import {treemapMixin} from "../../mixins/treemapMixin";
+import {SELECTED_COLOR, treemapMixin} from "../../mixins/treemapMixin";
 
 import SelectTechStructure from "../SelectTechStructure";
 
@@ -51,7 +52,9 @@ export default {
       ngdu_id: null,
       cdng_id: null,
       field_id: null,
-    }
+    },
+    selectedWells: [],
+    loading: false
   }),
   computed: {
     uwis() {
@@ -86,7 +89,7 @@ export default {
           wells.push({
             name: well.uwi,
             value: Math.abs(value),
-            fill: color,
+            fill: this.selectedWells.includes(well.uwi) ? SELECTED_COLOR : color,
             fillOriginal: color
           })
         })
@@ -118,6 +121,44 @@ export default {
           key: 'oil'
         },
       ]
+    }
+  },
+  methods: {
+    async getWells() {
+      this.loading = true
+
+      this.chartTrees = []
+
+      let url = this.localeUrl('/tech-data-forecast/get-data')
+
+      let params = {...{wells: 1}, ...this.form}
+
+      const {data} = await this.axios.get(url, {params: params})
+
+      this.selectedWells = data
+
+      this.loading = false
+
+      this.$nextTick(() => this.plotCharts()
+      )
+    },
+
+    selectWells(wells) {
+      wells.forEach(well => {
+        this.chartTrees.forEach(tree => {
+          let item = tree.search('name', well)
+
+          if (!item) return
+
+          item.set("fill", SELECTED_COLOR)
+        })
+      })
+    },
+
+    updateForm(key) {
+      this.form[key] = null
+
+      this.getWells()
     }
   }
 }

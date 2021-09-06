@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Technical\StoreTechnicalDataForecastRequest;
 use App\Http\Requests\Technical\TechnicalDataForecastRequest;
 use App\Models\Refs\TechnicalDataForecast;
+use App\Models\Refs\TechnicalStructureCdng;
 use App\Models\Refs\TechnicalStructureGu;
+use App\Models\Refs\TechnicalStructureNgdu;
 use App\Models\Refs\TechnicalStructureSource;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -82,8 +84,32 @@ class TechnicalDataForecastController extends Controller
             $query->whereSourceId($request->source_id);
         }
 
+        if ($request->ngdu_id) {
+            $ngdu = TechnicalStructureNgdu::findOrFail($request->ngdu_id);
+
+            $guIds = TechnicalStructureGu::query()
+                ->whereIn('cdng_id', $ngdu->cdngs()->pluck('id'))
+                ->pluck('id');
+
+            $query->whereIn('gu_id', $guIds);
+        }
+
+        if ($request->cdng_id) {
+            /** @var TechnicalStructureCdng $cdng */
+            $cdng = TechnicalStructureCdng::findOrFail($request->cdng_id);
+
+            $query->whereIn('gu_id', $cdng->gus()->pluck('id'));
+        }
+
         if ($request->gu_id) {
             $query->whereGuId($request->gu_id);
+        }
+
+        if ($request->wells) {
+            return $query
+                ->distinct()
+                ->pluck('well_id')
+                ->toArray();
         }
 
         return $query

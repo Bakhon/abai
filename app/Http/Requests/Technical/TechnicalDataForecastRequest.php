@@ -10,7 +10,10 @@ class TechnicalDataForecastRequest extends FormRequest
     {
         return [
             'source_id' => 'nullable|integer|min:1',
+            'ngdu_id' => 'nullable|integer|min:1',
+            'cdng_id' => 'nullable|integer|min:1',
             'gu_id' => 'nullable|integer|min:1',
+            'wells' => 'nullable|boolean',
         ];
     }
 }
