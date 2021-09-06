@@ -163,7 +163,7 @@ export default {
       }
       
       for(let idx in node.children) {
-        this.loadChildren(node.children[idx]);
+        await this.loadChildren(node.children[idx]);
       }
     },
     isHaveChildren(node) {

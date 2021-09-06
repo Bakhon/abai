@@ -172,16 +172,16 @@ export default {
             let fieldParts = field.split(".")
             return fieldParts.length === 3
         },
-        updateStatistics() {
-            this.loadStatistics()
-            let selectedAttributes = this.getSelectedAttributes()
+        async updateStatistics() {
+            await this.loadStatistics()
+            let selectedAttributes = await this.getSelectedAttributes()
             this.statisticsColumns = {}
             this.maxDepthOfSelectedAttributes = {}
             for (let sheetType in selectedAttributes) {
                 this.statisticsColumns[sheetType] = this.getStatisticsColumnNames(selectedAttributes[sheetType])
             }
         },
-        loadStatistics() {
+        async loadStatistics() {
             this.SET_LOADING(true)
             this.statistics = null;
 
@@ -192,7 +192,8 @@ export default {
                 this.SET_LOADING(false)
                 return
             }
-            let params = this.getStatisticsRequestParams()
+            let params = await this.getStatisticsRequestParams();
+
             this.axios.post(this.baseUrl + "get_statistics", JSON.stringify(params), {
                 responseType: 'json',
                 headers: {
@@ -203,9 +204,9 @@ export default {
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
+                console.log(JSON.stringify(params));
                 this.SET_LOADING(false)
-            });
-
+            })
         },
         validateStatisticsParams() {
             if (this.getSelectedObjects().length === 0) {
@@ -265,47 +266,58 @@ export default {
             }
             return field in this.attributeDescriptions["formulas"]
         },
-        getStatisticsRequestParams() {
+        async getStatisticsRequestParams() {
+            let selectedObjects = await this.getSelectedObjects();
+            let fields = await this.getSelectedAttributes();
+            let dates = await this.getDates();
+            let currentStructureType = this.currentStructureType;
+
             return {
-                "fields": this.getSelectedAttributes(),
-                "selectedObjects": this.getSelectedObjects(),
-                "structureType": this.currentStructureType,
-                "dates": this.getDates()
+                "fields": fields,
+                "selectedObjects": selectedObjects,
+                "structureType": currentStructureType,
+                "dates": dates
             }
         },
-        getSelectedObjects() {
+        async getSelectedObjects() {
             let selectedObjects = [];
             for(let structureType in this.selectedObjects) {
                 for(let option in this.selectedObjects[structureType]) {
                     for(let node of this.selectedObjects[structureType][option]) {
                         if(node.isChecked) {
-                            this.loadChildrenOfNode(node);
                             selectedObjects.push(node);
                         }
-                        selectedObjects = selectedObjects.concat(this.getSelectedChildren(node));
+                        selectedObjects = selectedObjects.concat(await this.getSelectedChildren(node));
                     }
                 }
             }
+            for(let node of selectedObjects) {
+                if(node.type === "well") continue;
+                await this.loadChildrenOfNode(node).then(async () => {
+                    selectedObjects = selectedObjects.concat(await this.getSelectedChildren(node));
+                });
+            }
+
+            console.log(selectedObjects);
             return selectedObjects;
         },
-        loadChildrenOfNode(node) {
+        async loadChildrenOfNode(node) {
             this.$refs.itemSelectTree.loadChildren(node)
-            .then(() => {
-                this.updateChildrenOfNode(node, node.level);
+            .then(async () => {
+                await this.updateChildrenOfNode(node, node.level)
             });
         },
-        updateChildrenOfNode(node, level) {
+        async updateChildrenOfNode(node, level) {
             if(!node?.children) return;
             for(let child of node.children) {
                 if(!('isChecked' in child)) {
                     child.isChecked = node.isChecked;
-                    child.level = level+1;
                 }
-                
-                this.updateChildrenOfNode(child, level+1);
+                child.level = level+1;
+                await this.updateChildrenOfNode(child, level+1);
             }
         },
-        getSelectedChildren(node) {
+        async getSelectedChildren(node) {
             if(!node || !('children' in node)) return [];
             let selectedChildren = [];
 
@@ -313,7 +325,7 @@ export default {
                 if(child.isChecked) {
                     selectedChildren.push(child);
                 }
-                selectedChildren = selectedChildren.concat(this.getSelectedChildren(child));
+                selectedChildren = selectedChildren.concat(await this.getSelectedChildren(child));
             }
             return selectedChildren;
         },
@@ -344,12 +356,12 @@ export default {
         },
         getStatisticsFile() {
             this.SET_LOADING(true)
-            try {
-                this.validateStatisticsParams()
-            } catch (e) {
-                this.showToast(e.name, e.message, 'danger', 10000)
-                return
-            }
+            // try {
+            //     this.validateStatisticsParams()
+            // } catch (e) {
+            //     this.showToast(e.name, e.message, 'danger', 10000)
+            //     return
+            // }
             let params = this.getStatisticsRequestParams()
             this.axios.post(
                 this.baseUrl + 'get_excel/',
