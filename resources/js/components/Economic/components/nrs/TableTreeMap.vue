@@ -1,5 +1,26 @@
 <template>
   <div>
+    <select-tech-structure
+        :form="form"
+        form-key="ngdu"
+        class="mb-3"
+        @change="form.cdng_id = null"/>
+
+    <select-tech-structure
+        v-if="form.ngdu_id"
+        :form="form"
+        :fetch-params="{ngdu_id: form.ngdu_id}"
+        form-key="cdng"
+        class="mb-3"
+        @change="form.gu_id = null"/>
+
+    <select-tech-structure
+        v-if="form.cdng_id"
+        :form="form"
+        :fetch-params="{cdng_id: form.cdng_id}"
+        form-key="gu"
+        class="mb-3"/>
+
     <div v-for="chart in charts"
          :key="chart.title"
          :id="chart.title">
@@ -10,8 +31,13 @@
 <script>
 import {treemapMixin} from "../../mixins/treemapMixin";
 
+import SelectTechStructure from "../SelectTechStructure";
+
 export default {
   name: "TableTreeMap",
+  components: {
+    SelectTechStructure
+  },
   mixins: [treemapMixin],
   props: {
     data: {
@@ -19,6 +45,14 @@ export default {
       type: Object
     },
   },
+  data: () => ({
+    form: {
+      gu_id: null,
+      ngdu_id: null,
+      cdng_id: null,
+      field_id: null,
+    }
+  }),
   computed: {
     uwis() {
       return Object.keys(this.data.uwis)
