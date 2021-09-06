@@ -44,4 +44,11 @@ return array (
   'data_on_page' => 'данных на странице',
   'report_duplicated' => 'Такой шаблон уже загружен',
   'horizon' => 'Горизонт',
+  'research_exploration' => 'Изученность пробами',
+  'no_field_selected' => 'Месторождение не выбрано',
+  'template_create' => 'Создание шаблона',
+  'close' => 'Закрыть',
+  'downloading_data' => 'Выгрузка данных',
+  'create_template' => 'Создать шаблон',
+  'choose_section' => 'Выбор раздела',
 );

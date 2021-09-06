@@ -52,7 +52,7 @@
         </ul>
       </div>
     </div>
-    <p v-show="collapsed" class="vertical-text">Выбор раздела</p>
+    <p v-show="collapsed" class="vertical-text">{{ trans("plast_fluids.choose_section") }}</p>
   </div>
 </template>
 
