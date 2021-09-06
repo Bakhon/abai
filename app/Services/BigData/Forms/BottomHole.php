@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 class BottomHole extends PlainForm
 {
     protected $configurationFileName = 'bottom_hole';
+    protected $bottomHoleType = 'TD';
 
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
@@ -33,7 +34,7 @@ class BottomHole extends PlainForm
     {
         return DB::connection('tbd')
             ->table('dict.bottom_hole_type')
-            ->where('code', 'TD')
+            ->where('code', $this->bottomHoleType)
             ->first();
     }
 
