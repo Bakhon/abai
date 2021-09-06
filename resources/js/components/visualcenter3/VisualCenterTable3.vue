@@ -551,9 +551,8 @@
                   <button
                           type="button"
                           data-toggle="dropdown"
-                          @click="switchDropdownCategories('waterInjection')"
                           :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' ,
-                            {'button-tab-highlighted': backendMenu.seawaterInjection || backendMenu.wasteWaterInjection || backendMenu.artezianWaterInjection}
+                            {'button-tab-highlighted': backendMenu.seaWaterInjection || backendMenu.wasteWaterInjection || backendMenu.artezianWaterInjection}
                           ]"
                   ></button>
                   <div>
