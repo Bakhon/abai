@@ -155,13 +155,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             return;
         }
 
-        $calcUrl = env('HYDRO_CALC_SERVICE_URL');
-        foreach ($pipes as $pipe) {
-            if ($pipe->between_points == 'zu-gu' and ($pipe->gu->omgngdu[0]->surge_tank_pressure ?? null)) {
-                $calcUrl = env('MANUAL_CALC_SERVICE_URL');
-                break;
-            }
-        }
+        $calcUrl = $this->getUrl($pipes);
 
         $data = [
             'pipes' => $pipes,
@@ -207,6 +201,20 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             );
         }
     }
+
+    protected function getUrl($pipes): string
+    {
+        $calcUrl = env('HYDRO_CALC_SERVICE_URL');
+        foreach ($pipes as $pipe) {
+            if ($pipe->between_points == 'zu-gu' and ($pipe->gu->omgngdu[0]->surge_tank_pressure ?? null)) {
+                $calcUrl = env('MANUAL_CALC_SERVICE_URL');
+                break;
+            }
+        }
+
+        return $calcUrl;
+    }
+
 
     protected function getFilteredQuery($filter, $query = null)
     {
