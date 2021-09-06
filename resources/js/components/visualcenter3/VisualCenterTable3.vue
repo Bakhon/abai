@@ -102,6 +102,7 @@
                             <div
                                     class="progress-bar"
                                     role="progressbar"
+                                    v-if="backendSummary.oilDeliveryFact"
                                     :style="{width: getBackendProgress(backendSummary.oilDeliveryFact,backendSummary.oilDeliveryPlan) + '%'}"
                                     :aria-valuenow="backendSummary.oilDeliveryFact"
                                     aria-valuemin="0"
@@ -143,7 +144,7 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ getFormattedNumber(productionParams.gas_fact) }}
+                              {{ getFormattedNumber(backendSummary.gasProductionFact) }}
                             </div>
 <!--                            <div-->
 <!--                                    v-if="!buttonDailyTab && !isOneDateSelected"-->
@@ -167,39 +168,35 @@
                             <div
                                     class="progress-bar"
                                     role="progressbar"
-                                    :style="{
-                                width: dailyProgressBars.gas + '%',
-                              }"
-                                    :aria-valuenow="productionParams.gas_fact"
+                                    v-if="backendSummary.gasProductionFact"
+                                    :style="{width: getBackendProgress(backendSummary.gasProductionFact,backendSummary.gasProductionPlan) + '%'}"
+                                    :aria-valuenow="backendSummary.gasProductionFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="productionParams.gas_plan"
+                                    :aria-valuemax="backendSummary.gasProductionPlan"
                             ></div>
+
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="productionParams.gas_fact">
-                              {{ getDiffProcentLastBigN(productionParams.gas_fact, productionParams.gas_plan) }}%
+                            <div class="percent-header col-5 col-md-6" v-if="backendSummary.gasProductionFact">
+                              {{ getDiffProcentLastBigN(backendSummary.gasProductionFact,backendSummary.gasProductionPlan)}}%
                             </div>
-                            <div class="plan-header col-6" v-if="productionParams.gas_plan">
-                              {{ formatDigitToThousand(productionParams.gas_plan) }}
+                            <div class="plan-header col-6" v-if="backendSummary.gasProductionPlan">
+                              {{ formatDigitToThousand(backendSummary.gasProductionPlan) }}
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(productionParams.gas_fact, productionPercentParams.gas_fact)}`"
+                                    :class="`${getGrowthIndicatorByDifference(backendSummary.gasProductionFact,backendHistoricalSummaryFact.gasProductionFact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{
-                              Math.abs(
-                              getDifferencePercentBetweenLastValues(productionPercentParams.gas_fact, productionParams.gas_fact)
-                              )
-                              }}%
+                              {{ Math.abs(getDifferencePercentBetweenLastValues(backendHistoricalSummaryFact.gasProductionFact,backendSummary.gasProductionFact))}}%
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
-                              <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                              <span v-if="backendPeriodRange === 0"> {{ backendHistoricalPeriodEnd.format('DD.MM.YYYY') }}</span>
+                              <span v-else> {{ backendHistoricalPeriodStart.format('DD.MM.YYYY') }} - {{ backendHistoricalPeriodEnd.format('DD.MM.YYYY') }}</span>
                             </div>
                           </div>
                         </div>

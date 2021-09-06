@@ -113,12 +113,20 @@ export default {
             return response.data;
         },
         backendUpdateSummaryFact(productionName,deliveryName) {
+            console.log('productionName ' + productionName);
             this.backendSummary.oilProductionFact = _.sumBy(this.backendProductionParams.tableData.current[productionName],'fact');
+            console.log(this.backendSummary.oilProductionFact);
             this.backendSummary.oilProductionPlan = _.sumBy(this.backendProductionParams.tableData.current[productionName],'plan');
             this.backendSummary.oilDeliveryFact = _.sumBy(this.backendProductionParams.tableData.current[deliveryName],'fact');
             this.backendSummary.oilDeliveryPlan = _.sumBy(this.backendProductionParams.tableData.current[deliveryName],'plan');
+            this.backendSummary.gasProductionFact = _.sumBy(this.backendProductionParams.tableData.current['gasProduction'],'fact');
+            this.backendSummary.gasProductionPlan = _.sumBy(this.backendProductionParams.tableData.current['gasProduction'],'plan');
             this.backendHistoricalSummaryFact.oilProductionFact = _.sumBy(this.backendProductionParams.tableData.historical[productionName],'fact');
+            console.log(this.backendHistoricalSummaryFact.oilProductionFact);
             this.backendHistoricalSummaryFact.oilDeliveryFact = _.sumBy(this.backendProductionParams.tableData.historical[deliveryName],'fact');
+            this.backendHistoricalSummaryFact.gasProductionFact = _.sumBy(this.backendProductionParams.tableData.historical['gasProduction'],'fact');
+            console.log(this.backendSummary)
+            console.log(this.backendHistoricalSummaryFact)
         },
         getBackendProgress(fact,plan) {
             return (fact / plan) * 100;

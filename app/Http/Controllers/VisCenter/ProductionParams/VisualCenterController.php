@@ -114,6 +114,7 @@ class VisualCenterController extends Controller
         $this->tableData['current']['oilCondensateDeliveryOilResidue'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDeliveryOilResidue');
 
         $this->tableData['current'] = array_merge($this->tableData['current'],$this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'gasProduction'));
+        $this->tableData['historical'] = array_merge($this->tableData['historical'],$this->getTableData($historicalDzoFact,$historicalDzoPlan,'gasProduction'));
         return array(
             'tableData' => $this->tableData,
             'chartData' => $this->chartData,

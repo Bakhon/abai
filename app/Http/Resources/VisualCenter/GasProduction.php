@@ -134,7 +134,7 @@ class GasProduction {
             $companySummary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$categoryFields['plan']);
             $companySummary['plan'] = $this->getCurrentPlanForYear($filteredPlan,$categoryFields['plan']);
         }
-        if ($companySummary['plan'] + $companySummary['fact'] === 0) {
+        if ($companySummary['plan'] + $companySummary['fact'] == 0) {
             return $summary;
         }
         array_push($summary,$companySummary);
