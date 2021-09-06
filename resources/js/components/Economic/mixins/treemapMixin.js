@@ -50,16 +50,16 @@ export const treemapMixin = {
 
                 treemap.container(chart.title)
 
-                treemap.hovered()
+                treemap.hovered().fill(SELECTED_COLOR)
 
-                treemap.selected()
+                treemap.selected().fill(SELECTED_COLOR)
 
                 treemap.draw()
             })
         },
 
-        getColor(well) {
-            return +well.Operating_profit > 0 ? '#13B062' : '#AB130E'
+        getColor(well, key) {
+            return +well[key] > 0 ? '#13B062' : '#AB130E'
         },
 
         selectPoint(event, index) {

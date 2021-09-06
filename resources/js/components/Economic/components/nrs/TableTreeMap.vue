@@ -47,7 +47,7 @@ export default {
 
           if (chart.hasOwnProperty('negative') && value >= 0) return
 
-          let color = this.getColor(well)
+          let color = this.getColor(well, 'Operating_profit')
 
           data.push({
             name: well.uwi,

@@ -48,7 +48,7 @@ export default {
 
           if (chart.hasOwnProperty('negative') && value >= 0) return
 
-          let color = this.getColor(well)
+          let color = this.getColor(well, 'Operating_profit_12m')
 
           data.push({
             name: well.uwi,
@@ -87,19 +87,6 @@ export default {
       ]
     },
   },
-  methods: {
-    selectStoppedWells() {
-      this.stoppedWells.forEach(well => {
-        this.chartTrees.forEach(tree => {
-          let item = tree.search('name', well)
-
-          if (!item) return
-
-          item.set("fill", SELECTED_COLOR)
-        })
-      })
-    }
-  }
 }
 </script>
 
