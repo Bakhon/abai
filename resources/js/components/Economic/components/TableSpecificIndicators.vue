@@ -170,16 +170,6 @@ export default {
           dimension: this.trans('economic_reference.million_tenge_for_operation')
         }
       ]
-
-      let gtms = this.gtms.map(gtm => {
-        return {
-          label: gtm.name,
-          value: +gtm.price / 1000000,
-          dimension: this.trans('economic_reference.million_tenge_for_operation')
-        }
-      })
-
-      return [...data, ...gtms]
     }
   }
 }
