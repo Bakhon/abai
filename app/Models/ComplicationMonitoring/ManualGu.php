@@ -107,4 +107,13 @@ class ManualGu extends Model
     {
         return $this->setConnection('tbd_cmon')->hasMany(ManualOilPipe::class);
     }
+
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($gu) {
+            $gu->omgngdu()->each(function($omgngdu) {
+                $omgngdu->delete();
+            });
+        });
+    }
 }

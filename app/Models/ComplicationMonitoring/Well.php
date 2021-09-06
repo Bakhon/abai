@@ -92,4 +92,13 @@ class Well extends Model
             'sg_water'
         );
     }
+
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($gu) {
+            $gu->omgngdu()->each(function($omgngdu) {
+                $omgngdu->delete();
+            });
+        });
+    }
 }

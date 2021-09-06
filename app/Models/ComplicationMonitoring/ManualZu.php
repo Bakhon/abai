@@ -60,4 +60,13 @@ class ManualZu extends Model
     {
         return $this->hasMany(OmgUHE::class, 'zu_id');
     }
+
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($gu) {
+            $gu->omgngdu()->each(function($omgngdu) {
+                $omgngdu->delete();
+            });
+        });
+    }
 }

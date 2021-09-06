@@ -165,4 +165,13 @@ class Gu extends Model
     {
         return $this->hasMany(MeteringUnits::class);
     }
+
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($gu) {
+            $gu->omgngdu()->each(function($omgngdu) {
+                $omgngdu->delete();
+            });
+        });
+    }
 }

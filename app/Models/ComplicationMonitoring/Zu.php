@@ -70,4 +70,13 @@ class Zu extends Model
     {
         return $this->hasMany(OmgNGDUZu::class);
     }
+
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($gu) {
+            $gu->omgngdu()->each(function($omgngdu) {
+                $omgngdu->delete();
+            });
+        });
+    }
 }

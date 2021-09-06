@@ -29,7 +29,7 @@ class ManualHydroCalculatedListResource extends CrudListResource
                 'gas_factor' => $this->gazf,
                 'pressure_start' => $this->press_start,
                 'pressure_end' => $this->press_end,
-                'temp_well' => $this->temperature_start,
+                'temp_start' => $this->temperature_start,
                 'temp_end' => $this->temperature_end,
                 'mix_speed_avg' => $this->mix_speed_avg,
                 'fluid_speed' => $this->fluid_speed,
