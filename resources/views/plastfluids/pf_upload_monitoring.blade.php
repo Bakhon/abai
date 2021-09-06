@@ -2,7 +2,7 @@
 @section('content')
 <div class="pf-upload-monitoring-wrapper">
     <div class="pf-upload-monitoring">
-        <pf-upload_monitoring :user="{{json_encode(auth()->user())}}"></pf-upload_monitoring>
+        <pf-upload-monitoring :user="{{json_encode(auth()->user())}}"></pf-upload-monitoring>
     </div>
 </div>
 @endsection
