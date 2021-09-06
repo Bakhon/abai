@@ -8,4 +8,4 @@
   </div>
 </template>
 
-<script src="./js/InflowCurve.js"></script>
+<script src="./js/SensitiveResult.js"></script>
