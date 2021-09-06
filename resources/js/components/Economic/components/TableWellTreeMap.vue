@@ -177,15 +177,6 @@ export default {
         treemap.draw()
       })
     },
-  },
-  watch: {
-    'scenario.percent_stop_cat_1'(newVal) {
-      this.selectStoppedWells()
-    },
-
-    'scenario.percent_stop_cat_2'(newVal) {
-      this.selectStoppedWells()
-    },
   }
 }
 </script>
