@@ -2,13 +2,14 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Traits\ClearOmgNgduOnDelete;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class ManualGu extends Model
 {
-    use LogsActivity, SoftDeletes;
+    use LogsActivity, SoftDeletes, ClearOmgNgduOnDelete;
 
     protected $guarded = ['id'];
     protected $hidden = [
@@ -106,14 +107,5 @@ class ManualGu extends Model
     public function oilPipes()
     {
         return $this->setConnection('tbd_cmon')->hasMany(ManualOilPipe::class);
-    }
-
-    public static function boot() {
-        parent::boot();
-        self::deleting(function($gu) {
-            $gu->omgngdu()->each(function($omgngdu) {
-                $omgngdu->delete();
-            });
-        });
     }
 }

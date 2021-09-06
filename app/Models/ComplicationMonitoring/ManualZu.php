@@ -2,13 +2,14 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Traits\ClearOmgNgduOnDelete;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class ManualZu extends Model
 {
-    use LogsActivity, SoftDeletes;
+    use LogsActivity, SoftDeletes, ClearOmgNgduOnDelete;
 
     protected $guarded = ['id'];
     protected $hidden = [
@@ -61,12 +62,5 @@ class ManualZu extends Model
         return $this->hasMany(OmgUHE::class, 'zu_id');
     }
 
-    public static function boot() {
-        parent::boot();
-        self::deleting(function($gu) {
-            $gu->omgngdu()->each(function($omgngdu) {
-                $omgngdu->delete();
-            });
-        });
-    }
+
 }

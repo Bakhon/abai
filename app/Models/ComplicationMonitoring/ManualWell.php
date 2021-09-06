@@ -5,10 +5,11 @@ namespace App\Models\ComplicationMonitoring;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
+use App\Traits\ClearOmgNgduOnDelete;
 
 class ManualWell extends Model
 {
-    use LogsActivity, SoftDeletes;
+    use LogsActivity, SoftDeletes, ClearOmgNgduOnDelete;
 
     protected $guarded = ['id'];
     protected $hidden = [
@@ -96,14 +97,5 @@ class ManualWell extends Model
             'sg_gas',
             'sg_water'
         );
-    }
-
-    public static function boot() {
-        parent::boot();
-        self::deleting(function($gu) {
-            $gu->omgngdu()->each(function($omgngdu) {
-                $omgngdu->delete();
-            });
-        });
     }
 }

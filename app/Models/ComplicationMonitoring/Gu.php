@@ -2,6 +2,7 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Traits\ClearOmgNgduOnDelete;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pipes\GuZuPipe;
 use App\Models\Pipes\ZuWellPipe;
@@ -10,7 +11,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Gu extends Model
 {
-    use LogsActivity, SoftDeletes;
+    use LogsActivity, SoftDeletes, ClearOmgNgduOnDelete;
 
     protected static $logAttributes = ['*'];
     protected static $logAttributesToIgnore = ['updated_at', 'created_at', 'deleted_at'];
@@ -164,14 +165,5 @@ class Gu extends Model
     public function metering_units()
     {
         return $this->hasMany(MeteringUnits::class);
-    }
-
-    public static function boot() {
-        parent::boot();
-        self::deleting(function($gu) {
-            $gu->omgngdu()->each(function($omgngdu) {
-                $omgngdu->delete();
-            });
-        });
     }
 }
