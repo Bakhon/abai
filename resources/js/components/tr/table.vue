@@ -868,10 +868,10 @@ tr:nth-child(even) {
 }
 .table tr:first-child .th {
     top: -1px;
-    z-index: 3000;
+    z-index: 4000;
 }
 .table.table tr:not(.notsticky) .th:nth-child(-n + 3) {
-  z-index: 4000;
+  z-index: 4001;
 }
 .table tr:nth-child(2) .th {
     top: 22px;
@@ -887,7 +887,7 @@ tr:nth-child(even) {
 }
 .table tr:nth-child(5) .th {
     top: 88px;
-    z-index: 3000;
+    z-index: 4000;
 }
 .trtablerow {
     position: relative;
