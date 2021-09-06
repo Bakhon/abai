@@ -19,7 +19,7 @@
     },
     {
       "title": "org",
-      "code": "org_name",
+      "code": "org",
       "type": "dict",
       "dict":"orgs",
       "is_editable": false,
