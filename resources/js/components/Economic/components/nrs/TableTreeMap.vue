@@ -38,7 +38,7 @@ export default {
       let series = {}
 
       this.charts.forEach(chart => {
-        let data = []
+        let wells = []
 
         this.wells.forEach(well => {
           let value = +well[chart.key]
@@ -49,7 +49,7 @@ export default {
 
           let color = this.getColor(well, 'Operating_profit')
 
-          data.push({
+          wells.push({
             name: well.uwi,
             value: Math.abs(value),
             fill: color,
@@ -57,7 +57,7 @@ export default {
           })
         })
 
-        series[chart.title] = data
+        series[chart.title] = wells
       })
 
       return series
