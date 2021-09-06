@@ -134,9 +134,7 @@ export default {
     },
 
     selectStoppedWells() {
-      let wells = JSON.parse(this.scenario.uwi_stop)
-
-      wells.forEach(well => {
+      this.stoppedWells.forEach(well => {
         this.chartTrees.forEach(tree => {
           let item = tree.search('name', well)
 
