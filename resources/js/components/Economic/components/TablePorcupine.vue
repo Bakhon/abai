@@ -108,6 +108,9 @@ export default {
               operating_profit: (operating_profit / dimension).toFixed(2),
             })
 
+            console.log(+scenario.oil.original_value_optimized)
+            console.log(+scenario.oil.original_value_optimized + (+scenario.gtm_oil))
+
             seriesGtm.push({
               uwi_count: scenario.uwi_count_optimize,
               cat_1: scenario.percent_stop_cat_1,

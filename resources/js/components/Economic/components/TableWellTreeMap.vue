@@ -79,14 +79,14 @@ export default {
     charts() {
       return [
         {
-          title: this.trans('economic_reference.operating_profit') + '+',
-          key: 'Operating_profit_12m',
-          positive: true
-        },
-        {
           title: this.trans('economic_reference.operating_profit') + '-',
           key: 'Operating_profit_12m',
           negative: true
+        },
+        {
+          title: this.trans('economic_reference.operating_profit') + '+',
+          key: 'Operating_profit_12m',
+          positive: true
         },
         {
           title: this.trans('economic_reference.liquid_production'),
@@ -180,14 +180,10 @@ export default {
   },
   watch: {
     'scenario.percent_stop_cat_1'(newVal) {
-      console.log(newVal)
-
       this.selectStoppedWells()
     },
 
     'scenario.percent_stop_cat_2'(newVal) {
-      console.log(newVal)
-
       this.selectStoppedWells()
     },
   }

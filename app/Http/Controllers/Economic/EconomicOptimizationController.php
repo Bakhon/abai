@@ -18,7 +18,7 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v5_gtm_optimize';
+    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v5_gtm_optimize_v1';
     const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v4';
     const DATA_SOURCE_DATE = '2021/01/01';
 

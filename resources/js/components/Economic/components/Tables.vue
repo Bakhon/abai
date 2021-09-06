@@ -1,5 +1,5 @@
 <template>
-  <div class="row p-3 bg-main1 position-relative">
+  <div class="row p-3 bg-main1 position-relative overflow-auto">
     <div class="d-flex">
       <chart-button
           v-for="(tab, index) in Object.keys(tabs)"
@@ -11,7 +11,7 @@
           @click.native="selectTab(tab)"/>
     </div>
 
-    <div class="mt-3 w-100 overflow-auto">
+    <div class="mt-3 w-100">
       <table-specific-indicators
           v-if="activeTab === 'specific_indicators'"
           :org="res.org"
@@ -143,7 +143,9 @@ export default {
       return `${this.scenario.dollar_rate},
           ${this.scenario.oil_price},
           ${this.scenario.coef_Fixed_nopayroll},
-          ${this.scenario.coef_cost_WR_payroll}`
+          ${this.scenario.coef_cost_WR_payroll}
+          ${this.scenario.percent_stop_cat_1},
+          ${this.scenario.percent_stop_cat_2},`
     }
   },
   methods: {
