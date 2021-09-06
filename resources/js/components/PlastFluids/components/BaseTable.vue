@@ -53,9 +53,16 @@
             </template>
             <template v-else>
               <tr v-for="(item, index) in items" :key="index">
-                <td v-for="(itemTD, ind) in item" :key="ind">
-                  {{ itemTD }}
-                </td>
+                <template v-if="typeof item === 'string'">
+                  <td style="background-color: #272953;">
+                    {{ item }}
+                  </td>
+                </template>
+                <template v-else>
+                  <td v-for="(itemTD, ind) in item" :key="ind">
+                    {{ itemTD }}
+                  </td>
+                </template>
               </tr>
             </template>
           </tbody>

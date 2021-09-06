@@ -1,19 +1,14 @@
 <template>
-  <div class="modal">
-    <div class="content" v-click-outside="emitClose">
-      <div class="content-header">
-        <p>{{ trans("plast_fluids.template_create") }}</p>
-        <button @click="emitClose">
-          {{ trans("plast_fluids.close") }}
-        </button>
+  <div class="base-modal">
+    <div>
+      <p>{{ heading }}</p>
+      <div class="input-holder">
+        <label for="">{{ inputLabel }}</label>
+        <input type="text" id="" v-model="inputText" />
       </div>
-      <div></div>
-      <div class="content-footer">
-        <button>
-          <img src="/img/PlastFluids/add.svg" alt="create template" />{{
-            trans("plast_fluids.create_template")
-          }}
-        </button>
+      <div class="action-buttons">
+        <button class="save-button">Сохранить</button>
+        <button class="cancel-button">Отмена</button>
       </div>
     </div>
   </div>
@@ -22,9 +17,19 @@
 <script>
 export default {
   name: "BaseModal",
-  methods: {
-    emitClose() {
-      this.$emit("close-modal");
+  props: {
+    heading: String,
+    inputLabel: String,
+    inputValue: String,
+  },
+  computed: {
+    inputText: {
+      get() {
+        return this.inputValue;
+      },
+      set(value) {
+        this.$emit("update:inputValue", value);
+      },
     },
   },
 };
@@ -32,56 +37,54 @@ export default {
 
 <style scoped>
 button {
-  font-size: 14px;
+  color: #fefefe;
   border: none;
+  font-size: 18px;
+  width: 160px;
+  height: 44px;
 }
 
-.modal {
-  position: absolute;
+.base-modal {
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+  align-items: center;
 }
 
-.content {
-  display: flex;
-  flex-flow: column;
-  justify-content: space-between;
-  max-height: 650px;
-  min-width: 430px;
+.base-modal > div {
+  min-width: 520px;
   padding: 20px;
-  color: #fff;
+  background-color: #272953;
 }
 
-.content-header {
+.base-modal > div > p {
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.input-holder {
+  padding: 14px 10px;
+  background-color: #2B2E5E;
+}
+
+.action-buttons {
   display: flex;
-  justify-content: space-between;
   width: 100%;
+  justify-content: center;
 }
 
-.content-header > p {
-  margin: 0;
-  font-size: 16px;
+.action-buttons:first-child {
+  margin-right: 5px;
+  background-color: #3366ff;
 }
 
-.content-header > button {
-  border-radius: 8px;
-  padding: 5px 15px;
-}
-
-.content-footer {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.content-footer > button {
-  padding: 8px 14px;
-  border-radius: 4px;
+.action-buttons:last-child {
+  margin-left: 5px;
+  background-color: #40467e;
 }
 </style>

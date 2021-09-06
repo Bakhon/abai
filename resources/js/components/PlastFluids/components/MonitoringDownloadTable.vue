@@ -3,7 +3,7 @@
     class="monitoring-table-div"
     :class="{ center: isEmpty(currentSubsoilField[0]) }"
   >
-    <template v-if="currentSubsoilField[0].field_id">
+    <template v-if="currentSubsoilField[0] && currentSubsoilField[0].field_id">
       <div class="table-title-holder">
         <p class="monitoring-table-title">
           {{
@@ -25,14 +25,23 @@
       />
     </template>
     <p v-else>{{ trans("plast_fluids.no_field_selected") }}</p>
-    <BaseModal v-if="isOpenModal" @close-modal="isOpenModal = false" />
+    <Modal
+      v-if="isOpenModal"
+      @close-modal="isOpenModal = false"
+      :templateName="
+        isEmpty(currentTemplate)
+          ? trans('plast_fluids.research_exploration')
+          : currentTemplate['name_' + currentLang]
+      "
+      :fields="tableFields"
+    />
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
 import BaseTable from "./BaseTable.vue";
-import BaseModal from "./BaseModal.vue";
+import Modal from "./MonitoringDownloadTableModal.vue";
 import _ from "lodash";
 
 export default {
@@ -44,7 +53,7 @@ export default {
   },
   components: {
     BaseTable,
-    BaseModal,
+    Modal,
   },
   computed: {
     ...mapState("plastFluidsLocal", [
@@ -62,7 +71,8 @@ export default {
     },
   },
   mounted() {
-    this.handleTableData(this.currentSubsoilField[0].field_id);
+    if (this.currentSubsoilField[0].field_id)
+      this.handleTableData(this.currentSubsoilField[0].field_id);
   },
 };
 </script>
