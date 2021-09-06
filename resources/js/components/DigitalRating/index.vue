@@ -40,11 +40,12 @@
         <accordion
           :list="objects"
           title="digital_rating.object"
+          @selectItem="(item) => selectPanelItem('horizon', item)"
         />
         <accordion
           :list="maps"
           title="digital_rating.mapsGeologyDevelopment"
-          @selectItem="selectPanelItem"
+          @selectItem="(item) => selectPanelItem('map', item)"
         />
         <accordion
           :list="cods"
@@ -59,163 +60,14 @@
         @close="closeSettingModal"
       />
       <well-atlas-modal
+        ref="atlasModal"
         @close="closeAtlasModal"
       />
     </div>
   </div>
 </template>
 
-<script>
-import L from 'leaflet';
-import mapsData from './json/test_grid.json';
-import wellsData from './json/dataWells.json';
-import 'leaflet/dist/leaflet.css';
-import BtnDropdown from "./components/BtnDropdown";
-import SettingModal from "./components/SettingModal";
-import WellAtlasModal from "./components/WellAtlasModal";
-import Accordion from "./components/Accordion";
-import mainMenu from "../GTM/mock-data/main_menu.json";
-
-export default {
-  name: "Sections",
-
-  components: {
-    BtnDropdown,
-    SettingModal,
-    WellAtlasModal,
-    Accordion,
-  },
-
-  data() {
-    return {
-      objects: ['Объект 1', 'Объект 2'],
-      maps: ['Скважина', 'Накопленные отборы'],
-      cods: ['1', '2', '3'],
-      properties: ['Значок', 'Шрифт', 'Палитра'],
-      fileActions: [
-        { title: 'digital_rating.import', icon: 'upload', type: 'import'  },
-        { title: 'digital_rating.export', icon: 'download', type: 'export' },
-        { title: 'digital_rating.save', icon: 'save', type: 'save' }
-      ],
-      mapsActions: [
-        { title: 'digital_rating.uploadCustomMaps', icon: 'share', type: 'upload' },
-        { title: 'digital_rating.importPlannedWells', icon: 'upload', type: 'importWells' }
-      ],
-      parentType: '',
-      menu: mainMenu,
-      mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
-      renderer: null,
-    };
-  },
-
-  async mounted() {
-    await this.initMap();
-    await this.initSectorOnMap();
-  },
-
-  methods: {
-    xy(x, y) {
-      let yx = L.latLng;
-      if (L.Util.isArray(x)) {
-        return yx(x[1], x[0]);
-      }
-      return yx(y, x);
-    },
-    initMap() {
-      this.map = L.map('map', {
-        crs: L.CRS.Simple,
-        zoomControl: false,
-        minZoom: 1,
-        maxZoom: 5,
-      });
-
-      L.control.zoom({
-        position: 'bottomright'
-      }).addTo(this.map);
-
-      const bounds = [[0, 1500], [0,1500]];
-      this.map.fitBounds(bounds);
-
-      this.map.setView( [850, 520], 1);
-
-      this.renderer = L.canvas({ padding: 0.5 });
-
-    },
-    initSectorOnMap() {
-      mapsData.forEach((el) => {
-        el.x1 = el.x1 / 100;
-        el.y1 = el.y1 / 100;
-        el.x2 = el.x2 / 100;
-        el.y2 = el.y2 / 100;
-      });
-
-      for(let i = 0; i < mapsData.length; i++) {
-        const coordinateStart = this.xy(mapsData[i]['x1'], mapsData[i]['y1']);
-        const coordinateEnd = this.xy(mapsData[i]['x2'], mapsData[i]['y2']);
-        let rectangle = L.rectangle([[coordinateStart], [coordinateEnd]], {
-          renderer: this.renderer,
-          color: mapsData[i]['color'],
-          weight: 3,
-          fillColor: mapsData[i]['color'],
-          fillOpacity: 1,
-        }).addTo(this.map).bindPopup(mapsData[i]['sector'].toString());
-
-        rectangle.on('mouseover', function (e) {
-          this.openPopup();
-        });
-        rectangle.on('mouseout', function (e) {
-          this.closePopup();
-        });
-        rectangle.on('click', (e) => {
-          this.onMapClick();
-        })
-      }
-    },
-    initWellOnMap() {
-      wellsData.forEach((el) => {
-        el.x = el.x / 100;
-        el.y = el.y / 100;
-      });
-
-      for(let i = 0; i < wellsData.length; i++) {
-        const coordinate = this.xy(wellsData[i]['x'], wellsData[i]['y']);
-        const marker = L.circleMarker(coordinate,{
-          renderer: this.renderer,
-          color: '#000',
-          opacity: 1,
-          weight: 1,
-          fillColor: '#000',
-          fillOpacity: 0,
-          radius: 5,
-        }).addTo(this.map).bindPopup(wellsData[i]['well']);
-      }
-    },
-    onMapClick() {
-      this.$modal.show('modalAtlas');
-    },
-    closeAtlasModal() {
-      this.$modal.hide('modalAtlas');
-    },
-    openSettingModal() {
-      this.$modal.show('modalSetting');
-    },
-    closeSettingModal() {
-      this.$modal.hide('modalSetting');
-    },
-    menuClick(data) {
-      const path = window.location.pathname.slice(3);
-      if (data?.url && data.url !== path) {
-        window.location.href = this.localeUrl(data.url);
-      }
-    },
-    selectPanelItem(item) {
-      if(item === 'Скважина') {
-        this.initWellOnMap();
-      }
-    }
-  }
-}
-</script>
+<script src="./Section.js"></script>
 
 <style lang="scss" scoped>
 .rating-sections {

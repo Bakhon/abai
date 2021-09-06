@@ -1,6 +1,7 @@
 import NotifyPlugin from "vue-easy-notify";
 import Multiselect from "vue-multiselect";
 import { pgnoMapState, pgnoMapGetters, pgnoMapMutations, pgnoMapActions } from '@store/helpers';
+import _ from 'lodash';
 
 Vue.use(NotifyPlugin);
 
@@ -8,11 +9,10 @@ export default {
 	components: {
 		Multiselect,
 	  },
+	props: {"calcKpodTrigger": Boolean},
 	data: function()  {
 		return {
 			settings: {},
-			svgTableN1: require('../../../../images/tableN1.svg'),
-			svgTableN2: require('../../../../images/tableN2.svg'),
 			steelMark: null,
 			steelMarks: null,
 			isModal: false,
@@ -100,8 +100,6 @@ export default {
 					"АЦ28ХГНЗФТ (О)"
 				]
 			},
-	
-			
 			kPodMode: true,
 		}
 	},
@@ -110,17 +108,30 @@ export default {
       'well',
       'lines',
       'points',
-	  'shgnSettings',
-	  'curveSettings'
+	  	'curveSettings',
+			'kPodSettings',
+			'settingsMode'
     ]),
 		...pgnoMapGetters([
       'steelMarkStore',
+			'shgnSettings'
     ]),
 	},
 	methods: {
 		...pgnoMapActions([
+			'setKpodSettings',
 			'setShgnSettings',
+			'setDefaultShgnSettings'
 		  ]),
+		setNotify(message, title, type) {
+				this.$bvToast.toast(message, {
+					title: title,
+					variant: type,
+					solid: true,
+					toaster: "b-toaster-top-center",
+					autoHideDelay: 8000,
+				});
+		},
 		onClick() {
 			this.$modal.show('modalTable')
 			this.isModal = true;
@@ -136,15 +147,35 @@ export default {
 		onClickI2() {
 			this.$modal.show('modalTable3')
 		},
-		onSubmitParams() {
-			this.setShgnSettings(this.settings)
+		isStupColumnsNumber(val) {
+			return (Number(this.settings.stupColumns) === val && this.settings.rodsTypes.length < val)
+		},
+
+		onSubmitParams(mode) {
+			for (let i of [1,2,3]){
+				if (this.isStupColumnsNumber(i)) {
+						this.setNotify("Укажите необходимые диаметры штанг", "Warning", "warning")
+						return
+				}
+			}			
+			this.$store.commit('pgno/SET_SETTINGS_MODE', mode)
+			if (mode === "getDefault"){
+				this.setDefaultShgnSettings(this.settings)
+			} else {
+				this.setShgnSettings(this.settings)
+			}
+			this.setKpodSettings(this.kPodSettings)
 			this.$emit('on-submit-params');
 			this.$modal.show('tabs');
 		},
 		calKpod(){
-			if (this.ql) {
-				this.kpodCalced = this.ql / (1440 * 3.14 * this.pumpType ** 2 * this.strokeLen * (this.spm / 4000000))
-				this.$store.commit('pgno/UPDATE_KPOD_CALCED', this.kpodCalced) 
+			if (this.kPodSettings.ql) {
+				this.kpodCalced = this.kPodSettings.ql / (1440 * 3.14 * this.kPodSettings.pumpType ** 2 * this.kPodSettings.strokeLen * (this.kPodSettings.spm / 4000000))
+				if (this.kpodCalced < 0.4 || this.kpodCalced > 0.9) {
+					var message = this.trans('pgno.kpodWarning', {kpod: this.kpodCalced.toFixed(2)}) 
+					this.setNotify(message, "Warning", "warning")
+				}
+				this.settings.kPodCalced = this.kpodCalced
 			}
 		},
 		onChangeCorrosion(e) {
@@ -152,18 +183,11 @@ export default {
 			this.settings.steelMark = this.steelMarkStore
 			this.steelMarks = this.steelMarksTypes[this.settings.corrosion]
 		}
-
-
 	},
 	created: function() {
-		this.settings =this.shgnSettings
+		this.settings = _.cloneDeep(this.shgnSettings)
 		this.settings.steelMark = this.steelMarkStore
 		this.steelMarks = this.steelMarksTypes[this.settings.corrosion]
-		this.pumpType = this.well.pumpType
-		this.spm = this.well.spm
-		this.strokeLen = this.well.strokeLen
-		this.ql = this.curveSettings.qLInput
 		this.calKpod()
-
 	}
 }

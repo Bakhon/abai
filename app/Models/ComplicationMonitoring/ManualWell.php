@@ -65,4 +65,36 @@ class ManualWell extends Model
     {
         return $this->hasMany(OmgNGDUWell::class, 'well_id');
     }
+
+    public function scopeWithLastOmgngdu($query)
+    {
+        $query->addSelect(
+            [
+                'last_omgngdu_id' => OmgNGDUWell::select('id')
+                    ->whereColumn('well_id', 'manual_wells.id')
+                    ->orderBy('date', 'desc')
+                    ->take(1)
+            ]
+        )->with('lastOmgngdu');
+    }
+
+    public function lastOmgngdu()
+    {
+        return $this->belongsTo(OmgNGDUWell::class)->select(
+            'id',
+            'date',
+            'well_id',
+            'daily_fluid_production',
+            'daily_oil_production',
+            'daily_water_production',
+            'bsw',
+            'gas_factor',
+            'pressure',
+            'temperature_well',
+            'temperature_zu',
+            'sg_oil',
+            'sg_gas',
+            'sg_water'
+        );
+    }
 }

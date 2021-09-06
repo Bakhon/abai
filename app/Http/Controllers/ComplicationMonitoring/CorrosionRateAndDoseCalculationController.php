@@ -90,8 +90,8 @@ class CorrosionRateAndDoseCalculationController extends Controller
         }
 
         $vdata = [
-            'corrosion_rate_mm_per_y_point_A' => round($corrosion_rate_a, 2),
-            'dose_mg_per_l_point_A' => round($dose_a),
+            'corrosion_rate_mm_per_y_point_A' => abs(round($corrosion_rate_a, 2)),
+            'dose_mg_per_l_point_A' => abs(round($dose_a)),
         ];
 
 

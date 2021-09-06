@@ -25,8 +25,8 @@ use Carbon\Carbon;
 use App\Models\VisCenter\ExcelForm\DzoImportOtm;
 use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
 use App\Models\VisCenter\EmergencyHistory;
-use App\Models\VisCenter\ChemistryForKGM;
-use App\Models\VisCenter\RepairsForKGM;
+use App\Models\VisCenter\InboundIntegration\KGM\Monthly\ChemistryForKGM;
+use App\Models\VisCenter\InboundIntegration\KGM\Monthly\RepairsForKGM;
 
 class VisualCenterController extends Controller
 {
@@ -453,10 +453,9 @@ class VisualCenterController extends Controller
     public function getEmergencyHistory(Request $request)
     {
         $emergencySituations = EmergencyHistory::query()
-            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description')
-            ->whereMonth('date', $request->currentMonth)
+            ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description','approved',DB::raw('DATE_FORMAT(approve_date,"%d.%m.%Y %H:%i:%s") as approve_date'))
             ->where('type',1)
-            ->orderBy('date', 'desc')
+            ->orderBy('id', 'desc')
             ->take(10);
 
         if (!empty($request->dzoName)){

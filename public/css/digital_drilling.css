@@ -402,7 +402,17 @@ canvas#foo {
 .digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent {
     padding: 15px;
 }
-
+.report_generation{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+.report_generation button{
+    border: 0;
+    background: #2E50E9;
+    padding: 7px 15px;
+    color: #FFFFFF;
+}
 .digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .bigTitle {
     display: table;
     color: #fff;
@@ -1356,6 +1366,7 @@ th.verticalText {
 }
 .dropdown-item{
     cursor: pointer;
+    white-space: pre-wrap;
 }
 .digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable tr td.green {
     background: #92D050;
@@ -1512,7 +1523,7 @@ option:hover {
     padding: 8px 18px;
     width: 100%;
     height: 100vh;
-    max-height: 800px;
+    max-height: calc(100vh - 100px);
     overflow: scroll;
 }
 .daily_raport_block::-webkit-scrollbar-thumb{

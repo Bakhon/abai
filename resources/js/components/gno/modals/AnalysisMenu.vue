@@ -6,29 +6,29 @@
       </div>
       <div class="modal-analysis-menu">
         <div v-if="!well.newWell" class="form-check">
-          <input v-model="analysisSettings.analysisOld" class="checkbox-analysis-modal" @change="updateGraph()"
+          <input v-model="settings.analysisOld" class="checkbox-analysis-modal" @change="updateGraph()"
                  value="analysisOldPres" type="checkbox"/>
           <label class="checkbox-modal-analysis-menu-label">{{ trans('pgno.ppl_equal_pnach') }}</label>
         </div>
         <div v-if="well.newWell" class="form-check-new">
-          <input v-model="analysisSettings.analysisNew" class="new-checkbox-modal-analysis-menu" @change="updateGraph()"
+          <input v-model="settings.analysisNew" class="new-checkbox-modal-analysis-menu" @change="updateGraph()"
                  value="analysisNewPres" type="checkbox"/>
           <label class="new-checkbox-modal-analysis-menu-label">{{ trans('pgno.p_pl_p_izobar') }}</label>
         </div>
 
         <div v-if="!well.newWell" class="form-check">
-          <input v-model="analysisSettings.analysisOld" class="checkbox-modal-analysnauryzbekis-menu" @change="updateGraph()"
+          <input v-model="settings.analysisOld" class="checkbox-modal-analysnauryzbekis-menu" @change="updateGraph()"
                  value="analysisOldHdyn" type="checkbox"/>
           <label class="checkbox-modal-analysis-menu-label">{{ trans('pgno.hdin_equal_hdin_min') }}</label>
         </div>
         <div v-if="well.newWell" class="form-check-new">
-          <input v-model="analysisSettings.analysisNew" class="new-checkbox-modal-analysis-menu" @change="updateGraph()"
+          <input v-model="settings.analysisNew" class="new-checkbox-modal-analysis-menu" @change="updateGraph()"
                  value="analysisNewPi" type="checkbox"/>
           <label class="new-checkbox-modal-analysis-menu-label">{{ trans('pgno.k_pr_k_po_okr') }}</label>
         </div>
 
         <div v-if="!well.newWell" class="form-check">
-          <input v-model="analysisSettings.analysisOld" class="checkbox-modal-analysnauryzbekis-menu" @change="updateGraph()"
+          <input v-model="settings.analysisOld" class="checkbox-modal-analysnauryzbekis-menu" @change="updateGraph()"
                  value="analysisOldBhp" type="checkbox"/>
           <label class="checkbox-modal-analysis-menu-label">{{ trans('pgno.p_zab_more_p_nas') }}</label>
         </div>
@@ -39,35 +39,35 @@
         </div>
 
         <div v-if="!well.newWell" class="form-check">
-          <input v-model="analysisSettings.analysisOld" class="checkbox-analysis-modal" @change="updateGraph()"
+          <input v-model="settings.analysisOld" class="checkbox-analysis-modal" @change="updateGraph()"
                  value="analysisOldQlAsma" type="checkbox"/>
           <label class="checkbox-modal-analysis-menu-label">{{ trans('pgno.q_liq_equal_q_liq') }}</label>
         </div>
         <div v-if="well.newWell" class="form-check-new">
-          <input v-model="analysisSettings.analysisNew" class="new-checkbox-modal-analysis-menu" @change="updateGraph()"
+          <input v-model="settings.analysisNew" class="new-checkbox-modal-analysis-menu" @change="updateGraph()"
                 value="analysisNewBhp" type="checkbox"/>
           <label class="new-checkbox-modal-analysis-menu-label">{{ trans('pgno.p_zab_more_p_nas') }}</label>
         </div>
 
         <div v-if="!well.newWell" class="form-check">
-          <input v-model="analysisSettings.analysisOld" class="checkbox-analysis-modal" @change="updateGraph()"
+          <input v-model="settings.analysisOld" class="checkbox-analysis-modal" @change="updateGraph()"
                  value="analysisOldWctAsma" type="checkbox"/>
           <label class="checkbox-modal-analysis-menu-label">{{ trans('pgno.obv_obv_acma') }}</label>
         </div>
         <div v-if="well.newWell" class="form-check-new">
-          <input v-model="analysisSettings.hasGrp" class="new-checkbox-modal-analysis-menu"  @change="updateGraph()" type="checkbox"/>
+          <input v-model="settings.hasGrp" class="new-checkbox-modal-analysis-menu"  @change="updateGraph()" type="checkbox"/>
           <label class="new-checkbox-modal-analysis-menu-label">{{ trans('pgno.s_grp') }}</label>
         </div>
 
 
         <div v-if="!well.newWell" class="form-check">
-          <input v-model="analysisSettings.analysisOld" class="checkbox-analysis-modal" @change="updateGraph()"
+          <input v-model="settings.analysisOld" class="checkbox-analysis-modal" @change="updateGraph()"
                  value="analysisOldGorAsma" type="checkbox"/>
           <label class="checkbox-modal-analysis-menu-label">{{ trans('pgno.gor_gor_acma') }}</label>
         </div>
         <div v-if="well.newWell" class="form-check-new">
           {{ trans('pgno.near_dist') }}
-          <input v-model="analysisSettings.nearDist" class="new-checkbox-modal-analysis-menu curve-settings-input w-25"  @change="updateGraph()"
+          <input v-model="settings.nearDist" class="new-checkbox-modal-analysis-menu curve-settings-input w-25"  @change="updateGraph()"
                 onfocus="this.value=''" type="text"/>
         </div>
         <div v-if="well.newWell" class="icon-near-wells" @click="openNearWellsModal()">

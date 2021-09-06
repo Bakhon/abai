@@ -5,6 +5,15 @@ export const pgnoMutations = {
     SET_HPUMP(state,value){
         state.curveSettings.hPumpValue = value
     },
+    SET_SENSETIVE_SETTINGS(state,value){
+        state.sensetiveSettings = value
+    },
+    SET_KPOD_SETTINGS(state,value){
+        state.kPodSettings = value
+    },
+    SET_SETTINGS_MODE(state, value){
+        state.settingsMode = value
+    },
     SET_ECONOMIC(state, value) {
         state.expAnalysisData = value
     },
@@ -36,6 +45,9 @@ export const pgnoMutations = {
 
     UPDATE_SHGN_SETTINGS(state, val) {
         state.shgnSettings = val
+    },
+    UPDATE_DEFAULT_SHGN_SETTINGS(state, val) {
+        state.shgnSettingsDefault = val
     },
     UPDATE_CURVE_SETTINGS(state, val) {
         state.curveSettings = val

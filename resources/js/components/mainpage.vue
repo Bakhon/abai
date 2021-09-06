@@ -88,8 +88,8 @@ export default {
             },
             {
               name: 'Карточка скважины',
-              icon: 'well_cart.svg',
-              url: this.localeUrl('/bigdata/well-cart'),
+              icon: 'well_card.svg',
+              url: this.localeUrl('/bigdata/well-card'),
             },
           ]
         },
@@ -123,7 +123,13 @@ export default {
           name: this.trans('economic_reference.economic_module_short'),
           icon: "nrs.svg",
           url: this.localeUrl('/economic/nrs')
-        }
+        },
+        {
+          name: 'Цифровое бурение',
+          icon: 'digital-drilling.svg',
+
+          url: this.localeUrl('/digital-drilling/')
+        },
       ],
         childMenuCollapseList: [
             {

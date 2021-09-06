@@ -259,4 +259,12 @@ return array (
   'curvePotencialPointHover' => '"<b>Потенциалдық  режим</b><br>" + "Qж = %{x:.1f} м³/сут<br>" + "Qн = %{text:.1f} т/сут<br>" + "Pзаб = %{y:.1f} атм<extra></extra>"',
   'curveMainLineName' => 'Кривая притока (пользователь)',
   'curveAnalysisLineName' => 'Кривая притока (анализ)',
+  'inclinometriaWell' => 'Инклинометрия скважины :wellNumber',
+  'kpodWarning' => 'Тек Кпод = :kpod, рекомендуем проверить входные данные ТР',
+  'sensitivity_analysis' => 'Анализ чувствительности',
+  'sensitivity_analysis_result' => 'Анализ чувствительности скважины',
+  'yagp' => 'Mech separation',
+  'kPodCalced' => 'Кпод (расч.)',
+  'kPodUser' => 'Кпод (польз.)',
+  'paker_no_tail' => 'Пакер',
 );

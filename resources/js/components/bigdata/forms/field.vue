@@ -108,7 +108,13 @@
       </datetime>
     </template>
     <template v-else-if="item.type === 'table'">
-      <BigdataTableField :id="id" :params="item" v-on:change="updateValue($event)"></BigdataTableField>
+      <BigdataTableField
+          :id="id"
+          :form="form"
+          :params="item"
+          v-on:change="updateValue($event)"
+      >
+      </BigdataTableField>
     </template>
     <template v-else-if="item.type === 'calc'">
       <label>{{ value }}</label>
@@ -117,7 +123,12 @@
       <BigdataCheckboxTableField :params="item" v-on:change="updateValue($event)"></BigdataCheckboxTableField>
     </template>
     <template v-else-if="item.type === 'file'">
-      <BigdataFileUploadField :params="item" v-on:change="updateValue($event)"></BigdataFileUploadField>
+      <BigdataFileUploadField
+          :existed-files="value || null"
+          :params="item"
+          v-on:change="updateValue($event)"
+      >
+      </BigdataFileUploadField>
     </template>
     <div v-if="error" class="text-danger error" v-html="showError(error)"></div>
   </div>
@@ -147,7 +158,8 @@ export default {
     'id',
     'item',
     'value',
-    'error'
+    'error',
+    'form'
   ],
   data: function () {
     return {
@@ -165,6 +177,9 @@ export default {
   watch: {
     value(newValue) {
       this.formatedValue = this.getFormatedValue(newValue)
+    },
+    dict(newValue) {
+      this.formatedValue = this.getFormatedValue(this.value)
     }
   },
   mounted() {
@@ -196,9 +211,11 @@ export default {
     },
     getFormatedValue(value) {
       if (this.item.type === 'dict') {
+
         if (this.dict === null) return {}
 
         let selected = this.dict.find(item => item.id === value) || {id: null, name: null}
+
         return {
           id: selected.id,
           name: selected.name,

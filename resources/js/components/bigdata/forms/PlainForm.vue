@@ -1,6 +1,5 @@
 <template>
   <div class="bd-main-block">
-    <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
@@ -34,6 +33,7 @@
                   <bigdata-form-field
                       v-model="formValues[item.code]"
                       :error="errors[item.code]"
+                      :form="params"
                       :item="item"
                       :id="wellId"
                       :key="`field_${item.code}`"
@@ -116,7 +116,7 @@ export default {
       let files = {}
       for (let key in this.formValues) {
         let field = this.formFields.find(field => field.code === key)
-        if (field.type !== 'file') continue
+        if (!field || field.type !== 'file') continue
         files[key] = this.formValues[key]
       }
       return files
@@ -125,7 +125,7 @@ export default {
       let values = {}
       for (let key in this.formValues) {
         let field = this.formFields.find(field => field.code === key)
-        if (field.type === 'file') continue
+        if (field && field.type === 'file') continue
         if (field && field.type === 'calc' && field.submit_value !== true) continue
         values[key] = this.formValues[key]
       }
@@ -158,7 +158,7 @@ export default {
             this.formParams = data
           })
           .catch(error => {
-            Vue.prototype.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
+            this.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
           })
 
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${this.wellId}`)).then(({data}) => {
@@ -183,16 +183,26 @@ export default {
       if (Object.keys(this.formFilesToSubmit).length > 0) {
         for (let key in this.formFilesToSubmit) {
           let formData = new FormData()
+          let existedFiles = []
           this.formFilesToSubmit[key].forEach((file, index) => {
+            if (file.exists) {
+              existedFiles.push(file.id)
+              return
+            }
             formData.append(`uploads[]`, file.file)
           })
+
+          if (formData.get('uploads[]') === null) {
+            files[key] = existedFiles
+            continue
+          }
 
           let fileField = this.formFields.find(field => field.code === key)
           let origin = this.formValues[fileField.origin]
           formData.append('origin', origin)
 
           await axios.post(this.localeUrl('/attachments'), formData).then(({data}) => {
-            files[key] = data.files
+            files[key] = [...JSON.parse(data.files), ...existedFiles]
           }).catch(() => {
             this.SET_LOADING(false)
           })
@@ -208,7 +218,7 @@ export default {
           .then(response => {
             this.errors = []
             this.$refs.form.reset()
-            Vue.prototype.$notifySuccess('Ваша форма успешно отправлена')
+            this.$notifySuccess('Ваша форма успешно отправлена')
             this.$emit('change', {
               id: response.data.id,
               values: this.formValues
@@ -219,7 +229,7 @@ export default {
           .catch(error => {
 
             if (error.response.status === 500) {
-              Vue.prototype.$notifyError(error.response.data.message)
+              this.$notifyError(error.response.data.message)
               return false
             }
 
@@ -227,7 +237,7 @@ export default {
 
               this.errors = error.response.data.errors
 
-              Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
+              this.$notifyWarning('Некоторые поля заполнены некорректно')
 
               for (const [tabIndex, tab] of Object.entries(this.formParams.tabs)) {
                 for (const blocks of tab.blocks) {

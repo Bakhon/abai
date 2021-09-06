@@ -13,14 +13,14 @@
                 <td rowspan="4" class="th">{{trans('tr.artificial_slaughter')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.perforation_intervals')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.h_up_perf_md')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.productivity_index')}}</td>
+                <td rowspan="4" class="th fix_colunn_full_table_lg">{{trans('tr.productivity_index')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.operation_method')}}</td>
                 <td rowspan="4" class="th pump_type_width">{{trans('tr.pump_type')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.outer_diameter_nkt')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.h_pump_set')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.tub_eqiup')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.h_packer_set')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.pump_frequency_or_speed')}}</td>
+                <td rowspan="4" class="th fix_colunn_full_table_blg">{{trans('tr.pump_frequency_or_speed')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.stroke_length')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.swing_number')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.choke_diameter')}}</td>
@@ -31,21 +31,21 @@
                 <td class="colspan th" colspan="14">{{trans('tr.intended_mode')}}</td>
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="3" class="th">{{trans('tr.h_dynamic')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.annular_pressure')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.pipe_pressure')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.p_layer')}}</td>
-                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.bottomhole_pressure')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.q_oil')}}</td>
-                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.q_liquid')}}</td>
+                <td rowspan="3" class="th fix_colunn_full_table_sm">{{trans('tr.h_dynamic')}}</td>
+                <td rowspan="3" class="th fix_colunn_full_table_sm">{{trans('tr.annular_pressure')}}</td>
+                <td rowspan="3" class="th fix_colunn_full_table_sm">{{trans('tr.pipe_pressure')}}</td>
+                <td rowspan="3" class="th fix_colunn_full_table_sm">{{trans('tr.p_layer')}}</td>
+                <td rowspan="3" class="th fix_colunn_full_table_sm" style="background: #333975;">{{trans('tr.bottomhole_pressure')}}</td>
+                <td rowspan="3" class="th fix_colunn_full_table_sm">{{trans('tr.q_oil')}}</td>
+                <td rowspan="3" class="th fix_colunn_full_table_sm" style="background: #333975;">{{trans('tr.q_liquid')}}</td>
                 <td rowspan="3" class="th">{{trans('tr.water_cut')}}</td>
 
                 <td rowspan="3" class="th">{{trans('tr.choke_diameter')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.q_oil')}}</td>
-                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.q_liquid')}}</td>
-                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.q_gas')}}</td>
+                <td rowspan="3" class="th fix_colunn_full_table_sm">{{trans('tr.q_oil')}}</td>
+                <td rowspan="3" class="th fix_colunn_full_table_sm" style="background: #333975;">{{trans('tr.q_liquid')}}</td>
+                <td rowspan="3" class="th fix_colunn_full_table_lg" style="background: #333975;">{{trans('tr.q_gas')}}</td>
                 <td rowspan="3" class="th">{{trans('tr.water_cut')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.gas_factor')}}</td>
+                <td rowspan="3" class="th fix_colunn_full_table_sm">{{trans('tr.gas_factor')}}</td>
                 <td rowspan="3" class="th"><span>{{trans('tr.work_days')}}</span></td>
                 <td rowspan="3" class="th"><span>{{trans('tr.planned_monthly_oil')}}</span></td>
                 <td rowspan="3" class="th"><span>{{trans('tr.planned_monthly_gas')}}</span></td>
@@ -58,8 +58,8 @@
 
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th fix_colunn_full_table_sm"><span>{{trans('tr.q_liquid')}}</span></td>
             </tr>
             <tr></tr>
             <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
@@ -69,7 +69,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectField.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -103,7 +103,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectWellName.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_well_filter">
                               <b-form-group
@@ -137,7 +137,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectWellType.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -171,7 +171,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectHorizon.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -205,7 +205,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectObject.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -239,7 +239,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectBlock.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -278,7 +278,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectExpMeth.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -310,7 +310,7 @@
                 <td @click="sortBy('pump_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('tub_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('h_pump_set')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
-                <td @click="sortBy('tub_eqiup')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td @click="sortBy('tub_equip')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('h_packer_set')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
                 <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.gc_ob/min')}}</td>
                 <td @click="sortBy('stroke_len')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
@@ -333,7 +333,7 @@
                 <td @click="sortBy('planned_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}</td>
                 <td @click="sortBy('planned_gas')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.thousan_m3_day')}}</td>
                 <td @click="sortBy('planned_wct')" class="th"><i class="fa fa-fw fa-sort"></i>%</td>
-                <td @click="sortBy('planned_gor')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3/t')}}</td>
+                <td @click="sortBy('gor')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3/t')}}</td>
                 <td @click="sortBy('planned_month_days')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.day')}}</td>
                 <td @click="sortBy('planned_monthly_oil')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.tonn')}}</td>
                 <td @click="sortBy('planned_monthly_gas')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.thousand_m3')}}</td>
@@ -346,7 +346,7 @@
         </thead>
         <tbody class="table_tbody">
             <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
-                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{ row_index + 1 }}</td>
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.number}} </td>
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}" :colspan="getRowWidthSpan(row)">{{row.field}} </td>
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}" v-if="!isActiveClass(row)">{{row.rus_wellname}} </td>
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`well_type`), 'activ': isActiveClass(row)}" td class="fixcol">
@@ -457,7 +457,7 @@
                     </span>
                 </td>
 
-                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.tub_eqiup}} </td>   
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.tub_equip}} </td>   
 
                 <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.h_packer_set}} </td>
 
@@ -628,7 +628,15 @@
                     </span>
                 </td>
 
-                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{Math.round(row.planned_month_days*10)/10}} </td>
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`gor`), 'activ': isActiveClass(row)}">
+                    <span :class="{'circle-err': wells && wells[row_index] &&
+                wells[row_index].gor[1][0] !== '0'}" :style="`background :${getColor(
+                wells[row_index].gor[1][0])}`"> </span>
+                    <span v-if="row.gor[0]!=null">{{Math.round(row.gor[0]*10)/10}}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                        {{ wells[row_index].gor[1][1]}}
+                    </span>
+                </td>
 
                 <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_month_days`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -708,7 +716,7 @@
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_events[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].planned_events[1][0])}`"> </span>
-                    <span v-if="row.planned_events[0]!=null">{{Math.round(row.planned_events[0]*10)/10}}</span>
+                    <span v-if="row.planned_events[0]!=null">{{row.planned_events[0]}}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                         {{ wells[row_index].planned_events[1][1]}}
                     </span>
@@ -820,6 +828,7 @@ export default {
             this.wells[row_index] &&
             this.wells[row_index][value][1][0] !== '0';
         },
+        
         isActiveClass (row) {
             if (row.rus_wellname) {
                 return false
@@ -854,6 +863,8 @@ tr:nth-child(even) {
 .table .th {
     position: sticky;
     background: rgb(51, 57, 117);
+    border-right: 2px solid #454d55;
+    border-left: 2px solid #454d55;
 }
 .table tr:first-child .th {
     top: -1px;
@@ -878,8 +889,6 @@ tr:nth-child(even) {
     top: 88px;
     z-index: 3000;
 }
-
-
 .trtablerow {
     position: relative;
 }
@@ -945,6 +954,18 @@ position: static;
 }
 .pump_type_width {
   min-width: 152px; 
+}
+.fix_colunn_full_table_lg {
+  min-width: 85px;
+}
+.fix_colunn_full_table_sm {
+  min-width: 51px;
+}
+.fix_colunn_full_table_nm {
+  min-width: 70px;
+}
+.fix_colunn_full_table_blg {
+  min-width: 106px;
 }
 
 </style>

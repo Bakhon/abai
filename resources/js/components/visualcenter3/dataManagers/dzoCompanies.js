@@ -78,7 +78,6 @@ export default {
                 fact: 0,
                 opekPlan: 0
             },
-            isSummaryShouldBeCalculated: true
         };
     },
     methods: {
@@ -141,7 +140,7 @@ export default {
             }
         },
 
-        calculateDzoCompaniesSummary() {
+        calculateDzoCompaniesSummary(isWithoutRefresh) {
             let emptyDzo = [];
             this.dzoSummaryForTable = _.cloneDeep(this.dzoCompanySummary).filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             let chartOutput = this.getFilteredForChartBySelectedCompanies();
@@ -180,7 +179,7 @@ export default {
             this.totalSummary.fact = summary.fact;
             summary = this.getFormatted(summary);
             this.dzoCompaniesSummary = summary;
-            if (this.isConsolidatedCategoryActive() && this.isSummaryShouldBeCalculated) {
+            if (this.isConsolidatedCategoryActive() && !isWithoutRefresh) {
                 this.updateProductionTotalFact(filteredByCompaniesYesterday,actualFilteredSummary,this.selectedView);
                 this.isOpecFilterActive = true;
             }
@@ -247,16 +246,16 @@ export default {
                 this.selectedDzoCompanies = [companyTicker];
                 this.calculateSecondaryCategories();
                 this.switchDzoCompaniesVisibility(companyTicker, 'ticker');
-                this.selectDzoCompany();
+                this.selectDzoCompany(true);
             }
         },
 
-        selectDzoCompany() {
+        selectDzoCompany(isWithoutRefresh) {
             this.disableDzoRegions();
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.buttonDzoDropdown = this.highlightedButton;
             this.calculateSecondaryCategories();
-            this.calculateDzoCompaniesSummary();
+            this.calculateDzoCompaniesSummary(isWithoutRefresh);
         },
 
         getDzoFactSummary(summaryData) {

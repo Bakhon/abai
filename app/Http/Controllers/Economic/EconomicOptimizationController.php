@@ -18,8 +18,8 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v9';
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_test_v9_3';
+    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v4_gtm_optimize_v1';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v4';
     const DATA_SOURCE_DATE = '2021/01/01';
 
     const SCENARIO_COLUMNS = [
@@ -30,15 +30,18 @@ class EconomicOptimizationController extends Controller
         "coef_cost_WR_payroll",
         "dollar_rate",
         "oil_price",
+        "gtm_oil",
+        "gtm_liquid",
+        "gtm_cost",
+        "gtm_operating_profit_12m",
+        "gtms",
+        "Barrel_ratio_export_scenario"
     ];
 
     const OPTIMIZED_COLUMNS = [
         'Revenue_total',
         'Revenue_local',
         'Revenue_export',
-        'Overall_expenditures',
-        'Overall_expenditures_full',
-        'operating_profit_12m',
         'oil',
         'liquid',
         'prs',
@@ -46,15 +49,20 @@ class EconomicOptimizationController extends Controller
         'days_worked',
         'production_export',
         'production_local',
-    ];
-
-    const OPTIMIZED_SINGLE_COLUMNS = [
+        'Fixed_noWRpayroll_expenditures',
         'Overall_expenditures',
         'Overall_expenditures_full',
-        'operating_profit_12m',
+        'Operating_profit',
+    ];
+
+    const OPTIMIZED_SCENARIO_COLUMNS = [
+        'Overall_expenditures',
+        'Overall_expenditures_full',
+        'Operating_profit',
     ];
 
     const SUFFIX_OPTIMIZE = '_optimize';
+    const SUFFIX_SCENARIO = '_scenario';
     const SUFFIX_PROFITABLE = '_profitable';
     const SUFFIX_PROFITLESS_CAT_1 = '_profitless_cat_1';
     const SUFFIX_PROFITLESS_CAT_2 = '_profitless_cat_2';
@@ -127,15 +135,9 @@ class EconomicOptimizationController extends Controller
 
         $columns = self::SCENARIO_COLUMNS;
 
-        $columnsVariations = [];
-
         foreach (self::OPTIMIZED_COLUMNS as $column) {
             foreach (self::columnVariations($column) as $columnVariation) {
-                $columnsVariations[] = $columnVariation;
-
                 $columns[] = $columnVariation;
-
-                $columns[] = $columnVariation . self::SUFFIX_OPTIMIZE;
             }
         }
 
@@ -151,16 +153,16 @@ class EconomicOptimizationController extends Controller
                 $scenarios[$index][$column] = $item[$column];
             }
 
-            foreach ($columnsVariations as $columnVariation) {
-                $columnOptimized = $columnVariation . self::SUFFIX_OPTIMIZE;
-
-                $scenarios[$index][$columnVariation] = [
-                    'value' => self::formatMoney($item[$columnVariation]),
-                    'value_optimized' => self::formatMoney($item[$columnOptimized]),
-                    'percent' => EconomicNrsController::calcPercent($item[$columnOptimized], $item[$columnVariation], 2),
-                    'original_value' => $item[$columnVariation],
-                    'original_value_optimized' => $item[$columnOptimized],
-                ];
+            foreach (self::OPTIMIZED_COLUMNS as $column) {
+                foreach (self::columnPairs($column) as $originalColumn => $optimizedColumn) {
+                    $scenarios[$index][$originalColumn] = [
+                        'value' => self::formatMoney($item[$originalColumn]),
+                        'value_optimized' => self::formatMoney($item[$optimizedColumn]),
+                        'percent' => EconomicNrsController::calcPercent($item[$optimizedColumn], $item[$originalColumn], 2),
+                        'original_value' => $item[$originalColumn],
+                        'original_value_optimized' => $item[$optimizedColumn],
+                    ];
+                }
             }
         }
 
@@ -206,15 +208,13 @@ class EconomicOptimizationController extends Controller
             "dollar_rate",
             'profitability_12m',
             "scenario_id",
-            "rank",
         ];
 
         return $builder
             ->select($columns)
-            ->doubleSum('operating_profit_12m')
-            ->orderBy('oil_price')
-            ->orderBy('dollar_rate')
-            ->orderBy('operating_profit_12m')
+            ->doubleSum('Operating_profit_12m')
+            ->doubleSum('oil_12m')
+            ->doubleSum('liquid_12m')
             ->groupBy($columns)
             ->data();
     }
@@ -306,15 +306,27 @@ class EconomicOptimizationController extends Controller
 
     static function columnVariations(string $column): array
     {
-        if (in_array($column, self::OPTIMIZED_SINGLE_COLUMNS)) {
-            return [$column];
+        $pairs = self::columnPairs($column);
+
+        return array_merge(array_keys($pairs), array_values($pairs));
+    }
+
+    static function columnPairs(string $column): array
+    {
+        if (in_array($column, self::OPTIMIZED_SCENARIO_COLUMNS)) {
+            return [
+                $column => $column . self::SUFFIX_SCENARIO,
+                $column . self::SUFFIX_PROFITABLE => $column . self::SUFFIX_SCENARIO . self::SUFFIX_PROFITABLE,
+                $column . self::SUFFIX_PROFITLESS_CAT_1 => $column . self::SUFFIX_SCENARIO . self::SUFFIX_PROFITLESS_CAT_1,
+                $column . self::SUFFIX_PROFITLESS_CAT_2 => $column . self::SUFFIX_SCENARIO . self::SUFFIX_PROFITLESS_CAT_2,
+            ];
         }
 
         return [
-            $column,
-            $column . self::SUFFIX_PROFITABLE,
-            $column . self::SUFFIX_PROFITLESS_CAT_1,
-            $column . self::SUFFIX_PROFITLESS_CAT_2,
+            $column => $column . self::SUFFIX_OPTIMIZE,
+            $column . self::SUFFIX_PROFITABLE => $column . self::SUFFIX_PROFITABLE . self::SUFFIX_OPTIMIZE,
+            $column . self::SUFFIX_PROFITLESS_CAT_1 => $column . self::SUFFIX_PROFITLESS_CAT_1 . self::SUFFIX_OPTIMIZE,
+            $column . self::SUFFIX_PROFITLESS_CAT_2 => $column . self::SUFFIX_PROFITLESS_CAT_2 . self::SUFFIX_OPTIMIZE,
         ];
     }
 }

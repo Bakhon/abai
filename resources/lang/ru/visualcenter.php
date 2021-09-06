@@ -276,8 +276,9 @@ return array (
     'insertData' => 'Внесение данных',
     'dataArchieve' => 'Архив данных',
     'dateSelect' => 'Выберите дату',
-    'executor' => 'Исполнитель',
+    'executor' => 'ФИО',
     'reason' => 'Причина',
+    'position' => 'Должность'
   ),
   'idleWells' => 'Фонд нагнетательных скважин',
   'inIdle' => 'В простое',
@@ -428,5 +429,8 @@ return array (
   'countWellsWorkover' => 'Количество КРС/ПРС, скв.',
   'countChemistry' => 'Химизация производства, тонн',
   'countDrillingWells' => 'Количество скважин из бурения, скв.',
-  'countDrilling' => 'Бурение проходка, м.'
+  'countDrilling' => 'Бурение проходка, м.',
+  'emergency' => 'Инцидент',
+  'emergencyDate' => 'Дата инцидента',
+  'resolvingDate' => 'Дата устранения инцидента'
 );

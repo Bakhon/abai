@@ -26,9 +26,9 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "@deck.gl/core": "^8.4.13",
-        "@deck.gl/layers": "^8.4.13",
-        "@deck.gl/mapbox": "^8.4.13",
+        "@deck.gl/core": "8.4.20",
+        "@deck.gl/layers": "8.4.20",
+        "@deck.gl/mapbox": "8.4.20",
         "@fortawesome/fontawesome-free": "^5.15.3",
         "@handsontable/vue": "^5.1.0",
         "@revolist/vue-datagrid": "^2.9.9",

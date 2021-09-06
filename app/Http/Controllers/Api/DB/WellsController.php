@@ -460,6 +460,7 @@ class WellsController extends Controller
         return $well->techs()
             ->join('dict.tech_type', 'dict.tech_type.id', '=', 'dict.tech.tech_type')
             ->where('dict.tech_type.code', '=', $code)
+            ->where('dict.tech.dbeg', '<=', $this->getToday())
             ->where('dict.tech.dend', '>=', $this->getToday())
             ->first(['dict.tech.name_ru']);
     }
