@@ -8,7 +8,7 @@
       <img src="/img/PlastFluids/analyze.svg" alt="analyze data" width="20px" />
       <p>Анализ данных</p>
     </a>
-    <a :href="localeUrl('/pf-standart_separation_flash/')">
+    <a :href="localeUrl('/pf-standart-separation-flash/')">
       <img
         src="/img/PlastFluids/download.svg"
         alt="download data"
