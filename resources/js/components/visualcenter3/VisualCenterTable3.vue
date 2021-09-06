@@ -422,8 +422,8 @@
                   <button
                           type="button"
                           data-toggle="dropdown"
-                          @click="switchDropdownCategories('gasProduction')"
-                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.gasProduction}]"                         
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' ,
+                          {'button-tab-highlighted': backendMenu.naturalGasProduction || backendMenu.associatedGasProduction || backendMenu.associatedGasFlaring || backendMenu.naturalGasDelivery || backendMenu.expensesForOwnNaturalGas || backendMenu.associatedGasDelivery || backendMenu.expensesForOwnAssociatedGas}]"
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
@@ -537,21 +537,14 @@
               </div>
               <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
                 <div class="button1 d-flex">
-                  <div
-                          :class="[`${waterInjectionButton}`, 'col-10 category-button_border']"
-                  >
+                  <div :class="[backendMenu.waterInjection ? 'button-tab-highlighted' : '', 'col-10 category-button_border']">
                     <div
                             class="button1-vc-inner"
-                            @click="switchCategory(
-                              'waterInjectionButton',
-                              'liq_plan',
-                              'liq_fact',
-                              trans('visualcenter.meterCubicWithSpace'),
-                              trans('visualcenter.liq'))"
+                            @click="backendSwitchCategory('waterInjection')"
                     >
                       <div class="icon-all icons5"></div>
                       <div class="txt5">
-                        <!-- Закачка воды -->{{ trans("visualcenter.liq") }}
+                        {{ trans("visualcenter.liq") }}
                       </div>
                     </div>
                   </div>
@@ -559,81 +552,52 @@
                           type="button"
                           data-toggle="dropdown"
                           @click="switchDropdownCategories('waterInjection')"
-                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' , {'button-tab-highlighted':dropdownMenu.waterInjection}]"
+                          :class="[isOneDzoSelected ? 'visualcenter-button-disable' : '', 'btn btn-primary dropdown-toggle position-button-vc col-2 m-0' ,
+                            {'button-tab-highlighted': backendMenu.seawaterInjection || backendMenu.wasteWaterInjection || backendMenu.artezianWaterInjection}
+                          ]"
                   ></button>
                   <div>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
                       <li
                               class="center-li row px-4"
-                              @click="switchMainMenu('waterInjectionButton','seaWaterInjection')"
+                              @click="backendSwitchCategory('seaWaterInjection','waterInjection')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('waterInjectionButton','seaWaterInjection')}`"
+                                v-html="backendMenu.seaWaterInjection ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a
                                 class="col-9 p-0 ml-3 mt-2"
-                                @click="
-                            updateProductionData(
-                              'ppd_zakachka_morskoi_vody_plan',
-                              'ppd_zakachka_morskoi_vody_fact',
-                              trans('visualcenter.liqOceanDynamic'),
-                              ' м³',
-                              trans('visualcenter.liqOcean')
-                            )
-                          "
                         >
-                          <!-- Закачка морской воды -->{{
-                          trans("visualcenter.liqOcean")
-                          }}
+                          {{trans("visualcenter.liqOcean")}}
                         </a>
                       </li>
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchMainMenu('waterInjectionButton','wasteWaterInjection')"
+                              @click="backendSwitchCategory('wasteWaterInjection','waterInjection')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('waterInjectionButton','wasteWaterInjection')}`"
+                                v-html="backendMenu.wasteWaterInjection ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a
                                 class="col-9 p-0 ml-3 mt-2"
-                                @click="
-                            updateProductionData(
-                              'ppd_zakachka_stochnoi_vody_plan',
-                              'ppd_zakachka_stochnoi_vody_fact',
-                              trans('visualcenter.liqStochnayaDynamic'),
-                              ' м³',
-                              trans('visualcenter.liqStochnaya')
-                            )
-                          "
                         >
-                          <!-- Закачка сточной воды -->{{
-                          trans("visualcenter.liqStochnaya")
-                          }}
+                          {{trans("visualcenter.liqStochnaya")}}
                         </a>
                       </li>
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchMainMenu('waterInjectionButton','albsenWaterInjection')"
+                              @click="backendSwitchCategory('artezianWaterInjection','waterInjection')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('waterInjectionButton','albsenWaterInjection')}`"
+                                v-html="backendMenu.artezianWaterInjection ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a
                                 class="col-9 p-0 ml-3 mt-2"
-                                @click="
-                            updateProductionData(
-                              'ppd_zakachka_albsen_vody_plan',
-                              'ppd_zakachka_albsen_vody_fact',
-                              trans('visualcenter.dynamicArtesianWater'),
-                              ' м³',
-                              trans('visualcenter.injectionArtesianWater')
-                            )
-                          "
                         >
                           {{trans("visualcenter.injectionArtesianWater")}}
                         </a>
@@ -757,7 +721,7 @@
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
                   <button
-                          v-if="buttonYearlyTab && oilCondensateProductionButton"
+                          v-if="buttonYearlyTab && backendMenu.oilCondensateProduction && backendMenu.oilCondensateDelivery"
                           type="button"
                           class="btn btn-primary dropdown-toggle position-button-vc mt-1"
                           data-toggle="dropdown"

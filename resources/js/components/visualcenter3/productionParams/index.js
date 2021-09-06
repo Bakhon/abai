@@ -15,7 +15,6 @@ export default {
                 'historicalTableData': []
             },
             backendSelectedCategory: 'oilCondensateProduction',
-            backendSelectedFilter: [],
             backendSummary: {
                 'oilProductionFact': 0,
                 'oilProductionPlan': 0,
@@ -70,7 +69,7 @@ export default {
                 'associatedGasDelivery': false,
                 'expensesForOwnAssociatedGas': false,
                 'waterInjection': false,
-                'seawaterInjection': false,
+                'seaWaterInjection': false,
                 'wasteWaterInjection': false,
                 'artezianWaterInjection': false
             },
@@ -81,7 +80,7 @@ export default {
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
                 '</svg>',
             backendPreviousCategory: 'oilCondensateProduction',
-            backendParentMenu: ['oilCondensateProduction','oilCondensateDelivery','gasProduction','waterInjection'],
+            backendDoubleFilter: ['oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG'],
             backendCondensateCompanies: {
                 'ОМГК': {
                     'id': '1.1.'
@@ -102,7 +101,6 @@ export default {
                 'periodRange': this.backendPeriodRange,
                 'dzoName': this.backendSelectedDzo,
                 'category': this.backendSelectedCategory,
-                'filter': this.backendSelectedFilter,
                 'periodType' : this.backendSelectedView
             };
             let uri = this.localeUrl("/get-production-params-by-category");
@@ -113,20 +111,15 @@ export default {
             return response.data;
         },
         backendUpdateSummaryFact(productionName,deliveryName) {
-            console.log('productionName ' + productionName);
             this.backendSummary.oilProductionFact = _.sumBy(this.backendProductionParams.tableData.current[productionName],'fact');
-            console.log(this.backendSummary.oilProductionFact);
             this.backendSummary.oilProductionPlan = _.sumBy(this.backendProductionParams.tableData.current[productionName],'plan');
             this.backendSummary.oilDeliveryFact = _.sumBy(this.backendProductionParams.tableData.current[deliveryName],'fact');
             this.backendSummary.oilDeliveryPlan = _.sumBy(this.backendProductionParams.tableData.current[deliveryName],'plan');
             this.backendSummary.gasProductionFact = _.sumBy(this.backendProductionParams.tableData.current['gasProduction'],'fact');
             this.backendSummary.gasProductionPlan = _.sumBy(this.backendProductionParams.tableData.current['gasProduction'],'plan');
             this.backendHistoricalSummaryFact.oilProductionFact = _.sumBy(this.backendProductionParams.tableData.historical[productionName],'fact');
-            console.log(this.backendHistoricalSummaryFact.oilProductionFact);
             this.backendHistoricalSummaryFact.oilDeliveryFact = _.sumBy(this.backendProductionParams.tableData.historical[deliveryName],'fact');
             this.backendHistoricalSummaryFact.gasProductionFact = _.sumBy(this.backendProductionParams.tableData.historical['gasProduction'],'fact');
-            console.log(this.backendSummary)
-            console.log(this.backendHistoricalSummaryFact)
         },
         getBackendProgress(fact,plan) {
             return (fact / plan) * 100;
@@ -179,11 +172,11 @@ export default {
         },
 
         backendSwitchCategory(category,parent) {
-            let isWithoutKmg = ['oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG'].includes(category);
+            let isWithoutKmg = this.backendDoubleFilter.includes(category);
             let isFilterChanged = category === this.backendSelectedCategory;
             let shouldRecalculateSummary = false;
             for (let item in this.backendMenu) {
-                if (item === category) {
+                if (item === category || this.backendDoubleFilter.includes(category)) {
                     continue;
                 }
                 this.backendMenu[item] = false;
@@ -192,8 +185,8 @@ export default {
             if (!isWithoutKmg) {
                 this.backendMenu[category] = !this.backendMenu[category];
             } else {
-                this.backendMenu['oilCondensateProductionWithoutKMG'] = !this.backendMenu[category];
-                this.backendMenu['oilCondensateDeliveryWithoutKMG'] = !this.backendMenu[category];
+                this.backendMenu['oilCondensateProductionWithoutKMG'] = !this.backendMenu['oilCondensateProductionWithoutKMG'];
+                this.backendMenu['oilCondensateDeliveryWithoutKMG'] = !this.backendMenu['oilCondensateDeliveryWithoutKMG'];
             }
             if (isWithoutKmg && this.backendMenu[category]) {
                 shouldRecalculateSummary = true;

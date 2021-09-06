@@ -11,6 +11,7 @@ use App\Http\Resources\VisualCenter\OilCondensateConsolidated;
 use App\Http\Resources\VisualCenter\OilCondensateConsolidatedWithoutKmg;
 use App\Http\Resources\VisualCenter\OilCondensateConsolidatedOilResidue;
 use App\Http\Resources\VisualCenter\GasProduction;
+use App\Http\Resources\VisualCenter\WaterInjection;
 use Carbon\Carbon;
 
 class VisualCenterController extends Controller
@@ -30,64 +31,18 @@ class VisualCenterController extends Controller
         'current' => array(
             'oilCondensateProduction' => array(),
             'oilCondensateProductionWithoutKMG' => array(),
-            'oilCondensateProductionCondensateOnly' => array(),
             'oilCondensateDelivery' => array(),
             'oilCondensateDeliveryWithoutKMG' => array(),
             'oilCondensateDeliveryOilResidue' => array(),
-            'oilCondensateDeliveryCondensateOnly' => array(),
-            'gasProduction' => array(),
-            'waterInjection' => array(),
-            'seawaterInjection' => array(),
-            'wasteWaterInjection' => array(),
-            'artezianWaterInjection' => array()
         ),
         'historical' => array(
             'oilCondensateProduction' => array(),
             'oilCondensateProductionWithoutKMG' => array(),
             'oilCondensateDelivery' => array(),
             'oilCondensateDeliveryWithoutKMG' => array(),
-            'gasProduction' => array()
         )
     );
     private $isOpek = false;
-    protected $factFields = [
-        'id',
-        'dzo_name',
-        'oil_production_fact',
-        'oil_delivery_fact',
-        'condensate_production_fact',
-        'condensate_delivery_fact',
-        'stock_of_goods_delivery_fact',
-        'natural_gas_production_fact',
-        'natural_gas_delivery_fact',
-        'natural_gas_expenses_for_own_fact',
-        'associated_gas_production_fact',
-        'associated_gas_flaring_fact',
-        'associated_gas_delivery_fact',
-        'associated_gas_expenses_for_own_fact',
-        'agent_upload_seawater_injection_fact',
-        'agent_upload_waste_water_injection_fact',
-        'agent_upload_albsenomanian_water_injection_fact'
-    ];
-    protected $planFields = [
-        'dzo',
-        'plan_oil',
-        'plan_oil_opek',
-        'plan_oil_dlv',
-        'plan_oil_dlv_opek',
-        'plan_kondensat',
-        'plan_kondensat_dlv',
-        'plan_prirod_gas',
-        'plan_prirod_gas_dlv',
-        'plan_prirod_gas_raskhod',
-        'plan_poput_gas',
-        'plan_poput_gas_burn',
-        'plan_poput_gas_dlv',
-        'plan_poput_gas_raskhod',
-        'plan_liq_ocean',
-        'plan_liq_waste',
-        'plan_liq_albsen'
-    ];
 
     public function getProductionParamsByCategory(Request $request)
     {
@@ -106,15 +61,14 @@ class VisualCenterController extends Controller
         $this->tableData['historical']['oilCondensateProduction'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan,'oilCondensateProduction');
         $this->tableData['current']['oilCondensateDelivery'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDelivery');
         $this->tableData['historical']['oilCondensateDelivery'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan,'oilCondensateProduction');
-
         $this->tableData['current']['oilCondensateProductionWithoutKMG'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateProductionWithoutKMG');
         $this->tableData['historical']['oilCondensateProductionWithoutKMG'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan,'oilCondensateProductionWithoutKMG');
         $this->tableData['current']['oilCondensateDeliveryWithoutKMG'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDeliveryWithoutKMG');
         $this->tableData['historical']['oilCondensateDeliveryWithoutKMG'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan,'oilCondensateDeliveryWithoutKMG');
         $this->tableData['current']['oilCondensateDeliveryOilResidue'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDeliveryOilResidue');
-
         $this->tableData['current'] = array_merge($this->tableData['current'],$this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'gasProduction'));
         $this->tableData['historical'] = array_merge($this->tableData['historical'],$this->getTableData($historicalDzoFact,$historicalDzoPlan,'gasProduction'));
+        $this->tableData['current'] = array_merge($this->tableData['current'],$this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'waterInjection'));
         return array(
             'tableData' => $this->tableData,
             'chartData' => $this->chartData,
@@ -131,7 +85,6 @@ class VisualCenterController extends Controller
         $this->historicalPeriodEnd = Carbon::parse($params->get('historicalPeriodEnd'))->endOfDay();
         $this->dzoName = $params->get('dzoName');
         $this->category = $params->get('category');
-        $this->filter = $params->get('filter');
         $this->isOpek = $this->category === 'oilCondensateProduction' || $this->category === 'oilCondensateDelivery';
     }
 
@@ -178,7 +131,8 @@ class VisualCenterController extends Controller
         $oilCondensateConsolidated = new OilCondensateConsolidated();
         $oilCondensateConsolidatedWithoutKmg = new OilCondensateConsolidatedWithoutKmg();
         $oilCondensateConsolidatedOilResidue = new OilCondensateConsolidatedOilResidue();
-        $GasProduction = new GasProduction();
+        $gasProduction = new GasProduction();
+        $waterInjection = new WaterInjection();
         $tableData = array();
         if ($type === 'oilCondensateProduction' || $type === 'oilCondensateDelivery') {
             $tableData = $oilCondensateConsolidated->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,$type,$this->yearlyPlan,$this->periodType,$this->dzoName);
@@ -190,7 +144,10 @@ class VisualCenterController extends Controller
             $tableData = $oilCondensateConsolidatedOilResidue->getDataByOilResidueCategory($fact,$this->periodRange,$this->dzoName);
         }
         if ($type === 'gasProduction') {
-            $tableData = $GasProduction->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName);
+            $tableData = $gasProduction->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName);
+        }
+        if ($type === 'waterInjection') {
+            $tableData = $waterInjection->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName);
         }
         return $tableData;
     }
