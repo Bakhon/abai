@@ -139,8 +139,7 @@ export default {
 
       this.loading = false
 
-      this.$nextTick(() => this.plotCharts()
-      )
+      this.$nextTick(() => this.plotCharts())
     },
 
     selectWells(wells) {
