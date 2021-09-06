@@ -12,7 +12,6 @@ export default {
             backendProductionParams: {
                 'tableData': [],
                 'chartData': [],
-                'historicalTableData': []
             },
             backendSelectedCategory: 'oilCondensateProduction',
             backendSummary: {
@@ -30,6 +29,7 @@ export default {
             },
             backendSelectedView: 'day',
             backendProductionTableData: [],
+            backendProductionChartData: [],
             backendMarginMapping: {
                 'oilCondensateProduction': [1,13,14,15],
                 'oilCondensateDelivery': [1,11,12,13],
@@ -92,7 +92,7 @@ export default {
         }
     },
     methods: {
-        async backendGetProductionParamsByCategory(istrue) {
+        async backendGetProductionParamsByCategory() {
             let queryOptions = {
                 'periodStart': this.backendPeriodStart.format(),
                 'periodEnd': this.backendPeriodEnd.format(),
@@ -151,8 +151,12 @@ export default {
             this.backendHistoricalPeriodEnd = this.backendPeriodStart.clone().subtract(1,'days').endOf('day');
             this.backendHistoricalPeriodStart = this.backendHistoricalPeriodEnd.clone().subtract(this.backendPeriodRange,'days');
             this.backendSwitchSelectedButton(view);
-            this.backendProductionParams = await this.backendGetProductionParamsByCategory(true);
+            this.backendProductionParams = await this.backendGetProductionParamsByCategory();
             this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
+            if (this.backendPeriodRange > 0) {
+                this.backendProductionChartData = this.backendGetSummaryForChart();
+                this.exportDzoCompaniesSummaryForChart(this.backendProductionChartData);
+            }
             this.SET_LOADING(false);
         },
 
@@ -171,7 +175,7 @@ export default {
             }
         },
 
-        backendSwitchCategory(category,parent) {
+        async backendSwitchCategory(category,parent) {
             let isWithoutKmg = this.backendDoubleFilter.includes(category);
             let isFilterChanged = category === this.backendSelectedCategory;
             let shouldRecalculateSummary = false;
@@ -197,6 +201,13 @@ export default {
                 this.backendPreviousCategory = parent;
                 this.backendSelectedCategory = category;
             }
+            this.SET_LOADING(true);
+            this.backendProductionParams = await this.backendGetProductionParamsByCategory();
+            this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
+            if (this.backendPeriodRange > 0) {
+                this.backendProductionChartData = this.backendGetSummaryForChart();
+            }
+            this.SET_LOADING(false);
             this.backendProductionTableData = _.cloneDeep(this.backendProductionParams.tableData.current[this.backendSelectedCategory]);
             if (['oilCondensateProductionCondensateOnly','oilCondensateDeliveryCondensateOnly'].includes(category) && !isFilterChanged) {
                 this.backendProductionTableData = _.cloneDeep(this.backendProductionParams.tableData.current[parent]);
@@ -208,14 +219,33 @@ export default {
                 this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
             }
         },
-
         backendGetFilteredByDzo(data,dzoList) {
             let filtered = data.filter(record => Object.keys(dzoList).includes((record.name)));
             for (let i in filtered) {
                 filtered[i].id = dzoList[filtered[i].name].id;
             }
             return filtered;
-        }
+        },
+        backendGetSummaryForChart() {
+            let chartData = _.cloneDeep(this.backendProductionParams.chartData);
+            if (this.backendSelectedDzo !== null) {
+                chartData = _.filter(chartData, (item) => {
+                    return item.name === this.backendSelectedDzo;
+                });
+            }
+            _.forEach(chartData, (item) => {
+                item.date = moment(item.date, 'DD/MM/YYYY').valueOf();
+            });
+            return _(chartData)
+                .groupBy("date")
+                .map((item, date) => ({
+                    time: date,
+                    productionFactForChart: _.round(_.sumBy(item, 'fact'), 0),
+                    productionPlanForChart: _.round(_.sumBy(item, 'plan'), 0),
+                    productionPlanForChart2: _.round(_.sumBy(item, 'opek'), 0),
+                }))
+                .value();
+        },
     },
     computed: {
         backendSummaryYearlyPlan() {
@@ -247,7 +277,7 @@ export default {
     async mounted() {
         this.SET_LOADING(true);
         this.backendProductionParams = await this.backendGetProductionParamsByCategory();
-        this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
+        //this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
         this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
         this.SET_LOADING(false);
     }

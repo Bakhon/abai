@@ -778,7 +778,7 @@
             </div>
 
               <!-- old table todo -->
-            <div class="row mh-60 mt-3 px-4">
+            <div class="d-flex mh-60 mt-3 px-4">
               <div
                       class="col-sm-7 vis-table"
                       :class="isOneDateSelected ? 'main-table__scroll' : ''"
@@ -788,7 +788,7 @@
                         :class="getProductionTableClass()"
                 >
                   <thead>
-                  <tr>
+                  <tr :class="">
                     <th>№</th>
                     <th>{{ trans("visualcenter.dzo") }}</th>
                     <th v-if="buttonMonthlyTab && !backendMenu.oilCondensateDeliveryOilResidue">
@@ -1341,21 +1341,16 @@
               </div>
               <div
                       class="pl-3 col-sm-5"
-                      v-if="
-                  ((planFieldName != 'oil_plan' &&
-                    planFieldName != 'oil_dlv_plan' &&
-                    planFieldName != 'oil_opek_plan') ||
-                  !isOneDateSelected) && !buttonDailyTab
-                "
+                      v-if="backendPeriodRange > 0"
               >
                 <div
-                        v-if="isConsolidatedCategoryActive() && !isOilResidueActive"
+                        v-if="isConsolidatedCategoryActive() && !backendMenu.oilCondensateDeliveryOilResidue"
                         class="oil-condensate-chart-secondary-name"
                 >
                   {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
                 </div>
                 <div
-                        v-else-if="isOilResidueActive"
+                        v-else-if="backendMenu.oilCondensateDeliveryOilResidue"
                         class="oil-condensate-chart-secondary-name"
                 >
                   {{ oilResidueChartName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
@@ -2622,7 +2617,6 @@
       }
     }
     .production-table {
-      table-layout: fixed;
       th {
         width: 90px;
         &:first-child {
