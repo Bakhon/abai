@@ -5,10 +5,11 @@ namespace App\Models\ComplicationMonitoring;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
+use App\Traits\MapObjectsTrait;
 
 class ManualWell extends Model
 {
-    use LogsActivity, SoftDeletes;
+    use LogsActivity, SoftDeletes, MapObjectsTrait;
 
     protected $guarded = ['id'];
     protected $hidden = [
@@ -29,16 +30,6 @@ class ManualWell extends Model
     public function gu()
     {
         return $this->belongsTo(ManualGu::class);
-    }
-
-    public function ngdu()
-    {
-        return $this->belongsTo(Ngdu::class);
-    }
-
-    public function omgngdu()
-    {
-        return $this->hasMany(OmgNGDU::class, 'well_id');
     }
 
     public function watermeasurement()

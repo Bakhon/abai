@@ -28,8 +28,8 @@ class ManualHydroCalcPrepareListResource extends CrudListResource
                 'wc' => $this->omgngdu ? $this->omgngdu->bsw : '',
                 'gas_factor' => $this->omgngdu ? $this->omgngdu->gas_factor : '',
                 'pressure_start' => $this->omgngdu ? $this->omgngdu->pressure : '',
-                'temp_well' => $this->omgngdu ? $this->omgngdu->temperature_well : '',
-                'temp_zu' => $this->omgngdu ? $this->omgngdu->temperature_zu : '',
+                'temp_start' => $this->omgngdu ? $this->omgngdu->temperature_well : '',
+                'temp_end' => $this->omgngdu ? (isset($this->omgngdu->heater_inlet_temperature) ? $this->omgngdu->heater_inlet_temperature : $this->omgngdu->temperature_zu) : '',
             ],
         ];
 
