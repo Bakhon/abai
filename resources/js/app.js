@@ -106,9 +106,12 @@ Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue'
 Vue.component('prs-crs', require('./components/gno/modals/PrsCrs.vue').default);
 Vue.component('inflow-curve', require('./components/gno/modals/InflowCurve.vue').default);
 Vue.component('economic', require('./components/gno/modals/Economic.vue').default);
+Vue.component('shgn-img', require('./components/gno/components/ShgnImg.vue').default);
 Vue.component('economic-table', require('./components/gno/modals/EconomicTable.vue').default);
 Vue.component('near-wells-table', require('./components/gno/modals/NearWellsTable.vue').default);
 Vue.component('pgno-analysis', require('./components/gno/modals/AnalysisMenu.vue').default);
+Vue.component('pgno-sensitive-settings', require('./components/gno/modals/SensitiveSettings.vue').default);
+Vue.component('pgno-sensitive-result', require('./components/gno/modals/SensitiveResult.vue').default);
 Vue.component('monitor-table', require('./components/complicationMonitoring/monitor/MonitorTable.vue').default);
 Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/complicationMonitoring/omgca/form.vue').default);
@@ -159,8 +162,8 @@ Vue.component('geo-mapping-form', require('./components/bigdata/mapping/form.vue
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
 Vue.component('corrosion-form', require('./components/complicationMonitoring/corrosion/form.vue').default);
-Vue.component('map-history', require('./components/complicationMonitoring/map/mapHistory.vue').default);
-Vue.component('gu-map', require('./components/complicationMonitoring/map/map.vue').default);
+Vue.component('map-history', require('./components/complicationMonitoring/techMap/mapHistory.vue').default);
+Vue.component('tech-map', require('./components/complicationMonitoring/techMap/map.vue').default);
 Vue.component('field-settings', require('./components/settings/fields.vue').default);
 
 Vue.component('fa-table', require('./components/tr/fa.vue').default);

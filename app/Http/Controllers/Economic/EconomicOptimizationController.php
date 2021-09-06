@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
 use App\Models\EcoRefsCost;
+use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -18,8 +19,8 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v3_gtm_optimize';
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v3';
+    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v5_gtm_optimize_v1';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v4';
     const DATA_SOURCE_DATE = '2021/01/01';
 
     const SCENARIO_COLUMNS = [
@@ -35,7 +36,8 @@ class EconomicOptimizationController extends Controller
         "gtm_cost",
         "gtm_operating_profit_12m",
         "gtms",
-        "Barrel_ratio_export_scenario"
+        "Barrel_ratio_export_scenario",
+        'uwi_stop'
     ];
 
     const OPTIMIZED_COLUMNS = [
@@ -120,6 +122,7 @@ class EconomicOptimizationController extends Controller
                 'value' => $this->getOilPrice() ?? '0',
                 'url' => self::OIL_PRICE_URL
             ],
+            'gtms' => EcoRefsGtm::all()
         ];
     }
 
@@ -208,12 +211,13 @@ class EconomicOptimizationController extends Controller
             "dollar_rate",
             'profitability_12m',
             "scenario_id",
-            "rank",
         ];
 
         return $builder
             ->select($columns)
-            ->doubleSum('operating_profit_12m')
+            ->doubleSum('Operating_profit_12m')
+            ->doubleSum('oil_12m')
+            ->doubleSum('liquid_12m')
             ->groupBy($columns)
             ->data();
     }

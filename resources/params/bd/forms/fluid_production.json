@@ -1,17 +1,6 @@
 {
   "type": "table",
   "table_type": "wells",
-  "merge_columns": {
-    "merge_2": {
-      "code": "merge_2",
-      "title": "Объединение 2",
-      "parent_column": "merge_1"
-    },
-    "merge_1": {
-      "code": "merge_1",
-      "title": "Объединение 1"
-    }
-  },
   "columns": [
     {
       "title": "uwi_number",
@@ -23,8 +12,7 @@
       "title": "other_uwi",
       "code": "other_uwi",
       "type": "text",
-      "is_editable": false,
-      "parent_column": "merge_1"
+      "is_editable": false
     },
     {
       "title": "worktime",
@@ -32,8 +20,7 @@
       "table": "prod.well_status",
       "column": "well_status_type_id",
       "type": "text",
-      "is_editable": false,
-      "parent_column": "merge_2"
+      "is_editable": false
     },
     {
       "title": "exp_type",
@@ -41,8 +28,7 @@
       "table": "prod.well_expl",
       "column": "name",
       "type": "text",
-      "is_editable": false,
-      "parent_column": "merge_2"
+      "is_editable": false
     },
     {
       "title": "lease",
@@ -50,8 +36,7 @@
       "table": "prod.well_tech",
       "column": "tap",
       "type": "integer",
-      "is_editable": false,
-      "parent_column": "merge_2"
+      "is_editable": false
     },
     {
       "title": "geostructure",

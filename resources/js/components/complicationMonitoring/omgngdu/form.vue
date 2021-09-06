@@ -187,7 +187,7 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-      <button type="submit" :disabled="!formFields.date" class="btn btn-success">{{ trans('app.save') }}</button>
+      <button type="submit" @click.prevent="submitForm" :disabled="!formFields.date" class="btn btn-success">{{ trans('app.save') }}</button>
     </div>
   </div>
 </template>
@@ -198,7 +198,6 @@ import {Datetime} from 'vue-datetime'
 import moment from 'moment'
 import 'vue-datetime/dist/vue-datetime.css'
 import {globalloadingMutations} from '@store/helpers';
-;
 
 Vue.use(Datetime)
 
@@ -254,10 +253,10 @@ export default {
       return null
     },
     requestUrl () {
-      return this.isEditing ? this.localeUrl("/omgngdu/" + this.omgngdu.id) : this.localeUrl("/omgngdu");
+      return this.omgngdu.id ? this.localeUrl("/omgngdu/" + this.omgngdu.id) : this.localeUrl("/omgngdu");
     },
     requestMethod () {
-      return this.isEditing ? "put" : "post";
+      return this.omgngdu.id ? "put" : "post";
     }
   },
   beforeCreate: function () {
