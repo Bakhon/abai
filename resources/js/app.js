@@ -175,7 +175,7 @@ Vue.component('well_cart', require('./components/well_cart/well_cart.vue').defau
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
-Vue.component('pf-upload_monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
+Vue.component('pf-upload-monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
 Vue.component('pf-data-analysis', require('./components/PlastFluids/views/PfDataAnalysis').default);
 Vue.component('pf-download-monitoring', require('./components/PlastFluids/views/DownloadMonitoring').default);
 
