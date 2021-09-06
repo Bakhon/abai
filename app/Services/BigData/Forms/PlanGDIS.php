@@ -42,7 +42,7 @@ class PlanGDIS extends TableForm
         foreach ($dates as $date) {
             $mergeColumns['date_' . $date->format('m_Y')] = [
                 'code' => 'date_' . $date->format('m_Y'),
-                'title' => $date->format('F Y')
+                'title' => trans('app.months.' . $date->format('n')) . ' ' . $date->format('Y')
             ];
             $columns[] = [
                 'code' => "date_{$date->format('m_Y')}_well_count",

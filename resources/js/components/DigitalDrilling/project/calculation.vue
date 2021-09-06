@@ -1,19 +1,19 @@
 <template>
     <table class="table defaultTable ">
         <tr>
-            <th rowspan="2">Наружный диаметр обсадной трубы</th>
-            <th colspan="2">Толщина стенки</th>
-            <th colspan="2">Диапазон варьирования внутреннего диаметра</th>
-            <th colspan="2">Наружный диаметр соединительной муфты</th>
-            <th rowspan="2">Толщина стенок обсадной трубы</th>
+            <th rowspan="2">{{ trans('digital_drilling.calculation.outside_diameter_casing') }}</th>
+            <th colspan="2">{{ trans('digital_drilling.calculation.wall_thickness') }}</th>
+            <th colspan="2">{{ trans('digital_drilling.calculation.internal_diameter_variation') }}</th>
+            <th colspan="2">{{ trans('digital_drilling.calculation.coupling_outer_diameter') }}</th>
+            <th rowspan="2">{{ trans('digital_drilling.calculation.casing_wall_thickness') }}</th>
         </tr>
         <tr>
-            <th>минимальная</th>
-            <th>максимальная</th>
-            <th>минимальная</th>
-            <th>максимальная</th>
-            <th>минимальная</th>
-            <th>максимальная</th>
+            <th>{{ trans('digital_drilling.calculation.minimum') }}</th>
+            <th>{{ trans('digital_drilling.calculation.maximum') }}</th>
+            <th>{{ trans('digital_drilling.calculation.minimum') }}</th>
+            <th>{{ trans('digital_drilling.calculation.maximum') }}</th>
+            <th>{{ trans('digital_drilling.calculation.minimum') }}</th>
+            <th>{{ trans('digital_drilling.calculation.maximum') }}</th>
         </tr>
         <tr v-for="i in 20">
             <td>114,3</td>

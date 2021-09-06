@@ -11,6 +11,7 @@ export default {
   props: ["updateCurveTrigger"],
   computed: {
     ...pgnoMapState([
+      'curveSettings',
       'well',
       'lines',
       'points',
@@ -93,94 +94,102 @@ export default {
   },
   methods: {
     updateGraph () {
-      this.data = [ 
-        {
-          name: this.trans("pgno.curveBhpLineName"),
-          legendgroup: "group1",
-          x: this.lines.qlLine,
-          y: this.lines.bhpLine,
-          text: this.lines.qoilLine,
-          hovertemplate: this.trans("pgno.curveBhpLineHover"), 
-          marker: {
-            x: 20,
-            y: 60,
-            size: "15",
-            color: "#FF0D18",
+      if (this.curveSettings.expChoosen === "ФОН"){
+        this.data = this.lines
+        this.layout.shapes[0].visible = false
+        
+      } else {
+        this.data = [ 
+          {
+            name: this.trans("pgno.curveBhpLineName"),
+            legendgroup: "group1",
+            x: this.lines.qlLine,
+            y: this.lines.bhpLine,
+            text: this.lines.qoilLine,
+            hovertemplate: this.trans("pgno.curveBhpLineHover"), 
+            marker: {
+              x: 20,
+              y: 60,
+              size: "15",
+              color: "#FF0D18",
+            },
           },
-        },
+  
+          {
+            name: this.trans("pgno.curvePintakeLineName"),
+            legendgroup: "group2",
+            x: this.lines.qlLine,
+            y: this.lines.pintakeLine,
+            hovertemplate: '<b>Pnp = %{y:.1f} атм</b><extra></extra>',
+            marker: {
+              size: "15",
+              color: "#CC6F3C",
+            },
+          },
+  
+          {
+            name: this.trans("pgno.curveFreegasLineName"),
+            legendgroup: "group3",
+            x: this.lines.qlLine,
+            y: this.lines.freegasLine,
+            yaxis: 'y',
+            hovertemplate: this.trans("pgno.curveFreegasHover"), 
+            marker: {
+              size: "15",
+              color: "#237DEB",
+            },
+          },
+  
+          {
+            name: this.trans("pgno.curveTargetPointName"),
+            legendgroup: "group5",
+            x: [this.points.qlCelValue],
+            y: [this.points.bhpCelValue],
+            text: [this.points.qoCelValue],
+            mode: "markers",
+            hovertemplate: this.trans("pgno.curveTargetPointHover"),
+            marker: {
+              size: "15",
+              color: "#13B062",
+            },
+          },
+  
+          {
+            name: this.trans("pgno.curveCurrentPointName"),
+            legendgroup: "group4",
+            x: [this.points.ql],
+            y: [this.points.bhp],
+            text: [this.points.qo],
+            mode: "markers",
+            hovertemplate: this.trans("pgno.curveCurrentPointHover"),
+            marker: {
+              size: "15",
+              color: "#00A0E3",
+            },
+          },
+  
+          {
+            name: this.trans("pgno.curvePotencialPointName"),
+            legendgroup: "group6",
+            x: [this.points.qlPotencial],
+            y: [this.points.bhpPotencial],
+            text: [this.points.qOilPotencial],
+            mode: "markers",
+            hovertemplate: this.trans("pgno.curvePotencialPointHover"),
+            marker: {
+              size: "6",
+              color: "#FBA409",
+            },
+          },
+        ];
+        this.chartOptions = {
+          labels: this.lines.qlLine,
+        };
+        this.layout.shapes[0].visible = true
+        this.layout.shapes[0].x0 = this.layout.shapes[0].x1 = this.points.qlPotencial
+      }
+      }
 
-        {
-          name: this.trans("pgno.curvePintakeLineName"),
-          legendgroup: "group2",
-          x: this.lines.qlLine,
-          y: this.lines.pintakeLine,
-          hovertemplate: '<b>Pnp = %{y:.1f} атм</b><extra></extra>',
-          marker: {
-            size: "15",
-            color: "#CC6F3C",
-          },
-        },
-
-        {
-          name: this.trans("pgno.curveFreegasLineName"),
-          legendgroup: "group3",
-          x: this.lines.qlLine,
-          y: this.lines.freegasLine,
-          yaxis: 'y',
-          hovertemplate: this.trans("pgno.curveFreegasHover"), 
-          marker: {
-            size: "15",
-            color: "#237DEB",
-          },
-        },
-
-        {
-          name: this.trans("pgno.curveTargetPointName"),
-          legendgroup: "group5",
-          x: [this.points.qlCelValue],
-          y: [this.points.bhpCelValue],
-          text: [this.points.qoCelValue],
-          mode: "markers",
-          hovertemplate: this.trans("pgno.curveTargetPointHover"),
-          marker: {
-            size: "15",
-            color: "#13B062",
-          },
-        },
-
-        {
-          name: this.trans("pgno.curveCurrentPointName"),
-          legendgroup: "group4",
-          x: [this.points.ql],
-          y: [this.points.bhp],
-          text: [this.points.qo],
-          mode: "markers",
-          hovertemplate: this.trans("pgno.curveCurrentPointHover"),
-          marker: {
-            size: "15",
-            color: "#00A0E3",
-          },
-        },
-
-        {
-          name: this.trans("pgno.curvePotencialPointName"),
-          legendgroup: "group6",
-          x: [this.points.qlPotencial],
-          y: [this.points.bhpPotencial],
-          text: [this.points.qOilPotencial],
-          mode: "markers",
-          hovertemplate: this.trans("pgno.curvePotencialPointHover"),
-          marker: {
-            size: "6",
-            color: "#FBA409",
-          },
-        },
-      ];
-      this.chartOptions = {
-        labels: this.lines.qlLine,
-      };
-      this.layout.shapes[0].x0 = this.layout.shapes[0].x1 = this.points.qlPotencial
-    },
 
   },
   mounted() {},
