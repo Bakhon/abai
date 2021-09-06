@@ -306,14 +306,6 @@ export default {
           color: '#313560',
         },
         {
-          index: '5',
-          title: this.trans('economic_reference.number_pp'),
-          dimension: '$ / bbl',
-          values: [...[''], ...this.reverseOilPrices.map(() => '')],
-          budget2020: this.budget2020Map,
-          color: '#272953',
-        },
-        {
           index: '6',
           title: this.trans('economic_reference.income'),
           dimension: '$ / bbl',
