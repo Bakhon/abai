@@ -93,43 +93,12 @@ class DigitalRatingContoller extends Controller
             }
          };
 
-        if(empty($neighboring_wells)){
+         if(empty($neighboring_wells)){
             return response()->json(['message' => 'Well not found']);
          }
-          $wells = $this->get_injection_wells($neighboring_wells);
-         $wells = $this->get_wells($neighboring_wells);
          $wells = $this->get_wells($neighboring_wells);
          $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
          return response()->json($wells,200,$headers,JSON_UNESCAPED_UNICODE);
    }
-   public function get_injection_wells(array $neighboring_wells) : object  
-   {  
-      foreach ($neighboring_wells as $item) {
-         $well_uwi[] = $item['well'];
-      }
-      $query =   DB::connection('tbd')->table('tbdi.well')
-               ->whereIn('tbdi.well.uwi',$well_uwi)
-               ->join('tbdi.well_category', 'tbdi.well.id', '=', 'tbdi.well_category.well_id')
-               ->where('tbdi.well_category.well_category_type_id', 2)
-               ->join('tbdi.water_inj', 'tbdi.well.id', '=', 'tbdi.water_inj.well_id')
-               ->whereDate('tbdi.water_inj.dend', '>', Carbon::now()->subDays(90))
-               ->select('tbdi.well.uwi', 'tbdi.well.id','tbdi.well_category.well_category_type_id','tbdi.water_inj.dend','tbdi.water_inj.dbeg','tbdi.water_inj.water_inj_val','tbdi.water_inj.well_id')
-               ->get();
-              
-      $query2 =   DB::connection('tbd')->table('tbdi.well')
-               ->whereIn('tbdi.well.uwi',$well_uwi)
-               ->join('tbdi.well_category', 'tbdi.well.id', '=', 'tbdi.well_category.well_id')
-               ->where('tbdi.well_category.well_category_type_id', 2)
-               ->join('tbdi.well_status', 'tbdi.well_category.well_id', '=', 'tbdi.well_status.well_id')
-               ->where('tbdi.well_status.well_status_type_id',  4)   
-               ->whereDate('tbdi.well_status.dbeg', '>', Carbon::now()->subDays(90))
-               ->get();
-
-        dd($query,$query2);
-                dd($query2);
-      foreach ($query as $item) {
-               dd($item);
-
-                      }                
-   }
+ 
 };
