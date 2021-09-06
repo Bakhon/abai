@@ -2,14 +2,14 @@
 
 namespace App\Models\ComplicationMonitoring;
 
-use App\Traits\ClearOmgNgduOnDelete;
+use App\Traits\MapObjectsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class ManualGu extends Model
 {
-    use LogsActivity, SoftDeletes, ClearOmgNgduOnDelete;
+    use LogsActivity, SoftDeletes, MapObjectsTrait;
 
     protected $guarded = ['id'];
     protected $hidden = [
@@ -27,11 +27,6 @@ class ManualGu extends Model
         return $this->belongsTo(Cdng::class);
     }
 
-    public function ngdu()
-    {
-        return $this->belongsTo(Ngdu::class);
-    }
-
     public function zus()
     {
         return $this->hasMany(ManualZu::class);
@@ -45,11 +40,6 @@ class ManualGu extends Model
     public function omgca()
     {
         return $this->hasMany(OmgCA::class, 'gu_id');
-    }
-
-    public function omgngdu()
-    {
-        return $this->hasMany(OmgNGDU::class, 'gu_id');
     }
 
     public function lastOmgngdu()
