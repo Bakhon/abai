@@ -106,9 +106,14 @@
                   </template>
                 </template>
                 <template v-else-if="column.type === 'dict'">
-                    <span class="value">
-                      {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
-                    </span>
+                  <bigdata-form-field
+                      :id="row.id"
+                      :key="`field_${column.code}`"
+                      v-model="row[column.code].value"
+                      :item="column"
+                      v-on:change="saveCell(row, column)"
+                  >
+                  </bigdata-form-field>
                 </template>
                 <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
                   <div v-if="isCellEdited(row, column)" class="input-wrap">
@@ -204,6 +209,7 @@ import RowHistoryGraph from './RowHistoryGraph'
 import BigDataPlainForm from './PlainForm'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
+import BigdataFormField from './field'
 import forms from '../../../json/bd/forms.json'
 
 
@@ -242,7 +248,8 @@ export default {
   components: {
     BigDataHistory,
     BigDataPlainForm,
-    RowHistoryGraph
+    RowHistoryGraph,
+    BigdataFormField
   },
   data() {
     return {
@@ -331,6 +338,7 @@ export default {
             this.loadEditHistory()
           })
           .catch(error => {
+            console.log(error)
             this.formError = error.response.data.message
           })
           .finally(() => {

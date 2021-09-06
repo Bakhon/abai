@@ -10,7 +10,8 @@
     {
       "code": "date_to",
       "title": "date_to",
-      "type": "date"
+      "type": "date",
+      "default": "current"
     }
   ],
   "columns": [
