@@ -18,8 +18,11 @@ use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
-use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\ExplTypePlanGDIS;
+use App\Models\BigData\Dictionaries\FileFormat;
+use App\Models\BigData\Dictionaries\FileOrigin;
+use App\Models\BigData\Dictionaries\FileStatus;
+use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
 use App\Models\BigData\Dictionaries\GeoRockType;
@@ -41,24 +44,27 @@ use App\Models\BigData\Dictionaries\PlanGISType;
 use App\Models\BigData\Dictionaries\ProcedTypePlanGDIS;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\ReasonEquipFail;
+use App\Models\BigData\Dictionaries\RecordingMethod;
+use App\Models\BigData\Dictionaries\RecordingState;
 use App\Models\BigData\Dictionaries\RepairWorkType;
 use App\Models\BigData\Dictionaries\ResearchMethod;
 use App\Models\BigData\Dictionaries\ResearchTarget;
 use App\Models\BigData\Dictionaries\SaturationType;
+use App\Models\BigData\Dictionaries\StemType;
 use App\Models\BigData\Dictionaries\Tag;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
+use App\Models\BigData\Dictionaries\TechStateCasing;
 use App\Models\BigData\Dictionaries\TechStateType;
 use App\Models\BigData\Dictionaries\TreatType;
 use App\Models\BigData\Dictionaries\Well;
 use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellExplType;
+use App\Models\BigData\Dictionaries\WellPrsRepairType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
-use App\Models\BigData\Dictionaries\WellPrsRepairType;
-use App\Models\BigData\Dictionaries\TechStateCasing;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -271,7 +277,7 @@ class DictionaryService
         ],
         'tech_state_casings' => [
             'class' => TechStateCasing::class,
-            'name_field' => 'name_ru'     
+            'name_field' => 'name_ru'
         ],
         'plan_gis_type' => [
             'class' => PlanGISType::class,
@@ -280,6 +286,30 @@ class DictionaryService
         'proced_type_plan_gdis' => [
             'class' => ProcedTypePlanGDIS::class,
             'name_field' => 'name'
+        ],
+        'file_origin' => [
+            'class' => FileOrigin::class,
+            'name_field' => 'name_ru'
+        ],
+        'stem_type' => [
+            'class' => StemType::class,
+            'name_field' => 'name_ru'
+        ],
+        'recording_method' => [
+            'class' => RecordingMethod::class,
+            'name_field' => 'name_ru'
+        ],
+        'file_format' => [
+            'class' => FileFormat::class,
+            'name_field' => 'name_ru'
+        ],
+        'file_status' => [
+            'class' => FileStatus::class,
+            'name_field' => 'name_ru'
+        ],
+        'recording_state' => [
+            'class' => RecordingState::class,
+            'name_field' => 'name_ru'
         ]
     ];
 
@@ -368,14 +398,17 @@ class DictionaryService
                     $dict = $this->getEquipTypeCascDict();
                     break;
                 case 'geo_type_hrz':
-                    $dict = $this->getGeoHorizonDict();
+                    $dict = $this->getGeoDictByType('HRZ');
+                    break;
+                case 'geo_type_field':
+                    $dict = $this->getGeoDictByType('FLD');
                     break;
                 case 'reason_ref':
                     $dict = $this->getReasonTypeDict("REF");
-                    break; 
+                    break;
                 case 'reason_rst':
                     $dict = $this->getReasonTypeDict('RST');
-                    break;        
+                    break;
                 case 'reason_type_rtr':
                     $dict = $this->getReasonTypeDict('RTR');
                     break;
@@ -547,12 +580,12 @@ class DictionaryService
             ->toArray();
     }
 
-    private function getGeoHorizonDict()
+    private function getGeoDictByType($type)
     {
         $items = DB::connection('tbd')
             ->table('dict.geo as g')
             ->select('g.id', 'g.name_ru as name', 'gp.parent as parent')
-            ->where('gt.code', 'HRZ')
+            ->where('gt.code', $type)
             ->distinct()
             ->orderBy('parent', 'asc')
             ->orderBy('name', 'asc')

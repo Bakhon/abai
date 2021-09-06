@@ -2,15 +2,11 @@ import download from "downloadjs";
 import moment from 'moment';
 import {Datetime} from 'vue-datetime';
 import Vue from "vue";
+import {globalloadingMutations} from '@store/helpers'
 
 Vue.use(Datetime)
 
 export default {
-    props: [
-        'formParams',
-        'wellId'
-    ],
-    components: {},
     data() {
         return {
             files: [],
@@ -18,11 +14,6 @@ export default {
             isFilesUploadedOnPreApproval: false,
             isLastFileProcessed: false,
             experimentId: null,
-            statisticsInput: {
-                experimentId: null,
-                mnemonics: [],
-            },
-            experimentStatistics: null,
             dateFormat: 'DDMMYY',
             localization: 'ru',
             filenameParameters: null,
@@ -34,7 +25,7 @@ export default {
                 'recordingState', 'extension'
             ],
             input: {
-                well: this.wellId,
+                well: null,
                 field: null,
                 comment: null,
                 provenanceId: '',
@@ -54,6 +45,7 @@ export default {
                 },
                 defaultsForFilename: {
                     field: '<Месторождение>',
+                    well: '<Скважина>',
                     stemType: '<Наименование Ствола>',
                     stemSection: '<Секция Ствола>',
                     recordingMethod: '<Технология Записи>',
@@ -67,41 +59,13 @@ export default {
             },
 
             baseUrl: process.env.MIX_MICROSERVICE_GEO_DATA,
-            experimentInfo: null,
-            selectedExperimentsInfo: null,
-            loadProvenance: null,
-            provenances: null,
-            isLoading: false,
-            permissionName: 'bigdata load_las'
+            isLoading: false
         }
     },
-    mounted: function () {
-        this.$nextTick(function () {
-            this.$store.commit('globalloading/SET_LOADING', false);
-        });
-        this.loadProvenances();
-    },
     methods: {
-        loadProvenances() {
-            let uri = this.baseUrl + "origins/";
-            this.isLoading = true
-            this.axios.get(uri, {
-                responseType: 'json',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then((response) => {
-                if (response.data) {
-                    this.provenances = response.data
-                } else {
-                    console.log("No data");
-                }
-                this.isLoading = false;
-            }).catch((error) => {
-                console.log(error)
-                this.isLoading = false
-            });
-        },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
         handleFileUpload() {
             this.files = this.$refs.file.files;
         },
@@ -112,7 +76,7 @@ export default {
                 formData.append('files', this.files[i])
             }
 
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true)
             this.axios.post(this.baseUrl + 'upload/', formData, {
                 responseType: 'json',
                 headers: {
@@ -125,7 +89,7 @@ export default {
                     this.isFilesUploadedOnPreApproval = true
                 }
             }).catch((error) => console.log(error)
-            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+            ).finally(() => this.SET_LOADING(false));
         },
         resetInternalVariablesOfFileUpload() {
             this.isLastFileProcessed = false
@@ -134,7 +98,7 @@ export default {
             this.filenameParameters = null
         },
         submitFileParams() {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true)
 
             let jsonData = JSON.stringify({
                 well: this.input.well,
@@ -157,7 +121,7 @@ export default {
                     this.setNextExperimentInfo()
                 }
             }).catch((error) => console.log(error)
-            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+            ).finally(() => this.SET_LOADING(false));
         },
         setExperimentId(experimentId) {
             this.filenameParameters.specific[this.currentFileInfoNum]['experimentId'] = experimentId
@@ -187,48 +151,6 @@ export default {
             this.input.field = experiment.field
             this.input.well = experiment.well
         },
-        fetchStatistics() {
-            this.$store.commit('globalloading/SET_LOADING', true);
-            this.experimentStatistics = null;
-            this.axios.get(
-                this.baseUrl + 'experiment_stats/' + this.statisticsInput.experimentId
-            ).then((response) => {
-                if (response.data) {
-                    this.experimentStatistics = response.data;
-                }
-            }).catch((error) => console.log(error)
-            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
-
-        },
-        fetchExperiments() {
-            this.$store.commit('globalloading/SET_LOADING', true);
-            this.experimentInfo = null;
-            this.axios.get(
-                this.baseUrl + 'experiment/' + this.experimentId
-            ).then((response) => {
-                if (response.data) {
-                    this.experimentInfo = response.data;
-                    this.formatCurveValues();
-                }
-            }).catch((error) => console.log(error)
-            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
-
-        },
-        formatCurveValues() {
-            let content = this.experimentInfo.curves;
-
-            for (let i = 0; i < content.length; i++) {
-                for (let j = 0; j < content[i].curve.length; j++) {
-                    // Check string value is a number
-                    if (isNaN(content[i].curve[j]) || content[i].curve[j].indexOf('.') == -1) continue;
-
-                    // Precision up to 3 digits after the dot
-                    content[i].curve[j] = parseFloat(content[i].curve[j]).toFixed(3);
-                }
-            }
-
-            this.experimentInfo.curves = content;
-        },
         getOriginalLas(experimentsInfo) {
             let content = JSON.stringify({
                 experiments_id: experimentsInfo.id,
@@ -248,19 +170,7 @@ export default {
                     download(response.data, experimentsInfo.filename, content)
                 }
             }).catch((error) => console.log(error)
-            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
-        },
-        selectExperiments() {
-            this.$store.commit('globalloading/SET_LOADING', true);
-            this.selectedExperimentsInfo = null;
-            this.axios.get(
-                this.baseUrl + 'experiments/well/' + this.wellId,
-            ).then((response) => {
-                if (response.data) {
-                    this.selectedExperimentsInfo = response.data;
-                }
-            }).catch((error) => console.log(error)
-            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+            ).finally(() => this.SET_LOADING(false));
         },
         getInputForFilename(field) {
             let content = this.input.filename[field]
@@ -291,15 +201,6 @@ export default {
                 return '.'
             }
             return ''
-        },
-        getLocalizedParameterName(parameter) {
-            if (parameter[this.localization] !== '') {
-                return parameter[this.localization]
-            }
-            if (parameter['ru'] !== '') {
-                return parameter['ru']
-            }
-            return parameter['value']
         }
     },
     computed: {
@@ -333,7 +234,7 @@ export default {
         refreshGenericUploadParams() {
 
             let uri = this.baseUrl + "generic_upload_params/";
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true)
             this.axios.get(uri, {
                 responseType: 'json',
                 headers: {
@@ -345,10 +246,16 @@ export default {
                     this.setExperimentFileParameters()
                 }
             }).catch((error) => console.log(error)
-            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+            ).finally(() => this.SET_LOADING(false));
         },
-    },
-    created() {
-
+        getLocalizedParameterName(parameter) {
+            if (parameter[this.localization] !== '') {
+                return parameter[this.localization]
+            }
+            if (parameter['ru'] !== '') {
+                return parameter['ru']
+            }
+            return parameter['value']
+        }
     }
 }
