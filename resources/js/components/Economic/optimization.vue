@@ -303,7 +303,8 @@ let economicRes = {
   org: {
     id: '',
     name: ''
-  }
+  },
+  gtms: []
 }
 
 let columnPairs = (column) => {
@@ -780,7 +781,7 @@ export default {
           : 0
     },
 
-    updateTab(tab){
+    updateTab(tab) {
       this.isVisibleWellChanges = tab === 'well_changes'
     }
   }

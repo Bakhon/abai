@@ -20,25 +20,30 @@
       </div>
 
       <div class="d-flex bg-blue">
-        <div class="flex-50 p-3 border-grey border-bottom-0">
+        <div class="flex-50 px-3 py-1 border-grey border-bottom-0 d-flex align-items-center justify-content-center">
           {{ trans('economic_reference.course_prices') }}
         </div>
 
-        <div class="flex-25 p-3 border-grey">
+        <div class="flex-25 px-3 py-1 border-grey d-flex align-items-center justify-content-center">
           {{ trans('economic_reference.tenge') }}
         </div>
 
-        <div class="flex-25 p-3 border-grey bg-blue">
-          {{ (+scenario.dollar_rate).toLocaleString() }}
+        <div class="flex-25 border-grey d-flex flex-column">
+          <div v-for="(item, index) in dollarRates"
+               :key="index"
+               :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
+               class="px-2 py-1">
+            {{ (+item).toLocaleString() }}
+          </div>
         </div>
       </div>
 
       <div class="d-flex bg-dark-blue">
-        <div class="flex-50 p-3 border-grey d-flex align-items-center justify-content-center">
+        <div class="flex-50 px-3 py-1 border-grey d-flex align-items-center justify-content-center">
           {{ trans('economic_reference.avg_oil_price_brent') }}
         </div>
 
-        <div class="flex-25 p-3 border-grey d-flex align-items-center justify-content-center">
+        <div class="flex-25 px-3 py-1 border-grey d-flex align-items-center justify-content-center">
           $ / bbl
         </div>
 
@@ -46,7 +51,7 @@
           <div v-for="(item, index) in oilPrices"
                :key="index"
                :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
-               class="px-2 py-3 ">
+               class="px-2 py-1 ">
             {{ (+item).toLocaleString() }}
           </div>
         </div>
@@ -56,17 +61,41 @@
            :key="index"
            :class="index % 2 === 0 ? 'bg-dark-blue' : 'bg-light-blue'"
            class="d-flex white-space-normal">
-        <div class="flex-50 p-3">
+        <div class="flex-50 px-3 py-2">
           {{ item.label }}
         </div>
 
         <div
-            class="flex-25 p-3 border-grey border-bottom-0 border-top-0 d-flex align-items-center justify-content-center">
+            class="flex-25 px-3 py-2 border-grey border-bottom-0 border-top-0 d-flex align-items-center justify-content-center">
           {{ item.dimension }}
         </div>
 
-        <div class="flex-25 p-3">
+        <div class="flex-25 px-3 py-2">
           {{ (+item.value.toFixed(2)).toLocaleString() }}
+        </div>
+      </div>
+
+      <div class="d-flex white-space-normal">
+        <div class="flex-50 border-grey d-flex flex-column">
+          <div v-for="(gtm, index) in gtms"
+               :key="gtm.id"
+               :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
+               class="px-2 py-1 ">
+            {{ gtm.name }}
+          </div>
+        </div>
+
+        <div class="flex-25 border-grey bg-dark-blue px-3 py-1 d-flex align-items-center justify-content-center">
+          {{ trans('economic_reference.million_tenge_for_operation') }}
+        </div>
+
+        <div class="flex-25 border-grey d-flex flex-column">
+          <div v-for="(gtm, index) in gtms"
+               :key="index"
+               :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
+               class="px-2 py-1 ">
+            {{ (+gtm.price / 1000000).toLocaleString() }}
+          </div>
         </div>
       </div>
     </div>
@@ -97,6 +126,14 @@ export default {
     data: {
       required: true,
       type: Object
+    },
+    dollarRates: {
+      required: true,
+      type: Array
+    },
+    gtms: {
+      required: true,
+      type: Array
     }
   },
   computed: {
@@ -133,6 +170,16 @@ export default {
           dimension: this.trans('economic_reference.million_tenge_for_operation')
         }
       ]
+
+      let gtms = this.gtms.map(gtm => {
+        return {
+          label: gtm.name,
+          value: +gtm.price / 1000000,
+          dimension: this.trans('economic_reference.million_tenge_for_operation')
+        }
+      })
+
+      return [...data, ...gtms]
     }
   }
 }
