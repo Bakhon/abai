@@ -1,6 +1,14 @@
 {
   "type": "table",
   "table_type": "wells",
+  "filter": [
+    {
+      "code": "date",
+      "title": "date",
+      "type": "date",
+      "default": "first day of january this year"
+    }
+  ],
   "columns": [
     {
       "title": "id",
@@ -8,6 +16,24 @@
       "type": "integer",
       "visible": false,
       "is_editable": false
+    },
+    {
+      "code":"reason_dowtime",
+      "type":"text",
+      "title":"reason_downtime",
+      "validation":"required|string"
+    },
+    {
+      "code":"dbeg",
+      "type":"datetime",
+      "title":"drill_beg",
+      "validation":"required"
+    },
+    {
+      "code":"dend",
+      "type":"datetime",
+      "title":"drill_end",
+      "validation":"required|after:dbeg"
     },
     {
       "code": "daily_drill_progress",
@@ -72,6 +98,61 @@
        "title":"liquid_water_yield",
        "validation":"required|numeric|gt:0|lte:100",
        "is_editable": true 
+      },
+      {
+        "code":"drill_rate",
+        "type":"numeric",
+        "title":"drill_rate",
+        "validation":"required|numeric|gt:0" 
+      },
+      {
+        "code":"drill_load",
+        "type":"numeric",
+        "title":"drill_load",
+        "validation":"required|numeric|gt:0" 
+      },
+      {
+        "code":"drill_pump_type",
+        "type":"dict",
+        "dict":"pump_types",
+        "title":"pump_type",
+        "validation":"required|exists:tbd.dict.drill_pump_type,id"                
+      },
+      {
+        "code":"revs_per_minute",
+        "type":"numeric",
+        "title":"revs_per_minute",
+        "validation":"required|numeric|gt:0" 
+      },
+      {
+        "code":"drill_pump_p",
+        "type":"numeric",
+        "title":"drill_pump_p",
+        "validation":"required|numeric|gt:0" 
+      },
+      {
+        "code":"rotating_moment",
+        "type":"numeric",
+        "title":"rotating_moment",
+        "validation":"required|numeric|gt:0" 
+      },
+      {
+        "code":"drill_piston_d",
+        "type":"numeric",
+        "title":"drill_piston_d",
+        "validation":"required|numeric|gt:0" 
+      },    
+      {
+        "code":"kern_roofing",
+        "type":"numeric",
+        "title":"kern_roofing",
+        "validation":"required|numeric|gt:0|lte:kern_sole" 
+      },
+      {
+        "code":"kern_sole",
+        "type":"numeric",
+        "title":"kern_sole",
+        "validation":"required|numeric|gt:0" 
       },
       {
         "code":"drill_chisel",

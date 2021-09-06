@@ -3,57 +3,89 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class Drilling extends DailyReports
+class Drilling extends TableForm
 {
-    const CITS = 0;
-    const GS = 1;
-    const ALL = 2;
-    protected $configurationFileName = 'drilling';
+    protected function saveSingleFieldInDB(array $params): void
+    {
+        $reportId = $params['wellId'];
 
-    protected function getData($filter): array {
-        $data = parent::getReports($filter);
-        $result = [];
-        $plan = $data->sum('plan');
-        $fact = $data->sum('fact');
-        switch ($filter->period) {
-            case self::DAY:
-                $result['plan'] = ['value' => $plan];
-                $result['fact'] = $result['daily_fact_cits'] = ['value' => $fact];
-                break;
-            case self::MONTH:
-                $result['month_plan'] = ['value' => $plan];
-                $result['month_fact'] = $result['month_fact_cits'] = ['value' => $fact];
-                break;
-            case self::YEAR:
-                $result['year_plan'] = ['value' => $plan];
-                $result['year_fact'] = $result['year_fact_cits'] = ['value' => $fact];
-                break;
+        DB::connection('tbd')
+            ->table('prod.report_org_daily_drill')
+            ->where('id', $reportId)
+            ->update(
+                [
+                    $params['field'] => $params['value']
+                ]
+            );
+    }
+
+
+    public function getRows(array $params = []): array
+    {
+        $filter = json_decode($this->request->get('filter'));
+        if (empty($filter->date)) {
+            return ['rows' => []];
         }
 
-        if ($filter->optionId === self::GS) {
-            $result['fact'] = ['value' => 0];
-            $result['month_fact'] = ['value' => 0];
-            $result['year_fact'] = ['value' => 0];
+        if ($this->request->get('type') !== 'org') {
+            throw new \Exception(trans('bd.select_dzo_ngdu'));
         }
-        $result['daily_fact_gs'] = ['value' => 0];
-        $result['month_fact_gs'] = ['value' => 0];
-        $result['year_fact_gs'] = ['value' => 0];
-        $result['daily_drill_progress'] = ['value' => 0];
-        $result['depth'] = ['value' => 0];
-        $result['well_status_type'] = ['value'=>$this->request->get('well_status_type')];
-        $result['work_name'] = ['value'=>$this->request->get('work_name')];
-        $result['liquid_density'] = ['value'=>$this->request->get('liquid_density')];
-        $result['liquid_crust'] = ['value'=>$this->request->get('liquid_crust')];
-        $result['liquid_viscosity'] =  ['value'=>$this->request->get('liquid_viscosity')];
-        $result['liquid_ph'] = ['value'=>$this->request->get('liquid_ph')];
-        $result['luquid_water_yield'] = ['value'=>$this->request->get('luquid_water_yield')];
-        $result['drill_chisel'] =['value'=>$this->request->get('drill_chisel')];
-        $result['diameter'] = ['value'=>$this->request->get('diameter')];
-        $result['drill_column_type'] = ['value'=>$this->request->get('drill_column_type')];
-        
-        return $result;
+
+        $rows = DB::connection('tbd')
+            ->table('prod.report_org_daily_drill as rodr')
+            ->select(
+                'rodr.id',
+                'org.name_ru as org',
+                'ww.well',
+                'ww.drill',
+                'ww.daily_drill_progress',
+                'bh.depth',
+                'dw.name_ru',
+                'ww.liquid_density',
+                'ww.liquid_crust',
+                'ww.liquid_viscosity',
+                'ww.liquid_ph',
+                'ww.luquid_water_yield',
+                'ww.drill_rate',
+                'ww.drill_load',
+                'ww.revs_per_minute',
+                'ww.drill_pump_p',
+                'ww.rotating_moment',
+                'ww.drill_piston_d',
+                'ww.kern_roofing',
+                'ww.kern_sole',
+                'ww.drill_chisel',
+                'ww.diameter',
+                'ww.value',
+            )
+            ->join('drill.well_daily_drill as ww', 'rodr.drill', 'ww.id')
+            ->join('dict.org as org', 'rodr.org', 'org.id')
+            ->join('prod.bottom_hole as bh', 'ww.well' , 'bh.well')
+            ->join('dict.well_status_type as dw', 'ww.well_status_type' , 'dw.id')
+            ->join('dict.drill_pump_type as dp', 'ww.drill_pump_type' , 'dp.id')
+            ->join('dict.drill_chisel as dc' , 'ww.drill_chisel' , 'dc.id')
+            ->where('rodr.org', $this->request->get('id'))
+            ->where('rodr.report_date', $filter->date)
+            ->get()
+            ->map(function ($item) {
+                $result = [];
+                foreach ($item as $key => $value) {
+                    if ($key === 'id') {
+                        $result[$key] = $value;
+                        continue;
+                    }
+                    $result[$key] = [
+                        'value' => $value
+                    ];
+                }
+                $result['geo'] = [
+                    'value' => 12
+                ];
+                return $result;
+            });
+
+        return ['rows' => $rows];
     }
 }
