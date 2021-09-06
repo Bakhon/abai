@@ -1,5 +1,5 @@
 <template>
-  <div class="row p-3 bg-main1 position-relative">
+  <div class="row p-3 bg-main1 position-relative overflow-auto customScroll">
     <div class="d-flex">
       <chart-button
           v-for="(tab, index) in Object.keys(tabs)"
@@ -74,6 +74,7 @@
       <table-well-tree-map
           v-else-if="activeTab === 'well_treemap'"
           :scenario="scenario"
+          :key="scenarioUniqueKey"
           :data="res.wellChanges"
           class="text-white"/>
     </div>
@@ -134,8 +135,17 @@ export default {
         porcupine: this.trans('economic_reference.table_porcupine'),
         technological_indicators: this.trans('economic_reference.technological_indicators'),
         palette: this.trans('economic_reference.palette'),
-        well_treemap: this.trans('economic_reference.table_well_treemap'),
+        well_treemap: 'TreeMap',
       }
+    },
+
+    scenarioUniqueKey() {
+      return `${this.scenario.dollar_rate},
+          ${this.scenario.oil_price},
+          ${this.scenario.coef_Fixed_nopayroll},
+          ${this.scenario.coef_cost_WR_payroll}
+          ${this.scenario.percent_stop_cat_1},
+          ${this.scenario.percent_stop_cat_2},`
     }
   },
   methods: {
