@@ -56,7 +56,7 @@ export default {
           item.comment,
           `${item.created_at} ${item.author.name}`,
           item.editor ? `${item.updated_at} ${item.editor.name}` : '',
-          this.localeUrl(`/tech-data-forecast/${item.id}`),
+          this.localeUrl(`/tech-data-forecast/${item.id}/edit`),
           item.log_id
         ])
       })
