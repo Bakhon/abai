@@ -18,6 +18,8 @@
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           :data="res.specificIndicator"
+          :dollar-rates="scenarioVariations.dollar_rates"
+          :gtms="res.gtms"
           class="text-white"/>
 
       <table-technical-economic-indicators
