@@ -308,7 +308,7 @@ export default {
         {
           index: '6',
           title: this.trans('economic_reference.income'),
-          dimension: '$ / bbl',
+          dimension: this.trans('economic_reference.million_tenge'),
           values: [
             ...[+this.baseScenario.Revenue_total.original_value_optimized / 1000000],
             ...this.reverseOilPrices.map((oilPrice, index) =>
@@ -321,7 +321,7 @@ export default {
         {
           index: '7',
           title: this.trans('economic_reference.total_expenses'),
-          dimension: '$ / bbl',
+          dimension: this.trans('economic_reference.million_tenge'),
           values: [
             ...[+this.baseScenario.Overall_expenditures_scenario / 1000000],
             ...this.reverseOilPrices.map((oilPrice, index) =>
@@ -341,6 +341,19 @@ export default {
           ],
           budget2020: this.budget2020Map,
           color: '#313560'
+        },
+        {
+          index: '8',
+          title:  this.trans('economic_reference.operating_profit'),
+          dimension: this.trans('economic_reference.million_tenge'),
+          values: [
+            ...[+this.baseScenario.Operating_profit_scenario / 1000000],
+            ...this.reverseOilPrices.map((oilPrice, index) =>
+                +this.oilPriceScenarios[index].Operating_profit_scenario / 1000000
+            )
+          ],
+          budget2020: this.budget2020Map,
+          color: '#106B4B',
         },
       ]
     },
