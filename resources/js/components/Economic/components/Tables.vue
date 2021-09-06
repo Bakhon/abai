@@ -135,7 +135,7 @@ export default {
         porcupine: this.trans('economic_reference.table_porcupine'),
         technological_indicators: this.trans('economic_reference.technological_indicators'),
         palette: this.trans('economic_reference.palette'),
-        well_treemap: this.trans('economic_reference.table_well_treemap'),
+        well_treemap: 'TreeMap',
       }
     },
 

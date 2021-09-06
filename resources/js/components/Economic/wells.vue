@@ -95,7 +95,7 @@ export default {
       let dimension = `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge')}`
 
       return {
-        treemap: this.trans('economic_reference.table_well_treemap'),
+        treemap: 'TreeMap',
         revenue: `${this.trans('economic_reference.Revenue')}, ${dimension}`,
         costs: `${this.trans('economic_reference.costs')}, ${dimension}`,
         operating_profit: `${this.trans('economic_reference.operating_profit')}, ${dimension}`,
