@@ -64,7 +64,7 @@ export default {
                 'gasProduction': false,
                 'naturalGasProduction': false,
                 'associatedGasProduction': false,
-                'flaringGas': false,
+                'associatedGasFlaring': false,
                 'naturalGasDelivery': false,
                 'expensesForOwnNaturalGas': false,
                 'associatedGasDelivery': false,
@@ -81,7 +81,15 @@ export default {
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
                 '</svg>',
             backendPreviousCategory: 'oilCondensateProduction',
-            backendParentMenu: ['oilCondensateProduction','oilCondensateDelivery','gasProduction','waterInjection']
+            backendParentMenu: ['oilCondensateProduction','oilCondensateDelivery','gasProduction','waterInjection'],
+            backendCondensateCompanies: {
+                'ОМГК': {
+                    'id': '1.1.'
+                },
+                'АГ': {
+                    'id': '1.2.'
+                }
+            }
         }
     },
     methods: {
@@ -164,6 +172,7 @@ export default {
 
         backendSwitchCategory(category,parent) {
             let isWithoutKmg = ['oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG'].includes(category);
+            let isFilterChanged = category === this.backendSelectedCategory;
             let shouldRecalculateSummary = false;
             for (let item in this.backendMenu) {
                 if (item === category) {
@@ -181,20 +190,31 @@ export default {
             if (isWithoutKmg && this.backendMenu[category]) {
                 shouldRecalculateSummary = true;
             }
-            if (category === this.backendSelectedCategory) {
-
+            if (isFilterChanged) {
                 this.backendSelectedCategory = this.backendPreviousCategory;
             } else {
                 this.backendPreviousCategory = parent;
                 this.backendSelectedCategory = category;
             }
-            this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
+            this.backendProductionTableData = _.cloneDeep(this.backendProductionParams.tableData.current[this.backendSelectedCategory]);
+            if (['oilCondensateProductionCondensateOnly','oilCondensateDeliveryCondensateOnly'].includes(category) && !isFilterChanged) {
+                this.backendProductionTableData = _.cloneDeep(this.backendProductionParams.tableData.current[parent]);
+                this.backendProductionTableData = this.backendGetFilteredByDzo(this.backendProductionTableData,this.backendCondensateCompanies);
+            }
             if (shouldRecalculateSummary) {
                 this.backendUpdateSummaryFact('oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG');
             } else {
                 this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
             }
         },
+
+        backendGetFilteredByDzo(data,dzoList) {
+            let filtered = data.filter(record => Object.keys(dzoList).includes((record.name)));
+            for (let i in filtered) {
+                filtered[i].id = dzoList[filtered[i].name].id;
+            }
+            return filtered;
+        }
     },
     computed: {
         backendSummaryYearlyPlan() {

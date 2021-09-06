@@ -280,7 +280,7 @@ export default {
         },
 
         isConsolidatedCategoryActive() {
-            return this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0;
+            return this.backendMenu.oilCondensateProduction || this.backendMenu.oilCondensateDelivery;
         },
 
         getNumberByDzo(dzoName, index){
@@ -329,7 +329,7 @@ export default {
             } else {
                 return 'tdStyleLight3';
             }
-        }
+        },
     },
     computed: {
         periodSelectFunc() {

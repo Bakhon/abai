@@ -22,8 +22,11 @@ class OilCondensateConsolidatedOilResidue {
         'fact' => 'stock_of_goods_delivery_fact'
     );
 
-    public function getDataByOilResidueCategory($factData,$periodRange)
+    public function getDataByOilResidueCategory($factData,$periodRange,$oneDzoSelected)
     {
+        if (!is_null($oneDzoSelected)) {
+            $this->companies = $oneDzoSelected;
+        }
         $summary = array();
         $groupedFact = $factData->groupBy('dzo_name');
         if ($periodRange === 0) {

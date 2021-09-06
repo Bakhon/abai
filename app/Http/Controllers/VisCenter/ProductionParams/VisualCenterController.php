@@ -10,6 +10,7 @@ use App\Models\DzoPlan;
 use App\Http\Resources\VisualCenter\OilCondensateConsolidated;
 use App\Http\Resources\VisualCenter\OilCondensateConsolidatedWithoutKmg;
 use App\Http\Resources\VisualCenter\OilCondensateConsolidatedOilResidue;
+use App\Http\Resources\VisualCenter\GasProduction;
 use Carbon\Carbon;
 
 class VisualCenterController extends Controller
@@ -35,13 +36,6 @@ class VisualCenterController extends Controller
             'oilCondensateDeliveryOilResidue' => array(),
             'oilCondensateDeliveryCondensateOnly' => array(),
             'gasProduction' => array(),
-            'naturalGasProduction' => array(),
-            'associatedGasProduction' => array(),
-            'flaringGas' => array(),
-            'naturalGasDelivery' => array(),
-            'expensesForOwnNaturalGas' => array(),
-            'associatedGasDelivery' => array(),
-            'expensesForOwnAssociatedGas' => array(),
             'waterInjection' => array(),
             'seawaterInjection' => array(),
             'wasteWaterInjection' => array(),
@@ -119,6 +113,7 @@ class VisualCenterController extends Controller
         $this->tableData['historical']['oilCondensateDeliveryWithoutKMG'] = $this->getTableData($historicalDzoFact,$historicalDzoPlan,'oilCondensateDeliveryWithoutKMG');
         $this->tableData['current']['oilCondensateDeliveryOilResidue'] = $this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDeliveryOilResidue');
 
+        $this->tableData['current'] = array_merge($this->tableData['current'],$this->getTableData($currentPeriodDzoFact,$currentPeriodDzoPlan,'gasProduction'));
         return array(
             'tableData' => $this->tableData,
             'chartData' => $this->chartData,
@@ -182,15 +177,19 @@ class VisualCenterController extends Controller
         $oilCondensateConsolidated = new OilCondensateConsolidated();
         $oilCondensateConsolidatedWithoutKmg = new OilCondensateConsolidatedWithoutKmg();
         $oilCondensateConsolidatedOilResidue = new OilCondensateConsolidatedOilResidue();
+        $GasProduction = new GasProduction();
         $tableData = array();
         if ($type === 'oilCondensateProduction' || $type === 'oilCondensateDelivery') {
-            $tableData = $oilCondensateConsolidated->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,$type,$this->yearlyPlan,$this->periodType);
+            $tableData = $oilCondensateConsolidated->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,$type,$this->yearlyPlan,$this->periodType,$this->dzoName);
         }
         if ($type === 'oilCondensateProductionWithoutKMG' || $type === 'oilCondensateDeliveryWithoutKMG') {
-            $tableData = $oilCondensateConsolidatedWithoutKmg->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,$type,$this->yearlyPlan,$this->periodType);
+            $tableData = $oilCondensateConsolidatedWithoutKmg->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,$type,$this->yearlyPlan,$this->periodType,$this->dzoName);
         }
         if ($type === 'oilCondensateDeliveryOilResidue') {
-            $tableData = $oilCondensateConsolidatedOilResidue->getDataByOilResidueCategory($fact,$this->periodRange);
+            $tableData = $oilCondensateConsolidatedOilResidue->getDataByOilResidueCategory($fact,$this->periodRange,$this->dzoName);
+        }
+        if ($type === 'gasProduction') {
+            $tableData = $GasProduction->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName);
         }
         return $tableData;
     }

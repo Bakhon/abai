@@ -70,8 +70,11 @@ class OilCondensateConsolidated {
         ),
     );
 
-    public function getDataByConsolidatedCategory($factData,$planData,$periodRange,$type,$yearlyPlan,$periodType)
+    public function getDataByConsolidatedCategory($factData,$planData,$periodRange,$type,$yearlyPlan,$periodType,$oneDzoSelected)
     {
+        if (!is_null($oneDzoSelected)) {
+            $this->companies = $oneDzoSelected;
+        }
         $summary = array();
         $groupedFact = $factData->groupBy('dzo_name');
         $pkiSumm = array (

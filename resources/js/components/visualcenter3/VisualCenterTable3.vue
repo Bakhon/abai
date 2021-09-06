@@ -354,7 +354,7 @@
                       <div class="icon-all icons2"></div>
                       <div
                               class="txt5"
-                              @click="backendSwitchCategory('oilCondensateDelivery','oilCondensateDeliveryButton')"
+                              @click="backendSwitchCategory('oilCondensateDelivery')"
                       >
                         {{ trans("visualcenter.oilCondensateDelivery") }}
                       </div>
@@ -413,21 +413,13 @@
               <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
                 <div class="button1 d-flex">
                   <div
-                          :class="[`${gasProductionButton}`, 'col-10 category-button_border']"
-                  >
+                  <div :class="[backendMenu.gasProduction ? 'button-tab-highlighted' : '', 'col-10 category-button_border']">
+                    <div class="icon-all icons3"></div>
                     <div
-                            @click="switchCategory(
-                              'gasProductionButton',
-                              'gas_plan',
-                              'gas_fact',
-                              trans('visualcenter.meterCubicWithSpace'),
-                              trans('visualcenter.getgaz'),
-                              'gasProductionButton')"
+                            class="txt5"
+                            @click="backendSwitchCategory('gasProduction')"
                     >
-                      <div class="icon-all icons3"></div>
-                      <div class="txt5">
-                        <!-- Добыча газа -->{{ trans("visualcenter.getgaz") }}
-                      </div>
+                      {{ trans("visualcenter.getgaz") }}
                     </div>
                   </div>
                   <button
@@ -440,23 +432,14 @@
                     <ul class="dropdown-menu dropdown-menu-right dropdown-position mt-1">
                       <li
                               class="center-li row px-4"
-                              @click="switchMainMenu('gasProductionButton','productionNaturalGas')"
+                              @click="backendSwitchCategory('naturalGasProduction','gasProduction')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('gasProductionButton','productionNaturalGas')}`"
+                                v-html="backendMenu.naturalGasProduction ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a
                                 class="col-9 p-0 ml-3 mt-2"
-                                @click="
-                                  updateProductionData(
-                                    'plan_prirod_gas',
-                                    'natural_gas_production_fact',
-                                    trans('visualcenter.productionNaturalGasChartName'),
-                                    ' м³',
-                                    trans('visualcenter.productionNaturalGas')
-                                  )
-                                "
                         >
                           {{ trans("visualcenter.productionNaturalGas") }}
                         </a>
@@ -464,23 +447,14 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchMainMenu('gasProductionButton','productionAssociatedGas')"
+                              @click="backendSwitchCategory('associatedGasProduction','gasProduction')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('gasProductionButton','productionAssociatedGas')}`"
+                                v-html="backendMenu.associatedGasProduction ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a
                                 class="col-9 p-0 ml-3 mt-2"
-                                @click="
-                                  updateProductionData(
-                                    'plan_poput_gas',
-                                    'associated_gas_production_fact',
-                                    trans('visualcenter.productionAssociatedGasChartName'),
-                                    ' м³',
-                                    trans('visualcenter.productionAssociatedGas')
-                                  )
-                                "
                         >
                           {{ trans("visualcenter.productionAssociatedGas") }}
                         </a>
@@ -488,23 +462,14 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchMainMenu('gasProductionButton','flaringAssociatedGas')"
+                              @click="backendSwitchCategory('associatedGasFlaring','gasProduction')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('gasProductionButton','flaringAssociatedGas')}`"
+                                v-html="backendMenu.associatedGasFlaring ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a
                                 class="col-9 p-0 ml-3 mt-2"
-                                @click="
-                                  updateProductionData(
-                                    'plan_poput_gas_burn',
-                                    'associated_gas_flaring_fact',
-                                    trans('visualcenter.flaringAssociatedGasChartName'),
-                                    ' м³',
-                                    trans('visualcenter.flaringAssociatedGas')
-                                  )
-                                "
                         >
                           {{ trans("visualcenter.flaringAssociatedGas") }}
                         </a>
@@ -512,23 +477,14 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchMainMenu('gasProductionButton','deliveryNaturalGas')"
+                              @click="backendSwitchCategory('naturalGasDelivery','gasProduction')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryNaturalGas')}`"
+                                v-html="backendMenu.naturalGasDelivery ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a
                                 class="col-9 p-0 ml-3 mt-2"
-                                @click="
-                            updateProductionData(
-                              'sdacha_gaza_prirod_plan',
-                              'sdacha_gaza_prirod_fact',
-                              trans('visualcenter.dlvPrirodGasldynamic'),
-                              ' м³',
-                              trans('visualcenter.prirodGazdlv')
-                            )
-                          "
                         >
                           {{trans("visualcenter.prirodGazdlv")}}
                         </a>
@@ -536,49 +492,29 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchMainMenu('gasProductionButton','gasConsumptionForNeeds')"
+                              @click="backendSwitchCategory('expensesForOwnNaturalGas','gasProduction')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('gasProductionButton','gasConsumptionForNeeds')}`"
+                                v-html="backendMenu.expensesForOwnNaturalGas ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a
                                 class="col-9 p-0 ml-3 mt-2"
-                                @click="
-                            updateProductionData(
-                              'raskhod_prirod_plan',
-                              'raskhod_prirod_fact',
-                              trans('visualcenter.raskhodprirodGazDynamic'),
-                              ' м³',
-                              trans('visualcenter.raskhodprirodGaz')
-                            )
-                          "
                         >
-                          <!-- Расход природного газа на собственные нужды -->{{
-                          trans("visualcenter.raskhodprirodGaz")
-                          }}
+                          {{trans("visualcenter.raskhodprirodGaz")}}
                         </a>
                       </li>
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchMainMenu('gasProductionButton','deliveryAssociatedGas')"
+                              @click="backendSwitchCategory('associatedGasDelivery','gasProduction')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryAssociatedGas')}`"
+                                v-html="backendMenu.associatedGasDelivery ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a
                                 class="col-9 p-0 ml-3 mt-2"
-                                @click="
-                            updateProductionData(
-                              'sdacha_gaza_poput_plan',
-                              'sdacha_gaza_poput_fact',
-                              trans('visualcenter.poputGazdlvDynamic'),
-                              ' тонн',
-                              trans('visualcenter.poputGazdlv')
-                            )
-                          "
                         >
                           {{trans("visualcenter.poputGazdlv")}}
                         </a>
@@ -586,23 +522,14 @@
                       <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
-                              @click="switchMainMenu('gasProductionButton','associatedGasConsumptionForNeeds')"
+                              @click="backendSwitchCategory('expensesForOwnAssociatedGas','gasProduction')"
                       >
                         <div
                                 class="col-1 mt-2"
-                                v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasConsumptionForNeeds')}`"
+                                v-html="backendMenu.expensesForOwnAssociatedGas ? `${backendFlagOn}` : `${backendFlagOff}`"
                         ></div>
                         <a
                                 class="col-9 p-0 ml-3 mt-2"
-                                @click="
-                            updateProductionData(
-                              'raskhod_poput_plan',
-                              'raskhod_poput_fact',
-                              trans('visualcenter.raskhodpoputGazDynamic'),
-                              ' м³',
-                              trans('visualcenter.raskhodpoputGaz')
-                            )
-                          "
                         >
                           {{ trans("visualcenter.raskhodpoputGaz") }}
                         </a>
@@ -937,7 +864,7 @@
                         {{ getThousandMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th v-if="!backendMenu.oilCondensateDeliveryOilResidue">
+                    <th v-if="!backendMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()">
                       {{ trans("visualcenter.plan") }}
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
@@ -967,7 +894,7 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th v-if="!backendMenu.oilCondensateDeliveryOilResidue">
+                    <th v-if="!backendMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()">
                       {{ trans("visualcenter.dzoDifference") }}
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
@@ -1010,8 +937,17 @@
                   </thead>
                   <tbody>
                   <tr v-for="(item, index) in backendProductionTableData">
-                    <td :class="`${getDzoColumnsClass(index,'difference')}`">
+                    <td
+                            v-if="isConsolidatedCategoryActive()"
+                            :class="`${getDzoColumnsClass(index,'difference')}`"
+                    >
                       {{item.id}}
+                    </td>
+                    <td
+                            v-else
+                            :class="`${getDzoColumnsClass(index,'difference')}`"
+                    >
+                      {{item.id + (index + 1)}}
                     </td>
                     <td
                             @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth,item.dzo)}` : `${selectAllDzoCompanies()}`"
@@ -1025,6 +961,15 @@
                       >
                         {{ getDzoName(item.name,dzoNameMapping) }}
 <!--                        {{ getNameDzoFull(item.name) }}-->
+                        <img src="/img/icons/link.svg" />
+                      </span>
+                      <span
+                              v-if="!isConsolidatedCategoryActive()"
+                              :class="backendMarginMapping[backendSelectedCategory] &&
+                                backendMarginMapping[backendSelectedCategory].includes(index) ? 'troubled-companies' : ''
+                              "
+                      >
+                        {{ getNameDzoFull(item.name) }}
                         <img src="/img/icons/link.svg" />
                       </span>
 <!--                      <span>-->
@@ -1061,7 +1006,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!backendMenu.oilCondensateDeliveryOilResidue"
+                            v-if="!backendMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="buttonYearlyTab || buttonMonthlyTab ? getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'companyName')"
                     >
                       <div class="font">
@@ -1069,6 +1014,7 @@
                       </div>
                     </td>
                     <td
+                            v-if="isConsolidatedCategoryActive()"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'plan')"
                     >
@@ -1076,18 +1022,34 @@
                         {{ formatDigitToThousand(item.fact) }}
                       </div>
                     </td>
-<!--                    <td-->
-<!--                            v-else-->
-<!--                            :class="isOilResidueActive ? getDzoColumnsClass(index,'yearlyPlan') : getDzoColumnsClass(index,'fact')"-->
-<!--                    >-->
-<!--                      <div class="font">-->
-<!--                        {{ formatDigitToThousand(item.fact) }}-->
-<!--                      </div>-->
-<!--                    </td>-->
                     <td
-                            v-if="!backendMenu.oilCondensateDeliveryOilResidue"
+                            v-else
+                            :class="buttonYearlyTab || buttonMonthlyTab ?
+                            getDzoColumnsClass(index,'plan') : getDzoColumnsClass(index,'fact')"
+                    >
+                      <div class="font">
+                        {{ formatDigitToThousand(item.fact) }}
+                      </div>
+                    </td>
+                    <td
+                            v-if="!backendMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'monthlyPlan') : getDzoColumnsClass(index,'percent')">
+                      <div
+                              v-if="item.plan - item.fact  !== 0"
+                              :class="item.plan > item.fact || item.fact === 0 ?
+                                'triangle fall-indicator-production-data' :
+                                'triangle growth-indicator-production-data'
+                              "
+                      ></div>
+                      <div class="font dynamic" >
+                        {{getFormattedNumberToThousand(item.plan,item.fact)}}
+                      </div>
+                    </td>
+                    <td
+                            v-else-if="!backendMenu.oilCondensateDeliveryOilResidue && !isConsolidatedCategoryActive()"
+                            :class="buttonYearlyTab || buttonMonthlyTab ?
+                            getDzoColumnsClass(index,'percent') : getDzoColumnsClass(index,'monthlyPlan')">
                       <div
                               v-if="item.plan - item.fact  !== 0"
                               :class="item.plan > item.fact || item.fact === 0 ?
@@ -1129,7 +1091,7 @@
 <!--                      </div>-->
 <!--                    </td>-->
                     <td
-                            v-if="!backendMenu.oilCondensateDeliveryOilResidue"
+                            v-if="!backendMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')"
                     >
@@ -1154,56 +1116,49 @@
 <!--                    </td>-->
                     <td
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
-                            :class="isConsolidatedCategoryActive() ?
-                            getDarkColorClass(index) : getLightColorClass(index)"
+                            :class="getDarkColorClass(index)"
                     >
                       <div :class="item.opec_explanation_reasons && item.opec_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                     <td
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
-                            :class="isConsolidatedCategoryActive() ?
-                            getLightColorClass(index) : getDarkColorClass(index)"
+                            :class="getLightColorClass(index)"
                     >
                       <div :class="item.impulse_explanation_reasons && item.impulse_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                     <td
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
-                            :class="isConsolidatedCategoryActive() ?
-                            getDarkColorClass(index) : getLightColorClass(index)"
+                            :class="getDarkColorClass(index)"
                     >
                       <div :class="item.shutdown_explanation_reasons && item.shutdown_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                     <td
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
-                            :class="isConsolidatedCategoryActive() ?
-                            getLightColorClass(index) : getDarkColorClass(index)"
+                            :class="getLightColorClass(index)"
                     >
                       <div :class="item.accident_explanation_reasons && item.accident_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                     <td
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
-                            :class="isConsolidatedCategoryActive() ?
-                            getDarkColorClass(index) : getLightColorClass(index)"
+                            :class="getDarkColorClass(index)"
                     >
                       <div :class="item.restriction_kto_explanation_reasons && item.restriction_kto_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                     <td
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
-                            :class="isConsolidatedCategoryActive() ?
-                            getLightColorClass(index) : getDarkColorClass(index)"
+                            :class="getLightColorClass(index)"
                     >
                       <div :class="item.other_explanation_reasons && item.other_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                     <td
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
-                            getDarkColorClass(index) : getLightColorClass(index)"
+                            :class="getDarkColorClass(index)"
                     >
                       <div :class="item.gas_restriction_explanation_reasons && item.gas_restriction_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
@@ -1258,7 +1213,8 @@
                       </div>
                     </td>
                     <td
-                            :class="backendPeriodRange === 0 && isConsolidatedCategoryActive() ?
+                            v-if="isConsolidatedCategoryActive()"
+                            :class="backendPeriodRange === 0 ?
                             getLighterClass(index) : getDarkerClass(index)"
                     >
                       <div class="font">
@@ -1269,8 +1225,35 @@
                       </div>
                     </td>
                     <td
-                            v-if="!backendMenu.oilCondensateDeliveryOilResidue"
+                            v-else
+                            :class="backendPeriodRange === 0 ?
+                            getDarkerClass(index) : getLighterClass(index)"
+                    >
+                      <div class="font">
+                        {{formatDigitToThousand(backendSummaryFact)}}
+                        <div class="right">
+                          {{ trans("visualcenter.thousand") }} {{ metricName }}
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                            v-if="!backendMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="buttonYearlyTab || buttonMonthlyTab ? getHighlightClassForSummary(false) : getHighlightClassForSummary(true)"
+                    >
+                      <div
+                              v-if="backendSummaryFact !== 0"
+                              :class="getIndicatorClass(backendSummaryPlan,backendSummaryFact)"
+                      ></div>
+                      <div class="font dynamic">
+                        {{formatDigitToThousand(Math.abs(backendSummaryDifference))}}
+                        <div class="right">
+                          {{ trans("visualcenter.thousand") }}{{ metricName }}
+                        </div>
+                      </div>
+                    </td>
+                    <td
+                            v-if="!backendMenu.oilCondensateDeliveryOilResidue && !isConsolidatedCategoryActive()"
+                            :class="buttonYearlyTab || buttonMonthlyTab ? getHighlightClassForSummary(true) : getHighlightClassForSummary(false)"
                     >
                       <div
                               v-if="backendSummaryFact !== 0"
@@ -1334,39 +1317,32 @@
 <!--                    </td>-->
 
                     <td
-                            :class="isConsolidatedCategoryActive() ?
-                            getDarkerClass(index) : getLighterClass(index)"
+                            :class="getDarkerClass(index)"
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     >
                     </td>
                     <td
-                            :class="isConsolidatedCategoryActive() ?
-                            getLighterClass(index) : getDarkerClass(index)"
+                            :class="getLighterClass(index)"
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     ></td>
                     <td
-                            :class="isConsolidatedCategoryActive() ?
-                            getDarkerClass(index) : getLighterClass(index)"
+                            :class="getDarkerClass(index)"
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     ></td>
                     <td
-                            :class="isConsolidatedCategoryActive() ?
-                            getLighterClass(index) : getDarkerClass(index)"
+                            :class="getLighterClass(index)"
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     ></td>
                     <td
-                            :class="isConsolidatedCategoryActive() ?
-                            getDarkerClass(index) : getLighterClass(index)"
+                            :class="getDarkerClass(index)"
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     ></td>
                     <td
-                            :class="isConsolidatedCategoryActive() ?
-                            getLighterClass(index) : getDarkerClass(index)"
+                            :class="getLighterClass(index)"
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     ></td>
                     <td
-                            :class="isConsolidatedCategoryActive() ?
-                            getLighterClass(index) : getDarkerClass(index)"
+                            :class="getDarkerClass(index)"
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                     ></td>
                   </tr>
