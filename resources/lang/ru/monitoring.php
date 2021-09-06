@@ -89,7 +89,7 @@ return array (
     'calc_result' => 'Расчитать результат',
     'calc_result_export' => 'Выгрузить результаты',
     'management' => 'Управление',
-    'export_excel' => 'Выгрузить в excel',
+    'export_excel' => 'Выгрузить в Excel',
   ),
   'selection_node' => 'Узел отбора',
   'omgca' => 
@@ -163,10 +163,7 @@ return array (
   'all_gus' => 'Все ГУ',
   'show_title' => 'Просмотр карточки',
   'field' => 'Месторождение',
-  'ngdu' => 
-  array (
-    'ngdu' => 'НГДУ',
-  ),
+  'ngdu' => 'НГДУ',
   'cdng' => 'ЦДНГ',
   'history' => 
   array (
@@ -762,5 +759,9 @@ return array (
       'avg_speed' => 'Средняя скорость солеотложения, мм/г',
     ),
     'saturation_index' => 'Индекс насыщенности',
+  ),
+  'zu-cleanings' => 
+  array (
+    'section-name' => 'База данных по очисткам ЗУ',
   ),
 );

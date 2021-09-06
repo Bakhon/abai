@@ -6,7 +6,6 @@ use App\Filters\ZusCleaningFilter;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\ZusCleaningCreateRequest;
-use App\Http\Requests\ZusCleaningUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
 use App\Jobs\ExportZusCLeaningToExcel;
 use App\Models\ComplicationMonitoring\ZusCleaning;
@@ -157,7 +156,7 @@ class ZusCleaningController extends CrudController
         ]);
     }
 
-    public function update(ZusCleaningUpdateRequest $request, ZusCleaning $zu_cleanings): \Illuminate\Http\RedirectResponse
+    public function update(ZusCleaningCreateRequest $request, ZusCleaning $zu_cleanings): \Illuminate\Http\RedirectResponse
     {
         $this->validateFields($request, 'zu-cleanings');
 

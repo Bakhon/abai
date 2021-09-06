@@ -22,7 +22,7 @@
               class="form-control"
               name="gu_id"
               v-model="formFields.gu_id"
-              @change="chooseZu($event)"
+              @change="chooseGu($event)"
           >
             <option v-for="row in gus" v-bind:value="row.id">
               {{ row.name }}

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\PermissionSection;
 
 class AddPermissionToZuCleanings extends Migration
 {
@@ -55,17 +56,24 @@ class AddPermissionToZuCleanings extends Migration
             ]
         );
 
-        if (DB::table('role_has_permissions')->where('role_id', 1)->count() > 0) {
-            foreach ($ids as $id) {
+        foreach ($ids as $id) {
 
-                DB::table('role_has_permissions')->insert(
-                    [
-                        'permission_id' => $id,
-                        'role_id' => 1
-                    ]
-                );
-            }
+            DB::table('role_has_permissions')->insert(
+                [
+                    'permission_id' => $id,
+                    'role_id' => 1
+                ]
+            );
         }
+
+        PermissionSection::firstOrCreate(
+            [
+                'code' => 'zu-cleanings',
+                'title_trans' => 'monitoring.zu-cleanings.section-name',
+                'module' => 'monitoring'
+            ]
+        );
+
     }
 
     /**
@@ -77,5 +85,13 @@ class AddPermissionToZuCleanings extends Migration
     {
         $peermissionIds = DB::table('permissions')->where('name', 'like', '%zu-cleanings%')->pluck('id')->toArray();
         DB::table('permissions')->whereIn('id', $peermissionIds)->delete();
+        
+        PermissionSection::delete(
+            [
+                'code' => 'zu-cleanings',
+                'title_trans' => 'monitoring.zu-cleanings.section-name',
+                'module' => 'monitoring'
+            ]
+        );
     }
 }
