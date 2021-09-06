@@ -12,9 +12,9 @@ import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import Vue from "vue";
 import FullPageLoader from "@ui-kit/FullPageLoader";
 import * as htmlToImage from "html-to-image";
-import jsPDF from "jspdf";
 import Tabs from "./components/tabs/Tabs.vue";
 import { globalloadingMutations } from "@store/helpers";
+import _ from 'lodash'
 
 const fileDownload = require("js-file-download");
 
@@ -34,6 +34,7 @@ export default {
       "points",
       "analysisSettings",
       "centralizer_range",
+      'sensetiveSettings'
     ]),
     ...pgnoMapGetters([
       'curveSettingsStore',
@@ -50,13 +51,13 @@ export default {
 
       steel: null,
       techmodeDate: null,
-      404: require("./images/404.svg"),
       isSkError: false,
       isEditing: false,
       activeRightTabName: "technological-mode",
       curveSettings: {},
       lines_analysis: {},
       points_analysis: {},
+      construction: {},
       isVisibleChart: true,
       shgnPumpType: null,
       shgnSPM: null,
@@ -175,7 +176,10 @@ export default {
       pumpTypeforKpod: null,
       calcKpodTrigger: true,
       shgnResult: {},
-      centratorsType: String
+      centratorsType: String,
+
+      hperfKompShgn: null,
+
     };
   },
   watch: {
@@ -195,11 +199,10 @@ export default {
   beforeCreate: function () {
     this.apiUrl = process.env.MIX_PGNO_API_URL;
     this.axios.get("/ru/organizations").then(({ data }) => {
-      console.log(this.fieldsByOrgId)
       var orgs = data.organizations
       if (orgs.length === 0) {
         this.orgs = [...this.fieldsByOrgId["АО «ОзенМунайГаз»"], ...this.fieldsByOrgId["АО «Мангистаумунайгаз»"]]
-      } 
+      }
       for (let orgName in this.fieldsByOrgId) {
         if (orgs.some(org => org['name'] === orgName)) {
           this.organizations = [...this.organizations, ...this.fieldsByOrgId[orgName]]
@@ -249,6 +252,7 @@ export default {
       "setCurveSettings",
       "getInclinometry",
     ]),
+
     setNotify(message, title, type) {
       this.$bvToast.toast(message, {
         title: title,
@@ -282,7 +286,7 @@ export default {
         if (val === "get") {
           type = "warning";
           title = "Warning";
-        } 
+        }
         if (val === "pgno") {
           title = "Error";
           type = "danger";
@@ -321,8 +325,7 @@ export default {
       
       this.curveSettings.whpInput = well.whp.toFixed(0);
       this.curveSettings.expChoosen = well.expMeth;
-      this.curveSettings.pBuff = well.whp.toFixed(0);
-      this.curveSettings.hPumpValue = well.hPumpSet.toFixed(0);
+
 
       this.curveSettings.es = (well.es * 100).toFixed(0);
       this.curveSettings.mechanicalSeparation = well.mechanicalSeparation;
@@ -361,7 +364,7 @@ export default {
       if (this.well.expMeth === "ШГН") {
         var kpod = this.well.qL / (1440 * 3.14 * this.well.pumpType ** 2 * this.well.strokeLen * (this.well.spm / 4000000))
 			  if (kpod < 0.4 || kpod > 0.9) {
-				  var message = this.trans('pgno.kpodWarning', {kpod: kpod.toFixed(2)}) 
+				  var message = this.trans('pgno.kpodWarning', {kpod: kpod.toFixed(2)})
 				  this.setNotify(message, "Warning", "warning")
 			  }
         this.curveSelect = "hdyn";
@@ -393,6 +396,8 @@ export default {
       this.curveSettings.targetButton = "ql";
       this.curveSettings.nkt = this.well.tubId;
       this.curveSettings.hPumpManomInput = this.well.hPumpSet.toFixed(0);
+      this.curveSettings.pBuff = this.well.whp.toFixed(0);
+      this.curveSettings.hPumpValue = this.well.hPumpSet.toFixed(0);
       this.skType = this.well.skType;
       this.horizon = this.well.horizon;
       if (this.well.wellError === "no_well_data") {
@@ -405,6 +410,29 @@ export default {
       this.updateCurveTrigger = !this.updateCurveTrigger;
       this.SET_LOADING(false);
     },
+    preparePost() {
+      var payload = {};
+      payload.url = this.apiUrl + "calculate";
+      if (this.curveSettings.expChoosen ==="ФОН") {
+        payload.data = {
+          shgn_settings: this.shgnSettings,
+          well: this.well,
+          curve_settings: this.curveSettings,
+          analysis_settings: this.analysisSettings,
+          sensetive_settings: this.sensetiveSettings
+        };
+      } else {
+        payload.data = {
+          shgn_settings: this.shgnSettings,
+          well: this.well,
+          curve_settings: this.curveSettings,
+          analysis_settings: this.analysisSettings,
+        };
+      }
+
+      return payload
+    },
+
     async postCurveData() {
       if (!this.wellNumber) {
         this.setNotify("Выберите скважину", "Error", "danger");
@@ -438,14 +466,7 @@ export default {
       }
       this.curveSettings.es = this.curveSettings.es / 100
       this.curveSettings.curveSelect = this.curveSelect
-      var payload = {};
-      payload.url = this.apiUrl + "calculate";
-      payload.data = {
-        shgn_settings: this.shgnSettings,
-        well: this.well,
-        curve_settings: this.curveSettings,
-        analysis_settings: this.analysisSettings,
-      };
+      var payload = this.preparePost()
       var isPostSuccess = await this.postWell(payload);
       if (!isPostSuccess) {
         this.curveSettings.es = this.curveSettings.es * 100
@@ -491,9 +512,7 @@ export default {
               analysis_settings: this.analysisSettings,
               points: this.points,
             };
-            this.axios
-              .post(this.apiUrl + "shgn", payload)
-              .then((response) => {
+            this.axios.post(this.apiUrl + "shgn", payload).then((response) => {
                 let data = response.data;
                 this.shgnResult = data
                 if (!this.well.newWell) {
@@ -526,9 +545,8 @@ export default {
                   );
                 } else {
                   this.shgnPumpType = data.kPodData["pump_type"]
-
                   this.freegasCel = this.points.freegasCelValue.toFixed(1),
-                    this.qoilShgnTable = this.points.qoCelValue.toFixed(1);
+                  this.qoilShgnTable = this.points.qoCelValue.toFixed(1);
                   this.construction = data.construction;
                   this.shgnSPM = data.kPodData["spm_calc"].toFixed(1);
                   this.shgnLen = data.kPodData["stroke_lens"].toFixed(1);
@@ -649,6 +667,9 @@ export default {
     closeModal(modalName) {
       this.$modal.hide(modalName);
     },
+    openSensAnalysisModal() {
+      this.$modal.show('sensAnalysisModal')
+    },
     openEcoModal() {
       if (!this.wellNumber) {
         this.setNotify("Выберите скважину", "Error", "danger");
@@ -741,6 +762,13 @@ export default {
       this.$modal.hide("modalTabs");
       this.postCurveData();
       this.calcKpodTrigger = false
+    },
+    openSensAnalysisModal() {
+      this.$modal.show("sensitiveSettings");
+    },
+    openSensitiveResult() {
+      this.$modal.hide("sensitiveSettings");
+      this.$modal.show("sensitiveResult");
     },
     downloadExcel(menu) {
       this.SET_LOADING(true);
@@ -881,6 +909,7 @@ export default {
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
     });
+
     this.setDefault();
   },
 };
