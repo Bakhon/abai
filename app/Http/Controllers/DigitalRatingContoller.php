@@ -94,7 +94,7 @@ class DigitalRatingContoller extends Controller
          };
 
         if(empty($neighboring_wells)){
-            return response()->json(['message' => 'Sector not found']);
+            return response()->json(['message' => 'Well not found']);
          }
           $wells = $this->get_injection_wells($neighboring_wells);
          $wells = $this->get_wells($neighboring_wells);
