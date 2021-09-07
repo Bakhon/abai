@@ -2,7 +2,7 @@
 @section('content')
 <div class="pf-upload-monitoring-wrapper">
     <div class="pf-upload-monitoring">
-        <pf-upload_monitoring></pf-upload_monitoring>
+        <pf-upload-monitoring></pf-upload-monitoring>
     </div>
 </div>
 @endsection
