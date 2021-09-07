@@ -33,38 +33,25 @@
               block
               class="w-100 mb-2"
               button-text="Недропользователь"
-              :options="[
-                { label: 'option 1', value: 1 },
-                { label: 'option 2', value: 2 },
-                { label: 'option 3', value: 3 },
-              ]"
+              :options="options"
             />
             <dropdown
               block
               class="w-100 mb-2"
               button-text="Месторождения"
-              :options="[
-                { label: 'option 1', value: 1 },
-                { label: 'option 2', value: 2 },
-                { label: 'option 3', value: 3 },
-              ]"
+              :options="options"
             />
             <dropdown
               block
               class="w-100 mb-2"
               button-text="Горизонт"
-              :options="[
-                { label: 'option 1', value: 1 },
-                { label: 'option 2', value: 2 },
-                { label: 'option 3', value: 3 },
-              ]"
+              :options="options"
             />
           </div>
         </div>
         <div class="sectors">
           <div class="sectors-svg">
-            <img src="/img/plastFluids/sections.svg" alt="sections" />
-
+            <img src="/img/plastFluids/sections" alt="template sections" />
             {{ trans("plast_fluids.sections") }}
           </div>
           <div class="tree-box box-border">
@@ -246,40 +233,65 @@
               </div>
             </b-row>
           </div>
-          <div class="upload_wrapper">
-            <div class="file_upload">
-              <div class="file_upload_title">
-                {{ trans("plast_fluids.download_file") }}
-                <dropdown
-                  style="margin-top: 10px;"
-                  block
-                  class="w-100 mb-2"
-                  button-text="Выбрать формат загрузки"
-                  :options="[
-                    { label: 'option 1', value: 1 },
-                    { label: 'option 2', value: 2 },
-                    { label: 'option 3', value: 3 },
-                  ]"
+        </div>
+        <div class="create_pattern">
+          <div>
+            {{ trans("plast_fluids.downloads_monitoring") }}
+          </div>
+          <div class="tables_wrapper">
+            <div class="ready_patterns">
+              <p>
+                {{ trans("plast_fluids.ready_templates") }}: Стандартная
+                сепарация Flash
+              </p>
+              <table class="table">
+                <tr>
+                  <th>Поле 1</th>
+                </tr>
+                <tr>
+                  <td>Поле 2</td>
+                </tr>
+                <tr>
+                  <td>Поле 3</td>
+                </tr>
+                <tr>
+                  <td>Поле 4</td>
+                </tr>
+                <tr>
+                  <td>Поле 5</td>
+                </tr>
+              </table>
+            </div>
+            <div class="arrows">
+              <div class="right_arrow">
+                <img
+                  src="/img/plastFluids/nextArrow.svg"
+                  alt="create custom template"
                 />
-                <div class="file_service">
-                  <div class="upload_border"></div>
-                  <button class="btn-common upload_file">
-                    {{ trans("plast_fluids.download_package") }}
-                  </button>
-                  <button class="btn-common exchange_file">
-                    {{ trans("plast_fluids.replace_package") }}
-                  </button>
-                </div>
+              </div>
+              <div class="left_arrow">
+                <img src="/img/plastFluids/backArrow.svg" alt="back" />
               </div>
             </div>
-            <div class="upload_status">
-              <div class="upload_status_title">
-                {{ trans("plast_fluids.download_log") }}
-              </div>
-              <div class="log_status"></div>
-              <button class="btn-common download_log">
-                {{ trans("plast_fluids.download_status_log") }}
-              </button>
+            <div class="arbitrary_pattern">
+              <p>{{ trans("plast_fluids.custom_templates") }}</p>
+              <table class="table">
+                <tr>
+                  <th>Поле 1</th>
+                </tr>
+                <tr>
+                  <td>Поле 2</td>
+                </tr>
+                <tr>
+                  <td>Поле 3</td>
+                </tr>
+                <tr>
+                  <td>Поле 4</td>
+                </tr>
+                <tr>
+                  <td>Поле 5</td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
@@ -292,7 +304,6 @@
 import dropdown from "../../geology/components/dropdowns/dropdown";
 import Button from "../../geology/components/buttons/Button";
 import Icon from "../../geology/components/icons/AwIcon";
-import { mapState } from "vuex";
 import tableData from "../tempData.json";
 
 export default {
@@ -302,19 +313,23 @@ export default {
     Button,
     Icon,
   },
+  el: "#app",
   data() {
     return {
-      fields: tableData.uploadMonitoring.tableHeader,
-      items: tableData.uploadMonitoring.tableBody,
+      info: null,
+      options: [
+        { label: "option 1", value: 1 },
+        { label: "option 2", value: 2 },
+        { label: "option 3", value: 3 },
+      ],
+      fields: tableData.standartSeparation.tableHeader,
+      items: tableData.standartSeparation.tableBody,
       currentPage: 1,
       perPage: 15,
       pageOptions: [15, 20, 25, { value: 100, text: "Показать больше" }],
     };
   },
-  computed: {
-    ...mapState("plastFluids", ["pickedSubsoilChildRadio"]),
-  },
 };
 </script>
 
-<style lang="scss" scoped src="./UploadMonitoringStyles.scss"></style>
+<style lang="scss" scoped src="./StandartSeparationFlashStyles.scss"></style>

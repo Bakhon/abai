@@ -1,38 +1,63 @@
 .v-select {
-    background: $main2;
-    border-radius: 5px;
-    height: 40px;
-    min-width: 300px;
+  background: $main2;
+  border-radius: 5px;
+  height: 40px;
+  min-width: 300px;
 
-    .vs {
-        &__search, &__selected {
-            color: #fff;
-            font-size: 16px;
-            font-weight: bold;
-            height: 40px;
-            line-height: 40px;
-            margin: 0;
-        }
-
-        &__actions {
-            svg {
-                path {
-                    fill: #fff;
-                }
-            }
-        }
-
-        &__dropdown-menu {
-            background: $main3;
-            border: 0.4px solid $blue;
-            top: 44px;
-
-            li {
-                color: #fff;
-                font-size: 12px;
-                font-weight: 600;
-                padding: 7px 16px;
-            }
-        }
+  .vs {
+    &__search,
+    &__selected {
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      height: 40px;
+      line-height: 40px;
+      margin: 0;
     }
+
+    &__actions {
+      svg {
+        path {
+          fill: #fff;
+        }
+      }
+    }
+
+    &__dropdown-menu {
+      background: $main3;
+      border: 0.4px solid $blue;
+      top: 44px;
+
+      li {
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 7px 16px;
+      }
+    }
+  }
+}
+
+.data-analysis__select {
+  input.el-input__inner {
+    background: rgba(31, 33, 66, 0.4);
+    outline: none;
+    border: 1px solid #454fa1;
+    border-radius: 2px;
+    text-align: left;
+    color: #fff;
+  }
+
+  .el-select-dropdown {
+    border: none;
+  }
+  .el-select-dropdown__wrap .el-scrollbar__wrap {
+    border: none;
+    outline: none;
+  }
+  .el-select-dropdown__item.hover,
+  .el-select-dropdown__item:hover {
+    opacity: 0.8;
+    background-color: transparent;
+  }
 }
