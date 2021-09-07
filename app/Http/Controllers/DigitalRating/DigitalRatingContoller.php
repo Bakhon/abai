@@ -14,7 +14,7 @@ class DigitalRatingContoller extends Controller
    const WELL_CATEGORY_TYPE_ID = 1;
    const PARAM_GDIS_HDIN_id = 217;
    const PARAM_GDIS_CONCLUSION_GDM_ID = 5000000587;
-   
+
    public function get_wells(array $neighboring_wells) : object  
    {
          foreach ($neighboring_wells as $item) {
@@ -102,5 +102,7 @@ class DigitalRatingContoller extends Controller
          $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
          return response()->json($wells,200,$headers,JSON_UNESCAPED_UNICODE);
    }
+
+  
    
 };
