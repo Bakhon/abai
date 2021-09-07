@@ -967,5 +967,8 @@ position: static;
 .fix_colunn_full_table_blg {
   min-width: 106px;
 }
-
+table {
+    border-collapse: separate;
+    border-color: red !important; 
+}
 </style>
