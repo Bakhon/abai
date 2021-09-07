@@ -62,6 +62,7 @@
           :filter="filter"
           :params="params"
           :type="type"
+          :key="params.code"
           @initialized="init"
       >
       </BigDataTableForm>

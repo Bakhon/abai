@@ -59,4 +59,6 @@
   'plan_g_i_s' => '\\App\\Services\\BigData\\Forms\\PlanGIS',
   'zu_gzu_production' => 'App\\Services\\BigData\\Forms\\ZuGzuProduction',
   'daily_reports_prs' => '\\App\\Services\\BigData\\Forms\\DailyReportsPrs',
+  'tech_water_well' => '\\App\\Services\\BigData\\Forms\\TechWaterWell',
+  'tech_events' => '\\App\\Services\\BigData\\Forms\\TechEvents',
 );

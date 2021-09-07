@@ -1,0 +1,395 @@
+:root {
+  box-sizing: border-box;
+}
+*,
+::before,
+::after {
+  box-sizing: inherit;
+}
+a {
+  text-decoration: none;
+  color: #fff;
+}
+.wrapper {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.top_wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.select_wrapper_left {
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  margin-right: 7.5px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  padding: 0px 25px;
+  background-color: #2e50e9;
+}
+.select_wrapper_right {
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  margin-left: 7.5px;
+  display: flex;
+  align-items: center;
+  padding: 0px 25px;
+  flex-direction: row;
+  background-color: #333975;
+}
+.top_wrapper select {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+  width: 100%;
+  height: 100%;
+  color: aliceblue;
+  border: none;
+}
+.select_left {
+  background-color: #2e50e9;
+}
+.select_right {
+  background-color: #333975;
+}
+.central_wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: calc(100% - 55px);
+}
+.menu_wrapper {
+  width: calc((350 / (1457+15+350) * 100%));
+  background-color: #272953;
+  margin-right: 15px;
+}
+
+.collapse-left__sidebar {
+  border: none;
+  background: var(--a-accent);
+  padding: 14px 6px;
+  border-radius: 0 10px 10px 0;
+}
+
+.dropdown__sidebar {
+  margin: 10px;
+}
+
+.sectors > div {
+  height: 50px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: white;
+  padding-top: 15px;
+  padding-left: 15px;
+}
+.sectors-svg > svg {
+  margin-right: 5px;
+}
+
+ul,
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+label {
+  font-weight: normal;
+}
+/*Tree*/
+
+.trees {
+  margin-left: 10px;
+}
+
+.trees li {
+  border-left: dotted 1px #bcbec0;
+  padding: 1px 0 1px 25px;
+  position: relative;
+}
+
+.trees li > label {
+  position: relative;
+  left: -11px;
+}
+
+.trees li:before {
+  content: "";
+  width: 13px;
+  height: 1px;
+  border-bottom: dotted 1px #bcbec0;
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
+
+.trees li:last-child:after {
+  /*content: "";*/
+  position: absolute;
+  width: 2px;
+  height: 13px;
+  background: #fff;
+  left: -1px;
+  bottom: 0px;
+}
+
+.trees li input {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.trees li.has-child > ul {
+  display: none;
+}
+
+.trees li.has-child > input {
+  opacity: 0;
+  position: absolute;
+  left: -14px;
+  z-index: 9999;
+  width: 22px;
+  height: 22px;
+  top: -5px;
+}
+
+.trees li.has-child > input + .tree-control {
+  position: absolute;
+  left: -4px;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  line-height: 8px;
+  z-index: 2;
+  display: inline-block;
+  color: #fff;
+  border-radius: 3px;
+}
+
+.trees li.has-child > input + .tree-control:after {
+  font-family: "FontAwesome";
+  content: "";
+  font-size: 8px;
+  color: #183955;
+  position: absolute;
+  left: 1px;
+}
+
+.trees li.has-child > input:checked + .tree-control:after {
+  font-family: "FontAwesome";
+  content: "";
+  font-size: 8px;
+  color: #183955;
+  position: absolute;
+  left: 1px;
+}
+
+.trees li.has-child > input:checked ~ ul {
+  display: block;
+}
+
+.trees ul li.has-child:last-child {
+  border-left: none;
+}
+
+.trees ul li.has-child:nth-last-child(2):after {
+  content: "";
+  width: 1px;
+  height: 5px;
+  border-left: dotted 1px #bcbec0;
+  position: absolute;
+  bottom: -5px;
+  left: -1px;
+}
+
+.tree-alt li {
+  padding: 4px 0;
+}
+
+.monitoring_wrapper {
+  width: calc((1457 / (1457+15+350) * 100%));
+  background-color: #272953;
+  display: flex;
+  flex-direction: column;
+}
+.service_wrapper {
+  display: flex;
+  flex-direction: row;
+}
+.upload_wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 445px;
+  width: 445px;
+  margin-top: 15px;
+  margin-right: 15px;
+}
+
+.monitoring_select > div {
+  padding-top: 20px;
+  padding-left: 25px;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: aliceblue;
+}
+.monitoring_select > div > img {
+  width: 24px;
+  height: 24px;
+}
+.table_div {
+  max-width: 960px;
+  width: 100%;
+  height: 100%;
+  margin: 15px;
+}
+table,
+th,
+td {
+  border: 1px solid #454d7d;
+  background: #333975;
+}
+th,
+td {
+  padding: 15px;
+}
+
+#per-page-select {
+  width: 20%;
+  background: #1f2142;
+  border-color: #454fa1;
+  color: #fff;
+}
+
+.pagination {
+  background: none;
+}
+.pagination > a {
+  color: #fff;
+  opacity: 0.5;
+  padding: 6px 14px;
+  float: right;
+}
+
+tr:nth-child(even) {
+  background-color: #454d7d52;
+}
+.table_header {
+  background-color: #333975;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 14px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: aliceblue;
+}
+
+.file_upload {
+  background-color: #363b68;
+  width: 445px;
+  height: 333px;
+}
+
+.upload_status {
+  background-color: #363b68;
+  margin-top: 15px;
+  width: 445px;
+  height: 491px;
+}
+
+.file_upload_title {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: aliceblue;
+  margin-left: 17px;
+  margin-top: 25px;
+}
+
+.upload_status_title {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: aliceblue;
+  margin-left: 17px;
+  margin-top: 25px;
+}
+
+.file_service {
+  margin-top: 11px;
+  width: 422px;
+  height: 260px;
+  background-color: #272953;
+}
+
+.upload_border {
+  width: 100%;
+  height: 100%;
+  border: 1px dashed;
+  border-radius: 10px;
+}
+
+.log_status {
+  margin-top: 11px;
+  margin-left: 12px;
+  width: 421px;
+  height: 367px;
+  background-color: #272953;
+}
+
+.btn-common {
+  height: 32px;
+  background-color: #3366ff;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: aliceblue;
+  border-radius: 4px;
+}
+.upload_file {
+  width: 132px;
+  margin-top: 218px;
+  margin-left: 74px;
+}
+
+.exchange_file {
+  width: 132px;
+  margin-top: 218px;
+  margin-right: 74px;
+}
+
+.download_log {
+  width: 183px;
+  margin-top: 12px;
+  margin-left: 131px;
+}
