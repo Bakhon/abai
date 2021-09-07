@@ -131,7 +131,7 @@ export default {
 
       let url = this.localeUrl('/tech-data-forecast/get-data')
 
-      let params = {...{wells: 1}, ...this.form}
+      let params = {...{only_well_id: 1}, ...this.form}
 
       const {data} = await this.axios.get(url, {params: params})
 

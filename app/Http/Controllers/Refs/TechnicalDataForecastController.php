@@ -88,6 +88,7 @@ class TechnicalDataForecastController extends Controller
             $ngdu = TechnicalStructureNgdu::findOrFail($request->ngdu_id);
 
             $guIds = TechnicalStructureGu::query()
+                ->distinct()
                 ->whereIn('cdng_id', $ngdu->cdngs()->pluck('id'))
                 ->pluck('id');
 
@@ -98,14 +99,14 @@ class TechnicalDataForecastController extends Controller
             /** @var TechnicalStructureCdng $cdng */
             $cdng = TechnicalStructureCdng::findOrFail($request->cdng_id);
 
-            $query->whereIn('gu_id', $cdng->gus()->pluck('id'));
+            $query->whereIn('gu_id', $cdng->gus()->distinct()->pluck('id'));
         }
 
         if ($request->gu_id) {
             $query->whereGuId($request->gu_id);
         }
 
-        if ($request->wells) {
+        if ($request->only_well_id) {
             return $query
                 ->distinct()
                 ->pluck('well_id')

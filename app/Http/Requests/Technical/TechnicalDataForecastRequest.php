@@ -13,7 +13,7 @@ class TechnicalDataForecastRequest extends FormRequest
             'ngdu_id' => 'nullable|integer|min:1',
             'cdng_id' => 'nullable|integer|min:1',
             'gu_id' => 'nullable|integer|min:1',
-            'wells' => 'nullable|boolean',
+            'only_well_id' => 'nullable|boolean',
         ];
     }
 }
