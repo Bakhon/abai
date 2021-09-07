@@ -1,7 +1,7 @@
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import orgStructure from '../../mock-data/org_structure.json'
-import {paegtmMapState} from "../../../../store/helpers";
+import {paegtmMapState} from "@store/helpers";
 import VueApexCharts from "vue-apexcharts";
 import filterSelect from '../../mixin/selectFilter'
 
@@ -17,37 +17,37 @@ export default {
             accumOilProdLabels: [],
             accumOilProdFactData: [],
             accumOilProdPlanData: [],
-            lineChartOptions: {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        fontSize: 14,
-                        fontColor: '#FFF',
-                    },
-                },
-                scales: {
-                    yAxes: [{
-                        gridLines: {
-                            color: '#3C4270',
-                        },
-                        ticks: {
-                            fontColor: '#FFF',
-                            fontSize: 10,
-                        },
-                    }],
-                    xAxes: [{
-                        gridLines: {
-                            fontColor: '#3C4270',
-                        },
-                        ticks: {
-                            fontColor: '#FFF',
-                            fontSize: 10,
-                        },
-                    }],
-                }
-            },
+            // lineChartOptions: {
+            //     responsive: true,
+            //     maintainAspectRatio: false,
+            //     legend: {
+            //         position: 'bottom',
+            //         labels: {
+            //             fontSize: 14,
+            //             fontColor: '#FFF',
+            //         },
+            //     },
+            //     scales: {
+            //         yAxes: [{
+            //             gridLines: {
+            //                 color: '#3C4270',
+            //             },
+            //             ticks: {
+            //                 fontColor: '#FFF',
+            //                 fontSize: 10,
+            //             },
+            //         }],
+            //         xAxes: [{
+            //             gridLines: {
+            //                 fontColor: '#3C4270',
+            //             },
+            //             ticks: {
+            //                 fontColor: '#FFF',
+            //                 fontSize: 10,
+            //             },
+            //         }],
+            //     }
+            // },
             gtmTypesList: [
                 { id: "vns", name: this.trans('paegtm.gtm_vns') },
                 { id: "grp", name: this.trans('paegtm.gtm_grp') },
@@ -65,6 +65,49 @@ export default {
                 data:  [28.1, 32, 46.2, 60, 74.7, 75, 91, 98, 107.8, 131, 134.4, 138, 28.1, 32, 46.2, 60, 74.7, 75, 91, 98, 107.8, 131, 134.4, 138, 28.1, 32, 46.2, 60, 74.7, 75, 91, 98, 107.8, 131, 134.4, 138],
             },],
             donutChartData: [45,60],
+            lineChartOptions: {
+                chart: {
+                    type: 'line',
+                    height: 350,
+                    foreColor: '#fff',
+                },
+                markers: {
+                    size: 5,
+                    colors: undefined,
+                    strokeColors: '#fff',
+                    strokeWidth: 2,
+                    discrete: [],
+                    shape: "circle",
+                    radius: 2,
+                },
+                grid: {
+                    show: true,
+                    borderColor: '#454d7d',
+                    strokeDashArray: 0,
+                    position: 'back',
+                    xaxis: {
+                        lines: {
+                            show: true
+                        }
+                    },
+                    yaxis: {
+                        lines: {
+                            show: true
+                        }
+                    },
+                },
+
+            },
+            lineSeriesChart: [
+                {
+                    name: this.trans('paegtm.plan'),
+                    data: this.accumOilProdPlanData,
+                },
+                {
+                    name: this.trans('paegtm.fact'),
+                    data: this.accumOilProdFactData,
+                }
+            ],
             barChartOptions: {
                 chart: {
                     type: 'bar',
@@ -218,8 +261,9 @@ export default {
         },
     },
     mounted() {
-
         this.getData();
+        console.log(this.accumOilProdPlanData)
+        console.log(this.accumOilProdFactData)
         this.dzosForFilter = this.dzos;
     },
 }

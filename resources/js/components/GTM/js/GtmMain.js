@@ -1,5 +1,5 @@
 import Vue from "vue";
-import {paegtmMapActions, paegtmMapGetters, globalloadingMutations} from '@store/helpers';
+import {paegtmMapActions, paegtmMapGetters, paegtmMapState, globalloadingMutations} from '@store/helpers';
 import VueApexCharts from "vue-apexcharts";
 import _ from 'lodash';
 
@@ -155,6 +155,10 @@ export default {
         };
     },
     methods: {
+        ...paegtmMapState([
+            'dateStart',
+            'dateEnd',
+        ]),
         ...paegtmMapActions([
             'changeDateStart',
             'changeDateEnd',
@@ -173,7 +177,7 @@ export default {
         getGtmInfo() {
             this.axios.get(
                 this.localeUrl('/paegtm/get-gtms'),
-                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart(), dateEnd: this.dateEnd()}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
@@ -184,7 +188,7 @@ export default {
         getMainTableData() {
             this.axios.get(
                 this.localeUrl('/paegtm/get-main-table-data'),
-                {params: {selectedDdzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                {params: {selectedDdzoName: this.dzoName, dateStart: this.dateStart(), dateEnd: this.dateEnd()}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
@@ -196,7 +200,7 @@ export default {
         getMainIndicatorData() {
             this.axios.get(
                 this.localeUrl('/paegtm/get-main-indicator-data'),
-                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart(), dateEnd: this.dateEnd()}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
@@ -207,7 +211,7 @@ export default {
         getAdditionalIndicatorData() {
             this.axios.get(
                 this.localeUrl('/paegtm/get-additional-indicator-data'),
-                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart(), dateEnd: this.dateEnd()}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
@@ -218,7 +222,7 @@ export default {
         getChartData() {
             this.axios.get(
                 this.localeUrl('/paegtm/get-chart-data'),
-                {params: {dzoName: this.dzoName, dateStart: this.dateStart, dateEnd: this.dateEnd}}
+                {params: {dzoName: this.dzoName, dateStart: this.dateStart(), dateEnd: this.dateEnd()}}
             ).then((response) => {
                 let data = response.data;
                 if (data) {
@@ -262,8 +266,8 @@ export default {
     },
     computed: {
         ...paegtmMapGetters([
-            'dateStart',
-            'dateEnd',
+            'getDateStart',
+            'getDateEnd',
             'dzoId',
             'dzoName',
         ]),

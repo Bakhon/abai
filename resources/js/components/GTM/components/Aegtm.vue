@@ -1,3 +1,4 @@
+<script src="js/AegtmEco.js"></script>
 <template>
   <div>
     <div class="row mx-0 mt-lg-2 gtm pt-1">
@@ -11,10 +12,10 @@
               <div class="p-1 pl-2 mh-370">
                 <apexchart
                     v-if="loaded"
-                    type="bar"
+                    type="line"
                     height="350"
-                    :options="barChartOptions"
-                    :series="barChartData"
+                    :options="lineChartOptions"
+                    :series="[{name: this.trans('paegtm.plan'),data: this.accumOilProdPlanData},{name: this.trans('paegtm.fact'),data: this.accumOilProdFactData}]"
                     :height="360">
                 </apexchart>
               </div>
