@@ -2,7 +2,7 @@
 
 namespace App\Models\ComplicationMonitoring;
 
-use App\Traits\MapObjectsTrait;
+use App\Models\Traits\MapObjectsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -47,13 +47,13 @@ class Zu extends Model
         return $this->hasMany(OmgUHE::class);
     }
 
-    public function omgngdu_well()
-    {
-        return $this->hasMany(OmgNGDUWell::class);
-    }
-
-    public function omgngdu_zu()
+    public function omgngdu()
     {
         return $this->hasMany(OmgNGDUZu::class);
+    }
+
+    public function omgngdu_well()
+    {
+        return $this->hasMany(OmgNGDUWell::class, 'zu_id');
     }
 }
