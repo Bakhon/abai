@@ -7,7 +7,7 @@ import SettingModal from "./components/SettingModal";
 import WellAtlasModal from "./components/WellAtlasModal";
 import Accordion from "./components/Accordion";
 import mainMenu from "../GTM/mock-data/main_menu.json";
-import { cods, maps, properties, objects, fileActions, mapActions } from './json/data';
+import { legends, maps, properties, objects, fileActions, mapActions } from './json/data';
 import { digitalRatingState, digitalRatingMutations } from '@store/helpers';
 
 export default {
@@ -24,7 +24,7 @@ export default {
         return {
             objects: objects,
             maps: maps,
-            cods: cods,
+            legends: legends,
             properties: properties,
             fileActions: fileActions,
             mapsActions: mapActions,

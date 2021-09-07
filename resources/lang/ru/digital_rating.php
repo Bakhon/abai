@@ -59,4 +59,5 @@ return array (
   'throttleResponse' => 'Приемистость',
   'stitchDiameter' => 'Диаметр штучера',
   'horizonNumber' => 'Номер горизонта',
+  'legend' => 'Легенда',
 );
