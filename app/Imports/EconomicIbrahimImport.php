@@ -9,6 +9,7 @@ use App\Models\Refs\EcoRefsScFa;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReading
 {
@@ -22,7 +23,22 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
 
     const CHUNK = 1000;
 
-    const ORG_COLUMN = 'org';
+    const COLUMNS = [
+        'company' => 0,
+        'date' => 1,
+        'variable' => 2,
+        'variable_processing' => 3,
+        'fix_noWRpayroll' => 4,
+        'fix_payroll' => 5,
+        'fix_nopayroll' => 6,
+        'fix' => 7,
+        'gaoverheads' => 8,
+        'wr_nopayroll' => 9,
+        'wr_payroll' => 10,
+        'wo' => 11,
+        'net_back' => 12,
+        'amort' => 13,
+    ];
 
     function __construct(int $userId, string $fileName, bool $isForecast)
     {
@@ -40,11 +56,11 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
 
     public function model(array $row): ?EcoRefsCost
     {
-        if (!isset($row[0]) or ($row[0] == self::ORG_COLUMN)) {
+        if (!isset($row[self::COLUMNS['company']]) || ($row[self::COLUMNS['company']] === 'Компания')) {
             return null;
         }
 
-        $companyName = $row[1];
+        $companyName = $row[self::COLUMNS['company']];
 
         $companyId = $this->companies[$companyName]
             ?? EcoRefsCompaniesId::query()
@@ -57,17 +73,21 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
         return new EcoRefsCost([
             "sc_fa" => $this->scFaId,
             "company_id" => $companyId,
-            "date" => $row[3],
-            "variable" => round($row[4], 2),
-            "fix_noWRpayroll" => round($row[5], 2),
-            "fix_payroll" => round($row[6], 2),
-            "fix_nopayroll" => round($row[7], 2),
-            "fix" => round($row[8], 2),
-            "gaoverheads" => round($row[9], 2),
-            "wr_nopayroll" => round($row[10], 2),
-            "wr_payroll" => round($row[11], 2),
-            "wo" => round($row[12], 2),
-            "amort" => isset($round[13]) ? round($row[13], 2) : null,
+            "date" => Date::excelToDateTimeObject($row[self::COLUMNS['date']]),
+            "variable" => round($row[self::COLUMNS['variable']], 2),
+            "variable_processing" => round($row[self::COLUMNS['variable_processing']], 2),
+            "fix_noWRpayroll" => round($row[self::COLUMNS['fix_noWRpayroll']], 2),
+            "fix_payroll" => round($row[self::COLUMNS['fix_payroll']], 2),
+            "fix_nopayroll" => round($row[self::COLUMNS['fix_nopayroll']], 2),
+            "fix" => round($row[self::COLUMNS['fix']], 2),
+            "gaoverheads" => round($row[self::COLUMNS['gaoverheads']], 2),
+            "wr_nopayroll" => round($row[self::COLUMNS['wr_nopayroll']], 2),
+            "wr_payroll" => round($row[self::COLUMNS['wr_payroll']], 2),
+            "wo" => round($row[self::COLUMNS['wo']], 2),
+            "net_back" => round($row[self::COLUMNS['net_back']], 2),
+            "amort" => isset($row[self::COLUMNS['amort']])
+                ? round($row[self::COLUMNS['amort']], 2)
+                : null,
             "author_id" => $this->userId,
             "log_id" => $this->logId
         ]);

@@ -1,0 +1,22 @@
+.rating-accordion__body {
+  background: $dropdownBg;
+  border: 12px solid $main1;
+  border-top: none;
+  padding: 8px;
+  height: auto;
+  overflow: auto;
+  max-height: 200px;
+
+  .list {
+    list-style: none;
+    margin-bottom: 0;
+
+    li {
+      padding: 4px 6px;
+      &:hover {
+        background: #2E50E9;
+        cursor: pointer;
+      }
+    }
+  }
+}

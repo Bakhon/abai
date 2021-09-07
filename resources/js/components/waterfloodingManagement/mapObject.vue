@@ -537,117 +537,117 @@ export default {
       line-height: 22px;
     }
 
-    .map-tool button{
-      height: 33px;
-      background-color: #656A8A;
-      padding: 0 18px;
-      margin: 0 7px;
+.map-tool button{
+  height: 33px;
+  background-color: #656A8A;
+  padding: 0 18px;
+  margin: 0 7px;
 
-      font-weight: 600;
-      font-size: 18px;
-      line-height: 22px;
-      text-align: center;
-      color: #FFFFFF;
-    }
-    .map-block{
-      height: 540px;
-      width: 100%;
-      padding: 5px;
-      background-color: #F1EBDA;
-    }
-    .map-images{
-      height: 100%;
-      width: 100%;
-      background-color: #F1EBDA;
-    }
-    .choose-object{
-      background-color: #272953;
-      padding: 10px 7px 7px 7px;
-      margin-top: 15px;
-    }
-    .choose-object-into{
-      background-color: #313560;
-      color: #fff!important;
-    }
-    .choose-object-select-title{
-      font-style: normal;
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 24px;
-      color: #fff;
-      padding-left: 8px;
-    }
-    .choose-object-into2{
-      height: auto;
-    }
-    .choose-object-title{
-      font-size: 18px;
-      color: #fff;
-    }
-    .calendar-date{
-      width: 124px;
-    }
-    .choose-object-table thead tr th{
-      height: 39px;
-      text-align: center;
-      background: #333975;
-      border: 1px solid #454D7D;
-    }
-    .choose-object-table tbody tr td,
-    .choose-object-table tbody tr th{
-      height: 25px;
-      text-align: center;
-      border: 1px solid #454D7D;
-    }
-    .choose-object-score-btn{
-      width: 100%;
-      height: 18px;
-      border-radius: 5px;
-      background: #1A1D46;
-      color: #fff;
-      position: relative;
-      outline: none;
-      border: none;
-      z-index: 2;
-    }
-  .choose-object-score-btn div{
-    width: 59%;
-    height: 100%;
-    background:  #2E50E9;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: #FFFFFF;
+}
+.map-block{
+  height: 600px;
+  width: 100%;
+  padding: 5px;
+  background-color: #272953;
+}
+.map-images{
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+}
+.choose-object{
+  background-color: #272953;
+  padding: 10px 7px 7px 7px;
+  margin-top: 15px;
+}
+.choose-object-into{
+  background-color: #313560;
+  color: #fff!important;
+}
+.choose-object-select-title{
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  color: #fff;
+  padding-left: 8px;
+}
+.choose-object-into2{
+  height: auto;
+}
+.choose-object-title{
+  font-size: 18px;
+  color: #fff;
+}
+.calendar-date{
+  width: 124px;
+}
+.choose-object-table thead tr th{
+  height: 39px;
+  text-align: center;
+  background: #333975;
+  border: 1px solid #454D7D;
+}
+.choose-object-table tbody tr td,
+.choose-object-table tbody tr th{
+  height: 25px;
+  text-align: center;
+  border: 1px solid #454D7D;
+}
+.choose-object-score-btn{
+  border-radius: 5px;
+  background: #1A1D46;
+  color: #fff;
+  position: relative;
+  outline: none;
+  border: none;
+  z-index: 2;
+}
+.choose-object-score-btn:before {
+  content: '\A';
+  position: absolute;
+  background: #2E50E9;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  z-index: -1;
+}
 
-  }
-  .choose-object-score-btn span{
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  .info-for-object{
-    height: 120px;
-    background: #2B2E5E;
-    border: 1px solid #454D7D;
-    border-radius: 1px;
-    color: #fff;
-    text-align: center;
-    margin: 3px 5px;
-  }
-  .info-object-title{
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 22px;
-    text-align: center;
-  }
-  .info-object-detail{
-    font-style: normal;
-    font-weight: bold;
-    font-size: 60px;
-    line-height: 72px;
-    text-align: center;
-    letter-spacing: -0.28px;
-  }
-  .info-object-detail span{
-    font-style: normal;
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 29px;
-  }
+.info-for-object{
+  height: 120px;
+  background: #2B2E5E;
+  border: 1px solid #454D7D;
+  /*box-sizing: border-box;*/
+  border-radius: 1px;
+  color: #fff;
+  text-align: center;
+  /*padding: 14px;*/
+  margin: 3px 5px;
+}
+.info-object-title{
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+}
+.info-object-detail{
+  font-style: normal;
+  font-weight: bold;
+  font-size: 60px;
+  line-height: 72px;
+  text-align: center;
+  letter-spacing: -0.28px;
+}
+.info-object-detail span{
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 29px;
+}
 </style>

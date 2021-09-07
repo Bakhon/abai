@@ -22,14 +22,14 @@
                     this.trans("visualcenter.dec"),
                 ],
                 initialChartColors: {
-                    plan: "#2E50E9",
-                    opecPlan: "#fff",
+                    plan: "#fff",
+                    opecPlan: "#2E50E9",
                     fact: "#9EA4C9",
                     monthlyPlan: '#009846',
                 },
                 initialChartLabels: {
-                    plan: this.trans("visualcenter.Plan") + " " + this.trans("visualcenter.utv"),
-                    opecPlan: this.trans("visualcenter.planOPEK"),
+                    plan: this.trans("visualcenter.planOPEK"),
+                    opecPlan: this.trans("visualcenter.Plan") + " " + this.trans("visualcenter.utv"),
                     monthlyPlan: this.trans("visualcenter.requiredDailyPlan"),
                     fact: this.trans("visualcenter.Fact"),
                     deviation: this.trans("visualcenter.deviation"),
@@ -95,12 +95,6 @@
 
                 let chartColors = _.cloneDeep(this.initialChartColors);
                 let chartLabels = _.cloneDeep(this.initialChartLabels);
-                if (chartSummary.isOpecFilterActive) {
-                    chartColors.plan = _.cloneDeep(this.initialChartColors).opecPlan;
-                    chartColors.opecPlan = _.cloneDeep(this.initialChartColors).plan;
-                    chartLabels.plan = _.cloneDeep(this.initialChartLabels).opecPlan;
-                    chartLabels.opecPlan = _.cloneDeep(this.initialChartLabels).plan;
-                }
 
                 let planChartOptions = {
                     label: chartLabels.plan,
@@ -139,12 +133,9 @@
                     pointRadius: 0,
                 };
 
-                let datasets = [planChartOptions, factChartOptions];
-                if (chartSummary.isOpecFilterActive) {
-                    datasets.push(planOpecChartOptions);
-                }
-                if (chartSummary.isFilterTargetPlanActive) {
-                    datasets.push(monthlyPlan);
+                let datasets = [planChartOptions,factChartOptions,planOpecChartOptions];
+                if (chartSummary.isFilterTargetPlanActive && !chartSummary.isOilResidueActive) {
+                    datasets = [planChartOptions,factChartOptions,planOpecChartOptions,monthlyPlan];
                 }
 
                 this.renderChart(
@@ -160,25 +151,8 @@
                             labels: {
                                 fontColor: "#fff",
                                 generateLabels: (chart) => {
-                                    let data = chart.data;
-                                    if (data.labels.length && data.datasets.length) {
-                                        let returnData = data.datasets.map(function (item, i) {
-                                            let meta = chart.getDatasetMeta(i);
-                                            let style = meta.controller.getStyle(i);
-                                            return {
-                                                text: item.label,
-                                                fillStyle: style.borderColor,
-                                            };
-                                        });
-                                        returnData.push({
-                                            text: this.trans("visualcenter.deviation"),
-                                            fillStyle: fillPattern,
-                                        });
-
-                                        return returnData;
-                                    }
-                                    return [];
-                                },
+                                    return this.getLabelsByDatasets(chart,chartSummary, fillPattern)
+                                }
                             },
                         },
                         scales: {
@@ -217,6 +191,29 @@
                     }
                 );
             },
+
+            getLabelsByDatasets(chart,chartSummary,fillPattern) {
+                let chartOptions = chart.data;
+                if (!chartOptions.labels.length && !chartOptions.datasets.length) {
+                    return [];
+                }
+                let labels = chartOptions.datasets.map(function (dataset, index) {
+                    let meta = chart.getDatasetMeta(index);
+                    let style = meta.controller.getStyle(index);
+                    return {
+                        text: dataset.label,
+                        fillStyle: style.borderColor,
+                    };
+                });
+                if (!chartSummary.isOilResidueActive) {
+                    labels.push({
+                        text: this.trans("visualcenter.deviation"),
+                        fillStyle: fillPattern,
+                    });
+                }
+                return labels;
+            },
+
             getFormattedDate(timestamp) {
                 let date = new Date(Number(timestamp));
                 return date.getDate() + " / " + this.monthMapping[date.getMonth()] + " / " + date.getFullYear();

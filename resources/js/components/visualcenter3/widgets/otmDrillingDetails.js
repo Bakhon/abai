@@ -51,6 +51,16 @@ export default {
             ],
             drillingChartData: [],
             drillingWidgetFactSum: 0,
+            drillingDailyChart: {
+                series: {
+                    comission: [],
+                    drilling: []
+                },
+                labels: [
+                    this.trans("visualcenter.Plan"),
+                    this.trans("visualcenter.Fact"),
+                ]
+            }
         };
     },
     methods: {
@@ -62,6 +72,12 @@ export default {
 
             let uri = this.localeUrl("/get-drilling-details");
             const response = await axios.get(uri,{params:queryOptions});
+
+            if (response.data && response.data.length === 0) {
+                this.drillingPeriodStart = moment(this.drillingPeriodStart, 'DD.MM.YYYY').subtract(1,'days').format('DD.MM.YYYY');
+                this.drillingPeriodEnd = moment(this.drillingPeriodEnd, 'DD.MM.YYYY').subtract(1,'days').format('DD.MM.YYYY');
+                return await this.getDrillingByMonth();
+            }
             if (response.status === 200) {
                 return response.data;
             }
@@ -69,7 +85,7 @@ export default {
         },
 
         async switchDrillingPeriod(buttonType) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             this.drillingDailyPeriod = "";
             this.drillingMonthlyPeriod = "";
             this.drillingYearlyPeriod = "";
@@ -80,7 +96,7 @@ export default {
             this.isDrillingPeriodSelected = this.isDrillingFewDaysSelected();
             this.drillingDetails = await this.getDrillingByMonth();
             this.updateDrillingWidget();
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         },
 
         isDrillingFewDaysSelected() {
@@ -113,7 +129,16 @@ export default {
             });
 
             this.updateDrillingWidgetTable(temporaryDrillingDetails);
-            this.drillingChartData = this.getDrillingWidgetChartData(temporaryDrillingDetails);
+            if (!this.isDrillingPeriodSelected) {
+                this.drillingDailyChart.series.comission = [];
+                this.drillingDailyChart.series.drilling = [];
+                let drillingComissionFact = this.drillingData[0];
+                let drillingFact = this.drillingData[1];
+                this.drillingDailyChart.series.comission.push(drillingComissionFact.plan,drillingComissionFact.fact);
+                this.drillingDailyChart.series.drilling.push(drillingFact.plan,drillingFact.fact);
+            } else {
+                this.drillingChartData = this.getDrillingWidgetChartData(temporaryDrillingDetails);
+            }
         },
 
         getDrillingWidgetChartData(temporaryDrillingDetails) {
@@ -141,9 +166,9 @@ export default {
                 .groupBy("data")
                 .map((item) => ({
                     otm_wells_commissioning_from_drilling_fact: _.round(_.sumBy(item, 'otm_wells_commissioning_from_drilling_fact'), 0),
-                    otm_wells_commissioning_from_drilling_fact_plan: _.round(_.sumBy(item, 'otm_wells_commissioning_from_drilling_plan'), 0),
+                    otm_wells_commissioning_from_drilling_plan: _.round(_.sumBy(item, 'otm_wells_commissioning_from_drilling_plan'), 0),
                     otm_drilling_fact: _.round(_.sumBy(item, 'otm_drilling_fact'), 0),
-                    otm_drilling_fact_plan: _.round(_.sumBy(item, 'otm_drilling_plan'), 0),
+                    otm_drilling_plan: _.round(_.sumBy(item, 'otm_drilling_plan'), 0),
                 })).value();
 
             this.drillingWidgetFactSum = this.getDrillingFactSum(tableData,'otm_wells_commissioning_from_drilling_fact');
@@ -154,7 +179,7 @@ export default {
             if (tableData.length > 0) {
                 let groupedDrilling = tableData[0];
                 _.forEach(this.drillingData, function(item) {
-                    item.plan = groupedDrilling[item.code + '_plan'];
+                    item.plan = groupedDrilling[item.code.replace('fact', 'plan')];
                     item.fact = groupedDrilling[item.code];
                     item.difference = item.plan - item.fact;
                 });
@@ -177,11 +202,16 @@ export default {
     },
     computed: {
         drillingDataForChart() {
-            let series = []
+            let series = {
+                plan: [],
+                fact: []
+            }
             let labels = []
+            let planFieldName = this.drillingSelectedRow.replace('fact', 'plan');
             for (let i in this.drillingChartData) {
-                series.push(this.drillingChartData[i][this.drillingSelectedRow])
-                labels.push(i)
+                series.fact.push(this.drillingChartData[i][this.drillingSelectedRow]);
+                series.plan.push(this.drillingChartData[i][planFieldName]);
+                labels.push(i);
             }
             return {
                 series: series,

@@ -14,7 +14,12 @@ class Org extends TBDModel
 
     public function parentOrg()
     {
-        return $this->belongsTo(Org::class, 'parent_id');
+        return $this->belongsTo(Org::class, 'parent');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Org::class, 'parent');
     }
 
     public function wells()
@@ -24,7 +29,7 @@ class Org extends TBDModel
 
     public function type()
     {
-        return $this->belongsTo(OrgType::class, 'type_id');
+        return $this->belongsTo(OrgType::class, 'org_type');
     }
 
 

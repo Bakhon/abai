@@ -1,5 +1,8 @@
 <template>
-  <i v-if="percent > 0"
+  <i v-if="percent === '0.00'"
+     class="fas color-blue fa-genderless"></i>
+
+  <i v-else-if="percent > 0"
      :class="reverse ? 'fa-angle-up' : 'fa-angle-down'"
      class="fas color-green"></i>
 
@@ -14,7 +17,7 @@ export default {
   props: {
     percent: {
       required: true,
-      type: Number
+      type: [Number, String]
     },
     reverse: {
       required: false,
@@ -25,11 +28,15 @@ export default {
 </script>
 
 <style scoped>
-.color-green{
+.color-green {
   color: #13B062
 }
 
-.color-red{
+.color-red {
   color: #AB130E
+}
+
+.color-blue {
+  color: #82BAFF;
 }
 </style>

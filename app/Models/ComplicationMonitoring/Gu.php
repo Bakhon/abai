@@ -2,6 +2,7 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Traits\MapObjectsTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pipes\GuZuPipe;
 use App\Models\Pipes\ZuWellPipe;
@@ -10,7 +11,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Gu extends Model
 {
-    use LogsActivity, SoftDeletes;
+    use LogsActivity, SoftDeletes, MapObjectsTrait;
 
     protected static $logAttributes = ['*'];
     protected static $logAttributesToIgnore = ['updated_at', 'created_at', 'deleted_at'];
@@ -29,11 +30,6 @@ class Gu extends Model
         return $this->belongsTo(Cdng::class);
     }
 
-    public function ngdu()
-    {
-        return $this->belongsTo(Ngdu::class);
-    }
-
     public function zus()
     {
         return $this->hasMany(Zu::class);
@@ -49,11 +45,6 @@ class Gu extends Model
         return $this->hasMany(OmgCA::class);
     }
 
-    public function omgngdu()
-    {
-        return $this->hasMany(OmgNGDU::class);
-    }
-
     public function lastOmgngdu()
     {
         return $this->belongsTo(OmgNGDU::class)->select(
@@ -66,9 +57,11 @@ class Gu extends Model
             'bsw',
             'pump_discharge_pressure',
             'heater_output_temperature',
-            'editable',
             'daily_gas_production_in_sib',
-            'surge_tank_pressure'
+            'surge_tank_pressure',
+            'sg_oil',
+            'sg_gas',
+            'sg_water'
         );
     }
 
@@ -82,11 +75,6 @@ class Gu extends Model
                     ->take(1)
             ]
         )->with('lastOmgngdu');
-    }
-
-    public function watermeasurement()
-    {
-        return $this->hasMany(WaterMeasurement::class);
     }
 
     public function oilgas()
@@ -111,7 +99,7 @@ class Gu extends Model
 
     public function oilPipes()
     {
-        return $this->hasMany(OilPipe::class);
+        return $this->setConnection('tbd_cmon')->hasMany(OilPipe::class);
     }
 
     public function zuPipes()
@@ -132,5 +120,35 @@ class Gu extends Model
     public function lost_profits()
     {
         return $this->hasMany(LostProfits::class);
+    }
+
+    public function buffer_tank()
+    {
+        return $this->hasMany(BufferTank::class);
+    }
+
+    public function pumps()
+    {
+        return $this->hasMany(Pump::class);
+    }
+
+    public function ovens()
+    {
+        return $this->hasMany(Oven::class);
+    }
+
+    public function agzu()
+    {
+        return $this->hasMany(Agzu::class);
+    }
+
+    public function sib()
+    {
+        return $this->hasMany(Sib::class);
+    }
+
+    public function metering_units()
+    {
+        return $this->hasMany(MeteringUnits::class);
     }
 }

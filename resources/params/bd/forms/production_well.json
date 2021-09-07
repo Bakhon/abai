@@ -1,5 +1,11 @@
 {
   "table": "prod.tech_mode_prod_oil",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "Основное",
@@ -12,13 +18,13 @@
                 "code": "dbeg",
                 "type": "date",
                 "title": "date_start",
-                "validation": "nullable|date"
+                "validation": "required|date"
               },
               {
                 "code": "dend",
                 "type": "date",
                 "title": "date_end",
-                "validation": "nullable|date|after:date_start"
+                "validation": "required|date|after:dbeg"
               }
             ]
           },
@@ -29,28 +35,20 @@
                 "code": "liquid",
                 "type": "numeric",
                 "title": "liquid",
-                "validation": "numeric",
-                "callbacks": {
-                  "fillCalculatedFields": ""
-                }
+                "validation": "numeric|gt:0",
+                "validate_deviation": true
+              },
+              {
+                "code": "oil",
+                "type": "numeric",
+                "submit_value": true,
+                "title": "oil"
               },
               {
                 "code": "wcut",
                 "type": "numeric",
                 "title": "water_cut",
-                "validation": "numeric|min:0|max:100",
-                "callbacks": {
-                  "fillCalculatedFields": ""
-                }
-              },
-              {
-                "code": "oil_density",
-                "type": "numeric",
-                "title": "oil_density",
-                "validation": "numeric",
-                "callbacks": {
-                  "fillCalculatedFields": ""
-                }
+                "validation": "numeric|min:0|max:100"
               }
             ]
           },
@@ -58,16 +56,16 @@
             "title": "calculated_fields",
             "items": [
               {
-                "code": "oil",
-                "type": "calc",
-                "submit_value": true,
-                "title": "oil"
+                "code": "oil_density",
+                "type": "numeric",
+                "title": "oil_density",
+                "validation": "numeric|min:0.7|max:1.05"
               }
             ]
           },
           {
-            "title":"Planned_events_tech_modes",
-            "items":[
+            "title": "Planned_events_tech_modes",
+            "items": [
               {
                 "code": "field4",
                 "type": "table",
@@ -84,9 +82,9 @@
                   },
                   {
                     "code": "plan_month",
-                    "type":"date",
-                    "title":"planned_month",
-                    "validation":"required|date"
+                    "type": "date",
+                    "title": "planned_month",
+                    "validation": "required|date"
                   }
                 ]
               }

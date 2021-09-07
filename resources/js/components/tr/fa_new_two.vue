@@ -157,100 +157,16 @@
     </el-table>
       
     </div>
-    <notifications position="top"></notifications>
   </div>
 </template>
 <script>
 import NotifyPlugin from "vue-easy-notify";
 import "vue-easy-notify/dist/vue-easy-notify.css";
-import { VueMomentLib } from "vue-moment-lib";
-import moment from "moment";
+import {VueMomentLib} from "vue-moment-lib";
 import Vue from "vue";
-import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
-import columnSortable from 'vue-column-sortable'
-// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
-import { fields } from "./constants.js";
+import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
+import {fields} from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
-import Element from 'element-ui';
-import {
-  Pagination,
-  Dialog,
-  Autocomplete,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  Menu,
-  Submenu,
-  MenuItem,
-  MenuItemGroup,
-  Input,
-  InputNumber,
-  Radio,
-  RadioGroup,
-  RadioButton,
-  Checkbox,
-  CheckboxButton,
-  CheckboxGroup,
-  Switch,
-  Select,
-  Option,
-  OptionGroup,
-  Button,
-  ButtonGroup,
-  Table,
-  TableColumn,
-  DatePicker,
-  TimeSelect,
-  TimePicker,
-  Popover,
-  Tooltip,
-  Breadcrumb,
-  BreadcrumbItem,
-  Form,
-  FormItem,
-  Tabs,
-  TabPane,
-  Tag,
-  Tree,
-  Alert,
-  Slider,
-  Icon,
-  Row,
-  Col,
-  Upload,
-  Progress,
-  Spinner,
-  Badge,
-  Card,
-  Rate,
-  Steps,
-  Step,
-  Carousel,
-  CarouselItem,
-  Collapse,
-  CollapseItem,
-  Cascader,
-  ColorPicker,
-  Transfer,
-  Container,
-  Header,
-  Aside,
-  Main,
-  Footer,
-  Timeline,
-  TimelineItem,
-  Link,
-  Divider,
-  Image,
-  Calendar,
-  Backtop,
-  PageHeader,
-  CascaderPanel,
-  Loading,
-  MessageBox,
-  Message,
-  Notification
-} from 'element-ui';
 
 Vue.use(NotifyPlugin, VueMomentLib);
 export default {
@@ -489,7 +405,7 @@ export default {
         console.log("date1", mm, yyyy, "date2", prMm, pryyyy);
         this.axios
           .get(
-            "http://172.20.103.187:7576/api/techregime/factor/" +
+            process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
               yyyy +
               "/" +
               mm +
@@ -594,7 +510,7 @@ export default {
         : "";
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/factor/" +
+          process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
             yyyy +
             "/" +
             mm +
@@ -662,7 +578,7 @@ export default {
     this.$store.commit("fa/SET_PR_YEAR", pryyyy);
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/factor/" +
+        process.env.MIX_MICROSERVICE_TECH_REGIME + "/api/techregime/factor/" +
           yyyy +
           "/" +
           mm +

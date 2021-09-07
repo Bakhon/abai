@@ -46,7 +46,16 @@ export default {
             wellsWorkoverSummary: {
                 'krs': 0,
                 'prs': 0
-            }
+            },
+            wellsWorkoverDailyChart: {
+                series: [],
+                labels: [
+                    this.trans("visualcenter.Plan"),
+                    this.trans("visualcenter.Fact"),
+                    this.trans("visualcenter.Plan"),
+                    this.trans("visualcenter.Fact")
+                ]
+            },
         };
     },
     methods: {
@@ -57,6 +66,12 @@ export default {
             };
             let uri = this.localeUrl("/get-otm-details");
             const response = await axios.get(uri,{params:queryOptions});
+
+            if (response.data && response.data.length === 0) {
+                this.wellsWorkoverPeriodStartMonth = moment(this.wellsWorkoverPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+                this.wellsWorkoverPeriodEndMonth = moment(this.wellsWorkoverPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+                return await this.getWellsWorkoverByMonth();
+            }
             if (response.status === 200) {
                 return response.data;
             }
@@ -64,7 +79,7 @@ export default {
         },
 
         async switchWellsWorkoverPeriod(buttonType) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             this.wellsWorkoverMonthlyPeriod = "";
             this.wellsWorkoverYearlyPeriod = "";
             this.wellsWorkoverPeriod = "";
@@ -74,7 +89,7 @@ export default {
             this.isWellsWorkoverPeriodSelected = this.isWellsWorkoverFewMonthsSelected();
             this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
             await this.updateWellsWorkoverWidget();
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         },
 
         isWellsWorkoverFewMonthsSelected() {
@@ -101,8 +116,16 @@ export default {
                     item['undeground_workover_plan'] = self.dzoMonthlyPlans[planIndex].plan_otm_prs_skv_plan;
                 }
             });
+
             this.updateWellsWorkoverWidgetTable(temporaryWellsWorkoverDetails);
-            this.wellsWorkoverChartData = this.getWellsWorkoverWidgetChartData(temporaryWellsWorkoverDetails);
+            if (this.wellsWorkoverMonthlyPeriod.length > 0) {
+                this.wellsWorkoverDailyChart.series = [];
+                for (let wellsWorkover of this.wellsWorkoverData) {
+                    this.wellsWorkoverDailyChart.series.push(wellsWorkover.fact,wellsWorkover.plan);
+                }
+            } else {
+                this.wellsWorkoverChartData = this.getWellsWorkoverWidgetChartData(temporaryWellsWorkoverDetails);
+            }
         },
 
         updateWellsWorkoverWidgetTable(temporaryWellsWorkoverDetails) {
@@ -140,7 +163,9 @@ export default {
                 for (let i in groupedForChart) {
                     chartData[i] = {
                         workover: _.round(_.sumBy(groupedForChart[i], 'otm_well_workover_fact'), 0),
+                        workover_plan: _.round(_.sumBy(groupedForChart[i], 'workover_plan'), 0),
                         underground_workover: _.round(_.sumBy(groupedForChart[i], 'otm_underground_workover'), 0),
+                        underground_workover_plan: _.round(_.sumBy(groupedForChart[i], 'undeground_workover_plan'), 0),
                     }
                 }
             }
@@ -160,10 +185,15 @@ export default {
     },
     computed: {
         wellsWorkoverDataForChart() {
-            let series = []
+            let series = {
+                plan: [],
+                fact: []
+            }
             let labels = []
+            let planFieldName = this.wellsWorkoverSelectedRow + '_plan';
             for (let i in this.wellsWorkoverChartData) {
-                series.push(this.wellsWorkoverChartData[i][this.wellsWorkoverSelectedRow]);
+                series.fact.push(Math.round(this.wellsWorkoverChartData[i][this.wellsWorkoverSelectedRow]));
+                series.plan.push(Math.round(this.wellsWorkoverChartData[i][planFieldName]));
                 labels.push(i);
             }
             return {

@@ -1,0 +1,48 @@
+{
+  "type": "plain",
+  "table": "prod.well_perf",
+  "tabs": [
+    {
+      "title": "main",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "company",
+                "type": "dict",
+                "dict": "companies",
+                "title": "podr",
+                "validation": "required|exists:tbd.dict.company,id"
+              },
+              {
+                "code": "reservoir_count",
+                "type": "numeric",
+                "title": "reserv_c",
+                "validation": "numeric|gte:1"
+              },
+              {
+                "code": "perf_date",
+                "type": "date",
+                "title": "data",
+                "validation": "required"
+              },
+              {
+                "code": "depth",
+                "type": "numeric",
+                "title": "depth",
+                "validation": "numeric|gte:0|lte:10000"
+              },
+              {
+                "code": "new_intervals",
+                "type": "calc",
+                "title": "packer_new_intervals"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

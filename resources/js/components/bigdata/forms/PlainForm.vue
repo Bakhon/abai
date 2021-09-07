@@ -1,10 +1,9 @@
 <template>
   <div class="bd-main-block">
-    <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
-    <form class="bd-main-block__form" style="width: 100%" ref="form">
+    <form v-if="formParams" ref="form" class="bd-main-block__form" style="width: 100%">
       <div class="bd-main-block__form-tabs-header">
         <template v-for="(tab, index) in formParams.tabs">
           <div
@@ -28,12 +27,16 @@
               <div class="bd-main-block__form-block-content">
                 <div
                     v-for="item in subBlock.items"
+                    v-if="isShowField(item)"
                 >
                   <label>{{ item.title }}</label>
                   <bigdata-form-field
                       v-model="formValues[item.code]"
                       :error="errors[item.code]"
+                      :form="params"
                       :item="item"
+                      :id="wellId"
+                      :key="`field_${item.code}`"
                       v-on:change="validateField($event, item)"
                       v-on:input="callback($event, item)"
                   >
@@ -60,7 +63,9 @@
 import Vue from "vue";
 import BigdataFormField from './field'
 import BigdataPlainFormResults from './PlainFormResults'
-import {bdFormActions, bdFormState} from '@store/helpers'
+import {bdFormActions, globalloadingMutations} from '@store/helpers'
+import axios from "axios";
+
 
 export default {
   name: "BigDataPlainForm",
@@ -84,6 +89,7 @@ export default {
   },
   data() {
     return {
+      formParams: null,
       errors: {},
       activeTab: 0,
       formValues: {},
@@ -91,9 +97,6 @@ export default {
     }
   },
   computed: {
-    ...bdFormState([
-      'formParams'
-    ]),
     formFields() {
       if (!this.formParams || !this.formParams.tabs) return []
 
@@ -109,10 +112,20 @@ export default {
       }
       return fields
     },
+    formFilesToSubmit() {
+      let files = {}
+      for (let key in this.formValues) {
+        let field = this.formFields.find(field => field.code === key)
+        if (!field || field.type !== 'file') continue
+        files[key] = this.formValues[key]
+      }
+      return files
+    },
     formValuesToSubmit() {
       let values = {}
       for (let key in this.formValues) {
         let field = this.formFields.find(field => field.code === key)
+        if (field && field.type === 'file') continue
         if (field && field.type === 'calc' && field.submit_value !== true) continue
         values[key] = this.formValues[key]
       }
@@ -128,6 +141,9 @@ export default {
     this.init()
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     ...bdFormActions([
       'getGeoDictByDZO',
       'updateForm',
@@ -138,8 +154,11 @@ export default {
     init() {
       this.activeTab = 0
       this.updateForm(this.params.code)
+          .then(data => {
+            this.formParams = data
+          })
           .catch(error => {
-            Vue.prototype.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
+            this.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
           })
 
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${this.wellId}`)).then(({data}) => {
@@ -156,28 +175,61 @@ export default {
       }
 
     },
-    submit() {
+    async submit() {
+
+      this.SET_LOADING(true)
+
+      let files = {}
+      if (Object.keys(this.formFilesToSubmit).length > 0) {
+        for (let key in this.formFilesToSubmit) {
+          let formData = new FormData()
+          let existedFiles = []
+          this.formFilesToSubmit[key].forEach((file, index) => {
+            if (file.exists) {
+              existedFiles.push(file.id)
+              return
+            }
+            formData.append(`uploads[]`, file.file)
+          })
+
+          if (formData.get('uploads[]') === null) {
+            files[key] = existedFiles
+            continue
+          }
+
+          let fileField = this.formFields.find(field => field.code === key)
+          let origin = this.formValues[fileField.origin]
+          formData.append('origin', origin)
+
+          await axios.post(this.localeUrl('/attachments'), formData).then(({data}) => {
+            files[key] = [...JSON.parse(data.files), ...existedFiles]
+          }).catch(() => {
+            this.SET_LOADING(false)
+          })
+        }
+      }
 
       this
           .submitForm({
             code: this.params.code,
             wellId: this.wellId,
-            values: this.formValuesToSubmit
+            values: {...this.formValuesToSubmit, ...files}
           })
-          .then(data => {
+          .then(response => {
             this.errors = []
-            Object.keys(this.formValues).forEach(key => {
-              this.formValues[key] = ''
-            })
             this.$refs.form.reset()
-            Vue.prototype.$notifySuccess('Ваша форма успешно отправлена')
-            this.$emit('change')
+            this.$notifySuccess('Ваша форма успешно отправлена')
+            this.$emit('change', {
+              id: response.data.id,
+              values: this.formValues
+            })
             this.$emit('close')
+            this.formValues = {}
           })
           .catch(error => {
 
             if (error.response.status === 500) {
-              Vue.prototype.$notifyError(error.response.data.message)
+              this.$notifyError(error.response.data.message)
               return false
             }
 
@@ -185,7 +237,7 @@ export default {
 
               this.errors = error.response.data.errors
 
-              Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
+              this.$notifyWarning('Некоторые поля заполнены некорректно')
 
               for (const [tabIndex, tab] of Object.entries(this.formParams.tabs)) {
                 for (const blocks of tab.blocks) {
@@ -201,6 +253,16 @@ export default {
               }
             }
           })
+          .finally(() => {
+            this.SET_LOADING(false)
+          })
+    },
+    submitForm(params) {
+      return axios.post(this.localeUrl(`/api/bigdata/forms/${params.code}`), {
+        ...params.values,
+        well: params.wellId,
+        files: params.files
+      })
     },
     cancel() {
       this.$emit('close')
@@ -217,7 +279,7 @@ export default {
       }
     },
     fillCalculatedFields() {
-      this.$store.commit('globalloading/SET_LOADING', true);
+      this.SET_LOADING(true)
       axios.post(
           this.localeUrl(`/api/bigdata/forms/${this.params.code}/calc-fields`),
           {
@@ -229,20 +291,41 @@ export default {
           this.formValues[key] = data[key]
         }
       }).finally(() => {
-        this.$store.commit('globalloading/SET_LOADING', false);
+        this.SET_LOADING(false)
       })
-
+    },
+    updateFields() {
+      this.SET_LOADING(true)
+      axios.post(
+          this.localeUrl(`/api/bigdata/forms/${this.params.code}/update-fields`),
+          {
+            values: this.formValues,
+            well_id: this.wellId
+          }
+      ).then(({data}) => {
+        for (let fieldCode in data) {
+          let field = this.formFields.find(field => field.code === fieldCode)
+          for (let key in data[fieldCode]) {
+            field[key] = data[fieldCode][key]
+          }
+        }
+      }).finally(() => {
+        this.SET_LOADING(false)
+      })
     },
     setWellPrefix(triggerFieldCode, changeFieldCode) {
+      if (!this.formValues[triggerFieldCode]) return
       this.getWellPrefix({code: this.params.code, geo: this.formValues[triggerFieldCode]})
           .then(({data}) => {
             for (const tab of this.formParams.tabs) {
-              for (const block of tab.blocks) {
-                for (const item of block.items) {
-                  if (item.code === changeFieldCode) {
-                    item.prefix = data.prefix
+              for (const blocks of tab.blocks) {
+                blocks.forEach(block => {
+                  for (const item of block.items) {
+                    if (item.code === changeFieldCode) {
+                      item.prefix = data.prefix
+                    }
                   }
-                }
+                })
               }
             }
           })
@@ -258,10 +341,25 @@ export default {
         }
       })
 
-      this.getGeoDictByDZO({
-        dzo: this.formValues[triggerFieldCode],
-        code: dictName
+      if (this.formValues[triggerFieldCode]) {
+        this.getGeoDictByDZO({
+          dzo: this.formValues[triggerFieldCode],
+          code: dictName
+        })
+      }
+
+    },
+    isShowField(field) {
+      if (!field.depends_on) return true
+
+      let isShowField = true
+      field.depends_on.forEach(dependency => {
+        if (this.formValues[dependency.field] !== dependency.value) {
+          isShowField = false
+        }
       })
+
+      return isShowField
 
     },
     validateField: _.debounce(function (e, formItem) {
@@ -298,8 +396,8 @@ export default {
           display: flex;
           font-size: 14px;
           font-weight: 600;
-          height: 28px;
           margin-right: 15px;
+          min-height: 28px;
           padding: 0 45px;
           @media (max-width: 768px) {
             padding: 0 15px;
@@ -332,8 +430,7 @@ export default {
     &-block {
       background: #272953;
       border-left: 1px solid #454D7D;
-      height: 600px;
-      overflow-y: auto;
+      overflow-y: visible;
       width: 50%;
       @media (max-width: 767px) {
         border-left: none;

@@ -8,6 +8,30 @@
       "withoutKmgParticipation": {
         "buttonClass": "",
         "flag": "flagOff"
+      },
+      "condensateOnly": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      }
+    }
+  },
+  "oilCondensateDeliveryButton": {
+    "tags": [
+      "oil_dlv_plan",
+      "tovarnyi_ostatok_nefti_prev_day"
+    ],
+    "childItems": {
+      "withoutKmgParticipation": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "oilResidue": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "condensateOnly": {
+        "buttonClass": "",
+        "flag": "flagOff"
       }
     }
   },
@@ -53,6 +77,18 @@
       "pererabotka_gaza_poput_plan"
     ],
     "childItems": {
+      "productionNaturalGas": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "productionAssociatedGas": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "flaringAssociatedGas": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
       "deliveryNaturalGas": {
         "buttonClass": "",
         "flag": "flagOff"
@@ -66,10 +102,6 @@
         "flag": "flagOff"
       },
       "associatedGasConsumptionForNeeds": {
-        "buttonClass": "",
-        "flag": "flagOff"
-      },
-      "associatedGasProcessing": {
         "buttonClass": "",
         "flag": "flagOff"
       }

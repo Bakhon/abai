@@ -1,5 +1,7 @@
 <template>
-  <div class="bd-form-field">
+  <div
+      :class="`bd-form-field bd-form-field_${item.type}`"
+  >
     <template v-if="['text', 'numeric'].indexOf(item.type) > -1">
       <input
           :type="item.type === 'numeric' ? 'number' : 'text'"
@@ -39,30 +41,35 @@
       </div>
     </template>
     <template v-else-if="item.type === 'checkbox'">
-       <label :for="`${item.code}`"></label>
-        <input
-            :name="item.code"
-            type="checkbox"
-            :id="`${item.code}`"
-            v-bind:checked="value"
-            v-on:input="$emit('input', $event.target.checked); $emit('change', $event.target.checked)"
-        >
+      <label :for="`${item.code}`"></label>
+      <input
+          :id="`${item.code}`"
+          :name="item.code"
+          type="checkbox"
+          v-bind:checked="value"
+          v-on:input="$emit('input', $event.target.checked); $emit('change', $event.target.checked)"
+      >
     </template>
     <template v-else-if="item.type === 'dict' && dict">
-      <v-select
-          :value="formatedValue"
-          label="name"
-          :options="dict"
-          @input="updateValue($event.id)"
-          :name="item.code"
-      >
-        <template #open-indicator="{ attributes }">
-          <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.5 1.00024L5.93356 4.94119C5.97145 4.97487 6.02855 4.97487 6.06644 4.94119L10.5 1.00024"
-                  stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-        </template>
-      </v-select>
+      <template v-if="item.is_editable === false">
+        <span>{{ formatedValue.text }}</span>
+      </template>
+      <template v-else>
+        <v-select
+            :name="item.code"
+            :options="dict"
+            :value="formatedValue"
+            label="name"
+            @input="updateValue($event.id)"
+        >
+          <template #open-indicator="{ attributes }">
+            <svg fill="none" height="6" viewBox="0 0 12 6" width="12" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.5 1.00024L5.93356 4.94119C5.97145 4.97487 6.02855 4.97487 6.06644 4.94119L10.5 1.00024"
+                    stroke="white" stroke-linecap="round" stroke-width="1.4"/>
+            </svg>
+          </template>
+        </v-select>
+      </template>
     </template>
     <template v-else-if="item.type === 'dict_tree'">
       <treeselect
@@ -106,10 +113,27 @@
       </datetime>
     </template>
     <template v-else-if="item.type === 'table'">
-      <BigdataTableField :params="item" v-on:change="updateValue($event)"></BigdataTableField>
+      <BigdataTableField
+          :id="id"
+          :form="form"
+          :params="item"
+          v-on:change="updateValue($event)"
+      >
+      </BigdataTableField>
     </template>
     <template v-else-if="item.type === 'calc'">
       <label>{{ value }}</label>
+    </template>
+    <template v-else-if="item.type === 'checkbox_table'">
+      <BigdataCheckboxTableField :params="item" v-on:change="updateValue($event)"></BigdataCheckboxTableField>
+    </template>
+    <template v-else-if="item.type === 'file'">
+      <BigdataFileUploadField
+          :existed-files="value || null"
+          :params="item"
+          v-on:change="updateValue($event)"
+      >
+      </BigdataFileUploadField>
     </template>
     <div v-if="error" class="text-danger error" v-html="showError(error)"></div>
   </div>
@@ -122,6 +146,8 @@ import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'vue-select/dist/vue-select.css'
 import BigdataTableField from './fields/Table'
+import BigdataCheckboxTableField from './fields/CheckboxTable'
+import BigdataFileUploadField from './fields/FileUpload'
 import {bdFormActions} from '@store/helpers'
 
 export default {
@@ -129,12 +155,16 @@ export default {
   components: {
     Treeselect,
     vSelect,
-    BigdataTableField
+    BigdataTableField,
+    BigdataFileUploadField,
+    BigdataCheckboxTableField
   },
   props: [
+    'id',
     'item',
     'value',
-    'error'
+    'error',
+    'form'
   ],
   data: function () {
     return {
@@ -152,9 +182,12 @@ export default {
   watch: {
     value(newValue) {
       this.formatedValue = this.getFormatedValue(newValue)
+    },
+    dict(newValue) {
+      this.formatedValue = this.getFormatedValue(this.value)
     }
   },
-  created() {
+  mounted() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
       if (this.dict === null) {
         this.loadDict(this.item.dict).then(result => {
@@ -183,9 +216,11 @@ export default {
     },
     getFormatedValue(value) {
       if (this.item.type === 'dict') {
+
         if (this.dict === null) return {}
 
         let selected = this.dict.find(item => item.id === value) || {id: null, name: null}
+
         return {
           id: selected.id,
           name: selected.name,
@@ -211,7 +246,7 @@ export default {
       if (this.item.prefix) {
         if (value && value.length <= this.item.prefix.length) return this.item.prefix
 
-        if (value && value.indexOf(this.item.prefix) === 0) {
+        if (value) {
           value = value.replace(this.item.prefix, '')
         }
 
@@ -226,6 +261,10 @@ export default {
 <style lang="scss">
 .bd-form-field {
   max-width: 600px;
+
+  &_table {
+    max-width: 100%;
+  }
 
 
   input.form-control {

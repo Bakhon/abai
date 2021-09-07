@@ -26,7 +26,7 @@ export default {
       type: String,
       default: () => 'sc_fa_id'
     },
-    forecast: {
+    isForecast: {
       required: false,
       type: Boolean
     }
@@ -49,10 +49,10 @@ export default {
       }]
 
       let params = {
-        is_forecast: +this.forecast
+        is_forecast: +this.isForecast
       }
 
-      const {data} = await this.axios.get(this.localeUrl('/eco_refs_sc_fas'), {params: params})
+      const {data} = await this.axios.get(this.localeUrl('/module_economy/eco_refs_sc_fas'), {params: params})
 
       this.scFas = [...this.scFas, ...data.data]
 

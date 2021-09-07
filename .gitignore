@@ -24,6 +24,7 @@ public/fonts/vendor/
 public/webfonts
 public/mix-manifest.json
 
+
 public/test2.php
 public/test1.php
 public/test.php
@@ -43,6 +44,7 @@ public/js/vendor.js
 public/vendors~/
 public/js/vendor.js.LICENSE.txt
 public/fonts/style.css
+public/adminer-4.8.1.php
 
 #IDE file
 kmg-dashboard.iml
@@ -52,6 +54,10 @@ kmg-dashboard.iml
 
 #Hydro Calc
 forward_pipes_beta_05.py
-pipeline_calc_input.xlsx
 calc_results.csv
 long_results.csv
+
+#translate
+resources/js/VueTranslation/translations.json
+
+/docker

@@ -9,7 +9,7 @@ class ReportsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:monitoring make report');
+        $this->middleware('can:monitoring create report');
     }
 
     public function index()

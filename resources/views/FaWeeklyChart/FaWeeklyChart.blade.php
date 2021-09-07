@@ -1,6 +1,6 @@
 @extends('layouts.tr')
 @section('content')
-    <div class="col p-4 fa_page" id="app">
+    <div class="col p-4 fa_page"  >
         <a href="{{url('/')}}/ru/export" class="float-right">
             
         </a>
@@ -10,7 +10,6 @@
 
             </div>
         </div>
-        <cat-loader />
     </div>
 @endsection
 <link href="{{ asset('css/trfa.css')}}" rel="stylesheet">

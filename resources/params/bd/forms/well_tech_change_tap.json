@@ -1,0 +1,28 @@
+{
+  "type": "plain",
+  "table": "prod.well_tech",
+  "tabs": [
+    {
+      "title": "main",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "dbeg",
+                "type": "date",
+                "title": "date_start"
+              },
+              {
+                "code": "tap",
+                "type": "text",
+                "title": "tap"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

@@ -6,6 +6,7 @@ namespace App\Services\BigData;
 use App\Services\BigData\Forms\TableForm;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -34,11 +35,7 @@ class FieldLimitsService
             ->where('dbeg', '>=', $startDate)
             ->where('dbeg', '<=', $date);
 
-        if (!empty($field['additional_filter'])) {
-            foreach ($field['additional_filter'] as $key => $value) {
-                $query->where($key, $value);
-            }
-        }
+        $query = $this->addAdditionalFilters($query, $field);
 
         $result = $query->get()
             ->groupBy('well')
@@ -54,7 +51,7 @@ class FieldLimitsService
         return $result->toArray();
     }
 
-    private function calculateColumnLimits(string $column, Collection $columnValues): array
+    public function calculateColumnLimits(string $column, Collection $columnValues): array
     {
         if ($columnValues->count() <= 1) {
             return [];
@@ -99,5 +96,26 @@ class FieldLimitsService
             'min' => $min,
             'max' => $max,
         ];
+    }
+
+    private function addAdditionalFilters(Builder $query, array $field)
+    {
+        if (!empty($field['additional_filter'])) {
+            foreach ($field['additional_filter'] as $key => $value) {
+                if (is_array($value)) {
+                    $entityQuery = DB::connection('tbd')->table($value['table']);
+                    foreach ($value['fields'] as $fieldName => $fieldValue) {
+                        $entityQuery->where($fieldName, $fieldValue);
+                    }
+                    $entity = $entityQuery->first();
+                    if (!empty($entity)) {
+                        $query->where($key, $entity->id);
+                    }
+                    continue;
+                }
+                $query->where($key, $value);
+            }
+        }
+        return $query;
     }
 }

@@ -30,6 +30,9 @@ class OmgNGDUCreateRequest extends FormRequest
             'surge_tank_pressure' => 'nullable|numeric',
             'well_id' => 'nullable|numeric',
             'zu_id' => 'nullable|numeric',
+            'sg_oil' => 'nullable|numeric',
+            'sg_gas' => 'nullable|numeric',
+            'sg_water' => 'nullable|numeric',
         ];
     }
 }

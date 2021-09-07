@@ -9,7 +9,7 @@
 @endsection
 @section('module_title', 'Конструктор отчетов')
 @section('content')
-    <div id="app">
+    <div  >
         <report-constructor></report-constructor>
     </div>
 @endsection

@@ -2,7 +2,6 @@
     <div>
         <apexchart
                 v-if="series.length"
-                type="bar"
                 height="480"
                 style="margin-top: 0px"
                 :options="chartOptions"
@@ -24,7 +23,9 @@ export default {
     },
     props: ["chartData"],
     data: function () {
-        return {};
+        return {
+            chartType: 'bar',
+        };
     },
     computed: {
         chartOptions() {
@@ -32,7 +33,11 @@ export default {
             if (this.chartData.labels.length > 1) {
                 datetime = "datetime";
             }
-
+            if (this.chartData.labels.length > 100) {
+                this.chartType = 'line';
+            } else {
+                this.chartType = 'bar';
+            }
             if (!this.chartData) {
                 return {};
             }
@@ -79,6 +84,7 @@ export default {
                 },
                 colors: ["#4A90E2", "#0080FF", "#F5FCFF"],
                 chart: {
+                    type: this.chartType,
                     stacked: false,
                     locales: [ru],
                     defaultLocale: "ru",
@@ -88,7 +94,11 @@ export default {
                     },
                     foreColor: "#FFFFFF",
                 },
-
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent']
+                },
                 plotOptions: {
                     bar: {
                         rangeBarOverlap: true,
@@ -108,7 +118,7 @@ export default {
                 },
                 labels: this.chartData.labels,
                 legend: {
-                    show: false,
+                    show: true,
                     position: "bottom",
                     horizontalAlign: "right",
                 },
@@ -163,12 +173,12 @@ export default {
             } else {
                 return [
                     {
-                        type: "bar",
                         name: this.trans("visualcenter.Fact"),
-                        stroke: {
-                            show: false,
-                        },
-                        data: this.chartData.series,
+                        data: this.chartData.series.fact,
+                    },
+                    {
+                        name: this.trans("visualcenter.Plan"),
+                        data: this.chartData.series.plan,
                     },
                 ];
             }

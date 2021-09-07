@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.visualcenter')
 @section('content')
 <div class="col">
     <h1 class="header-block p-2">{{trans('visualcenter.importForm.operatingInformationTitle')}}</h1>

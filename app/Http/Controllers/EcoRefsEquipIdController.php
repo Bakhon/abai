@@ -16,7 +16,7 @@ class EcoRefsEquipIdController extends Controller
     {
         $ecorefsequipid = EcoRefsEquipId::latest()->paginate(5);
 
-        return view('ecorefsequipid.index',compact('ecorefsequipid'))
+        return view('economy_kenzhe/ecorefsequipid.index',compact('ecorefsequipid'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -27,7 +27,7 @@ class EcoRefsEquipIdController extends Controller
      */
     public function create()
     {
-        return view('ecorefsequipid.create');
+        return view('economy_kenzhe/ecorefsequipid.create');
     }
 
     /**
@@ -68,7 +68,7 @@ class EcoRefsEquipIdController extends Controller
     public function edit($id)
     {
         $EcoRefsEquipId = EcoRefsEquipId::find($id);
-        return view('ecorefsequipid.edit',compact('EcoRefsEquipId'));
+        return view('economy_kenzhe/ecorefsequipid.edit',compact('EcoRefsEquipId'));
  
     }
 

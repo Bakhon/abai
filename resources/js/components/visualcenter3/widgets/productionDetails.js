@@ -23,20 +23,28 @@ export default {
                     mask: 'DD.MM.YYYY',
                 },
             },
+            dzoMenu: {
+                'chemistry': [],
+                'wellsWorkover': [],
+                'drilling': [],
+                'productionFond': [],
+                'injectionFond': [],
+            },
         };
     },
     methods: {
         getFormattingProductionDetails(data) {
             let self = this;
             let updatedData = [];
+            let fieldsMapping = _.cloneDeep(integrationFieldsMapping);
             _.forEach(data, function(item) {
                 let temporaryData = {
                     'dzo': item.dzo_name,
                     'date': moment(item.date).startOf('day').valueOf(),
                     '__time': new Date(item.date).getTime()
                 };
-                _.forEach(Object.keys(integrationFieldsMapping), function(key) {
-                    let paramName = integrationFieldsMapping[key];
+                _.forEach(Object.keys(fieldsMapping), function(key) {
+                    let paramName = fieldsMapping[key];
                     temporaryData = self.getDataUpdatedByMapping(key,paramName,temporaryData,item);
                 });
                 updatedData.push(temporaryData);
@@ -50,9 +58,10 @@ export default {
             if (categories.includes(key) && item[key] !== null) {
                 temporaryData = this.getUpdatedCategoryParams(item[key],paramName,temporaryData);
             } else if (gasFields.includes(key)) {
+                temporaryData[key] = item[key];
                 temporaryData[paramName] = this.getUpdatedGasParam(temporaryData[paramName],item[key]);
             } else {
-                temporaryData[paramName] = item[key];
+                temporaryData[paramName] = this.getMappedByCurrentCategory(item,key);
             }
             return temporaryData;
         },
@@ -63,6 +72,16 @@ export default {
             } else {
                 return param + inputData;
             }
+        },
+
+        getMappedByCurrentCategory(item,key) {
+            if (this.selectedButtonName === 'oilCondensateDeliveryButton') {
+                let mappedFieldName = this.consolidatedMenuMapping.oilDelivery[key];
+                if (mappedFieldName) {
+                    return item[mappedFieldName];
+                }
+            }
+            return item[key];
         },
 
         getUpdatedCategoryParams(items,paramName,temporaryData) {
@@ -78,8 +97,8 @@ export default {
             return updatedData;
         },
 
-        switchWidget(widgetName) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+        async switchWidget(widgetName) {
+            this.SET_LOADING(true);
             _.forEach(this.tableMapping, function (item) {
                 _.set(item, 'class', 'hide-company-list');
                 _.set(item, 'hover', '');
@@ -89,7 +108,13 @@ export default {
             this.updateChemistryWidget();
             this.updateWellsWorkoverWidget();
             this.updateDrillingWidget();
-            this.$store.commit('globalloading/SET_LOADING', false);
+            if (widgetName === 'productionWells') {
+                await this.updateProductionFondWidget();
+            }
+            if (widgetName === 'injectionWells') {
+                await this.updateInjectionFondWidget();
+            }
+            this.SET_LOADING(false);
         },
 
         getOrderedByAsc(data) {
@@ -97,6 +122,22 @@ export default {
                 ["date"],
                 ["asc"]
             );
+        },
+
+        updateDzoMenu() {
+            let self = this;
+            if (this.isOneDzoSelected) {
+                self.injectionWellsOptions = _.filter(self.injectionWellsOptions, function (item) {
+                    let selectedDzoCompanies = self.selectedDzoCompanies;
+                    if (Array.isArray(selectedDzoCompanies)) {
+                        selectedDzoCompanies = selectedDzoCompanies['0']
+                    }
+                    if (item.ticker === selectedDzoCompanies) {
+                        return item
+                    }
+                })
+            }
+            this.dzoMenu = _.mapValues(this.dzoMenu, () => _.cloneDeep(this.injectionWellsOptions));
         },
     }
 }

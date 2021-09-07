@@ -37,7 +37,7 @@ class HiveDataFromAvocet extends Command
     public function hiveDataFromAvocet($table, $date)
     {
         require_once app_path() . '/Libs/php-thrift-sql/ThriftSQL.phar';
-        $hive = new \ThriftSQL\Hive(env('SERVER_HIVE_FROM_AVOCET', '172.20.103.38'), 10000, 'hive', 'hive');
+        $hive = new \ThriftSQL\Hive(env('MIX_SERVER_HIVE_FROM_AVOCET'), 10000, 'hive', 'hive');
         $hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime like '" . $date . "%'");
         $dataMass = [];
         foreach ($hiveTables as $rowNum => $row) {
@@ -48,7 +48,7 @@ class HiveDataFromAvocet extends Command
 
     public function saveHiveDataFromAvocet()
     {
-        $dzo_summary_last_record = DzoImportData::latest('id')->first();
+        $dzo_summary_last_record = DzoImportData::latest('id')->whereNull('is_corrected')->first();
         $date = Carbon::yesterday();        
         $dataOilAndGas = $this->hiveDataFromAvocet('KMG_I_PRD_AREA_VIEW', $date);
         $dataWater = $this->hiveDataFromAvocet('KMG_I_MTR_INJ_VIEW', $date);

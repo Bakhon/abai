@@ -7,20 +7,37 @@ namespace App\Services\BigData;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class StructureService
 {
-    public function getTree($date)
+
+    const FULL_TREE_KEY = 'bd_org_tech_tree_full';
+
+    private static $childrenIds = [];
+
+    public function getTreeWithPermissions(): array
     {
-        $cacheKey = 'bd_org_tech_' . $date;
-        if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
+        $userSelectedTreeItems = auth()->user()->org_structure;
+        $fullTree = $this->getTree(Carbon::now());
+        $tree = [];
+        $this->fillTree($fullTree, $tree, $userSelectedTreeItems);
+        return $tree;
+    }
+
+    public function getTree(Carbon $date, bool $showWells = false, $isCacheResults = true): array
+    {
+        if ($isCacheResults) {
+            $cacheKey = 'bd_org_tech_' . $date->format('d.m.Y');
+            if (Cache::has($cacheKey)) {
+                return Cache::get($cacheKey);
+            }
         }
 
         $orgStructures = $this->getOrgStructure();
-        $techStructure = $this->getTechStructure($date);
+        $techStructure = $this->getTechStructure($date, $showWells);
 
         $orgTechs = DB::connection('tbd')
             ->table('prod.org_tech')
@@ -36,7 +53,7 @@ class StructureService
             ->toArray();
 
         foreach ($orgStructures as &$org) {
-            foreach ($techStructure as $keyTech => $tech) {
+            foreach ($techStructure as $tech) {
                 if (isset($orgTechs[$org['id']]) && in_array($tech['id'], $orgTechs[$org['id']])) {
                     $org['children'][] = $tech;
                 }
@@ -45,12 +62,15 @@ class StructureService
         unset($org);
 
         $result = $this->generateTree($orgStructures);
-        Cache::put($cacheKey, $result, now()->addDay());
+
+        if ($isCacheResults) {
+            Cache::put($cacheKey, $result, now()->addDay());
+        }
 
         return $result;
     }
 
-    private function getOrgStructure()
+    private function getOrgStructure(): array
     {
         $orgData = [];
         if (Cache::has('bd_org_with_wells')) {
@@ -66,6 +86,7 @@ class StructureService
                 'id' => $org->id,
                 'name' => $org->name_ru,
                 'type' => 'org',
+                'sub_type' => $org->type->code,
                 'parent_id' => $org->parent
             ];
         }
@@ -82,23 +103,43 @@ class StructureService
         return $orgData;
     }
 
-    private function getTechStructure($date)
+    private function getTechStructure(Carbon $date, bool $showWells): array
     {
-        $cacheKey = 'bd_tech_with_wells_' . $date;
+        $cacheKey = 'bd_tech_with_wells_' . $date->format('d.m.Y');
         $techData = [];
         if (Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         }
 
         $techs = Tech::query()
-            ->whereIn('tech_type', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU, Tech::TYPE_AGZU, Tech::TYPE_SPGU])
-            ->where('dbeg', '<=', Carbon::parse($date))
-            ->where('dend', '>=', Carbon::parse($date))
+            ->whereIn(
+                'tech_type',
+                function ($query) {
+                    return $query
+                        ->from('dict.tech_type')
+                        ->select('id')
+                        ->whereIn(
+                            'code',
+                            [
+                                Tech::TYPE_GZU,
+                                Tech::TYPE_GU,
+                                Tech::TYPE_ZU,
+                                Tech::TYPE_AGZU,
+                                Tech::TYPE_SPGU,
+                                Tech::TYPE_KNS,
+                                Tech::TYPE_BKNS
+                            ]
+                        );
+                }
+            )
+            ->where('dbeg', '<=', $date)
+            ->where('dend', '>=', $date)
             ->with(
                 [
+                    'type',
                     'wells' =>
                         function ($query) use ($date) {
-                            $query->active(Carbon::parse($date));
+                            $query->active($date);
                         }
                 ]
             )
@@ -111,6 +152,7 @@ class StructureService
                 'id' => $tech->id,
                 'name' => $tech->name_ru,
                 'type' => 'tech',
+                'sub_type' => $tech->type->code,
                 'wells' => $tech->wells->pluck('id')->toArray(),
                 'parent_id' => in_array($tech->parent, $techIds) ? $tech->parent : null
             ];
@@ -124,10 +166,24 @@ class StructureService
         );
 
         $result = $this->generateTree($techData);
-        $result = $this->clearTechStructure($result);
+        $result = $this->clearTechStructure($result, $showWells);
 
         Cache::put($cacheKey, $result, now()->addDay());
         return $result;
+    }
+
+    public function fillTree($branch, &$tree, $userSelectedTreeItems): void
+    {
+        foreach ($branch as $item) {
+            $key = implode(':', [$item['type'], $item['id']]);
+            if (in_array($key, $userSelectedTreeItems)) {
+                $tree[] = $item;
+                continue;
+            }
+            if (!empty($item['children'])) {
+                $this->fillTree($item['children'], $tree, $userSelectedTreeItems);
+            }
+        }
     }
 
     private function generateTree($items): array
@@ -139,7 +195,7 @@ class StructureService
         return $this->createTree($new, $new[null]);
     }
 
-    private function createTree(&$list, $parent)
+    private function createTree(&$list, $parent): array
     {
         $tree = array();
         foreach ($parent as $k => $l) {
@@ -155,12 +211,16 @@ class StructureService
         return $tree;
     }
 
-    private function clearTechStructure(array $result)
+    private function clearTechStructure(array $result, bool $showWells): array
     {
         foreach ($result as $key => $tech) {
             if (!empty($tech['children'])) {
-                unset($result[$key]['wells']);
-                $result[$key]['children'] = $this->clearTechStructure($result[$key]['children']);
+                if (!$showWells) {
+                    unset($result[$key]['wells']);
+                }
+                $result[$key]['children'] = array_values(
+                    $this->clearTechStructure($result[$key]['children'], $showWells)
+                );
                 continue;
             }
 
@@ -169,8 +229,101 @@ class StructureService
                 continue;
             }
 
-            unset($result[$key]['wells']);
+            if (!$showWells) {
+                unset($result[$key]['wells']);
+            }
         }
         return $result;
+    }
+
+    public function getFlattenTreeWithPermissions(): array
+    {
+        $tree = $this->getTreeWithPermissions();
+        return $this->getFlatten($tree);
+    }
+
+    private function getFlatten(array $tree, array $parent = null)
+    {
+        $result = [];
+        foreach ($tree as $item) {
+            if ($parent) {
+                $item['parent_id'] = $parent['id'];
+                $item['parent_type'] = $parent['type'];
+            }
+            if (isset($item['children'])) {
+                $result = array_merge($result, $this->getFlatten($item['children'], $item));
+                unset($item['children']);
+            }
+            $result[] = $item;
+        }
+        return $result;
+    }
+
+    public function getFullTree(): array
+    {
+        if (Cache::has(self::FULL_TREE_KEY)) {
+            return Cache::get(self::FULL_TREE_KEY);
+        }
+
+        return $this->generateFullTree();
+    }
+
+    public function getFlattenTree(): array
+    {
+        $tree = $this->getFullTree();
+        return $this->getFlatten($tree);
+    }
+
+    public function generateFullTree(): array
+    {
+        $tree = $this->getTree(Carbon::now()->timezone('Asia/Almaty'), true, false);
+        Cache::put(self::FULL_TREE_KEY, $tree, now()->addDay());
+        return $tree;
+    }
+
+    public static function getChildIds(array $orgs, int $selectedUserDzo): array
+    {
+        self::$childrenIds[] = $selectedUserDzo;
+        foreach ($orgs as $child) {
+            self::getChildsRecursive($child);
+        }
+
+        return self::$childrenIds;
+    }
+
+    private static function getChildsRecursive(array $child): void
+    {
+        if (!isset($child['children'])) {
+            return;
+        }
+        if (in_array($child['id'], self::$childrenIds)) {
+            self::$childrenIds = array_merge(
+                self::$childrenIds,
+                array_map(function ($item) {
+                    return $item['id'];
+                }, $child['children'])
+            );
+        }
+        foreach ($child['children'] as $childrenItem) {
+            self::getChildsRecursive($childrenItem);
+        }
+    }
+
+    public function getPath(int $id, string $type): ?Collection
+    {
+        $tree = collect($this->getFlattenTree());
+        $item = $tree->where('id', $id)->where('type', $type)->first();
+        if (empty($item)) {
+            return null;
+        }
+
+        $path = [$item];
+        while ($item['parent_id'] !== null) {
+            $parent = $tree->where('id', $item['parent_id'])->where('type', $item['parent_type'])->first();
+            $path[] = $parent;
+            $item = $parent;
+        }
+
+        return collect(array_reverse($path));
     }
 }

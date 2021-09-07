@@ -1,0 +1,122 @@
+{
+  "type": "plain",
+  "table": "prod.well_perf",
+  "tabs": [
+    {
+      "title": "main",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "perf_type",
+                "type": "dict",
+                "dict": "perf_types",
+                "title": "perf_t",
+                "validation": "required|exists:tbd.dict.perf_type,id"
+              },
+              {
+                "code": "company",
+                "type": "dict",
+                "dict": "companies",
+                "title": "podr",
+                "validation": "required|exists:tbd.dict.company,id"
+              },
+              {
+                "code": "hole_count",
+                "type": "numeric",
+                "title": "count",
+                "validation": "numeric|gte:0|lte:100"
+              },
+              {
+                "code": "hole_diameter",
+                "type": "numeric",
+                "title": "diame_c",
+                "validation": "numeric|gte:0|lte:50"
+              },
+              {
+                "code": "perforator_type",
+                "type": "dict",
+                "dict": "perforator_types",
+                "title": "perf_y",
+                "validation": "exists:tbd.dict.perforator_type,id"
+              },
+              {
+                "code": "patron_type",
+                "type": "dict",
+                "dict": "patron_types",
+                "title": "marka",
+                "validation": "exists:tbd.dict.patron_type,id"
+              },
+              {
+                "code": "liquid",
+                "type": "numeric",
+                "title": "liquid",
+                "validation": "numeric|gte:0"
+              },
+              {
+                "code": "bsw",
+                "type": "numeric",
+                "title": "bsw_p",
+                "validation": "numeric|gte:0|lte:100"
+              },
+              {
+                "code": "reservoir_count",
+                "type": "numeric",
+                "title": "reserv_c",
+                "validation": "numeric|gte:1"
+              },
+              {
+                "code": "perf_date",
+                "type": "date",
+                "title": "data",
+                "validation": "required"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "intervals",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "intervals",
+                "type": "table",
+                "dict": "perf_types",
+                "title": "perf_t",
+                "table": "prod.well_perf_interval",
+                "columns": [
+                  {
+                    "code": "horizon",
+                    "type": "dict_tree",
+                    "title": "horizon",
+                    "dict": "geos",
+                    "validation": "required|exists:tbd.dict.org,id"
+                  },
+                  {
+                    "code": "top",
+                    "type": "numeric",
+                    "title": "top",
+                    "validation": "required|numeric|gte:0|lte:base"
+                  },
+                  {
+                    "code": "base",
+                    "type": "numeric",
+                    "title": "base",
+                    "validation": "required|numeric|gte:0|lte:10000"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

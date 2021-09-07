@@ -7,53 +7,41 @@ use App\Exceptions\ParseJsonException;
 use App\Http\Controllers\Controller;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Services\BigData\Forms\BaseForm;
-use App\Services\BigData\Forms\RowHistory\RowHistory;
+use App\Services\BigData\Forms\History\RowHistory;
 use App\Services\BigData\Forms\TableForm;
+use App\Services\BigData\FormService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\File;
 
 class FormsController extends Controller
 {
 
-    protected $file;
-
-    public function __construct()
+    public function getForms(FormService $formService): JsonResponse
     {
-        $this->file = storage_path() . '/mobile_form.json';
+        return response()->json(
+            [
+                'forms' => $formService->getForms()->values()
+            ]
+        );
     }
 
-    public function getMobileFormValues(): array
-    {
-        if (!File::exists($this->file)) {
-            $values = [
-                'casing_pressure' => 1.12,
-                'wellhead_pressure' => 1,
-                'casing_pressure1' => 1.12,
-                'wellhead_pressure1' => 1.12,
-                'casing_pressure2' => 1.12,
-                'wellhead_pressure2' => 1.12,
-            ];
-            File::put($this->file, json_encode($values));
-        }
 
-        return json_decode(File::get($this->file), 1);
-    }
-
-    public function saveMobileForm(Request $request): void
+    public function getFormsStructure(FormService $formService): JsonResponse
     {
-        $values = $this->getMobileFormValues();
-        $values[$request->get('code')] = $request->get('value');
-        File::put($this->file, json_encode($values));
+        return response()->json(
+            [
+                'tree' => $formService->getFormsStructure()
+            ]
+        );
     }
 
     public function getParams(string $formName): JsonResponse
     {
         $form = $this->getForm($formName);
         try {
-            $result = $form->getFormatedParams();
+            $result = $form->getFormInfo();
         } catch (ParseJsonException $e) {
             return response()->json(
                 [
@@ -73,6 +61,12 @@ class FormsController extends Controller
         $form->validateSingleField($field);
     }
 
+    public function validateTableField(string $formName, string $parent, string $field): void
+    {
+        $form = $this->getForm($formName);
+        $form->validateSingleTableField($parent, $field);
+    }
+
     public function saveField(string $formName, string $field): void
     {
         $form = $this->getForm($formName);
@@ -89,10 +83,14 @@ class FormsController extends Controller
         }
     }
 
-    public function getRows(string $formName): array
+    public function getRows(string $formName)
     {
         $form = $this->getForm($formName);
         return $form->getRows();
+        try {
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function getRowHistory(string $formName, Request $request): array
@@ -163,14 +161,24 @@ class FormsController extends Controller
         return response()->json($form->getCalculatedFields($request->get('well_id'), $request->get('values')));
     }
 
+    public function updateFields(Request $request, string $form): JsonResponse
+    {
+        $form = $this->getForm($form);
+        return response()->json($form->getUpdatedFields($request->get('well_id'), $request->get('values')));
+    }
+
     public function getFormByRow(Request $request, string $form): JsonResponse
     {
         $form = $this->getForm($form);
         return response()->json($form->getFormByRow(json_decode($request->get('row'), 1)));
     }
 
-    public function delete(Request $request, string $form, int $row): JsonResponse
+    public function delete(string $form, int $row): JsonResponse
     {
+        if (auth()->user()->cannot("bigdata delete {$form}")) {
+            abort(403);
+        }
+
         $form = $this->getForm($form);
         return $form->delete($row);
     }

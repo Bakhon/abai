@@ -58,6 +58,10 @@ export default {
             ],
             chemistryChartData: [],
             chemistryWidgetFactSum: 0,
+            chemistryDailyChart: {
+                series: [],
+                labels: []
+            },
         };
     },
     methods: {
@@ -68,6 +72,11 @@ export default {
             };
             let uri = this.localeUrl("/get-chemistry-details");
             const response = await axios.get(uri,{params:queryOptions});
+            if (response.data && response.data.length === 0) {
+                this.chemistryPeriodStartMonth = moment(this.chemistryPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+                this.chemistryPeriodEndMonth = moment(this.chemistryPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+                return await this.getChemistryByMonth();
+            }
             if (response.status === 200) {
                 return response.data;
             }
@@ -75,7 +84,7 @@ export default {
         },
 
         async switchChemistryPeriod(buttonType) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+            this.SET_LOADING(true);
             this.chemistryMonthlyPeriod = "";
             this.chemistryYearlyPeriod = "";
             this.chemistryPeriod = "";
@@ -85,7 +94,7 @@ export default {
             this.isChemistryPeriodSelected = this.isChemistryFewMonthsSelected();
             this.chemistryDetails = await this.getChemistryByMonth();
             this.updateChemistryWidget();
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.SET_LOADING(false);
         },
 
         isChemistryFewMonthsSelected() {
@@ -116,7 +125,12 @@ export default {
             });
 
             this.updateChemistryWidgetTable(temporaryChemistryDetails);
-            this.chemistryChartData = this.getChemistryWidgetChartData(temporaryChemistryDetails);
+            if (this.chemistryMonthlyPeriod.length > 0) {
+                this.chemistryDailyChart.series = this.chemistryData.map(field => field.fact);
+                this.chemistryDailyChart.labels = this.chemistryData.map(field => field.code);
+            } else {
+                this.chemistryChartData = this.getChemistryWidgetChartData(temporaryChemistryDetails);
+            }
         },
 
         getChemistryWidgetChartData(temporaryChemistryDetails) {
@@ -183,11 +197,13 @@ export default {
     },
     computed: {
         chemistryDataForChart() {
-            let series = []
+            let series = {
+                fact: []
+            }
             let labels = []
             for (let i in this.chemistryChartData) {
-                series.push(this.chemistryChartData[i][this.chemistrySelectedRow])
-                labels.push(i)
+                series.fact.push(this.chemistryChartData[i][this.chemistrySelectedRow]);
+                labels.push(i);
             }
             return {
                 series: series,

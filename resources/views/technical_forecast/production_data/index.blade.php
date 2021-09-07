@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div class="col p-4 bg-light" id="app">
+    <div class="col p-4 bg-light"  >
         <tech-data-component></tech-data-component>
     </div>
 @endsection

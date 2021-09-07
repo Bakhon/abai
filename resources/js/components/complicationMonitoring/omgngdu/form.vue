@@ -1,5 +1,6 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
+
     <div class="col-xs-12 col-sm-4 col-md-4">
       <label>{{ trans('monitoring.field') }}</label>
       <div class="form-label-group">
@@ -186,7 +187,7 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-      <button type="submit" :disabled="!formFields.date" class="btn btn-success">{{ trans('app.save') }}</button>
+      <button type="submit" @click.prevent="submitForm" :disabled="!formFields.date" class="btn btn-success">{{ trans('app.save') }}</button>
     </div>
   </div>
 </template>
@@ -196,15 +197,22 @@ import Vue from 'vue'
 import {Datetime} from 'vue-datetime'
 import moment from 'moment'
 import 'vue-datetime/dist/vue-datetime.css'
+import {globalloadingMutations} from '@store/helpers';
 
 Vue.use(Datetime)
 
 export default {
   name: "omgngdu-form",
-  props: [
-    'omgngdu',
-    'validationParams'
-  ],
+  props: {
+    omgngdu: {
+      type: Object,
+      default: null
+    },
+    validationParams: {
+      type: Object,
+      required: true,
+    }
+  },
   data: function () {
     return {
       formFields: {
@@ -243,6 +251,12 @@ export default {
         return moment.parseZone(this.formFields.date).format('YYYY-MM-DD HH:mm')
       }
       return null
+    },
+    requestUrl () {
+      return this.omgngdu.id ? this.localeUrl("/omgngdu/" + this.omgngdu.id) : this.localeUrl("/omgngdu");
+    },
+    requestMethod () {
+      return this.omgngdu.id ? "put" : "post";
     }
   },
   beforeCreate: function () {
@@ -309,7 +323,11 @@ export default {
     }
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     chooseNgdu(event) {
+      this.SET_LOADING(true);
       this.axios.get(this.localeUrl("/getcdng"), {
         ngdu_id: event.target.value,
       }).then((response) => {
@@ -319,9 +337,11 @@ export default {
         } else {
           console.log('No data');
         }
+        this.SET_LOADING(false);
       });
     },
     chooseCdng(event) {
+      this.SET_LOADING(true);
       this.axios.post(this.localeUrl("/getgu"), {
         cdng_id: event.target.value,
       }).then((response) => {
@@ -331,12 +351,15 @@ export default {
         } else {
           console.log('No data');
         }
+        this.SET_LOADING(false);
       });
     },
     chooseGu(init = false) {
       if (!init) {
         this.formFields.well_id = null
       }
+
+      this.SET_LOADING(true);
       this.axios.post(this.localeUrl("/getzu"), {
         gu_id: this.formFields.gu_id,
       }).then((response) => {
@@ -346,8 +369,11 @@ export default {
         } else {
           console.log('No data');
         }
+
+        this.SET_LOADING(false);
       });
 
+      this.SET_LOADING(true);
       this.axios
           .post(this.localeUrl("/get-gu-cdng-ngdu-field"), {
             gu_id: this.formFields.gu_id,
@@ -360,9 +386,12 @@ export default {
             } else {
               console.log("No data");
             }
+
+            this.SET_LOADING(false);
           });
     },
     chooseZu() {
+      this.SET_LOADING(true);
       this.axios.post(this.localeUrl("/getwell"), {
         zu_id: this.formFields.zu_id,
       }).then((response) => {
@@ -372,7 +401,21 @@ export default {
         } else {
           console.log('No data');
         }
+
+        this.SET_LOADING(false);
       });
+    },
+    submitForm () {
+      this.SET_LOADING(true);
+      this.axios
+          [this.requestMethod](this.requestUrl, this.formFields)
+          .then((response) => {
+            if (response.data.status == 'success') {
+              window.location.replace(this.localeUrl("/omgngdu"));
+            }
+          });
+
+      this.SET_LOADING(false);
     }
   },
 };

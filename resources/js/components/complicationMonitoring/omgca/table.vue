@@ -1,6 +1,5 @@
 <template>
   <div class="table-page">
-    <cat-loader v-show="loading"/>
     <div class="filter-bg" v-if="filterOpened" @click="hideFilters"></div>
     <div class="float-right table-page__links">
       <a v-if="params.links.create" class="table-page__links-item table-page__links-item_add"
@@ -45,8 +44,6 @@
               type="date"
               v-model="selectedDate"
               input-class="form-control date"
-              value-zone="Asia/Almaty"
-              zone="Asia/Almaty"
               :format="{ year: 'numeric', month: 'long', day: 'numeric' }"
               :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
               :week-start="1"
@@ -222,17 +219,17 @@
 import Vue from "vue";
 import moment from "moment"
 import vSelect from 'vue-select'
-import CatLoader from '../../ui-kit/CatLoader'
 import 'vue-select/dist/vue-select.css'
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
+import {globalloadingMutations} from '@store/helpers';
+
 Vue.use(Datetime)
 
 export default {
   name: "view-table",
   components: {
-    vSelect,
-    CatLoader,
+    vSelect
   },
   props: {
     params: {
@@ -253,7 +250,6 @@ export default {
       },
       currentFilter: null,
       currentSort: null,
-      loading: false,
       currentPage: 1,
       filters: {},
       calendarFromShow: false,
@@ -266,6 +262,7 @@ export default {
     }
   },
   mounted() {
+    this.initSelectedDate();
     this.initCurrentFilter();
     this.initCurrentSort();
     this.initFilters();
@@ -291,11 +288,14 @@ export default {
     }
   },
   methods: {
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     showFilter(code) {
       this.filters[code].show = true
       this.filterOpened = true
     },
-    isShowSort(code){
+    isShowSort(code) {
       return typeof this.params.fields[code].sortable == 'undefined'
           || (typeof this.params.fields[code].sortable != 'undefined' && this.params.fields[code].sortable);
     },
@@ -314,6 +314,7 @@ export default {
     },
     formatDate(date) {
       if (!date) return null
+
       return moment.parseZone(date).format('YYYY-MM-DD')
     },
     prepareQueryParams() {
@@ -359,7 +360,7 @@ export default {
     loadData: _.debounce(function (e) {
       this.hideFilters()
 
-      this.loading = true
+      this.SET_LOADING(true);
 
       this.axios.get(this.params.links.list, {params: this.prepareQueryParams()}).then(response => {
         this.omgca = response.data;
@@ -367,7 +368,7 @@ export default {
       }).catch(e => {
 
       }).finally(() => {
-        this.loading = false
+        this.SET_LOADING(false);
         window.scrollTo({
           top: 0,
           behavior: 'smooth'
@@ -378,7 +379,7 @@ export default {
       this.filters[code].value = null;
       this.loadData();
     },
-    clearDateFilter (code) {
+    clearDateFilter(code) {
       this.filters[code].value = {from: null, to: null};
       this.loadData();
     },
@@ -407,7 +408,7 @@ export default {
             }
           })
     },
-    restoreItem (item) {
+    restoreItem(item) {
       this.$bvModal.msgBoxConfirm(this.trans('app.are-you-sure-to-restore'), {
         title: this.trans('app.restore_title'),
         headerBgVariant: 'danger',
@@ -424,12 +425,12 @@ export default {
           })
     },
     runJob(url) {
-      this.loading = true
+      this.SET_LOADING(true);
       this.axios.get(url, {params: this.prepareQueryParams()}).then((response) => {
         let interval = setInterval(() => {
           this.axios.get('/ru/jobs/status', {params: {id: response.data.id}}).then((response) => {
             if (response.data.job.status === 'finished') {
-              this.loading = false
+              this.SET_LOADING(false);
               clearInterval(interval)
 
               if (response.data.job.output) {
@@ -438,7 +439,7 @@ export default {
                 }
 
                 if (response.data.job.output.error) {
-                  this.showToast(response.data.job.output.error, this.trans('app.error'),'danger');
+                  this.showToast(response.data.job.output.error, this.trans('app.error'), 'danger');
                 }
               }
 
@@ -447,7 +448,7 @@ export default {
               }
 
             } else if (response.data.job.status === 'failed') {
-              this.loading = false
+              this.SET_LOADING(false);
               clearInterval(interval)
               alert(this.trans('monitoring.table.export_error'))
             }
@@ -467,13 +468,17 @@ export default {
       this.initFilters()
       this.loadData()
     },
-    initCurrentFilter () {
+    initSelectedDate() {
+      if (typeof this.params.selected_date !== 'undefined' &&
+          this.params.selected_date) {
+        this.selectedDate = moment(this.params.selected_date).format('YYYY-MM-DD');
+      }
+    },
+    initCurrentFilter() {
       if (typeof this.params.filter !== 'undefined' &&
           this.params.filter &&
           typeof this.params.filter.filter !== 'undefined') {
         this.currentFilter = this.params.filter.filter;
-      } else {
-        this.currentFilter = null;
       }
     },
     initCurrentSort() {
@@ -485,8 +490,6 @@ export default {
           by: this.params.filter.order_by,
           desc: Boolean(parseInt(this.params.filter.order_desc))
         }
-      } else {
-        this.currentSort = null;
       }
     },
     initFilters() {

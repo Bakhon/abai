@@ -17,7 +17,7 @@
       </div>
     </div>
     <div v-if="$scopedSlots['tools-footer']" class="tool-block__footer">
-      <slot name="tools-footer"/>
+      <slot name="tools-footer" />
     </div>
   </div>
 </template>
@@ -27,38 +27,47 @@ export default {
   name: "ToolBlock",
   props: {
     title: [String, Number]
-  },
+  }
 }
 </script>
 
 <style scoped lang="scss">
+
 .tool-block {
   border: 1px solid var(--a-accent-300);
+  background: var(--a-accent-darken-200);
+
   &__header {
     border-bottom: 1px solid var(--a-accent-300);
     background: var(--a-accent-darken-100);
     padding: 7px 12px;
-    h5{
+
+    h5 {
       font-size: 14px;
       line-height: 16px;
       font-weight: 400;
       color: #ffffff;
       margin: 0;
     }
-    &-under{
+
+    &-under {
       font-size: 12px;
       padding: 8px 12px;
       background: var(--a-accent-300);
       color: #ffffff;
+    }
+
+    & + .tool-block__body {
+      height: calc(100% - 31px);
     }
   }
 
   &__body {
     display: flex;
     width: 100%;
+    height: 100%;
 
     &__content {
-      background: var(--a-accent-darken-200);
       overflow-y: auto;
       width: 100%;
     }
@@ -72,7 +81,7 @@ export default {
     }
   }
 
-  &__footer{
+  &__footer {
     background: var(--a-accent-darken-100);
     padding: 10px 7px;
     color: #ffffff;

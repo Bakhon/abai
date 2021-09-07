@@ -1,8 +1,10 @@
 <template>
-  <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
-    <cat-loader v-show="isloading"/>
+  <form @submit.prevent="" ref="form" class="bd-main-block__form scrollable" style="width: 100%">
     <div class="table-page">
       <template v-if="formParams">
+        <p v-if="formError" class="table__message">
+          {{ formError }}
+        </p>
         <p v-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
           {{ trans('bd.select_ngdu') }}
         </p>
@@ -11,30 +13,54 @@
         </p>
         <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
         <div v-else class="table-wrap scrollable">
+          <div v-for="custom_column in formParams.custom_columns">
+            <div :is="custom_column.component_name"
+                 :column="custom_column"
+                 :allColumns="formParams.columns"
+                 :updateTableData="updateTableData"
+                 :filter="filter">
+            </div>
+          </div>
           <table v-if="rows.length" class="table">
             <thead>
-            <tr>
-              <th v-for="column in visibleColumns">
-                {{ column.title }}
-              </th>
-            </tr>
+            <template v-if="formParams.complicated_header">
+              <tr v-for="row in formParams.complicated_header">
+                <th
+                    v-for="column in row"
+                    :colspan="column.colspan"
+                    :rowspan="column.rowspan"
+                >
+                  {{ column.title }}
+                </th>
+              </tr>
+            </template>
+            <template v-else>
+              <tr>
+                <th v-for="column in visibleColumns">
+                  {{ column.title }}
+                </th>
+              </tr>
+            </template>
             </thead>
             <tbody>
             <tr v-for="(row, rowIndex) in rows">
 
               <td
                   v-for="column in visibleColumns"
-                  :class="{'editable': column.is_editable}"
+                  :class="{'editable': formParams && formParams.available_actions.includes('update') && column.is_editable}"
                   @dblclick="editCell(row, column)"
               >
-                <template v-if="column.type === 'link'">
+                <template v-if="column.type === 'form'">
+                  <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
+                </template>
+                <template v-else-if="column.type === 'link'">
                   <a :href="row[column.code].href">{{ row[column.code].name }}</a>
                 </template>
                 <template v-else-if="column.type === 'label'">
-                  <label>{{ row[column.code].name }}</label>
+                  <label v-html="row[column.code].name"></label>
                 </template>
                 <template v-else-if="column.type === 'calc'">
-                  <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                  <span class="value" v-html="row[column.code] ? row[column.code].value : ''"></span>
                 </template>
                 <template v-else-if="column.type === 'copy'">
                   <input
@@ -60,7 +86,6 @@
                   <div v-if="isCellEdited(row, column)" class="input-wrap">
                     <datetime
                         v-model="row[column.code].value"
-                        :disabled="isLoading"
                         :flow="['year', 'month', 'date']"
                         :phrases="{ok: '', cancel: ''}"
                         auto
@@ -81,13 +106,22 @@
                   </template>
                 </template>
                 <template v-else-if="column.type === 'dict'">
-                    <span class="value">
-                      {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
-                    </span>
+                  <bigdata-form-field
+                      :id="row.id"
+                      :key="`field_${column.code}`"
+                      v-model="row[column.code].value"
+                      :item="column"
+                      v-on:change="saveCell(row, column)"
+                  >
+                  </bigdata-form-field>
                 </template>
                 <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
                   <div v-if="isCellEdited(row, column)" class="input-wrap">
-                    <input v-model="row[column.code].value" class="form-control" type="text">
+                    <input
+                        v-model="row[column.code].value"
+                        class="form-control"
+                        type="text"
+                        @keyup.enter.stop.prevent="saveCell(row, column)">
                     <button type="button" @click.prevent="saveCell(row, column)">OK</button>
                     <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
                   </div>
@@ -100,7 +134,8 @@
                       </span>
                   </template>
                 </template>
-                <template v-if="history[row.id] && history[row.id][column.code]">
+                <template
+                    v-if="formParams.available_actions.includes('view history') && history[row.id] && history[row.id][column.code]">
                   <a :id="`history_${row.id}_${column.code}`" class="icon-history"></a>
                   <b-popover :target="`history_${row.id}_${column.code}`" custom-class="history-popover"
                              placement="top" triggers="hover">
@@ -149,6 +184,18 @@
         v-on:close="rowHistoryGraph = null"
     >
     </RowHistoryGraph>
+    <div v-if="isInnerFormOpened" class="bd-popup">
+      <div class="bd-popup__inner">
+        <a class="bd-popup__close" href="#" @click.prevent="isInnerFormOpened = false">{{ trans('bd.close') }}</a>
+        <BigDataPlainForm
+            :params="innerFormParams"
+            :values="innerFormValues"
+            :well-id="innerFormWellId"
+            @close="isInnerFormOpened = false"
+        >
+        </BigDataPlainForm>
+      </div>
+    </div>
   </form>
 </template>
 
@@ -156,11 +203,30 @@
 import Vue from "vue";
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
-import {bdFormActions, bdFormState} from '@store/helpers'
+import {bdFormActions, globalloadingMutations} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
+import BigDataPlainForm from './PlainForm'
+import upperFirst from 'lodash/upperFirst'
+import camelCase from 'lodash/camelCase'
+import BigdataFormField from './field'
+import forms from '../../../json/bd/forms.json'
 
-Vue.use(Datetime)
+
+const requireComponent = require.context('./CustomColumns', true, /\.vue$/i);
+requireComponent.keys().forEach(fileName => {
+  const componentConfig = requireComponent(fileName)
+  const componentName = upperFirst(
+      camelCase(
+          fileName
+              .split('/')
+              .pop()
+              .replace(/\.\w+$/, '')
+      )
+  );
+  Vue.component(componentName, componentConfig.default || componentConfig);
+});
+Vue.use(Datetime);
 
 export default {
   name: "BigDataTableForm",
@@ -181,12 +247,13 @@ export default {
   },
   components: {
     BigDataHistory,
-    RowHistoryGraph
+    BigDataPlainForm,
+    RowHistoryGraph,
+    BigdataFormField
   },
   data() {
     return {
       errors: {},
-      formValues: {},
       activeTab: 0,
       currentPage: 1,
       rows: [],
@@ -195,11 +262,18 @@ export default {
         row: null,
         column: null
       },
-      isloading: false,
       history: {},
       rowHistory: null,
       rowHistoryColumns: [],
       rowHistoryGraph: null,
+      oldFilter: null,
+      formParams: null,
+      formError: null,
+      forms: forms,
+      isInnerFormOpened: false,
+      innerFormParams: null,
+      innerFormValues: null,
+      innerFormWellId: null
     }
   },
   watch: {
@@ -209,27 +283,39 @@ export default {
     id() {
       this.updateTableData()
     },
+    filter: {
+      deep: true,
+      handler(val) {
+        this.updateTableData()
+      }
+    },
   },
   computed: {
-    ...bdFormState([
-      'formParams'
-    ]),
     visibleColumns() {
-      return this.formParams.columns.filter(column => column.type !== 'hidden')
+      return this.formParams.columns.filter(column => column.type !== 'hidden' && column.visible !== false)
     }
   },
   mounted() {
-    this.updateTableData()
+    this.updateForm(this.params.code)
+        .then(data => {
+          this.formParams = data
+          this.$emit('initialized', data)
+          this.updateTableData()
+        })
   },
   methods: {
     ...bdFormActions([
       'updateForm'
     ]),
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
     updateTableData() {
 
+      this.formError = null
       if (!this.filter || !this.id || !this.type) return
 
-      this.isloading = true
+      this.SET_LOADING(true)
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/rows`), {
         params: {
           filter: this.filter,
@@ -242,11 +328,21 @@ export default {
             if (data.columns) {
               this.formParams.columns = data.columns
             }
+            if (data.merge_columns) {
+              this.formParams.merge_columns = data.merge_columns
+            }
+            if (data.complicated_header) {
+              this.formParams.complicated_header = data.complicated_header
+            }
             this.recalculateCells()
             this.loadEditHistory()
           })
+          .catch(error => {
+            console.log(error)
+            this.formError = error.response.data.message
+          })
           .finally(() => {
-            this.isloading = false
+            this.SET_LOADING(false)
           })
 
     },
@@ -313,6 +409,9 @@ export default {
       return formula
     },
     editCell(row, column) {
+
+      if (!this.formParams.available_actions.includes('update')) return
+
       this.editableCell.row = row
       this.editableCell.column = column
     },
@@ -336,8 +435,7 @@ export default {
           if (row[column.code].params) {
             data['params'] = row[column.code].params
           }
-          this.isloading = true
-
+          this.SET_LOADING(true)
           this.axios
               .patch(this.localeUrl(`/api/bigdata/forms/${this.params.code}/save/${column.code}`), data)
               .then(({data}) => {
@@ -346,15 +444,11 @@ export default {
                   row: null,
                   cell: null
                 }
-                this.recalculateCells()
+                this.updateTableData()
               })
               .catch(error => {
                 Vue.set(this.errors, column.code, error.response.data.errors)
               })
-              .finally(() => {
-                this.isloading = false
-              })
-
         } else {
           this.editableCell = {
             row: null,
@@ -386,10 +480,6 @@ export default {
             })
       })
     },
-    changePage(page = 1) {
-      this.currentPage = page
-      this.updateForm()
-    },
     showError(err) {
       return err.join('<br>')
     },
@@ -398,7 +488,7 @@ export default {
       document.body.classList.remove('fixed')
     },
     showHistoricalDataForRow(row, column) {
-      this.isloading = true
+      this.SET_LOADING(true)
       document.body.classList.add('fixed')
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/row-history`), {
         params: {
@@ -415,11 +505,11 @@ export default {
         })
 
         this.rowHistoryColumns = columns
-        this.isloading = false
+        this.SET_LOADING(false)
       })
     },
     showHistoryGraphDataForRow(row, column) {
-      this.isloading = true
+      this.SET_LOADING(true)
       document.body.classList.add('fixed')
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/row-history-graph`), {
         params: {
@@ -428,11 +518,13 @@ export default {
           date: this.filter.date
         }
       }).then(({data}) => {
-        this.isloading = false
+        this.SET_LOADING(false)
         this.rowHistoryGraph = data
       })
     },
     copyValues(row, column, rowIndex) {
+
+      if (!row[column.copy.from].value) return
 
       this.$bvModal.msgBoxConfirm(this.trans('bd.sure_you_want_to_copy'), {
         okTitle: this.trans('app.yes'),
@@ -440,7 +532,7 @@ export default {
       })
           .then(result => {
             if (result === true) {
-              this.isloading = true
+              this.SET_LOADING(true)
               this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/copy`), {
                 params: {
                   well_id: row.id,
@@ -448,7 +540,7 @@ export default {
                   date: this.filter.date
                 }
               }).then(({data}) => {
-                this.isloading = false
+                this.SET_LOADING(false)
                 this.rowHistoryGraph = data
 
                 row[column.copy.to].value = row[column.copy.from].value
@@ -460,7 +552,13 @@ export default {
               })
             }
           })
-
+    },
+    openForm(row, column) {
+      this.isInnerFormOpened = true
+      this.innerFormParams = this.forms.find(formItem => formItem.code === column.form)
+      this.innerFormWellId = row.id
+      this.innerFormValues = {}
+      this.innerFormValues[column.code] = row[column.code].value
     }
   },
 };
@@ -574,7 +672,7 @@ body.fixed {
       width: 100%;
     }
 
-    th {
+    thead {
       position: sticky;
       top: 0;
       z-index: 10;
