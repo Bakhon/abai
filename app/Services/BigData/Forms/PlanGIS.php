@@ -25,14 +25,9 @@ class PlanGIS extends TableForm
             throw new \Exception(trans('bd.select_dzo_ngdu'));
         }
 
-        $org = Org::find($this->request->get('id'));
-        if (!$org->type || !in_array($org->type->code, ['SUBC', 'FOFS'])) {
-            throw new \Exception(trans('bd.select_dzo_ngdu'));
-        }
+        $org = $this->getOrganization();
 
-        $orgChildren = $org->children()->whereHas('type', function ($query) {
-            $query->whereIn('code', ['FOFS']);
-        })->get();
+        $orgChildren = $org->children()->get();
 
         $columns = $this->getColumns($filter, $org, $orgChildren);
 
@@ -47,6 +42,24 @@ class PlanGIS extends TableForm
             ),
             'rows' => $rows
         ];
+    }
+
+    private function getOrganization(): Org
+    {
+        $org = Org::find($this->request->get('id'));
+        if (!$org->type) {
+            throw new \Exception(trans('bd.select_dzo'));
+        }
+
+        if ($org->type->code === 'SUBC' || $org->parentOrg->name_short_ru === 'ММГ') {
+            return $org;
+        }
+
+        if ($org->parentOrg->type->code === 'SUBC') {
+            return $org->parentOrg;
+        }
+
+        throw new \Exception(trans('bd.select_dzo'));
     }
 
     private function getColumns($filter, $org, $children)
@@ -86,30 +99,19 @@ class PlanGIS extends TableForm
                     'title' => $child->name_short_ru,
                     'parent_column' => 'date_' . $date->format('n_Y'),
                     'type' => 'integer',
-                    'is_editable' => true
+                    'is_editable' => $org->name_short_ru === 'ММГ' ? false : true
                 ];
             }
 
             $orgCode = "date_{$date->format('n_Y')}_" . $org->id;
-            if ($org->type->code === 'FOFS') {
-                $totalColumnCodes[] = $orgCode;
-                $columns[] = [
-                    'code' => $orgCode,
-                    'title' => $org->name_short_ru,
-                    'parent_column' => 'date_' . $date->format('n_Y'),
-                    'type' => 'integer',
-                    'is_editable' => true
-                ];
-            } else {
-                $formula = $this->getSumFormula($childCodes);
-                $columns[] = [
-                    'code' => $orgCode,
-                    'title' => $org->name_short_ru,
-                    'parent_column' => 'date_' . $date->format('n_Y'),
-                    'type' => 'calc',
-                    'formula' => $formula
-                ];
-            }
+            $formula = $this->getSumFormula($childCodes);
+            $columns[] = [
+                'code' => $orgCode,
+                'title' => $org->name_short_ru,
+                'parent_column' => 'date_' . $date->format('n_Y'),
+                'type' => 'calc',
+                'formula' => $formula
+            ];
 
             $date->addMonth();
             if ($date >= $dateTo) {

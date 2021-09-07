@@ -1,0 +1,45 @@
+{
+  "table": "",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
+  "tabs": [
+    {
+      "title": "planned_events",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "events",
+                "type": "table",
+                "title": "",
+                "table": "prod.tech_mode_event",
+                "parent_column": "well",
+                "columns": [
+                  {
+                    "code": "event_type",
+                    "type": "dict",
+                    "title": "event",
+                    "dict": "well_activity",
+                    "validation": "required|exists:tbd.dict.well_activity,id"
+                  },
+                  {
+                    "code": "plan_month",
+                    "type": "date",
+                    "title": "planned_month",
+                    "validation": "required|date"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
