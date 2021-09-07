@@ -10,28 +10,35 @@
         <div
             :style="`width: ${columnWidth}px`"
             class="text-center border-grey d-flex bg-header">
-          <div class="text-center border-grey" style="flex: 0 0 100px;">
-            Скв
+          <div class="text-center border-grey flex-100px">
+            {{ trans('economic_reference.well_short') }}
           </div>
 
           <div v-for="price in oilPrices"
                :key="`${index}_${price}`"
-               class="text-center border-grey"
-               style="flex: 0 0 30px;">
+               class="text-center border-grey flex-30px">
             {{ (+price).toLocaleString() }}$
           </div>
+
+          <div class="text-center border-grey flex-30px"></div>
         </div>
 
         <div v-for="uwi in chunk" :key="uwi" class="d-flex">
-          <div class="text-center border-grey" style="flex: 0 0 100px;">
+          <div class="text-center border-grey flex-100px">
             {{ uwi }}
           </div>
 
           <div v-for="price in oilPrices"
                :key="`${uwi}_${price}_profitability_12m`"
                :style="`background: ${getColor(tableData[uwi].oilPrices[+price])}`"
-               class="border-grey"
-               style="flex: 0 0 30px;">
+               class="border-grey flex-30px">
+          </div>
+
+          <div class="border-grey flex-30px position-relative d-flex align-items-center justify-content-center">
+            <input v-model="tableData[uwi].isShutdown"
+                   type="checkbox"
+                   class="form-check-input m-0 flex-30px"
+                   @change="toggleWell(tableData[uwi])">
           </div>
         </div>
       </div>
@@ -41,6 +48,18 @@
 
 <script>
 import Subtitle from "./Subtitle";
+
+const WELL_KEYS = [
+  'Operating_profit_12m',
+  'Fixed_nopayroll_expenditures_12m',
+  'Fixed_payroll_expenditures_12m',
+  'oil_12m',
+  'liquid_12m',
+  'Revenue_total_12m',
+  'Overall_expenditures_12m',
+  'Overall_expenditures_full_12m',
+  'profitability_12m'
+]
 
 export default {
   name: "TableWellChanges",
@@ -71,6 +90,19 @@ export default {
           ? '#8D2540'
           : '#F7BB2E'
     },
+
+    toggleWell(well) {
+      console.log(well.isShutdown)
+
+      let oilPrice = (+this.scenario.oil_price).toFixed(0)
+
+      this.scenario.Revenue_total.value[0] = 1
+
+      console.log(well)
+      console.log(oilPrice)
+
+      console.log(well.oilPrices[oilPrice])
+    }
   },
   computed: {
     filteredData() {
@@ -82,13 +114,14 @@ export default {
 
       this.filteredData.forEach(well => {
         if (!wells.hasOwnProperty(well.uwi)) {
-          wells[well.uwi] = {oilPrices: {}, cat1: 0, cat2: 0, profitable: 0}
+          wells[well.uwi] = {oilPrices: {}, cat1: 0, cat2: 0, profitable: 0, isShutdown: false}
         }
 
-        wells[well.uwi].oilPrices[well.oil_price] = {
-          operating_profit_12m: well.operating_profit_12m,
-          profitability_12m: well.profitability_12m
-        }
+        wells[well.uwi].oilPrices[well.oil_price] = {}
+
+        WELL_KEYS.forEach(key => {
+          wells[well.uwi].oilPrices[well.oil_price][key] = well[key]
+        })
 
         switch (well.profitability_12m) {
           case 'profitable':
@@ -135,7 +168,7 @@ export default {
     },
 
     columnWidth() {
-      return 100 + this.oilPrices.length * 30
+      return 130 + this.oilPrices.length * 30
     }
   },
 }
@@ -148,5 +181,13 @@ export default {
 
 .bg-header {
   background: #333975;
+}
+
+.flex-100px {
+  flex: 0 0 100px;
+}
+
+.flex-30px {
+  flex: 0 0 30px;
 }
 </style>

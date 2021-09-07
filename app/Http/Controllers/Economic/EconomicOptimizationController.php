@@ -20,7 +20,7 @@ class EconomicOptimizationController extends Controller
     protected $structureService;
 
     const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v5_gtm_optimize_v1';
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v4';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v5';
     const DATA_SOURCE_DATE = '2021/01/01';
 
     const SCENARIO_COLUMNS = [
@@ -213,13 +213,24 @@ class EconomicOptimizationController extends Controller
             "scenario_id",
         ];
 
-        return $builder
-            ->select($columns)
-            ->doubleSum('Operating_profit_12m')
-            ->doubleSum('oil_12m')
-            ->doubleSum('liquid_12m')
-            ->groupBy($columns)
-            ->data();
+        $sumColumns = [
+            'Operating_profit_12m',
+            'Fixed_nopayroll_expenditures_12m',
+            'Fixed_payroll_expenditures_12m',
+            'oil_12m',
+            'liquid_12m',
+            'Revenue_total_12m',
+            'Overall_expenditures_12m',
+            'Overall_expenditures_full_12m',
+        ];
+
+        $builder->select($columns);
+
+        foreach ($sumColumns as $column) {
+            $builder->doubleSum($column);
+        }
+
+        return $builder->groupBy($columns)->data();
     }
 
     private function getDollarRate(): ?string
