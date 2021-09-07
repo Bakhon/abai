@@ -13,7 +13,7 @@
 
     li {
       padding: 4px 6px;
-      &:hover {
+      &:hover, &.active {
         background: #2E50E9;
         cursor: pointer;
       }

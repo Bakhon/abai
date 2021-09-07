@@ -18,6 +18,7 @@ export default new Vuex.Store({
             'index',
             'paegtm',
             'pgno',
+            'plastFluids',
             'techMode',
             'tr',
             'digitalDrilling',

@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Traits;
+namespace App\Models\Traits;
 
 use App\Models\ComplicationMonitoring\Ngdu;
 use App\Models\ComplicationMonitoring\OmgNGDU;
@@ -11,11 +10,6 @@ trait MapObjectsTrait
     public function ngdu()
     {
         return $this->belongsTo(Ngdu::class);
-    }
-
-    public function omgngdu()
-    {
-        return $this->hasMany(OmgNGDU::class, 'well_id');
     }
 
     public function watermeasurement()

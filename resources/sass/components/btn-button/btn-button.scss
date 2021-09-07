@@ -1,4 +1,4 @@
-[ class*='btn-button--thm-' ] {
+[class*="btn-button--thm-"] {
   transition: all 0.2s ease-in;
 
   &:hover {
@@ -36,6 +36,15 @@
     &:hover {
       background-color: darken($blue, 10%);
       border-color: darken($blue, 10%);
+    }
+  }
+
+  &--thm-dark-blue {
+    background: #293688;
+    border: 0.5px solid #3366ff;
+    color: #fff;
+    &:hover {
+      background-color: darken(#293688, 10%);
     }
   }
 }
