@@ -23,13 +23,10 @@
     </div>
   </div>
 </template>
-
 <script>
 import {waterfloodingManagementMapActions} from "../../store/helpers";
 import moment from 'moment'
 import axios from "axios";
-
-
 export default {
   data: function () {
     return {
@@ -56,8 +53,8 @@ export default {
   },
   methods: {
     ...waterfloodingManagementMapActions([
-        'changeGraphicStartDate',
-        'changeGraphicEndDate',
+      'changeGraphicStartDate',
+      'changeGraphicEndDate',
     ]),
     onDateRangeChange() {
       this.isDatePickerShow = false;
@@ -70,7 +67,7 @@ export default {
       axios.get(url)
           .then((response) =>{
             this.dateRange.end = moment(response.data.start_date).toDate();
-            this.dateRange.start = this.dateRange.end.subtract(1, 'months').toDate()
+            this.dateRange.start = moment(response.data.start_date).subtract(1, 'months').toDate()
             this.onDateRangeChange()
           }).catch((error) => {
         console.log(error)
@@ -78,9 +75,6 @@ export default {
     }
   }
 }
-
 </script>
-
 <style scoped>
-
 </style>

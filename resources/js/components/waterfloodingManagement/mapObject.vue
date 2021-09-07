@@ -2,33 +2,33 @@
   <div id="wrapper" class="row m-0 p-0">
     <div class="col-md-12 col-xl-9 m-0 p-0  ">
       <div class=" row map-wells m-0">
-          <div class="col-md-12 col-lg-2 col-xl-3 map-object d-flex align-items-center">
-            <span> {{ trans('waterflooding_management.map_object') }}</span>
-          </div>
-          <div class="col-md-12 col-lg-10 col-xl-9">
-            <div class="w-100 map-tool d-flex">
-              <img src="/img/waterfloodingManagement/map-tools-icon.svg" alt="">
-              <div class="d-flex align-items-center tool-title">
-                {{ trans('waterflooding_management.toolbar') }}
-              </div>
-              <button class="btn">
-                <img src="/img/waterfloodingManagement/map-tools-choose-map-button.svg" alt="">
-              </button>
-              <button class="btn">
-                <img src="/img/waterfloodingManagement/map-tools-present-map-button.svg" alt="">
-              </button>
-              <button class="btn">
-                <img src="/img/waterfloodingManagement/map-tools-accumulated-map-button.svg" alt="">
-              </button>
-              <button class="btn">
-                <img src="/img/waterfloodingManagement/map-tools-highlight-map-button.svg" alt="">
-              </button>
-              <button class="btn">
-                <img src="/img/waterfloodingManagement/map-tools-close-map-button.svg" alt="">
-              </button>
-              <button class="btn">Выбрать</button>
-              <a href="" class="transition"><img src="/img/waterfloodingManagement/transition.svg" alt=""></a>
+        <div class="col-md-12 col-lg-2 col-xl-3 map-object d-flex align-items-center">
+          <span> {{ trans('waterflooding_management.map_object') }}</span>
+        </div>
+        <div class="col-md-12 col-lg-10 col-xl-9">
+          <div class="w-100 map-tool d-flex">
+            <img src="/img/waterfloodingManagement/map-tools-icon.svg" alt="">
+            <div class="d-flex align-items-center tool-title">
+              {{ trans('waterflooding_management.toolbar') }}
             </div>
+            <button class="btn">
+              <img src="/img/waterfloodingManagement/map-tools-choose-map-button.svg" alt="">
+            </button>
+            <button class="btn">
+              <img src="/img/waterfloodingManagement/map-tools-present-map-button.svg" alt="">
+            </button>
+            <button class="btn">
+              <img src="/img/waterfloodingManagement/map-tools-accumulated-map-button.svg" alt="">
+            </button>
+            <button class="btn">
+              <img src="/img/waterfloodingManagement/map-tools-highlight-map-button.svg" alt="">
+            </button>
+            <button class="btn">
+              <img src="/img/waterfloodingManagement/map-tools-close-map-button.svg" alt="">
+            </button>
+            <button class="btn">Выбрать</button>
+            <a href="" class="transition"><img src="/img/waterfloodingManagement/transition.svg" alt=""></a>
+          </div>
         </div>
       </div>
       <div class="map-block">
@@ -75,20 +75,20 @@
         <div class="choose-object-into">
           <table class="choose-object-table w-100">
             <thead>
-              <tr>
-                <th scope="col">№</th>
-                <th scope="col">ОИЗ, тыс. т.</th>
-                <th scope="col">MOPVinj, д. ед.</th>
-                <th scope="col">КИН,%</th>
-                <th scope="col">VRRнакоп, %</th>
-                <th scope="col">Score</th>
-                <th scope="col">
-                  <br>
-                </th>
-              </tr>
+            <tr>
+              <th scope="col">№</th>
+              <th scope="col">ОИЗ, тыс. т.</th>
+              <th scope="col">MOPVinj, д. ед.</th>
+              <th scope="col">КИН,%</th>
+              <th scope="col">VRRнакоп, %</th>
+              <th scope="col">Score</th>
+              <th scope="col">
+                <br>
+              </th>
+            </tr>
             </thead>
             <tbody>
-              <tr v-for="r in ratingObject">
+            <tr v-for="r in ratingObject">
               <th scope="row">{{ r.name }}</th>
               <td>{{ r.oiz }}</td>
               <td>{{ r.hcpv }}</td>
@@ -145,7 +145,7 @@
             {{ trans('waterflooding_management.current_indicators') }}
           </p>
           <div class="calendar-date">
-          <dataPicker @dateChanged="getDate"></dataPicker>
+            <dataPicker @dateChanged="getDate"></dataPicker>
           </div>
         </div>
         <div class="choose-object-into2">
@@ -161,7 +161,7 @@
           </div>
         </div>
       </div>
-  </div>
+    </div>
     <div class="col-md-12 col-xl-6  ">
       <div class="w-100 choose-object">
         <div class="choose-object-title d-flex justify-content-between">
@@ -169,16 +169,9 @@
             <button type="button" class="btn btn-setting">
               {{ trans('waterflooding_management.config_graphic') }}
             </button>
-            <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img src="/img/waterfloodingManagement/Path.svg" alt="">
-            </button>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" type="button" >День</a>
-              <a class="dropdown-item" type="button" >Месяц</a>
-            </div>
           </div>
           <div class="d-flex justify-content-between">
-              <dataPickerRange @dateRangeChanged="dateRangeChanged"></dataPickerRange>
+            <dataPickerRange @dateRangeChanged="dateRangeChanged"></dataPickerRange>
           </div>
         </div>
         <div class="choose-object-into2">
@@ -187,33 +180,27 @@
               height="250"
               :options="chartOptions"
               :series="series"/>
-
         </div>
       </div>
     </div>
-    <keep-alive>
-      <WFM_modal
-          :modal_name="modal_name"
-          :r_object="r_object"
-          v-if="modal_show"
-          @modalClose="modalClose"
-      ></WFM_modal>
-    </keep-alive>
+    <WFM_modal
+        :modal_name="modal_name"
+        :r_object="r_object"
+        v-if="modal_show"
+        @modalClose="modalClose"
+    ></WFM_modal>
   </div>
 </template>
 <script>
 import axios from "axios";
 import moment from "moment"
 import vSelect from 'vue-select'
-
 import mainMenu from './main_menu.json'
 import WFM_modal from './modal'
 import dataPicker from './DatePicker'
 import dataPickerRange from "./dataPickerRange"
 import VueApexCharts from 'vue-apexcharts'
-import {waterfloodingManagementMapGetters} from '@store/helpers';
-
-
+import {waterfloodingManagementMapGetters, waterfloodingManagementMapActions} from '@store/helpers';
 
 export default {
   components: {
@@ -222,7 +209,7 @@ export default {
     dataPicker,
     dataPickerRange,
     "apexchart": VueApexCharts,
- },
+  },
   created() {
     this.getDzo();
     this.getGraphic(1,1,1, '17.03.2021', '17.04.2021' )
@@ -230,6 +217,7 @@ export default {
   },
   data: function () {
     return {
+      yAsixMin: 0,
       series: [],
       chartOptions: {
         legend: {
@@ -243,10 +231,18 @@ export default {
           height: 350,
           background: '#272953',
           type: 'line',
+          toolbar: {
+            show: false
+          },
         },
-        colors: ['#3366FF', '#EFBD74', '#6EBB71', '#02a6f2'],
+        colors: ['#3366FF', '#EFBD74', 'rgba(110,187,113,0.4)', '#02a6f2'],
         markers: {
           size: [0, 0, 0, 0],
+        },
+        stroke: {
+          width: [3, 3, 3, 3],
+          curve: 'smooth',
+          dashArray: [0, 0, 0, 5]
         },
         title:{
           style: {
@@ -280,9 +276,12 @@ export default {
         },
         yaxis: [
           {
-            min: 0,
+            min: 1300,
             seriesName: 'Left',
             showAlways: true,
+            tickAmount: 6,
+            dataLabels: {
+              enabled: true,},
             title: {
               text: ["Добыча жидкости, закачка – м3,"," нефти – т"],
               style: {
@@ -352,7 +351,18 @@ export default {
       menu: mainMenu,
     }
   },
+  computed: {
+    ...waterfloodingManagementMapGetters([
+      'chooseObjectDate'
+    ]),
+    getHalfWindowWidth(){
+      return window.innerWidth / 2 - 100;
+    },
+  },
   methods: {
+    ...waterfloodingManagementMapActions([
+      'getKin'
+    ]),
     getRatingObject(){
       let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/rating-object/'
       axios.get(url)
@@ -375,12 +385,11 @@ export default {
               });
             }
             else{
-            let data = response.data
+              let data = response.data
               this.show_choose_object.forEach(function(part, index) {
                 part.count = data[index].count;
               })
             }
-
           }).catch((error) => {
         console.log(error)
       })
@@ -393,8 +402,8 @@ export default {
             this.defaultDzo = this.dzo[0]
             this.getField(this.defaultDzo.id);
           }).catch((error) => {
-            console.log(error)
-          });
+        console.log(error)
+      });
     },
     getField(dzoId){
       let url = process.env.MIX_WATERFLOODING_MANAGMENT + 'object_selections/field/' + dzoId + '/'
@@ -432,10 +441,10 @@ export default {
       axios.get(url)
           .then((response) =>{
             this.series = [
-              {name:"Закачка, м3/сут.", data:[]},
-              {name:"Q нефти, т/сут.", data:[]},
-              { name:"Q жидкости, т/сут.", data:[]},
-              { name:"Обводненность", data:[]}
+              {name:"Закачка, м3/сут.", type: 'line', data:[]},
+              {name:"Q нефти, т/сут.", type: 'area', data:[]},
+              {name:"Q жидкости, т/сут.", type: 'area', data:[]},
+              {name:"Обводненность", type: 'line', data:[]}
             ]
             for(let i = 0; i < response.data.labels.length; i++){
               this.series[0].data.push({
@@ -475,6 +484,7 @@ export default {
       this.modal_show = false;
     },
     openModal(modal_name, r){
+      this.getKin(r.id)
       this.modal_show = true;
       this.modal_name = modal_name;
       this.r_object = r
@@ -483,59 +493,51 @@ export default {
       width: s+'%';
     }
   },
-  computed: {
-    ...waterfloodingManagementMapGetters([
-      'chooseObjectDate'
-    ]),
-    getHalfWindowWidth(){
-      return window.innerWidth / 2 - 100;
-    },
-  },
 }
 </script>
 <style scoped>
-  .btn-setting{
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 22px;
-    color: #FFFFFF;
-  }
-    .map-wells{
-      background-color: #272953;
-      color: #FFFFFF;
-      align-items: center;
-      margin-top: 15px!important;
-      padding: 10px 0;
-    }
-    .map-object{
-      height:100%;
-      text-align: start;
-      border-right: 2px solid #454D7D;
-    }
-    .map-object span{
-      margin-left: 8px;
-      font-weight: bold;
-      font-size: 21px;
-      line-height: 25px;
-    }
-    .map-tool{
-      position: relative;
-    }
-    .map-tool .transition{
-      position: absolute;
-      right: -11px;
-      top: -4px;
-    }
-    .v-select{
-      margin: 4px 0;
-    }
-    .map-tool .tool-title{
-      margin-left: 13px;
-      margin-right: 13px;
-      font-weight: normal;
-      font-size: 18px;
-      line-height: 22px;
-    }
+.btn-setting{
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 22px;
+  color: #FFFFFF;
+}
+.map-wells{
+  background-color: #272953;
+  color: #FFFFFF;
+  align-items: center;
+  margin-top: 15px!important;
+  padding: 10px 0;
+}
+.map-object{
+  height:100%;
+  text-align: start;
+  border-right: 2px solid #454D7D;
+}
+.map-object span{
+  margin-left: 8px;
+  font-weight: bold;
+  font-size: 21px;
+  line-height: 25px;
+}
+.map-tool{
+  position: relative;
+}
+.map-tool .transition{
+  position: absolute;
+  right: -11px;
+  top: -4px;
+}
+.v-select{
+  margin: 4px 0;
+}
+.map-tool .tool-title{
+  margin-left: 13px;
+  margin-right: 13px;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+}
 
 .map-tool button{
   height: 33px;
@@ -550,15 +552,15 @@ export default {
   color: #FFFFFF;
 }
 .map-block{
-  height: 600px;
+  height: 540px;
   width: 100%;
   padding: 5px;
-  background-color: #272953;
+  background-color: #F1EBDA;
 }
 .map-images{
   height: 100%;
   width: 100%;
-  background-color: #fff;
+  background-color: #F1EBDA;
 }
 .choose-object{
   background-color: #272953;
@@ -600,6 +602,8 @@ export default {
   border: 1px solid #454D7D;
 }
 .choose-object-score-btn{
+  width: 100%;
+  height: 18px;
   border-radius: 5px;
   background: #1A1D46;
   color: #fff;
@@ -608,26 +612,24 @@ export default {
   border: none;
   z-index: 2;
 }
-.choose-object-score-btn:before {
-  content: '\A';
-  position: absolute;
-  background: #2E50E9;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 50%;
-  z-index: -1;
-}
+.choose-object-score-btn div{
+  width: 59%;
+  height: 100%;
+  background:  #2E50E9;
 
+}
+.choose-object-score-btn span{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 .info-for-object{
   height: 120px;
   background: #2B2E5E;
   border: 1px solid #454D7D;
-  /*box-sizing: border-box;*/
   border-radius: 1px;
   color: #fff;
   text-align: center;
-  /*padding: 14px;*/
   margin: 3px 5px;
 }
 .info-object-title{
