@@ -128,6 +128,8 @@ class VisualCenterController extends Controller
 
         $tableData['current']['oilCondensateProductionWithoutKMG'] = $categoryMapping['oilCondensateProductionWithoutKMG']->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'oilCondensateProductionWithoutKMG',$this->yearlyPlan,$this->periodType,$this->dzoName);
         $tableData['current']['oilCondensateDeliveryWithoutKMG'] = $categoryMapping['oilCondensateDeliveryWithoutKMG']->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'oilCondensateDeliveryWithoutKMG',$this->yearlyPlan,$this->periodType,$this->dzoName);
+        $tableData['historical']['oilCondensateProductionWithoutKMG'] = $categoryMapping['oilCondensateProductionWithoutKMG']->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'oilCondensateProductionWithoutKMG',$this->yearlyPlan,$this->periodType,$this->dzoName);
+        $tableData['historical']['oilCondensateDeliveryWithoutKMG'] = $categoryMapping['oilCondensateDeliveryWithoutKMG']->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'oilCondensateDeliveryWithoutKMG',$this->yearlyPlan,$this->periodType,$this->dzoName);
         $tableData['current'] = array_merge($tableData['current'],$categoryMapping['gasProduction']->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
         $tableData['historical'] = array_merge($tableData['historical'],$categoryMapping['gasProduction']->getDataByCategory($historicalFact,$historicalPlan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
         if ($this->periodRange > 0) {
