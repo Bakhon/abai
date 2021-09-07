@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
 use App\Models\EcoRefsCost;
+use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -121,6 +122,7 @@ class EconomicOptimizationController extends Controller
                 'value' => $this->getOilPrice() ?? '0',
                 'url' => self::OIL_PRICE_URL
             ],
+            'gtms' => EcoRefsGtm::all()
         ];
     }
 
