@@ -137,17 +137,36 @@ class WellDocument extends PlainForm
                     ]
                 );
 
-            $files = json_decode($files);
-            if (!empty($files)) {
-                foreach ($files as $file) {
-                    DB::connection('tbd')
-                        ->table('prod.document_file')
-                        ->insert(
-                            [
-                                'document' => $id,
-                                'file' => $file
-                            ]
-                        );
+                $this->submittedData['fields'] = $data;
+                $this->submittedData['id'] = $id;
+
+                $this->updateFiles($id, $files);
+            } else {
+                if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
+                    throw new \Exception("You don't have permissions");
+                }
+                $id = $dbQuery->insertGetId($data);
+
+                DB::connection('tbd')
+                    ->table('prod.well_document')
+                    ->insert(
+                        [
+                            'document' => $id,
+                            'well' => $wellId
+                        ]
+                    );
+
+                if (!empty($files)) {
+                    foreach ($files as $file) {
+                        DB::connection('tbd')
+                            ->table('prod.document_file')
+                            ->insert(
+                                [
+                                    'document' => $id,
+                                    'file' => $file
+                                ]
+                            );
+                    }
                 }
             }
         }
@@ -159,5 +178,46 @@ class WellDocument extends PlainForm
     {
         $attachmentService = app()->make(AttachmentService::class);
         return $attachmentService->getInfo($fileIds);
+    }
+
+    private function updateFiles(int $id, array $files)
+    {
+        $existedFiles = DB::connection('tbd')
+            ->table('prod.document_file')
+            ->where('document', $id)
+            ->get()
+            ->map(function ($file) {
+                return $file->file;
+            })
+            ->toArray();
+
+        foreach ($existedFiles as $existedFile) {
+            if (in_array($existedFile, $files)) {
+                continue;
+            }
+            DB::connection('tbd')
+                ->table('prod.document_file')
+                ->where('document', $id)
+                ->where('file', $existedFile)
+                ->delete();
+        }
+
+        if (empty($files)) {
+            return;
+        }
+
+        foreach ($files as $file) {
+            if (in_array($file, $existedFiles)) {
+                continue;
+            }
+            DB::connection('tbd')
+                ->table('prod.document_file')
+                ->insert(
+                    [
+                        'document' => $id,
+                        'file' => $file
+                    ]
+                );
+        }
     }
 }

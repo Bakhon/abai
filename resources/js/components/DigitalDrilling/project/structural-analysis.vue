@@ -3,7 +3,7 @@
         <window-head />
         <div class="windowBody">
             <div class="bodyContent">
-                <p class="bigTitle left">Расчет Конструкции</p>
+                <p class="bigTitle left">{{ trans('digital_drilling.design_calculation') }}</p>
                 <div class="dropdown">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                         {{ trans(mainTable.name) }} <i class="fas fa-chevron-down"></i>

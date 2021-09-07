@@ -267,4 +267,6 @@ return array (
   'number_gtms_by_type' => 'Количество ГТМ по видам',
   'full_screen' => 'Полноэкранный режим',
   'table_well_treemap' => 'Таблица «Тримап»',
+  'oar_costs' => 'Затраты на ОАР',
+  'avg_cost_krs' => 'Средняя стоимость КРС',
 );

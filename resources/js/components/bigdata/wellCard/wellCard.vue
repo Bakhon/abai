@@ -490,17 +490,17 @@ export default {
       let value = ''
       for (let i = 0; i < Object.keys(objectName).length; i++) {
         if (i + 1 < Object.keys(objectName).length) {
-          value += objectName[i].[objectKey] + ' / '
+          value += objectName[i][objectKey] + ' / '
         } else {
-          value += objectName[i].[objectKey]
+          value += objectName[i][objectKey]
         }
       }
       return (value)
     },
     setWellObjectData(key, path, source) {
       try {
-        if (source.[path] != null) {
-          this.well.[key] = source.[path]
+        if (source[path] != null) {
+          this.well[key] = source[path]
         } else {
           variable = null
         }

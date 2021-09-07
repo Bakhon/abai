@@ -1,21 +1,25 @@
 <template>
   <div class="bd-forms col-12 p-0 pl-2 h-100">
     <div class="blueblock h-100 m-0">
-      <div class="wells-select-block m-0 p-3">
+      <div class="wells-select-block m-0 p-3" v-if="renderComponent">
         <tree-view
-            v-for="(treeData, index) in items"
+            v-for="(treeData, index) in selectedObjects[currentOption.name]"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
-            :key="index + treeData.id"
+            :key="`${index}-${treeData.id}`"
             :node="treeData"
+            :parent="treeData"
             :handle-click="nodeClick"
             :get-wells="getWells"
             :get-initial-items="getInitialItems"
             :isShowCheckboxes="isShowCheckboxes"
             :isWell="isWell"
-            :onCheckboxClick="onCheckboxClick"
             :level="level+1"
             :nodeClickOnArrow="true"
+            :renderComponent="renderComponent"
+            :updateThisComponent="updateThisComponent"
+            :selectedObjects="selectedObjects"
             :isCheckedCheckbox="isCheckedCheckbox"
+            :onClick="onClick"
         ></tree-view>
       </div>
     </div>
@@ -30,19 +34,20 @@ export default {
   data() {
     return {
       baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
-      items: null,
-      level: 0
+      level: 0,
+      renderComponent: 1,
     }
   },
   props: {
     structureType: String,
     itemType: Number,
     isShowCheckboxes: Boolean,
-    onCheckboxClick: Function,
+    currentOption: Object,
+    selectedObjects: Object,
     isCheckedCheckbox: Function,
   },
-  mounted() {
-    this.init()
+  beforeMount() {
+    this.init();
   },
   watch: {
     itemType(newValue) {
@@ -50,8 +55,14 @@ export default {
     }
   },
   methods: {
-    init() {
-      this.getInitialItems().then(items => this.items = items);
+    init: async function() {
+      if(!this.selectedObjects[this.currentOption.name]) {
+        this.getInitialItems().then((items) => {
+          this.selectedObjects[this.currentOption.name] = items;
+        }).then(() => {
+          this.updateThisComponent();
+        });
+      }
     },
     getInitialItems() {
       this.isLoading = true
@@ -77,7 +88,7 @@ export default {
       });
 
     },
-    nodeClick(node) {
+    async nodeClick(node) {
       this.isLoading = true
       return this.axios.get(this.baseUrl + "get_children_of_item", {
         params: {
@@ -98,14 +109,18 @@ export default {
         this.isLoading = false;
       })
     },
+    updateThisComponent() {
+      this.renderComponent += 1;
+    },
     isNodeOnBottomLevelOfHierarchy(node) {
       return (!node.children || node.children.length === 0)
     },
     isWell: function(node){
       return (typeof node.type !== 'undefined' && node.type === 'well')
     },
-    getWells: function (child) {
-      let node = child.node
+    getWells: async function (child) {
+      let node = (typeof child.node === 'undefined') ? child : child.node;
+
       return this.axios.get(this.baseUrl + "get_wells", {
         params: {
           structure_type: this.structureType,
@@ -124,6 +139,37 @@ export default {
       }).finally(() => {
         child.isLoading = false;
       })
+    },
+    onClick: async function (content) {
+      let node = content.node;
+      node.isChecked = !node.isChecked;
+
+      content.isLoading = true;
+      content.updateChildren(node, content.level, node.isChecked)
+      .then(() => {
+        content.updateThisComponent();
+        content.isLoading = false;
+      });
+
+      node.level = content.level;
+    },
+    loadChildren: async function(node) {
+      if(this.isWell(node)) return;
+      if(typeof node.children === 'undefined') {
+        await this.nodeClick(node);
+      }
+      if(!this.isHaveChildren(node)) {
+        await this.getWells(node);
+      }
+      
+      for(let idx in node.children) {
+        await this.loadChildren(node.children[idx]);
+      }
+    },
+    isHaveChildren(node) {
+      return typeof node !== 'undefined' && 
+             typeof node.children !== 'undefined' && 
+             !this.isNodeOnBottomLevelOfHierarchy(node);
     },
   },
 }

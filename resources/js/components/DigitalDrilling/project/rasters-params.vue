@@ -1,31 +1,31 @@
 <template>
     <table class="table defaultTable rastersParams">
         <tr>
-            <th rowspan="3">Название (тип) раствора</th>
-            <th colspan="2">Интервал (по стволу), м</th>
-            <th colspan="14">Параметры бурового раствора</th>
+            <th rowspan="3">{{ trans('digital_drilling.drilling_fluids.solution_name') }}</th>
+            <th colspan="2">{{ trans('digital_drilling.rasters.interval_along_trunk') }}</th>
+            <th colspan="14">{{ trans('digital_drilling.drilling_fluids.mud_parameters') }}</th>
         </tr>
         <tr>
-            <th colspan="1" rowspan="2">От (верх)</th>
-            <th colspan="1" rowspan="2">До (низ)</th>
-            <th colspan="1" rowspan="2" class="verticalText"><span>Плотность, кг/м3</span></th>
-            <th colspan="1" rowspan="2" class="verticalText"><span>Условная вязкость, сек</span></th>
-            <th colspan="1" rowspan="2" class="verticalText"><span>Водоотдача, см3/30 мин</span></th>
-            <th colspan="2">СНС, фунт/100фут2</th>
-            <th colspan="1" rowspan="2" class="verticalText"><span>Корка, мм</span></th>
-            <th colspan="3">Содержание твердой фазы, % (об.)</th>
+            <th colspan="1" rowspan="2">{{ trans('digital_drilling.from') }}</th>
+            <th colspan="1" rowspan="2">{{ trans('digital_drilling.to') }}</th>
+            <th colspan="1" rowspan="2" class="verticalText"><span>{{ trans('digital_drilling.drilling_fluids.density') }}</span></th>
+            <th colspan="1" rowspan="2" class="verticalText"><span>{{ trans('digital_drilling.drilling_fluids.conditional_viscosity') }}</span></th>
+            <th colspan="1" rowspan="2" class="verticalText"><span>{{ trans('digital_drilling.rasters.water_loss_30_min') }}</span></th>
+            <th colspan="2">{{ trans('digital_drilling.rasters.SNS_100ft') }}</th>
+            <th colspan="1" rowspan="2" class="verticalText"><span>{{ trans('digital_drilling.drilling_fluids.crust') }}</span></th>
+            <th colspan="3">{{ trans('digital_drilling.rasters.solid_phase_content') }}</th>
             <th colspan="1" rowspan="2">рН</th>
-            <th colspan="1" rowspan="2" class="verticalText"><span>Минерализация по Са2+, мг/л, не более</span></th>
-            <th colspan="1" rowspan="2" class="verticalText"><span>пластическая вязкость, сантипуазах</span></th>
-            <th colspan="1" rowspan="2" class="verticalText"><span>динамическое напряжение сдвига, фунт/100фут2</span></th>
-            <th colspan="1" rowspan="2" class="verticalText"><span>плотность до утяжеления, кг/м3</span></th>
+            <th colspan="1" rowspan="2" class="verticalText"><span>{{ trans('digital_drilling.rasters.mineralization_no_more') }}</span></th>
+            <th colspan="1" rowspan="2" class="verticalText"><span>{{ trans('digital_drilling.drilling_fluids.plastic_viscosity') }}</span></th>
+            <th colspan="1" rowspan="2" class="verticalText"><span>{{ trans('digital_drilling.rasters.dynamic_shear_stress_100ft2') }}</span></th>
+            <th colspan="1" rowspan="2" class="verticalText"><span>{{ trans('digital_drilling.drilling_fluids.density_before_weighting') }}</span></th>
         </tr>
         <tr>
             <th colspan="1">1 мин</th>
             <th colspan="1">10 мин</th>
-            <th colspan="1" class="verticalText"><span>(активной)</span></th>
-            <th colspan="1" class="verticalText"><span>песка</span></th>
-            <th colspan="1" class="verticalText"><span>Всего</span></th>
+            <th colspan="1" class="verticalText"><span>{{ trans('digital_drilling.rasters.active') }}</span></th>
+            <th colspan="1" class="verticalText"><span>{{ trans('digital_drilling.rasters.sand') }}</span></th>
+            <th colspan="1" class="verticalText"><span>{{ trans('digital_drilling.all') }}</span></th>
         </tr>
         <tr>
             <td v-for="i in 17">{{i+1}}</td>

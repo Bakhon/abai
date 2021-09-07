@@ -3,12 +3,13 @@
 namespace App\Models\ComplicationMonitoring;
 
 use App\Models\Refs\Field;
+use App\Models\Traits\OmgNgduTrait;
 use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
 
 class OmgNGDU extends Model
 {
-    use WithHistory;
+    use WithHistory, OmgNgduTrait;
 
     protected $guarded = ['id'];
     protected $table = 'omg_n_g_d_u_s_1';
@@ -21,21 +22,6 @@ class OmgNGDU extends Model
     public function cdng()
     {
         return $this->hasOne(Cdng::class,'id','cdng_id')->withDefault();
-    }
-
-    public function gu()
-    {
-        return $this->hasOne(Gu::class,'id','gu_id')->withDefault();
-    }
-
-    public function zu()
-    {
-        return $this->hasOne(Zu::class,'id','zu_id')->withDefault();
-    }
-
-    public function well()
-    {
-        return $this->hasOne(Well::class,'id','well_id')->withDefault();
     }
 
     public function field()

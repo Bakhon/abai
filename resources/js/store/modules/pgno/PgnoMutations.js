@@ -5,6 +5,9 @@ export const pgnoMutations = {
     SET_HPUMP(state,value){
         state.curveSettings.hPumpValue = value
     },
+    SET_SENSETIVE_SETTINGS(state,value){
+        state.sensetiveSettings = value
+    },
     SET_KPOD_SETTINGS(state,value){
         state.kPodSettings = value
     },

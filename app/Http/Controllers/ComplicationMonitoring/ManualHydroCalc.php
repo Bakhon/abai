@@ -70,13 +70,12 @@ class ManualHydroCalc extends CrudController
                     'title' => trans('monitoring.hydro_calculation.fields.pressure_end'),
                     'type' => 'numeric',
                 ],
-
-                'temp_well' => [
-                    'title' => trans('monitoring.manual_hydro_calculation.fields.temperature_well'),
+                'temp_start' => [
+                    'title' => trans('monitoring.hydro_calculation.fields.temperature_start'),
                     'type' => 'numeric',
                 ],
-                'temp_zu' => [
-                    'title' => trans('monitoring.manual_hydro_calculation.fields.temperature_zu'),
+                'temp_end' => [
+                    'title' => trans('monitoring.hydro_calculation.fields.temperature_end'),
                     'type' => 'numeric',
                 ],
                 'start_point' => [
@@ -170,6 +169,11 @@ class ManualHydroCalc extends CrudController
         $alerts = [];
 
         foreach ($pipes as $key => $pipe) {
+            if (!$pipe->lastCoords) {
+                unset($pipes[$key]);
+                continue;
+            }
+
             if ($pipe->between_points == 'well-zu') {
                 $query = OmgNGDUWell::where('well_id', $pipe->well_id);
 
