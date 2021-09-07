@@ -49,12 +49,12 @@ class ManualOilPipe extends Model
 
     public function firstCoords()
     {
-        return $this->setConnection('mysql')->hasOne(PipeCoord::class)->orderBy('m_distance');
+        return $this->setConnection('mysql')->hasOne(PipeCoord::class, 'oil_pipe_id', 'id')->orderBy('m_distance');
     }
 
     public function lastCoords()
     {
-        return $this->setConnection('mysql')->hasOne(PipeCoord::class)->orderByDesc('m_distance');
+        return $this->setConnection('mysql')->hasOne(PipeCoord::class, 'oil_pipe_id', 'id')->orderByDesc('m_distance');
     }
 
     public function hydroCalc()

@@ -23,6 +23,7 @@ return [
     'select_dzo' => 'Выберите ДЗО из списка',
     'select_ngdu' => 'Выберите НГДУ из списка',
     'select_dzo_ngdu' => 'Выберите ДЗО или НГДУ из списка',
+    'select_gu' => 'Выберите ГУ из списка',
     'nothing_found' => 'Ничего не найдено',
     'actions' => 'Действия',
     'forms' => [
@@ -95,7 +96,7 @@ return [
             'contractor' => 'Подрядчик',
             'brigade' => 'Бригада',
             'brigade_master' => 'Мастер бригады',
-            'duplicate_in_gts' => 'Дублировать в ГТС',
+            'duplicate_in_gts' => 'Дублировать в ГТМ',
             'opi' => 'ОПИ',
             'work_end_date' => 'Дата окончания работ',
             'done_work_description' => 'Описание проделанных работ',
@@ -104,7 +105,7 @@ return [
             'used_run_down_nkt' => 'Кол-во спущенных НКТ, б/у',
             'actual_bottomhole_m' => 'Фактический забой, м',
             'no_slaughter' => 'Забой отсутствует',
-            'no_slaughter_reason' => 'Причина отсутсивия забоя',
+            'no_slaughter_reason' => 'Причина отсутствия забоя',
             'artificial_slaughter_m' => 'Искусственный забой, м',
             'machine_technical_condition' => 'Техническое состояние скважин',
             'not_change_technical_condition' => 'Не менять техническое состояние',
@@ -113,9 +114,11 @@ return [
             'new_state' => 'Новое состояние',
             'condition' => 'Состояние',
             'not_change_state' => 'Не менять состояние',
-            'hardware_failure_cause' => 'Основная причина отказа оборудования',
-            'equipment_failure_type' => 'Вид причины отказа оборудования',
-            'stopping_reason' => 'Причина остановки'
+            'cause_h_failure' => 'Основная причина отказа оборудования',
+            'add_f' => 'Детальная причина отказа',
+            'reason_type' => 'Дополнительная информация',
+            'reason_stopping' => 'Причина остановки',
+            'well_previous_category' => 'Категория до выбранной даты'
         ],
         'injection_wells' => [
             'title' => 'Тех.Режим - Нагнетательные скважины',
@@ -190,7 +193,9 @@ return [
             'owt_of_plan' => 'Вне плана',
             'do_not_chenge_teckh_condition' => 'Не менять техническое состояние',
             'do_not_chenge_condition' => 'Не менять состояние',
-            'gtm_duplicate' => 'Дублировать в ГТМ'
+            'gtm_duplicate' => 'Дублировать в ГТМ',
+            'on_our_own' => 'Собственными силами',
+
 
         ],
         'gas_well' => [
@@ -822,7 +827,7 @@ return [
         'report_constructor' => [
             'menu' => 'Конструктор отчетов',
         ],
-        'well_cart' => [
+        'well_card' => [
             'menu' => 'Карточка скважины',
         ],
         'production_wells_schedule' => [
@@ -972,7 +977,7 @@ return [
             'treat_type' => 'Вид обработки',
             'ch_reagent_type' => 'Хим.реагент',
             'scraper_income' => 'Доход скребка, м',
-            'data' => 'Дата',
+            'date' => 'Дата',
         ],
         'plan_g_d_i_s' => [
             'date' => 'Дата с',
@@ -986,7 +991,51 @@ return [
             'total' => 'Всего',
             'date' => 'Дата с',
             'date_to' => 'Дата по',
-        ]
+        ],
+        'daily_reports_prs' => [
+            'title' => 'Суточные сводки - ПРС',
+            'org' => 'Подразделение',
+            'contractor' => 'Подрядчик',
+            'repair_work_type' => 'Вид ремонтных работ',
+            'work_done' => 'Проделанные работы',
+            'uwi' => 'Истинная глубина по вертикали',
+            'machine_type' => 'Вид станка',
+            'well' => 'Скважина',
+            'geo' => 'Горизонт'
+        ],
+        'zu_gzu_production' => [
+            'pf' => 'ПФ',
+            'ngdu' => 'НГДУ',
+            'cdng' => 'ЦДНГ',
+            'zu_gzu' => 'ЗУ/ГЗУ',
+            'mark' => 'Отметка',
+            'liquid_prod' => 'Добыча жидкости, м3/сут',
+            'liquid_prod_tel' => 'Добыча жидкости, м3/сут (телеметрия)',
+            'water_cut' => 'Обводненность, %/сут',
+            'water_cut_tel' => 'Обводненность, %/сут (телеметрия)',
+            'oil_prod' => 'Добыча нефти, т/сут',
+            'oil_prod_tel' => 'Добыча нефти, т/сут (телеметрия)',
+            'gaz_prod' => 'Добыча газа, м3/сут',
+            'gaz_prod_tel' => 'Добыча газа, м3/сут (телеметрия)',
+        ],
+        'tech_water_well' => [
+            'uwi_number' => 'Номер скважины',
+            'bottom_hole' => 'Факт. забой',
+            'horizon' => 'Горизонт',
+            'diameter' => 'Диаметр экс.колонны, мм',
+            'worktime' => 'Отработанные дни',
+            'avg_water_prev_month' => 'Средний дебит воды, м3/сут',
+            'sum_water_prev_month' => 'Добыча воды за пред. месяц, м3',
+            'water_prod' => 'Дебит воды, м3/сут',
+            'dbeg' => 'Дата начала',
+            'dend' => 'Дата конца',
+            'events' => 'Мероприятия',
+        ],
+        'tech_events' => [
+            'planned_events' => 'Намечаемые мероприятия',
+            'event' => 'Мероприятие',
+            'planned_month' => 'Планируемый месяц'
+        ],
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',
     'list' => 'Просмотр списка',
@@ -1012,6 +1061,8 @@ return [
     'dd_mm_yyyy' => 'дд.мм.гггг',
     'choose_start_date' => 'Выберите начальную дату',
     'choose_end_date' => 'Выберите конечную дату',
+    'start_date' => 'Начальная дата',
+    'end_date' => 'Конечная дата',
     'load_las' => 'Загрузка las',
     'view' => 'Просмотр главной',
     'create_report' => 'Создать отчет', 

@@ -15,7 +15,7 @@ class WellPerfDrillPacker extends PlainForm
         $errors = [];
         
         if (!$this->isValidDate($this->request->get('well'), $this->request->get('perf_date'), 'dict.well' , 'drill_end_date')) {
-            $errors['perf_date'][] = trans('bd.validation.perf_date');
+            $errors['perf_date'] = trans('bd.validation.perf_date');
         }
         return $errors;
     }

@@ -13,8 +13,6 @@ export default {
 	data: function()  {
 		return {
 			settings: {},
-			svgTableN1: require('../../../../images/tableN1.svg'),
-			svgTableN2: require('../../../../images/tableN2.svg'),
 			steelMark: null,
 			steelMarks: null,
 			isModal: false,
@@ -177,8 +175,7 @@ export default {
 					var message = this.trans('pgno.kpodWarning', {kpod: this.kpodCalced.toFixed(2)}) 
 					this.setNotify(message, "Warning", "warning")
 				}
-
-				this.$store.commit('pgno/UPDATE_KPOD_CALCED', this.kpodCalced) 
+				this.settings.kPodCalced = this.kpodCalced
 			}
 		},
 		onChangeCorrosion(e) {

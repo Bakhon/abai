@@ -258,6 +258,7 @@ return array (
       'dataIsNotValid' => 'В данных найдены ошибки!',
       'verifySumByDzo' => 'Ошибка! Проверьте общие суммы по параметрам.',
       'sendedToApprove' => 'Отправлено на согласование',
+      'emptyData' => 'Заполните пожалуйста все параметры!'
     ),
     'chemistry' => 'Химизация производства, т/мес',
     'enterChemistryButton' => 'Химизация производства',
@@ -276,8 +277,9 @@ return array (
     'insertData' => 'Внесение данных',
     'dataArchieve' => 'Архив данных',
     'dateSelect' => 'Выберите дату',
-    'executor' => 'Исполнитель',
+    'executor' => 'ФИО',
     'reason' => 'Причина',
+    'position' => 'Должность'
   ),
   'idleWells' => 'Фонд нагнетательных скважин',
   'inIdle' => 'В простое',
@@ -431,5 +433,5 @@ return array (
   'countDrilling' => 'Бурение проходка, м.',
   'emergency' => 'Инцидент',
   'emergencyDate' => 'Дата инцидента',
-  'resolvingDate' => 'Дата заполнения'
+  'resolvingDate' => 'Дата устранения инцидента'
 );

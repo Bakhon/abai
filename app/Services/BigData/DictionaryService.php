@@ -18,8 +18,8 @@ use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
-use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\ExplTypePlanGDIS;
+use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
 use App\Models\BigData\Dictionaries\GeoRockType;
@@ -30,6 +30,7 @@ use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\IsoMaterialType;
 use App\Models\BigData\Dictionaries\LabResearchType;
+use App\Models\BigData\Dictionaries\MachineType;
 use App\Models\BigData\Dictionaries\Mark;
 use App\Models\BigData\Dictionaries\NoBtmReason;
 use App\Models\BigData\Dictionaries\Org;
@@ -48,12 +49,14 @@ use App\Models\BigData\Dictionaries\SaturationType;
 use App\Models\BigData\Dictionaries\Tag;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
+use App\Models\BigData\Dictionaries\TechStateCasing;
 use App\Models\BigData\Dictionaries\TechStateType;
 use App\Models\BigData\Dictionaries\TreatType;
 use App\Models\BigData\Dictionaries\Well;
 use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellExplType;
+use App\Models\BigData\Dictionaries\WellPrsRepairType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
@@ -121,7 +124,7 @@ class DictionaryService
         ],
         'wells_tech_conditions' => [
             'class' => TechConditionOfWells::class,
-            'name_field' => ''
+            'name_field' => 'name_ru'
         ],
         'pump_types' => [
             'class' => PumpType::class,
@@ -278,6 +281,10 @@ class DictionaryService
         'proced_type_plan_gdis' => [
             'class' => ProcedTypePlanGDIS::class,
             'name_field' => 'name'
+        ],
+        'machine_types' => [
+            'class' => MachineType::class,
+            'name_field' => 'name_ru'
         ]
     ];
 
@@ -369,15 +376,17 @@ class DictionaryService
                     $dict = $this->getGeoHorizonDict();
                     break;
                 case 'reason_ref':
-                    $dict = $this->getReasonTypeRefDict();
-                    break;
+                    $dict = $this->getReasonTypeDict("REF");
+                    break; 
                 case 'reason_rst':
-                    $dict = $this->getReasonTypeRstDict();
-                    break;
-                    break;
+                    $dict = $this->getReasonTypeDict('RST');
+                    break;        
                 case 'reason_type_rtr':
-                    $dict = $this->getReasonTypeRtrDict();
+                    $dict = $this->getReasonTypeDict('RTR');
                     break;
+                case 'reason_rls':
+                    $dict = $this->getReasonTypeDict('RLS');
+                    break; 
                 default:
                     throw new DictionaryNotFound();
             }
@@ -569,18 +578,17 @@ class DictionaryService
             )
             ->toArray();
 
-        return $items;
-    }
+        return $items;                  
 
-    private function getReasonTypeRefDict()
-    {
+    }     
+    
+    private function getReasonTypeDict(string $type){
         $items = DB::connection('tbd')
-            ->table('prod.well_workover as p')
+            ->table('dict.reason as r')
             ->select('r.id', 'r.name_ru as name')
-            ->where('rt.code', 'REF')
+            ->where('rt.code', $type)
             ->distinct()
             ->orderBy('name', 'asc')
-            ->join('dict.reason as r', 'p.reason_equip_fail', 'r.id')
             ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
             ->get()
             ->map(
@@ -591,47 +599,6 @@ class DictionaryService
             ->toArray();
 
         return $items;
+  
     }
-
-    private function getReasonTypeRstDict()
-    {
-        $items = DB::connection('tbd')
-            ->table('prod.well_workover as p')
-            ->select('r.id', 'r.name_ru as name')
-            ->where('rt.code', 'RST')
-            ->distinct()
-            ->orderBy('name', 'asc')
-            ->join('dict.reason as r', 'p.stop_reason', 'r.id')
-            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
-            ->get()
-            ->map(
-                function ($item) {
-                    return (array)$item;
-                }
-            )
-            ->toArray();
-
-        return $items;
-    }
-
-    private function getReasonTypeRtrDict()
-    {
-        $items = DB::connection('tbd')
-            ->table('prod.well_treatment as p')
-            ->select('r.id', 'r.name_ru as name')
-            ->where('rt.code', 'RTR')
-            ->distinct()
-            ->orderBy('name', 'asc')
-            ->join('dict.reason as r', 'p.reason', 'r.id')
-            ->join('dict.reason_type as rt', 'r.reason_type', 'rt.id')
-            ->get()
-            ->map(
-                function ($item) {
-                    return (array)$item;
-                }
-            )
-            ->toArray();
-
-        return $items;
-    }
-}
+}    
