@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use Illuminate\Support\Facades\DB;
+use App\Models\BigData\Well;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
-use App\Exceptions\BigData\SubmitFormException;
-use App\Models\BigData\Well;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 class Kpc extends PlainForm
 {
     protected $configurationFileName = 'kpc';
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
+
     protected function prepareDataToSubmit()
     {
         $data = $this->request->except($this->tableFieldCodes);
@@ -42,30 +43,21 @@ class Kpc extends PlainForm
         return $errors;
     }
 
-    public function submit(): array
+    protected function submitForm(): array
     {
-        DB::beginTransaction();
+        $formFields = $this->request->except('well_status');
 
-        try {
-            $formFields = $this->request->except('well_status');
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
-            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-            if (!empty($formFields['id'])) {
-                $id = $dbQuery->where('id', $formFields['id'])->update($formFields);
-            } else {
-                $id = $dbQuery->insertGetId($formFields);
-            }
-
-            $this->updateWellStatus();
-
-            DB::commit();
-
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw new SubmitFormException();
+        if (!empty($formFields['id'])) {
+            $id = $dbQuery->where('id', $formFields['id'])->update($formFields);
+        } else {
+            $id = $dbQuery->insertGetId($formFields);
         }
+
+        $this->updateWellStatus();
+
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
     private function updateWellStatus()

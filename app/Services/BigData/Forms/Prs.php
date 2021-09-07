@@ -3,17 +3,17 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
-use Illuminate\Support\Facades\DB;
+
+use App\Models\BigData\Well;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
-use App\Exceptions\BigData\SubmitFormException;
-use App\Models\BigData\Well;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class Prs extends PlainForm
 {
     protected $configurationFileName = 'prs';
-    
+
     use DateMoreThanValidationTrait;
     use DepthValidationTrait;
 
@@ -29,30 +29,23 @@ class Prs extends PlainForm
         $data['repair_type'] = $prs->id;
         return $data;
     }
-    public function submit(): array
+
+    protected function submitForm(): array
     {
-        DB::beginTransaction();
+        $formFields = $this->request->except('well_status');
 
-        try {
-            $formFields = $this->request->except('well_status');
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
-            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-            if (!empty($formFields['id'])) {
-                $id = $dbQuery->where('id', $formFields['id'])->update($formFields);
-            } else {
-                $id = $dbQuery->insertGetId($formFields);
-            }
-
-            $this->updateWellStatus();
-
-            DB::commit();
-
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw new SubmitFormException();
+        if (!empty($formFields['id'])) {
+            $id = $dbQuery->where('id', $formFields['id'])->update($formFields);
+        } else {
+            $id = $dbQuery->insertGetId($formFields);
         }
+
+        $this->updateWellStatus();
+
+
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
     private function updateWellStatus()
@@ -86,7 +79,7 @@ class Prs extends PlainForm
     {
         $errors = [];
 
-        
+
         if (!$this->isValidDepth($this->request->get('well'), $this->request->get('actual_bh'))) {
             $errors['actual_bh'] = trans('bd.validation.depth');
         }
