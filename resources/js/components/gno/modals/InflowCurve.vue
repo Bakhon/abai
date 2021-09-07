@@ -1,9 +1,5 @@
 <template>
   <div>
-    <div class="gno-curve-table-title">
-      {{trans('pgno.krivaya_pritoka')}}
-    </div>
-
     <Plotly :data="data"
             :layout="layout"
             :display-mode-bar="false"
@@ -12,4 +8,4 @@
   </div>
 </template>
 
-<script src="./js/InflowCurve.js">
+<script src="./js/InflowCurve.js"></script>

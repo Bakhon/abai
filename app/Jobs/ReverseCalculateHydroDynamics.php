@@ -109,10 +109,6 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
 
         foreach($pipes as $key => $pipe) {
 
-            if ($pipe->between_points == 'gu-gu') {
-
-            }
-
             $query = OmgNGDUWell::where('well_id', $pipe->well->id)
                 ->orderBy('date', 'desc');
 

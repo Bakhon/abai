@@ -1,5 +1,5 @@
 <template>
-  <div class="row p-3 bg-main1 position-relative">
+  <div class="row p-3 bg-main1 position-relative overflow-auto customScroll">
     <div class="d-flex">
       <chart-button
           v-for="(tab, index) in Object.keys(tabs)"
@@ -18,6 +18,8 @@
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           :data="res.specificIndicator"
+          :dollar-rates="scenarioVariations.dollar_rates"
+          :gtms="res.gtms"
           class="text-white"/>
 
       <table-technical-economic-indicators
@@ -37,8 +39,6 @@
 
       <table-well-changes
           v-else-if="activeTab === 'well_changes'"
-          :org="res.org"
-          :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           :data="res.wellChanges"
@@ -72,6 +72,13 @@
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
+
+      <table-well-tree-map
+          v-else-if="activeTab === 'well_treemap'"
+          :scenario="scenario"
+          :key="scenarioUniqueKey"
+          :data="res.wellChanges"
+          class="text-white"/>
     </div>
   </div>
 </template>
@@ -86,6 +93,7 @@ import TableEconomicEfficiency from "./TableEconomicEfficiency";
 import TablePorcupine from "./TablePorcupine";
 import TableTechnologicalIndicators from "./TableTechnologicalIndicators";
 import TablePalette from "./TablePalette";
+import TableWellTreeMap from "./TableWellTreeMap";
 
 export default {
   name: "Tables",
@@ -99,6 +107,7 @@ export default {
     TablePorcupine,
     TableTechnologicalIndicators,
     TablePalette,
+    TableWellTreeMap
   },
   props: {
     scenario: {
@@ -128,7 +137,17 @@ export default {
         porcupine: this.trans('economic_reference.table_porcupine'),
         technological_indicators: this.trans('economic_reference.technological_indicators'),
         palette: this.trans('economic_reference.palette'),
+        well_treemap: 'TreeMap',
       }
+    },
+
+    scenarioUniqueKey() {
+      return `${this.scenario.dollar_rate},
+          ${this.scenario.oil_price},
+          ${this.scenario.coef_Fixed_nopayroll},
+          ${this.scenario.coef_cost_WR_payroll}
+          ${this.scenario.percent_stop_cat_1},
+          ${this.scenario.percent_stop_cat_2},`
     }
   },
   methods: {

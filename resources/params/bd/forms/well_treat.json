@@ -54,7 +54,8 @@
       "type": "dict",
       "dict": "treat_type",
       "title": "treat_type",
-      "validation": "exists:tbd.dict.treat_type,id"
+      "validation": "exists:tbd.dict.treat_type,id",
+      "is_editable": true
     },
     {
       "title": "pretreat_buff_pressure",
@@ -75,27 +76,22 @@
       "type": "dict",
       "dict": "chemical_reagent_types",
       "title": "ch_reagent_type",
-      "validation": "exists:tbd.dict.chemical_reagent_type,id"
+      "validation": "exists:tbd.dict.chemical_reagent_type,id",
+      "is_editable": true
     },
     {
       "code": "reason",
       "type": "dict",
       "dict": "reason_type_rtr",
       "title": "reason",
-      "validation": "required|exists:tbd.dict.reason,id"
+      "validation": "required|exists:tbd.dict.reason,id",
+      "is_editable": true
     },
     {
       "title": "scraper_income",
       "code": "scraper_income",
       "type": "float",
       "validation": "required|gte:0",
-      "is_editable": true
-    },
-    {
-      "title": "data",
-      "code": "data",
-      "type": "date",
-      "validation": "",
       "is_editable": true
     }
   ]

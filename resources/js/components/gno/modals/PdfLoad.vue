@@ -250,7 +250,7 @@
               </div>
 
               <img class="rods-image"
-                   src="../images/shgn.png"
+                   src="/img/gno/shgn.png"
                    alt="podbor-gno"/>
 
             </div>

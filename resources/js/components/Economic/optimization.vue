@@ -303,7 +303,8 @@ let economicRes = {
   org: {
     id: '',
     name: ''
-  }
+  },
+  gtms: []
 }
 
 let columnPairs = (column) => {
@@ -506,7 +507,8 @@ export default {
             value: this.avgLiquidValue(),
             dimension: this.trans('economic_reference.cubic_meter_per_day'),
             percent: this.avgLiquidPercent,
-            reverse: true,
+            reverse: false,
+            reversePercent: true
           },
         ],
       ]
@@ -779,7 +781,7 @@ export default {
           : 0
     },
 
-    updateTab(tab){
+    updateTab(tab) {
       this.isVisibleWellChanges = tab === 'well_changes'
     }
   }
