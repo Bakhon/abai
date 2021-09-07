@@ -43,7 +43,7 @@ class DigitalRatingContoller extends Controller
                ORDER BY dbeg DESC LIMIT 2', 
                ['id' => $item->well_id,'PARAM_GDIS_HDIN_id'=>self::PARAM_GDIS_HDIN_id,
                'PARAM_GDIS_CONCLUSION_GDM_ID'=>self::PARAM_GDIS_CONCLUSION_GDM_ID]);
-
+               dd($params_gdis);
                foreach ($params_gdis as $param) {
                   if($param->param_gdis_id == 217) {
                      $param_gdis_hdin = $param->value_double;
@@ -57,11 +57,12 @@ class DigitalRatingContoller extends Controller
                $wells[$key]->result = number_format( $result, 2);
                $wells[$key]->liquid_val_average  = number_format( $item->liquid_val_average, 2);
                $wells[$key]->bsw_val_average  = number_format( $item->bsw_val_average, 2);
-               $wells[$key]->gdis_conclusion = $gdis_conclusion;
-               $wells[$key]->param_gdis_hdin = number_format( $param_gdis_hdin, 2) ;
+               // $wells[$key]->gdis_conclusion = $gdis_conclusion;
+               // $wells[$key]->param_gdis_hdin = number_format( $param_gdis_hdin, 2) ;
 
             }
          }
+
          return $wells;                
    }
 
@@ -94,7 +95,7 @@ class DigitalRatingContoller extends Controller
                $neighboring_wells[] = $item;
             }
          };
-         
+
          if(empty($neighboring_wells)){
             return response()->json(['message' => 'Well not found']);
          }
