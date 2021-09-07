@@ -140,6 +140,13 @@
                             </a>
                         </li>
                     @endif
+                    @if(auth()->user()->can('monitoring list zu-cleanings'))
+                        <li class="left-menu-li">
+                            <a href="{{route('zu-cleanings.index')}}">
+                                {{ trans('monitoring.zu_cleanings.title') }}
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </li>
         @endif
