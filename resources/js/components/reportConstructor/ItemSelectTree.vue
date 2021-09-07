@@ -88,7 +88,7 @@ export default {
       });
 
     },
-    nodeClick(node) {
+    async nodeClick(node) {
       this.isLoading = true
       return this.axios.get(this.baseUrl + "get_children_of_item", {
         params: {
@@ -118,7 +118,7 @@ export default {
     isWell: function(node){
       return (typeof node.type !== 'undefined' && node.type === 'well')
     },
-    getWells: function (child) {
+    getWells: async function (child) {
       let node = (typeof child.node === 'undefined') ? child : child.node;
 
       return this.axios.get(this.baseUrl + "get_wells", {
