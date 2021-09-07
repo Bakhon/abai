@@ -13,6 +13,8 @@ class BottomHole extends PlainForm
 {
     protected $configurationFileName = 'bottom_hole';
     protected $bottomHoleType = 'TD';
+    protected $dateValidationField = 'drill_start_date';
+    protected $dateValidationErrorKey = 'bd.validation.bottom_hole_date';
 
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
@@ -60,9 +62,9 @@ class BottomHole extends PlainForm
             $this->request->get('well'),
             $this->request->get('data'),
             'dict.well',
-            'drill_start_date'
+            $this->dateValidationField
         )) {
-            $errors['data'][] = trans('bd.validation.bottom_hole_date');
+            $errors['data'][] = trans($this->dateValidationErrorKey);
         }
 
         return $errors;
