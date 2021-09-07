@@ -56,8 +56,8 @@ class DigitalRatingContoller extends Controller
                $wells[$key]->result = number_format( $result, 2);
                $wells[$key]->liquid_val_average  = number_format( $item->liquid_val_average, 2);
                $wells[$key]->bsw_val_average  = number_format( $item->bsw_val_average, 2);
-               // $wells[$key]->gdis_conclusion = $gdis_conclusion;
-               // $wells[$key]->param_gdis_hdin = number_format( $param_gdis_hdin, 2) ;
+               $wells[$key]->gdis_conclusion = $gdis_conclusion;
+               $wells[$key]->param_gdis_hdin = number_format( $param_gdis_hdin, 2) ;
 
             }
          }
