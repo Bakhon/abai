@@ -216,16 +216,19 @@ export default {
                 throw new Error("Не выбраны поля для отображения")
             }
         },
-        async isHasSelectedObjects() {
+        isHasSelectedObjects() {
             let content = this.selectedObjects;
+            let arr = null;
             for(let structureType in content) {
                 for(let option in content[structureType]) {
                     for(let node of content[structureType][option]) {
                         if(node.isChecked) {
                             return true;
                         }
-                        let arr = await this.getSelectedChildren(node);
-                        if(arr.length != 0) return true;
+                        this.getSelectedChildren(node)
+                        .then((target) => {
+                            if(target) return true;
+                        });
                     }
                 }
             }
