@@ -8,6 +8,8 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgNGDUWellRequest;
 use App\Http\Resources\OmgNGDUWellListResource;
+use App\Models\ComplicationMonitoring\ManualWell;
+use App\Models\ComplicationMonitoring\ManualZu;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use App\Models\ComplicationMonitoring\Well;
 use App\Models\ComplicationMonitoring\Zu;
@@ -43,18 +45,7 @@ class OmgNGDUWellController extends CrudController
                     'title' => trans('monitoring.zu.zu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => Zu::whereHas('omgngdu_well')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
+                        'values' => getAllObjectsWithOmgngdu('Zu', 'omgngdu_well')
                     ]
                 ],
 
@@ -62,18 +53,7 @@ class OmgNGDUWellController extends CrudController
                     'title' => trans('monitoring.well.well'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => Well::whereHas('omgngdu_well')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
+                        'values' => getAllObjectsWithOmgngdu('Well')
                     ]
                 ],
 
@@ -139,7 +119,7 @@ class OmgNGDUWellController extends CrudController
         parent::list($request);
 
         $query = OmgNGDUWell::query()
-            ->with('zu', 'well');
+            ->with('zu', 'well', 'manualWell', 'manualZu');
 
         $omgngdu_well = $this
             ->getFilteredQuery($request->validated(), $query)
