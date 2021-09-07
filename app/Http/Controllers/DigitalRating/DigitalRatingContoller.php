@@ -43,7 +43,6 @@ class DigitalRatingContoller extends Controller
                ORDER BY dbeg DESC LIMIT 2', 
                ['id' => $item->well_id,'PARAM_GDIS_HDIN_id'=>self::PARAM_GDIS_HDIN_id,
                'PARAM_GDIS_CONCLUSION_GDM_ID'=>self::PARAM_GDIS_CONCLUSION_GDM_ID]);
-               dd($params_gdis);
                foreach ($params_gdis as $param) {
                   if($param->param_gdis_id == 217) {
                      $param_gdis_hdin = $param->value_double;
