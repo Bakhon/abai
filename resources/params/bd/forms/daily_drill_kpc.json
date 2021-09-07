@@ -1,14 +1,6 @@
 {
   "type": "table",
   "table_type": "wells",
-  "filter": [
-    {
-      "code": "date",
-      "title": "date",
-      "type": "date",
-      "default": "first day of january this year"
-    }   
-  ],
   "columns": [
     {
       "title": "id",
