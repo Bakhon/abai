@@ -206,12 +206,16 @@ export default {
             this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
             if (this.backendPeriodRange > 0) {
                 this.backendProductionChartData = this.backendGetSummaryForChart();
+                this.exportDzoCompaniesSummaryForChart(this.backendProductionChartData);
             }
             this.SET_LOADING(false);
             this.backendProductionTableData = _.cloneDeep(this.backendProductionParams.tableData.current[this.backendSelectedCategory]);
             if (['oilCondensateProductionCondensateOnly','oilCondensateDeliveryCondensateOnly'].includes(category) && !isFilterChanged) {
                 this.backendProductionTableData = _.cloneDeep(this.backendProductionParams.tableData.current[parent]);
                 this.backendProductionTableData = this.backendGetFilteredByDzo(this.backendProductionTableData,this.backendCondensateCompanies);
+            }
+            if (this.backendPeriodRange !== 0) {
+                return;
             }
             if (shouldRecalculateSummary) {
                 this.backendUpdateSummaryFact('oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG');
@@ -277,7 +281,7 @@ export default {
     async mounted() {
         this.SET_LOADING(true);
         this.backendProductionParams = await this.backendGetProductionParamsByCategory();
-        //this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
+        this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
         this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
         this.SET_LOADING(false);
     }

@@ -123,7 +123,7 @@ class GasProduction {
             $companySummary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$categoryFields['plan']);
             $companySummary['plan'] = $this->getCurrentPlanForYear($filteredPlan,$categoryFields['plan']);
         }
-        if ($companySummary['plan'] + $companySummary['fact'] == 0) {
+        if ($companySummary['plan'] + $companySummary['fact'] <= 0) {
             return $summary;
         }
         array_push($summary,$companySummary);
@@ -194,6 +194,49 @@ class GasProduction {
             array_push($summaryGas,$summary);
         }
         return $summaryGas;
+    }
+
+    public function getChartData($fact,$plan,$dzoName,$type)
+    {
+        $companies = $this->companies;
+        if (!is_null($dzoName)) {
+            $fact = $fact->filter(function($item) {
+                return $item->dzo_name === $dzoName;
+            });
+        } else {
+            $fact = $fact->filter(function($item) use($companies) {
+                return in_array($item->dzo_name,$companies);
+            });
+        }
+        $chartData = array();
+        $formattedPlan = array();
+        foreach($plan as $item) {
+            $date = Carbon::parse($item['date'])->format('d/m/Y');
+            $formattedPlan[$date][$item['dzo']] = $item->toArray();
+        }
+        if ($type === 'gasProduction') {
+            $factField = $this->fieldsMapping['naturalGasProduction']['fact'];
+            $planField = 'plan_gas';
+        } else {
+            $factField = $this->fieldsMapping[$type]['fact'];
+            $planField = $this->fieldsMapping[$type]['plan'];
+        }
+        foreach($fact as $item) {
+            $date = Carbon::parse($item['date'])->startOfDay()->format('d/m/Y');
+            $daySummary = array();
+            $formattedDate = Carbon::parse($item['date'])->copy()->firstOfMonth()->startOfDay()->format('d/m/Y');
+            $dzoName = $item['dzo_name'];
+            $planRecord = $formattedPlan[$formattedDate][$dzoName];
+            $daySummary['fact'] = $item[$factField];
+            $daySummary['plan'] = $planRecord[$planField];
+            $daySummary['date'] = $date;
+            $daySummary['name'] = $dzoName;
+            if ($type === 'gasProduction') {
+               $daySummary['fact'] +=  $item[$this->fieldsMapping['associatedGasProduction']['fact']];
+            }
+            array_push($chartData,$daySummary);
+        }
+        return $chartData;
     }
 
 }

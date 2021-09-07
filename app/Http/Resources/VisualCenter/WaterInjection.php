@@ -173,4 +173,39 @@ class WaterInjection {
         }
         return $ordered;
     }
+
+    public function getChartData($fact,$plan,$dzoName,$type)
+    {
+        $companies = $this->companies;
+        if (!is_null($dzoName)) {
+            $fact = $fact->filter(function($item) {
+                return $item->dzo_name === $dzoName;
+            });
+        } else {
+            $fact = $fact->filter(function($item) use($companies) {
+                return in_array($item->dzo_name,$companies);
+            });
+        }
+        $chartData = array();
+        $formattedPlan = array();
+        foreach($plan as $item) {
+            $date = Carbon::parse($item['date'])->format('d/m/Y');
+            $formattedPlan[$date][$item['dzo']] = $item->toArray();
+        }
+        $factField = $this->fieldsMapping[$type]['fact'];
+        $planField = $this->fieldsMapping[$type]['plan'];
+        foreach($fact as $item) {
+            $date = Carbon::parse($item['date'])->startOfDay()->format('d/m/Y');
+            $daySummary = array();
+            $formattedDate = Carbon::parse($item['date'])->copy()->firstOfMonth()->startOfDay()->format('d/m/Y');
+            $dzoName = $item['dzo_name'];
+            $planRecord = $formattedPlan[$formattedDate][$dzoName];
+            $daySummary['fact'] = $item[$factField];
+            $daySummary['plan'] = $planRecord[$planField];
+            $daySummary['date'] = $date;
+            $daySummary['name'] = $dzoName;
+            array_push($chartData,$daySummary);
+        }
+        return $chartData;
+    }
 }
