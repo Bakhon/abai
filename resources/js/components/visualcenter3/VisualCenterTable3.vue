@@ -16,12 +16,6 @@
                             <div class="number">
                               {{ getFormattedNumber(backendSummary.oilProductionFact) }}
                             </div>
-<!--                            <div-->
-<!--                                    v-if="!buttonDailyTab && backendPeriodRange !== 0"-->
-<!--                                    class="unit-vc ml-2"-->
-<!--                            >-->
-<!--                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}-->
-<!--                            </div>-->
                             <div
                                     class="unit-vc ml-2"
                             >
@@ -81,12 +75,6 @@
                             <div class="number">
                               {{ getFormattedNumber(backendSummary.oilDeliveryFact) }}
                             </div>
-<!--                            <div-->
-<!--                                    v-if="!buttonDailyTab && backendPeriodRange !== 0"-->
-<!--                                    class="unit-vc ml-2"-->
-<!--                            >-->
-<!--                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}-->
-<!--                            </div>-->
                             <div
                                     class="unit-vc ml-2"
                             >
@@ -146,12 +134,6 @@
                             <div class="number">
                               {{ getFormattedNumber(backendSummary.gasProductionFact) }}
                             </div>
-<!--                            <div-->
-<!--                                    v-if="!buttonDailyTab && !isOneDateSelected"-->
-<!--                                    class="unit-vc ml-2"-->
-<!--                            >-->
-<!--                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.meterCubic') }}-->
-<!--                            </div>-->
                             <div
                                     class="unit-vc ml-2"
                             >
@@ -777,7 +759,6 @@
               </div>
             </div>
 
-              <!-- old table todo -->
             <div class="d-flex mh-60 mt-3 px-4">
               <div
                       class="col-sm-7 vis-table"
@@ -866,11 +847,6 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-<!--                    <th v-if="isFilterTargetPlanActive && !isOilResidueActive">-->
-<!--                      {{ trans("visualcenter.dzoTargetPlan") }}-->
-<!--                      <br>-->
-<!--                      {{ getThousandMetricNameByCategorySelected() }}-->
-<!--                    </th>-->
                     <th v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoOpec") }}
                     </th>
@@ -920,7 +896,6 @@
                               "
                       >
                         {{ getDzoName(item.name,dzoNameMapping) }}
-<!--                        {{ getNameDzoFull(item.name) }}-->
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span
@@ -932,14 +907,6 @@
                         {{ getNameDzoFull(item.name) }}
                         <img src="/img/icons/link.svg" />
                       </span>
-<!--                      <span>-->
-<!--                        {{ getDzoName(item.name,dzoNameMappingWithoutKMG) }}-->
-<!--                        <img src="/img/icons/link.svg" />-->
-<!--                      </span>-->
-<!--                      <span v-else :class="getDzoNameFormatting(item.name)">-->
-<!--                        {{ getDzoName(item.name,dzoNameMapping) }}-->
-<!--                        <img src="/img/icons/link.svg" />-->
-<!--                      </span>-->
                     </td>
                     <td
                             v-if="buttonYearlyTab && !backendMenu.oilCondensateDeliveryOilResidue"
@@ -1021,35 +988,6 @@
                         {{getFormattedNumberToThousand(item.plan,item.fact)}}
                       </div>
                     </td>
-<!--                    <td-->
-<!--                            v-else-if="!isOilResidueActive"-->
-<!--                            :class="getDzoColumnsClass(index,'difference')">-->
-<!--                      <div-->
-<!--                              v-if="item.plan - item.fact  !== 0"-->
-<!--                              :class="item.plan > item.fact || item.fact === 0 ?-->
-<!--                                'triangle fall-indicator-production-data' :-->
-<!--                                'triangle growth-indicator-production-data'-->
-<!--                              "-->
-<!--                      ></div>-->
-<!--                      <div class="font dynamic" >-->
-<!--                        {{getFormattedNumberToThousand(item.plan,item.fact)}}-->
-<!--                      </div>-->
-<!--                    </td>-->
-<!--                    <td-->
-<!--                            v-if="!isFilterTargetPlanActive && !isConsolidatedCategoryActive() && !isOilResidueActive"-->
-<!--                            :class="`${getDzoColumnsClass(index,'percent')}`"-->
-<!--                    >-->
-<!--                      <div-->
-<!--                              v-if="item.plan - item.fact  !== 0"-->
-<!--                              :class="item.plan > item.fact || item.fact === 0 ?-->
-<!--                                'triangle fall-indicator-production-data' :-->
-<!--                                'triangle growth-indicator-production-data'-->
-<!--                              "-->
-<!--                      ></div>-->
-<!--                      <div class="font dynamic">-->
-<!--                        {{getPercentDifference (item.plan , item.fact)}}-->
-<!--                      </div>-->
-<!--                    </td>-->
                     <td
                             v-if="!backendMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
@@ -1066,14 +1004,6 @@
                         {{ getFormattedNumberToThousand(item.opek,item.fact) }}
                       </div>
                     </td>
-<!--                    <td-->
-<!--                            v-if="isFilterTargetPlanActive && !isOilResidueActive"-->
-<!--                            :class="`${getDzoColumnsClass(index,'percent')}`"-->
-<!--                    >-->
-<!--                      <div class="font">-->
-<!--                        {{ formatDigitToThousand(item.targetPlan) }}-->
-<!--                      </div>-->
-<!--                    </td>-->
                     <td
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="getDarkColorClass(index)"
@@ -1226,28 +1156,12 @@
                         </div>
                       </div>
                     </td>
-<!--                    <td-->
-<!--                            v-else-if="!isOilResidueActive"-->
-<!--                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?-->
-<!--                            getDarkerClass(index) : getLighterClass(index)"-->
-<!--                    >-->
-<!--                      <div-->
-<!--                              v-if="totalSummary.fact > 0"-->
-<!--                              :class="getIndicatorClass(backendSummaryPlan,backendSummaryFact)"-->
-<!--                      ></div>-->
-<!--                      <div class="font dynamic">-->
-<!--                        {{formatDigitToThousand(backendSummaryDifference)}}-->
-<!--                        <div class="right">-->
-<!--                          {{ trans("visualcenter.thousand") }}{{ metricName }}-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </td>-->
                     <td
                             v-if="isFilterTargetPlanActive && !backendMenu.oilCondensateDeliveryOilResidue"
                             :class="`${getColorClassBySelectedPeriod(index)}`"
                     >
-                      <div class="font">targetPlan
-<!--                        {{dzoCompaniesSummary.targetPlan}}-->
+                      <div class="font">
+                        {{formatDigitToThousand(backendSummaryYearlyPlan)}}
                       </div>
                     </td>
                     <td
@@ -1263,19 +1177,6 @@
                         {{formatDigitToThousand(Math.abs(backendSummaryOpekDifference))}}
                       </div>
                     </td>
-<!--                    <td-->
-<!--                            v-if="!isFilterTargetPlanActive && !isConsolidatedCategoryActive() && !isOilResidueActive"-->
-<!--                            :class="`${getColorClassBySelectedPeriod(index)}`"-->
-<!--                    >-->
-<!--                      <div-->
-<!--                              v-if="totalSummary.fact > 0"-->
-<!--                              :class="getIndicatorClass(backendSummaryOpek,backendSummaryFact)"-->
-<!--                      ></div>-->
-<!--                      <div class="font dynamic" v-if="totalSummary.fact > 0">-->
-<!--                        {{dzoCompaniesSummary.percent}}-->
-<!--                      </div>-->
-<!--                    </td>-->
-
                     <td
                             :class="getDarkerClass(index)"
                             v-if="backendPeriodRange === 0 && !backendMenu.oilCondensateDeliveryOilResidue"
