@@ -19,7 +19,12 @@ class Tech extends TBDModel
 
     public function parent()
     {
-        return $this->belongsTo(Geo::class, 'parent_id', 'id');
+        return $this->belongsTo(Tech::class, 'parent', 'id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Tech::class, 'parent', 'id');
     }
 
     public function wells()

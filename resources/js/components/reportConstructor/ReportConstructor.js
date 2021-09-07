@@ -534,6 +534,11 @@ export default {
         setEndOfMonth(date) {
             this.endDate = formatDate.getLastDayOfMonthFormatted(date, 'datetimePickerFormat');
         },
+        clearDate() {
+            this.setDefaultDateFilter();
+            this.startDate = null;
+            this.endDate = null;
+        },
         saveTemplate() {
             this.SET_LOADING(true)
             let params = {

@@ -181,80 +181,77 @@
           <div class="col">
             <section class="section-top  bg-dark">
               <div class="vertical-centered">
-                <div class="row">
                   <div class="row date-container">
-                    <div class="col start-date-container mb-2">
-                      <label>{{ trans('bd.choose_start_date') }}</label>
-                      <template>
-                        <datetime
-                            type="date"
-                            v-bind:value="startDate"
-                            v-on:input="onStartDatePickerClick($event)"
-                            class="start-date"
-                            value-zone="Asia/Almaty"
-                            zone="Asia/Almaty"
-                            :title="trans('bd.choose_start_date')"
-                            :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-                            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                            :max-datetime="endDate"
-                            :week-start="1"
-                            :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
-                            auto
-                            :flow="dateFlow"
-                        >
-                        </datetime>
-                      </template>
+                    <div class="col">
+                      <div class="row start-date-container mb-2">
+                        <label class="col">{{ trans('bd.start_date') }}</label>
+                        <template>
+                          <datetime
+                              type="date"
+                              v-bind:value="startDate"
+                              v-on:input="onStartDatePickerClick($event)"
+                              class="col start-date"
+                              value-zone="Asia/Almaty"
+                              zone="Asia/Almaty"
+                              :title="trans('bd.choose_start_date')"
+                              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                              :max-datetime="endDate"
+                              :week-start="1"
+                              :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+                              auto
+                              :flow="dateFlow"
+                          >
+                          </datetime>
+                        </template>
+                      </div>
+                      <div class="row end-date-container mb-2">
+                        <label class="col">{{ trans('bd.end_date') }}</label>
+                        <template>
+                          <datetime
+                              type="date"
+                              v-bind:value="endDate"
+                              v-on:input="onEndDatePickerClick($event)"
+                              class="end-date"
+                              value-zone="Asia/Almaty"
+                              zone="Asia/Almaty"
+                              :title="trans('bd.choose_end_date')"
+                              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                              :min-datetime="startDate"
+                              :week-start="1"
+                              :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+                              auto
+                              :flow="dateFlow"
+                          >
+                          </datetime>
+                        </template>
+                      </div>
                     </div>
-                    <div class="col end-date-container mb-2">
-                      <label>{{ trans('bd.choose_end_date') }}</label>
-                      <template>
-                        <datetime
-                            type="date"
-                            v-bind:value="endDate"
-                            v-on:input="onEndDatePickerClick($event)"
-                            class="end-date"
-                            value-zone="Asia/Almaty"
-                            zone="Asia/Almaty"
-                            :title="trans('bd.choose_end_date')"
-                            :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-                            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                            :min-datetime="startDate"
-                            :week-start="1"
-                            :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
-                            auto
-                            :flow="dateFlow"
-                        >
-                        </datetime>
-                      </template>
+                    <div class="col date-picker inline-flex">
+                      <button
+                          @click="onMonthClick()"
+                          class="calendar mb-2"
+                          v-bind:class="{active: currentDatePickerFilter === 'month'}"
+                      >{{ trans('bd.month_3') }}
+                      </button>
+
+                      <button
+                          @click="onYearClick()"
+                          class="calendar justify-content-center mb-2"
+                          v-bind:class="{active: currentDatePickerFilter === 'year'}"
+                      >{{ trans('bd.year_1') }}
+                      </button>
+                    </div>
+
+                    <div class="btn-container">
+                      <button @click="clearDate()"> Очистить дату </button>
+                      <button class="" @click="showTemplatesModal('templateSelectorModal')">{{
+                          trans('bd.choose_template')
+                        }}
+                      </button>
                     </div>
                   </div>
-                  <div class="row date-picker inline-flex mb-2">
-                    <button
-                        @click="onMonthClick()"
-                        class="calendar"
-                        v-bind:class="{active: currentDatePickerFilter === 'month'}"
-                    >{{ trans('bd.month_3') }}
-                    </button>
-
-                    <button
-                        @click="onYearClick()"
-                        class="calendar justify-content-center"
-                        v-bind:class="{active: currentDatePickerFilter === 'year'}"
-                    >{{ trans('bd.year_1') }}
-                    </button>
-                  </div>
-
-                  <div class="btn-container">
-                    <button class="" :disabled="!startDate" @click="updateStatistics()">{{
-                        trans('bd.create_report')
-                      }}
-                    </button>
-                    <button class="" @click="showTemplatesModal('templateSelectorModal')">{{
-                        trans('bd.choose_template')
-                      }}
-                    </button>
-                  </div>
-                </div>
 
               </div>
 
@@ -374,6 +371,9 @@
               </div>
               <div class="row">
                 <div class="btn-container">
+                  <button class="" :disabled="!startDate" @click="updateStatistics()">
+                    {{trans('bd.create_report')}}
+                  </button>
                   <button @click="getStatisticsFile()">Скачать отчет</button>
                   <button @click="showModal('newTemplateNameModal')">Сохранить как шаблон</button>
                 </div>
@@ -957,7 +957,9 @@ body {
     }
 
     .date-container {
-      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
 
       label {
         margin-right: 10px;
@@ -983,25 +985,11 @@ body {
         display: none;
       }
 
-      @media(max-width: 1035px) {
-        .start-date-container {
-          display: flex;
-          justify-content: flex-start;
-          margin-right: 30px;
-        }
-      }
-
       @media(min-width: 1035px) {
         .start-date-container {
           display: flex;
-          justify-content: flex-end;
           margin-right: 30px;
         }
-      }
-
-      .end-date-container {
-        display: flex;
-        justify-content: flex-start;
       }
     }
 
@@ -1457,7 +1445,7 @@ body {
 
 .btn-container {
   display: flex;
-  margin-left: auto;
+  justify-content: center;
 
   button {
     background: #3C4280;

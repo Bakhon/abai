@@ -69,7 +69,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectField.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -103,7 +103,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectWellName.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_well_filter">
                               <b-form-group
@@ -137,7 +137,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectWellType.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -171,7 +171,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectHorizon.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -205,7 +205,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectObject.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -239,7 +239,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectBlock.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -278,7 +278,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectExpMeth.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -716,7 +716,7 @@
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_events[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].planned_events[1][0])}`"> </span>
-                    <span v-if="row.planned_events[0]!=null">{{Math.round(row.planned_events[0]*10)/10}}</span>
+                    <span v-if="row.planned_events[0]!=null">{{row.planned_events[0]}}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                         {{ wells[row_index].planned_events[1][1]}}
                     </span>
@@ -828,6 +828,7 @@ export default {
             this.wells[row_index] &&
             this.wells[row_index][value][1][0] !== '0';
         },
+        
         isActiveClass (row) {
             if (row.rus_wellname) {
                 return false
