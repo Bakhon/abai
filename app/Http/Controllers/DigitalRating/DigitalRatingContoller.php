@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\DigitalRating;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -67,7 +68,7 @@ class DigitalRatingContoller extends Controller
  
    public function search_wells(Request $request):JsonResponse
    {
-     
+      
       $sector_number = $request->input('sector');
       $horizon = $request->input('horizon');
       $sectors_json_points = file_get_contents(public_path('js/json/digital-rating/horizon/grid_'.$horizon.'.json'), 'r');
@@ -80,19 +81,20 @@ class DigitalRatingContoller extends Controller
       }
 
 
-      $weels_json_points = file_get_contents(public_path('js/json/digital-rating/wells_points.json'), 'r');
-      $weels_points= json_decode($weels_json_points, true);
-      $sectorX  = $sector['x1'];
-      $sectorY = $sector['y1'];
-      $radius =500;
+         $weels_json_points = file_get_contents(public_path('js/json/digital-rating/wells_points.json'), 'r');
+         $weels_points= json_decode($weels_json_points, true);
+         $sectorX  = $sector['x1'];
+         $sectorY = $sector['y1'];
+         $radius =500;
          $neighboring_wells = [];
+
          foreach ($weels_points as $item) {
             if((($item['x'] - $sectorX)*($item['x'] - $sectorX))+(($item['y']-$sectorY)*($item['y']-$sectorY)) <= $radius*$radius){
             if($item['horizon'] == $horizon)
                $neighboring_wells[] = $item;
             }
          };
-
+         
          if(empty($neighboring_wells)){
             return response()->json(['message' => 'Well not found']);
          }
@@ -100,5 +102,5 @@ class DigitalRatingContoller extends Controller
          $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
          return response()->json($wells,200,$headers,JSON_UNESCAPED_UNICODE);
    }
- 
+   
 };
