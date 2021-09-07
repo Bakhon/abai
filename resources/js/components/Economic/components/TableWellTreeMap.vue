@@ -1,34 +1,18 @@
 <template>
   <div>
-    <div v-for="chart in charts" :key="chart.key">
-      <subtitle font-size="18" style="line-height: 26px">
-        {{ chart.title }}
-      </subtitle>
-
-      <apexchart
-          :options="chartOptions(chart.key)"
-          :series="chartSeries[chart.key]"
-          type="treemap"
-          style="color: #000"/>
+    <div v-for="chart in charts"
+         :key="chart.title"
+         :id="chart.title">
     </div>
   </div>
 </template>
 
 <script>
-import chart from "vue-apexcharts";
-
-import Subtitle from "./Subtitle";
-
-const RU = require("apexcharts/dist/locales/ru.json");
-
-const WELL_KEYS = ['oil_12m', 'liquid_12m', 'Operating_profit_12m']
+import {SELECTED_COLOR, treemapMixin} from "../mixins/treemapMixin";
 
 export default {
   name: "TableWellTreeMap",
-  components: {
-    Subtitle,
-    apexchart: chart,
-  },
+  mixins: [treemapMixin],
   props: {
     scenario: {
       required: true,
@@ -39,9 +23,6 @@ export default {
       type: Array
     },
   },
-  data: () => ({
-    selectedWells: []
-  }),
   computed: {
     filteredData() {
       return this.data.filter(x =>
@@ -50,24 +31,34 @@ export default {
       )
     },
 
+    stoppedWells() {
+      return JSON.parse(this.scenario.uwi_stop)
+    },
 
     chartSeries() {
       let series = {}
 
-      WELL_KEYS.forEach(key => {
-        let data = []
+      this.charts.forEach(chart => {
+        let wells = []
 
-        let colors = []
+        this.filteredData.forEach(well => {
+          let value = +well[chart.key]
 
-        this.filteredData.sort((prev, next) => +next[key] - +prev[key]).forEach(well => {
-          let value = +well[key]
+          if (chart.hasOwnProperty('positive') && value < 0) return
 
-          colors.push(this.getColor(well))
+          if (chart.hasOwnProperty('negative') && value >= 0) return
 
-          data.push({x: well.uwi, y: value})
+          let color = this.getColor(well, 'Operating_profit_12m')
+
+          wells.push({
+            name: well.uwi,
+            value: Math.abs(value),
+            fill: this.stoppedWells.includes(well.uwi) ? SELECTED_COLOR : color,
+            fillOriginal: color
+          })
         })
 
-        series[key] = [{data: data, colors: colors}]
+        series[chart.title] = wells
       })
 
       return series
@@ -76,8 +67,14 @@ export default {
     charts() {
       return [
         {
-          title: this.trans('economic_reference.operating_profit'),
-          key: 'Operating_profit_12m'
+          title: this.trans('economic_reference.operating_profit') + '-',
+          key: 'Operating_profit_12m',
+          negative: true
+        },
+        {
+          title: this.trans('economic_reference.operating_profit') + '+',
+          key: 'Operating_profit_12m',
+          positive: true
         },
         {
           title: this.trans('economic_reference.liquid_production'),
@@ -88,50 +85,8 @@ export default {
           key: 'oil_12m'
         },
       ]
-    }
+    },
   },
-  methods: {
-    selectPoint(key, {seriesIndex, dataPointIndex}) {
-      let uwi = this.chartSeries[key][seriesIndex].data[dataPointIndex].x
-
-      let index = this.selectedWells.findIndex(well => well === uwi)
-
-      index === -1
-          ? this.selectedWells.push(uwi)
-          : this.selectedWells.splice(index, 1);
-    },
-
-    getColor(well) {
-      if (this.selectedWells.includes(well.uwi)) {
-        return '#8125B0'
-      }
-
-      return +well.Operating_profit_12m > 0 ? '#13B062' : '#AB130E'
-    },
-
-    chartOptions(key) {
-      return {
-        legend: {
-          show: false
-        },
-        colors: this.chartSeries[key][0].colors,
-        plotOptions: {
-          treemap: {
-            distributed: true,
-            enableShades: false,
-          }
-        },
-        chart: {
-          foreColor: '#FFFFFF',
-          locales: [RU],
-          defaultLocale: 'ru',
-          events: {
-            dataPointSelection: (event, chartContext, config) => this.selectPoint(key, config)
-          }
-        },
-      }
-    },
-  }
 }
 </script>
 

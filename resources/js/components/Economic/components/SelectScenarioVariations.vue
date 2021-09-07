@@ -115,7 +115,7 @@ export default {
     },
     scenarioVariations: {
       required: true,
-      type: Array
+      type: Object
     },
     isInline: {
       required: false,

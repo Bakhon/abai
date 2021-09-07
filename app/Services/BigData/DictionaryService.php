@@ -18,11 +18,11 @@ use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
+use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\ExplTypePlanGDIS;
 use App\Models\BigData\Dictionaries\FileFormat;
 use App\Models\BigData\Dictionaries\FileOrigin;
 use App\Models\BigData\Dictionaries\FileStatus;
-use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
 use App\Models\BigData\Dictionaries\GeoRockType;
@@ -33,6 +33,7 @@ use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\IsoMaterialType;
 use App\Models\BigData\Dictionaries\LabResearchType;
+use App\Models\BigData\Dictionaries\MachineType;
 use App\Models\BigData\Dictionaries\Mark;
 use App\Models\BigData\Dictionaries\NoBtmReason;
 use App\Models\BigData\Dictionaries\Org;
@@ -309,6 +310,10 @@ class DictionaryService
         ],
         'recording_state' => [
             'class' => RecordingState::class,
+            'name_field' => 'name_ru'
+        ],
+        'machine_types' => [
+            'class' => MachineType::class,
             'name_field' => 'name_ru'
         ]
     ];

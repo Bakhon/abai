@@ -189,16 +189,26 @@ export default {
       if (Object.keys(this.formFilesToSubmit).length > 0) {
         for (let key in this.formFilesToSubmit) {
           let formData = new FormData()
+          let existedFiles = []
           this.formFilesToSubmit[key].forEach((file, index) => {
+            if (file.exists) {
+              existedFiles.push(file.id)
+              return
+            }
             formData.append(`uploads[]`, file.file)
           })
+
+          if (formData.get('uploads[]') === null) {
+            files[key] = existedFiles
+            continue
+          }
 
           let fileField = this.formFields.find(field => field.code === key)
           let origin = this.formValues[fileField.origin]
           formData.append('origin', origin)
 
           await axios.post(this.localeUrl('/attachments'), formData).then(({data}) => {
-            files[key] = data.files
+            files[key] = [...JSON.parse(data.files), ...existedFiles]
           }).catch(() => {
             this.SET_LOADING(false)
           })
