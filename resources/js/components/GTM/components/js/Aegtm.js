@@ -17,37 +17,6 @@ export default {
             accumOilProdLabels: [],
             accumOilProdFactData: [],
             accumOilProdPlanData: [],
-            // lineChartOptions: {
-            //     responsive: true,
-            //     maintainAspectRatio: false,
-            //     legend: {
-            //         position: 'bottom',
-            //         labels: {
-            //             fontSize: 14,
-            //             fontColor: '#FFF',
-            //         },
-            //     },
-            //     scales: {
-            //         yAxes: [{
-            //             gridLines: {
-            //                 color: '#3C4270',
-            //             },
-            //             ticks: {
-            //                 fontColor: '#FFF',
-            //                 fontSize: 10,
-            //             },
-            //         }],
-            //         xAxes: [{
-            //             gridLines: {
-            //                 fontColor: '#3C4270',
-            //             },
-            //             ticks: {
-            //                 fontColor: '#FFF',
-            //                 fontSize: 10,
-            //             },
-            //         }],
-            //     }
-            // },
             gtmTypesList: [
                 { id: "vns", name: this.trans('paegtm.gtm_vns') },
                 { id: "grp", name: this.trans('paegtm.gtm_grp') },
@@ -262,8 +231,6 @@ export default {
     },
     mounted() {
         this.getData();
-        console.log(this.accumOilProdPlanData)
-        console.log(this.accumOilProdFactData)
         this.dzosForFilter = this.dzos;
     },
 }

@@ -56,7 +56,7 @@
 </template>
 <script>
 
-import { paegtmMapActions,  paegtmMapState } from '@store/helpers';
+import {paegtmMapGetters, paegtmMapActions,  paegtmMapState } from '@store/helpers';
 
 export default {
     props: {
@@ -67,28 +67,26 @@ export default {
         return {
             isDatePickerShow: false,
             dateFlow: ['year', 'month', 'date'],
-            dateStartGtm: '2020-01-01',
-            dateEndGtm: '2021-12-01',
+            dateStartGtm: this.getDateStart(),
+            dateEndGtm: this.getDateEnd(),
         }
     },
     computed: {
         ...paegtmMapState([
-          'dateStart',
-          'dateEnd'
+            'dateStart',
+            'dateEnd',
         ]),
-      ...paegtmMapState([
-        'getDateStart',
-        'getDateEnd'
-      ]),
     },
     methods: {
+        ...paegtmMapGetters([
+            'getDateStart',
+            'getDateEnd'
+        ]),
         ...paegtmMapActions([
             'changeDateStart',
             'changeDateEnd',
         ]),
         onDateRangeChange() {
-            // this.dateStart = this.dateStartGtm
-            // this.dateEnd = this.dateEndGtm
             this.isDatePickerShow = false;
             this.changeDateStart(this.dateStartGtm);
             this.changeDateEnd(this.dateEndGtm);

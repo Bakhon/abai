@@ -19,7 +19,7 @@
 </template>
 <script>
 
-import {paegtmMapActions} from '@store/helpers';
+import {paegtmMapState, paegtmMapActions} from '@store/helpers';
 import mainMenu from './mock-data/main_menu.json'
 
 export default {
@@ -34,6 +34,11 @@ export default {
             parentType: '',
             menu: mainMenu,
         };
+    },
+    computed: {
+        ...paegtmMapState([
+            'isShadowBlockShow',
+        ]),
     },
     methods: {
         ...paegtmMapActions([
