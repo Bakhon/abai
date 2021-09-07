@@ -2,6 +2,9 @@
   <form @submit.prevent="" ref="form" class="bd-main-block__form scrollable" style="width: 100%">
     <div class="table-page">
       <template v-if="formParams">
+        <p v-if="formError" class="table__message">
+          {{ formError }}
+        </p>
         <p v-if="formParams.table_type === 'plan' && (!id || type !== 'org')" class="table__message">
           {{ trans('bd.select_ngdu') }}
         </p>
@@ -47,14 +50,17 @@
                   :class="{'editable': formParams && formParams.available_actions.includes('update') && column.is_editable}"
                   @dblclick="editCell(row, column)"
               >
-                <template v-if="column.type === 'link'">
+                <template v-if="column.type === 'form'">
+                  <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
+                </template>
+                <template v-else-if="column.type === 'link'">
                   <a :href="row[column.code].href">{{ row[column.code].name }}</a>
                 </template>
                 <template v-else-if="column.type === 'label'">
-                  <label>{{ row[column.code].name }}</label>
+                  <label v-html="row[column.code].name"></label>
                 </template>
                 <template v-else-if="column.type === 'calc'">
-                  <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                  <span class="value" v-html="row[column.code] ? row[column.code].value : ''"></span>
                 </template>
                 <template v-else-if="column.type === 'copy'">
                   <input
@@ -100,9 +106,14 @@
                   </template>
                 </template>
                 <template v-else-if="column.type === 'dict'">
-                    <span class="value">
-                      {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
-                    </span>
+                  <bigdata-form-field
+                      :id="row.id"
+                      :key="`field_${column.code}`"
+                      v-model="row[column.code].value"
+                      :item="column"
+                      v-on:change="saveCell(row, column)"
+                  >
+                  </bigdata-form-field>
                 </template>
                 <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
                   <div v-if="isCellEdited(row, column)" class="input-wrap">
@@ -173,6 +184,18 @@
         v-on:close="rowHistoryGraph = null"
     >
     </RowHistoryGraph>
+    <div v-if="isInnerFormOpened" class="bd-popup">
+      <div class="bd-popup__inner">
+        <a class="bd-popup__close" href="#" @click.prevent="isInnerFormOpened = false">{{ trans('bd.close') }}</a>
+        <BigDataPlainForm
+            :params="innerFormParams"
+            :values="innerFormValues"
+            :well-id="innerFormWellId"
+            @close="isInnerFormOpened = false"
+        >
+        </BigDataPlainForm>
+      </div>
+    </div>
   </form>
 </template>
 
@@ -183,8 +206,11 @@ import 'vue-datetime/dist/vue-datetime.css'
 import {bdFormActions, globalloadingMutations} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
+import BigDataPlainForm from './PlainForm'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
+import BigdataFormField from './field'
+import forms from '../../../json/bd/forms.json'
 
 
 const requireComponent = require.context('./CustomColumns', true, /\.vue$/i);
@@ -221,12 +247,13 @@ export default {
   },
   components: {
     BigDataHistory,
-    RowHistoryGraph
+    BigDataPlainForm,
+    RowHistoryGraph,
+    BigdataFormField
   },
   data() {
     return {
       errors: {},
-      formValues: {},
       activeTab: 0,
       currentPage: 1,
       rows: [],
@@ -240,7 +267,13 @@ export default {
       rowHistoryColumns: [],
       rowHistoryGraph: null,
       oldFilter: null,
-      formParams: null
+      formParams: null,
+      formError: null,
+      forms: forms,
+      isInnerFormOpened: false,
+      innerFormParams: null,
+      innerFormValues: null,
+      innerFormWellId: null
     }
   },
   watch: {
@@ -279,6 +312,7 @@ export default {
     ]),
     updateTableData() {
 
+      this.formError = null
       if (!this.filter || !this.id || !this.type) return
 
       this.SET_LOADING(true)
@@ -294,8 +328,18 @@ export default {
             if (data.columns) {
               this.formParams.columns = data.columns
             }
+            if (data.merge_columns) {
+              this.formParams.merge_columns = data.merge_columns
+            }
+            if (data.complicated_header) {
+              this.formParams.complicated_header = data.complicated_header
+            }
             this.recalculateCells()
             this.loadEditHistory()
+          })
+          .catch(error => {
+            console.log(error)
+            this.formError = error.response.data.message
           })
           .finally(() => {
             this.SET_LOADING(false)
@@ -480,6 +524,8 @@ export default {
     },
     copyValues(row, column, rowIndex) {
 
+      if (!row[column.copy.from].value) return
+
       this.$bvModal.msgBoxConfirm(this.trans('bd.sure_you_want_to_copy'), {
         okTitle: this.trans('app.yes'),
         cancelTitle: this.trans('app.no'),
@@ -506,6 +552,13 @@ export default {
               })
             }
           })
+    },
+    openForm(row, column) {
+      this.isInnerFormOpened = true
+      this.innerFormParams = this.forms.find(formItem => formItem.code === column.form)
+      this.innerFormWellId = row.id
+      this.innerFormValues = {}
+      this.innerFormValues[column.code] = row[column.code].value
     }
   },
 };
@@ -619,7 +672,7 @@ body.fixed {
       width: 100%;
     }
 
-    th {
+    thead {
       position: sticky;
       top: 0;
       z-index: 10;

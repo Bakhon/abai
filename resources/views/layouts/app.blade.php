@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -34,6 +33,7 @@
     @include('layouts.head-sidebar')
 
     <div class="container-fluid col pt-md-10px mx-md-10px px-0 container-main">
+        <notifications position="top"></notifications>
         <cat-loader></cat-loader>
         @yield('content')
     </div>

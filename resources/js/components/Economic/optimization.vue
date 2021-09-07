@@ -1,8 +1,17 @@
 <template>
   <div class="position-relative">
     <div class="row">
-      <div class="col-9 pr-2">
-        <div class="row text-white text-wrap flex-nowrap mb-10px">
+      <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
+        <select-scenario-variations
+            v-if="scenarioVariation.isFullScreen"
+            :scenario-variation="scenarioVariation"
+            :scenario-variations="scenarioVariations"
+            class="row p-3"
+            is-inline/>
+
+
+        <div v-else
+             class="row text-white text-wrap flex-nowrap mb-10px">
           <div
               v-for="(header, index) in calculatedHeaders"
               :key="`calculated_${index}`"
@@ -98,9 +107,9 @@
             @updateTab="updateTab"/>
       </div>
 
-      <div
-          :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right:0'"
-          class="col-3">
+      <div v-show="!scenarioVariation.isFullScreen"
+           :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right:0'"
+           class="col-3">
         <div class="bg-main1 text-white text-wrap p-3 mb-10px">
           <subtitle>
             {{ trans('economic_reference.production_wells_fund') }}
@@ -220,97 +229,10 @@
             </option>
           </select>
 
-          <div v-if="form.scenario_id">
-            <div>
-              <label for="oil_price">
-                {{ trans('economic_reference.oil_price') }}
-              </label>
-
-              <select
-                  v-model="scenarioVariation.oil_price"
-                  id="oil_price"
-                  class="mb-3 form-control text-white border-0 bg-dark-blue">
-                <option
-                    v-for="item in scenarioVariations.oil_prices"
-                    :key="item"
-                    :value="item">
-                  {{ item }}
-                </option>
-              </select>
-            </div>
-
-            <div>
-              <label for="dollar_rate">
-                {{ trans('economic_reference.course_prices') }}
-              </label>
-
-              <select
-                  v-model="scenarioVariation.dollar_rate"
-                  id="dollar_rate"
-                  class="mb-3 form-control text-white border-0 bg-dark-blue">
-                <option
-                    v-for="item in scenarioVariations.dollar_rates"
-                    :key="item"
-                    :value="item">
-                  {{ item }}
-                </option>
-              </select>
-            </div>
-
-            <div>
-              <label for="salary_percent">
-                {{ trans('economic_reference.salary_optimization') }}
-              </label>
-
-              <select
-                  v-model="scenarioVariation.salary_percent"
-                  id="salary_percent"
-                  class="mb-3 form-control text-white border-0 bg-dark-blue">
-                <option
-                    v-for="item in scenarioVariations.salary_percents"
-                    :key="item.value"
-                    :value="item.value">
-                  {{ item.label }}
-                </option>
-              </select>
-            </div>
-
-            <div>
-              <label for="retention_percent">
-                {{ trans('economic_reference.retention_percents') }}
-              </label>
-
-              <select
-                  v-model="scenarioVariation.retention_percent"
-                  id="retention_percent"
-                  class="mb-3 form-control text-white border-0 bg-dark-blue">
-                <option
-                    v-for="item in scenarioVariations.retention_percents"
-                    :key="item.value"
-                    :value="item.value">
-                  {{ item.label }}
-                </option>
-              </select>
-            </div>
-
-            <div>
-              <label for="optimization_percent">
-                {{ trans('economic_reference.stop_unprofitable_fund') }}
-              </label>
-
-              <select
-                  v-model="scenarioVariation.optimization_percent"
-                  id="optimization_percent"
-                  class="mb-3 form-control text-white border-0 bg-dark-blue">
-                <option
-                    v-for="item in scenarioVariations.optimization_percents"
-                    :key="item.label"
-                    :value="item.value">
-                  {{ item.label }}
-                </option>
-              </select>
-            </div>
-          </div>
+          <select-scenario-variations
+              v-if="form.scenario_id"
+              :scenario-variation="scenarioVariation"
+              :scenario-variations="scenarioVariations"/>
 
           <button class="btn btn-primary mt-4 py-2 w-100 border-0 bg-export">
             {{ trans('economic_reference.export_excel') }}
@@ -334,15 +256,13 @@ import PercentBadge from "./components/PercentBadge";
 import PercentBadgeIcon from "./components/PercentBadgeIcon";
 import PercentProgress from "./components/PercentProgress";
 import SelectOrganization from "./components/SelectOrganization";
+import SelectScenarioVariations from "./components/SelectScenarioVariations";
 import Tables from "./components/Tables";
 
 const optimizedColumns = [
   'Revenue_total',
   'Revenue_local',
   'Revenue_export',
-  'Overall_expenditures',
-  'Overall_expenditures_full',
-  'operating_profit_12m',
   'oil',
   'liquid',
   'prs',
@@ -350,12 +270,16 @@ const optimizedColumns = [
   'days_worked',
   'production_export',
   'production_local',
-];
-
-const optimizedOtherColumns = [
+  'Fixed_noWRpayroll_expenditures',
   'Overall_expenditures',
   'Overall_expenditures_full',
-  'operating_profit_12m',
+  'Operating_profit',
+];
+
+const optimizedScenarioColumns = [
+  'Overall_expenditures',
+  'Overall_expenditures_full',
+  'Operating_profit',
 ];
 
 let economicRes = {
@@ -379,25 +303,65 @@ let economicRes = {
   org: {
     id: '',
     name: ''
-  }
+  },
+  gtms: []
 }
 
-let columnVariations = (column) => {
-  if (optimizedOtherColumns.includes(column)) {
-    return [column]
+let columnPairs = (column) => {
+  if (optimizedScenarioColumns.includes(column)) {
+    return [
+      {
+        original: column,
+        optimized: `${column}_scenario`
+      },
+      {
+        original: `${column}_profitable`,
+        optimized: `${column}_scenario_profitable`
+      },
+      {
+        original: `${column}_profitless_cat_1`,
+        optimized: `${column}_scenario_profitless_cat_1`
+      },
+      {
+        original: `${column}_profitless_cat_2`,
+        optimized: `${column}_scenario_profitless_cat_2`
+      },
+    ]
   }
 
   return [
-    column,
-    column + '_profitable',
-    column + '_profitless_cat_1',
-    column + '_profitless_cat_2',
-  ];
+    {
+      original: column,
+      optimized: `${column}_optimized`
+    },
+    {
+      original: `${column}_profitable`,
+      optimized: `${column}_profitable_optimized`
+    },
+    {
+      original: `${column}_profitless_cat_1`,
+      optimized: `${column}_profitless_cat_1_optimized`
+    },
+    {
+      original: `${column}_profitless_cat_2`,
+      optimized: `${column}_profitless_cat_2_optimized`
+    },
+  ]
+}
+
+let columnVariations = (column) => {
+  let pairs = columnPairs(column)
+
+  let variations = []
+
+  pairs.forEach(pair => variations.push(pair.original, pair.optimized))
+
+  return variations
 }
 
 optimizedColumns.forEach(column => {
-  columnVariations(column).forEach(columnVariation => {
-    economicRes.scenarios[0][columnVariation] = {
+  columnPairs(column).forEach(pair => {
+    economicRes.scenarios[0][pair.original] = {
       value: [0, ''],
       value_optimized: [0, ''],
       percent: 0,
@@ -410,7 +374,6 @@ optimizedColumns.forEach(column => {
 export default {
   name: "economic-optimization",
   components: {
-
     Divider,
     EconomicCol,
     EconomicTitle,
@@ -419,6 +382,7 @@ export default {
     PercentBadgeIcon,
     PercentProgress,
     SelectOrganization,
+    SelectScenarioVariations,
     Tables,
   },
   data: () => ({
@@ -434,7 +398,8 @@ export default {
       optimization_percent: {
         cat_1: null,
         cat_2: null,
-      }
+      },
+      isFullScreen: false
     },
     res: economicRes,
     isVisibleWellChanges: false
@@ -460,10 +425,10 @@ export default {
         },
         {
           name: this.trans('economic_reference.operating_profit'),
-          baseValue: this.scenario.operating_profit_12m.value[0],
-          value: this.scenario.operating_profit_12m[this.scenarioValueKey][0],
-          dimension: this.scenario.operating_profit_12m[this.scenarioValueKey][1],
-          percent: this.scenario.operating_profit_12m.percent
+          baseValue: this.scenario.Operating_profit.value[0],
+          value: this.scenario.Operating_profit[this.scenarioValueKey][0],
+          dimension: this.scenario.Operating_profit[this.scenarioValueKey][1],
+          percent: this.scenario.Operating_profit.percent
         }
       ]
     },
@@ -542,7 +507,8 @@ export default {
             value: this.avgLiquidValue(),
             dimension: this.trans('economic_reference.cubic_meter_per_day'),
             percent: this.avgLiquidPercent,
-            reverse: true,
+            reverse: false,
+            reversePercent: true
           },
         ],
       ]
@@ -748,12 +714,12 @@ export default {
       }
 
       let liquid = optimized
-          ? this.scenario.liquid.original_value_optimized
-          : this.scenario.liquid.original_value
+          ? +this.scenario.liquid.original_value_optimized
+          : +this.scenario.liquid.original_value
 
       let oil = optimized
-          ? this.scenario.oil.original_value_optimized
-          : this.scenario.oil.original_value
+          ? +this.scenario.oil.original_value_optimized
+          : +this.scenario.oil.original_value
 
       // TODO: посмотреть более точную формулу
       return liquid
@@ -767,12 +733,12 @@ export default {
       }
 
       let days_worked = optimized
-          ? this.scenario.days_worked.original_value_optimized
-          : this.scenario.days_worked.original_value
+          ? +this.scenario.days_worked.original_value_optimized
+          : +this.scenario.days_worked.original_value
 
       let oil = optimized
-          ? this.scenario.oil.original_value_optimized
-          : this.scenario.oil.original_value
+          ? +this.scenario.oil.original_value_optimized
+          : +this.scenario.oil.original_value
 
       return days_worked
           ? (oil / days_worked).toFixed(2)
@@ -785,12 +751,12 @@ export default {
       }
 
       let days_worked = optimized
-          ? this.scenario.days_worked.original_value_optimized
-          : this.scenario.days_worked.original_value
+          ? +this.scenario.days_worked.original_value_optimized
+          : +this.scenario.days_worked.original_value
 
       let liquid = optimized
-          ? this.scenario.liquid.original_value_optimized
-          : this.scenario.liquid.original_value
+          ? +this.scenario.liquid.original_value_optimized
+          : +this.scenario.liquid.original_value
 
       return days_worked
           ? (liquid / days_worked).toFixed(fractionDigits)
@@ -803,20 +769,20 @@ export default {
       }
 
       let uwi_count = optimized
-          ? this.scenario.uwi_count.original_value_optimized
-          : this.scenario.uwi_count.original_value
+          ? +this.scenario.uwi_count.original_value_optimized
+          : +this.scenario.uwi_count.original_value
 
       let prs = optimized
-          ? this.scenario.prs.original_value_optimized
-          : this.scenario.prs.original_value
+          ? +this.scenario.prs.original_value_optimized
+          : +this.scenario.prs.original_value
 
       return uwi_count
-          ? (prs * 1000 / uwi_count).toFixed(fractionDigits)
+          ? (prs / uwi_count).toFixed(fractionDigits)
           : 0
     },
 
-    updateTab(index){
-      this.isVisibleWellChanges = index === 3
+    updateTab(tab) {
+      this.isVisibleWellChanges = tab === 'well_changes'
     }
   }
 };

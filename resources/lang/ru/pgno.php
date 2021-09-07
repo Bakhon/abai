@@ -265,4 +265,10 @@ return array (
   'curveAnalysisLineName' => 'Кривая притока (анализ)',
   'inclinometriaWell' => 'Инклинометрия скважины :wellNumber',
   'kpodWarning' => 'Тек Кпод = :kpod, рекомендуем проверить входные данные ТР',
+  'sensitivity_analysis' => 'Анализ чувствительности',
+  'sensitivity_analysis_result' => 'Анализ чувствительности скважины',
+  'yagp' => 'ЯГП',
+  'kPodCalced' => 'Кпод (расч.)',
+  'kPodUser' => 'Кпод (польз.)',
+  'paker_no_tail' => 'Пакер',
 );

@@ -1,6 +1,5 @@
 <template>
   <div class="bd-form-mobile">
-    <notifications position="top"></notifications>
     <form ref="form" style="width: 100%">
       <template v-if="selectedItem">
         <ScrollPicker v-model="formValues[selectedItem.code]" :item="selectedItem" @close="saveItemValue">

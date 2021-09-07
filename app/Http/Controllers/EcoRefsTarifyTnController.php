@@ -38,7 +38,7 @@ class EcoRefsTarifyTnController extends Controller
                 ]
             ];
 
-            $ecorefstarifytn = EcoRefsTarifyTn::latest()->with('scfa')->with('branch')->with('company')->with('direction')->with('route')->with('routetn')->with('exc')->paginate(5);
+            $ecorefstarifytn = EcoRefsTarifyTn::orderBy('id','desc')->with('scfa')->with('branch')->with('company')->with('direction')->with('route')->with('routetn')->with('exc')->paginate(10);
 
             $ecorefstarifytnPages = view('economy_kenzhe/ecorefstarifytn.index',compact('ecorefstarifytn'))
                 ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);

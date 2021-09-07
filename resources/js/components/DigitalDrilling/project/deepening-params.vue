@@ -1,30 +1,22 @@
 <template>
     <table class="table defaultTable rastersParams">
         <tr>
-            <th colspan="2">Интервал, м</th>
-            <th rowspan="2">Вид технологической операции (бурение, отбор керна, расширка, проработка)</th>
-            <th rowspan="2">Способ бурения</th>
-            <th rowspan="2">Условный номер КНБК</th>
-            <th colspan="3">Режим бурения</th>
-            <th rowspan="2">Скорость выполнения технологической операции, м/час</th>
+            <th colspan="2">{{ trans('digital_drilling.deepening.interval_m') }}</th>
+            <th rowspan="2">{{ trans('digital_drilling.deepening.type_of_technological_operation') }}</th>
+            <th rowspan="2">{{ trans('digital_drilling.deepening.drilling_method') }}</th>
+            <th rowspan="2">{{ trans('digital_drilling.deepening.conditional_BHA_number') }}</th>
+            <th colspan="3">{{ trans('digital_drilling.deepening.drilling_mode') }}</th>
+            <th rowspan="2">{{ trans('digital_drilling.deepening.technological_operation_speed') }}</th>
         </tr>
         <tr>
-            <th colspan="1">от (верх)</th>
-            <th colspan="1">до (низ)</th>
-            <th colspan="1">осевая нагрузка, тс</th>
-            <th colspan="1">скорость вращения, об/мин</th>
-            <th colspan="1">расход бурового раствора, л/с</th>
+            <th colspan="1">{{ trans('digital_drilling.from') }}</th>
+            <th colspan="1">{{ trans('digital_drilling.to') }}</th>
+            <th colspan="1">{{ trans('digital_drilling.deepening.axial_load_tf') }}</th>
+            <th colspan="1">{{ trans('digital_drilling.deepening.rotation_speed_rpm') }}</th>
+            <th colspan="1">{{ trans('digital_drilling.deepening.drilling_mud_flow_rate') }}</th>
         </tr>
         <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
-            <td>6</td>
-            <td>7</td>
-            <td>8</td>
-            <td>9</td>
+            <td v-for="i in 9">{{i}}</td>
         </tr>
         <tr v-for="i in 20">
             <td></td>

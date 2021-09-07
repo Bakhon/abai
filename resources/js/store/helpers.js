@@ -169,3 +169,23 @@ export const geologyMutations = arrNames => ({
     ]),
 });
 // End geology //
+
+// Digital Rating //
+export const digitalRatingState = arrNames => ({
+    ...mapState('digitalRating', [
+      ...arrNames
+    ]),
+});
+
+export const digitalRatingMutations = arrNames => ({
+    ...mapMutations('digitalRating', [
+        ...arrNames
+    ]),
+});
+
+export const digitalRatingActions = arrNames => ({
+    ...mapActions('digitalRating', [
+        ...arrNames
+    ]),
+});
+//End Digital Rating//

@@ -1,5 +1,6 @@
 {
   "type": "table",
+  "table_type": "wells",
   "filter": [
     {
       "code": "treat_type",
@@ -23,28 +24,28 @@
     {
       "title": "volume",
       "code": "volume",
-      "type": "numeric",
+      "type": "float",
       "validation": "required|gte:0",
       "is_editable": true
     },
     {
       "title": "pretreat_pressure",
       "code": "pretreat_pressure",
-      "type": "numeric",
+      "type": "float",
       "validation": "gte:0",
       "is_editable": true
     },
     {
       "title": "posttreat_pressure",
       "code": "posttreat_pressure",
-      "type": "numeric",
+      "type": "float",
       "validation": "gte:0",
       "is_editable": true
     },
     {
       "title": "temperature",
       "code": "temperature",
-      "type": "numeric",
+      "type": "float",
       "validation": "gte:0",
       "is_editable": true
     },
@@ -53,19 +54,20 @@
       "type": "dict",
       "dict": "treat_type",
       "title": "treat_type",
-      "validation": "exists:tbd.dict.treat_type,id"
+      "validation": "exists:tbd.dict.treat_type,id",
+      "is_editable": true
     },
     {
       "title": "pretreat_buff_pressure",
       "code": "pretreat_buff_pressure",
-      "type": "numeric",
+      "type": "float",
       "validation": "gte:0",
       "is_editable": true
     },
     {
       "title": "posttreat_buff_pressure",
       "code": "posttreat_buff_pressure",
-      "type": "numeric",
+      "type": "float",
       "validation": "gte:0",
       "is_editable": true
     },
@@ -74,27 +76,22 @@
       "type": "dict",
       "dict": "chemical_reagent_types",
       "title": "ch_reagent_type",
-      "validation": "exists:tbd.dict.chemical_reagent_type,id"
+      "validation": "exists:tbd.dict.chemical_reagent_type,id",
+      "is_editable": true
     },
     {
       "code": "reason",
       "type": "dict",
       "dict": "reason_type_rtr",
       "title": "reason",
-      "validation": "required|exists:tbd.dict.reason,id"
+      "validation": "required|exists:tbd.dict.reason,id",
+      "is_editable": true
     },
     {
       "title": "scraper_income",
       "code": "scraper_income",
-      "type": "numeric",
+      "type": "float",
       "validation": "required|gte:0",
-      "is_editable": true
-    },
-    {
-      "title": "data",
-      "code": "data",
-      "type": "date",
-      "validation": "",
       "is_editable": true
     }
   ]

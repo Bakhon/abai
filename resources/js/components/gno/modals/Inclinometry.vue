@@ -134,7 +134,6 @@
           </div>
         </div>
       </div>
-      <notifications position="top"></notifications>
     </div>
   </div>
 </template>
