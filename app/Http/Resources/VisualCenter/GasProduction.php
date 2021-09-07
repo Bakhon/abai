@@ -52,7 +52,7 @@ class GasProduction {
         }
         $summaryByCategories = array();
         foreach($this->fieldsMapping as $subcategory => $fields) {
-            $summaryByCategories[$subcategory] = $this->getDataBySubCategory($groupedFact,$planData,$periodType,$yearlyPlan,$fields);
+            $summaryByCategories[$subcategory] = $this->getDataBySubCategory($groupedFact,$planData,$periodType,$yearlyPlan,$fields,$periodRange);
         }
         $summaryByCategories['gasProduction'] = $this->getSummary($summaryByCategories['naturalGasProduction'],$summaryByCategories['associatedGasProduction']);
         return $summaryByCategories;
@@ -80,22 +80,11 @@ class GasProduction {
              ->first();
     }
 
-    private function getDataBySubCategory($groupedFact,$planData,$periodType,$yearlyPlan,$fields)
+    private function getDataBySubCategory($groupedFact,$planData,$periodType,$yearlyPlan,$fields,$periodRange)
     {
         $summary = array();
         foreach($groupedFact as $dzoName => $dzoFact) {
-            $factDates = array();
-            foreach($dzoFact as $dayFact) {
-                array_push($factDates,Carbon::parse($dayFact->date)->copy()->firstOfMonth()->format('d.m.Y'));
-            }
-
-            if (!is_array($dzoFact)) {
-                $dzoFact = $dzoFact->toArray();
-            }
-
-            $filteredPlan = $planData->filter(function($item) use($dzoName,$factDates) {
-                return in_array(Carbon::parse($item->date)->firstOfMonth()->format('d.m.Y'),$factDates) && $item->dzo === $dzoName;
-            })->toArray();
+            $filteredPlan = $planData->where('dzo',$dzoName);
             if (count($filteredPlan) === 0) {
                 continue;
             }
@@ -116,8 +105,8 @@ class GasProduction {
         $companySummary = array(
            'id' => '1.',
            'name' => $dzo,
-           'fact' => array_sum(array_column($dzoFact,$categoryFields['fact'])),
-           'plan' => array_sum(array_column($filteredPlan,$categoryFields['plan'])),
+           'fact' => $dzoFact->sum($categoryFields['fact']),
+           'plan' => $filteredPlan->sum($categoryFields['plan']),
            'opec_explanation_reasons' => $this->getAccidentDescription($dzoFact,'opec_explanation_reasons'),
            'impulse_explanation_reasons' => $this->getAccidentDescription($dzoFact,'impulse_explanation_reasons'),
            'shutdown_explanation_reasons' => $this->getAccidentDescription($dzoFact,'shutdown_explanation_reasons'),
@@ -127,7 +116,7 @@ class GasProduction {
            'other_explanation_reasons' => $this->getAccidentDescription($dzoFact,'other_explanation_reasons'),
         );
         if ($periodType === 'month') {
-            $companySummary['monthlyPlan'] = array_column($filteredPlan,$categoryFields['plan'])[0] * $daysInMonth;
+            $companySummary['monthlyPlan'] = $filteredPlan->sum($categoryFields['plan']) * $daysInMonth;
             $companySummary['plan'] *= Carbon::now()->day - 1;
         }
         if ($periodType === 'year') {
