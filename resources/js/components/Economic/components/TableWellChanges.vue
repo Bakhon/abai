@@ -38,7 +38,7 @@
             <input v-model="tableData[uwi].isShutdown"
                    type="checkbox"
                    class="form-check-input m-0 flex-30px"
-                   @change="toggleWell(tableData[uwi])">
+                   @change="toggleWell(uwi, tableData[uwi])">
           </div>
         </div>
       </div>
@@ -61,6 +61,11 @@ const WELL_KEYS = [
   'profitability_12m'
 ]
 
+const WELL_VALUE_KEYS = [
+  'original_value',
+  'original_value_optimized'
+]
+
 export default {
   name: "TableWellChanges",
   components: {
@@ -79,6 +84,10 @@ export default {
       required: true,
       type: Array
     },
+    selectedWells: {
+      required: true,
+      type: Array
+    }
   },
   methods: {
     getColor({profitability_12m}) {
@@ -91,17 +100,60 @@ export default {
           : '#F7BB2E'
     },
 
-    toggleWell(well) {
-      console.log(well.isShutdown)
+    toggleWell(uwi, well) {
+      let oilPrice = +this.scenario.oil_price
 
-      let oilPrice = (+this.scenario.oil_price).toFixed(0)
+      let oil = +well.oilPrices[oilPrice].oil_12m
 
-      this.scenario.Revenue_total.value[0] = 1
+      let liquid = +well.oilPrices[oilPrice].liquid_12m
 
-      console.log(well)
-      console.log(oilPrice)
+      let revenueTotal = +well.oilPrices[oilPrice].Revenue_total_12m
 
-      console.log(well.oilPrices[oilPrice])
+      let overallExpendituresScenario =
+          +this.scenario.coef_Fixed_nopayroll * +well.oilPrices[oilPrice].Fixed_nopayroll_expenditures_12m +
+          +this.scenario.coef_cost_WR_payroll * +well.oilPrices[oilPrice].Fixed_payroll_expenditures_12m
+
+      let operatingProfit = +well.oilPrices[oilPrice].Operating_profit_12m - overallExpendituresScenario
+
+      let overallExpenditures = +well.oilPrices[oilPrice].Overall_expenditures_12m - overallExpendituresScenario
+
+      let overallExpendituresFull = +well.oilPrices[oilPrice].Overall_expenditures_full_12m - overallExpendituresScenario
+
+      if (well.isShutdown) {
+        this.selectedWells.push(uwi)
+
+        oil = -oil
+
+        liquid = -liquid
+
+        revenueTotal = -revenueTotal
+
+        operatingProfit = -operatingProfit
+
+        overallExpenditures = -overallExpenditures
+
+        overallExpendituresFull = -overallExpendituresFull
+      } else {
+        let index = this.selectedWells.findIndex(well => well === uwi)
+
+        if (index !== -1) {
+          this.selectedWells.splice(index, 1)
+        }
+      }
+
+      WELL_VALUE_KEYS.forEach(key => {
+        this.scenario.oil[key] = +this.scenario.oil[key] + oil
+
+        this.scenario.liquid[key] = +this.scenario.liquid[key] + liquid
+
+        this.scenario.Revenue_total[key] = +this.scenario.Revenue_total[key] + revenueTotal
+
+        this.scenario.Operating_profit[key] = +this.scenario.Operating_profit[key] + operatingProfit
+
+        this.scenario.Overall_expenditures[key] = +this.scenario.Overall_expenditures[key] + overallExpenditures
+
+        this.scenario.Overall_expenditures_full[key] = +this.scenario.Overall_expenditures_full[key] + overallExpendituresFull
+      })
     }
   },
   computed: {
@@ -114,7 +166,13 @@ export default {
 
       this.filteredData.forEach(well => {
         if (!wells.hasOwnProperty(well.uwi)) {
-          wells[well.uwi] = {oilPrices: {}, cat1: 0, cat2: 0, profitable: 0, isShutdown: false}
+          wells[well.uwi] = {
+            oilPrices: {},
+            cat1: 0,
+            cat2: 0,
+            profitable: 0,
+            isShutdown: this.selectedWells.includes(well.uwi)
+          }
         }
 
         wells[well.uwi].oilPrices[well.oil_price] = {}

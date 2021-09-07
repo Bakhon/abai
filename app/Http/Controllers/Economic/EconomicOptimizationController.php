@@ -159,9 +159,6 @@ class EconomicOptimizationController extends Controller
             foreach (self::OPTIMIZED_COLUMNS as $column) {
                 foreach (self::columnPairs($column) as $originalColumn => $optimizedColumn) {
                     $scenarios[$index][$originalColumn] = [
-                        'value' => self::formatMoney($item[$originalColumn]),
-                        'value_optimized' => self::formatMoney($item[$optimizedColumn]),
-                        'percent' => EconomicNrsController::calcPercent($item[$optimizedColumn], $item[$originalColumn], 2),
                         'original_value' => $item[$originalColumn],
                         'original_value_optimized' => $item[$optimizedColumn],
                     ];
@@ -289,32 +286,6 @@ class EconomicOptimizationController extends Controller
             self::ORG_KAZ_GER => self::COMPANY_KAZ_GER,
             self::ORG_EMBA => self::COMPANY_EMBA,
             self::ORG_MANGISTAU => self::COMPANY_MANGISTAU,
-        ];
-    }
-
-    static function formatMoney(?float $digit): array
-    {
-        $digit = $digit ?? 0;
-
-        $digitAbs = abs($digit);
-
-        if ($digitAbs < 1000000) {
-            return [
-                number_format($digit / 1000, 2),
-                trans('economic_reference.thousand')
-            ];
-        }
-
-        if ($digitAbs < 1000000000) {
-            return [
-                number_format($digit / 1000000, 2),
-                trans('economic_reference.million')
-            ];
-        }
-
-        return [
-            number_format($digit / 1000000000, 2),
-            trans('economic_reference.billion')
         ];
     }
 

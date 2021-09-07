@@ -361,9 +361,6 @@ let columnVariations = (column) => {
 optimizedColumns.forEach(column => {
   columnPairs(column).forEach(pair => {
     economicRes.scenarios[0][pair.original] = {
-      value: [0, ''],
-      value_optimized: [0, ''],
-      percent: 0,
       original_value: 0,
       original_value_optimized: 0,
     }
