@@ -1,15 +1,15 @@
 <template>
-  <div class="container p-4 bg-light" style="max-width: 90vw">
-    <subtitle class="mb-2">{{ title }}</subtitle>
+  <div class="container p-4 bg-light" style="max-width: 90vw">    
+    <subtitle class="mb-3 text-center">{{ title }}</subtitle>
 
     <select-sc-fa
-        :loading="loading"
         :form="form"
         :is-forecast="isForecast"
         form-key="sc_fa"
         @loading="SET_LOADING(true)"
         @loaded="SET_LOADING(false)"
         @change="getData"/>
+    
 
     <vue-table-dynamic
         v-if="form.sc_fa"
@@ -26,10 +26,8 @@
 </template>
 
 <script>
-import VueTableDynamic from 'vue-table-dynamic'
-
+import VueTableDynamic from 'vue-table-dynamic';
 import {globalloadingMutations} from '@store/helpers';
-
 import Subtitle from "../components/Subtitle";
 import SelectScFa from "../components/SelectScFa";
 
@@ -39,6 +37,7 @@ export default {
     VueTableDynamic,
     Subtitle,
     SelectScFa
+
   },
   props: {
     isForecast: {
@@ -53,7 +52,9 @@ export default {
     data: [],
   }),
   methods: {
-    ...globalloadingMutations(['SET_LOADING']),
+    ...globalloadingMutations(
+      ['SET_LOADING']
+    ),
 
     async getData() {
       if (!this.form.sc_fa) return

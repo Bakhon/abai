@@ -61,6 +61,12 @@ class FormsController extends Controller
         $form->validateSingleField($field);
     }
 
+    public function validateTableField(string $formName, string $parent, string $field): void
+    {
+        $form = $this->getForm($formName);
+        $form->validateSingleTableField($parent, $field);
+    }
+
     public function saveField(string $formName, string $field): void
     {
         $form = $this->getForm($formName);
@@ -77,10 +83,14 @@ class FormsController extends Controller
         }
     }
 
-    public function getRows(string $formName): array
+    public function getRows(string $formName)
     {
         $form = $this->getForm($formName);
         return $form->getRows();
+        try {
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function getRowHistory(string $formName, Request $request): array

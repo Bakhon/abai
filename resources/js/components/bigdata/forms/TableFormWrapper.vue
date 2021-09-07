@@ -1,6 +1,5 @@
 <template>
   <div class="bd-main-block">
-    <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
@@ -63,6 +62,7 @@
           :filter="filter"
           :params="params"
           :type="type"
+          :key="params.code"
           @initialized="init"
       >
       </BigDataTableForm>

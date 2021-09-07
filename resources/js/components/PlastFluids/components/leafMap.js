@@ -2,7 +2,6 @@ import L from "leaflet";
 import { kzRegions } from "../plugins/global";
 import RK from "../plugins/rk_border";
 import { field } from "../plugins/field";
-import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 import "leaflet/dist/leaflet.css";
 
 const initMap = (click) => {

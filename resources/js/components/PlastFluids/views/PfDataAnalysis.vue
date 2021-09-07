@@ -8,7 +8,7 @@
           <div class="icon-title">
             <i class="fas fa-sliders-h"/>
           </div>
-          <span>Детальная статистика изученности по видам исследований</span>
+          <span>{{ trans("plast_fluids.detailed_statistics_by_research") }}</span>
         </div>
         <div class="data-analysis__wrapper-img">
           <img src="/img/PlastFluids/mapProperty.svg" alt="">
@@ -16,7 +16,7 @@
       </div>
       <div class="data-analysis__wrapper">
         <div class="data-analysis__wrapper-title">
-          <span>Данные по пробам</span>
+          <span>{{ trans("plast_fluids.sample_data") }}</span>
         </div>
       </div>
     </div>

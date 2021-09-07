@@ -1,0 +1,19 @@
+{
+  "type": "table",
+  "filter": [
+    {
+      "code": "date",
+      "title": "date",
+      "type": "date",
+      "default": "first day of january this year"
+    },
+    {
+      "code": "date_to",
+      "title": "date_to",
+      "type": "date",
+      "default": "now"
+    }
+  ],
+  "columns": [
+  ]
+}
