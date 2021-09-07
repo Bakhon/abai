@@ -218,7 +218,6 @@ export default {
         },
         isHasSelectedObjects() {
             let content = this.selectedObjects;
-            let arr = null;
             for(let structureType in content) {
                 for(let option in content[structureType]) {
                     for(let node of content[structureType][option]) {
