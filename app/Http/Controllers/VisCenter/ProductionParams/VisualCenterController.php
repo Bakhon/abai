@@ -53,24 +53,9 @@ class VisualCenterController extends Controller
         $currentPeriodDzoPlan = $this->getDzoPlan($this->periodStart,$this->periodEnd);
         $historicalDzoFact = $this->getDzoFact($this->historicalPeriodStart,$this->historicalPeriodEnd);
         $historicalDzoPlan = $this->getDzoPlan($this->historicalPeriodStart,$this->historicalPeriodEnd);
-        if ($this->periodRange > 0) {
-            //$this->chartData = $this->getChartData($currentPeriodDzoFact,$currentPeriodDzoPlan);
-        }
         $outputData = $this->getData($currentPeriodDzoFact,$currentPeriodDzoPlan,$historicalDzoFact,$historicalDzoPlan);
         $this->tableData = $outputData['table'];
         $this->chartData = $outputData['chart'];
-        //$this->tableData['current']['oilCondensateProduction'] = $this->getData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateProduction');
-        //$this->tableData['historical']['oilCondensateProduction'] = $this->getData($historicalDzoFact,$historicalDzoPlan,'oilCondensateProduction');
-       // $this->tableData['current']['oilCondensateDelivery'] = $this->getData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDelivery');
-       // $this->tableData['historical']['oilCondensateDelivery'] = $this->getData($historicalDzoFact,$historicalDzoPlan,'oilCondensateProduction');
-       // $this->tableData['current']['oilCondensateProductionWithoutKMG'] = $this->getData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateProductionWithoutKMG');
-       // $this->tableData['historical']['oilCondensateProductionWithoutKMG'] = $this->getData($historicalDzoFact,$historicalDzoPlan,'oilCondensateProductionWithoutKMG');
-       // $this->tableData['current']['oilCondensateDeliveryWithoutKMG'] = $this->getData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDeliveryWithoutKMG');
-      //  $this->tableData['historical']['oilCondensateDeliveryWithoutKMG'] = $this->getData($historicalDzoFact,$historicalDzoPlan,'oilCondensateDeliveryWithoutKMG');
-      //  $this->tableData['current']['oilCondensateDeliveryOilResidue'] = $this->getData($currentPeriodDzoFact,$currentPeriodDzoPlan,'oilCondensateDeliveryOilResidue');
-      //  $this->tableData['current'] = array_merge($this->tableData['current'],$this->getData($currentPeriodDzoFact,$currentPeriodDzoPlan,'gasProduction'));
-      //  $this->tableData['historical'] = array_merge($this->tableData['historical'],$this->getData($historicalDzoFact,$historicalDzoPlan,'gasProduction'));
-      //  $this->tableData['current'] = array_merge($this->tableData['current'],$this->getData($currentPeriodDzoFact,$currentPeriodDzoPlan,'waterInjection'));
         return array(
             'tableData' => $this->tableData,
             'chartData' => $this->chartData,

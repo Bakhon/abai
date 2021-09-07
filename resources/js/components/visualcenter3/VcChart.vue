@@ -52,7 +52,7 @@
                     labels: []
                 };
                 let self = this;
- 
+
                 _.forEach(chartSummary.dzoCompaniesSummaryForChart, function (item) {
                     formattedChartSummary.labels.push(self.getFormattedDate(item.time));
                     formattedChartSummary.plan.push(item.productionPlanForChart2);
