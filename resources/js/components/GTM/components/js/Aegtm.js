@@ -1,7 +1,7 @@
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import orgStructure from '../../mock-data/org_structure.json'
-import {paegtmMapState} from "@store/helpers";
+import {paegtmMapState, globalloadingMutations} from "@store/helpers";
 import VueApexCharts from "vue-apexcharts";
 import filterSelect from '../../mixin/selectFilter'
 
@@ -186,8 +186,11 @@ export default {
         }
     },
     methods: {
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
         getData() {
-            this.$store.commit('globalloading/SET_LOADING',true);
+            this.SET_LOADING(true);
             this.axios.get(
                 this.localeUrl('/paegtm/accum_oil_prod_data'),
                 {params: {dateStart: this.dateStart, dateEnd: this.dateEnd}}
@@ -226,7 +229,7 @@ export default {
                     });
                 }
             });
-            this.$store.commit('globalloading/SET_LOADING',false);
+            this.SET_LOADING(false);
         },
     },
     mounted() {
