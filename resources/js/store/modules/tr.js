@@ -23,6 +23,7 @@ const tr = {
     block: [],
     expMeth: [],
     wellName: [],
+    plannedEvents: [],
     pageNumber: 1,
     isFullVersion: false,
   },
@@ -96,12 +97,57 @@ const tr = {
     }, 
     SET_VERSION: (state, val) => {
       state.isFullVersion = val;
-    }, 
-  },
+    },
+    SET_EVENT: (state, val) => {
+      state.plannedEvents = val;
+    },  },
 
   actions: {
   },
-
+  getters: {
+    Dynamic: (state) => {
+      return {
+        field: state.field,
+        is_dynamic: state.isDynamic,
+        object: state.object,
+        searchString: state.searchString,
+        sortType: state.isSortType,
+        sortParam: state.sortParam,
+        wellType: state.wellType,
+        pageNum: state.pageNumber,
+        block: state.block,
+        expMeth: state.expMeth,
+        horizon: state.horizon,
+        year_1: state.year_dyn_start,
+        month_1: state.month_dyn_start,
+        day_1: state.day_dyn_start,
+        year_2: state.year_dyn_end,
+        month_2: state.month_dyn_end,
+        day_2: state.day_dyn_end,
+        wellName: state.wellName,
+        plannedEvents: state.plannedEvents,
+      };
+    },
+    notDynamic: (state) => {
+      return {
+        month: state.month,
+        year: state.year,
+        sortType: state.isSortType,
+        sortParam: state.sortParam,
+        field: state.field,
+        horizon: state.horizon,
+        wellType: state.wellType,
+        object: state.object,
+        block: state.block,
+        expMeth: state.expMeth,
+        searchString: state.searchString,
+        is_dynamic: state.isDynamic,
+        pageNum: state.pageNumber,
+        wellName: state.wellName,
+        plannedEvents: state.plannedEvents,
+      };
+    },
+  },
 };
 
 export default tr;
