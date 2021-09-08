@@ -29,7 +29,6 @@ class ManualCalculateHydroDynamics implements ShouldQueue
     use Trackable;
 
     public $tries = 1;
-    public $errors = [];
 
     protected $params;
     protected $input;
