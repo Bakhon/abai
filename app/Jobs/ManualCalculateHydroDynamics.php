@@ -29,6 +29,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
     use Trackable;
 
     public $tries = 1;
+    public $errors = [];
 
     protected $params;
     protected $input;
@@ -142,16 +143,22 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             $q->where('date', $date);
         }]);
 
-        $pipes = $this
+        $query = $this
             ->getFilteredQuery($this->input, $query)
             ->whereNotNull('start_point')
             ->whereNotNull('end_point')
-            ->orderBy('gu_id')
-            ->get();
+            ->orderBy('gu_id');
+
+        if ($this->input['checkbox_selected']) {
+            $query->whereIn('gu_id', $this->input['checkbox_selected']);
+        }
+
+        $pipes = $query->get();
 
         $pipes->load('pipeType');
+        $this->loadRelations($pipes);
 
-        if (!$this->loadRelations($pipes)) {
+        if (!$pipes) {
             return;
         }
 
@@ -244,23 +251,9 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         }
     }
 
-    public function returnError(ManualOilPipe $pipe)
-    {
-        $message = $pipe->start_point . ' ' . trans('monitoring.hydro_calculation.message.no-omgdu-data');
-
-        if (isset($input['date'])) {
-            $message .= ' на ' . $input['date'];
-        }
-
-        $this->setOutput(
-            [
-                'error' => $message
-            ]
-        );
-    }
-
     public function loadRelations(Collection $pipes)
     {
+        $guIds = [];
         foreach ($pipes as $key => $pipe) {
             if ($pipe->between_points != 'well-zu') {
                 continue;
@@ -278,10 +271,13 @@ class ManualCalculateHydroDynamics implements ShouldQueue
                 continue;
             }
 
-            $this->returnError($pipe);
-            return false;
+            $guIds[] = $pipe->gu_id;
         }
 
-        return true;
+        foreach ($pipes as $key => $pipe) {
+            if (in_array($pipe->gu_id, $guIds)) {
+                unset($pipes[$key]);
+            }
+        }
     }
 }
