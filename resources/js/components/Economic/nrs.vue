@@ -83,7 +83,8 @@
             :granularity="form.granularity"
             :profitability="form.profitability"
             :oil-prices="res.oilPrices"
-            :dollar-rates="res.dollarRates"/>
+            :dollar-rates="res.dollarRates"
+            :org_id="form.org_id"/>
       </div>
 
       <div class="col-3 pr-0 pl-10px">

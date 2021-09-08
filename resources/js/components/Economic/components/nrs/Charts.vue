@@ -50,6 +50,7 @@
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
+          :org_id="org_id"
           class="bg-economic-chart"/>
 
       <chart-with-liquid-production
@@ -100,6 +101,10 @@ export default {
     dollarRates: {
       required: true,
       type: Array
+    },
+    org_id: {
+      required: true,
+      type: Number
     }
   },
   data: () => ({
