@@ -53,10 +53,15 @@
           title="digital_rating.mapsGeologyDevelopment"
           @selectItem="(item) => selectPanelItem('map', item)"
         />
-        <accordion
-          :list="cods"
-          title="digital_rating.sectorCode"
-        />
+        <accordion title="digital_rating.legend">
+          <ul class="list">
+            <li
+              v-for="(item, index) in legends" :key="index">
+              <div :style="`background: ${item.color}`" class="legend"/>
+              <span>{{ item.title }}</span>
+            </li>
+          </ul>
+        </accordion>
         <accordion
           :list="properties"
           title="digital_rating.property"
