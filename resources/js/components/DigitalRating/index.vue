@@ -57,7 +57,9 @@
           <ul class="list">
             <li
               v-for="(item, index) in legends" :key="index">
-              <div :style="`background: ${item.color}`" class="legend"/>
+              <span>{{index+1}}</span>
+              <div :style="`background: ${item.color}`" class="legend">
+              </div>
               <span>{{ item.title }}</span>
             </li>
           </ul>

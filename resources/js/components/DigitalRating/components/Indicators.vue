@@ -117,6 +117,10 @@
       }
     },
 
+    mounted() {
+      this.fetchIndicators({});
+    },
+
     methods: {
       ...digitalRatingActions([
           'fetchIndicators'
