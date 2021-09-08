@@ -101,21 +101,6 @@ export default {
             });
         },
 
-        getFormatted(summary) {
-            if (this.isConsolidatedCategoryActive()) {
-                summary.opekDifference = this.getFormattedNumberToThousand(
-                    summary.opekPlan,summary.fact);
-                summary.opekPlan = this.formatDigitToThousand(summary.opekPlan);
-            }
-            summary.difference = this.getFormattedNumberToThousand(
-                summary.plan,summary.fact);
-            summary.percent = this.getPercentDifference(summary.plan,summary.fact);
-            summary.plan = this.formatDigitToThousand(summary.plan);
-            summary.fact = this.formatDigitToThousand(summary.fact);
-            summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
-            return summary;
-        },
-
         getAllDzoCompanies() {
             return _.cloneDeep(this.dzoCompaniesTemplate).map(company => company.ticker);
         },
@@ -221,6 +206,27 @@ export default {
             this.disableDzoRegions();
             this.selectedDzoCompanies = this.getAllDzoCompanies();
             this.buttonDzoDropdown = "";
+        },
+
+        assignOneCompanyToSelectedDzo(oneDzoNameSelected) {
+            if (oneDzoNameSelected == 'ОМГ') {
+                oneDzoNameSelected = [oneDzoNameSelected, 'ОМГК'];
+            }
+            this.selectedDzoCompanies = oneDzoNameSelected;
+            if (Array.isArray(oneDzoNameSelected)) {
+                oneDzoNameSelected = oneDzoNameSelected[0]
+            }
+            this.chemistrySelectedCompany= oneDzoNameSelected;
+            this.wellsWorkoverSelectedCompany= oneDzoNameSelected;
+            this.drillingSelectedCompany= oneDzoNameSelected;
+            this.productionFondSelectedCompany = oneDzoNameSelected;
+            this.injectionFondSelectedCompany = oneDzoNameSelected;
+            this.updateDzoMenu();
+            this.updateChemistryWidget();
+            this.updateWellsWorkoverWidget();
+            this.updateDrillingWidget();
+            this.updateProductionFondWidget();
+            this.updateInjectionFondWidget();
         },
     },
 }

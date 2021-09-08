@@ -10,9 +10,7 @@ import oilRates from './widgets/oilRates';
 import usdRates from './widgets/usdRates';
 import mainStatisticsTable from './widgets/mainStatisticsTable';
 import rates from './dataManagers/rates';
-import oilProductionFilters from './dataManagers/oilProductionFilters';
 import mainTableChart from './widgets/mainTableChart.js';
-import secondaryParams from './dataManagers/secondaryParams';
 import productionDetails from './widgets/productionDetails';
 import chemistryDetails from './widgets/chemistryDetails';
 import wellsWorkoverDetails from './widgets/wellsWorkoverDetails';
@@ -127,6 +125,12 @@ export default {
             });
             return dzoTicker;
         },
+
+        disableTargetCompanyFilter() {
+            this.$refs.targetPlan.classList.remove('show');
+            this.isFilterTargetPlanActive = false;
+            this.buttonTargetPlan = "";
+        },
     },
     mixins: [
         сompaniesDzo,
@@ -135,9 +139,7 @@ export default {
         usdRates,
         mainStatisticsTable,
         rates,
-        oilProductionFilters,
         mainTableChart,
-        secondaryParams,
         productionDetails,
         chemistryDetails,
         wellsWorkoverDetails,

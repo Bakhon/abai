@@ -38,7 +38,6 @@
         },
         methods: {
             updateChartOptions: function (chartSummary) {
-                let opec = chartSummary.opec;
                 let color1;
                 let color2;
                 let plan1;

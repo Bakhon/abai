@@ -8,12 +8,6 @@ export default {
         };
     },
     methods: {
-        filterDzoInputForSeparateCompany(data, company) {
-            return _.filter(data, function (item) {
-                return (item.dzo === company);
-            })
-        },
-
         getDzoColumnsClass(rowIndex, columnName) {
             if (this.getColumnIndex(columnName) % 2 === 0) {
                 return this.getDarkColorClass(rowIndex);
@@ -44,19 +38,6 @@ export default {
             }
         },
 
-        ISODateString(d) {
-            function pad(n) {
-                return n < 10 ? '0' + n : n
-            }
-
-            return d.getUTCFullYear() + '-'
-                + pad(d.getUTCMonth() + 1) + '-'
-                + pad(d.getUTCDate()) + 'T'
-                + pad(d.getUTCHours()) + ':'
-                + pad(d.getUTCMinutes()) + ':'
-                + pad(d.getUTCSeconds()) + '+06:00'
-        },
-
         getDiffProcentLastBigN(a, b) {
             if (a != '') {
                 return ((a / b) * 100).toFixed(2);
@@ -72,10 +53,6 @@ export default {
             return 0;
         },
 
-        pad(n) {
-            return n < 10 ? "0" + n : n;
-        },
-
         getNameDzoFull: function (dzo) {
             if (Array.isArray(dzo)) {
                 dzo = dzo['0']
@@ -88,28 +65,6 @@ export default {
 
         getDaysCountInMonth(date) {
             return moment(date, "YYYY-MM").daysInMonth();
-        },
-
-        getQuarter(d) {
-            return [parseInt(d.getMonth() / 3) + 1, d.getFullYear()];
-        },
-
-        getPreviousWorkday(){
-            let workday = moment();
-            let day = workday.day();
-            let diff = 2;
-            if (day === 0 || day === 1){
-                diff = day + 2;
-            }
-            return workday.subtract(diff, 'days').endOf('day').format();
-        },
-
-        getPercentDifference(a, b) {
-            if (a && b) {
-                return new Intl.NumberFormat("ru-RU").format(Math.abs(((a - b) / b) * 100).toFixed(1))
-            } else {
-                return 0
-            }
         },
 
         getFormattedNumber(num) {
@@ -170,13 +125,6 @@ export default {
             }
         },
 
-        getDataOrderedByAsc(data) {
-            return _.orderBy(data,
-                ["__time"],
-                ["asc"]
-            );
-        },
-
         getFilteredData(data, type) {
             _.forEach(this.dzoType[type], function (dzoName) {
                 data = _.reject(data, _.iteratee({dzo: dzoName}));
@@ -188,33 +136,6 @@ export default {
             _.forEach(this.dzoRegionsMapping, function(region) {
                 _.set(region, 'isActive', false);
             });
-        },
-
-        getProductionDataInPeriodRange(data, periodStart, periodEnd) {
-            return _.filter(data, function (item) {
-                return _.every([
-                    _.inRange(
-                        item.__time,
-                        periodStart,
-                        periodEnd
-                    ),
-                ]);
-            });
-        },
-
-        getFilteredDataByOneDay(filteredDataByCompanies,dayType,periodStart,periodEnd) {
-            let dayTypeMapping = {
-                'today': {
-                    'start': periodStart,
-                    'end': periodEnd
-                },
-                'yesterday': {
-                    'start': moment(new Date(periodStart)).subtract(1, 'days').valueOf(),
-                    'end': periodStart
-                }
-            };
-            let filteredDataByOneDay = this.getProductionDataInPeriodRange(filteredDataByCompanies,dayTypeMapping[dayType].start,dayTypeMapping[dayType].end);
-            return this.getDataOrderedByAsc(filteredDataByOneDay);
         },
 
         getFormattedNumberToThousand(plan,fact) {
@@ -245,32 +166,16 @@ export default {
             return arrowClass;
         },
 
-        getFilteredDataByOneCompany(data) {
-            let self = this;
-            return _.filter(data, function (item) {
-                return self.company == item.dzo;
-            });
-        },
-
         getDzoName(acronym,mapping) {
             if (!mapping[acronym]) {
-                console.log(mapping)
                 return acronym;
             }
-            // console.log(mapping[acronym]);
             return this.trans(mapping[acronym]);
-        },
-
-        getOilProductionKmgParticipationDzoTitle(percentParticipation){
-            if (percentParticipation) {
-                return " (" + percentParticipation * 100 + "%)";
-            }
-            return "";
         },
 
         getProductionTableClass() {
             let classes = 'table4 production-table';
-            if (!this.isOilResidueActive) {
+            if (!this.backendMenu.oilCondensateDeliveryOilResidue) {
                 classes += ' w-100';
             }
             if (!this.buttonDailyTab) {
@@ -283,37 +188,8 @@ export default {
             return this.backendMenu.oilCondensateProduction || this.backendMenu.oilCondensateDelivery;
         },
 
-        getNumberByDzo(dzoName, index){
-            if (this.oilCondensateFilters.isCondensateOnly) {
-                return this.dzoNumbers['condensateOnly'][dzoName];
-            }
-            if (this.isOilResidueActive) {
-                return this.dzoNumbers['oilResidue'][dzoName];
-            }
-            if (this.oilCondensateProductionButton && this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return this.dzoNumbers['productionConsolidated'][dzoName];
-            }
-            if (this.oilCondensateProductionButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return this.dzoNumbers['productionKMG'][dzoName];
-            }
-            if (this.oilCondensateDeliveryButton && this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return this.dzoNumbers['deliveryConsolidated'][dzoName];
-            }
-            if (this.oilCondensateDeliveryButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return this.dzoNumbers['deliveryKMG'][dzoName];
-            }
-            return '1.' + index + '.';
-        },
-
         getNumberFormat(num) {
             return (new Intl.NumberFormat("ru-RU").format(num))
-        },
-
-        getDzoNameFormatting(dzo) {
-            if (this.troubledCompanies.includes(dzo) && !this.oilCondensateFilters.isCondensateOnly) {
-                return 'troubled-companies';
-            }
-            return '';
         },
 
         getIndicatorClass(plan,fact) {

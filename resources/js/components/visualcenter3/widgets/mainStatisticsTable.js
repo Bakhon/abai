@@ -8,14 +8,6 @@ export default {
             buttonYearlyTab: "",
             buttonPeriodTab: "",
             highlightedButton: "button-tab-highlighted",
-            assetTitleMapping: {
-                isOperating: this.trans("visualcenter.summaryOperatingAssets"),
-                isNonOperating: this.trans("visualcenter.summaryNonOperatingAssets"),
-                isAllAssets: this.trans("visualcenter.summaryAssets"),
-                opecRestriction: this.trans("visualcenter.opek"),
-                kmgParticipation: this.trans("visualcenter.dolyaUchast"),
-                isRegion: this.trans("visualcenter.summaryByRegion"),
-            },
             tableMapping: {
                 'productionDetails': {
                     'class': '',

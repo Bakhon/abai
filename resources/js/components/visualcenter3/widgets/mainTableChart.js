@@ -22,36 +22,7 @@ export default {
                 differenceOnEachMonth: 0,
             },
             chartOutput: [],
-            consolidatedOptions: {
-                'ОМГ': {
-                    'dzo': 'ОМГК',
-                    'plan': 'gk_plan',
-                    'fact': 'gk_fact',
-                    'opek': 'gk_plan',
-                    'formula': (fieldName,input) => input[fieldName]
-                },
-                'ПКК': {
-                    'dzo': 'ПККР',
-                    'plan': 'oil_plan',
-                    'fact': 'oil_fact',
-                    'opek': 'oil_opek_plan',
-                    'formula': (fieldName,input) => Math.round(input[fieldName] * 0.33)
-                },
-                'КГМ': {
-                    'dzo': 'КГМКМГ',
-                    'plan': 'oil_plan',
-                    'fact': 'oil_fact',
-                    'opek': 'oil_opek_plan',
-                    'formula': (fieldName,input) => Math.round(input[fieldName] * 0.5 * 0.33)
-                },
-                'АГ': {
-                    'dzo': 'АГ',
-                    'plan': 'gk_plan',
-                    'fact': 'gk_fact',
-                    'opek': 'gk_plan',
-                    'formula': (fieldName,input) => input[fieldName]
-                },
-            }
+            oilResidueChartName: this.trans('visualcenter.ostatokNefti'),
         };
     },
     methods: {
