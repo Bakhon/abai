@@ -426,7 +426,7 @@
                             <td>24:00</td>
                             <td>0:00</td>
                             <td></td>
-                            <td>Код операции</td>
+                            <td>{{trans('digital_drilling.daily_raport.operation_code')}}</td>
                             <td class="w-40">
                                 {{trans('digital_drilling.daily_raport.NOTE')}}
                             </td>
@@ -439,7 +439,7 @@
                             <td ><input type="text"></td>
                             <td >
                                 <select name="" id="">
-                                    <option value="">Test</option>
+                                    <option value=""v-for="code in operationCodes">{{code}}</option>
                                 </select>
                             </td>
                             <td ><input type="text"></td>
@@ -450,9 +450,11 @@
                             <td ><input type="text"></td>
                             <td ><input type="text"></td>
                             <td ><input type="text"></td>
-                            <td ><select name="" id="">
-                                <option value="">Test</option>
-                            </select></td>
+                            <td >
+                                <select name="" id="">
+                                    <option value="" v-for="code in operationCodes">{{code}}</option>
+                                </select>
+                            </td>
                             <td ><input type="text"></td>
                         </tr>
                         <tr>
@@ -460,7 +462,7 @@
                             <td >24:00</td>
                             <td ><input type="text"></td>
                             <td ><select name="" id="">
-                                <option value="">Test</option>
+                                <option value=""v-for="code in operationCodes">{{code}}</option>
                             </select></td>
                             <td ><input type="text"></td>
                             <td class="w-5"></td>
@@ -562,7 +564,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select name="" id="">
+                                    <option value="" v-for="type in threadTypes">{{type}}</option>
+                                </select>
                             </td>
                             <td >
                                 <input type="text">
@@ -601,7 +605,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select name="" id="">
+                                    <option value="" v-for="type in threadTypes">{{type}}</option>
+                                </select>
                             </td>
                             <td >
                                 <input type="text">
@@ -640,7 +646,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select name="" id="">
+                                    <option value="" v-for="type in threadTypes">{{type}}</option>
+                                </select>
                             </td>
                             <td >
                                 <input type="text">
@@ -675,7 +683,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select name="" id="">
+                                    <option value="" v-for="type in threadTypes">{{type}}</option>
+                                </select>
                             </td>
                             <td >
                                 <input type="text">
@@ -710,7 +720,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select name="" id="">
+                                    <option value="" v-for="type in threadTypes">{{type}}</option>
+                                </select>
                             </td>
                             <td >
                                 <input type="text">
@@ -745,7 +757,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select name="" id="">
+                                    <option value="" v-for="type in threadTypes">{{type}}</option>
+                                </select>
                             </td>
                             <td >
                                 <input type="text">
@@ -780,7 +794,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select name="" id="">
+                                    <option value="" v-for="type in threadTypes">{{type}}</option>
+                                </select>
                             </td>
                             <td >
                                 <input type="text">
@@ -815,7 +831,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select name="" id="">
+                                    <option value="" v-for="type in threadTypes">{{type}}</option>
+                                </select>
                             </td>
                             <td >
                                 <input type="text">
@@ -850,7 +868,9 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select name="" id="">
+                                    <option value="" v-for="type in threadTypes">{{type}}</option>
+                                </select>
                             </td>
                             <td >
                                 <input type="text">
@@ -935,7 +955,11 @@
                                 <input type="text">
                             </td>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №1</td>
-                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2">
+                                <select name="" id="">
+                                    <option value="" v-for="pump in pumps">{{pump}}</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td>
@@ -968,7 +992,11 @@
                             <td>
                                 {{trans('digital_drilling.daily_raport.bushings_mm')}}
                             </td>
-                            <td><input type="text"></td>
+                            <td>
+                                <select name="" id="">
+                                    <option value="" v-for="bushing in bushings">{{bushing}}</option>
+                                </select>
+                            </td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                             <td>
                                 <input type="text">
@@ -1140,7 +1168,11 @@
                             <td colspan="3">
                                 {{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №2
                             </td>
-                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2">
+                                <select name="" id="">
+                                    <option value="" v-for="pump in pumps">{{pump}}</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.operating_hours_vibrating_sieve')}} №2</td>
@@ -1240,7 +1272,11 @@
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №3 <span class="add"  @click="deletePump(0)">-</span></td>
-                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2">
+                                <select name="" id="">
+                                    <option value="" v-for="pump in pumps">{{pump}}</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="3"><input type="text"></td>
@@ -1346,7 +1382,11 @@
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №4 <span class="add" @click="deletePump(1)">-</span></td>
-                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2">
+                                <select name="" id="">
+                                    <option value="" v-for="pump in pumps">{{pump}}</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="3"><input type="text"></td>
@@ -1536,7 +1576,7 @@
                             <td><input type="text"></td>
                             <td>
                                 <select name="" id="">
-                                    <option value="">Test</option>
+                                    <option value="" v-for="code in operationCodes">{{code}}</option>
                                 </select>
                             </td>
                             <td><input type="text"></td>
@@ -1627,7 +1667,7 @@
                         <tr v-for="i in 3">
                             <td colspan="3" class="w-10">
                                 <select name="" id="">
-                                    <option value="">Test</option>
+                                    <option value="" v-for="type in drillingMudTypes">{{type}}</option>
                                 </select>
                             </td>
                             <td v-for="i in 19">
@@ -1706,15 +1746,28 @@
                             <td>{{trans('digital_drilling.daily_raport.remaining_rig')}}</td>
                         </tr>
                         <tr v-for="i in 8">
-                            <td v-for="j in 6"><input type="text"></td>
+                            <td>
+                                <select-input :options="chemicalNames"/>
+                            </td>
+                            <td v-for="i in 5"><input type="text"></td>
                             <td v-for="j in 2" colspan="2"><input type="text"></td>
                             <td><input type="text"></td>
                         </tr>
                         <tr>
-                            <td v-for="i in 11"><input type="text"></td>
+                            <td>
+                                <select name="" id="">
+                                    <option value="" v-for="name in chemicalNames">{{name}}</option>
+                                </select>
+                            </td>
+                            <td v-for="i in 10"><input type="text"></td>
                         </tr>
                         <tr v-for="i in 6">
-                            <td v-for="j in 6"><input type="text"></td>
+                            <td>
+                                <select name="" id="">
+                                    <option value="" v-for="name in chemicalNames">{{name}}</option>
+                                </select>
+                            </td>
+                            <td v-for="i in 5"><input type="text"></td>
                             <td v-for="j in 2" colspan="2"><input type="text"></td>
                             <td><input type="text"></td>
                         </tr>
@@ -1919,8 +1972,11 @@
 </template>
 
 <script>
+    import SelectInput from  './components/SelectInput'
+
     export default {
         name: "DailyRaport",
+        components: {SelectInput},
         data(){
             return{
                 pump:[
@@ -1933,6 +1989,37 @@
                         active: false
                     },
                 ],
+                bushings:[
+                    120, 130, 140, 150, 160, 170, 180
+                ],
+                drillingMudTypes: ['На водной основе', 'На углеводородной основе', 'Аэрированный', 'Эмульсионный'],
+                operationCodes:['Монтаж/Демонтаж/Переезд', 'Бурение', 'Проработка/Расширка ствола скважины',
+                               'Отбор керна', 'Промывка и восстановление параметров раствора', 'СПО',
+                               'Обслуживание и ремонт оборудования буровой установки', 'Ремонт буровой установки',
+                               'Замена талевого каната', 'Замер инклинометрии', 'ГИС', 'Крепление (спуск и цементирование ОК)',
+                               'ОЗЦ', 'Монтаж/демонтаж ПВО', 'Опрессовка ПВО', 'Испытание скважины',
+                               'PLUG BACK', 'Продавка цемента', 'Ловильные работы', 'Наклонно-направленное бурение',
+                               'Спуск и извлечение оборудования хвостовика', 'Опрессовка оборудования устья скважины',
+                               'Прочие операции', 'Непроизводительное время (НПВ)', 'Статус операций',
+                               'Техника безопасности', 'ГНВП', 'Гибкие НКТ', 'Перфорация', 'СПО НКТ',
+                               'Освоение и заканчивание скважины', 'Сваббирование', 'Испытание скважины',
+                               'Установка подводного оборудования'],
+                chemicalNames:['Бикорбанат натрия', 'Биополимер ксантановый Гламин', 'Калий Хлор', 'Лубрикон ТУ',
+                               'ATREN Antifoam (гаспен силикон)', 'Atren Bio (Биоцидол)', 'PAC LV - ХимПАК В',
+                               'PAC HV - ХимПАК Н', 'Aquaflo LV', 'Асфасол', 'Известь Са(ОН)2 тн',
+                               'Ингидол ДТ - 1 противосальниковая', 'Ингидол ГГЛ', 'Ингидол Б',
+                               'FRACSEAL (Кислотнорастворимый)', 'Desco CF', 'Карбонат Кальция (SOLUFLAKE D хлопьевидный)',
+                               'Биксол Фри', 'БИОЦИДОЛ - бактерицид', 'Карбонат Кальция М-5', 'Карбонат Кальция М-50',
+                               'Гаммаксан/Ксантангам/Гламин (биополимер)', 'Полимер акриловый (PHPA) ',
+                               'Бентонит порошкообразный для струтуро образования', 'Лимонная кислота',
+                               'Ореховая скорлупа', 'Соль техническая', 'Шелуха рисовая', 'Ингибитор глин, Стабилайт II',
+                               'Микрошарик, 500-1000 мкм', 'Микрошарик, 150-600 мкм' ],
+                threadTypes: ['ОТТМ', 'ОТТГ', 'ТБО', 'VAM'],
+                pumps: ['F-800D', 'F-1000D', 'F-1300D', 'F-1600D', 'SL3NB-1300D', 'SL3NB-1000D', 'НБ-1000D'],
+                timeSpents: ['Организ. простой', 'Ремонт после 21 часа', 'Осложения по стволу', 'Авария',
+                             'Неэффективность работы', 'Ожидание оборудования', 'Ожидание персонала',
+                             'Ожидание техники', 'Некачествен. цементир.', 'Ожидание указ. Заказчика',
+                             'Подогрев оборудования', 'Ожидание химреагентов', 'Отключение элек.энерг. ', 'Превыш. нормы времени'],
                 bitWare: {
                     I: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                     O: [0, 1, 2, 3, 4, 5, 6, 7, 8],
@@ -1986,7 +2073,7 @@
 
 <style scoped>
     .bit-ware{
-        width: 140px;
+        /*width: 140px;*/
     }
     .select__name{
         height: 25px;
@@ -1999,10 +2086,8 @@
         color: #000000;
     }
     .select__name div{
-        text-align: center;
-        width: 15px;
-        max-width: 12%;
-        margin-left: 2px
+        text-align: left;
+        margin-left:4px
     }
     .bit-ware .selects{
         display: flex;
@@ -2013,9 +2098,19 @@
         margin-top: 2px;
     }
     .selects select{
-        width: 15px;
-        max-width: 12%;
         margin-left: 2px;
+    }
+    .select__name div:nth-child(1), .select__name div:nth-child(2),
+    .select__name div:nth-child(4), .select__name div:nth-child(5),
+    .selects select:nth-child(1), .selects select:nth-child(2),
+    .selects select:nth-child(4), .selects select:nth-child(5){
+        width: 35px;
+    }
+    .select__name div:nth-child(3), .select__name div:nth-child(6),
+    .select__name div:nth-child(7), .select__name div:nth-child(8),
+    .selects select:nth-child(3), .selects select:nth-child(6),
+    .selects select:nth-child(7), .selects select:nth-child(8){
+        width: 45px;
     }
 .pump td{
     width: 7.35%!important
