@@ -373,45 +373,9 @@ export default {
     },
     getPageData() {
         if (this.isDynamic) {
-            return {
-                field: this.$store.state.tr.field,
-                is_dynamic: this.$store.state.tr.isDynamic,
-                object: this.$store.state.tr.object,
-                searchString: this.$store.state.tr.searchString,
-                sortType: this.$store.state.tr.isSortType,
-                sortParam: this.$store.state.tr.sortParam,
-                wellType: this.$store.state.tr.wellType,
-                pageNum: this.$store.state.tr.pageNumber,
-                block: this.$store.state.tr.block,
-                expMeth: this.$store.state.tr.expMeth,
-                horizon: this.$store.state.tr.horizon,
-                year_1: this.$store.state.tr.year_dyn_start,
-                month_1: this.$store.state.tr.month_dyn_start,
-                day_1: this.$store.state.tr.day_dyn_start,
-                year_2: this.$store.state.tr.year_dyn_end,
-                month_2: this.$store.state.tr.month_dyn_end,
-                day_2: this.$store.state.tr.day_dyn_end,
-                wellName: this.$store.state.tr.wellName,
-                plannedEvents: this.$store.state.tr.plannedEvents,
-            };
+            return this.$store.getters['tr/isActive'];
         } else {
-            return {
-                month: this.$store.state.tr.month,
-                year: this.$store.state.tr.year,
-                sortType: this.$store.state.tr.isSortType,
-                sortParam: this.$store.state.tr.sortParam,
-                field: this.$store.state.tr.field,
-                horizon: this.$store.state.tr.horizon,
-                wellType: this.$store.state.tr.wellType,
-                object: this.$store.state.tr.object,
-                block: this.$store.state.tr.block,
-                expMeth: this.$store.state.tr.expMeth,
-                searchString: this.$store.state.tr.searchString,
-                is_dynamic: this.$store.state.tr.isDynamic,
-                pageNum: this.$store.state.tr.pageNumber,
-                wellName: this.$store.state.tr.wellName,
-                plannedEvents: this.$store.state.tr.plannedEvents,
-            }
+            return this.$store.getters['tr/inActive'];
         };
     },
     clickCallback(pageNum) {
