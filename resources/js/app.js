@@ -231,6 +231,12 @@ Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 
 Vue.component('map-constructor-main', require('./components/mapConstructor/Main.vue').default);
 
+Vue.component('water-flooding-management-main', require('./components/waterfloodingManagement/waterfloodingManagementLayout.vue').default);
+Vue.component('water-flooding-management-main-menu', require('./components/waterfloodingManagement/mainMenu.vue').default);
+Vue.component('water-flooding-management-map', require('./components/waterfloodingManagement/mapObject.vue').default);
+Vue.component('water-flooding-management-forecasting', require('./components/waterfloodingManagement/forecastingOptimization').default);
+Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);
+
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
 Vue.prototype.$urlLink = url => urlLink(url);

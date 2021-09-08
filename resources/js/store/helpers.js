@@ -195,3 +195,14 @@ export const digitalRatingActions = arrNames => ({
     ]),
 });
 //End Digital Rating//
+
+export const waterfloodingManagementMapActions = arrNames => ({
+    ...mapActions('waterfloodingManagement', [
+        ...arrNames,
+    ]),
+});
+export const waterfloodingManagementMapGetters = arrNames => ({
+    ...mapGetters('waterfloodingManagement', [
+        ...arrNames,
+    ]),
+});
