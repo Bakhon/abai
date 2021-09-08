@@ -106,9 +106,12 @@ Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue'
 Vue.component('prs-crs', require('./components/gno/modals/PrsCrs.vue').default);
 Vue.component('inflow-curve', require('./components/gno/modals/InflowCurve.vue').default);
 Vue.component('economic', require('./components/gno/modals/Economic.vue').default);
+Vue.component('shgn-img', require('./components/gno/components/ShgnImg.vue').default);
 Vue.component('economic-table', require('./components/gno/modals/EconomicTable.vue').default);
 Vue.component('near-wells-table', require('./components/gno/modals/NearWellsTable.vue').default);
 Vue.component('pgno-analysis', require('./components/gno/modals/AnalysisMenu.vue').default);
+Vue.component('pgno-sensitive-settings', require('./components/gno/modals/SensitiveSettings.vue').default);
+Vue.component('pgno-sensitive-result', require('./components/gno/modals/SensitiveResult.vue').default);
 Vue.component('monitor-table', require('./components/complicationMonitoring/monitor/MonitorTable.vue').default);
 Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/complicationMonitoring/omgca/form.vue').default);
@@ -176,9 +179,9 @@ Vue.component('well-card', require('./components/bigdata/wellCard/wellCard.vue')
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
-Vue.component('pf-upload_monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
-Vue.component('pf-template_pvt_plast_oil', require('./components/PlastFluids/views/SuperTemplatePvtPlastOil.vue').default);
-Vue.component('pf-oil-map', require('./components/PlastFluids/components/OilMapKz.vue').default);
+Vue.component('pf-upload-monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
+Vue.component('pf-data-analysis', require('./components/PlastFluids/views/PfDataAnalysis').default);
+Vue.component('pf-standart-separation-flash', require('./components/PlastFluids/components/StandartSeparationFlash').default);
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);

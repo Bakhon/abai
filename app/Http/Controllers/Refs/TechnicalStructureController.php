@@ -23,7 +23,7 @@ class TechnicalStructureController extends Controller
 
         $view = "{$this->view_path}.{$this->controller_name}.index";
 
-        return view($view,compact('technicalForecast'));
+        return view($view, compact('technicalForecast'));
     }
 
     public function create(): View
@@ -39,10 +39,10 @@ class TechnicalStructureController extends Controller
         ]);
 
         $dataArray = $request->all();
-        $dataArray['user_id'] = auth()->user()-> id;
+        $dataArray['user_id'] = auth()->user()->id;
         $this->model::create($dataArray);
 
-        return redirect()->route($this->index_route)->with('success',__('app.created'));
+        return redirect()->route($this->index_route)->with('success', __('app.created'));
     }
 
     public function edit(int $id): View
@@ -54,7 +54,7 @@ class TechnicalStructureController extends Controller
 
     public function update(Request $request, int $id): RedirectResponse
     {
-        $technicalForecast=$this->model::find($id);
+        $technicalForecast = $this->model::find($id);
         $request->validate([
             'name' => 'required'
         ]);
@@ -63,7 +63,7 @@ class TechnicalStructureController extends Controller
         $dataArray['user_id'] = auth()->user()->id;
         $technicalForecast->update($dataArray);
 
-        return redirect()->route($this->index_route)->with('success',__('app.updated'));
+        return redirect()->route($this->index_route)->with('success', __('app.updated'));
     }
 
     public function destroy(int $id): RedirectResponse
@@ -71,7 +71,30 @@ class TechnicalStructureController extends Controller
         $technicalForecast = $this->model::find($id);
         $technicalForecast->delete();
 
-        return redirect()->route($this->index_route)->with('success',__('app.deleted'));
+        return redirect()->route($this->index_route)->with('success', __('app.deleted'));
+    }
+
+    public function getData(Request $request): array
+    {
+        $query = $this->model::query();
+
+        if ($request->cdng_id) {
+            $query->whereCdngId($request->cdng_id);
+        }
+
+        if ($request->ngdu_id) {
+            $query->whereNgduId($request->ngdu_id);
+        }
+
+        if ($request->field_id) {
+            $query->whereFieldId($request->field_id);
+        }
+
+        if ($request->company_id) {
+            $query->whereCompanyId($request->company_id);
+        }
+
+        return $query->get()->toArray();
     }
 
 }

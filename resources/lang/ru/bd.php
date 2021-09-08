@@ -195,8 +195,9 @@ return [
             'do_not_chenge_condition' => 'Не менять состояние',
             'gtm_duplicate' => 'Дублировать в ГТМ',
             'on_our_own' => 'Собственными силами',
-
-
+            'gtm_type' => 'Вид ГТМ',
+            'status_before_selected_date' => 'Статус до выбранной даты',
+            'well_previous_category' => 'Категория до выбранной даты'
         ],
         'gas_well' => [
             'title' => 'Тех. режим - газовые скважины',
@@ -977,7 +978,7 @@ return [
             'treat_type' => 'Вид обработки',
             'ch_reagent_type' => 'Хим.реагент',
             'scraper_income' => 'Доход скребка, м',
-            'data' => 'Дата',
+            'date' => 'Дата',
         ],
         'research_lab_research' => [
             'date' => 'Дата исследования',
@@ -1067,6 +1068,17 @@ return [
             'date' => 'Дата с',
             'date_to' => 'Дата по',
         ],
+        'daily_reports_prs' => [
+            'title' => 'Суточные сводки - ПРС',
+            'org' => 'Подразделение',
+            'contractor' => 'Подрядчик',
+            'repair_work_type' => 'Вид ремонтных работ',
+            'work_done' => 'Проделанные работы',
+            'uwi' => 'Истинная глубина по вертикали',
+            'machine_type' => 'Вид станка',
+            'well' => 'Скважина',
+            'geo' => 'Горизонт'
+        ],
         'zu_gzu_production' => [
             'pf' => 'ПФ',
             'ngdu' => 'НГДУ',
@@ -1081,7 +1093,25 @@ return [
             'oil_prod_tel' => 'Добыча нефти, т/сут (телеметрия)',
             'gaz_prod' => 'Добыча газа, м3/сут',
             'gaz_prod_tel' => 'Добыча газа, м3/сут (телеметрия)',
-        ]
+        ],
+        'tech_water_well' => [
+            'uwi_number' => 'Номер скважины',
+            'bottom_hole' => 'Факт. забой',
+            'horizon' => 'Горизонт',
+            'diameter' => 'Диаметр экс.колонны, мм',
+            'worktime' => 'Отработанные дни',
+            'avg_water_prev_month' => 'Средний дебит воды, м3/сут',
+            'sum_water_prev_month' => 'Добыча воды за пред. месяц, м3',
+            'water_prod' => 'Дебит воды, м3/сут',
+            'dbeg' => 'Дата начала',
+            'dend' => 'Дата конца',
+            'events' => 'Мероприятия',
+        ],
+        'tech_events' => [
+            'planned_events' => 'Намечаемые мероприятия',
+            'event' => 'Мероприятие',
+            'planned_month' => 'Планируемый месяц'
+        ],
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',
     'list' => 'Просмотр списка',

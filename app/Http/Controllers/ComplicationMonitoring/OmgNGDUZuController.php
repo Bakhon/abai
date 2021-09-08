@@ -42,22 +42,9 @@ class OmgNGDUZuController extends CrudController
                     'title' => trans('monitoring.zu.zu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => Zu::whereHas('omgngdu_zu')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
+                        'values' => getAllObjectsWithOmgngdu('Zu')
                     ]
                 ],
-
-
                 'date' => [
                     'title' => trans('app.date'),
                     'type' => 'date',
@@ -120,7 +107,7 @@ class OmgNGDUZuController extends CrudController
         parent::list($request);
 
         $query = OmgNGDUZu::query()
-            ->with('zu', 'manual_zu');
+            ->with('zu', 'manualZu');
 
         $omgngdu_zu = $this
             ->getFilteredQuery($request->validated(), $query)

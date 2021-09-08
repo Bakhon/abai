@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -41,39 +40,31 @@ class TechState extends PlainForm
         ];
     }
 
-    public function submit(): array
+    protected function submitForm(): array
     {
-        DB::beginTransaction();
-        try {
-            $row = DB::connection('tbd')
+        $row = DB::connection('tbd')
+            ->table('prod.well_tech_state')
+            ->select('id')
+            ->where(
+                'dbeg',
+                '<=',
+                Carbon::parse($this->request->get('dbeg'))->timezone('Asia/Almaty')->endOfDay()
+            )
+            ->where('dend', '>', Carbon::now()->timezone('Asia/Almaty'))
+            ->where('well', $this->request->get('well'))
+            ->orderBy('dbeg', 'desc')
+            ->limit(1)
+            ->first();
+
+        if (!empty($row)) {
+            DB::connection('tbd')
                 ->table('prod.well_tech_state')
-                ->select('id')
-                ->where(
-                    'dbeg',
-                    '<=',
-                    Carbon::parse($this->request->get('dbeg'))->timezone('Asia/Almaty')->endOfDay()
-                )
-                ->where('dend', '>', Carbon::now()->timezone('Asia/Almaty'))
-                ->where('well', $this->request->get('well'))
-                ->orderBy('dbeg', 'desc')
-                ->limit(1)
-                ->first();
-
-            if (!empty($row)) {
-                DB::connection('tbd')
-                    ->table('prod.well_tech_state')
-                    ->where('id', $row->id)
-                    ->update(['dend' => Carbon::parse($this->request->get('dbeg'))->timezone('Asia/Almaty')]);
-            }
-
-            $result = parent::submit();
-
-            DB::commit();
-
-            return $result;
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw new SubmitFormException($e->getMessage());
+                ->where('id', $row->id)
+                ->update(['dend' => Carbon::parse($this->request->get('dbeg'))->timezone('Asia/Almaty')]);
         }
+
+        $result = parent::submitForm();
+
+        return $result;
     }
 }
