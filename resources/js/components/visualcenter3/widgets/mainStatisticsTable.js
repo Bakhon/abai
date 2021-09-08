@@ -7,11 +7,7 @@ export default {
             buttonMonthlyTab: "",
             buttonYearlyTab: "",
             buttonPeriodTab: "",
-            scroll: '',
-            tables: "",
-            buttonNormalTab: "",
             highlightedButton: "button-tab-highlighted",
-            display: "none",
             assetTitleMapping: {
                 isOperating: this.trans("visualcenter.summaryOperatingAssets"),
                 isNonOperating: this.trans("visualcenter.summaryNonOperatingAssets"),
@@ -20,13 +16,6 @@ export default {
                 kmgParticipation: this.trans("visualcenter.dolyaUchast"),
                 isRegion: this.trans("visualcenter.summaryByRegion"),
             },
-            oilProductionButton: "",
-            oilDeliveryButton: "",
-            gasProductionButton: "",
-            condensateProductionButton: "",
-            minimalDaysCountInPeriodForChart: 1,
-            oilCondensateProductionButton: "button-tab-highlighted",
-            oilCondensateDeliveryButton: '',
             tableMapping: {
                 'productionDetails': {
                     'class': '',

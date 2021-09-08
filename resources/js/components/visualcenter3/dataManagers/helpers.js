@@ -117,7 +117,7 @@ export default {
         },
 
         getColumnIndex(columnName) {
-            return this.dzoColumns[this.currentDzoList].indexOf(columnName);
+            return this.dzoColumns.indexOf(columnName);
         },
 
         getDarkColorClass(rowIndex) {
@@ -328,6 +328,22 @@ export default {
                 return 'tdStyle3';
             } else {
                 return 'tdStyleLight3';
+            }
+        },
+
+        getMetricNameByCategorySelected() {
+            if (this.gasProductionButton) {
+                return this.trans('visualcenter.meterCubic');
+            } else {
+                return this.trans("visualcenter.tonWithSpace");
+            }
+        },
+
+        getThousandMetricNameByCategorySelected() {
+            if (this.gasProductionButton) {
+                return this.trans('visualcenter.thousand') + this.trans('visualcenter.meterCubicWithSpace');
+            } else {
+                return this.trans("visualcenter.dzoThousandTon");
             }
         },
     },

@@ -1,25 +1,18 @@
 import {EventBus} from "../../event-bus.js";
 import moment from "moment";
-import Calendar from "v-calendar/lib/components/calendar.umd";
-import DatePicker from "v-calendar/lib/components/date-picker.umd";
-import {isString} from "lodash";
 
-import mainMenuConfiguration from './main_menu_configuration.json';
-import dzoNumberMapping from './dzo_number_mapping.json';
 import {dzoMapState, dzoMapActions} from '@store/helpers';
 
-import mainMenu from './widgets/mainMenu';
+
 import сompaniesDzo from './dataManagers/dzoCompanies';
 import helpers from './dataManagers/helpers';
 import oilRates from './widgets/oilRates';
 import usdRates from './widgets/usdRates';
 import mainStatisticsTable from './widgets/mainStatisticsTable';
 import rates from './dataManagers/rates';
-import dates from './dataManagers/dates';
 import oilProductionFilters from './dataManagers/oilProductionFilters';
 import mainTableChart from './widgets/mainTableChart.js';
 import secondaryParams from './dataManagers/secondaryParams';
-import consolidateOilCondensate from './dataManagers/consolidateOilCondensate';
 import productionDetails from './widgets/productionDetails';
 import chemistryDetails from './widgets/chemistryDetails';
 import wellsWorkoverDetails from './widgets/wellsWorkoverDetails';
@@ -32,6 +25,7 @@ import emergency from './widgets/emergency';
 import {globalloadingMutations} from '@store/helpers';
 import Vue from "vue";
 import backendProductionParams from './productionParams/index';
+import dzoCompaniesNameMapping from "./dzo_companies_consolidated_name_mapping.json";
 
 Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
 Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
@@ -39,10 +33,6 @@ Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChar
 
 
 export default {
-    components: {
-        Calendar,
-        DatePicker
-    },
     props: ['userId'],
     data: function () {
         return {
@@ -78,7 +68,6 @@ export default {
             oneDzoSelected: null,
             isOneDzoSelected: false,
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
-            quantityRange: '',
             index: "",
             NameDzoFull: {
                 'ОМГ': this.trans("visualcenter.omg"),
@@ -100,46 +89,9 @@ export default {
                 'ПКК': this.trans("visualcenter.pkk"),
                 'КГМКМГ': this.trans("visualcenter.kgm"),
             },
-            starts: [""],
-            series: ["", ""],
-            timestampToday: "",
-            timestampEnd: "",
-            isPricesChartLoading: false,
             chartHeadName: this.trans("visualcenter.oilCondensateProductionChartName"),
             chartSecondaryName: this.trans('visualcenter.oilCondensateProduction'),
-            planFieldName: "oil_plan",
-            factFieldName: "oil_fact",
             metricName: this.trans("visualcenter.chemistryMetricTon"),
-            productionParams : {
-                gas_plan: 0,
-                gas_fact: 0,
-            },
-            dailyProgressBars: {
-                oilDelivery: 0,
-                oil: 0,
-                gas: 0,
-            },
-            productionPercentParams: {
-                gas_fact: 0
-            },
-            millisecondsInOneDay: 1000*60*60*24,
-            companyTemplate: {
-                "opec": null,
-                "impulses": null,
-                "landing": null,
-                "restrictions": null,
-                "otheraccidents": null,
-                "dzoMonth": null,
-                "planMonth": 0,
-                "factMonth": 0,
-                "periodPlan": 0,
-                "opekPlan": 0
-            },
-            companies: ['ОМГ','ММГ','ЭМГ','КБМ',
-                'КГМ','КТМ','КОА','УО','ТШО','НКО',
-                'КПО','ПКИ','ПКК','ТП','АГ'
-            ],
-            waterInjectionButton: "",
             injectionWellsOptions: [
                 {ticker: 'all', name: this.trans("visualcenter.allCompany")},
                 {ticker: 'ОМГ', name: this.trans("visualcenter.omg")},
@@ -150,14 +102,10 @@ export default {
                 {ticker: 'КБМ', name: this.trans("visualcenter.kbm")},
                 {ticker: 'ЭМГ', name: this.trans("visualcenter.emg")},
             ],
-            dzoNumbers: dzoNumberMapping,
-            troubledCompanies: ['ОМГК','ТП','ПККР','КГМКМГ'],
-            gasSortingOrder: [
-                'ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО',
-            ],
-            waterSortingOrder: [
-                'ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА'
-            ],
+            dzoNameMapping: _.cloneDeep(dzoCompaniesNameMapping.dzoNameMapping),
+            dzoNameMappingWithoutKMG: _.cloneDeep(dzoCompaniesNameMapping.dzoNameMappingWithoutKMG),
+            dzoNameMappingNormal: _.cloneDeep(dzoCompaniesNameMapping.normalNames),
+            timeSelect: "",
         };
     },
     methods: {
@@ -180,18 +128,15 @@ export default {
         },
     },
     mixins: [
-        mainMenu,
         сompaniesDzo,
         helpers,
         oilRates,
         usdRates,
         mainStatisticsTable,
         rates,
-        dates,
         oilProductionFilters,
         mainTableChart,
         secondaryParams,
-        consolidateOilCondensate,
         productionDetails,
         chemistryDetails,
         wellsWorkoverDetails,

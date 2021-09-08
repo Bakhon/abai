@@ -1,4 +1,4 @@
-import mainMenuConfiguration from "../main_menu_configuration.json";
+
 import companiesListWithKMG from "../dzo_companies_initial_consolidated_withkmg.json";
 import dzoCompaniesInitial from "../dzo_companies_initial.json";
 import companiesListWithoutKMG from "../dzo_companies_initial_consolidated_withoutkmg.json";
@@ -111,21 +111,7 @@ export default {
             });
         },
 
-        getThousandMetricNameByCategorySelected() {
-            if (this.gasProductionButton) {
-                return this.trans('visualcenter.thousand') + this.trans('visualcenter.meterCubicWithSpace');
-            } else {
-                return this.trans("visualcenter.dzoThousandTon");
-            }
-        },
 
-        getMetricNameByCategorySelected() {
-            if (this.gasProductionButton) {
-                return this.trans('visualcenter.meterCubic');
-            } else {
-                return this.trans("visualcenter.tonWithSpace");
-            }
-        },
 
         assignOneCompanyToSelectedDzo(oneDzoNameSelected) {
             if (oneDzoNameSelected == 'ОМГ') {

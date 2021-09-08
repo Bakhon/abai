@@ -4,13 +4,7 @@ export default {
     data: function () {
         return {
             isMultipleDzoCompaniesSelected: true,
-            dzoCompaniesSummaryForChart: {},
-            dzoColumns: {
-                daily: ['companyName', 'plan', 'fact', 'difference', 'percent'],
-                monthly: ['companyName', 'monthlyPlan', 'plan', 'fact', 'difference', 'percent'],
-                yearly: ['companyName', 'yearlyPlan', 'plan', 'fact', 'difference', 'percent'],
-            },
-            currentDzoList: 'daily',
+            dzoColumns: ['companyName', 'plan', 'fact', 'difference', 'percent'],
             dzoCompaniesAssets: {
                 isAllAssets: true,
                 isOperating: false,
@@ -54,30 +48,13 @@ export default {
                 },
             },
             selectedDzoCompanies: [],
-            company: "all",
             dzoCompanies: _.cloneDeep(companiesListWithKMG),
             dzoCompaniesTemplate: _.cloneDeep(companiesListWithKMG),
-            dzoCompanySummary: this.bigTable,
-            dzoCompaniesSummaryInitial: {
-                plan: 0,
-                periodPlan: 0,
-                fact: 0,
-                difference: 0,
-                percent: 0,
-                targetPlan: 0,
-                opekPlan: 0,
-            },
-            dzoCompaniesSummary: {},
             dzoType: {
                 isOperating: [],
                 isNonOperating: []
             },
             dzoSummaryForTable: [],
-            totalSummary: {
-                plan: 0,
-                fact: 0,
-                opekPlan: 0
-            },
         };
     },
     methods: {
@@ -123,66 +100,6 @@ export default {
                     company.selected = !company.selected;
                 }
             });
-        },
-
-        calculateSecondaryCategories() {
-            let categories = ['oilCondensateProductionButton','oilCondensateDeliveryButton'];
-            let index = categories.findIndex(categoryName => categoryName === this.selectedButtonName);
-            categories.splice(index, 1);
-            for (let i in categories) {
-                if (this.oilCondensateFilters['isWithoutKMGFilterActive']) {
-                    this.consolidatedData[categories[i]].current = this.consolidatedData[categories[i]].currentWithKMG;
-                    this.consolidatedData[categories[i]].yesterday = this.consolidatedData[categories[i]].yesterdayWithKMG;
-                } else {
-                    this.consolidatedData[categories[i]].current = this.consolidatedData[categories[i]].currentWithoutKMG;
-                    this.consolidatedData[categories[i]].yesterday = this.consolidatedData[categories[i]].yesterdayWithoutKMG;
-                }
-            }
-        },
-
-        calculateDzoCompaniesSummary(isWithoutRefresh) {
-            let emptyDzo = [];
-            this.dzoSummaryForTable = _.cloneDeep(this.dzoCompanySummary).filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
-            let chartOutput = this.getFilteredForChartBySelectedCompanies();
-            let summaryForChart = this.getSumForChart(chartOutput);
-            this.exportDzoCompaniesSummaryForChart(summaryForChart);
-            if (this.gasProductionButton || this.waterInjectionButton) {
-                this.dzoSummaryForTable = this.getSorted(this.dzoSummaryForTable,this.gasSortingOrder)
-            }
-            if (this.isOilResidueActive) {
-                this.dzoSummaryForTable = this.dzoSummaryForTable.filter(item => item.factMonth > 0);
-            }
-            let filteredByCompaniesYesterday = this.yesterdaySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
-            let actualFilteredSummary = _.cloneDeep(this.dzoSummaryForTable);
-            if (!this.isConsolidatedCategoryActive()) {
-                filteredByCompaniesYesterday = this.yesterdayProductionDetails.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
-            }
-            this.isMultipleDzoCompaniesSelected = this.dzoSummaryForTable.length > 1;
-            let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
-            let self = this;
-            _.forEach(actualFilteredSummary, function (company) {
-                if(!company) {
-                    return;
-                }
-                summary.plan = parseInt(summary.plan) + parseInt(company.planMonth);
-                summary.fact = parseFloat(summary.fact) + parseFloat(company.factMonth);
-                summary.periodPlan = parseInt(summary.periodPlan) + parseInt(company.periodPlan);
-                if (self.isFilterTargetPlanActive) {
-                    summary.targetPlan = parseInt(summary.targetPlan) + parseInt(company.targetPlan);
-                }
-                if (self.isConsolidatedCategoryActive()) {
-                    summary.opekPlan = parseInt(summary.opekPlan) + parseInt(company.opekPlan);
-                }
-            });
-            this.totalSummary.plan = summary.plan;
-            this.totalSummary.opekPlan = summary.opekPlan;
-            this.totalSummary.fact = summary.fact;
-            summary = this.getFormatted(summary);
-            this.dzoCompaniesSummary = summary;
-            if (this.isConsolidatedCategoryActive() && !isWithoutRefresh) {
-                this.updateProductionTotalFact(filteredByCompaniesYesterday,actualFilteredSummary,this.selectedView);
-                this.isOpecFilterActive = true;
-            }
         },
 
         getFormatted(summary) {

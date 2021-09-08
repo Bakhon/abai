@@ -762,7 +762,7 @@
             <div class="d-flex mh-60 mt-3 px-4">
               <div
                       class="col-sm-7 vis-table"
-                      :class="isOneDateSelected ? 'main-table__scroll' : ''"
+                      :class="backendPeriodRange === 0 ? 'main-table__scroll' : ''"
               >
                 <table
                         v-if="backendProductionTableData.length"
@@ -780,9 +780,6 @@
                       <div v-else>
                         {{ getThousandMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive">
-                        {{ trans("visualcenter.dzoOpec") }}
-                      </div>
                     </th>
                     <th v-if="buttonYearlyTab && !backendMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoYearlyPlan") }}
@@ -791,9 +788,6 @@
                       </div>
                       <div v-else>
                         {{ getThousandMetricNameByCategorySelected() }}
-                      </div>
-                      <div v-if="isOpecFilterActive">
-                        {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
                     <th v-if="!backendMenu.oilCondensateDeliveryOilResidue">
@@ -1275,9 +1269,8 @@
                 :usd-rates-data.sync="oilRatesData"
                 :period-select-func.sync="periodSelectFunc"
                 :table-data.sync="oilRatesDataTableForCurrentPeriod"
-                :usd-chart-is-loading.sync="isPricesChartLoading"
                 @period-select-usd="
-            updatePrices(periodSelect(selectedPeriod))
+            updatePrices(periodSelect())
           "
                 @change-table="changeTable('productionDetails')"
                 :main-title="trans('visualcenter.oilPricedynamic')"
@@ -1289,9 +1282,8 @@
                 :usd-rates-data.sync="usdRatesData"
                 :period-select-func.sync="periodSelectFunc"
                 :table-data.sync="usdRatesDataTableForCurrentPeriod"
-                :usd-chart-is-loading.sync="isPricesChartLoading"
                 @period-select-usd="
-            updatePrices(periodSelect(selectedPeriod))
+            updatePrices(periodSelect())
           "
                 @change-table="changeTable('productionDetails')"
                 :main-title="trans('visualcenter.kursHeader')"
@@ -2524,7 +2516,7 @@
           width: 50px;
         }
         &:nth-child(2) {
-          width: 352px;
+          width: 365px;
         }
       }
     }
