@@ -86,6 +86,14 @@ export default {
         this.$store.commit("tr/SET_BLOCK", newVal);
       }, 
     },
+    selectEvent: {
+      get(){
+        return this.$store.state.tr.plannedEvents;
+      }, 
+      set(newVal){
+        this.$store.commit("tr/SET_EVENT", newVal);
+      }, 
+    },
     addWellData() {
       try {
         let filteredResult = this.allWells.filter(
@@ -281,6 +289,7 @@ export default {
       blockFilterData: [],
       expMethFilterData: [],
       wellNameFilterData: [],
+      eventFilterData: [],
       perPage: 3,
       currentPage: 1,
       isAscSort: "",
@@ -359,26 +368,8 @@ export default {
                 }
                 this.isPermission = this.params.includes(this.permissionName);
             });
-        this.axios
-            .get(
-                this.postApiUrl + "techregime/tr_parameter_filters/"
-            )
-            .then((response) => {
-                let data = response.data;
-                if (data) {
-                    this.filter_column = data;
-                    this.horizonFilterData = data.horizon;
-                    this.objectFilterData = data.object;
-                    this.fieldFilterData = data.field;
-                    this.wellTypeFilterData = data.well_type;
-                    this.blockFilterData = data.block;
-                    this.expMethFilterData = data.exp_meth;
-                    this.wellNameFilterData = data.rus_wellname;
-                } else {
-                    console.log("No data");
-                }
-            });
         this.pageInfo(this.pageNumberLink);
+        this.getFilter();
     },
     getPageData() {
         if (this.isDynamic) {
@@ -401,6 +392,7 @@ export default {
                 month_2: this.$store.state.tr.month_dyn_end,
                 day_2: this.$store.state.tr.day_dyn_end,
                 wellName: this.$store.state.tr.wellName,
+                plannedEvents: this.$store.state.tr.plannedEvents,
             };
         } else {
             return {
@@ -418,6 +410,7 @@ export default {
                 is_dynamic: this.$store.state.tr.isDynamic,
                 pageNum: this.$store.state.tr.pageNumber,
                 wellName: this.$store.state.tr.wellName,
+                plannedEvents: this.$store.state.tr.plannedEvents,
             }
         };
     },
@@ -478,14 +471,15 @@ export default {
         this.pushChooseParameter();
     },
     pushChooseParameter() {
-        if (this.isDynamic) {
-            this.formingDynamicTR();
-        } else if (this.isEdit) {
-            this.axiosEdit();
-        } else {
-            this.requestFilter();
-        }
-        this.checkFilter();
+      if (this.isDynamic) {
+        this.formingDynamicTR();
+      } else if (this.isEdit) {
+        this.axiosEdit();
+      } else {
+        this.requestFilter();
+      }
+      this.checkFilter();
+      this.getFilter();
     },
     axiosEdit() {
         this.axios
@@ -522,6 +516,29 @@ export default {
             });
         this.pageInfo(this.pageNumberLink);
     },
+    getFilter() {
+        this.axios
+            .post(
+                this.postApiUrl + "techregime/tr_parameter_filters_2/",
+                this.getPageData(),
+            )
+            .then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.filter_column = data;
+                    this.horizonFilterData = data.horizon;
+                    this.objectFilterData = data.object;
+                    this.fieldFilterData = data.field;
+                    this.wellTypeFilterData = data.well_type;
+                    this.blockFilterData = data.block;
+                    this.expMethFilterData = data.exp_meth;
+                    this.wellNameFilterData = data.rus_wellname;
+                    this.eventFilterData = data.planned_events;
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
     pageInfo(link) {
         this.axios
             .post(
@@ -536,6 +553,27 @@ export default {
                     console.log("No data");
                 }
             });
+        // this.axios
+        //     .post(
+        //         this.postApiUrl + "techregime/tr_parameter_filters_2/",
+        //         this.getPageData(),
+        //     )
+        //     .then((response) => {
+        //         let data = response.data;
+        //         if (data) {
+        //             this.filter_column = data;
+        //             this.horizonFilterData = data.horizon;
+        //             this.objectFilterData = data.object;
+        //             this.fieldFilterData = data.field;
+        //             this.wellTypeFilterData = data.well_type;
+        //             this.blockFilterData = data.block;
+        //             this.expMethFilterData = data.exp_meth;
+        //             this.wellNameFilterData = data.rus_wellname;
+        //             this.eventFilterData = data.planned_events;
+        //         } else {
+        //             console.log("No data");
+        //         }
+        //     });
     },
     // Режим месячного формирования
     requestFilter() {
@@ -622,6 +660,7 @@ export default {
         this.editedWells = [];
         this.isShowFirst = false;
         this.isShowSecond = true;
+        this.checkAllFilters = false;
         this.loadPage();
     },
     reRender() {

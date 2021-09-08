@@ -23,6 +23,7 @@ const tr = {
     block: [],
     expMeth: [],
     wellName: [],
+    plannedEvents: [],
     pageNumber: 1,
     isFullVersion: false,
   },
@@ -96,8 +97,10 @@ const tr = {
     }, 
     SET_VERSION: (state, val) => {
       state.isFullVersion = val;
-    }, 
-  },
+    },
+    SET_EVENT: (state, val) => {
+      state.plannedEvents = val;
+    },  },
 
   actions: {
   },
