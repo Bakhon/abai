@@ -141,7 +141,7 @@ export default {
     chartSeries() {
       return [
         {
-          name: '',
+          name: this.well_id,
           type: 'line',
           data: [{
             x: this.oilPerDay,
