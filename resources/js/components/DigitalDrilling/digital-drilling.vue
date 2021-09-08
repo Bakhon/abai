@@ -3,7 +3,7 @@
         <div class="col-sm-12 centerBlock">
             <menuHead @changePage="changePage"/>
         </div>
-        <div class="col-sm-10 leftBlock">
+        <div class="col-sm-10 leftBlock pl-0 pr-0">
             <div class="resultsBlock">
                 <ul>
                     <li>
@@ -129,7 +129,7 @@
             }
         },
     }
-    Vue.component('home', require('./bd/home').default);
+    Vue.component('home-t', require('./bd/home').default);
     Vue.component('project-data', require('./bd/ProjectData').default);
     Vue.component('technical-task', require('./bd/ProjectData/TechnicalTask').default);
     Vue.component('geology', require('./bd/ProjectData/Geology').default);

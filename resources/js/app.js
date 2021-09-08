@@ -221,6 +221,7 @@ Vue.component('visual-center-daily-approve', require('./components/visualcenter3
 Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/index.vue').default);
 
 Vue.component('digital-drilling', require('./components/DigitalDrilling/digital-drilling').default);
+Vue.component('digital-drilling-new', require('./components/Digital-Drilling/DigitalDrilling').default);
 Vue.component('digital-drilling-menu', require('./components/DigitalDrilling/menu').default);
 Vue.component('window-head', require('./components/DigitalDrilling/WindowHead').default);
 

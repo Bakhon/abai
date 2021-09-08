@@ -1,22 +1,14 @@
 {
   "bd": [
     {
-      "name": "digital_drilling.general_information",
-      "img": "/img/digital-drilling/menu2.svg",
-      "id": 1,
-      "component": {
-        "name": "main-table",
-        "template": "<home-t></home-t>"
-      }
-    },
-    {
       "name": "digital_drilling.well_data_sheet",
       "img": "/img/digital-drilling/menu3.svg",
       "id": 2,
       "component": {
         "name": "main-table",
         "template": "<passport></passport>"
-      }
+      },
+      "accordion": false
     },
     {
       "name": "digital_drilling.open_hole_logging",
@@ -25,7 +17,8 @@
       "component": {
         "name": "main-table",
         "template": "<gis></gis>"
-      }
+      },
+      "accordion": false
     },
     {
       "name": "digital_drilling.survey",
@@ -34,7 +27,8 @@
       "component": {
         "name": "main-table",
         "template": "<inclino></inclino>"
-      }
+      },
+      "accordion": false
     },
     {
       "name": "digital_drilling.well_design_menu",
@@ -43,7 +37,28 @@
       "component": {
         "name": "main-table",
         "template": "<structure></structure>"
-      }
+      },
+      "accordion": true,
+      "child": [
+        {
+          "name": "digital_drilling.project_data.visualization",
+          "id": 1,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<structure></structure>"
+          }
+        },
+        {
+          "name": "digital_drilling.project_data.tabular_data",
+          "id": 2,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<structure></structure>"
+          }
+        }
+      ]
     },
     {
       "name": "digital_drilling.project_fact_data",
@@ -52,16 +67,18 @@
       "component": {
         "name": "main-table",
         "template": "<project-data></project-data>"
-      }
+      },
+      "accordion": false
     },
     {
       "name": "digital_drilling.drilling_problems",
       "img": "/img/digital-drilling/menu7.svg",
-      "id": 3,
+      "id": 7,
       "component": {
         "name": "main-table",
         "template": "<complications></complications>"
-      }
+      },
+      "accordion": false
     }
   ],
   "project": [

@@ -432,7 +432,8 @@ canvas#foo {
     color: #fff;
 }
 
-.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr:nth-child(odd) {background: rgba(69, 77, 125, 0.7);}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent
+table tr:nth-child(odd) {background: rgba(69, 77, 125, 0.7);}
 
 .digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr th {
     background: #323370;

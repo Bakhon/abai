@@ -31,7 +31,7 @@ class BDController extends Controller
 
     public function index()
     {
-        return view('digital_drilling.bd.home');
+        return view('digital_drilling.digital-drilling');
     }
 
     public function info()

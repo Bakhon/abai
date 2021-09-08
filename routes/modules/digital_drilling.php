@@ -7,6 +7,9 @@ Route::group(
             Route::group(['prefix' => '/'], function () {
                 Route::get('/',                 'DigitalDrilling\BDController@home')->name('digital-drilling');
             });
+            Route::group(['prefix' => '/new'], function () {
+                Route::get('/',                 'DigitalDrilling\BDController@index')->name('digital-drilling');
+            });
 
 
             // Daily report
