@@ -451,34 +451,33 @@ export default {
     runJob(url) {
       this.SET_LOADING(true);
       this.axios.get(url, {params: this.prepareQueryParams()}).then((response) => {
-        // let interval = setInterval(() => {
-        //   this.axios.get('/ru/jobs/status', {params: {id: response.data.id}}).then((response) => {
-        //     if (response.data.job.status === 'finished') {
-        //       this.SET_LOADING(false);
-        //       clearInterval(interval)
-        //
-        //       if (response.data.job.output) {
-        //         if (response.data.job.output.filename) {
-        //           document.location.href = response.data.job.output.filename
-        //         }
-        //
-        //         if (response.data.job.output.error) {
-        //           this.showToast(response.data.job.output.error, this.trans('app.error'), 'danger');
-        //         }
-        //       }
-        //
-        //       if (this.params.links.calc) {
-        //         this.loadData();
-        //       }
-        //
-        //     } else if (response.data.job.status === 'failed') {
-        //       this.SET_LOADING(false);
-        //       clearInterval(interval)
-        //       alert(this.trans('monitoring.table.export_error'))
-        //     }
-        //   })
-        // }, 2000)
+        let interval = setInterval(() => {
+          this.axios.get('/ru/jobs/status', {params: {id: response.data.id}}).then((response) => {
+            if (response.data.job.status === 'finished') {
+              this.SET_LOADING(false);
+              clearInterval(interval)
 
+              if (response.data.job.output) {
+                if (response.data.job.output.filename) {
+                  document.location.href = response.data.job.output.filename
+                }
+
+                if (response.data.job.output.error) {
+                  this.showToast(response.data.job.output.error, this.trans('app.error'), 'danger');
+                }
+              }
+
+              if (this.params.links.calc) {
+                this.loadData();
+              }
+
+            } else if (response.data.job.status === 'failed') {
+              this.SET_LOADING(false);
+              clearInterval(interval)
+              alert(this.trans('monitoring.table.export_error'))
+            }
+          })
+        }, 2000)
       });
     },
     resetFilters() {
