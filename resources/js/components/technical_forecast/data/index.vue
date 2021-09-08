@@ -1,20 +1,16 @@
 <template>
-  <div class="container-fluid economic-wrap">
+  <div class="container p-4 bg-light" style="max-width: 90vw">
+    <select-source
+        :form="form"
+        @loading="SET_LOADING(true)"
+        @loaded="SET_LOADING(false)"
+        @change="getData"/>
 
-    <div class="row justify-content-between">
-      <select-source
-          :loading="loading"
-          :form="form"
-          @loading="loading = true"
-          @loaded="loading = false"
-          @change="getData"/>
-
-      <vue-table-dynamic v-if="form.source_id" :params="params" ref="table">
-        <a slot="column-11" slot-scope="{ props }" :href="props.cellData">
-          {{ trans('app.edit') }}
-        </a>
-      </vue-table-dynamic>
-    </div>
+    <vue-table-dynamic v-if="form.source_id" :params="params" ref="table">
+      <a slot="column-11" slot-scope="{ props }" :href="props.cellData">
+        {{ trans('app.edit') }}
+      </a>
+    </vue-table-dynamic>
   </div>
 </template>
 
@@ -35,35 +31,7 @@ export default {
     form: {
       source_id: null
     },
-    sources: [],
-    params: {
-      data: [],
-      enableSearch: true,
-      whiteSpace: 'normal',
-      header: 'row',
-      border: true,
-      stripe: true,
-      pagination: true,
-      sort: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12],
-      pageSize: 12,
-      pageSizes: [12, 24, 48],
-      headerHeight: 80,
-      rowHeight: 50,
-      columnWidth: [
-        {column: 0, width: 100},
-        {column: 1, width: 60},
-        {column: 2, width: 120},
-        {column: 3, width: 80},
-        {column: 4, width: 80},
-        {column: 5, width: 80},
-        {column: 6, width: 120},
-        {column: 7, width: 60},
-        {column: 9, width: 150},
-        {column: 10, width: 150},
-        {column: 11, width: 120},
-        {column: 12, width: 80},
-      ]
-    },
+    data: []
   }),
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
@@ -71,17 +39,73 @@ export default {
     async getData() {
       this.SET_LOADING(true);
 
-      this.params.data = []
+      this.data = [this.headers]
 
-      const {data} = await this.axios.get(this.localeUrl('/tech_data_json'), {params: this.form})
+      const {data} = await this.axios.get(this.url, {params: this.form})
 
-      this.params.data = data.data
+      data.forEach(item => {
+        this.data.push([
+          item.source.name,
+          item.gu.name,
+          item.well_id,
+          item.date,
+          item.oil,
+          item.liquid,
+          item.days_worked,
+          item.prs,
+          item.comment,
+          `${item.created_at} ${item.author.name}`,
+          item.editor ? `${item.updated_at} ${item.editor.name}` : '',
+          this.localeUrl(`/tech-data-forecast/${item.id}/edit`),
+          item.log_id
+        ])
+      })
 
       this.SET_LOADING(false);
     },
   },
   computed: {
     ...globalloadingState(['loading']),
+
+    url() {
+      return this.localeUrl('/tech-data-forecast/get-data')
+    },
+
+    params() {
+      return {
+        data: this.data,
+        enableSearch: true,
+        whiteSpace: 'normal',
+        header: 'row',
+        border: true,
+        stripe: true,
+        pagination: true,
+        sort: this.headers.map((col, index) => (index)),
+        pageSize: 12,
+        pageSizes: [12, 24, 48],
+        headerHeight: 80,
+        rowHeight: 50,
+        columnWidth: this.headers.map((col, index) => ({column: index, width: 150}))
+      }
+    },
+
+    headers() {
+      return [
+        this.trans('forecast.source_data'),
+        this.trans('forecast.gu'),
+        this.trans('forecast.well'),
+        this.trans('forecast.month-year'),
+        this.trans('forecast.oil-production'),
+        this.trans('forecast.extraction-liquid'),
+        this.trans('forecast.days-worked'),
+        this.trans('forecast.prs'),
+        this.trans('forecast.comment'),
+        this.trans('forecast.added_date_author'),
+        this.trans('forecast.changed_date_author'),
+        this.trans('forecast.edit'),
+        this.trans('forecast.id_of_add')
+      ]
+    }
   }
 };
 </script>
