@@ -182,19 +182,20 @@ export default {
             let isFilterChanged = category === this.backendSelectedCategory;
             let shouldRecalculateSummary = false;
             for (let item in this.backendMenu) {
-                if (item === category || this.backendDoubleFilter.includes(category)) {
+                if (item === category || this.backendDoubleFilter.includes(item)) {
                     continue;
                 }
                 this.backendMenu[item] = false;
             }
+
             if (!isWithoutKmg) {
                 this.backendMenu[category] = !this.backendMenu[category];
             } else {
                 this.backendMenu['oilCondensateProductionWithoutKMG'] = !this.backendMenu['oilCondensateProductionWithoutKMG'];
                 this.backendMenu['oilCondensateDeliveryWithoutKMG'] = !this.backendMenu['oilCondensateDeliveryWithoutKMG'];
             }
-
             this.backendMenu[parent] = true;
+
             if (isWithoutKmg && this.backendMenu[category]) {
                 shouldRecalculateSummary = true;
             }
@@ -217,6 +218,12 @@ export default {
                 this.backendProductionTableData = _.cloneDeep(this.backendProductionParams.tableData.current[parent]);
                 this.backendProductionTableData = this.backendGetFilteredByDzo(this.backendProductionTableData,this.backendCondensateCompanies);
             }
+
+            if (!this.backendMenu[category]) {
+                this.backendProductionTableData = _.cloneDeep(this.backendProductionParams.tableData.current[parent]);
+                this.backendSelectedCategory = parent;
+            }
+            this.productionData = _.cloneDeep(this.backendProductionTableData);
             if (this.backendPeriodRange !== 0) {
                 return;
             }

@@ -122,6 +122,7 @@ export default {
 
         selectAllDzoCompanies() {
             if (!this.isOneDzoSelected) {
+                this.productionData = _.cloneDeep(this.backendProductionTableData);
                 this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
                 _.forEach(this.dzoCompanies, function (dzo) {
                     _.set(dzo, 'selected', true);
