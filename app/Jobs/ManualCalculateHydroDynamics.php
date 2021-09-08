@@ -135,6 +135,20 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             return;
         }
 
+        $pipes = $this->getPipes();
+
+        $pipes->load('pipeType');
+        $this->loadRelations($pipes);
+
+        if (!$pipes) {
+            return;
+        }
+
+        $this->calculate($pipes);
+    }
+
+    public function getPipes ()
+    {
         $query = ManualOilPipe::query()
             ->with('firstCoords', 'lastCoords');
 
@@ -153,15 +167,11 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             $query->whereIn('gu_id', $this->input['checkbox_selected']);
         }
 
-        $pipes = $query->get();
+        return $query->get();
+    }
 
-        $pipes->load('pipeType');
-        $this->loadRelations($pipes);
-
-        if (!$pipes) {
-            return;
-        }
-
+    public function calculate ($pipes)
+    {
         $calcUrl = $this->getUrl($pipes);
 
         $data = [
