@@ -373,9 +373,9 @@ export default {
     },
     getPageData() {
         if (this.isDynamic) {
-            return this.$store.getters['tr/isActive'];
+            return this.$store.getters['tr/Dynamic'];
         } else {
-            return this.$store.getters['tr/inActive'];
+            return this.$store.getters['tr/notDynamic'];
         };
     },
     clickCallback(pageNum) {
