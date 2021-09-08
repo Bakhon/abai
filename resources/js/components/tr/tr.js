@@ -553,29 +553,7 @@ export default {
                     console.log("No data");
                 }
             });
-        // this.axios
-        //     .post(
-        //         this.postApiUrl + "techregime/tr_parameter_filters_2/",
-        //         this.getPageData(),
-        //     )
-        //     .then((response) => {
-        //         let data = response.data;
-        //         if (data) {
-        //             this.filter_column = data;
-        //             this.horizonFilterData = data.horizon;
-        //             this.objectFilterData = data.object;
-        //             this.fieldFilterData = data.field;
-        //             this.wellTypeFilterData = data.well_type;
-        //             this.blockFilterData = data.block;
-        //             this.expMethFilterData = data.exp_meth;
-        //             this.wellNameFilterData = data.rus_wellname;
-        //             this.eventFilterData = data.planned_events;
-        //         } else {
-        //             console.log("No data");
-        //         }
-        //     });
     },
-    // Режим месячного формирования
     requestFilter() {
         this.axios
             .post(
