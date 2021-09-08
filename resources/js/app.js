@@ -124,7 +124,7 @@ Vue.component('zu-form', require('./components/complicationMonitoring/zu/form.vu
 Vue.component('pipe-passport-form', require('./components/complicationMonitoring/pipePassport/form.vue').default);
 
 Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);
-Vue.component('gtm-main-page', require('./components/GTM/Main.vue').default);
+Vue.component('gtm-main-page', require('./components/GTM/GtmMain.vue').default);
 Vue.component('gtm-main-indicator', require('./components/GTM/MainIndicator.vue').default);
 Vue.component('gtm-aegtm', require('./components/GTM/components/Aegtm.vue').default);
 Vue.component('gtm-aegtm-eco', require('./components/GTM/components/AegtmEco.vue').default);
@@ -133,8 +133,6 @@ Vue.component('gtm-podbor-gtm', require('./components/GTM/components/PodborGTM.v
 Vue.component('gtm-digital-rating-gtm', require('./components/GTM/components/DigitalRating.vue').default);
 Vue.component('gtm-etu', require('./components/GTM/components/Etu.vue').default);
 Vue.component('gtm-main-menu', require('./components/GTM/MainMenu.vue').default);
-Vue.component('gtm-bar-chart', require('./components/GTM/components/BarChart.vue').default);
-Vue.component('gtm-line-chart', require('./components/GTM/components/LineChart.vue').default);
 Vue.component('gtm-tree', require('./components/GTM/mixin/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/mixin/NodeTree.vue').default);
 Vue.component('gtm-date-picker', require('./components/GTM/mixin/DatePicker.vue').default);

@@ -1,6 +1,6 @@
 [
   {
-    "name": "Анализ эффективности ГТМ",
+    "name": "Анализ эффективности ГТМ и ВНС",
     "icon": "/img/GTM/aegtm_icon.svg",
     "parentType": "aegtm",
     "children": [
