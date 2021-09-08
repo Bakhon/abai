@@ -41,13 +41,14 @@ class GasProduction {
     public function getDataByCategory($factData,$planData,$periodRange,$yearlyPlan,$periodType,$oneDzoSelected)
     {
         if (!is_null($oneDzoSelected)) {
-            $this->companies = $oneDzoSelected;
+            $this->companies = array();
+            $this->companies[] = $oneDzoSelected;
         }
         $factData = $factData->filter(function($item) {
             return in_array($item->dzo_name,$this->companies);
         });
         $groupedFact = $factData->groupBy('dzo_name');
-        if ($periodRange === 0) {
+        if ($periodRange === 0 && is_null($oneDzoSelected)) {
             $groupedFact = $this->getUpdatedByMissingCompanies($groupedFact);
         }
         $summaryByCategories = array();
@@ -198,16 +199,13 @@ class GasProduction {
 
     public function getChartData($fact,$plan,$dzoName,$type)
     {
-        $companies = $this->companies;
         if (!is_null($dzoName)) {
-            $fact = $fact->filter(function($item) {
-                return $item->dzo_name === $dzoName;
-            });
-        } else {
-            $fact = $fact->filter(function($item) use($companies) {
-                return in_array($item->dzo_name,$companies);
-            });
+            $this->companies = array();
+            $this->companies[] = $dzoName;
         }
+        $fact = $fact->filter(function($item) {
+            return in_array($item->dzo_name,$this->companies);
+        });
         $chartData = array();
         $formattedPlan = array();
         foreach($plan as $item) {

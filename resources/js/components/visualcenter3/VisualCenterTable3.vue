@@ -282,7 +282,7 @@
                     <div class="icon-all icons1"></div>
                     <div
                             class="txt5"
-                            @click="backendSwitchCategory('oilCondensateProduction')"
+                            @click="backendSwitchCategory('oilCondensateProduction','oilCondensateProduction')"
                     >
                       {{ trans("visualcenter.oilCondensateProduction") }}
                     </div>
@@ -333,7 +333,7 @@
                       <div class="icon-all icons2"></div>
                       <div
                               class="txt5"
-                              @click="backendSwitchCategory('oilCondensateDelivery')"
+                              @click="backendSwitchCategory('oilCondensateDelivery','oilCondensateDelivery')"
                       >
                         {{ trans("visualcenter.oilCondensateDelivery") }}
                       </div>
@@ -396,7 +396,7 @@
                     <div class="icon-all icons3"></div>
                     <div
                             class="txt5"
-                            @click="backendSwitchCategory('gasProduction')"
+                            @click="backendSwitchCategory('gasProduction','gasProduction')"
                     >
                       {{ trans("visualcenter.getgaz") }}
                     </div>
@@ -522,7 +522,7 @@
                   <div :class="[backendMenu.waterInjection ? 'button-tab-highlighted' : '', 'col-10 category-button_border']">
                     <div
                             class="button1-vc-inner"
-                            @click="backendSwitchCategory('waterInjection')"
+                            @click="backendSwitchCategory('waterInjection','waterInjection')"
                     >
                       <div class="icon-all icons5"></div>
                       <div class="txt5">

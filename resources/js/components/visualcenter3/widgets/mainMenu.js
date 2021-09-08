@@ -6,7 +6,6 @@ import companiesListWithoutKMG from "../dzo_companies_initial_consolidated_witho
 export default {
     data: function () {
         return {
-            isMainMenuItemChanged: false,
             mainMenuButtonElementOptions: {},
             categoryMenuPreviousParent: '',
             mainMenuButtonHighlighted: "color: #fff;background: #237deb;font-weight:bold;",
@@ -66,66 +65,11 @@ export default {
         };
     },
     methods: {
-        switchCategory(buttonName, planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
-            this.lastSelectedCategory = '';
-            this.oilCondensateProductionButton = '';
-            this.oilCondensateDeliveryButton = '';
-            this.SET_LOADING(true);
-            this.isOpecFilterActive = false;
-            this.oilCondensateFilters.isWithoutKMGFilterActive = true;
-            this.isOilResidueActive = false;
-            if (!this.condolidatedButtons.includes(buttonName)) {
-                this.changeDzoCompaniesList(dzoCompaniesInitial);
-            } else {
-                this.changeDzoCompaniesList(companiesListWithKMG);
-            }
-            if (!this.isOneDzoSelected){
-                this.selectAllDzoCompanies();
-            }
-            this.setDzoCompaniesToInitial();
-            this.disableTargetCompanyFilter();
-            if (!childButton) {
-                this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
-                this.disableOilFilters();
-            }
-            this.selectedView = buttonName;
-            this.chartHeadName = this.chartTranslateMapping[buttonName];
-            this.chartSecondaryName = categoryName;
-            this.selectedButtonName = buttonName;
-            this.dzoCompaniesAssets['assetTitle'] = this.trans("visualcenter.summaryAssets");
-            this.planFieldName = planFieldName;
-            this.factFieldName = factFieldName;
-            this.metricName = metricName;
-            if (parentButton && childButton) {
-                this.switchMainMenu(parentButton, childButton);
-                this.changeAssets(childButton);
-            } else {
-                this.isMainMenuItemChanged = true;
-            }
-            this.changeDate();
-        },
-
         changeDzoCompaniesList(companyList) {
             this.dzoCompanies = _.cloneDeep(companyList);
             this.dzoCompaniesTemplate = _.cloneDeep(companyList);
         },
 
-        switchMainMenu(parentButton, childButton,chartName) {
-            this.chartHeadName = this.chartTranslateMapping[childButton];
-            this.selectAllDzoCompanies();
-            this.disableTargetCompanyFilter();
-            let self = this;
-            this.isMainMenuItemChanged = false;
-            this.isOilResidueActive = childButton === 'oilResidue' && !this.isOilResidueActive;
-            let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
-            if (this.categoryMenuPreviousParent !== parentButton) {
-                _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
-                    self.disableMainMenuFlags(self.mainMenuButtonElementOptions[button]);
-                });
-            }
-            this.categoryMenuPreviousParent = parentButton;
-            this.switchButtonOptions(currentFilterOptions);
-        },
         switchButtonOptions(elementOptions) {
             let enabledFlag = 'flagOn';
             let disabledFlag = 'flagOff'
@@ -141,16 +85,6 @@ export default {
             } else {
                 elementOptions.flag = disabledFlag;
             }
-        },
-
-        disableMainMenuFlags(menuCategory) {
-            if (!menuCategory.childItems) {
-                return;
-            }
-            _.forEach(Object.keys(menuCategory.childItems), function (childButton) {
-                menuCategory.childItems[childButton]['flag'] = 'flagOff';
-                menuCategory.childItems[childButton]['button'] = '';
-            });
         },
 
         changeAssets(type,category,regionName) {
@@ -175,22 +109,6 @@ export default {
             _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
                 self[button] = self.getButtonClassForMainMenu(button);
             });
-        },
-
-        getButtonClassForMainMenu(buttonType) {
-            if (buttonType === this.selectedButtonName) {
-                return this.highlightedButton;
-            } else {
-                return "";
-            }
-        },
-
-        getMainMenuButtonFlag(parentButton, childButton) {
-            if (!this.mainMenuButtonElementOptions[parentButton]) {
-                return this.flagOff;
-            }
-            let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
-            return this[buttonOptions.flag];
         },
 
         getThousandMetricNameByCategorySelected() {
@@ -228,11 +146,6 @@ export default {
             this.updateDrillingWidget();    
             this.updateProductionFondWidget();
             this.updateInjectionFondWidget();          
-        },
-
-        switchDropdownCategories(category) {
-            this.dropdownMenu = _.mapValues(this.dropdownMenu, () => false);
-            this.dropdownMenu[category] = !this.dropdownMenu[category];
         },
     },
 }

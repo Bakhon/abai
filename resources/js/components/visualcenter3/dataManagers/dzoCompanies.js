@@ -277,12 +277,6 @@ export default {
                 isFilterTargetPlanActive: this.isFilterTargetPlanActive,
             });
         },
-        sortDzoList() {
-            let self = this;
-            _.forEach(this.dzoCompanies, function(item) {
-                self.dzoType[item.type].push(item.ticker)
-            });
-        },
         getFilteredCompaniesList(data) {
             let condensateMapping = {
                 'ОМГК': 'ОМГ',

@@ -7,19 +7,6 @@ export default {
             previousPeriodEnd: '',
             isOneDateSelected: true,
             timeSelectOld: '',
-            range: {},
-            modelConfig: {
-                start: {
-                    timeAdjust: '00:00:00',
-                    type: 'string',
-                    mask: 'YYYY-MM-DDTHH:mm:ssXXX',
-                },
-                end: {
-                    timeAdjust: '23:59:00',
-                    type: 'string',
-                    mask: 'YYYY-MM-DDTHH:mm:ssXXX',
-                },
-            },
             selectedDate: "",
             selectedDMY: 0,
             timeSelect: "",
@@ -79,9 +66,7 @@ export default {
                 "Dec",
             ],
             date: new Date(),
-            selectedDay: undefined,
             selectedMonth: undefined,
-            selectedYear: undefined,
             selectedPeriod: 0,
         };
     },
@@ -91,16 +76,6 @@ export default {
             this.previousPeriodEnd = moment(new Date(this.timestampToday)).subtract(1, 'days').format('DD.MM.YYYY');
             this.currentMonthDateStart = moment(new Date(this.timestampToday)).subtract(1, 'months').format('MMMM YYYY');
             this.currentMonthDateEnd = moment(new Date(this.timestampEnd)).subtract(1, 'months').format('MMMM YYYY');
-        },
-
-        isOneDatePeriodSelected() {
-            let periodStart = new Date(this.timestampToday);
-            let periodEnd = new Date(this.timestampEnd);
-            return this.formatDateWithoutTimezone(periodStart) === this.formatDateWithoutTimezone(periodEnd);
-        },
-
-        dayClicked() {
-            this.changeMenu2('period');
         },
 
         periodSelect() {
@@ -119,24 +94,6 @@ export default {
             if (this.period === 4) {
                 return null;
             }
-        },
-
-        changeDate() {
-            this.selectedDay = 0;
-            this.timestampToday = this.formatDateWithoutTimezone(new Date(this.range.start));
-            this.timestampEnd = new Date(this.range.end).getTime();
-            let differenceBetweenDates = this.timestampEnd - this.timestampToday;
-            this.quantityRange = Math.trunc((Math.abs(differenceBetweenDates) / 86400000) + 1);
-            this.timeSelect = new Date(this.range.start).toLocaleDateString();
-            this.chemistrySelectedDate = moment(new Date(this.range.start).toString()).format("MMM yyyy");
-            this.timeSelectOld = new Date(this.range.end).toLocaleDateString();
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
-            this.getCurrencyNow(new Date().toLocaleDateString());
-            this.updatePrices(this.period);
-        },
-
-        formatDateWithoutTimezone(date) {
-            return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0).getTime();
         },
 
         menuDMY() {

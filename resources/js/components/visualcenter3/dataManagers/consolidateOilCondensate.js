@@ -448,23 +448,6 @@ export default {
             this.productionSummary[viewName].yesterday.oilFact = _.sumBy(yesterdaySummary,'factMonth');
         },
 
-        deleteTroubleCompanies(yesterdayProductionDetails) {
-            let indexes = this.getElementIndexesByCompany(yesterdayProductionDetails,'ПКИ','dzoMonth');
-            for (var i in indexes.reverse()) {
-                yesterdayProductionDetails.splice(indexes[i], 1);
-            }
-            return yesterdayProductionDetails;
-        },
-
-        getFilteredByNotUsableDzo(data) {
-            let updatedData = data;
-            let tpIndex = updatedData.findIndex(element => element.dzoMonth === 'ТП');
-            let pkkIndex = updatedData.findIndex(element => element.dzoMonth === 'ПКК');
-            updatedData.splice(tpIndex, 1);
-            updatedData.splice(pkkIndex, 1);
-            return updatedData;
-        },
-
         getUpdatedByPeriodPlan(data) {
             let updatedData = data;
             let daysPassed = moment().date();

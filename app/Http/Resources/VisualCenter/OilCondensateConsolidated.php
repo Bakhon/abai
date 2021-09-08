@@ -79,9 +79,14 @@ class OilCondensateConsolidated {
     public function getDataByConsolidatedCategory($factData,$planData,$periodRange,$type,$yearlyPlan,$periodType,$oneDzoSelected)
     {
         if (!is_null($oneDzoSelected)) {
-            $this->companies = $oneDzoSelected;
+            $this->companies = array();
+            $this->companies[] = $oneDzoSelected;
         }
         $summary = array();
+        $factData = $factData->filter(function($item) {
+            return in_array($item->dzo_name,$this->companies);
+        });
+
         $groupedFact = $factData->groupBy('dzo_name');
         $pkiSumm = array (
             'fact' => 0,
@@ -90,11 +95,11 @@ class OilCondensateConsolidated {
             'monthlyPlan' => 0,
             'yearlyPlan' => 0
         );
-        if ($periodRange === 0) {
+        if ($periodRange === 0 && is_null($oneDzoSelected)) {
             $groupedFact = $this->getUpdatedByMissingCompanies($groupedFact);
         }
         foreach($groupedFact as $dzoName => $dzoFact) {
-           $filteredPlan = $planData->where('dzo',$dzoName);
+            $filteredPlan = $planData->where('dzo',$dzoName);
             if (count($filteredPlan) === 0) {
                 continue;
             }
@@ -106,18 +111,20 @@ class OilCondensateConsolidated {
                 $summary = array_merge($summary,$updated);
             }
         }
-
-        array_push($summary,array(
-              'id' => $this->consolidatedNumberMapping[$type]['ПКИ'],
-              'name' => 'ПКИ',
-              'fact' => $pkiSumm['fact'],
-              'plan' => $pkiSumm['plan'],
-              'opek' => $pkiSumm['opek'],
-              'monthlyPlan' => $pkiSumm['monthlyPlan'],
-              'yearlyPlan' => $pkiSumm['yearlyPlan']
-        ));
-        $sorted = $this->getSortedById($summary,$type);
-        return $sorted;
+        if (is_null($oneDzoSelected)) {
+            array_push($summary,array(
+                  'id' => $this->consolidatedNumberMapping[$type]['ПКИ'],
+                  'name' => 'ПКИ',
+                  'fact' => $pkiSumm['fact'],
+                  'plan' => $pkiSumm['plan'],
+                  'opek' => $pkiSumm['opek'],
+                  'monthlyPlan' => $pkiSumm['monthlyPlan'],
+                  'yearlyPlan' => $pkiSumm['yearlyPlan']
+            ));
+            $sorted = $this->getSortedById($summary,$type);
+            return $sorted;
+        }
+        return $summary;
     }
 
     private function getUpdatedByMissingCompanies($groupedFact)
@@ -381,7 +388,7 @@ class OilCondensateConsolidated {
     public function getChartData($fact,$plan,$dzoName,$type)
     {
         if (!is_null($dzoName)) {
-            $fact = $fact->filter(function($item) {
+            $fact = $fact->filter(function($item) use($dzoName) {
                 return $item->dzo_name === $dzoName;
             });
         }

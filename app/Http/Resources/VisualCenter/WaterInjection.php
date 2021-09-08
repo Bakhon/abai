@@ -29,13 +29,14 @@ class WaterInjection {
     public function getDataByCategory($factData,$planData,$periodRange,$yearlyPlan,$periodType,$oneDzoSelected)
     {
         if (!is_null($oneDzoSelected)) {
-            $this->companies = $oneDzoSelected;
+            $this->companies = array();
+            $this->companies[] = $oneDzoSelected;
         }
         $factData = $factData->filter(function($item) {
             return in_array($item->dzo_name,$this->companies);
         });
         $groupedFact = $factData->groupBy('dzo_name');
-        if ($periodRange === 0) {
+        if ($periodRange === 0 && is_null($oneDzoSelected)) {
             $groupedFact = $this->getUpdatedByMissingCompanies($groupedFact);
         }
         $summaryByCategories = array();
@@ -178,7 +179,7 @@ class WaterInjection {
     {
         $companies = $this->companies;
         if (!is_null($dzoName)) {
-            $fact = $fact->filter(function($item) {
+            $fact = $fact->filter(function($item) use($dzoName) {
                 return $item->dzo_name === $dzoName;
             });
         } else {

@@ -40,36 +40,6 @@ export default {
             });
         },
 
-        getOpecDataForYear() {
-            let uri = this.localeUrl("/visualcenter3GetDataOpec");
-
-            this.axios.get(uri).then((response) => {
-                let data = response.data;
-                if (data) {
-                    let SummFromRange = _(data)
-                        .groupBy("dzo")
-                        .map((dzo, id) => ({
-                            dzoMonth: id,
-                            periodPlan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
-                        }))
-
-                        .value();
-                    let opecDataSumm = _.reduce(
-                        SummFromRange,
-                        function (memo, item) {
-                            return memo + item.periodPlan;
-                        },
-                        0
-                    );
-
-                    this.opecData = SummFromRange;
-
-                } else {
-                    console.log('Not opec data');
-                }
-            });
-        },
-
         getOpecMonth(data) {
             let filteredByOneDay = _.filter(data, _.iteratee({date: moment().startOf('month').valueOf()}));
 

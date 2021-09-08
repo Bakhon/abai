@@ -29,7 +29,7 @@ class OilCondensateConsolidatedOilResidue {
         }
         $summary = array();
         $groupedFact = $factData->groupBy('dzo_name');
-        if ($periodRange === 0) {
+        if ($periodRange === 0 && is_null($oneDzoSelected)) {
             $groupedFact = $this->getUpdatedByMissingCompanies($groupedFact);
         }
         foreach($groupedFact as $dzoName => $dzoFact) {

@@ -92,7 +92,7 @@ class VisualCenterController extends Controller
             ->whereDate('date', '>=', $startDate->firstOfMonth()->startOfDay())
             ->whereDate('date', '<=', $endDate->firstOfMonth()->startOfDay());
         if (!is_null($this->dzoName)) {
-            $query->where('dzo_name', $this->dzoName);
+            $query->where('dzo', $this->dzoName);
         }
         return $query->orderBy('date', 'asc')->get();
     }
@@ -138,7 +138,7 @@ class VisualCenterController extends Controller
         if ($this->category === 'oilCondensateDeliveryOilResidue') {
             $tableData['current']['oilCondensateDeliveryOilResidue'] = $categoryMapping['oilCondensateDeliveryOilResidue']->getDataByOilResidueCategory($fact,$this->periodRange,$this->dzoName);
         }
-        if (str_contains($this->category, 'water')) {
+        if (str_contains(strtolower($this->category), 'water')) {
             $tableData['current'] = array_merge($tableData['current'], $categoryMapping['waterInjection']->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
         }
         return array (
@@ -152,7 +152,7 @@ class VisualCenterController extends Controller
         $query = DzoPlan::query()
             ->whereYear('date', $this->periodStart->year);
         if (!is_null($this->dzoName)) {
-            $query->where('dzo_name', $this->dzoName);
+            $query->where('dzo', $this->dzoName);
         }
         return $query->orderBy('date', 'asc')->get();
     }

@@ -8,7 +8,6 @@ export default {
             backendHistoricalPeriodStart: moment(),
             backendHistoricalPeriodEnd: moment().subtract(2,'days').endOf('day'),
             backendPeriodRange: 0,
-            backendSelectedDzo: null,
             backendProductionParams: {
                 'tableData': [],
                 'chartData': [],
@@ -99,7 +98,7 @@ export default {
                 'historicalPeriodStart': this.backendHistoricalPeriodStart.format(),
                 'historicalPeriodEnd': this.backendHistoricalPeriodEnd.format(),
                 'periodRange': this.backendPeriodRange,
-                'dzoName': this.backendSelectedDzo,
+                'dzoName': this.oneDzoSelected,
                 'category': this.backendSelectedCategory,
                 'periodType' : this.backendSelectedView
             };
@@ -185,13 +184,14 @@ export default {
                 }
                 this.backendMenu[item] = false;
             }
-            this.backendMenu[parent] = true;
             if (!isWithoutKmg) {
                 this.backendMenu[category] = !this.backendMenu[category];
             } else {
                 this.backendMenu['oilCondensateProductionWithoutKMG'] = !this.backendMenu['oilCondensateProductionWithoutKMG'];
                 this.backendMenu['oilCondensateDeliveryWithoutKMG'] = !this.backendMenu['oilCondensateDeliveryWithoutKMG'];
             }
+
+            this.backendMenu[parent] = true;
             if (isWithoutKmg && this.backendMenu[category]) {
                 shouldRecalculateSummary = true;
             }
@@ -232,9 +232,9 @@ export default {
         },
         backendGetSummaryForChart() {
             let chartData = _.cloneDeep(this.backendProductionParams.chartData);
-            if (this.backendSelectedDzo !== null) {
+            if (this.oneDzoSelected !== null) {
                 chartData = _.filter(chartData, (item) => {
-                    return item.name === this.backendSelectedDzo;
+                    return item.name === this.oneDzoSelected;
                 });
             }
             _.forEach(chartData, (item) => {
@@ -274,15 +274,4 @@ export default {
             return _.sumBy(this.backendProductionTableData, 'opek') - _.sumBy(this.backendProductionTableData, 'fact');
         }
     },
-    created() {
-        this.backendPeriodRange = this.backendPeriodEnd.diff(this.backendPeriodStart, 'days');
-        this.backendHistoricalPeriodStart = this.backendPeriodStart.clone().subtract(1,'days');
-    },
-    async mounted() {
-        this.SET_LOADING(true);
-        this.backendProductionParams = await this.backendGetProductionParamsByCategory();
-        this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
-        this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
-        this.SET_LOADING(false);
-    }
 }
