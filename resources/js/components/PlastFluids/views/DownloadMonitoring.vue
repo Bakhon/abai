@@ -418,7 +418,6 @@ export default {
     Button,
     Icon,
   },
-  el: "#app",
   data() {
     return {
       info: null,
