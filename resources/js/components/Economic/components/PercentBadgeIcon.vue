@@ -1,5 +1,5 @@
 <template>
-  <i v-if="percent === '0.00' || percent === '-0.00' || percent === 0"
+  <i v-if="+percent === 0"
      class="fas color-blue fa-genderless"></i>
 
   <i v-else-if="percent > 0"
