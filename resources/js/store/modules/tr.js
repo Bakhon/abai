@@ -105,7 +105,7 @@ const tr = {
   actions: {
   },
   getters: {
-    isActive: (state) => {
+    Dynamic: (state) => {
       return {
         field: state.field,
         is_dynamic: state.isDynamic,
@@ -128,7 +128,7 @@ const tr = {
         plannedEvents: state.plannedEvents,
       };
     },
-    inActive: (state) => {
+    notDynamic: (state) => {
       return {
         month: state.month,
         year: state.year,
