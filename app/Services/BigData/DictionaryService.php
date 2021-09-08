@@ -18,11 +18,11 @@ use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
-use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\ExplTypePlanGDIS;
-use App\Models\BigData\Dictionaries\FileFormat;
 use App\Models\BigData\Dictionaries\FileOrigin;
 use App\Models\BigData\Dictionaries\FileStatus;
+use App\Models\BigData\Dictionaries\FileType;
+use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
 use App\Models\BigData\Dictionaries\GeoRockType;
@@ -300,8 +300,8 @@ class DictionaryService
             'class' => RecordingMethod::class,
             'name_field' => 'name_ru'
         ],
-        'file_format' => [
-            'class' => FileFormat::class,
+        'file_type' => [
+            'class' => FileType::class,
             'name_field' => 'name_ru'
         ],
         'file_status' => [
@@ -419,7 +419,10 @@ class DictionaryService
                     break;
                 case 'reason_rls':
                     $dict = $this->getReasonTypeDict('RLS');
-                    break; 
+                    break;
+                case 'las_mnemonics':
+                    $dict = $this->getLasMnemonics();
+                    break;
                 default:
                     throw new DictionaryNotFound();
             }
@@ -632,6 +635,23 @@ class DictionaryService
             ->toArray();
 
         return $items;
-  
+    }
+
+    private function getLasMnemonics()
+    {
+        $items = DB::connection('tbd')
+            ->table('dict.metric as m')
+            ->select('m.id', 'm.code')
+            ->join('dict.metric as parent', 'm.parent', 'parent.id')
+            ->where('parent.code', 'LASS')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+        return $items;
     }
 }    

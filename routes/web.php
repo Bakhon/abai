@@ -106,7 +106,7 @@ Route::group(
                 );
 
                 Route::post('attachments', 'AttachmentController@upload');
-                Route::get('attachments/{attachment}', 'AttachmentController@get');
+                Route::get('attachments/{attachment}', 'AttachmentController@get')->name('attachment.download');
             }
         );
         Auth::routes(

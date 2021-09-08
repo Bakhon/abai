@@ -95,9 +95,9 @@
                     multiple
                     required
                 >
-                  <option v-for="mnemonic in filenameParameters.specific[currentFileInfoNum].mnemonics"
-                          :value="mnemonic"
-                  >{{ mnemonic }}
+                  <option v-for="mnemonic in getDict('las_mnemonics')"
+                          :value="mnemonic.code"
+                  >{{ mnemonic.code }}
                   </option>
                 </select>
               </div>
@@ -167,7 +167,7 @@
                     required
                 >
                   <option disabled value="">Расширение файла</option>
-                  <option v-for="item in getDict('file_format')" :value="item.id">{{ item.name }}</option>
+                  <option v-for="item in getDict('file_type')" :value="item.id">{{ item.name }}</option>
                 </select>
               </div>
               <div class="col"></div>
@@ -176,7 +176,7 @@
               <button id="submitExperimentInfo"
                       :disabled="!isInputFilledFieldsForFileUpload || !files || isLoading || input.provenanceId === ''"
                       class="col btn btn-primary get-report-button"
-                      @click="submitFileParams()">
+                      @click.prevent="saveExperiment()">
                 Подтвердить данные по эксперименту
               </button>
             </div>

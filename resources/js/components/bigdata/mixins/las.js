@@ -97,7 +97,7 @@ export default {
             this.isFilesUploadedOnPreApproval = false
             this.filenameParameters = null
         },
-        submitFileParams() {
+        async submitFileParams() {
             this.SET_LOADING(true)
 
             let jsonData = JSON.stringify({
@@ -109,7 +109,7 @@ export default {
                 experimentIdToApprove: this.filenameParameters.specific[this.currentFileInfoNum]['futureExperimentId'],
             })
             this.setExperimentUserFileName()
-            this.axios.post(this.baseUrl + 'approve-upload/', jsonData, {
+            return this.axios.post(this.baseUrl + 'approve-upload/', jsonData, {
                 responseType: 'json',
                 headers: {
                     'Content-Type': 'application/json'
@@ -119,6 +119,10 @@ export default {
                     this.setExperimentId(response.data.experimentId)
                     this.resetFileUploadFields()
                     this.setNextExperimentInfo()
+                    return {
+                        id: response.data.experimentId,
+                        filename: this.filenameByParameters
+                    }
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.SET_LOADING(false));

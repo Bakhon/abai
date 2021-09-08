@@ -21,9 +21,10 @@ export default {
                 'geo_type_field',
                 'stem_type',
                 'recording_method',
-                'file_format',
+                'file_type',
                 'file_status',
-                'recording_state'
+                'recording_state',
+                'las_mnemonics'
             ],
             well: null
         }
@@ -53,8 +54,19 @@ export default {
             return this.$store.getters['bdform/dict'](code);
         },
         loadWell() {
-            this.axios.get(this.localeUrl(`/api/bigdata/wells/${this.wellId}`)).then(response => {
-                console.log(response)
+            this.axios.get(this.localeUrl(`/api/bigdata/las/wells/${this.wellId}`)).then(response => {
+                this.well = response.data.well
+                this.input.filename.well = this.well.uwi
+                this.input.filename.field = response.data.field.name_ru
+            })
+        },
+        saveExperiment() {
+            this.submitFileParams().then(result => {
+                this.axios.post(this.localeUrl('/api/bigdata/las/gis'), {
+                    experiment_id: result.id,
+                    filename: result.filename,
+                    well_id: this.well.id
+                })
             })
         }
     },

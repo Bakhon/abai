@@ -231,6 +231,9 @@ export default {
         this.rows = data.rows
         this.columns = data.columns
         this.form = data.form
+        if (data.available_actions) {
+          this.availableActions = data.available_actions
+        }
 
       }).catch(() => {
         this.rows = null
