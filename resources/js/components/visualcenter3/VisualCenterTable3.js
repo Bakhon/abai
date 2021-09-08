@@ -158,10 +158,10 @@ export default {
             this.isOneDzoSelected = true;
             this.assignOneCompanyToSelectedDzo(this.oneDzoSelected);
         }
-        this.backendProductionParams = await this.backendGetProductionParamsByCategory();
-        this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
-        this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
-        this.productionData = _.cloneDeep(this.backendProductionTableData);
+        this.productionParams = await this.getProductionParamsByCategory();
+        this.updateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
+        this.productionTableData = this.productionParams.tableData.current[this.selectedCategory];
+        this.productionData = _.cloneDeep(this.productionTableData);
         this.selectedDzoCompanies = this.getAllDzoCompanies();
         this.updateDzoMenu();
         localStorage.setItem("selectedPeriod", "undefined");
@@ -188,7 +188,7 @@ export default {
         this.SET_LOADING(false);
     },
     created() {
-        this.backendPeriodRange = this.backendPeriodEnd.diff(this.backendPeriodStart, 'days');
-        this.backendHistoricalPeriodStart = this.backendPeriodStart.clone().subtract(1,'days');
+        this.periodRange = this.periodEnd.diff(this.periodStart, 'days');
+        this.historicalPeriodStart = this.periodStart.clone().subtract(1,'days');
     },
 };

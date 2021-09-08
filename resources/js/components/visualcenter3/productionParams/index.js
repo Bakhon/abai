@@ -3,17 +3,17 @@ import moment from "moment";
 export default {
     data: function () {
         return {
-            backendPeriodStart: moment().subtract(1,'days'),
-            backendPeriodEnd: moment().subtract(1,'days').endOf('day'),
-            backendHistoricalPeriodStart: moment(),
-            backendHistoricalPeriodEnd: moment().subtract(2,'days').endOf('day'),
-            backendPeriodRange: 0,
-            backendProductionParams: {
+            periodStart: moment().subtract(1,'days'),
+            periodEnd: moment().subtract(1,'days').endOf('day'),
+            historicalPeriodStart: moment(),
+            historicalPeriodEnd: moment().subtract(2,'days').endOf('day'),
+            periodRange: 0,
+            productionParams: {
                 'tableData': [],
                 'chartData': [],
             },
-            backendSelectedCategory: 'oilCondensateProduction',
-            backendSummary: {
+            selectedCategory: 'oilCondensateProduction',
+            summary: {
                 'oilProductionFact': 0,
                 'oilProductionPlan': 0,
                 'oilDeliveryFact': 0,
@@ -21,37 +21,25 @@ export default {
                 'gasProductionFact': 0,
                 'gasProductionPlan': 0,
             },
-            backendHistoricalSummaryFact: {
+            historicalSummaryFact: {
                 'oilProductionFact': 0,
                 'oilDeliveryFact': 0,
                 'gasProductionFact': 0
             },
-            backendSelectedView: 'day',
-            backendProductionTableData: [],
-            backendProductionChartData: [],
-            backendMarginMapping: {
+            selectedView: 'day',
+            productionTableData: [],
+            productionChartData: [],
+            marginMapping: {
                 'oilCondensateProduction': [1,13,14,15],
                 'oilCondensateDelivery': [1,11,12,13],
             },
-            backendDatePickerConfig: {
-                start: {
-                    timeAdjust: '00:00:00',
-                    type: 'string',
-                    mask: 'YYYY-MM-DDTHH:mm:ssXXX',
-                },
-                end: {
-                    timeAdjust: '23:59:00',
-                    type: 'string',
-                    mask: 'YYYY-MM-DDTHH:mm:ssXXX',
-                },
-            },
-            backendDatePickerModel: {
+            datePickerModel: {
                 start: moment().startOf('day').subtract(1, "days").format(),
                 end: moment().endOf('day').subtract(1, "days").format(),
                 formatInput: true,
             },
-            backendDisabledDate: moment().subtract(1,'days').format(),
-            backendMenu: {
+            disabledDate: moment().subtract(1,'days').format(),
+            mainMenu: {
                 'oilCondensateProduction': true,
                 'oilCondensateProductionWithoutKMG': false,
                 'oilCondensateProductionCondensateOnly': false,
@@ -72,15 +60,15 @@ export default {
                 'wasteWaterInjection': false,
                 'artezianWaterInjection': false
             },
-            backendFlagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
+            flagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +
                 '</svg>',
-            backendFlagOff: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"> \n' +
+            flagOff: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"> \n' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
                 '</svg>',
-            backendPreviousCategory: 'oilCondensateProduction',
-            backendDoubleFilter: ['oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG'],
-            backendCondensateCompanies: {
+            previousCategory: 'oilCondensateProduction',
+            doubleFilter: ['oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG'],
+            condensateCompanies: {
                 'ОМГК': {
                     'id': '1.1.'
                 },
@@ -91,16 +79,16 @@ export default {
         }
     },
     methods: {
-        async backendGetProductionParamsByCategory() {
+        async getProductionParamsByCategory() {
             let queryOptions = {
-                'periodStart': this.backendPeriodStart.format(),
-                'periodEnd': this.backendPeriodEnd.format(),
-                'historicalPeriodStart': this.backendHistoricalPeriodStart.format(),
-                'historicalPeriodEnd': this.backendHistoricalPeriodEnd.format(),
-                'periodRange': this.backendPeriodRange,
+                'periodStart': this.periodStart.format(),
+                'periodEnd': this.periodEnd.format(),
+                'historicalPeriodStart': this.historicalPeriodStart.format(),
+                'historicalPeriodEnd': this.historicalPeriodEnd.format(),
+                'periodRange': this.periodRange,
                 'dzoName': this.oneDzoSelected,
-                'category': this.backendSelectedCategory,
-                'periodType' : this.backendSelectedView
+                'category': this.selectedCategory,
+                'periodType' : this.selectedView
             };
 
             let uri = this.localeUrl("/get-production-params-by-category");
@@ -110,59 +98,59 @@ export default {
             }
             return response.data;
         },
-        backendUpdateSummaryFact(productionName,deliveryName) {
-            this.backendSummary.oilProductionFact = _.sumBy(this.backendProductionParams.tableData.current[productionName],'fact');
-            this.backendSummary.oilProductionPlan = _.sumBy(this.backendProductionParams.tableData.current[productionName],'plan');
-            this.backendSummary.oilDeliveryFact = _.sumBy(this.backendProductionParams.tableData.current[deliveryName],'fact');
-            this.backendSummary.oilDeliveryPlan = _.sumBy(this.backendProductionParams.tableData.current[deliveryName],'plan');
-            this.backendSummary.gasProductionFact = _.sumBy(this.backendProductionParams.tableData.current['gasProduction'],'fact');
-            this.backendSummary.gasProductionPlan = _.sumBy(this.backendProductionParams.tableData.current['gasProduction'],'plan');
-            this.backendHistoricalSummaryFact.oilProductionFact = _.sumBy(this.backendProductionParams.tableData.historical[productionName],'fact');
-            this.backendHistoricalSummaryFact.oilDeliveryFact = _.sumBy(this.backendProductionParams.tableData.historical[deliveryName],'fact');
-            this.backendHistoricalSummaryFact.gasProductionFact = _.sumBy(this.backendProductionParams.tableData.historical['gasProduction'],'fact');
+        updateSummaryFact(productionName,deliveryName) {
+            this.summary.oilProductionFact = _.sumBy(this.productionParams.tableData.current[productionName],'fact');
+            this.summary.oilProductionPlan = _.sumBy(this.productionParams.tableData.current[productionName],'plan');
+            this.summary.oilDeliveryFact = _.sumBy(this.productionParams.tableData.current[deliveryName],'fact');
+            this.summary.oilDeliveryPlan = _.sumBy(this.productionParams.tableData.current[deliveryName],'plan');
+            this.summary.gasProductionFact = _.sumBy(this.productionParams.tableData.current['gasProduction'],'fact');
+            this.summary.gasProductionPlan = _.sumBy(this.productionParams.tableData.current['gasProduction'],'plan');
+            this.historicalSummaryFact.oilProductionFact = _.sumBy(this.productionParams.tableData.historical[productionName],'fact');
+            this.historicalSummaryFact.oilDeliveryFact = _.sumBy(this.productionParams.tableData.historical[deliveryName],'fact');
+            this.historicalSummaryFact.gasProductionFact = _.sumBy(this.productionParams.tableData.historical['gasProduction'],'fact');
         },
-        getBackendProgress(fact,plan) {
+        getProgress(fact,plan) {
             return (fact / plan) * 100;
         },
-        async backendSwitchView(view) {
+        async switchView(view) {
             this.SET_LOADING(true);
             this.buttonDailyTab = "";
             this.buttonMonthlyTab = "";
             this.buttonYearlyTab = "";
             this.buttonPeriodTab = "";
-            this.backendSelectedView = view;
+            this.selectedView = view;
             if (view === 'period') {
-                this.backendPeriodStart = moment(this.backendDatePickerModel.start, 'DD.MM.YYYY').startOf('day');
-                this.backendPeriodEnd = moment(this.backendDatePickerModel.end, 'DD.MM.YYYY').endOf('day');
+                this.periodStart = moment(this.datePickerModel.start, 'DD.MM.YYYY').startOf('day');
+                this.periodEnd = moment(this.datePickerModel.end, 'DD.MM.YYYY').endOf('day');
             } else {
-                this.backendPeriodStart = moment().startOf(view);
-                this.backendPeriodEnd = moment().subtract(1,'days').endOf('day');
+                this.periodStart = moment().startOf(view);
+                this.periodEnd = moment().subtract(1,'days').endOf('day');
             }
             if (view === 'day') {
-                this.backendPeriodStart = this.backendPeriodStart.subtract(1,'days');
+                this.periodStart = this.periodStart.subtract(1,'days');
             }
             if (view === 'month' && moment().date() < 3) {
-                this.backendPeriodStart = this.backendPeriodStart.subtract(3,'days');
+                this.periodStart = this.periodStart.subtract(3,'days');
             }
             if (view !== 'year') {
                 this.isFilterTargetPlanActive = false;
             }
-            this.backendPeriodRange = this.backendPeriodEnd.diff(this.backendPeriodStart, 'days');
-            this.backendHistoricalPeriodEnd = this.backendPeriodStart.clone().subtract(1,'days').endOf('day');
-            this.backendHistoricalPeriodStart = this.backendHistoricalPeriodEnd.clone().subtract(this.backendPeriodRange,'days');
-            this.backendSwitchSelectedButton(view);
-            this.backendProductionParams = await this.backendGetProductionParamsByCategory();
-            this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
-            if (this.backendPeriodRange > 0) {
-                this.backendProductionChartData = this.backendGetSummaryForChart();
-                this.exportDzoCompaniesSummaryForChart(this.backendProductionChartData);
+            this.periodRange = this.periodEnd.diff(this.periodStart, 'days');
+            this.historicalPeriodEnd = this.periodStart.clone().subtract(1,'days').endOf('day');
+            this.historicalPeriodStart = this.historicalPeriodEnd.clone().subtract(this.periodRange,'days');
+            this.switchSelectedButton(view);
+            this.productionParams = await this.getProductionParamsByCategory();
+            this.productionTableData = this.productionParams.tableData.current[this.selectedCategory];
+            if (this.periodRange > 0) {
+                this.productionChartData = this.getSummaryForChart();
+                this.exportDzoCompaniesSummaryForChart(this.productionChartData);
             }
-            this.productionData = _.cloneDeep(this.backendProductionTableData);
+            this.productionData = _.cloneDeep(this.productionTableData);
             this.productionData = this.getFilteredTableData();
             this.SET_LOADING(false);
         },
 
-        backendSwitchSelectedButton(view) {
+        switchSelectedButton(view) {
             if (view !== 'year') {
                 this.isFilterTargetPlanActive = false;
             }
@@ -177,71 +165,71 @@ export default {
             }
         },
 
-        async backendSwitchCategory(category,parent) {
-            let isWithoutKmg = this.backendDoubleFilter.includes(category);
-            let isFilterChanged = category === this.backendSelectedCategory;
+        async switchCategory(category,parent) {
+            let isWithoutKmg = this.doubleFilter.includes(category);
+            let isFilterChanged = category === this.selectedCategory;
             let shouldRecalculateSummary = false;
-            for (let item in this.backendMenu) {
-                if (item === category || this.backendDoubleFilter.includes(item)) {
+            for (let item in this.mainMenu) {
+                if (item === category || this.doubleFilter.includes(item)) {
                     continue;
                 }
-                this.backendMenu[item] = false;
+                this.mainMenu[item] = false;
             }
 
             if (!isWithoutKmg) {
-                this.backendMenu[category] = !this.backendMenu[category];
+                this.mainMenu[category] = !this.mainMenu[category];
             } else {
-                this.backendMenu['oilCondensateProductionWithoutKMG'] = !this.backendMenu['oilCondensateProductionWithoutKMG'];
-                this.backendMenu['oilCondensateDeliveryWithoutKMG'] = !this.backendMenu['oilCondensateDeliveryWithoutKMG'];
+                this.mainMenu['oilCondensateProductionWithoutKMG'] = !this.mainMenu['oilCondensateProductionWithoutKMG'];
+                this.mainMenu['oilCondensateDeliveryWithoutKMG'] = !this.mainMenu['oilCondensateDeliveryWithoutKMG'];
             }
-            this.backendMenu[parent] = true;
+            this.mainMenu[parent] = true;
 
-            if (isWithoutKmg && this.backendMenu[category]) {
+            if (isWithoutKmg && this.mainMenu[category]) {
                 shouldRecalculateSummary = true;
             }
             if (isFilterChanged) {
-                this.backendSelectedCategory = this.backendPreviousCategory;
+                this.selectedCategory = this.previousCategory;
             } else {
-                this.backendPreviousCategory = parent;
-                this.backendSelectedCategory = category;
+                this.previousCategory = parent;
+                this.selectedCategory = category;
             }
             this.SET_LOADING(true);
-            this.backendProductionParams = await this.backendGetProductionParamsByCategory();
-            this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
-            if (this.backendPeriodRange > 0) {
-                this.backendProductionChartData = this.backendGetSummaryForChart();
-                this.exportDzoCompaniesSummaryForChart(this.backendProductionChartData);
+            this.productionParams = await this.getProductionParamsByCategory();
+            this.productionTableData = this.productionParams.tableData.current[this.selectedCategory];
+            if (this.periodRange > 0) {
+                this.productionChartData = this.getSummaryForChart();
+                this.exportDzoCompaniesSummaryForChart(this.productionChartData);
             }
             this.SET_LOADING(false);
-            this.backendProductionTableData = _.cloneDeep(this.backendProductionParams.tableData.current[this.backendSelectedCategory]);
+            this.productionTableData = _.cloneDeep(this.productionParams.tableData.current[this.selectedCategory]);
             if (['oilCondensateProductionCondensateOnly','oilCondensateDeliveryCondensateOnly'].includes(category) && !isFilterChanged) {
-                this.backendProductionTableData = _.cloneDeep(this.backendProductionParams.tableData.current[parent]);
-                this.backendProductionTableData = this.backendGetFilteredByDzo(this.backendProductionTableData,this.backendCondensateCompanies);
+                this.productionTableData = _.cloneDeep(this.productionParams.tableData.current[parent]);
+                this.productionTableData = this.getFilteredByDzo(this.productionTableData,this.condensateCompanies);
             }
 
-            if (!this.backendMenu[category]) {
-                this.backendProductionTableData = _.cloneDeep(this.backendProductionParams.tableData.current[parent]);
-                this.backendSelectedCategory = parent;
+            if (!this.mainMenu[category]) {
+                this.productionTableData = _.cloneDeep(this.productionParams.tableData.current[parent]);
+                this.selectedCategory = parent;
             }
-            this.productionData = _.cloneDeep(this.backendProductionTableData);
-            if (this.backendPeriodRange !== 0) {
+            this.productionData = _.cloneDeep(this.productionTableData);
+            if (this.periodRange !== 0) {
                 return;
             }
             if (shouldRecalculateSummary) {
-                this.backendUpdateSummaryFact('oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG');
+                this.updateSummaryFact('oilCondensateProductionWithoutKMG','oilCondensateDeliveryWithoutKMG');
             } else {
-                this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
+                this.updateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
             }
         },
-        backendGetFilteredByDzo(data,dzoList) {
+        getFilteredByDzo(data,dzoList) {
             let filtered = data.filter(record => Object.keys(dzoList).includes((record.name)));
             for (let i in filtered) {
                 filtered[i].id = dzoList[filtered[i].name].id;
             }
             return filtered;
         },
-        backendGetSummaryForChart() {
-            let chartData = _.cloneDeep(this.backendProductionParams.chartData);
+        getSummaryForChart() {
+            let chartData = _.cloneDeep(this.productionParams.chartData);
             if (this.oneDzoSelected !== null) {
                 chartData = _.filter(chartData, (item) => {
                     return item.name === this.oneDzoSelected;
@@ -266,26 +254,26 @@ export default {
         },
     },
     computed: {
-        backendSummaryYearlyPlan() {
-            return _.sumBy(this.backendProductionTableData, 'yearlyPlan');
+        summaryYearlyPlan() {
+            return _.sumBy(this.productionTableData, 'yearlyPlan');
         },
-        backendSummaryMonthlyPlan() {
-            return _.sumBy(this.backendProductionTableData, 'monthlyPlan');
+        summaryMonthlyPlan() {
+            return _.sumBy(this.productionTableData, 'monthlyPlan');
         },
-        backendSummaryFact() {
-            return _.sumBy(this.backendProductionTableData, 'fact');
+        summaryFact() {
+            return _.sumBy(this.productionTableData, 'fact');
         },
-        backendSummaryPlan() {
-            return _.sumBy(this.backendProductionTableData, 'plan');
+        summaryPlan() {
+            return _.sumBy(this.productionTableData, 'plan');
         },
-        backendSummaryOpek() {
-            return _.sumBy(this.backendProductionTableData, 'opek');
+        summaryOpek() {
+            return _.sumBy(this.productionTableData, 'opek');
         },
-        backendSummaryDifference() {
-            return _.sumBy(this.backendProductionTableData, 'plan') - _.sumBy(this.backendProductionTableData, 'fact');
+        summaryDifference() {
+            return _.sumBy(this.productionTableData, 'plan') - _.sumBy(this.productionTableData, 'fact');
         },
-        backendSummaryOpekDifference() {
-            return _.sumBy(this.backendProductionTableData, 'opek') - _.sumBy(this.backendProductionTableData, 'fact');
+        summaryOpekDifference() {
+            return _.sumBy(this.productionTableData, 'opek') - _.sumBy(this.productionTableData, 'fact');
         }
     },
 }

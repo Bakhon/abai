@@ -175,7 +175,7 @@ export default {
 
         getProductionTableClass() {
             let classes = 'table4 production-table';
-            if (!this.backendMenu.oilCondensateDeliveryOilResidue) {
+            if (!this.mainMenu.oilCondensateDeliveryOilResidue) {
                 classes += ' w-100';
             }
             if (!this.buttonDailyTab) {
@@ -185,7 +185,7 @@ export default {
         },
 
         isConsolidatedCategoryActive() {
-            return this.backendMenu.oilCondensateProduction || this.backendMenu.oilCondensateDelivery;
+            return this.mainMenu.oilCondensateProduction || this.mainMenu.oilCondensateDelivery;
         },
 
         getNumberFormat(num) {
