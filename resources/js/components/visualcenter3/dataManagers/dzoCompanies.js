@@ -82,7 +82,6 @@ export default {
             this.disableDzoCompaniesVisibility();
             this.switchDzoCompaniesVisibility(type,category,regionName);
             this.calculateSecondaryCategories();
-            this.calculateDzoCompaniesSummary();
         },
 
         disableDzoCompaniesVisibility() {
@@ -127,8 +126,9 @@ export default {
                 _.forEach(this.dzoCompanies, function (dzo) {
                     _.set(dzo, 'selected', true);
                 });
-                this.changeDate();
                 this.selectDzoCompanies();
+                this.backendProductionChartData = this.backendGetSummaryForChart();
+                this.exportDzoCompaniesSummaryForChart(this.backendProductionChartData);
             }
         },
 
@@ -137,9 +137,7 @@ export default {
             this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
             this.disableDzoRegions();
             this.selectedDzoCompanies = this.getAllDzoCompanies();
-            this.calculateSecondaryCategories();
-            this.buttonDzoDropdown = "";
-            this.calculateDzoCompaniesSummary();
+            this.productionData = _.cloneDeep(this.backendProductionTableData);
         },
 
         selectOneDzoCompany(companyTicker) {
@@ -161,18 +159,19 @@ export default {
                 this.isMultipleDzoCompaniesSelected = false;
                 this.disableDzoCompaniesVisibility();
                 this.selectedDzoCompanies = [companyTicker];
-                this.calculateSecondaryCategories();
                 this.switchDzoCompaniesVisibility(companyTicker, 'ticker');
-                this.selectDzoCompany(true);
+                if (companyTicker === 'ОМГ') {
+                    this.selectedDzoCompanies.push('ОМГК');
+                }
+                this.productionData = this.getFilteredTableData();
+                this.backendProductionChartData = this.backendGetSummaryForChart();
+                this.exportDzoCompaniesSummaryForChart(this.backendProductionChartData);
             }
         },
 
         selectDzoCompany(isWithoutRefresh) {
             this.disableDzoRegions();
             this.dzoCompaniesAssets['isAllAssets'] = false;
-            this.buttonDzoDropdown = this.highlightedButton;
-            this.calculateSecondaryCategories();
-            this.calculateDzoCompaniesSummary(isWithoutRefresh);
         },
 
         getDzoFactSummary(summaryData) {

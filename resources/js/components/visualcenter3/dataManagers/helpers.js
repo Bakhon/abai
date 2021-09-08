@@ -346,6 +346,12 @@ export default {
                 return this.trans("visualcenter.dzoThousandTon");
             }
         },
+
+        getFilteredTableData() {
+            return _.filter(this.productionData, (item) => {
+                return this.selectedDzoCompanies.includes(item.name);
+            });
+        }
     },
     computed: {
         periodSelectFunc() {

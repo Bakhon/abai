@@ -102,6 +102,7 @@ export default {
                 'category': this.backendSelectedCategory,
                 'periodType' : this.backendSelectedView
             };
+
             let uri = this.localeUrl("/get-production-params-by-category");
             const response = await axios.get(uri,{params:queryOptions});
             if (response.status !== 200) {
@@ -156,6 +157,8 @@ export default {
                 this.backendProductionChartData = this.backendGetSummaryForChart();
                 this.exportDzoCompaniesSummaryForChart(this.backendProductionChartData);
             }
+            this.productionData = _.cloneDeep(this.backendProductionTableData);
+            this.productionData = this.getFilteredTableData();
             this.SET_LOADING(false);
         },
 
@@ -235,6 +238,10 @@ export default {
             if (this.oneDzoSelected !== null) {
                 chartData = _.filter(chartData, (item) => {
                     return item.name === this.oneDzoSelected;
+                });
+            } else {
+                chartData = _.filter(chartData, (item) => {
+                   return this.selectedDzoCompanies.includes(item.name)
                 });
             }
             _.forEach(chartData, (item) => {

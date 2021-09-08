@@ -106,6 +106,7 @@ export default {
             dzoNameMappingWithoutKMG: _.cloneDeep(dzoCompaniesNameMapping.dzoNameMappingWithoutKMG),
             dzoNameMappingNormal: _.cloneDeep(dzoCompaniesNameMapping.normalNames),
             timeSelect: "",
+            productionData: []
         };
     },
     methods: {
@@ -158,6 +159,7 @@ export default {
         this.backendProductionParams = await this.backendGetProductionParamsByCategory();
         this.backendUpdateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
         this.backendProductionTableData = this.backendProductionParams.tableData.current[this.backendSelectedCategory];
+        this.productionData = _.cloneDeep(this.backendProductionTableData);
         this.selectedDzoCompanies = this.getAllDzoCompanies();
         this.updateDzoMenu();
         localStorage.setItem("selectedPeriod", "undefined");

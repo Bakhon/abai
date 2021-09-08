@@ -866,7 +866,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="(item, index) in backendProductionTableData">
+                  <tr v-for="(item, index) in productionData">
                     <td
                             v-if="isConsolidatedCategoryActive()"
                             :class="`${getDzoColumnsClass(index,'difference')}`"
@@ -880,7 +880,7 @@
                       {{item.id + (index + 1)}}
                     </td>
                     <td
-                            @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth,item.dzo)}` : `${selectAllDzoCompanies()}`"
+                            @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.name)}` : `${selectAllDzoCompanies()}`"
                             :class="[index % 2 === 0 ? 'tdStyle' : '','cursor-pointer']"
                     >
                       <span
