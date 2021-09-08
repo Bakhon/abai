@@ -13,7 +13,7 @@
             :key="`section_${sectionCode}`"
             @click="changeTab(sectionCode)"
         >
-          <p><b>{{ sectionNames[sectionCode] }}</b></p>
+          <p><b>{{ trans('monitoring.settings.' + sectionCode) }}</b></p>
         </div>
       </div>
       <div class="col-9 field-settings__fields" v-if="fields[selectedSectionCode]">
@@ -60,16 +60,6 @@ export default {
   ],
   data() {
     return {
-      sectionNames: {
-        omgca: 'ОМГ ДДНГ',
-        omgngdu: 'ОМГ НГДУ',
-        omguhe: 'ОМГ УХЭ',
-        watermeasurement: 'Промысловая жидкость и газ',
-        oilgas: 'Нефть и газ',
-        corrosioncrud: 'Скорость коррозии',
-        pipes: 'Трубопроводы',
-        inhibitors: 'Ингибиторы',
-      },
       selectedSectionCode: null,
       success: null,
       errors: []

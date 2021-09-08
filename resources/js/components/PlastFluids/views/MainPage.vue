@@ -1,70 +1,146 @@
 <template>
-  <div class="wrapper-info">
-    <div class="statistic-info">
-      <div class="grid-container">
-        <info-table inform_data="21" :description="amount_of_pvt"></info-table>
-        <info-table inform_data="17" :description="deep_samples"></info-table>
-
-        <info-table inform_data="53" :description="recombined"></info-table>
-        <info-table inform_data="9" :description="well_head_samples"></info-table>
+  <div id="plast-fluids-main">
+    <Header />
+    <div class="main-content-holder">
+      <div class="map-and-page-footer">
+        <OilMap />
+        <Footer />
       </div>
-    </div>
-    <div class="filter"></div>
-    <div class="buttons-wrapper">
-      <button>{{ trans("plast_fluids.data_download") }}</button>
-      <button>{{ trans("plast_fluids.data_analysis") }}</button>
-      <button>{{ trans("plast_fluids.data_upload") }}</button>
+      <div class="area-choose-block-and-map-statistics">
+        <div class="map-statistics">
+          <div class="statistics-container">
+            <p>
+              {{ selectedField ? fieldData[selectedField].field : 0 }}
+            </p>
+            <p>{{ trans("plast_fluids.wells") }}</p>
+          </div>
+          <div class="statistics-container">
+            <p>
+              {{ selectedField ? fieldData[selectedField].deep : 0 }}
+            </p>
+            <p>
+              {{ trans("plast_fluids.deep_samples") }}
+            </p>
+          </div>
+          <div class="statistics-container">
+            <p>
+              {{ selectedField ? fieldData[selectedField].recombine : 0 }}
+            </p>
+            <p>{{ trans("plast_fluids.recombined") }}</p>
+          </div>
+          <div class="statistics-container">
+            <p>
+              {{ selectedField ? fieldData[selectedField].estuarine : 0 }}
+            </p>
+            <p>
+              {{ trans("plast_fluids.well_head_samples") }}
+            </p>
+          </div>
+        </div>
+        <div class="subsoil-user" v-if="subsoilUsers.length">
+          <p>{{ trans("plast_fluids.subsurface_user") }}</p>
+          <div class="subsoil-search-block">
+            <input type="text" v-model.trim="subsoilUserSearch" />
+            <button>ОК</button>
+          </div>
+          <SubsoilTreeMain
+            v-if="filteredSubsoilUsers.length"
+            :treeData="filteredSubsoilUsers"
+          />
+          <div v-else class="subsoil-not-found">
+            <p>{{ trans("plast_fluids.subsoil_not_found") }}</p>
+          </div>
+          <p>{{ trans("plast_fluids.field") }}</p>
+          <div class="subsoil-search-block">
+            <input type="text" v-model.trim="subsoilChildrenSearch" />
+            <button>ОК</button>
+          </div>
+          <template v-if="pickedSubsoil[0]">
+            <div class="subsoil-secondary-tree-holder">
+              <template v-if="filteredSubsoilChildren.length">
+                <SubsoilTreeChildren
+                  v-for="subsoilChild in filteredSubsoilChildren"
+                  :key="subsoilChild.field_id"
+                  :subsoil="subsoilChild"
+                  :pickedSubsoil="pickedSubsoil[0]"
+                />
+              </template>
+              <div v-else class="subsoil-not-found">
+                <p>{{ trans("plast_fluids.subsoil_not_found") }}</p>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import InfoTable from "../components/InfoTable.vue";
+import leafMap from "../components/leafMap";
+import OilMap from "../components/OilMapKz.vue";
+import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
+import SubsoilTreeMain from "../components/SubsoilTreeMain.vue";
+import { createDataTree, handleSearch } from "../helpers";
+import { getMapOwners } from "../services/mapService";
+import { mapState } from "vuex";
+import SubsoilTreeChildren from "../components/SubsoilTreeChildren.vue";
+
 export default {
-  data: function () {
+  name: "PlastFluidsMain",
+  components: {
+    Header,
+    OilMap,
+    Footer,
+    SubsoilTreeMain,
+    SubsoilTreeChildren,
+  },
+  data() {
     return {
-      amount_of_pvt: this.trans("plast_fluids.amount_of_pvt"),
-      deep_samples: this.trans("plast_fluids.deep_samples"),
-      recombined: this.trans("plast_fluids.recombined"),
-      well_head_samples: this.trans("plast_fluids.well_head_samples"),
+      subsoilUserSearch: "",
+      subsoilChildrenSearch: "",
+      subsoilUsers: [],
+      selectedField: null,
+      fieldData: {
+        kozhasai: {
+          field: 60,
+          deep: 86,
+          recombine: 24,
+          estuarine: 86,
+        },
+      },
     };
   },
-  components: {
-    InfoTable,
+  computed: {
+    ...mapState("plastFluids", ["currentSubsoilChildren", "pickedSubsoil"]),
+    filteredSubsoilUsers() {
+      return handleSearch(this.subsoilUsers, this.subsoilUserSearch);
+    },
+    filteredSubsoilChildren() {
+      return handleSearch(
+        this.currentSubsoilChildren,
+        this.subsoilChildrenSearch
+      );
+    },
+  },
+  methods: {
+    async getOwners() {
+      const data = await getMapOwners();
+      this.subsoilUsers = createDataTree(data);
+    },
+  },
+  mounted() {
+    this.getOwners();
+    leafMap((e) => {
+      if (e.target.feature.properties.type === "field") {
+        this.selectedField = e.target.feature.properties.id;
+      } else {
+        this.selectedField = null;
+      }
+    });
   },
 };
 </script>
 
-<style scoped>
-.wrapper-info {
-  display : flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: #272953;
-  padding: 10px 14px 10px;
-  height: 100%;
-}
-.grid-container {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
-}
-.buttons-wrapper {
-  background: #272953;
-  display : flex;
-  flex-direction: column;
-  
-}
-.buttons-wrapper button {
-  height:40px;
-  background: #333975;
-  margin-bottom: 10px;
-  font-size: 14px;
-  font-style: normal;
-  color: #ffffff;
-  text-align: center;
-  font-family: "Harmonia Sans Pro Cyr", sans-serif;
-  font-weight: 700;
-  line-height: 16.8px;
-}
-</style>
+<style lang="scss" scoped src="./MainPageStyles.scss"></style>

@@ -52,6 +52,7 @@ export default {
 
     ScenarioForm,
     DeleteButton
+
   },
   data: () => ({
     data: [],

@@ -36,14 +36,6 @@
     },
     {
       "action": "create",
-      "title": "add_openhole",
-      "form": "well_perf_shot",
-      "default_values": {
-        "perf_type": 5
-      }
-    },
-    {
-      "action": "create",
       "title": "add_slotted_reperforation",
       "form": "well_perf_shot",
       "default_values": {
@@ -101,15 +93,15 @@
     },
     {
       "action": "edit",
-      "title": "Отменить подключение к узлу",
-      "form": "well_tech_connect"
+      "title": "Изменить",
+      "form": "well_perf"
     },
     {
-      "action": "edit",
-      "title": "Отменить подключение к узлу",
-      "form": "well_tech_connect"
+      "action": "delete",
+      "title": "Удалить"
     }
   ],
+  "custom_row_edit": true,
   "sort": [
     {
       "field": "perf_date",

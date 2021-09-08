@@ -37,19 +37,31 @@
         </div>
       </div>
       <div class="rating-panel">
-        <accordion
-          :list="objects"
-          title="digital_rating.object"
-        />
+        <accordion title="digital_rating.object">
+          <ul class="list">
+            <li
+              v-for="(item, index) in objects" :key="index"
+              @click="selectPanelItem('horizon', item)"
+              :class="{'active': item.id === horizonNumber}"
+            >
+              {{ item.title || item }}
+            </li>
+          </ul>
+        </accordion>
         <accordion
           :list="maps"
           title="digital_rating.mapsGeologyDevelopment"
-          @selectItem="selectPanelItem"
+          @selectItem="(item) => selectPanelItem('map', item)"
         />
-        <accordion
-          :list="cods"
-          title="digital_rating.sectorCode"
-        />
+        <accordion title="digital_rating.legend">
+          <ul class="list">
+            <li
+              v-for="(item, index) in legends" :key="index">
+              <div :style="`background: ${item.color}`" class="legend"/>
+              <span>{{ item.title }}</span>
+            </li>
+          </ul>
+        </accordion>
         <accordion
           :list="properties"
           title="digital_rating.property"
@@ -59,6 +71,7 @@
         @close="closeSettingModal"
       />
       <well-atlas-modal
+        ref="atlasModal"
         @close="closeAtlasModal"
       />
     </div>
@@ -122,5 +135,10 @@
     -webkit-transform: scale(1) rotateZ(360deg);
     transform: scale(1) rotateZ(360deg);
   }
+}
+
+.leaflet-div-icon {
+  background: #fff;
+  border: 1px solid #666;
 }
 </style>

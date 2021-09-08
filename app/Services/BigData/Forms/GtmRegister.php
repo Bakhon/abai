@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
-use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
-use App\Exceptions\BigData\SubmitFormException;
+
 use App\Models\BigData\Well;
+use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -13,30 +13,23 @@ class GtmRegister extends PlainForm
 {
     protected $configurationFileName = 'gtm_register';
 
-    public function submit(): array
+    protected function submitForm(): array
     {
-        DB::beginTransaction();
+        $formFields = $this->request->except('well_status_type', 'own_forces');
 
-        try {
-            $formFields = $this->request->except('well_status_type', 'own_forces');
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
-            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-            if (!empty($formFields['id'])) {
-                $id = $dbQuery->where('id', $formFields['id'])->update($formFields);
-            } else {
-                $id = $dbQuery->insertGetId($formFields);
-            }
-
-            $this->updateWellStatus();
-
-            DB::commit();
-
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw new SubmitFormException();
+        if (!empty($formFields['id'])) {
+            $id = $dbQuery->where('id', $formFields['id'])->update($formFields);
+        } else {
+            $id = $dbQuery->insertGetId($formFields);
         }
+
+        $this->updateWellStatus();
+
+        DB::commit();
+
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
     private function updateWellStatus()
@@ -114,7 +107,12 @@ class GtmRegister extends PlainForm
     {
         $errors = [];
 
-        if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'), 'dict.well' , 'drill_start_date')){
+        if (!$this->isValidDate(
+            $this->request->get('well'),
+            $this->request->get('dbeg'),
+            'dict.well',
+            'drill_start_date'
+        )) {
             $errors['dbeg'] = trans('bd.validation.drill_date');
         }
 

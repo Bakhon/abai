@@ -143,26 +143,26 @@ Route::group(
                 )->name('corrosioncrud.history');
                 Route::resource('corrosioncrud', 'ComplicationMonitoring\CorrosionController');
 
-                Route::get('/gu-map', 'ComplicationMonitoring\MapsController@guMap')->name('maps.gu');
-                Route::get('/gu-map/mapdata', 'ComplicationMonitoring\MapsController@mapData')->name('maps.gu_pipes');
-                Route::get('/gu-map/hydro-reverse-calc', 'ComplicationMonitoring\MapsController@getHydroReverseCalc')->name('maps.hydro-reverse-calc');
-                Route::get('/gu-map/pressure', 'ComplicationMonitoring\MapsController@getPressure')->name('maps.pressure');
-                Route::get('/gu-map/temperature', 'ComplicationMonitoring\MapsController@getTemperature')->name('maps.temperature');
+                Route::get('/tech-map', 'ComplicationMonitoring\TechMapController@guMap')->name('tech-map.index');
+                Route::get('/tech-map/mapdata', 'ComplicationMonitoring\TechMapController@mapData')->name('tech-map.mapdata');
+                Route::get('/tech-map/hydro-reverse-calc', 'ComplicationMonitoring\TechMapController@getHydroReverseCalc')->name('tech-map.hydro-reverse-calc');
+                Route::get('/tech-map/pressure', 'ComplicationMonitoring\TechMapController@getPressure')->name('tech-map.pressure');
+                Route::get('/tech-map/temperature', 'ComplicationMonitoring\TechMapController@getTemperature')->name('tech-map.temperature');
 
-                Route::post('/gu-map/gu', 'ComplicationMonitoring\MapsController@storeGu')->name('maps.store_gu');
-                Route::post('/gu-map/zu', 'ComplicationMonitoring\MapsController@storeZu')->name('maps.store_zu');
-                Route::post('/gu-map/well', 'ComplicationMonitoring\MapsController@storeWell')->name('maps.store_well');
-                Route::post('/gu-map/pipe', 'ComplicationMonitoring\MapsController@storePipe')->name('maps.store_pipe');
+                Route::post('/tech-map/gu', 'ComplicationMonitoring\TechMapController@storeGu')->name('tech-map.store_gu');
+                Route::post('/tech-map/zu', 'ComplicationMonitoring\TechMapController@storeZu')->name('tech-map.store_zu');
+                Route::post('/tech-map/well', 'ComplicationMonitoring\TechMapController@storeWell')->name('tech-map.store_well');
+                Route::post('/tech-map/pipe', 'ComplicationMonitoring\TechMapController@storePipe')->name('tech-map.store_pipe');
 
-                Route::put('/gu-map/gu/{id}', 'ComplicationMonitoring\MapsController@updateGu')->name('maps.update_gu');
-                Route::put('/gu-map/zu/{id}', 'ComplicationMonitoring\MapsController@updateZu')->name('maps.update_zu');
-                Route::put('/gu-map/well/{id}', 'ComplicationMonitoring\MapsController@updateWell')->name('maps.update_well');
-                Route::put('/gu-map/pipe/{id}', 'ComplicationMonitoring\MapsController@updatePipe')->name('maps.update_pipe');
+                Route::put('/tech-map/gu/{id}', 'ComplicationMonitoring\TechMapController@updateGu')->name('tech-map.update_gu');
+                Route::put('/tech-map/zu/{id}', 'ComplicationMonitoring\TechMapController@updateZu')->name('tech-map.update_zu');
+                Route::put('/tech-map/well/{id}', 'ComplicationMonitoring\TechMapController@updateWell')->name('tech-map.update_well');
+                Route::put('/tech-map/pipe/{id}', 'ComplicationMonitoring\TechMapController@updatePipe')->name('tech-map.update_pipe');
 
-                Route::delete('/gu-map/gu/{id}', 'ComplicationMonitoring\MapsController@deleteGu')->name('maps.delete_gu');
-                Route::delete('/gu-map/zu/{id}', 'ComplicationMonitoring\MapsController@deleteZu')->name('maps.delete_zu');
-                Route::delete('/gu-map/well/{id}', 'ComplicationMonitoring\MapsController@deleteWell')->name('maps.delete_well');
-                Route::delete('/gu-map/pipe/{id}', 'ComplicationMonitoring\MapsController@deletePipe')->name('maps.delete_pipe');
+                Route::delete('/tech-map/gu/{id}', 'ComplicationMonitoring\TechMapController@deleteGu')->name('tech-map.delete_gu');
+                Route::delete('/tech-map/zu/{id}', 'ComplicationMonitoring\TechMapController@deleteZu')->name('tech-map.delete_zu');
+                Route::delete('/tech-map/well/{id}', 'ComplicationMonitoring\TechMapController@deleteWell')->name('tech-map.delete_well');
+                Route::delete('/tech-map/pipe/{id}', 'ComplicationMonitoring\TechMapController@deletePipe')->name('tech-map.delete_pipe');
 
                 Route::get('/monitor/reports', 'ReportsController@index')->name('monitor.reports');
                 Route::get('/monitor/reports/generate', 'ReportsController@generateReport');
@@ -199,6 +199,11 @@ Route::group(
                 Route::get('/reverse-calc/list', 'ComplicationMonitoring\ReverseCalculationController@list')->name('reverse_calculation.list');
                 Route::get('/reverse-calc', 'ComplicationMonitoring\ReverseCalculationController@index')->name('reverse_calculation.index');
                 Route::get('/reverse-calc/calculate', 'ComplicationMonitoring\ReverseCalculationController@calculate')->name('reverse_calculation.calculate');
+
+                Route::get('/manual-hydro-calc/list', 'ComplicationMonitoring\ManualHydroCalc@list')->name('manual_hydro_calculation.list');
+                Route::get('/manual-hydro-calc', 'ComplicationMonitoring\ManualHydroCalc@index')->name('manual_hydro_calculation.index');
+                Route::get('/manual-hydro-calc/calculate', 'ComplicationMonitoring\ManualHydroCalc@calculate')->name('manual_hydro_calculation.calculate');
+                Route::get('/manual-hydro-calc/test', 'ComplicationMonitoring\ManualHydroCalc@getPrepairedData');
 
                 Route::get('economical-effect/list', 'ComplicationMonitoring\EconomicalEffectController@list')->name(
                     'economical_effect.list'

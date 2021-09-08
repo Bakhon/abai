@@ -14,7 +14,7 @@
                 "type": "dict",
                 "dict": "companies",
                 "title": "podr",
-                "validation": "exists:tbd.dict.company,id"
+                "validation": "required|exists:tbd.dict.company,id"
               },
               {
                 "code": "reservoir_count",
