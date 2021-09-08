@@ -113,7 +113,7 @@ export default {
           +this.scenario.coef_Fixed_nopayroll * +well.oilPrices[oilPrice].Fixed_nopayroll_expenditures_12m +
           +this.scenario.coef_cost_WR_payroll * +well.oilPrices[oilPrice].Fixed_payroll_expenditures_12m
 
-      let operatingProfit = +well.oilPrices[oilPrice].Operating_profit_12m - overallExpendituresScenario
+      let operatingProfit = +well.oilPrices[oilPrice].Operating_profit_12m + overallExpendituresScenario
 
       let overallExpenditures = +well.oilPrices[oilPrice].Overall_expenditures_12m - overallExpendituresScenario
 
