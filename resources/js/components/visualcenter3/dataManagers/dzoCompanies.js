@@ -160,10 +160,6 @@ export default {
             this.dzoCompaniesAssets['isAllAssets'] = false;
         },
 
-        getDzoFactSummary(summaryData) {
-            return _.sumBy(summaryData, 'productionFactForChart');
-        },
-
         getFilteredDzoYearlyPlan() {
             let dzoMonthlyPlanData = _.cloneDeep(this.dzoMonthlyPlans);
             let filteredPlanData = dzoMonthlyPlanData.filter(row => this.selectedDzoCompanies.includes(row.dzo));

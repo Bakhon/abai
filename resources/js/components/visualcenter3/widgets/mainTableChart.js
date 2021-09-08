@@ -132,23 +132,6 @@ export default {
             return this.dzoYearlyData.differenceOnEachMonth;
         },
 
-        setTotalFact(monthlyFact) {
-            this.dzoYearlyData.totallyFact += monthlyFact;
-        },
-
-        getProductionData(data, dzoName) {
-            let summary = data.filter(row => dzoName === row.dzo);
-            let groupedByTime = _(summary)
-                .groupBy("__time")
-                .map((items, time) => ({
-                    time: time,
-                    productionFactForChart: _.round(_.sumBy(items, this.factFieldName), 0),
-                    productionPlanForChart: _.round(_.sumBy(items, this.planFieldName), 0),
-                }))
-                .value();
-            return this.getMonthlyPlansInYear(groupedByTime,dzoName);
-        },
-
         getSummaryTargetPlan(yearlyData) {
             let targetPlan = 0;
             _.forEach(yearlyData, function(monthData) {
@@ -157,31 +140,6 @@ export default {
                 }
             });
             return targetPlan;
-        },
-
-        getProductionForChart(data) {
-            let summary = this.getFilteredCompaniesList(data);
-            if (summary.length === 0) {
-                summary = data;
-            }
-
-            let summaryForChart = _(summary)
-                .groupBy("date")
-                .map((__time, id) => ({
-                    time: id,
-                    dzo: 'dzo',
-                    productionFactForChart: _.round(_.sumBy(__time, this.factFieldName), 0),
-                    productionPlanForChart: _.round(_.sumBy(__time, this.planFieldName), 0),
-                    productionPlanForChart2: _.round(_.sumBy(__time, this.opecFieldNameForChart), 0),
-                }))
-                .value();
-
-            if (this.isFilterTargetPlanActive) {
-                let monthlyPlansInYear = this.getMonthlyPlansInYear(summaryForChart);
-                summaryForChart = monthlyPlansInYear;
-            }
-
-            return summaryForChart;
         },
     }
 }
