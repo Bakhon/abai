@@ -141,34 +141,6 @@ class WellDocument extends PlainForm
                 $this->submittedData['id'] = $id;
 
                 $this->updateFiles($id, $files);
-            } else {
-                if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
-                    throw new \Exception("You don't have permissions");
-                }
-                $id = $dbQuery->insertGetId($data);
-
-                DB::connection('tbd')
-                    ->table('prod.well_document')
-                    ->insert(
-                        [
-                            'document' => $id,
-                            'well' => $wellId
-                        ]
-                    );
-
-                if (!empty($files)) {
-                    foreach ($files as $file) {
-                        DB::connection('tbd')
-                            ->table('prod.document_file')
-                            ->insert(
-                                [
-                                    'document' => $id,
-                                    'file' => $file
-                                ]
-                            );
-                    }
-                }
-            }
         }
 
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
