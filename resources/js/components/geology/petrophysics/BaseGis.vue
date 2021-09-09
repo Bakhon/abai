@@ -122,14 +122,14 @@ import AwIcon from "../components/icons/AwIcon";
 import ListOfWells from "./modals/ListOfWells";
 import TableSettings from "./modals/TableSettings";
 import CrossPlot from "./modals/CrossPlot";
+import graph1 from "./graphics/graph1";
 import graph2 from "./graphics/graph2";
 import curve from "../demo_json/curve.json";
-import GisGraph from "./graphics/gisGraph/GisGraph";
+import {globalloadingMutations} from '@store/helpers';
 
 export default {
   name: "Geology-Page",
   components: {
-    GisGraph,
     Button,
     dropdown,
     ToolBlock,
@@ -145,8 +145,8 @@ export default {
       activeGraph: "GisGraph",
       graphComponents: [
         {
-          id: 1,
-          is: GisGraph,
+          id: 'canvasWrapper',
+          is: graph1,
           graphData: curve
         },
         {
@@ -212,6 +212,14 @@ export default {
     getGraphComponents() {
       return this.graphComponents.sort(e => e.id === this.activeGraph ? -1 : 1);
     }
+  },
+  async mounted() {
+    this.SET_LOADING(false);
+  },
+  methods:{
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
   }
 }
 </script>
