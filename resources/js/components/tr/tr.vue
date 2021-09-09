@@ -617,6 +617,7 @@
             :wellTypeFilterData="wellTypeFilterData" 
             :expMethFilterData="expMethFilterData"
             :wellNameFilterData="wellNameFilterData"
+            :eventFilterData="eventFilterData"
             @onSort="sortBy" 
             @filter="chooseFilter"
             @dropFilters="dropFilter"
@@ -1450,8 +1451,39 @@
                   <td @click="sortBy('planned_diff_liq')" class="th">
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
-                  <td @click="sortBy('planned_events')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('planned_events')"></i>
+                      <div>
+                        <b-dropdown id="dropdownFilterCustom" no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter" :class="selectEvent.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="field_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                  v-model="selectEvent"
+                                  :options="eventFilterData"
+                                  :aria-describedby="ariaDescribedby"                                  
+                                >
+                                </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.choose_t')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_EVENT')"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
                   </td>
                 </tr>
               </thead>

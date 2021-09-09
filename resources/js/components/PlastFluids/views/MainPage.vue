@@ -37,7 +37,7 @@
             </p>
           </div>
         </div>
-        <div class="subsoil-user" v-if="subsoilUsers.length">
+        <div class="subsoil-user" v-if="subsoils.length">
           <p>{{ trans("plast_fluids.subsurface_user") }}</p>
           <div class="subsoil-search-block">
             <input type="text" v-model.trim="subsoilUserSearch" />
@@ -55,16 +55,12 @@
             <input type="text" v-model.trim="subsoilChildrenSearch" />
             <button>ОК</button>
           </div>
-          <template v-if="pickedSubsoil[0]">
+          <template v-if="currentSubsoil[0]">
             <div class="subsoil-secondary-tree-holder">
-              <template v-if="filteredSubsoilChildren.length">
-                <SubsoilTreeChildren
-                  v-for="subsoilChild in filteredSubsoilChildren"
-                  :key="subsoilChild.field_id"
-                  :subsoil="subsoilChild"
-                  :pickedSubsoil="pickedSubsoil[0]"
-                />
-              </template>
+              <SubsoilTreeChildren
+                v-if="filteredSubsoilChildren.length"
+                :treeData="filteredSubsoilChildren"
+              />
               <div v-else class="subsoil-not-found">
                 <p>{{ trans("plast_fluids.subsoil_not_found") }}</p>
               </div>
@@ -82,9 +78,9 @@ import OilMap from "../components/OilMapKz.vue";
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
 import SubsoilTreeMain from "../components/SubsoilTreeMain.vue";
-import { createDataTree, handleSearch } from "../helpers";
+import { handleSearch } from "../helpers";
 import { getMapOwners } from "../services/mapService";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import SubsoilTreeChildren from "../components/SubsoilTreeChildren.vue";
 
 export default {
@@ -100,8 +96,8 @@ export default {
     return {
       subsoilUserSearch: "",
       subsoilChildrenSearch: "",
-      subsoilUsers: [],
       selectedField: null,
+      checkedField: [],
       fieldData: {
         kozhasai: {
           field: 60,
@@ -113,21 +109,33 @@ export default {
     };
   },
   computed: {
-    ...mapState("plastFluids", ["currentSubsoilChildren", "pickedSubsoil"]),
+    ...mapState("plastFluids", ["currentSubsoil", "subsoils", "subsoilFields"]),
     filteredSubsoilUsers() {
-      return handleSearch(this.subsoilUsers, this.subsoilUserSearch);
+      return handleSearch(this.subsoils, this.subsoilUserSearch);
     },
     filteredSubsoilChildren() {
       return handleSearch(
-        this.currentSubsoilChildren,
-        this.subsoilChildrenSearch
+        this.subsoilFields,
+        this.subsoilChildrenSearch,
+        "field"
       );
     },
   },
   methods: {
+    ...mapMutations("plastFluids", [
+      "SET_SUBSOILS",
+      "SET_CURRENT_SUBSOIL_FIELD",
+    ]),
     async getOwners() {
       const data = await getMapOwners();
-      this.subsoilUsers = createDataTree(data);
+      this.SET_SUBSOILS(data);
+    },
+    setCheckedField(value) {
+      this.checkedField = [value];
+      this.SET_CURRENT_SUBSOIL_FIELD(value);
+    },
+    clearCheckboxArray() {
+      this.checkedField = [];
     },
   },
   mounted() {
