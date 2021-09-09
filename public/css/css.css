@@ -1417,11 +1417,21 @@ h2.subtitle {
     margin-left: 15px;
 }
 
-li.left-menu-li {
-    width: 15vw;
-    margin-left: 10px;
+li.left-menu-li a {
+    padding: 20px;
+    display: block;
 }
-
+li.left-menu-li:nth-child(odd) {
+    background: rgba(46, 80, 233, 0.1);
+}
+li.left-menu-li:nth-child(even) {
+    background: rgba(46, 80, 233, 0.2);
+}
+li.left-menu-li:hover {
+    background: #2E50E9;
+    cursor: pointer;
+    transition: .4s ease;
+}
 
 #sidebar-container2 .left-panel .left-menu-li .dropdown-child {
     background-color: #20274f;
