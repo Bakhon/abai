@@ -1,67 +1,97 @@
 <template>
-    <div>
-        <div class="position-absolute r-100">
-            <date-picker v-if="isDatePickerShow" v-model="dateRange" is-range @input="onDateRangeChange"></date-picker>
+  <div>
+    <template>
+      <div style="display: flex; justify-content: space-evenly;"
+           class="calendar-filter-block d-flex* text-center align-items-center cursor-pointer">
+        <div>
+          от
         </div>
-        <div class="row m-0">
-            <div class="col-5 p-0">
-                <div @click.stop="isDatePickerShow = !isDatePickerShow" class="calendar-filter-block d-flex align-items-center cursor-pointer">
-                    {{ dateStartString }}
-                    <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                </div>
-            </div>
-            <div class="col-5 p-0">
-                <div @click.stop="isDatePickerShow = !isDatePickerShow" class="ml-1 calendar-filter-block d-flex align-items-center cursor-pointer">
-                    {{ dateEndString }}
-                    <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                </div>
-            </div>
-            <div class="col-1 p-0">
-                <div class="ml-1 calendar-filter-block d-flex align-items-center">
-                    <img class="gear-icon m-auto" src="/img/GTM/gear.svg">
-                </div>
-            </div>
+        <div>
+          <datetime
+              type="date"
+              v-model="dateStartGtm"
+              class="start-date-gtm"
+              value-zone="Asia/Almaty"
+              zone="Asia/Almaty"
+              :title="trans('bd.choose_start_date')"
+              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+              :max-datetime="dateEndGtm"
+              :week-start="1"
+              :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+              auto
+              :flow="dateFlow"
+          >
+          </datetime>
         </div>
-    </div>
+        <div>
+          до
+        </div>
+        <div>
+          <datetime
+              type="date"
+              v-model="dateEndGtm"
+              @input="onDateRangeChange"
+              class="end-date-gtm"
+              value-zone="Asia/Almaty"
+              zone="Asia/Almaty"
+              :title="trans('bd.choose_end_date')"
+              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+              :min-datetime="dateStartGtm"
+              :week-start="1"
+              :placeholder="[[ trans('bd.dd_mm_yyyy') ]]"
+              auto
+              :flow="dateFlow"
+          >
+          </datetime>
+        </div>
+
+
+      </div>
+
+    </template>
+  </div>
+
 </template>
 <script>
 
-import {paegtmMapActions} from '@store/helpers';
+import {paegtmMapGetters, paegtmMapActions,  paegtmMapState } from '@store/helpers';
 
 export default {
+    props: {
+        showSettings: true,
+        showPeriodTitle: false,
+    },
     data: function () {
         return {
             isDatePickerShow: false,
-            dateRange: {
-                start: this.$store.getters.dateStart,
-                end: this.$store.getters.dateEnd,
-            },
+            dateFlow: ['year', 'month', 'date'],
+            dateStartGtm: this.getDateStart(),
+            dateEndGtm: this.getDateEnd(),
         }
     },
     computed: {
-        dateStartString: function () {
-            if (this.dateRange.start) {
-                return this.dateRange.start.toLocaleDateString();
-                this.$store.mutations(dateRange.start, value)
-            }
-        },
-        dateEndString: function () {
-            if (this.dateRange.end) {
-                return this.dateRange.end.toLocaleDateString();
-            }
-        }
+        ...paegtmMapState([
+            'dateStart',
+            'dateEnd',
+        ]),
     },
     methods: {
+        ...paegtmMapGetters([
+            'getDateStart',
+            'getDateEnd'
+        ]),
         ...paegtmMapActions([
             'changeDateStart',
             'changeDateEnd',
         ]),
         onDateRangeChange() {
             this.isDatePickerShow = false;
-            this.changeDateStart(this.dateRange.start);
-            this.changeDateEnd(this.dateRange.end);
+            this.changeDateStart(this.dateStartGtm);
+            this.changeDateEnd(this.dateEndGtm);
             this.$emit('dateChanged')
         }
-    }
+    },
 }
 </script>
