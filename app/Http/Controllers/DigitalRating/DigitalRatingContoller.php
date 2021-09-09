@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\DigitalRating;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -13,7 +14,7 @@ class DigitalRatingContoller extends Controller
    const WELL_CATEGORY_TYPE_ID = 1;
    const PARAM_GDIS_HDIN_id = 217;
    const PARAM_GDIS_CONCLUSION_GDM_ID = 5000000587;
-   
+
    public function get_wells(array $neighboring_wells) : object  
    {
          foreach ($neighboring_wells as $item) {
@@ -30,7 +31,7 @@ class DigitalRatingContoller extends Controller
                ->select('tbdi.well.uwi', 'tbdi.well.id','tbdi.well_category.well_category_type_id','tbdi.well_status.well_status_type_id','tbdi.well_status.well_id')
                ->selectRaw('AVG(tbdi.liquid_prod.liquid_val) as liquid_val_average')
                ->selectRaw('AVG(tbdi.bsw_prod.bsw_val) as bsw_val_average')
-                ->whereDate('tbdi.liquid_prod.dend', '>', Carbon::now()->subDays(90))
+               ->whereDate('tbdi.liquid_prod.dend', '>', Carbon::now()->subDays(90))
                ->whereDate('tbdi.bsw_prod.dend', '>', Carbon::now()->subDays(90))
                ->groupBy('well.uwi','well.id','well_category.well_category_type_id','well_status.well_status_type_id','well_status.well_id','tbdi.liquid_prod.well_id','tbdi.bsw_prod.well_id')
                ->get();
@@ -42,7 +43,6 @@ class DigitalRatingContoller extends Controller
                ORDER BY dbeg DESC LIMIT 2', 
                ['id' => $item->well_id,'PARAM_GDIS_HDIN_id'=>self::PARAM_GDIS_HDIN_id,
                'PARAM_GDIS_CONCLUSION_GDM_ID'=>self::PARAM_GDIS_CONCLUSION_GDM_ID]);
-
                foreach ($params_gdis as $param) {
                   if($param->param_gdis_id == 217) {
                      $param_gdis_hdin = $param->value_double;
@@ -61,35 +61,48 @@ class DigitalRatingContoller extends Controller
 
             }
          }
+
          return $wells;                
    }
 
  
    public function search_wells(Request $request):JsonResponse
    {
-      $sector = $request->input('sector');
+      
+      $sector_number = $request->input('sector');
       $horizon = $request->input('horizon');
-      $sectors_json_points = file_get_contents(public_path('js/json/digital-rating/sectors_points.json'), 'r');
-         $sectors_points= json_decode($sectors_json_points, true);
-         foreach ($sectors_points as $item) {
-            if($item['sector'] == $sector) {
-               $sector = $item;
-            }
+      $sectors_json_points = file_get_contents(public_path('js/json/digital-rating/horizon/grid_'.$horizon.'.json'), 'r');
+      $sectors_points= json_decode($sectors_json_points, true);
+
+      foreach ($sectors_points as $item) {
+         if($item['sector'] == $sector_number) {
+            $sector = $item;
          }
-      $weels_json_points = file_get_contents(public_path('js/json/digital-rating/wells_points.json'), 'r');
-      $weels_points= json_decode($weels_json_points, true);
-         $sectorX  = $sector['x'];
-         $sectorY = $sector['y'];
+      }
+
+
+         $weels_json_points = file_get_contents(public_path('js/json/digital-rating/wells_points.json'), 'r');
+         $weels_points= json_decode($weels_json_points, true);
+         $sectorX  = $sector['x1'];
+         $sectorY = $sector['y1'];
          $radius =500;
          $neighboring_wells = [];
+
          foreach ($weels_points as $item) {
             if((($item['x'] - $sectorX)*($item['x'] - $sectorX))+(($item['y']-$sectorY)*($item['y']-$sectorY)) <= $radius*$radius){
             if($item['horizon'] == $horizon)
                $neighboring_wells[] = $item;
             }
          };
+
+         if(empty($neighboring_wells)){
+            return response()->json(['message' => 'Well not found']);
+         }
          $wells = $this->get_wells($neighboring_wells);
          $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
          return response()->json($wells,200,$headers,JSON_UNESCAPED_UNICODE);
    }
+
+  
+   
 };

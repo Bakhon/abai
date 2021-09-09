@@ -65,47 +65,53 @@ abstract class PlainForm extends BaseForm
         DB::connection('tbd')->beginTransaction();
 
         try {
-            $this->tableFields = $this->getFields()
-                ->filter(
-                    function ($item) {
-                        return $item['type'] === 'table';
-                    }
-                );
-
-            $this->tableFieldCodes = $this->tableFields
-                ->pluck('code')
-                ->toArray();
-
-            $data = $this->prepareDataToSubmit();
-            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-            if (!empty($data['id'])) {
-                $this->checkFormPermission('update');
-
-                $id = $data['id'];
-                unset($data['id']);
-
-                $dbQuery = $dbQuery->where('id', $id);
-
-                $this->originalData = $dbQuery->first();
-                $dbQuery->update($data);
-
-                $this->submittedData['fields'] = $data;
-                $this->submittedData['id'] = $id;
-            } else {
-                $this->checkFormPermission('create');
-
-                $id = $dbQuery->insertGetId($data);
-            }
-
-            $this->insertInnerTable($id);
-
+            $result = $this->submitForm();
             DB::connection('tbd')->commit();
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
+            return $result;
         } catch (\Exception $e) {
             DB::connection('tbd')->rollBack();
             throw new SubmitFormException($e->getMessage());
         }
+    }
+
+    protected function submitForm(): array
+    {
+        $this->tableFields = $this->getFields()
+            ->filter(
+                function ($item) {
+                    return $item['type'] === 'table';
+                }
+            );
+
+        $this->tableFieldCodes = $this->tableFields
+            ->pluck('code')
+            ->toArray();
+
+        $data = $this->prepareDataToSubmit();
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+
+        if (!empty($data['id'])) {
+            $this->checkFormPermission('update');
+
+            $id = $data['id'];
+            unset($data['id']);
+
+            $dbQuery = $dbQuery->where('id', $id);
+
+            $this->originalData = $dbQuery->first();
+            $dbQuery->update($data);
+
+            $this->submittedData['fields'] = $data;
+            $this->submittedData['id'] = $id;
+        } else {
+            $this->checkFormPermission('create');
+
+            $id = $dbQuery->insertGetId($data);
+        }
+
+        $this->insertInnerTable($id);
+
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
     protected function prepareDataToSubmit()

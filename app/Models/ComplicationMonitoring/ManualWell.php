@@ -5,7 +5,7 @@ namespace App\Models\ComplicationMonitoring;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
-use App\Traits\MapObjectsTrait;
+use App\Models\Traits\MapObjectsTrait;
 
 class ManualWell extends Model
 {
@@ -52,7 +52,7 @@ class ManualWell extends Model
         return $this->hasMany(OmgUHE::class, 'well_id');
     }
 
-    public function omgngdu_well()
+    public function omgngdu()
     {
         return $this->hasMany(OmgNGDUWell::class, 'well_id');
     }
