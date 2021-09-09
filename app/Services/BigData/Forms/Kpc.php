@@ -25,10 +25,11 @@ class Kpc extends PlainForm
             ->select('pw.repair_type')
             ->leftJoin('dict.well_repair_type as dw', 'pw.repair_type', 'dw.id')
             ->where('dw.code', 'CWO')
-            ->orderBy('dbeg', 'desc')
-            ->first();
-
-        $data['repair_type'] = $kpc->id;
+            ->orderBy('pw.dbeg', 'desc')
+            ->limit(1);
+           
+        $data['repair_type'] = $kpc;
+        dd($kpc);
         return $data;
     }
 
@@ -128,7 +129,7 @@ class Kpc extends PlainForm
         if (!empty($newState)) {
             $result['well_status'] = $newState->state;
         }
-
+        
         return $result;
     }
 }
