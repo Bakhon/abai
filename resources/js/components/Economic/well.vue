@@ -58,6 +58,8 @@ import chart from "vue-apexcharts";
 
 import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
+import {formatValueMixin} from "./mixins/formatMixin";
+
 import SelectInterval from "./components/SelectInterval";
 
 export default {
@@ -66,6 +68,7 @@ export default {
     apexchart: chart,
     SelectInterval,
   },
+  mixins: [formatValueMixin],
   props: {
     org_id: {
       required: true,
@@ -185,38 +188,6 @@ export default {
       }
 
       this.SET_LOADING(false);
-    },
-
-    formatValue(value) {
-      value = +value
-
-      let absoluteValue = Math.abs(+value)
-
-      if (absoluteValue < 1000) {
-        return {
-          value: value,
-          dimension: ''
-        }
-      }
-
-      if (absoluteValue < 1000000) {
-        return {
-          value: value / 1000,
-          dimension: this.trans('economic_reference.thousand')
-        }
-      }
-
-      if (absoluteValue < 1000000000) {
-        return {
-          value: value / 1000000,
-          dimension: this.trans('economic_reference.million')
-        }
-      }
-
-      return {
-        value: value / 1000000000,
-        dimension: this.trans('economic_reference.billion')
-      }
     },
   }
 };
