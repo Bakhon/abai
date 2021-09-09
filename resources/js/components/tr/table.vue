@@ -67,7 +67,7 @@
                 <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('field')"></i>
                       <div>
-                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                        <b-dropdown no-caret ref="dropdown" toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
                             <i class="fas fa-filter" :class="selectField.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
@@ -86,7 +86,7 @@
                                 </b-form-checkbox-group>
                               </b-form-group>
                               <div class="field_filter_text">
-                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                <a href="#" class="form_text" @click.prevent="chooseFilter"
                                   >{{trans('tr.form')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_FIELD')"
@@ -101,7 +101,7 @@
                 <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('rus_wellname')"></i>
                       <div>
-                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                        <b-dropdown no-caret toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
                             <i class="fas fa-filter" :class="selectWellName.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
@@ -800,6 +800,7 @@ export default {
     data: function () {
         return {
             isEdit: false,
+            show: false,
         }
     },
     methods: {
@@ -818,6 +819,7 @@ export default {
         },
         chooseFilter() {
              this.$emit('filter');
+             this.toggle();
         },
         getRowWidthSpan (row) {
             return row.rus_wellname ? 0 : 2;
@@ -836,6 +838,12 @@ export default {
                 return true
             }
         },
+        toggle() {
+            this.show = !this.show
+
+            if (!this.show) {
+                    this.$refs.dropdown.show()
+                } else {this.$refs.dropdown.hide()}},
     }
 }
 </script>
@@ -967,8 +975,5 @@ position: static;
 .fix_colunn_full_table_blg {
   min-width: 106px;
 }
-table {
-    border-collapse: separate;
-    border-color: red !important; 
-}
+
 </style>
