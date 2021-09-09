@@ -86,8 +86,8 @@ export default {
             }).then(({data}) => {
                 this.chartSeries = [
                     data.ndin,
-                    data.oil,
                     data.measLiq,
+                    data.oil,
                     data.measWaterCut,
                 ];
                 if (data.wellStatuses) {
@@ -134,9 +134,8 @@ export default {
                     position: 'right',
                 },
                 chart: {
-                    stacked: true,
-                    background: 'rgba(39, 41, 83, 1)',
-                    foreColor: '#FFFFFF',
+                    background: 'rgba(255, 255, 255, 1)',
+                    foreColor: '#000000',
                     selection: {
                         enabled: true,
                         type: 'x',
@@ -166,15 +165,19 @@ export default {
                         },
                         labels: {
                             style: {
-                                colors: '#fff',
+                                colors: '#000000',
                             }
                         },
                         title: {
-                            text: this.trans('app.liquid'),
+                            text: '',
                             style: {
-                                color: '#fff',
+                                color: '#000000',
                             }
                         },
+                    },
+                    {
+                        seriesName: this.trans('app.oil'),
+                        show: false
                     },
                     {
                         seriesName: this.trans('app.waterCut'),
@@ -188,35 +191,13 @@ export default {
                         },
                         labels: {
                             style: {
-                                colors: '#fff',
+                                colors: '#000000',
                             }
                         },
                         title: {
                             text: this.trans('app.waterCut'),
                             style: {
-                                color: '#fff',
-                            }
-                        },
-                    },
-                    {
-                        seriesName: this.trans('app.oil'),
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#fff',
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.oil'),
-                            style: {
-                                color: '#fff',
+                                color: '#000000',
                             }
                         },
                     },
@@ -232,16 +213,16 @@ export default {
                         },
                         labels: {
                             style: {
-                                colors: '#fff',
+                                colors: '#000000',
                             }
                         },
                         title: {
                             text: this.trans('app.ndin'),
                             style: {
-                                color: '#fff',
+                                color: '#000000',
                             }
                         },
-                    },
+                    }
                 ],
                 tooltip: {
                     shared: true,
@@ -250,7 +231,7 @@ export default {
                 annotations: {
                     points: this.chartPoints,
                 },
-                colors:['rgba(33, 186, 78, 1)', 'rgba(72, 81, 95, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(33, 186, 78, 1)'],
+                colors:['rgba(33, 186, 78, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(72, 81, 95, 1)', 'rgba(255, 0, 0, 1)'],
             }
         },
     },

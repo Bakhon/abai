@@ -1,134 +1,57 @@
 <template>
-  <div ref="mapContainer" id="mapContainer"></div>
+  <div id="map"></div>
 </template>
 
 <script>
-import mapTool from "./mapTool";
-const map = new mapTool("#mapContainer");
-
 export default {
   name: "OilMapKz",
   data() {
     return {
       map: null,
-    }
+      province: undefined,
+      currentProvince: undefined,
+    };
   },
-  mounted() {
-    this.map = map.createSvg({
-      background: "none",
-      scale: 1000,
-      center: [50, 50],
-      viewBox: `-100 0 800 50`,
-    });
-
-    map.createMap('/kz.json', "kz", true, {
-      kz: [
-        ['fill', 'none'],
-        ['stroke', 'white'],
-        ['stroke-width','3px']
-      ]
-    });
-    map.createMap('/balkhash.json', false, true, {
-      balkhash: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/torgai.json', false, true, {
-      torgai: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/ustyrt.json', false, true, {
-      ustyrt: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/alakol.json', false, true, {
-      alakol: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/aral.json', false, true, {
-      aral: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/mangyshlak.json', false, true, {
-      mangyshlak: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/precaspian.json', false, true, {
-      precaspian: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/preertis.json', false, true, {
-      preertis: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/storgay.json', false, true, {
-      storgay: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/zaisan.json', false, true, {
-      zaisan: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/Ili.json', false, true, {
-      Ili: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/norkz.json', false, true, {
-      norkz: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/syrdaria.json', false, true, {
-      syrdaria: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/teniz.json', false, true, {
-      teniz: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-    map.createMap('/borderbasin.json', false, true, {
-      borderbasin: [
-        ['fill', 'none'],
-        ['stroke', 'yellow']
-      ]
-    });
-  },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-#mapContainer{
-  &::v-deep{
-    svg{
-      width: 100%;
-      height: 100%;
-    }
-  }
+#map {
+  height: calc(100% - 45px);
+  width: 100%;
+  background: #2b2e5e;
+}
+
+.info {
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+.info h4 {
+  margin: 0 0 5px;
+  color: #777;
+}
+
+.legend {
+  line-height: 18px;
+  color: #555;
+}
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+#map::v-deep .leaflet-tooltip.my-label {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  font-size: 14px;
+  color: #a1a3bc;
 }
 </style>

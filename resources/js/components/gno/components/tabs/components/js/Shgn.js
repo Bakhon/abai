@@ -1,6 +1,7 @@
 import NotifyPlugin from "vue-easy-notify";
 import Multiselect from "vue-multiselect";
 import { pgnoMapState, pgnoMapGetters, pgnoMapMutations, pgnoMapActions } from '@store/helpers';
+import _ from 'lodash';
 
 Vue.use(NotifyPlugin);
 
@@ -12,8 +13,6 @@ export default {
 	data: function()  {
 		return {
 			settings: {},
-			svgTableN1: require('../../../../images/tableN1.svg'),
-			svgTableN2: require('../../../../images/tableN2.svg'),
 			steelMark: null,
 			steelMarks: null,
 			isModal: false,
@@ -101,8 +100,6 @@ export default {
 					"АЦ28ХГНЗФТ (О)"
 				]
 			},
-	
-			
 			kPodMode: true,
 		}
 	},
@@ -111,18 +108,20 @@ export default {
       'well',
       'lines',
       'points',
-	  	'shgnSettings',
 	  	'curveSettings',
-			'kPodSettings'
+			'kPodSettings',
+			'settingsMode'
     ]),
 		...pgnoMapGetters([
       'steelMarkStore',
+			'shgnSettings'
     ]),
 	},
 	methods: {
 		...pgnoMapActions([
 			'setKpodSettings',
 			'setShgnSettings',
+			'setDefaultShgnSettings'
 		  ]),
 		setNotify(message, title, type) {
 				this.$bvToast.toast(message, {
@@ -149,7 +148,7 @@ export default {
 			this.$modal.show('modalTable3')
 		},
 		isStupColumnsNumber(val) {
-			this.settings.stupColumns === val && this.settings.rodsTypes.length < val
+			return (Number(this.settings.stupColumns) === val && this.settings.rodsTypes.length < val)
 		},
 
 		onSubmitParams(mode) {
@@ -160,7 +159,11 @@ export default {
 				}
 			}			
 			this.$store.commit('pgno/SET_SETTINGS_MODE', mode)
-			this.setShgnSettings(this.settings)
+			if (mode === "getDefault"){
+				this.setDefaultShgnSettings(this.settings)
+			} else {
+				this.setShgnSettings(this.settings)
+			}
 			this.setKpodSettings(this.kPodSettings)
 			this.$emit('on-submit-params');
 			this.$modal.show('tabs');
@@ -172,8 +175,7 @@ export default {
 					var message = this.trans('pgno.kpodWarning', {kpod: this.kpodCalced.toFixed(2)}) 
 					this.setNotify(message, "Warning", "warning")
 				}
-
-				this.$store.commit('pgno/UPDATE_KPOD_CALCED', this.kpodCalced) 
+				this.settings.kPodCalced = this.kpodCalced
 			}
 		},
 		onChangeCorrosion(e) {
@@ -181,11 +183,9 @@ export default {
 			this.settings.steelMark = this.steelMarkStore
 			this.steelMarks = this.steelMarksTypes[this.settings.corrosion]
 		}
-
-
 	},
 	created: function() {
-		this.settings =this.shgnSettings
+		this.settings = _.cloneDeep(this.shgnSettings)
 		this.settings.steelMark = this.steelMarkStore
 		this.steelMarks = this.steelMarksTypes[this.settings.corrosion]
 		this.calKpod()

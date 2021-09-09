@@ -14,7 +14,7 @@ use App\Filters\SibFilter;
 use App\Exports\SibExport;
 use Carbon\Carbon;
 
-class ExportAgzuToExcel implements ShouldQueue
+class ExportSibToExcel implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
