@@ -23,35 +23,6 @@
                 "validation": "required|exists:tbd.dict.lab_research_type,id"
               },
               {
-                "code": "research_date",
-                "table": "prod.pvt_data",
-                "type": "date",
-                "title": "date",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "PVTD"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "research_type",
-                "table": "prod.pvt_data",
-                "type": "dict",
-                "title": "research_type",
-                "dict": "lab_research_type",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "PVTD"
-                    }
-                  }
-                ]
-              },
-              {
                 "code": "oil_viscosity",
                 "table": "prod.pvt_data",
                 "type": "numeric",
@@ -167,35 +138,6 @@
                     "field": "research_type",
                     "value": {
                       "code": "PVTD"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "research_date",
-                "table": "prod.reservoir_oil_prob_analysis",
-                "type": "date",
-                "title": "date",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "ADSPO"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "research_type",
-                "table": "prod.reservoir_oil_prob_analysis",
-                "type": "dict",
-                "dict":"lab_research_type",
-                "title": "research_type",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "ADSPO"
                     }
                   }
                 ]
@@ -531,35 +473,6 @@
                 ]
               },
               {
-                "code": "research_date",
-                "table": "prod.reservoir_oil_prob_analysis",
-                "type": "date",
-                "title": "date",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "ARSPO"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "research_type",
-                "table": "prod.reservoir_oil_prob_analysis",
-                "type": "dict",
-                "dict":"lab_research_type",
-                "title": "research_type",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "ARSPO"
-                    }
-                  }
-                ]
-              },
-              {
                 "code": "res_pressure",
                 "table": "prod.reservoir_oil_prob_analysis",
                 "type": "numeric",
@@ -890,35 +803,6 @@
                 ]
               },
               {
-                "code": "research_date",
-                "table": "prod.produced_water_analysis",
-                "type": "date",
-                "title": "date",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "AEF"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "research_type",
-                "table": "prod.produced_water_analysis",
-                "type": "dict",
-                "dict":"lab_research_type",
-                "title": "research_type",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "AEF"
-                    }
-                  }
-                ]
-              },
-              {
                 "code": "water_share",
                 "table": "prod.produced_water_analysis",
                 "type": "numeric",
@@ -1077,35 +961,6 @@
                     "field": "research_type",
                     "value": {
                       "code": "AEF"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "research_date",
-                "table": "prod.res_oil_char",
-                "type": "date",
-                "title": "date",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "OCRC"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "research_type",
-                "table": "prod.res_oil_char",
-                "type": "dict",
-                "dict":"lab_research_type",
-                "title": "research_type",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "OCRC"
                     }
                   }
                 ]
@@ -1286,35 +1141,6 @@
                     "field": "research_type",
                     "value": {
                       "code": "OCRC"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "research_date",
-                "table": "prod.surf_oil_characteristics",
-                "type": "date",
-                "title": "date",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "COSC"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "research_type",
-                "table": "prod.surf_oil_characteristics",
-                "type": "dict",
-                "dict":"lab_research_type",
-                "title": "research_type",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "COSC"
                     }
                   }
                 ]
