@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
 use App\Services\BigData\DictionaryService;
@@ -27,7 +28,7 @@ abstract class PlainForm extends BaseForm
     protected $submittedData = [];
 
 
-    protected function getFields(): Collection
+    public function getFields(): Collection
     {
         if ($this->formFields) {
             return $this->formFields;

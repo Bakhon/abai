@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\LabResearchType;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+
 class MeasLabResearch extends TableForm
 {
     protected $configurationFileName = 'meas_lab_research';
@@ -15,56 +19,82 @@ class MeasLabResearch extends TableForm
             throw new \Exception('Выберите вид исследования');
         }
 
-        //$wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filterValues, $params);
+        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
 
-        $columns = $this->getColumns($filter);
+        $table = $this->getResearchTable($filter->research_type);
 
-        $rows = [
-            [
-                'id' => 1,
-                'uwi' => [
-                    'href' => '#'
-                ]
-            ]
-        ];
+        $columns = $this->getColumns($table);
+
+        $rowsData = DB::connection('tbd')
+            ->table('prod.lab_research as lr')
+            ->select('t.*', 'lr.id', 'lr.well', 'lr.research_date')
+            ->leftJoin($table . ' as t', 'lr.id', 't.well')
+            ->whereIn('lr.well', $wells->pluck('id')->toArray())
+            ->whereDate('research_date', '<=', $filter->date)
+            ->where('research_type', $filter->research_type)
+            ->orderBy('lr.well')
+            ->orderBy('lr.research_date', 'desc')
+            ->distinct('lr.well')
+            ->get();
+
+        $rows = $wells
+            ->map(
+                function ($item) use ($rowsData, $columns) {
+                    $rowData = $rowsData->where('well', $item->id)->first();
+                    if (empty($rowData)) {
+                        return null;
+                    }
+                    $result = [
+                        'id' => $rowData->id
+                    ];
+
+                    foreach ($columns as $column) {
+                        if ($column['type'] === 'link') {
+                            $value = [
+                                'id' => $item->id,
+                                'name' => $item->uwi,
+                                'href' => '#'
+                            ];
+                        } else {
+                            $value = [
+                                'date' => $rowData->research_date,
+                                'old_value' => $rowData->{$column['code']}
+                            ];
+                        }
+                        $result[$column['code']] = $value;
+                    }
+                    return $result;
+                }
+            )
+            ->filter()
+            ->values()
+            ->toArray();
 
         return [
-            'columns' => $columns,
-            'rows' => $rows
+            'rows' => $rows,
+            'columns' => $columns
         ];
     }
 
-    private function getColumns(\stdClass $filterValues)
+    protected function getResearchTable(int $researchTypeId)
     {
-        $dictionaryService = app()->make(\App\Services\BigData\DictionaryService::class);
-        $filterFields = collect($this->params()['filter']);
+        $researchType = LabResearchType::find($researchTypeId);
+        try {
+            return ResearchLabResearch::TABLES_BY_TYPE[$researchType->code];
+        } catch (\Exception $e) {
+            throw new \Exception('Нет данных по исследованию');
+        }
+    }
 
-        $fields = $this->getFields()
-            ->filter(function ($field) use ($filterFields, $filterValues, $dictionaryService) {
-                if (!isset($field['depends_on'])) {
+    protected function getColumns(string $table): Collection
+    {
+        return $this->getFields()
+            ->filter(function ($field) use ($table) {
+                if (!isset($field['table'])) {
                     return true;
                 }
-
-
-                foreach ($field['depends_on'] as $dependency) {
-                    $filterField = $filterFields->where('code', $dependency['field'])->first();
-                    $dict = collect($dictionaryService->get($filterField['dict']));
-
-                    $code = $dependency['value']['code'];
-
-                    $dictItem = $dict->where('code', $code)
-                        ->where('id', $filterValues->{$filterField['code']})
-                        ->first();
-
-                    if (empty($dictItem)) {
-                        return false;
-                    }
-                }
-
-                return true;
+                return $field['table'] === $table;
             });
-
-        return $fields;
     }
 
     protected function saveSingleFieldInDB(array $params): void
