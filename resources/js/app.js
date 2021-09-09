@@ -179,7 +179,7 @@ Vue.component('report-constructor', require('./components/reportConstructor/Repo
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
 Vue.component('pf-upload-monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
 Vue.component('pf-data-analysis', require('./components/PlastFluids/views/PfDataAnalysis').default);
-Vue.component('pf-standart-separation-flash', require('./components/PlastFluids/components/StandartSeparationFlash').default);
+Vue.component('pf-download-monitoring', require('./components/PlastFluids/views/DownloadMonitoring').default);
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);

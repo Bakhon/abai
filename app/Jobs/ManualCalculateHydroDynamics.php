@@ -264,6 +264,11 @@ class ManualCalculateHydroDynamics implements ShouldQueue
     {
         $guIds = [];
         foreach ($pipes as $key => $pipe) {
+            if (!$pipe->lastCoords || !$pipe->firstCoords) {
+                unset($pipes[$key]);
+                continue;
+            }
+
             if ($pipe->between_points != 'well-zu') {
                 continue;
             }

@@ -101,7 +101,7 @@ return array (
   'equipment' => 'Наименование оборудования',
   'equipment_name' => 'Наименование оборудования',
   'compare_to_prev_month' => 'В сравнении с предыдущим месяцем',
-  'download_example' => 'Скачать пример',
+  'download_example' => 'Скачать шаблон',
   'in_pause' => 'В простое',
   'in_work' => 'В работе',
   'wells_profitless' => 'Нерентабельные скважины',
