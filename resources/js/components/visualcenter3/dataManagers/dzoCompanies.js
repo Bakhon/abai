@@ -107,14 +107,14 @@ export default {
 
         selectAllDzoCompanies() {
             if (!this.isOneDzoSelected) {
-                this.productionData = _.cloneDeep(this.backendProductionTableData);
+                this.productionData = _.cloneDeep(this.productionTableData);
                 this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
                 _.forEach(this.dzoCompanies, function (dzo) {
                     _.set(dzo, 'selected', true);
                 });
                 this.selectDzoCompanies();
-                this.backendProductionChartData = this.backendGetSummaryForChart();
-                this.exportDzoCompaniesSummaryForChart(this.backendProductionChartData);
+                this.productionChartData = this.getSummaryForChart();
+                this.exportDzoCompaniesSummaryForChart(this.productionChartData);
             }
         },
 
@@ -123,7 +123,7 @@ export default {
             this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
             this.disableDzoRegions();
             this.selectedDzoCompanies = this.getAllDzoCompanies();
-            this.productionData = _.cloneDeep(this.backendProductionTableData);
+            this.productionData = _.cloneDeep(this.productionTableData);
         },
 
         selectOneDzoCompany(companyTicker) {
@@ -150,8 +150,8 @@ export default {
                     this.selectedDzoCompanies.push('ОМГК');
                 }
                 this.productionData = this.getFilteredTableData();
-                this.backendProductionChartData = this.backendGetSummaryForChart();
-                this.exportDzoCompaniesSummaryForChart(this.backendProductionChartData);
+                this.productionChartData = this.getSummaryForChart();
+                this.exportDzoCompaniesSummaryForChart(this.productionChartData);
             }
         },
 

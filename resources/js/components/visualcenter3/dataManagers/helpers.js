@@ -20,7 +20,7 @@ export default {
             if (num == null) {
                 return 0;
             }
-            if (this.backendPeriodRange === 0) {
+            if (this.periodRange === 0) {
                 this.thousand = '';
                 return new Intl.NumberFormat("ru-RU").format(Math.round(num));
             } else {

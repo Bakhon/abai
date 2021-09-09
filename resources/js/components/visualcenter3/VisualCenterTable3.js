@@ -22,7 +22,7 @@ import injectionFondDetails from './widgets/injectionFondDetails';
 import emergency from './widgets/emergency';
 import {globalloadingMutations} from '@store/helpers';
 import Vue from "vue";
-import backendProductionParams from './productionParams/index';
+import productionParams from './productionParams/index';
 import dzoCompaniesNameMapping from "./dzo_companies_consolidated_name_mapping.json";
 
 Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
@@ -149,7 +149,7 @@ export default {
         productionFondDetails,
         injectionFondDetails,
         emergency,
-        backendProductionParams
+        productionParams
     ],
     async mounted() {
         this.SET_LOADING(true);

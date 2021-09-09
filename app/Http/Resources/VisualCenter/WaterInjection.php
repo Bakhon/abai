@@ -53,7 +53,7 @@ class WaterInjection {
         $missingCompanies = array_diff($this->companies, $presentCompanies);
         foreach($missingCompanies as $dzoName) {
             $missingData = $this->getMissingCompanyData($dzoName);
-            $updatedByMissingCompanies[$dzoName] = array($missingData);
+            $updatedByMissingCompanies->put($dzoName,$missingData);
         }
         return $updatedByMissingCompanies;
     }
@@ -65,7 +65,8 @@ class WaterInjection {
              ->whereNull('is_corrected')
              ->with('importDecreaseReason')
              ->latest('date')
-             ->first();
+             ->take(1)
+             ->get();
     }
 
     private function getDataBySubCategory($groupedFact,$planData,$periodType,$yearlyPlan,$fields)
@@ -106,14 +107,23 @@ class WaterInjection {
            'name' => $dzo,
            'fact' => array_sum(array_column($dzoFact,$categoryFields['fact'])),
            'plan' => array_sum(array_column($filteredPlan,$categoryFields['plan'])),
-           'opec_explanation_reasons' => $this->getAccidentDescription($dzoFact,'opec_explanation_reasons'),
-           'impulse_explanation_reasons' => $this->getAccidentDescription($dzoFact,'impulse_explanation_reasons'),
-           'shutdown_explanation_reasons' => $this->getAccidentDescription($dzoFact,'shutdown_explanation_reasons'),
-           'accident_explanation_reasons' => $this->getAccidentDescription($dzoFact,'accident_explanation_reasons'),
-           'restriction_kto_explanation_reasons' => $this->getAccidentDescription($dzoFact,'restriction_kto_explanation_reasons'),
-           'gas_restriction_explanation_reasons' => $this->getAccidentDescription($dzoFact,'gas_restriction_explanation_reasons'),
-           'other_explanation_reasons' => $this->getAccidentDescription($dzoFact,'other_explanation_reasons'),
+           'opec_explanation_reasons' => '',
+           'impulse_explanation_reasons' => '',
+           'shutdown_explanation_reasons' => '',
+           'accident_explanation_reasons' => '',
+           'restriction_kto_explanation_reasons' => '',
+           'gas_restriction_explanation_reasons' => '',
+           'other_explanation_reasons' => '',
         );
+        if ($periodType === 'day') {
+            $companySummary['opec_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'opec_explanation_reasons');
+            $companySummary['impulse_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'impulse_explanation_reasons');
+            $companySummary['shutdown_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'shutdown_explanation_reasons');
+            $companySummary['accident_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'accident_explanation_reasons');
+            $companySummary['restriction_kto_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'restriction_kto_explanation_reasons');
+            $companySummary['gas_restriction_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'gas_restriction_explanation_reasons');
+            $companySummary['other_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'other_explanation_reasons');
+        }
         if ($periodType === 'month') {
             $companySummary['monthlyPlan'] = array_column($filteredPlan,$categoryFields['plan'])[0] * $daysInMonth;
             $companySummary['plan'] *= Carbon::now()->day - 1;
@@ -131,13 +141,11 @@ class WaterInjection {
 
     private function getAccidentDescription($dzoFact,$fieldName)
     {
-        $accidentDescription = '';
         foreach($dzoFact as $item) {
-            if (!is_null($item['import_decrease_reason']) && isset($item['import_decrease_reason'][$fieldName])) {
-                $accidentDescription .= $item['import_decrease_reason'][$fieldName] . '\n';
+            if (!is_null($item['importDecreaseReason']) && isset($item['importDecreaseReason'][$fieldName])) {
+                return $item['importDecreaseReason'][$fieldName];
             }
         }
-        return $accidentDescription;
     }
 
     private function getYearlyPlanBy($yearlyPlan,$fieldName)

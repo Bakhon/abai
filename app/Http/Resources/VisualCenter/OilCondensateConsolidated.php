@@ -76,6 +76,38 @@ class OilCondensateConsolidated {
         'НКО' => ((1 - 0.019) * 241 / 1428) / 2
     );
 
+    private $dzoTableMultiplier = array (
+        'ПКК' => 0.33,
+        'ПККР' => 0.33,
+        'КГМ' => 0.5 * 0.33,
+        'ТП' => 0.5 * 0.33,
+        'НКО' => ((1 - 0.019) * 241 / 1428) / 2,
+        'ММГ' => 0.5,
+        'КБМ' => 0.5,
+        'КОА' => 0.5,
+        'КГМ' => 0.5,
+        'ТШО' => 0.2,
+        'КПО' => 0.1
+    );
+
+    private $companyTemplate = array(
+        'id' => '',
+        'name' => '',
+        'fact' => 0,
+        'plan' => 0,
+        'opek' => 0,
+        'condensatePlan' => 0,
+        'condensateFact' => 0,
+        'condensateOpek' => 0,
+        'opec_explanation_reasons' => '',
+        'impulse_explanation_reasons' => '',
+        'shutdown_explanation_reasons' => '',
+        'accident_explanation_reasons' => '',
+        'restriction_kto_explanation_reasons' => '',
+        'gas_restriction_explanation_reasons' => '',
+        'other_explanation_reasons' => '',
+   );
+
     public function getDataByConsolidatedCategory($factData,$planData,$periodRange,$type,$yearlyPlan,$periodType,$oneDzoSelected)
     {
         if (!is_null($oneDzoSelected)) {
@@ -134,8 +166,9 @@ class OilCondensateConsolidated {
         $missingCompanies = array_diff($this->companies, $presentCompanies);
         foreach($missingCompanies as $dzoName) {
             $missingData = $this->getMissingCompanyData($dzoName);
-            $updatedByMissingCompanies[$dzoName] = array($missingData);
+            $updatedByMissingCompanies->put($dzoName,$missingData);
         }
+
         return $updatedByMissingCompanies;
     }
 
@@ -146,7 +179,8 @@ class OilCondensateConsolidated {
              ->whereNull('is_corrected')
              ->with('importDecreaseReason')
              ->latest('date')
-             ->first();
+             ->take(1)
+             ->get();
     }
 
     private function getUpdatedByTroubledCompanies($dzo,$dzoFact,$filteredPlan,&$pkiSumm,$type,$periodType,$yearlyPlan)
@@ -161,25 +195,25 @@ class OilCondensateConsolidated {
         }
         $daysInMonth = Carbon::parse($dzoFact[0]['date'])->daysInMonth;
         $summary = array();
+        $companySummary = $this->companyTemplate;
+        $companySummary['id'] = $this->consolidatedNumberMapping[$type][$dzo];
+        $companySummary['name'] = $dzo;
+        $companySummary['fact'] = $dzoFact->sum($this->consolidatedFieldsMapping[$type]['fact']);
+        $companySummary['plan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']);
+        $companySummary['opek'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['opek']);
+        $companySummary['condensatePlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['condensatePlan']);
+        $companySummary['condensateFact'] = $dzoFact->sum($this->consolidatedFieldsMapping[$type]['condensateFact']);
+        $companySummary['condensateOpek'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['condensateOpek']);
 
-        $companySummary = array(
-           'id' => $this->consolidatedNumberMapping[$type][$dzo],
-           'name' => $dzo,
-           'fact' => $dzoFact->sum($this->consolidatedFieldsMapping[$type]['fact']),
-           'plan' => $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']),
-           'opek' => $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['opek']),
-           'condensatePlan' => $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['condensatePlan']),
-           'condensateFact' => $dzoFact->sum($this->consolidatedFieldsMapping[$type]['condensateFact']),
-           'condensateOpek' => $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['condensateOpek']),
-           'opec_explanation_reasons' => $this->getAccidentDescription($dzoFact,'opec_explanation_reasons'),
-           'impulse_explanation_reasons' => $this->getAccidentDescription($dzoFact,'impulse_explanation_reasons'),
-           'shutdown_explanation_reasons' => $this->getAccidentDescription($dzoFact,'shutdown_explanation_reasons'),
-           'accident_explanation_reasons' => $this->getAccidentDescription($dzoFact,'accident_explanation_reasons'),
-           'restriction_kto_explanation_reasons' => $this->getAccidentDescription($dzoFact,'restriction_kto_explanation_reasons'),
-           'gas_restriction_explanation_reasons' => $this->getAccidentDescription($dzoFact,'gas_restriction_explanation_reasons'),
-           'other_explanation_reasons' => $this->getAccidentDescription($dzoFact,'other_explanation_reasons'),
-        );
-
+        if ($periodType === 'day') {
+            $companySummary['opec_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'opec_explanation_reasons');
+            $companySummary['impulse_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'impulse_explanation_reasons');
+            $companySummary['shutdown_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'shutdown_explanation_reasons');
+            $companySummary['accident_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'accident_explanation_reasons');
+            $companySummary['restriction_kto_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'restriction_kto_explanation_reasons');
+            $companySummary['gas_restriction_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'gas_restriction_explanation_reasons');
+            $companySummary['other_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'other_explanation_reasons');
+        }
         if ($periodType === 'month') {
             $companySummary['monthlyPlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']) * $daysInMonth;
             $companySummary['plan'] *= Carbon::now()->day - 1;
@@ -226,15 +260,15 @@ class OilCondensateConsolidated {
             $condensateSummary = $companySummary;
             $condensateSummary['id'] = $this->consolidatedNumberMapping[$type]['КГМКМГ'];
             $condensateSummary['name'] = 'КГМКМГ';
-            $condensateSummary['fact'] *= 0.5 * 0.33;
-            $condensateSummary['plan'] *= 0.5 * 0.33;
+            $condensateSummary['fact'] *= $this->dzoTableMultiplier[$dzo];
+            $condensateSummary['plan'] *= $this->dzoTableMultiplier[$dzo];
             if ($periodType === 'month') {
-                $condensateSummary['monthlyPlan'] *= 0.5 * 0.33;
+                $condensateSummary['monthlyPlan'] *= $this->dzoTableMultiplier[$dzo];
             }
             if ($periodType === 'year') {
-                $condensateSummary['yearlyPlan'] *= 0.5 * 0.33;
+                $condensateSummary['yearlyPlan'] *= $this->dzoTableMultiplier[$dzo];
             }
-            $condensateSummary['opek'] *= 0.5 * 0.33;
+            $condensateSummary['opek'] *= $this->dzoTableMultiplier[$dzo];
             $pkiSumm['fact'] += $condensateSummary['fact'];
             $pkiSumm['plan'] += $condensateSummary['plan'];
             $pkiSumm['opek'] += $condensateSummary['opek'];
@@ -244,100 +278,49 @@ class OilCondensateConsolidated {
             if ($periodType === 'year') {
                 $pkiSumm['yearlyPlan'] += $condensateSummary['yearlyPlan'];
             }
-        } elseif ($dzo === 'ПККР') {
-             $companySummary['fact'] *= 0.33;
-             $companySummary['plan'] *= 0.33;
-             $companySummary['opek'] *= 0.33;
-             if ($periodType === 'month') {
-                $companySummary['monthlyPlan'] *= 0.33;
-             }
-             if ($periodType === 'year') {
-                $companySummary['yearlyPlan'] *= 0.33;
-             }
-             $pkiSumm['fact'] += $companySummary['fact'];
-             $pkiSumm['plan'] += $companySummary['plan'];
-             $pkiSumm['opek'] += $companySummary['opek'];
-             if ($periodType === 'month') {
+
+        } elseif (in_array($dzo, array('ПККР','ТП'))) {
+            $companySummary['fact'] *= $this->dzoTableMultiplier[$dzo];
+            $companySummary['plan'] *= $this->dzoTableMultiplier[$dzo];
+            $companySummary['opek'] *= $this->dzoTableMultiplier[$dzo];
+            if ($periodType === 'month') {
+                $companySummary['monthlyPlan'] *= $this->dzoTableMultiplier[$dzo];
+            }
+            if ($periodType === 'year') {
+                $companySummary['yearlyPlan'] *= $this->dzoTableMultiplier[$dzo];
+            }
+            $pkiSumm['fact'] += $companySummary['fact'];
+            $pkiSumm['plan'] += $companySummary['plan'];
+            $pkiSumm['opek'] += $companySummary['opek'];
+            if ($periodType === 'month') {
                 $pkiSumm['monthlyPlan'] += $companySummary['monthlyPlan'];
-             }
-             if ($periodType === 'year') {
+            }
+            if ($periodType === 'year') {
                 $pkiSumm['yearlyPlan'] += $companySummary['yearlyPlan'];
-             }
-         } elseif ($dzo === 'ТП') {
-             $companySummary['fact'] *= 0.5 * 0.33;
-             $companySummary['plan'] *= 0.5 * 0.33;
-             $companySummary['opek'] *= 0.5 * 0.33;
-             if ($periodType === 'month') {
-                $companySummary['monthlyPlan'] *= 0.5 * 0.33;
-             }
-             if ($periodType === 'year') {
-                $companySummary['yearlyPlan'] *= 0.5 * 0.33;
-             }
-             $pkiSumm['fact'] += $companySummary['fact'];
-             $pkiSumm['plan'] += $companySummary['plan'];
-             $pkiSumm['opek'] += $companySummary['opek'];
-             if ($periodType === 'month') {
-                $pkiSumm['monthlyPlan'] += $companySummary['monthlyPlan'];
-             }
-             if ($periodType === 'year') {
-                $pkiSumm['yearlyPlan'] += $companySummary['yearlyPlan'];
-             }
-         }
-         if (in_array($dzo, array('ММГ','КБМ','КОА','КГМ'))) {
-            $companySummary['fact'] *= 0.5;
-            $companySummary['plan'] *= 0.5;
-            $companySummary['opek'] *= 0.5;
+            }
+        }
+        if (in_array($dzo, array('ММГ','КБМ','КОА','КГМ','ТШО','КПО','НКО'))) {
+            $companySummary['fact'] *= $this->dzoTableMultiplier[$dzo];
+            $companySummary['plan'] *= $this->dzoTableMultiplier[$dzo];
+            $companySummary['opek'] *= $this->dzoTableMultiplier[$dzo];
             if ($periodType === 'month') {
-                $companySummary['monthlyPlan'] *= 0.5;
+                $companySummary['monthlyPlan'] *= $this->dzoTableMultiplier[$dzo];
             }
             if ($periodType === 'year') {
-                $companySummary['yearlyPlan'] *= 0.5;
+                $companySummary['yearlyPlan'] *= $this->dzoTableMultiplier[$dzo];
             }
-         }
-         if ($dzo === 'ТШО') {
-            $companySummary['fact'] *= 0.2;
-            $companySummary['plan'] *= 0.2;
-            $companySummary['opek'] *= 0.2;
-            if ($periodType === 'month') {
-                $companySummary['monthlyPlan'] *= 0.2;
-            }
-            if ($periodType === 'year') {
-                $companySummary['yearlyPlan'] *= 0.2;
-            }
-         }
-         if ($dzo === 'КПО') {
-            $companySummary['fact'] *= 0.1;
-            $companySummary['plan'] *= 0.1;
-            $companySummary['opek'] *= 0.1;
-            if ($periodType === 'month') {
-                $companySummary['monthlyPlan'] *= 0.1;
-            }
-            if ($periodType === 'year') {
-                $companySummary['yearlyPlan'] *= 0.1;
-            }
-         }
-         if ($dzo === 'НКО') {
-            $companySummary['fact'] = (($companySummary['fact'] - $companySummary['fact'] * 0.019) * 241 / 1428) / 2;
-            $companySummary['plan'] = (($companySummary['plan'] - $companySummary['plan'] * 0.019) * 241 / 1428) / 2;
-            $companySummary['opek'] = (($companySummary['opek'] - $companySummary['opek'] * 0.019) * 241 / 1428) / 2;
-            if ($periodType === 'month') {
-                $companySummary['monthlyPlan'] = (($companySummary['monthlyPlan'] - $companySummary['monthlyPlan'] * 0.019) * 241 / 1428) / 2;
-            }
-            if ($periodType === 'year') {
-                $companySummary['yearlyPlan'] = (($companySummary['yearlyPlan'] - $companySummary['yearlyPlan'] * 0.019) * 241 / 1428) / 2;
-            }
-         }
-         if (is_null($companySummary['opek']) || $companySummary['opek'] == 0) {
+        }
+        if (is_null($companySummary['opek']) || $companySummary['opek'] == 0) {
              $companySummary['opek'] = $companySummary['plan'];
-         }
-         if (is_null($condensateSummary['opek']) || $condensateSummary['opek'] == 0) {
+        }
+        if (is_null($condensateSummary['opek']) || $condensateSummary['opek'] == 0) {
               $condensateSummary['opek'] = $condensateSummary['plan'];
-         }
-         if (in_array($dzo, array('КГМ','ОМГ'))) {
+        }
+        if (in_array($dzo, array('КГМ','ОМГ'))) {
             array_push($summary,$condensateSummary);
-         }
-         array_push($summary,$companySummary);
-         return $summary;
+        }
+        array_push($summary,$companySummary);
+        return $summary;
     }
 
     private function getSortedById($data,$type)
@@ -354,13 +337,11 @@ class OilCondensateConsolidated {
 
     private function getAccidentDescription($dzoFact,$fieldName)
     {
-        $accidentDescription = '';
         foreach($dzoFact as $item) {
-            if (!is_null($item['import_decrease_reason']) && isset($item['import_decrease_reason'][$fieldName])) {
-                $accidentDescription .= $item['import_decrease_reason'][$fieldName] . '\n';
+            if (!is_null($item['importDecreaseReason']) && isset($item['importDecreaseReason'][$fieldName])) {
+                return $item['importDecreaseReason'][$fieldName];
             }
         }
-        return $accidentDescription;
     }
 
     private function getYearlyPlanBy($yearlyPlan,$fieldName)
