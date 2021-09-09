@@ -2,7 +2,7 @@
 
 namespace App\Models\ComplicationMonitoring;
 
-use App\Traits\MapObjectsTrait;
+use App\Models\Traits\MapObjectsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -97,5 +97,10 @@ class ManualGu extends Model
     public function oilPipes()
     {
         return $this->setConnection('tbd_cmon')->hasMany(ManualOilPipe::class);
+    }
+
+    public function omgngdu()
+    {
+        return $this->hasMany(OmgNGDU::class, 'gu_id');
     }
 }

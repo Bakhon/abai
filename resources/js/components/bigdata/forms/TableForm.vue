@@ -50,7 +50,10 @@
                   :class="{'editable': formParams && formParams.available_actions.includes('update') && column.is_editable}"
                   @dblclick="editCell(row, column)"
               >
-                <template v-if="column.type === 'link'">
+                <template v-if="column.type === 'form'">
+                  <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
+                </template>
+                <template v-else-if="column.type === 'link'">
                   <a :href="row[column.code].href">{{ row[column.code].name }}</a>
                 </template>
                 <template v-else-if="column.type === 'label'">
@@ -68,7 +71,7 @@
                 </template>
                 <template v-else-if="column.type === 'history_graph'">
                   <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">
-                      <span class="value">{{
+                      <span v-if="row[column.code]" class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
                     <span v-if="row[column.code] && row[column.code].date" class="date">
@@ -181,6 +184,18 @@
         v-on:close="rowHistoryGraph = null"
     >
     </RowHistoryGraph>
+    <div v-if="isInnerFormOpened" class="bd-popup">
+      <div class="bd-popup__inner">
+        <a class="bd-popup__close" href="#" @click.prevent="isInnerFormOpened = false">{{ trans('bd.close') }}</a>
+        <BigDataPlainForm
+            :params="innerFormParams"
+            :values="innerFormValues"
+            :well-id="innerFormWellId"
+            @close="isInnerFormOpened = false"
+        >
+        </BigDataPlainForm>
+      </div>
+    </div>
   </form>
 </template>
 
@@ -191,9 +206,11 @@ import 'vue-datetime/dist/vue-datetime.css'
 import {bdFormActions, globalloadingMutations} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
+import BigDataPlainForm from './PlainForm'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 import BigdataFormField from './field'
+import forms from '../../../json/bd/forms.json'
 
 
 const requireComponent = require.context('./CustomColumns', true, /\.vue$/i);
@@ -230,13 +247,13 @@ export default {
   },
   components: {
     BigDataHistory,
+    BigDataPlainForm,
     RowHistoryGraph,
     BigdataFormField
   },
   data() {
     return {
       errors: {},
-      formValues: {},
       activeTab: 0,
       currentPage: 1,
       rows: [],
@@ -251,7 +268,12 @@ export default {
       rowHistoryGraph: null,
       oldFilter: null,
       formParams: null,
-      formError: null
+      formError: null,
+      forms: forms,
+      isInnerFormOpened: false,
+      innerFormParams: null,
+      innerFormValues: null,
+      innerFormWellId: null
     }
   },
   watch: {
@@ -530,6 +552,13 @@ export default {
               })
             }
           })
+    },
+    openForm(row, column) {
+      this.isInnerFormOpened = true
+      this.innerFormParams = this.forms.find(formItem => formItem.code === column.form)
+      this.innerFormWellId = row.id
+      this.innerFormValues = {}
+      this.innerFormValues[column.code] = row[column.code].value
     }
   },
 };

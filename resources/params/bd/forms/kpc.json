@@ -164,7 +164,10 @@
               "type": "datetime",
               "title": "work_end_date",
               "validation": "required|nullable|date|after:dbeg",
-              "is_editable": true
+              "is_editable": true,
+              "callbacks": {
+                "fillCalculatedFields": ""
+              }
             },
             {
               "code": "work_list",

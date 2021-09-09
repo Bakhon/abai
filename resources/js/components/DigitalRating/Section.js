@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import { Minichart } from 'leaflet.minichart';
 import 'leaflet/dist/leaflet.css';
 import wellsData from './json/dataWells.json';
 import BtnDropdown from "./components/BtnDropdown";
@@ -6,7 +7,7 @@ import SettingModal from "./components/SettingModal";
 import WellAtlasModal from "./components/WellAtlasModal";
 import Accordion from "./components/Accordion";
 import mainMenu from "../GTM/mock-data/main_menu.json";
-import { cods, maps, properties, objects, fileActions, mapActions } from './json/data';
+import { legends, maps, properties, objects, fileActions, mapActions } from './json/data';
 import { digitalRatingState, digitalRatingMutations } from '@store/helpers';
 
 export default {
@@ -23,7 +24,7 @@ export default {
         return {
             objects: objects,
             maps: maps,
-            cods: cods,
+            legends: legends,
             properties: properties,
             fileActions: fileActions,
             mapsActions: mapActions,
@@ -34,9 +35,9 @@ export default {
             marker: null,
             bounds: [[0, 15000], [0,15000]],
             center: [85000, 52000],
-            zoom: -5,
-            minZoom: -7,
-            maxZoom: 2,
+            zoom: -6,
+            minZoom: -6,
+            maxZoom: 0,
             renderer: L.canvas({ padding: 0.5 }),
         };
     },
@@ -63,6 +64,7 @@ export default {
             L.control.zoom({
                 position: 'bottomright'
             }).addTo(this.map);
+
             this.map.fitBounds(this.bounds);
             this.map.setView( this.center, this.zoom);
         },
@@ -89,6 +91,7 @@ export default {
                     this.onMapClick(maps[i]['sector']);
                 })
             }
+            this.initChartOnMap();
         },
 
         initWellOnMap() {
@@ -101,13 +104,29 @@ export default {
                     weight: 1,
                     fillColor: '#000',
                     fillOpacity: 0,
-                    radius: 5,
+                    radius: 3,
                 }).addTo(this.map).bindPopup(wellsData[i]['well']);
 
                 this.marker.on('mouseover', function (e) {
                     this.openPopup();
                 });
             }
+        },
+
+        initChartOnMap() {
+            function fakeData() {
+                return [Math.random(), Math.random()];
+            }
+
+            const myBarChart = L.minichart([85000, 52000], {
+                data: fakeData(),
+                type: 'pie',
+                width: 40,
+                height: 40,
+                labels: ['Test1', 'Test2']
+            });
+
+            this.map.addLayer(myBarChart);
         },
 
         getBounds(item) {

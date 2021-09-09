@@ -11,7 +11,8 @@
     </div>
     <transition-expand duration="100">
       <div v-show="isOpen" class="rating-accordion__body">
-        <ul class="list">
+        <slot v-if="$slots.default"></slot>
+        <ul class="list" v-else>
           <li
             v-for="(item, index) in list" :key="index"
             @click="$emit('selectItem', item)">
