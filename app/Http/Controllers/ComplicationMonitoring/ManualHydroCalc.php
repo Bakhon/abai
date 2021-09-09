@@ -188,7 +188,7 @@ class ManualHydroCalc extends CrudController
         $alerts = [];
 
         foreach ($pipes as $key => $pipe) {
-            if (!$pipe->lastCoords) {
+            if (!$pipe->lastCoords || !$pipe->firstCoords) {
                 unset($pipes[$key]);
                 continue;
             }
