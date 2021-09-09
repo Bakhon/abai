@@ -145,22 +145,17 @@ export default {
           dimension: this.trans('economic_reference.tenge_per_ton_liquid')
         },
         {
-          label: this.trans('economic_reference.personnel_costs'),
-          value: this.data.avg_fix_payroll * 12 / 1000000,
-          dimension: this.trans('economic_reference.million_tenge_per_year')
-        },
-        {
-          label: this.trans('economic_reference.krs'),
-          value: this.data.avg_wo,
-          dimension: this.trans('economic_reference.million_tenge_per_operation'),
-        },
-        {
           label: this.trans('economic_reference.conditional_fixed_costs'),
           value: this.data.avg_fix * 12 / 1000000,
           dimension: this.trans('economic_reference.million_tenge_per_year')
         },
         {
-          label: this.trans('economic_reference.oar'),
+          label: this.trans('economic_reference.personnel_costs'),
+          value: this.data.avg_fix_payroll * 12 / 1000000,
+          dimension: this.trans('economic_reference.million_tenge_per_year')
+        },
+        {
+          label: this.trans('economic_reference.oar_costs'),
           value: this.data.avg_gaoverheads * 12 / 1000000,
           dimension: this.trans('economic_reference.million_tenge_per_year')
         },
@@ -168,7 +163,12 @@ export default {
           label: this.trans('economic_reference.avg_cost_prs_with_payroll'),
           value: this.data.avg_wr_nopayroll + this.data.avg_wr_payroll,
           dimension: this.trans('economic_reference.million_tenge_for_operation')
-        }
+        },
+        {
+          label: this.trans('economic_reference.avg_cost_krs'),
+          value: this.data.avg_wo,
+          dimension: this.trans('economic_reference.million_tenge_per_operation'),
+        },
       ]
     }
   }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
 use Illuminate\Support\Facades\DB;
@@ -37,22 +36,7 @@ class Gis extends PlainForm
         return $errors;
     }
 
-    public function submit(): array
-    {
-        DB::connection('tbd')->beginTransaction();
-
-        try {
-            $this->submitForm();
-
-            DB::connection('tbd')->commit();
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
-        } catch (\Exception $e) {
-            DB::connection('tbd')->rollBack();
-            throw new SubmitFormException($e->getMessage());
-        }
-    }
-
-    private function submitForm()
+    private function submitForm(): array
     {
         $this->tableFields = $this->getFields()
             ->filter(
@@ -95,6 +79,8 @@ class Gis extends PlainForm
         }
 
         $this->insertInnerTable($id);
+
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
     private function insertDocuments(int $id)

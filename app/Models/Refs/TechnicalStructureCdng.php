@@ -19,4 +19,9 @@ class TechnicalStructureCdng extends Model
     {
         return $this->belongsTo(TechnicalStructureNgdu::class, 'ngdu_id');
     }
+
+    public function gus()
+    {
+        return $this->hasMany(TechnicalStructureGu::class, 'cdng_id');
+    }
 }
