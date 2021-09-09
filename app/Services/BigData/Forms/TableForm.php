@@ -190,6 +190,7 @@ abstract class TableForm extends BaseForm
         ];
 
         $dateField = $fieldParams['date_field'] ?? 'dbeg';
+
         if ($this->isCurrentDay($row->{$dateField})) {
             $result['value'] = $value;
         } else {
@@ -257,6 +258,36 @@ abstract class TableForm extends BaseForm
                         ->groupBy('well_id');
 
                     break;
+                case 'prod.bottom_hole':
+                    $result[$table] = DB::connection('tbd')
+                        ->table('prod.bottom_hole as bh')
+                        ->whereIn('bh.well', $wellIds)
+                        ->whereDate('data', '<=', $date)
+                        ->orderBy('data', 'desc')
+                        ->get()
+                        ->groupBy('well');
+
+                    break;
+                case 'prod.well_geo':
+                    $result[$table] = DB::connection('tbd')
+                        ->table('prod.well_geo as wg')
+                        ->whereIn('wg.well', $wellIds)
+                        ->whereDate('dbeg', '<=', $date)
+                        ->join('dict.geo as g', 'g.id', 'wg.geo')
+                        ->orderBy('dbeg', 'desc')
+                        ->get()
+                        ->groupBy('well');
+
+                    break;
+                case 'prod.well_constr':
+                    $result[$table] = DB::connection('tbd')
+                        ->table('prod.well_constr as wc')
+                        ->whereIn('wc.well', $wellIds)
+                        ->join('dict.tube_nom as tn', 'tn.id', 'wc.casing_nom')
+                        ->get()
+                        ->groupBy('well');
+
+                    break;
                 default:
                     $result[$table] = DB::connection('tbd')
                         ->table($table)
@@ -321,7 +352,10 @@ abstract class TableForm extends BaseForm
         }
 
         if (!empty($params['merge_columns'])) {
-            $params['complicated_header'] = $this->tableHeaderService->getHeader($params);
+            $params['complicated_header'] = $this->tableHeaderService->getHeader(
+                $params['columns'],
+                $params['merge_columns']
+            );
         }
 
         return $params;

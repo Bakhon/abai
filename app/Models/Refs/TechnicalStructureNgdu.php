@@ -19,4 +19,9 @@ class TechnicalStructureNgdu extends Model
     {
         return $this->belongsTo('App\Models\Refs\TechnicalStructureField', 'field_id');
     }
+
+    public function cdngs()
+    {
+        return $this->hasMany(TechnicalStructureCdng::class, 'ngdu_id');
+    }
 }

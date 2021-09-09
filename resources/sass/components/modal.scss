@@ -55,6 +55,16 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin: 20px 0;
 }
 
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+#modalAtlas___BV_modal_content_ {
+  height: 800px;
+}

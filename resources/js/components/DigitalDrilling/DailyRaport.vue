@@ -978,10 +978,43 @@
                             <td rowspan="2" class="align-middle">
                                 {{trans('digital_drilling.daily_raport.bit_wear_according_IADC')}}
                             </td>
-                            <td rowspan="2" colspan="2" class="align-middle">
-                                <select name="" id="">
-                                    <option value="">Test</option>
-                                </select>
+                            <td rowspan="2" colspan="2" class="align-middle bit-ware">
+                                <div class="select__name">
+                                    <div>I</div>
+                                    <div>O</div>
+                                    <div>D</div>
+                                    <div>L</div>
+                                    <div>B</div>
+                                    <div>G</div>
+                                    <div>D</div>
+                                    <div>R</div>
+                                </div>
+                                <div class="selects">
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.I">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.O">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.D">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.L">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.B">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.G">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.D">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.R">{{opt}}</option>
+                                    </select>
+                                </div>
                             </td>
                             <td rowspan="2" colspan="2" class="align-middle">
                                 <select name="" id="">
@@ -1900,6 +1933,19 @@
                         active: false
                     },
                 ],
+                bitWare: {
+                    I: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                    O: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                    D: ["BC", "BF", "BT", "BU", "CC", "CD", "CI", "CR", "CT", "ER", "FC", "HC", "JD", "LC", "LN",
+                        "LT", "OC", "PB", "PN", "RG", "RO", "SD", "SS", "TR", "WO", "WT", "NO"],
+                    L: ["C", "N", "T", "S", "G", "A" ],
+                    B: [0, 1, 2, 3, 4, 5, 6, 7, 8, "E", "F", "N", "X"],
+                    G: [1, "1/16", "1/8", "1/4"],
+                    D:  ["BC", "BF", "BT", "BU", "CC", "CD", "CI", "CR", "CT", "ER", "FC", "HC", "JD", "LC", "LN",
+                        "LT", "OC", "PB", "PN", "RG", "RO", "SD", "SS", "TR", "WO", "WT", "NO"],
+                    R: ["BHA", "CM", "CP", "DMF", "DP", "DSF", "DST", "DTF", "FM", "HP", "HR",
+                        "LIH”", "LOG;", "PP”", "PR”", "RIG", "TD”", "TQ", "TW", "WC"],
+                },
                 Expenses: [
                     {operation1: 'digital_drilling.daily_raport.drilling', operation2: 'digital_drilling.daily_raport.organiz_simple'},
                     {operation1: 'digital_drilling.daily_raport.build_up', operation2: 'digital_drilling.daily_raport.repair_after_21'},
@@ -1939,6 +1985,38 @@
 </script>
 
 <style scoped>
+    .bit-ware{
+        width: 140px;
+    }
+    .select__name{
+        height: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #454d7d;
+        padding: 2px 2px 0;
+        border-radius: 5px;
+        color: #000000;
+    }
+    .select__name div{
+        text-align: center;
+        width: 15px;
+        max-width: 12%;
+        margin-left: 2px
+    }
+    .bit-ware .selects{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #454d7d;
+        border-radius: 5px;
+        margin-top: 2px;
+    }
+    .selects select{
+        width: 15px;
+        max-width: 12%;
+        margin-left: 2px;
+    }
 .pump td{
     width: 7.35%!important
 }

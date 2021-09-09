@@ -4,11 +4,13 @@
       <div class="my-table-border col-md-1" v-if="isShowCheckboxes">
         <div class="centered">
           <div class="custom-checkbox">
-            <form>
+            <form> 
               <label class="container">
                 <span class="bottom-border"></span>
-                <input type="checkbox" :id="node.id" name="tech_structure" value="tech_structure"
-                       class="dropdown-item" @change="onCheckboxClick(node, level)" :checked="isCheckedCheckbox(node, level)">
+                <input type="checkbox"
+                      v-if="!!renderComponent"
+                      :checked="node.isChecked"
+                      class="dropdown-item" @change="onCheckboxClick()">
                 <span class="checkmark"></span>
               </label>
             </form>
@@ -31,18 +33,21 @@
       <node
             v-for="(child, index) in node.children"
             :node="child"
-            :key="index+child.id"
+            :parent="node"
+            :key="`${index}-${child.id}-${node.id}`"
             :handle-click="handleClick"
             :get-wells="getWells"
             :get-initial-items="getInitialItems"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :isShowCheckboxes="isShowCheckboxes"
-            :onCheckboxClick="onCheckboxClick"
             :isWell="isWell"
             :currentWellId="currentWellId"
             :level="level+1"
             :nodeClickOnArrow="nodeClickOnArrow"
+            :renderComponent="renderComponent"
+            :updateThisComponent="updateThisComponent"
             :isCheckedCheckbox="isCheckedCheckbox"
+            :onClick="onClick"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -56,15 +61,19 @@ export default {
   name: "node",
   props: {
     node: Object,
+    parent: Object,
     level: Number,
+    renderComponent: Number,
+    updateThisComponent: Function,
     handleClick: Function,
     getWells: Function,
     getInitialItems: Function,
     isNodeOnBottomLevelOfHierarchy: Function,
     isShowCheckboxes: Boolean,
     isWell: Function,
-    onCheckboxClick: {
-      type: Function,
+    onClick: Function,
+    currentWellId: {
+      type: Number,
       required: false
     },
     isCheckedCheckbox: {
@@ -75,7 +84,13 @@ export default {
       type: Number,
       required: false
     },
-    nodeClickOnArrow: false
+    nodeClickOnArrow: false,
+  },
+  created() {
+    if(!this.isShowCheckboxes) return;
+    if(!('isChecked' in this.node)) {
+      this.node.isChecked = this.parent.isChecked;
+    }
   },
   model: {
     prop: "node",
@@ -87,14 +102,31 @@ export default {
       if (!this.isShowChildren) {
         return
       }
-      if (this.nodeClickOnArrow) {
-          await this.handleClick(this.node);
+      if (this.nodeClickOnArrow && !this.node.children) {
+        await this.handleClick(this.node);
       }
-      if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
+      if(!this.isHaveChildren(this.node)) {
         this.isLoading = true;
-        this.getWells(this);
+        await this.getWells(this);
       }
+
       this.$forceUpdate()
+    },
+    onCheckboxClick: async function () {
+      this.onClick(this);
+    },
+    updateChildren: async function(node, level, val) {
+      if(!node?.children) return;
+      for(let child of node.children) {
+        child.isChecked = val;
+        child.level = level+1;
+        this.updateChildren(child, level+1, val);
+      }
+    },
+    isHaveChildren(node) {
+      return typeof node !== 'undefined' && 
+             typeof node.children !== 'undefined' && 
+             !this.isNodeOnBottomLevelOfHierarchy(node);
     },
   },
   data: function () {

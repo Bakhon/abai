@@ -2052,22 +2052,20 @@
               </div>
               <div class="container-fluid">
                 <div class="row p-0 emergency-table__header">
-                  <span class="col-1 p-2 pl-5">{{ trans("visualcenter.date") }}</span>
-                  <span class="col-2 p-2 pl-3">Дата заполнения</span>
-                  <span class="col-9 p-2 pl-3">{{ trans("visualcenter.notes") }}</span>
+                  <span class="col-3 p-2">{{ trans("visualcenter.emergencyDate") }}</span>
+                  <span class="col-3 p-2">{{ trans("visualcenter.dzo") }}</span>
+                  <span class="col-3 p-2">{{ trans("visualcenter.emergency") }}</span>
+                  <span class="col-3 p-2">{{ trans("visualcenter.resolvingDate") }}</span>
                 </div>
                 <div
                         class="row emergency-view"
                         v-for="(item, index) in emergencyHistory"
                 >
                   <div class="col-12 d-flex emergency-title p-0">
-                    <span :class="[item.approved ? 'emergency-resolved' : 'not-resolved' ,'col-1']">{{item.date}}</span>
-                    <span class="col-11">{{item.title}}</span>
-                  </div>
-                  <div class="col-12 d-flex emergency-description p-2">
-                    <span class="col-1"></span>
-                    <span class="col-2">{{item.approve_date}}</span>
-                    <span class="col-9">{{item.description}}</span>
+                    <span :class="[item.approved ? 'emergency-resolved' : '' ,'col-3']">{{item.date}}</span>
+                    <span class="col-3">{{item.description}}</span>
+                    <span class="col-3">{{item.title}}</span>
+                    <span class="col-3">{{item.approve_date}}</span>
                   </div>
                 </div>
               </div>
@@ -3225,15 +3223,16 @@
   .emergency-view {
     .emergency-title {
       font-size: 16px;
-      span:last-child {
-        background: #4C537E;
+      text-align: center;
+      span {
+        border: 1px solid #4C537E;
+      }
+      span:nth-child(3) {
+        text-align:left;
       }
     }
     .emergency-description {
       background: #313561;
-    }
-    .not-resolved {
-      background: #353EA1;
     }
   }
   .category-button_border {
@@ -3264,6 +3263,7 @@
     font-size: 17px;
     span{
       border-right: 0.5px solid #272953;
+      text-align:center;
     }
   }
   .dropdown-splitter {

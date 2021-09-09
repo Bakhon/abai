@@ -17,9 +17,9 @@ class EmergencySituations extends Command
     protected $signature = 'create-emergency:cron';
     protected $allCompanies = array('КГМ','КБМ','ОМГ','КТМ','НКО','ПКИ','КПО','ТП','ПКК','ТШО','АГ','ММГ','КОА','ЭМГ','УО');
     protected $typeMapping = array(
-        'Форма ввода' => array('КБМ','ОМГ','КТМ','ММГ','КОА','ЭМГ','УО'),
-        'Парсинг неоперационных активов' => array('НКО','ПКИ','КПО','ТП','ПКК','ТШО','АГ'),
-        'Интеграция Avoсet' => array('КГМ')
+        'Не заполнена форма ввода' => array('КБМ','ОМГ','КТМ','ММГ','КОА','ЭМГ','УО'),
+        'Не сработал парсер отчета ИАЦНГ' => array('НКО','ПКИ','КПО','ТП','ПКК','ТШО','АГ'),
+        'Не сработал программный код Avocet' => array('КГМ')
     );
     /**
      * The console command description.
@@ -88,8 +88,8 @@ class EmergencySituations extends Command
         $incident = array (
             'date' => Carbon::now(),
             'type' => 1,
-            'title' => 'Отсутствие суточных данных - ' . $type,
-            'description' => 'Сегодня отсутствуют - ' . $company
+            'title' => $type,
+            'description' => $company
         );
         EmergencyHistory::create($incident);
     }

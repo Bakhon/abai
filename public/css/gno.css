@@ -303,6 +303,11 @@ td {
 /*h-perf intervals end*/
 
 /*icons*/
+.icon-inflow-curve {
+    padding-right: 5px;
+    padding-top: 8px;
+}
+
 .icon-near-wells {
     position: absolute;
     left: 72.25%;
@@ -449,9 +454,15 @@ span.open, span.closer {
 }
 
 .download-button-excel-1 {
+}
+
+.pl-2r {
+    padding-left: 2rem !important;
+}
+.download-button-excel-gno {
     position: absolute;
     margin-left: 175px;
-    margin-top: 5px;
+    margin-top: -40px;
 }
 
 .potential-analysis-button {
@@ -520,6 +531,43 @@ span.open, span.closer {
     background-color: #484749;
 }
 
+.download-curve-button-plot {
+    text-align: center;
+    width: 130px;
+    height: 26px;
+    font-size: 14px;
+    color: white;
+    border: 0.4px solid #222452;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background: #323370;
+    outline: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+a.dropdown-item {
+    color: white;
+}
+
+a.dropdown-item:hover {
+    background-color: #494AA5;
+    color: white;
+    border-radius: 5px;
+}
+
+.dropdown-menu.show {
+    padding-top: 0;
+    padding-bottom: 0;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.bottom-arrow-curve {
+    padding-top: 8px;
+    padding-right: 5px;
+}
+
 .download-curve-button {
     position: relative;
     text-align: center;
@@ -534,6 +582,11 @@ span.open, span.closer {
     outline: none;
     left: 20px;
     top: 8px;
+}
+
+.bottom-arrow-curve {
+    padding-top: 8px;
+    padding-right: 5px;
 }
 
 .podbor-gno-button {
@@ -559,6 +612,31 @@ span.open, span.closer {
 }
 
 .podbor-gno-button:hover {
+    background-color: #484749;
+}
+
+.sensitivity-analysis-button {
+    float: left;
+    font-size: 14px;
+    background-color: #656a8a;
+    cursor: pointer;
+    user-select: none;
+    height: 26px;
+    width: 197px;
+    border-radius: 6px;
+    text-align: center;
+    color: white;
+    border: none;
+}
+
+.sensitivity-analysis-button:active {
+    background-color: #144079;
+    box-shadow: 0 2px #666;
+    transform: translateY(0.02px);
+    filter: blur(0.3px);
+}
+
+.sensitivity-analysis-button:hover {
     background-color: #484749;
 }
 
@@ -667,6 +745,28 @@ span.open, span.closer {
     outline: none !important;
     background: #1a225e;
 }
+
+.sensitivity-analysis-settings-button {
+    width: 100%;
+    height: 32px;
+    background-color: #17955f;
+    color: white;
+    border-radius: 9px;
+    border: 0;
+    float: right;
+    margin-top: 15px;
+}
+
+.sensitivity-analysis-settings-button:active {
+    background-color: #144079;
+    box-shadow: 0 2px #666;
+    transform: translateY(0.02px);
+    filter: blur(0.3px);
+}
+
+.sensitivity-analysis-settings-button:hover {
+    background-color: #484749;
+}
 /*buttons end*/
 
 .сentralizers-block {
@@ -700,14 +800,12 @@ span.open, span.closer {
     width: 100%;
     color: white;
     box-sizing: border-box;
-    -moz-appearance: none;
     -webkit-appearance: none;
     padding-left: 5px;
-    margin-top: -2px;
-    border: none;
-    margin-right: 1px;
-    appearance: none;
     background: #494aa5 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>") no-repeat right 5px top 50%;
+    border-radius: 2px;
+    border: 1px solid #222452;
+    height: inherit;
 }
 
 .select-edit {
@@ -723,20 +821,6 @@ span.open, span.closer {
 .main-title-centralizers {
     text-align: center;
     margin-bottom: 0;
-}
-
-.input-selection-options {
-    width: 57px;
-    margin-bottom: 10px;
-    background: #494AA5;
-    border: 1px solid #272953;
-    outline: none;
-    height: 22px;
-    color: white;
-    box-sizing: border-box;
-    border-radius: 2px;
-    line-height: 25px !important;
-    margin-top: 5px;
 }
 
 .w-62 {
@@ -777,13 +861,15 @@ span.open, span.closer {
 }
 
 .well-number-input {
-    border: 1px solid rgba(34, 36, 82, 1);
     background: rgba(76, 190, 237, 0.278431);
     outline: none;
+    margin-top: 2px;
     width: 100%;
     color: white;
-    padding-left: 5px;
     line-height: 25px !important;
+    border: 1px solid #222452;
+    border-radius: 2px;
+    height: 19px;
 }
 
 .shgn-input {
@@ -992,12 +1078,9 @@ iframe.iframe {
 }
 
 .image-rods-data {
-    width: 500px;
-    height: 450px;
     padding-top: 5px;
     padding-bottom: 5px;
     display: flex;
-    position: relative;
 }
 
 .shgn-rod {
@@ -1125,6 +1208,10 @@ iframe.iframe {
     padding: 0 15px;
 }
 
+.flex {
+    display: flex;
+}
+
 .gno-line-chart, .shgn-composition-wrapper {
     height: 445px;
     overflow: hidden;
@@ -1207,7 +1294,7 @@ iframe.iframe {
     float: left;
     font-size: 14px;
     background-color: #2b2e5e;
-    height: 24px;
+    height: 25px;
 }
 
 .choosing-well-data,
@@ -1236,6 +1323,7 @@ input.curve-select-option {
     background: #237DEB;
     border: 2px solid #FFFFFF;
     border-radius: 8px;
+    transform: scale(1.1);
 }
 
 input.radio-q-liq {
@@ -1259,7 +1347,6 @@ input.radio-q-liq {
 
 .title-sep {
     height: 20px;
-    padding-left: 15px;
 }
 
 .fs-16 {
@@ -1381,7 +1468,6 @@ input.radio-q-liq {
     height: 35px;
     font-size: 20px;
     font-weight: bold;
-    padding: 10px 15px 0 15px;
 }
 
 .gno-shgn-block-title {
@@ -2327,7 +2413,7 @@ input.radio-q-liq {
     font-size: 15px;
     width: 20%;
     vertical-align: middle;
-    border-top: 0px;
+    border-top: 0;
     text-align: center;
     background: #323f8a;
 }
@@ -2881,7 +2967,7 @@ input.radio-q-liq {
     height: 130px;
     margin-top: 10px;
     position: relative;
-    left: 0px;
+    left: 0;
     color: white;
     font-weight: bold;
     font-size: 1em;
@@ -2895,7 +2981,7 @@ input.radio-q-liq {
     height: 130px;
     margin-top: 10px;
     position: relative;
-    left: 0px;
+    left: 0;
     color: white;
     font-weight: bold;
     font-size: 1em;
@@ -2908,7 +2994,7 @@ input.radio-q-liq {
     height: 80px;
     margin-top: 10px;
     position: relative;
-    left: 0px;
+    left: 0;
     color: white;
     font-weight: bold;
     font-size: 1em;
@@ -3058,8 +3144,8 @@ input.radio-q-liq {
     width: 896px;
     background-color: #2b2e5e;
     position: relative;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
 }
 
 .block__2__input {
@@ -3091,8 +3177,8 @@ input.radio-q-liq {
 
 .measurements-shgn-1 {
     position: absolute;
-    right: 505px;
-    top: 5px;
+    right: 490px;
+    top: 6px;
 }
 
 .measurements-shgn-2 {
@@ -3181,22 +3267,22 @@ input.radio-q-liq {
 
 .input-box-gno.podbor-kpod-block-1 {
     width: 80px;
-    margin-inline: 0px;
-    margin-top: 0px;
+    margin-inline: 0;
+    margin-top: 0;
     margin-right: 5px;
 }
 
 .input-box-gno.podbor-kpod-block-2 {
     width: 85px;
-    margin-inline: 0px;
-    margin-top: 0px;
+    margin-inline: 0;
+    margin-top: 0;
     margin-right: 5px;
 }
 
 .input-box-gno.podbor-kpod-block-3 {
     width: 50px;
-    margin-inline: 0px;
-    margin-top: 0px;
+    margin-inline: 0;
+    margin-top: 0;
 }
 
 .submit_button {
@@ -3239,7 +3325,7 @@ input.radio-q-liq {
     font-size: 15px;
     width: 20%;
     vertical-align: middle;
-    border-top: 0px;
+    border-top: 0;
     text-align: center;
     background: #323f8a;
 }
@@ -3261,3 +3347,39 @@ input.radio-q-liq {
     margin-top: -10px;
 }
 /*Shgn end*/
+
+.custom-select-sensitivity {
+    background-color: #494aa5 !important;
+    color: white !important;
+}
+
+.w-170 {
+    width: 170px;
+}
+
+.w-80 {
+    width: 80px;
+}
+
+/*Flex position*/
+.fg-0 {
+    flex-grow: 0;
+}
+
+.fg-4 {
+    flex-grow: 4;
+}
+
+.fg-05 {
+    flex-grow: 0.5;
+}
+
+.no-overflow {
+    overflow: hidden;
+}
+
+/*FP end*/
+.block-shgn {
+    font-size: 13px;
+    flex-direction: column;
+}

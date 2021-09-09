@@ -6,7 +6,7 @@
             v-for="(treeData, index) in filterTree"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :node="treeData"
-            :key="index + treeData.id"
+            :key="`${index}-${treeData.id}`"
             :handle-click="nodeClick"
             :get-wells="getWells"
             :isShowCheckboxes="false"
