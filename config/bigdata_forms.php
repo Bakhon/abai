@@ -55,6 +55,7 @@
   'lab_research' => '\\App\\Services\\BigData\\Forms\\LabResearch',
   'well_treat' => '\\App\\Services\\BigData\\Forms\\WellTreat',
   'well_mark' => '\\App\\Services\\BigData\\Forms\\WellMark',
+  'daily_drill_kpc' => '\\App\\Services\\BigData\\Forms\\DailyDrillKpc',
   'plan_g_d_i_s' => '\\App\\Services\\BigData\\Forms\\PlanGDIS',
   'plan_g_i_s' => '\\App\\Services\\BigData\\Forms\\PlanGIS',
   'zu_gzu_production' => 'App\\Services\\BigData\\Forms\\ZuGzuProduction',

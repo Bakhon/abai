@@ -3,15 +3,21 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class #MIGRATION_CLASS_NAME# extends Migration
+class AddPermissionsToDailyDrillKpcForm extends Migration
 {
     protected $permissions;
     protected $permissionSection;
 
     public function __construct()
     {
-        $this->permissions = json_decode('#PERMISSIONS#', 1);
-        $this->permissionSection = json_decode('#PERMISSION_SECTION#', 1);
+        $this->permissions = json_decode(
+            '[{"name":"bigdata list daily_drill_kpc","guard_name":"web"},{"name":"bigdata create daily_drill_kpc","guard_name":"web"},{"name":"bigdata update daily_drill_kpc","guard_name":"web"},{"name":"bigdata view history daily_drill_kpc","guard_name":"web"},{"name":"bigdata delete daily_drill_kpc","guard_name":"web"}]',
+            1
+        );
+        $this->permissionSection = json_decode(
+            '{"code":"daily_drill_kpc","title_trans":"bd.forms.daily_drill_kpc.title","module":"bigdata"}',
+            1
+        );
     }
 
     public function up()
@@ -22,7 +28,9 @@ class #MIGRATION_CLASS_NAME# extends Migration
                 ->where('guard_name', $permission['guard_name'])
                 ->first();
 
-            if(!empty($row)) continue;
+            if (!empty($row)) {
+                continue;
+            }
 
             DB::table('permissions')->insert($permission);
         }
