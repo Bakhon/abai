@@ -35,9 +35,8 @@
           </div>
 
           <div class="flex-25">
-            {{ formatValue(oilPerDay).value.toFixed(2) }}
-            {{ formatValue(oilPerDay).dimension }}
-            {{ trans('economic_reference.tons') }}
+            {{ oilPerDay.toFixed(2) }}
+            {{ trans('economic_reference.tons_per_day') }}
           </div>
         </div>
 
@@ -130,10 +129,23 @@ export default {
           defaultLocale: 'ru'
         },
         markers: {
-          size: 0
+          size: 8
         },
         xaxis: {
-          type: 'numeric'
+          type: 'numeric',
+          min: 0,
+          max: Math.ceil(this.oilPerDay * 2),
+          labels: {
+            formatter: (val) => val.toFixed(2)
+          },
+        },
+        yaxis: {
+          type: 'numeric',
+          min: this.operatingProfit.value - 1,
+          max: this.operatingProfit.value + 1,
+          labels: {
+            formatter: (val) => val.toFixed(2)
+          },
         },
       }
     },
@@ -179,6 +191,13 @@ export default {
       value = +value
 
       let absoluteValue = Math.abs(+value)
+
+      if (absoluteValue < 1000) {
+        return {
+          value: value,
+          dimension: ''
+        }
+      }
 
       if (absoluteValue < 1000000) {
         return {
