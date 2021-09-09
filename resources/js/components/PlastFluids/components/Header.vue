@@ -34,7 +34,7 @@ export default {
           localeName: "data_upload",
         },
         {
-          url: "pf-data-analysis",
+          url: "pf-data-analysis/pressure-and-temperature",
           localeName: "data_analysis",
         },
         {
@@ -92,7 +92,7 @@ export default {
 .plast-fluids-header > a {
   display: flex;
   border-radius: 4px;
-  height: 35px;
+  height: 40px;
   justify-content: flex-start;
   align-items: center;
   padding: 8px 14px;

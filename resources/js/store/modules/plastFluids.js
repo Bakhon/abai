@@ -9,6 +9,7 @@ const plastFluids = {
     currentSubsoil: [],
     subsoils: [],
     subsoilFields: [],
+    subsoilHorizons: [],
   },
 
   mutations: {
@@ -28,6 +29,23 @@ const plastFluids = {
     },
     SET_SUBSOIL_FIELDS(state, payload) {
       state.subsoilFields = payload;
+    },
+    SET_SUBSOIL_HORIZONS(state, payload) {
+      state.subsoilHorizons = payload;
+    },
+  },
+  actions: {
+    UPDATE_CURRENT_SUBSOIL({ commit }, value) {
+      commit("SET_CURRENT_SUBSOIL", value);
+      commit("SET_CURRENT_SUBSOIL_FIELD", {});
+      commit("SET_CURRENT_SUBSOIL_HORIZON", "");
+      commit("SET_SUBSOIL_FIELDS", value.fields);
+      commit("SET_SUBSOIL_HORIZONS", []);
+    },
+    UPDATE_CURRENT_SUBSOIL_FIELD({ commit }, value) {
+      commit("SET_CURRENT_SUBSOIL_FIELD", value);
+      commit("SET_CURRENT_SUBSOIL_HORIZON", "");
+      commit("SET_SUBSOIL_HORIZONS", value?.horizons ?? []);
     },
   },
 };

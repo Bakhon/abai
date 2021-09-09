@@ -56,6 +56,7 @@ button {
 .dropdown {
   display: flex;
   width: 100%;
+  height: 30px;
   position: relative;
   background: #1f2142;
   color: #fff;
@@ -65,6 +66,7 @@ button {
 
 .dropdown > button {
   width: 100%;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -72,6 +74,7 @@ button {
 
 .dropdown > button > img {
   transform: rotate(270deg);
+  width: 16px;
 }
 
 .dropdown > div {

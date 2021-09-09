@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "SubsoilTreeChildren",
@@ -50,8 +50,7 @@ export default {
         return this.currentSubsoilField;
       },
       set(value) {
-        this.SET_CURRENT_SUBSOIL_HORIZON("");
-        this.SET_CURRENT_SUBSOIL_FIELD(value[value.length - 1]);
+        this.UPDATE_CURRENT_SUBSOIL_FIELD(value[value.length - 1]);
       },
     },
     hasChild() {
@@ -71,12 +70,14 @@ export default {
   methods: {
     ...mapMutations("plastFluids", [
       "SET_CURRENT_SUBSOIL_HORIZON",
-      "SET_CURRENT_SUBSOIL_FIELD",
       "SET_SUBSOIL_FIELDS",
+    ]),
+    ...mapActions("plastFluids", [
+      "UPDATE_CURRENT_SUBSOIL_FIELD",
     ]),
   },
   beforeDestroy() {
-    this.SET_CURRENT_SUBSOIL_FIELD({});
+    this.UPDATE_CURRENT_SUBSOIL_FIELD({});
     this.SET_SUBSOIL_FIELDS([]);
   },
 };

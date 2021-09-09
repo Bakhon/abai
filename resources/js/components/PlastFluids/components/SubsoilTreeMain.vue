@@ -12,7 +12,6 @@
           :id="subsoil.owner_name"
           :value="subsoil"
           v-model="computedPickedSubsoil"
-          @click="handleSubsoilCheckbox(subsoil.fields)"
         />
         <label :for="subsoil.owner_name">{{ subsoil.owner_name }}</label>
       </div>
@@ -21,7 +20,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "SubsoilTreeMain",
@@ -35,18 +34,12 @@ export default {
         return this.currentSubsoil;
       },
       set(value) {
-        this.SET_CURRENT_SUBSOIL(value[value.length - 1]);
+        this.UPDATE_CURRENT_SUBSOIL(value[value.length - 1]);
       },
     },
   },
   methods: {
-    ...mapMutations("plastFluids", [
-      "SET_SUBSOIL_FIELDS",
-      "SET_CURRENT_SUBSOIL",
-    ]),
-    handleSubsoilCheckbox(subsoilChildren) {
-      this.SET_SUBSOIL_FIELDS(subsoilChildren);
-    },
+    ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL"]),
   },
 };
 </script>
