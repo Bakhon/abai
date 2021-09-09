@@ -431,5 +431,6 @@ return array (
   'countDrilling' => 'Бурение проходка, м.',
   'emergency' => 'Инцидент',
   'emergencyDate' => 'Дата инцидента',
-  'resolvingDate' => 'Дата заполнения'
+  'resolvingDate' => 'Дата заполнения',
+  'reasonExplanations' => 'Причины отклонений'
 );

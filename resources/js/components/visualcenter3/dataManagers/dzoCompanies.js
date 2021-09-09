@@ -81,7 +81,6 @@ export default {
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.disableDzoCompaniesVisibility();
             this.switchDzoCompaniesVisibility(type,category,regionName);
-            this.calculateSecondaryCategories();
         },
 
         disableDzoCompaniesVisibility() {

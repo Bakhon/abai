@@ -104,7 +104,8 @@ export default {
             dzoNameMappingWithoutKMG: _.cloneDeep(dzoCompaniesNameMapping.dzoNameMappingWithoutKMG),
             dzoNameMappingNormal: _.cloneDeep(dzoCompaniesNameMapping.normalNames),
             timeSelect: "",
-            productionData: []
+            productionData: [],
+            reasonExplanations: {}
         };
     },
     methods: {
@@ -131,6 +132,32 @@ export default {
             this.isFilterTargetPlanActive = false;
             this.buttonTargetPlan = "";
         },
+
+        changeAssets(type,category,regionName) {
+            this.dzoCompaniesAssets[type] = true;
+            if (!this.dzoCompaniesAssets[type]) {
+                this.dzoCompaniesAssets['isAllAssets'] = true;
+            }
+            this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
+
+            this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
+            this.dzoCompaniesAssets[type] = !this.dzoCompaniesAssets[type];
+            this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
+            this.productionData = this.getFilteredTableData();
+            console.log(this.selectedDzoCompanies);
+            console.log(this.productionData);
+            this.selectMultipleDzoCompanies(type,category,regionName);
+        },
+
+        getReasonExplanations() {
+            let reasons = {};
+            _.forEach(this.productionTableData, (item) => {
+                if (item.decreaseReasonExplanations && item.decreaseReasonExplanations.length > 0) {
+                    reasons[item.name] = item.decreaseReasonExplanations;
+                }
+            });
+            return reasons;
+        }
     },
     mixins: [
         сompaniesDzo,
@@ -162,6 +189,8 @@ export default {
         this.updateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
         this.productionTableData = this.productionParams.tableData.current[this.selectedCategory];
         this.productionData = _.cloneDeep(this.productionTableData);
+        this.reasonExplanations = this.getReasonExplanations();
+        console.log(this.reasonExplanations)
         this.selectedDzoCompanies = this.getAllDzoCompanies();
         this.updateDzoMenu();
         localStorage.setItem("selectedPeriod", "undefined");

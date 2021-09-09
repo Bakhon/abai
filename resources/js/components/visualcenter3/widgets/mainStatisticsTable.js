@@ -45,7 +45,15 @@ export default {
                     'class': 'hide-company-list',
                     'hover': '',
                 },
-            }
+            },
+            assetTitleMapping: {
+                isOperating: this.trans("visualcenter.summaryOperatingAssets"),
+                isNonOperating: this.trans("visualcenter.summaryNonOperatingAssets"),
+                isAllAssets: this.trans("visualcenter.summaryAssets"),
+                opecRestriction: this.trans("visualcenter.opek"),
+                kmgParticipation: this.trans("visualcenter.dolyaUchast"),
+                isRegion: this.trans("visualcenter.summaryByRegion"),
+            },
         };
     },
     methods: {

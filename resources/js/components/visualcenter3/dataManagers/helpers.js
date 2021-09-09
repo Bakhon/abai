@@ -224,7 +224,7 @@ export default {
         },
 
         getFilteredTableData() {
-            return _.filter(this.productionData, (item) => {
+            return _.filter(_.cloneDeep(this.productionTableData), (item) => {
                 return this.selectedDzoCompanies.includes(item.name);
             });
         }

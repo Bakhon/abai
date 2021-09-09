@@ -25,6 +25,15 @@ class WaterInjection {
             'plan' => 'plan_liq_albsen'
         )
     );
+    private $decreaseReasonFields = array (
+        'opec_explanation_reasons',
+        'impulse_explanation_reasons',
+        'shutdown_explanation_reasons',
+        'accident_explanation_reasons',
+        'restriction_kto_explanation_reasons',
+        'gas_restriction_explanation_reasons',
+        'other_explanation_reasons'
+    );
 
     public function getDataByCategory($factData,$planData,$periodRange,$yearlyPlan,$periodType,$oneDzoSelected)
     {
@@ -107,22 +116,10 @@ class WaterInjection {
            'name' => $dzo,
            'fact' => array_sum(array_column($dzoFact,$categoryFields['fact'])),
            'plan' => array_sum(array_column($filteredPlan,$categoryFields['plan'])),
-           'opec_explanation_reasons' => '',
-           'impulse_explanation_reasons' => '',
-           'shutdown_explanation_reasons' => '',
-           'accident_explanation_reasons' => '',
-           'restriction_kto_explanation_reasons' => '',
-           'gas_restriction_explanation_reasons' => '',
-           'other_explanation_reasons' => '',
+           'decreaseReasonExplanations' => [],
         );
         if ($periodType === 'day') {
-            $companySummary['opec_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'opec_explanation_reasons');
-            $companySummary['impulse_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'impulse_explanation_reasons');
-            $companySummary['shutdown_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'shutdown_explanation_reasons');
-            $companySummary['accident_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'accident_explanation_reasons');
-            $companySummary['restriction_kto_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'restriction_kto_explanation_reasons');
-            $companySummary['gas_restriction_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'gas_restriction_explanation_reasons');
-            $companySummary['other_explanation_reasons'] = $this->getAccidentDescription($dzoFact,'other_explanation_reasons');
+            $companySummary['decreaseReasonExplanations'] = $this->getAccidentDescription($dzoFact);
         }
         if ($periodType === 'month') {
             $companySummary['monthlyPlan'] = array_column($filteredPlan,$categoryFields['plan'])[0] * $daysInMonth;
@@ -139,13 +136,16 @@ class WaterInjection {
         return $summary;
     }
 
-    private function getAccidentDescription($dzoFact,$fieldName)
+    private function getAccidentDescription($dzoFact)
     {
-        foreach($dzoFact as $item) {
-            if (!is_null($item['importDecreaseReason']) && isset($item['importDecreaseReason'][$fieldName])) {
-                return $item['importDecreaseReason'][$fieldName];
+        $accidents = array();
+        $dzoFactData = $dzoFact[0];
+        foreach($this->decreaseReasonFields as $fieldName) {
+            if (!is_null($dzoFactData['importDecreaseReason']) && isset($dzoFactData['importDecreaseReason'][$fieldName])) {
+               array_push($accidents,$dzoFactData['importDecreaseReason'][$fieldName]);
             }
         }
+        return $accidents;
     }
 
     private function getYearlyPlanBy($yearlyPlan,$fieldName)

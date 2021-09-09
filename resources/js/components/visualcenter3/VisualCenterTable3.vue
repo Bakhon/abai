@@ -768,7 +768,7 @@
                         :class="getProductionTableClass()"
                 >
                   <thead>
-                  <tr :class="">
+                  <tr>
                     <th>№</th>
                     <th>{{ trans("visualcenter.dzo") }}</th>
                     <th v-if="buttonMonthlyTab && !mainMenu.oilCondensateDeliveryOilResidue">
@@ -841,26 +841,7 @@
                       </div>
                     </th>
                     <th v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoOpec") }}
-                    </th>
-                    <th v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoImpulses") }}
-                    </th>
-                    <th v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoLanding") }}
-                    </th>
-                    <th v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoAlarmFirst") }}<br>
-                      {{ trans("visualcenter.dzoAlarmSecond") }}
-                    </th>
-                    <th v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoRestrictions") }}
-                    </th>
-                    <th v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoOthers") }}
-                    </th>
-                    <th v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.gasRestriction") }}
+                      {{ trans("visualcenter.reasonExplanations") }}
                     </th>
                   </tr>
                   </thead>
@@ -1001,49 +982,7 @@
                             v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
                             :class="getDarkColorClass(index)"
                     >
-                      <div :class="item.opec_explanation_reasons && item.opec_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
-                      </div>
-                    </td>
-                    <td
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="getLightColorClass(index)"
-                    >
-                      <div :class="item.impulse_explanation_reasons && item.impulse_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
-                      </div>
-                    </td>
-                    <td
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="getDarkColorClass(index)"
-                    >
-                      <div :class="item.shutdown_explanation_reasons && item.shutdown_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
-                      </div>
-                    </td>
-                    <td
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="getLightColorClass(index)"
-                    >
-                      <div :class="item.accident_explanation_reasons && item.accident_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
-                      </div>
-                    </td>
-                    <td
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="getDarkColorClass(index)"
-                    >
-                      <div :class="item.restriction_kto_explanation_reasons && item.restriction_kto_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
-                      </div>
-                    </td>
-                    <td
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="getLightColorClass(index)"
-                    >
-                      <div :class="item.other_explanation_reasons && item.other_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
-                      </div>
-                    </td>
-                    <td
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="getDarkColorClass(index)"
-                    >
-                      <div :class="item.gas_restriction_explanation_reasons && item.gas_restriction_explanation_reasons.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                      <div :class="item.decreaseReasonExplanations.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                   </tr>
@@ -1175,30 +1114,6 @@
                             v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
                     >
                     </td>
-                    <td
-                            :class="getLighterClass(index)"
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                    ></td>
-                    <td
-                            :class="getDarkerClass(index)"
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                    ></td>
-                    <td
-                            :class="getLighterClass(index)"
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                    ></td>
-                    <td
-                            :class="getDarkerClass(index)"
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                    ></td>
-                    <td
-                            :class="getLighterClass(index)"
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                    ></td>
-                    <td
-                            :class="getDarkerClass(index)"
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                    ></td>
                   </tr>
                   </tbody>
                 </table>
@@ -2510,7 +2425,6 @@
     }
     .production-table {
       th {
-        width: 90px;
         &:first-child {
           width: 50px;
         }
