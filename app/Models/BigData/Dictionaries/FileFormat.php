@@ -4,7 +4,7 @@ namespace App\Models\BigData\Dictionaries;
 
 use App\Models\TBDModel;
 
-class StemType extends TBDModel
+class FileFormat extends TBDModel
 {
-    protected $table = 'dict.stem_type';
+    protected $table = 'dict.file_format';
 }

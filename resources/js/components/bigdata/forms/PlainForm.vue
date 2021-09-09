@@ -11,7 +11,7 @@
               :class="{'active': index === activeTab}"
               @click="changeTab(index)"
           >
-            <p>{{ tab.title }}</p>
+            <p v-if="tab.title">{{ tab.title }}</p>
           </div>
         </template>
       </div>
@@ -25,23 +25,28 @@
             <template v-for="subBlock in block">
               <p v-if="subBlock.title" class="bd-main-block__form-block-title">{{ subBlock.title }}</p>
               <div class="bd-main-block__form-block-content">
-                <div
-                    v-for="item in subBlock.items"
-                    v-if="isShowField(item)"
-                >
-                  <label>{{ item.title }}</label>
-                  <bigdata-form-field
-                      v-model="formValues[item.code]"
-                      :error="errors[item.code]"
-                      :form="params"
-                      :item="item"
-                      :id="wellId"
-                      :key="`field_${item.code}`"
-                      v-on:change="validateField($event, item)"
-                      v-on:input="callback($event, item)"
-                  >
-                  </bigdata-form-field>
+                <div v-if="subBlock.component">
+                  <component v-bind:is="subBlock.component" :form-params="params" :well-id="wellId"></component>
                 </div>
+                <template v-else>
+                  <div
+                      v-for="item in subBlock.items"
+                      v-if="isShowField(item)"
+                  >
+                    <label>{{ item.title }}</label>
+                    <bigdata-form-field
+                        :id="wellId"
+                        :key="`field_${item.code}`"
+                        v-model="formValues[item.code]"
+                        :error="errors[item.code]"
+                        :form="params"
+                        :item="item"
+                        v-on:change="validateField($event, item)"
+                        v-on:input="callback($event, item)"
+                    >
+                    </bigdata-form-field>
+                  </div>
+                </template>
               </div>
             </template>
           </div>
@@ -104,6 +109,7 @@ export default {
       for (const tab of this.formParams.tabs) {
         for (const blocks of tab.blocks) {
           blocks.forEach(block => {
+            if (!block.items) return
             for (const item of block.items) {
               fields.push(item)
             }
