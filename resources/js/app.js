@@ -124,7 +124,7 @@ Vue.component('zu-form', require('./components/complicationMonitoring/zu/form.vu
 Vue.component('pipe-passport-form', require('./components/complicationMonitoring/pipePassport/form.vue').default);
 
 Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);
-Vue.component('gtm-main-page', require('./components/GTM/Main.vue').default);
+Vue.component('gtm-main-page', require('./components/GTM/GtmMain.vue').default);
 Vue.component('gtm-main-indicator', require('./components/GTM/MainIndicator.vue').default);
 Vue.component('gtm-aegtm', require('./components/GTM/components/Aegtm.vue').default);
 Vue.component('gtm-aegtm-eco', require('./components/GTM/components/AegtmEco.vue').default);
@@ -133,8 +133,6 @@ Vue.component('gtm-podbor-gtm', require('./components/GTM/components/PodborGTM.v
 Vue.component('gtm-digital-rating-gtm', require('./components/GTM/components/DigitalRating.vue').default);
 Vue.component('gtm-etu', require('./components/GTM/components/Etu.vue').default);
 Vue.component('gtm-main-menu', require('./components/GTM/MainMenu.vue').default);
-Vue.component('gtm-bar-chart', require('./components/GTM/components/BarChart.vue').default);
-Vue.component('gtm-line-chart', require('./components/GTM/components/LineChart.vue').default);
 Vue.component('gtm-tree', require('./components/GTM/mixin/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/mixin/NodeTree.vue').default);
 Vue.component('gtm-date-picker', require('./components/GTM/mixin/DatePicker.vue').default);
@@ -188,6 +186,7 @@ Vue.component('visualcenter3-excelform', require('./components/visualcenter3/imp
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('las', require('./components/bigdata/Las.vue').default);
+Vue.component('gis-form-las', require('./components/bigdata/GisFormLas.vue').default);
 Vue.component('geo-data-reference-book', require('./components/bigdata/GeoDataReferenceBook.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('proto-form-wrapper', require('./components/bigdata/FormsWrapper.vue').default);
@@ -232,6 +231,12 @@ Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport'
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 
 Vue.component('map-constructor-main', require('./components/mapConstructor/Main.vue').default);
+
+Vue.component('water-flooding-management-main', require('./components/waterfloodingManagement/waterfloodingManagementLayout.vue').default);
+Vue.component('water-flooding-management-main-menu', require('./components/waterfloodingManagement/mainMenu.vue').default);
+Vue.component('water-flooding-management-map', require('./components/waterfloodingManagement/mapObject.vue').default);
+Vue.component('water-flooding-management-forecasting', require('./components/waterfloodingManagement/forecastingOptimization').default);
+Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);
 
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;

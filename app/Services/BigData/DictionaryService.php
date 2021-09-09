@@ -19,6 +19,9 @@ use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
 use App\Models\BigData\Dictionaries\ExplTypePlanGDIS;
+use App\Models\BigData\Dictionaries\FileOrigin;
+use App\Models\BigData\Dictionaries\FileStatus;
+use App\Models\BigData\Dictionaries\FileType;
 use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
@@ -42,10 +45,13 @@ use App\Models\BigData\Dictionaries\PlanGISType;
 use App\Models\BigData\Dictionaries\ProcedTypePlanGDIS;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\ReasonEquipFail;
+use App\Models\BigData\Dictionaries\RecordingMethod;
+use App\Models\BigData\Dictionaries\RecordingState;
 use App\Models\BigData\Dictionaries\RepairWorkType;
 use App\Models\BigData\Dictionaries\ResearchMethod;
 use App\Models\BigData\Dictionaries\ResearchTarget;
 use App\Models\BigData\Dictionaries\SaturationType;
+use App\Models\BigData\Dictionaries\StemType;
 use App\Models\BigData\Dictionaries\Tag;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
@@ -282,6 +288,30 @@ class DictionaryService
             'class' => ProcedTypePlanGDIS::class,
             'name_field' => 'name'
         ],
+        'file_origin' => [
+            'class' => FileOrigin::class,
+            'name_field' => 'name_ru'
+        ],
+        'stem_type' => [
+            'class' => StemType::class,
+            'name_field' => 'name_ru'
+        ],
+        'recording_method' => [
+            'class' => RecordingMethod::class,
+            'name_field' => 'name_ru'
+        ],
+        'file_type' => [
+            'class' => FileType::class,
+            'name_field' => 'name_ru'
+        ],
+        'file_status' => [
+            'class' => FileStatus::class,
+            'name_field' => 'name_ru'
+        ],
+        'recording_state' => [
+            'class' => RecordingState::class,
+            'name_field' => 'name_ru'
+        ],
         'machine_types' => [
             'class' => MachineType::class,
             'name_field' => 'name_ru'
@@ -373,20 +403,26 @@ class DictionaryService
                     $dict = $this->getEquipTypeCascDict();
                     break;
                 case 'geo_type_hrz':
-                    $dict = $this->getGeoHorizonDict();
+                    $dict = $this->getGeoDictByType('HRZ');
+                    break;
+                case 'geo_type_field':
+                    $dict = $this->getGeoDictByType('FLD');
                     break;
                 case 'reason_ref':
                     $dict = $this->getReasonTypeDict("REF");
-                    break; 
+                    break;
                 case 'reason_rst':
                     $dict = $this->getReasonTypeDict('RST');
-                    break;        
+                    break;
                 case 'reason_type_rtr':
                     $dict = $this->getReasonTypeDict('RTR');
                     break;
                 case 'reason_rls':
                     $dict = $this->getReasonTypeDict('RLS');
-                    break; 
+                    break;
+                case 'las_mnemonics':
+                    $dict = $this->getLasMnemonics();
+                    break;
                 default:
                     throw new DictionaryNotFound();
             }
@@ -552,12 +588,12 @@ class DictionaryService
             ->toArray();
     }
 
-    private function getGeoHorizonDict()
+    private function getGeoDictByType($type)
     {
         $items = DB::connection('tbd')
             ->table('dict.geo as g')
             ->select('g.id', 'g.name_ru as name', 'gp.parent as parent')
-            ->where('gt.code', 'HRZ')
+            ->where('gt.code', $type)
             ->distinct()
             ->orderBy('parent', 'asc')
             ->orderBy('name', 'asc')
@@ -599,6 +635,23 @@ class DictionaryService
             ->toArray();
 
         return $items;
-  
+    }
+
+    private function getLasMnemonics()
+    {
+        $items = DB::connection('tbd')
+            ->table('dict.metric as m')
+            ->select('m.id', 'm.code')
+            ->join('dict.metric as parent', 'm.parent', 'parent.id')
+            ->where('parent.code', 'LASS')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+        return $items;
     }
 }    

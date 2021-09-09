@@ -269,4 +269,5 @@ return array (
   'table_well_treemap' => 'Таблица «Тримап»',
   'oar_costs' => 'Затраты на ОАР',
   'avg_cost_krs' => 'Средняя стоимость КРС',
+  'well_short' => 'Скв',
 );

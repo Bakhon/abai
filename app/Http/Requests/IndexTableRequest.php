@@ -24,6 +24,7 @@ class IndexTableRequest extends FormRequest
             'page' => 'nullable|int',
             'calc_export' => 'nullable|string',
             'model_name' => 'nullable|string',
+            'checkbox_selected' => 'nullable|array'
         ];
     }
 }
