@@ -93,13 +93,6 @@
       "type": "float",
       "validation": "required|gte:0",
       "is_editable": true
-    },
-    {
-      "title": "data",
-      "code": "data",
-      "type": "date",
-      "validation": "",
-      "is_editable": true
     }
   ]
 }

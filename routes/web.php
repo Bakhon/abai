@@ -77,11 +77,15 @@ Route::group(
                 Route::resource('tech_struct_cdng', 'Refs\TechnicalStructureCdngController');
                 Route::resource('tech_struct_gu', 'Refs\TechnicalStructureGuController');
                 Route::resource('tech_struct_bkns', 'Refs\TechnicalStructureBknsController');
-                Route::resource('tech_data_forecast', 'Refs\TechnicalDataForecastController');
+                Route::get('tech-data-forecast/get-data', 'Refs\TechnicalDataForecastController@getData');
+                Route::resource('tech-data-forecast', 'Refs\TechnicalDataForecastController');
                 Route::resource('tech_data_log', 'Refs\TechnicalDataLogController');
-                Route::get('tech_data_json', 'Refs\TechnicalDataForecastController@techDataJson');
                 Route::get('technical_forecast/upload_excel', 'Refs\TechnicalDataController@uploadExcel')->name('tech_refs_upload');
                 Route::post('technical_forecast/import_excel', 'Refs\TechnicalDataController@importExcel')->name('tech_refs_import');
+                Route::get('tech-struct-field/get-data', 'Refs\TechnicalStructureFieldController@getData');
+                Route::get('tech-struct-ngdu/get-data', 'Refs\TechnicalStructureNgduController@getData');
+                Route::get('tech-struct-cdng/get-data', 'Refs\TechnicalStructureCdngController@getData');
+                Route::get('tech-struct-gu/get-data', 'Refs\TechnicalStructureGuController@getData');
 
                 Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
                 Route::resource('antiecoone', 'AntiCrisis\AntiEcoOneController');
@@ -106,7 +110,7 @@ Route::group(
                 );
 
                 Route::post('attachments', 'AttachmentController@upload');
-                Route::get('attachments/{attachment}', 'AttachmentController@get');
+                Route::get('attachments/{attachment}', 'AttachmentController@get')->name('attachment.download');
             }
         );
         Auth::routes(

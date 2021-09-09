@@ -202,6 +202,7 @@ export default {
           },
         },
         xaxis: {
+          type: 'numeric',
           labels: {
             formatter: (val) => (+val / 1000).toFixed(0),
           },

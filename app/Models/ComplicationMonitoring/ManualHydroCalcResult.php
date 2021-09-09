@@ -15,6 +15,6 @@ class ManualHydroCalcResult extends Model
 
     public function oilPipe()
     {
-        return $this->belongsTo(OilPipe::class);
+        return $this->belongsTo(ManualOilPipe::class);
     }
 }

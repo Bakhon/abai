@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use App\Services\AttachmentService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -86,46 +85,62 @@ class WellDocument extends PlainForm
         }
     }
 
-    public function submit(): array
+    protected function submitForm(): array
     {
-        DB::connection('tbd')->beginTransaction();
-
-        try {
-            $this->tableFields = $this->getFields()
-                ->filter(
-                    function ($item) {
-                        return $item['type'] === 'table';
-                    }
-                );
-
-            $this->tableFieldCodes = $this->tableFields
-                ->pluck('code')
-                ->toArray();
-
-            $data = $this->prepareDataToSubmit();
-            $data['owner'] = auth()->id();
-            $data['load_date'] = Carbon::now();
-            $wellId = $data['well'];
-            $files = $data['file'];
-            unset($data['well']);
-            unset($data['file']);
-
-            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-            if (!empty($data['id'])) {
-                if (auth()->user()->cannot("bigdata update {$this->configurationFileName}")) {
-                    throw new \Exception("You don't have permissions");
+        $this->tableFields = $this->getFields()
+            ->filter(
+                function ($item) {
+                    return $item['type'] === 'table';
                 }
-                $id = $data['id'];
-                unset($data['id']);
+            );
 
-                $dbQuery = $dbQuery->where('id', $id);
+        $this->tableFieldCodes = $this->tableFields
+            ->pluck('code')
+            ->toArray();
 
-                $this->originalData = $dbQuery->first();
-                $dbQuery->update($data);
+        $data = $this->prepareDataToSubmit();
+        $data['owner'] = auth()->id();
+        $data['load_date'] = Carbon::now();
+        $wellId = $data['well'];
+        $files = $data['file'];
+        unset($data['well']);
+        unset($data['file']);
+
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+
+        if (!empty($data['id'])) {
+            if (auth()->user()->cannot("bigdata update {$this->configurationFileName}")) {
+                throw new \Exception("You don't have permissions");
+            }
+            $id = $data['id'];
+            unset($data['id']);
+
+            $dbQuery = $dbQuery->where('id', $id);
+
+            $this->originalData = $dbQuery->first();
+            $dbQuery->update($data);
+
+            $this->submittedData['fields'] = $data;
+            $this->submittedData['id'] = $id;
+        } else {
+            if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
+                throw new \Exception("You don't have permissions");
+            }
+            $id = $dbQuery->insertGetId($data);
+
+            DB::connection('tbd')
+                ->table('prod.well_document')
+                ->insert(
+                    [
+                        'document' => $id,
+                        'well' => $wellId
+                    ]
+                );
 
                 $this->submittedData['fields'] = $data;
                 $this->submittedData['id'] = $id;
+
+                $this->updateFiles($id, $files);
             } else {
                 if (auth()->user()->cannot("bigdata create {$this->configurationFileName}")) {
                     throw new \Exception("You don't have permissions");
@@ -141,7 +156,6 @@ class WellDocument extends PlainForm
                         ]
                     );
 
-                $files = json_decode($files);
                 if (!empty($files)) {
                     foreach ($files as $file) {
                         DB::connection('tbd')
@@ -155,18 +169,55 @@ class WellDocument extends PlainForm
                     }
                 }
             }
-
-            DB::connection('tbd')->commit();
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
-        } catch (\Exception $e) {
-            DB::connection('tbd')->rollBack();
-            throw new SubmitFormException($e->getMessage());
         }
+
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
     private function getFilesInfo(array $fileIds)
     {
         $attachmentService = app()->make(AttachmentService::class);
         return $attachmentService->getInfo($fileIds);
+    }
+
+    private function updateFiles(int $id, array $files)
+    {
+        $existedFiles = DB::connection('tbd')
+            ->table('prod.document_file')
+            ->where('document', $id)
+            ->get()
+            ->map(function ($file) {
+                return $file->file;
+            })
+            ->toArray();
+
+        foreach ($existedFiles as $existedFile) {
+            if (in_array($existedFile, $files)) {
+                continue;
+            }
+            DB::connection('tbd')
+                ->table('prod.document_file')
+                ->where('document', $id)
+                ->where('file', $existedFile)
+                ->delete();
+        }
+
+        if (empty($files)) {
+            return;
+        }
+
+        foreach ($files as $file) {
+            if (in_array($file, $existedFiles)) {
+                continue;
+            }
+            DB::connection('tbd')
+                ->table('prod.document_file')
+                ->insert(
+                    [
+                        'document' => $id,
+                        'file' => $file
+                    ]
+                );
+        }
     }
 }

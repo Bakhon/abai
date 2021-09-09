@@ -134,6 +134,20 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             return;
         }
 
+        $pipes = $this->getPipes();
+
+        $pipes->load('pipeType');
+        $this->loadRelations($pipes);
+
+        if (!$pipes) {
+            return;
+        }
+
+        $this->calculate($pipes);
+    }
+
+    public function getPipes ()
+    {
         $query = ManualOilPipe::query()
             ->with('firstCoords', 'lastCoords');
 
@@ -142,18 +156,22 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             $q->where('date', $date);
         }]);
 
-        $pipes = $this
+        $query = $this
             ->getFilteredQuery($this->input, $query)
             ->whereNotNull('start_point')
             ->whereNotNull('end_point')
-            ->orderBy('gu_id')
-            ->get();
+            ->orderBy('gu_id');
 
-        $pipes->load('pipeType');
-
-        if (!$this->loadRelations($pipes)) {
-            return;
+        if ($this->input['checkbox_selected']) {
+            $query->whereIn('gu_id', $this->input['checkbox_selected']);
         }
+
+        return $query->get();
+    }
+
+    public function calculate ($pipes)
+    {
+        $calcUrl = $this->getUrl($pipes);
 
         $data = [
             'pipes' => $pipes,
@@ -165,15 +183,18 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         Excel::store(new ManualCalculateExport($data), $filePath);
 
         $fileurl = env('KMG_SERVER_URL') . Storage::url($filePath);
-        $url = env('MANUAL_CALC_SERVICE_URL') . 'url_file/?url=' . $fileurl;
+        $url = $calcUrl . 'url_file/?url=' . $fileurl;
 
         $client = new \GuzzleHttp\Client();
 
         $request = $this->calcRequest($client, $url);
 
-        $data = json_decode($request->getBody()->getContents())[0]->data;
-        $this->storeShortResult($data);
+        $data = json_decode($request->getBody()->getContents());
+        $short = $data->short->data;
 
+        if ($short) {
+            $this->storeShortResult($short);
+        }
     }
 
     public function calcRequest($client, string $url)
@@ -197,6 +218,20 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         }
     }
 
+    protected function getUrl($pipes): string
+    {
+        $calcUrl = env('HYDRO_CALC_SERVICE_URL');
+        foreach ($pipes as $pipe) {
+            if ($pipe->between_points == 'zu-gu' and ($pipe->gu->omgngdu[0]->surge_tank_pressure ?? null)) {
+                $calcUrl = env('MANUAL_CALC_SERVICE_URL');
+                break;
+            }
+        }
+
+        return $calcUrl;
+    }
+
+
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new ManualHydroCalculationFilter($query, $filter))->filter();
@@ -216,30 +251,18 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             );
 
             foreach ($this->shortSchema as $param => $index) {
-                $calcResult->$param = $row[$index];
+                if ($param != 'name') {
+                    $calcResult->$param = $row[$index];
+                }
             }
 
             $calcResult->save();
         }
     }
 
-    public function returnError(ManualOilPipe $pipe)
-    {
-        $message = $pipe->start_point . ' ' . trans('monitoring.hydro_calculation.message.no-omgdu-data');
-
-        if (isset($input['date'])) {
-            $message .= ' на ' . $input['date'];
-        }
-
-        $this->setOutput(
-            [
-                'error' => $message
-            ]
-        );
-    }
-
     public function loadRelations(Collection $pipes)
     {
+        $guIds = [];
         foreach ($pipes as $key => $pipe) {
             if ($pipe->between_points != 'well-zu') {
                 continue;
@@ -257,10 +280,13 @@ class ManualCalculateHydroDynamics implements ShouldQueue
                 continue;
             }
 
-            $this->returnError($pipe);
-            return false;
+            $guIds[] = $pipe->gu_id;
         }
 
-        return true;
+        foreach ($pipes as $key => $pipe) {
+            if (in_array($pipe->gu_id, $guIds)) {
+                unset($pipes[$key]);
+            }
+        }
     }
 }

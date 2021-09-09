@@ -177,10 +177,10 @@
           </div>   
           <a v-show="false" v-if="isEdit"></a>
             <div class="tr_icons_block">
-              <!-- <button v-on:click="dropAllFilters" class="reset_all_filters"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <button v-if="checkAllFilters" v-on:click="dropAllFilters" class="reset_all_filters"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
 <path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
-</svg>{{trans('tr.reset_filters')}}</button> -->
+</svg>{{trans('tr.reset_filters')}}</button>
               <modal name="add_well" :width="1600" :height="600"  :adaptive="true" style="z-index:9900000; ">
                 <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
                   <div>
@@ -209,7 +209,7 @@
                                     value="Месторождение"
                                   >
                                     <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_field') : f }}
+                                      {{ f === null ? trans('tr.choose_field') : f }}
                                     </option>
                                   </select>
                                 </div>
@@ -222,7 +222,7 @@
                                     value="Тип скв"
                                   >
                                     <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_well_type') : f }}
+                                      {{ f === null ? trans('tr.choose_well_type') : f }}
                                     </option>
                                   </select>
                                 </div>
@@ -235,7 +235,7 @@
                                     value="Состояние"
                                   >
                                     <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
-                                      {{ f === undefined ? trans('tr.choose_state') : f }}
+                                      {{ f === null ? trans('tr.choose_state') : f }}
                                     </option>
                                   </select>
                                 </div>
@@ -617,6 +617,7 @@
             :wellTypeFilterData="wellTypeFilterData" 
             :expMethFilterData="expMethFilterData"
             :wellNameFilterData="wellNameFilterData"
+            :eventFilterData="eventFilterData"
             @onSort="sortBy" 
             @filter="chooseFilter"
             @dropFilters="dropFilter"
@@ -1450,8 +1451,39 @@
                   <td @click="sortBy('planned_diff_liq')" class="th">
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
-                  <td @click="sortBy('planned_events')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('planned_events')"></i>
+                      <div>
+                        <b-dropdown id="dropdownFilterCustom" no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter" :class="selectEvent.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="field_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                  v-model="selectEvent"
+                                  :options="eventFilterData"
+                                  :aria-describedby="ariaDescribedby"                                  
+                                >
+                                </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.choose_t')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_EVENT')"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
                   </td>
                 </tr>
               </thead>
@@ -5946,7 +5978,7 @@
                   </td>
 
                   <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ Math.round(row.planned_gas*10)/10 }}</td>
-                  <td v-if="isEdit">{{ Math.round(row.planned_gas*10)/10 }}</td>
+                  <td v-if="isEdit"><input v-model="row.planned_gas" @change="editrow(row, row_index)" :disabled="!isEdit" class="input_edit"></td>
 
                   <td
                     v-if="!isEdit"
