@@ -74,7 +74,7 @@
                 </template>
                 <template v-else-if="column.type === 'history_graph'">
                   <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">
-                      <span class="value">{{
+                      <span v-if="row[column.code]" class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
                     <span v-if="row[column.code] && row[column.code].date" class="date">
