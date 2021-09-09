@@ -27,6 +27,7 @@ import dzoCompaniesNameMapping from "./dzo_companies_consolidated_name_mapping.j
 
 Vue.component('fonds-daily-chart', require('./charts/fondsDailyChart.vue').default);
 Vue.component('otm-drilling-daily-chart', require('./charts/otmDrillingDailyChart.vue').default);
+Vue.component('modal-reasons', require('./widgets/modalReasonExplanations.vue').default);
 
 
 
@@ -139,13 +140,10 @@ export default {
                 this.dzoCompaniesAssets['isAllAssets'] = true;
             }
             this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
-
             this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
             this.dzoCompaniesAssets[type] = !this.dzoCompaniesAssets[type];
             this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
             this.productionData = this.getFilteredTableData();
-            console.log(this.selectedDzoCompanies);
-            console.log(this.productionData);
             this.selectMultipleDzoCompanies(type,category,regionName);
         },
 
@@ -190,7 +188,6 @@ export default {
         this.productionTableData = this.productionParams.tableData.current[this.selectedCategory];
         this.productionData = _.cloneDeep(this.productionTableData);
         this.reasonExplanations = this.getReasonExplanations();
-        console.log(this.reasonExplanations)
         this.selectedDzoCompanies = this.getAllDzoCompanies();
         this.updateDzoMenu();
         localStorage.setItem("selectedPeriod", "undefined");

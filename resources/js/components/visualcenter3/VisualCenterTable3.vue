@@ -979,10 +979,11 @@
                       </div>
                     </td>
                     <td
+                            @click="$modal.show('modalReasonExplanations')"
                             v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="getDarkColorClass(index)"
+                            :class="[getDarkColorClass(index),'d-flex justify-content-center']"
                     >
-                      <div :class="item.decreaseReasonExplanations.length > 0 ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                      <div :class="item.decreaseReasonExplanations.length > 0 ? 'reason-icon' : 'no-reason-icon mt-2'">
                       </div>
                     </td>
                   </tr>
@@ -2354,6 +2355,7 @@
         </div>
       </div>
     </div>
+    <modal-reasons :reasons="reasonExplanations"></modal-reasons>
   </div>
 </template>
 
@@ -2441,6 +2443,7 @@
           padding: 5px 5px 5px 10px;
           position: relative;
           vertical-align: middle;
+          min-height: 29px;
           &:not(:first-child) {
             min-width: 71px;
           }
@@ -2606,7 +2609,7 @@
 
   .accident-triangle {
     border-top: 6px solid rgb(227, 30, 36);
-    margin-left: 30%;
+    margin-left: 45%;
   }
   .no-accident-triangle {
     position: relative;
@@ -2614,7 +2617,7 @@
     height: 5px;
     background: #9da0b7;
     border: unset;
-    margin-left: 30%;
+    margin-left: 45%;
   }
   .button-tab-highlighted {
     border: none;
@@ -2961,5 +2964,18 @@
   }
   .visualcenter-button-disable {
     display: none;
-}
+  }
+  .reason-icon {
+    width: 20px;
+    height: 20px;
+    background: url(/img/visualcenter3/emergency.png) 3% no-repeat;
+    background-size: 100%;
+  }
+  .no-reason-icon {
+    position: relative;
+    width: 20px;
+    height: 5px;
+    background: #9da0b7;
+    border: unset;
+  }
 </style>
