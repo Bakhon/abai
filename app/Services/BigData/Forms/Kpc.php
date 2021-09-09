@@ -21,8 +21,11 @@ class Kpc extends PlainForm
         $data = $this->request->except($this->tableFieldCodes);
 
         $kpc = DB::connection('tbd')
-            ->table('dict.well_repair_type')
-            ->where('code', 'CWO')
+            ->table('prod.well_workover as pw')
+            ->select('pw.repair_type')
+            ->leftJoin('dict.well_repair_type as dw', 'pw.repair_type', 'dw.id')
+            ->where('dw.code', 'CWO')
+            ->orderBy('dbeg', 'desc')
             ->first();
 
         $data['repair_type'] = $kpc->id;
