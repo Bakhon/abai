@@ -175,7 +175,7 @@ class Gis extends PlainForm
         }
     }
 
-    private function submitForm()
+    protected function submitForm(): array
     {
         $this->tableFields = $this->getFields()
             ->filter(
