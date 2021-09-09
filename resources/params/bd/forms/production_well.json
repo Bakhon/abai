@@ -24,7 +24,7 @@
                 "code": "dend",
                 "type": "date",
                 "title": "date_end",
-                "validation": "required|date|after:dbeg"
+                "validation": "date|after:dbeg"
               }
             ]
           },
