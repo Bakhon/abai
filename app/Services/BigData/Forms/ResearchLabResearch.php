@@ -88,9 +88,7 @@ class ResearchLabResearch extends PlainForm
         $researchType = LabResearchType::find($this->request->get('research_type'));
         $mainFields = $this->getFields()
             ->filter(function ($field) use ($researchType) {
-                if (empty($field['depends_on'])) {
-                    return true;
-                }
+                return empty($field['depends_on']);
             });
 
         $dependentFields = $this->getFields()
