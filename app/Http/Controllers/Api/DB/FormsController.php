@@ -173,6 +173,12 @@ class FormsController extends Controller
         return response()->json($form->getFormByRow(json_decode($request->get('row'), 1)));
     }
 
+    public function getFormParamsToEdit(Request $request, string $form): JsonResponse
+    {
+        $form = $this->getForm($form);
+        return response()->json($form->getFormParamsToEdit($request->all()));
+    }
+
     public function delete(string $form, int $row): JsonResponse
     {
         if (auth()->user()->cannot("bigdata delete {$form}")) {
