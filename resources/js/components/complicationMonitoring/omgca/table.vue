@@ -83,113 +83,134 @@
           <th v-if="!params.table_header">{{ trans('monitoring.table.management') }}</th>
         </tr>
         <tr v-if="omgca && omgca.data" class="table-sort">
-          <th
-              v-for="(field, code) in params.fields"
-              class="sort"
-              :class="{
+          <template v-for="(field, code) in params.fields">
+            <th v-if="field.type == 'checkbox'" class="check-all">
+              <b-form-checkbox
+                  name="checkAllToggle"
+                  v-model="checkedAll"
+                  @change="checkAllToggle"
+              >
+              </b-form-checkbox>
+            </th>
+            <th
+                v-else
+                class="sort"
+                :class="{
                             'selected': filters[code] && filters[code].show,
                             'active': isFilterActive(code)
                         }"
-          >
-            <i
-                @click="showFilter(code)"
-                class="fa fa-filter"
-                aria-hidden="true"
-                v-if="!params.hide_filter"
-            ></i>
-            <div class="filter-wrap" v-if="filters[code] && filters[code].show">
-              <template v-if="params.fields[code].type === 'select'">
-                <div class="filter-item">
-                  <v-select
-                      v-model="filters[code].value"
-                      @input="loadData()"
-                      :options="params.fields[code].filter.values"
-                      :reduce="option => option.id"
-                      label="name"
-                      :placeholder="`Выберите ${params.fields[code].title}`"
+            >
+              <i
+                  @click="showFilter(code)"
+                  class="fa fa-filter"
+                  aria-hidden="true"
+                  v-if="!params.hide_filter"
+              ></i>
+              <div class="filter-wrap" v-if="filters[code] && filters[code].show">
+                <template v-if="params.fields[code].type === 'select'">
+                  <div class="filter-item">
+                    <v-select
+                        v-model="filters[code].value"
+                        @input="loadData()"
+                        :options="params.fields[code].filter.values"
+                        :reduce="option => option.id"
+                        label="name"
+                        :placeholder="`Выберите ${params.fields[code].title}`"
+                    >
+                    </v-select>
+                  </div>
+                </template>
+                <template v-else-if="params.fields[code].type === 'date'">
+                  <div class="filter-item filter-item_datepicker">
+                    <input
+                        class="filter-input"
+                        type="text"
+                        @click="calendarFromShow = !calendarFromShow"
+                        :value="formatDate(filters[code].value.from)"
+                        readonly
+                    >
+                    <date-picker
+                        v-if="calendarFromShow"
+                        is-expanded
+                        :first-day-of-week="2"
+                        :locale="{id: 'ru', masks: { weekdays: 'WW' }}"
+                        :max-date="new Date()"
+                        v-model="filters[code].value.from"
+                        @dayclick="calendarFromShow = false"
+                    >
+                    </date-picker>
+                  </div>
+                  <div class="filter-item filter-item_datepicker">
+                    <input
+                        class="filter-input"
+                        type="text"
+                        @click="calendarToShow = !calendarToShow"
+                        :value="formatDate(filters[code].value.to)"
+                        readonly
+                    >
+                    <date-picker
+                        v-if="calendarToShow"
+                        is-expanded
+                        :first-day-of-week="2"
+                        :locale="{id: 'ru', masks: { weekdays: 'WW' }}"
+                        :max-date="new Date()"
+                        v-model="filters[code].value.to"
+                        @dayclick="calendarToShow = false"
+                    >
+                    </date-picker>
+                  </div>
+                  <button class="filter-data-clear ml-10px"
+                          v-show="filters[code].value.to || filters[code].value.from"
+                          @click="clearDateFilter(code)"
                   >
-                  </v-select>
-                </div>
-              </template>
-              <template v-else-if="params.fields[code].type === 'date'">
-                <div class="filter-item filter-item_datepicker">
-                  <input
-                      class="filter-input"
-                      type="text"
-                      @click="calendarFromShow = !calendarFromShow"
-                      :value="formatDate(filters[code].value.from)"
-                      readonly
-                  >
-                  <date-picker
-                      v-if="calendarFromShow"
-                      is-expanded
-                      :first-day-of-week="2"
-                      :locale="{id: 'ru', masks: { weekdays: 'WW' }}"
-                      :max-date="new Date()"
-                      v-model="filters[code].value.from"
-                      @dayclick="calendarFromShow = false"
-                  >
-                  </date-picker>
-                </div>
-                <div class="filter-item filter-item_datepicker">
-                  <input
-                      class="filter-input"
-                      type="text"
-                      @click="calendarToShow = !calendarToShow"
-                      :value="formatDate(filters[code].value.to)"
-                      readonly
-                  >
-                  <date-picker
-                      v-if="calendarToShow"
-                      is-expanded
-                      :first-day-of-week="2"
-                      :locale="{id: 'ru', masks: { weekdays: 'WW' }}"
-                      :max-date="new Date()"
-                      v-model="filters[code].value.to"
-                      @dayclick="calendarToShow = false"
-                  >
-                  </date-picker>
-                </div>
-                <button class="filter-data-clear ml-10px"
-                        v-show="filters[code].value.to || filters[code].value.from"
-                        @click="clearDateFilter(code)"
-                >
-                  <i class="fas fa-times"></i>
-                </button>
-                <button class="filter-apply" @click="loadData()">OK</button>
-              </template>
-              <template v-else>
-                <div class="filter-item filter-item_input">
-                  <input
-                      class="filter-input"
-                      type="text"
-                      v-model="filters[code].value"
-                      @keyup.enter="loadData"
-                  >
-                  <button class="filter-clear mr-15px" v-show="filters[code].value" @click="clearFilter(code)">
                     <i class="fas fa-times"></i>
                   </button>
                   <button class="filter-apply" @click="loadData()">OK</button>
-                </div>
-              </template>
-            </div>
-            <span
-                v-if="isShowSort(code)"
-                class="arrows"
-                :class="{
+                </template>
+                <template v-else>
+                  <div class="filter-item filter-item_input">
+                    <input
+                        class="filter-input"
+                        type="text"
+                        v-model="filters[code].value"
+                        @keyup.enter="loadData"
+                    >
+                    <button class="filter-clear mr-15px" v-show="filters[code].value" @click="clearFilter(code)">
+                      <i class="fas fa-times"></i>
+                    </button>
+                    <button class="filter-apply" @click="loadData()">OK</button>
+                  </div>
+                </template>
+              </div>
+              <span
+                  v-if="isShowSort(code)"
+                  class="arrows"
+                  :class="{
                             'asc': sort.by === code && sort.desc === false,
                             'desc': sort.by === code && sort.desc === true,
                         }"
-                @click="sortBy(code)">
+                  @click="sortBy(code)">
                         </span>
-          </th>
+            </th>
+          </template>
+
           <th></th>
         </tr>
         </thead>
         <tbody v-if="omgca && omgca.data">
         <tr v-for="row in omgca.data">
           <td v-for="(field, code) in params.fields">
-            {{ row.fields[code] }}
+            <template v-if="field.type == 'checkbox'">
+              <b-form-checkbox
+                  :name="row.fields[code].toString()"
+                  :value="row.fields[code]"
+                  v-model="checkboxSelected"
+              >
+              </b-form-checkbox>
+            </template>
+            <template v-else>
+              {{ row.fields[code] }}
+            </template>
           </td>
           <td class="row__links">
             <div class="links">
@@ -248,6 +269,8 @@ export default {
         by: null,
         desc: false
       },
+      checkedAll: false,
+      checkboxSelected: [],
       currentFilter: null,
       currentSort: null,
       currentPage: 1,
@@ -285,7 +308,7 @@ export default {
         "table-responsive": this.isResponsive,
         'with-pagination': this.omgca && this.omgca.total > this.omgca.per_page
       }
-    }
+    },
   },
   methods: {
     ...globalloadingMutations([
@@ -350,6 +373,7 @@ export default {
       }
 
       queryParams.model_name = this.params.model_name;
+      queryParams.checkbox_selected = this.checkboxSelected;
 
       return queryParams
     },
@@ -454,7 +478,6 @@ export default {
             }
           })
         }, 2000)
-
       });
     },
     resetFilters() {
@@ -520,463 +543,26 @@ export default {
         this.sort = this.currentSort;
         this.currentPage = this.params.filter.page;
       }
+    },
+    getCheckboxValues() {
+      if (!this.omgca) {
+        return [];
+      }
+
+      let values = Object.keys(this.omgca.data).map((key) => {
+        return this.omgca.data[key].fields.check_calc;
+      });
+
+      return [...new Set(values)]
+    },
+    checkAllToggle() {
+      this.checkboxSelected = this.checkedAll ? this.getCheckboxValues() : []
     }
   },
 };
 </script>
+
+
 <style lang="scss">
-
-
-/* width */
-table::-webkit-scrollbar {
-  width: 13px;
-}
-
-/* Track */
-table::-webkit-scrollbar-track {
-  background: #333975;
-}
-
-/* Handle */
-table::-webkit-scrollbar-thumb {
-  background: #656A8A;
-
-}
-
-/* Handle on hover */
-table::-webkit-scrollbar-thumb:hover {
-  background: #656A8A;
-
-}
-
-table::-webkit-scrollbar-corner {
-  background: #333975;
-}
-
-.table-page {
-  background: #272953;
-  padding: 16px 24px 20px 19px;
-
-  &__wrapper {
-    min-height: calc(100vh - 88px);
-    overflow-x: auto;
-    position: relative;
-    max-width: calc(100vw - 137px);
-  }
-
-  h1 {
-    font-weight: bold;
-    font-size: 22px;
-    line-height: 26px;
-    margin-bottom: 19px;
-  }
-
-  &__links {
-    display: flex;
-
-    &-item {
-      align-items: center;
-      background: #656A8A;
-      border-radius: 6px;
-      color: #fff;
-      display: flex;
-      font-weight: bold;
-      justify-content: center;
-      height: 30px;
-      margin-left: 8px;
-      padding: 0 7px;
-
-      &:hover {
-        color: #fff;
-        text-decoration: none;
-      }
-
-      &_excel {
-        padding: 0 17px 0 20px;
-
-        span {
-          margin-left: 9px;
-        }
-      }
-
-      &_date {
-        padding: 0 17px 0 20px;
-
-        i {
-          margin-right: 9px;
-          font-size: 18px;
-        }
-
-        input.vdatetime-input {
-          max-height: 20px;
-        }
-      }
-
-      &_result_export {
-        &.custom-control.custom-checkbox {
-          line-height: 30px;
-          background: none;
-        }
-
-        .custom-control-label::before {
-          top: 7px;
-          left: -30px;
-        }
-
-        .custom-control-label::after {
-          top: 7px;
-          left: -30px;
-        }
-      }
-    }
-  }
-
-  .alert {
-    p {
-      margin: 0;
-    }
-  }
-
-  .filter {
-    &-bg {
-      background: rgba(0, 0, 0, 0.5);
-      position: absolute;
-      left: 0;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 10;
-    }
-
-    &-wrap {
-      background: #333975;
-      border: 0.4px solid #2E50E9;
-      border-radius: 5px;
-      display: flex;
-      padding: 10px;
-      position: absolute;
-      left: 0;
-      top: 36px;
-      z-index: 1000;
-
-
-    }
-
-    &-item {
-      margin-left: 20px;
-      position: relative;
-
-      &:before {
-        background: rgba(196, 222, 242, 0.4);
-        content: "";
-        height: 36px;
-        left: -10px;
-        position: absolute;
-        top: 2px;
-        width: 1px;
-      }
-
-      &:first-child {
-        margin-left: 0;
-
-        &:before {
-          display: none;
-        }
-      }
-
-      &_datepicker {
-        .vc-container {
-          background: #40467E;
-          border: 0.4px solid #2E50E9;
-          padding-top: 17px;
-          position: absolute;
-        }
-
-        .vc-header {
-          padding-bottom: 14px;
-        }
-
-        .vc-title {
-          color: #fff;
-          font-size: 15px;
-          font-weight: normal;
-          text-transform: capitalize;
-        }
-
-        .vc-weekday {
-          background: rgba(51, 57, 117, 0.501961);
-          margin-bottom: 15px;
-          padding: 8px 0;
-        }
-
-        .vc-arrows-container {
-          padding: 0 30px;
-        }
-
-        .vc-day-content {
-          color: #fff;
-          font-size: 12px;
-          opacity: 0.8;
-
-          &.vc-focusable {
-            opacity: 1;
-          }
-        }
-      }
-
-      &_input {
-        .filter-apply {
-          position: absolute;
-          right: 4px;
-        }
-      }
-    }
-
-    &-input {
-      background: #41488B;
-      border: none;
-      border-radius: 5px;
-      color: #fff;
-      height: 40px;
-      font-size: 16px;
-      font-weight: bold;
-      outline: none;
-      padding: 0 16px;
-      width: 314px;
-    }
-
-    &-apply {
-      background: rgba(123, 132, 173, 0.64);
-      border: none;
-      border-radius: 4px;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 600;
-      height: 32px;
-      margin-left: 10px;
-      outline: none;
-      position: relative;
-      top: 4px;
-      width: 56px;
-    }
-
-    &-clear {
-      background: transparent;
-      border: none;
-      font-size: 12px;
-      height: 32px;
-      position: absolute;
-      top: 4px;
-      right: 56px;
-    }
-
-    &-data-clear {
-      background: transparent;
-      border: none;
-      font-size: 12px;
-      height: 32px;
-      position: relative;
-      top: 4px;
-    }
-  }
-
-  .table {
-    border: 1px solid #454D7D;
-    color: white !important;
-    margin-bottom: 28px;
-
-    &.table-responsive {
-      overflow: scroll;
-      height: calc(100vh - 205px);
-
-      &.with-pagination {
-        height: calc(100vh - 258px);
-      }
-    }
-
-    th {
-      background: #333975;
-      border: 1px solid #454D7D;
-      font-weight: bold;
-      font-size: 12px;
-      min-width: 70px;
-      padding: 10px 0;
-      text-align: center;
-
-      &.selected {
-        position: relative;
-        z-index: 100;
-      }
-
-      &.active {
-        i.fa {
-          color: #3366FF;
-        }
-      }
-
-      &.sort {
-        background: #505585;
-        font-weight: normal;
-        padding: 10px 20px 10px 5px;
-        position: relative;
-        text-align: right;
-
-        .arrows {
-          display: block;
-          height: 16px;
-          position: absolute;
-          right: 2px;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 15px;
-
-          &:before {
-            background: url(/img/icons/table_sort_up.svg);
-            background-size: cover;
-            content: "";
-            height: 4px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 6px;
-          }
-
-          &:after {
-            background: url(/img/icons/table_sort_down.svg);
-            background-size: cover;
-            content: "";
-            height: 4px;
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 7px;
-          }
-
-          &.asc {
-            &:before {
-              display: none;
-            }
-          }
-
-          &.desc {
-            &:after {
-              display: none;
-            }
-          }
-        }
-      }
-
-    }
-
-    tbody {
-      tr {
-        td {
-          background: #303560;
-          border: none;
-          border-left: 1px solid #454D7D;
-          border-right: 1px solid #454D7D;
-          font-size: 14px;
-          padding: 7px 5px;
-          text-align: center;
-          vertical-align: middle;
-
-          &.row__links {
-            padding-left: 20px;
-            padding-right: 20px;
-            width: 150px;
-          }
-
-          .links {
-            align-items: center;
-            display: flex;
-            justify-content: space-between;
-            width: 112px;
-
-            &__item {
-              display: block;
-
-              &_edit {
-                background: url(/img/icons/edit.svg);
-                height: 14px;
-                width: 14px;
-              }
-
-              &_view {
-                background: url(/img/icons/view.svg);
-                height: 10px;
-                width: 21px;
-              }
-
-              &_history {
-                background: url(/img/icons/history.svg);
-                height: 14px;
-                width: 17px;
-              }
-
-              &_restore {
-                background: url(/img/icons/history.svg);
-                height: 14px;
-                width: 17px;
-              }
-
-              &_delete {
-                background: url(/img/icons/delete.svg);
-                height: 14px;
-                width: 15px;
-              }
-            }
-          }
-        }
-
-        &:nth-child(2n) {
-          td {
-            background: #272953;
-          }
-        }
-      }
-    }
-  }
-
-  .loader {
-    flex: 0 1 auto;
-    flex-flow: row wrap;
-    width: 100%;
-    align-items: flex-start;
-    position: absolute;
-    height: 100%;
-    justify-content: center;
-    display: flex;
-    z-index: 5000;
-    background: rgba(0, 0, 0, 0.4);
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-
-    .v-spinner {
-      top: 250px;
-    }
-  }
-
-  .pagination {
-    justify-content: center;
-
-    .page-item {
-      .page-link {
-        background: none;
-        border-color: #40489C;
-        color: #636A99;
-        padding: 0.8rem 1.35rem;
-      }
-
-      &.active {
-        .page-link {
-          background: #3366FF;
-          color: #fff;
-        }
-      }
-    }
-  }
-
-}
+  @import '@sass/components/table.scss';
 </style>

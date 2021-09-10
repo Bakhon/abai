@@ -7,7 +7,6 @@
             v-model="gu"
             @input="centerTo"
             :options="guPoints"
-            :reduce="option => option.id"
             label="name"
             :placeholder="trans('monitoring.map.select_gu')"
         >
@@ -1124,20 +1123,6 @@ export default {
           pitch: 30
         }
       })
-
-      //added to fix a bug with deck.gl on first click to gu select
-      if (!this.firstCentered) {
-        this.deck.setProps({
-          initialViewState: {
-            longitude: parseFloat(point.lon),
-            latitude: parseFloat(point.lat),
-            zoom: 15,
-            bearing: 0,
-            pitch: 30
-          }
-        })
-        this.firstCentered = true
-      }
 
       this.map.jumpTo({
         center: [parseFloat(point.lon), parseFloat(point.lat)],
