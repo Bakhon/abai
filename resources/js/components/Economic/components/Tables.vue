@@ -79,6 +79,7 @@
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
+          :wells="res.wellChanges"
           class="text-white"/>
 
       <table-well-tree-map

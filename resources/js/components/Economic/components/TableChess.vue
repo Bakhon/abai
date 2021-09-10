@@ -28,8 +28,8 @@
         </div>
 
         <div v-else
-             v-for="column in row.columns"
-             :key="`${index}_${column.value}`"
+             v-for="(column, columnIndex) in row.columns"
+             :key="`${index}_${columnIndex}`"
              :style="`flex: 1 1 ${100 / row.columns.length}%; background: ${column.color}`"
              class="px-3 py-1 border-grey text-center">
           {{ (+column.value).toLocaleString() }}
@@ -43,54 +43,15 @@
 <script>
 import Subtitle from "./Subtitle";
 
+import {paletteMixin} from "../mixins/paletteMixin";
+
 export default {
   name: "TableChess",
   components: {
     Subtitle
   },
-  props: {
-    scenario: {
-      required: true,
-      type: Object
-    },
-    scenarios: {
-      required: true,
-      type: Array
-    },
-    wells: {
-      required: true,
-      type: Array
-    },
-    oilPrices: {
-      required: true,
-      type: Array
-    },
-  },
+  mixins: [paletteMixin],
   computed: {
-    reverseOilPrices() {
-      return [...this.oilPrices].reverse()
-    },
-
-    scenariosByOilPrice() {
-      let scenarios = this.scenarios.filter(scenario =>
-          scenario.dollar_rate === this.scenario.dollar_rate &&
-          scenario.coef_cost_WR_payroll === this.scenario.coef_cost_WR_payroll &&
-          scenario.coef_Fixed_nopayroll === this.scenario.coef_Fixed_nopayroll
-      )
-
-      return this.reverseOilPrices.map(oilPrice => {
-        return scenarios
-            .filter(scenario => scenario.oil_price === oilPrice)
-            .reduce((prev, current) => (+prev.Operating_profit_scenario > +current.Operating_profit_scenario) ? prev : current)
-      })
-    },
-
-    wellsByOilPrice() {
-      let wells = this.wells.filter(well => +well.dollar_rate === +this.scenario.dollar_rate)
-
-      return this.reverseOilPrices.map(oilPrice => wells.filter(well => +well.oil_price === +oilPrice))
-    },
-
     tableData() {
       let oilProduction = [
         {
@@ -125,80 +86,6 @@ export default {
         },
       ]
 
-      let revenueTotal = this.reverseOilPrices.map((oilPrice, oilPriceIndex) => {
-        let stoppedWells = this.scenariosByOilPrice[oilPriceIndex].uwi_stop
-
-        return {
-          title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
-          pp2020: '',
-          columns: this.reverseOilPrices.map((price, priceIndex) => {
-            let revenue = 0
-
-            this.wellsByOilPrice[priceIndex].forEach(well => {
-              if (stoppedWells.includes(well.uwi)) return
-
-              revenue += well.Revenue_total_12m
-            })
-
-
-            return {
-              value: (revenue / 1000000).toFixed(2),
-              color: this.getColor(oilPrice, oilPriceIndex, price, priceIndex)
-            }
-          })
-        }
-      })
-
-      let overallExpenditures = this.reverseOilPrices.map((oilPrice, oilPriceIndex) => {
-        let stoppedWells = this.scenariosByOilPrice[oilPriceIndex].uwi_stop
-
-        let stoppedWellsExpenditures = this.scenariosByOilPrice[oilPriceIndex].Overall_expenditures_full_scenario
-
-        this.wellsByOilPrice[oilPriceIndex].forEach(well => {
-          if (stoppedWells.includes(well.uwi)) return
-
-          stoppedWellsExpenditures -= well.Overall_expenditures_full_12m
-        })
-
-        return {
-          title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
-          pp2020: '',
-          columns: this.reverseOilPrices.map((price, priceIndex) => {
-            let expenditures = stoppedWellsExpenditures
-
-            this.wellsByOilPrice[priceIndex].forEach(well => {
-              if (stoppedWells.includes(well.uwi)) return
-
-              expenditures += well.Overall_expenditures_full_12m
-            })
-
-            return {
-              value: (expenditures / 1000000).toFixed(2),
-              color: this.getColor(oilPrice, oilPriceIndex, price, priceIndex)
-            }
-          })
-        }
-      })
-
-      let operatingProfit = this.reverseOilPrices.map((oilPrice, oilPriceIndex) => {
-        let revenue = revenueTotal[oilPriceIndex]
-
-        let expenditures = overallExpenditures[oilPriceIndex]
-
-        return {
-          title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
-          pp2020: '',
-          columns: this.reverseOilPrices.map((price, priceIndex) => {
-            let operatingProfit = revenue.columns[priceIndex].value - expenditures.columns[priceIndex].value
-
-            return {
-              value: (operatingProfit).toFixed(2),
-              color: this.getColorOperatingProfit(oilPriceIndex, priceIndex, operatingProfit)
-            }
-          })
-        }
-      })
-
       return [
         ...oilProduction,
         ...[{
@@ -207,62 +94,24 @@ export default {
           subtitle: `${this.trans('economic_reference.income')}, ${this.trans('economic_reference.million_tenge')}`,
           styleClass: 'bg-deep-blue'
         }],
-        ...revenueTotal,
+        ...this.revenueTotalByOilPrice,
         ...[{
           title: '',
           pp2020: '',
           subtitle: `${this.trans('economic_reference.costs')}, ${this.trans('economic_reference.million_tenge')}`,
           styleClass: 'bg-deep-blue'
         }],
-        ...overallExpenditures,
+        ...this.overallExpendituresByOilPrice,
         ...[{
           title: '',
           pp2020: '',
           subtitle: `${this.trans('economic_reference.operating_profit')}, ${this.trans('economic_reference.million_tenge')}`,
           styleClass: 'bg-deep-blue'
         }],
-        ...operatingProfit
+        ...this.operatingProfitByOilPrice
       ]
     }
   },
-  methods: {
-    getColor(scenarioPrice, scenarioIndex, currentPrice, currentIndex) {
-      if (scenarioPrice === currentPrice) {
-        return '#106B4B'
-      }
-
-      let diff = Math.abs(scenarioIndex - currentIndex)
-
-      switch (diff) {
-        case 1:
-          return '#BDA74D'
-        case 2:
-          return '#AC7550'
-        default:
-          return scenarioPrice % 2 === 0 ? '#505585' : '#272953'
-      }
-    },
-
-    getColorOperatingProfit(scenarioIndex, currentIndex, operatingProfit) {
-      if (scenarioIndex === currentIndex) {
-        return '#106B4B'
-      }
-
-      if (operatingProfit > 0 || currentIndex - scenarioIndex > 0) {
-        return '#4A9B7E'
-      }
-
-      if (operatingProfit > -25000) {
-        return '#BDA74D'
-      }
-
-      if (operatingProfit > -50000) {
-        return '#AC7550'
-      }
-
-      return '#682041'
-    },
-  }
 }
 </script>
 
