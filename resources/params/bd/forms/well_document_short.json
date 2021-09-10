@@ -1,0 +1,33 @@
+{
+  "type": "plain",
+  "table": "prod.document",
+  "tabs": [
+    {
+      "title": "",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "doc_date",
+                "type": "date",
+                "title": "document_date",
+                "validation": "required",
+                "is_editable": true
+              },
+              {
+                "code": "file",
+                "type": "file",
+                "origin": "name_ru",
+                "title": "uploaded_files",
+                "validation": "required",
+                "is_editable": true
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

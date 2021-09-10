@@ -101,7 +101,7 @@ return array (
   'equipment' => 'Наименование оборудования',
   'equipment_name' => 'Наименование оборудования',
   'compare_to_prev_month' => 'В сравнении с предыдущим месяцем',
-  'download_example' => 'Скачать пример',
+  'download_example' => 'Скачать шаблон',
   'in_pause' => 'В простое',
   'in_work' => 'В работе',
   'wells_profitless' => 'Нерентабельные скважины',
@@ -267,4 +267,7 @@ return array (
   'number_gtms_by_type' => 'Количество ГТМ по видам',
   'full_screen' => 'Полноэкранный режим',
   'table_well_treemap' => 'Таблица «Тримап»',
+  'oar_costs' => 'Затраты на ОАР',
+  'avg_cost_krs' => 'Средняя стоимость КРС',
+  'well_short' => 'Скв',
 );

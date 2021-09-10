@@ -6,8 +6,8 @@ use App\Filters\ManualHydroCalculationFilter;
 use App\Filters\ManualReverseCalculationFilter;
 use App\Http\Controllers\CrudController;
 use App\Http\Requests\IndexTableRequest;
+use App\Http\Resources\ManualHydroCalcListResource;
 use App\Http\Resources\ManualHydroCalcPrepareListResource;
-use App\Http\Resources\ManualHydroCalculatedListResource;
 use App\Jobs\ManualCalculateHydroDynamics;
 use App\Models\ComplicationMonitoring\ManualHydroCalcResult;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
@@ -21,7 +21,8 @@ class ManualHydroCalc extends CrudController
 {
     protected $modelName = 'manual_hydro_calculation';
 
-    public function index () {
+    public function index()
+    {
         $params = [
             'success' => Session::get('success'),
             'links' => [
@@ -29,8 +30,16 @@ class ManualHydroCalc extends CrudController
             ],
             'title' => trans('monitoring.manual_hydro_calculation.table_title'),
             'fields' => [
+                'check_calc' => [
+                    'title' => trans('monitoring.hydro_calculation.fields.check_calc'),
+                    'type' => 'checkbox',
+                ],
                 'id' => [
                     'title' => '№',
+                    'type' => 'numeric',
+                ],
+                'gu_name' => [
+                    'title' => trans('monitoring.gu.gu'),
                     'type' => 'numeric',
                 ],
                 'date' => [
@@ -40,7 +49,6 @@ class ManualHydroCalc extends CrudController
                 'out_dia' => [
                     'title' => trans('monitoring.pipe_types.fields.outside_diameter'),
                     'type' => 'numeric',
-
                 ],
                 'wall_thick' => [
                     'title' => trans('monitoring.pipe_types.fields.thickness'),
@@ -51,11 +59,11 @@ class ManualHydroCalc extends CrudController
                     'type' => 'numeric',
                 ],
                 'daily_fluid_production' => [
-                    'title' => trans('monitoring.units.q_zh').', '.trans('measurements.m3/day'),
+                    'title' => trans('monitoring.units.q_zh') . ', ' . trans('measurements.m3/day'),
                     'type' => 'numeric',
                 ],
                 'wc' => [
-                    'title' => trans('monitoring.gu.fields.bsw').', '.trans('measurements.percent'),
+                    'title' => trans('monitoring.gu.fields.bsw') . ', ' . trans('measurements.percent'),
                     'type' => 'numeric',
                 ],
                 'gas_factor' => [
@@ -70,13 +78,12 @@ class ManualHydroCalc extends CrudController
                     'title' => trans('monitoring.hydro_calculation.fields.pressure_end'),
                     'type' => 'numeric',
                 ],
-
-                'temp_well' => [
-                    'title' => trans('monitoring.manual_hydro_calculation.fields.temperature_well'),
+                'temp_start' => [
+                    'title' => trans('monitoring.hydro_calculation.fields.temperature_start'),
                     'type' => 'numeric',
                 ],
-                'temp_zu' => [
-                    'title' => trans('monitoring.manual_hydro_calculation.fields.temperature_zu'),
+                'temp_end' => [
+                    'title' => trans('monitoring.hydro_calculation.fields.temperature_end'),
                     'type' => 'numeric',
                 ],
                 'start_point' => [
@@ -122,7 +129,7 @@ class ManualHydroCalc extends CrudController
             ],
         ];
 
-        $params['links']['calc']['link'] = route($this->modelName.'.calculate');
+        $params['links']['calc']['link'] = route($this->modelName . '.calculate');
         $params['links']['date'] = true;
         $params['selected_date'] = session('manual_hydro_calc_date');
 
@@ -131,31 +138,40 @@ class ManualHydroCalc extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-
         $input = $request->validated();
-        $points = null;
+        $calculatedPipes = null;
+        $calculatedPipesIds = [];
 
         if (isset($input['date'])) {
-            $points = $this->getCalculatedData($input['date']);
-            $list = json_decode(ManualHydroCalculatedListResource::collection($points)->toJson());
+            $calculatedPipes = $this->getCalculatedData($input['date']);
+
+            if ($calculatedPipes) {
+                foreach ($calculatedPipes as $pipe) {
+                    $calculatedPipesIds[] = $pipe->oil_pipe_id;
+                }
+            }
         }
 
-        if (!$points || !$points->total()) {
-            $prepairedData = $this->getPrepairedData($input);
-            $points = $prepairedData['points'];
-            $alerts = $prepairedData['alerts'];
-            $request->session()->put('from_manual_hydro_calc', true);
-            $list = json_decode(ManualHydroCalcPrepareListResource::collection($points)->toJson());
+        $prepairedData = $this->getPrepairedData($input, $calculatedPipesIds);
+        $pipes = $prepairedData['pipes'];
+        $alerts = $prepairedData['alerts'];
 
-            if (count($alerts)) {
-                $list->alerts = $alerts;
-            }
+        if ($calculatedPipes) {
+            $pipes = $calculatedPipes->merge($pipes);
+        }
+
+        $pipes = $this->paginate($pipes, 25, (int)$input['page']);
+        $request->session()->put('from_manual_hydro_calc', true);
+        $list = json_decode(ManualHydroCalcListResource::collection($pipes)->toJson());
+
+        if (count($alerts)) {
+            $list->alerts = $alerts;
         }
 
         return response()->json($list);
     }
 
-    public function getPrepairedData(array $input = []): array
+    public function getPrepairedData(array $input = [], array $calculatedPipesIds): array
     {
         $query = ManualOilPipe::query()
             ->with('firstCoords', 'lastCoords');
@@ -164,12 +180,19 @@ class ManualHydroCalc extends CrudController
             ->getFilteredQuery($input, $query)
             ->whereNotNull('start_point')
             ->whereNotNull('end_point')
+            ->whereNotIn('id', $calculatedPipesIds)
+            ->orderBy('gu_id')
             ->get();
 
-        $pipes->load('pipeType');
+        $pipes->load('pipeType', 'gu');
         $alerts = [];
 
         foreach ($pipes as $key => $pipe) {
+            if (!$pipe->lastCoords || !$pipe->firstCoords) {
+                unset($pipes[$key]);
+                continue;
+            }
+
             if ($pipe->between_points == 'well-zu') {
                 $query = OmgNGDUWell::where('well_id', $pipe->well_id);
 
@@ -195,8 +218,7 @@ class ManualHydroCalc extends CrudController
             }
         }
 
-        $pipes = $this->paginate($pipes, 25, (int)$input['page']);
-        return ['points' => $pipes, 'alerts' => $alerts];
+        return ['pipes' => $pipes, 'alerts' => $alerts];
     }
 
     protected function getFilteredQuery($filter, $query = null)
@@ -232,9 +254,9 @@ class ManualHydroCalc extends CrudController
 
     public function getCalculatedData(string $date)
     {
-        return ManualHydroCalcResult::with('oilPipe.pipeType')
+        return ManualHydroCalcResult::with('oilPipe.pipeType', 'oilPipe.gu')
             ->where('date', $date)
             ->orderBy('id')
-            ->paginate(25);
+            ->get();
     }
 }
