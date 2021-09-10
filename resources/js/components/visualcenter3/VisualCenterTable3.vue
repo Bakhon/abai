@@ -980,10 +980,10 @@
                     </td>
                     <td
                             @click="$modal.show('modalReasonExplanations')"
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
+                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                             :class="[getDarkColorClass(index),'d-flex justify-content-center']"
                     >
-                      <div :class="item.decreaseReasonExplanations.length > 0 ? 'reason-icon' : 'no-reason-icon mt-2'">
+                      <div :class="item.decreaseReasonExplanations.length > 0 ? 'reason-icon' : ''">
                       </div>
                     </td>
                   </tr>
@@ -2431,7 +2431,7 @@
           width: 50px;
         }
         &:nth-child(2) {
-          width: 365px;
+          width: 370px;
         }
       }
     }
@@ -2970,12 +2970,5 @@
     height: 20px;
     background: url(/img/visualcenter3/emergency.png) 3% no-repeat;
     background-size: 100%;
-  }
-  .no-reason-icon {
-    position: relative;
-    width: 20px;
-    height: 5px;
-    background: #9da0b7;
-    border: unset;
   }
 </style>

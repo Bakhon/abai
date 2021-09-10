@@ -18,9 +18,22 @@
                         </button>
                     </div>
                 </div>
-                <div v-for="(item, index) in reasons">
-                    <div class="font-weight-bold">{{index}}:</div>
-                    <div>{{item.join(',\n')}}</div>
+                <div class="container-fluid">
+                    <div class="row p-2 reason-header">
+                        <span class="col-3">{{ trans("visualcenter.dzo") }}</span>
+                        <span class="col-9">{{ trans("visualcenter.importForm.reason") }}</span>
+                    </div>
+                    <div class="reason-table">
+                        <div
+                                class="d-flex"
+                                v-for="(item, index) in reasons"
+                        >
+                            <div class="col-12 d-flex p-2 reason-description" v-for="reason in item">
+                                <span class="col-3 font-weight-bold p-0">{{index}}</span>
+                                <span class="col-9">{{reason}}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </modal>
@@ -43,5 +56,17 @@ export default {
 <style scoped lang="scss">
 .modal_header {
     margin: 0 auto;
+}
+.reason-table {
+    overflow-y: auto;
+}
+.reason-header {
+    background: #2E50E9;
+    span:first-child {
+        border-right: 1px solid #272953;
+    }
+}
+.reason-description {
+    border-bottom: 1px solid #4C537E;
 }
 </style>
