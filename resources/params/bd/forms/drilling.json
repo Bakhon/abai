@@ -1,52 +1,35 @@
 {
   "type": "table",
   "table_type": "wells",
+  "edit": {
+    "active": true,
+    "form": "daily_drill"
+  },
   "filter": [
     {
       "code": "date",
       "title": "date",
       "type": "date",
-      "default": "first day of january this year"
+      "default": "today"
     }
   ],
   "columns": [
     {
-      "title": "id",
-      "code": "id",
-      "type": "integer",
-      "visible": false,
+      "title": "uwi_number",
+      "code": "uwi",
+      "type": "text",
       "is_editable": false
-    },
-    {
-      "code":"reason_dowtime",
-      "type":"text",
-      "title":"reason_downtime",
-      "validation":"required|string"
-    },
-    {
-      "code":"dbeg",
-      "type":"datetime",
-      "title":"drill_beg",
-      "validation":"required"
-    },
-    {
-      "code":"dend",
-      "type":"datetime",
-      "title":"drill_end",
-      "validation":"required|after:dbeg"
     },
     {
       "code": "daily_drill_progress",
       "type": "float",
       "title": "daily_drill_progress",
-      "validation": "gte:0|lte:100",
-      "is_editable": true
+      "is_editable": false
     },
     {
       "code": "depth",
       "type": "float",
       "title": "depth",
-      "validation": "gte:0",
       "is_editable": false
     },
     {
@@ -54,136 +37,14 @@
       "dict":"well_statuses",
       "type": "dict",
       "title": "well_status_type",
-      "is_editable": true,
-      "validation": "exists:tbd.dict.well_status_type,id"
+      "is_editable": false
     },
     {
       "code": "work_name",
       "type": "text",
       "title": "work_name",
-      "validation": "",
-      "is_editable": true
-    },
-    {
-      "code":"liquid_density",
-      "type":"float",
-      "title":"liquid_density",
-      "validation":"required|numeric|gt:0|lte:10",
-      "is_editable": true 
-     },
-     {
-       "code":"liquid_crust",
-       "type":"float",
-       "title":"liquid_crust",
-       "validation":"required|numeric|gt:0|lte:10",
-       "is_editable": true 
-      },
-      {
-       "code":"liquid_viscosity",
-       "type":"float",
-       "title":"liquid_viscosity",
-       "validation":"required|numeric|gt:0|lte:100",
-       "is_editable": true 
-      },
-      {
-       "code":"liquid_ph",
-       "type":"float",
-       "title":"liquid_ph",
-       "validation":"required|numeric|gt:0|lte:15",
-       "is_editable": true
-      },
-      {
-       "code":"luquid_water_yield",
-       "type":"float",
-       "title":"liquid_water_yield",
-       "validation":"required|numeric|gt:0|lte:100",
-       "is_editable": true 
-      },
-      {
-        "code":"drill_rate",
-        "type":"numeric",
-        "title":"drill_rate",
-        "validation":"required|numeric|gt:0" 
-      },
-      {
-        "code":"drill_load",
-        "type":"numeric",
-        "title":"drill_load",
-        "validation":"required|numeric|gt:0" 
-      },
-      {
-        "code":"drill_pump_type",
-        "type":"dict",
-        "dict":"pump_types",
-        "title":"pump_type",
-        "validation":"required|exists:tbd.dict.drill_pump_type,id"                
-      },
-      {
-        "code":"revs_per_minute",
-        "type":"numeric",
-        "title":"revs_per_minute",
-        "validation":"required|numeric|gt:0" 
-      },
-      {
-        "code":"drill_pump_p",
-        "type":"numeric",
-        "title":"drill_pump_p",
-        "validation":"required|numeric|gt:0" 
-      },
-      {
-        "code":"rotating_moment",
-        "type":"numeric",
-        "title":"rotating_moment",
-        "validation":"required|numeric|gt:0" 
-      },
-      {
-        "code":"drill_piston_d",
-        "type":"numeric",
-        "title":"drill_piston_d",
-        "validation":"required|numeric|gt:0" 
-      },    
-      {
-        "code":"kern_roofing",
-        "type":"numeric",
-        "title":"kern_roofing",
-        "validation":"required|numeric|gt:0|lte:kern_sole" 
-      },
-      {
-        "code":"kern_sole",
-        "type":"numeric",
-        "title":"kern_sole",
-        "validation":"required|numeric|gt:0" 
-      },
-      {
-        "code":"drill_chisel",
-        "type":"dict",
-        "title":"chisel",
-        "validation":"required|exists:tbd.dict.drill_chisel,id",
-        "dict":"drill_chisels",
-        "is_editable": true
-      },
-      {
-        "code":"diameter",
-        "type":"float",
-        "title":"diameter",
-        "validation":"required|gt:0|lte:1000" ,
-        "is_editable": true
-      },
-      {
-        "code":"drill_column_type",
-        "type":"dict",
-        "title":"drill_column_type",
-        "validation":"required|exists:tbd.dict.drill_column_type,id",
-        "dict":"drill_column_types",
-        "is_editable": true
-      },
-      {
-        "code":"value",
-        "type":"float",
-        "title":"value",
-        "validation":"required",
-        "is_editable": true
-      }    
+      "is_editable": false
+    }
   ]
 }
   
