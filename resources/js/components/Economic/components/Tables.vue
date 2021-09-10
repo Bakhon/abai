@@ -141,14 +141,14 @@ export default {
   computed: {
     tabs() {
       return {
-        chess: this.trans('economic_reference.table_chess'),
         specific_indicators: this.trans('economic_reference.specific_indicators'),
         technical_economic_indicators: this.trans('economic_reference.technical_economic_indicators'),
         oil_price_options: this.trans('economic_reference.oil_price_options'),
         well_changes: this.trans('economic_reference.table_well_changes'),
-        economic_efficiency: this.trans('economic_reference.economic_efficiency'),
         porcupine: this.trans('economic_reference.table_porcupine'),
         technological_indicators: this.trans('economic_reference.technological_indicators'),
+        chess: this.trans('economic_reference.table_chess'),
+        economic_efficiency: this.trans('economic_reference.economic_efficiency'),
         palette: this.trans('economic_reference.palette'),
         well_treemap: 'TreeMap',
       }
