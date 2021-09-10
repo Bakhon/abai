@@ -152,11 +152,19 @@ export default {
       let overallExpenditures = this.reverseOilPrices.map((oilPrice, oilPriceIndex) => {
         let stoppedWells = this.filteredScenarios[oilPriceIndex].uwi_stop
 
+        let stoppedWellsExpenditures = this.filteredScenarios[oilPriceIndex].Overall_expenditures_full_scenario
+
+        this.filteredWells[oilPriceIndex].forEach(well => {
+          if (stoppedWells.includes(well.uwi)) return
+
+          stoppedWellsExpenditures -= well.Overall_expenditures_full_12m
+        })
+
         return {
           title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
           pp2020: '',
           columns: this.reverseOilPrices.map((price, priceIndex) => {
-            let expenditures = 0
+            let expenditures = stoppedWellsExpenditures
 
             this.filteredWells[priceIndex].forEach(well => {
               if (stoppedWells.includes(well.uwi)) return
@@ -167,6 +175,25 @@ export default {
             return {
               value: (expenditures / 1000000).toFixed(2),
               color: this.getColor(oilPrice, oilPriceIndex, price, priceIndex)
+            }
+          })
+        }
+      })
+
+      let operatingProfit = this.reverseOilPrices.map((oilPrice, oilPriceIndex) => {
+        let revenue = revenueTotal[oilPriceIndex]
+
+        let expenditures = overallExpenditures[oilPriceIndex]
+
+        return {
+          title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
+          pp2020: '',
+          columns: this.reverseOilPrices.map((price, priceIndex) => {
+            let operatingProfit = revenue.columns[priceIndex].value - expenditures.columns[priceIndex].value
+
+            return {
+              value: (operatingProfit).toFixed(2),
+              color: this.getColorOperatingProfit(oilPriceIndex, priceIndex, operatingProfit)
             }
           })
         }
@@ -187,7 +214,14 @@ export default {
           subtitle: `${this.trans('economic_reference.costs')}, ${this.trans('economic_reference.million_tenge')}`,
           styleClass: 'bg-deep-blue'
         }],
-        ...overallExpenditures
+        ...overallExpenditures,
+        ...[{
+          title: '',
+          pp2020: '',
+          subtitle: `${this.trans('economic_reference.operating_profit')}, ${this.trans('economic_reference.million_tenge')}`,
+          styleClass: 'bg-deep-blue'
+        }],
+        ...operatingProfit
       ]
     }
   },
@@ -207,7 +241,27 @@ export default {
         default:
           return scenarioPrice % 2 === 0 ? '#505585' : '#272953'
       }
-    }
+    },
+
+    getColorOperatingProfit(scenarioIndex, currentIndex, operatingProfit) {
+      if (scenarioIndex === currentIndex) {
+        return '#106B4B'
+      }
+
+      if (operatingProfit > 0 || currentIndex - scenarioIndex > 0) {
+        return '#4A9B7E'
+      }
+
+      if (operatingProfit > -25000) {
+        return '#BDA74D'
+      }
+
+      if (operatingProfit > -50000) {
+        return '#AC7550'
+      }
+
+      return '#682041'
+    },
   }
 }
 </script>
