@@ -3,18 +3,18 @@
     <div
       class="subsoil-tree-item"
       v-for="subsoil in treeData"
-      :key="subsoil.field_id"
+      :key="subsoil.owner_id"
     >
       <div class="subsoil-input-label-holder">
         <input
           type="checkbox"
-          :name="subsoil.field_name"
-          :id="subsoil.field_name"
-          :value="subsoil.field_id"
+          :name="subsoil.owner_name"
+          :id="subsoil.owner_name"
+          :value="subsoil"
           v-model="computedPickedSubsoil"
-          @click="handleSubsoilCheckbox(subsoil.childNodes)"
+          @click="handleSubsoilCheckbox(subsoil.fields)"
         />
-        <label :for="subsoil.field_name">{{ subsoil.field_name }}</label>
+        <label :for="subsoil.owner_name">{{ subsoil.owner_name }}</label>
       </div>
     </div>
   </div>
@@ -29,23 +29,23 @@ export default {
     treeData: Array,
   },
   computed: {
-    ...mapState("plastFluids", ["pickedSubsoil", "currentSubsoilChildren"]),
+    ...mapState("plastFluids", ["currentSubsoil"]),
     computedPickedSubsoil: {
       get() {
-        return this.pickedSubsoil;
+        return this.currentSubsoil;
       },
       set(value) {
-        this.SET_PICKED_SUBSOIL(value[value.length - 1]);
+        this.SET_CURRENT_SUBSOIL(value[value.length - 1]);
       },
     },
   },
   methods: {
     ...mapMutations("plastFluids", [
-      "SET_CURRENT_SUBSOIL_CHILDREN",
-      "SET_PICKED_SUBSOIL",
+      "SET_SUBSOIL_FIELDS",
+      "SET_CURRENT_SUBSOIL",
     ]),
     handleSubsoilCheckbox(subsoilChildren) {
-      this.SET_CURRENT_SUBSOIL_CHILDREN(subsoilChildren);
+      this.SET_SUBSOIL_FIELDS(subsoilChildren);
     },
   },
 };

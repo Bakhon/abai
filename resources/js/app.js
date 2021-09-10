@@ -122,6 +122,8 @@ Vue.component('omgngdu-zu-form', require('./components/complicationMonitoring/om
 Vue.component('gu-form', require('./components/complicationMonitoring/gu/form.vue').default);
 Vue.component('zu-form', require('./components/complicationMonitoring/zu/form.vue').default);
 Vue.component('pipe-passport-form', require('./components/complicationMonitoring/pipePassport/form.vue').default);
+Vue.component('zu-cleanings-form', require('./components/complicationMonitoring/zuCleanings/form.vue').default);
+
 
 Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);
 Vue.component('gtm-main-page', require('./components/GTM/GtmMain.vue').default);
@@ -179,13 +181,14 @@ Vue.component('report-constructor', require('./components/reportConstructor/Repo
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
 Vue.component('pf-upload-monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
 Vue.component('pf-data-analysis', require('./components/PlastFluids/views/PfDataAnalysis').default);
-Vue.component('pf-standart-separation-flash', require('./components/PlastFluids/components/StandartSeparationFlash').default);
+Vue.component('pf-download-monitoring', require('./components/PlastFluids/views/DownloadMonitoring').default);
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('las', require('./components/bigdata/Las.vue').default);
+Vue.component('gis-form-las', require('./components/bigdata/GisFormLas.vue').default);
 Vue.component('geo-data-reference-book', require('./components/bigdata/GeoDataReferenceBook.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('proto-form-wrapper', require('./components/bigdata/FormsWrapper.vue').default);
