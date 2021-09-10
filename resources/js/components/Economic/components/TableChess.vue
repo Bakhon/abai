@@ -71,7 +71,7 @@ export default {
       return [...this.oilPrices].reverse()
     },
 
-    filteredScenarios() {
+    scenariosByOilPrice() {
       let scenarios = this.scenarios.filter(scenario =>
           scenario.dollar_rate === this.scenario.dollar_rate &&
           scenario.coef_cost_WR_payroll === this.scenario.coef_cost_WR_payroll &&
@@ -85,7 +85,7 @@ export default {
       })
     },
 
-    filteredWells() {
+    wellsByOilPrice() {
       let wells = this.wells.filter(well => +well.dollar_rate === +this.scenario.dollar_rate)
 
       return this.reverseOilPrices.map(oilPrice => wells.filter(well => +well.oil_price === +oilPrice))
@@ -118,7 +118,7 @@ export default {
           pp2020: '',
           columns: this.reverseOilPrices.map((price, index) => {
             return {
-              value: (this.filteredScenarios[index].oil.original_value_optimized / 1000).toFixed(2),
+              value: (this.scenariosByOilPrice[index].oil.original_value_optimized / 1000).toFixed(2),
               color: ''
             }
           })
@@ -126,7 +126,7 @@ export default {
       ]
 
       let revenueTotal = this.reverseOilPrices.map((oilPrice, oilPriceIndex) => {
-        let stoppedWells = this.filteredScenarios[oilPriceIndex].uwi_stop
+        let stoppedWells = this.scenariosByOilPrice[oilPriceIndex].uwi_stop
 
         return {
           title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
@@ -134,7 +134,7 @@ export default {
           columns: this.reverseOilPrices.map((price, priceIndex) => {
             let revenue = 0
 
-            this.filteredWells[priceIndex].forEach(well => {
+            this.wellsByOilPrice[priceIndex].forEach(well => {
               if (stoppedWells.includes(well.uwi)) return
 
               revenue += well.Revenue_total_12m
@@ -150,11 +150,11 @@ export default {
       })
 
       let overallExpenditures = this.reverseOilPrices.map((oilPrice, oilPriceIndex) => {
-        let stoppedWells = this.filteredScenarios[oilPriceIndex].uwi_stop
+        let stoppedWells = this.scenariosByOilPrice[oilPriceIndex].uwi_stop
 
-        let stoppedWellsExpenditures = this.filteredScenarios[oilPriceIndex].Overall_expenditures_full_scenario
+        let stoppedWellsExpenditures = this.scenariosByOilPrice[oilPriceIndex].Overall_expenditures_full_scenario
 
-        this.filteredWells[oilPriceIndex].forEach(well => {
+        this.wellsByOilPrice[oilPriceIndex].forEach(well => {
           if (stoppedWells.includes(well.uwi)) return
 
           stoppedWellsExpenditures -= well.Overall_expenditures_full_12m
@@ -166,7 +166,7 @@ export default {
           columns: this.reverseOilPrices.map((price, priceIndex) => {
             let expenditures = stoppedWellsExpenditures
 
-            this.filteredWells[priceIndex].forEach(well => {
+            this.wellsByOilPrice[priceIndex].forEach(well => {
               if (stoppedWells.includes(well.uwi)) return
 
               expenditures += well.Overall_expenditures_full_12m
