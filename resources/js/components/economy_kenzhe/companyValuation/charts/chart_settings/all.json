@@ -1,0 +1,26 @@
+{
+    "chartOptions": {
+        "grid": {
+            "show": true,
+            "borderColor": "#33396f"
+        },
+        "chart": {
+            "foreColor": "#fff",
+            "height": 350,
+            "type": "line",
+            "stacked": false,
+            "toolbar": {
+                "show": false
+            }
+        },
+        "title": {
+            "align": "center",
+            "offsetY": 15,
+            "style": {
+                "fontSize": "18px",
+                "fontWeight": "bold",
+                "color": "#fff"
+            }
+        }
+    }
+}
