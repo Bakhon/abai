@@ -419,19 +419,19 @@ export default {
       this.editableCell.column = column
     },
     isEditable(row, column) {
-      if (column.is_editable || (row[column.code] && row[column.code].is_editable)) return true
-      return false
+      return column.is_editable || (row[column.code] && row[column.code].is_editable)
     },
     getCellType(row, column) {
-      if (row[column.code] && row[column.code].type) return row[column.code].type
-      return column.type
+      return (row[column.code] && row[column.code].type) ? row[column.code].type : column.type
     },
     getFieldParams(row, column) {
       let params = {...column}
       let fieldsToOverwrite = ['type', 'is_editable', 'dict']
       if (row[column.code]) {
         fieldsToOverwrite.forEach(field => {
-          if (row[column.code][field]) params[field] = row[column.code][field]
+          if (!row[column.code][field]) return
+
+          params[field] = row[column.code][field]
         })
       }
       return params
