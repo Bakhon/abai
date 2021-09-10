@@ -1,9 +1,9 @@
 <template>
     <div class="select__input">
-        <select v-model="selected">
+        <select v-model="selected" v-if="options.length>0">
             <option :value="option"
                     v-for="option in options"
-            >{{option}}</option>
+            >{{trans(option)}}</option>
         </select>
         <input type="text" class="input" v-model="selected">
     </div>
@@ -15,7 +15,7 @@
         props: ['options'],
         data(){
             return{
-                selected: this.options[0],
+                selected: this.trans(this.options[0]),
             }
         },
     }
@@ -24,7 +24,8 @@
 <style scoped>
 .select__input{
     position: relative;
-
+    min-width: 150px;
+    min-height: 20px;
 }
 .select__input .input{
    position: absolute;
