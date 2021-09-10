@@ -49,6 +49,7 @@ export const paletteMixin = {
                 return {
                     title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
                     pp2020: '',
+                    bgColor: this.getBgColor(oilPriceIndex),
                     columns: this.reverseOilPrices.map((price, priceIndex) => {
                         let revenue = 0
 
@@ -82,6 +83,7 @@ export const paletteMixin = {
                 return {
                     title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
                     pp2020: '',
+                    bgColor: this.getBgColor(oilPriceIndex),
                     columns: this.reverseOilPrices.map((price, priceIndex) => {
                         let expenditures = stoppedWellsExpenditures
 
@@ -95,7 +97,7 @@ export const paletteMixin = {
                             value: (expenditures / 1000000).toFixed(2),
                             color: this.getColor(oilPrice, oilPriceIndex, price, priceIndex)
                         }
-                    })
+                    }),
                 }
             })
         },
@@ -109,6 +111,7 @@ export const paletteMixin = {
                 return {
                     title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
                     pp2020: '',
+                    bgColor: this.getBgColor(oilPriceIndex),
                     columns: this.reverseOilPrices.map((price, priceIndex) => {
                         let operatingProfit = revenue.columns[priceIndex].value - expenditures.columns[priceIndex].value
 
@@ -117,7 +120,6 @@ export const paletteMixin = {
                             color: this.getColorOperatingProfit(oilPriceIndex, priceIndex, operatingProfit)
                         }
                     }),
-                    bgColor: oilPriceIndex % 2 === 0 ? '#333975' : '#393F78'
                 }
             })
         },
@@ -159,5 +161,9 @@ export const paletteMixin = {
 
             return '#682041'
         },
+
+        getBgColor(index) {
+            return index % 2 === 0 ? '#333975' : '#393F78'
+        }
     }
 }

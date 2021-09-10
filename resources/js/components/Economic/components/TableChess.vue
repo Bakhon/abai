@@ -14,11 +14,13 @@
            :key="index"
            :class="row.styleClass"
            class="d-flex">
-        <div class="px-3 py-1 border-grey text-center flex-300px">
+        <div :style="row.bgColor ? `background: ${row.bgColor}` : ''"
+             class="px-3 py-1 border-grey text-center flex-350px">
           {{ row.title }}
         </div>
 
-        <div class="px-3 py-1 border-grey text-center flex-120px">
+        <div :style="row.bgColor ? `background: ${row.bgColor}` : ''"
+             class="px-3 py-1 border-grey text-center flex-150px">
           {{ row.pp2020 }}
         </div>
 
@@ -112,6 +114,11 @@ export default {
       ]
     }
   },
+  methods: {
+    getBgColor(index) {
+      return index % 2 === 0 ? '#505585' : '#272953'
+    }
+  }
 }
 </script>
 
@@ -136,15 +143,11 @@ export default {
   background: #272953;
 }
 
-.flex-120px {
-  flex: 0 0 120px;
+.flex-150px {
+  flex: 0 0 150px;
 }
 
-.flex-300px {
-  flex: 0 0 300px;
-}
-
-.height-31px {
-  height: 31px;
+.flex-350px {
+  flex: 0 0 350px;
 }
 </style>

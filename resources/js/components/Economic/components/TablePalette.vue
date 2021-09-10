@@ -6,7 +6,7 @@
 
     <div class="mt-3 text-center border-grey">
       <div class="d-flex bg-header font-weight-600">
-        <div class="py-3 border-grey d-flex align-items-center justify-content-center flex-300px">
+        <div class="py-3 border-grey d-flex align-items-center justify-content-center flex-350px">
           {{ trans('economic_reference.course') }}
           {{ (+scenario.dollar_rate).toLocaleString() }}
           {{ trans('economic_reference.tenge') }} / $
@@ -38,7 +38,7 @@
            :style="row.color ? `color: ${row.color}` : ''"
            class="d-flex">
         <div :style="row.bgColor ? `background: ${row.bgColor}` : ''"
-             class="px-3 py-2 border-grey text-center flex-300px">
+             class="px-3 py-2 border-grey text-center flex-350px">
           {{ row.title }}
         </div>
 
@@ -104,23 +104,11 @@ export default {
         return '#374AB4'
       }
 
-      if (operatingProfit < 0) {
-        return scenarioIndex % 2 === 0 ? '#313560' : '#272953'
+      if (currentIndex - scenarioIndex > 0) {
+        return scenarioIndex % 2 === 0 ? '#377B74' : '#31906F'
       }
 
-      if (operatingProfit > 0 || currentIndex - scenarioIndex > 0) {
-        return '#4A9B7E'
-      }
-
-      if (operatingProfit > -25000) {
-        return '#BDA74D'
-      }
-
-      if (operatingProfit > -50000) {
-        return '#AC7550'
-      }
-
-      return '#682041'
+      return scenarioIndex % 2 === 0 ? '#106B4B' : '#21615B'
     },
   },
   computed: {
@@ -210,8 +198,8 @@ export default {
   background: #272953;
 }
 
-.flex-300px {
-  flex: 0 0 300px;
+.flex-350px {
+  flex: 0 0 350px;
 }
 
 .flex-150px {
