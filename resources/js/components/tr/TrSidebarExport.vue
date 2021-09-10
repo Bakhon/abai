@@ -69,6 +69,7 @@ export default {
           isFullVersion: this.$store.state.tr.isFullVersion,
           month: this.$store.state.tr.month,
           year: this.$store.state.tr.year,
+          // plannedEvents: this.$store.state.tr.plannedEvents
 
         }
       );

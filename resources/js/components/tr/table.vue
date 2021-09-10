@@ -344,29 +344,29 @@
                 <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('planned_events')"></i>
                       <div>
-                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                        <b-dropdown no-caret toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter" :class="selectEvent.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
+                            <i class="fas fa-filter" :class="selectWellName.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
-                            <b-dropdown-form class="external_field_filter">
+                            <b-dropdown-form class="external_well_filter">
                               <b-form-group
                                 label=""
                                 v-slot="{ ariaDescribedby }"
                                 @submit.stop.prevent
-                                class="field_form_fil"
+                                class="p_events_form_fil"
                               >
                                 <b-form-checkbox-group
-                                  v-model="selectEvent"
-                                  :options="eventFilterData"
-                                  :aria-describedby="ariaDescribedby"                                  
-                                >
-                                </b-form-checkbox-group>
+                                v-model="selectEvent"
+                                :options="eventFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
                               </b-form-group>
                               <div class="field_filter_text">
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
                                   >{{trans('tr.form')}}
                                   </a>
-                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_EVENT')"
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_WELLNAME')"
                                   >{{trans('tr.reset')}}
                                   </a>
                               </div>
