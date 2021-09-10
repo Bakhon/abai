@@ -223,6 +223,7 @@ Vue.component('admin-user-settings', require('./components/admin/user/Settings.v
 Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);
 Vue.component('visual-center-daily-approve', require('./components/visualcenter3/importForm/dailyApprove/index.vue').default);
 Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/index.vue').default);
+Vue.component('visual-center-oil-dynamic', require('./components/visualcenter3/oilDynamic/index.vue').default);
 
 Vue.component('digital-drilling', require('./components/DigitalDrilling/digital-drilling').default);
 Vue.component('digital-drilling-menu', require('./components/DigitalDrilling/menu').default);

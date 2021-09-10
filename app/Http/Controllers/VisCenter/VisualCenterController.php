@@ -545,4 +545,9 @@ class VisualCenterController extends Controller
     {
         return view('visualcenter.daily_approve');
     }
+
+    public function oilDynamic()
+    {
+        return view('visualcenter.oil_dynamic');
+    }
 }
