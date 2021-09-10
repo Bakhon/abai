@@ -280,6 +280,10 @@ class DictionaryService
             'class' => TechStateCasing::class,
             'name_field' => 'name_ru'
         ],
+        'machine_types' => [
+            'class' => MachineType::class,
+            'name_field' => 'name_ru'
+        ],        
         'plan_gis_type' => [
             'class' => PlanGISType::class,
             'name_field' => 'name'
