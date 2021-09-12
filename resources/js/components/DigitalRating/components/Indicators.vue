@@ -1,7 +1,7 @@
 <template>
   <div class="rating-indicators">
     <div class="d-flex align-items-start mb-20px">
-      <table class="table text-center text-white rating-table w-50 mb-0">
+      <table class="table text-center text-white rating-table mb-0" style="width: 55%">
         <thead>
           <tr>
             <th class="align-middle" v-for="col in colsIndicator" :key="col.name">
@@ -25,11 +25,11 @@
         :layout="layout"
         :display-mode-bar="false"
         :displaylogo="false"
-        class="w-50"
+        style="width: 45%"
       />
     </div>
     <div class="d-flex align-items-start">
-      <table class="table text-center text-white rating-table w-50 mb-0">
+      <table class="table text-center text-white rating-table mb-0" style="width: 55%">
         <thead>
           <tr>
             <th class="align-middle" v-for="col in secondColsIndicators" :key="col.name">
@@ -50,7 +50,7 @@
         :layout="layout"
         :display-mode-bar="false"
         :displaylogo="false"
-        class="w-50"
+        style="width: 45%"
       />
     </div>
   </div>
