@@ -195,8 +195,9 @@ return [
             'do_not_chenge_condition' => 'Не менять состояние',
             'gtm_duplicate' => 'Дублировать в ГТМ',
             'on_our_own' => 'Собственными силами',
-
-
+            'gtm_type' => 'Вид ГТМ',
+            'status_before_selected_date' => 'Статус до выбранной даты',
+            'well_previous_category' => 'Категория до выбранной даты'
         ],
         'gas_well' => [
             'title' => 'Тех. режим - газовые скважины',
@@ -362,40 +363,12 @@ return [
         'gis' => [
             'title' => 'Гис в открытом стволе',
             'main' => 'Основное',
-            'data' => 'Дата и время проведения ГИС',
-            'podr' => 'Подрядчик',
-            'intr_ot' => 'Интервал замера, от',
-            'intr_do' => 'Интервал замера, до',
-            'intr_obr_ot' => 'Интервал обработки, от',
-            'intr_obr_do' => 'Интервал обработки, до',
-            'types' => 'Виды и методы каротажей',
-            'gis_methods' => 'Методы ГИС',
-            'interpretation' => 'Интерпретация ГИС',
-            'zakl'=> 'Заключение от подрядчика',
-            'geo' => 'Горизонт',
-            'top' => 'Кровля / Top, m',
-            'Botton' => 'Подошва / Botton, m',
-            'Thickness' => 'Мощность / Thickness, m',
-            'pronik' => 'Проницаемость, мД',
-            'cali' => 'КВ / CALI, mm',
-            'lls' => 'БК / LLS, Ohmm',
-            'vec5' => 'ИК-дальний зонд / VEC5-RILD, Ohmm',
-            'Ohmm' => 'БМК / MLL, Ohmm',
-            'h' => 'ГК / GR, UR / h',
-            'c' => 'НГК / NGR, C / c',
-            'm' => 'АК / DT, US / m',
-            'g' => 'ГГКп / DEN, G / C3',
-            'nphi' => 'Водосодержание / NPHI, %',
-            'phit_den' => 'КПггк / PHIT_DEN, %',
-            'phit_son' => 'КПак / PHIT_SON, %',
-            'phit' => 'КПобщ / PHIT, %',
-            'phie' => 'КПэф / PHIE, %',
-            'vsh' => 'КГЛ / VSH, %',
-            'factor' => 'Кнасыщ / Saturation factor, %',
-            'typeofsaturation' => 'Тип насыщения / Type of saturation, %',
-            'lithology' => 'Литология / Lithology',
-            'files_gis' => 'Файлы ГИС',
-            'scan_doc' => 'Сканированный документ'
+            'table' => 'Планшет',
+            'results' => 'Результаты интерпретации ГИС (РИГИС)',
+            'akts' => 'АКЦ',
+            'inclinometry' => 'Инклинометрия',
+            'conclusion' => 'Заключение от подрядчика',
+            'las_files' => 'LAS файлы'
         ],
         'well_incl' => [
             'title' => 'Инклинометрия скважины',
@@ -979,6 +952,18 @@ return [
             'scraper_income' => 'Доход скребка, м',
             'date' => 'Дата',
         ],
+        'daily_drill_kpc' => [
+            'org' => 'Подразделение',
+            'company' => 'Подрядчик',
+            'repair_work_type' => 'Вид ремонтных работ',
+            'work_done' => 'Проделанные работы',
+            'uwi' => 'Истинная глубина по вертикали',
+            'machine_type'=> 'Вид станка',
+            'well' => 'Скважина',
+            'geo'=> 'Горизонт',
+            'date' => 'Дата'
+        ],
+            
         'plan_g_d_i_s' => [
             'date' => 'Дата с',
             'date_to' => 'Дата по',
@@ -1018,6 +1003,22 @@ return [
             'gaz_prod' => 'Добыча газа, м3/сут',
             'gaz_prod_tel' => 'Добыча газа, м3/сут (телеметрия)',
         ],
+        'meas_water_prod' => [
+            'prod_meas' => 'Показатели тех.режимов',
+            'main_param' => 'Параметры режима',
+            'water_prod_val' => 'Дебит воды, м3/сут',
+            'dbeg' => 'Дата начала',
+            'dend' => 'Дата конца',
+            'events' => 'Мероприятия',
+            'planned_events' => 'Намечаемые мероприятия',
+            'event' => 'Мероприятие',
+            'planned_month' => 'Планируемый месяц'
+        ],
+        'tech_events' => [
+            'planned_events' => 'Намечаемые мероприятия',
+            'event' => 'Мероприятие',
+            'planned_month' => 'Планируемый месяц'
+        ],
         'tech_water_well' => [
             'uwi_number' => 'Номер скважины',
             'bottom_hole' => 'Факт. забой',
@@ -1030,11 +1031,6 @@ return [
             'dbeg' => 'Дата начала',
             'dend' => 'Дата конца',
             'events' => 'Мероприятия',
-        ],
-        'tech_events' => [
-            'planned_events' => 'Намечаемые мероприятия',
-            'event' => 'Мероприятие',
-            'planned_month' => 'Планируемый месяц'
         ],
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',
