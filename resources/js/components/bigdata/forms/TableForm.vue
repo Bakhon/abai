@@ -316,7 +316,7 @@ export default {
       if (!this.filter || !this.id || !this.type) return
 
       this.SET_LOADING(true)
-      this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/rows`), {
+      this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/results`), {
         params: {
           filter: this.filter,
           id: this.id,

@@ -14,7 +14,7 @@ class WellDocument extends PlainForm
 {
     protected $configurationFileName = 'well_document';
 
-    public function getResults(int $wellId): JsonResponse
+    public function getResults(): JsonResponse
     {
         try {
             $query = DB::connection('tbd')

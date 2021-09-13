@@ -135,8 +135,9 @@ abstract class PlainForm extends BaseForm
         }
     }
 
-    public function getResults(int $wellId): JsonResponse
+    public function getResults(): JsonResponse
     {
+        $wellId = $this->request->get('well_id');
         try {
             $query = DB::connection('tbd')
                 ->table($this->params()['table'])

@@ -45,7 +45,7 @@ class WellRegister extends PlainForm
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $wellId)->first();
     }
 
-    public function getResults(int $wellId): JsonResponse
+    public function getResults(): JsonResponse
     {
         return response()->json(
             [
