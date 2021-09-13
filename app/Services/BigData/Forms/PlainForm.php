@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
 use App\Services\BigData\DictionaryService;
@@ -14,7 +13,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-
+use App\Exceptions\BigData\SubmitFormException;
 abstract class PlainForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'plain_form.json';
@@ -136,45 +135,8 @@ abstract class PlainForm extends BaseForm
 
     public function getResults(): array
     {
-        $wellId = $this->request->get('well_id');
-
-        $query = DB::connection('tbd')
-            ->table($this->params()['table'])
-            ->where('well', $wellId)
-            ->orderBy('id', 'desc');
-
-        $rows = $query->get();
-
-        if (!empty($this->params()['sort'])) {
-            foreach ($this->params()['sort'] as $sort) {
-                if ($sort['order'] === 'desc') {
-                    $rows->sortByDesc($sort['field']);
-                } else {
-                    $rows->sortBy($sort['field']);
-                }
-            }
-        }
-
-        $rows = $this->formatRows($rows);
-
-        $columns = $this->getFields()->filter(
-            function ($item) {
-                if (isset($item['depends_on'])) {
-                    return false;
-                }
-
-                if (isset($this->params()['table_fields'])) {
-                    return in_array($item['code'], $this->params()['table_fields']);
-                }
-
-                return $item['type'] !== 'table';
-            }
-        )
-            ->mapWithKeys(
-                function ($item) {
-                    return [$item['code'] => $item];
-                }
-            );
+        $rows = $this->getRows();
+        $columns = $this->getColumns();
 
         return [
             'rows' => $rows->values(),
@@ -316,7 +278,7 @@ abstract class PlainForm extends BaseForm
         }
     }
 
-    protected function formatRows(Collection $rows)
+    protected function formatRows(Collection $rows): Collection
     {
         return $rows->map(function ($row) {
             if (isset($row->dend)) {
@@ -337,6 +299,52 @@ abstract class PlainForm extends BaseForm
             $this->originalData,
             $this->submittedData
         );
+    }
+
+    protected function getRows(): Collection
+    {
+        $wellId = $this->request->get('well_id');
+        $query = DB::connection('tbd')
+            ->table($this->params()['table'])
+            ->where('well', $wellId)
+            ->orderBy('id', 'desc');
+
+        $rows = $query->get();
+
+        if (!empty($this->params()['sort'])) {
+            foreach ($this->params()['sort'] as $sort) {
+                if ($sort['order'] === 'desc') {
+                    $rows->sortByDesc($sort['field']);
+                } else {
+                    $rows->sortBy($sort['field']);
+                }
+            }
+        }
+
+        return $this->formatRows($rows);
+    }
+
+    protected function getColumns(): Collection
+    {
+        $columns = $this->getFields()->filter(
+            function ($item) {
+                if (isset($item['depends_on'])) {
+                    return false;
+                }
+
+                if (isset($this->params()['table_fields'])) {
+                    return in_array($item['code'], $this->params()['table_fields']);
+                }
+
+                return $item['type'] !== 'table';
+            }
+        )
+            ->mapWithKeys(
+                function ($item) {
+                    return [$item['code'] => $item];
+                }
+            );
+        return $columns;
     }
 
 }

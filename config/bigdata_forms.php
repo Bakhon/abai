@@ -63,5 +63,6 @@
   'daily_reports_prs' => '\\App\\Services\\BigData\\Forms\\DailyReportsPrs',
   'tech_water_well' => '\\App\\Services\\BigData\\Forms\\TechWaterWell',
   'tech_events' => '\\App\\Services\\BigData\\Forms\\TechEvents',
+  'research_lab_research' => '\\App\\Services\\BigData\\Forms\\ResearchLabResearch',
   'meas_water_prod' => '\\App\\Services\\BigData\\Forms\\MeasWaterProd',
 );

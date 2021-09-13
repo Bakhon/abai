@@ -3,15 +3,21 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class #MIGRATION_CLASS_NAME# extends Migration
+class AddPermissionsToResearchLabResearchForm extends Migration
 {
     protected $permissions;
     protected $permissionSection;
 
     public function __construct()
     {
-        $this->permissions = json_decode('#PERMISSIONS#', 1);
-        $this->permissionSection = json_decode('#PERMISSION_SECTION#', 1);
+        $this->permissions = json_decode(
+            '[{"name":"bigdata list research_lab_research","guard_name":"web"},{"name":"bigdata create research_lab_research","guard_name":"web"},{"name":"bigdata update research_lab_research","guard_name":"web"},{"name":"bigdata view history research_lab_research","guard_name":"web"},{"name":"bigdata delete research_lab_research","guard_name":"web"}]',
+            1
+        );
+        $this->permissionSection = json_decode(
+            '{"code":"research_lab_research","title_trans":"bd.forms.research_lab_research.title","module":"bigdata"}',
+            1
+        );
     }
 
     public function up()
@@ -22,7 +28,9 @@ class #MIGRATION_CLASS_NAME# extends Migration
                 ->where('guard_name', $permission['guard_name'])
                 ->first();
 
-            if(!empty($row)) continue;
+            if (!empty($row)) {
+                continue;
+            }
 
             DB::table('permissions')->insert($permission);
         }
@@ -43,4 +51,5 @@ class #MIGRATION_CLASS_NAME# extends Migration
                 ->delete();
         }
     }
+
 }

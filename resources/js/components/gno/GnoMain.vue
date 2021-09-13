@@ -382,16 +382,16 @@
             </div>
 
             <div class="spoiler"
-                 :class="{ 'opened': activeRightTabName === 'technological-mode' || (windowWidth <= 1300 && windowWidth > 991) }">
+                 :class="{ 'opened': activeRightTabName === 'techmode' || (windowWidth <= 1300 && windowWidth > 991) }">
               <input style="width: 845px; height: 45px;"
                      type="checkbox"
                      tabindex="-1"
-                     :checked="activeRightTabName === 'technological-mode'"
-                     @click="setActiveRightTabName($event, 'technological-mode')"/>
+                     :checked="activeRightTabName === 'techmode'"
+                     @click="setActiveRightTabName($event, 'techmode')"/>
               <div class="right-side-box">
                 <div class="right-title-block no-gutter col-12">
 
-                  <div class="technological-mode-title">{{ trans('pgno.technologicheskii_rezhim') }}
+                  <div class="techmode-title">{{ trans('pgno.technologicheskii_rezhim') }}
                     {{ techmodeDate }}
                   </div>
                 </div>
@@ -402,7 +402,7 @@
                    <img src="/img/gno/bottom-arrow.svg" alt="">
                   </span>
                 <div class="right-block-details"
-                     v-show="activeRightTabName === 'technological-mode' || (windowWidth <= 1300 && windowWidth > 991)">
+                     v-show="activeRightTabName === 'techmode' || (windowWidth <= 1300 && windowWidth > 991)">
                   <div class="tech-data no-gutter col-7">{{ trans('pgno.q_zhidkosti') }}</div>
                   <div class="tech-data left-border-line right-block-data no-gutter col-5">
                     {{ well.qL }} {{ trans('measurements.m3/day') }}
@@ -883,7 +883,7 @@
                       <h6 class="centralizers-title">{{ centratorsType }}:
                         <b v-for="item in centratorsRequiredValue">{{ item }}</b></h6>
                     </div>
-                    <button class="button-pdf col-12" >
+                    <button class="button-pdf col-12" @click="downloadExcel('report')">
                       {{ trans('pgno.sozdanie_otcheta') }}
                     </button>
                   </div>
