@@ -72,25 +72,21 @@ export const paletteMixin = {
             return this.reverseOilPrices.map((oilPrice, oilPriceIndex) => {
                 let stoppedWells = this.scenariosByOilPrice[oilPriceIndex].uwi_stop
 
-                let stoppedWellsExpenditures = this.scenariosByOilPrice[oilPriceIndex].Overall_expenditures_full_scenario
-
-                this.wellsByOilPrice[oilPriceIndex].forEach(well => {
-                    if (stoppedWells.includes(well.uwi)) return
-
-                    stoppedWellsExpenditures -= well.Overall_expenditures_full_12m
-                })
-
                 return {
                     title: `${+oilPrice} ${this.trans('economic_reference.dollar_per_bar')}`,
                     pp2020: '',
                     bgColor: this.getBgColor(oilPriceIndex),
                     columns: this.reverseOilPrices.map((price, priceIndex) => {
-                        let expenditures = stoppedWellsExpenditures
+                        let expenditures = 0
 
                         this.wellsByOilPrice[priceIndex].forEach(well => {
-                            if (stoppedWells.includes(well.uwi)) return
+                            if (!stoppedWells.includes(well.uwi)) {
+                                return expenditures += +well.Overall_expenditures_full_12m
+                            }
 
-                            expenditures += well.Overall_expenditures_full_12m
+                            expenditures +=
+                                +this.scenario.coef_Fixed_nopayroll * +well.Fixed_nopayroll_expenditures_12m +
+                                +this.scenario.coef_cost_WR_payroll * +well.Fixed_payroll_expenditures_12m
                         })
 
                         return {
