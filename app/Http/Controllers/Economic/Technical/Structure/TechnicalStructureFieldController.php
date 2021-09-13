@@ -17,20 +17,20 @@ class TechnicalStructureFieldController extends TechnicalStructureController
 
     public function create(): View
     {
-        $company = TechnicalStructureCompany::get();
+        $companies = TechnicalStructureCompany::get();
 
-        return view('economic.technical.field.create', compact('company'));
+        return view('economic.technical.field.create', compact('companies'));
     }
 
     public function edit(int $id): View
     {
         $model = $this->model::findOrFail($id);
 
-        $company = TechnicalStructureCompany::get();
+        $companies = TechnicalStructureCompany::get();
 
         return view(
             'economic.technical.field.edit',
-            compact('model', 'company')
+            compact('model', 'companies')
         );
     }
 }

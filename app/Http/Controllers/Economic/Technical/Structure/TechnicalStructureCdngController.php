@@ -18,20 +18,20 @@ class TechnicalStructureCdngController extends TechnicalStructureController
 
     public function create(): View
     {
-        $ngdu = TechnicalStructureNgdu::get();
+        $ngdus = TechnicalStructureNgdu::get();
 
-        return view('economic.technical.cdng.create', compact('ngdu'));
+        return view('economic.technical.cdng.create', compact('ngdus'));
     }
 
     public function edit(int $id): View
     {
         $model = $this->model::findOrFail($id);
 
-        $ngdu = TechnicalStructureNgdu::get();
+        $ngdus = TechnicalStructureNgdu::get();
 
         return view(
             'economic.technical.cdng.edit',
-            compact('model', 'ngdu')
+            compact('model', 'ngdus')
         );
     }
 }

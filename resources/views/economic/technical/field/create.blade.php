@@ -27,9 +27,9 @@
                                     <div class="form-group">
                                         <strong>{{ __('forecast.company') }}:</strong>
                                         <select class="form-control" name="company_id">
-                                            @foreach ($company as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->name }}
+                                            @foreach ($companies as $company)
+                                                <option value="{{ $company->id }}">
+                                                    {{ $company->name }}
                                                 </option>
                                             @endforeach
                                         </select>

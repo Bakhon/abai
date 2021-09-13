@@ -18,20 +18,20 @@ class TechnicalStructureGuController extends TechnicalStructureController
 
     public function create(): View
     {
-        $cdng = TechnicalStructureCdng::get();
+        $cdngs = TechnicalStructureCdng::get();
 
-        return view('economic.technical.gu.create', compact('cdng'));
+        return view('economic.technical.gu.create', compact('cdngs'));
     }
 
     public function edit(int $id): View
     {
         $model = $this->model::findOrFail($id);
 
-        $cdng = TechnicalStructureCdng::get();
+        $cdngs = TechnicalStructureCdng::get();
 
         return view(
             'economic.technical.gu.edit',
-            compact('model', 'cdng')
+            compact('model', 'cdngs')
         );
     }
 }

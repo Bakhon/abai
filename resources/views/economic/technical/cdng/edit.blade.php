@@ -28,15 +28,14 @@
                                     <div class="form-group">
                                         <strong>{{ __('forecast.NGDU') }}:</strong>
                                         <select class="form-control" name="ngdu_id">
-                                            <option>Select Item</option>
-                                            @foreach ($ngdu as $item)
-                                                @if($item->id==$model->ngdu_id)
-                                                    <option value="{{ $item->id }}" selected>
-                                                        {{ $item->name }}
+                                            @foreach ($ngdus as $ngdu)
+                                                @if($ngdu->id === $model->ngdu_id)
+                                                    <option value="{{ $ngdu->id }}" selected>
+                                                        {{ $ngdu->name }}
                                                     </option>
                                                 @else
-                                                    <option value="{{ $item->id }}">
-                                                        {{ $item->name }}
+                                                    <option value="{{ $ngdu->id }}">
+                                                        {{ $ngdu->name }}
                                                     </option>
                                                 @endif
                                             @endforeach

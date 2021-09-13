@@ -28,14 +28,14 @@
                                     <div class="form-group">
                                         <strong>{{ __('forecast.company') }}:</strong>
                                         <select class="form-control" name="company_id">
-                                            @foreach ($company as $item)
-                                                @if($item->id==$model->company_id)
-                                                    <option value="{{ $item->id }}" selected>
-                                                        {{ $item->name }}
+                                            @foreach ($companies as $company)
+                                                @if($company->id === $model->company_id)
+                                                    <option value="{{ $company->id }}" selected>
+                                                        {{ $company->name }}
                                                     </option>
                                                 @else
-                                                    <option value="{{ $item->id }}">
-                                                        {{ $item->name }}
+                                                    <option value="{{ $company->id }}">
+                                                        {{ $company->name }}
                                                     </option>
                                                 @endif
                                             @endforeach

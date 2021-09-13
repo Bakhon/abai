@@ -24,7 +24,7 @@ abstract class TechnicalStructureController extends Controller
 
     public function index(): View
     {
-        $models = $this->model::latest()->paginate(self::PAGINATION);
+        $models = $this->model::latest('id')->paginate(self::PAGINATION);
 
         return view($this->viewPath("index"), compact('models'));
     }

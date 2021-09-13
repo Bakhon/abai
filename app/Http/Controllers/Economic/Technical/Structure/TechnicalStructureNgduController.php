@@ -2,61 +2,36 @@
 
 namespace App\Http\Controllers\Economic\Technical\Structure;
 
+use App\Http\Requests\Economic\Technical\Structure\TechnicalStructureStoreNgduRequest;
 use App\Models\Refs\TechnicalStructureField;
 use App\Models\Refs\TechnicalStructureNgdu;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 
 class TechnicalStructureNgduController extends TechnicalStructureController
 {
+    protected $viewName = 'ngdu';
+
     protected $model = TechnicalStructureNgdu::class;
 
-    protected $controller_name = 'ngdu';
-    protected $indexRoute = "tech_struct_ngdu.index";
+    protected $storeRequest = TechnicalStructureStoreNgduRequest::class;
 
     public function create(): View
     {
-        $field = TechnicalStructureField::get();
+        $fields = TechnicalStructureField::get();
 
-        return view('technical_forecast.ngdu.create', compact('field'));
-    }
-
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => 'required',
-            'field_id' => 'required'
-        ]);
-
-        $dataArray = $request->all();
-        $dataArray['user_id'] = auth()->user()->id;
-        $this->model::create($dataArray);
-
-        return redirect()->route($this->indexRoute)->with('success', __('app.created'));
+        return view('economic.technical.ngdu.create', compact('fields'));
     }
 
     public function edit(int $id): View
     {
-        $technicalForecast = $this->model::find($id);
-        $field = TechnicalStructureField::get();
-        return view('technical_forecast.ngdu.edit', compact('technicalForecast', 'field'));
+        $model = $this->model::findOrFail($id);
+
+        $fields = TechnicalStructureField::get();
+
+        return view(
+            'economic.technical.ngdu.edit',
+            compact('model', 'fields')
+        );
     }
-
-    public function update(Request $request, int $id): RedirectResponse
-    {
-        $technicalForecast = $this->model::find($id);
-        $request->validate([
-            'name' => 'required',
-            'field_id' => 'required'
-        ]);
-
-        $dataArray = $request->all();
-        $dataArray['user_id'] = auth()->user()->id;
-        $technicalForecast->update($dataArray);
-
-        return redirect()->route($this->indexRoute)->with('success', __('app.updated'));
-    }
-
 }

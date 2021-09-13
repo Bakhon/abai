@@ -28,14 +28,14 @@
                                     <div class="form-group">
                                         <strong>{{ __('forecast.CDNG') }}:</strong>
                                         <select class="form-control" name="cdng_id">
-                                            @foreach ($cdng as $item)
-                                                @if($item->id==$model->cdng_id)
-                                                    <option value="{{ $item->id }}" selected>
-                                                        {{ $item->name }}
+                                            @foreach ($cdngs as $cdng)
+                                                @if($cdng->id === $model->cdng_id)
+                                                    <option value="{{ $cdng->id }}" selected>
+                                                        {{ $cdng->name }}
                                                     </option>
                                                 @else
-                                                    <option value="{{ $item->id }}">
-                                                        {{ $item->name }}
+                                                    <option value="{{ $cdng->id }}">
+                                                        {{ $cdng->name }}
                                                     </option>
                                                 @endif
                                             @endforeach

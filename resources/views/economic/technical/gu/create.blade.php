@@ -27,9 +27,9 @@
                                     <div class="form-group">
                                         <strong>{{ __('forecast.CDNG') }}:</strong>
                                         <select class="form-control" name="cdng_id">
-                                            @foreach ($cdng as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->name }}
+                                            @foreach ($cdngs as $cdng)
+                                                <option value="{{ $cdng->id }}">
+                                                    {{ $cdng->name }}
                                                 </option>
                                             @endforeach
                                         </select>

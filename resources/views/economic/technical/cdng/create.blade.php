@@ -28,9 +28,9 @@
                                     <div class="form-group">
                                         <strong>{{ __('forecast.NGDU') }}:</strong>
                                         <select class="form-control" name="ngdu_id">
-                                            @foreach ($ngdu as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->name }}
+                                            @foreach ($ngdus as $ngdu)
+                                                <option value="{{ $ngdu->id }}">
+                                                    {{ $ngdu->name }}
                                                 </option>
                                             @endforeach
                                         </select>
