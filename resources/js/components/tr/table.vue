@@ -883,10 +883,12 @@ export default {
         },
         toggle() {
             this.show = !this.show
-
             if (!this.show) {
-                    this.$refs.dropdown.show()
-                } else {this.$refs.dropdown.hide()}},
+                this.$refs.dropdown.show()
+            } else {
+                this.$refs.dropdown.hide()
+            }
+        },
     }
 }
 </script>
