@@ -274,7 +274,7 @@ overflow-y: hidden !important;
 }
 /* width */
 ::-webkit-scrollbar {
-width: 10px;
+width: 5px;
 }
 
 /* Track */
@@ -314,5 +314,13 @@ fill: #394066;
 }
 .style-chooser .vs__searchable {
 width: 2px;
+}
+.plan_events_filter {
+  width: 169px;
+}
+.plan_event_filter_text {
+  display: flex;
+  justify-content: center;
+  margin-left: -11px;
 }
 

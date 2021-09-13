@@ -1454,36 +1454,36 @@
                   <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('planned_events')"></i>
                       <div>
-                        <b-dropdown id="dropdownFilterCustom" no-caret  toggle-class="drop-filter-custom" >
+                        <b-dropdown no-caret toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter" :class="selectEvent.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
+                            <i class="fas fa-filter" :class="selectWellName.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
-                            <b-dropdown-form class="external_field_filter">
+                            <b-dropdown-form class="plan_events_filter">
                               <b-form-group
                                 label=""
                                 v-slot="{ ariaDescribedby }"
                                 @submit.stop.prevent
-                                class="field_form_fil"
+                                class="p_events_form_fil"
                               >
                                 <b-form-checkbox-group
-                                  v-model="selectEvent"
-                                  :options="eventFilterData"
-                                  :aria-describedby="ariaDescribedby"                                  
-                                >
-                                </b-form-checkbox-group>
+                                v-model="selectEvent"
+                                :options="eventFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
                               </b-form-group>
-                              <div class="field_filter_text">
+                              <div class="plan_event_filter_text">
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
-                                  >{{trans('tr.choose_t')}}
+                                  >{{trans('tr.form')}}
                                   </a>
-                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_EVENT')"
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_WELLNAME')"
                                   >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>
                           </b-dropdown>
                         </div>
-                      </div>
+                    </div>
                   </td>
                 </tr>
               </thead>
@@ -6775,23 +6775,27 @@ tr:nth-child(even) td {
 }
 
 /* width */
-table::-webkit-scrollbar {
-  width: 13px;
+::-webkit-scrollbar {
+  width: 5px;
 }
 
 /* Track */
-table::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: #333975;
 }
 
 /* Handle */
-table::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: #656A8A;
 }
 
 /* Handle on hover */
-table::-webkit-scrollbar-thumb:hover {
-  background: #656A8A;  
+::-webkit-scrollbar-thumb:hover {
+  background: #656A8A;
+}
+/* the bottom corner of the scrollbar, where both horizontal and vertical scrollbars meet This is often the bottom-right corner of the browser window.*/
+::-webkit-scrollbar-corner {
+  background: #333975;
 }
 
 table::-webkit-scrollbar-corner {

@@ -348,7 +348,7 @@
                           <template #button-content class="outer_button_filter">        
                             <i class="fas fa-filter" :class="selectWellName.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
-                            <b-dropdown-form class="external_well_filter">
+                            <b-dropdown-form class="plan_events_filter">
                               <b-form-group
                                 label=""
                                 v-slot="{ ariaDescribedby }"
@@ -362,7 +362,7 @@
                               >
                               </b-form-checkbox-group>
                               </b-form-group>
-                              <div class="field_filter_text">
+                              <div class="plan_event_filter_text">
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
                                   >{{trans('tr.form')}}
                                   </a>
@@ -980,7 +980,8 @@ position: static;
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
+  height: 5px;
 }
 
 /* Track */
@@ -991,11 +992,16 @@ position: static;
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #656A8A;
+  width: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #272953;
+  background: #656A8A;
+}
+/* the bottom corner of the scrollbar, where both horizontal and vertical scrollbars meet This is often the bottom-right corner of the browser window.*/
+::-webkit-scrollbar-corner {
+  background: #333975;
 }
 .activ {
   border-bottom: 2px solid rgb(145, 145, 145) ;
