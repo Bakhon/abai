@@ -6,7 +6,6 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Well;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class WellRegister extends PlainForm
@@ -45,15 +44,13 @@ class WellRegister extends PlainForm
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $wellId)->first();
     }
 
-    public function getResults(): JsonResponse
+    public function getResults(): array
     {
-        return response()->json(
-            [
-                'rows' => [],
-                'columns' => [],
-                'form' => $this->params()
-            ]
-        );
+        return [
+            'rows' => [],
+            'columns' => [],
+            'form' => $this->params()
+        ];
     }
 
     protected function getCustomValidationErrors(): array

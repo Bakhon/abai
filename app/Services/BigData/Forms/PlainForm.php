@@ -10,7 +10,6 @@ use App\Models\BigData\Well;
 use App\Services\BigData\DictionaryService;
 use App\Services\BigData\Forms\History\PlainFormHistory;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -135,63 +134,53 @@ abstract class PlainForm extends BaseForm
         }
     }
 
-    public function getResults(): JsonResponse
+    public function getResults(): array
     {
         $wellId = $this->request->get('well_id');
-        try {
-            $query = DB::connection('tbd')
-                ->table($this->params()['table'])
-                ->where('well', $wellId)
-                ->orderBy('id', 'desc');
 
-            $rows = $query->get();
+        $query = DB::connection('tbd')
+            ->table($this->params()['table'])
+            ->where('well', $wellId)
+            ->orderBy('id', 'desc');
 
-            if (!empty($this->params()['sort'])) {
-                foreach ($this->params()['sort'] as $sort) {
-                    if ($sort['order'] === 'desc') {
-                        $rows->sortByDesc($sort['field']);
-                    } else {
-                        $rows->sortBy($sort['field']);
-                    }
+        $rows = $query->get();
+
+        if (!empty($this->params()['sort'])) {
+            foreach ($this->params()['sort'] as $sort) {
+                if ($sort['order'] === 'desc') {
+                    $rows->sortByDesc($sort['field']);
+                } else {
+                    $rows->sortBy($sort['field']);
                 }
             }
-
-            $rows = $this->formatRows($rows);
-
-            $columns = $this->getFields()->filter(
-                function ($item) {
-                    if (isset($item['depends_on'])) {
-                        return false;
-                    }
-
-                    if (isset($this->params()['table_fields'])) {
-                        return in_array($item['code'], $this->params()['table_fields']);
-                    }
-
-                    return $item['type'] !== 'table';
-                }
-            )
-                ->mapWithKeys(
-                    function ($item) {
-                        return [$item['code'] => $item];
-                    }
-                );
-
-            return response()->json(
-                [
-                    'rows' => $rows->values(),
-                    'columns' => $columns,
-                    'form' => $this->params()
-                ]
-            );
-        } catch (\Exception $e) {
-            return response()->json(
-                [
-                    'error' => $e->getMessage()
-                ],
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
         }
+
+        $rows = $this->formatRows($rows);
+
+        $columns = $this->getFields()->filter(
+            function ($item) {
+                if (isset($item['depends_on'])) {
+                    return false;
+                }
+
+                if (isset($this->params()['table_fields'])) {
+                    return in_array($item['code'], $this->params()['table_fields']);
+                }
+
+                return $item['type'] !== 'table';
+            }
+        )
+            ->mapWithKeys(
+                function ($item) {
+                    return [$item['code'] => $item];
+                }
+            );
+
+        return [
+            'rows' => $rows->values(),
+            'columns' => $columns,
+            'form' => $this->params()
+        ];
     }
 
     public function getCalculatedFields(int $wellId, array $values): array
@@ -267,7 +256,9 @@ abstract class PlainForm extends BaseForm
         foreach ($params['tabs'] as &$tab) {
             foreach ($tab['blocks'] as &$block) {
                 foreach ($block as &$subBlock) {
-                    if (empty($subBlock['items'])) continue;
+                    if (empty($subBlock['items'])) {
+                        continue;
+                    }
                     foreach ($subBlock['items'] as &$item) {
                         if (empty($item['depends_on'])) {
                             continue;
