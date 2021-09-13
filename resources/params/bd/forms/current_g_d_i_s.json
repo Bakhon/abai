@@ -1,21 +1,5 @@
 {
   "type": "table",
   "columns": [
-    {
-      "title": "cycle_per_minute",
-      "code": "cycle_per_minute",
-      "table": "prod.gdis_current_value",
-      "column": "value_double",
-      "additional_filter": {
-        "metric": {
-          "table": "dict.metric",
-          "fields": {
-            "code": "RPM"
-          }
-        }
-      },
-      "type": "float",
-      "is_editable": false
-    }
   ]
 }

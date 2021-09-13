@@ -57,7 +57,7 @@
                   <a :href="row[column.code].href">{{ row[column.code].name }}</a>
                 </template>
                 <template v-else-if="column.type === 'label'">
-                  <label v-html="row[column.code].name"></label>
+                  <label v-html="row[column.code].name || ''"></label>
                 </template>
                 <template v-else-if="column.type === 'calc'">
                   <span class="value" v-html="row[column.code] ? row[column.code].value : ''"></span>

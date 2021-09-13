@@ -4,61 +4,99 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\GdisCurrent;
 use Illuminate\Support\Collection;
 
 class CurrentGDIS extends TableForm
 {
     protected $configurationFileName = 'current_g_d_i_s';
+    protected $gdisFields = [
+        [
+            'code' => 'conclusion',
+            'type' => 'dict',
+            'dict' => 'gdis_conclusion',
+        ],
+        [
+            'code' => 'target',
+            'type' => 'text'
+        ],
+        [
+            'code' => 'device',
+            'type' => 'dict',
+            'dict' => 'device'
+        ],
+        [
+            'code' => 'transcript_dynamogram',
+            'type' => 'text'
+        ],
+        [
+            'code' => 'note',
+            'type' => 'text'
+        ],
+        [
+            'code' => 'conclusion_text',
+            'type' => 'text'
+        ],
+        [
+            'code' => 'file_dynamogram',
+            'type' => 'file'
+        ],
+    ];
 
-    public function getRows(array $params = []): array
+    protected $metricCodes = [
+        'FLVL',
+        'BHP',
+        'MLP',
+        'INJR',
+        'FLRT',
+        'FLRD',
+        'WCUT',
+        'GASR',
+        'ADMCF',
+        'PDCF',
+        'RRP',
+        'RP',
+        'BP',
+        'STP',
+        'OTP',
+        'TBP',
+        'STLV',
+        'RSVT',
+        'RSD',
+        'PRDK',
+        'DBD',
+        'SLHDM',
+        'PSHDM',
+        'PSD',
+        'OTPM',
+        'TPDM',
+        'PLST',
+        'PMPR',
+        'SHDMD',
+        'SHDME',
+        'RPM'
+    ];
+
+    public function getResults(): array
     {
-        $gdisFields = [
-            'conclusion',
-            'target',
-            'device',
-            'transcript_dynamogram',
-            'note',
-            'conclusion_text',
-            'file_dynamogram',
-        ];
+        $measurements = $this->getMeasurements();
+        $rows = $this->getRows($measurements);
+        $columns = $this->getColumns($measurements);
 
-        $metricCodes = [
-            'FLVL',
-            'BHP',
-            'MLP',
-            'INJR',
-            'FLRT',
-            'FLRD',
-            'WCUT',
-            'GASR',
-            'ADMCF',
-            'PDCF',
-            'RRP',
-            'RP',
-            'BP',
-            'STP',
-            'OTP',
-            'TBP',
-            'STLV',
-            'RSVT',
-            'RSD',
-            'PRDK',
-            'DBD',
-            'SLHDM',
-            'PSHDM',
-            'PSD',
-            'OTPM',
-            'TPDM',
-            'PLST',
-            'PMPR',
-            'SHDMD',
-            'SHDME',
-            'RPM'
+        return [
+            'columns' => $columns,
+            'rows' => $rows
         ];
+    }
+
+    private function getMeasurements()
+    {
+        $wellId = $this->request->get('id');
+        $wellId = 1524;
 
         $dates = GdisCurrent::query()
-            ->where('well', $this->request->get('id'))
+            ->where('well', $wellId)
             ->select('meas_date')
             ->orderBy('meas_date', 'desc')
             ->distinct()
@@ -72,8 +110,8 @@ class CurrentGDIS extends TableForm
         }
         $oldestDate = $dates->last()->meas_date;
 
-        $measurements = GdisCurrent::query()
-            ->where('well', $this->request->get('id'))
+        return GdisCurrent::query()
+            ->where('well', $wellId)
             ->where('meas_date', '>=', $oldestDate)
             ->orderBy('meas_date', 'desc')
             ->orderBy('id', 'desc')
@@ -82,38 +120,107 @@ class CurrentGDIS extends TableForm
             ->groupBy(function ($item) {
                 return $item->meas_date->format('d.m.Y');
             })
-            ->map(function ($items) use ($metricCodes, $gdisFields) {
-                $result = [];
+            ->map(function ($items, $date) {
+                $result = [
+                    'date' => $date
+                ];
 
-                foreach ($gdisFields as $field) {
-                    $item = $items->whereNotNull($field)->first();
+                foreach ($this->gdisFields as $field) {
+                    $item = $items->whereNotNull($field['code'])->first();
                     if (!empty($item)) {
-                        $result[$field] = $item->$field;
+                        $result['fields'][$field['code']] = [
+                            'value' => $item->{$field['code']},
+                        ];
                     }
                 }
 
-                $itemsWithMetrics = $items->filter(function ($item) use ($metricCodes) {
+                foreach ($items as $item) {
                     foreach ($item->values as $value) {
-                        if (in_array($value->metricItem->code, $metricCodes)) {
-                            return true;
+                        if (in_array($value->metricItem->code, $this->metricCodes)) {
+                            $result['metrics'][$value->metricItem->code] = [
+                                'value' => $value->value_double ?? $value->value_string
+                            ];
                         }
                     }
-                    return false;
-                });
+                }
 
                 return $result;
             });
+    }
 
-        dd($measurements);
+    private function getRows(Collection $measurements): array
+    {
+        return array_merge(
+            $this->getGdisFieldRows($measurements),
+            $this->getGdisMetricRows($measurements),
+        );
+    }
 
-        $columns = $this->getColumns($measurements);
+    public function getGdisFieldRows(Collection $measurements)
+    {
+        $rows = [];
+        foreach ($this->gdisFields as $field) {
+            $row = [
+                'value' => [
+                    'name' => trans('bd.forms.current_g_d_i_s.' . $field['code'])
+                ],
+                'last_measure_date' => ['name' => null],
+                'last_measure_value' => [
+                    'value' => null,
+                    'params' => [
+                        'type' => 'field',
+                        'code' => $field['code']
+                    ]
+                ],
+            ];
+            foreach ($measurements as $date => $measurement) {
+                if (isset($measurement['fields'][$field['code']])) {
+                    $row[$date] = $measurement['fields'][$field['code']];
+                    if (empty($row['last_measure_value']['value'])) {
+                        $row['last_measure_date'] = ['name' => $date];
+                        $row['last_measure_value']['value'] = $row[$date]['value'];
+                    }
+                }
+            }
 
-        dd($measurements, $columns);
+            $rows[] = $row;
+        }
+        return $rows;
+    }
 
-        return [
-            'columns' => $columns,
-            'rows' => $rows
-        ];
+    public function getGdisMetricRows(Collection $measurements)
+    {
+        $metricNames = Metric::whereIn('code', $this->metricCodes)
+            ->pluck('name_ru', 'code')
+            ->toArray();
+
+        $rows = [];
+        foreach ($this->metricCodes as $code) {
+            $row = [
+                'value' => [
+                    'name' => $metricNames[$code]
+                ],
+                'last_measure_date' => ['name' => null],
+                'last_measure_value' => [
+                    'value' => null,
+                    'params' => [
+                        'type' => 'metric',
+                        'code' => $code
+                    ]
+                ],
+            ];
+            foreach ($measurements as $date => $measurement) {
+                if (isset($measurement['metrics'][$code])) {
+                    $row[$date] = $measurement['metrics'][$code];
+                    if (empty($row['last_measure_value']['value'])) {
+                        $row['last_measure_date'] = ['name' => $date];
+                        $row['last_measure_value']['value'] = $row[$date]['value'];
+                    }
+                }
+            }
+            $rows[] = $row;
+        }
+        return $rows;
     }
 
     private function getColumns(Collection $measurements): array
@@ -132,16 +239,16 @@ class CurrentGDIS extends TableForm
             [
                 'code' => 'last_measure_value',
                 'title' => 'last_measure_value',
-                'type' => 'label',
+                'type' => 'text',
                 'is_editable' => true
             ],
         ];
 
-        foreach ($measurements as $measurement) {
+        foreach ($measurements as $date => $measurement) {
             $columns[] = [
-                'code' => 'meas_date_' . $measurement->meas_date->format('d_m_Y'),
-                'title' => $measurement->meas_date->format('d.m.Y'),
-                'type' => 'label',
+                'code' => $date,
+                'title' => $date,
+                'type' => 'text',
                 'is_editable' => false
             ];
         }
