@@ -13,7 +13,7 @@ class Kgm extends Dzo {
     protected function getCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType)
     {
         $condensateSummary = $companySummary;
-        $condensateSummary['id'] = $this->consolidatedNumberMapping[$type]['КГМКМГ'];
+        $condensateSummary['id'] = '';
         $condensateSummary['name'] = 'КГМКМГ';
         $condensateSummary['fact'] *= $this->condensateMultiplier;
         $condensateSummary['plan'] *= $this->condensateMultiplier;

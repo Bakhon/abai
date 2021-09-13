@@ -17,46 +17,9 @@ class Dzo {
         'condensateOpek' => 0,
         'decreaseReasonExplanations' => []
     );
-    protected $consolidatedNumberMapping = array (
-        'oilCondensateProduction' => array (
-            'ОМГ' => '1.1.',
-            'ОМГК' => '',
-            'ММГ' => '1.2.',
-            'ЭМГ' => '1.3.',
-            'КБМ' => '1.4.',
-            'КГМ' => '1.5.',
-            'КТМ' => '1.6.',
-            'КОА' => '1.7.',
-            'УО' => '1.8.',
-            'ТШО' => '1.9.',
-            'НКО' => '1.10.',
-            'КПО' => '1.11.',
-            'ПКИ' => '1.12.',
-            'ПККР' => '',
-            'КГМКМГ' => '',
-            'ТП' => '',
-            'АГ' => '1.13.',
-        ),
-        'oilCondensateDelivery' => array (
-            "ОМГ" => "1.1.",
-            "ОМГК" => "",
-            "ММГ" => "1.2.",
-            "ЭМГ" => "1.3.",
-            "КБМ" => "1.4.",
-            "КГМ" => "1.5.",
-            "КТМ" => "1.6.",
-            "КОА" => "1.7.",
-            "ТШО" => "1.8.",
-            "НКО" => "1.9.",
-            "ПКИ" => "1.10.",
-            "КГМКМГ" => "",
-            "ПККР" => "",
-            "ТП" => "",
-            "АГ" => "1.11."
-        ),
-    );
-    private $consolidatedFieldsMapping = array (
-        'oilCondensateProduction' => array(
+
+    protected $consolidatedFieldsMapping = array (
+        'production' => array(
             'fact' => 'oil_production_fact',
             'plan' => 'plan_oil',
             'opek' => 'plan_oil_opek',
@@ -64,7 +27,7 @@ class Dzo {
             'condensatePlan' => 'plan_kondensat',
             'condensateOpek' => 'plan_kondensat'
         ),
-        'oilCondensateDelivery' => array (
+        'delivery' => array (
             'fact' => 'oil_delivery_fact',
             'plan' => 'plan_oil_dlv',
             'opek' => 'plan_oil_dlv_opek',
@@ -88,6 +51,16 @@ class Dzo {
     );
 
     private $dzoMapping = array();
+
+    protected $decreaseReasonFields = array (
+        'opec_explanation_reasons',
+        'impulse_explanation_reasons',
+        'shutdown_explanation_reasons',
+        'accident_explanation_reasons',
+        'restriction_kto_explanation_reasons',
+        'gas_restriction_explanation_reasons',
+        'other_explanation_reasons'
+    );
 
     private function initializeDzo()
     {
@@ -168,6 +141,51 @@ class Dzo {
         return $summary;
     }
 
+    protected function getSummaryWithoutKMG($dzoFact,$dzoName,$filteredPlan,&$pkiSumm,$type,$periodType,$filteredYearlyPlan)
+    {
+        $this->initializeDzo();
+        $summary = array();
+        $daysInMonth = Carbon::parse($dzoFact[0]['date'])->daysInMonth;
+        $companySummary = $this->oilCondensateTemplate;
+        $companySummary['id'] = $this->consolidatedNumberMappingWithoutKmg[$type][$dzoName];
+        $companySummary['name'] = $dzoName;
+        $companySummary['fact'] = $dzoFact->sum($this->consolidatedFieldsMapping[$type]['fact']);
+        $companySummary['plan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']);
+        $companySummary['opek'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['opek']);
+        $companySummary['condensatePlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['condensatePlan']);
+        $companySummary['condensateFact'] = $dzoFact->sum($this->consolidatedFieldsMapping[$type]['condensateFact']);
+        $companySummary['condensateOpek'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['condensateOpek']);
+
+        if ($periodType === 'day') {
+            $companySummary['decreaseReasonExplanations'] = $this->getAccidentDescription($dzoFact);
+        }
+        if ($periodType === 'month') {
+            $companySummary = $this->getUpdatedForMonthPeriod($companySummary,$filteredPlan,$type,$daysInMonth);
+        }
+        if ($periodType === 'year') {
+            $companySummary = $this->getUpdatedForYearPeriod($companySummary,$filteredPlan,$type,$daysInMonth,$filteredYearlyPlan);
+        }
+        $condensateSummary = $companySummary;
+
+        if ($dzoName === 'АГ') {
+            $companySummary = $this->dzoMapping[$dzoName]->getOilCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$this->consolidatedFieldsMapping[$type]['condensatePlan'],$periodType);
+        }
+        if ($dzoName === 'ОМГ') {
+            $condensateSummary = $this->dzoMapping[$dzoName]->getOilCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$this->consolidatedFieldsMapping[$type]['condensatePlan'],$periodType);
+        }
+        if (is_null($companySummary['opek']) || $companySummary['opek'] == 0) {
+             $companySummary['opek'] = $companySummary['plan'];
+        }
+        if (is_null($condensateSummary['opek']) || $condensateSummary['opek'] == 0) {
+             $condensateSummary['opek'] = $condensateSummary['plan'];
+        }
+        if ($dzoName === 'ОМГ') {
+            array_push($summary,$condensateSummary);
+        }
+        array_push($summary,$companySummary);
+        return $summary;
+    }
+
     protected function getYearlyPlanBy($yearlyPlan,$fieldName)
     {
         $summary = 0;
@@ -238,5 +256,51 @@ class Dzo {
             array_push($chartData,$daySummary);
         }
         return $chartData;
+    }
+
+    protected function getAccidentDescription($dzoFact)
+    {
+        $accidents = array();
+        $dzoFactData = $dzoFact[0];
+        foreach($this->decreaseReasonFields as $fieldName) {
+            if (!is_null($dzoFactData['importDecreaseReason']) && isset($dzoFactData['importDecreaseReason'][$fieldName])) {
+               array_push($accidents,$dzoFactData['importDecreaseReason'][$fieldName]);
+            }
+        }
+        return $accidents;
+    }
+
+    protected function getSortedById($data,$type,$numberMapping)
+    {
+        $ordered = array();
+        foreach(array_keys($numberMapping[$type]) as $value) {
+            $key = array_search($value, array_column($data, 'name'));
+            if ($data[$key]) {
+                array_push($ordered,$data[$key]);
+            }
+        }
+        return $ordered;
+    }
+
+    protected function getUpdatedForMonthPeriod($companySummary,$filteredPlan,$type,$daysInMonth)
+    {
+        $summary = $companySummary;
+        $summary['monthlyPlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']) * $daysInMonth;
+        $summary['plan'] *= Carbon::now()->day - 1;
+        $summary['opek'] *= Carbon::now()->day - 1;
+        $summary['condensatePlan'] *= Carbon::now()->day - 1;
+        $summary['condensateOpek'] *= Carbon::now()->day - 1;
+        return $summary;
+    }
+
+    protected function getUpdatedForYearPeriod($companySummary,$filteredPlan,$type,$daysInMonth,$filteredYearlyPlan)
+    {
+        $summary = $companySummary;
+        $summary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$this->consolidatedFieldsMapping[$type]['plan']);
+        $summary['plan'] = $this->getCurrentPlanForYear($filteredPlan,'plan',$type);
+        $summary['opek'] = $this->getCurrentPlanForYear($filteredPlan,'opek',$type);
+        $summary['condensatePlan'] = $this->getCurrentPlanForYear($filteredPlan,'condensatePlan',$type);
+        $summary['condensateOpek'] = $this->getCurrentPlanForYear($filteredPlan,'condensateOpek',$type);
+        return $summary;
     }
 }

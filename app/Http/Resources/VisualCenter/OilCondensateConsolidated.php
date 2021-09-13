@@ -7,41 +7,46 @@ use App\Http\Resources\VisualCenter\Dzo;
 use Carbon\Carbon;
 
 class OilCondensateConsolidated extends Dzo {
-    private $companies = array ('ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','ТШО','НКО','КПО','ПКИ','ПКК','ТП','АГ');
-    private $consolidatedFieldsMapping = array (
-        'oilCondensateProduction' => array(
-            'fact' => 'oil_production_fact',
-            'plan' => 'plan_oil',
-            'opek' => 'plan_oil_opek',
-            'condensateFact' => 'condensate_production_fact',
-            'condensatePlan' => 'plan_kondensat',
-            'condensateOpek' => 'plan_kondensat'
-        ),
-        'oilCondensateDelivery' => array (
-            'fact' => 'oil_delivery_fact',
-            'plan' => 'plan_oil_dlv',
-            'opek' => 'plan_oil_dlv_opek',
-            'condensateFact' => 'condensate_delivery_fact',
-            'condensatePlan' => 'plan_kondensat_dlv',
-            'condensateOpek' => 'plan_kondensat_dlv'
-        ),
-        'gasProduction' => array(
-            'naturalFact' => 'natural_gas_production_fact',
-            'associatedFact' => 'associated_gas_production_fact',
-            'naruralPlan' => 'plan_prirod_gas',
-            'associatedPlan' => 'plan_poput_gas'
-        ),
-    );
 
-    private $decreaseReasonFields = array (
-        'opec_explanation_reasons',
-        'impulse_explanation_reasons',
-        'shutdown_explanation_reasons',
-        'accident_explanation_reasons',
-        'restriction_kto_explanation_reasons',
-        'gas_restriction_explanation_reasons',
-        'other_explanation_reasons'
+    protected $consolidatedNumberMapping = array (
+        'production' => array (
+            'ОМГ' => '1.1.',
+            'ОМГК' => '',
+            'ММГ' => '1.2.',
+            'ЭМГ' => '1.3.',
+            'КБМ' => '1.4.',
+            'КГМ' => '1.5.',
+            'КТМ' => '1.6.',
+            'КОА' => '1.7.',
+            'УО' => '1.8.',
+            'ТШО' => '1.9.',
+            'НКО' => '1.10.',
+            'КПО' => '1.11.',
+            'ПКИ' => '1.12.',
+            'ПККР' => '',
+            'КГМКМГ' => '',
+            'ТП' => '',
+            'АГ' => '1.13.',
+        ),
+        'delivery' => array (
+            "ОМГ" => "1.1.",
+            "ОМГК" => "",
+            "ММГ" => "1.2.",
+            "ЭМГ" => "1.3.",
+            "КБМ" => "1.4.",
+            "КГМ" => "1.5.",
+            "КТМ" => "1.6.",
+            "КОА" => "1.7.",
+            "ТШО" => "1.8.",
+            "НКО" => "1.9.",
+            "ПКИ" => "1.10.",
+            "КГМКМГ" => "",
+            "ПККР" => "",
+            "ТП" => "",
+            "АГ" => "1.11."
+        ),
     );
+    private $companies = array ('ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','ТШО','НКО','КПО','ПКИ','ПКК','ТП','АГ');
 
     public function getDataByConsolidatedCategory($factData,$planData,$periodRange,$type,$yearlyPlan,$periodType,$oneDzoSelected)
     {
@@ -80,7 +85,7 @@ class OilCondensateConsolidated extends Dzo {
               'yearlyPlan' => $pkiSumm['yearlyPlan'],
               'decreaseReasonExplanations' => []
         ));
-        $sorted = $this->getSortedById($summary,$type);
+        $sorted = $this->getSortedById($summary,$type,$this->consolidatedNumberMapping);
         return $sorted;
 
     }
@@ -147,54 +152,12 @@ class OilCondensateConsolidated extends Dzo {
         return $this->getSummaryByOilCondensate($dzoFact,$dzoName,$filteredPlan,$pkiSumm,$type,$periodType,$filteredYearlyPlan);
     }
 
-    protected function getUpdatedForMonthPeriod($companySummary,$filteredPlan,$type,$daysInMonth)
-    {
-        $summary = $companySummary;
-        $summary['monthlyPlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']) * $daysInMonth;
-        $summary['plan'] *= Carbon::now()->day - 1;
-        $summary['opek'] *= Carbon::now()->day - 1;
-        $summary['condensatePlan'] *= Carbon::now()->day - 1;
-        $summary['condensateOpek'] *= Carbon::now()->day - 1;
-        return $summary;
-    }
-
-    protected function getUpdatedForYearPeriod($companySummary,$filteredPlan,$type,$daysInMonth,$filteredYearlyPlan)
-    {
-        $summary = $companySummary;
-        $summary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$this->consolidatedFieldsMapping[$type]['plan']);
-        $summary['plan'] = $this->getCurrentPlanForYear($filteredPlan,'plan',$type);
-        $summary['opek'] = $this->getCurrentPlanForYear($filteredPlan,'opek',$type);
-        $summary['condensatePlan'] = $this->getCurrentPlanForYear($filteredPlan,'condensatePlan',$type);
-        $summary['condensateOpek'] = $this->getCurrentPlanForYear($filteredPlan,'condensateOpek',$type);
-        return $summary;
-    }
-
-    private function getSortedById($data,$type)
-    {
-        $ordered = array();
-        foreach(array_keys($this->consolidatedNumberMapping[$type]) as $value) {
-            $key = array_search($value, array_column($data, 'name'));
-            if ($data[$key]) {
-                array_push($ordered,$data[$key]);
-            }
-        }
-        return $ordered;
-    }
-
-    protected function getAccidentDescription($dzoFact)
-    {
-        $accidents = array();
-        $dzoFactData = $dzoFact[0];
-        foreach($this->decreaseReasonFields as $fieldName) {
-            if (!is_null($dzoFactData['importDecreaseReason']) && isset($dzoFactData['importDecreaseReason'][$fieldName])) {
-               array_push($accidents,$dzoFactData['importDecreaseReason'][$fieldName]);
-            }
-        }
-        return $accidents;
-    }
-
     public function getChartData($fact,$plan,$dzoName,$type)
     {
+        $dataType = 'production';
+        if (str_contains($type, 'delivery')) {
+            $dataType = 'delivery';
+        }
         if (!is_null($dzoName)) {
             $fact = $fact->filter(function($item) use($dzoName) {
                 return $item->dzo_name === $dzoName;
@@ -207,6 +170,6 @@ class OilCondensateConsolidated extends Dzo {
             $formattedPlan[$date][$item['dzo']] = $item->toArray();
         }
 
-        return $this->getChartDataByOilCondensate($formattedPlan,$fact,$type);
+        return $this->getChartDataByOilCondensate($formattedPlan,$fact,$dataType);
     }
 }

@@ -10,7 +10,7 @@ class Omg extends Dzo {
     protected function getOilCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$fieldName,$periodType)
     {
         $condensateSummary = $companySummary;
-        $condensateSummary['id'] = $this->consolidatedNumberMapping[$type]['ОМГК'];
+        $condensateSummary['id'] = '';
         $condensateSummary['name'] = 'ОМГК';
         $condensateSummary['fact'] = $companySummary['condensateFact'];
         $condensateSummary['plan'] = $companySummary['condensatePlan'];
