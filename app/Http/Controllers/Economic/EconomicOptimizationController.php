@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
 use App\Models\EcoRefsCost;
+use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -18,8 +19,8 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v4_gtm_optimize_v1';
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v4';
+    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v5_gtm_optimize_v2';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v5';
     const DATA_SOURCE_DATE = '2021/01/01';
 
     const SCENARIO_COLUMNS = [
@@ -35,7 +36,8 @@ class EconomicOptimizationController extends Controller
         "gtm_cost",
         "gtm_operating_profit_12m",
         "gtms",
-        "Barrel_ratio_export_scenario"
+        "Barrel_ratio_export_scenario",
+        'uwi_stop'
     ];
 
     const OPTIMIZED_COLUMNS = [
@@ -120,6 +122,7 @@ class EconomicOptimizationController extends Controller
                 'value' => $this->getOilPrice() ?? '0',
                 'url' => self::OIL_PRICE_URL
             ],
+            'gtms' => EcoRefsGtm::all()
         ];
     }
 
@@ -156,9 +159,6 @@ class EconomicOptimizationController extends Controller
             foreach (self::OPTIMIZED_COLUMNS as $column) {
                 foreach (self::columnPairs($column) as $originalColumn => $optimizedColumn) {
                     $scenarios[$index][$originalColumn] = [
-                        'value' => self::formatMoney($item[$originalColumn]),
-                        'value_optimized' => self::formatMoney($item[$optimizedColumn]),
-                        'percent' => EconomicNrsController::calcPercent($item[$optimizedColumn], $item[$originalColumn], 2),
                         'original_value' => $item[$originalColumn],
                         'original_value_optimized' => $item[$optimizedColumn],
                     ];
@@ -210,13 +210,24 @@ class EconomicOptimizationController extends Controller
             "scenario_id",
         ];
 
-        return $builder
-            ->select($columns)
-            ->doubleSum('Operating_profit_12m')
-            ->doubleSum('oil_12m')
-            ->doubleSum('liquid_12m')
-            ->groupBy($columns)
-            ->data();
+        $sumColumns = [
+            'Operating_profit_12m',
+            'Fixed_nopayroll_expenditures_12m',
+            'Fixed_payroll_expenditures_12m',
+            'oil_12m',
+            'liquid_12m',
+            'Revenue_total_12m',
+            'Overall_expenditures_12m',
+            'Overall_expenditures_full_12m',
+        ];
+
+        $builder->select($columns);
+
+        foreach ($sumColumns as $column) {
+            $builder->doubleSum($column);
+        }
+
+        return $builder->groupBy($columns)->data();
     }
 
     private function getDollarRate(): ?string
@@ -275,32 +286,6 @@ class EconomicOptimizationController extends Controller
             self::ORG_KAZ_GER => self::COMPANY_KAZ_GER,
             self::ORG_EMBA => self::COMPANY_EMBA,
             self::ORG_MANGISTAU => self::COMPANY_MANGISTAU,
-        ];
-    }
-
-    static function formatMoney(?float $digit): array
-    {
-        $digit = $digit ?? 0;
-
-        $digitAbs = abs($digit);
-
-        if ($digitAbs < 1000000) {
-            return [
-                number_format($digit / 1000, 2),
-                trans('economic_reference.thousand')
-            ];
-        }
-
-        if ($digitAbs < 1000000000) {
-            return [
-                number_format($digit / 1000000, 2),
-                trans('economic_reference.million')
-            ];
-        }
-
-        return [
-            number_format($digit / 1000000000, 2),
-            trans('economic_reference.billion')
         ];
     }
 

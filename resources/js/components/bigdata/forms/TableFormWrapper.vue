@@ -62,6 +62,7 @@
           :filter="filter"
           :params="params"
           :type="type"
+          :key="params.code"
           @initialized="init"
       >
       </BigDataTableForm>
@@ -412,6 +413,7 @@ body.fixed {
     border-radius: 8px;
     color: #fff;
     left: 50%;
+    max-width: 90%;
     min-width: 730px;
     padding: 20px 25px;
     position: absolute;

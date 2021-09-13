@@ -9,7 +9,6 @@
             class="row p-3"
             is-inline/>
 
-
         <div v-else
              class="row text-white text-wrap flex-nowrap mb-10px">
           <div
@@ -22,7 +21,7 @@
                 font-size="58"
                 line-height="72"
                 class="text-nowrap">
-              <span> {{ header.value }} </span>
+              <span> {{ header.value.toFixed(2) }} </span>
 
               <span class="font-size-16px line-height-20px text-blue">
                {{ header.dimension }}
@@ -39,13 +38,13 @@
                 {{ (100 + header.percent).toFixed(2) }} %
               </div>
 
-              <div>{{ header.baseValue }}</div>
+              <div>{{ header.baseValue.toFixed(2) }}</div>
             </div>
 
             <div v-if="form.scenario_id"
                  class="d-flex align-items-center">
               <percent-badge
-                  :percent="header.percent"
+                  :percent="header.percent.toFixed(2)"
                   class="text-nowrap mr-2"
                   reverse/>
 
@@ -158,7 +157,7 @@
 
               <div class="ml-2 d-flex align-items-center">
                 <span class="font-weight-bold">
-                  {{ subBlock.value.toLocaleString() }}
+                  {{ subBlock.value }}
                 </span>
 
                 <span class="ml-2 d-flex flex-column text-blue font-size-14px line-height-16px">
@@ -184,11 +183,11 @@
                   class="font-size-22px line-height-26px mr-1"/>
 
               <span class="font-size-24px line-height-28px font-weight-bold">
-                {{ Math.abs(subBlock.percent) }}
+                {{ Math.abs(+subBlock.percent) }}
               </span>
 
               <span class="ml-2 d-flex flex-column font-size-12px line-height-12px">
-                 <div>{{ subBlock.dimension }}</div>
+                 <div>{{ subBlock.percentDimension || subBlock.dimension }}</div>
 
                   <div v-if="subBlock.dimensionSuffix">
                     {{ subBlock.dimensionSuffix }}
@@ -303,7 +302,8 @@ let economicRes = {
   org: {
     id: '',
     name: ''
-  }
+  },
+  gtms: []
 }
 
 let columnPairs = (column) => {
@@ -361,9 +361,6 @@ let columnVariations = (column) => {
 optimizedColumns.forEach(column => {
   columnPairs(column).forEach(pair => {
     economicRes.scenarios[0][pair.original] = {
-      value: [0, ''],
-      value_optimized: [0, ''],
-      percent: 0,
       original_value: 0,
       original_value_optimized: 0,
     }
@@ -407,29 +404,34 @@ export default {
     ...globalloadingState(['loading']),
 
     calculatedHeaders() {
-      return [
+      let headers = [
         {
           name: this.trans('economic_reference.revenue'),
-          baseValue: this.scenario.Revenue_total.value[0],
-          value: this.scenario.Revenue_total[this.scenarioValueKey][0],
-          dimension: this.scenario.Revenue_total[this.scenarioValueKey][1],
-          percent: this.scenario.Revenue_total.percent
+          key: 'Revenue_total'
         },
         {
           name: this.trans('economic_reference.costs'),
-          baseValue: this.scenario.Overall_expenditures_full.value[0],
-          value: this.scenario.Overall_expenditures_full[this.scenarioValueKey][0],
-          dimension: this.scenario.Overall_expenditures_full[this.scenarioValueKey][1],
-          percent: this.scenario.Overall_expenditures_full.percent
+          key: 'Overall_expenditures_full'
         },
         {
           name: this.trans('economic_reference.operating_profit'),
-          baseValue: this.scenario.Operating_profit.value[0],
-          value: this.scenario.Operating_profit[this.scenarioValueKey][0],
-          dimension: this.scenario.Operating_profit[this.scenarioValueKey][1],
-          percent: this.scenario.Operating_profit.percent
+          key: 'Operating_profit'
         }
       ]
+
+      return headers.map(header => {
+        let scenarioValue = this.scenario[header.key]
+
+        let formattedValue = this.formatValue(scenarioValue[this.scenarioValueKey])
+
+        return {
+          name: header.name,
+          baseValue: this.formatValue(scenarioValue.original_value).value,
+          value: formattedValue.value,
+          dimension: formattedValue.dimension,
+          percent: this.calcPercent(scenarioValue[this.scenarioValueKey], scenarioValue.original_value)
+        }
+      })
     },
 
     remoteHeaders() {
@@ -457,10 +459,11 @@ export default {
           {
             title: this.trans('economic_reference.oil_production'),
             icon: 'oil_production.svg',
-            value: this.scenario.oil[this.scenarioValueKey][0],
-            dimension: this.scenario.oil[this.scenarioValueKey][1],
+            value: this.formatValue(this.scenario.oil[this.scenarioValueKey]).value,
+            dimension: this.formatValue(this.scenario.oil[this.scenarioValueKey]).dimension,
             dimensionSuffix: this.trans('economic_reference.tons'),
-            percent: this.oilPercent,
+            percent: this.formatValue(this.oilPercent).value,
+            percentDimension: this.formatValue(this.oilPercent).dimension,
             reverse: true,
             reversePercent: true
           },
@@ -477,7 +480,7 @@ export default {
           {
             title: this.trans('economic_reference.total_prs'),
             icon: 'total_prs.svg',
-            value: this.scenario.prs[this.scenarioValueKey][0] * 1000,
+            value: +this.scenario.prs[this.scenarioValueKey],
             dimension: this.trans('economic_reference.units'),
             percent: this.prsPercent,
             reversePercent: true
@@ -639,7 +642,7 @@ export default {
     },
 
     scenarioValueKey() {
-      return this.form.scenario_id ? 'value_optimized' : 'value'
+      return this.form.scenario_id ? 'original_value_optimized' : 'original_value'
     },
 
     dollarRatePercent() {
@@ -651,7 +654,7 @@ export default {
     },
 
     oilPercent() {
-      return ((this.scenario.oil.original_value - this.scenario.oil.original_value_optimized) / 1000).toFixed(2)
+      return this.scenario.oil.original_value - this.scenario.oil.original_value_optimized
     },
 
     prsPercent() {
@@ -780,8 +783,47 @@ export default {
           : 0
     },
 
-    updateTab(tab){
+    updateTab(tab) {
       this.isVisibleWellChanges = tab === 'well_changes'
+    },
+
+    formatValue(value) {
+      value = +value
+
+      let absoluteValue = Math.abs(+value)
+
+      if (absoluteValue < 1000000) {
+        return {
+          value: value / 1000,
+          dimension: this.trans('economic_reference.thousand')
+        }
+      }
+
+      if (absoluteValue < 1000000000) {
+        return {
+          value: value / 1000000,
+          dimension: this.trans('economic_reference.million')
+        }
+      }
+
+      return {
+        value: value / 1000000000,
+        dimension: this.trans('economic_reference.billion')
+      }
+    },
+
+    calcPercent(last, prev) {
+      last = +last
+
+      prev = +prev
+
+      if (!prev) {
+        return last ? 100 : 0;
+      }
+
+      return prev < 0
+          ? (prev - last) * 100 / prev
+          : (last - prev) * 100 / prev
     }
   }
 };

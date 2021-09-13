@@ -134,8 +134,8 @@ export default {
                     position: 'right',
                 },
                 chart: {
-                    background: 'rgba(39, 41, 83, 1)',
-                    foreColor: '#FFFFFF',
+                    background: 'rgba(255, 255, 255, 1)',
+                    foreColor: '#000000',
                     selection: {
                         enabled: true,
                         type: 'x',
@@ -154,6 +154,7 @@ export default {
                 },
                 yaxis: [
                     {
+                        seriesName: this.trans('app.liquid'),
                         opposite: true,
                         axisTicks: {
                             show: true,
@@ -164,38 +165,22 @@ export default {
                         },
                         labels: {
                             style: {
-                                colors: '#fff',
+                                colors: '#000000',
                             }
                         },
                         title: {
-                            text: this.trans('app.ndin'),
+                            text: '',
                             style: {
-                                color: '#fff',
+                                color: '#000000',
                             }
                         },
                     },
                     {
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#fff',
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.liquid'),
-                            style: {
-                                color: '#fff',
-                            }
-                        },
+                        seriesName: this.trans('app.oil'),
+                        show: false
                     },
                     {
+                        seriesName: this.trans('app.waterCut'),
                         opposite: true,
                         axisTicks: {
                             show: true,
@@ -206,37 +191,38 @@ export default {
                         },
                         labels: {
                             style: {
-                                colors: '#fff',
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.oil'),
-                            style: {
-                                color: '#fff',
-                            }
-                        },
-                    },
-                    {
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#fff',
+                                colors: '#000000',
                             }
                         },
                         title: {
                             text: this.trans('app.waterCut'),
                             style: {
-                                color: '#fff',
+                                color: '#000000',
                             }
                         },
                     },
+                    {
+                        seriesName: this.trans('app.ndin'),
+                        opposite: true,
+                        axisTicks: {
+                            show: true,
+                        },
+                        axisBorder: {
+                            show: true,
+                            color: 'rgba(69, 77, 125, 1)'
+                        },
+                        labels: {
+                            style: {
+                                colors: '#000000',
+                            }
+                        },
+                        title: {
+                            text: this.trans('app.ndin'),
+                            style: {
+                                color: '#000000',
+                            }
+                        },
+                    }
                 ],
                 tooltip: {
                     shared: true,
@@ -245,7 +231,7 @@ export default {
                 annotations: {
                     points: this.chartPoints,
                 },
-                colors:['rgba(33, 186, 78, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(72, 81, 95, 1)', 'rgba(33, 186, 78, 1)'],
+                colors:['rgba(33, 186, 78, 1)', 'rgba(130, 186, 255, 0.7)', 'rgba(72, 81, 95, 1)', 'rgba(255, 0, 0, 1)'],
             }
         },
     },

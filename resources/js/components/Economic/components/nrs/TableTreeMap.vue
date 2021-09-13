@@ -1,34 +1,45 @@
 <template>
-  <div class="text-white">
-    <div v-for="chart in charts" :key="chart.key">
-      <subtitle font-size="18" style="line-height: 26px">
-        {{ chart.title }}
-      </subtitle>
+  <div>
+    <select-tech-structure
+        :form="form"
+        form-key="ngdu"
+        class="mb-3"
+        @change="updateForm('cdng_id')"/>
 
-      <apexchart
-          :options="chartOptions(chart.key)"
-          :series="chartSeries[chart.key]"
-          type="treemap"
-          style="color: #000"/>
+    <select-tech-structure
+        v-if="form.ngdu_id"
+        :form="form"
+        :fetch-params="{ngdu_id: form.ngdu_id}"
+        form-key="cdng"
+        class="mb-3"
+        @change="updateForm('gu_id')"/>
+
+    <select-tech-structure
+        v-if="form.cdng_id"
+        :form="form"
+        :fetch-params="{cdng_id: form.cdng_id}"
+        form-key="gu"
+        class="mb-3"
+        @change="getWells"/>
+
+    <div v-for="chart in loading ? [] : charts"
+         :key="chart.title"
+         :id="chart.title">
     </div>
   </div>
 </template>
 
 <script>
-import chart from "vue-apexcharts";
+import {SELECTED_COLOR, treemapMixin} from "../../mixins/treemapMixin";
 
-import Subtitle from "../Subtitle";
-
-const RU = require("apexcharts/dist/locales/ru.json");
-
-const WELL_KEYS = ['oil', 'liquid', 'Operating_profit']
+import SelectTechStructure from "../SelectTechStructure";
 
 export default {
   name: "TableTreeMap",
   components: {
-    Subtitle,
-    apexchart: chart,
+    SelectTechStructure
   },
+  mixins: [treemapMixin],
   props: {
     data: {
       required: true,
@@ -36,7 +47,14 @@ export default {
     },
   },
   data: () => ({
-    selectedWells: []
+    form: {
+      gu_id: null,
+      ngdu_id: null,
+      cdng_id: null,
+      field_id: null,
+    },
+    selectedWells: [],
+    loading: false
   }),
   computed: {
     uwis() {
@@ -47,36 +65,36 @@ export default {
       return this.uwis.map(uwi => {
         let well = {uwi: uwi}
 
-        WELL_KEYS.forEach(key => well[key] = this.data.uwis[uwi][key].sum)
+        this.charts.forEach(chart => well[chart.key] = this.data.uwis[uwi][chart.key].sum)
 
         return well
-      })
-    },
-
-    sortedWells() {
-      return WELL_KEYS.map(key => {
-        return {
-          key: key,
-          wells: this.wells.sort((prev, next) => +next[key] - +prev[key])
-        }
       })
     },
 
     chartSeries() {
       let series = {}
 
-      this.sortedWells.forEach(item => {
-        let data = []
+      this.charts.forEach(chart => {
+        let wells = []
 
-        let colors = []
+        this.wells.forEach(well => {
+          let value = +well[chart.key]
 
-        item.wells.forEach(well => {
-          colors.push(this.getColor(well))
+          if (chart.hasOwnProperty('positive') && value < 0) return
 
-          data.push({x: well.uwi, y: +well[item.key]})
+          if (chart.hasOwnProperty('negative') && value >= 0) return
+
+          let color = this.getColor(well, 'Operating_profit')
+
+          wells.push({
+            name: well.uwi,
+            value: Math.abs(value),
+            fill: this.selectedWells.includes(well.uwi) ? SELECTED_COLOR : color,
+            fillOriginal: color
+          })
         })
 
-        series[item.key] = [{data: data, colors: colors}]
+        series[chart.title] = wells
       })
 
       return series
@@ -85,8 +103,14 @@ export default {
     charts() {
       return [
         {
-          title: this.trans('economic_reference.operating_profit'),
-          key: 'Operating_profit'
+          title: this.trans('economic_reference.operating_profit') + '+',
+          key: 'Operating_profit',
+          positive: true
+        },
+        {
+          title: this.trans('economic_reference.operating_profit') + '-',
+          key: 'Operating_profit',
+          negative: true
         },
         {
           title: this.trans('economic_reference.liquid_production'),
@@ -100,46 +124,41 @@ export default {
     }
   },
   methods: {
-    selectPoint(key, {seriesIndex, dataPointIndex}) {
-      let uwi = this.chartSeries[key][seriesIndex].data[dataPointIndex].x
+    async getWells() {
+      this.loading = true
 
-      let index = this.selectedWells.findIndex(well => well === uwi)
+      this.chartTrees = []
 
-      index === -1
-          ? this.selectedWells.push(uwi)
-          : this.selectedWells.splice(index, 1);
+      let url = this.localeUrl('/tech-data-forecast/get-data')
+
+      let params = {...{only_well_id: 1}, ...this.form}
+
+      const {data} = await this.axios.get(url, {params: params})
+
+      this.selectedWells = data
+
+      this.loading = false
+
+      this.$nextTick(() => this.plotCharts())
     },
 
-    getColor(well) {
-      if (this.selectedWells.includes(well.uwi)) {
-        return '#8125B0'
-      }
+    selectWells(wells) {
+      wells.forEach(well => {
+        this.chartTrees.forEach(tree => {
+          let item = tree.search('name', well)
 
-      return +well.Operating_profit > 0 ? '#13B062' : '#AB130E'
+          if (!item) return
+
+          item.set("fill", SELECTED_COLOR)
+        })
+      })
     },
 
-    chartOptions(key) {
-      return {
-        legend: {
-          show: false
-        },
-        colors: this.chartSeries[key][0].colors,
-        plotOptions: {
-          treemap: {
-            distributed: true,
-            enableShades: false,
-          }
-        },
-        chart: {
-          foreColor: '#FFFFFF',
-          locales: [RU],
-          defaultLocale: 'ru',
-          events: {
-            dataPointSelection: (event, chartContext, config) => this.selectPoint(key, config)
-          }
-        },
-      }
-    },
+    updateForm(key) {
+      this.form[key] = null
+
+      this.getWells()
+    }
   }
 }
 </script>

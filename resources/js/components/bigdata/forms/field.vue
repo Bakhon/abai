@@ -41,30 +41,35 @@
       </div>
     </template>
     <template v-else-if="item.type === 'checkbox'">
-       <label :for="`${item.code}`"></label>
-        <input
-            :name="item.code"
-            type="checkbox"
-            :id="`${item.code}`"
-            v-bind:checked="value"
-            v-on:input="$emit('input', $event.target.checked); $emit('change', $event.target.checked)"
-        >
+      <label :for="`${item.code}`"></label>
+      <input
+          :id="`${item.code}`"
+          :name="item.code"
+          type="checkbox"
+          v-bind:checked="value"
+          v-on:input="$emit('input', $event.target.checked); $emit('change', $event.target.checked)"
+      >
     </template>
     <template v-else-if="item.type === 'dict' && dict">
-      <v-select
-          :value="formatedValue"
-          label="name"
-          :options="dict"
-          @input="updateValue($event.id)"
-          :name="item.code"
-      >
-        <template #open-indicator="{ attributes }">
-          <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.5 1.00024L5.93356 4.94119C5.97145 4.97487 6.02855 4.97487 6.06644 4.94119L10.5 1.00024"
-                  stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-        </template>
-      </v-select>
+      <template v-if="item.is_editable === false">
+        <span>{{ formatedValue.text }}</span>
+      </template>
+      <template v-else>
+        <v-select
+            :name="item.code"
+            :options="dict"
+            :value="formatedValue"
+            label="name"
+            @input="updateValue($event.id)"
+        >
+          <template #open-indicator="{ attributes }">
+            <svg fill="none" height="6" viewBox="0 0 12 6" width="12" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.5 1.00024L5.93356 4.94119C5.97145 4.97487 6.02855 4.97487 6.06644 4.94119L10.5 1.00024"
+                    stroke="white" stroke-linecap="round" stroke-width="1.4"/>
+            </svg>
+          </template>
+        </v-select>
+      </template>
     </template>
     <template v-else-if="item.type === 'dict_tree'">
       <treeselect
