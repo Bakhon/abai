@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Refs;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Technical\StoreTechnicalDataForecastRequest;
-use App\Http\Requests\Technical\TechnicalDataForecastRequest;
+use App\Http\Requests\Economic\Technical\TechnicalDataForecastRequest;
+use App\Http\Requests\Economic\Technical\TechnicalDataForecastStoreRequest;
 use App\Models\Refs\TechnicalDataForecast;
 use App\Models\Refs\TechnicalStructureCdng;
 use App\Models\Refs\TechnicalStructureGu;
@@ -23,7 +23,7 @@ class TechnicalDataForecastController extends Controller
         return view('technical_forecast.production_data.index');
     }
 
-    public function store(StoreTechnicalDataForecastRequest $request): RedirectResponse
+    public function store(TechnicalDataForecastStoreRequest $request): RedirectResponse
     {
         $params = $request->validated();
 
@@ -50,7 +50,7 @@ class TechnicalDataForecastController extends Controller
         );
     }
 
-    public function update(StoreTechnicalDataForecastRequest $request, int $id): RedirectResponse
+    public function update(TechnicalDataForecastStoreRequest $request, int $id): RedirectResponse
     {
         $technicalDataForecast = TechnicalDataForecast::findOrFail($id);
 
