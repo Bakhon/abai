@@ -2,58 +2,36 @@
 
 namespace App\Http\Controllers\Economic\Technical\Structure;
 
+use App\Http\Requests\Economic\Technical\Structure\TechnicalStructureStoreGuRequest;
 use App\Models\Refs\TechnicalStructureCdng;
+use App\Models\Refs\TechnicalStructureGu;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 
 class TechnicalStructureGuController extends TechnicalStructureController
 {
-    protected $model = "App\Models\Refs\TechnicalStructureGu";
+    protected $viewName = 'gu';
 
-    protected $controller_name = 'gu';
-    protected $indexRoute = "tech_struct_gu.index";
+    protected $model = TechnicalStructureGu::class;
+
+    protected $storeRequest = TechnicalStructureStoreGuRequest::class;
 
     public function create(): View
     {
         $cdng = TechnicalStructureCdng::get();
-        return view('technical_forecast.gu.create',compact('cdng'));
-    }
 
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => 'required',
-            'cdng_id' => 'required'
-        ]);
-
-        $dataArray = $request->all();
-        $dataArray['user_id'] = auth()->user()->id;
-        $this->model::create($dataArray);
-
-        return redirect()->route($this->indexRoute)->with('success',__('app.created'));
+        return view('economic.technical.gu.create', compact('cdng'));
     }
 
     public function edit(int $id): View
     {
-        $technicalForecast = $this->model::find($id);
+        $model = $this->model::findOrFail($id);
+
         $cdng = TechnicalStructureCdng::get();
-        return view('technical_forecast.gu.edit',compact('technicalForecast', 'cdng'));
-    }
 
-    public function update(Request $request, int $id): RedirectResponse
-    {
-        $technicalForecast=$this->model::find($id);
-        $request->validate([
-            'name' => 'required',
-            'cdng_id' => 'required'
-        ]);
-
-        $dataArray = $request->all();
-        $dataArray['user_id'] = auth()->user()->id;
-        $technicalForecast->update($dataArray);
-
-        return redirect()->route($this->indexRoute)->with('success',__('app.updated'));
+        return view(
+            'economic.technical.gu.edit',
+            compact('model', 'cdng')
+        );
     }
 }
