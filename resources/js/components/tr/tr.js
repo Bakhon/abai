@@ -342,6 +342,7 @@ export default {
         this.$store.commit("tr/SET_BLOCK", []);
         this.$store.commit("tr/SET_EXPMETH", []);
         this.$store.commit("tr/SET_WELLNAME", []);
+        this.$store.commit("tr/SET_EVENT", []);
         this.axios
             .post(
                 this.postApiUrl + this.searchLink,
@@ -392,12 +393,13 @@ export default {
       this.$store.commit("tr/SET_BLOCK", []);
       this.$store.commit("tr/SET_EXPMETH", []);
       this.$store.commit("tr/SET_WELLNAME", []);
+      this.$store.commit("tr/SET_EVENT", []);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
       this.pageNumber = 1;
       this.pushChooseParameter();
     },
     checkFilter() {
-      if (this.$store.state.tr.field.length === 0 && this.$store.state.tr.horizon.length === 0 && this.$store.state.tr.wellType.length === 0 && this.$store.state.tr.object.length === 0 && this.$store.state.tr.block.length === 0 && this.$store.state.tr.expMeth.length === 0) {
+      if (this.$store.state.tr.field.length === 0 && this.$store.state.tr.horizon.length === 0 && this.$store.state.tr.wellType.length === 0 && this.$store.state.tr.object.length === 0 && this.$store.state.tr.block.length === 0 && this.$store.state.tr.expMeth.length === 0 && this.$store.state.tr.plannedEvents.length === 0) {
         this.checkAllFilters = false;
       }
       else {
@@ -419,6 +421,8 @@ export default {
             this.$store.commit(x, []);
         } else if (x === 'tr/SET_WELLTYPE') {
             this.$store.commit(x, []);
+        } else if (x === 'tr/SET_EVENT') {
+            this.$store.commit(x, []);            
         } else {
             this.$store.commit("tr/SET_WELLNAME", []);
         };
@@ -720,6 +724,7 @@ export default {
             this.$store.commit("tr/SET_WELLTYPE", []);
             this.$store.commit("tr/SET_BLOCK", []);
             this.$store.commit("tr/SET_EXPMETH", []);
+            this.$store.commit("tr/SET_EVENT", []);
             this.$store.commit("tr/SET_PAGENUMBER", 1);
             this.$store.commit("tr/SET_SEARCH", "");
             this.$store.commit("tr/SET_SORTTYPE", true);
@@ -748,6 +753,7 @@ export default {
         this.$store.commit("tr/SET_WELLTYPE", []);
         this.$store.commit("tr/SET_BLOCK", []);
         this.$store.commit("tr/SET_EXPMETH", []);
+        this.$store.commit("tr/SET_EVENT", []);
         this.$store.commit("tr/SET_PAGENUMBER", 1);
         this.$store.commit("tr/SET_SORTTYPE", true);
         this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
