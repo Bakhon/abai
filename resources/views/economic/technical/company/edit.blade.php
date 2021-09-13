@@ -30,10 +30,10 @@
                                         <strong>{{ __('forecast.NDO') }}:</strong>
                                         <input type="text" name="name" class="form-control"
                                                value="{{$model->name}}">
-                                        <strong>Сокращённое название компании:</strong>
+                                        <strong>{{trans('economic_reference.name_short')}}:</strong>
                                         <input type="text" name="short_name" class="form-control"
                                                value="{{$model->short_name}}">
-                                        <strong>ID в базе TBD:</strong>
+                                        <strong>TBD_ID:</strong>
                                         <input type="text" name="tbd_id" class="form-control"
                                                value="{{$model->tbd_id}}">
                                     </div>

@@ -2,59 +2,35 @@
 
 namespace App\Http\Controllers\Economic\Technical\Structure;
 
+use App\Http\Requests\Economic\Technical\Structure\TechnicalStructureStoreFieldRequest;
 use App\Models\Refs\TechnicalStructureCompany;
 use App\Models\Refs\TechnicalStructureField;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class TechnicalStructureFieldController extends TechnicalStructureController
 {
+    protected $viewName = 'field';
+
     protected $model = TechnicalStructureField::class;
 
-    protected $controller_name = 'field';
-    protected $indexRoute = "tech_struct_field.index";
+    protected $storeRequest = TechnicalStructureStoreFieldRequest::class;
 
     public function create(): View
     {
         $company = TechnicalStructureCompany::get();
-        return view('technical_forecast.field.create',compact('company'));
-    }
 
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => 'required',
-            'company_id' => 'required'
-        ]);
-
-        $dataArray = $request->all();
-        $dataArray['user_id'] = auth()->user()->id;
-        $this->model::create($dataArray);
-
-        return redirect()->route($this->indexRoute)->with('success',__('app.created'));
+        return view('economic.technical.field.create', compact('company'));
     }
 
     public function edit(int $id): View
     {
-        $technicalForecast = $this->model::find($id);
+        $model = $this->model::findOrFail($id);
+
         $company = TechnicalStructureCompany::get();
-        return view('technical_forecast.field.edit',compact('technicalForecast', 'company'));
+
+        return view(
+            'economic.technical.field.edit',
+            compact('model', 'company')
+        );
     }
-
-    public function update(Request $request, int $id): RedirectResponse
-    {
-        $technicalForecast=$this->model::find($id);
-        $request->validate([
-            'name' => 'required',
-            'company_id' => 'required'
-        ]);
-
-        $dataArray = $request->all();
-        $dataArray['user_id'] = auth()->user()->id;
-        $technicalForecast->update($dataArray);
-
-        return redirect()->route($this->indexRoute)->with('success',__('app.updated'));
-    }
-
 }

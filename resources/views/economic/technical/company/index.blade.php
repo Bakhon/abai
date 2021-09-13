@@ -26,9 +26,9 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
-                                <th>Название компании:</th>
-                                <th>Сокращённое название компании:</th>
-                                <th>ID в базе TBD:</th>
+                                <th>{{trans('economic_reference.name')}}:</th>
+                                <th>{{trans('economic_reference.name_short')}}:</th>
+                                <th>TBD_ID:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
                             @foreach ($models as $item)
