@@ -851,6 +851,7 @@ export default {
         },
         dropFilter(x) {
             this.$emit('dropFilters', x);
+            this.toggle();
         },
         getColor(status) {
             if (status === "1") return "#ffff00";

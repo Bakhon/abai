@@ -420,8 +420,8 @@ export default {
         `${this.trans('tr.total_oil_and_liquid_production_rate')}`,
         `${this.trans('tr.distribution_of_productivity_index')}`,
         `${this.trans('tr.distribution_of_wells_by_oil_production_rate')}`,
-        `${this.trans('tr.distribution_of_wells_by_fluid_flow_rate')}`,
         `${this.trans('tr.distribution_of_wells_by_water_cut')}`,
+        `${this.trans('tr.distribution_of_wells_by_fluid_flow_rate')}`,
       ],
       chartBarOptions: {
         colors: ["#00e396", "#feb019", "#5FA7FF", "#ff4560", "#554298"],
