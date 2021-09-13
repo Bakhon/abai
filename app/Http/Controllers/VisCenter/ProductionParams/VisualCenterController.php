@@ -118,33 +118,37 @@ class VisualCenterController extends Controller
             'wasteWaterInjection' => new WaterInjection(),
             'artezianWaterInjection' => new WaterInjection(),
         );
-        $tableData = array();
         $chartData = array();
 
+        if ($this->periodRange > 0) {
+            $chartData = $categoryMapping[$this->category]->getChartData($fact,$plan,$this->dzoName,$this->category);
+        }
+        return array (
+            'table' => $this->getTableData($categoryMapping,$fact,$plan,$historicalFact,$historicalPlan),
+            'chart' => $chartData
+        );
+    }
+
+    private function getTableData($categoryMapping,$fact,$plan,$historicalFact,$historicalPlan)
+    {
+        $tableData = array();
         $tableData['current']['oilCondensateProduction'] = $categoryMapping['oilCondensateProduction']->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'oilCondensateProduction',$this->yearlyPlan,$this->periodType,$this->dzoName);
         $tableData['historical']['oilCondensateProduction'] = $categoryMapping['oilCondensateProduction']->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'oilCondensateProduction',$this->yearlyPlan,$this->periodType,$this->dzoName);
         $tableData['current']['oilCondensateDelivery'] = $categoryMapping['oilCondensateDelivery']->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'oilCondensateDelivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
         $tableData['historical']['oilCondensateDelivery'] = $categoryMapping['oilCondensateDelivery']->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'oilCondensateDelivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
-
         $tableData['current']['oilCondensateProductionWithoutKMG'] = $categoryMapping['oilCondensateProductionWithoutKMG']->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'oilCondensateProductionWithoutKMG',$this->yearlyPlan,$this->periodType,$this->dzoName);
         $tableData['current']['oilCondensateDeliveryWithoutKMG'] = $categoryMapping['oilCondensateDeliveryWithoutKMG']->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'oilCondensateDeliveryWithoutKMG',$this->yearlyPlan,$this->periodType,$this->dzoName);
         $tableData['historical']['oilCondensateProductionWithoutKMG'] = $categoryMapping['oilCondensateProductionWithoutKMG']->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'oilCondensateProductionWithoutKMG',$this->yearlyPlan,$this->periodType,$this->dzoName);
         $tableData['historical']['oilCondensateDeliveryWithoutKMG'] = $categoryMapping['oilCondensateDeliveryWithoutKMG']->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'oilCondensateDeliveryWithoutKMG',$this->yearlyPlan,$this->periodType,$this->dzoName);
         $tableData['current'] = array_merge($tableData['current'],$categoryMapping['gasProduction']->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
         $tableData['historical'] = array_merge($tableData['historical'],$categoryMapping['gasProduction']->getDataByCategory($historicalFact,$historicalPlan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
-        if ($this->periodRange > 0) {
-            $chartData = $categoryMapping[$this->category]->getChartData($fact,$plan,$this->dzoName,$this->category);
-        }
         if ($this->category === 'oilCondensateDeliveryOilResidue') {
             $tableData['current']['oilCondensateDeliveryOilResidue'] = $categoryMapping['oilCondensateDeliveryOilResidue']->getDataByOilResidueCategory($fact,$this->periodRange,$this->dzoName);
         }
         if (str_contains(strtolower($this->category), 'water')) {
             $tableData['current'] = array_merge($tableData['current'], $categoryMapping['waterInjection']->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
         }
-        return array (
-            'table' => $tableData,
-            'chart' => $chartData
-        );
+        return $tableData;
     }
 
     private function getYearlyPlan()
