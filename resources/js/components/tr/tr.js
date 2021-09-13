@@ -30,6 +30,14 @@ export default {
     Multiselect,
   },
   computed: {
+    isFilterChecked() {
+      for (let column of this.filterList) {
+        if (this.$store.state.tr[column].length !== 0) {
+          return true;
+        }
+      }
+      return false;
+    },
     selectHorizon: {
       get(){
         return this.$store.state.tr.horizon;
@@ -306,7 +314,8 @@ export default {
       isMaxDate: true,
       isActiveHorizonFilterr: false,
       editedAddWells: [],
-      checkAllFilters: false,
+      filterList: ['field','horizon','wellType', 'object','block', 'expMeth','plannedEvents'],
+
     };
   },
   methods: {
@@ -397,14 +406,6 @@ export default {
       this.$store.commit("tr/SET_PAGENUMBER", 1);
       this.pageNumber = 1;
       this.pushChooseParameter();
-    },
-    checkFilter() {
-      if (this.$store.state.tr.field.length === 0 && this.$store.state.tr.horizon.length === 0 && this.$store.state.tr.wellType.length === 0 && this.$store.state.tr.object.length === 0 && this.$store.state.tr.block.length === 0 && this.$store.state.tr.expMeth.length === 0 && this.$store.state.tr.plannedEvents.length === 0) {
-        this.checkAllFilters = false;
-      }
-      else {
-        this.checkAllFilters = true;
-      }
     },
     dropFilter(x) {
         this.$store.commit("globalloading/SET_LOADING", true),
@@ -606,7 +607,6 @@ export default {
         this.editedWells = [];
         this.isShowFirst = false;
         this.isShowSecond = true;
-        this.checkAllFilters = false;
         this.loadPage();
     },
     reRender() {
