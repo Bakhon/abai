@@ -21,7 +21,7 @@
 @endsection
 @section('content')
     <div>
-        <gno-table :params='@json($permissionNames)'></gno-table>
+        <gno-table :user="{{json_encode(auth()->user())}}"></gno-table>
     </div>
 @endsection
 <link href="{{ asset('css/gno.css')}}" rel="stylesheet">

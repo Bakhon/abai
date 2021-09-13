@@ -255,9 +255,7 @@ export default {
             this.setTableFormat();
         },
         async wellWorkoverSave() {
-            if (parseFloat(this.wellWorkover.otm_well_workover_fact) > 0 && parseFloat(this.wellWorkover.otm_underground_workover) > 0) {
-                await this.storeWellWorkoverData();
-            }
+            await this.storeWellWorkoverData();
         },
         async chemistrySave() {
             this.chemistryErrorFields = [];

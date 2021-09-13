@@ -2,13 +2,14 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Models\Traits\MapObjectsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Zu extends Model
 {
-    use LogsActivity, SoftDeletes;
+    use LogsActivity, SoftDeletes, MapObjectsTrait;
 
     protected $guarded = ['id'];
     protected $hidden = [
@@ -31,21 +32,6 @@ class Zu extends Model
         return $this->hasMany(Well::class);
     }
 
-    public function ngdu()
-    {
-        return $this->belongsTo(Ngdu::class);
-    }
-
-    public function omgngdu()
-    {
-        return $this->hasMany(OmgNGDU::class);
-    }
-
-    public function watermeasurement()
-    {
-        return $this->hasMany(WaterMeasurement::class);
-    }
-
     public function oilgas()
     {
         return $this->hasMany(OilGas::class);
@@ -61,13 +47,18 @@ class Zu extends Model
         return $this->hasMany(OmgUHE::class);
     }
 
-    public function omgngdu_well()
-    {
-        return $this->hasMany(OmgNGDUWell::class);
-    }
-
-    public function omgngdu_zu()
+    public function omgngdu()
     {
         return $this->hasMany(OmgNGDUZu::class);
+    }
+
+    public function zu_cleanings()
+    {
+        return $this->hasMany(ZusCLeaning::class);
+    }    
+
+    public function omgngdu_well()
+    {
+        return $this->hasMany(OmgNGDUWell::class, 'zu_id');
     }
 }

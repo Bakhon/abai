@@ -12,10 +12,10 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <a class="btn btn-primary" href="{{ route('tech_data_forecast.index') }}">{{__('app.back')}}</a>
+                        <a class="btn btn-primary" href="{{ route('tech-data-forecast.index') }}">{{__('app.back')}}</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('tech_data_forecast.update', $technicalDataForecast->id) }}"
+                        <form action="{{ route('tech-data-forecast.update', $technicalDataForecast->id) }}"
                               method="POST"> @csrf @method('PUT')
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">

@@ -106,9 +106,12 @@ Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue'
 Vue.component('prs-crs', require('./components/gno/modals/PrsCrs.vue').default);
 Vue.component('inflow-curve', require('./components/gno/modals/InflowCurve.vue').default);
 Vue.component('economic', require('./components/gno/modals/Economic.vue').default);
+Vue.component('shgn-img', require('./components/gno/components/ShgnImg.vue').default);
 Vue.component('economic-table', require('./components/gno/modals/EconomicTable.vue').default);
 Vue.component('near-wells-table', require('./components/gno/modals/NearWellsTable.vue').default);
 Vue.component('pgno-analysis', require('./components/gno/modals/AnalysisMenu.vue').default);
+Vue.component('pgno-sensitive-settings', require('./components/gno/modals/SensitiveSettings.vue').default);
+Vue.component('pgno-sensitive-result', require('./components/gno/modals/SensitiveResult.vue').default);
 Vue.component('monitor-table', require('./components/complicationMonitoring/monitor/MonitorTable.vue').default);
 Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/complicationMonitoring/omgca/form.vue').default);
@@ -119,9 +122,11 @@ Vue.component('omgngdu-zu-form', require('./components/complicationMonitoring/om
 Vue.component('gu-form', require('./components/complicationMonitoring/gu/form.vue').default);
 Vue.component('zu-form', require('./components/complicationMonitoring/zu/form.vue').default);
 Vue.component('pipe-passport-form', require('./components/complicationMonitoring/pipePassport/form.vue').default);
+Vue.component('zu-cleanings-form', require('./components/complicationMonitoring/zuCleanings/form.vue').default);
+
 
 Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);
-Vue.component('gtm-main-page', require('./components/GTM/Main.vue').default);
+Vue.component('gtm-main-page', require('./components/GTM/GtmMain.vue').default);
 Vue.component('gtm-main-indicator', require('./components/GTM/MainIndicator.vue').default);
 Vue.component('gtm-aegtm', require('./components/GTM/components/Aegtm.vue').default);
 Vue.component('gtm-aegtm-eco', require('./components/GTM/components/AegtmEco.vue').default);
@@ -130,8 +135,6 @@ Vue.component('gtm-podbor-gtm', require('./components/GTM/components/PodborGTM.v
 Vue.component('gtm-digital-rating-gtm', require('./components/GTM/components/DigitalRating.vue').default);
 Vue.component('gtm-etu', require('./components/GTM/components/Etu.vue').default);
 Vue.component('gtm-main-menu', require('./components/GTM/MainMenu.vue').default);
-Vue.component('gtm-bar-chart', require('./components/GTM/components/BarChart.vue').default);
-Vue.component('gtm-line-chart', require('./components/GTM/components/LineChart.vue').default);
 Vue.component('gtm-tree', require('./components/GTM/mixin/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/mixin/NodeTree.vue').default);
 Vue.component('gtm-date-picker', require('./components/GTM/mixin/DatePicker.vue').default);
@@ -176,15 +179,16 @@ Vue.component('well-card', require('./components/bigdata/wellCard/wellCard.vue')
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
-Vue.component('pf-upload_monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
-Vue.component('pf-template_pvt_plast_oil', require('./components/PlastFluids/views/SuperTemplatePvtPlastOil.vue').default);
-Vue.component('pf-oil-map', require('./components/PlastFluids/components/OilMapKz.vue').default);
+Vue.component('pf-upload-monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
+Vue.component('pf-data-analysis', require('./components/PlastFluids/views/PfDataAnalysis').default);
+Vue.component('pf-download-monitoring', require('./components/PlastFluids/views/DownloadMonitoring').default);
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('las', require('./components/bigdata/Las.vue').default);
+Vue.component('gis-form-las', require('./components/bigdata/GisFormLas.vue').default);
 Vue.component('geo-data-reference-book', require('./components/bigdata/GeoDataReferenceBook.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('proto-form-wrapper', require('./components/bigdata/FormsWrapper.vue').default);
@@ -230,6 +234,12 @@ Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport'
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 
 Vue.component('map-constructor-main', require('./components/mapConstructor/Main.vue').default);
+
+Vue.component('water-flooding-management-main', require('./components/waterfloodingManagement/waterfloodingManagementLayout.vue').default);
+Vue.component('water-flooding-management-main-menu', require('./components/waterfloodingManagement/mainMenu.vue').default);
+Vue.component('water-flooding-management-map', require('./components/waterfloodingManagement/mapObject.vue').default);
+Vue.component('water-flooding-management-forecasting', require('./components/waterfloodingManagement/forecastingOptimization').default);
+Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);
 
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;

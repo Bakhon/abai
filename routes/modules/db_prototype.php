@@ -108,13 +108,19 @@ Route::group(
                 Route::delete('forms/{form}/{row}', 'Api\DB\FormsController@delete');
 
                 Route::get('wells/search', 'Api\DB\WellsController@search');
-                Route::get('wells/production-wells-schedule-data', 'Api\DB\WellsController@getProductionWellsScheduleData');
+                Route::get(
+                    'wells/production-wells-schedule-data',
+                    'Api\DB\WellsController@getProductionWellsScheduleData'
+                );
                 Route::get('wells/tree', 'Api\DB\WellsController@getStructureTree');
                 Route::get('wells/{well}', 'Api\DB\WellsController@get');
                 Route::get('wells/{well}/wellInfo', 'Api\DB\WellsController@wellInfo');
 
-
                 Route::get('tech/wells', 'Api\DB\TechController@getWellsById');
+
+                Route::get('/las/wells/{well}', 'Api\DB\LasController@getWellForLas')->name('las.well');
+                Route::post('/las/gis', 'Api\DB\LasController@attachFileToGis')->name('las.attach_to_gis');
+                Route::get('/las/download/{experiment}', 'Api\DB\LasController@downloadFile')->name('las.download');
             }
         );
     }
