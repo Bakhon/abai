@@ -13,6 +13,7 @@ class EconomicNrsWellsRequest extends FormRequest
             'field_id' => 'nullable|integer|min:1',
             'interval_start' => 'nullable|date',
             'interval_end' => 'nullable|date',
+            'well_id' => 'nullable|string'
         ];
     }
 }
