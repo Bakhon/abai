@@ -9,7 +9,7 @@ class GdisCurrentValue extends TBDModel
 {
     protected $table = 'prod.gdis_current_value';
 
-    public function metric()
+    public function metricItem()
     {
         return $this->belongsTo(Metric::class, 'metric');
     }

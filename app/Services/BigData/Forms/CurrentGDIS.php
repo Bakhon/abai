@@ -13,6 +13,16 @@ class CurrentGDIS extends TableForm
 
     public function getRows(array $params = []): array
     {
+        $gdisFields = [
+            'conclusion',
+            'target',
+            'device',
+            'transcript_dynamogram',
+            'note',
+            'conclusion_text',
+            'file_dynamogram',
+        ];
+
         $metricCodes = [
             'FLVL',
             'BHP',
@@ -47,16 +57,58 @@ class CurrentGDIS extends TableForm
             'RPM'
         ];
 
+        $dates = GdisCurrent::query()
+            ->where('well', $this->request->get('id'))
+            ->select('meas_date')
+            ->orderBy('meas_date', 'desc')
+            ->distinct()
+            ->limit(10)
+            ->get();
+
+        if ($dates->isEmpty()) {
+            return [
+                'rows' => []
+            ];
+        }
+        $oldestDate = $dates->last()->meas_date;
+
         $measurements = GdisCurrent::query()
             ->where('well', $this->request->get('id'))
+            ->where('meas_date', '>=', $oldestDate)
             ->orderBy('meas_date', 'desc')
-            ->limit(10)
-            ->with('values', 'values.metric')
-            ->get();
+            ->orderBy('id', 'desc')
+            ->with('values', 'values.metricItem')
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->meas_date->format('d.m.Y');
+            })
+            ->map(function ($items) use ($metricCodes, $gdisFields) {
+                $result = [];
+
+                foreach ($gdisFields as $field) {
+                    $item = $items->whereNotNull($field)->first();
+                    if (!empty($item)) {
+                        $result[$field] = $item->$field;
+                    }
+                }
+
+                $itemsWithMetrics = $items->filter(function ($item) use ($metricCodes) {
+                    foreach ($item->values as $value) {
+                        if (in_array($value->metricItem->code, $metricCodes)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+
+                return $result;
+            });
+
+        dd($measurements);
 
         $columns = $this->getColumns($measurements);
 
-        dd($columns);
+        dd($measurements, $columns);
 
         return [
             'columns' => $columns,
