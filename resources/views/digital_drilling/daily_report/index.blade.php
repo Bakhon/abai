@@ -2,11 +2,11 @@
 @section('content')
     <link rel="stylesheet" href="/css/digital_drilling.css">
     <div class="row digital_drilling">
-        <div class="col-sm-12 centerBlock">
-            {{--@include('digital_drilling.layouts.menu')--}}
-        </div>
         <daily-raport />
     </div>
+@endsection
+@section('sidebar_menu_additional')
+    @include('partials.sidebar.digital_drilling_menu')
 @endsection
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
