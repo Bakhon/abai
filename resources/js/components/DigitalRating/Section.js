@@ -91,7 +91,6 @@ export default {
                     this.onMapClick(maps[i]['sector']);
                 })
             }
-            this.initChartOnMap();
         },
 
         initWellOnMap() {
