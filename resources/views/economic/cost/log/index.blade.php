@@ -4,7 +4,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <a href="{{ route('economic.cost.index') }}" class="btn btn-info">
-                {{ __('economic_reference.return_menu') }}</a>
+                {{ __('economic_reference.return_menu') }}
+            </a>
         </div>
     </div>
     <div class="container">
@@ -25,22 +26,25 @@
                                 <th>{{ __('economic_reference.author_added') }}:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
-                            @foreach ($economicDataLog as $item)
+                            @foreach ($logs as $log)
                                 <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td>{{ $item->created_at  }}</td>
-                                    <td>{{ $item->author->name  }}</td>
+                                    <td>{{ $log->id }}</td>
+                                    <td>{{ $log->created_at  }}</td>
+                                    <td>{{ $log->author->name  }}</td>
                                     <td>
-                                        <form action="{{ route('economic.cost.log.destroy',$item->id) }}" method="POST">
+                                        <form action="{{ route('economic.cost.log.destroy', $log->id) }}"
+                                              method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button>
+                                            <button type="submit" class="btn btn-danger">
+                                                {{__('app.delete')}}
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
                             @endforeach
                         </table>
-                        {!! $economicDataLog->links() !!}
+                        {!! $logs->links() !!}
                     </div>
                 </div>
             </div>

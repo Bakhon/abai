@@ -26,22 +26,25 @@
                                 <th>{{ __('forecast.author_added') }}:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
-                            @foreach ($technicalForecast as $item)
+                            @foreach ($logs as $log)
                                 <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td>{{ $item->created_at  }}</td>
-                                    <td>{{ $item->author->name  }}</td>
+                                    <td>{{ $log->id }}</td>
+                                    <td>{{ $log->created_at  }}</td>
+                                    <td>{{ $log->author->name  }}</td>
                                     <td>
-                                        <form action="{{ route('tech_data_log.destroy',$item->id) }}" method="POST">
+                                        <form action="{{ route('tech_data_log.destroy',$log->id) }}"
+                                              method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button>
+                                            <button type="submit" class="btn btn-danger">
+                                                {{__('app.delete')}}
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
                             @endforeach
                         </table>
-                        {!! $technicalForecast->links() !!}
+                        {!! $logs->links() !!}
                     </div>
                 </div>
             </div>

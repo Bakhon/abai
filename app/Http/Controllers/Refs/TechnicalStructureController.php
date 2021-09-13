@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Refs;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Economic\Technical\Structure\TechnicalStructureStoreRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -10,68 +11,68 @@ use Illuminate\Http\Request;
 
 class TechnicalStructureController extends Controller
 {
-    protected $paginate_num = 12;
-    protected $model = "";
+    const PAGINATION = 12;
 
-    protected $view_path = 'technical_forecast';
-    protected $controller_name = "";
-    protected $index_route = "";
+    const VIEW_PREFIX = 'economic.technical';
+
+    protected $viewName = '';
+
+    protected $model;
 
     public function index(): View
     {
-        $technicalForecast = $this->model::latest()->paginate($this->paginate_num);
+        $models = $this->model::latest()->paginate(self::PAGINATION);
 
-        $view = "{$this->view_path}.{$this->controller_name}.index";
-
-        return view($view, compact('technicalForecast'));
+        return view($this->viewPath("index"), compact('models'));
     }
 
     public function create(): View
     {
-        $view = "{$this->view_path}.{$this->controller_name}.create";
-        return view($view);
+        return view($this->viewPath("create"));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(TechnicalStructureStoreRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required',
-        ]);
+        $params = $request->validated();
 
-        $dataArray = $request->all();
-        $dataArray['user_id'] = auth()->user()->id;
-        $this->model::create($dataArray);
+        $params['user_id'] = auth()->user()->id;
 
-        return redirect()->route($this->index_route)->with('success', __('app.created'));
+        $this->model::create($params);
+
+        return redirect()
+            ->route($this->viewPath('index'))
+            ->with('success', __('app.created'));
     }
 
     public function edit(int $id): View
     {
-        $technicalForecast = $this->model::find($id);
-        $view = "{$this->view_path}.{$this->controller_name}.edit";
-        return view($view, compact('technicalForecast'));
+        $model = $this->model::findOrFail($id);
+
+        return view($this->viewPath('edit'), compact('model'));
     }
 
-    public function update(Request $request, int $id): RedirectResponse
+    public function update(TechnicalStructureStoreRequest $request, int $id): RedirectResponse
     {
-        $technicalForecast = $this->model::find($id);
-        $request->validate([
-            'name' => 'required'
-        ]);
+        $model = $this->model::findOrFail($id);
 
-        $dataArray = $request->all();
-        $dataArray['user_id'] = auth()->user()->id;
-        $technicalForecast->update($dataArray);
+        $params = $request->validated();
 
-        return redirect()->route($this->index_route)->with('success', __('app.updated'));
+        $params['user_id'] = auth()->user()->id;
+
+        $model->update($params);
+
+        return redirect()
+            ->route($this->viewPath('index'))
+            ->with('success', __('app.updated'));
     }
 
     public function destroy(int $id): RedirectResponse
     {
-        $technicalForecast = $this->model::find($id);
-        $technicalForecast->delete();
+        $this->model::whereId($id)->delete();
 
-        return redirect()->route($this->index_route)->with('success', __('app.deleted'));
+        return redirect()
+            ->route($this->viewPath('index'))
+            ->with('success', __('app.deleted'));
     }
 
     public function getData(Request $request): array
@@ -97,4 +98,8 @@ class TechnicalStructureController extends Controller
         return $query->get()->toArray();
     }
 
+    protected function viewPath(string $method = ""): string
+    {
+        return self::VIEW_PREFIX . "." . $this->viewName . "." . $method;
+    }
 }

@@ -8,12 +8,12 @@
         </a>
 
         <div class="mt-3 text-center">
-            <a href="{{ route('tech_refs_upload') }}"
+            <a href="{{ route('economic.technical.forecast.upload') }}"
                class="list-group-item list-group-item-action">
                 {{ __('economic_reference.upload_excel') }}
             </a>
 
-            <a href="{{ route('tech_data_log.index') }}"
+            <a href="{{ route('economic.technical.forecast.log.index') }}"
                class="list-group-item list-group-item-action">
                 {{ __('economic_reference.delete_wrong_uploaded_data') }}
             </a>

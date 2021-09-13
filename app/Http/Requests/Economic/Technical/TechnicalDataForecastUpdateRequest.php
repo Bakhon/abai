@@ -4,7 +4,7 @@ namespace App\Http\Requests\Economic\Technical;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TechnicalDataForecastStoreRequest extends FormRequest
+class TechnicalDataForecastUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

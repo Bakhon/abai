@@ -50,26 +50,6 @@ Route::group(
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
                 Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
 
-                // economic tech data
-                Route::get('tech_data_list', 'Refs\TechnicalDataController@refsList')->name('tech_data_list');
-                Route::resource('tech_struct_source', 'Refs\TechnicalStructureSourceController');
-                Route::get('tech_struct_sources', 'Refs\TechnicalStructureSourceController@getSources');
-                Route::resource('tech_struct_company', 'Refs\TechnicalStructureCompanyController');
-                Route::resource('tech_struct_field', 'Refs\TechnicalStructureFieldController');
-                Route::resource('tech_struct_ngdu', 'Refs\TechnicalStructureNgduController');
-                Route::resource('tech_struct_cdng', 'Refs\TechnicalStructureCdngController');
-                Route::resource('tech_struct_gu', 'Refs\TechnicalStructureGuController');
-                Route::resource('tech_struct_bkns', 'Refs\TechnicalStructureBknsController');
-                Route::get('tech-data-forecast/get-data', 'Refs\TechnicalDataForecastController@getData');
-                Route::resource('tech-data-forecast', 'Refs\TechnicalDataForecastController');
-                Route::resource('tech_data_log', 'Refs\TechnicalDataLogController');
-                Route::get('technical_forecast/upload_excel', 'Refs\TechnicalDataController@uploadExcel')->name('tech_refs_upload');
-                Route::post('technical_forecast/import_excel', 'Refs\TechnicalDataController@importExcel')->name('tech_refs_import');
-                Route::get('tech-struct-field/get-data', 'Refs\TechnicalStructureFieldController@getData');
-                Route::get('tech-struct-ngdu/get-data', 'Refs\TechnicalStructureNgduController@getData');
-                Route::get('tech-struct-cdng/get-data', 'Refs\TechnicalStructureCdngController@getData');
-                Route::get('tech-struct-gu/get-data', 'Refs\TechnicalStructureGuController@getData');
-
                 Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
                 Route::resource('antiecoone', 'AntiCrisis\AntiEcoOneController');
                 Route::resource('antiecotwo', 'AntiCrisis\AntiEcoTwoController');

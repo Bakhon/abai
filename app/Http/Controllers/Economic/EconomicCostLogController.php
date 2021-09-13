@@ -15,11 +15,11 @@ class EconomicCostLogController extends Controller
 
     public function index(): View
     {
-        $economicDataLog = EconomicDataLog::query()
+        $logs = EconomicDataLog::query()
             ->latest()
             ->paginate(self::PAGINATION);
 
-        return view('economic.cost.log.index', compact('economicDataLog'));
+        return view('economic.cost.log.index', compact('logs'));
     }
 
     public function destroy(int $id): RedirectResponse

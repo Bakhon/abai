@@ -14,7 +14,7 @@ class TechnicalStructureNgduController extends TechnicalStructureController
     protected $model = TechnicalStructureNgdu::class;
 
     protected $controller_name = 'ngdu';
-    protected $index_route = "tech_struct_ngdu.index";
+    protected $indexRoute = "tech_struct_ngdu.index";
 
     public function create(): View
     {
@@ -33,7 +33,7 @@ class TechnicalStructureNgduController extends TechnicalStructureController
         $dataArray['user_id'] = auth()->user()->id;
         $this->model::create($dataArray);
 
-        return redirect()->route($this->index_route)->with('success',__('app.created'));
+        return redirect()->route($this->indexRoute)->with('success',__('app.created'));
     }
 
     public function edit(int $id): View
@@ -55,7 +55,7 @@ class TechnicalStructureNgduController extends TechnicalStructureController
         $dataArray['user_id'] = auth()->user()->id;
         $technicalForecast->update($dataArray);
 
-        return redirect()->route($this->index_route)->with('success',__('app.updated'));
+        return redirect()->route($this->indexRoute)->with('success',__('app.updated'));
     }
 
 }

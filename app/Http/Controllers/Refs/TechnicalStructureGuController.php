@@ -13,7 +13,7 @@ class TechnicalStructureGuController extends TechnicalStructureController
     protected $model = "App\Models\Refs\TechnicalStructureGu";
 
     protected $controller_name = 'gu';
-    protected $index_route = "tech_struct_gu.index";
+    protected $indexRoute = "tech_struct_gu.index";
 
     public function create(): View
     {
@@ -32,7 +32,7 @@ class TechnicalStructureGuController extends TechnicalStructureController
         $dataArray['user_id'] = auth()->user()->id;
         $this->model::create($dataArray);
 
-        return redirect()->route($this->index_route)->with('success',__('app.created'));
+        return redirect()->route($this->indexRoute)->with('success',__('app.created'));
     }
 
     public function edit(int $id): View
@@ -54,6 +54,6 @@ class TechnicalStructureGuController extends TechnicalStructureController
         $dataArray['user_id'] = auth()->user()->id;
         $technicalForecast->update($dataArray);
 
-        return redirect()->route($this->index_route)->with('success',__('app.updated'));
+        return redirect()->route($this->indexRoute)->with('success',__('app.updated'));
     }
 }

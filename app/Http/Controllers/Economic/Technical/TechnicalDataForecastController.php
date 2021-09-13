@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Refs;
+namespace App\Http\Controllers\Economic\Technical;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Economic\Technical\TechnicalDataForecastImportExcelRequest;
 use App\Http\Requests\Economic\Technical\TechnicalDataForecastRequest;
-use App\Http\Requests\Economic\Technical\TechnicalDataForecastStoreRequest;
+use App\Http\Requests\Economic\Technical\TechnicalDataForecastUpdateRequest;
+use App\Imports\Economic\Technical\TechnicalDataForecastImport;
 use App\Models\Refs\TechnicalDataForecast;
 use App\Models\Refs\TechnicalStructureCdng;
 use App\Models\Refs\TechnicalStructureGu;
@@ -12,28 +14,17 @@ use App\Models\Refs\TechnicalStructureNgdu;
 use App\Models\Refs\TechnicalStructureSource;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class TechnicalDataForecastController extends Controller
 {
-    const INDEX_ROUTE = "tech-data-forecast.index";
+    const INDEX_ROUTE = "economic.technical.forecast.index";
 
     public function index(): View
     {
-        return view('technical_forecast.production_data.index');
-    }
-
-    public function store(TechnicalDataForecastStoreRequest $request): RedirectResponse
-    {
-        $params = $request->validated();
-
-        $params['author_id'] = auth()->user()->id;
-
-        TechnicalDataForecast::create($params);
-
-        return redirect()
-            ->route(self::INDEX_ROUTE)
-            ->with('success', __('app.created'));
+        return view('economic.technical.forecast.index');
     }
 
     public function edit(int $id): View
@@ -45,12 +36,12 @@ class TechnicalDataForecastController extends Controller
         $source = TechnicalStructureSource::get();
 
         return view(
-            'technical_forecast.production_data.edit',
+            'economic.technical.forecast.edit',
             compact('source', 'technicalDataForecast', 'gu')
         );
     }
 
-    public function update(TechnicalDataForecastStoreRequest $request, int $id): RedirectResponse
+    public function update(TechnicalDataForecastUpdateRequest $request, int $id): RedirectResponse
     {
         $technicalDataForecast = TechnicalDataForecast::findOrFail($id);
 
@@ -117,5 +108,28 @@ class TechnicalDataForecastController extends Controller
             ->with(['source', 'gu', 'author', 'editor'])
             ->get()
             ->toArray();
+    }
+
+    public function uploadExcel(): View
+    {
+        $mimeTypes = TechnicalDataForecastImportExcelRequest::MIME_TYPES;
+
+        return view('economic.technical.forecast.import_excel', compact('mimeTypes'));
+    }
+
+    public function importExcel(TechnicalDataForecastImportExcelRequest $request): RedirectResponse
+    {
+        DB::transaction(function () use ($request) {
+            $fileName = pathinfo(
+                $request->file->getClientOriginalName(),
+                PATHINFO_FILENAME
+            );
+
+            $import = new TechnicalDataForecastImport(auth()->id(), $fileName);
+
+            Excel::import($import, $request->file);
+        });
+
+        return back()->with('success', __('app.success'));
     }
 }

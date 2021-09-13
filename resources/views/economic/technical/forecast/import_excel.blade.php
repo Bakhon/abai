@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <a href="{{ route('tech-data-forecast.index') }}"
+            <a href="{{ route('economic.technical.forecast.index') }}"
                class="btn btn-info">
                 {{ __('economic_reference.return_menu') }}
             </a>
@@ -39,7 +39,7 @@
 
         <form method="post"
               enctype="multipart/form-data"
-              action="{{ route('tech_refs_import') }}">
+              action="{{ route('economic.technical.forecast.import') }}">
             {{ csrf_field() }}
             <div class="form-group">
                 <input type="file"

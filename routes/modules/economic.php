@@ -4,7 +4,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
     Route::group(['middleware' => 'auth', 'prefix' => 'economic', 'namespace' => 'Economic'], function () {
 
         Route::group(['prefix' => 'nrs'], function () {
-            Route::get('', 'EconomicNrsController@index')->name('economic.nrs');
+            Route::get('', 'EconomicNrsController@index')
+                ->name('economic.nrs');
             Route::get('get-data', "EconomicNrsController@getData");
             Route::post('export-data', "EconomicNrsController@exportData");
             Route::get('wells', 'EconomicNrsController@indexWells');
@@ -12,7 +13,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         });
 
         Route::group(['prefix' => 'optimization'], function () {
-            Route::get('', 'EconomicOptimizationController@index')->name('economic.optimization');
+            Route::get('', 'EconomicOptimizationController@index')
+                ->name('economic.optimization');
             Route::get('get-data', 'EconomicOptimizationController@getData');
         });
 
@@ -20,7 +22,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::group(['prefix' => 'gtm'], function () {
                 Route::get('get-data', 'EconomicGtmController@getData');
                 Route::get('upload-excel', 'EconomicGtmController@uploadExcel');
-                Route::post('import-excel', 'EconomicGtmController@importExcel')->name('economic.gtm.import');
+                Route::post('import-excel', 'EconomicGtmController@importExcel')
+                    ->name('economic.gtm.import');
             });
 
             Route::resource('gtm', 'EconomicGtmController')
@@ -34,7 +37,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::group([], function () {
             Route::group(['prefix' => 'gtm_value'], function () {
                 Route::get('get-data', 'EconomicGtmValueController@getData');
-                Route::post('import-excel', 'EconomicGtmValueController@importExcel')->name('economic.gtm_value.import');
+                Route::post('import-excel', 'EconomicGtmValueController@importExcel')
+                    ->name('economic.gtm_value.import');
             });
 
             Route::resource('gtm_value', 'EconomicGtmValueController')
@@ -59,8 +63,13 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::group([], function () {
             Route::group(['prefix' => 'cost'], function () {
                 Route::get('get-data', 'EconomicCostController@getData');
-                Route::get('upload-excel', 'EconomicCostController@uploadExcel')->name('economic.cost.upload');
-                Route::post('import-excel', 'EconomicCostController@importExcel')->name('economic.cost.import');
+
+                Route::get('upload-excel', 'EconomicCostController@uploadExcel')
+                    ->name('economic.cost.upload');
+
+                Route::post('import-excel', 'EconomicCostController@importExcel')
+                    ->name('economic.cost.import');
+
                 Route::resource('log', 'EconomicCostLogController')
                     ->only(['index', 'destroy'])
                     ->names([
@@ -81,24 +90,73 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         });
 
         Route::group(['prefix' => 'technical', 'namespace' => 'Technical'], function () {
-            Route::get('list', 'TechnicalDataController@list')->name('economic.technical.list');
-//            Route::resource('tech_struct_source', 'Refs\TechnicalStructureSourceController');
-//            Route::get('tech_struct_sources', 'Refs\TechnicalStructureSourceController@getSources');
-//            Route::resource('tech_struct_company', 'Refs\TechnicalStructureCompanyController');
-//            Route::resource('tech_struct_field', 'Refs\TechnicalStructureFieldController');
-//            Route::resource('tech_struct_ngdu', 'Refs\TechnicalStructureNgduController');
-//            Route::resource('tech_struct_cdng', 'Refs\TechnicalStructureCdngController');
-//            Route::resource('tech_struct_gu', 'Refs\TechnicalStructureGuController');
-//            Route::resource('tech_struct_bkns', 'Refs\TechnicalStructureBknsController');
-//            Route::get('tech-data-forecast/get-data', 'Refs\TechnicalDataForecastController@getData');
-//            Route::resource('tech-data-forecast', 'Refs\TechnicalDataForecastController');
-//            Route::resource('tech_data_log', 'Refs\TechnicalDataLogController');
-//            Route::get('technical_forecast/upload_excel', 'Refs\TechnicalDataController@uploadExcel')->name('tech_refs_upload');
-//            Route::post('technical_forecast/import_excel', 'Refs\TechnicalDataController@importExcel')->name('tech_refs_import');
-//            Route::get('tech-struct-field/get-data', 'Refs\TechnicalStructureFieldController@getData');
-//            Route::get('tech-struct-ngdu/get-data', 'Refs\TechnicalStructureNgduController@getData');
-//            Route::get('tech-struct-cdng/get-data', 'Refs\TechnicalStructureCdngController@getData');
-//            Route::get('tech-struct-gu/get-data', 'Refs\TechnicalStructureGuController@getData');
+            Route::get('list', 'TechnicalListController')
+                ->name('economic.technical.list');
+
+            Route::group(['prefix' => 'structure', 'namespace' => 'Structure'], function () {
+                Route::get('source/get-data', 'TechnicalStructureSourceController@getData');
+
+                Route::resource('source', 'TechnicalStructureSourceController')
+                    ->names([
+                        'index' => 'economic.technical.source.index',
+                        'create' => 'economic.technical.source.create',
+                        'store' => 'economic.technical.source.store',
+                        'edit' => 'economic.technical.source.edit',
+                        'update' => 'economic.technical.source.update',
+                        'destroy' => 'economic.technical.source.destroy',
+                    ]);
+
+                Route::resource('company', 'TechnicalStructureCompanyController')
+                    ->names([
+                        'index' => 'economic.technical.company.index',
+                        'create' => 'economic.technical.company.create',
+                        'store' => 'economic.technical.company.store',
+                        'edit' => 'economic.technical.company.edit',
+                        'update' => 'economic.technical.company.update',
+                        'destroy' => 'economic.technical.company.destroy',
+                    ]);
+            });
+
+            Route::group([], function () {
+                Route::group(['prefix' => 'forecast'], function () {
+                    Route::get('get-data', 'TechnicalDataForecastController@getData');
+
+                    Route::get('upload-excel', 'TechnicalDataForecastController@uploadExcel')
+                        ->name('economic.technical.forecast.upload');
+
+                    Route::get('import-excel', 'TechnicalDataForecastController@importExcel')
+                        ->name('economic.technical.forecast.import');
+
+                    Route::resource('log', 'TechnicalDataForecastLogController')
+                        ->only(['index', 'destroy'])
+                        ->names([
+                            'index' => 'economic.technical.forecast.log.index',
+                            'destroy' => 'economic.technical.forecast.log.destroy',
+                        ]);
+                });
+
+                Route::resource('forecast', 'TechnicalDataForecastController')
+                    ->only(['index', 'edit', 'update', 'destroy'])
+                    ->names([
+                        'index' => 'economic.technical.forecast.index',
+                        'edit' => 'economic.technical.forecast.edit',
+                        'update' => 'economic.technical.forecast.update',
+                        'destroy' => 'economic.technical.forecast.destroy',
+                    ]);
+            });
+
+            Route::resource('tech_struct_field', 'Refs\TechnicalStructureFieldController');
+            Route::resource('tech_struct_ngdu', 'Refs\TechnicalStructureNgduController');
+            Route::resource('tech_struct_cdng', 'Refs\TechnicalStructureCdngController');
+            Route::resource('tech_struct_gu', 'Refs\TechnicalStructureGuController');
+            Route::resource('tech_struct_bkns', 'Refs\TechnicalStructureBknsController');
+            Route::resource('tech_data_log', 'Refs\TechnicalDataLogController');
+            Route::get('technical_forecast/upload_excel', 'Refs\TechnicalDataController@uploadExcel')->name('tech_refs_upload');
+            Route::post('technical_forecast/import_excel', 'Refs\TechnicalDataController@importExcel')->name('tech_refs_import');
+            Route::get('tech-struct-field/get-data', 'Refs\TechnicalStructureFieldController@getData');
+            Route::get('tech-struct-ngdu/get-data', 'Refs\TechnicalStructureNgduController@getData');
+            Route::get('tech-struct-cdng/get-data', 'Refs\TechnicalStructureCdngController@getData');
+            Route::get('tech-struct-gu/get-data', 'Refs\TechnicalStructureGuController@getData');
         });
     });
 });
