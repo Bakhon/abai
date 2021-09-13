@@ -963,7 +963,6 @@ return [
             'geo'=> 'Горизонт',
             'date' => 'Дата'
         ],
-
         'research_lab_research' => [
             'date' => 'Дата исследования',
             'main' => 'Основное',

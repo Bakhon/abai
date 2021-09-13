@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\LabResearchType;
+use App\Exceptions\BigData\SubmitFormException;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
 use Carbon\Carbon;
@@ -89,16 +90,12 @@ class ResearchLabResearch extends PlainForm
         $researchType = LabResearchType::find($this->request->get('research_type'));
         $mainFields = $this->getFields()
             ->filter(function ($field) use ($researchType) {
-                if (empty($field['depends_on'])) {
-                    return true;
-                }
+                return !empty($field['depends_on']);
             });
 
         $dependentFields = $this->getFields()
             ->filter(function ($field) use ($researchType) {
-                if (empty($field['depends_on'])) {
-                    return false;
-                }
+                return !empty($field['depends_on']);
                 foreach ($field['depends_on'] as $dependency) {
                     return $dependency['value']['code'] === $researchType->code;
                 }
