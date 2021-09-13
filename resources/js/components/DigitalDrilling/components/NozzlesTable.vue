@@ -16,8 +16,8 @@
                     <th v-for="i in 10">{{i}}</th>
                 </tr>
                 <tr v-for="(tr, index) in table">
-                    <td class="bg-color">{{index+7}}</td>
-                    <td v-for="td in tr" class="hover">{{td}}</td>
+                    <td class="bg-color" v-for="(td, index) in tr" v-if="index==0">{{td}}</td>
+                    <td v-for="(td, index) in tr" class="hover" v-if="index>0">{{td}}</td>
                 </tr>
             </table>
         </div>
@@ -30,7 +30,7 @@
         props: ['table'],
         data(){
             return{
-                tableShow: false
+                tableShow: false,
             }
         },
         mounted(){
