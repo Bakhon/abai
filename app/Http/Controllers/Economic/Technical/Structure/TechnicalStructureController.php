@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Refs;
+namespace App\Http\Controllers\Economic\Technical\Structure;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\Technical\Structure\TechnicalStructureStoreRequest;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 
-class TechnicalStructureController extends Controller
+abstract class TechnicalStructureController extends Controller
 {
     const PAGINATION = 12;
 
@@ -17,7 +18,9 @@ class TechnicalStructureController extends Controller
 
     protected $viewName = '';
 
-    protected $model;
+    protected $model = Model::class;
+
+    protected $storeRequest = TechnicalStructureStoreRequest::class;
 
     public function index(): View
     {
@@ -31,9 +34,9 @@ class TechnicalStructureController extends Controller
         return view($this->viewPath("create"));
     }
 
-    public function store(TechnicalStructureStoreRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        $params = $request->validated();
+        $params = $request->validate((new $this->storeRequest)->rules());
 
         $params['user_id'] = auth()->user()->id;
 
@@ -51,11 +54,11 @@ class TechnicalStructureController extends Controller
         return view($this->viewPath('edit'), compact('model'));
     }
 
-    public function update(TechnicalStructureStoreRequest $request, int $id): RedirectResponse
+    public function update(Request $request, int $id): RedirectResponse
     {
         $model = $this->model::findOrFail($id);
 
-        $params = $request->validated();
+        $params = $request->validate((new $this->storeRequest)->rules());
 
         $params['user_id'] = auth()->user()->id;
 

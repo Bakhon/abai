@@ -26,15 +26,12 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Название компании:</strong>
-                                        <input type="text" name="name" class="form-control"
-                                               placeholder="Пример: АО МангистауМунайГаз">
-                                        <strong>Сокращённое название компании:</strong>
-                                        <input type="text" name="short_name" class="form-control"
-                                               placeholder="Пример: MMG">
-                                        <strong>ID в базе TBD:</strong>
-                                        <input type="number" name="tbd_id" class="form-control"
-                                               placeholder="Пример: 2000000002">
+                                        <strong>{{trans('economic_reference.name')}}:</strong>
+                                        <input type="text" name="name" class="form-control">
+                                        <strong>{{trans('economic_reference.name_short')}}:</strong>
+                                        <input type="text" name="short_name" class="form-control">
+                                        <strong>TBD_ID:</strong>
+                                        <input type="number" name="tbd_id" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

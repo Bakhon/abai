@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Refs;
+namespace App\Http\Controllers\Economic\Technical\Structure;
 
 use App\Models\Refs\TechnicalStructureCdng;
 use Illuminate\Contracts\View\View;

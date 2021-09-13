@@ -32,7 +32,7 @@
                                     <td>{{ $log->created_at  }}</td>
                                     <td>{{ $log->author->name  }}</td>
                                     <td>
-                                        <form action="{{ route('tech_data_log.destroy',$log->id) }}"
+                                        <form action="{{ route('economic.technical.forecast.log.destroy',$log->id) }}"
                                               method="POST">
                                             @csrf
                                             @method('DELETE')

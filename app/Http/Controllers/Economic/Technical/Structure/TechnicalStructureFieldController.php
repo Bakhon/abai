@@ -1,31 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\Refs;
+namespace App\Http\Controllers\Economic\Technical\Structure;
 
-use App\Models\Refs\TechnicalStructureNgdu;
+use App\Models\Refs\TechnicalStructureCompany;
+use App\Models\Refs\TechnicalStructureField;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-
-class TechnicalStructureCdngController extends TechnicalStructureController
+class TechnicalStructureFieldController extends TechnicalStructureController
 {
-    protected $model = "App\Models\Refs\TechnicalStructureCdng";
+    protected $model = TechnicalStructureField::class;
 
-    protected $controller_name = 'cdng';
-    protected $indexRoute = "tech_struct_cdng.index";
+    protected $controller_name = 'field';
+    protected $indexRoute = "tech_struct_field.index";
 
     public function create(): View
     {
-        $ngdu = TechnicalStructureNgdu::get();
-        return view('technical_forecast.cdng.create', compact('ngdu'));
+        $company = TechnicalStructureCompany::get();
+        return view('technical_forecast.field.create',compact('company'));
     }
 
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
-            'ngdu_id' => 'required'
+            'company_id' => 'required'
         ]);
 
         $dataArray = $request->all();
@@ -38,8 +38,8 @@ class TechnicalStructureCdngController extends TechnicalStructureController
     public function edit(int $id): View
     {
         $technicalForecast = $this->model::find($id);
-        $ngdu = TechnicalStructureNgdu::get();
-        return view('technical_forecast.cdng.edit', compact('technicalForecast', 'ngdu'));
+        $company = TechnicalStructureCompany::get();
+        return view('technical_forecast.field.edit',compact('technicalForecast', 'company'));
     }
 
     public function update(Request $request, int $id): RedirectResponse
@@ -47,7 +47,7 @@ class TechnicalStructureCdngController extends TechnicalStructureController
         $technicalForecast=$this->model::find($id);
         $request->validate([
             'name' => 'required',
-            'ngdu_id' => 'required'
+            'company_id' => 'required'
         ]);
 
         $dataArray = $request->all();

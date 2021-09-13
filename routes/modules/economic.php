@@ -93,30 +93,6 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::get('list', 'TechnicalListController')
                 ->name('economic.technical.list');
 
-            Route::group(['prefix' => 'structure', 'namespace' => 'Structure'], function () {
-                Route::get('source/get-data', 'TechnicalStructureSourceController@getData');
-
-                Route::resource('source', 'TechnicalStructureSourceController')
-                    ->names([
-                        'index' => 'economic.technical.source.index',
-                        'create' => 'economic.technical.source.create',
-                        'store' => 'economic.technical.source.store',
-                        'edit' => 'economic.technical.source.edit',
-                        'update' => 'economic.technical.source.update',
-                        'destroy' => 'economic.technical.source.destroy',
-                    ]);
-
-                Route::resource('company', 'TechnicalStructureCompanyController')
-                    ->names([
-                        'index' => 'economic.technical.company.index',
-                        'create' => 'economic.technical.company.create',
-                        'store' => 'economic.technical.company.store',
-                        'edit' => 'economic.technical.company.edit',
-                        'update' => 'economic.technical.company.update',
-                        'destroy' => 'economic.technical.company.destroy',
-                    ]);
-            });
-
             Route::group([], function () {
                 Route::group(['prefix' => 'forecast'], function () {
                     Route::get('get-data', 'TechnicalDataForecastController@getData');
@@ -124,7 +100,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                     Route::get('upload-excel', 'TechnicalDataForecastController@uploadExcel')
                         ->name('economic.technical.forecast.upload');
 
-                    Route::get('import-excel', 'TechnicalDataForecastController@importExcel')
+                    Route::post('import-excel', 'TechnicalDataForecastController@importExcel')
                         ->name('economic.technical.forecast.import');
 
                     Route::resource('log', 'TechnicalDataForecastLogController')
@@ -145,18 +121,91 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                     ]);
             });
 
-            Route::resource('tech_struct_field', 'Refs\TechnicalStructureFieldController');
-            Route::resource('tech_struct_ngdu', 'Refs\TechnicalStructureNgduController');
-            Route::resource('tech_struct_cdng', 'Refs\TechnicalStructureCdngController');
-            Route::resource('tech_struct_gu', 'Refs\TechnicalStructureGuController');
-            Route::resource('tech_struct_bkns', 'Refs\TechnicalStructureBknsController');
-            Route::resource('tech_data_log', 'Refs\TechnicalDataLogController');
-            Route::get('technical_forecast/upload_excel', 'Refs\TechnicalDataController@uploadExcel')->name('tech_refs_upload');
-            Route::post('technical_forecast/import_excel', 'Refs\TechnicalDataController@importExcel')->name('tech_refs_import');
-            Route::get('tech-struct-field/get-data', 'Refs\TechnicalStructureFieldController@getData');
-            Route::get('tech-struct-ngdu/get-data', 'Refs\TechnicalStructureNgduController@getData');
-            Route::get('tech-struct-cdng/get-data', 'Refs\TechnicalStructureCdngController@getData');
-            Route::get('tech-struct-gu/get-data', 'Refs\TechnicalStructureGuController@getData');
+            Route::group(['prefix' => 'structure', 'namespace' => 'Structure'], function () {
+                Route::get('source/get-data', 'TechnicalStructureSourceController@getData');
+
+                Route::resource('source', 'TechnicalStructureSourceController')
+                    ->names([
+                        'index' => 'economic.technical.source.index',
+                        'create' => 'economic.technical.source.create',
+                        'store' => 'economic.technical.source.store',
+                        'edit' => 'economic.technical.source.edit',
+                        'update' => 'economic.technical.source.update',
+                        'destroy' => 'economic.technical.source.destroy',
+                    ]);
+
+                Route::get('company/get-data', 'TechnicalStructureSourceController@getData');
+
+                Route::resource('company', 'TechnicalStructureCompanyController')
+                    ->names([
+                        'index' => 'economic.technical.company.index',
+                        'create' => 'economic.technical.company.create',
+                        'store' => 'economic.technical.company.store',
+                        'edit' => 'economic.technical.company.edit',
+                        'update' => 'economic.technical.company.update',
+                        'destroy' => 'economic.technical.company.destroy',
+                    ]);
+
+                Route::get('bkns/get-data', 'TechnicalStructureSourceController@getData');
+
+                Route::resource('bkns', 'TechnicalStructureBknsController')
+                    ->names([
+                        'index' => 'economic.technical.bkns.index',
+                        'create' => 'economic.technical.bkns.create',
+                        'store' => 'economic.technical.bkns.store',
+                        'edit' => 'economic.technical.bkns.edit',
+                        'update' => 'economic.technical.bkns.update',
+                        'destroy' => 'economic.technical.bkns.destroy',
+                    ]);
+
+                Route::get('cdng/get-data', 'TechnicalStructureSourceController@getData');
+
+                Route::resource('cdng', 'TechnicalStructureCdngController')
+                    ->names([
+                        'index' => 'economic.technical.cdng.index',
+                        'create' => 'economic.technical.cdng.create',
+                        'store' => 'economic.technical.cdng.store',
+                        'edit' => 'economic.technical.cdng.edit',
+                        'update' => 'economic.technical.cdng.update',
+                        'destroy' => 'economic.technical.cdng.destroy',
+                    ]);
+
+                Route::get('ngdu/get-data', 'TechnicalStructureNgduController@getData');
+
+                Route::resource('ngdu', 'TechnicalStructureNgduController')
+                    ->names([
+                        'index' => 'economic.technical.ngdu.index',
+                        'create' => 'economic.technical.ngdu.create',
+                        'store' => 'economic.technical.ngdu.store',
+                        'edit' => 'economic.technical.ngdu.edit',
+                        'update' => 'economic.technical.ngdu.update',
+                        'destroy' => 'economic.technical.ngdu.destroy',
+                    ]);
+
+                Route::get('gu/get-data', 'TechnicalStructureGuController@getData');
+
+                Route::resource('gu', 'TechnicalStructureGuController')
+                    ->names([
+                        'index' => 'economic.technical.gu.index',
+                        'create' => 'economic.technical.gu.create',
+                        'store' => 'economic.technical.gu.store',
+                        'edit' => 'economic.technical.gu.edit',
+                        'update' => 'economic.technical.gu.update',
+                        'destroy' => 'economic.technical.gu.destroy',
+                    ]);
+
+                Route::get('field/get-data', 'TechnicalStructureFieldController@getData');
+
+                Route::resource('field', 'TechnicalStructureFieldController')
+                    ->names([
+                        'index' => 'economic.technical.field.index',
+                        'create' => 'economic.technical.field.create',
+                        'store' => 'economic.technical.field.store',
+                        'edit' => 'economic.technical.field.edit',
+                        'update' => 'economic.technical.field.update',
+                        'destroy' => 'economic.technical.field.destroy',
+                    ]);
+            });
         });
     });
 });

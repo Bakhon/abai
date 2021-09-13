@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Refs;
+namespace App\Http\Controllers\Economic\Technical\Structure;
 
 use App\Models\Refs\TechnicalStructureField;
 use App\Models\Refs\TechnicalStructureNgdu;
@@ -19,7 +19,8 @@ class TechnicalStructureNgduController extends TechnicalStructureController
     public function create(): View
     {
         $field = TechnicalStructureField::get();
-        return view('technical_forecast.ngdu.create',compact('field'));
+
+        return view('technical_forecast.ngdu.create', compact('field'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -33,19 +34,19 @@ class TechnicalStructureNgduController extends TechnicalStructureController
         $dataArray['user_id'] = auth()->user()->id;
         $this->model::create($dataArray);
 
-        return redirect()->route($this->indexRoute)->with('success',__('app.created'));
+        return redirect()->route($this->indexRoute)->with('success', __('app.created'));
     }
 
     public function edit(int $id): View
     {
         $technicalForecast = $this->model::find($id);
         $field = TechnicalStructureField::get();
-        return view('technical_forecast.ngdu.edit',compact('technicalForecast', 'field'));
+        return view('technical_forecast.ngdu.edit', compact('technicalForecast', 'field'));
     }
 
     public function update(Request $request, int $id): RedirectResponse
     {
-        $technicalForecast=$this->model::find($id);
+        $technicalForecast = $this->model::find($id);
         $request->validate([
             'name' => 'required',
             'field_id' => 'required'
@@ -55,7 +56,7 @@ class TechnicalStructureNgduController extends TechnicalStructureController
         $dataArray['user_id'] = auth()->user()->id;
         $technicalForecast->update($dataArray);
 
-        return redirect()->route($this->indexRoute)->with('success',__('app.updated'));
+        return redirect()->route($this->indexRoute)->with('success', __('app.updated'));
     }
 
 }
