@@ -60,98 +60,9 @@ class FluidProductionMonth extends TableForm
 
             $i = 0;
             foreach ($indicators as $code) {
-                $row = [
-                    'id' => $well->id . '|' . $code,
-                    'indicator' => ['value' => trans('bd.forms.fluid_production_month.' . $code)]
-                ];
+                $row = $this->getIndicatorRowData($well, $code, $techMode, $date, $liquid, $bsw, $workTime[$well->id]);
                 if ($i++ === 0) {
                     $row = array_merge($firstRow, $row);
-                }
-
-                switch ($code) {
-                    case 'liquid':
-
-                        $row['tech'] = [
-                            'value' => $techMode->get($well->id) ? $techMode->get($well->id)->liquid : null
-                        ];
-
-                        $count = $sum = 0;
-                        $monthDay = $date->startOfMonth();
-                        while ($monthDay < $date) {
-                            $wellLiquid = $liquid->get($well->id);
-                            $liquidValue = $wellLiquid->get($monthDay->format('j'));
-                            $row[$monthDay->format('d.m.Y')] = ['value' => $liquidValue['liquid'] ?? null];
-
-                            if (!empty($liquidValue['liquid'])) {
-                                $count++;
-                                $sum += $liquidValue['liquid'];
-                            }
-
-                            $monthDay = $monthDay->addDay();
-                        }
-
-                        $row['meas_count'] = ['value' => $count];
-                        $row['avg'] = ['value' => round($sum / $count, 2)];
-
-                        break;
-                    case 'bsw':
-
-                        $row['tech'] = [
-                            'value' => $techMode->get($well->id) ? $techMode->get($well->id)->wcut : null
-                        ];
-
-                        $count = $sum = 0;
-                        $monthDay = $date->startOfMonth();
-                        while ($monthDay < $date) {
-                            $wellBsw = $bsw->get($well->id);
-                            $bswValue = $wellBsw ? $wellBsw->get($monthDay->format('j')) : null;
-                            $row[$monthDay->format('d.m.Y')] = [
-                                'is_editable' => true,
-                                'value' => $bswValue ?? null
-                            ];
-
-                            if (!empty($bswValue)) {
-                                $count++;
-                                $sum += $bswValue;
-                            }
-
-                            $monthDay = $monthDay->addDay();
-                        }
-
-                        $row['meas_count'] = ['value' => $count];
-                        $row['avg'] = ['value' => round($sum / $count, 2)];
-
-                        break;
-                    case 'oil':
-                        continue;
-                    case 'note':
-                        $monthDay = $date->startOfMonth();
-                        while ($monthDay < $date) {
-                            $liquidValue = $liquid->get($well->id)->get($monthDay->format('j'));
-                            $row[$monthDay->format('d.m.Y')] = ['value' => $liquidValue['note'] ?? null];
-                            $monthDay = $monthDay->addDay();
-                        }
-                        break;
-                    case 'reason_decline':
-                        $monthDay = $date->startOfMonth();
-                        while ($monthDay < $date) {
-                            $liquidValue = $liquid->get($well->id)->get($monthDay->format('j'));
-                            $row[$monthDay->format('d.m.Y')] = [
-                                'value' => $liquidValue['reason_decline'] ?? null,
-                                'is_editable' => true,
-                                'type' => 'dict',
-                                'dict' => 'reason_rrd'
-                            ];
-                            $monthDay = $monthDay->addDay();
-                        }
-                        break;
-                    case 'worktime':
-                        $monthDay = $date->startOfMonth();
-                        while ($monthDay < $date) {
-                            $row[$monthDay->format('d.m.Y')] = $workTime[$well->id][$monthDay->format('j')];
-                            $monthDay = $monthDay->addDay();
-                        }
-                        break;
                 }
                 $rows[] = $row;
             }
@@ -179,13 +90,13 @@ class FluidProductionMonth extends TableForm
         return DB::connection('tbd')
             ->table('prod.meas_liq as ml')
             ->select('ml.well', 'ml.liquid', 'ml.dbeg', 'ml.note', 'ml.reason_decline')
-//            ->join('dict.well_activity as wa', 'ml.activity', 'wa.id')
-//            ->join('dict.value_type as vt', 'ml.value_type', 'vt.id')
+            ->join('dict.well_activity as wa', 'ml.activity', 'wa.id')
+            ->join('dict.value_type as vt', 'ml.value_type', 'vt.id')
             ->whereIn('ml.well', $wellIds)
             ->where('ml.dbeg', '>=', $date->startOfMonth())
             ->where('ml.dend', '<=', $date)
-//            ->where('wa.code', 'PMSR')
-//            ->where('vt.code', 'MNT')
+            ->where('wa.code', 'PMSR')
+            ->where('vt.code', 'MNT')
             ->get()
             ->groupBy('well')
             ->map(function ($items) {
@@ -207,13 +118,13 @@ class FluidProductionMonth extends TableForm
     {
         return DB::connection('tbd')
             ->table('prod.meas_water_cut as mwc')
-//            ->join('dict.well_activity as wa', 'mwc.activity', 'wa.id')
-//            ->join('dict.value_type as vt', 'mwc.value_type', 'vt.id')
+            ->join('dict.well_activity as wa', 'mwc.activity', 'wa.id')
+            ->join('dict.value_type as vt', 'mwc.value_type', 'vt.id')
             ->whereIn('mwc.well', $wellIds)
             ->where('mwc.dbeg', '>=', $date->startOfMonth())
             ->where('mwc.dend', '<=', $date)
-//            ->where('wa.code', 'PMSR')
-//            ->where('vt.code', 'MNT')
+            ->where('wa.code', 'PMSR')
+            ->where('vt.code', 'MNT')
             ->get()
             ->groupBy('well')
             ->map(function ($items) {
@@ -252,29 +163,39 @@ class FluidProductionMonth extends TableForm
             $startOfDay = $monthDay->startOfDay();
             $endOfDay = $monthDay->endOfDay();
             foreach ($wellIds as $wellId) {
-                $hours = 0;
-                $dailyStatuses = $wellStatuses
-                    ->where('dbeg', '<=', $endOfDay)
-                    ->where('dend', '>=', $startOfDay)
-                    ->where('well', $wellId);
-
-                foreach ($dailyStatuses as $status) {
-                    if ($status->dbeg <= $startOfDay && $status->dend >= $endOfDay) {
-                        $hours += 24;
-                    } elseif ($status->dbeg > $startOfDay) {
-                        $hours += $status->dbeg->diffInHours($status->dend < $endOfDay ? $status->dend : $endOfDay);
-                    } elseif ($status->dend < $endOfDay) {
-                        $hours += $startOfDay->diffInHours($status->dend);
-                    }
-                }
-
-                $result[$wellId][$monthDay->format('j')] = ['value' => $hours];
+                $result[$wellId][$monthDay->format('j')] = [
+                    'value' => $this->getHoursForOneDay($wellStatuses, $endOfDay, $startOfDay, $wellId)
+                ];
             }
 
             $monthDay = $monthDay->addDay();
         }
 
         return $result;
+    }
+
+    private function getHoursForOneDay(
+        Collection $wellStatuses,
+        CarbonImmutable $endOfDay,
+        CarbonImmutable $startOfDay,
+        $wellId
+    ): int {
+        $hours = 0;
+        $dailyStatuses = $wellStatuses
+            ->where('dbeg', '<=', $endOfDay)
+            ->where('dend', '>=', $startOfDay)
+            ->where('well', $wellId);
+
+        foreach ($dailyStatuses as $status) {
+            if ($status->dbeg <= $startOfDay && $status->dend >= $endOfDay) {
+                $hours += 24;
+            } elseif ($status->dbeg > $startOfDay) {
+                $hours += $status->dbeg->diffInHours($status->dend < $endOfDay ? $status->dend : $endOfDay);
+            } elseif ($status->dend < $endOfDay) {
+                $hours += $startOfDay->diffInHours($status->dend);
+            }
+        }
+        return $hours;
     }
 
     private function getOtherUwis(array $wellIds): array
@@ -301,6 +222,118 @@ class FluidProductionMonth extends TableForm
         }
 
         return $result;
+    }
+
+    private function getIndicatorRowData(
+        $well,
+        string $code,
+        Collection $techMode,
+        CarbonImmutable $date,
+        Collection $liquid,
+        Collection $bsw,
+        $workTime
+    ): array {
+        $row = [
+            'id' => $well->id . '|' . $code,
+            'indicator' => ['value' => trans('bd.forms.fluid_production_month.' . $code)]
+        ];
+
+        switch ($code) {
+            case 'liquid':
+                $row = array_merge($row, $this->getLiquidRowData($techMode, $well, $date, $liquid));
+                break;
+            case 'bsw':
+                $row = array_merge($row, $this->getBswRowData($techMode, $well, $date, $bsw));
+                break;
+            case 'oil':
+                continue;
+            case 'note':
+                $monthDay = $date->startOfMonth();
+                while ($monthDay < $date) {
+                    $liquidValue = $liquid->get($well->id)->get($monthDay->format('j'));
+                    $row[$monthDay->format('d.m.Y')] = ['value' => $liquidValue['note'] ?? null];
+                    $monthDay = $monthDay->addDay();
+                }
+                break;
+            case 'reason_decline':
+                $monthDay = $date->startOfMonth();
+                while ($monthDay < $date) {
+                    $liquidValue = $liquid->get($well->id)->get($monthDay->format('j'));
+                    $row[$monthDay->format('d.m.Y')] = [
+                        'value' => $liquidValue['reason_decline'] ?? null,
+                        'is_editable' => true,
+                        'type' => 'dict',
+                        'dict' => 'reason_rrd'
+                    ];
+                    $monthDay = $monthDay->addDay();
+                }
+                break;
+            case 'worktime':
+                $monthDay = $date->startOfMonth();
+                while ($monthDay < $date) {
+                    $row[$monthDay->format('d.m.Y')] = $workTime[$monthDay->format('j')];
+                    $monthDay = $monthDay->addDay();
+                }
+                break;
+        }
+        return $row;
+    }
+
+    private function getLiquidRowData(Collection $techMode, $well, CarbonImmutable $date, Collection $liquid): array
+    {
+        $row = [];
+        $row['tech'] = [
+            'value' => $techMode->get($well->id) ? $techMode->get($well->id)->liquid : null
+        ];
+
+        $count = $sum = 0;
+        $monthDay = $date->startOfMonth();
+        while ($monthDay < $date) {
+            $wellLiquid = $liquid->get($well->id);
+            $liquidValue = $wellLiquid->get($monthDay->format('j'));
+            $row[$monthDay->format('d.m.Y')] = ['value' => $liquidValue['liquid'] ?? null];
+
+            if (!empty($liquidValue['liquid'])) {
+                $count++;
+                $sum += $liquidValue['liquid'];
+            }
+
+            $monthDay = $monthDay->addDay();
+        }
+
+        $row['meas_count'] = ['value' => $count];
+        $row['avg'] = ['value' => round($sum / $count, 2)];
+        return $row;
+    }
+
+    private function getBswRowData(Collection $techMode, $well, CarbonImmutable $date, Collection $bsw): array
+    {
+        $row = [];
+        $row['tech'] = [
+            'value' => $techMode->get($well->id) ? $techMode->get($well->id)->wcut : null
+        ];
+
+        $count = $sum = 0;
+        $monthDay = $date->startOfMonth();
+        while ($monthDay < $date) {
+            $wellBsw = $bsw->get($well->id);
+            $bswValue = $wellBsw ? $wellBsw->get($monthDay->format('j')) : null;
+            $row[$monthDay->format('d.m.Y')] = [
+                'is_editable' => true,
+                'value' => $bswValue ?? null
+            ];
+
+            if (!empty($bswValue)) {
+                $count++;
+                $sum += $bswValue;
+            }
+
+            $monthDay = $monthDay->addDay();
+        }
+
+        $row['meas_count'] = ['value' => $count];
+        $row['avg'] = ['value' => round($sum / $count, 2)];
+        return $row;
     }
 
     private function getColumns(CarbonImmutable $date): array
@@ -340,23 +373,23 @@ class FluidProductionMonth extends TableForm
         $date = Carbon::parse($params['field'])->timezone('Asia/Almaty')->toImmutable();
         switch ($field) {
             case 'bsw':
-                $this->saveBsw($wellId, $date, $params['value']);
+                $this->saveField('prod.meas_water_cut', 'water_cut', $wellId, $date, $params['value']);
                 break;
             case 'reason_decline':
-                $this->saveReasonDecline($wellId, $date, $params['value']);
+                $this->saveField('prod.meas_liq', 'reason_decline', $wellId, $date, $params['value']);
                 break;
         }
     }
 
-    private function saveBsw(int $wellId, CarbonImmutable $date, float $value)
+    private function saveField(string $table, string $field, int $wellId, CarbonImmutable $date, float $value)
     {
         $activity = WellActivity::where('code', 'PMSR')->first();
         $valueType = ValueType::where('code', 'MNT')->first();
 
         $row = DB::connection('tbd')
-            ->table('prod.meas_water_cut')
-//                    ->where('activity', $activity->id)
-//                    ->where('value_type', $valueType->id)
+            ->table($table)
+            ->where('activity', $activity->id)
+            ->where('value_type', $valueType->id)
             ->where('well', $wellId)
             ->where('dbeg', '>=', $date->startOfDay())
             ->where('dbeg', '<=', $date->endOfDay())
@@ -364,63 +397,24 @@ class FluidProductionMonth extends TableForm
 
         if (empty($row)) {
             DB::connection('tbd')
-                ->table('prod.meas_water_cut')
+                ->table($table)
                 ->insert(
                     [
                         'activity' => $activity->id,
                         'value_type' => $valueType->id,
                         'well' => $wellId,
-                        'water_cut' => $value,
+                        $field => $value,
                         'dbeg' => $date->startOfDay(),
                         'dend' => $date->endOfDay()
                     ]
                 );
         } else {
             DB::connection('tbd')
-                ->table('prod.meas_water_cut')
+                ->table($table)
                 ->where('id', $row->id)
                 ->update(
                     [
-                        'water_cut' => $value
-                    ]
-                );
-        }
-    }
-
-    private function saveReasonDecline($wellId, CarbonImmutable $date, float $value)
-    {
-        $activity = WellActivity::where('code', 'PMSR')->first();
-        $valueType = ValueType::where('code', 'MNT')->first();
-
-        $row = DB::connection('tbd')
-            ->table('prod.meas_liq')
-//                    ->where('activity', $activity->id)
-//                    ->where('value_type', $valueType->id)
-            ->where('well', $wellId)
-            ->where('dbeg', '>=', $date->startOfDay())
-            ->where('dbeg', '<=', $date->endOfDay())
-            ->first();
-
-        if (empty($row)) {
-            DB::connection('tbd')
-                ->table('prod.meas_liq')
-                ->insert(
-                    [
-                        'activity' => $activity->id,
-                        'value_type' => $valueType->id,
-                        'well' => $wellId,
-                        'reason_decline' => $value,
-                        'dbeg' => $date->startOfDay(),
-                        'dend' => $date->endOfDay()
-                    ]
-                );
-        } else {
-            DB::connection('tbd')
-                ->table('prod.meas_liq')
-                ->where('id', $row->id)
-                ->update(
-                    [
-                        'reason_decline' => $value
+                        $field => $value
                     ]
                 );
         }
