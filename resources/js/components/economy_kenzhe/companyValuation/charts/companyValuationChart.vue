@@ -1,7 +1,7 @@
 <template>
   <div class="chart-border_color mt-3">
     <div>
-      <div class="col px-2 container-col_color" v-if="show">
+      <div class="col px-2 container-col_color" v-if="isDisplay">
         <apexchart
           type="line"
           height="255"
@@ -26,21 +26,20 @@ export default {
       chartSettings: chartSettings,
       chartOptions: {},
       series: {},
-      show: false,
+      isDisplay: false,
     };
   },
   async created() {
-    await this.downloadJson();
+    await this.showChart();
   },
   methods: {
-    downloadJson() {
-      console.log(this.chartOptionsData);
+    showChart() {
       this.chartOptions = this.chartOptionsData;
       this.chartOptionsData.chartOptions = Object.assign(
         this.chartOptionsData.chartOptions,
         this.chartSettings.chartOptions
       );
-      this.show = true;
+      this.isDisplay = true;
     },
   },
 };
