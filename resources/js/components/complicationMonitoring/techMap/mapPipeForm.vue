@@ -184,9 +184,13 @@ export default {
     wellOptions: function () {
       let options = [];
       this.wellPoints.forEach((item) => {
-        options.push(
-            {value: item.id, text: item.name}
-        );
+        if (_.isUndefined(this.pipe.zu_id) ||
+            item.zu_id == this.pipe.zu_id
+        ) {
+          options.push(
+              {value: item.id, text: item.name}
+          );
+        }
       });
 
       return options;
@@ -214,9 +218,13 @@ export default {
     zuOptions: function () {
       let options = [];
       this.zuPoints.forEach((item) => {
-        options.push(
-            {value: item.id, text: item.name}
-        );
+        if (_.isUndefined(this.pipe.gu_id) ||
+            item.gu_id == this.pipe.gu_id
+        ) {
+          options.push(
+              {value: item.id, text: item.name}
+          );
+        }
       });
 
       return options;
