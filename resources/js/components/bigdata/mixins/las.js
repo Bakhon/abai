@@ -205,6 +205,15 @@ export default {
                 return '.'
             }
             return ''
+        },
+        getLocalizedParameterName(parameter) {
+            if (parameter[this.localization] !== '') {
+                return parameter[this.localization]
+            }
+            if (parameter['ru'] !== '') {
+                return parameter['ru']
+            }
+            return parameter['value']
         }
     },
     computed: {
@@ -251,15 +260,6 @@ export default {
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.SET_LOADING(false));
-        },
-        getLocalizedParameterName(parameter) {
-            if (parameter[this.localization] !== '') {
-                return parameter[this.localization]
-            }
-            if (parameter['ru'] !== '') {
-                return parameter['ru']
-            }
-            return parameter['value']
         }
     }
 }
