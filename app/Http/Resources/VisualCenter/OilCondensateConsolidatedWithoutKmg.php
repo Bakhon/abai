@@ -42,7 +42,8 @@ class OilCondensateConsolidatedWithoutKmg {
     public function getDataByConsolidatedCategory($factData,$planData,$periodRange,$type,$yearlyPlan,$periodType,$oneDzoSelected)
     {
         if (!is_null($oneDzoSelected)) {
-            $this->companies = $oneDzoSelected;
+            $this->companies = array();
+            $this->companies[] = $oneDzoSelected;
         }
         $summary = array();
         $groupedFact = $factData->groupBy('dzo_name');
@@ -54,6 +55,9 @@ class OilCondensateConsolidatedWithoutKmg {
             if (count($filteredPlan) === 0) {
                 continue;
             }
+            if (!in_array($dzoName,$this->companies)) {
+                continue;
+            }
             if ($dzoName === 'ПКИ') {
                 continue;
             }
@@ -62,8 +66,12 @@ class OilCondensateConsolidatedWithoutKmg {
                 $summary = array_merge($summary,$updated);
             }
         }
+
         $oilCondensate = new Dzo();
         $sorted = $oilCondensate->getSortedById($summary,$type,$this->consolidatedNumberMappingWithoutKmg);
+        if (!is_null($oneDzoSelected)) {
+            $sorted = $summary;
+        }
         return $sorted;
     }
 

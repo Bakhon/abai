@@ -183,6 +183,7 @@ export default {
             this.isOneDzoSelected = true;
             this.assignOneCompanyToSelectedDzo(this.oneDzoSelected);
         }
+        this.oneDzoSelected = 'ОМГ';
         this.productionParams = await this.getProductionParamsByCategory();
         this.updateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
         this.productionTableData = this.productionParams.tableData.current[this.selectedCategory];

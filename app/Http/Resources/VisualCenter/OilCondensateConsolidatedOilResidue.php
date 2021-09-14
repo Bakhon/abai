@@ -25,7 +25,8 @@ class OilCondensateConsolidatedOilResidue {
     public function getDataByOilResidueCategory($factData,$periodRange,$oneDzoSelected)
     {
         if (!is_null($oneDzoSelected)) {
-            $this->companies = $oneDzoSelected;
+            $this->companies = array();
+            $this->companies[] = $oneDzoSelected;
         }
         $summary = array();
         $groupedFact = $factData->groupBy('dzo_name');
@@ -47,6 +48,9 @@ class OilCondensateConsolidatedOilResidue {
             array_push($summary,$companySummary);
         }
         $sorted = $this->getSortedById($summary);
+        if (!is_null($oneDzoSelected)) {
+            $sorted = $summary;
+        }
         return $sorted;
     }
 

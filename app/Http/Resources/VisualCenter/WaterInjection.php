@@ -141,8 +141,8 @@ class WaterInjection {
         $accidents = array();
         $dzoFactData = $dzoFact[0];
         foreach($this->decreaseReasonFields as $fieldName) {
-            if (!is_null($dzoFactData['importDecreaseReason']) && isset($dzoFactData['importDecreaseReason'][$fieldName])) {
-               array_push($accidents,$dzoFactData['importDecreaseReason'][$fieldName]);
+            if (!is_null($dzoFactData['import_decrease_reason']) && isset($dzoFactData['import_decrease_reason'][$fieldName])) {
+               array_push($accidents,$dzoFactData['import_decrease_reason'][$fieldName]);
             }
         }
         return $accidents;
