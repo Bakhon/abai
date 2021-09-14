@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Resources\VisualCenter;
+namespace App\Http\Resources\VisualCenter\Dzo;
 
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use Carbon\Carbon;
 use App\Http\Resources\VisualCenter\Dzo;
 
 class Kgm extends Dzo {
+
+    protected $dzoName = 'КГМ';
     private $condensateMultiplier = 0.5 * 0.33;
     private $oilCondensateMultiplier = 0.5;
 
@@ -39,6 +41,23 @@ class Kgm extends Dzo {
         if ($periodType === 'year') {
             $summary['yearlyPlan'] *= $this->oilCondensateMultiplier;
         }
+        return $summary;
+    }
+
+    protected function getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type)
+    {
+        $summaryByOil = $companySummary;
+        $summaryByCondensate = $this->getCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType);
+        $summary = array();
+        array_push($summary,$summaryByCondensate);
+        array_push($summary,$summaryByOil);
+        return $summary;
+    }
+
+    protected function getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType)
+    {
+        $summary = array();
+        array_push($summary,$companySummary);
         return $summary;
     }
 }

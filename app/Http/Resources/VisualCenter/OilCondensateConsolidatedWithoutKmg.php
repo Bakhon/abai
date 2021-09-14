@@ -4,9 +4,10 @@ namespace App\Http\Resources\VisualCenter;
 
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Http\Resources\VisualCenter\Dzo;
+use App\Http\Resources\VisualCenter\Dzo\Factory;
 use Carbon\Carbon;
 
-class OilCondensateConsolidatedWithoutKmg extends Dzo {
+class OilCondensateConsolidatedWithoutKmg {
     protected $consolidatedNumberMappingWithoutKmg = array (
         'production' => array (
             "ОМГ" => "2.1.",
@@ -56,12 +57,13 @@ class OilCondensateConsolidatedWithoutKmg extends Dzo {
             if ($dzoName === 'ПКИ') {
                 continue;
             }
-            $updated = $this->getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,$pkiSumm,$type,$periodType,$yearlyPlan);
+            $updated = $this->getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,$type,$periodType,$yearlyPlan);
             if (count($updated) > 0) {
                 $summary = array_merge($summary,$updated);
             }
         }
-        $sorted = $this->getSortedById($summary,$type,$this->consolidatedNumberMappingWithoutKmg);
+        $oilCondensate = new Dzo();
+        $sorted = $oilCondensate->getSortedById($summary,$type,$this->consolidatedNumberMappingWithoutKmg);
         return $sorted;
     }
 
@@ -88,14 +90,14 @@ class OilCondensateConsolidatedWithoutKmg extends Dzo {
              ->get();
     }
 
-    private function getUpdatedByTroubledCompanies($dzo,$dzoFact,$filteredPlan,&$pkiSumm,$type,$periodType,$yearlyPlan)
+    private function getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,$type,$periodType,$yearlyPlan)
     {
-        $filteredYearlyPlan = $yearlyPlan->where('dzo',$dzo);
-        if (!array_key_exists($dzo,$this->consolidatedNumberMappingWithoutKmg[$type])) {
+        $filteredYearlyPlan = $yearlyPlan->where('dzo',$dzoName);
+        if (!array_key_exists($dzoName,$this->consolidatedNumberMappingWithoutKmg[$type])) {
             return [];
         }
-
-        return $this->getSummaryWithoutKMG($dzoFact,$dzo,$filteredPlan,$pkiSumm,$type,$periodType,$filteredYearlyPlan);
+        $dzo = new Dzo();
+        return $dzo->getSummaryWithoutKMG($dzoFact,$dzoName,$filteredPlan,$type,$periodType,$filteredYearlyPlan,$this->consolidatedNumberMappingWithoutKmg[$type][$dzoName]);
     }
 
     public function getChartData($fact,$plan,$dzoName,$type)

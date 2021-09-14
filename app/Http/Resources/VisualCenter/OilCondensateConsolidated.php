@@ -4,9 +4,10 @@ namespace App\Http\Resources\VisualCenter;
 
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Http\Resources\VisualCenter\Dzo;
+use App\Http\Resources\VisualCenter\Dzo\Factory;
 use Carbon\Carbon;
 
-class OilCondensateConsolidated extends Dzo {
+class OilCondensateConsolidated {
 
     protected $consolidatedNumberMapping = array (
         'production' => array (
@@ -59,13 +60,7 @@ class OilCondensateConsolidated extends Dzo {
             return in_array($item->dzo_name,$this->companies);
         });
 
-        $pkiSumm = array (
-            'fact' => 0,
-            'plan' => 0,
-            'opek' => 0,
-            'monthlyPlan' => 0,
-            'yearlyPlan' => 0
-        );
+
         $groupedFact = $this->getGroupedFact($factData);
         if ($periodRange === 0 && is_null($oneDzoSelected)) {
             $groupedFact = $this->getUpdatedByMissingCompanies($groupedFact);
@@ -75,19 +70,17 @@ class OilCondensateConsolidated extends Dzo {
         if (!is_null($oneDzoSelected)) {
             return $summary;
         }
-        array_push($summary,array(
-              'id' => $this->consolidatedNumberMapping[$type]['ПКИ'],
-              'name' => 'ПКИ',
-              'fact' => $pkiSumm['fact'],
-              'plan' => $pkiSumm['plan'],
-              'opek' => $pkiSumm['opek'],
-              'monthlyPlan' => $pkiSumm['monthlyPlan'],
-              'yearlyPlan' => $pkiSumm['yearlyPlan'],
-              'decreaseReasonExplanations' => []
-        ));
-        $sorted = $this->getSortedById($summary,$type,$this->consolidatedNumberMapping);
+        $pkiDzo = array('КГМКМГ','ТП','ПККР');
+        $filteredByPki = array_filter($summary, function ($dzo) use($pkiDzo) {
+            return in_array($dzo['name'],$pkiDzo);
+        });
+        $factory = new Factory();
+        $dzo = $factory->make('ПКИ');
+        $pkiSummary = $dzo->getSumByOtherDzo($filteredByPki,$periodType,$type,$this->consolidatedNumberMapping[$type]['ПКИ']);
+        array_push($summary,$pkiSummary);
+        $oilCondensate = new Dzo();
+        $sorted = $oilCondensate->getSortedById($summary,$type,$this->consolidatedNumberMapping);
         return $sorted;
-
     }
 
     private function getGroupedFact($factData)
@@ -106,7 +99,7 @@ class OilCondensateConsolidated extends Dzo {
             if ($dzoName === 'ПКИ') {
                 continue;
             }
-            $updated = $this->getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,$pkiSumm,$type,$periodType,$yearlyPlan);
+            $updated = $this->getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,$type,$periodType,$yearlyPlan);
             if (count($updated) > 0) {
                 $summary = array_merge($summary,$updated);
             }
@@ -139,7 +132,7 @@ class OilCondensateConsolidated extends Dzo {
              ->get();
     }
 
-    private function getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,&$pkiSumm,$type,$periodType,$yearlyPlan)
+    private function getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,$type,$periodType,$yearlyPlan)
     {
         $filteredYearlyPlan = $yearlyPlan->where('dzo',$dzoName);
         if ($dzoName === 'ПКК') {
@@ -149,7 +142,8 @@ class OilCondensateConsolidated extends Dzo {
         if (!array_key_exists($dzoName,$this->consolidatedNumberMapping[$type])) {
             return [];
         }
-        return $this->getSummaryByOilCondensate($dzoFact,$dzoName,$filteredPlan,$pkiSumm,$type,$periodType,$filteredYearlyPlan);
+        $dzo = new Dzo();
+        return $dzo->getSummaryByOilCondensate($dzoFact,$dzoName,$filteredPlan,$type,$periodType,$filteredYearlyPlan,$this->consolidatedNumberMapping[$type][$dzoName]);
     }
 
     public function getChartData($fact,$plan,$dzoName,$type)

@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Http\Resources\VisualCenter;
+namespace App\Http\Resources\VisualCenter\Dzo;
 
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use Carbon\Carbon;
 use App\Http\Resources\VisualCenter\Dzo;
 
 class Omg extends Dzo {
-    protected function getOilCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$fieldName,$periodType)
+
+    protected $dzoName = 'ОМГ';
+
+    protected function getCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$fieldName,$periodType)
     {
         $condensateSummary = $companySummary;
         $condensateSummary['id'] = '';
@@ -35,5 +38,25 @@ class Omg extends Dzo {
         $condensateSummary['date'] = $date;
         $condensateSummary['name'] = 'ОМГК';
         return $condensateSummary;
+    }
+
+    protected function getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type)
+    {
+        $summaryByOil = $companySummary;
+        $summaryByCondensate = $this->getCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$this->consolidatedFieldsMapping[$type]['condensatePlan'],$periodType);
+        $summary = array();
+        array_push($summary,$summaryByCondensate);
+        array_push($summary,$summaryByOil);
+        return $summary;
+    }
+
+    protected function getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType)
+    {
+        $summaryByOil = $companySummary;
+        $summaryByCondensate = $this->getCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$this->consolidatedFieldsMapping[$type]['condensatePlan'],$periodType);
+        $summary = array();
+        array_push($summary,$summaryByCondensate);
+        array_push($summary,$summaryByOil);
+        return $summary;
     }
 }
