@@ -122,11 +122,10 @@ import AwIcon from "../components/icons/AwIcon";
 import ListOfWells from "./modals/ListOfWells";
 import TableSettings from "./modals/TableSettings";
 import CrossPlot from "./modals/CrossPlot";
-import graph1 from "./graphics/graph1";
 import graph2 from "./graphics/graph2";
 import curve from "../demo_json/curve.json";
 import {globalloadingMutations} from '@store/helpers';
-
+import AwGis from "./graphics/awGis/AwGis";
 export default {
   name: "Geology-Page",
   components: {
@@ -146,7 +145,7 @@ export default {
       graphComponents: [
         {
           id: 'canvasWrapper',
-          is: graph1,
+          is: AwGis,
           graphData: curve
         },
         {
