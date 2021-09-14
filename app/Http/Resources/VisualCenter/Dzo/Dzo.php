@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\VisualCenter;
+namespace App\Http\Resources\VisualCenter\Dzo;
 
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Http\Resources\VisualCenter\Dzo\Factory;

@@ -3,7 +3,7 @@
 namespace App\Http\Resources\VisualCenter;
 
 use App\Models\VisCenter\ExcelForm\DzoImportData;
-use App\Http\Resources\VisualCenter\Dzo;
+use App\Http\Resources\VisualCenter\Dzo\Dzo;
 use App\Http\Resources\VisualCenter\Dzo\Factory;
 use Carbon\Carbon;
 

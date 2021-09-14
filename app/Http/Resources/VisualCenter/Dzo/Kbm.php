@@ -4,7 +4,7 @@ namespace App\Http\Resources\VisualCenter\Dzo;
 
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use Carbon\Carbon;
-use App\Http\Resources\VisualCenter\Dzo;
+use App\Http\Resources\VisualCenter\Dzo\Dzo;
 
 class Kbm extends Dzo {
 
