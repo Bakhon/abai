@@ -44,8 +44,8 @@
       "code": "liquid_mark",
       "type": "copy",
       "copy": {
-        "from": "liquid_prod",
-        "to": "liquid_prod_tel"
+        "from": "liquid_prod_tel",
+        "to": "liquid_prod"
       },
       "table": "prod.meas_gzu_prod",
       "column": "liquid_mark",
@@ -72,8 +72,8 @@
       "code": "liquid_mark_tel",
       "type": "copy",
       "copy": {
-        "from": "water_cut",
-        "to": "water_cut_tel"
+        "from": "water_cut_tel",
+        "to": "water_cut"
       },
       "table": "prod.meas_gzu_prod",
       "column": "liquid_mark_tel",
@@ -116,8 +116,8 @@
       "code": "gaz_mark",
       "type": "copy",
       "copy": {
-        "from": "gaz_prod",
-        "to": "gaz_prod_tel"
+        "from": "gaz_prod_tel",
+        "to": "gaz_prod"
       },
       "table": "prod.meas_gzu_prod",
       "column": "gaz_mark",

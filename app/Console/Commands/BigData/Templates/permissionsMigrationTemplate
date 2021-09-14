@@ -32,7 +32,6 @@ class #MIGRATION_CLASS_NAME# extends Migration
 
     public function down()
     {
-        return;
         foreach ($this->permissions as $permission) {
             DB::table('permissions')
                 ->where('name', $permission['name'])
