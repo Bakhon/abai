@@ -29,10 +29,11 @@ export const chartInitMixin = {
             required: false,
             type: String,
         },
-
     },
     data: () => ({
-        isVisibleDefaultSeries: true
+        isVisibleDefaultSeries: true,
+        isVisibleInWork: true,
+        isVisibleInPause: false,
     }),
     computed: {
         isProfitabilityFull() {
@@ -71,11 +72,7 @@ export const chartInitMixin = {
             let series = [...this.defaultSeries]
 
             this.chartKeys.forEach(key => {
-                series.push({
-                    name: this.trans(`economic_reference.wells_${key}`),
-                    type: 'area',
-                    data: this.data[key]
-                })
+                series.push(this.chartArea(key, this.data))
             })
 
             return series
@@ -83,8 +80,14 @@ export const chartInitMixin = {
 
         chartKeys() {
             return this.isProfitabilityFull
-                ? ['profitable', 'profitless_cat_2', 'profitless_cat_1']
-                : ['profitable', 'profitless']
+                ? ['profitable', 'profitless_cat_2', 'profitless_cat_1'].reverse()
+                : ['profitable', 'profitless'].reverse()
+        },
+
+        chartOpacity() {
+            return this.isProfitabilityFull
+                ? [0.8, 0.4, 0.2]
+                : [0.8, 0.4]
         },
 
         chartOptions() {
@@ -98,11 +101,11 @@ export const chartInitMixin = {
                 },
                 colors: [
                     ...this.defaultColors,
+                    ...(this.isVisibleInPause ? this.colorsInPause : this.colorsInWork),
                     ...this.colorsInWork,
-                    ...this.colorsInPause,
                 ],
                 chart: {
-                    stacked: true,
+                    stacked: false,
                     foreColor: '#FFFFFF',
                     locales: [ru],
                     defaultLocale: 'ru'
@@ -128,9 +131,14 @@ export const chartInitMixin = {
                         return {
                             formatter: index < this.defaultSeriesLength
                                 ? (y) => y
-                                : (y) => this.tooltipFormatter(y)
+                                : (y, config) => this.tooltipFormatter(y, config)
                         }
                     })
+                },
+                fill: {
+                    opacity: this.isVisibleDefaultSeries
+                        ? [...[0.9, 0.9], ...this.chartOpacity, ...this.chartOpacity]
+                        : [...this.chartOpacity, ...this.chartOpacity]
                 }
             }
         },
@@ -139,10 +147,7 @@ export const chartInitMixin = {
             return this.chartSeries.map((item, index) => {
                 return {
                     min: 0,
-                    max: index === 1 && index < this.defaultSeries.length
-                        ? this.defaultSeries[index].max * 1.3
-                        : undefined,
-                    show: index === 0 || index === this.defaultSeriesLength,
+                    show: index <= 1 || index === this.defaultSeriesLength,
                     opposite: index < this.defaultSeriesLength && this.defaultSeriesLength,
                     seriesName: index < this.defaultSeriesLength
                         ? this.defaultSeries[index].name
@@ -165,26 +170,101 @@ export const chartInitMixin = {
 
         colorsInWork() {
             return this.isProfitabilityFull
-                ? ['#13B062', '#F7BB2E', '#AB130E']
-                : ['#13B062', '#AB130E']
+                ? ['#13B062', '#F7BB2E', '#AB130E'].reverse()
+                : ['#13B062', '#AB130E'].reverse()
         },
 
         colorsInPause() {
             return this.isProfitabilityFull
-                ? ['#0E7D45', '#C49525', '#780D0A']
-                : ['#0E7D45', '#780D0A']
+                ? ['#0E7D45', '#C49525', '#780D0A'].reverse()
+                : ['#0E7D45', '#780D0A'].reverse()
         },
     },
     methods: {
-        tooltipFormatter(y) {
-            if (y === undefined || y === null) {
-                return y
-            }
+        tooltipFormatter(value, {dataPointIndex, seriesIndex}) {
+            value = this.chartSeries[seriesIndex].tooltipData[dataPointIndex]
 
             return new Intl.NumberFormat(
                 'en-IN',
                 {maximumSignificantDigits: 4}
-            ).format(y.toFixed(2)) + ` ${this.tooltipText || ''}`;
+            ).format(value.toFixed(2)) + ` ${this.tooltipText || ''}`;
+        },
+
+        chartArea(profitability, wells, pausedWells = null) {
+            let name = this.trans(`economic_reference.wells_${profitability}`)
+
+            if (pausedWells) {
+                name += ` ${this.trans('economic_reference.in_pause').toLowerCase()}`
+
+                if (!this.isVisibleInWork) {
+                    wells = pausedWells
+
+                    pausedWells = null
+                }
+            }
+
+            switch (profitability) {
+                case "profitable":
+                    return {
+                        name: name,
+                        type: 'area',
+                        data: pausedWells
+                            ? pausedWells[profitability].map((value, index) => {
+                                return value
+                                    + wells.profitable[index]
+                                    + wells.profitless_cat_1[index]
+                                    + wells.profitless_cat_2[index]
+                            })
+                            : wells[profitability],
+                        tooltipData: pausedWells
+                            ? pausedWells[profitability]
+                            : wells[profitability],
+                    }
+                case "profitless":
+                case "profitless_cat_2":
+                    return {
+                        name: name,
+                        profitability: profitability,
+                        type: 'area',
+                        data: pausedWells
+                            ? pausedWells[profitability].map((value, index) => {
+                                return value
+                                    + wells.profitable[index]
+                                    + wells.profitless_cat_1[index]
+                                    + wells.profitless_cat_2[index]
+                                    + pausedWells.profitable[index]
+                            })
+                            : wells[profitability].map((value, index) => {
+                                return value + wells.profitable[index]
+                            }),
+                        tooltipData: pausedWells
+                            ? pausedWells[profitability]
+                            : wells[profitability],
+                    }
+                case "profitless_cat_1":
+                    return {
+                        name: name,
+                        profitability: profitability,
+                        type: 'area',
+                        data: pausedWells
+                            ? pausedWells[profitability].map((value, index) => {
+                                return value
+                                    + wells.profitable[index]
+                                    + wells.profitless_cat_1[index]
+                                    + wells.profitless_cat_2[index]
+                                    + pausedWells.profitable[index]
+                                    + pausedWells.profitless_cat_2[index]
+                            })
+                            : wells[profitability].map((value, index) => {
+                                return value
+                                    + wells.profitable[index]
+                                    + wells.profitless_cat_2[index]
+                            }),
+                        tooltipData: pausedWells
+                            ? pausedWells[profitability]
+                            : wells[profitability],
+                    }
+            }
         },
     }
 }
