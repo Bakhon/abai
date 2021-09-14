@@ -255,8 +255,10 @@ class EconomicOptimizationController extends Controller
                 }
             }
         } catch (\Throwable $e) {
-            return null;
+
         }
+
+        return null;
     }
 
     private function getOilPrice(): ?string
