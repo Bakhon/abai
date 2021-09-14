@@ -18,8 +18,10 @@ class CreateGtmFactCostsTable extends Migration
             $table->unsignedBigInteger('org_id')->nullable();
             $table->string('dzo_name');
             $table->string('dzo_name_short');
+            $table->unsignedBigInteger('geo_id')->nullable();
             $table->string('oilfield');
             $table->string('well_name');
+            $table->unsignedBigInteger('gtm_type_id')->nullable();
             $table->string('gtm_name');
             $table->date('gtm_date');
             $table->float('price', 12, 8);
