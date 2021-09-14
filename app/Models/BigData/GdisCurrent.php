@@ -7,6 +7,7 @@ use App\Models\TBDModel;
 class GdisCurrent extends TBDModel
 {
     protected $table = 'prod.gdis_current';
+    protected $guarded = ['id'];
 
     protected $casts = [
         'meas_date' => 'date'

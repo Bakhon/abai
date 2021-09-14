@@ -7,6 +7,7 @@ namespace App\Services\BigData\Forms;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\GdisCurrent;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class CurrentGDIS extends TableForm
 {
@@ -107,7 +108,6 @@ class CurrentGDIS extends TableForm
     private function getMeasurements()
     {
         $wellId = $this->request->get('id');
-        $wellId = 1524;
 
         $dates = GdisCurrent::query()
             ->where('well', $wellId)
@@ -181,6 +181,7 @@ class CurrentGDIS extends TableForm
         $rows = [];
         foreach ($this->gdisFields as $field) {
             $row = [
+                'id' => $this->request->get('id'),
                 'value' => [
                     'name' => trans('bd.forms.current_g_d_i_s.' . $field['code'])
                 ],
@@ -218,6 +219,7 @@ class CurrentGDIS extends TableForm
         $rows = [];
         foreach ($this->metricCodes as $code) {
             $row = [
+                'id' => $this->request->get('id'),
                 'value' => [
                     'name' => $metricNames[$code]
                 ],
@@ -279,7 +281,59 @@ class CurrentGDIS extends TableForm
 
     protected function saveSingleFieldInDB(array $params): void
     {
+        $code = $this->request->get('params')['code'];
+        $measurement = GdisCurrent::query()
+            ->where('well', $params['wellId'])
+            ->where('meas_date', $params['date'])
+            ->first();
 
-        dd($this->request->all(), $params);
+        try {
+            DB::connection('tbd')->beginTransaction();
+
+            if (empty($measurement)) {
+                $measurement = GdisCurrent::create(
+                    [
+                        'well' => $params['wellId'],
+                        'meas_date' => $params['date']
+                    ]
+                );
+            }
+
+            switch ($this->request->get('params')['type']) {
+                case 'field':
+                    $measurement->update(
+                        [
+                            $code => $params['value']
+                        ]
+                    );
+                    break;
+                case 'metric':
+
+                    $metric = Metric::where('code', $code)->first();
+                    $measurementValue = $measurement->values->where('metric', $metric->id)->first();
+
+                    if (empty($measurementValue)) {
+                        $measurementValue = $measurement->values()->create(
+                            [
+                                'metric' => $metric->id
+                            ]
+                        );
+                    }
+
+                    $measurementValue->update(
+                        [
+                            'value_string' => $params['value']
+                        ]
+                    );
+
+                    break;
+                default:
+                    throw new \Exception('Saving error');
+            }
+            DB::connection('tbd')->commit();
+        } catch (\Exception $e) {
+            DB::connection('tbd')->rollBack();
+            throw new \Exception('Saving error');
+        }
     }
 }
