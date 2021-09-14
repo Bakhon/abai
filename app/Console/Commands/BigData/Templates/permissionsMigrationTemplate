@@ -5,19 +5,42 @@ use Illuminate\Support\Facades\DB;
 
 class #MIGRATION_CLASS_NAME# extends Migration
 {
+    protected $permissions;
+    protected $permissionSection;
+
+    public function __construct()
+    {
+        $this->permissions = json_decode('#PERMISSIONS#', 1);
+        $this->permissionSection = json_decode('#PERMISSION_SECTION#', 1);
+    }
+
     public function up()
     {
-        $permissions = json_decode('#PERMISSIONS#', 1);
+        foreach ($this->permissions as $permission) {
+            $row = DB::table('permissions')
+                ->where('name', $permission['name'])
+                ->where('guard_name', $permission['guard_name'])
+                ->first();
 
-        foreach ($permissions as $permission) {
+            if(!empty($row)) continue;
+
             DB::table('permissions')->insert($permission);
         }
 
-        $permissionSection = json_decode('#PERMISSION_SECTION#', 1);
-        DB::table('permission_sections')->insert($permissionSection);
+        DB::table('permission_sections')->insert($this->permissionSection);
     }
 
     public function down()
     {
+        foreach ($this->permissions as $permission) {
+            DB::table('permissions')
+                ->where('name', $permission['name'])
+                ->where('guard_name', $permission['guard_name'])
+                ->delete();
+
+            DB::table('permission_sections')
+                ->where('code', $this->permissionSection['code'])
+                ->delete();
+        }
     }
 }

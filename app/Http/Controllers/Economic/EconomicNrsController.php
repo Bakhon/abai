@@ -10,6 +10,7 @@ use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Extractions\ExtractionBuilder;
@@ -67,6 +68,15 @@ class EconomicNrsController extends Controller
     public function indexWells()
     {
         return view('economic.nrs_wells');
+    }
+
+    public function indexWell(Request $request)
+    {
+        $orgId = $request->route('org_id');
+
+        $wellId = $request->route('well_id');
+
+        return view('economic.nrs_well', compact('orgId', 'wellId'));
     }
 
     public function getData(EconomicNrsDataRequest $request): array
@@ -411,9 +421,13 @@ class EconomicNrsController extends Controller
             $builder->where('dpz', '=', $dpz);
         }
 
+        if ($request->well_id) {
+            $builder->where('uwi', '=', $request->well_id);
+        }
+
         $wells = $builder->groupBy()->data();
 
-        $wellsByDates = ['dates' => [], 'uwis' => []];
+        $wellsByDates = ['org' => $org, 'dates' => [], 'uwis' => []];
 
         foreach ($wells as &$well) {
             $uwi = $well['uwi'];
