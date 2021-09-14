@@ -255,11 +255,7 @@ export default {
             this.setTableFormat();
         },
         async wellWorkoverSave() {
-            if (this.selectedDzo.ticker === 'КОА' || this.isWellWorkoverDataValid()) {
-                await this.storeWellWorkoverData();
-            } else {
-                this.status = this.trans("visualcenter.importForm.status.emptyData");
-            }
+            await this.storeWellWorkoverData();
         },
         async chemistrySave() {
             this.chemistryErrorFields = [];
@@ -477,9 +473,6 @@ export default {
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
-        isWellWorkoverDataValid() {
-            return parseFloat(this.wellWorkover.otm_well_workover_fact) > 0 && parseFloat(this.wellWorkover.otm_underground_workover) > 0
-        }
     },
     components: {
         VGrid

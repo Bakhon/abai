@@ -61,7 +61,9 @@ export default {
         columnWidth: this.tableHeaders.map((col, index) => ({
           column: index,
           width: index > 0 ? 90 : 100
-        }))
+        })),
+        highlight: {column: [0, 1]},
+        highlightedColor: '#E6E6E6'
       }
     },
 
@@ -117,7 +119,6 @@ export default {
 }
 
 .height-unset >>> .v-table-row {
-  height: unset !important;
-  padding: 5px 0;
+  height: 30px !important;
 }
 </style>

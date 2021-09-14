@@ -17,7 +17,10 @@ const digitalRating = {
     },
     SET_INDICATORS(state, payload) {
       state.indicators = payload;
-    }
+    },
+    CLEAR_ATLAS(state) {
+      state.indicators = [];
+    },
   },
 
   actions: {
