@@ -230,6 +230,12 @@ width: 192px;
   height: calc(100vh - 355px);
   overflow-y: scroll;
 }
+.p_events_form_fil {
+  background: #333975;
+  width: 133px;
+  height: calc(100vh - 520px);
+  overflow-y: scroll;
+}
 .well_modal_form_fil.well_modal_form_fil {
   background: #333975;
   width: 150px;
@@ -268,7 +274,7 @@ overflow-y: hidden !important;
 }
 /* width */
 ::-webkit-scrollbar {
-width: 10px;
+width: 5px;
 }
 
 /* Track */
@@ -308,5 +314,13 @@ fill: #394066;
 }
 .style-chooser .vs__searchable {
 width: 2px;
+}
+.plan_events_filter {
+  width: 169px;
+}
+.plan_event_filter_text {
+  display: flex;
+  justify-content: center;
+  margin-left: -11px;
 }
 
