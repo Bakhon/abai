@@ -588,7 +588,7 @@ return array (
         'altitude' => 'Альтитуд α',
         'coal' => 'Угол (°)',
         'azimuth' => 'Азимут(°)',
-        'three_instruments' => 'Типs прибора',
+        'three_instruments' => 'Тип прибора',
 
         'SAFETY' => 'ТЕХНИКА БЕЗОПАСНОСТИ',
         'fire_alarm' => 'Пожарная тревога',
