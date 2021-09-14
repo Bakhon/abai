@@ -98,10 +98,6 @@ export default {
       required: true,
       type: Array
     },
-    selectedWells: {
-      required: true,
-      type: Array
-    }
   },
   methods: {
     getColor({profitability_12m}) {
@@ -136,14 +132,14 @@ export default {
       let sumKeys = Object.keys(sumValues)
 
       if (well.isShutdown) {
-        this.selectedWells.push(uwi)
+        this.scenario.uwi_stop.push(uwi)
 
         sumKeys.forEach(key => sumValues[key] = -sumValues[key])
       } else {
-        let index = this.selectedWells.findIndex(well => well === uwi)
+        let index = this.scenario.uwi_stop.findIndex(well => well === uwi)
 
         if (index !== -1) {
-          this.selectedWells.splice(index, 1)
+          this.scenario.uwi_stop.splice(index, 1)
         }
       }
 
@@ -169,7 +165,7 @@ export default {
             cat1: 0,
             cat2: 0,
             profitable: 0,
-            isShutdown: this.selectedWells.includes(well.uwi)
+            isShutdown: this.scenario.uwi_stop.includes(well.uwi)
           }
         }
 
