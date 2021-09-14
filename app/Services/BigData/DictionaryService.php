@@ -424,6 +424,9 @@ class DictionaryService
                 case 'reason_rls':
                     $dict = $this->getReasonTypeDict('RLS');
                     break;
+                case 'reason_rrd':
+                    $dict = $this->getReasonTypeDict('RRD');
+                    break;
                 case 'las_mnemonics':
                     $dict = $this->getLasMnemonics();
                     break;
