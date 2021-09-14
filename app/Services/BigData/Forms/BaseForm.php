@@ -221,4 +221,9 @@ abstract class BaseForm
             throw new ParseJsonException(implode('<br>', $errors));
         }
     }
+
+    public function getFormParamsToEdit(array $params)
+    {
+        return [];
+    }
 }

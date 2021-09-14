@@ -85,6 +85,7 @@ Route::group(
                 Route::get('forms/{form}/row-history', 'Api\DB\FormsController@getRowHistory');
                 Route::get('forms/{form}/row-history-graph', 'Api\DB\FormsController@getRowHistoryGraph');
                 Route::get('forms/{form}/copy', 'Api\DB\FormsController@copyFieldValue');
+                Route::post('forms/{form}/edit-form', 'Api\DB\FormsController@getFormParamsToEdit');
                 Route::get('forms/{form}/well-prefix', 'Api\DB\FormsController@getWellPrefix');
                 Route::get('forms/{form}/form-by-row', 'Api\DB\FormsController@getFormByRow');
                 Route::post(
