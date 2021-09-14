@@ -586,9 +586,9 @@ return array (
         'INCLINOMETRY' => 'ИНКЛИНОМЕТРИЯ',
         'depth_m' => 'Глубина, м',
         'altitude' => 'Альтитуд α',
-        'coal' => 'Уголь (°)',
+        'coal' => 'Угол (°)',
         'azimuth' => 'Азимут(°)',
-        'three_instruments' => 'Три прибора',
+        'three_instruments' => 'Типs прибора',
 
         'SAFETY' => 'ТЕХНИКА БЕЗОПАСНОСТИ',
         'fire_alarm' => 'Пожарная тревога',
