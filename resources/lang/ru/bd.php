@@ -1130,6 +1130,7 @@ return [
             'note' => 'Примечание',
             'conclusion_text' => 'Заключение',
             'file_dynamogram' => 'Файлы динамограммы',
+            'value' => 'Показатель',
             'last_measure_date' => 'Дата последнего замера',
             'last_measure_value' => 'Значение последнего замера',
         ]

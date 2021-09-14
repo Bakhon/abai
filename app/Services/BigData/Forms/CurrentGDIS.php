@@ -14,33 +14,47 @@ class CurrentGDIS extends TableForm
     protected $gdisFields = [
         [
             'code' => 'conclusion',
-            'type' => 'dict',
-            'dict' => 'gdis_conclusion',
+            'params' => [
+                'type' => 'dict',
+                'dict' => 'gdis_conclusion',
+            ]
         ],
         [
             'code' => 'target',
-            'type' => 'text'
+            'params' => [
+                'type' => 'text'
+            ]
         ],
         [
             'code' => 'device',
-            'type' => 'dict',
-            'dict' => 'device'
+            'params' => [
+                'type' => 'dict',
+                'dict' => 'device'
+            ]
         ],
         [
             'code' => 'transcript_dynamogram',
-            'type' => 'text'
+            'params' => [
+                'type' => 'text'
+            ]
         ],
         [
             'code' => 'note',
-            'type' => 'text'
+            'params' => [
+                'type' => 'text'
+            ]
         ],
         [
             'code' => 'conclusion_text',
-            'type' => 'text'
+            'params' => [
+                'type' => 'text'
+            ]
         ],
         [
             'code' => 'file_dynamogram',
-            'type' => 'file'
+            'params' => [
+                'type' => 'file'
+            ]
         ],
     ];
 
@@ -131,6 +145,12 @@ class CurrentGDIS extends TableForm
                         $result['fields'][$field['code']] = [
                             'value' => $item->{$field['code']},
                         ];
+                        if ($field['params']) {
+                            $result['fields'][$field['code']] = array_merge(
+                                $result['fields'][$field['code']],
+                                $field['params']
+                            );
+                        }
                     }
                 }
 
@@ -173,6 +193,7 @@ class CurrentGDIS extends TableForm
                     ]
                 ],
             ];
+            $row['last_measure_value'] = array_merge($row['last_measure_value'], $field['params']);
             foreach ($measurements as $date => $measurement) {
                 if (isset($measurement['fields'][$field['code']])) {
                     $row[$date] = $measurement['fields'][$field['code']];
@@ -228,17 +249,17 @@ class CurrentGDIS extends TableForm
         $columns = [
             [
                 'code' => 'value',
-                'title' => 'Показатель',
+                'title' => trans('bd.forms.current_g_d_i_s.value'),
                 'type' => 'label'
             ],
             [
                 'code' => 'last_measure_date',
-                'title' => 'last_measure_date',
+                'title' => trans('bd.forms.current_g_d_i_s.last_measure_date'),
                 'type' => 'label'
             ],
             [
                 'code' => 'last_measure_value',
-                'title' => 'last_measure_value',
+                'title' => trans('bd.forms.current_g_d_i_s.last_measure_value'),
                 'type' => 'text',
                 'is_editable' => true
             ],
@@ -258,5 +279,7 @@ class CurrentGDIS extends TableForm
 
     protected function saveSingleFieldInDB(array $params): void
     {
+
+        dd($this->request->all(), $params);
     }
 }
