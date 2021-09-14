@@ -5,19 +5,19 @@
                 <div class="col-6">Динамика добычи нефти</div>
                 <select
                         class="form-select col-6"
-                        @change="selectedDzo = $event.target.value"
+                        @change="handleDzo($event.target.value)"
                 >
-                    <option v-for="company in dzoCompanies" :value="company.ticker">{{company.name}}</option>
+                    <option v-for="company in dzoCompanies" :value="company.id">{{company.name}}</option>
                 </select>
             </div>
             <div class="col-2"></div>
             <div class="col-6 d-flex justify-content-end">
                 <select
                         class="form-select col-2"
-                        v-model="selectedDate.format('MMMM')"
-                        @change="selectedDate = $event.target.value"
+                        v-model="selectedMonth"
+                        @change="handleMonth($event.target.value)"
                 >
-                    <option v-for="month in monthes" :value="month.name">{{month.name}}</option>
+                    <option v-for="month in monthes" :value="month.id">{{month.name}}</option>
                 </select>
                 <div class="col-2">(тонн)</div>
             </div>
@@ -36,9 +36,9 @@
                 <tbody>
                     <tr>
                         <td>{{monthsPassed}} мес.</td>
-                        <td>{{summaryMonthlyPlan}}</td>
-                        <td>{{summaryMonthlyFact}}</td>
-                        <td>{{summaryMonthlyPlan - summaryMonthlyFact}}</td>
+                        <td>{{getFormattedNumber(yearlyData.planYear)}}</td>
+                        <td>{{getFormattedNumber(yearlyData.factYear)}}</td>
+                        <td :class="yearlyData.factYear - yearlyData.planYear < 0 ? 'color__red' : 'color__green'">{{getFormattedNumber(yearlyData.factYear - yearlyData.planYear)}}</td>
                         <td>{{summaryMonthlyExecution}}</td>
                     </tr>
                 </tbody>
@@ -72,21 +72,21 @@
                             :class="getRowClass(index)"
                     >
                         <td>{{day.date}}</td>
-                        <td>{{day.planDay}}</td>
-                        <td>{{day.factDay}}</td>
-                        <td>{{day.planDay - day.factDay}}</td>
-                        <td>{{day.planMonth}}</td>
-                        <td>{{day.factMonth}}</td>
-                        <td>{{day.planMonth - day.factMonth}}</td>
-                        <td>{{day.planYear}}</td>
-                        <td>{{day.factYear}}</td>
-                        <td>{{day.planYear - day.factYear}}</td>
+                        <td>{{getFormattedNumber(day.planDay)}}</td>
+                        <td>{{getFormattedNumber(day.factDay)}}</td>
+                        <td :class="day.factDay - day.planDay < 0 ? 'color__red' : 'color__green'">{{getFormattedNumber(day.factDay - day.planDay)}}</td>
+                        <td>{{getFormattedNumber(day.planMonth)}}</td>
+                        <td>{{getFormattedNumber(day.factMonth)}}</td>
+                        <td :class="day.factMonth - day.planMonth < 0 ? 'color__red' : 'color__green'">{{getFormattedNumber(day.factMonth - day.planMonth)}}</td>
+                        <td>{{getFormattedNumber(day.planYear)}}</td>
+                        <td>{{getFormattedNumber(day.factYear)}}</td>
+                        <td :class="day.factYear - day.planYear < 0 ? 'color__red' : 'color__green'">{{getFormattedNumber(day.factYear - day.planYear)}}</td>
                     </tr>
                     <tr class="summary-table">
-                        <td>{{selectedDate.format('MMMM')}}</td>
-                        <td>{{summaryPlan}}</td>
-                        <td>{{summaryFact}}</td>
-                        <td>{{summaryPlan - summaryFact}}</td>
+                        <td>{{selectedDate}}</td>
+                        <td>{{getFormattedNumber(summaryPlan)}}</td>
+                        <td>{{getFormattedNumber(summaryFact)}}</td>
+                        <td :class="summaryFact - summaryPlan < 0 ? 'color__red' : 'color__green'">{{getFormattedNumber(summaryFact - summaryPlan)}}</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -102,80 +102,144 @@
 
 <script>
 import moment from "moment";
+import {globalloadingMutations} from '@store/helpers';
 
 export default {
     data: function () {
         return {
-            selectedDate: moment(),
-            selectedDzo: 'ММГ',
+            selectedDate: moment().format('MMMM'),
+            selectedMonth: moment().month() + 1,
+            selectedDzo: {
+                id: 1,
+                ticker: 'ЭМГ',
+                name: 'АО "Эмбамунайгаз"',
+                factName: 'oil_production_fact',
+                planName: 'plan_oil'
+            },
             dzoCompanies: [
                 {
+                    id: 1,
                     ticker: 'ЭМГ',
-                    name: 'АО "Эмбамунайгаз"'
+                    name: 'АО "Эмбамунайгаз"',
+                    factName: 'oil_production_fact',
+                    planName: 'plan_oil'
                 },
                 {
+                    id: 2,
                     ticker: 'КОА',
-                    name: 'ТОО "Казахойл Актобе"'
+                    name: 'ТОО "Казахойл Актобе"',
+                    factName: 'oil_production_fact',
+                    planName: 'plan_oil'
                 },
                 {
+                    id: 3,
                     ticker: 'КТМ',
-                    name: 'ТОО "Казахтуркмунай"'
+                    name: 'ТОО "Казахтуркмунай"',
+                    factName: 'oil_production_fact',
+                    planName: 'plan_oil'
                 },
                 {
+                    id: 4,
                     ticker: 'КБМ',
-                    name: 'АО "КАРАЖАНБАСМУНАЙ"'
+                    name: 'АО "КАРАЖАНБАСМУНАЙ"',
+                    factName: 'oil_production_fact',
+                    planName: 'plan_oil'
                 },
                 {
+                    id: 5,
                     ticker: 'КГМ',
-                    name: 'ТОО СП "КАЗГЕРМУНАЙ"'
+                    name: 'ТОО СП "КАЗГЕРМУНАЙ"',
+                    factName: 'oil_production_fact',
+                    planName: 'plan_oil'
                 },
                 {
+                    id: 6,
                     ticker: 'ММГ',
-                    name: 'АО "Мангистаумунайгаз"'
+                    name: 'АО "Мангистаумунайгаз"',
+                    factName: 'oil_production_fact',
+                    planName: 'plan_oil'
                 },
                 {
+                    id: 7,
                     ticker: 'ОМГ',
-                    name: 'АО "ОзенМунайГаз"'
+                    name: 'АО "ОзенМунайГаз"',
+                    factName: 'oil_production_fact',
+                    planName: 'plan_oil'
                 },
                 {
+                    id: 8,
+                    ticker: 'ОМГ',
+                    name: 'АО "ОзенМунайГаз" Конденсат',
+                    planName: 'plan_kondensat',
+                    factName: 'condensate_production_fact'
+                },
+                {
+                    id: 9,
                     ticker: 'УО',
-                    name: 'ТОО "Урихтау Оперейтинг"'
+                    name: 'ТОО "Урихтау Оперейтинг"',
+                    factName: 'oil_production_fact',
+                    planName: 'plan_oil'
+                },
+                {
+                    id: 10,
+                    ticker: 'АГ',
+                    name: 'ТОО "Амангельды Газ"',
+                    planName: 'plan_kondensat',
+                    factName: 'condensate_production_fact'
                 },
             ],
             monthes: [],
-            tableData: []
+            tableData: [],
+            summaryData: [],
+            yearlyData: {}
         };
     },
-    mounted() {
+    async mounted() {
         this.fillMonthes();
-        this.fillTableData();
+        this.updateDailyView();
     },
     methods: {
+        async getDaily() {
+            let uri = this.localeUrl("/oil-dynamic-daily");
+            let queryOptions = {
+                'dzo': this.selectedDzo.ticker,
+                'month': this.selectedMonth,
+                'planField': this.selectedDzo.planName,
+                'factField': this.selectedDzo.factName,
+            };
+            const response = await axios.get(uri,{params:queryOptions});
+            if (response.status !== 200) {
+                return {};
+            }
+            return response.data;
+        },
+
+        async updateDailyView() {
+            this.SET_LOADING(true);
+            this.summaryData = await this.getDaily();
+            this.tableData = this.summaryData.tableData;
+            this.yearlyData = this.summaryData.yearlyData;
+            this.SET_LOADING(false);
+        },
+
+        async handleMonth(value) {
+            this.selectedMonth = value;
+            this.updateDailyView();
+        },
+
+        async handleDzo(value) {
+            let filteredDzo = _.filter(_.cloneDeep(this.dzoCompanies), (dzo) => dzo.id == value);
+            this.selectedDzo = filteredDzo[0];
+            this.updateDailyView();
+        },
+
         fillMonthes() {
-            for (let i = 0; i < 12; i++) {
+            for (let i = 0; i < this.selectedMonth; i++) {
                 let date = moment().month(i);
                 this.monthes.push(
                     {
                         'name': date.format('MMMM'),
-                        'dateStart': date.startOf('day').startOf('month').startOf('day'),
-                        'dateEnd': date.endOf('month').endOf('day'),
-                    }
-                );
-            }
-        },
-
-        fillTableData() {
-            for (let i = 1; i <= this.selectedDate.clone().endOf('month').date(); i++) {
-                let date = this.selectedDate.clone().date(i).format('DD.MM.YYYY');
-                this.tableData.push(
-                    {
-                        'date': date,
-                        'planDay': 0,
-                        'factDay': 0,
-                        'planMonth': 0,
-                        'factMonth': 0,
-                        'planYear': 0,
-                        'factYear': 0
+                        'id': date.month() + 1
                     }
                 );
             }
@@ -187,6 +251,14 @@ export default {
             } else {
                 return 'background__dark';
             }
+        },
+
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
+
+        getFormattedNumber(num) {
+            return (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
         },
     },
     computed: {
@@ -200,13 +272,13 @@ export default {
             return 0;
         },
         monthsPassed() {
-            return moment().month();
+            return this.selectedMonth - 1;
         },
         summaryPlan() {
-            return 0;
+            return _.sumBy(this.tableData, 'planDay');
         },
         summaryFact() {
-            return 0;
+            return _.sumBy(this.tableData, 'factDay');
         }
     }
 }
@@ -271,5 +343,11 @@ export default {
         border-right: 1px solid #696e96;
     }
     background: #333975;
+}
+.color__red {
+    color: #E31E24;
+}
+.color__green {
+    color: #00b353;
 }
 </style>
