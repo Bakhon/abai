@@ -323,9 +323,9 @@ abstract class PlainForm extends BaseForm
         if (!empty($this->params()['sort'])) {
             foreach ($this->params()['sort'] as $sort) {
                 if ($sort['order'] === 'desc') {
-                    $rows->sortByDesc($sort['field']);
+                    $rows = $rows->sortByDesc($sort['field']);
                 } else {
-                    $rows->sortBy($sort['field']);
+                    $rows = $rows->sortBy($sort['field']);
                 }
             }
         }
