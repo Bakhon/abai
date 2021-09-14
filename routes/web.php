@@ -40,6 +40,7 @@ Route::group(
                 Route::get('/economic/nrs/get-data', "Economic\EconomicNrsController@getData");
                 Route::post('/economic/nrs/export-data', "Economic\EconomicNrsController@exportData");
                 Route::get('/economic/nrs/wells', 'Economic\EconomicNrsController@indexWells');
+                Route::get('/economic/nrs/wells/{org_id}/{well_id}', 'Economic\EconomicNrsController@indexWell');
                 Route::get('/economic/nrs/get-wells', "Economic\EconomicNrsController@getWells");
                 Route::get('/economic/optimization', 'Economic\EconomicOptimizationController@index')->name('economic_optimization');
                 Route::get('/economic/optimization/get-data', 'Economic\EconomicOptimizationController@getData');
