@@ -56,7 +56,8 @@
           "well_tech",
           "tech_state",
           "distribution_substation",
-          "joint_wells"
+          "joint_wells",
+          "well_block"
         ]
       },{
         "code": "measurement_schedule",
@@ -117,7 +118,6 @@
       }
     ],
     "forms": [
-      "well_block",
       "gis_type"
     ]
   },

@@ -1,10 +1,14 @@
 .rating-table {
+  display: block;
+  height: 300px;
+  overflow-y: auto;
   thead {
     th {
       font-weight: normal;
       font-size: 16px;
       background-color: #333975;
       border: 1px solid #454D7D;
+      width: 20%;
     }
   }
   tbody {
@@ -17,9 +21,10 @@
       &:nth-of-type(odd) {
         background-color: #363B68;
       }
-    }
-    td {
-      border: 1px solid #454D7D;
+      td {
+        border: 1px solid #454D7D;
+        width: 20%;
+      }
     }
   }
 }

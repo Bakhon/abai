@@ -247,6 +247,8 @@ const fileDownload = require("js-file-download");
 
 import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
+import {formatValueMixin} from "./mixins/formatMixin";
+
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
 import EconomicTitle from "./components/EconomicTitle";
@@ -381,6 +383,7 @@ export default {
     SelectScenarioVariations,
     Tables,
   },
+  mixins: [formatValueMixin],
   data: () => ({
     form: {
       org_id: null,
@@ -785,31 +788,6 @@ export default {
 
     updateTab(tab) {
       this.isVisibleWellChanges = tab === 'well_changes'
-    },
-
-    formatValue(value) {
-      value = +value
-
-      let absoluteValue = Math.abs(+value)
-
-      if (absoluteValue < 1000000) {
-        return {
-          value: value / 1000,
-          dimension: this.trans('economic_reference.thousand')
-        }
-      }
-
-      if (absoluteValue < 1000000000) {
-        return {
-          value: value / 1000000,
-          dimension: this.trans('economic_reference.million')
-        }
-      }
-
-      return {
-        value: value / 1000000000,
-        dimension: this.trans('economic_reference.billion')
-      }
     },
 
     calcPercent(last, prev) {
