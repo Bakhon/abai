@@ -43,13 +43,13 @@
                         <li class="left-menu-li">
                             <ul>
                                 <li class="left-menu-li">
-                                    <a href="{{route('economic_nrs')}}">
+                                    <a href="{{route('economic.nrs')}}">
                                         {{ trans('economic_reference.nrs') }}
                                     </a>
                                 </li>
 
                                 <li class="left-menu-li">
-                                    <a href="{{route('economic_optimization')}}">
+                                    <a href="{{route('economic.optimization')}}">
                                         {{ trans('economic_reference.optimization_of_development') }}
                                     </a>
                                 </li>
