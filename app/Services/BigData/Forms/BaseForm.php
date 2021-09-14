@@ -29,6 +29,8 @@ abstract class BaseForm
         $this->validator = app()->make(\App\Services\BigData\CustomValidator::class);
     }
 
+    abstract public function getResults(): array;
+
     public function getHistory(int $id, \DateTimeInterface $date = null): array
     {
         if (!$date) {

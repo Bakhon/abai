@@ -1122,6 +1122,18 @@ return [
             'avg' => 'Среднее значение',
             'meas_count' => 'Кол-во замеров',
         ],
+        'current_g_d_i_s' => [
+            'conclusion' => 'Заключение',
+            'target' => 'Цель',
+            'device' => 'Прибор',
+            'transcript_dynamogram' => 'Расшифровка динамограммы',
+            'note' => 'Примечание',
+            'conclusion_text' => 'Заключение',
+            'file_dynamogram' => 'Файлы динамограммы',
+            'value' => 'Показатель',
+            'last_measure_date' => 'Дата последнего замера',
+            'last_measure_value' => 'Значение последнего замера',
+        ]
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',
     'list' => 'Просмотр списка',

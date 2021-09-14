@@ -82,7 +82,6 @@ Route::group(
                 Route::get('forms/{form}', 'Api\DB\FormsController@getParams')->name('bigdata.form.params');
                 Route::post('forms/{form}', 'Api\DB\FormsController@submit')->name('bigdata.form.send');
                 Route::get('forms/{form}/history', 'Api\DB\FormsController@getHistory');
-                Route::get('forms/{form}/rows', 'Api\DB\FormsController@getRows');
                 Route::get('forms/{form}/row-history', 'Api\DB\FormsController@getRowHistory');
                 Route::get('forms/{form}/row-history-graph', 'Api\DB\FormsController@getRowHistoryGraph');
                 Route::get('forms/{form}/copy', 'Api\DB\FormsController@copyFieldValue');
