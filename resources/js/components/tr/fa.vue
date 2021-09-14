@@ -972,7 +972,7 @@
           </td>
 
           <td v-if= isGenHide
-            style="background: #12135C; min-width:270px"
+            style="background: #12135C; min-width:281px"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -1615,7 +1615,8 @@ body {
 
 /* width */
 table::-webkit-scrollbar {
-  width: 13px;
+  width: 5px;
+  height: 5px;
 }
 
 /* Track */

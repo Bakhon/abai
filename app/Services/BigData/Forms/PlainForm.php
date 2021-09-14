@@ -158,6 +158,16 @@ abstract class PlainForm extends BaseForm
         }
     }
 
+    protected function getResultsQuery(int $wellId): Collection
+    {
+        $query = DB::connection('tbd')
+            ->table($this->params()['table'])
+            ->where('well', $wellId)
+            ->orderBy('id', 'desc');
+
+        return $query->get();
+    }
+
     public function getCalculatedFields(int $wellId, array $values): array
     {
         return [];
