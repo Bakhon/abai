@@ -51,7 +51,7 @@ class TechMapController extends Controller
         return $center;
     }
 
-    public function mapData()
+    public function mapData(): array
     {
         $pipes = OilPipe::with('coords', 'pipeType')
             ->with([
