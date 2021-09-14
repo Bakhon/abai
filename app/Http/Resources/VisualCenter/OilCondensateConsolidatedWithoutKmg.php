@@ -117,7 +117,7 @@ class OilCondensateConsolidatedWithoutKmg {
             $date = Carbon::parse($item['date'])->format('d/m/Y');
             $formattedPlan[$date][$item['dzo']] = $item->toArray();
         }
-
-        return $this->getChartDataByOilCondensate($formattedPlan,$fact,$dataType);
+        $dzo = new Dzo();
+        return $dzo->getChartDataByOilCondensate($formattedPlan,$fact,$dataType);
     }
 }

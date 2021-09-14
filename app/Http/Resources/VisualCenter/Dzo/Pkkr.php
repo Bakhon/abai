@@ -40,4 +40,15 @@ class Pkkr extends Dzo {
         array_push($summary,$companySummary);
         return $summary;
     }
+
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    {
+        $chartSummary = $daySummary;
+        $chartSummary['fact'] *= $this->oilCondensateMultiplier;
+        $chartSummary['plan'] *= $this->oilCondensateMultiplier;
+        $chartSummary['opek'] *= $this->oilCondensateMultiplier;
+        $summary = array();
+        array_push($summary,$chartSummary);
+        return $summary;
+    }
 }

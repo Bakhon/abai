@@ -43,4 +43,11 @@ class Pki extends Dzo {
         );
         return $summary;
     }
+
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    {
+       $summary = array();
+       array_push($summary,$daySummary);
+       return $summary;
+    }
 }

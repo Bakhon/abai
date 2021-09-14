@@ -60,4 +60,28 @@ class Kgm extends Dzo {
         array_push($summary,$companySummary);
         return $summary;
     }
+
+    protected function getCondensateForChart($daySummary)
+    {
+        $condensateSummary = $daySummary;
+        $condensateSummary['id'] = '';
+        $condensateSummary['name'] = 'КГМКМГ';
+        $condensateSummary['fact'] *= $this->condensateMultiplier;
+        $condensateSummary['plan'] *= $this->condensateMultiplier;
+        $condensateSummary['opek'] *= $this->condensateMultiplier;
+        return $condensateSummary;
+    }
+
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    {
+       $chartSummary = $daySummary;
+       $chartSummary['fact'] *= $this->condensateMultiplier;
+       $chartSummary['plan'] *= $this->condensateMultiplier;
+       $chartSummary['opek'] *= $this->condensateMultiplier;
+       $condensateSummary = $this->getCondensateForChart($daySummary);
+       $summary = array();
+       array_push($summary,$condensateSummary);
+       array_push($summary,$chartSummary);
+       return $summary;
+    }
 }

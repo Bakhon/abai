@@ -51,8 +51,6 @@ class Dzo {
         'НКО' => ((1 - 0.019) * 241 / 1428) / 2
     );
 
-    private $dzoMapping = array();
-
     protected $decreaseReasonFields = array (
         'opec_explanation_reasons',
         'impulse_explanation_reasons',
@@ -136,8 +134,8 @@ class Dzo {
 
         $factory = new Factory();
         $dzo = $factory->make($dzoName);
-        $companySummary = $dzo->getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$this->consolidatedFieldsMapping[$type]['condensatePlan'],$periodType);
-        return $companySummary;
+        $summary = $dzo->getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$this->consolidatedFieldsMapping[$type]['condensatePlan'],$periodType);
+        return $summary;
     }
 
     protected function getDzoBySummaryOilCondensateWithoutKMG($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType)
@@ -168,9 +166,8 @@ class Dzo {
         return $summaryPlan;
     }
 
-    protected function getChartDataByOilCondensate($formattedPlan,$fact,$type)
+    public function getChartDataByOilCondensate($formattedPlan,$fact,$type)
     {
-        $this->initializeDzo();
         $chartData = array();
         foreach($fact as $item) {
             $date = Carbon::parse($item['date'])->startOfDay()->format('d/m/Y');
@@ -182,39 +179,23 @@ class Dzo {
             $daySummary['plan'] = $planRecord[$this->consolidatedFieldsMapping[$type]['plan']];
             $daySummary['opek'] = $planRecord[$this->consolidatedFieldsMapping[$type]['opek']];
             $daySummary['date'] = $date;
+            $daySummary['opek'] = $this->getOpekUpdatedByPlan($daySummary['plan'],$daySummary['opek']);
+            if ($dzoName === 'ПКК') {
+                $dzoName = 'ПККР';
+            }
             $daySummary['name'] = $dzoName;
-            if ($dzoName === 'ОМГ') {
-                $condensateSummary = $this->dzoMapping[$dzoName]->getChartData(
-                    $planRecord,
-                    $date,
-                    $item,
-                    $this->consolidatedFieldsMapping[$type]['condensateFact'],
-                    $this->consolidatedFieldsMapping[$type]['condensatePlan'],
-                    $this->consolidatedFieldsMapping[$type]['condensateOpek']
-                );
-                array_push($chartData,$condensateSummary);
-            }
-            if ($dzoName === 'АГ') {
-                $daySummary = $this->dzoMapping[$dzoName]->getChartData(
-                    $daySummary,
-                    $item,
-                    $planRecord,
-                    $this->consolidatedFieldsMapping[$type]['condensateFact'],
-                    $this->consolidatedFieldsMapping[$type]['condensatePlan'],
-                    $this->consolidatedFieldsMapping[$type]['condensateOpek']
-                );
-            }
-            if ($daySummary['opek'] == 0) {
-                $daySummary['opek'] = $daySummary['plan'];
-            }
-            if (array_key_exists($dzoName,$this->dzoMultiplier)) {
-                $daySummary['fact'] *= $this->dzoMultiplier[$dzoName];
-                $daySummary['plan'] *= $this->dzoMultiplier[$dzoName];
-                $daySummary['opek'] *= $this->dzoMultiplier[$dzoName];
-            }
-            array_push($chartData,$daySummary);
+            $factory = new Factory();
+            $dzo = $factory->make($dzoName);
+            $summary = $dzo->getChartData($daySummary,$planRecord,$date,$item,$this->consolidatedFieldsMapping[$type]['condensateFact'],$this->consolidatedFieldsMapping[$type]['condensatePlan'],$this->consolidatedFieldsMapping[$type]['condensateOpek']);
+            $chartData = array_merge($chartData,$summary);
         }
+
         return $chartData;
+    }
+
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
+    {
+
     }
 
     protected function getAccidentDescription($dzoFact)

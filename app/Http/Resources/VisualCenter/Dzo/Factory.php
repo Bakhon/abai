@@ -18,7 +18,8 @@ class Factory {
         'ТШО' => 'Tsho',
         'УО' => 'Yo',
         'ЭМГ' => 'Emg',
-        'КТМ' => 'Ktm'
+        'КТМ' => 'Ktm',
+        'ПКК' => 'Pkk'
     );
 
     public function make($dzoName)

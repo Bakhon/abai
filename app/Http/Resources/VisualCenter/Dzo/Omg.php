@@ -29,7 +29,7 @@ class Omg extends Dzo {
         return $condensateSummary;
     }
 
-    protected function getChartData($planRecord,$date,$fact,$factField,$planField,$opekField)
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
     {
         $condensateSummary = array();
         $condensateSummary['fact'] = $fact[$factField];
@@ -37,7 +37,10 @@ class Omg extends Dzo {
         $condensateSummary['opek'] = $planRecord[$opekField];
         $condensateSummary['date'] = $date;
         $condensateSummary['name'] = 'ОМГК';
-        return $condensateSummary;
+        $summary = array();
+        array_push($summary,$condensateSummary);
+        array_push($summary,$daySummary);
+        return $summary;
     }
 
     protected function getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type)

@@ -27,12 +27,14 @@ class Ag extends Dzo {
         return $summary;
     }
 
-    protected function getChartData($daySummary,$fact,$planRecord,$factField,$planField,$opekField)
+    protected function getChartData($daySummary,$planRecord,$date,$fact,$factField,$planField,$opekField)
     {
-        $summary = $daySummary;
-        $daySummary['fact'] = $fact[$factField];
-        $daySummary['plan'] = $planRecord[$planField];
-        $daySummary['opek'] = $planRecord[$opekField];
+        $chartSummary = $daySummary;
+        $chartSummary['fact'] = $fact[$factField];
+        $chartSummary['plan'] = $planRecord[$planField];
+        $chartSummary['opek'] = $planRecord[$opekField];
+        $summary = array();
+        array_push($summary,$chartSummary);
         return $summary;
     }
 
