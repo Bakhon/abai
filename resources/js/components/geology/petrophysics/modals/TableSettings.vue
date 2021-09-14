@@ -37,8 +37,7 @@
                 </div>
                 <div class="d-flex align-items-center p-2 w-100">
                   <label class="d-flex align-items-center mr-2 mb-0 w-space-nowrap">
-                    <input type="checkbox" class="mr-2">
-                    <span>Max value</span>
+                    <span>Direction</span>
                   </label>
                   <dropdown class="w-100" button-text="Выбрать" :options="[
                   {label: 'option 1', value: 1},
