@@ -10,7 +10,7 @@ class WaterProduction extends MeasurementLogForm
 {
     protected $configurationFileName = 'water_production';
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
         $params['filter']['well_category'] = ['WTR'];

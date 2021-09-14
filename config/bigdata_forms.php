@@ -59,6 +59,7 @@
   'daily_drill_kpc' => '\\App\\Services\\BigData\\Forms\\DailyDrillKpc',
   'plan_g_d_i_s' => '\\App\\Services\\BigData\\Forms\\PlanGDIS',
   'plan_g_i_s' => '\\App\\Services\\BigData\\Forms\\PlanGIS',
+  'current_g_d_i_s' => '\\App\\Services\\BigData\\Forms\\CurrentGDIS',
   'zu_gzu_production' => 'App\\Services\\BigData\\Forms\\ZuGzuProduction',
   'daily_reports_prs' => '\\App\\Services\\BigData\\Forms\\DailyReportsPrs',
   'tech_water_well' => '\\App\\Services\\BigData\\Forms\\TechWaterWell',

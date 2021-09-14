@@ -60,7 +60,7 @@
                   <a :href="row[column.code].href">{{ row[column.code].name }}</a>
                 </template>
                 <template v-else-if="getCellType(row, column) === 'label'">
-                  <label v-html="row[column.code].name"></label>
+                  <label v-html="row[column.code].name || ''"></label>
                 </template>
                 <template v-else-if="getCellType(row, column) === 'calc'">
                   <span class="value" v-html="row[column.code] ? row[column.code].value : ''"></span>
@@ -320,7 +320,7 @@ export default {
       if (!this.filter || !this.id || !this.type) return
 
       this.SET_LOADING(true)
-      this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/rows`), {
+      this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/results`), {
         params: {
           filter: this.filter,
           id: this.id,
