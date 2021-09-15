@@ -54,6 +54,7 @@
   'production_wells_schedule' => '\\App\\Services\\BigData\\Forms\\ProductionWellsSchedule',
   'lab_research' => '\\App\\Services\\BigData\\Forms\\LabResearch',
   'well_treat' => '\\App\\Services\\BigData\\Forms\\WellTreat',
+  'drilling' => '\\App\\Services\\BigData\\Forms\\Drilling',
   'well_mark' => '\\App\\Services\\BigData\\Forms\\WellMark',
   'daily_drill_kpc' => '\\App\\Services\\BigData\\Forms\\DailyDrillKpc',
   'plan_g_d_i_s' => '\\App\\Services\\BigData\\Forms\\PlanGDIS',

@@ -1,6 +1,7 @@
 <?php
 
 return array (
+    'module_title'=> 'Digital drilling',
     'database' => 'Database',
     'general_information' => 'General information',
     'well_data_sheet' => 'Well data sheet',

@@ -24,6 +24,7 @@ return [
     'select_ngdu' => 'Выберите НГДУ из списка',
     'select_dzo_ngdu' => 'Выберите ДЗО или НГДУ из списка',
     'select_gu' => 'Выберите ГУ из списка',
+    'select_date' => 'Укажите дату',
     'nothing_found' => 'Ничего не найдено',
     'actions' => 'Действия',
     'forms' => [
@@ -951,6 +952,16 @@ return [
             'ch_reagent_type' => 'Хим.реагент',
             'scraper_income' => 'Доход скребка, м',
             'date' => 'Дата',
+        ],
+        'drilling' => [
+            'main' => 'Главная',
+            'drilling' => 'Бурение',
+            'uwi_number' => 'Скважина',
+            'daily_drill_progress' => 'Суточная проходка',
+            'depth' => 'Забой скважины',
+            'well_status_type' => 'Статус ведения работ',
+            'date' => 'Дата',
+            'work_name' => 'Проводимые работы'
         ],
         'daily_drill_kpc' => [
             'org' => 'Подразделение',
