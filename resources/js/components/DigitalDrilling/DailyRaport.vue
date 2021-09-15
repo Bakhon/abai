@@ -1804,13 +1804,13 @@
                     <tbody>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.coal')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.angle')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.azimuth')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.three_instruments')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.type_instrument')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.coal')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.angle')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.azimuth')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.three_instruments')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.type_instrument')}}</td>
                         </tr>
                         <tr v-for="i in 20">
                             <td v-for="i in 8"><input type="text"></td>
