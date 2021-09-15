@@ -1,5 +1,11 @@
 {
   "type": "table",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "columns": [
     {
       "title": "uwi_number",
