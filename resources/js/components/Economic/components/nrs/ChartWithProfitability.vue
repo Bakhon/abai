@@ -174,9 +174,6 @@ export default {
           yaxis: this.isVisibleDefaultSeries
               ? this.chartYaxis
               : {min: 0, title: {text: this.title}},
-          fill: {
-            opacity: 0.9
-          }
         }
       }
     }
