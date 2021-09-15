@@ -16,7 +16,7 @@ class EcoRefsCompaniesIdsController extends Controller
     {
         $ecorefscompanies = EcoRefsCompaniesId::latest()->paginate(5);
 
-        return view('economy_kenzhe/ecorefscompanies.index', compact('ecorefscompanies'))
+        return view('economy_kenzhe/ecorefscompanies.index',compact('ecorefscompanies'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -33,7 +33,7 @@ class EcoRefsCompaniesIdsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -45,13 +45,13 @@ class EcoRefsCompaniesIdsController extends Controller
 
         EcoRefsCompaniesId::create($request->all());
 
-        return redirect()->route('ecorefscompaniesids.index')->with('success', __('app.created'));
+        return redirect()->route('ecorefscompaniesids.index')->with('success',__('app.created'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -62,39 +62,39 @@ class EcoRefsCompaniesIdsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $EcoRefsCompaniesId = EcoRefsCompaniesId::find($id);
-        return view('economy_kenzhe/ecorefscompanies.edit', compact('EcoRefsCompaniesId'));
+        return view('economy_kenzhe/ecorefscompanies.edit',compact('EcoRefsCompaniesId'));
 
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $EcoRefsCompaniesId = EcoRefsCompaniesId::find($id);
+        $EcoRefsCompaniesId=EcoRefsCompaniesId::find($id);
         $request->validate([
             'name' => 'required'
         ]);
 
         $EcoRefsCompaniesId->update($request->all());
 
-        return redirect()->route('ecorefscompaniesids.index')->with('success', __('app.updated'));
+        return redirect()->route('ecorefscompaniesids.index')->with('success',__('app.updated'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -102,7 +102,7 @@ class EcoRefsCompaniesIdsController extends Controller
         $EcoRefsCompaniesId = EcoRefsCompaniesId::find($id);
         $EcoRefsCompaniesId->delete();
 
-        return redirect()->route('ecorefscompaniesids.index')->with('success', __('app.deleted'));
+        return redirect()->route('ecorefscompaniesids.index')->with('success',__('app.deleted'));
         //
     }
 
