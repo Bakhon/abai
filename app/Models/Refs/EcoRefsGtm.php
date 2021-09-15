@@ -3,6 +3,7 @@
 namespace App\Models\Refs;
 
 use App\Models\EcoRefsCompaniesId;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class EcoRefsGtm extends Model
@@ -12,5 +13,10 @@ class EcoRefsGtm extends Model
     public function company()
     {
         return $this->belongsTo(EcoRefsCompaniesId::class, 'company_id');
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author_id');
     }
 }

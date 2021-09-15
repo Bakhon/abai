@@ -1,12 +1,31 @@
 <template>
-  <vue-table-dynamic
-      ref="table"
-      :params="params"
-      class="height-fit-content height-unset">
-    <div slot="column-6" slot-scope="{ props }" class="mx-auto">
-      <delete-button @click.native="deleteItem(props.rowData[0].data)"/>
-    </div>
-  </vue-table-dynamic>
+  <div>
+    <select
+        v-model="form.author_id"
+        class="form-control"
+        @change="getData()"
+    >
+      <option :value="null" disabled selected>
+        {{ trans('economic_reference.select_user') }}
+      </option>
+
+      <option
+          v-for="author in authors"
+          :key="author.id"
+          :value="author.id">
+        {{ author.name }}
+      </option>
+    </select>
+
+    <vue-table-dynamic
+        ref="table"
+        :params="params"
+        class="height-fit-content height-unset">
+      <div slot="column-6" slot-scope="{ props }" class="mx-auto">
+        <delete-button @click.native="deleteItem(props.rowData[0].data)"/>
+      </div>
+    </vue-table-dynamic>
+  </div>
 </template>
 
 <script>
@@ -21,9 +40,13 @@ export default {
   },
   data: () => ({
     data: [],
+    authors: [],
+    form: {
+      author_id: null
+    }
   }),
   created() {
-    this.getData()
+    this.getAuthors()
   },
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
@@ -32,9 +55,23 @@ export default {
       this.SET_LOADING(true);
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/gtm/get-data'))
+        const {data} = await this.axios.get(this.localeUrl('/economic/gtm/get-data'), {params: this.form})
 
         this.data = [...[this.headers], ...data.data]
+      } catch (e) {
+        console.log(e)
+      }
+
+      this.SET_LOADING(false);
+    },
+
+    async getAuthors() {
+      this.SET_LOADING(true);
+
+      try {
+        const {data} = await this.axios.get(this.localeUrl('/economic/gtm/get-authors'))
+
+        this.authors = data
       } catch (e) {
         console.log(e)
       }

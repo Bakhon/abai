@@ -21,6 +21,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::group([], function () {
             Route::group(['prefix' => 'gtm'], function () {
                 Route::get('get-data', 'EconomicGtmController@getData');
+                Route::get('get-authors', 'EconomicGtmController@getAuthors');
                 Route::get('upload-excel', 'EconomicGtmController@uploadExcel');
                 Route::post('import-excel', 'EconomicGtmController@importExcel')
                     ->name('economic.gtm.import');
@@ -37,6 +38,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::group([], function () {
             Route::group(['prefix' => 'gtm_value'], function () {
                 Route::get('get-data', 'EconomicGtmValueController@getData');
+                Route::get('get-authors', 'EconomicGtmValueController@getAuthors');
                 Route::post('import-excel', 'EconomicGtmValueController@importExcel')
                     ->name('economic.gtm_value.import');
             });

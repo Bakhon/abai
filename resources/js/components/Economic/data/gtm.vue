@@ -1,33 +1,37 @@
 <template>
   <div>
-    <div v-for="link in links"
-         :key="link.url"
-         class="container p-4 mb-3 bg-light max-width-90vw">
-      <a :href="link.url"
-         target="_blank"
-         class="text-decoration-none">
-        <h4 class="text-secondary cursor-pointer mb-0">
-          {{ link.title }}
-        </h4>
-      </a>
-    </div>
-
     <div class="container p-4 mb-3 bg-light max-width-90vw">
-      <h4 class="text-secondary cursor-pointer mb-0"
-          @click="isVisibleEconomicTable = !isVisibleEconomicTable">
-        {{ trans('economic_reference.economic_data') }}
-      </h4>
+      <div class="d-flex align-items-center">
+        <h4 class="text-secondary cursor-pointer mb-0 flex-grow-1"
+            @click="isVisibleEconomicTable = !isVisibleEconomicTable">
+          {{ trans('economic_reference.economic_data') }}
+        </h4>
 
-      <gtm-table v-if="isVisibleEconomicTable"/>
+        <a :href="localeUrl('/economic/gtm/upload-excel')"
+           target="_blank"
+           class="text-decoration-none">
+          <i class="fas fa-external-link-alt text-primary"></i>
+        </a>
+      </div>
+
+      <gtm-table v-if="isVisibleEconomicTable" class="mt-2"/>
     </div>
 
     <div class="container p-4 bg-light max-width-90vw">
-      <h4 class="text-secondary cursor-pointer mb-0"
-          @click="isVisibleTechTable = !isVisibleTechTable">
-        {{ trans('economic_reference.technical_data') }}
-      </h4>
+      <div class="d-flex align-items-center">
+        <h4 class="text-secondary cursor-pointer mb-0 flex-grow-1"
+            @click="isVisibleTechTable = !isVisibleTechTable">
+          {{ trans('economic_reference.technical_data') }}
+        </h4>
 
-      <gtm-value-table v-if="isVisibleTechTable"/>
+        <a :href="localeUrl('/economic/gtm/upload-excel?is_technical=1')"
+           target="_blank"
+           class="text-decoration-none">
+          <i class="fas fa-external-link-alt text-primary"></i>
+        </a>
+      </div>
+
+      <gtm-value-table v-if="isVisibleTechTable" class="mt-2"/>
     </div>
   </div>
 </template>
@@ -40,26 +44,12 @@ export default {
   name: "economic-data-gtm-component",
   components: {
     GtmTable,
-    GtmValueTable
+    GtmValueTable,
   },
   data: () => ({
     isVisibleEconomicTable: false,
     isVisibleTechTable: false,
   }),
-  computed: {
-    links() {
-      return [
-        {
-          title: this.trans('economic_reference.upload_economic_data'),
-          url: this.localeUrl('/economic/gtm/upload-excel')
-        },
-        {
-          title: this.trans('economic_reference.upload_technical_data'),
-          url: this.localeUrl('/economic/gtm/upload-excel?is_technical=1')
-        }
-      ]
-    }
-  }
 };
 </script>
 <style scoped>

@@ -8,6 +8,7 @@ use App\Http\Requests\Economic\Gtm\Value\EconomicGtmValueDataRequest;
 use App\Http\Resources\EcoRefsGtmValueResource;
 use App\Imports\Economic\EconomicGtmValueImport;
 use App\Models\Refs\EcoRefsGtmValue;
+use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -31,6 +32,10 @@ class EconomicGtmValueController extends Controller
             $query->whereGtmId($request->gtm_id);
         }
 
+        if ($request->author_id) {
+            $query->whereAuthorId($request->author_id);
+        }
+
         $data = $query
             ->with(['company', 'gtm'])
             ->latest('id')
@@ -50,5 +55,16 @@ class EconomicGtmValueController extends Controller
         });
 
         return back()->with('success', __('app.success'));
+    }
+
+    public function getAuthors(): array
+    {
+        $authorIds = EcoRefsGtmValue::query()->distinct()->pluck('author_id');
+
+        return User::query()
+            ->select(['id', 'name'])
+            ->whereIn('id', $authorIds)
+            ->get()
+            ->toArray();
     }
 }
