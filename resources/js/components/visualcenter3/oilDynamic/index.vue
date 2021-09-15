@@ -94,6 +94,10 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="col-4 row">
+                <chart class="col-12" :name="dailyChartName" :chartData="dailyChart"></chart>
+                <chart class="col-12" :name="yearlyChartName" :chartData="yearlyChart"></chart>
+            </div>
         </div>
     </div>
 </template>
@@ -101,10 +105,14 @@
 <script>
 import moment from "moment";
 import {globalloadingMutations} from '@store/helpers';
+import Vue from "vue";
+Vue.component('chart', require('./chart.vue').default);
 
 export default {
     data: function () {
         return {
+            dailyChartName: 'Динамика суточной добычи нефти',
+            yearlyChartName: 'Динамика накопленной добычи нефти с начала года',
             selectedDate: moment().format('MMMM'),
             selectedMonth: moment().month() + 1,
             selectedDzo: {
@@ -196,7 +204,22 @@ export default {
             monthes: [],
             tableData: [],
             summaryData: [],
-            yearlyData: {}
+            yearlyData: {},
+            chartDataTemplate: {
+                series: [
+                    {
+                        'name': 'Факт',
+                        'type': 'line',
+                        'data': []
+                    },
+                    {
+                        'name': 'План',
+                        'type': 'line',
+                        'data': []
+                    },
+                ],
+                labels: []
+            }
         };
     },
     async mounted() {
@@ -222,7 +245,6 @@ export default {
         async updateDailyView() {
             this.SET_LOADING(true);
             this.summaryData = await this.getDaily();
-            console.log(this.summaryData);
             this.tableData = this.summaryData.tableData;
             this.yearlyData = this.summaryData.yearlyData;
             this.SET_LOADING(false);
@@ -283,6 +305,24 @@ export default {
         summaryMonthlyExecution() {
             return this.yearlyData.factYear / this.yearlyData.planYear * 100;
         },
+        dailyChart() {
+            let chartData = _.cloneDeep(this.chartDataTemplate);
+            _.forEach(this.tableData, (dayData) => {
+                chartData.series[0].data.push(parseInt(dayData['factDay']));
+                chartData.series[1].data.push(parseInt(dayData['planDay']));
+                chartData.labels.push(dayData['date']);
+            });
+            return chartData;
+        },
+        yearlyChart() {
+            let chartData = _.cloneDeep(this.chartDataTemplate);
+            _.forEach(this.tableData, (dayData) => {
+                chartData.series[0].data.push(parseInt(dayData['factYear']));
+                chartData.series[1].data.push(parseInt(dayData['planYear']));
+                chartData.labels.push(dayData['date']);
+            });
+            return chartData;
+        }
     }
 }
 </script>
