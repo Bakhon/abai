@@ -42,7 +42,6 @@
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           :data="res.wellChanges"
-          :selected-wells="selectedWells"
           class="text-white"/>
 
       <table-economic-efficiency
@@ -135,8 +134,7 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 'chess',
-    selectedWells: []
+    activeTab: 'specific_indicators',
   }),
   computed: {
     tabs() {
