@@ -29,6 +29,8 @@ abstract class BaseForm
         $this->validator = app()->make(\App\Services\BigData\CustomValidator::class);
     }
 
+    abstract public function getResults(): array;
+
     public function getHistory(int $id, \DateTimeInterface $date = null): array
     {
         if (!$date) {
@@ -80,6 +82,21 @@ abstract class BaseForm
             $this->getValidationAttributeNames(),
             $field,
             $errors
+        );
+    }
+
+    public function validateSingleTableField(string $parent, string $field): void
+    {
+        $parentField = $this->getFields()->where('code', $parent)->first();
+        if (empty($parentField)) {
+            return;
+        }
+
+        $this->validator->validateSingleField(
+            $this->request,
+            $this->getValidationRules($parentField['columns']),
+            $this->getValidationAttributeNames($parentField['columns']),
+            $field
         );
     }
 
@@ -143,11 +160,14 @@ abstract class BaseForm
         );
     }
 
-    private function getValidationRules(): array
+    private function getValidationRules($fields = []): array
     {
+        if (empty($fields)) {
+            $fields = $this->getFields();
+        }
         $rules = [];
 
-        foreach ($this->getFields() as $field) {
+        foreach ($fields as $field) {
             if (empty($field['validation'])) {
                 continue;
             }
@@ -157,11 +177,14 @@ abstract class BaseForm
         return $rules;
     }
 
-    private function getValidationAttributeNames(): array
+    private function getValidationAttributeNames($fields = []): array
     {
+        if (empty($fields)) {
+            $fields = $this->getFields();
+        }
         $attributes = [];
 
-        foreach ($this->getFields() as $field) {
+        foreach ($fields as $field) {
             $attributes[$field['code']] = $field['title'];
         }
 
@@ -197,5 +220,10 @@ abstract class BaseForm
             }
             throw new ParseJsonException(implode('<br>', $errors));
         }
+    }
+
+    public function getFormParamsToEdit(array $params)
+    {
+        return [];
     }
 }

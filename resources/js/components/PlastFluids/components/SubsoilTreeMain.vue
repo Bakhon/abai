@@ -77,16 +77,4 @@ export default {
 .subsoil-input-label-holder > label {
   margin-left: 10px;
 }
-
-.owner-checkbox {
-  margin-bottom: 10px;
-}
-
-.input {
-  margin-top: 15px;
-}
-
-.input-bg {
-  background-color: #1f2142;
-}
 </style>

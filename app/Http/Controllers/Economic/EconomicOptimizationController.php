@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
 use App\Models\EcoRefsCost;
+use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -18,8 +19,8 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_test_v9';
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_test_v9_3';
+    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v5_gtm_optimize_v2';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v8';
     const DATA_SOURCE_DATE = '2021/01/01';
 
     const SCENARIO_COLUMNS = [
@@ -30,15 +31,19 @@ class EconomicOptimizationController extends Controller
         "coef_cost_WR_payroll",
         "dollar_rate",
         "oil_price",
+        "gtm_oil",
+        "gtm_liquid",
+        "gtm_cost",
+        "gtm_operating_profit_12m",
+        "gtms",
+        "Barrel_ratio_export_scenario",
+        'uwi_stop'
     ];
 
     const OPTIMIZED_COLUMNS = [
         'Revenue_total',
         'Revenue_local',
         'Revenue_export',
-        'Overall_expenditures',
-        'Overall_expenditures_full',
-        'operating_profit_12m',
         'oil',
         'liquid',
         'prs',
@@ -46,15 +51,38 @@ class EconomicOptimizationController extends Controller
         'days_worked',
         'production_export',
         'production_local',
-    ];
-
-    const OPTIMIZED_SINGLE_COLUMNS = [
+        'Fixed_noWRpayroll_expenditures',
         'Overall_expenditures',
         'Overall_expenditures_full',
-        'operating_profit_12m',
+        'Operating_profit',
+    ];
+
+    const OPTIMIZED_SCENARIO_COLUMNS = [
+        'Overall_expenditures',
+        'Overall_expenditures_full',
+        'Operating_profit',
+    ];
+
+    const WELL_COLUMNS = [
+        'Revenue_total_12m',
+        'Revenue_local_12m',
+        'Revenue_export_12m',
+        'oil_12m',
+        'liquid_12m',
+        'prs_12m',
+        'days_worked_12m',
+        'production_export_12m',
+        'production_local_12m',
+        'Fixed_noWRpayroll_expenditures_12m',
+        'Operating_profit_12m',
+        'Overall_expenditures_12m',
+        'Overall_expenditures_full_12m',
+        'Fixed_nopayroll_expenditures_12m',
+        'Fixed_payroll_expenditures_12m',
     ];
 
     const SUFFIX_OPTIMIZE = '_optimize';
+    const SUFFIX_SCENARIO = '_scenario';
     const SUFFIX_PROFITABLE = '_profitable';
     const SUFFIX_PROFITLESS_CAT_1 = '_profitless_cat_1';
     const SUFFIX_PROFITLESS_CAT_2 = '_profitless_cat_2';
@@ -112,6 +140,7 @@ class EconomicOptimizationController extends Controller
                 'value' => $this->getOilPrice() ?? '0',
                 'url' => self::OIL_PRICE_URL
             ],
+            'gtms' => EcoRefsGtm::all()
         ];
     }
 
@@ -127,15 +156,9 @@ class EconomicOptimizationController extends Controller
 
         $columns = self::SCENARIO_COLUMNS;
 
-        $columnsVariations = [];
-
         foreach (self::OPTIMIZED_COLUMNS as $column) {
             foreach (self::columnVariations($column) as $columnVariation) {
-                $columnsVariations[] = $columnVariation;
-
                 $columns[] = $columnVariation;
-
-                $columns[] = $columnVariation . self::SUFFIX_OPTIMIZE;
             }
         }
 
@@ -151,16 +174,13 @@ class EconomicOptimizationController extends Controller
                 $scenarios[$index][$column] = $item[$column];
             }
 
-            foreach ($columnsVariations as $columnVariation) {
-                $columnOptimized = $columnVariation . self::SUFFIX_OPTIMIZE;
-
-                $scenarios[$index][$columnVariation] = [
-                    'value' => self::formatMoney($item[$columnVariation]),
-                    'value_optimized' => self::formatMoney($item[$columnOptimized]),
-                    'percent' => EconomicNrsController::calcPercent($item[$columnOptimized], $item[$columnVariation], 2),
-                    'original_value' => $item[$columnVariation],
-                    'original_value_optimized' => $item[$columnOptimized],
-                ];
+            foreach (self::OPTIMIZED_COLUMNS as $column) {
+                foreach (self::columnPairs($column) as $originalColumn => $optimizedColumn) {
+                    $scenarios[$index][$originalColumn] = [
+                        'original_value' => $item[$originalColumn],
+                        'original_value_optimized' => $item[$optimizedColumn],
+                    ];
+                }
             }
         }
 
@@ -206,17 +226,15 @@ class EconomicOptimizationController extends Controller
             "dollar_rate",
             'profitability_12m',
             "scenario_id",
-            "rank",
         ];
 
-        return $builder
-            ->select($columns)
-            ->doubleSum('operating_profit_12m')
-            ->orderBy('oil_price')
-            ->orderBy('dollar_rate')
-            ->orderBy('operating_profit_12m')
-            ->groupBy($columns)
-            ->data();
+        $builder->select($columns);
+
+        foreach (self::WELL_COLUMNS as $column) {
+            $builder->doubleSum($column);
+        }
+
+        return $builder->groupBy($columns)->data();
     }
 
     private function getDollarRate(): ?string
@@ -278,43 +296,29 @@ class EconomicOptimizationController extends Controller
         ];
     }
 
-    static function formatMoney(?float $digit): array
-    {
-        $digit = $digit ?? 0;
-
-        $digitAbs = abs($digit);
-
-        if ($digitAbs < 1000000) {
-            return [
-                number_format($digit / 1000, 2),
-                trans('economic_reference.thousand')
-            ];
-        }
-
-        if ($digitAbs < 1000000000) {
-            return [
-                number_format($digit / 1000000, 2),
-                trans('economic_reference.million')
-            ];
-        }
-
-        return [
-            number_format($digit / 1000000000, 2),
-            trans('economic_reference.billion')
-        ];
-    }
-
     static function columnVariations(string $column): array
     {
-        if (in_array($column, self::OPTIMIZED_SINGLE_COLUMNS)) {
-            return [$column];
+        $pairs = self::columnPairs($column);
+
+        return array_merge(array_keys($pairs), array_values($pairs));
+    }
+
+    static function columnPairs(string $column): array
+    {
+        if (in_array($column, self::OPTIMIZED_SCENARIO_COLUMNS)) {
+            return [
+                $column => $column . self::SUFFIX_SCENARIO,
+                $column . self::SUFFIX_PROFITABLE => $column . self::SUFFIX_SCENARIO . self::SUFFIX_PROFITABLE,
+                $column . self::SUFFIX_PROFITLESS_CAT_1 => $column . self::SUFFIX_SCENARIO . self::SUFFIX_PROFITLESS_CAT_1,
+                $column . self::SUFFIX_PROFITLESS_CAT_2 => $column . self::SUFFIX_SCENARIO . self::SUFFIX_PROFITLESS_CAT_2,
+            ];
         }
 
         return [
-            $column,
-            $column . self::SUFFIX_PROFITABLE,
-            $column . self::SUFFIX_PROFITLESS_CAT_1,
-            $column . self::SUFFIX_PROFITLESS_CAT_2,
+            $column => $column . self::SUFFIX_OPTIMIZE,
+            $column . self::SUFFIX_PROFITABLE => $column . self::SUFFIX_PROFITABLE . self::SUFFIX_OPTIMIZE,
+            $column . self::SUFFIX_PROFITLESS_CAT_1 => $column . self::SUFFIX_PROFITLESS_CAT_1 . self::SUFFIX_OPTIMIZE,
+            $column . self::SUFFIX_PROFITLESS_CAT_2 => $column . self::SUFFIX_PROFITLESS_CAT_2 . self::SUFFIX_OPTIMIZE,
         ];
     }
 }

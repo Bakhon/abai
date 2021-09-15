@@ -50,4 +50,5 @@ return array (
   'close' => 'Закрыть',
   'downloading_data' => 'Выгрузка данных',
   'create_template' => 'Создать шаблон',
+  'choose_section' => 'Выбор раздела',
 );

@@ -73,17 +73,13 @@
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_avg_prs')}}
                     </a>
-                    <a href="{{ route('eco_refs_cost.index') }}"
+                    <a href="{{ route('economic.cost.index') }}"
                        class="text-primary list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_cost')}}
                     </a>
-                    <a href="{{ route('eco_refs_cost.index',['is_forecast'=> 1]) }}"
+                    <a href="{{ route('economic.cost.index',['is_forecast'=> 1]) }}"
                        class="text-primary list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_scenario')}}
-                    </a>
-                    <a href="{{ route('eco-refs-gtm.index') }}"
-                       class="text-primary list-group-item list-group-item-action">
-                        {{__('economic_reference.eco_refs_gtm')}}
                     </a>
                     <a href="{{url('/')}}/ru/module_economy/ecorefsmacro"
                        class="list-group-item list-group-item-action text-primary">

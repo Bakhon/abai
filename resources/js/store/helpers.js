@@ -78,13 +78,19 @@ export const complicationMonitoringActions = arrNames => ({
 
 // paegtm Map //
 export const paegtmMapActions = arrNames => ({
-    ...mapActions('paegtmMap', [
+    ...mapActions('paegtm', [
+        ...arrNames,
+    ]),
+});
+
+export const paegtmMapState = arrNames => ({
+    ...mapState('paegtm', [
         ...arrNames,
     ]),
 });
 
 export const paegtmMapGetters = arrNames => ({
-    ...mapGetters('paegtmMap', [
+    ...mapGetters('paegtm', [
         ...arrNames,
     ]),
 });
@@ -169,3 +175,34 @@ export const geologyMutations = arrNames => ({
     ]),
 });
 // End geology //
+
+// Digital Rating //
+export const digitalRatingState = arrNames => ({
+    ...mapState('digitalRating', [
+      ...arrNames
+    ]),
+});
+
+export const digitalRatingMutations = arrNames => ({
+    ...mapMutations('digitalRating', [
+        ...arrNames
+    ]),
+});
+
+export const digitalRatingActions = arrNames => ({
+    ...mapActions('digitalRating', [
+        ...arrNames
+    ]),
+});
+//End Digital Rating//
+
+export const waterfloodingManagementMapActions = arrNames => ({
+    ...mapActions('waterfloodingManagement', [
+        ...arrNames,
+    ]),
+});
+export const waterfloodingManagementMapGetters = arrNames => ({
+    ...mapGetters('waterfloodingManagement', [
+        ...arrNames,
+    ]),
+});

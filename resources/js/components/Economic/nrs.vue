@@ -83,7 +83,8 @@
             :granularity="form.granularity"
             :profitability="form.profitability"
             :oil-prices="res.oilPrices"
-            :dollar-rates="res.dollarRates"/>
+            :dollar-rates="res.dollarRates"
+            :org_id="form.org_id"/>
       </div>
 
       <div class="col-3 pr-0 pl-10px">
@@ -177,7 +178,7 @@ import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
-import Charts from "./components/Charts";
+import Charts from "./components/nrs/Charts";
 import EconomicTitle from "./components/EconomicTitle";
 import Subtitle from "./components/Subtitle";
 import PercentBadge from "./components/PercentBadge";

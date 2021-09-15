@@ -35,7 +35,7 @@ class EcoRefsDiscontCoefBarController extends Controller
             ]
         ];
         
-        $ecorefsdiscontcoefbar = EcoRefsDiscontCoefBar::latest()->with('scfa')->with('company')->with('direction')->with('route')->paginate(5);
+        $ecorefsdiscontcoefbar = EcoRefsDiscontCoefBar::orderBy('id','desc')->with('scfa')->with('company')->with('direction')->with('route')->paginate(10);
 
         $ecorefsdiscontcoefbarPages = view('economy_kenzhe/ecorefsdiscontcoefbar.index',compact('ecorefsdiscontcoefbar'))
             ->with('starting_row_number', (request()->input('page', 1) - 1) * 5);

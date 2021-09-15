@@ -61,6 +61,12 @@ class FormsController extends Controller
         $form->validateSingleField($field);
     }
 
+    public function validateTableField(string $formName, string $parent, string $field): void
+    {
+        $form = $this->getForm($formName);
+        $form->validateSingleTableField($parent, $field);
+    }
+
     public function saveField(string $formName, string $field): void
     {
         $form = $this->getForm($formName);
@@ -75,12 +81,6 @@ class FormsController extends Controller
         } catch (SubmitFormException $exception) {
             return response()->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-    }
-
-    public function getRows(string $formName): array
-    {
-        $form = $this->getForm($formName);
-        return $form->getRows();
     }
 
     public function getRowHistory(string $formName, Request $request): array
@@ -142,7 +142,13 @@ class FormsController extends Controller
     public function getResults(Request $request, string $formName): JsonResponse
     {
         $form = $this->getForm($formName);
-        return $form->getResults($request->get('well_id'));
+        try {
+            return response()->json(
+                $form->getResults()
+            );
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function calcFields(Request $request, string $form): JsonResponse
@@ -161,6 +167,12 @@ class FormsController extends Controller
     {
         $form = $this->getForm($form);
         return response()->json($form->getFormByRow(json_decode($request->get('row'), 1)));
+    }
+
+    public function getFormParamsToEdit(Request $request, string $form): JsonResponse
+    {
+        $form = $this->getForm($form);
+        return response()->json($form->getFormParamsToEdit($request->all()));
     }
 
     public function delete(string $form, int $row): JsonResponse

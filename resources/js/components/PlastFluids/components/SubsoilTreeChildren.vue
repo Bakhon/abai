@@ -15,17 +15,21 @@
         v-if="hasChild"
       >
         <div
-          v-for="horizon in checkedField[0].horizons"
+          v-for="horizon in field.horizons"
           :key="horizon.horizon_id"
           class="subsoil-horizons"
         >
-          <input
-            type="radio"
-            :id="horizon.horizon_name"
-            :value="horizon.horizon_name"
-            v-model="pickedSubsoilHorizon"
-          />
-          <label :for="horizon.horizon_name">{{ horizon.horizon_name }}</label>
+          <template v-if="horizon.horizon_name">
+            <input
+              type="radio"
+              :id="horizon.horizon_name"
+              :value="horizon.horizon_name"
+              v-model="pickedSubsoilHorizon"
+            />
+            <label :for="horizon.horizon_name">{{
+              horizon.horizon_name
+            }}</label></template
+          >
         </div>
       </div>
     </div>

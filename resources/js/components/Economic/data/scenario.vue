@@ -52,6 +52,7 @@ export default {
 
     ScenarioForm,
     DeleteButton
+
   },
   data: () => ({
     data: [],
@@ -69,7 +70,7 @@ export default {
       this.SET_LOADING(true);
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/module_economy/eco_refs_scenarios'))
+        const {data} = await this.axios.get(this.localeUrl('/economic/scenario/get-data'))
 
         this.data = [...[this.headers], ...data.data]
       } catch (e) {
@@ -81,7 +82,7 @@ export default {
 
     async deleteScenario(id) {
       try {
-        await this.axios.delete(this.localeUrl(`/module_economy/eco_refs_scenario/${id}`))
+        await this.axios.delete(this.localeUrl(`/economic/scenario/${id}`))
 
         let index = this.data.findIndex(x => x[0] === id)
 

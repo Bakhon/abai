@@ -8,7 +8,7 @@ Route::group(
             function () {
                 Route::get('/', 'bd\DBController@bigdata')->name('bigdata');
                 Route::get('/las', 'bd\DBController@las')->name('las');
-                Route::get('/well-cart', 'bd\DBController@well_cart')->name('bigdata.well_cart');
+                Route::get('/well-card', 'bd\DBController@well_card')->name('bigdata.well_card');
                 Route::get('/report-constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
                 Route::get('/field-list', 'bd\DBController@field_list')->name('field_list');
@@ -82,12 +82,18 @@ Route::group(
                 Route::get('forms/{form}', 'Api\DB\FormsController@getParams')->name('bigdata.form.params');
                 Route::post('forms/{form}', 'Api\DB\FormsController@submit')->name('bigdata.form.send');
                 Route::get('forms/{form}/history', 'Api\DB\FormsController@getHistory');
-                Route::get('forms/{form}/rows', 'Api\DB\FormsController@getRows');
                 Route::get('forms/{form}/row-history', 'Api\DB\FormsController@getRowHistory');
                 Route::get('forms/{form}/row-history-graph', 'Api\DB\FormsController@getRowHistoryGraph');
                 Route::get('forms/{form}/copy', 'Api\DB\FormsController@copyFieldValue');
+                Route::post('forms/{form}/edit-form', 'Api\DB\FormsController@getFormParamsToEdit');
                 Route::get('forms/{form}/well-prefix', 'Api\DB\FormsController@getWellPrefix');
                 Route::get('forms/{form}/form-by-row', 'Api\DB\FormsController@getFormByRow');
+                Route::post(
+                    'forms/{form}/validate/{parent}/{field}',
+                    'Api\DB\FormsController@validateTableField'
+                )->name(
+                    'bigdata.form.validate.table_field'
+                );
                 Route::post('forms/{form}/validate/{field}', 'Api\DB\FormsController@validateField')->name(
                     'bigdata.form.validate.field'
                 );
@@ -102,13 +108,19 @@ Route::group(
                 Route::delete('forms/{form}/{row}', 'Api\DB\FormsController@delete');
 
                 Route::get('wells/search', 'Api\DB\WellsController@search');
-                Route::get('wells/production-wells-schedule-data', 'Api\DB\WellsController@getProductionWellsScheduleData');
+                Route::get(
+                    'wells/production-wells-schedule-data',
+                    'Api\DB\WellsController@getProductionWellsScheduleData'
+                );
                 Route::get('wells/tree', 'Api\DB\WellsController@getStructureTree');
                 Route::get('wells/{well}', 'Api\DB\WellsController@get');
                 Route::get('wells/{well}/wellInfo', 'Api\DB\WellsController@wellInfo');
 
-
                 Route::get('tech/wells', 'Api\DB\TechController@getWellsById');
+
+                Route::get('/las/wells/{well}', 'Api\DB\LasController@getWellForLas')->name('las.well');
+                Route::post('/las/gis', 'Api\DB\LasController@attachFileToGis')->name('las.attach_to_gis');
+                Route::get('/las/download/{experiment}', 'Api\DB\LasController@downloadFile')->name('las.download');
             }
         );
     }

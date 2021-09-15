@@ -972,7 +972,7 @@
           </td>
 
           <td v-if= isGenHide
-            style="background: #12135C; min-width:270px"
+            style="background: #12135C; min-width:281px"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -1000,19 +1000,15 @@
         </tr>
       </table>
     </div>
-    <notifications position="top"></notifications>
-
   </div>
 </template>
 <script>
 import NotifyPlugin from "vue-easy-notify";
 import "vue-easy-notify/dist/vue-easy-notify.css";
-import { VueMomentLib } from "vue-moment-lib";
-import moment from "moment";
+import {VueMomentLib} from "vue-moment-lib";
 import Vue from "vue";
 import SearchFormRefresh from "@ui-kit/SearchFormRefresh.vue";
-import columnSortable from 'vue-column-sortable'
-import { fields } from "./constants.js";
+import {fields} from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 
 
@@ -1619,7 +1615,8 @@ body {
 
 /* width */
 table::-webkit-scrollbar {
-  width: 13px;
+  width: 5px;
+  height: 5px;
 }
 
 /* Track */

@@ -5,6 +5,7 @@
   padding: 8px;
   height: auto;
   overflow: auto;
+  max-height: 200px;
 
   .list {
     list-style: none;
@@ -12,10 +13,21 @@
 
     li {
       padding: 4px 6px;
-      &:hover {
+      display: flex;
+      align-items: baseline;
+      &:hover, &.active {
         background: #2E50E9;
         cursor: pointer;
       }
+    }
+
+    .legend {
+      width: 30px;
+      min-width: 30px;
+      height: 10px;
+      display: block;
+      margin-right: 10px;
+      margin-left: 5px;
     }
   }
 }

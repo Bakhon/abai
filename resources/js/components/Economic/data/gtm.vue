@@ -51,11 +51,11 @@ export default {
       return [
         {
           title: this.trans('economic_reference.upload_economic_data'),
-          url: this.localeUrl('/eco-refs-gtm/upload-excel')
+          url: this.localeUrl('/economic/gtm/upload-excel')
         },
         {
           title: this.trans('economic_reference.upload_technical_data'),
-          url: this.localeUrl('/eco-refs-gtm/upload-excel?is_technical=1')
+          url: this.localeUrl('/economic/gtm/upload-excel?is_technical=1')
         }
       ]
     }

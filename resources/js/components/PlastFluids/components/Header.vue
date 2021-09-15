@@ -47,9 +47,9 @@ export default {
   },
   methods: {
     routeTo(url) {
-      const { reload, pathname, origin } = location;
+      const { pathname, origin } = location;
       if (this.localeUrl(url) === pathname) {
-        reload();
+        location.reload();
         return;
       }
       location.href = origin + this.localeUrl(url);
