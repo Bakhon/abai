@@ -39,7 +39,7 @@
                         <td>{{getFormattedNumber(yearlyData.planYear)}}</td>
                         <td>{{getFormattedNumber(yearlyData.factYear)}}</td>
                         <td :class="yearlyData.factYear - yearlyData.planYear < 0 ? 'color__red' : 'color__green'">{{getFormattedNumber(yearlyData.factYear - yearlyData.planYear)}}</td>
-                        <td>{{summaryMonthlyExecution}}</td>
+                        <td>{{summaryMonthlyExecution.toFixed(1)}}%</td>
                     </tr>
                 </tbody>
             </table>
@@ -87,12 +87,10 @@
                         <td>{{getFormattedNumber(summaryPlan)}}</td>
                         <td>{{getFormattedNumber(summaryFact)}}</td>
                         <td :class="summaryFact - summaryPlan < 0 ? 'color__red' : 'color__green'">{{getFormattedNumber(summaryFact - summaryPlan)}}</td>
+                    </tr>
+                    <tr class="summary-execution">
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td colspan="3">Выполнение {{summaryExecution.toFixed(1)}}%</td>
                     </tr>
                 </tbody>
             </table>
@@ -270,15 +268,6 @@ export default {
         },
     },
     computed: {
-        summaryMonthlyPlan() {
-            return 0;
-        },
-        summaryMonthlyFact() {
-            return 0;
-        },
-        summaryMonthlyExecution() {
-            return 0;
-        },
         monthsPassed() {
             return this.selectedMonth - 1;
         },
@@ -287,7 +276,13 @@ export default {
         },
         summaryFact() {
             return _.sumBy(this.tableData, 'factDay');
-        }
+        },
+        summaryExecution() {
+            return this.summaryFact / this.summaryPlan * 100;
+        },
+        summaryMonthlyExecution() {
+            return this.yearlyData.factYear / this.yearlyData.planYear * 100;
+        },
     }
 }
 </script>
@@ -348,9 +343,19 @@ export default {
 }
 .summary-table {
     td {
-        border-right: 1px solid #696e96;
+        border: 1px solid #696e96 !important;
     }
     background: #333975;
+}
+.summary-execution {
+    td {
+        border: 1px solid #696e96 !important;
+    }
+    background: #333975;
+    td:first-child {
+        background: #272953;
+        border: unset !important;
+    }
 }
 .color__red {
     color: #E31E24;
