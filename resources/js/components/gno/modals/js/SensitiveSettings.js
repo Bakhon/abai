@@ -13,7 +13,7 @@ export default {
                 {value: 'wct', text: this.trans('pgno.obvodnenost'), unit: this.trans('measurements.percent')},
                 {value: 'gor', text: this.trans('pgno.gf_s'), unit: this.trans('measurements.m3/t')},
                 {value: 'p_res', text: this.trans('pgno.p_pl'), unit: this.trans('measurements.atm')},
-                {value: 'pi', text: this.trans('pgno.k_pod'), unit: this.trans('measurements.m3/d/atm')},
+                {value: 'pi', text: this.trans('pgno.k_prod'), unit: this.trans('measurements.m3/d/atm')},
             ],
 
         }

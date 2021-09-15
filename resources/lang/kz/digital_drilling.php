@@ -1,6 +1,7 @@
 <?php
 
 return array (
+    'module_title'=> 'Сандық бұрғылау',
     'database' => 'Мәліметтер базасы',
     'general_information' => 'жалпы ақпарат',
     'well_data_sheet' => 'ұңғыманың паспорты',

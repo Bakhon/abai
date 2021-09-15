@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'module_title'=> 'Цифровое бурение',
   'database' => 'База данных',
   'general_information' => 'Общая информация',
   'well_data_sheet' => 'Паспорт скважины',
@@ -586,9 +587,9 @@ return array (
         'INCLINOMETRY' => 'ИНКЛИНОМЕТРИЯ',
         'depth_m' => 'Глубина, м',
         'altitude' => 'Альтитуд α',
-        'coal' => 'Уголь (°)',
+        'angle' => 'Угол (°)',
         'azimuth' => 'Азимут(°)',
-        'three_instruments' => 'Три прибора',
+        'type_instrument' => 'Тип прибора',
 
         'SAFETY' => 'ТЕХНИКА БЕЗОПАСНОСТИ',
         'fire_alarm' => 'Пожарная тревога',

@@ -50,15 +50,29 @@
 import Subtitle from "./Subtitle";
 
 const WELL_KEYS = [
-  'Operating_profit_12m',
-  'Fixed_nopayroll_expenditures_12m',
-  'Fixed_payroll_expenditures_12m',
+  'Revenue_total_12m',
+  'Revenue_local_12m',
+  'Revenue_export_12m',
   'oil_12m',
   'liquid_12m',
-  'Revenue_total_12m',
+  'prs_12m',
+  'days_worked_12m',
+  'production_export_12m',
+  'production_local_12m',
+  'Fixed_noWRpayroll_expenditures_12m',
+  'Operating_profit_12m',
   'Overall_expenditures_12m',
   'Overall_expenditures_full_12m',
+  'Fixed_nopayroll_expenditures_12m',
+  'Fixed_payroll_expenditures_12m',
   'profitability_12m'
+]
+
+const WELL_SUM_KEYS = [
+  'oil',
+  'liquid',
+  'Revenue_total',
+  'prs'
 ]
 
 const WELL_VALUE_KEYS = [
@@ -84,10 +98,6 @@ export default {
       required: true,
       type: Array
     },
-    selectedWells: {
-      required: true,
-      type: Array
-    }
   },
   methods: {
     getColor({profitability_12m}) {
@@ -103,56 +113,40 @@ export default {
     toggleWell(uwi, well) {
       let oilPrice = +this.scenario.oil_price
 
-      let oil = +well.oilPrices[oilPrice].oil_12m
+      let sumValues = {}
 
-      let liquid = +well.oilPrices[oilPrice].liquid_12m
-
-      let revenueTotal = +well.oilPrices[oilPrice].Revenue_total_12m
+      WELL_SUM_KEYS.forEach(key => {
+        sumValues[key] = +well.oilPrices[oilPrice][`${key}_12m`]
+      })
 
       let overallExpendituresScenario =
           +this.scenario.coef_Fixed_nopayroll * +well.oilPrices[oilPrice].Fixed_nopayroll_expenditures_12m +
           +this.scenario.coef_cost_WR_payroll * +well.oilPrices[oilPrice].Fixed_payroll_expenditures_12m
 
-      let operatingProfit = +well.oilPrices[oilPrice].Operating_profit_12m + overallExpendituresScenario
+      sumValues.Operating_profit = +well.oilPrices[oilPrice].Operating_profit_12m + overallExpendituresScenario
 
-      let overallExpenditures = +well.oilPrices[oilPrice].Overall_expenditures_12m - overallExpendituresScenario
+      sumValues.Overall_expenditures = +well.oilPrices[oilPrice].Overall_expenditures_12m - overallExpendituresScenario
 
-      let overallExpendituresFull = +well.oilPrices[oilPrice].Overall_expenditures_full_12m - overallExpendituresScenario
+      sumValues.Overall_expenditures_full = +well.oilPrices[oilPrice].Overall_expenditures_full_12m - overallExpendituresScenario
+
+      let sumKeys = Object.keys(sumValues)
 
       if (well.isShutdown) {
-        this.selectedWells.push(uwi)
+        this.scenario.uwi_stop.push(uwi)
 
-        oil = -oil
-
-        liquid = -liquid
-
-        revenueTotal = -revenueTotal
-
-        operatingProfit = -operatingProfit
-
-        overallExpenditures = -overallExpenditures
-
-        overallExpendituresFull = -overallExpendituresFull
+        sumKeys.forEach(key => sumValues[key] = -sumValues[key])
       } else {
-        let index = this.selectedWells.findIndex(well => well === uwi)
+        let index = this.scenario.uwi_stop.findIndex(well => well === uwi)
 
         if (index !== -1) {
-          this.selectedWells.splice(index, 1)
+          this.scenario.uwi_stop.splice(index, 1)
         }
       }
 
-      WELL_VALUE_KEYS.forEach(key => {
-        this.scenario.oil[key] = +this.scenario.oil[key] + oil
-
-        this.scenario.liquid[key] = +this.scenario.liquid[key] + liquid
-
-        this.scenario.Revenue_total[key] = +this.scenario.Revenue_total[key] + revenueTotal
-
-        this.scenario.Operating_profit[key] = +this.scenario.Operating_profit[key] + operatingProfit
-
-        this.scenario.Overall_expenditures[key] = +this.scenario.Overall_expenditures[key] + overallExpenditures
-
-        this.scenario.Overall_expenditures_full[key] = +this.scenario.Overall_expenditures_full[key] + overallExpendituresFull
+      WELL_VALUE_KEYS.forEach(valueKey => {
+        sumKeys.forEach(sumKey => {
+          this.scenario[sumKey][valueKey] = +this.scenario[sumKey][valueKey] + sumValues[sumKey]
+        })
       })
     }
   },
@@ -171,7 +165,7 @@ export default {
             cat1: 0,
             cat2: 0,
             profitable: 0,
-            isShutdown: this.selectedWells.includes(well.uwi)
+            isShutdown: this.scenario.uwi_stop.includes(well.uwi)
           }
         }
 
