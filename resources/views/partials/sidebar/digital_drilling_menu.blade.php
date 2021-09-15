@@ -10,8 +10,11 @@
         </div>
         <div class="dropdown-menu">
             <div class="move-menu">
-                <li class="left-menu-li">
+                <li class="left-menu-li mb-1">
                     <a href="{{route('digital-drilling-daily-report')}}">{{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}</a>
+                </li>
+                <li class="left-menu-li">
+                    <a href="{{route('digital-drilling-daily-report')}}">Импорт бурового рапорта</a>
                 </li>
             </div>
         </div>

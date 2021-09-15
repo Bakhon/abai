@@ -363,7 +363,7 @@ return array (
         'weight' => 'weight, kg',
     ],
     'daily_raport' => [
-        'DAILY_DRILLING_REPORT' => 'СУТОЧНЫЙ БУРОВОЙ РАПОРТ',
+        'DAILY_DRILLING_REPORT' => 'Суточный буровой рапорт',
         'date' => 'Дата',
         'report' => 'Рапорт',
         'page' => 'Страница',
