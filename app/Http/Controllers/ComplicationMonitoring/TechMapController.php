@@ -55,13 +55,13 @@ class TechMapController extends Controller
     {
         $pipes = OilPipe::with('coords', 'pipeType')
             ->with([
-                'hydroCalcLong' => function($query) {
+                'hydroCalcLong' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
                 },
-                'hydroCalc' => function($query) {
+                'hydroCalc' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
                 },
-                'reverseCalc' => function($query) {
+                'reverseCalc' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
                 }
             ])
@@ -71,13 +71,13 @@ class TechMapController extends Controller
 
         $manualPipes = ManualOilPipe::with('coords', 'pipeType')
             ->with([
-                'hydroCalcLong' => function($query) {
+                'hydroCalcLong' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
                 },
-                'hydroCalc' => function($query) {
+                'hydroCalc' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
                 },
-                'reverseCalc' => function($query) {
+                'reverseCalc' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
                 }
             ])
@@ -310,13 +310,13 @@ class TechMapController extends Controller
 
         $pipe = ManualOilPipe::with('coords', 'pipeType')
             ->with([
-                'hydroCalcLong' => function($query) {
+                'hydroCalcLong' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
                 },
-                'hydroCalc' => function($query) {
+                'hydroCalc' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
                 },
-                'reverseCalc' => function($query) {
+                'reverseCalc' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
                 }
             ])
@@ -343,7 +343,7 @@ class TechMapController extends Controller
             );
         }
 
-        $model = $id >= 10000 ? app($this->modelNameSpace.'ManualGu') : app($this->modelNameSpace.'Gu');
+        $model = $id >= 10000 ? app($this->modelNameSpace . 'ManualGu') : app($this->modelNameSpace . 'Gu');
         $gu = $model->find($id);
 
         $gu_input = $request->input('gu');
@@ -441,7 +441,7 @@ class TechMapController extends Controller
             );
         }
 
-        $model = $id >= 10000 ? app($this->modelNameSpace.'ManualOilPipe') : app($this->modelNameSpace.'OilPipe');
+        $model = $id >= 10000 ? app($this->modelNameSpace . 'ManualOilPipe') : app($this->modelNameSpace . 'OilPipe');
         $pipe = $model->find($id);
 
         $pipe_input = $request->input('pipe');
@@ -456,13 +456,13 @@ class TechMapController extends Controller
 
         $pipe = $model->with('coords', 'pipeType')
             ->with([
-                'hydroCalcLong' => function($query) {
+                'hydroCalcLong' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
                 },
-                'hydroCalc' => function($query) {
+                'hydroCalc' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
                 },
-                'reverseCalc' => function($query) {
+                'reverseCalc' => function ($query) {
                     $query->where('date', Carbon::now()->format('Y-m-d'));
                 }
             ])
@@ -580,7 +580,7 @@ class TechMapController extends Controller
                 'reverseCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
                 },
-                'hydroCalcLong' => function($query) use ($date) {
+                'hydroCalcLong' => function ($query) use ($date) {
                     $query->where('date', $date);
                 },
             ]
@@ -596,7 +596,7 @@ class TechMapController extends Controller
                 'reverseCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
                 },
-                'hydroCalcLong' => function($query) use ($date) {
+                'hydroCalcLong' => function ($query) use ($date) {
                     $query->where('date', $date);
                 },
             ]

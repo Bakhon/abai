@@ -1,17 +1,5 @@
-<li class="left-menu-li">
-    <a class="d-flex justify-content-between" href="{{route('monitor')}}">
-        <div>
-            <img src="/img/icons/monitor_gray.svg" width="25" height="25" class="companyLogo">
-            {{ trans('monitoring.monitoring_module') }}
-        </div>
-        <img src="/img/icons/arrow-right.svg">
-     </a>
+<li class="left-menu-li"><a href="{{route('monitor')}}">{{ trans('monitoring.monitoring_module') }}</a>
     <ul class="dropdown-child">
-        <div class="menu-header">
-            <img src="/img/icons/monitor.svg" width="25" height="25" class="companyLogo">
-            {{ trans('monitoring.monitoring_module') }}
-        </div>
-        <div class="menu-title no-route">{{ trans('monitoring.monitoring_module') }}</div>
         <li class="left-menu-li">
             <ul>
                 @if(auth()->user()->can('monitoring view main'))
@@ -59,9 +47,9 @@
             || auth()->user()->can('monitoring list reverse_calculation')
         )
             <li class="left-menu-li">
-                <div class="menu-title no-route">
+                <a>
                     {{ trans('monitoring.kaznipi') }}
-                </div>
+                </a>
                 <ul>
                     @if(auth()->user()->can('monitoring list watermeasurement'))
                         <li class="left-menu-li">
@@ -113,9 +101,9 @@
             || auth()->user()->can('monitoring list inhibitors')
         )
             <li class="left-menu-li">
-                <div class="menu-title no-route">
+                <a>
                     {{ trans('monitoring.gu_equipment') }}
-                </div>
+                </a>
                 <ul>
                     @if(auth()->user()->can('monitoring list buffer-tank'))
                         <li class="left-menu-li">
@@ -159,6 +147,13 @@
                             </a>
                         </li>
                     @endif
+                    @if(auth()->user()->can('monitoring list zu-cleanings'))
+                        <li class="left-menu-li">
+                            <a href="{{route('zu-cleanings.index')}}">
+                                {{ trans('monitoring.zu_cleanings.title') }}
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </li>
         @endif
@@ -167,9 +162,9 @@
             || auth()->user()->can('monitoring list inhibitors')
         )
             <li class="left-menu-li">
-                <div class="menu-title no-route">
+                <a>
                     {{ trans('monitoring.dictionaries') }}
-                </div>
+                </a>
                 <ul>
                     @if(auth()->user()->can('monitoring list pipes'))
                         <li class="left-menu-li">
@@ -198,47 +193,37 @@
 
         @if(auth()->user()->can('monitoring view pipes map'))
             <li class="left-menu-li">
-                <div class="menu-title">
-                    <a href="{{route('tech-map.index')}}">
-                        {{ trans('monitoring.tech_map') }}
-                    </a>
-                </div>
+                <a href="{{route('tech-map.index')}}">
+                    {{ trans('monitoring.tech_map') }}
+                </a>
             </li>
         @endif
 
         @if(auth()->user()->can('monitoring view pipes map'))
             <li class="left-menu-li">
-                <div class="menu-title">
-                    <a href="{{route('map-history.index')}}">
-                        {{ trans('monitoring.map-history.menu') }}
-                    </a>
-                </div>
+                <a href="{{route('map-history.index')}}">
+                    {{ trans('monitoring.map-history.menu') }}
+                </a>
             </li>
         @endif
 
         <li class="left-menu-li">
-            <div class="menu-title">
-                <a href="{{route('facilities')}}">
-                    {{ trans('monitoring.tech_map_prototype') }}
-                </a>
-            </div>
+            <a href="{{route('facilities')}}">
+                {{ trans('monitoring.tech_map_prototype') }}
+            </a>
         </li>
         @if(auth()->user()->can('monitoring list lost_profits'))
             <li class="left-menu-li">
-                <div class="menu-title">
-                    <a href="{{route('lost-profits.index')}}">
-                        {{ trans('monitoring.lost_profits_title') }}
-                    </a>
-                </div>
+                <a href="{{route('lost-profits.index')}}">
+                    {{ trans('monitoring.lost_profits_title') }}
+                </a>
             </li>
         @endif
         @if(auth()->user()->can('monitoring list economical_effect'))
             <li class="left-menu-li">
-                <div class="menu-title">
-                    <a href="{{route('economical-effect.index')}}">
-                        {{ trans('monitoring.economical_effect_title') }}
-                    </a>
-                </div>
+                <a href="{{route('economical-effect.index')}}">
+                    {{ trans('monitoring.economical_effect_title') }}
+                </a>
             </li>
         @endif
     </ul>

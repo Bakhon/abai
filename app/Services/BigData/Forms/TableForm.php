@@ -23,8 +23,6 @@ abstract class TableForm extends BaseForm
     protected $jsonValidationSchemeFileName = 'table_form.json';
     protected $tableHeaderService;
 
-    abstract public function getRows(array $params = []): array;
-
     abstract protected function saveSingleFieldInDB(array $params): void;
 
     public function __construct(Request $request)

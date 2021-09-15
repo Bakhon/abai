@@ -5,15 +5,13 @@ namespace App\Http\Controllers\bd;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BigData\WellCreateRequest;
 use App\Models\BigData\Well;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 
 class WellsController extends Controller
 {
     public function index()
     {
-        $wells = Well::active(Carbon::now())->orderBy('uwi', 'asc')->paginate(20);
-        return view('bigdata.wells.index', compact('wells'));
+        return view('bigdata.wells.index');
     }
 
     public function show(Well $well)

@@ -1,63 +1,27 @@
 #sidebar-container2{
   z-index: 99;
-  ::-webkit-scrollbar {
-    width: 5px;
-  }
 
-  ::-webkit-scrollbar-track {
-    background: #272953;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #656a8a;
-  }
   .left-panel{
     min-height: calc(100vh - 78px);
     position: relative;
 
     .dropdown-menu{
       margin-left: 0;
-      padding: 0;
-      height: 95vh;
     }
 
     .left-menu-li{
-
       .dropdown-child{
+        background-color: $main1;
         display: none;
-        left: 100%;
-        top: 0;
+        left: 15px;
         margin: 0;
-        width: 519px;
-        height: 95vh;
-        background: rgba(46, 80, 233, 0.05);;
-        overflow-y: scroll;
-        .menu-title {
-          background: #333975;
-        }
-        .no-route {
-          padding: 20px;
+        padding: 10px!important;
+        ul{
+          padding-left: 10px;
         }
         .left-menu-li{
-          display: block;
+          display: inline-block;
           margin-left: 0;
-          padding: 0;
-          a {
-            padding: 20px 20px 20px 40px;
-            display: block;
-          }
-          &:hover{
-            cursor: auto;
-            background: #333975;
-          }
-          ul {
-            .left-menu-li{
-              &:hover {
-                cursor: pointer;
-                background: #2E50E9;
-              }
-            }
-          }
         }
       }
       &:hover{
@@ -73,44 +37,32 @@
     padding: 15px 0px 15px 15px;
   }
 
+  .dropright:hover>.dropdown-menu {
+    display: block;
+  }
+
   .dropright .dropdown-menu {
+    background-color: #20274f;
     color: white;
-    top: -185%;
-    width: 525px;
-    background: #333975;
-    box-shadow: 5px 5px 40px 5px rgba(0, 0, 0, 0.5);
   }
 
   .dropright .dropdown-menu a:link {
     color: white;
-    text-decoration: none;
   }
 
-  .dropright .dropdown-menu a, div {
+  .dropright .dropdown-menu a {
     color: white;
-    font-size: 20px;
-    line-height: 24px;
   }
 
   .dropright .dropdown-menu a:visited {
     color: white;
   }
 
-  .vc3_min-width {
-    min-width: 180px;
+  .move-menu {
+    margin-left: 15px;
   }
 
-  .menu-header {
-    display: flex;
-    padding: 10px 13px 10px 20px;
-    background: #46498E;
-    height: 50px;
-    align-items: center;
-    .btn {
-      background: #656A8A;
-      color: #FEFEFE;
-      font-weight: bold;
-      border-radius: 10px;
-    }
+  .vc3_min-width {
+    min-width: 180px;
   }
 }

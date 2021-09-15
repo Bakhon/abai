@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class DailyReportsPrs extends TableForm
 {
     protected $configurationFileName = 'daily_reports_prs';
+    protected $repairType = 'WLO';
 
     protected function saveSingleFieldInDB(array $params): void
     {
@@ -25,7 +26,7 @@ class DailyReportsPrs extends TableForm
     }
 
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
         if (empty($filter->date)) {
@@ -54,7 +55,7 @@ class DailyReportsPrs extends TableForm
             ->join('prod.well_geo as wg', 'ww.well', 'wg.well')
             ->where('rodr.org', $this->request->get('id'))
             ->where('rodr.report_date', $filter->date)
-            ->where('wrt.code', 'WLO')
+            ->where('wrt.code', $this->repairType)
             ->where('wg.dbeg', '<=', $filter->date)
             ->where('wg.dend', '>=', $filter->date)
             ->get()

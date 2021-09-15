@@ -19,8 +19,9 @@ class Gis extends PlainForm
     use DateMoreThanValidationTrait;
     use DepthValidationTrait;
 
-    public function getResults(int $wellId): JsonResponse
+    public function getResults(): JsonResponse
     {
+        $wellId = $this->request->get('well_id');
         try {
             $rows = $this->getRows($wellId);
 
@@ -175,7 +176,7 @@ class Gis extends PlainForm
         }
     }
 
-    private function submitForm()
+    protected function submitForm(): array
     {
         $this->tableFields = $this->getFields()
             ->filter(
