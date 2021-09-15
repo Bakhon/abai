@@ -227,7 +227,7 @@ export default {
             return _.filter(_.cloneDeep(this.productionTableData), (item) => {
                 return this.selectedDzoCompanies.includes(item.name);
             });
-        }
+        },
     },
     computed: {
         periodSelectFunc() {

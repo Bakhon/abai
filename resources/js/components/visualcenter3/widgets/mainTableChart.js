@@ -51,7 +51,9 @@ export default {
             } else {
                 this.buttonTargetPlan = "button-tab-highlighted";
             }
-            this.changeMenu2('yearly');
+            this.switchView('year');
+            this.productionChartData = this.getSummaryForChart();
+            this.exportDzoCompaniesSummaryForChart(this.productionChartData);
         },
 
         getMonthlyPlansInYear(summaryForChart,dzoName) {
@@ -129,6 +131,7 @@ export default {
                 this.dzoYearlyData.differenceOnEachMonth = Math.round((this.dzoYearlyData.plan - this.dzoYearlyData.totallyFact) / monthsLeftInYear);
                 this.setTotalFact(monthlyFact);
             }
+
             return this.dzoYearlyData.differenceOnEachMonth;
         },
 
@@ -140,6 +143,10 @@ export default {
                 }
             });
             return targetPlan;
+        },
+
+        setTotalFact(monthlyFact) {
+            this.dzoYearlyData.totallyFact += monthlyFact;
         },
     }
 }

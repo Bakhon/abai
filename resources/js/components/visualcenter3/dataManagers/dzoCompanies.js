@@ -157,6 +157,9 @@ export default {
         selectDzoCompany(isWithoutRefresh) {
             this.disableDzoRegions();
             this.dzoCompaniesAssets['isAllAssets'] = false;
+            this.productionData = this.getFilteredTableData();
+            this.productionChartData = this.getSummaryForChart();
+            this.exportDzoCompaniesSummaryForChart(this.productionChartData);
         },
 
         getFilteredDzoYearlyPlan() {

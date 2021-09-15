@@ -75,7 +75,8 @@ export default {
                 'АГ': {
                     'id': '1.2.'
                 }
-            }
+            },
+            companiesWithData: []
         }
     },
     methods: {
@@ -142,6 +143,7 @@ export default {
             this.productionParams = await this.getProductionParamsByCategory();
             this.productionTableData = this.productionParams.tableData.current[this.selectedCategory];
             if (this.periodRange > 0) {
+                this.companiesWithData = _.map(this.productionTableData, 'name');
                 this.productionChartData = this.getSummaryForChart();
                 this.exportDzoCompaniesSummaryForChart(this.productionChartData);
             }
@@ -213,6 +215,9 @@ export default {
             }
             this.productionData = _.cloneDeep(this.productionTableData);
             if (this.periodRange !== 0) {
+                this.companiesWithData = _.map(this.productionTableData, 'name');
+                this.productionChartData = this.getSummaryForChart();
+                this.exportDzoCompaniesSummaryForChart(this.productionChartData);
                 return;
             }
             if (shouldRecalculateSummary) {
@@ -236,13 +241,13 @@ export default {
                 });
             } else {
                 chartData = _.filter(chartData, (item) => {
-                   return this.selectedDzoCompanies.includes(item.name)
+                   return this.companiesWithData.includes(item.name)
                 });
             }
             _.forEach(chartData, (item) => {
                 item.date = moment(item.date, 'DD/MM/YYYY').valueOf();
             });
-            return _(chartData)
+            let summary = _(chartData)
                 .groupBy("date")
                 .map((item, date) => ({
                     time: date,
@@ -251,29 +256,37 @@ export default {
                     productionPlanForChart2: _.round(_.sumBy(item, 'opek'), 0),
                 }))
                 .value();
+
+            if (!this.isFilterTargetPlanActive) {
+                return summary;
+            }
+            return this.getMonthlyPlansInYear(summary);
         },
     },
     computed: {
         summaryYearlyPlan() {
-            return _.sumBy(this.productionTableData, 'yearlyPlan');
+            return _.sumBy(this.productionData, 'yearlyPlan');
         },
         summaryMonthlyPlan() {
-            return _.sumBy(this.productionTableData, 'monthlyPlan');
+            return _.sumBy(this.productionData, 'monthlyPlan');
         },
         summaryFact() {
-            return _.sumBy(this.productionTableData, 'fact');
+            return _.sumBy(this.productionData, 'fact');
         },
         summaryPlan() {
-            return _.sumBy(this.productionTableData, 'plan');
+            return _.sumBy(this.productionData, 'plan');
         },
         summaryOpek() {
-            return _.sumBy(this.productionTableData, 'opek');
+            return _.sumBy(this.productionData, 'opek');
         },
         summaryDifference() {
-            return _.sumBy(this.productionTableData, 'plan') - _.sumBy(this.productionTableData, 'fact');
+            return _.sumBy(this.productionData, 'plan') - _.sumBy(this.productionData, 'fact');
         },
         summaryOpekDifference() {
-            return _.sumBy(this.productionTableData, 'opek') - _.sumBy(this.productionTableData, 'fact');
+            return _.sumBy(this.productionData, 'opek') - _.sumBy(this.productionData, 'fact');
+        },
+        summaryTargetPlan() {
+            return _.sumBy(this.productionData, 'yearlyPlan') - _.sumBy(this.productionData, 'plan');
         }
     },
 }

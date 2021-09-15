@@ -702,7 +702,7 @@
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
                   <button
-                          v-if="buttonYearlyTab && mainMenu.oilCondensateProduction && mainMenu.oilCondensateDelivery"
+                          v-if="buttonYearlyTab && mainMenu.oilCondensateProduction"
                           type="button"
                           class="btn btn-primary dropdown-toggle position-button-vc mt-1"
                           data-toggle="dropdown"
@@ -828,7 +828,7 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()">
+                    <th v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && !isFilterTargetPlanActive">
                       {{ trans("visualcenter.dzoDifference") }}
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
@@ -839,6 +839,9 @@
                       <div v-else>
                         {{ getMetricNameByCategorySelected() }}
                       </div>
+                    </th>
+                    <th v-if="isFilterTargetPlanActive">
+                      {{ trans("visualcenter.dzoTargetPlan") }}
                     </th>
                     <th v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.reasonExplanations") }}
@@ -963,7 +966,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
+                            v-if="!mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive() && !isFilterTargetPlanActive"
                             :class="buttonYearlyTab || buttonMonthlyTab ?
                             getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')"
                     >
@@ -976,6 +979,15 @@
                       ></div>
                       <div class="font dynamic">
                         {{ getFormattedNumberToThousand(item.opek,item.fact) }}
+                      </div>
+                    </td>
+                    <td
+                            v-if="isFilterTargetPlanActive"
+                            :class="buttonYearlyTab || buttonMonthlyTab ?
+                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')"
+                    >
+                      <div class="font dynamic">
+                        {{getFormattedNumberToThousand(item.yearlyPlan - item.plan)}}
                       </div>
                     </td>
                     <td
@@ -1091,10 +1103,10 @@
                     </td>
                     <td
                             v-if="isFilterTargetPlanActive && !mainMenu.oilCondensateDeliveryOilResidue"
-                            :class="`${getColorClassBySelectedPeriod(index)}`"
+                            :class="periodRange === 0 ? getLighterClass(index) : getDarkerClass(index)"
                     >
                       <div class="font">
-                        {{formatDigitToThousand(summaryYearlyPlan)}}
+                        {{formatDigitToThousand(summaryTargetPlan)}}
                       </div>
                     </td>
                     <td
