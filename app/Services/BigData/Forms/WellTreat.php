@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Traits\BigData\Forms\DepthValidationTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Traits\BigData\Forms\DepthValidationTrait;
 
 class WellTreat extends TableForm
 {
     protected $configurationFileName = 'well_treat';
     use DepthValidationTrait;
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
         $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
