@@ -187,6 +187,13 @@ export default {
                     planName: 'plan_kondensat',
                     factName: 'condensate_production_fact'
                 },
+                {
+                    id: 11,
+                    ticker: 'ПКИ',
+                    name: 'АО "ПетроКазахстан Инк."',
+                    planName: 'plan_oil',
+                    factName: 'oil_production_fact'
+                },
             ],
             monthes: [],
             tableData: [],
@@ -217,6 +224,7 @@ export default {
         async updateDailyView() {
             this.SET_LOADING(true);
             this.summaryData = await this.getDaily();
+            console.log(this.summaryData);
             this.tableData = this.summaryData.tableData;
             this.yearlyData = this.summaryData.yearlyData;
             this.SET_LOADING(false);
