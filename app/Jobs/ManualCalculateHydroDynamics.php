@@ -287,7 +287,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
                 continue;
             }
 
-            if ($pipe) {
+            if (!$pipe) {
                 $points = explode(" - ", $data[$key - 1][self::PIPE_OR_SEGMENT]);
                 $message = trans('monitoring.calculate_messages.no_such_pipe',
                     [
