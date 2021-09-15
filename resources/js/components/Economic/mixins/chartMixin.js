@@ -1,5 +1,11 @@
 const ru = require("apexcharts/dist/locales/ru.json");
 
+const PROFITLESS_PROFITABILITIES = [
+    'profitless',
+    'profitless_cat_1',
+    'profitless_cat_2',
+]
+
 import {GRANULARITY_DAY} from "../components/SelectGranularity";
 import {PROFITABILITY_FULL} from "../components/SelectProfitability";
 
@@ -83,12 +89,6 @@ export const chartInitMixin = {
                 : ['profitable', 'profitless'].reverse()
         },
 
-        chartOpacity() {
-            return this.isProfitabilityFull
-                ? [0.8, 0.4, 0.2]
-                : [0.8, 0.4]
-        },
-
         chartOptions() {
             return {
                 labels: this.data.hasOwnProperty('dt')
@@ -136,9 +136,6 @@ export const chartInitMixin = {
                 },
                 fill: {
                     opacity: 0.9,
-                    // opacity: this.isVisibleDefaultSeries
-                    //     ? [...[0.9, 0.9], ...this.chartOpacity, ...this.chartOpacity]
-                    //     : [...this.chartOpacity, ...this.chartOpacity]
                 }
             }
         },
@@ -212,17 +209,11 @@ export const chartInitMixin = {
                             ? pausedWells[profitability].map((value, index) => {
                                 let sum = value + wells.profitable[index]
 
-                                if (wells.hasOwnProperty('profitless_cat_1')) {
-                                    sum += wells.profitless_cat_1[index]
-                                }
-
-                                if (wells.hasOwnProperty('profitless_cat_2')) {
-                                    sum += wells.profitless_cat_2[index]
-                                }
-
-                                if (wells.hasOwnProperty('profitless')) {
-                                    sum += wells.profitless[index]
-                                }
+                                PROFITLESS_PROFITABILITIES.forEach(profitless => {
+                                    if (wells.hasOwnProperty(profitless)) {
+                                        sum += wells[profitless][index]
+                                    }
+                                })
 
                                 return sum
                             })
@@ -239,19 +230,15 @@ export const chartInitMixin = {
                         type: 'area',
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
-                                let sum = value + wells.profitable[index] + pausedWells.profitable[index]
+                                let sum = value
+                                    + wells.profitable[index]
+                                    + pausedWells.profitable[index]
 
-                                if (wells.hasOwnProperty('profitless_cat_1')) {
-                                    sum += wells.profitless_cat_1[index]
-                                }
-
-                                if (wells.hasOwnProperty('profitless_cat_2')) {
-                                    sum += wells.profitless_cat_2[index]
-                                }
-
-                                if (wells.hasOwnProperty('profitless')) {
-                                    sum += wells.profitless[index]
-                                }
+                                PROFITLESS_PROFITABILITIES.forEach(profitless => {
+                                    if (wells.hasOwnProperty(profitless)) {
+                                        sum += wells[profitless][index]
+                                    }
+                                })
 
                                 return sum
                             })
@@ -269,30 +256,23 @@ export const chartInitMixin = {
                         type: 'area',
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
-                                let sum = value + wells.profitable[index] + pausedWells.profitable[index]
+                                let sum = value
+                                    + wells.profitable[index]
+                                    + pausedWells.profitable[index]
+                                    + pausedWells.profitless_cat_2[index]
 
-                                if (wells.hasOwnProperty('profitless_cat_1')) {
-                                    sum += wells.profitless_cat_1[index]
-                                }
-
-                                if (wells.hasOwnProperty('profitless_cat_2')) {
-                                    sum += wells.profitless_cat_2[index]
-                                }
-
-                                if (pausedWells.hasOwnProperty('profitless_cat_2')) {
-                                    sum += pausedWells.profitless_cat_2[index]
-                                }
+                                PROFITLESS_PROFITABILITIES.forEach(profitless => {
+                                    if (wells.hasOwnProperty(profitless)) {
+                                        sum += wells[profitless][index]
+                                    }
+                                })
 
                                 return sum
                             })
                             : wells[profitability].map((value, index) => {
-                                let sum = value + wells.profitable[index]
-
-                                if (wells.hasOwnProperty('profitless_cat_2')) {
-                                    sum += wells.profitless_cat_2[index]
-                                }
-
-                                return sum
+                                return value
+                                    + wells.profitable[index]
+                                    + wells.profitless_cat_2[index]
                             }),
                         tooltipData: pausedWells
                             ? pausedWells[profitability]
