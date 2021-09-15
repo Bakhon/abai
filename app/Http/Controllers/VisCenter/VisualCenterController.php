@@ -101,12 +101,14 @@ class VisualCenterController extends Controller
       return response()->json($oilRatesData);
     }
 
-    public function getDzoMonthlyPlans() {
-          $dzoMonthlyPlans = dzoPlan::query()
-              ->get()
-              ->toArray();
-          return response()->json($dzoMonthlyPlans);
-        }
+    public function getDzoMonthlyPlans()
+    {
+        $dzoMonthlyPlans = dzoPlan::query()
+            ->whereYear('date',Carbon::now()->year)
+            ->get()
+            ->toArray();
+        return response()->json($dzoMonthlyPlans);
+    }
 
     public function getDzoYearlyPlan() {
         $dzoYearlyPlan = DZOyear::query()
