@@ -49,6 +49,7 @@ class OilDynamic extends Controller
             ->whereYear('date', Carbon::now()->year)
             ->whereMonth('date', $this->monthNumber)
             ->where('dzo_name',$this->dzoName)
+            ->orderBy('date', 'ASC')
             ->get();
     }
 
