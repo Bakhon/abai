@@ -18,4 +18,17 @@
             </div>
         </a>
     </div>
+    <div class="dropdown-menu">
+        <div class="move-menu">
+            <li class="left-menu-li">
+                <a href="{{route('bigdata.wells.index')}}">Формы ввода</a>
+            </li>
+            <li class="left-menu-li">
+                <a href="{{route('bigdata.wells.create')}}">Регистрация скважины</a>
+            </li>
+            <li class="left-menu-li">
+                <a href="{{route('bigdata.well_card')}}">Карточка скважины</a>
+            </li>
+        </div>
+    </div>
 </div>
