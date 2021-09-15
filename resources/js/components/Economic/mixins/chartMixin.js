@@ -220,6 +220,10 @@ export const chartInitMixin = {
                                     sum += wells.profitless_cat_2[index]
                                 }
 
+                                if (wells.hasOwnProperty('profitless')) {
+                                    sum += wells.profitless[index]
+                                }
+
                                 return sum
                             })
                             : wells[profitability],
@@ -243,6 +247,10 @@ export const chartInitMixin = {
 
                                 if (wells.hasOwnProperty('profitless_cat_2')) {
                                     sum += wells.profitless_cat_2[index]
+                                }
+
+                                if (wells.hasOwnProperty('profitless')) {
+                                    sum += wells.profitless[index]
                                 }
 
                                 return sum
