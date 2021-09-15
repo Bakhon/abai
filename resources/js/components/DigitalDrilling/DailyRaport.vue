@@ -1650,7 +1650,7 @@
                             <td colspan="4">CHC I,b/100ft2</td>
                             <td rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.crust')}}</td>
                             <td rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.total_hardness')}}</td>
-                            <td colspan="4">{{trans('digital_drilling.concentration')}}</td>
+                            <td colspan="4">{{trans('digital_drilling.daily_raport.concentration')}}</td>
                         </tr>
                         <tr>
                             <td colspan="2">10 {{trans('digital_drilling.daily_raport.sec')}}</td>
@@ -1804,18 +1804,16 @@
                     <tbody>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.altitude')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.coal')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.angle')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.azimuth')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.three_instruments')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.type_instrument')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.altitude')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.coal')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.angle')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.azimuth')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.three_instruments')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.type_instrument')}}</td>
                         </tr>
                         <tr v-for="i in 20">
-                            <td v-for="i in 10"><input type="text"></td>
+                            <td v-for="i in 8"><input type="text"></td>
                         </tr>
                     </tbody>
                 </table>
