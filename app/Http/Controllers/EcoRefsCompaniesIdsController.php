@@ -105,9 +105,4 @@ class EcoRefsCompaniesIdsController extends Controller
         return redirect()->route('ecorefscompaniesids.index')->with('success',__('app.deleted'));
         //
     }
-
-    public function getData(): array
-    {
-        return EcoRefsCompaniesId::all()->toArray();
-    }
 }
