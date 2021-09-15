@@ -13,7 +13,7 @@ class PlanGDIS extends TableForm
 {
     protected $configurationFileName = 'plan_g_d_i_s';
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
         if (empty($filter->date) || empty($filter->date_to)) {
@@ -28,7 +28,7 @@ class PlanGDIS extends TableForm
             $date->addMonthNoOverflow();
         }
 
-        $rows = $this->fillRows($dates);
+        $rows = $this->getRows($dates);
 
         $mergeColumns = [];
         $columns = [
@@ -68,7 +68,7 @@ class PlanGDIS extends TableForm
         ];
     }
 
-    private function fillRows(array $dates): ?array
+    private function getRows(array $dates): ?array
     {
         $dateTo = end($dates);
         $dateFrom = reset($dates);

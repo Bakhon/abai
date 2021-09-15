@@ -63,7 +63,7 @@ export default {
 
       this.data = []
 
-      const {data} = await this.axios.get(this.localeUrl('module_economy/eco_refs_costs'), {params: this.form})
+      const {data} = await this.axios.get(this.localeUrl('economic/cost/get-data'), {params: this.form})
 
       this.data = [...[this.headers], ...data.data]
 

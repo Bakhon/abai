@@ -29,6 +29,8 @@ abstract class BaseForm
         $this->validator = app()->make(\App\Services\BigData\CustomValidator::class);
     }
 
+    abstract public function getResults(): array;
+
     public function getHistory(int $id, \DateTimeInterface $date = null): array
     {
         if (!$date) {
@@ -218,5 +220,10 @@ abstract class BaseForm
             }
             throw new ParseJsonException(implode('<br>', $errors));
         }
+    }
+
+    public function getFormParamsToEdit(array $params)
+    {
+        return [];
     }
 }

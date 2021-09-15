@@ -42,7 +42,6 @@
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
           :data="res.wellChanges"
-          :selected-wells="selectedWells"
           class="text-white"/>
 
       <table-economic-efficiency
@@ -66,11 +65,20 @@
           :oil-prices="scenarioVariations.oil_prices"
           class="text-white"/>
 
+      <table-chess
+          v-else-if="activeTab === 'chess'"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :oil-prices="scenarioVariations.oil_prices"
+          :wells="res.wellChanges"
+          class="text-white"/>
+
       <table-palette
           v-else-if="activeTab === 'palette'"
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
+          :wells="res.wellChanges"
           class="text-white"/>
 
       <table-well-tree-map
@@ -92,6 +100,7 @@ import TableWellChanges from "./TableWellChanges";
 import TableEconomicEfficiency from "./TableEconomicEfficiency";
 import TablePorcupine from "./TablePorcupine";
 import TableTechnologicalIndicators from "./TableTechnologicalIndicators";
+import TableChess from "./TableChess";
 import TablePalette from "./TablePalette";
 import TableWellTreeMap from "./TableWellTreeMap";
 
@@ -106,6 +115,7 @@ export default {
     TableEconomicEfficiency,
     TablePorcupine,
     TableTechnologicalIndicators,
+    TableChess,
     TablePalette,
     TableWellTreeMap
   },
@@ -125,18 +135,18 @@ export default {
   },
   data: () => ({
     activeTab: 'specific_indicators',
-    selectedWells: []
   }),
   computed: {
     tabs() {
       return {
         specific_indicators: this.trans('economic_reference.specific_indicators'),
+        technological_indicators: this.trans('economic_reference.technological_indicators'),
         technical_economic_indicators: this.trans('economic_reference.technical_economic_indicators'),
         oil_price_options: this.trans('economic_reference.oil_price_options'),
         well_changes: this.trans('economic_reference.table_well_changes'),
-        economic_efficiency: this.trans('economic_reference.economic_efficiency'),
         porcupine: this.trans('economic_reference.table_porcupine'),
-        technological_indicators: this.trans('economic_reference.technological_indicators'),
+        chess: this.trans('economic_reference.table_chess'),
+        economic_efficiency: this.trans('economic_reference.economic_efficiency'),
         palette: this.trans('economic_reference.palette'),
         well_treemap: 'TreeMap',
       }
