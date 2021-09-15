@@ -46,7 +46,7 @@ class Kgm extends Dzo {
 
     protected function getDzoBySummaryOilCondensate($companySummary,$periodType,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type)
     {
-        $summaryByOil = $companySummary;
+        $summaryByOil = $this->getOilCondensateCalculated($companySummary,$periodType);
         $summaryByCondensate = $this->getCondensateCalculated($companySummary,$filteredYearlyPlan,$filteredPlan,$daysInMonth,$type,$periodType);
         $summary = array();
         array_push($summary,$summaryByCondensate);

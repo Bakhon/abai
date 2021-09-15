@@ -76,7 +76,8 @@ export default {
                     'id': '1.2.'
                 }
             },
-            companiesWithData: []
+            companiesWithData: [],
+            exceptionDzo: ['КГМКМГ','ТП','ПККР']
         }
     },
     methods: {
@@ -100,9 +101,9 @@ export default {
             return response.data;
         },
         updateSummaryFact(productionName,deliveryName) {
-            this.summary.oilProductionFact = _.sumBy(this.productionParams.tableData.current[productionName],'fact');
+            this.summary.oilProductionFact = this.getSummaryFact(this.productionParams.tableData.current[productionName],'fact');
             this.summary.oilProductionPlan = _.sumBy(this.productionParams.tableData.current[productionName],'plan');
-            this.summary.oilDeliveryFact = _.sumBy(this.productionParams.tableData.current[deliveryName],'fact');
+            this.summary.oilDeliveryFact = this.getSummaryFact(this.productionParams.tableData.current[deliveryName],'fact');
             this.summary.oilDeliveryPlan = _.sumBy(this.productionParams.tableData.current[deliveryName],'plan');
             this.summary.gasProductionFact = _.sumBy(this.productionParams.tableData.current['gasProduction'],'fact');
             this.summary.gasProductionPlan = _.sumBy(this.productionParams.tableData.current['gasProduction'],'plan');
@@ -113,6 +114,17 @@ export default {
         getProgress(fact,plan) {
             return (fact / plan) * 100;
         },
+
+        getSummaryFact(data,fieldName) {
+            let summary = 0;
+            _.forEach(data, (item) => {
+                if (!this.exceptionDzo.includes(item.name)) {
+                    summary += item[fieldName];
+                }
+            });
+            return summary;
+        },
+
         async switchView(view) {
             this.SET_LOADING(true);
             this.buttonDailyTab = "";
@@ -271,13 +283,13 @@ export default {
             return _.sumBy(this.productionData, 'monthlyPlan');
         },
         summaryFact() {
-            return _.sumBy(this.productionData, 'fact');
+            return this.getSummaryFact(this.productionData,'fact');
         },
         summaryPlan() {
-            return _.sumBy(this.productionData, 'plan');
+            return this.getSummaryFact(this.productionData,'plan');
         },
         summaryOpek() {
-            return _.sumBy(this.productionData, 'opek');
+            return this.getSummaryFact(this.productionData,'opek');
         },
         summaryDifference() {
             return _.sumBy(this.productionData, 'plan') - _.sumBy(this.productionData, 'fact');
