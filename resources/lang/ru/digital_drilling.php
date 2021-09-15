@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'module_title'=> 'Цифровое бурение',
   'database' => 'База данных',
   'general_information' => 'Общая информация',
   'well_data_sheet' => 'Паспорт скважины',
