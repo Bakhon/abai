@@ -154,7 +154,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         $this->calculate($pipes);
     }
 
-    public function getPipes ()
+    public function getPipes()
     {
         $query = ManualOilPipe::query()
             ->with('firstCoords', 'lastCoords');
@@ -177,7 +177,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         return $query->get();
     }
 
-    public function calculate ($pipes)
+    public function calculate($pipes)
     {
         $calcUrl = $this->getUrl($pipes);
 
@@ -279,7 +279,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
     {
         foreach ($data as $key => $row) {
             if (!ctype_digit($row[self::PIPE_OR_SEGMENT])) {
-                $points = explode(" - ",$row[self::PIPE_OR_SEGMENT]);
+                $points = explode(" - ", $row[self::PIPE_OR_SEGMENT]);
                 $pipe = ManualOilPipe::where('start_point', $points[0])
                     ->where('end_point', $points[1])
                     ->first();
@@ -288,7 +288,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             }
 
             if ($pipe) {
-                $points = explode(" - ",$data[$key - 1][self::PIPE_OR_SEGMENT]);
+                $points = explode(" - ", $data[$key - 1][self::PIPE_OR_SEGMENT]);
                 $message = trans('monitoring.calculate_messages.no_such_pipe',
                     [
                         'start_point' => $points[0],
