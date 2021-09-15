@@ -19,6 +19,9 @@
             currentSubsoilField[0] ? currentSubsoilField[0].field_name : ''
           "
           dropKey="field_name"
+          :parentShortName="
+            currentSubsoil[0] ? currentSubsoil[0].owner_short_name : ''
+          "
           @dropdown-select="updateCurrentSubsoilField"
         />
       </div>

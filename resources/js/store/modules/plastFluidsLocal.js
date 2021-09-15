@@ -1,5 +1,6 @@
 import translation from "../../VueTranslation/Translation";
 import { getTemplateData } from "../../components/PlastFluids/services/templateService";
+import { getTableGraphData } from "../../components/PlastFluids/services/graphService";
 
 const plastFluidsLocal = {
   namespaced: true,
@@ -54,6 +55,23 @@ const plastFluidsLocal = {
       commit("SET_CURRENT_TEMPLATE", state.currentTemplate);
       commit("SET_TABLE_FIELDS", data.columns_name);
       commit("SET_TABLE_ROWS", data.rows);
+    },
+    async handleTableGraphData({ commit, state }, dataToPost) {
+      const postDataMock = {
+        horizons: "None",
+        blocks: "None",
+        vid_fluid: "None",
+        data_start: "None",
+        data_end: "None",
+      };
+      let merged = { ...postDataMock, ...dataToPost };
+      const postData = new FormData();
+      for (let key in merged) {
+        postData.append(key, merged[key]);
+      }
+      const data = await getTableGraphData(postData);
+      commit("SET_TABLE_FIELDS", data[0].table_header);
+      commit("SET_TABLE_ROWS", data.slice(1));
     },
   },
 };

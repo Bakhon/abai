@@ -1,16 +1,19 @@
 <template>
   <div class="data-analysis-header-and-content">
     <DataAnalysisHeader />
+    <DataAnalysisContent />
   </div>
 </template>
 
 <script>
 import DataAnalysisHeader from "./DataAnalysisHeader.vue";
+import DataAnalysisContent from "./DataAnalysisContent.vue";
 
 export default {
   name: "DataAnalysisHeaderAndContent",
   components: {
     DataAnalysisHeader,
+    DataAnalysisContent,
   },
 };
 </script>

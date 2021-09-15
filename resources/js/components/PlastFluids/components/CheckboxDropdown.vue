@@ -1,69 +1,51 @@
 <template>
-  <div class="dropdown">
+  <div class="checkbox-dropdown">
     <button @click.stop="isOpen = !isOpen">
-      <span>{{ selectedValue || placeholder }}</span>
+      <span>{{ placeholder }}</span>
       <img src="/img/PlastFluids/backArrow.svg" />
     </button>
     <div v-show="isOpen" v-click-outside="closeDropdown">
-      <button
-        @click="handleSelect(item)"
-        v-for="item in items"
-        :key="item[dropKey]"
-      >
-        {{
-          isParentShortNameExist
-            ? item[dropKey] + " - " + parentShortName
-            : item[dropKey]
-        }}
-      </button>
+      <div v-for="item in items" :key="item[dropKey]">
+        <input
+          type="checkbox"
+          :value="item"
+          v-model="selectedItems"
+          @click="handleSelect"
+          :id="item[dropKey]"
+        />
+        <label :for="item[dropKey]">{{ item[dropKey] }}</label>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Dropdown",
+  name: "CheckboxDropdown",
   props: {
     items: Array,
     placeholder: String,
     dropKey: String,
-    parentShortName: String,
-    selectedValue: {
-      type: String,
-      default: null,
-    },
   },
   data() {
     return {
       isOpen: false,
+      selectedItems: [],
     };
-  },
-  computed: {
-    isParentShortNameExist() {
-      return this.parentShortName && this.parentShortName !== "Unknown";
-    },
   },
   methods: {
     closeDropdown() {
       this.isOpen = false;
     },
-    handleSelect(item) {
-      this.closeDropdown();
-      this.$emit("dropdown-select", item);
+    handleSelect() {
+      this.$emit("dropdown-select", this.selectedItems);
     },
   },
 };
 </script>
 
 <style scoped>
-button {
-  background-color: inherit;
-  color: inherit;
-  border: none;
-  padding: 7px 14px;
-}
-
-.dropdown {
+.checkbox-dropdown {
   display: flex;
   width: 100%;
   height: 30px;
@@ -74,20 +56,24 @@ button {
   margin-bottom: 6px;
 }
 
-.dropdown > button {
+.checkbox-dropdown > button {
   width: 100%;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: inherit;
+  color: inherit;
+  border: none;
+  padding: 7px 14px;
 }
 
-.dropdown > button > img {
+.checkbox-dropdown > button > img {
   transform: rotate(270deg);
   width: 16px;
 }
 
-.dropdown > div {
+.checkbox-dropdown > div {
   background: #1f2142;
   color: #fff;
   position: absolute;
@@ -97,5 +83,13 @@ button {
   top: calc(100% + 2px);
   left: 0;
   z-index: 2;
+}
+
+.checkbox-dropdown > div > div {
+  padding: 7px 14px;
+}
+
+label {
+  margin: 0;
 }
 </style>

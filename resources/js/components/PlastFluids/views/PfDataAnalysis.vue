@@ -31,7 +31,8 @@ export default {
   provide() {
     return {
       headingKey: this.url[1],
-    }
+      reservoilOilInfo: this.url.length > 2 ? [this.url[2], this.url[3]] : "",
+    };
   },
   computed: {
     url() {

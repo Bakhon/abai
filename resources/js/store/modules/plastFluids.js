@@ -4,7 +4,7 @@ const plastFluids = {
   namespaced: true,
 
   state: {
-    currentSubsoilHorizon: "",
+    currentSubsoilHorizon: [],
     currentSubsoilField: [],
     currentSubsoil: [],
     subsoils: [],
@@ -38,13 +38,13 @@ const plastFluids = {
     UPDATE_CURRENT_SUBSOIL({ commit }, value) {
       commit("SET_CURRENT_SUBSOIL", value);
       commit("SET_CURRENT_SUBSOIL_FIELD", {});
-      commit("SET_CURRENT_SUBSOIL_HORIZON", "");
+      commit("SET_CURRENT_SUBSOIL_HORIZON", []);
       commit("SET_SUBSOIL_FIELDS", value.fields);
       commit("SET_SUBSOIL_HORIZONS", []);
     },
     UPDATE_CURRENT_SUBSOIL_FIELD({ commit }, value) {
       commit("SET_CURRENT_SUBSOIL_FIELD", value);
-      commit("SET_CURRENT_SUBSOIL_HORIZON", "");
+      commit("SET_CURRENT_SUBSOIL_HORIZON", []);
       commit("SET_SUBSOIL_HORIZONS", value?.horizons ?? []);
     },
   },

@@ -34,7 +34,7 @@ export default {
           localeName: "data_upload",
         },
         {
-          url: "pf-data-analysis/pressure-and-temperature",
+          url: "pf-data-analysis",
           localeName: "data_analysis",
         },
         {
@@ -47,12 +47,18 @@ export default {
   },
   methods: {
     routeTo(url) {
-      const { reload, pathname, origin } = location;
+      const { pathname, origin } = location;
       if (this.localeUrl(url) === pathname) {
-        reload();
+        location.reload();
         return;
       }
-      location.href = origin + this.localeUrl(url);
+      location.href =
+        origin +
+        this.localeUrl(
+          url === "/pf-data-analysis"
+            ? "pf-data-analysis/pressure-and-temperature"
+            : url
+        );
     },
     goToMainPage() {
       location.href = location.origin + this.localeUrl("/pf");

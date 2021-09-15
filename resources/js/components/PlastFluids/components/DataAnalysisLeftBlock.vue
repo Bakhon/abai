@@ -20,15 +20,18 @@
           currentSubsoilField[0] ? currentSubsoilField[0].field_name : ''
         "
         dropKey="field_name"
+        :parentShortName="
+          currentSubsoil[0] ? currentSubsoil[0].owner_short_name : ''
+        "
         @dropdown-select="updateCurrentSubsoilField"
       />
-      <Dropdown
+      <CheckboxDropdown
         :items="subsoilHorizons"
         :placeholder="trans('plast_fluids.horizon')"
-        :selectedValue="currentSubsoilHorizon ? currentSubsoilHorizon : ''"
         dropKey="horizon_name"
         @dropdown-select="updateCurrentHorizon"
       />
+      <Dropdown :placeholder="trans('plast_fluids.block')" />
       <Dropdown :placeholder="trans('plast_fluids.wells')" />
     </div>
   </div>
@@ -37,17 +40,20 @@
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
 import Dropdown from "./Dropdown.vue";
+import CheckboxDropdown from "./CheckboxDropdown.vue";
 
 export default {
-  name: "DataAnalysisLeftPanel",
+  name: "DataAnalysisLeftBlock",
   components: {
     Dropdown,
+    CheckboxDropdown,
   },
   data() {
     return {};
   },
   computed: {
     ...mapState("plastFluids", [
+      "currentSubsoil",
       "subsoilFields",
       "currentSubsoilField",
       "subsoilHorizons",
@@ -55,15 +61,18 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions("plastFluidsLocal", ["handleTableData"]),
+    ...mapActions("plastFluidsLocal", [
+      "handleTableData",
+      "handleTableGraphData",
+    ]),
     ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL_FIELD"]),
     ...mapMutations("plastFluids", ["SET_CURRENT_SUBSOIL_HORIZON"]),
     updateCurrentSubsoilField(value) {
       this.UPDATE_CURRENT_SUBSOIL_FIELD(value);
-      this.handleTableData(value.field_id);
+      this.handleTableGraphData({ field_id: value.field_id });
     },
     updateCurrentHorizon(value) {
-      this.SET_CURRENT_SUBSOIL_HORIZON(value.horizon_name);
+      this.SET_CURRENT_SUBSOIL_HORIZON(value);
     },
   },
 };

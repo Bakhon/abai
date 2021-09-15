@@ -50,4 +50,11 @@ return array (
   'close' => 'Закрыть',
   'downloading_data' => 'Выгрузка данных',
   'create_template' => 'Создать шаблон',
+  'choose_section' => 'Выбор раздела',
+  'block' => 'Блок',
+  'exponential' => 'Экспоненциальная',
+  'linear' => 'Линейная',
+  'logarithmic' => 'Логарифмическая',
+  'polynomial' => 'Полиномиальная',
+  'power' => 'Степенная',
 );

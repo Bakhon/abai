@@ -14,19 +14,23 @@
         v-show="checkedField[0].field_name == field.field_name"
         v-if="hasChild"
       >
-        <div
-          v-for="horizon in checkedField[0].horizons"
-          :key="horizon.horizon_id"
-          class="subsoil-horizons"
-        >
-          <input
-            type="radio"
-            :id="horizon.horizon_name"
-            :value="horizon.horizon_name"
-            v-model="pickedSubsoilHorizon"
-          />
-          <label :for="horizon.horizon_name">{{ horizon.horizon_name }}</label>
-        </div>
+        <template v-for="horizon in checkedField[0].horizons">
+          <div
+            v-if="horizon.horizon_name"
+            :key="horizon.horizon_id"
+            class="subsoil-horizons"
+          >
+            <input
+              type="checkbox"
+              :id="horizon.horizon_name"
+              :value="horizon"
+              v-model="checkedSubsoilHorizon"
+            />
+            <label :for="horizon.horizon_name">{{
+              horizon.horizon_name
+            }}</label>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -58,7 +62,7 @@ export default {
         this.checkedField[0]?.horizons && this.checkedField[0]?.horizons.length
       );
     },
-    pickedSubsoilHorizon: {
+    checkedSubsoilHorizon: {
       get() {
         return this.currentSubsoilHorizon;
       },
@@ -72,9 +76,7 @@ export default {
       "SET_CURRENT_SUBSOIL_HORIZON",
       "SET_SUBSOIL_FIELDS",
     ]),
-    ...mapActions("plastFluids", [
-      "UPDATE_CURRENT_SUBSOIL_FIELD",
-    ]),
+    ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL_FIELD"]),
   },
   beforeDestroy() {
     this.UPDATE_CURRENT_SUBSOIL_FIELD({});
