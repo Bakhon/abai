@@ -94,7 +94,7 @@
               </div>
             </div>
           </div>
-          <div class="block-header p-2 text-center calc-button mt-4" @click="postTreeData(treeData)">
+          <div class="block-header p-2 text-center calc-button mt-4" @click="closeModal('modalPeriod')">
             {{ trans("paegtm.calc") }}
           </div>
         </div>
