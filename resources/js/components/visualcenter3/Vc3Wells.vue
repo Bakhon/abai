@@ -41,6 +41,7 @@ export default {
             if (!this.chartData) {
                 return {};
             }
+            console.log(this.chartData);
 
             return {
                 grid: {
@@ -72,7 +73,7 @@ export default {
                     inverseOrder: false,
                     custom: undefined,
                     fillSeriesColor: false,
-                    theme: false,
+                    theme: 'dark',
                     y: {
                         formatter: function (value) {
                             if (value) {
@@ -82,7 +83,6 @@ export default {
                         },
                     },
                 },
-                colors: ["#4A90E2", "#0080FF", "#F5FCFF"],
                 chart: {
                     type: this.chartType,
                     stacked: false,
@@ -90,14 +90,12 @@ export default {
                     defaultLocale: "ru",
                     toolbar: {
                         show: false,
-                        Color: "#373d3f",
                     },
                     foreColor: "#FFFFFF",
                 },
                 stroke: {
                     show: true,
                     width: 2,
-                    colors: ['transparent']
                 },
                 plotOptions: {
                     bar: {
@@ -148,13 +146,7 @@ export default {
                     },
                     labels: {
                         formatter: function (val) {
-                            return moment(val).format("DD / MMM / YYYY");
-                        },
-                        type: datetime,
-                        datetimeFormatter: {
-                            day: "dd MMM yy",
-                            month: "dd MMM yy",
-                            year: "yy",
+                            return moment(val,'DD.MM.YYYY').format('DD/MMM/YYYY');
                         },
                     },
                     position: "bottom",
@@ -175,11 +167,7 @@ export default {
                     {
                         name: this.trans("visualcenter.Fact"),
                         data: this.chartData.series.fact,
-                    },
-                    {
-                        name: this.trans("visualcenter.Plan"),
-                        data: this.chartData.series.plan,
-                    },
+                    }
                 ];
             }
         },

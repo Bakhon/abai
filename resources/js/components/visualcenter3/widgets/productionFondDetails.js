@@ -218,9 +218,10 @@ export default {
         },
 
         getProductionFondWidgetChartData(compared) {
-            let groupedForChart =  _.groupBy(compared, item => {
-                return moment(item.date).startOf('day').format("MM.DD.YYYY");
-            });
+            let sorted = _.sortBy(compared,'date','asc');
+            let groupedForChart =  _.groupBy(sorted, item => {
+                return moment(item.date).startOf('day').format("DD.MM.YYYY");
+            })
             let chartData = {};
             if (groupedForChart) {
                 for (let i in groupedForChart) {
@@ -281,6 +282,15 @@ export default {
                 fact: []
             }
             let labels = []
+            if (this.productionFondChartData.length > 0) {
+                let productionFond = this.productionFondChartData
+                    .map(x => Object.entries(x)[0])
+                    .sort((a, b) => b[1].id - a[1].id)
+                    .map(x => x[0]);
+                console.log('productionFond');
+                console.log(productionFond);
+            }
+
             for (let i in this.productionFondChartData) {
                 series.fact.push(Math.round(this.productionFondChartData[i][this.productionFondSelectedRow]));
                 labels.push(i);
