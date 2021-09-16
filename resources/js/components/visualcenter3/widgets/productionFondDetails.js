@@ -282,15 +282,6 @@ export default {
                 fact: []
             }
             let labels = []
-            if (this.productionFondChartData.length > 0) {
-                let productionFond = this.productionFondChartData
-                    .map(x => Object.entries(x)[0])
-                    .sort((a, b) => b[1].id - a[1].id)
-                    .map(x => x[0]);
-                console.log('productionFond');
-                console.log(productionFond);
-            }
-
             for (let i in this.productionFondChartData) {
                 series.fact.push(Math.round(this.productionFondChartData[i][this.productionFondSelectedRow]));
                 labels.push(i);
