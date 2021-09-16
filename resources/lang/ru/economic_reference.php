@@ -275,4 +275,5 @@ return array (
   'production_program_at_oil_price' => 'Производственная программа при цене на нефть',
   'name_short' => 'Сокращённое название',
   'select_user' => 'Выберите пользователя',
+  'select_log' => 'Выберите лог',
 );

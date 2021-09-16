@@ -9,8 +9,9 @@
 
         <a :href="localeUrl('/economic/gtm/upload-excel')"
            target="_blank"
-           class="text-decoration-none">
-          <i class="fas fa-external-link-alt text-primary"></i>
+           class="text-decoration-none text-primary">
+          {{ trans('economic_reference.upload') }}
+          <i class="fas fa-external-link-alt text-primary ml-1"></i>
         </a>
       </div>
 
@@ -26,8 +27,9 @@
 
         <a :href="localeUrl('/economic/gtm/upload-excel?is_technical=1')"
            target="_blank"
-           class="text-decoration-none">
-          <i class="fas fa-external-link-alt text-primary"></i>
+           class="text-decoration-none text-primary">
+          {{ trans('economic_reference.upload') }}
+          <i class="fas fa-external-link-alt text-primary ml-1"></i>
         </a>
       </div>
 

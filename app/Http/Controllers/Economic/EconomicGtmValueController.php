@@ -36,6 +36,10 @@ class EconomicGtmValueController extends Controller
             $query->whereAuthorId($request->author_id);
         }
 
+        if ($request->log_id) {
+            $query->whereLogId($request->log_id);
+        }
+
         $data = $query
             ->with(['company', 'gtm'])
             ->latest('id')

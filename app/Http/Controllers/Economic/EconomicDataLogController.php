@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Economic;
 
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Economic\Log\EconomicLogIndexRequest;
+use App\Http\Requests\Economic\Log\EconomicDataLogRequest;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EconomicDataLog;
 use App\Models\Refs\EconomicDataLogType;
@@ -18,7 +18,7 @@ class EconomicDataLogController extends Controller
 {
     const PAGINATION = 10;
 
-    public function index(EconomicLogIndexRequest $request): View
+    public function index(EconomicDataLogRequest $request): View
     {
         $query = EconomicDataLog::query();
 
@@ -55,5 +55,23 @@ class EconomicDataLogController extends Controller
         return redirect()
             ->back()
             ->with('success', __('app.deleted'));
+    }
+
+    public function getData(EconomicDataLogRequest $request): array
+    {
+        $query = EconomicDataLog::query();
+
+        if ($request->type_id) {
+            $query->whereTypeId($request->type_id);
+        }
+
+        if ($request->author_id) {
+            $query->whereAuthorId($request->author_id);
+        }
+
+        return $query
+            ->latest('id')
+            ->get()
+            ->toArray();
     }
 }

@@ -84,12 +84,16 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                 ]);
         });
 
-        Route::resource('log', 'EconomicDataLogController')
-            ->only(['index', 'destroy'])
-            ->names([
-                'index' => 'economic.log.index',
-                'destroy' => 'economic.log.destroy',
-            ]);
+        Route::group([], function () {
+            Route::get('log/get-data', 'EconomicDataLogController@getData');
+
+            Route::resource('log', 'EconomicDataLogController')
+                ->only(['index', 'destroy'])
+                ->names([
+                    'index' => 'economic.log.index',
+                    'destroy' => 'economic.log.destroy',
+                ]);
+        });
 
         Route::group(['prefix' => 'technical', 'namespace' => 'Technical'], function () {
             Route::get('list', 'TechnicalListController')

@@ -1,21 +1,15 @@
 <template>
   <div>
-    <select
-        v-model="form.author_id"
-        class="form-control"
-        @change="getData()"
-    >
-      <option :value="null" disabled selected>
-        {{ trans('economic_reference.select_user') }}
-      </option>
+    <select-author
+        :form="form"
+        :url="localeUrl('/economic/gtm_value/get-authors')"/>
 
-      <option
-          v-for="author in authors"
-          :key="author.id"
-          :value="author.id">
-        {{ author.name }}
-      </option>
-    </select>
+    <select-log
+        v-if="form.author_id"
+        :form="form"
+        :fetch-params="{author_id: form.author_id, type_id: EconomicDataLogTypeModel.GTM_VALUE}"
+        class="mt-3"
+        @change="getData()"/>
 
     <vue-table-dynamic
         ref="table"
@@ -31,23 +25,27 @@
 <script>
 import {globalloadingMutations} from '@store/helpers';
 
-import DeleteButton from "../components/DeleteButton";
+import SelectAuthor from "./SelectAuthor";
+import SelectLog from "./SelectLog";
+import DeleteButton from "./DeleteButton";
+
+import {EconomicDataLogTypeModel} from "../models/EconomicDataLogTypeModel";
 
 export default {
   name: "GtmValueTable",
   components: {
+    SelectAuthor,
+    SelectLog,
     DeleteButton
   },
   data: () => ({
+    EconomicDataLogTypeModel,
     data: [],
-    authors: [],
     form: {
-      author_id: null
+      author_id: null,
+      log_id: null
     }
   }),
-  created() {
-    this.getAuthors()
-  },
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
 
@@ -58,20 +56,6 @@ export default {
         const {data} = await this.axios.get(this.localeUrl('/economic/gtm_value/get-data'))
 
         this.data = [...[this.headers], ...data.data]
-      } catch (e) {
-        console.log(e)
-      }
-
-      this.SET_LOADING(false);
-    },
-
-    async getAuthors() {
-      this.SET_LOADING(true);
-
-      try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/gtm_value/get-authors'))
-
-        this.authors = data
       } catch (e) {
         console.log(e)
       }

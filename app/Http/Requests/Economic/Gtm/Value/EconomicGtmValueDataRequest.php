@@ -10,7 +10,9 @@ class EconomicGtmValueDataRequest extends FormRequest
     {
         return [
             'company_id' => 'nullable|integer|min:1',
+            'author_id' => 'nullable|integer|min:1',
             'gtm_id' => 'nullable|integer|min:1',
+            'log_id' => 'nullable|integer|min:1',
         ];
     }
 }

@@ -6,7 +6,7 @@ use App\Models\Refs\EconomicDataLogType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class EconomicLogIndexRequest extends FormRequest
+class EconomicDataLogRequest extends FormRequest
 {
     public function rules()
     {
@@ -15,7 +15,8 @@ class EconomicLogIndexRequest extends FormRequest
                 'nullable',
                 'integer',
                 Rule::in(EconomicDataLogType::ids())
-            ]
+            ],
+            'author_id' => 'nullable|integer|min:1'
         ];
     }
 }
