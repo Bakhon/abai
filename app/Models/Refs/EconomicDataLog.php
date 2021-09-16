@@ -8,7 +8,8 @@ class EconomicDataLog extends Model
 {
     protected $fillable = [
         'author_id',
-        'type_id'
+        'type_id',
+        'name'
     ];
 
     public function author()

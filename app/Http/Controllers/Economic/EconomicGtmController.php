@@ -68,7 +68,12 @@ class EconomicGtmController extends Controller
     public function importExcel(EconomicGtmImportExcelRequest $request): RedirectResponse
     {
         DB::transaction(function () use ($request) {
-            $import = new EconomicGtmImport(auth()->id());
+            $fileName = pathinfo(
+                $request->file->getClientOriginalName(),
+                PATHINFO_FILENAME
+            );
+
+            $import = new EconomicGtmImport(auth()->id(), $fileName);
 
             Excel::import($import, $request->file);
         });

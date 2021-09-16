@@ -34,13 +34,14 @@ class EconomicGtmValueImport implements ToModel, WithBatchInserts, WithChunkRead
         'comment' => 6,
     ];
 
-    function __construct(int $userId)
+    function __construct(int $userId, string $fileName)
     {
         $this->userId = $userId;
 
         $this->logId = EconomicDataLog::create([
             'author_id' => $userId,
-            'type_id' => EconomicDataLogType::GTM_VALUE
+            'name' => $fileName,
+            'type_id' => EconomicDataLogType::GTM_VALUE,
         ])->id;
     }
 
