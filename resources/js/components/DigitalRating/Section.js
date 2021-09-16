@@ -6,6 +6,7 @@ import BtnDropdown from "./components/BtnDropdown";
 import SettingModal from "./components/SettingModal";
 import WellAtlasModal from "./components/WellAtlasModal";
 import Accordion from "./components/Accordion";
+import SearchFormRefresh from "../ui-kit/SearchFormRefresh";
 import mainMenu from "../GTM/mock-data/main_menu.json";
 import { legends, maps, properties, objects, fileActions, mapActions } from './json/data';
 import { digitalRatingState, digitalRatingMutations } from '@store/helpers';
@@ -18,6 +19,7 @@ export default {
         SettingModal,
         WellAtlasModal,
         Accordion,
+        SearchFormRefresh
     },
 
     data() {
@@ -39,6 +41,7 @@ export default {
             minZoom: -6,
             maxZoom: 0,
             renderer: L.canvas({ padding: 0.5 }),
+            searchSector: '',
         };
     },
 
@@ -61,6 +64,7 @@ export default {
                 minZoom: this.minZoom,
                 maxZoom: this.maxZoom,
             });
+
             L.control.zoom({
                 position: 'bottomright'
             }).addTo(this.map);
@@ -91,7 +95,6 @@ export default {
                     this.onMapClick(maps[i]['sector']);
                 })
             }
-            this.initChartOnMap();
         },
 
         initWellOnMap() {
@@ -172,6 +175,13 @@ export default {
                     await this.initSectorOnMap();
                 }, 0);
             }
+        },
+        onSearchSector() {
+            this.map.eachLayer(function(layer) {
+                if (layer?._popup?._content === this.searchSector?.toString()) {
+                    layer.openPopup();
+                }
+            }, this);
         }
     },
 }

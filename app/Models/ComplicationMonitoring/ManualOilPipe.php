@@ -59,7 +59,7 @@ class ManualOilPipe extends Model
 
     public function hydroCalc()
     {
-        return $this->hasOne(HydroCalcResult::class, 'oil_pipe_id');
+        return $this->belongsTo(ManualHydroCalcResult::class, 'oil_pipe_id');
     }
 
     public function reverseCalc()
@@ -83,14 +83,14 @@ class ManualOilPipe extends Model
 
     public function lastHydroCalc()
     {
-        return $this->belongsTo(HydroCalcResult::class, 'oil_pipe_id');
+        return $this->belongsTo(ManualHydroCalcResult::class);
     }
 
     public function scopeWithLastHydroCalc($query)
     {
         $query->addSelect(
             [
-                'last_hydro_calc_id' => HydroCalcResult::select('id')
+                'last_hydro_calc_id' => ManualHydroCalcResult::select('id')
                     ->whereColumn('oil_pipe_id', 'manual_oil_pipes.id')
                     ->orderBy('date', 'desc')
                     ->take(1)

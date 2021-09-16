@@ -6,7 +6,7 @@
 
     <div class="mt-3 text-center border-grey">
       <div class="d-flex bg-header font-weight-600">
-        <div class="py-3 border-grey d-flex align-items-center justify-content-center flex-300px">
+        <div class="py-3 border-grey d-flex align-items-center justify-content-center flex-350px">
           {{ trans('economic_reference.course') }}
           {{ (+scenario.dollar_rate).toLocaleString() }}
           {{ trans('economic_reference.tenge') }} / $
@@ -32,47 +32,25 @@
         </div>
       </div>
 
-      <div v-for="(item, index) in tableData"
+      <div v-for="(row, index) in tableData"
            :key="index"
            :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
-           :style="item.color ? `color: ${item.color}` : ''"
+           :style="row.color ? `color: ${row.color}` : ''"
            class="d-flex">
-        <div class="px-3 py-2 border-grey text-center flex-300px">
-          {{ item.title }}
+        <div :style="row.bgColor ? `background: ${row.bgColor}` : ''"
+             class="px-3 py-2 border-grey text-center flex-350px">
+          {{ row.title }}
         </div>
 
         <div class="px-3 py-2 border-grey text-center flex-150px">
-          {{ item.pp2020 }}
+          {{ row.pp2020 }}
         </div>
 
-        <div v-for="(price, priceIndex) in reverseOilPrices"
-             :key="price"
-             :style="`flex-basis: ${100 / reverseOilPrices.length}%`"
+        <div v-for="(column, columnIndex) in row.columns"
+             :key="`${index}_${columnIndex}`"
+             :style="`flex-basis: ${100 / row.columns.length}%; background: ${column.color}`"
              class="px-3 py-2 border-grey text-center flex-grow-1">
-          {{ item.values[priceIndex].toLocaleString() }}
-        </div>
-      </div>
-
-      <div v-for="(oilPrice, index) in reverseOilPrices"
-           :key="index"
-           :class="index % 2 === 0 ? 'bg-header-light' : 'bg-header'"
-           class="d-flex">
-        <div class="px-3 py-2 border-grey text-center flex-300px">
-          {{ (+oilPrice).toLocaleString() }}
-          {{ trans('economic_reference.dollar_per_bar') }}
-        </div>
-
-        <div
-            :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
-            class="px-3 py-2 border-grey text-center flex-150px">
-        </div>
-
-        <div v-for="(price, priceIndex) in reverseOilPrices"
-             :key="price"
-             :style="`flex-basis: ${100 / reverseOilPrices.length}%`"
-             :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
-             class="px-3 py-2 border-grey text-center flex-grow-1">
-
+          {{ column.value.toLocaleString() }}
         </div>
       </div>
     </div>
@@ -81,6 +59,8 @@
 
 <script>
 import Subtitle from "./Subtitle";
+
+import {paletteMixin} from "../mixins/paletteMixin";
 
 const ROMANS = {
   M: 1000,
@@ -103,20 +83,7 @@ export default {
   components: {
     Subtitle
   },
-  props: {
-    scenarios: {
-      required: true,
-      type: Array
-    },
-    scenario: {
-      required: true,
-      type: Object
-    },
-    oilPrices: {
-      required: true,
-      type: Array,
-    },
-  },
+  mixins: [paletteMixin],
   methods: {
     convertToRoman(value) {
       let str = '';
@@ -130,65 +97,76 @@ export default {
       }
 
       return str
-    }
+    },
+
+    getColorOperatingProfit(scenarioIndex, currentIndex, operatingProfit) {
+      if (scenarioIndex === currentIndex) {
+        return '#374AB4'
+      }
+
+      if (currentIndex - scenarioIndex > 0) {
+        return scenarioIndex % 2 === 0 ? '#377B74' : '#31906F'
+      }
+
+      return scenarioIndex % 2 === 0 ? '#106B4B' : '#21615B'
+    },
   },
   computed: {
-    reverseOilPrices() {
-      return [...this.oilPrices].reverse()
-    },
-
-    filteredData() {
-      let scenarios = this.scenarios.filter(scenario =>
-          scenario.dollar_rate === this.scenario.dollar_rate &&
-          scenario.coef_cost_WR_payroll === this.scenario.coef_cost_WR_payroll &&
-          scenario.coef_Fixed_nopayroll === this.scenario.coef_Fixed_nopayroll
-      )
-
-      return this.reverseOilPrices.map(oilPrice => {
-        return scenarios
-            .filter(scenario => scenario.oil_price === oilPrice)
-            .reduce((prev, current) => (+prev.Operating_profit_scenario > +current.Operating_profit_scenario) ? prev : current)
-      })
-    },
-
     tableData() {
       return [
-        {
-          title: this.trans('economic_reference.program_number'),
-          pp2020: '',
-          values: this.filteredData.map((item, index) => this.convertToRoman(index + 1)),
-          color: '#81B9FE'
-        },
-        {
-          title: `${this.trans('economic_reference.production')}, ${this.trans('economic_reference.thousand_tons')}`,
-          pp2020: '',
-          values: this.filteredData.map(item =>
-              +(+item.oil.original_value_optimized / 1000).toFixed(2)
-          )
-        },
-        {
-          title: this.trans('economic_reference.stop_nrs'),
-          pp2020: '',
-          values: this.filteredData.map(item => {
-            let cat1 = +item.uwi_count_profitless_cat_1.original_value_optimized
+        ...[
+          {
+            title: this.trans('economic_reference.program_number'),
+            pp2020: '',
+            columns: this.scenariosByOilPrice.map((item, index) => {
+              return {
+                value: this.convertToRoman(index + 1)
+              }
+            }),
+            color: '#81B9FE'
+          },
+          {
+            title: `${this.trans('economic_reference.production')}, ${this.trans('economic_reference.thousand_tons')}`,
+            pp2020: '',
+            columns: this.scenariosByOilPrice.map(item => {
+              return {
+                value: +(+item.oil.original_value_optimized / 1000).toFixed(2)
+              }
+            })
+          },
+          {
+            title: this.trans('economic_reference.stop_nrs'),
+            pp2020: '',
+            columns: this.scenariosByOilPrice.map(item => {
+              let cat1 = +item.uwi_count_profitless_cat_1.original_value_optimized
 
-            let cat2 = +item.uwi_count_profitless_cat_2.original_value_optimized
+              let cat2 = +item.uwi_count_profitless_cat_2.original_value_optimized
 
-            return cat1 + cat2
-          })
-        },
-        {
-          title: `${this.trans('economic_reference.personnel_costs_payroll')}, ${this.trans('economic_reference.million_tenge')}`,
-          pp2020: '',
-          values: this.filteredData.map(item =>
-              +(+item.Fixed_noWRpayroll_expenditures.original_value_optimized / 1000000).toFixed(2)
-          )
-        },
-        {
-          title: `${this.trans('economic_reference.kvl')}, ${this.trans('economic_reference.million_tenge')}`,
-          pp2020: '',
-          values: this.filteredData.map(item => '')
-        },
+              return {
+                value: cat1 + cat2
+              }
+            })
+          },
+          {
+            title: `${this.trans('economic_reference.personnel_costs_payroll')}, ${this.trans('economic_reference.million_tenge')}`,
+            pp2020: '',
+            columns: this.scenariosByOilPrice.map(item => {
+              return {
+                value: +(+item.Fixed_noWRpayroll_expenditures.original_value_optimized / 1000000).toFixed(2)
+              }
+            })
+          },
+          {
+            title: `${this.trans('economic_reference.kvl')}, ${this.trans('economic_reference.million_tenge')}`,
+            pp2020: '',
+            columns: this.scenariosByOilPrice.map(item => {
+              return {
+                value: ''
+              }
+            })
+          },
+        ],
+        ...this.operatingProfitByOilPrice
       ]
     },
   },
@@ -220,8 +198,8 @@ export default {
   background: #272953;
 }
 
-.flex-300px {
-  flex: 0 0 300px;
+.flex-350px {
+  flex: 0 0 350px;
 }
 
 .flex-150px {

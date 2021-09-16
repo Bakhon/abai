@@ -22,7 +22,7 @@ Vue.use(NotifyPlugin);
 
 export default {
   components: { PerfectScrollbar, FullPageLoader, Tabs, Plotly },
-  props: ["params"],
+  props: ["user"],
   computed: {
     ...pgnoMapState([
       "calcedWell",
@@ -53,7 +53,7 @@ export default {
       techmodeDate: null,
       isSkError: false,
       isEditing: false,
-      activeRightTabName: "technological-mode",
+      activeRightTabName: "techmode",
       curveSettings: {},
       lines_analysis: {},
       points_analysis: {},
@@ -68,7 +68,6 @@ export default {
       expChoose: null,
       targetButton: "ql",
       qlTargetValue: null,
-      bhpCelValue: null,
       piCelValue: null,
       fieldsByOrgId: {
         "АО «ОзенМунайГаз»": [
@@ -134,7 +133,6 @@ export default {
       nkt: null,
 
       centratorsRequiredValue: null,
-      centratorsRecommendedValue: null,
       nkt_choose: [
         {
           for_calc_value: 50.3,
@@ -782,7 +780,7 @@ export default {
           lines: this.linesAnalysis,
         };
         var url = this.apiUrl + "excel/download"
-        var filename = "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx"
+        var filename = "ПГНО_АНАЛИЗ_" + this.field + "_" + this.wellNumber + ".xlsx"
       } else if (menu === "main") {
         var payload = {
           shgn_settings: this.shgnSettings,
@@ -793,9 +791,11 @@ export default {
           lines: this.lines,
         };
         var url = this.apiUrl + "excel/download"
-        var filename = "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx"
-      } else if (menu === "gno") {
+        var filename = "ПГНО_КРИВЫЕ_" + this.field + "_" + this.wellNumber + ".xlsx"
+      } else if (menu === "gno" || menu === "report") {
         this.shgnResult.centralizer_range = this.centralizer_range
+        this.shgnResult.shgnImg = this.shgnImg
+        this.shgnResult.user = this.user
         var payload = {
           shgn_settings: this.shgnSettings,
           well: this.well,
@@ -804,8 +804,9 @@ export default {
           points: this.points,
           result: this.shgnResult,
         };
-        var url = this.apiUrl + "shgn/download"
-        var filename = "ПГНО_" + this.field + "_" + this.wellNumber + "_ШГН.xlsx"
+        var url = menu === "gno" ? this.apiUrl + "shgn/download": this.apiUrl + "report/download"
+        var startline = menu === "gno" ? "ПГНО_РЕЗУЛЬТАТ_" : "ПГНО_ОТЧЁТ_"
+        var filename = startline + this.field + "_" + this.wellNumber + "_ШГН.xlsx"
       }
       this.axios.post(url, payload, { responseType: "blob" }).then((response) => {
         fileDownload(response.data, filename)
@@ -842,7 +843,7 @@ export default {
         val === this.activeRightTabName &&
         (this.windowWidth > 1300 || this.windowWidth <= 991)
       ) {
-        this.activeRightTabName = "technological-mode";
+        this.activeRightTabName = "techmode";
         return;
       }
 
@@ -856,7 +857,7 @@ export default {
       }
 
       if (
-        val === "technological-mode" &&
+        val === "techmode" &&
         this.windowWidth <= 1300 &&
         this.windowWidth > 991
       ) {

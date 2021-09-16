@@ -10,6 +10,12 @@
         <div class="rating-content__title">
           <div>{{ trans('digital_rating.sectorMap') }}</div>
           <div class="d-flex align-items-center">
+            <SearchFormRefresh
+              @input="(val) => this.searchSector = val"
+              placeholder="Поиск"
+              @start-search="onSearchSector()"
+              class="mr-10px"
+            />
             <btn-dropdown :list="fileActions">
               <template #icon>
                 <i class="far fa-file"/>
@@ -57,7 +63,9 @@
           <ul class="list">
             <li
               v-for="(item, index) in legends" :key="index">
-              <div :style="`background: ${item.color}`" class="legend"/>
+              <span>{{index+1}}</span>
+              <div :style="`background: ${item.color}`" class="legend">
+              </div>
               <span>{{ item.title }}</span>
             </li>
           </ul>
