@@ -362,7 +362,8 @@ return array (
         'weight' => 'салмағы, кг',
     ],
     'daily_raport' => [
-        'DAILY_DRILLING_REPORT' => 'Суточный буровой рапорт',
+        'DAILY_DRILLING_REPORT' => 'Күнделікті рапорттар / тәүлік ақпарат',
+        'IMPORT_DRILLING_REPORT' => 'Бұрғылау есебін енгізу',
         'date' => 'Дата',
         'report' => 'Рапорт',
         'page' => 'Страница',

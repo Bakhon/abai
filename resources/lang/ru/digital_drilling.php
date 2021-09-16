@@ -364,6 +364,7 @@ return array (
     ],
     'daily_raport' => [
         'DAILY_DRILLING_REPORT' => 'Суточный буровой рапорт',
+        'IMPORT_DRILLING_REPORT' => 'Импорт бурового рапорта',
         'date' => 'Дата',
         'report' => 'Рапорт',
         'page' => 'Страница',
