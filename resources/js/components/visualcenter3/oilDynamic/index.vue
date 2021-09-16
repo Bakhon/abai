@@ -1,25 +1,25 @@
 <template>
     <div class="page-wrapper">
-        <div class="d-flex p-3">
-            <div class="col-4 d-flex justify-content-start">
-                <div class="col-6">Динамика добычи нефти</div>
+        <div class="row p-3">
+            <div class="col-12">
+                Динамика суточной добычи нефти и конденсата, тонн
+            </div>
+            <div class="col-3 p-3">
                 <select
-                        class="form-select col-6"
+                        class="form-select dropdown_list"
                         @change="handleDzo($event.target.value)"
                 >
                     <option v-for="company in dzoCompanies" :value="company.id">{{company.name}}</option>
                 </select>
             </div>
-            <div class="col-2"></div>
-            <div class="col-6 d-flex justify-content-end">
+            <div class="col-3 p-3">
                 <select
-                        class="form-select col-2"
+                        class="form-select dropdown_list"
                         v-model="selectedMonth"
                         @change="handleMonth($event.target.value)"
                 >
                     <option v-for="month in monthes" :value="month.id">{{month.name}}</option>
                 </select>
-                <div class="col-2">(тонн)</div>
             </div>
         </div>
         <div class="d-flex justify-content-end p-3">
@@ -402,5 +402,13 @@ export default {
 }
 .color__green {
     color: #00b353;
+}
+.dropdown_list {
+    background-color: #333975;
+    height: 40px;
+    text-align: center;
+    color: #9ea4c9;
+    border: none;
+    width: 100%;
 }
 </style>
