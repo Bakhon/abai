@@ -14,7 +14,7 @@ class PlanGIS extends TableForm
 {
     protected $configurationFileName = 'plan_g_i_s';
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
         if (empty($filter->date) || empty($filter->date_to)) {
@@ -31,7 +31,7 @@ class PlanGIS extends TableForm
 
         $columns = $this->getColumns($filter, $org, $orgChildren);
 
-        $rows = $this->getRowData($filter, $org, $orgChildren);
+        $rows = $this->getRows($filter, $org, $orgChildren);
 
         return [
             'columns' => $columns['columns'],
@@ -163,7 +163,7 @@ class PlanGIS extends TableForm
             ->join(' + ');
     }
 
-    private function getRowData(\stdClass $filter, Org $org, Collection $orgChildren): array
+    private function getRows(\stdClass $filter, Org $org, Collection $orgChildren): array
     {
         $plans = DB::connection('tbd')
             ->table('prod.plan_gis')

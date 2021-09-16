@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.lab_research",
+  "sort": [
+    {
+      "field": "research_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main",

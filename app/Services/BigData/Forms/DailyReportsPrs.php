@@ -26,7 +26,7 @@ class DailyReportsPrs extends TableForm
     }
 
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
         if (empty($filter->date)) {

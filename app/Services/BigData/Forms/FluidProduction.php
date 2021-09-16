@@ -11,7 +11,7 @@ class FluidProduction extends MeasurementLogForm
 
     protected $configurationFileName = 'fluid_production';
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
         $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
