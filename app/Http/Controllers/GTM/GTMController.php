@@ -139,9 +139,10 @@ class GTMController extends Controller
 
     /**
      * @param Request $request
+     * @param bool $returnQuery
      * @return Builder[]|Collection
      */
-    public function getMainData(Request $request): Collection
+    public function getMainData(Request $request, bool $returnQuery = false)
     {
         $query = DzoAegtm::query();
 
@@ -152,11 +153,13 @@ class GTMController extends Controller
         $query->when($request->filled('dateStart') && $request->filled('dateEnd'), function ($q) use ($request) {
             return $q->whereBetween('date', [
                 $request->input('dateStart', '2021-01-01 00:00:00'),
-                $request->input('dateEnd', '2021-01-01 00:00:00'),
+                $request->input('dateEnd', '2021-12-31 00:00:00'),
             ]);
         });
 
-        return $query->orderBy('date', 'ASC')->get();
+        return $returnQuery ?
+            $query :
+            $query->orderBy('date')->get();
     }
 
     /**
@@ -354,7 +357,17 @@ class GTMController extends Controller
 
         $vnsPlan = $vnsFact = $vnsGrpPlan = $vnsGrpFact = $gsPlan
             = $gsFact = $zbsPlan = $zbsFact = $zbgsPlan = $zbgsFact
-            = $grpPlan = $grpFact = $pvlgPlan = $pvlgFact = $pvrPlan = $pvrFact = 0;
+            = $grpPlan = $grpFact = $pvlgPlan = $pvlgFact = $pvrPlan
+            = $gsGrpPlan = $gsGrpFact = $deepeningPlan = $deepeningFact
+            = $grpSkinPlan = $grpSkinFact = $perestrelPlan = $perestrelFact
+            = $dostrelPlan = $dostrelFact = $vbdPlan = $vbdFact
+            = $oplPlan = $oplFact = $transferToOilPlan = $transferToOilFact
+            = $uecnPlan = $uecnFact = $pvlgPriPrsPlan = $pvlgPriPrsFact
+            = $vppPlan = $vppFact = $pfpPlan = $pfpFact
+            = $tgrpPlan = $tgrpFact = $vnsOperPlan = $vnsOperFact
+            = $vnsNnPlan = $vnsNnFact = $vnsNnOperPlan = $vnsNnOperFact
+            = $idnPlan = $idnFact
+            = $pvrFact = 0;
 
 
         foreach ($data as $item) {
@@ -381,6 +394,57 @@ class GTMController extends Controller
 
             $pvrPlan+= $item->pvr_plan;
             $pvrFact+= $item->pvr_fact;
+
+            $gsGrpPlan+= $item->gs_grp_plan;
+            $gsGrpFact+= $item->gs_grp_fact;
+
+            $deepeningPlan+= $item->deepening_plan;
+            $deepeningFact+= $item->deepening_fact;
+
+            $grpSkinPlan+= $item->grp_skin_plan;
+            $grpSkinFact+= $item->grp_skin_fact;
+
+            $perestrelPlan+= $item->perestrel_plan;
+            $perestrelFact+= $item->perestrel_fact;
+
+            $dostrelPlan+= $item->dostrel_plan;
+            $dostrelFact+= $item->dostrel_fact;
+
+            $vbdPlan+= $item->vbd_plan;
+            $vbdFact+= $item->vbd_fact;
+
+            $oplPlan+= $item->opl_plan;
+            $oplFact+= $item->opl_fact;
+
+            $transferToOilPlan+= $item->transfer_to_oil_plan;
+            $transferToOilFact+= $item->transfer_to_oil_fact;
+
+            $uecnPlan+= $item->uecn_plan;
+            $uecnFact+= $item->uecn_fact;
+
+            $pvlgPriPrsPlan+= $item->pvlg_pri_prs_plan;
+            $pvlgPriPrsFact+= $item->pvlg_pri_prs_fact;
+
+            $vppPlan+= $item->vpp_plan;
+            $vppFact+= $item->vpp_fact;
+
+            $pfpPlan+= $item->pfp_plan;
+            $pfpFact+= $item->pfp_fact;
+
+            $tgrpPlan+= $item->tgrp_plan;
+            $tgrpFact+= $item->tgrp_fact;
+
+            $vnsOperPlan+= $item->vns_oper_plan;
+            $vnsOperFact+= $item->vns_oper_fact;
+
+            $vnsNnPlan+= $item->vns_nn_plan;
+            $vnsNnFact+= $item->vns_nn_fact;
+
+            $vnsNnOperPlan+= $item->vns_nn_oper_plan;
+            $vnsNnOperFact+= $item->vns_nn_oper_fact;
+
+            $idnPlan+= $item->idn_plan;
+            $idnFact+= $item->idn_fact;
         }
 
         $result[] = [
@@ -447,6 +511,142 @@ class GTMController extends Controller
             0
         ];
 
+        $result[] = [
+            'ГС+ГРП',
+            $gsGrpPlan,
+            $gsGrpFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'Углубление',
+            $deepeningPlan,
+            $deepeningFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'Скин ГРП',
+            $grpSkinPlan,
+            $grpSkinFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'Перестрел',
+            $perestrelPlan,
+            $perestrelFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'Дострел',
+            $dostrelPlan,
+            $dostrelFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'ВБД',
+            $vbdPlan,
+            $vbdFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'ОПЛ',
+            $oplPlan,
+            $oplFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'Перевод под нефть',
+            $transferToOilPlan,
+            $transferToOilFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'УЭЦН',
+            $uecnPlan,
+            $uecnFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'ПВЛГ при ПРС',
+            $pvlgPriPrsPlan,
+            $pvlgPriPrsFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'ВПП',
+            $vppPlan,
+            $vppFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'ПФП',
+            $pfpPlan,
+            $pfpFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'ТГРП',
+            $tgrpPlan,
+            $tgrpFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'ВНС опер.',
+            $vnsOperPlan,
+            $vnsOperFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'ВНС НН',
+            $vnsNnPlan,
+            $vnsNnFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'ВНС НН опер.',
+            $vnsNnOperPlan,
+            $vnsNnOperFact,
+            0,
+            0
+        ];
+
+        $result[] = [
+            'ИДН',
+            $idnPlan,
+            $idnFact,
+            0,
+            0
+        ];
+
         return response()->json($result);
     }
 
@@ -456,7 +656,22 @@ class GTMController extends Controller
      */
     public function getChartData(Request $request): JsonResponse
     {
-        $data = $this->getMainData($request);
+        $data = $this->getMainData($request, true)
+            ->select(
+                'date',
+                DB::raw('
+                    sum(vns_plan_chart) as vns_plan_chart,
+                    sum(vns_fact_chart) as vns_fact_chart,
+                    sum(vns_prod_plan_chart) as vns_prod_plan_chart,
+                    sum(vns_prod_fact_chart) as vns_prod_fact_chart,
+                    sum(gtm_plan_chart) as gtm_plan_chart,
+                    sum(gtm_fact_chart) as gtm_fact_chart,
+                    sum(gtm_prod_plan_chart) as gtm_prod_plan_chart,
+                    sum(gtm_prod_fact_chart) as gtm_prod_fact_chart
+                '))
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
 
         $result = [];
 
@@ -469,8 +684,8 @@ class GTMController extends Controller
             $vnsProdPlan[] = round($item->vns_prod_plan_chart, 2);
             $vnsProdFact[] = round($item->vns_prod_fact_chart, 2);
 
-            $gtmPlan[] =  $item->gtm_plan_chart;
-            $gtmFact[] = $item->gtm_fact_chart;
+            $gtmPlan[] =    round($item->gtm_plan_chart, 2);
+            $gtmFact[] =    round($item->gtm_fact_chart, 2);
             $gtmProdPlan[] = round($item->gtm_prod_plan_chart, 2);
             $gtmProdFact[] = round($item->gtm_prod_fact_chart, 2);
         }

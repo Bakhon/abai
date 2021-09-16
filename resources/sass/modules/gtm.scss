@@ -337,6 +337,21 @@
 
 }
 
+.paegtm-gtm-table {
+    overflow-y: scroll;
+    display: block;
+
+    th {
+        width: 100%;
+    }
+
+    tr{
+        td:first-child {
+            cursor: default;
+        }
+    }
+}
+
 .distribution-table {
     display: block;
     overflow-y: scroll;
