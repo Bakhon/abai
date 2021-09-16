@@ -68,4 +68,5 @@
   'research_lab_research' => '\\App\\Services\\BigData\\Forms\\ResearchLabResearch',
   'meas_water_prod' => '\\App\\Services\\BigData\\Forms\\MeasWaterProd',
   'fluid_production_month' => '\\App\\Services\\BigData\\Forms\\FluidProductionMonth',
+  'tech_mode_prod' => '\\App\\Services\\BigData\\Forms\\TechModeProd',
 );
