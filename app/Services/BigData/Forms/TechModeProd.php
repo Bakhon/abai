@@ -34,8 +34,10 @@ class TechModeProd extends TableForm
             ->groupBy('well')
             ->map(function ($measurements) {
                 return [
-                    'avg' => round($measurements->avg('wcut'), 2),
-                    'sum' => round($measurements->sum('wcut'), 2)
+                    'wcut(avg)' => round($measurements->avg('wcut'), 2),
+                    'liquid(avg)' => round($measurements->avg('liquid'), 2),
+                    'oil(avg)' => round($measurements->avg('oil'), 2),
+                    'sum' => round($measurements->sum('oil'), 2)
                 ];
             });
 
@@ -67,13 +69,13 @@ class TechModeProd extends TableForm
         switch ($field['code']) {
             case 'avg_liquid_prev_month':
                 $measurement = $this->waterMeasurements->get($item->id);
-                return !empty($measurement) ? ['value' => $measurement['avg']] : null;
+                return !empty($measurement) ? ['value' => $measurement['liquid(avg)']] : null;
             case 'avg_wcut_prev_month':
                 $measurement = $this->waterMeasurements->get($item->id);
-                return !empty($measurement) ? ['value' => $measurement['avg']] : null; 
+                return !empty($measurement) ? ['value' => $measurement['wcut(avg)']] : null; 
             case 'avg_oil_prev_month':
                 $measurement = $this->waterMeasurements->get($item->id);
-                return !empty($measurement) ? ['value' => $measurement['avg']] : null;       
+                return !empty($measurement) ? ['value' => $measurement['oil(avg)']] : null;       
             case 'sum_oil_prev_month':
                 $measurement = $this->waterMeasurements->get($item->id);
                 return !empty($measurement) ? ['value' => $measurement['sum']] : null;
