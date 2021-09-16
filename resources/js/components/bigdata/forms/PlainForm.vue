@@ -319,6 +319,20 @@ export default {
         this.SET_LOADING(false)
       })
     },
+    updateFieldList() {
+      this.SET_LOADING(true)
+      axios.post(
+          this.localeUrl(`/api/bigdata/forms/${this.params.code}/update-field-list`),
+          {
+            values: this.formValues,
+            well_id: this.wellId
+          }
+      ).then(({data}) => {
+        this.formParams.tabs = data
+      }).finally(() => {
+        this.SET_LOADING(false)
+      })
+    },
     setWellPrefix(triggerFieldCode, changeFieldCode) {
       if (!this.formValues[triggerFieldCode]) return
       this.getWellPrefix({code: this.params.code, geo: this.formValues[triggerFieldCode]})

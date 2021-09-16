@@ -163,6 +163,12 @@ class FormsController extends Controller
         return response()->json($form->getUpdatedFields($request->get('well_id'), $request->get('values')));
     }
 
+    public function updateFieldList(Request $request, string $form): JsonResponse
+    {
+        $form = $this->getForm($form);
+        return response()->json($form->getUpdatedFieldList($request->get('well_id'), $request->get('values')));
+    }
+
     public function getFormByRow(Request $request, string $form): JsonResponse
     {
         $form = $this->getForm($form);

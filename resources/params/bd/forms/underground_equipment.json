@@ -1,0 +1,31 @@
+{
+  "type": "plain",
+  "actions": [
+    {
+      "action": "create",
+      "title": "installation",
+      "form": "underground_equipment_installation"
+    }
+  ],
+  "table": "prod.well_equip",
+  "tabs": [
+    {
+      "title": "hello_world",
+      "blocks": [
+        [
+          {
+            "title": "hello_world",
+            "items": [
+              {
+                "code": "hello_world",
+                "type": "text",
+                "title": "hello_world",
+                "validation": ""
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
