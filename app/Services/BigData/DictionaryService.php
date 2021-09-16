@@ -280,6 +280,10 @@ class DictionaryService
             'class' => TechStateCasing::class,
             'name_field' => 'name_ru'
         ],
+        'machine_types' => [
+            'class' => MachineType::class,
+            'name_field' => 'name_ru'
+        ],        
         'plan_gis_type' => [
             'class' => PlanGISType::class,
             'name_field' => 'name'
@@ -419,6 +423,9 @@ class DictionaryService
                     break;
                 case 'reason_rls':
                     $dict = $this->getReasonTypeDict('RLS');
+                    break;
+                case 'reason_rrd':
+                    $dict = $this->getReasonTypeDict('RRD');
                     break;
                 case 'las_mnemonics':
                     $dict = $this->getLasMnemonics();

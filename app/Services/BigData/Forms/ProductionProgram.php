@@ -25,7 +25,7 @@ class ProductionProgram extends TableForm
 
     const TABLE = 'prod.production_plan';
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         if ($this->request->get('type') !== 'org') {
             return [];

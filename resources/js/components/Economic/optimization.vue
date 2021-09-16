@@ -247,6 +247,8 @@ const fileDownload = require("js-file-download");
 
 import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
+import {formatValueMixin} from "./mixins/formatMixin";
+
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
 import EconomicTitle from "./components/EconomicTitle";
@@ -281,6 +283,10 @@ const optimizedScenarioColumns = [
   'Operating_profit',
 ];
 
+const jsonColumns = [
+  'uwi_stop',
+]
+
 let economicRes = {
   scenarios: [{
     scenario_id: null,
@@ -290,6 +296,7 @@ let economicRes = {
     coef_cost_WR_payroll: 0,
     dollar_rate: 0,
     oil_price: 0,
+    uwi_stop: [],
   }],
   dollarRate: {
     value: 0,
@@ -381,6 +388,7 @@ export default {
     SelectScenarioVariations,
     Tables,
   },
+  mixins: [formatValueMixin],
   data: () => ({
     form: {
       org_id: null,
@@ -576,7 +584,7 @@ export default {
     },
 
     scenario() {
-      return this.res.scenarios.find(item =>
+      let scenario = this.res.scenarios.find(item =>
           item.oil_price === this.scenarioVariation.oil_price &&
           item.dollar_rate === this.scenarioVariation.dollar_rate &&
           item.coef_cost_WR_payroll === this.scenarioVariation.salary_percent &&
@@ -584,6 +592,14 @@ export default {
           item.percent_stop_cat_1 === this.scenarioVariation.optimization_percent.cat_1 &&
           item.percent_stop_cat_2 === this.scenarioVariation.optimization_percent.cat_2
       ) || this.res.scenarios[0]
+
+      jsonColumns.forEach(column => {
+        if (typeof scenario[column] === 'string') {
+          scenario[column] = JSON.parse(scenario[column])
+        }
+      })
+
+      return scenario
     },
 
     scenarioVariations() {
@@ -785,31 +801,6 @@ export default {
 
     updateTab(tab) {
       this.isVisibleWellChanges = tab === 'well_changes'
-    },
-
-    formatValue(value) {
-      value = +value
-
-      let absoluteValue = Math.abs(+value)
-
-      if (absoluteValue < 1000000) {
-        return {
-          value: value / 1000,
-          dimension: this.trans('economic_reference.thousand')
-        }
-      }
-
-      if (absoluteValue < 1000000000) {
-        return {
-          value: value / 1000000,
-          dimension: this.trans('economic_reference.million')
-        }
-      }
-
-      return {
-        value: value / 1000000000,
-        dimension: this.trans('economic_reference.billion')
-      }
     },
 
     calcPercent(last, prev) {

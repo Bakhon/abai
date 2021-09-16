@@ -101,7 +101,7 @@ return array (
   'equipment' => 'Наименование оборудования',
   'equipment_name' => 'Наименование оборудования',
   'compare_to_prev_month' => 'В сравнении с предыдущим месяцем',
-  'download_example' => 'Скачать пример',
+  'download_example' => 'Скачать шаблон',
   'in_pause' => 'В простое',
   'in_work' => 'В работе',
   'wells_profitless' => 'Нерентабельные скважины',
@@ -270,4 +270,8 @@ return array (
   'oar_costs' => 'Затраты на ОАР',
   'avg_cost_krs' => 'Средняя стоимость КРС',
   'well_short' => 'Скв',
+  'org' => 'Организация',
+  'table_chess_subtitle' => 'Потребность в субсидировании со стороны КМГ при различных ценах на нефть и ПП',
+  'production_program_at_oil_price' => 'Производственная программа при цене на нефть',
+  'name_short' => 'Сокращённое название',
 );

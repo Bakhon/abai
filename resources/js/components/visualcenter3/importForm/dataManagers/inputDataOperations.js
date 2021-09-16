@@ -86,10 +86,14 @@ export default {
         },
 
         formatCategoryByType(event,category,type) {
+            let value = 0;
             if (event.target) {
-                let value = this.getFormattedNumber(event.target.value);
-                this[category][type] = value
+                value = this.getFormattedNumber(event.target.value);
             }
+            if (isNaN(value)) {
+                value = 0;
+            }
+            this[category][type] = value;
         },
 
         isValidSummary(options) {

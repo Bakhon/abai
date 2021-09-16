@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Exports\ManualCalculateExport;
 use App\Filters\ManualHydroCalculationFilter;
 use App\Imports\HydroCalcResultImport;
+use App\Models\ComplicationMonitoring\ManualHydroCalcLong;
 use App\Models\ComplicationMonitoring\ManualHydroCalcResult;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
@@ -91,6 +92,8 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         'comment' => 28
     ];
 
+    const PIPE_OR_SEGMENT = 0;
+
     protected $shortSchema = [
         'length' => 3,
         'qliq' => 4,
@@ -131,6 +134,11 @@ class ManualCalculateHydroDynamics implements ShouldQueue
     public function handle()
     {
         if (!isset($this->input['date'])) {
+            $this->setOutput(
+                [
+                    'error' => trans('monitoring.calculate_messages.no_date')
+                ]
+            );
             return;
         }
 
@@ -146,7 +154,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         $this->calculate($pipes);
     }
 
-    public function getPipes ()
+    public function getPipes()
     {
         $query = ManualOilPipe::query()
             ->with('firstCoords', 'lastCoords');
@@ -162,14 +170,14 @@ class ManualCalculateHydroDynamics implements ShouldQueue
             ->whereNotNull('end_point')
             ->orderBy('gu_id');
 
-        if ($this->input['checkbox_selected']) {
+        if (!empty($this->input['checkbox_selected'])) {
             $query->whereIn('gu_id', $this->input['checkbox_selected']);
         }
 
         return $query->get();
     }
 
-    public function calculate ($pipes)
+    public function calculate($pipes)
     {
         $calcUrl = $this->getUrl($pipes);
 
@@ -191,9 +199,15 @@ class ManualCalculateHydroDynamics implements ShouldQueue
 
         $data = json_decode($request->getBody()->getContents());
         $short = $data->short->data;
+        $long = $data->long;
 
         if ($short) {
             $this->storeShortResult($short);
+        }
+
+        if ($long) {
+            array_unshift($long->data, $long->columns);
+            $this->storeLongResult($long->data);
         }
     }
 
@@ -215,6 +229,7 @@ class ManualCalculateHydroDynamics implements ShouldQueue
                     'error' => $responseBodyAsString
                 ]
             );
+            return;
         }
     }
 
@@ -260,10 +275,60 @@ class ManualCalculateHydroDynamics implements ShouldQueue
         }
     }
 
+    protected function storeLongResult(array $data): void
+    {
+        foreach ($data as $key => $row) {
+            if (!ctype_digit($row[self::PIPE_OR_SEGMENT])) {
+                $points = explode(" - ", $row[self::PIPE_OR_SEGMENT]);
+                $pipe = ManualOilPipe::where('start_point', $points[0])
+                    ->where('end_point', $points[1])
+                    ->first();
+
+                continue;
+            }
+
+            if (!$pipe) {
+                $points = explode(" - ", $data[$key - 1][self::PIPE_OR_SEGMENT]);
+                $message = trans('monitoring.calculate_messages.no_such_pipe',
+                    [
+                        'start_point' => $points[0],
+                        'end_point' => $points[1]
+                    ]);
+
+                $this->setOutput(
+                    [
+                        'error' => $message
+                    ]
+                );
+                return;
+            }
+
+            $hydroCalcLong = ManualHydroCalcLong::firstOrCreate(
+                [
+                    'date' => Carbon::parse($this->input['date'])->format('Y-m-d'),
+                    'oil_pipe_id' => $pipe->id,
+                    'segment' => $row[self::PIPE_OR_SEGMENT]
+                ]
+            );
+
+            foreach ($this->longSchema as $param => $index) {
+                $hydroCalcLong->$param = $row[$index];
+            }
+
+            $hydroCalcLong->save();
+        }
+    }
+
+
     public function loadRelations(Collection $pipes)
     {
         $guIds = [];
         foreach ($pipes as $key => $pipe) {
+            if (!$pipe->lastCoords || !$pipe->firstCoords) {
+                unset($pipes[$key]);
+                continue;
+            }
+
             if ($pipe->between_points != 'well-zu') {
                 continue;
             }

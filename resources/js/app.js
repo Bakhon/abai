@@ -100,6 +100,7 @@ Vue.component('tech-data-component', require('./components/technical_forecast/da
 
 Vue.component('economic-nrs', require('./components/Economic/nrs.vue').default);
 Vue.component('economic-nrs-wells', require('./components/Economic/wells.vue').default);
+Vue.component('economic-nrs-well', require('./components/Economic/well.vue').default);
 Vue.component('economic-optimization', require('./components/Economic/optimization.vue').default);
 Vue.component('gno-table', require('./components/gno/GnoMain.vue').default);
 Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue').default);
@@ -122,6 +123,8 @@ Vue.component('omgngdu-zu-form', require('./components/complicationMonitoring/om
 Vue.component('gu-form', require('./components/complicationMonitoring/gu/form.vue').default);
 Vue.component('zu-form', require('./components/complicationMonitoring/zu/form.vue').default);
 Vue.component('pipe-passport-form', require('./components/complicationMonitoring/pipePassport/form.vue').default);
+Vue.component('zu-cleanings-form', require('./components/complicationMonitoring/zuCleanings/form.vue').default);
+
 
 Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);
 Vue.component('gtm-main-page', require('./components/GTM/GtmMain.vue').default);
@@ -179,7 +182,7 @@ Vue.component('report-constructor', require('./components/reportConstructor/Repo
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
 Vue.component('pf-upload-monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
 Vue.component('pf-data-analysis', require('./components/PlastFluids/views/PfDataAnalysis').default);
-Vue.component('pf-standart-separation-flash', require('./components/PlastFluids/components/StandartSeparationFlash').default);
+Vue.component('pf-download-monitoring', require('./components/PlastFluids/views/DownloadMonitoring').default);
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);

@@ -71,6 +71,7 @@ return array (
       'weight_after' => 'Масса после извлечения, гр',
       'avg_speed' => 'Средняя скорость коррозии, мм/г',
     ),
+    'volume_fractions' => 'Объемные доли',
   ),
   'fact_common_corrosion_speed' => 'Фактическая общая скорость коррозии',
   'test_coupons' => 'тест купоны',
@@ -272,6 +273,7 @@ return array (
     'deleting_error' => 'Ошибка при удалении Скважины',
     'name' => 'Имя Скважины',
     'well' => 'Скважина',
+    'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
     'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ Скважина',
   ),
   'pipe' => 
@@ -571,5 +573,10 @@ return array (
     'pipe_types' => 'Размеры трубопроводов',
     'pipes' => 'Трубопроводы',
     'watermeasurement' => 'Промысловая жидкость и газ',
+  ),
+  'calculate_messages' => 
+  array (
+    'no_date' => 'Не выбрана дата',
+    'no_such_pipe' => 'Нет такой трубы с начальной точкой :start_point и конечной точкой :end_point',
   ),
 );

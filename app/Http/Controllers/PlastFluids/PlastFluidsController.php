@@ -26,11 +26,11 @@ class PlastFluidsController extends Controller
         return view('plastfluids.pf_upload_monitoring', compact('permissionNames'));
     }
 
-    public function pfStandartSeparationFlash()
+    public function pfDownloadMonitoring()
     {
         $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();
 
-        return view('plastfluids.pf_standart_separation_flash', compact('permissionNames'));
+        return view('plastfluids.pf_download_monitoring', compact('permissionNames'));
     }
 
 }

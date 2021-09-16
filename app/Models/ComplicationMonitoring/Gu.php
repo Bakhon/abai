@@ -156,4 +156,9 @@ class Gu extends Model
     {
         return $this->hasMany(MeteringUnits::class);
     }
+    
+    public function zu_cleanings()
+    {
+        return $this->hasMany(ZusCLeaning::class);
+    }
 }
