@@ -4,8 +4,3 @@
         <pf-download-monitoring></pf-download-monitoring>
     </div>
 @endsection
-
-
-<style>
-
-</style>
