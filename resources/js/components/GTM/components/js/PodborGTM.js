@@ -2,8 +2,6 @@ import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import {globalloadingMutations} from "../../../../store/helpers";
 import VueApexCharts from "vue-apexcharts";
-import myJson from '../../mock-data/my.json'
-import _ from 'lodash'
 import {paegtmMapState} from "@store/helpers";
 
 
@@ -17,6 +15,7 @@ export default {
             showBlock: 2,
             menuArrowUp: '/img/GTM/icon_menu_arrow_up.svg',
             menuArrowDown: '/img/GTM/icon_menu_arrow_down.svg',
+            url: 'http://172.20.103.51:7577/api/gtmfinder',
             table: {
                 main_data: {
                     header: null,
@@ -24,7 +23,6 @@ export default {
                 },
 
             },
-            myTable: myJson,
             dataRange: null,
             fieldName: null,
             mainData: null,
@@ -169,7 +167,7 @@ export default {
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
                 data: body,
-                url: 'http://172.20.103.51:7577/api/gtmfinder'
+                url: this.url
             })
                 .then((res) => {
                     this.table.main_data.header = res.data.main_data.header
@@ -185,7 +183,6 @@ export default {
                 })
         },
         onClickWell(v) {
-            //TODO 'get well data which one is clicked'
             this.setNotify(`Вы нажали на скважину ${v}`, "Success", "success")
         },
         closeTree() {
@@ -197,7 +194,7 @@ export default {
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
                 data: this.body,
-                url: 'http://172.20.103.51:7577/api/gtmfinder'
+                url: this.url
             })
                 .then((res) => {
                     this.dataRange = res.data.date_range_model;
@@ -220,7 +217,7 @@ export default {
                 method: 'POST',
                 headers: { 'content-type': 'application/json' },
                 data: body,
-                url: 'http://172.20.103.51:7577/api/gtmfinder'
+                url: this.url
             })
                 .then((res) => {
                     if(res.status === 200) {
