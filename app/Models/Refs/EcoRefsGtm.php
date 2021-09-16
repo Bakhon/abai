@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EcoRefsGtm extends Model
 {
-    protected $fillable = ['company_id', 'name', 'price', 'pi', 'comment', 'author_id'];
+    protected $fillable = ['company_id', 'name', 'price', 'pi', 'comment', 'author_id', 'log_id'];
 
     public function company()
     {
