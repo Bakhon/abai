@@ -62,6 +62,13 @@ return array (
         'meters' => 'meters',
         'drilled_per_day' => 'Drilling per day',
         'total_drilled' => 'Total drilled',
+        'close' => 'Close',
+        'reset' => 'Cancel',
+        'import' => 'Import',
+        'import_daily-report' => 'Import of daily drilling report',
+        'select_file' => 'Select a file',
+        'or' => 'or',
+        'drag_here' => 'drag the file here',
     ],
     'home' => [
         'operating_oil_pipeline' => 'Operating oil pipeline',

@@ -62,6 +62,13 @@ return array (
       'meters' => 'метров',
       'drilled_per_day' => 'Пробурено за сутки',
       'total_drilled' => 'Пробурено итого',
+      'close' => 'Закрыть',
+      'reset' => 'Отмена',
+      'import' => 'Импорт',
+      'import_daily-report' => 'Импорт суточного бурового рапорта',
+      'select_file' => 'Выберите файл',
+      'or' => 'или',
+      'drag_here' => 'перетащите сюда файл',
   ],
   'home' => [
       'operating_oil_pipeline' => 'Действующий нефтепровод',

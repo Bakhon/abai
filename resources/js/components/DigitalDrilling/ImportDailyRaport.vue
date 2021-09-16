@@ -11,26 +11,26 @@
                                     <img src="/img/digital-drilling/import-icon.png" alt="">
                                 </div>
                                 <div class="header-title">
-                                    Импорт суточного бурового рапорта
+                                    {{ trans('digital_drilling.default.import_daily-report') }}
                                 </div>
                             </div>
                             <div class="header-close">
-                                <button>Закрыть</button>
+                                <a href="daily-report">{{ trans('digital_drilling.default.close') }}</a>
                             </div>
                         </div>
                         <div class="import-daily-body">
                             <div class="import-daily-body">
                                 <div class="file-input" @dragover="dragover" @dragleave="dragleave" @drop="drop">
                                     <input type="file" multiple name="fields[assetsFieldHandle][]" id="assetsFieldHandle"
-                                           class="w-px h-px opacity-0 overflow-hidden absolute" @change="onChange" ref="file" accept=".pdf,.jpg,.jpeg,.png" />
+                                           class="w-px h-px opacity-0 overflow-hidden absolute" @change="onChange" ref="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                                     <label for="assetsFieldHandle" v-if="!filelist.length">
                                         <div class="report-btn">
                                             <img src="/img/digital-drilling/file.png" alt="">
-                                            <div class="report-text">Выберите файл</div>
+                                            <div class="report-text">{{ trans('digital_drilling.default.select_file') }}</div>
                                         </div>
                                         <div class="report-detail" >
-                                            или <br>
-                                            перетащите сюда файл
+                                            {{ trans('digital_drilling.default.or') }} <br>
+                                            {{ trans('digital_drilling.default.drag_here') }}
                                         </div>
                                     </label>
                                     <ul v-if="filelist.length" v-cloak>
@@ -41,8 +41,8 @@
                                 </div>
                             </div>
                             <div class="import-daily-body-btns">
-                                <button>Импорт</button>
-                                <button>Отмена</button>
+                                <button :class="{disabled: !filelist.length}">{{ trans('digital_drilling.default.import') }}</button>
+                                <button>{{ trans('digital_drilling.default.reset') }}</button>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                 // Clean up
                 event.currentTarget.classList.add('bg-gray-100');
                 event.currentTarget.classList.remove('bg-green-300');
-            }
+            },
         }
     }
 </script>
@@ -133,7 +133,7 @@
     .import-daily-raport .header-close{
 
     }
-    .import-daily-raport .header-close button{
+    .import-daily-raport .header-close a{
         background: #656A8A;
         border: 0;
         border-radius: 10px;
@@ -144,6 +144,8 @@
         line-height: 17px;
         color: #FFFFFF;
         padding: 4px 13px;
+        text-decoration: none;
+        cursor: pointer;
     }
 
     .import-daily-raport .header-title{
@@ -186,7 +188,7 @@
         background: #878BA9;
         border-radius: 4px;
         color: #FFFFFF;
-        width: 152px;
+        width: auto;
         padding: 9px 14px;
     }
     .file-input label .report-detail{
@@ -222,6 +224,12 @@
     .import-daily-body-btns button:first-child{
         background: #2E50E9;
         margin-right: 20px;
+    }
+    .import-daily-body-btns button.disabled{
+        border: 1px solid #999999;
+        background-color: #cccccc;
+        color: #666666;
+        cursor: default;
     }
 
 </style>
