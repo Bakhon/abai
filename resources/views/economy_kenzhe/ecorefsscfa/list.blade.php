@@ -97,6 +97,10 @@
                        class="list-group-item list-group-item-action text-primary">
                         {{__('economic_reference.eco_refs_tarify_tn')}}
                     </a>
+                    <a href="{{ route('paegtm-refs-list') }}"
+                       class="list-group-item list-group-item-action ">
+                        {{__('paegtm.paegtm_refs_list')}}
+                    </a>
                 </div>
             </div>
         </div>

@@ -80,9 +80,9 @@ export default {
                 this.rectangle = L.rectangle(this.getBounds(maps[i]), {
                     renderer: this.renderer,
                     color: maps[i]['color'],
-                    weight: 3,
+                    weight: 1,
                     fillColor: maps[i]['color'],
-                    fillOpacity: 1,
+                    fillOpacity: 0.7,
                 }).addTo(this.map).bindPopup(maps[i]['sector'].toString());
 
                 this.rectangle.on('mouseover', function (e) {
@@ -165,10 +165,14 @@ export default {
             }
         },
         async selectPanelItem(type, item) {
+            this.map.remove();
             if(type === 'map' && item?.id === 1) {
-                this.initWellOnMap();
+                setTimeout(async() => {
+                    this.initMap();
+                    await this.initSectorOnMap();
+                    this.initWellOnMap();
+                }, 0);
             } else {
-                this.map.remove();
                 this.SET_HORIZON(item?.id);
                 setTimeout(async() => {
                     this.initMap();
@@ -179,6 +183,8 @@ export default {
         onSearchSector() {
             this.map.eachLayer(function(layer) {
                 if (layer?._popup?._content === this.searchSector?.toString()) {
+                    const {lat, lng} = layer._bounds?._northEast;
+                    this.map.setView([lat, lng], -3);
                     layer.openPopup();
                 }
             }, this);
