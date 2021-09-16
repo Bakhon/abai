@@ -82,6 +82,7 @@ export default {
                         },
                     },
                 },
+                colors: ["#4A90E2", "#0080FF", "#F5FCFF"],
                 chart: {
                     type: this.chartType,
                     stacked: false,
