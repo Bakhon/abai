@@ -47,6 +47,7 @@ class EconomicCostImport implements ToModel, WithBatchInserts, WithChunkReading
 
         $this->logId = EconomicDataLog::create([
             'author_id' => $userId,
+            'name' => $fileName,
             'type_id' => EconomicDataLogType::COST
         ])->id;
 

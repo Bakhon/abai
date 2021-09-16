@@ -23,6 +23,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
+                                <th>{{ __('economic_reference.name') }}:</th>
                                 <th>{{ __('economic_reference.date_added') }}:</th>
                                 <th>{{ __('economic_reference.author_added') }}:</th>
                                 <th width="220px">{{__('app.action')}}</th>
@@ -30,6 +31,7 @@
                             @foreach ($logs as $log)
                                 <tr>
                                     <td>{{ $log->id }}</td>
+                                    <td>{{ $log->name }}</td>
                                     <td>{{ $log->created_at  }}</td>
                                     <td>{{ $log->author->name  }}</td>
                                     <td>
