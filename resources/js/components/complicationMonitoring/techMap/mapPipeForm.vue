@@ -258,14 +258,14 @@ export default {
     updateEndPoints () {
       let well, zu, gu;
 
+      zu = this.zuPoints.find((zu) => {
+        return zu.id == this.pipe.zu_id;
+      });
+
       switch (this.pipe.between_points) {
         case 'well-zu':
           well = this.wellPoints.find((well) => {
             return well.id == this.pipe.well_id;
-          });
-
-          zu = this.zuPoints.find((zu) => {
-            return zu.id == this.pipe.zu_id;
           });
 
           this.pipe.start_point = well.name
@@ -275,10 +275,6 @@ export default {
         case 'zu-gu':
           gu = this.guPoints.find((gu) => {
             return gu.id == this.pipe.gu_id;
-          });
-
-          zu = this.zuPoints.find((zu) => {
-            return zu.id == this.pipe.zu_id;
           });
 
           this.pipe.end_point = gu.name
