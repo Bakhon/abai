@@ -2,7 +2,6 @@ import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import {globalloadingMutations} from "../../../../store/helpers";
 import VueApexCharts from "vue-apexcharts";
-import tableGtm from '../../mock-data/response-data-export_item_click.json'
 import myJson from '../../mock-data/my.json'
 import _ from 'lodash'
 import {paegtmMapState} from "@store/helpers";

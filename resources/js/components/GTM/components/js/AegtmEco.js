@@ -23,7 +23,7 @@ export default {
                 name: this.trans('paegtm.plan'),
                 data: [16200, 12500, 14000, 13800, 15700, 16200, 15800, 14100, 14400, 14100, 15500, 19100],
             }, {
-                name:this.trans('paegtm.fact_plus_forecast'),
+                name: this.trans('paegtm.fact_plus_forecast'),
                 data: [16000, 14500, 14100, 13900, 15800, 17000, 16100, 14200, 14600, 14200, 16200, 18800],
             },],
             lineSeriesChart: [
@@ -35,24 +35,24 @@ export default {
                     name: this.trans('paegtm.fact'),
                     data: [200, 900, 1100, 1600, 1700, 2200, 3100],
                 }
-    ],
-        lineChartOptions: {
-            chart: {
-                type: 'line',
+            ],
+            lineChartOptions: {
+                chart: {
+                    type: 'line',
                     height: 350,
                     foreColor: '#fff',
-            },
-            markers: {
-                size: 5,
+                },
+                markers: {
+                    size: 5,
                     colors: undefined,
                     strokeColors: '#fff',
                     strokeWidth: 2,
                     discrete: [],
                     shape: "circle",
                     radius: 2,
-            },
-            grid: {
-                show: true,
+                },
+                grid: {
+                    show: true,
                     borderColor: '#454d7d',
                     strokeDashArray: 0,
                     position: 'back',
@@ -60,65 +60,65 @@ export default {
                         lines: {
                             show: true
                         }
+                    },
+                    yaxis: {
+                        lines: {
+                            show: true
+                        }
+                    },
                 },
-                yaxis: {
-                    lines: {
-                        show: true
-                    }
-                },
-            },
 
-        },
-        barChartOptions1: {
-            chart: {
-                type: 'bar',
+            },
+            barChartOptions1: {
+                chart: {
+                    type: 'bar',
                     height: 350,
                     foreColor: '#fff',
                     horizontal: false
-            },
-            dataLabels: {
-                enabled: false
-            },
-            colors: ['#f27e31', '#82baff'],
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                colors: ['#f27e31', '#82baff'],
                 xaxis: {
-                categories: [
-                    this.trans('paegtm.Jan'),
-                    this.trans('paegtm.Feb'),
-                    this.trans('paegtm.Mar'),
-                    this.trans('paegtm.Apr'),
-                    this.trans('paegtm.May'),
-                    this.trans('paegtm.Jun'),
-                    this.trans('paegtm.Jul'),
-                    this.trans('paegtm.Aug'),
-                    this.trans('paegtm.Sep'),
-                    this.trans('paegtm.Oct'),
-                    this.trans('paegtm.Nov'),
-                    this.trans('paegtm.Dec')
-                ],
+                    categories: [
+                        this.trans('paegtm.Jan'),
+                        this.trans('paegtm.Feb'),
+                        this.trans('paegtm.Mar'),
+                        this.trans('paegtm.Apr'),
+                        this.trans('paegtm.May'),
+                        this.trans('paegtm.Jun'),
+                        this.trans('paegtm.Jul'),
+                        this.trans('paegtm.Aug'),
+                        this.trans('paegtm.Sep'),
+                        this.trans('paegtm.Oct'),
+                        this.trans('paegtm.Nov'),
+                        this.trans('paegtm.Dec')
+                    ],
+                },
             },
-        },
-        dzo: null,
+            dzo: null,
             gtmTypesList: [
-                { id: "vns", name: this.trans('paegtm.gtm_vns') },
-                { id: "grp", name: this.trans('paegtm.gtm_grp') },
-                { id: "pvlg", name: this.trans('paegtm.gtm_pvlg') },
-                { id: "pvr", name: this.trans('paegtm.gtm_pvr') },
-                { id: "rir", name: this.trans('paegtm.gtm_rir') },
+                {id: "vns", name: this.trans('paegtm.gtm_vns')},
+                {id: "grp", name: this.trans('paegtm.gtm_grp')},
+                {id: "pvlg", name: this.trans('paegtm.gtm_pvlg')},
+                {id: "pvr", name: this.trans('paegtm.gtm_pvr')},
+                {id: "rir", name: this.trans('paegtm.gtm_rir')},
             ],
             loaded: false,
             oilFileds: [],
             horizonts: [],
             objects: [],
-            gtmTypes : [],
+            gtmTypes: [],
 
             dzosForFilter: [],
             oilFieldsForFilter: [],
             horizontsForFilter: [],
             objectsForFilter: [],
-    };
-},
+        };
+    },
 
-methods: {
+    methods: {
         getData: function () {
 
         },

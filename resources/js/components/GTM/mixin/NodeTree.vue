@@ -72,9 +72,6 @@ export default {
         nodeHasChildren: function () {
             return this.node.children && this.node.children.length;
         },
-        // nodeHasClickable: function () {
-        //     return this.node.clickable
-        // }
     }
 }
 </script>

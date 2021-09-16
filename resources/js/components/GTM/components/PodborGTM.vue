@@ -1,11 +1,6 @@
 <template>
   <div>
     <div class="row mx-0 mt-lg-2 gtm">
-<!--      <div class="gtm-dark col-lg-10 p-0 d-flex" v-if="serviceOffline">-->
-<!--        <div style="width: 250px; color: white; text-align: center; justify-content: center;">-->
-<!--          Сервис оффлайн-->
-<!--        </div>-->
-<!--      </div>-->
       <div class="gtm-dark col-lg-10 p-0" @click="closeTree()">
         <div class="row col-12 p-0 m-0">
           <div class="col-6 d-none d-lg-block p-0 pl-1">
