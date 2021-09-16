@@ -1,3 +1,6 @@
+.daily-report.dropdown-menu{
+    min-height: 140px!important;
+}
 canvas#foo {
     width: 100%;
     margin-bottom: 50px;

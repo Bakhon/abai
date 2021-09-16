@@ -8,7 +8,7 @@
                 </div>
             </a>
         </div>
-        <div class="dropdown-menu">
+        <div class="daily-report dropdown-menu " >
             <div class="move-menu">
                 <li class="left-menu-li mb-1">
                     <a href="{{route('digital-drilling-daily-report')}}">{{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}</a>
