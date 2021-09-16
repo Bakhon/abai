@@ -3,6 +3,8 @@
 namespace App\Imports\Economic;
 
 use App\Models\EcoRefsCompaniesId;
+use App\Models\Refs\EconomicDataLog;
+use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\EcoRefsGtmValue;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -13,6 +15,8 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 class EconomicGtmValueImport implements ToModel, WithBatchInserts, WithChunkReading
 {
     protected $userId;
+
+    protected $logId;
 
     protected $companies = [];
 
@@ -33,6 +37,11 @@ class EconomicGtmValueImport implements ToModel, WithBatchInserts, WithChunkRead
     function __construct(int $userId)
     {
         $this->userId = $userId;
+
+        $this->logId = EconomicDataLog::create([
+            'author_id' => $userId,
+            'type_id' => EconomicDataLogType::GTM_VALUE
+        ])->id;
     }
 
     public function model(array $row): ?EcoRefsGtmValue
@@ -72,6 +81,7 @@ class EconomicGtmValueImport implements ToModel, WithBatchInserts, WithChunkRead
             'amount' => $row[self::COLUMNS['amount']],
             'comment' => $row[self::COLUMNS['comment']],
             'author_id' => $this->userId,
+            'log_id' => $this->logId,
         ]);
     }
 

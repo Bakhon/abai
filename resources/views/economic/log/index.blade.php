@@ -3,12 +3,13 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <a href="{{ route('economic.cost.index') }}" class="btn btn-info">
-                {{ __('economic_reference.return_menu') }}
+            <a href="{{ url()->previous() }}" class="btn btn-info">
+                {{ __('app.back') }}
             </a>
         </div>
     </div>
-    <div class="container">
+
+    <div class="container mt-3">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -32,7 +33,7 @@
                                     <td>{{ $log->created_at  }}</td>
                                     <td>{{ $log->author->name  }}</td>
                                     <td>
-                                        <form action="{{ route('economic.cost.log.destroy', $log->id) }}"
+                                        <form action="{{ route('economic.log.destroy', $log->id) }}"
                                               method="POST">
                                             @csrf
                                             @method('DELETE')
