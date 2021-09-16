@@ -2,6 +2,11 @@ import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css'
 import {globalloadingMutations} from "../../../../store/helpers";
 import VueApexCharts from "vue-apexcharts";
+import tableGtm from '../../mock-data/response-data-export_item_click.json'
+import myJson from '../../mock-data/my.json'
+import _ from 'lodash'
+import {paegtmMapState} from "@store/helpers";
+
 
 export default {
     components: {
@@ -13,6 +18,18 @@ export default {
             showBlock: 2,
             menuArrowUp: '/img/GTM/icon_menu_arrow_up.svg',
             menuArrowDown: '/img/GTM/icon_menu_arrow_down.svg',
+            table: {
+                main_data: {
+                    header: null,
+                    data: null,
+                },
+
+            },
+            myTable: myJson,
+            dataRange: null,
+            fieldName: null,
+            mainData: null,
+            serviceOffline: true,
             body: {
                 action_type: 'page_initialized',
                 main_data: "\"название страницы\""
@@ -120,12 +137,16 @@ export default {
                     },
                 },
             },
-
             treeSettingHeader: '',
             treeSettingBody: '',
             treeSettingComponent: null,
             treeChildrenComponent: null,
         };
+    },
+    computed: {
+        ...paegtmMapState([
+            'clickable',
+        ]),
     },
     methods: {
         ...globalloadingMutations([
@@ -140,6 +161,34 @@ export default {
                 autoHideDelay: 8000,
             });
         },
+        onClickableValue() {
+            const body = {
+                action_type: 'finder_item_clicked',
+                main_data: this.clickable,
+            }
+            this.axios({
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                data: body,
+                url: 'http://172.20.103.51:7577/api/gtmfinder'
+            })
+                .then((res) => {
+                    this.table.main_data.header = res.data.main_data.header
+                    this.table.main_data.data = res.data.main_data.data
+                    if(res.status === 200) {
+                        this.setNotify("Таблица пришла", "Success", "success")
+                    } else {
+                        this.setNotify("Что-то пошло не так", "Error", "danger")
+                    }
+                })
+                .finally(() => {
+                    this.SET_LOADING(false);
+                })
+        },
+        onClickWell(v) {
+            //TODO 'get well data which one is clicked'
+            this.setNotify(`Вы нажали на скважину ${v}`, "Success", "success")
+        },
         closeTree() {
             this.treeChildrenComponent = 0;
             this.treeSettingComponent = 0;
@@ -152,13 +201,20 @@ export default {
                 url: 'http://172.20.103.51:7577/api/gtmfinder'
             })
                 .then((res) => {
-                    this.treeData = res.data.main_data["finder_model"]["children"];
-                })
+                    this.dataRange = res.data.date_range_model;
+                    this.treeData = res.data.finder_model.children;
+                    this.fieldName = res.data.field_name;
+               })
         },
         postTreeData(v) {
             const body = {
                 action_type: 'calc_button_pressed',
-                main_data: v
+                date_range_model: this.dataRange,
+                fieldName: this.fieldName,
+                finder_model: {
+                    name: "root",
+                    children: v
+                }
             }
             this.SET_LOADING(true);
             this.axios({
@@ -169,7 +225,7 @@ export default {
             })
                 .then((res) => {
                     if(res.status === 200) {
-                        this.setNotify("Расчет прошел", "Success", "success")
+                        this.setNotify("Скважины пришли", "Success", "success")
                     } else {
                         this.setNotify("Что-то пошло не так", "Error", "danger")
                     }
@@ -225,5 +281,5 @@ export default {
     },
     created() {
         this.getTreeData();
-    }
+    },
 }

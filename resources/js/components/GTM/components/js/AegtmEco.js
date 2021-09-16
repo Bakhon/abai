@@ -57,9 +57,9 @@ export default {
                     strokeDashArray: 0,
                     position: 'back',
                     xaxis: {
-                    lines: {
-                        show: true
-                    }
+                        lines: {
+                            show: true
+                        }
                 },
                 yaxis: {
                     lines: {

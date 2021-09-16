@@ -1,6 +1,11 @@
 <template>
   <div>
     <div class="row mx-0 mt-lg-2 gtm">
+<!--      <div class="gtm-dark col-lg-10 p-0 d-flex" v-if="serviceOffline">-->
+<!--        <div style="width: 250px; color: white; text-align: center; justify-content: center;">-->
+<!--          Сервис оффлайн-->
+<!--        </div>-->
+<!--      </div>-->
       <div class="gtm-dark col-lg-10 p-0" @click="closeTree()">
         <div class="row col-12 p-0 m-0">
           <div class="col-6 d-none d-lg-block p-0 pl-1">
@@ -8,30 +13,40 @@
               <div class="block-header pb-0 pl-2 pt-1">
                 {{ trans("paegtm.wells-candidates") }}
               </div>
-              <div class="p-1 pl-2">
-                <table class="table text-center text-white podbor-middle-table">
-                  <thead>
-                  <tr>
-                    <th class="align-middle" rowspan="2">{{ trans("paegtm.borehole_number") }}</th>
-                    <th class="align-middle" rowspan="2">{{ trans("paegtm.gtmType") }}</th>
-                    <th colspan="3">{{ trans("paegtm.forecast_indicators") }}</th>
-                  </tr>
-                  <tr>
-                    <th>{{ trans("paegtm.q_liq") }}</th>
-                    <th>{{ trans("paegtm.q_oil") }}</th>
-                    <th>{{ trans("paegtm.water_cut") }} %</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr v-for="candidate in candidates">
-                    <td>{{ candidate[0] }}</td>
-                    <td>{{ candidate[1] }}</td>
-                    <td>{{ candidate[2] }}</td>
-                    <td>{{ candidate[3] }}</td>
-                    <td>{{ candidate[4] }}</td>
-                  </tr>
-                  </tbody>
-                </table>
+              <div class="p-1 pl-2 table-pgtm">
+                <div v-if="!table.main_data.data" >
+                  <div style="color: white; text-align: center; font-size: 16px; padding-top: 150px;">
+                    Сделайте расчет прежде чем получить скважины
+                  </div>
+                </div>
+                <div v-else>
+                  <table class="table text-center text-white podbor-middle-table">
+                    <thead>
+                    <tr>
+                      <th v-for="(row, idx) in table.main_data.header" :key="idx"
+                          :colspan="Array.isArray(row) ? row.length : ''"
+                          :rowspan="Array.isArray(row) ? '' : 2"
+                      >
+                        {{ idx }}
+                      </th>
+                    </tr>
+                    <tr>
+                      <template v-for="(row) in table.main_data.header">
+                        <template v-if="Array.isArray(row)">
+                          <th v-for="r in row">
+                            {{ r }}
+                          </th>
+                        </template>
+                      </template>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="c in table.main_data.data">
+                      <th class="bg-body" v-for="row in c" @click="onClickWell(row)">{{ row }}</th>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -78,7 +93,9 @@
           <div class="block-header p-2">
             {{ trans("paegtm.period") }}
           </div>
-          <gtm-date-picker></gtm-date-picker>
+          <gtm-date-picker
+          :showSettings="true"
+          ></gtm-date-picker>
         </div>
 
         <div class="block-header gtm-dark">
@@ -121,7 +138,7 @@
         </div>
 
         <div class="gtm-dark mt-2">
-          <div class="block-header p-2 text-center calc-button" @click="postTreeData($event)">
+          <div class="block-header p-2 text-center calc-button" @click="postTreeData(treeData)">
             {{ trans("paegtm.calc") }}
           </div>
         </div>
@@ -154,6 +171,7 @@
                   :treeData="treeDataChild"
                   :key="treeDataChild.name"
                   @node-click="nodeClick"
+                  @event-emit="onClickableValue()"
               ></gtm-tree>
             </div>
           </div>
@@ -193,5 +211,14 @@
 <style scoped>
 .h-233 {
   min-height: 233px;
+}
+
+.table-pgtm {
+  height: 400px;
+  overflow: auto;
+}
+
+.bg-body {
+  background-color: #20274f;
 }
 </style>
