@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.mark",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "mark",

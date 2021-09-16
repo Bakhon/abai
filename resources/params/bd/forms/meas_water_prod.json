@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.meas_water_prod",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "prod_meas",

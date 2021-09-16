@@ -43,7 +43,7 @@ return array (
   'restore' => 'Восстановить',
   'restore_title' => 'Восстановление',
   'rollback' => 'Откатить',
-  'months' =>
+  'months' => 
   array (
     1 => 'Январь',
     2 => 'Февраль',
@@ -61,5 +61,4 @@ return array (
   'module_title' => 'Модуль',
   'download' => 'Скачать',
   'thereIsNoData' => 'Нет данных',
-  'modules' => 'Модули',
 );
