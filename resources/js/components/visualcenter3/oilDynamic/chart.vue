@@ -67,10 +67,16 @@ export default {
                         show: false,
                     },
                     foreColor: "#FFFFFF",
+                    zoom: {
+                        enabled: false,
+                    },
                 },
                 title: {
                     text: this.name,
-                    align: 'center'
+                    align: 'center',
+                    style: {
+                        fontFamily:  'HarmoniaSansProCyr-Regular, Harmonia-sans',
+                    },
                 },
             };
         },
