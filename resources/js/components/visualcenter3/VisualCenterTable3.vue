@@ -843,7 +843,7 @@
                     <th v-if="isFilterTargetPlanActive">
                       {{ trans("visualcenter.dzoTargetPlan") }}
                     </th>
-                    <th v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue">
+                    <th class="decrease-reason" v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()">
                       {{ trans("visualcenter.reasonExplanations") }}
                     </th>
                   </tr>
@@ -1124,7 +1124,7 @@
                     </td>
                     <td
                             :class="getDarkerClass(index)"
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
+                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                     >
                     </td>
                   </tr>
@@ -2982,5 +2982,8 @@
     height: 20px;
     background: url(/img/visualcenter3/emergency.png) 3% no-repeat;
     background-size: 100%;
+  }
+  .decrease-reason {
+    width: 171px;
   }
 </style>
