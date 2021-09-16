@@ -9,7 +9,7 @@
                 style="background: transparent;"
                 :adaptive="true"
         >
-            <div class="modal-bign modal-bign-container reason-container">
+            <div class="modal-bign modal-bign-container">
                 <div class="modal-bign-header">
                     <div class="modal-bign-title modal_header">{{ trans('visualcenter.reasonExplanations') }}</div>
                     <div class="btn-toolbar">
@@ -23,7 +23,7 @@
                         <span class="col-3">{{ trans("visualcenter.dzo") }}</span>
                         <span class="col-9">{{ trans("visualcenter.importForm.reason") }}</span>
                     </div>
-                    <div>
+                    <div class="reason-container row p-2">
                         <div
                                 class="row"
                                 v-for="(item, index) in reasons"
@@ -59,6 +59,27 @@ export default {
 }
 .reason-container {
     overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 300px;
+    &::-webkit-scrollbar {
+        width: 3px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #333975;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #1f213e;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #1f213e;
+    }
+
+    &::-webkit-scrollbar-corner {
+        background: #333975;
+    }
 }
 .reason-header {
     background: #2E50E9;
