@@ -56,7 +56,7 @@ export default {
           item.comment,
           `${item.created_at} ${item.author.name}`,
           item.editor ? `${item.updated_at} ${item.editor.name}` : '',
-          this.localeUrl(`/tech-data-forecast/${item.id}/edit`),
+          this.localeUrl(`/economic/technical/forecast/${item.id}/edit`),
           item.log_id
         ])
       })
@@ -68,7 +68,7 @@ export default {
     ...globalloadingState(['loading']),
 
     url() {
-      return this.localeUrl('/tech-data-forecast/get-data')
+      return this.localeUrl('/economic/technical/forecast/get-data')
     },
 
     params() {

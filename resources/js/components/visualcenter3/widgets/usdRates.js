@@ -31,11 +31,9 @@ export default {
         },
 
         updateCurrentUsdPrices(period) {
-            this.isPricesChartLoading = true;
             this.usdPeriod = period;
             let uri = this.localeUrl("/get-usd-rates");
             this.setDataAndChart(uri, 'usd');
-            this.isPricesChartLoading = false;
         },
 
         setUsdPlacements(ratesData) {

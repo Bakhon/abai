@@ -1,0 +1,1429 @@
+{
+  "type": "plain",
+  "table": "prod.lab_research",
+  "sort": [
+    {
+      "field": "research_date",
+      "order": "desc"
+    }
+  ],
+  "tabs": [
+    {
+      "title": "main",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "research_date",
+                "type": "date",
+                "title": "date",
+                "validation": "required|date"
+              },
+              {
+                "code": "research_type",
+                "type": "dict",
+                "dict": "lab_research_type",
+                "title": "research_type",
+                "validation": "required|exists:tbd.dict.lab_research_type,id"
+              },
+              {
+                "code": "oil_viscosity",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "oil",
+                "validation" : "gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "water_viscosity",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "water",
+                "validation" : "gte:0|lte:100000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "volume_coef",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "volume",
+                "validation" : "gte:0.9|lte:10",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "oil_density",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "r_oil",
+                "validation" : "gte:0.7|lte:1.05",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "water_density",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "r_water",
+                "validation" : "gte:0.9|lte:2",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "gas_pressure",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "pnac",
+                "validation" : "gte:0|lte:1500",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "gas_factor",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "gf",
+                "validation" : "gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "temp_pl",
+                "table": "prod.pvt_data",
+                "type": "numeric",
+                "title": "tpl",
+                "validation" : "gte:0|lte:250",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "PVTD"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "res_pressure",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "pres_plast",
+                "validation" : "gte:0|lte: 200",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "res_temp",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "temp_plast",
+                "validation" : "gte:0|lte: 250",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sat_press_oil_gas",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "pres_gas",
+                "validation" : "gte:0|lte:150",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "gas_share_m3t",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "gas_t",
+                "validation" : "gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "gas_share_m3m3",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "gas_m3",
+                "validation" : "gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "stand_sep_volume_coef",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "koeff",
+                "validation" : "gte:0.9|lte:10",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "shrinkage",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "usadka",
+                "validation" : "gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sol_coef_gas_oil",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "k_gasoil",
+                "validation" : "gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "comp_coef_res_oil",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "k_plastoil",
+                "validation" : "gte:0.0001|lte:0.05",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "res_oil_viscosity",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "plast_oil",
+                "validation" : "gte:0.7|lte: 1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "res_oil_density",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "density_oil",
+                "validation" : "gte:0.7|lte:1.05",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sep_oil_density20c",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "density_20",
+                "validation" : "gte:0.5|lte:1.1",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "gas_density20c",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "density_gas_20",
+                "validation" : "gte:0.0001|lte:0.01",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "water_share",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "water_share",
+                "validation" : "gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "dehyd_water_share",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "dehyd_water_share",
+                "validation" : "gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "density20c",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "density20c",
+                "validation" : "gte:0.5|lte:1.1",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "cinem_visc_40c",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "cinem_visc_40c",
+                "validation" : "gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "cinem_visc_50c",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "cinem_visc_50c",
+                "validation" : "gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "cinem_visc_60c",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "cinem_visc_60c",
+                "validation" : "gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "solid_temp",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "solid_temp",
+                "validation" : "gte:-100|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "molecular_weight",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "molecular_weight",
+                "validation" : "gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sulf_share",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "sulf_share",
+                "validation" : "gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ADSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "res_pressure",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "pres_plast",
+                "validation" : "gte:0|lte:200",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "res_temp",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "temp_plast",
+                "validation" : "gte:0|lte:250",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sat_press_oil_gas",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "pres_gas",
+                "validation" : "gte:0|lte:150",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "gas_share_m3t",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "gas_t",
+                "validation" : "gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "gas_share_m3m3",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "gas_m3",
+                "validation" : "gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "stand_sep_volume_coef",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "koeff",
+                "validation" : "gte:0.9|lte:10",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "shrinkage",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "usadka",
+                "validation" : "gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sol_coef_gas_oil",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "k_gasoil",
+                "validation" : "gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "comp_coef_res_oil",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "k_plastoil",
+                "validation" : "gte:0.0001|lte:0.05",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "res_oil_viscosity",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "plast_oil",
+                "validation" : "gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "res_oil_density",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "density_oil",
+                "validation" : "gte:0.7|lte:1.05",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sep_oil_density20c",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "density_20",
+                "validation" : "gte:0.5|lte:1.1",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "gas_density20c",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "validation" : "gte:0.0001|lte:0.01",
+                "title": "density_gas_20",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "water_share",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "water_share",
+                "validation" : "gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "dehyd_water_share",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "dehyd_water_share",
+                "validation" : "gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "density20c",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "density20c",
+                "validation" : "gte:0.5|lte:1.1",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "cinem_visc_40c",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "cinem_visc_40c",
+                "validation" : "gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "cinem_visc_50c",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "cinem_visc_50c",
+                "validation" : "gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "cinem_visc_60c",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "cinem_visc_60c",
+                "validation" : "gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "solid_temp",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "solid_temp",
+                "validation" : "gte:-100|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "molecular_weight",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "validation" : "gte:0",
+                "title": "molecular_weight",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sulf_share",
+                "table": "prod.reservoir_oil_prob_analysis",
+                "type": "numeric",
+                "title": "sulf_share",
+                "validation" : "gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "ARSPO"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "water_share",
+                "table": "prod.produced_water_analysis",
+                "type": "numeric",
+                "title": "water_sh",
+                "validation" : "gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "AEF"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "water_density",
+                "table": "prod.produced_water_analysis",
+                "type": "numeric",
+                "validation" : "gte:0.9|lte:2",
+                "title": "water_density",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "AEF"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "ca_share",
+                "table": "prod.produced_water_analysis",
+                "type": "numeric",
+                "title": "ca_share",
+                "validation" : "gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "AEF"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "cl_share",
+                "table": "prod.produced_water_analysis",
+                "type": "numeric",
+                "title": "cl_share",
+                "validation" : "gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "AEF"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "mg_share",
+                "table": "prod.produced_water_analysis",
+                "type": "numeric",
+                "title": "mg_share",
+                "validation" : "gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "AEF"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "salt_types",
+                "table": "prod.produced_water_analysis",
+                "type": "numeric",
+                "title": "salt_types",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "AEF"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "comments",
+                "table": "prod.produced_water_analysis",
+                "type": "numeric",
+                "title": "comments",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "AEF"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sea_water_share",
+                "table": "prod.produced_water_analysis",
+                "type": "numeric",
+                "validation" : "gte:0",
+                "title": "sea_water_share",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "AEF"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "alb_water_share",
+                "table": "prod.produced_water_analysis",
+                "type": "numeric",
+                "validation" : "gte:0",
+                "title": "alb_water_share",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "AEF"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "res_water_share",
+                "table": "prod.produced_water_analysis",
+                "type": "numeric",
+                "validation" : "gte:0",
+                "title": "res_water_share",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "AEF"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "mech_mixtures",
+                "table": "prod.produced_water_analysis",
+                "type": "numeric",
+                "title": "mech_mixtures",
+                "validation" : "gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "AEF"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sat_pressure",
+                "table": "prod.res_oil_char",
+                "type": "numeric",
+                "title": "sat_pressure",
+                "validation" :"gte:0|lte:150",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "comp_coef",
+                "table": "prod.res_oil_char",
+                "type": "numeric",
+                "title": "comp_coef",
+                "validation":"gte:0.0001|lte:0.05",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "stand_sep_gas_share",
+                "table": "prod.res_oil_char",
+                "type": "numeric",
+                "title": "stand_sep_gas_share",
+                "validation":"gte:0|lte:10000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "stand_sep_volume_coef",
+                "table": "prod.res_oil_char",
+                "type": "numeric",
+                "title": "stand_sep_volume_coef",
+                "validation":"gte:0.9|lte:10",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "stand_sep_res_oil_density",
+                "table": "prod.res_oil_char",
+                "type": "numeric",
+                "title": "stand_sep_res_oil_density",
+                "validation":"gte:0.7|lte:1.05",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "stand_sep_sep_oil_density",
+                "table": "prod.res_oil_char",
+                "type": "numeric",
+                "title": "stand_sep_sep_oil_density",
+                "validation":"gte:0.5|lte:1.1",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "stand_sep_sep_gas_density",
+                "table": "prod.res_oil_char",
+                "type": "numeric",
+                "title": "stand_sep_sep_gas_density",
+                "validation": "gte:0.0001|lte:0.01",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "step_sep_gas_factor",
+                "table": "prod.res_oil_char",
+                "type": "numeric",
+                "title": "step_sep_gas_factor",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "step_sep_volume_coef",
+                "table": "prod.res_oil_char",
+                "type": "numeric",
+                "title": "step_sep_volume_coef",
+                "validation":"gte:0.9|lte:10",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "step_sep_sep_oil_density",
+                "table": "prod.res_oil_char",
+                "type": "numeric",
+                "title": "step_sep_sep_oil_density",
+                "validation":"gte:0.5|lte:1.1",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "res_oil_viscosity",
+                "table": "prod.res_oil_char",
+                "type": "numeric",
+                "title": "res_oil_viscosity",
+                "validation":"gte:0|lte:10000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "paraf_sat_temp",
+                "table": "prod.res_oil_char",
+                "type": "numeric",
+                "title": "paraf_sat_temp",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "OCRC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "horizone",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "horizone",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "depth",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "depth",
+                "validation":"lte:10000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "viscosity_20c",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "viscosity_20c",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "viscosity_50c",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "viscosity_50c",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "solid_temp",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "solid_temp",
+                "validation":"gte:-100|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "paraf_sat_temp",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "paraf_sat_temp",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sulf_weight",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "validation":"gte:0",
+                "title": "sulf_weight",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sulf_share",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "sulf_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "selik_smol_weight",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "selik_smol_weight",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "selik_smol_share",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "selik_smol_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "asphalten_weight",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "asphalten_weight",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "asphalten_share",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "asphalten_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "paraf_weight",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "paraf_weight",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "paraf_share",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "research_type",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "fractions_100c",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "fractions_100c",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "fractions_150c",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "fractions_150c",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "fractions_200c",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "fractions_200c",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "fractions_300c",
+                "table": "prod.surf_oil_characteristics",
+                "type": "numeric",
+                "title": "fractions_300c",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "COSC"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
