@@ -41,7 +41,6 @@ export default {
             if (!this.chartData) {
                 return {};
             }
-            console.log(this.chartData);
 
             return {
                 grid: {
@@ -146,8 +145,15 @@ export default {
                     },
                     labels: {
                         formatter: function (val) {
-                            return moment(val,'DD.MM.YYYY').format('DD/MMM/YYYY');
+                            return moment(val).format("DD / MMM / YYYY");
                         },
+                        type: datetime,
+                        datetimeFormatter: {
+                            day: "dd MMM yy",
+                            month: "dd MMM yy",
+                            year: "yy",
+                        },
+
                     },
                     position: "bottom",
                     axisBorder: {
@@ -163,12 +169,21 @@ export default {
             if (!this.chartData) {
                 return [];
             } else {
-                return [
+                let chartData = [
                     {
                         name: this.trans("visualcenter.Fact"),
                         data: this.chartData.series.fact,
                     }
                 ];
+                if (this.chartData.series.plan) {
+                    chartData.push(
+                        {
+                            name: this.trans("visualcenter.Plan"),
+                            data: this.chartData.series.plan,
+                        }
+                    );
+                }
+                return chartData;
             }
         },
     },

@@ -220,7 +220,7 @@ export default {
         getProductionFondWidgetChartData(compared) {
             let sorted = _.sortBy(compared,'date','asc');
             let groupedForChart =  _.groupBy(sorted, item => {
-                return moment(item.date).startOf('day').format("DD.MM.YYYY");
+                return moment(item.date).startOf('day').format("MM.DD.YYYY");
             })
             let chartData = {};
             if (groupedForChart) {
