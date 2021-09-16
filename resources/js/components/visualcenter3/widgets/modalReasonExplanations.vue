@@ -32,26 +32,6 @@
                                 <span class="col-3 font-weight-bold">{{index}}</span>
                                 <span class="col-9">{{reason}}</span>
                             </div>
-                            <div class="col-12 d-flex p-2 reason-description" v-for="reason in item">
-                                <span class="col-3 font-weight-bold">{{index}}</span>
-                                <span class="col-9">{{reason}}</span>
-                            </div>
-                            <div class="col-12 d-flex p-2 reason-description" v-for="reason in item">
-                                <span class="col-3 font-weight-bold">{{index}}</span>
-                                <span class="col-9">{{reason}}</span>
-                            </div>
-                            <div class="col-12 d-flex p-2 reason-description" v-for="reason in item">
-                                <span class="col-3 font-weight-bold">{{index}}</span>
-                                <span class="col-9">{{reason}}</span>
-                            </div>
-                            <div class="col-12 d-flex p-2 reason-description" v-for="reason in item">
-                                <span class="col-3 font-weight-bold">{{index}}</span>
-                                <span class="col-9">{{reason}}</span>
-                            </div><div class="col-12 d-flex p-2 reason-description" v-for="reason in item">
-                            <span class="col-3 font-weight-bold">{{index}}</span>
-                            <span class="col-9">{{reason}}</span>
-                        </div>
-
                         </div>
                     </div>
                 </div>
