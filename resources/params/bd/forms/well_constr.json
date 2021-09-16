@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table":   "prod.well_constr",
+  "sort": [
+    {
+      "field": "landing_date",
+      "order": "desc"
+    }
+  ],
   "default_values": {
     "project_drill": false
   },
