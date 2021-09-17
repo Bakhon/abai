@@ -230,6 +230,7 @@ Vue.component('digital-drilling-menu', require('./components/DigitalDrilling/men
 Vue.component('window-head', require('./components/DigitalDrilling/WindowHead').default);
 
 Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
+Vue.component('import-daily-raport', require('./components/DigitalDrilling/ImportDailyRaport').default);
 
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 

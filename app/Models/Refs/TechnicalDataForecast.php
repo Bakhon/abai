@@ -18,7 +18,8 @@ class TechnicalDataForecast extends Model
         'comment',
         'author_id',
         'editor_id',
-        'log_id'
+        'log_id',
+        'pes_id'
     ];
 
     public function source()
@@ -44,5 +45,10 @@ class TechnicalDataForecast extends Model
     public function log()
     {
         return $this->belongsTo(TechnicalDataLog::class, 'log_id');
+    }
+
+    public function pes()
+    {
+        return $this->belongsTo(TechnicalStructurePes::class, 'pes_id');
     }
 }

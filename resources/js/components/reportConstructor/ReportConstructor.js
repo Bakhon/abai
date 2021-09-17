@@ -451,11 +451,11 @@ export default {
             }
             return maxChildrenNumber
         },
-        getRowHeightSpan(attribute, currentDepth) {
+        getRowHeightSpan(attribute, currentDepth, sheetType) {
             if (attribute.maxChildrenNumber > 0) {
                 return 1
             }
-            return this.maxDepthOfSelectedAttributes - currentDepth
+            return this.maxDepthOfSelectedAttributes[sheetType] - currentDepth
         },
         getRowWidthSpan(attribute) {
             if (attribute.maxChildrenNumber === 0) {

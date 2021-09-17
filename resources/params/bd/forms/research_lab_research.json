@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.lab_research",
+  "sort": [
+    {
+      "field": "research_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main",
@@ -27,7 +33,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "oil",
-                "validation" : "gte:0|lte:1000000",
+                "validation": "required|gte:0|lte:1000000",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -42,7 +48,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "water",
-                "validation" : "gte:0|lte:100000",
+                "validation": "required|gte:0|lte:100000",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -57,7 +63,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "volume",
-                "validation" : "gte:0.9|lte:10",
+                "validation": "required|gte:0.9|lte:10",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -72,7 +78,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "r_oil",
-                "validation" : "gte:0.7|lte:1.05",
+                "validation": "required|gte:0.7|lte:1.05",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -102,7 +108,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "pnac",
-                "validation" : "gte:0|lte:1500",
+                "validation": "required|gte:0|lte:1500",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -117,7 +123,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "gf",
-                "validation" : "gte:0",
+                "validation": "required|gte:0",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -132,7 +138,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "tpl",
-                "validation" : "gte:0|lte:250",
+                "validation": "required|gte:0|lte:250",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -1410,6 +1416,681 @@
                     "field": "research_type",
                     "value": {
                       "code": "COSC"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "cond_begin_pressure",
+                "table": "prod.res_gas_char",
+                "type": "numeric",
+                "title": "cond_begin_pressure",
+                "validation":"gte:0|lte:150",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CRG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "density",
+                "table": "prod.res_gas_char",
+                "type": "numeric",
+                "title": "density",
+                "validation":"gte:0|lte:1",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CRG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sep_volume_coef",
+                "table": "prod.res_gas_char",
+                "type": "numeric",
+                "title": "sep_volume_coef",
+                "validation":"gte:0|lte:500",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CRG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "viscosity",
+                "table": "prod.res_gas_char",
+                "type": "numeric",
+                "title": "viscosity",
+                "validation":"gte:0|lte:10",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CRG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "stable_cond_share",
+                "table": "prod.res_gas_char",
+                "type": "numeric",
+                "title": "stable_cond_share",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CRG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "cond_sep_factor",
+                "table": "prod.res_gas_char",
+                "type": "numeric",
+                "title": "cond_sep_factor",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CRG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sulf_hydro_mol",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "sulf_hydro_mol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sulf_hydro_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "sulf_hydro_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "co2_mol",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "co2_mol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "co2_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "co2_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "nitro_rare_mol",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "nitro_rare_mol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "nitro_rare_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "nitro_rare_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "nitro_rare_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "nitro_rare_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "metan_mol",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "metan_mol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "metan_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "metan_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "etan_mol",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "etan_mol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "etan_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "etan_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "propan_mol",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "propan_mol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "propan_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "propan_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "isobutan_mol",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "isobutan_mol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "isobutan_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "isobutan_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "h_butan_mol",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "h_butan_mol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "h_butan_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "h_butan_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "heksan_mol",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "heksan_mol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "heksan_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "heksan_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "heptan_mol",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "heptan_mol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "heptan_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "heptan_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "resid_mol",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "resid_mol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "resid_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "resid_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "molar_mol",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "molar_mol",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "molar_share",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "molar_share",
+                "validation":"gte:0|lte:100",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "stand_density",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "stand_density",
+                "validation":"gte:0.0001|lte:0.01",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "stand_density_resid",
+                "table": "prod.petro_gas_char",
+                "type": "numeric",
+                "title": "stand_density_resid",
+                "validation":"gte:0.0001|lte: 0.01",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPG"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sat_pressure",
+                "table": "prod.res_water_char",
+                "type": "numeric",
+                "title": "sat_pressure",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPIW"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "sulf_hydro",
+                "table": "prod.res_water_char",
+                "type": "numeric",
+                "title": "sulf_hydro",
+                "validation":"gte:0",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPIW"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "volume_coef",
+                "table": "prod.res_water_char",
+                "type": "numeric",
+                "title": "volume_coef",
+                "validation":"gte:0.98|lte: 1.07",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPIW"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "viscosity",
+                "table": "prod.res_water_char",
+                "type": "numeric",
+                "title": "viscosity",
+                "validation":"gte:0|lte:100000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPIW"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "total_mineralization",
+                "table": "prod.res_water_char",
+                "type": "numeric",
+                "title": "total_mineralization",
+                "validation":"gte:0|lte: 1000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPIW"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "density",
+                "table": "prod.res_water_char",
+                "type": "numeric",
+                "title": "density",
+                "validation":"gte:0.9|lte:2",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPIW"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "cl_ion",
+                "table": "prod.res_water_char",
+                "type": "numeric",
+                "title": "cl_ion",
+                "validation":"gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPIW"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "so4_ion",
+                "table": "prod.res_water_char",
+                "type": "numeric",
+                "title": "so4_ion",
+                "validation":"gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPIW"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "hso3_ion",
+                "table": "prod.res_water_char",
+                "type": "numeric",
+                "title": "hso3_ion",
+                "validation":"gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPIW"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "ca_ion",
+                "table": "prod.res_water_char",
+                "type": "numeric",
+                "title": "ca_ion",
+                "validation":"gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPIW"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "mg_ion",
+                "table": "prod.res_water_char",
+                "type": "numeric",
+                "title": "mg_ion",
+                "validation":"gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPIW"
+                    }
+                  }
+                ]
+              },
+              {
+                "code": "nak_ion",
+                "table": "prod.res_water_char",
+                "type": "numeric",
+                "title": "nak_ion",
+                "validation":"gte:0|lte:1000000",
+                "depends_on": [
+                  {
+                    "field": "research_type",
+                    "value": {
+                      "code": "CPIW"
                     }
                   }
                 ]

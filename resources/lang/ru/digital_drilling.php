@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'module_title'=> 'Цифровое бурение',
   'database' => 'База данных',
   'general_information' => 'Общая информация',
   'well_data_sheet' => 'Паспорт скважины',
@@ -61,6 +62,13 @@ return array (
       'meters' => 'метров',
       'drilled_per_day' => 'Пробурено за сутки',
       'total_drilled' => 'Пробурено итого',
+      'close' => 'Закрыть',
+      'reset' => 'Отмена',
+      'import' => 'Импорт',
+      'import_daily-report' => 'Импорт суточного бурового рапорта',
+      'select_file' => 'Выберите файл',
+      'or' => 'или',
+      'drag_here' => 'перетащите сюда файл',
   ],
   'home' => [
       'operating_oil_pipeline' => 'Действующий нефтепровод',
@@ -362,7 +370,8 @@ return array (
         'weight' => 'масса, кг',
     ],
     'daily_raport' => [
-        'DAILY_DRILLING_REPORT' => 'СУТОЧНЫЙ БУРОВОЙ РАПОРТ',
+        'DAILY_DRILLING_REPORT' => 'Суточный буровой рапорт',
+        'IMPORT_DRILLING_REPORT' => 'Импорт бурового рапорта',
         'date' => 'Дата',
         'report' => 'Рапорт',
         'page' => 'Страница',
@@ -586,9 +595,9 @@ return array (
         'INCLINOMETRY' => 'ИНКЛИНОМЕТРИЯ',
         'depth_m' => 'Глубина, м',
         'altitude' => 'Альтитуд α',
-        'coal' => 'Уголь (°)',
+        'angle' => 'Угол (°)',
         'azimuth' => 'Азимут(°)',
-        'three_instruments' => 'Три прибора',
+        'type_instrument' => 'Тип прибора',
 
         'SAFETY' => 'ТЕХНИКА БЕЗОПАСНОСТИ',
         'fire_alarm' => 'Пожарная тревога',

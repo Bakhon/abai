@@ -215,7 +215,8 @@ export default {
         },
 
         getInjectionFondWidgetChartData(compared) {
-            let groupedForChart =  _.groupBy(compared, item => {
+            let sorted = _.sortBy(compared,'date','asc');
+            let groupedForChart =  _.groupBy(sorted, item => {
                 return moment(item.date).startOf('day').format("MM.DD.YYYY");
             });
             let chartData = {};

@@ -11,6 +11,7 @@ use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\EcoRefsScFa;
+use App\Models\Refs\TechnicalStructurePes;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -29,15 +30,19 @@ class EconomicCostController extends Controller
 
     public function edit(int $id): View
     {
-        $ecoRefsCost = EcoRefsCost::findOrFail($id);
+        $model = EcoRefsCost::findOrFail($id);
+
+        $fillableFloatKeys = EcoRefsCost::FILLABLE_FLOAT_KEYS;
 
         $scFas = EcoRefsScFa::get();
 
         $companies = EcoRefsCompaniesId::get();
 
+        $pes = TechnicalStructurePes::get();
+
         return view(
             'economic.cost.edit',
-            compact('ecoRefsCost', 'scFas', 'companies')
+            compact('model', 'fillableFloatKeys', 'scFas', 'companies', 'pes')
         );
     }
 
@@ -64,42 +69,20 @@ class EconomicCostController extends Controller
 
     public function getData(EconomicCostDataRequest $request): array
     {
-        $data = EcoRefsCost::query()
-            ->whereScFa($request->sc_fa)
-            ->with(['scfa', 'company', 'author', 'editor'])
-            ->get();
+        $query = EcoRefsCost::query();
 
-        $response = [];
-
-        /** @var EcoRefsCost $item */
-        foreach ($data as $item) {
-            $response[] = [
-                $item->scfa->name,
-                $item->company->name,
-                date('Y-m', strtotime($item->date)),
-                $item->variable,
-                $item->variable_processing,
-                $item->fix_noWRpayroll,
-                $item->fix_payroll,
-                $item->fix_nopayroll,
-                $item->fix,
-                $item->gaoverheads,
-                $item->wr_nopayroll,
-                $item->wr_payroll,
-                $item->wo,
-                $item->net_back,
-                $item->amort,
-                $item->comment,
-                $item->author ? "{$item->created_at} {$item->author->name}" : "",
-                $item->editor ? "{$item->updated_at} {$item->editor->name}" : "",
-                route("economic.cost.edit", $item->id),
-                $item->log_id,
-            ];
+        if($request->sc_fa){
+            $query->whereScFa($request->sc_fa);
         }
 
-        return [
-            'data' => $response
-        ];
+        if($request->company_id){
+            $query->whereCompanyId($request->company_id);
+        }
+
+        return $query
+            ->with(['scfa', 'company', 'author', 'editor', 'pes'])
+            ->get()
+            ->toArray();
     }
 
     public function uploadExcel(): View

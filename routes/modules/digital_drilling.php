@@ -13,5 +13,9 @@ Route::group(
             Route::group(['prefix' => '/daily-report'], function () {
                 Route::get('/', 'DigitalDrilling\DailyReportController@index')->name('digital-drilling-daily-report');
             });
+            // Daily report
+            Route::group(['prefix' => '/daily-report-import'], function () {
+                Route::get('/', 'DigitalDrilling\DailyReportController@raport')->name('digital-drilling-import-daily-report');
+            });
         });
     });

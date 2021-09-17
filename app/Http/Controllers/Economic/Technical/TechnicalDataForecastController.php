@@ -11,6 +11,7 @@ use App\Models\Refs\TechnicalDataForecast;
 use App\Models\Refs\TechnicalStructureCdng;
 use App\Models\Refs\TechnicalStructureGu;
 use App\Models\Refs\TechnicalStructureNgdu;
+use App\Models\Refs\TechnicalStructurePes;
 use App\Models\Refs\TechnicalStructureSource;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -29,15 +30,17 @@ class TechnicalDataForecastController extends Controller
 
     public function edit(int $id): View
     {
-        $technicalDataForecast = TechnicalDataForecast::find($id);
+        $model = TechnicalDataForecast::find($id);
 
         $gu = TechnicalStructureGu::get();
 
         $source = TechnicalStructureSource::get();
 
+        $pes = TechnicalStructurePes::get();
+
         return view(
             'economic.technical.forecast.edit',
-            compact('source', 'technicalDataForecast', 'gu')
+            compact('model', 'gu', 'source', 'pes')
         );
     }
 
@@ -105,7 +108,7 @@ class TechnicalDataForecastController extends Controller
         }
 
         return $query
-            ->with(['source', 'gu', 'author', 'editor'])
+            ->with(['source', 'gu', 'author', 'editor', 'pes'])
             ->get()
             ->toArray();
     }

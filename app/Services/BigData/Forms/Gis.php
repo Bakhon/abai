@@ -8,8 +8,6 @@ use App\Exceptions\BigData\SubmitFormException;
 use App\Services\AttachmentService;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +17,7 @@ class Gis extends PlainForm
     use DateMoreThanValidationTrait;
     use DepthValidationTrait;
 
-    public function getResults(): JsonResponse
+    public function getResults(): array
     {
         $wellId = $this->request->get('well_id');
         try {
@@ -34,26 +32,23 @@ class Gis extends PlainForm
                 });
             }
 
-            return response()->json(
-                [
-                    'rows' => $rows->values(),
-                    'columns' => $columns,
-                    'form' => $this->params(),
-                    'available_actions' => array_values($availableActions)
-                ]
-            );
+            return [
+                'rows' => $rows->values(),
+                'columns' => $columns,
+                'form' => $this->params(),
+                'available_actions' => array_values($availableActions)
+            ];
         } catch (\Exception $e) {
-            return response()->json(
-                [
-                    'error' => $e->getMessage()
-                ],
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
+            return [
+                'error' => $e->getMessage()
+            ];
         }
     }
 
-    private function getRows(int $wellId): Collection
+    protected function getRows(): Collection
     {
+        $wellId = (int)$this->request->get('well_id');
+
         $rows = collect();
         $row = [];
 
@@ -115,7 +110,7 @@ class Gis extends PlainForm
             ->toArray();
     }
 
-    private function getColumns()
+    protected function getColumns(): Collection
     {
         $columns = collect();
         $columns->push(

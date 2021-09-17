@@ -1,7 +1,7 @@
 <template>
   <div :class="getAwTreeClasses">
     <ul v-if="typeof items === 'object'" :class="getAwTreeRootListClasses">
-      <component :is="variant" :index="2" :settings="settings" :item="items" />
+      <component :is="variant" :settings="settings" :item="items"/>
     </ul>
   </div>
 </template>
@@ -26,13 +26,22 @@ export default {
       default: "AwTreeItem"
     }
   },
+  data(){
+    return {
+      dragElement: null,
+      dragTo: null,
+      dragFrom: null
+    }
+  },
   computed: {
+    getDragElement(){
+      return this.dragElement
+    },
     getAwTreeRootListClasses(){
       return {
         "aw-tree__list": true,
         [this.variant]: true
       }
-
     },
     getAwTreeClasses(){
       return {
@@ -42,6 +51,9 @@ export default {
     }
   },
   methods: {
+    selectItem(item){
+      this.$emit('selectItem', item)
+    },
     clickItem(value){
       let existsIndex = this.selected.indexOf(value);
       if(~existsIndex){
@@ -50,15 +62,16 @@ export default {
         this.selected.push(value)
       }
       this.$emit('update:selected', this.selected)
-    }
+    },
   },
   provide(){
     return {
+      selectItem: this.selectItem,
       selected: this.selected,
       settings: this.settings,
       clickItem: this.clickItem,
       isWithoutSpace: this.isWithoutSpace,
-      variant: this.variant
+      variant: this.variant,
     }
   }
 }
