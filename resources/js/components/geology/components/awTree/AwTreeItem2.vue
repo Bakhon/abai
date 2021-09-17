@@ -1,5 +1,8 @@
 <template>
-  <li :class="itemClasses">
+  <li
+      :id="item.id"
+      :class="{...itemClasses, 'selected': ($store.state.geologyGis.wellName === item.name)}"
+  >
     <div class="d-flex align-items-center">
       <div :class="getStatBoxClasses" v-if="isFolder" @click="ontoggle">
         <AwIcon width="6" height="8" name="minus" v-if="isOpen" />
@@ -15,11 +18,11 @@
         <div class="icon-box" v-if="item.iconType">
           <AwIcon :fill="item.iconFill" :name="item.iconType" />
         </div>
-        <span class="aw-tree__list-item__label" @click="ontoggle">{{ item.name }}</span>
+        <span class="aw-tree__list-item__label" @dblclick="ontoggle" @click="select(item)">{{ item.name }}</span>
       </div>
     </div>
     <ul v-if="item.children" v-show="isOpen" >
-      <AwTreeItem2 :settings="settings" v-for="(child, i) in item.children" :item="child" :key="i" :index="index+1" />
+      <AwTreeItem2 :id="item.children.id" :parent="item" :settings="settings" v-for="(child, i) in item.children" :item="child" :key="i" :index="index+1" />
     </ul>
   </li>
 </template>
@@ -42,8 +45,12 @@ export default {
         "is-folder": this.isFolder,
       }
     }
+  },
+  methods:{
+    select(item){
+      this.selectItem(item)
+    },
   }
-
 }
 </script>
 
@@ -92,6 +99,10 @@ export default {
         }
       }
       &-item {
+        .enter {
+          background: #000;
+        }
+
         ul {
           position: relative;
           &:after {

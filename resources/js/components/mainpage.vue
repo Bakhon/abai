@@ -130,6 +130,11 @@ export default {
 
           url: this.localeUrl('/digital-drilling/')
         },
+        {
+          name: this.trans('economy_pf.economy'),
+          icon: 'ecomony-kenje.svg',
+          url: this.localeUrl('/module_economy/proactive-factors/')
+        }
       ],
         childMenuCollapseList: [
             {
