@@ -70,25 +70,23 @@
             },
             dragover(event) {
                 event.preventDefault();
-                // Add some visual fluff to show the user can drop its files
                 if (!event.currentTarget.classList.contains('bg-green-300')) {
-                    event.currentTarget.classList.remove('bg-gray-100');
-                    event.currentTarget.classList.add('bg-green-300');
+                    this.addDeleteClass()
                 }
             },
             dragleave(event) {
-                // Clean up
-                event.currentTarget.classList.add('bg-gray-100');
-                event.currentTarget.classList.remove('bg-green-300');
+               this.addDeleteClass()
             },
             drop(event) {
                 event.preventDefault();
                 this.$refs.file.files = event.dataTransfer.files;
-                this.onChange(); // Trigger the onChange event manually
-                // Clean up
+                this.onChange()
+
+            },
+            addDeleteClass(){
                 event.currentTarget.classList.add('bg-gray-100');
                 event.currentTarget.classList.remove('bg-green-300');
-            },
+            }
         }
     }
 </script>
