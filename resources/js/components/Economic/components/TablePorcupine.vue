@@ -138,15 +138,11 @@ export default {
 
     chartSeries() {
       return this.filteredData.map(item => {
-        const suffix = item.is_gtm
-            ? this.trans('economic_reference.with_gtm')
-            : this.trans('economic_reference.without_gtm')
-
         return {
           name: `
           ${this.trans('economic_reference.fot_optimization')} - ${+item.salary_percent.value * 100}%,
           ${this.trans('economic_reference.non_optimizable_costs_share')} - ${+item.retention_percent.value * 100}%
-          ${suffix}
+          ${item.is_gtm ? this.trans('economic_reference.with_gtm') : this.trans('economic_reference.without_gtm')}
           `,
           type: 'line',
           data: item.series.map(item => {
