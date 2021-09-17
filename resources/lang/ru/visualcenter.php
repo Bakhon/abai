@@ -422,7 +422,6 @@ return array (
   'notes' => 'Примечания',
   'kpdModuleTitle' => 'КПД Upstream',
   'condensateDelivery' => 'Сдача конденсата',
-  'notes' => 'Примечания',
   'countOfProductionWells' => 'Количество добывающих скважин, скв.',
   'countOfInjectionWells' => 'Количество нагнетательных скважин, скв.',
   'countDrillingWells' => 'Количество скважин из бурения, скв.',
@@ -433,5 +432,8 @@ return array (
   'countDrilling' => 'Бурение проходка, м.',
   'emergency' => 'Инцидент',
   'emergencyDate' => 'Дата инцидента',
-  'resolvingDate' => 'Дата устранения инцидента'
+  'reasonExplanations' => 'Причины отклонений',
+  'resolvingDate' => 'Дата устранения инцидента',
+  'emergencyFinished' => 'Завершенные',
+  'emergencyOpen' => 'Открытые'
 );

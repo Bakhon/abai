@@ -6,6 +6,7 @@ import BtnDropdown from "./components/BtnDropdown";
 import SettingModal from "./components/SettingModal";
 import WellAtlasModal from "./components/WellAtlasModal";
 import Accordion from "./components/Accordion";
+import SearchFormRefresh from "../ui-kit/SearchFormRefresh";
 import mainMenu from "../GTM/mock-data/main_menu.json";
 import { legends, maps, properties, objects, fileActions, mapActions } from './json/data';
 import { digitalRatingState, digitalRatingMutations } from '@store/helpers';
@@ -18,6 +19,7 @@ export default {
         SettingModal,
         WellAtlasModal,
         Accordion,
+        SearchFormRefresh
     },
 
     data() {
@@ -39,6 +41,7 @@ export default {
             minZoom: -6,
             maxZoom: 0,
             renderer: L.canvas({ padding: 0.5 }),
+            searchSector: '',
         };
     },
 
@@ -61,6 +64,7 @@ export default {
                 minZoom: this.minZoom,
                 maxZoom: this.maxZoom,
             });
+
             L.control.zoom({
                 position: 'bottomright'
             }).addTo(this.map);
@@ -76,9 +80,9 @@ export default {
                 this.rectangle = L.rectangle(this.getBounds(maps[i]), {
                     renderer: this.renderer,
                     color: maps[i]['color'],
-                    weight: 3,
+                    weight: 1,
                     fillColor: maps[i]['color'],
-                    fillOpacity: 1,
+                    fillOpacity: 0.7,
                 }).addTo(this.map).bindPopup(maps[i]['sector'].toString());
 
                 this.rectangle.on('mouseover', function (e) {
@@ -161,16 +165,29 @@ export default {
             }
         },
         async selectPanelItem(type, item) {
+            this.map.remove();
             if(type === 'map' && item?.id === 1) {
-                this.initWellOnMap();
+                setTimeout(async() => {
+                    this.initMap();
+                    await this.initSectorOnMap();
+                    this.initWellOnMap();
+                }, 0);
             } else {
-                this.map.remove();
                 this.SET_HORIZON(item?.id);
                 setTimeout(async() => {
                     this.initMap();
                     await this.initSectorOnMap();
                 }, 0);
             }
+        },
+        onSearchSector() {
+            this.map.eachLayer(function(layer) {
+                if (layer?._popup?._content === this.searchSector?.toString()) {
+                    const {lat, lng} = layer._bounds?._northEast;
+                    this.map.setView([lat, lng], -3);
+                    layer.openPopup();
+                }
+            }, this);
         }
     },
 }

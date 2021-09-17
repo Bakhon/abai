@@ -11,27 +11,12 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-class FluidProductionMonth extends TableForm
+class FluidProductionMonth extends MeasLogByMonth
 {
     protected $configurationFileName = 'fluid_production_month';
 
-    public function getRows(array $params = []): array
-    {
-        $filter = json_decode($this->request->get('filter'));
-        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
 
-        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
-
-        $rows = $this->getRowsData($date, $wells);
-        $columns = $this->getColumns($date);
-
-        return [
-            'columns' => $columns,
-            'rows' => $rows
-        ];
-    }
-
-    private function getRowsData(CarbonImmutable $date, Collection $wells): array
+    protected function getRows(CarbonImmutable $date, Collection $wells): array
     {
         $wellIds = $wells->pluck('id')->toArray();
 
@@ -290,19 +275,21 @@ class FluidProductionMonth extends TableForm
         $monthDay = $date->startOfMonth();
         while ($monthDay < $date) {
             $wellLiquid = $liquid->get($well->id);
-            $liquidValue = $wellLiquid->get($monthDay->format('j'));
-            $row[$monthDay->format('d.m.Y')] = ['value' => $liquidValue['liquid'] ?? null];
+            if ($wellLiquid) {
+                $liquidValue = $wellLiquid->get($monthDay->format('j'));
+                $row[$monthDay->format('d.m.Y')] = ['value' => $liquidValue['liquid'] ?? null];
 
-            if (!empty($liquidValue['liquid'])) {
-                $count++;
-                $sum += $liquidValue['liquid'];
+                if (!empty($liquidValue['liquid'])) {
+                    $count++;
+                    $sum += $liquidValue['liquid'];
+                }
             }
 
             $monthDay = $monthDay->addDay();
         }
 
         $row['meas_count'] = ['value' => $count];
-        $row['avg'] = ['value' => round($sum / $count, 2)];
+        $row['avg'] = ['value' => $count > 0 ? round($sum / $count, 2) : 0];
         return $row;
     }
 
@@ -332,11 +319,11 @@ class FluidProductionMonth extends TableForm
         }
 
         $row['meas_count'] = ['value' => $count];
-        $row['avg'] = ['value' => round($sum / $count, 2)];
+        $row['avg'] = ['value' => $count > 0 ? round($sum / $count, 2) : 0];
         return $row;
     }
 
-    private function getColumns(CarbonImmutable $date): array
+    protected function getColumns(CarbonImmutable $date): array
     {
         $columns = $this->getFields()->toArray();
 

@@ -36,6 +36,7 @@
             </template>
             <template v-else>
               <tr>
+                <th v-if="formParams.edit"></th>
                 <th v-for="column in visibleColumns">
                   {{ column.title }}
                 </th>
@@ -44,7 +45,9 @@
             </thead>
             <tbody>
             <tr v-for="(row, rowIndex) in rows">
-
+              <td v-if="formParams.edit">
+                <a href="#" @click.prevent="editForm(row)">Редактировать</a>
+              </td>
               <td
                   v-for="column in visibleColumns"
                   :class="{'editable': formParams && formParams.available_actions.includes('update') && isEditable(row, column)}"
@@ -57,7 +60,7 @@
                   <a :href="row[column.code].href">{{ row[column.code].name }}</a>
                 </template>
                 <template v-else-if="getCellType(row, column) === 'label'">
-                  <label v-html="row[column.code].name"></label>
+                  <label v-html="row[column.code].name || ''"></label>
                 </template>
                 <template v-else-if="getCellType(row, column) === 'calc'">
                   <span class="value" v-html="row[column.code] ? row[column.code].value : ''"></span>
@@ -317,7 +320,7 @@ export default {
       if (!this.filter || !this.id || !this.type) return
 
       this.SET_LOADING(true)
-      this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/rows`), {
+      this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.params.code}/results`), {
         params: {
           filter: this.filter,
           id: this.id,
@@ -585,6 +588,18 @@ export default {
       this.innerFormWellId = row.id
       this.innerFormValues = {}
       this.innerFormValues[column.code] = row[column.code].value
+    },
+    editForm(row) {
+      this.axios.post(this.localeUrl(`/api/bigdata/forms/${this.formParams.edit.form}/edit-form`), {
+            id: row.id,
+            filter: this.filter
+          }
+      ).then(response => {
+        this.isInnerFormOpened = true
+        this.innerFormParams = this.forms.find(formItem => formItem.code === this.formParams.edit.form)
+        this.innerFormWellId = response.data.well_id
+        this.innerFormValues = response.data.values
+      })
     }
   },
 };

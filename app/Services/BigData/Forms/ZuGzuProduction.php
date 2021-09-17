@@ -14,7 +14,7 @@ class ZuGzuProduction extends TableForm
 
     protected $configurationFileName = 'zu_gzu_production';
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
 

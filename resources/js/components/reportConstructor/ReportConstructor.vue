@@ -347,7 +347,7 @@
                         <tr v-for="(attributesOnDepth, index) in getHeaders(sheetType)">
                           <th
                               v-for="attribute in attributesOnDepth"
-                              :rowspan="getRowHeightSpan(attribute, index)"
+                              :rowspan="getRowHeightSpan(attribute, index, sheetType)"
                               :colspan="getRowWidthSpan(attribute)"
                           >
                             <div class="centered">
