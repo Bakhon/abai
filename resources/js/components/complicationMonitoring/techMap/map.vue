@@ -1291,8 +1291,7 @@ export default {
       this.layerRedraw('icon-layer-well', 'well', this.wellPoints);
       this.layerRedraw('icon-layer-zu', 'zu', this.zuPoints);
       this.layerRedraw('icon-layer-gu', 'gu', this.guPoints);
-    },
-
+    }
   }
 }
 </script>
