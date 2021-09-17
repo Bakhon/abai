@@ -4,6 +4,10 @@
       class="form-control"
       @change="$emit('change')"
   >
+    <option :value="null" disabled selected>
+      {{ trans('economic_reference.select_item') }}
+    </option>
+
     <option
         v-for="sc_fa in scFas"
         :key="sc_fa.id"
@@ -43,10 +47,7 @@ export default {
 
       this.form.sc_fas = null
 
-      this.scFas = [{
-        id: null,
-        name: this.trans('economic_reference.select_item')
-      }]
+      this.scFas = []
 
       let params = {
         is_forecast: +this.isForecast
@@ -54,7 +55,7 @@ export default {
 
       const {data} = await this.axios.get(this.localeUrl('/module_economy/eco_refs_sc_fas'), {params: params})
 
-      this.scFas = [...this.scFas, ...data.data]
+      this.scFas = data.data
 
       this.$emit('loaded')
     },

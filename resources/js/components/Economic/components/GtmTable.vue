@@ -53,7 +53,7 @@ export default {
       this.SET_LOADING(true);
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/gtm/get-data'), {params: this.form})
+        const {data} = await this.axios.get(this.url, {params: this.form})
 
         this.data = [...[this.headers], ...data.data]
       } catch (e) {
@@ -109,6 +109,10 @@ export default {
         '',
       ]
     },
+
+    url() {
+      return this.localeUrl('/economic/gtm/get-data')
+    }
   }
 }
 </script>

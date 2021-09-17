@@ -7,7 +7,7 @@
     <select-log
         v-if="form.author_id"
         :form="form"
-        :fetch-params="{author_id: form.author_id, type_id: EconomicDataLogTypeModel.GTM_VALUE}"
+        :fetch-params="{author_id: form.author_id, type_id: EconomicDataLogTypeModel.GTM}"
         class="mt-3"
         @change="getData()"/>
 
@@ -53,7 +53,7 @@ export default {
       this.SET_LOADING(true);
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/gtm_value/get-data'))
+        const {data} = await this.axios.get(this.url, {params: this.form})
 
         this.data = [...[this.headers], ...data.data]
       } catch (e) {
@@ -110,6 +110,10 @@ export default {
         '',
       ]
     },
+
+    url() {
+      return this.localeUrl('/economic/gtm_value/get-data')
+    }
   }
 };
 </script>

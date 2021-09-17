@@ -44,8 +44,6 @@ class EconomicDataLogController extends Controller
                 case EconomicDataLogType::GTM:
                     EcoRefsGtm::query()->whereLogId($log->id)->delete();
 
-                    break;
-                case EconomicDataLogType::GTM_VALUE:
                     EcoRefsGtmValue::query()->whereLogId($log->id)->delete();
 
                     break;

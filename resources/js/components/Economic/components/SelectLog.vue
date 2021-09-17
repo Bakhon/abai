@@ -1,11 +1,11 @@
 <template>
   <select
-      v-model="form.log_id"
+      v-model="form[formKey]"
       class="form-control"
       @change="$emit('change')"
   >
     <option :value="null" disabled selected>
-      {{ trans('economic_reference.select_log') }}
+      {{ selectDefault }}
     </option>
 
     <option
@@ -27,9 +27,18 @@ export default {
       required: true,
       type: Object
     },
+    formKey: {
+      required: false,
+      type: String,
+      default: () => 'log_id'
+    },
     fetchParams: {
       required: false,
       type: Object
+    },
+    placeholder: {
+      required: false,
+      type: String
     }
   },
   data: () => ({
@@ -54,6 +63,10 @@ export default {
   computed: {
     url() {
       return this.localeUrl('/economic/log/get-data')
+    },
+
+    selectDefault() {
+      return this.placeholder || this.trans('economic_reference.select_log')
     }
   }
 }

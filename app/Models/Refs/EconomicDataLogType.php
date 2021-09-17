@@ -10,14 +10,11 @@ class EconomicDataLogType extends Model
 
     const GTM = 2;
 
-    const GTM_VALUE = 3;
-
     public static function ids(): array
     {
         return [
             self::COST,
             self::GTM,
-            self::GTM_VALUE,
         ];
     }
 
