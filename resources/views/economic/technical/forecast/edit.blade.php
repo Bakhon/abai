@@ -69,25 +69,25 @@
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <strong>{{ __('forecast.well') }}:</strong>
-                                    <input type="text" name="well_id" class="form-control" placeholder=""
+                                    <input type="text" name="well_id" class="form-control"
                                            value="{{$model->well_id}}">
                                     <strong>{{ __('forecast.date') }}:</strong>
-                                    <input type="date" name="date" class="form-control" placeholder=""
+                                    <input type="date" name="date" class="form-control"
                                            value="{{$model->date}}">
                                     <strong>{{ __('forecast.oil-production') }}:</strong>
-                                    <input type="text" name="oil" class="form-control" placeholder=""
+                                    <input type="text" name="oil" class="form-control"
                                            value="{{$model->oil}}">
                                     <strong>{{ __('forecast.extraction-liquid') }}:</strong>
-                                    <input type="text" name="liquid" class="form-control" placeholder=""
+                                    <input type="text" name="liquid" class="form-control"
                                            value="{{$model->liquid}}">
                                     <strong>{{ __('forecast.days-worked') }}:</strong>
-                                    <input type="text" name="days_worked" class="form-control" placeholder=""
+                                    <input type="text" name="days_worked" class="form-control"
                                            value="{{$model->days_worked}}">
                                     <strong>{{ __('forecast.prs') }}:</strong>
-                                    <input type="text" name="prs" class="form-control" placeholder=""
+                                    <input type="text" name="prs" class="form-control"
                                            value="{{$model->prs}}">
                                     <strong>{{ __('forecast.comment') }}:</strong>
-                                    <input type="text" name="comment" class="form-control" placeholder=""
+                                    <input type="text" name="comment" class="form-control"
                                            value="{{$model->comment }}">
                                 </div>
                             </div>
