@@ -843,7 +843,7 @@
                     <th v-if="isFilterTargetPlanActive">
                       {{ trans("visualcenter.dzoTargetPlan") }}
                     </th>
-                    <th v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue">
+                    <th class="decrease-reason" v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()">
                       {{ trans("visualcenter.reasonExplanations") }}
                     </th>
                   </tr>
@@ -1124,7 +1124,7 @@
                     </td>
                     <td
                             :class="getDarkerClass(index)"
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
+                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                     >
                     </td>
                   </tr>
@@ -1743,21 +1743,41 @@
                 </div>
               </div>
               <div class="container-fluid">
-                <div class="row p-0 emergency-table__header">
-                  <span class="col-3 p-2">{{ trans("visualcenter.emergencyDate") }}</span>
-                  <span class="col-3 p-2">{{ trans("visualcenter.dzo") }}</span>
-                  <span class="col-3 p-2">{{ trans("visualcenter.emergency") }}</span>
-                  <span class="col-3 p-2">{{ trans("visualcenter.resolvingDate") }}</span>
+                <div class="row p-2">
+                  <div class="col-2 px-2">
+                    <div
+                            :class="['button2',{'button-tab-highlighted': isOpenActive}]"
+                            @click="emergencyTable = emergencyOpen,isOpenActive = true"
+                    >
+                      {{ trans("visualcenter.emergencyOpen") }}
+                    </div>
+                  </div>
+                  <div class="col-2 px-2">
+                    <div
+                            :class="['button2',{'button-tab-highlighted': !isOpenActive}]"
+                            @click="emergencyTable = emergencyFinished,isOpenActive = false"
+                    >
+                      {{ trans("visualcenter.emergencyFinished") }}
+                    </div>
+                  </div>
                 </div>
-                <div
-                        class="row emergency-view"
-                        v-for="(item, index) in emergencyHistory"
-                >
-                  <div class="col-12 d-flex emergency-title p-0">
-                    <span :class="[item.approved ? 'emergency-resolved' : '' ,'col-3']">{{item.date}}</span>
-                    <span class="col-3">{{item.description}}</span>
-                    <span class="col-3">{{item.title}}</span>
-                    <span class="col-3">{{item.approve_date}}</span>
+                <div class="row m-0 emergency-table__header">
+                  <span class="col-3 py-2">{{ trans("visualcenter.emergencyDate") }}</span>
+                  <span class="col-3 py-2">{{ trans("visualcenter.dzo") }}</span>
+                  <span class="col-3 py-2">{{ trans("visualcenter.emergency") }}</span>
+                  <span class="col-3 py-2">{{ trans("visualcenter.resolvingDate") }}</span>
+                </div>
+                <div class="emergency-table__body">
+                  <div
+                          class="row emergency-view w-100 m-0"
+                          v-for="(item, index) in emergencyTable"
+                  >
+                    <div class="col-12 d-flex emergency-title p-0">
+                      <span :class="[item.approved ? 'emergency-resolved' : '' ,'col-3']">{{item.date}}</span>
+                      <span class="col-3">{{item.description}}</span>
+                      <span class="col-3">{{item.title}}</span>
+                      <span class="col-3">{{item.approve_date}}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2982,5 +3002,31 @@
     height: 20px;
     background: url(/img/visualcenter3/emergency.png) 3% no-repeat;
     background-size: 100%;
+  }
+  .decrease-reason {
+    width: 171px;
+  }
+  .emergency-table__body {
+    overflow-y: auto;
+    max-height: 600px;
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #333975;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #1f213e;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #1f213e;
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: #333975;
+    }
   }
 </style>

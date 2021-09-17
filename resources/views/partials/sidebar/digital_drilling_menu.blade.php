@@ -1,4 +1,4 @@
-@if(auth()->user()->can('digitalDrilling view main'))
+{{--@if(auth()->user()->can('digitalDrilling view main'))--}}
     <div class="dropright">
         <div data-toggle="dropdown">
             <a href="#" class="bg-dark-new list-group-item list-group-item-action">
@@ -19,4 +19,4 @@
             </div>
         </div>
     </div>
-@endif
+{{--@endif--}}

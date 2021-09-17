@@ -184,18 +184,13 @@ export default {
             let isFilterChanged = category === this.selectedCategory;
             let shouldRecalculateSummary = false;
             for (let item in this.mainMenu) {
-                if (item === category || this.doubleFilter.includes(item)) {
+                if (item === category) {
                     continue;
                 }
                 this.mainMenu[item] = false;
             }
 
-            if (!isWithoutKmg) {
-                this.mainMenu[category] = !this.mainMenu[category];
-            } else {
-                this.mainMenu['oilCondensateProductionWithoutKMG'] = !this.mainMenu['oilCondensateProductionWithoutKMG'];
-                this.mainMenu['oilCondensateDeliveryWithoutKMG'] = !this.mainMenu['oilCondensateDeliveryWithoutKMG'];
-            }
+            this.mainMenu[category] = !this.mainMenu[category];
             this.mainMenu[parent] = true;
 
             if (isWithoutKmg && this.mainMenu[category]) {
