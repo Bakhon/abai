@@ -255,7 +255,24 @@ class GTMController extends Controller
                 $item->zbgs_plan +
                 $item->grp_plan +
                 $item->pvlg_plan +
-                $item->pvr_plan;
+                $item->pvr_plan +
+                $item->gs_grp_plan +
+                $item->deepening_plan +
+                $item->grp_skin_plan +
+                $item->perestrel_plan +
+                $item->dostrel_plan +
+                $item->vbd_plan +
+                $item->opl_plan +
+                $item->transfer_to_oil_plan +
+                $item->uecn_plan +
+                $item->pvlg_pri_prs_plan +
+                $item->vpp_plan +
+                $item->pfp_plan +
+                $item->tgrp_plan +
+                $item->vns_oper_plan +
+                $item->vns_nn_plan +
+                $item->vns_nn_oper_plan +
+                $item->idn_plan;
 
             $gtmAndVnsCountFact +=
                 $item->vns_fact_total +
@@ -264,7 +281,25 @@ class GTMController extends Controller
                 $item->zbgs_fact +
                 $item->grp_fact +
                 $item->pvlg_fact +
-                $item->pvr_fact;
+                $item->pvr_fact +
+                $item->gs_grp_fact +
+                $item->deepening_fact +
+                $item->grp_skin_fact +
+                $item->perestrel_fact +
+                $item->dostrel_fact +
+                $item->vbd_fact +
+                $item->opl_fact +
+                $item->transfer_to_oil_fact +
+                $item->uecn_fact +
+                $item->pvlg_pri_prs_fact +
+                $item->vpp_fact +
+                $item->pfp_fact +
+                $item->tgrp_fact +
+                $item->vns_oper_fact +
+                $item->vns_nn_fact +
+                $item->vns_nn_oper_fact +
+                $item->idn_fact;
+
 
             $vnsAdditionalOilProdPlan += $item->vns_prod_plan_total;
             $vnsAdditionalOilProdFact += $item->vns_prod_fact_total;
@@ -282,7 +317,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.number_of_gtm_and_vns'),
             'progressValue' => $gtmAndVnsCountFact,
             'progressMax' => $gtmAndVnsCountPlan,
-            'progressPercents' => $gtmAndVnsCountFact / $gtmAndVnsCountPlan * 100,
+            'progressPercents' => $gtmAndVnsCountPlan ? $gtmAndVnsCountFact / $gtmAndVnsCountPlan * 100 : 0,
         ];
 
         $result[] = [
@@ -291,7 +326,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.additional_oil_production_from_vns'),
             'progressValue' => $vnsAdditionalOilProdFact,
             'progressMax' => $vnsAdditionalOilProdPlan,
-            'progressPercents' => $vnsAdditionalOilProdFact / $vnsAdditionalOilProdPlan * 100,
+            'progressPercents' => $vnsAdditionalOilProdPlan ? $vnsAdditionalOilProdFact / $vnsAdditionalOilProdPlan * 100 : 0,
         ];
 
         $result[] = [
@@ -300,7 +335,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.additional_oil_production_from_gtm'),
             'progressValue' => $gtmAdditionalOilProdFact,
             'progressMax' => $gtmAdditionalOilProdPlan,
-            'progressPercents' => $gtmAdditionalOilProdFact / $gtmAdditionalOilProdPlan * 100,
+            'progressPercents' => $gtmAdditionalOilProdPlan ? $gtmAdditionalOilProdFact / $gtmAdditionalOilProdPlan * 100 : 0,
         ];
 
         $result[] = [
@@ -309,7 +344,7 @@ class GTMController extends Controller
             'title' => trans('paegtm.basic_oil_production'),
             'progressValue' => $baseOilProdFact,
             'progressMax' => $baseOilProdPlan,
-            'progressPercents' => $baseOilProdFact / $baseOilProdPlan * 100,
+            'progressPercents' => $baseOilProdPlan ? $baseOilProdFact / $baseOilProdPlan * 100 : 0,
         ];
 
         return response()->json($result);
