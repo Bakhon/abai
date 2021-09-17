@@ -46,13 +46,12 @@
             <table class="col-8 dynamic-table">
                 <thead>
                 <tr>
-                    <th></th>
+                    <th rowspan="2">Дата</th>
                     <th colspan="3">Суточная</th>
                     <th colspan="3">С начала месяца</th>
                     <th colspan="3">С начала года</th>
                 </tr>
                 <tr>
-                    <th></th>
                     <th>План</th>
                     <th>Факт</th>
                     <th>Отклонение</th>
@@ -334,11 +333,6 @@ export default {
     tr:last-child {
         th {
             width: 115px;
-        }
-    }
-    tr:first-child, tr:nth-child(2) {
-        th:first-child {
-            background: inherit;
         }
     }
     th {
