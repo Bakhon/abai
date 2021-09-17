@@ -7,7 +7,7 @@
         @change="getData"/>
 
     <vue-table-dynamic v-if="form.source_id" :params="params" ref="table">
-      <a slot="column-11" slot-scope="{ props }" :href="props.cellData">
+      <a slot="column-12" slot-scope="{ props }" :href="props.cellData">
         {{ trans('app.edit') }}
       </a>
     </vue-table-dynamic>

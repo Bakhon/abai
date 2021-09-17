@@ -30,7 +30,7 @@ class TechnicalDataForecastController extends Controller
 
     public function edit(int $id): View
     {
-        $technicalDataForecast = TechnicalDataForecast::find($id);
+        $model = TechnicalDataForecast::find($id);
 
         $gu = TechnicalStructureGu::get();
 
@@ -40,7 +40,7 @@ class TechnicalDataForecastController extends Controller
 
         return view(
             'economic.technical.forecast.edit',
-            compact('source', 'technicalDataForecast', 'gu', 'pes')
+            compact('model', 'gu', 'source', 'pes')
         );
     }
 
