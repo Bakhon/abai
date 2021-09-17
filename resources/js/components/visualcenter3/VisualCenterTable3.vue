@@ -758,7 +758,7 @@
               </div>
             </div>
 
-            <div class="d-flex mh-60 mt-3 px-4">
+            <div class="d-flex mh-60 mt-3">
               <div
                       class="col-sm-7 vis-table"
                       :class="periodRange === 0 ? 'main-table__scroll' : ''"
@@ -2460,11 +2460,14 @@
     .production-table {
       th {
         &:first-child {
-          width: 50px;
+          width: 20px;
         }
         &:nth-child(2) {
           width: 370px;
         }
+      }
+      td:first-child {
+        width: 20px;
       }
     }
 
@@ -2472,7 +2475,7 @@
       min-width: 683px;
       tr {
         td {
-          padding: 5px 5px 5px 10px;
+          padding: 5px;
           position: relative;
           vertical-align: middle;
           min-height: 29px;
@@ -2825,11 +2828,6 @@
     }
   }
   @media (max-width: 2000px) {
-    .table4 {
-      tr td:not(:first-child) {
-        min-width: 5.3em !important;
-      }
-    }
     .row-name_width_40 {
       width: 80%;
     }
