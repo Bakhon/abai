@@ -382,7 +382,7 @@
                                 v-html="mainMenu.oilCondensateDeliveryCondensateOnly ? `${flagOn}` : `${flagOff}`"
                         ></div>
                         <a class="col-9 mt-1 p-0 ml-3">
-                          {{trans("visualcenter.getgk")}}
+                          {{trans("visualcenter.condensateDelivery")}}
                         </a>
                       </li>
                     </ul>
@@ -581,6 +581,20 @@
                                 class="col-9 p-0 ml-3 mt-2"
                         >
                           {{trans("visualcenter.injectionArtesianWater")}}
+                        </a>
+                      </li>
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory('streamWaterInjection','waterInjection')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.streamWaterInjection ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{trans("visualcenter.streamInjection")}}
                         </a>
                       </li>
                     </ul>

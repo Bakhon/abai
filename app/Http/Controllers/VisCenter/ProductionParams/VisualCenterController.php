@@ -117,6 +117,7 @@ class VisualCenterController extends Controller
             'seaWaterInjection' => new WaterInjection(),
             'wasteWaterInjection' => new WaterInjection(),
             'artezianWaterInjection' => new WaterInjection(),
+            'streamWaterInjection' => new WaterInjection(),
         );
         $chartData = array();
 
