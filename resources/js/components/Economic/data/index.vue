@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-4 bg-light" style="max-width: 90vw">    
+  <div class="container p-4 bg-light" style="max-width: 90vw">
     <subtitle class="mb-3 text-center">{{ title }}</subtitle>
 
     <select-sc-fa
@@ -9,7 +9,7 @@
         @loading="SET_LOADING(true)"
         @loaded="SET_LOADING(false)"
         @change="getData"/>
-    
+
 
     <vue-table-dynamic
         v-if="form.sc_fa"
@@ -27,7 +27,9 @@
 
 <script>
 import VueTableDynamic from 'vue-table-dynamic';
+
 import {globalloadingMutations} from '@store/helpers';
+
 import Subtitle from "../components/Subtitle";
 import SelectScFa from "../components/SelectScFa";
 
@@ -37,7 +39,6 @@ export default {
     VueTableDynamic,
     Subtitle,
     SelectScFa
-
   },
   props: {
     isForecast: {
@@ -52,20 +53,42 @@ export default {
     data: [],
   }),
   methods: {
-    ...globalloadingMutations(
-      ['SET_LOADING']
-    ),
+    ...globalloadingMutations(['SET_LOADING']),
 
     async getData() {
       if (!this.form.sc_fa) return
 
       this.SET_LOADING(true);
 
-      this.data = []
+      this.data = [this.headers]
 
       const {data} = await this.axios.get(this.localeUrl('economic/cost/get-data'), {params: this.form})
 
-      this.data = [...[this.headers], ...data.data]
+      data.forEach(item => {
+        this.data.push([
+          item.scfa.name,
+          item.company.name,
+          item.pes ? item.pes.name : '',
+          item.date,
+          item.variable,
+          item.variable_processing,
+          item.fix_noWRpayroll,
+          item.fix_payroll,
+          item.fix_nopayroll,
+          item.fix,
+          item.gaoverheads,
+          item.wr_nopayroll,
+          item.wr_payroll,
+          item.wo,
+          item.net_back,
+          item.amort,
+          item.comment,
+          item.author ? `${item.created_at} ${item.author.name}` : '',
+          item.editor ? `${item.updated_at} ${item.editor.name}` : '',
+          this.localeUrl(`/economic/cost/${item.id}/edit`),
+          item.log_id
+        ])
+      })
 
       this.SET_LOADING(false);
     },
@@ -113,6 +136,7 @@ export default {
       return [
         {value: this.isForecast ? 'scenario' : 'source_data'},
         {value: 'company'},
+        {value: 'pes'},
         {value: 'month-year'},
         {value: 'variable', dimension: 'tenge_per_cube_liquid'},
         {value: 'variable_processing', dimension: 'tenge_per_ton_oil'},

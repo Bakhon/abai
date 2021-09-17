@@ -87,6 +87,7 @@ export default {
                 'УО': this.trans("visualcenter.uo"),
                 'ПКК': this.trans("visualcenter.pkk"),
                 'КГМКМГ': this.trans("visualcenter.kgm"),
+                'ПККР': this.trans("visualcenter.pkk"),
             },
             chartHeadName: this.trans("visualcenter.oilCondensateProductionChartName"),
             chartSecondaryName: this.trans('visualcenter.oilCondensateProduction'),

@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.gdis_complex",
+  "sort": [
+    {
+      "field": "research_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main",
