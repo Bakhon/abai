@@ -42,12 +42,7 @@ class ExportOmgNGDUToExcel implements ShouldQueue
     public function handle()
     {
         $query = OmgNGDU::query()
-            ->with('field')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->with('zu')
-            ->with('well');
+            ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well', 'manualGu');
 
         $omgngdu = (new \App\Filters\OmgNGDUFilter($query, $this->params))
             ->filter()
