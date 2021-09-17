@@ -2,6 +2,7 @@ import AwIcon from "../icons/AwIcon";
 
 export default {
     inject: [
+        "selectItem",
         "settings",
         "selected",
         "clickItem",
@@ -9,6 +10,7 @@ export default {
     props: {
         item: Object,
         settings: Object,
+        parent: Object,
         index: Number,
     },
     data() {
