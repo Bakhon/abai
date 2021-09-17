@@ -16,15 +16,6 @@ class OilDynamic extends Controller
     private $monthNumber;
     private $factField;
     private $planField;
-    private $consolidatedDzo = array(
-        'ПКИ' => array ('ПКК','КГМ','ТП')
-    );
-    private $pkiMultiplier = array(
-        'ПКК' => 3.03,
-        'КГМ' => 2,
-        'ТП' => 2,
-        'summary' => 0.33
-    );
     private $fields = array(
         'factDay',
         'planDay',
@@ -33,8 +24,93 @@ class OilDynamic extends Controller
         'factYear',
         'planYear'
     );
-    private $isConsolidated = false;
-    private $selectedCategory;
+    private $allCategories = array (
+        'ЭМГ' => array (
+            'dzo' => array ('ЭМГ'),
+            'fact' => array ('oil_production_fact'),
+            'plan' => array ('plan_oil')
+        ),
+        'КОА' => array (
+             'dzo' => array ('КОА'),
+             'fact' => array ('oil_production_fact'),
+             'plan' => array ('plan_oil')
+         ),
+        'КТМ' => array (
+             'dzo' => array ('КТМ'),
+             'fact' => array ('oil_production_fact'),
+             'plan' => array ('plan_oil')
+         ),
+        'КБМ' => array (
+             'dzo' => array ('КБМ'),
+             'fact' => array ('oil_production_fact'),
+             'plan' => array ('plan_oil')
+         ),
+        'КГМ' => array (
+            'dzo' => array ('КГМ'),
+            'fact' => array ('oil_production_fact'),
+            'plan' => array ('plan_oil')
+        ),
+        'ММГ' => array (
+             'dzo' => array ('ММГ'),
+             'fact' => array ('oil_production_fact'),
+             'plan' => array ('plan_oil')
+         ),
+        'ОМГ' => array (
+             'dzo' => array ('ОМГ'),
+             'fact' => array ('oil_production_fact'),
+             'plan' => array ('plan_oil')
+         ),
+        'ОМГК' => array (
+             'dzo' => array ('ОМГ'),
+             'fact' => array ('condensate_production_fact'),
+             'plan' => array ('plan_kondensat')
+         ),
+        'УО' => array (
+             'dzo' => array ('УО'),
+             'fact' => array ('oil_production_fact'),
+             'plan' => array ('plan_oil')
+         ),
+        'АГ' => array (
+             'dzo' => array ('АГ'),
+             'fact' => array ('condensate_production_fact'),
+             'plan' => array ('plan_kondensat')
+         ),
+        'ПКИ' => array (
+            'dzo' => array ('ПКК','КГМ','ТП'),
+            'fact' => array ('oil_production_fact'),
+            'plan' => array ('plan_oil'),
+            'multiplier' => array (
+                'ПКК' => 3.03,
+                'КГМ' => 2,
+                'ТП' => 2
+            )
+        ),
+        'ПКК' => array (
+             'dzo' => array ('ПКК'),
+             'fact' => array ('oil_production_fact'),
+             'plan' => array ('plan_oil')
+         ),
+        'ТП' => array (
+             'dzo' => array ('ТП'),
+             'fact' => array ('oil_production_fact'),
+             'plan' => array ('plan_oil')
+         ),
+        'КПО' => array (
+             'dzo' => array ('КПО'),
+             'fact' => array ('oil_production_fact'),
+             'plan' => array ('plan_oil')
+         ),
+        'НКО' => array (
+           'dzo' => array ('НКО'),
+           'fact' => array ('oil_production_fact'),
+           'plan' => array ('plan_oil')
+        ),
+        'РД КМГ' => array (
+            'dzo' => array ('ОМГ','ЭМГ'),
+            'fact' => array ('oil_production_fact'),
+            'plan' => array ('plan_oil')
+        )
+    );
 
     public function oilDynamic()
     {
@@ -43,24 +119,29 @@ class OilDynamic extends Controller
 
     public function getDailyProductionData(Request $request)
     {
-        $this->selectedCategory = $request->dzo;
-        $this->dzoName = array($request->dzo);
-        if (array_key_exists($request->dzo,$this->consolidatedDzo)) {
-            $this->dzoName = $this->consolidatedDzo[$request->dzo];
-            $this->isConsolidated = true;
-        }
         $this->monthNumber = $request->month;
-        $this->factField = $request->factField;
-        $this->planField = $request->planField;
+        return $this->getSummaryByCategories();
+    }
 
+    private function getSummaryByCategories()
+    {
+        $summary = array();
+        foreach($this->allCategories as $category => $item) {
+            $summary[$category] = $this->getSummaryByCategory($item,$category);
+        }
+        return $summary;
+    }
+
+    private function getSummaryByCategory($item,$category)
+    {
+        $this->dzoName = $item['dzo'];
+        $this->factField = $item['fact'];
+        $this->planField = $item['plan'];
         $dailyFact = $this->getDailyFact();
         $dailyPlan = $this->getDailyPlan();
         $yearlyData = $this->getYearly();
-        $dailyCompared = $this->getCompared($dailyFact,$dailyPlan);
-        $monthlyData = $this->getMonthly($dailyCompared,$yearlyData);
-        return array (
-            'tableData' => $monthlyData
-        );
+        $dailyCompared = $this->getCompared($dailyFact,$dailyPlan,$item,$category);
+        return $this->getMonthly($dailyCompared,$yearlyData);
     }
 
     private function getDailyFact()
@@ -87,53 +168,69 @@ class OilDynamic extends Controller
             ->get();
     }
 
-    private function getCompared($fact,$plan)
+    private function getCompared($fact,$plan,$dzoParams,$category)
     {
         $compared = array();
+        $planFields = $this->planField;
         foreach($fact as $dayFact) {
             $filteredPlan = $plan->where('dzo',$dayFact['dzo_name']);
-            $dailyPlan = $filteredPlan->sum($this->planField);
+            $dailyPlan = $filteredPlan->sum(function ($row) use ($planFields) {
+                $summary = 0;
+                foreach($planFields as $field) {
+                    $summary += $row->$field;
+                };
+                return $summary;
+            });
             $dayRecord = array (
                  'name' => $dayFact['dzo_name'],
                  'date' => Carbon::parse($dayFact['date'])->format('d.m.Y'),
-                 'factDay' => $dayFact[$this->factField],
+                 'factDay' => $this->getSummaryByFields($dayFact,$this->factField),
                  'planDay' => $dailyPlan,
                  'planMonth' => 0,
                  'factMonth' => 0,
                  'factYear' => 0,
                  'planYear' => 0
             );
-            if ($this->isConsolidated) {
-               $dayRecord = $this->getUpdatedByMultiplier($dayRecord);
+            if (array_key_exists('multiplier',$dzoParams)) {
+               $dayRecord = $this->getUpdatedByMultiplier($dayRecord,$dzoParams['multiplier']);
+               $dayRecord['name'] = $category;
             }
             array_push($compared,$dayRecord);
         }
-        if ($this->isConsolidated) {
+        if (count($this->dzoName) > 1) {
             $groupedByDate = array();
             foreach ($compared as $key => $item) {
                $groupedByDate[$item['date']][$key] = $item;
             }
-            return $this->getSummary($groupedByDate);
+            return $this->getSummary($groupedByDate,$category);
         }
         return $compared;
     }
 
-    private function getUpdatedByMultiplier($dayRecord)
+    private function getSummaryByFields($data,$fields)
+    {
+        $summary = 0;
+        foreach($fields as $field) {
+            $summary += $data->$field;
+        };
+        return $summary;
+    }
+
+    private function getUpdatedByMultiplier($dayRecord,$multiplier)
     {
         $multipliedRecord = $dayRecord;
         foreach($this->fields as $field) {
-            $multipliedRecord[$field] /= $this->pkiMultiplier[$multipliedRecord['name']];
+            $multipliedRecord[$field] /= $multiplier[$multipliedRecord['name']];
         }
         return $multipliedRecord;
     }
 
-    private function getSummary($grouped)
+    private function getSummary($grouped,$category)
     {
         $summary = array();
         foreach($grouped as $date => $item) {
-
             $daySummary = array(
-                'name' => $this->selectedCategory,
+                'name' => $category,
                 'date' => $date
             );
             foreach($this->fields as $field) {
@@ -177,24 +274,32 @@ class OilDynamic extends Controller
 
     private function getYearlyFact()
     {
+        $factFields = $this->factField;
         return DzoImportData::query()
             ->select('date')
             ->addSelect($this->factField)
             ->whereNull('is_corrected')
             ->whereMonth('date', '<', $this->monthNumber)
             ->whereYear('date', Carbon::now()->year)
-            ->where('dzo_name',$this->dzoName)
-            ->sum($this->factField);
+            ->whereIn('dzo_name',$this->dzoName)
+            ->get()
+            ->sum(function ($row) use ($factFields) {
+                $summary = 0;
+                foreach($factFields as $field) {
+                    $summary += $row->$field;
+                };
+                return $summary;
+            });
     }
 
     private function getYearlyPlan()
     {
         $yearlyPlans = DzoPlan::query()
-            ->select('date')
+            ->select('date','dzo')
             ->addSelect($this->planField)
             ->whereMonth('date', '<', $this->monthNumber)
             ->whereYear('date', Carbon::now()->year)
-            ->where('dzo',$this->dzoName)
+            ->whereIn('dzo',$this->dzoName)
             ->get();
         $summaryPlan = $this->getSummaryPlan($yearlyPlans);
         return $summaryPlan;
@@ -205,7 +310,9 @@ class OilDynamic extends Controller
         $summary = 0;
         foreach($yearlyPlans as $monthlyPlan) {
             $daysInMonth = Carbon::parse($monthlyPlan['date'])->daysInMonth;
-            $summary += $monthlyPlan[$this->planField] * $daysInMonth;
+            foreach($this->planField as $field) {
+                $summary += $monthlyPlan[$field] * $daysInMonth;
+            }
         }
         return $summary;
     }

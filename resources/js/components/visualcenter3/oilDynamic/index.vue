@@ -114,78 +114,81 @@ export default {
                     id: 1,
                     ticker: 'ЭМГ',
                     name: 'АО "Эмбамунайгаз"',
-                    factName: 'oil_production_fact',
-                    planName: 'plan_oil'
                 },
                 {
                     id: 2,
                     ticker: 'КОА',
                     name: 'ТОО "Казахойл Актобе"',
-                    factName: 'oil_production_fact',
-                    planName: 'plan_oil'
                 },
                 {
                     id: 3,
                     ticker: 'КТМ',
                     name: 'ТОО "Казахтуркмунай"',
-                    factName: 'oil_production_fact',
-                    planName: 'plan_oil'
                 },
                 {
                     id: 4,
                     ticker: 'КБМ',
                     name: 'АО "КАРАЖАНБАСМУНАЙ"',
-                    factName: 'oil_production_fact',
-                    planName: 'plan_oil'
                 },
                 {
                     id: 5,
                     ticker: 'КГМ',
                     name: 'ТОО СП "КАЗГЕРМУНАЙ"',
-                    factName: 'oil_production_fact',
-                    planName: 'plan_oil'
                 },
                 {
                     id: 6,
                     ticker: 'ММГ',
                     name: 'АО "Мангистаумунайгаз"',
-                    factName: 'oil_production_fact',
-                    planName: 'plan_oil'
                 },
                 {
                     id: 7,
                     ticker: 'ОМГ',
                     name: 'АО "ОзенМунайГаз"',
-                    factName: 'oil_production_fact',
-                    planName: 'plan_oil'
                 },
                 {
                     id: 8,
                     ticker: 'ОМГ',
                     name: 'АО "ОзенМунайГаз" Конденсат',
-                    planName: 'plan_kondensat',
-                    factName: 'condensate_production_fact'
                 },
                 {
                     id: 9,
                     ticker: 'УО',
                     name: 'ТОО "Урихтау Оперейтинг"',
-                    factName: 'oil_production_fact',
-                    planName: 'plan_oil'
                 },
                 {
                     id: 10,
                     ticker: 'АГ',
                     name: 'ТОО "Амангельды Газ"',
-                    planName: 'plan_kondensat',
-                    factName: 'condensate_production_fact'
                 },
                 {
                     id: 11,
                     ticker: 'ПКИ',
                     name: 'АО "ПетроКазахстан Инк."',
-                    planName: 'plan_oil',
-                    factName: 'oil_production_fact'
+                },
+                {
+                    id: 12,
+                    ticker: 'ПКК',
+                    name: 'АО "ПетроКазахстан Кумколь Ресорсиз"',
+                },
+                {
+                    id: 13,
+                    ticker: 'ТП',
+                    name: 'АО "Тургай-Петролеум"',
+                },
+                {
+                    id: 14,
+                    ticker: 'КПО',
+                    name: 'Карачаганак Петролеум Оперейтинг б.в.',
+                },
+                {
+                    id: 15,
+                    ticker: 'НКО',
+                    name: 'Норт Каспиан Оперейтинг Компани',
+                },
+                {
+                    id: 16,
+                    ticker: 'РД КМГ',
+                    name: 'РД КМГ',
                 },
             ],
             monthes: [],
@@ -223,10 +226,7 @@ export default {
         async getDaily() {
             let uri = this.localeUrl("/oil-dynamic-daily");
             let queryOptions = {
-                'dzo': this.selectedDzo.ticker,
-                'month': this.selectedMonth,
-                'planField': this.selectedDzo.planName,
-                'factField': this.selectedDzo.factName,
+                'month': this.selectedMonth
             };
             const response = await axios.get(uri,{params:queryOptions});
             if (response.status !== 200) {
@@ -238,7 +238,7 @@ export default {
         async updateDailyView() {
             this.SET_LOADING(true);
             this.summaryData = await this.getDaily();
-            this.tableData = this.summaryData.tableData;
+            this.tableData = this.summaryData[this.selectedDzo.ticker];
             this.SET_LOADING(false);
         },
 
@@ -248,9 +248,11 @@ export default {
         },
 
         async handleDzo(value) {
+            this.SET_LOADING(true);
             let filteredDzo = _.filter(_.cloneDeep(this.dzoCompanies), (dzo) => dzo.id == value);
             this.selectedDzo = filteredDzo[0];
-            this.updateDailyView();
+            this.tableData = this.summaryData[this.selectedDzo.ticker];
+            this.SET_LOADING(false);
         },
 
         fillMonthes() {
