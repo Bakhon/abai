@@ -13,7 +13,7 @@
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('economic.cost.update', $ecoRefsCost->id) }}"
+                        <form action="{{ route('economic.cost.update', $model->id) }}"
                               method="POST">
                             @csrf
                             @method('PUT')
@@ -30,7 +30,7 @@
                                             </option>
 
                                             @foreach ($scFas as $item)
-                                                @if($item->id==$ecoRefsCost->sc_fa)
+                                                @if($item->id==$model->sc_fa)
                                                     <option value="{{ $item->id }}" selected>
                                                         {{ $item->name }}
                                                     </option>
@@ -56,7 +56,7 @@
                                             </option>
 
                                             @foreach ($companies as $item)
-                                                @if($item->id==$ecoRefsCost->company_id)
+                                                @if($item->id==$model->company_id)
                                                     <option value="{{ $item->id }}" selected>
                                                         {{ $item->name }}
                                                     </option>
@@ -78,12 +78,12 @@
 
                                         <input type="date"
                                                name="date"
-                                               value="{{$ecoRefsCost->date}}"
+                                               value="{{$model->date}}"
                                                class="form-control">
                                     </div>
                                 </div>
 
-                                @foreach(\App\Models\EcoRefsCost::FILLABLE_FLOAT_KEYS as $key)
+                                @foreach($fillableFloatKeys as $key)
                                     <div class="col-xs-12 col-sm-12 col-md-12">
                                         <div class="form-group">
                                             <strong>
@@ -92,7 +92,7 @@
 
                                             <input type="float"
                                                    name="{{$key}}"
-                                                   value="{{$ecoRefsCost->$key}}"
+                                                   value="{{$model->$key}}"
                                                    class="form-control">
                                         </div>
                                     </div>
@@ -107,7 +107,7 @@
                                         <input type="float"
                                                name="comment"
                                                class="form-control"
-                                               value="{{$ecoRefsCost->comment}}">
+                                               value="{{$model->comment}}">
                                     </div>
                                 </div>
 

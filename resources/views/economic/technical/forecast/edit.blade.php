@@ -26,7 +26,6 @@
                                     <div class="form-group">
                                         <strong>{{ __('forecast.source_data') }}:</strong>
                                         <select class="form-control" name="source_id">
-                                            <option>Select Item</option>
                                             @foreach ($source as $item)
                                                 @if($item->id==$model->source_id)
                                                     <option value="{{ $item->id }}" selected>
@@ -47,7 +46,6 @@
                                     <div class="form-group">
                                         <strong>{{ __('forecast.gu') }}:</strong>
                                         <select class="form-control" name="gu_id">
-                                            <option>Select Item</option>
                                             @foreach ($gu as $item)
                                                 @if($item->id==$model->gu_id)
                                                     <option value="{{ $item->id }}" selected>
@@ -58,6 +56,21 @@
                                                         {{ $item->name }}
                                                     </option>
                                                 @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>{{ __('forecast.pes') }}:</strong>
+                                        <select class="form-control" name="pes_id">
+                                            @foreach ($pes as $item)
+                                                <option value="{{ $item->id }}"
+                                                        {{$item->id === $model->pes_id ? 'selected' : ''}}>
+                                                    {{ $item->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
