@@ -119,7 +119,6 @@ class OmgNGDUController extends CrudController
         
         $query = OmgNGDU::query()
             ->with('field', 'ngdu', 'cdng', 'gu', 'manualGu');
-//            ->whereHas('gu')->orWhereHas('manualGu');
 
         $omgngdu = $this
             ->getFilteredQuery($request->validated(), $query)
