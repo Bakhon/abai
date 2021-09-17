@@ -22,27 +22,25 @@
                 </select>
             </div>
         </div>
-        <div class="d-flex justify-content-end p-3">
-            <table class="col-6 month-summary-table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>План</th>
-                        <th>Факт</th>
-                        <th>Отклонение</th>
-                        <th>Выполнение</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{monthsPassed}} мес.</td>
-                        <td>{{getFormattedNumber(yearlyData.planYear)}}</td>
-                        <td>{{getFormattedNumber(yearlyData.factYear)}}</td>
-                        <td :class="yearlyData.factYear - yearlyData.planYear < 0 ? 'color__red' : 'color__green'">{{getFormattedNumber(yearlyData.factYear - yearlyData.planYear)}}</td>
-                        <td>{{summaryMonthlyExecution.toFixed(1)}}%</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="row p-3">
+            <daily-chart class="col-10" :chartData="dailyProductionChart"></daily-chart>
+            <div class="col-1 p-3 info-block">
+                <div class="inform-buttons">
+                    Отклонение<br>
+                    <span>
+                        {{getFormattedNumber(summaryFact - summaryPlan)}}
+                    </span>
+                </div>
+            </div>
+            <div class="col-1 p-3 info-block">
+                <div class="inform-buttons">
+                    Выполнение<br>
+                    <span>
+                        {{summaryExecution.toFixed(1)}}%
+                    </span>
+                </div>
+            </div>
+
         </div>
         <div class="d-flex p-3">
             <table class="col-8 dynamic-table">
@@ -82,16 +80,6 @@
                         <td>{{getFormattedNumber(day.factYear)}}</td>
                         <td :class="day.factYear - day.planYear < 0 ? 'color__red' : 'color__green'">{{getFormattedNumber(day.factYear - day.planYear)}}</td>
                     </tr>
-                    <tr class="summary-table">
-                        <td>{{selectedDate}}</td>
-                        <td>{{getFormattedNumber(summaryPlan)}}</td>
-                        <td>{{getFormattedNumber(summaryFact)}}</td>
-                        <td :class="summaryFact - summaryPlan < 0 ? 'color__red' : 'color__green'">{{getFormattedNumber(summaryFact - summaryPlan)}}</td>
-                    </tr>
-                    <tr class="summary-execution">
-                        <td></td>
-                        <td colspan="3">Выполнение {{summaryExecution.toFixed(1)}}%</td>
-                    </tr>
                 </tbody>
             </table>
             <div class="col-4 row">
@@ -107,13 +95,13 @@ import moment from "moment";
 import {globalloadingMutations} from '@store/helpers';
 import Vue from "vue";
 Vue.component('chart', require('./chart.vue').default);
+Vue.component('daily-chart', require('./dailyChart.vue').default);
 
 export default {
     data: function () {
         return {
             dailyChartName: 'Динамика суточной добычи нефти',
             yearlyChartName: 'Динамика накопленной добычи нефти с начала года',
-            selectedDate: moment().format('MMMM'),
             selectedMonth: moment().month() + 1,
             selectedDzo: {
                 id: 1,
@@ -204,7 +192,6 @@ export default {
             monthes: [],
             tableData: [],
             summaryData: [],
-            yearlyData: {},
             chartDataTemplate: {
                 series: [
                     {
@@ -219,6 +206,13 @@ export default {
                     },
                 ],
                 labels: []
+            },
+            dailyProductionChartTemplate: {
+                series: [],
+                labels: [
+                    this.trans("visualcenter.Plan"),
+                    this.trans("visualcenter.Fact"),
+                ]
             }
         };
     },
@@ -246,7 +240,6 @@ export default {
             this.SET_LOADING(true);
             this.summaryData = await this.getDaily();
             this.tableData = this.summaryData.tableData;
-            this.yearlyData = this.summaryData.yearlyData;
             this.SET_LOADING(false);
         },
 
@@ -290,9 +283,6 @@ export default {
         },
     },
     computed: {
-        monthsPassed() {
-            return this.selectedMonth - 1;
-        },
         summaryPlan() {
             return _.sumBy(this.tableData, 'planDay');
         },
@@ -301,9 +291,6 @@ export default {
         },
         summaryExecution() {
             return this.summaryFact / this.summaryPlan * 100;
-        },
-        summaryMonthlyExecution() {
-            return this.yearlyData.factYear / this.yearlyData.planYear * 100;
         },
         dailyChart() {
             let chartData = _.cloneDeep(this.chartDataTemplate);
@@ -321,6 +308,11 @@ export default {
                 chartData.series[1].data.push(parseInt(dayData['planYear']));
                 chartData.labels.push(dayData['date']);
             });
+            return chartData;
+        },
+        dailyProductionChart() {
+            let chartData = _.cloneDeep(this.dailyProductionChartTemplate);
+            chartData.series.push(this.summaryPlan,this.summaryFact);
             return chartData;
         }
     }
@@ -410,5 +402,17 @@ export default {
     color: #9ea4c9;
     border: none;
     width: 100%;
+}
+.inform-buttons {
+    background-color: #333975;
+    text-align: center;
+    padding-top: 15px;
+    height: 100%;
+    span {
+        font-size: 26px;
+    }
+}
+.info-block {
+    margin-top: -40px;
 }
 </style>

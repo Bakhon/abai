@@ -59,8 +59,7 @@ class OilDynamic extends Controller
         $dailyCompared = $this->getCompared($dailyFact,$dailyPlan);
         $monthlyData = $this->getMonthly($dailyCompared,$yearlyData);
         return array (
-            'tableData' => $monthlyData,
-            'yearlyData' => $yearlyData
+            'tableData' => $monthlyData
         );
     }
 

@@ -1,26 +1,13 @@
 <template>
     <div>
         <apexchart
-                height="300"
+                height="120"
                 :options="chartOptions"
-                :series="series"
+                style="margin-top:-50px"
+                :series="seriesDrilling"
         ></apexchart>
     </div>
 </template>
-
-<style scoped>
-.header {
-    height: 50px;
-    font-size: 16px;
-}
-.comission-header {
-    padding-top: 40px;
-}
-.drilling-header {
-    margin-top: -20px
-}
-</style>
-
 
 <script>
 var ru = require("apexcharts/dist/locales/ru.json");
@@ -32,7 +19,7 @@ export default {
     components: {
         "apexchart": VueApexCharts
     },
-    props: ["chartData", "name"],
+    props: ["chartData"],
     data: function () {
         return {
         };
@@ -50,41 +37,52 @@ export default {
                         left: 0,
                     },
                 },
+                legend: {
+                    show: false,
+                },
+                colors: ['#009847','#2E50E9'],
                 dataLabels: {
-                    enabled: false,
+                    enabled: true,
+                    formatter: function(num) {
+                        return (new Intl.NumberFormat("ru-RU").format(Math.round(num)));
+                    }
                 },
                 labels: this.chartData.labels,
-                colors: ['#009847','#2E50E9'],
                 tooltip: {
-                    enabled: true,
-                    theme: 'dark',
+                    enabled: false,
                 },
                 yaxis: {
                     show: true,
                 },
                 chart: {
-                    type: 'line',
+                    type: 'bar',
                     toolbar: {
                         show: false,
                     },
                     foreColor: "#FFFFFF",
-                    zoom: {
-                        enabled: false,
-                    },
-                    distributed: true
                 },
-                title: {
-                    text: this.name,
-                    align: 'center',
-                    style: {
-                        fontFamily:  'HarmoniaSansProCyr-Regular, Harmonia-sans',
-                    },
+                plotOptions: {
+                    bar: {
+                        horizontal: true,
+                        dataLabels: {
+                            position: 'top',
+                        },
+                        distributed: true
+                    }
                 },
             };
         },
-        series() {
-            return this.chartData.series;
-        }
+        seriesDrilling() {
+            if (this.chartData.series.length === 0) {
+                return [];
+            } else {
+                return [
+                    {
+                        data: this.chartData.series,
+                    },
+                ];
+            }
+        },
     },
 };
 </script>
