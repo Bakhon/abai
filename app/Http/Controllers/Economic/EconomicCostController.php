@@ -9,6 +9,7 @@ use App\Http\Requests\Economic\Cost\EconomicCostUpdateRequest;
 use App\Imports\Economic\EconomicCostImport;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsCost;
+use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\EcoRefsScFa;
 use App\Models\Refs\TechnicalStructurePes;
 use Illuminate\Http\RedirectResponse;
@@ -22,7 +23,9 @@ class EconomicCostController extends Controller
     {
         $isForecast = request()->query('is_forecast');
 
-        return view('economic.cost.index', compact('isForecast'));
+        $logType = EconomicDataLogType::COST;
+
+        return view('economic.cost.index', compact('isForecast', 'logType'));
     }
 
     public function edit(int $id): View

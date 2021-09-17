@@ -5,6 +5,7 @@ namespace App\Imports\Economic;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EconomicDataLog;
+use App\Models\Refs\EconomicDataLogType;
 use App\Models\Refs\EcoRefsScFa;
 use App\Models\Refs\TechnicalStructurePes;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -49,7 +50,9 @@ class EconomicCostImport implements ToModel, WithBatchInserts, WithChunkReading
         $this->userId = $userId;
 
         $this->logId = EconomicDataLog::create([
-            'author_id' => $userId
+            'author_id' => $userId,
+            'name' => $fileName,
+            'type_id' => EconomicDataLogType::COST
         ])->id;
 
         $this->scFaId = EcoRefsScFa::firstOrCreate([
