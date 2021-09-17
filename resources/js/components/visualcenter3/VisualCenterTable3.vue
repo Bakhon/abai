@@ -1776,10 +1776,10 @@
                   </div>
                 </div>
                 <div class="row m-0 emergency-table__header">
-                  <span class="col-3 py-2">{{ trans("visualcenter.emergencyDate") }}</span>
+                  <span class="col-2 py-2">{{ trans("visualcenter.emergencyDate") }}</span>
                   <span class="col-3 py-2">{{ trans("visualcenter.dzo") }}</span>
-                  <span class="col-3 py-2">{{ trans("visualcenter.emergency") }}</span>
-                  <span class="col-3 py-2">{{ trans("visualcenter.resolvingDate") }}</span>
+                  <span class="col-5 py-2">{{ trans("visualcenter.emergency") }}</span>
+                  <span class="col-2 px-0 py-2">{{ trans("visualcenter.resolvingDate") }}</span>
                 </div>
                 <div class="emergency-table__body">
                   <div
@@ -1787,10 +1787,10 @@
                           v-for="(item, index) in emergencyTable"
                   >
                     <div class="col-12 d-flex emergency-title p-0">
-                      <span :class="[item.approved ? 'emergency-resolved' : '' ,'col-3']">{{item.date}}</span>
-                      <span class="col-3">{{item.description}}</span>
-                      <span class="col-3">{{item.title}}</span>
-                      <span class="col-3">{{item.approve_date}}</span>
+                      <span class="col-2">{{item.date}}</span>
+                      <span class="col-3">{{getNameDzoFull(item.description)}}</span>
+                      <span class="col-5">{{item.title}}</span>
+                      <span class="col-2 px-0">{{item.approve_date}}</span>
                     </div>
                   </div>
                 </div>
@@ -2961,7 +2961,7 @@
       span {
         border: 1px solid #4C537E;
       }
-      span:nth-child(3) {
+      span:nth-child(3),span:nth-child(2) {
         text-align:left;
       }
     }
