@@ -27,7 +27,9 @@
 
 <script>
 import VueTableDynamic from 'vue-table-dynamic';
+
 import {globalloadingMutations} from '@store/helpers';
+
 import Subtitle from "../components/Subtitle";
 import SelectScFa from "../components/SelectScFa";
 
@@ -37,7 +39,6 @@ export default {
     VueTableDynamic,
     Subtitle,
     SelectScFa
-
   },
   props: {
     isForecast: {
@@ -52,9 +53,7 @@ export default {
     data: [],
   }),
   methods: {
-    ...globalloadingMutations(
-        ['SET_LOADING']
-    ),
+    ...globalloadingMutations(['SET_LOADING']),
 
     async getData() {
       if (!this.form.sc_fa) return
