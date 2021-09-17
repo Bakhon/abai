@@ -7,11 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\DzoPlan;
-use App\Http\Resources\VisualCenter\OilCondensateConsolidated;
-use App\Http\Resources\VisualCenter\OilCondensateConsolidatedWithoutKmg;
-use App\Http\Resources\VisualCenter\OilCondensateConsolidatedOilResidue;
-use App\Http\Resources\VisualCenter\GasProduction;
-use App\Http\Resources\VisualCenter\WaterInjection;
+use App\Http\Resources\VisualCenter\Dzo\Factory;
 use Carbon\Carbon;
 
 class VisualCenterController extends Controller
@@ -99,54 +95,36 @@ class VisualCenterController extends Controller
 
     private function getData($fact,$plan,$historicalFact,$historicalPlan)
     {
-        $categoryMapping = array (
-            'oilCondensateProduction' => new OilCondensateConsolidated(),
-            'oilCondensateDelivery' => new OilCondensateConsolidated(),
-            'oilCondensateProductionWithoutKMG' => new OilCondensateConsolidatedWithoutKmg(),
-            'oilCondensateDeliveryWithoutKMG' => new OilCondensateConsolidatedWithoutKmg(),
-            'oilCondensateDeliveryOilResidue' => new OilCondensateConsolidatedOilResidue(),
-            'gasProduction' => new GasProduction(),
-            'naturalGasProduction' => new GasProduction(),
-            'associatedGasProduction' => new GasProduction(),
-            'associatedGasFlaring' => new GasProduction(),
-            'naturalGasDelivery' => new GasProduction(),
-            'expensesForOwnNaturalGas' => new GasProduction(),
-            'associatedGasDelivery' => new GasProduction(),
-            'expensesForOwnAssociatedGas' => new GasProduction(),
-            'waterInjection' => new WaterInjection(),
-            'seaWaterInjection' => new WaterInjection(),
-            'wasteWaterInjection' => new WaterInjection(),
-            'artezianWaterInjection' => new WaterInjection(),
-        );
+        $factory = new Factory();
         $chartData = array();
 
         if ($this->periodRange > 0) {
-            $chartData = $categoryMapping[$this->category]->getChartData($fact,$plan,$this->dzoName,$this->category);
+            $chartData = $factory->makeCategory($this->category)->getChartData($fact,$plan,$this->dzoName,$this->category);
         }
         return array (
-            'table' => $this->getTableData($categoryMapping,$fact,$plan,$historicalFact,$historicalPlan),
+            'table' => $this->getTableData($factory,$fact,$plan,$historicalFact,$historicalPlan),
             'chart' => $chartData
         );
     }
 
-    private function getTableData($categoryMapping,$fact,$plan,$historicalFact,$historicalPlan)
+    private function getTableData($factory,$fact,$plan,$historicalFact,$historicalPlan)
     {
         $tableData = array();
-        $tableData['current']['oilCondensateProduction'] = $categoryMapping['oilCondensateProduction']->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['historical']['oilCondensateProduction'] = $categoryMapping['oilCondensateProduction']->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['current']['oilCondensateDelivery'] = $categoryMapping['oilCondensateDelivery']->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['historical']['oilCondensateDelivery'] = $categoryMapping['oilCondensateDelivery']->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['current']['oilCondensateProductionWithoutKMG'] = $categoryMapping['oilCondensateProductionWithoutKMG']->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['current']['oilCondensateDeliveryWithoutKMG'] = $categoryMapping['oilCondensateDeliveryWithoutKMG']->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['historical']['oilCondensateProductionWithoutKMG'] = $categoryMapping['oilCondensateProductionWithoutKMG']->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['historical']['oilCondensateDeliveryWithoutKMG'] = $categoryMapping['oilCondensateDeliveryWithoutKMG']->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
-        $tableData['current'] = array_merge($tableData['current'],$categoryMapping['gasProduction']->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
-        $tableData['historical'] = array_merge($tableData['historical'],$categoryMapping['gasProduction']->getDataByCategory($historicalFact,$historicalPlan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
+        $tableData['current']['oilCondensateProduction'] = $factory->makeCategory('oilCondensateProduction')->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName);
+        $tableData['historical']['oilCondensateProduction'] = $factory->makeCategory('oilCondensateProduction')->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName);
+        $tableData['current']['oilCondensateDelivery'] = $factory->makeCategory('oilCondensateDelivery')->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
+        $tableData['historical']['oilCondensateDelivery'] = $factory->makeCategory('oilCondensateDelivery')->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
+        $tableData['current']['oilCondensateProductionWithoutKMG'] = $factory->makeCategory('oilCondensateProductionWithoutKMG')->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName);
+        $tableData['current']['oilCondensateDeliveryWithoutKMG'] = $factory->makeCategory('oilCondensateDeliveryWithoutKMG')->getDataByConsolidatedCategory($fact,$plan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
+        $tableData['historical']['oilCondensateProductionWithoutKMG'] = $factory->makeCategory('oilCondensateProductionWithoutKMG')->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'production',$this->yearlyPlan,$this->periodType,$this->dzoName);
+        $tableData['historical']['oilCondensateDeliveryWithoutKMG'] = $factory->makeCategory('oilCondensateDeliveryWithoutKMG')->getDataByConsolidatedCategory($historicalFact,$historicalPlan,$this->periodRange,'delivery',$this->yearlyPlan,$this->periodType,$this->dzoName);
+        $tableData['current'] = array_merge($tableData['current'],$factory->makeCategory('gasProduction')->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
+        $tableData['historical'] = array_merge($tableData['historical'],$factory->makeCategory('gasProduction')->getDataByCategory($historicalFact,$historicalPlan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
         if ($this->category === 'oilCondensateDeliveryOilResidue') {
-            $tableData['current']['oilCondensateDeliveryOilResidue'] = $categoryMapping['oilCondensateDeliveryOilResidue']->getDataByOilResidueCategory($fact,$this->periodRange,$this->dzoName);
+            $tableData['current']['oilCondensateDeliveryOilResidue'] = $factory->makeCategory('oilCondensateDeliveryOilResidue')->getDataByOilResidueCategory($fact,$this->periodRange,$this->dzoName);
         }
         if (str_contains(strtolower($this->category), 'water')) {
-            $tableData['current'] = array_merge($tableData['current'], $categoryMapping['waterInjection']->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
+            $tableData['current'] = array_merge($tableData['current'], $factory->makeCategory('waterInjection')->getDataByCategory($fact,$plan,$this->periodRange,$this->yearlyPlan,$this->periodType,$this->dzoName));
         }
         return $tableData;
     }

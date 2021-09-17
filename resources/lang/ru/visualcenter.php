@@ -435,5 +435,6 @@ return array (
   'reasonExplanations' => 'Причины отклонений',
   'resolvingDate' => 'Дата устранения инцидента',
   'emergencyFinished' => 'Завершенные',
-  'emergencyOpen' => 'Открытые'
+  'emergencyOpen' => 'Открытые',
+  'streamInjection' => 'Закачка пара'
 );
