@@ -57,7 +57,7 @@ export default {
   mounted() {
     this.context.canvas.onwheel = (e) => {
       e.preventDefault();
-      this.scrollBlock += e.deltaY > 1 ? this.scaleY/**this.scrollSpeed*/ : -this.scaleY/**this.scrollSpeed*/;
+      this.scrollBlock += e.deltaY > 1 ? this.scaleY : -this.scaleY;
     }
 
     this.context.canvas.onmousedown = () => {
@@ -109,7 +109,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

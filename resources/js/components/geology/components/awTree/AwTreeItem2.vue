@@ -2,13 +2,6 @@
   <li
       :id="item.id"
       :class="{...itemClasses, 'selected': ($store.state.geologyGis.wellName === item.name)}"
-      :draggable="!isFolder"
-      @dragenter="dragEnter.apply(this, [$event, item])"
-      @dragleave="dragLeave.apply(this, [$event, item])"
-      @dragstart="dragStart.apply(this, [$event, item])"
-      @dragend="dragEnd.apply(this, [$event, item])"
-      @drop="drop.apply(this, [$event, item.children, item])"
-      @dragover="dragOver.apply(this, [$event, item])"
   >
     <div class="d-flex align-items-center">
       <div :class="getStatBoxClasses" v-if="isFolder" @click="ontoggle">
@@ -56,33 +49,6 @@ export default {
   methods:{
     select(item){
       this.selectItem(item)
-    },
-    dragStart(e, item){
-      if(this.$el === e.target){
-      }
-    },
-    dragEnd(e, item){
-      if(this.$el === e.target){
-
-      }
-    },
-    dragEnter(e, item){
-      e.stopPropagation();
-      if(this.$el === e.target&&this.isFolder){
-        e.target.classList.add('enter');
-      }
-    },
-    dragLeave(e){
-      e.stopPropagation();
-      if(this.$el === e.target&&this.isFolder){
-        e.target.classList.remove('enter');
-      }
-    },
-    dragOver(e) {
-      e.preventDefault();
-    },
-    drop(e, item){
-      if (e.stopPropagation) e.stopPropagation();
     },
   }
 }

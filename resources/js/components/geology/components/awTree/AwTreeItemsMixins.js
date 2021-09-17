@@ -6,12 +6,6 @@ export default {
         "settings",
         "selected",
         "clickItem",
-        "dragElement",
-        "dragTo",
-        "dragFrom",
-        "setDragTo",
-        "setDragElement",
-        "dropTo"
     ],
     props: {
         item: Object,

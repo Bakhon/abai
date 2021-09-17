@@ -63,19 +63,6 @@ export default {
       }
       this.$emit('update:selected', this.selected)
     },
-    setDragFrom(el){
-      this.dragFrom = el
-    },
-    setDragTo(el){
-      this.dragTo = el
-    },
-    setDragElement(el){
-      this.dragElement = el
-    },
-    dropTo(el){
-      console.log(el, this.dragElement);
-      // el.push(this.dragElement)
-    }
   },
   provide(){
     return {
@@ -85,13 +72,6 @@ export default {
       clickItem: this.clickItem,
       isWithoutSpace: this.isWithoutSpace,
       variant: this.variant,
-      dragElement: this.getDragElement,
-      dragTo: this.dragTo,
-      dragFrom: this.dragFrom,
-      setDragFrom: this.setDragFrom,
-      setDragTo: this.setDragTo,
-      setDragElement: this.setDragElement,
-      dropTo: this.dropTo,
     }
   }
 }
