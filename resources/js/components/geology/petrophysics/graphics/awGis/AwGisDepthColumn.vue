@@ -6,10 +6,12 @@
       :header-height="headerHeight"
       :depth-column-width="depthColumnWidth"
       :offset-y="offsetY"
+      column-name="SSTVD"
   />
 </template>
 <script>
 import AwGisColumn from "./AwGisColumn";
+import {SET_SCROLL_BLOCK_Y} from "../../../../../store/modules/geologyGis.const";
 export default {
   name: "AwGisDepthColumn",
   components: {
@@ -36,18 +38,26 @@ export default {
       set(val) {
         this.offsetDepth = val;
       }
+    },
+    scrollBlock:{
+      get(){
+        return this.$store.state.geologyGis.blocksScrollY;
+      },
+      set(y){
+        this.$store.commit(SET_SCROLL_BLOCK_Y, y)
+      }
     }
   },
   watch: {
-    offsetDepth() {
-      this.$emit('update:changeOffsetY', this.getOffsetDepth)
+    scrollBlock() {
+      this.$emit('update:scrollBlock', this.scrollBlock)
       this.initAxis();
     }
   },
   mounted() {
     this.context.canvas.onwheel = (e) => {
       e.preventDefault();
-      this.getOffsetDepth += e.deltaY > 1 ? this.scaleY/**this.scrollSpeed*/ : -this.scaleY/**this.scrollSpeed*/;
+      this.scrollBlock += e.deltaY > 1 ? this.scaleY/**this.scrollSpeed*/ : -this.scaleY/**this.scrollSpeed*/;
     }
 
     this.context.canvas.onmousedown = () => {
@@ -61,7 +71,7 @@ export default {
   methods: {
     mouseMove(e){
       e.preventDefault();
-      this.getOffsetDepth -= e?.movementY;
+      this.scrollBlock -= e?.movementY;
     },
     initAxis() {
       this.clearCanvas();
@@ -71,7 +81,7 @@ export default {
     drawAxis() {
       let ctx = this.context;
       let axisSize = this.scaleY;
-      let offsetY = this.getOffsetDepth;
+      let offsetY = this.scrollBlock+this.getOffsetDepth;
       let canvasHeight = ctx.canvas.height / axisSize;
       canvasHeight = canvasHeight += offsetY;
       ctx.beginPath();

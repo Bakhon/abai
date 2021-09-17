@@ -9,7 +9,7 @@
       <div class="table-settings__content w-100">
         <div class="d-flex align-items-stretch h-100 w-100">
           <div class="customScroll tree-wrapper mr-2">
-            <AwTree :selected.sync="tableSettingsSelected" variant="AwTreeItem2" :items="items" />
+            <AwTree :selected.sync="tableSettingsSelected" @selectItem="selectWell" variant="AwTreeItem2" :items="getCurves" />
           </div>
           <AwTab active="tab3" class="options-tabs w-100" :buttons="[
             {id: 'tab1', label: 'Info'},
@@ -75,6 +75,7 @@ import AwTab from "../../components/awTab/AwTab";
 import AwTabContent from "../../components/awTab/AwTabContent";
 import AwInput from "../../components/form/AwInput";
 import dropdown from "../../components/dropdowns/dropdown";
+import {SET_SELECTED_WELL_CURVES, SET_WELL_NAME} from "../../../../store/modules/geologyGis.const";
 
 export default {
   name: "TableSettings",
@@ -87,78 +88,33 @@ export default {
     AwTabContent,
     dropdown
   },
+
   data() {
     return {
       tableSettingsSelected: [],
-      items: {
+      gisData: [],
+    }
+  },
+  watch:{
+    tableSettingsSelected(val){
+      this.$store.commit(SET_SELECTED_WELL_CURVES, val);
+    }
+  },
+  computed: {
+    getCurves(){
+      return {
+        id: 1,
         name: 'Vertical track',
         iconType: 'oilTower',
         iconFill: 'red',
         isOpen: true,
-        children: [
-          {
-            name: 'Index track',
-            value: 'index_track',
-            iconType: 'ruler',
-            iconFill: '#B6BAD9',
-            isOpen: true
-          },
-          {
-            name: 'GR',
-            value: 'GR',
-            iconType: 'oilTower',
-            iconFill: '#FF6600',
-            isOpen: true,
-            children: [
-              {
-                name: 'GR',
-                value: 'GR1',
-              },
-            ]
-          },
-          {
-            name: 'SP',
-            value: 'SP',
-            iconType: 'oilTower',
-            iconFill: '#FF6600',
-            isOpen: true,
-            children: [
-              {
-                name: 'SP',
-                value: 'SP',
-              },
-            ]
-          },
-          {
-            name: 'CSAT',
-            value: 'CSAT',
-            iconType: 'oilTower',
-            iconFill: '#FF6600',
-            isOpen: true,
-            children: [
-              {
-                name: 'CSAT',
-                value: 'CSAT1',
-              },
-            ]
-          },
-          {
-            name: 'Completion track',
-            value: 'Completion_track',
-            isOpen: true,
-            children: [
-              {
-                name: 'Perforation',
-                value: 'Perforation',
-              },
-              {
-                name: 'Flow path',
-                value: 'Flow_path',
-              },
-            ]
-          }
-        ]
+        children: this.$store.state?.geologyGis.gisData.curves||[]
       }
+    }
+  },
+  methods:{
+    selectWell(item){
+      this.$store.commit(SET_WELL_NAME, item.name);
     }
   }
 }
@@ -207,7 +163,7 @@ export default {
     }
   }
 
-  .limits-tab{
+  .limits-tab {
     padding: 20px;
   }
 }

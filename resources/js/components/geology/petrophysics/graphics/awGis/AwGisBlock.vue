@@ -4,18 +4,18 @@
       {{ blockName }}
     </div>
     <div class="block__content d-flex">
-      <AwGisDepthColumn :changeOffsetY.sync="offsetY" v-bind="$attrs" />
+      <AwGisDepthColumn :scrollBlock.sync="offsetY" v-bind="$attrs" />
       <AwGisColumn
           @resized="init"
           v-for="(element, key) in getElements"
-          :ref="element.data.name.replace(/ /, '').trim()"
+          :ref="element.replace(/ /, '').trim()"
           v-bind="$attrs"
           :key="key"
-          :column-name="element.data.name"
+          :column-name="element"
       />
     </div>
   </div>
-</template>
+</template>as
 
 <script>
 import AwGisColumn from "./AwGisColumn";
@@ -26,7 +26,8 @@ export default {
   props: {
     blockName: String,
     blocksMargin: Number,
-    elements: Array
+    elements: Array,
+    blocksScrollY: Number
   },
   components: {
     AwGisDepthColumn,
@@ -54,8 +55,8 @@ export default {
   },
   computed: {
     getElements() {
-      return this.elements;
-    }
+      return this.$store.state.geologyGis.selectedGisCurves;
+    },
   },
   methods: {
     init() {
@@ -63,8 +64,8 @@ export default {
         let column = this.$refs[columnName][0];
         let columnCtx = column.ctx;
         this.getElements.forEach((ee) => {
-          if (ee.data.name === columnName && columnCtx) {
-            let curve = ee.data.curve;
+          if (ee === columnName && columnCtx) {
+            let curve = this.$store.state.geologyGis.gisDataCurves[ee];
             this.clearCanvas(columnCtx);
             this.drawCurve(curve, columnCtx, columnName)
           }

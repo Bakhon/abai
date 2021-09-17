@@ -2,12 +2,12 @@
   <div class="aw-gis" ref="mainContainer" :style="{height: `${settings.heightContainer}px`}">
     <div class="block-wrapper d-flex" ref="blockWrapper">
       <AwGisBlock
-          v-for="(group, key) in getGroups"
+          v-for="(well, key) in getWellsBlock"
           :ref="`block_${key}`"
           :alt="`block_${key}`"
           v-bind="settings"
           :key="key"
-          :elements="getGroupElementsWithData(group.groupName)" :block-name="group.groupName"
+          :block-name="well.name"
       />
       <canvas ref="infoCanvas" id="awGisCanvas" :height="settings.heightContainer" />
     </div>
@@ -17,6 +17,7 @@
 <script>
 import AwGisBlock from "./AwGisBlock";
 import AwGisClass from "./utils/AwGisClass";
+import {ADD_BLOCK, FETCH_GIS_DATA} from "../../../../../store/modules/geologyGis.const";
 
 export default {
   name: "awGis",
@@ -28,7 +29,9 @@ export default {
       awGis: null,
       gisData: null,
       gisGroups: [],
+      gisWells: [],
       groupSettingDefault: {},
+      blocksScrollY: 0,
       settings: {
         blocksMargin: 20,
         headerHeight: 60,
@@ -41,41 +44,31 @@ export default {
   },
   async mounted() {
     this.awGis = new AwGisClass();
-    await fetch("/js/json/geology_demo/curve.json").then(async (res) => {
-      this.gisData = await res.json();
-    });
-
-    this.gisData = {
-      ...this.gisData,
-      curves: this.gisData.curves.map(item => ({
-        ...item,
-        curve: item.curve.filter(item => +item).map((item) => +item)
-      }))
+    await this.$store.dispatch(FETCH_GIS_DATA);
+    for (let i = 0; i <1; i++) {
+      this.$store.commit(ADD_BLOCK, `well ${i}`);
     }
-    this.addBlock('Test block');
-    this.selectCurve('SP', [], 'Test block');
-
     setTimeout(()=>{this.setInfoCanvasSize();}, 1)
   },
   computed: {
     getGroups() {
       return this.gisGroups;
+    },
+    getWellsBlock(){
+      return this.$store.state.geologyGis.gisWells;
     }
   },
 
   methods: {
-    addBlock(blockName) {
-      this.awGis.addGroup(blockName, {...this.groupSettingDefault});
+    addGroup(bockName, opt){
+      this.awGis.addGroup(bockName, {...this.groupSettingDefault, ...opt});
       this.update();
     },
 
     selectCurve(curveName, curve, groupName) {
       if (groupName) {
-        if (this.awGis.hasElementInGroup(groupName, curveName)) {
-          this.awGis.removeElementFromGroup(groupName, curveName);
-        } else {
-          this.awGis.addElementToGroup(groupName, curveName, curve);
-        }
+        if(this.awGis.hasElementInGroup(groupName, curveName)) this.awGis.removeElementFromGroup(groupName, curveName)
+        else this.awGis.addElementToGroup(groupName, curveName, curve)
       }
       this.update();
     },
@@ -108,7 +101,9 @@ export default {
   },
   provide() {
     return {
-      awGis: this.awGis
+      awGis: this.awGis,
+      update: this.update,
+      addGroup: this.addGroup
     }
   }
 }

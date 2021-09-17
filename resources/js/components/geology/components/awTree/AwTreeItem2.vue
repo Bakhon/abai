@@ -1,5 +1,15 @@
 <template>
-  <li :class="itemClasses">
+  <li
+      :id="item.id"
+      :class="{...itemClasses, 'selected': ($store.state.geologyGis.wellName === item.name)}"
+      :draggable="!isFolder"
+      @dragenter="dragEnter.apply(this, [$event, item])"
+      @dragleave="dragLeave.apply(this, [$event, item])"
+      @dragstart="dragStart.apply(this, [$event, item])"
+      @dragend="dragEnd.apply(this, [$event, item])"
+      @drop="drop.apply(this, [$event, item.children, item])"
+      @dragover="dragOver.apply(this, [$event, item])"
+  >
     <div class="d-flex align-items-center">
       <div :class="getStatBoxClasses" v-if="isFolder" @click="ontoggle">
         <AwIcon width="6" height="8" name="minus" v-if="isOpen" />
@@ -15,11 +25,11 @@
         <div class="icon-box" v-if="item.iconType">
           <AwIcon :fill="item.iconFill" :name="item.iconType" />
         </div>
-        <span class="aw-tree__list-item__label" @click="ontoggle">{{ item.name }}</span>
+        <span class="aw-tree__list-item__label" @dblclick="ontoggle" @click="select(item)">{{ item.name }}</span>
       </div>
     </div>
     <ul v-if="item.children" v-show="isOpen" >
-      <AwTreeItem2 :settings="settings" v-for="(child, i) in item.children" :item="child" :key="i" :index="index+1" />
+      <AwTreeItem2 :id="item.children.id" :parent="item" :settings="settings" v-for="(child, i) in item.children" :item="child" :key="i" :index="index+1" />
     </ul>
   </li>
 </template>
@@ -42,8 +52,39 @@ export default {
         "is-folder": this.isFolder,
       }
     }
-  }
+  },
+  methods:{
+    select(item){
+      this.selectItem(item)
+    },
+    dragStart(e, item){
+      if(this.$el === e.target){
+      }
+    },
+    dragEnd(e, item){
+      if(this.$el === e.target){
 
+      }
+    },
+    dragEnter(e, item){
+      e.stopPropagation();
+      if(this.$el === e.target&&this.isFolder){
+        e.target.classList.add('enter');
+      }
+    },
+    dragLeave(e){
+      e.stopPropagation();
+      if(this.$el === e.target&&this.isFolder){
+        e.target.classList.remove('enter');
+      }
+    },
+    dragOver(e) {
+      e.preventDefault();
+    },
+    drop(e, item){
+      if (e.stopPropagation) e.stopPropagation();
+    },
+  }
 }
 </script>
 
@@ -92,6 +133,10 @@ export default {
         }
       }
       &-item {
+        .enter {
+          background: #000;
+        }
+
         ul {
           position: relative;
           &:after {

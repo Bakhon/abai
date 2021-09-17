@@ -27,7 +27,6 @@ export default {
     return {
       ctx: null,
       offsetDepth: this.offsetY,
-
     }
   },
   watch: {
