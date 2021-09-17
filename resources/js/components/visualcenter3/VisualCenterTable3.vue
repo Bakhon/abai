@@ -382,7 +382,7 @@
                                 v-html="mainMenu.oilCondensateDeliveryCondensateOnly ? `${flagOn}` : `${flagOff}`"
                         ></div>
                         <a class="col-9 mt-1 p-0 ml-3">
-                          {{trans("visualcenter.getgk")}}
+                          {{trans("visualcenter.condensateDelivery")}}
                         </a>
                       </li>
                     </ul>
@@ -583,6 +583,20 @@
                           {{trans("visualcenter.injectionArtesianWater")}}
                         </a>
                       </li>
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory('streamWaterInjection','waterInjection')"
+                      >
+                        <div
+                                class="col-1 mt-2"
+                                v-html="mainMenu.streamWaterInjection ? `${flagOn}` : `${flagOff}`"
+                        ></div>
+                        <a
+                                class="col-9 p-0 ml-3 mt-2"
+                        >
+                          {{trans("visualcenter.streamInjection")}}
+                        </a>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -758,7 +772,7 @@
               </div>
             </div>
 
-            <div class="d-flex mh-60 mt-3 px-4">
+            <div class="d-flex mh-60 mt-3">
               <div
                       class="col-sm-7 vis-table"
                       :class="periodRange === 0 ? 'main-table__scroll' : ''"
@@ -843,7 +857,7 @@
                     <th v-if="isFilterTargetPlanActive">
                       {{ trans("visualcenter.dzoTargetPlan") }}
                     </th>
-                    <th v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue">
+                    <th class="decrease-reason" v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()">
                       {{ trans("visualcenter.reasonExplanations") }}
                     </th>
                   </tr>
@@ -1124,7 +1138,7 @@
                     </td>
                     <td
                             :class="getDarkerClass(index)"
-                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue"
+                            v-if="periodRange === 0 && !mainMenu.oilCondensateDeliveryOilResidue && isConsolidatedCategoryActive()"
                     >
                     </td>
                   </tr>
@@ -1743,21 +1757,41 @@
                 </div>
               </div>
               <div class="container-fluid">
-                <div class="row p-0 emergency-table__header">
-                  <span class="col-3 p-2">{{ trans("visualcenter.emergencyDate") }}</span>
-                  <span class="col-3 p-2">{{ trans("visualcenter.dzo") }}</span>
-                  <span class="col-3 p-2">{{ trans("visualcenter.emergency") }}</span>
-                  <span class="col-3 p-2">{{ trans("visualcenter.resolvingDate") }}</span>
+                <div class="row p-2">
+                  <div class="col-2 px-2">
+                    <div
+                            :class="['button2',{'button-tab-highlighted': isOpenActive}]"
+                            @click="emergencyTable = emergencyOpen,isOpenActive = true"
+                    >
+                      {{ trans("visualcenter.emergencyOpen") }}
+                    </div>
+                  </div>
+                  <div class="col-2 px-2">
+                    <div
+                            :class="['button2',{'button-tab-highlighted': !isOpenActive}]"
+                            @click="emergencyTable = emergencyFinished,isOpenActive = false"
+                    >
+                      {{ trans("visualcenter.emergencyFinished") }}
+                    </div>
+                  </div>
                 </div>
-                <div
-                        class="row emergency-view"
-                        v-for="(item, index) in emergencyHistory"
-                >
-                  <div class="col-12 d-flex emergency-title p-0">
-                    <span :class="[item.approved ? 'emergency-resolved' : '' ,'col-3']">{{item.date}}</span>
-                    <span class="col-3">{{item.description}}</span>
-                    <span class="col-3">{{item.title}}</span>
-                    <span class="col-3">{{item.approve_date}}</span>
+                <div class="row m-0 emergency-table__header">
+                  <span class="col-2 py-2">{{ trans("visualcenter.emergencyDate") }}</span>
+                  <span class="col-3 py-2">{{ trans("visualcenter.dzo") }}</span>
+                  <span class="col-5 py-2">{{ trans("visualcenter.emergency") }}</span>
+                  <span class="col-2 px-0 py-2">{{ trans("visualcenter.resolvingDate") }}</span>
+                </div>
+                <div class="emergency-table__body">
+                  <div
+                          class="row emergency-view w-100 m-0"
+                          v-for="(item, index) in emergencyTable"
+                  >
+                    <div class="col-12 d-flex emergency-title p-0">
+                      <span class="col-2">{{item.date}}</span>
+                      <span class="col-3">{{getNameDzoFull(item.description)}}</span>
+                      <span class="col-5">{{item.title}}</span>
+                      <span class="col-2 px-0">{{item.approve_date}}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2440,11 +2474,14 @@
     .production-table {
       th {
         &:first-child {
-          width: 50px;
+          width: 20px;
         }
         &:nth-child(2) {
           width: 370px;
         }
+      }
+      td:first-child {
+        width: 20px;
       }
     }
 
@@ -2452,7 +2489,7 @@
       min-width: 683px;
       tr {
         td {
-          padding: 5px 5px 5px 10px;
+          padding: 5px;
           position: relative;
           vertical-align: middle;
           min-height: 29px;
@@ -2805,11 +2842,6 @@
     }
   }
   @media (max-width: 2000px) {
-    .table4 {
-      tr td:not(:first-child) {
-        min-width: 5.3em !important;
-      }
-    }
     .row-name_width_40 {
       width: 80%;
     }
@@ -2929,7 +2961,7 @@
       span {
         border: 1px solid #4C537E;
       }
-      span:nth-child(3) {
+      span:nth-child(3),span:nth-child(2) {
         text-align:left;
       }
     }
@@ -2982,5 +3014,31 @@
     height: 20px;
     background: url(/img/visualcenter3/emergency.png) 3% no-repeat;
     background-size: 100%;
+  }
+  .decrease-reason {
+    width: 171px;
+  }
+  .emergency-table__body {
+    overflow-y: auto;
+    max-height: 600px;
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #333975;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #1f213e;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #1f213e;
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: #333975;
+    }
   }
 </style>

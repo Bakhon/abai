@@ -23,6 +23,10 @@ class WaterInjection {
         'artezianWaterInjection' => array(
             'fact' => 'agent_upload_albsenomanian_water_injection_fact',
             'plan' => 'plan_liq_albsen'
+        ),
+        'streamWaterInjection' => array(
+            'fact' => 'agent_upload_stream_injection_fact',
+            'plan' => 'plan_par'
         )
     );
     private $decreaseReasonFields = array (
