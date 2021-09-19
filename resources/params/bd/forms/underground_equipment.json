@@ -5,22 +5,58 @@
       "action": "create",
       "title": "installation",
       "form": "underground_equipment_installation"
+    },
+    {
+      "action": "edit",
+      "title": "disassembling",
+      "form": "underground_equipment_disassembling"
+    },
+    {
+      "action": "edit",
+      "title": "change_equipment",
+      "form": "underground_equipment_installation"
+    },
+    {
+      "action": "edit",
+      "title": "change_params",
+      "form": "underground_equipment_installation"
+    },
+    {
+      "action": "edit",
+      "title": "repair_equipment",
+      "form": "underground_equipment_installation"
     }
   ],
   "table": "prod.well_equip",
   "tabs": [
     {
-      "title": "hello_world",
+      "title": "",
       "blocks": [
         [
           {
-            "title": "hello_world",
+            "title": "",
             "items": [
               {
-                "code": "hello_world",
+                "code": "equip_type",
+                "type": "dict",
+                "dict": "underground_equip_type",
+                "title": "equip_type"
+              },
+              {
+                "code": "equip_element",
+                "type": "dict",
+                "dict": "underground_equip_element",
+                "title": "equip_element"
+              },
+              {
+                "code": "equip_params",
                 "type": "text",
-                "title": "hello_world",
-                "validation": ""
+                "title": "equip_params"
+              },
+              {
+                "code": "equip_date",
+                "type": "text",
+                "title": "equip_date"
               }
             ]
           }

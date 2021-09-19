@@ -66,6 +66,7 @@ use App\Models\BigData\Dictionaries\WellPrsRepairType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Services\BigData\DictionaryServices\UndergroundEquipElement;
 use App\Services\BigData\DictionaryServices\UndergroundEquipType;
 use App\TybeNom;
 use Carbon\Carbon;
@@ -429,6 +430,9 @@ class DictionaryService
                     break;
                 case 'underground_equip_type':
                     $dict = UndergroundEquipType::getDict();
+                    break;
+                case 'underground_equip_element':
+                    $dict = UndergroundEquipElement::getDict();
                     break;
                 default:
                     throw new DictionaryNotFound();

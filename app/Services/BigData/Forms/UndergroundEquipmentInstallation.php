@@ -29,26 +29,11 @@ class UndergroundEquipmentInstallation extends PlainForm
                 "code" => "equip_element",
                 "type" => "list",
                 "values" => $elements,
-                "title" => "equip_element"
+                "title" => trans('bd.forms.underground_equipment_installation.equip_element')
             ];
 
             $tabs[0]['blocks'][0][1]['items'] = $this->getEquipParams($values['equip_type']);
         }
-
-        if (isset($values['equip_element'])) {
-            $properties = $this->getElements($values['equip_element']);
-
-            $tabs[0]['blocks'][0][0]['items'][] = [
-                "code" => "equip_element",
-                "type" => "list",
-                "values" => $elements,
-                "title" => "equip_element",
-                "callbacks" => [
-                    "updateFieldList" => ""
-                ]
-            ];
-        }
-
         return $tabs;
     }
 
@@ -130,7 +115,8 @@ class UndergroundEquipmentInstallation extends PlainForm
     {
         $data = $this->request->all();
         if (!isset($data['id'])) {
-            $this->insertNewRecord($data);
+            $id = $this->insertNewRecord($data);
+            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
         } else {
         }
     }
@@ -172,6 +158,8 @@ class UndergroundEquipmentInstallation extends PlainForm
                 ->table('prod.well_equip_param')
                 ->insertGetId($values);
         }
+
+        return $wellEquipId;
     }
 
     private function getParamsToSubmit(array $data)

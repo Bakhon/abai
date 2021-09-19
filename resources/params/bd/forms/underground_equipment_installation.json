@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "",
+  "table": "prod.well_equip",
   "tabs": [
     {
       "title": "",
@@ -27,7 +27,7 @@
             ]
           },
           {
-            "title": "Параметры установки оборудования",
+            "title": "installation_parameters",
             "items": []
           }
         ]

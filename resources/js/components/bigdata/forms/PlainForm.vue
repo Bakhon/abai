@@ -159,9 +159,20 @@ export default {
     ]),
     init() {
       this.activeTab = 0
+
+      if (this.values) {
+        this.formValues = this.values
+      }
+
       this.updateForm(this.params.code)
           .then(data => {
             this.formParams = data
+
+            this.formFields.filter(field => !!field.callbacks).forEach(field => {
+              if (this.formValues[field.code]) {
+                this.callback(null, field)
+              }
+            })
           })
           .catch(error => {
             this.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
@@ -170,10 +181,6 @@ export default {
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${this.wellId}`)).then(({data}) => {
         this.well = data.well
       })
-
-      if (this.values) {
-        this.formValues = this.values
-      }
 
       let calculatedFields = this.formFields.filter(field => field.type === 'calc')
       if (calculatedFields.length > 0) {
