@@ -882,28 +882,19 @@
                     >
                       <span
                               v-if="mainMenu.oilCondensateProductionWithoutKMG || mainMenu.oilCondensateDeliveryWithoutKMG"
-                              :class="marginMapping[selectedCategory] &&
-                                marginMapping[selectedCategory].includes(index) ? 'troubled-companies' : ''
-                              "
+                              :class="isTroubleCompany(item.name) ? 'troubled-companies' : ''"
                       >
                         {{ getDzoName(item.name,dzoNameMappingWithoutKMG) }}
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span
                               v-else-if="isConsolidatedCategoryActive()"
-                              :class="marginMapping[selectedCategory] &&
-                                marginMapping[selectedCategory].includes(index) ? 'troubled-companies' : ''
-                              "
+                              :class="isTroubleCompany(item.name)  ? 'troubled-companies' : ''"
                       >
                         {{ getDzoName(item.name,dzoNameMapping) }}
                         <img src="/img/icons/link.svg" />
                       </span>
-                      <span
-                              v-else
-                              :class="marginMapping[selectedCategory] &&
-                                marginMapping[selectedCategory].includes(index) ? 'troubled-companies' : ''
-                              "
-                      >
+                      <span v-else>
                         {{ getNameDzoFull(item.name) }}
                         <img src="/img/icons/link.svg" />
                       </span>
