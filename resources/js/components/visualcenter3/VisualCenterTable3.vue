@@ -583,6 +583,7 @@
                           {{trans("visualcenter.injectionArtesianWater")}}
                         </a>
                       </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
                               @click="switchCategory('streamWaterInjection','waterInjection')"
@@ -2475,14 +2476,11 @@
     .production-table {
       th {
         &:first-child {
-          width: 20px;
+          width: 50px;
         }
         &:nth-child(2) {
           width: 370px;
         }
-      }
-      td:first-child {
-        width: 20px;
       }
     }
 
@@ -2752,6 +2750,13 @@
   }
   .chemistry-table {
     height: calc(100% - 20px);
+    /*table-layout: fixed;*/
+    /*th {*/
+    /*  width: 20%;*/
+    /*  &:first-child {*/
+    /*    width: 60%;*/
+    /*  }*/
+    /*}*/
   }
   .cursor-pointer {
     cursor: pointer;
@@ -2843,6 +2848,12 @@
     }
   }
   @media (max-width: 2000px) {
+    .table4 {
+      tr td:not(:first-child) {
+        min-width: 5.3em !important;
+      }
+    }
+
     .row-name_width_40 {
       width: 80%;
     }
@@ -3017,7 +3028,7 @@
     background-size: 100%;
   }
   .decrease-reason {
-    width: 171px;
+    width: 180px;
   }
   .emergency-table__body {
     overflow-y: auto;
