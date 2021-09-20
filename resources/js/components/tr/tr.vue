@@ -294,7 +294,7 @@
                                   {{trans('tr.cancel')}}</a> 
 
                                 <a
-                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                                  class="save_but_modal"
                                   @click="saveadd()"
                                   @click.prevent="reRender"
                                   v-if="isDeleted && isShowAdd"
@@ -309,7 +309,8 @@
 
                                   
                                   <a
-                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                                  class="save_but_modal"
+                                  
                                   @click="saveadd()"
                                   @click.prevent="reRender"
                                   v-if="isSaved && isShowAdd"
@@ -323,11 +324,11 @@
                                   </svg>{{trans('tr.save_changes')}}</a>
 
                                 <a
-                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                                  class="save_but_modal"
                                   @click="deleteWell"
                                   @click.prevent="reRender"
                                   v-if="isSaved && isShowAdd"
-
+                                  disabled
                                   ><svg width="24"
                                   height="24" 
                                   viewBox="0 0 24 24" 
@@ -377,7 +378,7 @@
                             <td><input data-key="rus_wellname" v-model="row.rus_wellname" class="input_edit_modal"></td>
                             <td><b-form-select data-key="horizon" v-model="row.horizon"  :options="horizonFilterData" @change="editAddWell(row, row_index)" class="select_edit"></b-form-select></td>
                             <td><input data-key="object" v-model="row.object" class="input_edit_modal"></td>
-                            <td><input data-key="exp_meth" v-model="row.exp_meth" class="input_edit_modal"></td>
+                            <td><input data-key="exp_meth" v-model="row.exp_meth" :class="{'input_edit_modal_2': !haveData(row),'input_edit_modal': haveData(row)}"></td>
                             <td><input data-key="type_text" v-model="row.type_text" class="input_edit_modal"></td>
                             <td><input data-key="block" v-model="row.block" class="input_edit_modal"></td>
                             <td><input data-key="cas_OD" v-model="row.cas_OD" class="input_edit_modal"></td>
@@ -6496,7 +6497,12 @@
 .select_pages {
   color: white;
 }
-
+.save_but_modal {
+  margin-left: 10px; 
+  cursor: pointer; 
+  color:white; 
+  margin-top: 5px;
+}
 .form-controll-from {
   background-color: #333975;
   border-color: #333975;
@@ -6773,6 +6779,10 @@ tr:nth-child(even) td {
   font-size: 12px;
   height: 31px;
 }
+.save_but_modal_2 {
+  pointer-events: none;
+  cursor: not-allowed;
+}
 
 
 ::-webkit-scrollbar {
@@ -6868,6 +6878,11 @@ table::-webkit-scrollbar-corner {
   cursor: pointer; 
   color:white; 
   margin-top: 5px;
+}
+.input_edit_modal_2 {
+  border-color: red;
+  font-size: 12px;
+  height: 31px;
 }
 .modal_table {
   height: 240px !important;

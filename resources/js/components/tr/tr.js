@@ -30,6 +30,7 @@ export default {
     Multiselect,
   },
   computed: {
+    
     isFilterChecked() {
       for (let column of this.filterList) {
         if (this.$store.state.tr[column].length !== 0) {
@@ -609,6 +610,7 @@ export default {
         this.isShowSecond = true;
         this.loadPage();
     },
+
     reRender() {
         this.filteredWellData = [];
         this.lonelywell = [];
@@ -858,6 +860,13 @@ export default {
                 this.reRender();
                 console.log('good')
             })
+    },
+    haveData(row) {
+      if (row.exp_meth) {
+        return true
+    } else {
+        return false
+    }
     },
     deleteWell() {
         this.notification(`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
