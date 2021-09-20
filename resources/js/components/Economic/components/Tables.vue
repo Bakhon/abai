@@ -41,7 +41,7 @@
           v-else-if="activeTab === 'well_changes'"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
-          :data="res.wellChanges"
+          :data="res.wells"
           class="text-white"/>
 
       <table-economic-efficiency
@@ -70,7 +70,7 @@
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
-          :wells="res.wellChanges"
+          :wells="res.wells"
           class="text-white"/>
 
       <table-palette
@@ -78,15 +78,20 @@
           :scenarios="res.scenarios"
           :scenario="scenario"
           :oil-prices="scenarioVariations.oil_prices"
-          :wells="res.wellChanges"
+          :wells="res.wells"
           class="text-white"/>
 
       <table-well-tree-map
           v-else-if="activeTab === 'well_treemap'"
           :scenario="scenario"
           :key="scenarioUniqueKey"
-          :data="res.wellChanges"
+          :data="res.wells"
           class="text-white"/>
+
+      <table-well-overview-map
+          v-else-if="activeTab === 'well_overview_map'"
+          :scenario="scenario"
+          :wells="res.wells"/>
     </div>
   </div>
 </template>
@@ -103,6 +108,7 @@ import TableTechnologicalIndicators from "./TableTechnologicalIndicators";
 import TableChess from "./TableChess";
 import TablePalette from "./TablePalette";
 import TableWellTreeMap from "./TableWellTreeMap";
+import TableWellOverviewMap from "./TableWellOverviewMap";
 
 export default {
   name: "Tables",
@@ -117,7 +123,8 @@ export default {
     TableTechnologicalIndicators,
     TableChess,
     TablePalette,
-    TableWellTreeMap
+    TableWellTreeMap,
+    TableWellOverviewMap
   },
   props: {
     scenario: {
@@ -134,7 +141,7 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 'specific_indicators',
+    activeTab: 'well_overview_map',
   }),
   computed: {
     tabs() {
@@ -149,6 +156,7 @@ export default {
         economic_efficiency: this.trans('economic_reference.economic_efficiency'),
         palette: this.trans('economic_reference.palette'),
         well_treemap: 'TreeMap',
+        well_overview_map: this.trans('economic_reference.well_overview_map'),
       }
     },
 
