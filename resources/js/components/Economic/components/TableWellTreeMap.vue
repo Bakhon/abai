@@ -31,10 +31,6 @@ export default {
       )
     },
 
-    stoppedWells() {
-      return JSON.parse(this.scenario.uwi_stop)
-    },
-
     chartSeries() {
       let series = {}
 
@@ -53,7 +49,7 @@ export default {
           wells.push({
             name: well.uwi,
             value: Math.abs(value),
-            fill: this.stoppedWells.includes(well.uwi) ? SELECTED_COLOR : color,
+            fill: this.scenario.uwi_stop.includes(well.uwi) ? SELECTED_COLOR : color,
             fillOriginal: color
           })
         })

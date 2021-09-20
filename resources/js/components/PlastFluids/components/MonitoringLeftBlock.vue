@@ -61,16 +61,16 @@ import Dropdown from "./Dropdown.vue";
 import Button from "../../geology/components/buttons/Button";
 import Icon from "../../geology/components/icons/AwIcon";
 import MonitoringTreeMenu from "./MonitoringTreeMenu.vue";
-import { getDownloadTemplates } from "../services/templateService";
-import { convertTemplateData } from "../helpers";
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "MonitoringLeftBlock",
+  props: {
+    templates: Array,
+  },
   data() {
     return {
       collapsed: false,
-      templates: [],
     };
   },
   computed: {
@@ -87,6 +87,7 @@ export default {
       "SET_CURRENT_SUBSOIL_FIELD",
       "SET_SUBSOIL_FIELDS",
     ]),
+    ...mapActions("plastFluidsLocal", ["handleTableData"]),
     updateCurrentSubsoil(value) {
       this.SET_CURRENT_SUBSOIL(value);
       this.SET_CURRENT_SUBSOIL_FIELD({});
@@ -94,14 +95,8 @@ export default {
     },
     updateCurrentSubsoilField(value) {
       this.SET_CURRENT_SUBSOIL_FIELD(value);
+      this.handleTableData(value.field_id);
     },
-    async getTemplates() {
-      const data = await getDownloadTemplates();
-      this.templates = convertTemplateData(data, this.currentLang);
-    },
-  },
-  mounted() {
-    this.getTemplates();
   },
   components: {
     Dropdown,

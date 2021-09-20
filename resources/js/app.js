@@ -100,6 +100,7 @@ Vue.component('tech-data-component', require('./components/technical_forecast/da
 
 Vue.component('economic-nrs', require('./components/Economic/nrs.vue').default);
 Vue.component('economic-nrs-wells', require('./components/Economic/wells.vue').default);
+Vue.component('economic-nrs-well', require('./components/Economic/well.vue').default);
 Vue.component('economic-optimization', require('./components/Economic/optimization.vue').default);
 Vue.component('gno-table', require('./components/gno/GnoMain.vue').default);
 Vue.component('inclinometry', require('./components/gno/modals/Inclinometry.vue').default);
@@ -229,6 +230,7 @@ Vue.component('digital-drilling-menu', require('./components/DigitalDrilling/men
 Vue.component('window-head', require('./components/DigitalDrilling/WindowHead').default);
 
 Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
+Vue.component('import-daily-raport', require('./components/DigitalDrilling/ImportDailyRaport').default);
 
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 

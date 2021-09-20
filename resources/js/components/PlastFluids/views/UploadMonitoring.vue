@@ -4,7 +4,7 @@
       <Header />
     </div>
     <div class="central-wrapper">
-      <MonitoringLeftBlock />
+      <MonitoringLeftBlock :templates="templates" />
       <MonitoringDataTable
         :currentSubsoil="currentSubsoil[0]"
         :currentSubsoilField="currentSubsoilField[0]"
@@ -20,6 +20,8 @@ import MonitoringLeftBlock from "../components/MonitoringLeftBlock.vue";
 import MonitoringDataTable from "../components/MonitoringDataTable.vue";
 import MonitoringFileUploadAndLog from "../components/MonitoringFileUploadAndLog.vue";
 import { mapState } from "vuex";
+import { getDownloadTemplates } from "../services/templateService";
+import { convertTemplateData } from "../helpers";
 
 export default {
   name: "UploadMonitoring",
@@ -34,16 +36,26 @@ export default {
   },
   data() {
     return {
-      templates: null,
+      templates: [],
     };
   },
   provide() {
     return {
       name: this.user.name,
+      type: 'download',
     };
   },
   computed: {
     ...mapState("plastFluids", ["currentSubsoil", "currentSubsoilField"]),
+  },
+  methods: {
+    async getTemplates() {
+      const data = await getDownloadTemplates();
+      this.templates = convertTemplateData(data, this.currentLang);
+    },
+  },
+  mounted() {
+    this.getTemplates();
   },
 };
 </script>

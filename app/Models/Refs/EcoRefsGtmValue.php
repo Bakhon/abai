@@ -8,7 +8,7 @@ class EcoRefsGtmValue extends Model
 {
     protected $fillable = [
         'gtm_id', 'date', 'priority',
-        'growth', 'amount', 'comment', 'author_id'
+        'growth', 'amount', 'comment', 'author_id', 'log_id'
     ];
 
     public function company()

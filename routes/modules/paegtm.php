@@ -15,6 +15,12 @@ Route::group(
                 Route::get('/get-main-indicator-data', 'GTM\GTMController@getMainIndicatorData');
                 Route::get('/get-additional-indicator-data', 'GTM\GTMController@getAdditionalIndicatorData');
                 Route::get('/get-chart-data', 'GTM\GTMController@getChartData');
+
+                Route::group(['prefix' => 'refslist'], function () {
+                    Route::get('/', 'GTM\EcoRefs\BaseController@index')->name('paegtm-refs-list');
+                    Route::get('/gtm-fact-costs-ref/upload-excel', 'GTM\EcoRefs\GtmFactCostsController@uploadExcel')->name('paegtm-gtm-fact-costs-upload-excel');
+                    Route::post('/gtm-fact-costs-ref/import-excel', 'GTM\EcoRefs\GtmFactCostsController@importExcel')->name('paegtm-gtm-fact-costs-import-excel');
+                });
             }
         );
     }
