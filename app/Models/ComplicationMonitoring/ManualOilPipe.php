@@ -59,7 +59,7 @@ class ManualOilPipe extends Model
 
     public function hydroCalc()
     {
-        return $this->belongsTo(ManualHydroCalcResult::class, 'oil_pipe_id');
+        return $this->hasOne(ManualHydroCalcResult::class, 'oil_pipe_id');
     }
 
     public function reverseCalc()
@@ -69,7 +69,7 @@ class ManualOilPipe extends Model
 
     public function hydroCalcLong()
     {
-        return $this->hasMany(HydroCalcLong::class, 'oil_pipe_id')->orderby('segment');
+        return $this->hasMany(ManualHydroCalcLong::class, 'oil_pipe_id')->orderby('segment');
     }
 
     public static function boot() {
