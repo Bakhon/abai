@@ -62,16 +62,16 @@
     },
     {
       "title": "sk_type",
-      "code": "name_ru",
-      "table": "dict.equip_type",
-      "column": "name_ru",
+      "code": "equip_type",
+      "table": "prod.well_equip",
+      "column": "equip_type",
       "type": "text",
       "is_editable": false
     },
     {
       "title": "prm",
       "code": "prm",
-      "table": "well.well_equip_param",
+      "table": "prod.well_equip_param",
       "column": "prm",
       "type": "float",
       "additional_filter": {
@@ -89,7 +89,7 @@
     {
       "title": "depth",
       "code": "prm",
-      "table": "well.well_equip_param",
+      "table": "prod.well_equip_param",
       "column": "prm",
       "type": "float",
       "additional_filter": {
@@ -125,7 +125,7 @@
     {
       "title": "d_stg",
       "code": "prm",
-      "table": "well.well_equip_param",
+      "table": "prod.well_equip_param",
       "column": "prm",
       "type": "float",
       "additional_filter": {
@@ -143,7 +143,7 @@
     {
       "title": "dlina",
       "code": "prm",
-      "table": "well.well_equip_param",
+      "table": "prod.well_equip_param",
       "column": "prm",
       "type": "float",
       "additional_filter": {
@@ -161,7 +161,7 @@
     {
       "title": "rpm",
       "code": "prm",
-      "table": "well.well_equip_param",
+      "table": "prod.well_equip_param",
       "column": "prm",
       "type": "float",
       "additional_filter": {
@@ -179,10 +179,10 @@
     {
       "title": "QZh",
       "code": "prm",
-      "table": "well.well_equip_param",
+      "table": "prod.well_equip_param",
       "column": "prm",
       "type": "float",
-      "validation":"gte:0",
+      "validation": "gte:0",
       "validate_deviation": true,
       "additional_filter": {
         "casing_type": {
