@@ -1193,6 +1193,7 @@
                         class="oil-condensate-chart-secondary-name"
                 >
                   {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
+                  <span v-if="isFilterTargetPlanActive">/{{trans("visualcenter.Month").toLowerCase()}}</span>
                 </div>
                 <div
                         v-else-if="mainMenu.oilCondensateDeliveryOilResidue"
