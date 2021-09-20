@@ -784,7 +784,7 @@
                   <thead>
                   <tr>
                     <th>№</th>
-                    <th>{{ trans("visualcenter.dzo") }}</th>
+                    <th>{{ trans("visualcenter.companyName") }}</th>
                     <th v-if="buttonMonthlyTab && !mainMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoMonthlyPlan") }}
                       <div v-if="periodRange === 0">
