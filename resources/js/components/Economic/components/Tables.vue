@@ -91,6 +91,7 @@
       <table-well-overview-map
           v-else-if="activeTab === 'well_overview_map'"
           :scenario="scenario"
+          :key="scenarioUniqueKey"
           :wells="res.wells"/>
     </div>
   </div>

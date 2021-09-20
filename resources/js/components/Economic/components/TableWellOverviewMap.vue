@@ -34,13 +34,6 @@ export default {
   },
   data: () => ({
     map: null,
-    viewState: {
-      latitude: 43.426262258809,
-      longitude: 52.854602599069,
-      zoom: 11,
-      bearing: 0,
-      pitch: 30
-    }
   }),
   async mounted() {
     this.initMap()
@@ -50,10 +43,10 @@ export default {
       this.map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
-        center: [this.viewState.longitude, this.viewState.latitude],
-        zoom: this.viewState.zoom,
-        bearing: this.viewState.bearing,
-        pitch: this.viewState.pitch,
+        center: this.wellPoints[0].coordinates,
+        zoom: 11,
+        bearing: 0,
+        pitch: 30,
         accessToken: process.env.MIX_MAPBOX_TOKEN
       })
 
