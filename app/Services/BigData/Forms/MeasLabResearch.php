@@ -12,7 +12,7 @@ class MeasLabResearch extends TableForm
 {
     protected $configurationFileName = 'meas_lab_research';
 
-    public function getRows(array $params = []): array
+    public function getResults(array $params = []): array
     {
         $filter = json_decode($this->request->get('filter'));
         if (empty($filter->research_type)) {

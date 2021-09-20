@@ -16,7 +16,3 @@
         background: #0f1430;
     }
 </style>
-
-<script>
-
-</script>
