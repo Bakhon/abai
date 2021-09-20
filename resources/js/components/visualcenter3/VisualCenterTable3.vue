@@ -787,7 +787,7 @@
                     <th>№</th>
                     <th>{{ trans("visualcenter.companyName") }}</th>
                     <th v-if="buttonMonthlyTab && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoMonthlyPlan") }}
+                      {{ trans("visualcenter.dzoMonthlyPlan") }},
                       <div v-if="periodRange === 0">
                         {{ getMetricNameByCategorySelected() }}
                       </div>
@@ -796,7 +796,7 @@
                       </div>
                     </th>
                     <th v-if="buttonYearlyTab && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoYearlyPlan") }}
+                      {{ trans("visualcenter.dzoYearlyPlan") }},
                       <div v-if="periodRange === 0">
                         {{ getMetricNameByCategorySelected() }}
                       </div>
@@ -835,7 +835,7 @@
                       </div>
                     </th>
                     <th v-if="!mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoDifference") }}
+                      {{ trans("visualcenter.dzoDifference") }},
                       <div v-if="periodRange !== 0">
                         {{ getThousandMetricNameByCategorySelected() }}
                       </div>
@@ -2476,12 +2476,16 @@
     .production-table {
       th {
         &:first-child {
-          width: 50px;
+          width: 20px;
         }
         &:nth-child(2) {
           width: 370px;
         }
       }
+      td:first-child {
+        width: 20px;
+      }
+
     }
 
     .table4 {
