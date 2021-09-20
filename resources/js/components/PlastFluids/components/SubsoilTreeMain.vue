@@ -11,7 +11,8 @@
           :name="subsoil.owner_name"
           :id="subsoil.owner_name"
           :value="subsoil"
-          v-model="computedPickedSubsoil"
+          v-model="pickedSubsoil"
+          @click="clearArray"
         />
         <label :for="subsoil.owner_name">{{ subsoil.owner_name }}</label>
       </div>
@@ -29,7 +30,7 @@ export default {
   },
   computed: {
     ...mapState("plastFluids", ["currentSubsoil"]),
-    computedPickedSubsoil: {
+    pickedSubsoil: {
       get() {
         return this.currentSubsoil;
       },
@@ -40,6 +41,9 @@ export default {
   },
   methods: {
     ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL"]),
+    clearArray() {
+      this.pickedSubsoil = [];
+    },
   },
 };
 </script>

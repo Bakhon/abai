@@ -57,4 +57,12 @@ return array (
   'logarithmic' => 'Логарифмическая',
   'polynomial' => 'Полиномиальная',
   'power' => 'Степенная',
+  'approximation_ahead_predict' => 'Вперед на',
+  'approximation_backward_predict' => 'Назад на',
+  'from' => 'От',
+  'to' => 'До',
+  'ps_bs_ds_ms_graph_ps' => 'Давление насыщения от газосодержания пластовой нефти КТ-II',
+  'ps_bs_ds_ms_graph_ms' => 'Вязкость от газосодержания пластовой нефти КТ-II',
+  'ps_bs_ds_ms_graph_ds' => 'Плотность от газосодержания пластовой нефти КТ-II',
+  'ps_bs_ds_ms_graph_bs' => 'Объемный коэффициент от газосодержания пластовой нефти КТ-II',
 );

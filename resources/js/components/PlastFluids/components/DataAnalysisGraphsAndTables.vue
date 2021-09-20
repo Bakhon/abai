@@ -8,11 +8,15 @@
         </div>
       </div>
       <div class="content">
-        <ScatterGraph
-          v-if="graphData.ps.data.length"
-          :series="graphData.ps"
-          :type="type"
-        />
+        <div v-for="(graph, key) in graphData" :key="key" class="content-child">
+          <ScatterGraph
+            v-if="graph.data.length"
+            :series="graph"
+            :title="trans(`plast_fluids.${graphType}_graph_${key}`)"
+            :graphType="key"
+          />
+          <SmallCatLoader :loading="loading" v-else />
+        </div>
       </div>
     </div>
     <DataAnalysisDataTable
@@ -24,6 +28,7 @@
 </template>
 
 <script>
+import SmallCatLoader from "./SmallCatLoader.vue";
 import ScatterGraph from "./ScatterGraph.vue";
 import DataAnalysisDataTable from "./DataAnalysisDataTable.vue";
 import { mapState, mapActions } from "vuex";
@@ -33,11 +38,11 @@ export default {
   components: {
     ScatterGraph,
     DataAnalysisDataTable,
+    SmallCatLoader,
   },
   data() {
     return {
       graphType: "ps_bs_ds_ms",
-      type: "scatter",
     };
   },
   computed: {
@@ -46,13 +51,13 @@ export default {
       "currentSubsoilField",
       "currentSubsoilHorizon",
     ]),
-    ...mapState("plastFluidsLocal", ["tableFields", "tableRows"]),
+    ...mapState("plastFluidsLocal", ["tableFields", "tableRows", "loading"]),
     graphData() {
       let allGraphData = {
-        bs: { name: "Данные", data: [] },
-        ms: { name: "Данные", data: [] },
-        ps: { name: "Данные", data: [] },
-        ds: { name: "Данные", data: [] },
+        ps: { name: "Данные", data: [], type: "scatter" },
+        bs: { name: "Данные", data: [], type: "scatter" },
+        ds: { name: "Данные", data: [], type: "scatter" },
+        ms: { name: "Данные", data: [], type: "scatter" },
       };
       this.tableRows.map((row) => {
         allGraphData.bs.data.push(row.Bs);
@@ -69,13 +74,6 @@ export default {
       const max = Math.max(...arrayData);
       const min = Math.min(...arrayData);
       return [min, max];
-    },
-    getApproximation(type, series) {
-      const response = graphData.approximation;
-      const response1 = graphData.approximation1;
-      this.type = "line";
-      this.gasGraphSeries.graph1.approximation = response;
-      this.gasGraphSeries.graph1.approximation1 = response1;
     },
   },
   mounted() {
@@ -129,9 +127,25 @@ export default {
 }
 
 .content {
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
   height: calc(100% - 38px);
   border: 6px solid #272953;
   padding: 4px;
+}
+
+.content-child {
+  min-height: 180px;
+  width: calc(50% - 3px);
+}
+
+.content-child:nth-of-type(1),
+.content-child:nth-of-type(2) {
+  margin-bottom: 6px;
+}
+
+.content-child:nth-of-type(even) {
+  margin-left: 6px;
 }
 </style>

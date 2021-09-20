@@ -20,13 +20,22 @@
       </div>
     </div>
     <div class="data-analysis-table-holder">
-      <BaseTable :fields="fields" :items="items" :isAnalysisTable="true" />
+      <SmallCatLoader v-if="loading" :loading="loading" />
+      <BaseTable
+        v-else
+        :fields="fields"
+        :items="items"
+        :isAnalysisTable="true"
+        :sticky="true"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import BaseTable from "./BaseTable.vue";
+import SmallCatLoader from "./SmallCatLoader.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "DataAnalysisDataTable",
@@ -37,6 +46,10 @@ export default {
   },
   components: {
     BaseTable,
+    SmallCatLoader,
+  },
+  computed: {
+    ...mapState("plastFluidsLocal", ["loading"]),
   },
 };
 </script>

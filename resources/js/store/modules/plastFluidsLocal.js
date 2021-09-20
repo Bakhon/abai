@@ -11,6 +11,7 @@ const plastFluidsLocal = {
     tableFields: [],
     tableRows: [],
     currentTemplate: {},
+    loading: false,
   },
 
   mutations: {
@@ -28,6 +29,9 @@ const plastFluidsLocal = {
     },
     SET_TABLE_ROWS(state, payload) {
       state.tableRows = payload;
+    },
+    SET_LOADING(state, payload) {
+      state.loading = payload;
     },
   },
 
@@ -57,21 +61,28 @@ const plastFluidsLocal = {
       commit("SET_TABLE_ROWS", data.rows);
     },
     async handleTableGraphData({ commit, state }, dataToPost) {
-      const postDataMock = {
-        horizons: "None",
-        blocks: "None",
-        vid_fluid: "None",
-        data_start: "None",
-        data_end: "None",
-      };
-      let merged = { ...postDataMock, ...dataToPost };
-      const postData = new FormData();
-      for (let key in merged) {
-        postData.append(key, merged[key]);
+      try {
+        commit("SET_LOADING", true);
+        const postDataMock = {
+          horizons: "None",
+          blocks: "None",
+          vid_fluid: "None",
+          data_start: "None",
+          data_end: "None",
+        };
+        let merged = { ...postDataMock, ...dataToPost };
+        const postData = new FormData();
+        for (let key in merged) {
+          postData.append(key, merged[key]);
+        }
+        const data = await getTableGraphData(postData);
+        commit("SET_TABLE_FIELDS", data[0].table_header);
+        commit("SET_TABLE_ROWS", data.slice(2));
+      } catch (error) {
+        alert(error);
+      } finally {
+        commit("SET_LOADING", false);
       }
-      const data = await getTableGraphData(postData);
-      commit("SET_TABLE_FIELDS", data[0].table_header);
-      commit("SET_TABLE_ROWS", data.slice(1));
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="scatter-graph">
     <div class="scatter-graph-header">
-      <p>Давление насыщения от газосодержания пластовой нефти КТ-II</p>
+      <p>{{ title }}</p>
       <div class="scatter-graph-toolbar">
         <button @click.stop="isApproximationOpen = true">Аппроксимация</button>
         <img
@@ -22,7 +22,10 @@
     ></ApexCharts>
     <ScatterGraphApproximation
       v-show="isApproximationOpen"
+      :series="series.data"
+      :graphType="graphType"
       @close-approximation="isApproximationOpen = false"
+      @get-approximation="getApproximation"
     />
   </div>
 </template>
@@ -34,19 +37,27 @@ import Export from "apexcharts/src/modules/Exports.js";
 
 export default {
   name: "ScatterGraph",
-  props: {
-    series: Object,
-    type: String,
-    approximation: Object,
-  },
   components: {
     ApexCharts: VueApexCharts,
     ScatterGraphApproximation,
   },
+  props: {
+    series: Object,
+    title: String,
+    graphType: String,
+  },
   data() {
     return {
+      type: "scatter",
       isApproximationOpen: false,
+      graphSeries: [],
+      approximation: [],
+      maxX: "",
+      maxY: "",
       chartOptions: {
+        stroke: {
+          show: true,
+        },
         dataLabels: {
           enabled: false,
         },
@@ -101,7 +112,6 @@ export default {
             show: true,
           },
           min: 0,
-          max: 600,
           tickAmount: 6,
         },
         yaxis: {
@@ -111,25 +121,79 @@ export default {
           lines: {
             show: true,
           },
+          min: 0,
+          tickAmount: 4,
         },
       },
     };
   },
-  computed: {
-    graphSeries() {
-      const seriesData = [this.series];
-      if (this.approximation) {
-        seriesData.push(this.approximation);
-      }
-      return seriesData;
+  watch: {
+    series: {
+      handler(obj) {
+        this.maxX = this.getMaxInObjectArray(obj.data, "x");
+        this.maxY = this.getMaxInObjectArray(obj.data, "y");
+        Vue.set(this.chartOptions.xaxis, "max", this.maxX + 50);
+        Vue.set(this.chartOptions.yaxis, "max", this.maxY + 5);
+        this.graphSeries = [];
+        this.graphSeries.push(obj);
+      },
+      immediate: true,
     },
   },
   methods: {
+    getMaxInObjectArray(obj, property) {
+      let max = 0;
+      obj.forEach((dot) => {
+        if (dot[property] > max) max = dot[property];
+      });
+      return max;
+    },
+    getApproximation(data) {
+      if (data.approximation) {
+        this.type = "line";
+        this.chartOptions.stroke.curve = "smooth";
+        this.graphSeries.push(data.approximation);
+      }
+      if (data.graphOptions) {
+        const minY =
+          this.chartOptions.yaxis.min ?? this.chartOptions.yaxis[0].min;
+        const maxY =
+          this.chartOptions.yaxis.max ?? this.chartOptions.yaxis[0].max;
+        this.chartOptions = {
+          ...this.chartOptions,
+          yaxis: {
+            min: data.graphOptions.ordinateFrom
+              ? parseInt(data.graphOptions.ordinateFrom)
+              : minY,
+            max: data.graphOptions.ordinateTo
+              ? parseInt(data.graphOptions.ordinateTo)
+              : maxY,
+            labels: {
+              formatter: (value) => value.toFixed(),
+            },
+            lines: {
+              show: true,
+            },
+            tickAmount: 4,
+          },
+          xaxis: {
+            ...this.chartOptions.xaxis,
+            min: data.graphOptions.abscissaFrom
+              ? parseInt(data.graphOptions.abscissaFrom)
+              : this.chartOptions.xaxis.min,
+            max: data.graphOptions.abscissaTo
+              ? parseInt(data.graphOptions.abscissaTo)
+              : this.chartOptions.xaxis.max,
+          },
+        };
+      }
+    },
     handleMarkerClick(
       event,
       chartContext,
       { seriesIndex, dataPointIndex, config }
     ) {
+      console.log(max);
       console.log(event, chartContext, { seriesIndex, dataPointIndex, config });
     },
     saveToPng() {

@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="data-analysis-study">
     <div class="data-analysis__wrapper">
       <div class="data-analysis__wrapper-title">
         <div class="icon-title">

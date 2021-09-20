@@ -15,7 +15,7 @@ const plastFluids = {
   mutations: {
     SET_CURRENT_SUBSOIL(state, payload) {
       state.currentSubsoil = [];
-      Vue.set(state.currentSubsoil, 0, payload);
+      state.currentSubsoil.push(payload);
     },
     SET_CURRENT_SUBSOIL_FIELD(state, payload) {
       state.currentSubsoilField = [];
@@ -39,7 +39,7 @@ const plastFluids = {
       commit("SET_CURRENT_SUBSOIL", value);
       commit("SET_CURRENT_SUBSOIL_FIELD", {});
       commit("SET_CURRENT_SUBSOIL_HORIZON", []);
-      commit("SET_SUBSOIL_FIELDS", value.fields);
+      commit("SET_SUBSOIL_FIELDS", value?.fields);
       commit("SET_SUBSOIL_HORIZONS", []);
     },
     UPDATE_CURRENT_SUBSOIL_FIELD({ commit }, value) {
