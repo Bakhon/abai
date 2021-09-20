@@ -277,4 +277,9 @@ return array (
   'select_user' => 'Выберите пользователя',
   'select_log' => 'Выберите лог',
   'pes' => 'Производственно-экономический участок',
+  'stop_options_for_unprofitable_fund' => 'Варианты остановок нерентабельного фонда',
+  'with_gtm' => 'с учетом ГТМ',
+  'without_gtm' => 'без учета ГТМ',
+  'fot_optimization' => 'Оптимизация ФОТ',
+  'non_optimizable_costs_share' => 'неоптимизируемая доля затрат',
 );
