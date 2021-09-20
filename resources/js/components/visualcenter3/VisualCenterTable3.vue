@@ -2754,13 +2754,6 @@
   }
   .chemistry-table {
     height: calc(100% - 20px);
-    /*table-layout: fixed;*/
-    /*th {*/
-    /*  width: 20%;*/
-    /*  &:first-child {*/
-    /*    width: 60%;*/
-    /*  }*/
-    /*}*/
   }
   .cursor-pointer {
     cursor: pointer;
