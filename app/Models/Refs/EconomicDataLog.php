@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class EconomicDataLog extends Model
 {
     protected $fillable = [
-        'author_id'
+        'author_id', 'type_id', 'name'
     ];
 
     public function author()

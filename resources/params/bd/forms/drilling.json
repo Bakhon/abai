@@ -1,0 +1,47 @@
+{
+  "type": "table",
+  "table_type": "wells",
+  "edit": {
+    "active": true,
+    "form": "daily_drill"
+  },
+  "columns": [
+    {
+      "title": "uwi_number",
+      "code": "uwi",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "code": "daily_drill_progress",
+      "type": "float",
+      "title": "daily_drill_progress",
+      "is_editable": false
+    },
+    {
+      "code": "depth",
+      "type": "float",
+      "title": "depth",
+      "is_editable": false
+    },
+    {
+      "code": "well_status_type",
+      "dict":"well_statuses",
+      "type": "dict",
+      "title": "well_status_type",
+      "is_editable": false
+    },
+    {
+      "code": "work_name",
+      "type": "text",
+      "title": "work_name",
+      "is_editable": false
+    }
+  ]
+}
+  
+           
+              
+          
+              
+              

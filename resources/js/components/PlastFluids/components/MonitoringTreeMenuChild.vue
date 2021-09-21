@@ -2,13 +2,14 @@
   <li
     @mouseover="hovered = true"
     @mouseleave="hovered = false"
-    @click="handleTemplateDownload"
+    @click="type === 'download' ? handleTemplateDownload() : setTableData()"
   >
     <label>
       <i style="color: #999DC0; margin-right: 8px;" class="fa fa-file "></i
       >{{ treeChild["name_" + currentLang] }}
     </label>
     <img
+      v-if="type === 'download'"
       v-show="hovered"
       class="download-icon"
       src="/img/PlastFluids/data_upload.svg"
@@ -19,6 +20,7 @@
 
 <script>
 import { downloadTemplate } from "../services/templateService";
+import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "MonitoringTreeMenuChild",
@@ -30,7 +32,21 @@ export default {
       hovered: false,
     };
   },
+  inject: {
+    type: {
+      default: "",
+    },
+  },
+  computed: {
+    ...mapState("plastFluids", ["currentSubsoilField"]),
+  },
   methods: {
+    ...mapMutations("plastFluidsLocal", [
+      "SET_CURRENT_TEMPLATE",
+      "SET_TABLE_FIELDS",
+      "SET_TABLE_ROWS",
+    ]),
+    ...mapActions("plastFluidsLocal", ["handleTableData"]),
     async handleTemplateDownload() {
       const data = new FormData();
       data.append("template_id", this.treeChild.id);
@@ -44,6 +60,10 @@ export default {
 
       link.href = URL.createObjectURL(blob);
       link.click();
+    },
+    setTableData() {
+      this.SET_CURRENT_TEMPLATE(this.treeChild);
+      this.handleTableData(this.currentSubsoilField[0].field_id);
     },
   },
 };

@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.document",
+  "sort": [
+    {
+      "field": "doc_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "",

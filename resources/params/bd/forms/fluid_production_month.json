@@ -1,0 +1,37 @@
+{
+  "type": "table",
+  "show_history": false,
+  "update_after_edit": false,
+  "columns": [
+    {
+      "code": "uwi",
+      "type": "text",
+      "is_editable": false,
+      "title": "uwi"
+    },
+    {
+      "code": "other_uwi",
+      "type": "text",
+      "is_editable": false,
+      "title": "other_uwi"
+    },
+    {
+      "code": "tap",
+      "type": "text",
+      "is_editable": false,
+      "title": "tap"
+    },
+    {
+      "code": "indicator",
+      "type": "text",
+      "is_editable": false,
+      "title": "indicators"
+    },
+    {
+      "code": "tech",
+      "type": "text",
+      "is_editable": false,
+      "title": "tech"
+    }
+  ]
+}

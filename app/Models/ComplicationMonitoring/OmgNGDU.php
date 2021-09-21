@@ -6,10 +6,11 @@ use App\Models\Refs\Field;
 use App\Models\Traits\OmgNgduTrait;
 use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OmgNGDU extends Model
 {
-    use WithHistory, OmgNgduTrait;
+    use WithHistory, OmgNgduTrait, SoftDeletes;
 
     protected $guarded = ['id'];
     protected $table = 'omg_n_g_d_u_s_1';

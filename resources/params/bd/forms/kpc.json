@@ -2,7 +2,7 @@
   "table": "prod.well_workover",
   "sort": [
     {
-      "field": "request_date",
+      "field": "dbeg",
       "order": "desc"
     }
   ],
@@ -247,7 +247,7 @@
               "is_editable": true
             },
             {
-              "code": "status",
+              "code": "well_previous_status_type",
               "table": "prod.well_status",
               "type":"calc",
               "title": "status_before_selected_date",
@@ -255,7 +255,7 @@
               "is_editable": false
             },
             {
-              "code": "category",
+              "code": "well_previous_category",
               "table": "prod.well_category",
               "type":"calc",
               "title": "well_previous_category",

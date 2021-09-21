@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\LabResearchType;
-use App\Exceptions\BigData\SubmitFormException;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -26,8 +26,9 @@ class ResearchLabResearch extends PlainForm
 
     protected $configurationFileName = 'research_lab_research';
 
-    protected function getRows(int $wellId): Collection
+    protected function getRows(): Collection
     {
+        $wellId = (int)$this->request->get('well_id');
         $query = DB::connection('tbd')
             ->table('prod.lab_research as lr')
             ->select('lr.id', 'research_type', 'research_date', 'lrt.code as research_type_code')
@@ -89,12 +90,15 @@ class ResearchLabResearch extends PlainForm
         $researchType = LabResearchType::find($this->request->get('research_type'));
         $mainFields = $this->getFields()
             ->filter(function ($field) use ($researchType) {
-                return !empty($field['depends_on']);
+                return empty($field['depends_on']);
             });
 
         $dependentFields = $this->getFields()
             ->filter(function ($field) use ($researchType) {
-                return !empty($field['depends_on']);
+                if (empty($field['depends_on'])) {
+                    return false;
+                }
+
                 foreach ($field['depends_on'] as $dependency) {
                     return $dependency['value']['code'] === $researchType->code;
                 }
@@ -105,13 +109,24 @@ class ResearchLabResearch extends PlainForm
         $dependentTable = self::TABLES_BY_TYPE[$researchType->code];
 
         $data = $this->request->all();
-        $mainData = array_filter($data, function ($value, $key) use ($mainFields) {
-            return $mainFields->where('code', $key)->isNotEmpty();
-        },                       ARRAY_FILTER_USE_BOTH);
+        $mainData = array_filter(
+            $data,
+            function ($value, $key) use ($mainFields) {
+                if ($key === 'well') {
+                    return true;
+                }
+                return $mainFields->where('code', $key)->isNotEmpty();
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
 
-        $dependentData = array_filter($data, function ($value, $key) use ($dependentFields) {
-            return $dependentFields->where('code', $key)->isNotEmpty();
-        },                            ARRAY_FILTER_USE_BOTH);
+        $dependentData = array_filter(
+            $data,
+            function ($value, $key) use ($dependentFields) {
+                return $dependentFields->where('code', $key)->isNotEmpty();
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
 
 
         $dbQuery = DB::connection('tbd')->table($this->params()['table']);
@@ -161,4 +176,38 @@ class ResearchLabResearch extends PlainForm
         return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
+    public function getFormParamsToEdit(array $params)
+    {
+        $row = DB::connection('tbd')
+            ->table('prod.lab_research as lr')
+            ->select('lr.id', 'research_type', 'research_date', 'lr.well', 'lrt.code as research_type_code')
+            ->where('lr.id', $params['id'])
+            ->join('dict.lab_research_type as lrt', 'lr.research_type', 'lrt.id')
+            ->first();
+
+        if (Carbon::parse($row->research_date) != Carbon::parse($params['filter']['date'])) {
+            return [
+                'well_id' => $row->well,
+                'values' => [
+                    'research_date' => $params['filter']['date'],
+                    'research_type' => $row->research_type
+                ]
+            ];
+        }
+
+        $additionalData = DB::connection('tbd')
+            ->table(self::TABLES_BY_TYPE[$row->research_type_code])
+            ->where('well', $row->id)
+            ->first();
+        unset($additionalData->id, $additionalData->well);
+
+        foreach ((array)$additionalData as $key => $value) {
+            $row->$key = $value;
+        }
+
+        return [
+            'well_id' => $row->well,
+            'values' => (array)$row
+        ];
+    }
 }

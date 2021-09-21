@@ -366,7 +366,7 @@
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
                                   >{{trans('tr.form')}}
                                   </a>
-                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_WELLNAME')"
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_EVENT')"
                                   >{{trans('tr.reset')}}
                                   </a>
                               </div>

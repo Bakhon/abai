@@ -22,6 +22,7 @@ class OmgNGDUFilter extends BaseFilter
                 $this->query
                 ->select($this->table.'.*')
                 ->leftJoin('gus', 'gus.id', $this->table.'.gu_id')
+                ->leftJoin('manual_gus', 'manual_gus.id', $this->table.'.gu_id')
                 //dirty hack for alphanumeric sort but other solutions doesn't work
                 ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gus_name'))
                 ->orderBy('gus_name', $isDescending ? 'desc' : 'asc');

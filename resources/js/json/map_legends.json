@@ -112,12 +112,12 @@
         {
             "type": "color-box",
             "color": "danger",
-            "name": "Давление > значения"
+            "name": "Давление > {referentValue}"
         },
         {
             "type": "color-box",
             "color": "good",
-            "name": "Давление < значения"
+            "name": "Давление < {referentValue}"
         },
         {
             "type": "color-box",
@@ -129,12 +129,12 @@
         {
             "type": "color-box",
             "color": "danger",
-            "name": "Температура < значения"
+            "name": "Температура < {referentValue}"
         },
         {
             "type": "color-box",
             "color": "good",
-            "name": "Температура > значения"
+            "name": "Температура > {referentValue}"
         },
         {
             "type": "color-box",
