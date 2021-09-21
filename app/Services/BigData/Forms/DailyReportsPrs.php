@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Services\BigData\StructureService;
 use Illuminate\Support\Facades\DB;
 
 class DailyReportsPrs extends TableForm
@@ -37,6 +38,8 @@ class DailyReportsPrs extends TableForm
             throw new \Exception(trans('bd.select_dzo_ngdu'));
         }
 
+        $orgIds = $this->getOrgIds((int)$this->request->get('id'));
+
         $rows = DB::connection('tbd')
             ->table('prod.report_org_daily_repair as rodr')
             ->select(
@@ -53,7 +56,7 @@ class DailyReportsPrs extends TableForm
             ->join('dict.well_repair_type as wrt', 'ww.repair_type', 'wrt.id')
             ->join('dict.org as org', 'rodr.org', 'org.id')
             ->join('prod.well_geo as wg', 'ww.well', 'wg.well')
-            ->where('rodr.org', $this->request->get('id'))
+            ->whereIn('rodr.org', $orgIds)
             ->where('rodr.report_date', $filter->date)
             ->where('wrt.code', $this->repairType)
             ->where('wg.dbeg', '<=', $filter->date)
@@ -82,6 +85,29 @@ class DailyReportsPrs extends TableForm
             });
 
         return ['rows' => $rows];
+    }
+
+    private function getOrgIds(int $orgId)
+    {
+        $structureService = app()->make(StructureService::class);
+        $orgStructure = $structureService->getFlattenTreeWithPermissions();
+        $org = array_filter($orgStructure, function ($item) use ($orgId) {
+            return $item['type'] === 'org' && $item['id'] === $orgId;
+        });
+        $org = reset($org);
+        return $this->getOrgWithChildren($orgStructure, $org['id']);
+    }
+
+    private function getOrgWithChildren(array $orgStructure, $orgId)
+    {
+        $ids = [$orgId];
+        $children = array_filter($orgStructure, function ($item) use ($orgId) {
+            return $item['type'] === 'org' && $item['parent_id'] === $orgId;
+        });
+        foreach ($children as $child) {
+            $ids = array_merge($ids, $this->getOrgWithChildren($orgStructure, $child['id']));
+        }
+        return $ids;
     }
 
     private function getHorizon($geoId)

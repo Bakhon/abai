@@ -1,4 +1,4 @@
-@if(auth()->user()->can('digitalDrilling view main'))
+{{--@if(auth()->user()->can('digitalDrilling view main'))--}}
     <div class="dropright">
         <div data-toggle="dropdown">
             <a href="#" class="bg-dark-new list-group-item list-group-item-action">
@@ -8,12 +8,15 @@
                 </div>
             </a>
         </div>
-        <div class="dropdown-menu">
+        <div class="daily-report dropdown-menu " >
             <div class="move-menu">
-                <li class="left-menu-li">
+                <li class="left-menu-li mb-1">
                     <a href="{{route('digital-drilling-daily-report')}}">{{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}</a>
+                </li>
+                <li class="left-menu-li">
+                    <a href="{{route('digital-drilling-import-daily-report')}}">Импорт бурового рапорта</a>
                 </li>
             </div>
         </div>
     </div>
-@endif
+{{--@endif--}}

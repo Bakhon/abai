@@ -87,6 +87,7 @@ export default {
                 'УО': this.trans("visualcenter.uo"),
                 'ПКК': this.trans("visualcenter.pkk"),
                 'КГМКМГ': this.trans("visualcenter.kgm"),
+                'ПККР': this.trans("visualcenter.pkk"),
             },
             chartHeadName: this.trans("visualcenter.oilCondensateProductionChartName"),
             chartSecondaryName: this.trans('visualcenter.oilCondensateProduction'),
@@ -201,6 +202,7 @@ export default {
         this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
         this.drillingDetails = await this.getDrillingByMonth();
         this.emergencyHistory = await this.getEmergencyByMonth();
+        this.fillEmergencyByType();
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
         this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);

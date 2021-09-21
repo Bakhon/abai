@@ -1,0 +1,37 @@
+{
+  "type": "plain",
+  "table": "prod.well_equip",
+  "tabs": [
+    {
+      "title": "",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "date",
+                "type": "datetime",
+                "title": "installation_date",
+                "validation": ""
+              },
+              {
+                "code": "equip_type",
+                "type": "dict",
+                "dict": "underground_equip_type",
+                "title": "equip_type",
+                "callbacks": {
+                  "updateFieldList": ""
+                }
+              }
+            ]
+          },
+          {
+            "title": "installation_parameters",
+            "items": []
+          }
+        ]
+      ]
+    }
+  ]
+}

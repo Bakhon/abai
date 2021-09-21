@@ -1,7 +1,7 @@
 <template>
   <div class="table-page">
     <table class="table table-bordered table-dark">
-      <tbody v-if="longInfoRows">
+      <tbody v-if="longInfoRows.length">
       <tr v-for="(row, rIndex) in longInfoRows">
         <template v-for="(column, cIndex) in row">
           <th v-if="cIndex == 0" scope="row">{{ column.name }}</th>
@@ -82,6 +82,10 @@ export default {
   computed: {
     longInfoRows() {
       let longInfoRows = [];
+
+      if (!this.pipe) {
+        return longInfoRows;
+      }
 
       this.fields.forEach((field, fIndex) => {
         longInfoRows[fIndex] = [field];

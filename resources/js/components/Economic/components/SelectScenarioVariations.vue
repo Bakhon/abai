@@ -87,7 +87,7 @@
 
     <div :class="isInline ? 'flex-grow-1 ml-2' : ''">
       <label for="optimization_percent">
-        {{ trans('economic_reference.stop_unprofitable_fund') }}
+        {{ trans('economic_reference.stop_options_for_unprofitable_fund') }}
       </label>
 
       <select
