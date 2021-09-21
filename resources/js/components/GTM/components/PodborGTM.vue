@@ -1,3 +1,4 @@
+<script src="js/PodborGTM.js"></script>
 <template>
   <div>
     <div class="row mx-0 mt-lg-2 gtm">
@@ -57,10 +58,15 @@
           </div>
         </div>
         <div class="row col-12 p-0 m-0 pb-2">
-          <div class="col-6 d-none d-lg-block p-0 pl-1">
+          <div v-if="lineChartSeries === null" class="col-6 d-none d-lg-block p-0 pl-1">
+            <div style="color: white; text-align: center; font-size: 16px; padding-top: 150px;">
+              Нажмите на скважину чтобы получить данные
+            </div>
+          </div>
+          <div v-else class="col-6 d-none d-lg-block p-0 pl-1">
             <div class="h-100">
               <div class="block-header pb-0 pl-2 pt-1">
-                {{ trans("paegtm.well") }} 4931
+                {{ trans("paegtm.well") }} {{ wellNumber }}
               </div>
               <div class="p-1 pl-2 mh-370">
                 <apexchart
@@ -72,12 +78,19 @@
             </div>
           </div>
           <div class="col-6 d-none d-lg-block p-0">
-            <div class="h-100 pb-2">
+            <div v-if="waterFallChartSeries === null" class="h-100 pb-2">
+              None
+            </div>
+            <div v-else class="h-100 pb-2">
               <div class="block-header pb-0 pl-2">
                 {{ trans("paegtm.factor_analysis") }}, {{ trans("measurements.thousand_tons") }}
               </div>
               <div class="p-1 pl-2">
-                <img class="demo-img" src="/img/GTM/podbo_demo_graph.svg" height="350">
+                <apexchart
+                  :height="320"
+                  :options="waterFallChartOptions"
+                  :series="waterFallChartSeries"
+                ></apexchart>
               </div>
             </div>
           </div>

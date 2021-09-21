@@ -10,18 +10,22 @@ export default {
         vSelect,
         apexchart: VueApexCharts
     },
+
     data: function () {
         return {
             showBlock: 2,
             menuArrowUp: '/img/GTM/icon_menu_arrow_up.svg',
             menuArrowDown: '/img/GTM/icon_menu_arrow_down.svg',
             url: 'http://172.20.103.51:7577/api/gtmfinder',
+            bswVal: [],
+            liquidRate: [],
+            oilRate: [],
+            wellNumber: null,
             table: {
                 main_data: {
                     header: null,
                     data: null,
                 },
-
             },
             dataRange: null,
             fieldName: null,
@@ -32,27 +36,27 @@ export default {
                 main_data: "\"название страницы\""
             },
             dzosForFilter: [
-                { name: 'АО "Озенмунайгаз"', code: 'omg'},
-                { name: 'АО "ЭмбаМунайГаз"',code: 'emba'},
-                { name: 'АО "Мангистаумунайгаз"',code: 'mmg'},
-                { name: 'АО "Каражанбасмунай"',code: 'krm'},
-                { name: 'ТОО "СП "Казгермунай"',code: 'kazger'},
-                { name: 'ТОО "Казтуркмунай"',code: 'ktm'},
-                { name: 'ТОО "Казахойл Актобе"',code: 'koa'},
+                {name: 'АО "Озенмунайгаз"', code: 'omg'},
+                {name: 'АО "ЭмбаМунайГаз"', code: 'emba'},
+                {name: 'АО "Мангистаумунайгаз"', code: 'mmg'},
+                {name: 'АО "Каражанбасмунай"', code: 'krm'},
+                {name: 'ТОО "СП "Казгермунай"', code: 'kazger'},
+                {name: 'ТОО "Казтуркмунай"', code: 'ktm'},
+                {name: 'ТОО "Казахойл Актобе"', code: 'koa'},
             ],
             oilFieldsForFilter: [
-                { name: 'Акшабулак', code: 'oil_1'},
-                { name: 'Актобе', code: 'oil_2'},
-                { name: 'Алтыколь', code: 'oil_3'},
-                { name: 'Жетыбай', code: 'oil_4'},
-                { name: 'Жыланды', code: 'oil_5'},
-                { name: 'Жыланды', code: 'oil_6'},
-                { name: 'Каламкас', code: 'oil_7'},
-                { name: 'Каражанбас', code: 'oil_8'},
+                {name: 'Акшабулак', code: 'oil_1'},
+                {name: 'Актобе', code: 'oil_2'},
+                {name: 'Алтыколь', code: 'oil_3'},
+                {name: 'Жетыбай', code: 'oil_4'},
+                {name: 'Жыланды', code: 'oil_5'},
+                {name: 'Жыланды', code: 'oil_6'},
+                {name: 'Каламкас', code: 'oil_7'},
+                {name: 'Каражанбас', code: 'oil_8'},
             ],
-            objectsForFilter: [{ name: 'Вариант 1'}],
-            structuresForFilter: [{ name: 'Вариант 1'}],
-            gusForFilter: [{ name: 'Вариант 1'}],
+            objectsForFilter: [{name: 'Вариант 1'}],
+            structuresForFilter: [{name: 'Вариант 1'}],
+            gusForFilter: [{name: 'Вариант 1'}],
             candidates: [
                 [4320, 'ГРП', 7.9, 5.53, 70],
                 [4320, 'ГРП', 7.9, 5.53, 70],
@@ -67,71 +71,103 @@ export default {
                 [4320, 'ГРП', 7.9, 5.53, 70],
             ],
             treeData: [],
-            lineLabels: ['Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июнь', 'Июль', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.'],
-            lineChartSeries: [
-                {
-                    name: 'Пласт',
-                    borderColor: "rgba(242, 126, 49, 1)",
-                    data: [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500],
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 0,
-                    pointBorderColor: "#FFFFFF",
+            waterFallChartOptions: {
+                chart: {
+                    height: 320,
+                    type: 'rangeBar',
+                    foreColor: '#fff'
                 },
-                {
-                    name: 'Обводненность',
-                    borderColor: "rgba(57, 81, 206, 1)",
-                    data: [3200, 4700, 1950, 2800, 2400, 3300, 800, 1100, 3100, 4400, 1000, 2700],
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 0,
-                    pointBorderColor: "#FFFFFF",
+                plotOptions: {
+                    bar: {
+                        horizontal: false
+                    }
                 },
-                {
-                    name: 'Qн (По МЭР), м3/сут',
-                    borderColor: "rgba(239, 83, 80, 1)",
-                    backgroundColor: 'rgba(239, 83, 80, 0.2)',
-                    data: [500, 700, 900, 500, 1100, 1500, 1000, 560, 780, 1300, 2000, 1750],
-                    fill: true,
-                    showLine: true,
-                    pointRadius: 0,
-                    pointBorderColor: "#FFFFFF",
-                },
-                {
-                    name: 'Qж (По МЭР), м3/сут',
-                    borderColor: "rgba(76, 175, 80, 1)",
-                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
-                    data: [2800, 4700, 2400, 1000, 2400, 200, 2800, 3400, 2450, 2000, 1000, 800],
-                    fill: true,
-                    showLine: true,
-                    pointRadius: 0,
-                    pointBorderColor: "#FFFFFF",
+                dataLabels: {
+                    enabled: true
                 }
-            ],
+            },
+            waterFallChartSeries: null,
+            lineChartSeries: null,
             lineChartOptions: {
                 chart: {
                     height: 350,
                     type: 'area',
                     foreColor: '#fff'
                 },
+                options: {
+                    legend: {
+                        fontSize: '5px',
+                        horizontalAlign: "left",
+                    },
+                },
+                colors: ["#04f689", "#fa4202", '#0253fa'],
                 dataLabels: {
                     enabled: false
                 },
+                xaxis: {
+                    categories: null,
+                    tickAmount: 6,
+                    lines: {
+                        show: true,
+                        tickAmount: 20,
+                        min: 10,
+                        max: 20,
+                    },
+                    labels: {
+                        style: {
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                yaxis: [
+                    {
+                        seriesName: 'Qн т/сут.',
+                        axisTicks: {show: true},
+                        axisBorder: {show: true,},
+                        title: {
+                            text: "Qн т/сут.", style: {
+                                color: undefined,
+                                fontSize: '15px',
+                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                fontWeight: 700,
+                                cssClass: 'apexcharts-yaxis-title',
+                            },
+                        }
+                    },
+                    {
+                        seriesName: 'Qж м3/сут',
+                        axisTicks: {show: true},
+                        axisBorder: {show: true,},
+                        title: {
+                            text: "Qж м3/сут.", style: {
+                                color: undefined,
+                                fontSize: '15px',
+                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                fontWeight: 700,
+                                cssClass: 'apexcharts-yaxis-title',
+                            },
+                        }
+                    },
+                    {
+                        seriesName: 'Обводненность',
+                        opposite: true,
+                        max: 100,
+                        title: {
+                            text: "Обв. %", style: {
+                                color: undefined,
+                                fontSize: '15px',
+                                fontFamily: 'Helvetica, Arial, sans-serif',
+                                fontWeight: 700,
+                                cssClass: 'apexcharts-yaxis-title',
+                            },
+                        }
+                    },
+                ],
                 grid: {
                     show: true,
                     borderColor: '#454d7d',
                     strokeDashArray: 0,
                     position: 'back',
-                    xaxis: {
-                        lines: {
-                            show: true
-                        }
-                    },
-                    yaxis: {
-                        lines: {
-                            show: true
-                        }
-                    },
                 },
             },
             treeSettingHeader: '',
@@ -163,16 +199,17 @@ export default {
                 action_type: 'finder_item_clicked',
                 main_data: this.clickable,
             }
+            this.SET_LOADING(true);
             this.axios({
                 method: 'POST',
-                headers: { 'content-type': 'application/json' },
+                headers: {'content-type': 'application/json'},
                 data: body,
                 url: this.url
             })
                 .then((res) => {
                     this.table.main_data.header = res.data.main_data.header
                     this.table.main_data.data = res.data.main_data.data
-                    if(res.status === 200) {
+                    if (res.status === 200) {
                         this.setNotify("Таблица пришла", "Success", "success")
                     } else {
                         this.setNotify("Что-то пошло не так", "Error", "danger")
@@ -183,16 +220,81 @@ export default {
                 })
         },
         onClickWell(v) {
+            this.wellNumber = v
             this.setNotify(`Вы нажали на скважину ${v}`, "Success", "success")
+
+            const body = {
+                action_type: 'well_name_clicked',
+                main_data: v,
+                distance: 500
+            }
+            this.SET_LOADING(true);
+            this.axios({
+                method: 'POST',
+                headers: {'content-type': 'application/json'},
+                data: body,
+                url: this.url
+            })
+                .then((res) => {
+                    this.lineChartOptions.xaxis.categories = Object.values(res.data.main_data.dt)
+                    this.lineChartSeries = [
+                        {
+                            name: res.data.main_data.labels.liquid_rate,
+                            data: Object.values(res.data.main_data.liquid_rate),
+                            showLine: false,
+                        },
+                        {
+                            name: res.data.main_data.labels.oil_rate,
+                            data: Object.values(res.data.main_data.oil_rate),
+                            pointBorderColor: "#FFFFFF",
+                        },
+                        {
+                            name: res.data.main_data.labels.bsw_val,
+                            data: Object.values(res.data.main_data.bsw_val),
+                            pointBorderColor: "#FFFFFF",
+                        },
+                    ],
+                        this.waterFallChartSeries = [{
+                            data: [
+                                {
+                                    x: this.trans('paegtm.plan'),
+                                    y: [1, 5],
+                                    fillColor: '#ba8c1f'
+                                }, {
+                                    x: '',
+                                    y: [4, 6],
+                                    fillColor: '#124fba'
+                                }, {
+                                    x: '',
+                                    y: [5, 8],
+                                    fillColor: '#124fba'
+                                }, {
+                                    x: this.trans('paegtm.fact'),
+                                    y: [3, 11],
+                                    fillColor: '#029bfa'
+                                }
+                            ]
+                        }]
+
+                    if (res.status === 200) {
+                        this.setNotify("Таблица пришла", "Success", "success")
+                    } else {
+                        this.setNotify("Что-то пошло не так", "Error", "danger")
+                    }
+                })
+                .finally(() => {
+                    this.SET_LOADING(false);
+                })
         },
         closeTree() {
             this.treeChildrenComponent = 0;
             this.treeSettingComponent = 0;
         },
         getTreeData() {
+            this.SET_LOADING(true);
             this.axios({
                 method: 'POST',
-                headers: { 'content-type': 'application/json' },
+                headers: {'content-type': 'application/json'},
                 data: this.body,
                 url: this.url
             })
@@ -200,7 +302,9 @@ export default {
                     this.dataRange = res.data.date_range_model;
                     this.treeData = res.data.finder_model.children;
                     this.fieldName = res.data.field_name;
-               })
+                }).finally(() => {
+                this.SET_LOADING(false);
+            })
         },
         postTreeData(v) {
             const body = {
@@ -215,12 +319,12 @@ export default {
             this.SET_LOADING(true);
             this.axios({
                 method: 'POST',
-                headers: { 'content-type': 'application/json' },
+                headers: {'content-type': 'application/json'},
                 data: body,
                 url: this.url
             })
                 .then((res) => {
-                    if(res.status === 200) {
+                    if (res.status === 200) {
                         this.setNotify("Скважины пришли", "Success", "success")
                     } else {
                         this.setNotify("Что-то пошло не так", "Error", "danger")
@@ -230,7 +334,7 @@ export default {
                     this.SET_LOADING(false);
                 })
         },
-        nodeClick (data) {
+        nodeClick(data) {
             this.$_setTreeChildrenComponent(data);
             this.treeSettingComponent = {
                 name: 'gtm-tree-setting',
@@ -241,7 +345,7 @@ export default {
                         },
                     }
                 },
-                template: '<div class="block-header text-center"><div>'+ data.node.name + '</div><gtm-tree :treeData="treeData"></gtm-tree></div>',
+                template: '<div class="block-header text-center"><div>' + data.node.name + '</div><gtm-tree :treeData="treeData"></gtm-tree></div>',
             };
         },
         $_setTreeChildrenComponent(data) {
@@ -264,11 +368,11 @@ export default {
                     }
                 },
                 template: '<div>' +
-                    '       <div class="block-header text-center">'+ data.node.name +
+                    '       <div class="block-header text-center">' + data.node.name +
                     '</div><gtm-tree :treeData="treeData" @node-click="handleClick">' +
                     '</gtm-tree></div>',
                 methods: {
-                    handleClick (data) {
+                    handleClick(data) {
                         this.$emit('node-click', {node: data.node, hideIoiMenu: false});
                     },
                 }

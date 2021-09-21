@@ -111,13 +111,13 @@
     <div class="row m-0 p-1 pt-2">
       <div class="col-6 pr-0 pl-0 z-index-1">
         <div class="svg-icon-chart-1 z-index-2" @click="showModal('chart1')">
-          <img src="/img/maximize-chart.svg" alt="">
+          <img src="./img/maximize-chart.svg" alt="">
         </div>
         <apexchart type="line" height="200" :options="chartOptions" :series="chartData.series_1"></apexchart>
       </div>
       <div class="col-6 pr-0 pl-2 z-index-1">
         <div class="svg-icon-chart-2 z-index-2" @click="showModal('chart2')">
-          <img src="/img/maximize-chart.svg" alt="">
+          <img src="./img/maximize-chart.svg" alt="">
         </div>
         <apexchart type="line" height="200" :options="chartOptions2" :series="chartData.series_2"></apexchart>
       </div>
