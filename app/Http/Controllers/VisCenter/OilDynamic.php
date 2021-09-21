@@ -104,11 +104,6 @@ class OilDynamic extends Controller
            'dzo' => array ('НКО'),
            'fact' => array ('oil_production_fact'),
            'plan' => array ('plan_oil')
-        ),
-        'РД КМГ' => array (
-            'dzo' => array ('ОМГ','ЭМГ'),
-            'fact' => array ('oil_production_fact'),
-            'plan' => array ('plan_oil')
         )
     );
 

@@ -140,7 +140,7 @@ export default {
       this.loading = true
 
       try {
-        const {data} = await this.axios.post(this.localeUrl('/module_economy/eco_refs_scenario'), this.form)
+        const {data} = await this.axios.post(this.localeUrl('/economic/scenario'), this.form)
 
         this.$emit('created', data.data)
 

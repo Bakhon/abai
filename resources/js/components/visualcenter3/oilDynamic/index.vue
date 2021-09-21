@@ -105,9 +105,7 @@ export default {
             selectedDzo: {
                 id: 1,
                 ticker: 'ЭМГ',
-                name: 'АО "Эмбамунайгаз"',
-                factName: 'oil_production_fact',
-                planName: 'plan_oil'
+                name: 'АО "Эмбамунайгаз"'
             },
             dzoCompanies: [
                 {
@@ -187,8 +185,14 @@ export default {
                 },
                 {
                     id: 16,
-                    ticker: 'РД КМГ',
-                    name: 'РД КМГ',
+                    ticker: 'НККМГ',
+                    name: 'НК КМГ (консолид.)',
+                },
+                ,
+                {
+                    id: 17,
+                    ticker: 'НККМГОП',
+                    name: 'Опер. активы НК КМГ (консолид.)',
                 },
             ],
             monthes: [],

@@ -82,10 +82,10 @@ Route::group(
                 Route::get('forms/{form}', 'Api\DB\FormsController@getParams')->name('bigdata.form.params');
                 Route::post('forms/{form}', 'Api\DB\FormsController@submit')->name('bigdata.form.send');
                 Route::get('forms/{form}/history', 'Api\DB\FormsController@getHistory');
-                Route::get('forms/{form}/rows', 'Api\DB\FormsController@getRows');
                 Route::get('forms/{form}/row-history', 'Api\DB\FormsController@getRowHistory');
                 Route::get('forms/{form}/row-history-graph', 'Api\DB\FormsController@getRowHistoryGraph');
                 Route::get('forms/{form}/copy', 'Api\DB\FormsController@copyFieldValue');
+                Route::post('forms/{form}/edit-form', 'Api\DB\FormsController@getFormParamsToEdit');
                 Route::get('forms/{form}/well-prefix', 'Api\DB\FormsController@getWellPrefix');
                 Route::get('forms/{form}/form-by-row', 'Api\DB\FormsController@getFormByRow');
                 Route::post(
@@ -103,6 +103,7 @@ Route::group(
 
                 Route::post('forms/{form}/calc-fields', 'Api\DB\FormsController@calcFields');
                 Route::post('forms/{form}/update-fields', 'Api\DB\FormsController@updateFields');
+                Route::post('forms/{form}/update-field-list', 'Api\DB\FormsController@updateFieldList');
 
                 Route::get('forms/{form}/results', 'Api\DB\FormsController@getResults');
                 Route::delete('forms/{form}/{row}', 'Api\DB\FormsController@delete');

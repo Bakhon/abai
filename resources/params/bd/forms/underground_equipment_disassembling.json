@@ -1,0 +1,24 @@
+{
+  "type": "plain",
+  "table": "prod.well_equip",
+  "tabs": [
+    {
+      "title": "disassembling",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "date",
+                "type": "datetime",
+                "title": "disassembling_date",
+                "validation": ""
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

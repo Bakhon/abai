@@ -456,6 +456,7 @@ export default {
             if (response.data.job.status === 'finished') {
               this.SET_LOADING(false);
               clearInterval(interval)
+              let isError = false;
 
               if (response.data.job.output) {
                 if (response.data.job.output.filename) {
@@ -464,10 +465,11 @@ export default {
 
                 if (response.data.job.output.error) {
                   this.showToast(response.data.job.output.error, this.trans('app.error'), 'danger');
+                  isError = true;
                 }
               }
 
-              if (this.params.links.calc) {
+              if (this.params.links.calc && !isError) {
                 this.loadData();
               }
 

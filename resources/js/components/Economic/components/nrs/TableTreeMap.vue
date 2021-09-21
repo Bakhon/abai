@@ -129,7 +129,7 @@ export default {
 
       this.chartTrees = []
 
-      let url = this.localeUrl('/tech-data-forecast/get-data')
+      let url = this.localeUrl('/economic/technical/forecast/get-data')
 
       let params = {...{only_well_id: 1}, ...this.form}
 
