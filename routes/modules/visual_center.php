@@ -90,6 +90,10 @@ Route::group(
                 Route::post('/kpd-tree-catalog-store', 'VisCenter\Kpd\KpdTreeController@storeKpd');
                 Route::get('/get-fond-daily-chart', 'VisCenter\AdditionalParams\ProductionFondController@getDailyDataByDzo');
                 Route::get('/get-production-params-by-category', 'VisCenter\ProductionParams\VisualCenterController@getProductionParamsByCategory');
+
+                Route::get('/upload-historical-data', 'VisCenter\ExcelForm\HistoricalUploadController@uploadHistoricalData')->name('upload-historical-data');
+                Route::post('/store-historical-data', 'VisCenter\ExcelForm\HistoricalUploadController@storeHistoricalDataByDzo');
+
             }
         );
     }
