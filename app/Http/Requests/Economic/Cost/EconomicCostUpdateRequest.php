@@ -9,8 +9,8 @@ class EconomicCostUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'sc_fa' => 'required',
-            'company_id' => 'required',
+            'sc_fa' => 'required|integer|min:1',
+            'company_id' => 'required|integer|min:1',
             'date' => 'required',
             'variable' => 'nullable|numeric',
             'variable_processing' => 'nullable|numeric',
@@ -23,6 +23,7 @@ class EconomicCostUpdateRequest extends FormRequest
             'wo' => 'nullable|numeric',
             'net_back' => 'nullable|numeric',
             'amort' => 'nullable|numeric',
+            'pes_id' => 'nullable|integer|min:1'
         ];
     }
 }

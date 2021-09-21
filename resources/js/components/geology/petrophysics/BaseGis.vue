@@ -23,19 +23,19 @@
       </div>
     </div>
     <div class="main_graph mb-2">
-      <component :is="getGraphComponents[0]" />
+      <component v-bind="getGraphComponents[0]" />
     </div>
     <div class="d-flex">
       <ToolBlock class="mr-3">
         <template #header>
           <div class="d-flex align-items-center justify-content-between">
             <h5 class="mr-2">Значения</h5>
-            <Button @click="activeGraph = getGraphComponents[1].name" i-width="10" i-height="10" color="transparent"
+            <Button @click="activeGraph = getGraphComponents[1].id" i-width="10" i-height="10" color="transparent"
                     icon="rectArrow" size="small" />
           </div>
         </template>
         <div class="secondary__graph">
-          <component :is="getGraphComponents[1]" />
+          <component v-bind="getGraphComponents[1]" />
         </div>
       </ToolBlock>
       <div class="info__grid">
@@ -94,39 +94,20 @@
       </div>
     </div>
 
-    <AwModal size="lg" title="Список скважин" :is-show.sync="isShowListOfWellsModal">
+    <AwModal is-confirm size="lg" title="Список скважин" :is-show.sync="isShowListOfWellsModal">
       <ListOfWells />
     </AwModal>
 
-    <AwModal position="top" size="lg" title="Выбор отбивок" :is-show.sync="isShowChooseStratModal">
+    <AwModal is-confirm position="top" size="lg" title="Выбор отбивок" :is-show.sync="isShowChooseStratModal">
       <AwTree class="p-2" :selected.sync="chooseStratModalTree" :items="chooseStratModalTreeItems" />
-
-      <template #footer>
-        <div class="d-flex align-items-center justify-content-center">
-          <Button class="mr-3">Ок</Button>
-          <Button color="primary" @click="isShowChooseStratModal = false">Отмена</Button>
-        </div>
-      </template>
     </AwModal>
 
-    <AwModal position="top" size="lg" title="Настройка планшета" :is-show.sync="isShowTableSettings">
+    <AwModal is-confirm position="top" size="lg" title="Настройка планшета" :is-show.sync="isShowTableSettings">
       <TableSettings />
-      <template #footer>
-        <div class="d-flex align-items-center justify-content-center">
-          <Button class="mr-3">Ок</Button>
-          <Button color="primary" @click="isShowTableSettings = false">Отмена</Button>
-        </div>
-      </template>
     </AwModal>
 
-    <AwModal position="top" size="xl" title="Кросс-плот" :is-show.sync="isShowCrossPlot">
-      <CrossPlot></CrossPlot>
-      <template #footer>
-        <div class="d-flex align-items-center justify-content-center">
-          <Button class="mr-3">Ок</Button>
-          <Button color="primary" @click="isShowCrossPlot = false">Отмена</Button>
-        </div>
-      </template>
+    <AwModal is-confirm position="top" size="xl" title="Кросс-плот" :is-show.sync="isShowCrossPlot">
+      <CrossPlot/>
     </AwModal>
   </div>
 </template>
@@ -141,9 +122,10 @@ import AwIcon from "../components/icons/AwIcon";
 import ListOfWells from "./modals/ListOfWells";
 import TableSettings from "./modals/TableSettings";
 import CrossPlot from "./modals/CrossPlot";
-import graph1 from "./graphics/graph1";
 import graph2 from "./graphics/graph2";
-
+import curve from "../demo_json/curve.json";
+import {globalloadingMutations} from '@store/helpers';
+import AwGis from "./graphics/awGis/AwGis";
 export default {
   name: "Geology-Page",
   components: {
@@ -156,14 +138,20 @@ export default {
     TableSettings,
     CrossPlot,
     AwTree,
-    graph1
   },
   data() {
     return {
-      activeGraph: "graph1",
+      activeGraph: "GisGraph",
       graphComponents: [
-        graph1,
-        graph2,
+        {
+          id: 'canvasWrapper',
+          is: AwGis,
+          graphData: curve
+        },
+        {
+          id: 2,
+          is: graph2,
+        },
       ],
       dropdownValue: {
         value: null,
@@ -221,9 +209,17 @@ export default {
   },
   computed: {
     getGraphComponents() {
-      return this.graphComponents.sort(e => e.name === this.activeGraph ? -1 : 1);
+      return this.graphComponents.sort(e => e.id === this.activeGraph ? -1 : 1);
     }
   },
+  async mounted() {
+    this.SET_LOADING(false);
+  },
+  methods:{
+    ...globalloadingMutations([
+      'SET_LOADING'
+    ]),
+  }
 }
 </script>
 
@@ -296,10 +292,12 @@ export default {
     object-fit: cover;
   }
 }
+
 //!TODO Поменять стили после создания графиков
-.secondary__graph{
+.secondary__graph {
   min-width: 560px;
-  img{
+
+  img {
     display: block;
     width: 100%;
     height: 100%;
