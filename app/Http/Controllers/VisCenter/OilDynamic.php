@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\DzoPlan;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use Carbon\Carbon;
+use App\Http\Resources\VisualCenter\Dzo\Factory;
 
 class OilDynamic extends Controller
 {
@@ -46,6 +47,11 @@ class OilDynamic extends Controller
              'plan' => array ('plan_oil')
          ),
         'КГМ' => array (
+            'dzo' => array ('КГМ'),
+            'fact' => array ('oil_production_fact'),
+            'plan' => array ('plan_oil')
+        ),
+        'КГМКМГ' => array (
             'dzo' => array ('КГМ'),
             'fact' => array ('oil_production_fact'),
             'plan' => array ('plan_oil')
@@ -104,8 +110,15 @@ class OilDynamic extends Controller
            'dzo' => array ('НКО'),
            'fact' => array ('oil_production_fact'),
            'plan' => array ('plan_oil')
+        ),
+        'ТШО' => array (
+           'dzo' => array ('ТШО'),
+           'fact' => array ('oil_production_fact'),
+           'plan' => array ('plan_oil')
         )
     );
+    private $category;
+    private $operatingCompanies = array('ОМГ','ОМГК','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','КГМКМГ');
 
     public function oilDynamic()
     {
@@ -115,26 +128,79 @@ class OilDynamic extends Controller
     public function getDailyProductionData(Request $request)
     {
         $this->monthNumber = $request->month;
-        return $this->getSummaryByCategories();
+        $this->category = $request->type;
+        if ($this->category === 'НККМГ') {
+            return $this->getConsolidated(array_keys($this->allCategories));
+        }
+        if ($this->category === 'НККМГОП') {
+            return $this->getConsolidated($this->operatingCompanies);
+        }
+        return $this->getSummaryByCategories($this->category);
     }
 
-    private function getSummaryByCategories()
+    private function getConsolidated($companies)
     {
+        $consolidatedSummary = $this->getConsolidatedTemplate();
         $summary = array();
-        foreach($this->allCategories as $category => $item) {
-            $summary[$category] = $this->getSummaryByCategory($item,$category);
+        foreach($companies as $dzoName) {
+            if ($dzoName === 'ПКИ') {
+                continue;
+            }
+            $dzoSummary = $this->getSummaryByCategories($dzoName);
+            foreach($dzoSummary as $key => $day) {
+                $dzoSummary[$key]['name'] = $dzoName;
+                $factory = new Factory();
+                $dzo = $factory->make($dzoName);
+                $dzoSummary[$key] = $dzo->getDzoDynamicByMultiplier($this->fields,$dzoSummary[$key]);
+                $consolidatedKey = array_search($day['date'], array_column($consolidatedSummary, 'date'));
+                foreach($this->fields as $fieldName) {
+                    $consolidatedSummary[$consolidatedKey][$fieldName] += $dzoSummary[$key][$fieldName];
+                }
+            }
+            array_push($summary,$dzoSummary);
+        }
+        return $consolidatedSummary;
+    }
+
+    private function getConsolidatedTemplate()
+    {
+        $currentDate = Carbon::now()->subDays(1);
+        $monthStart = Carbon::now()->startOfMonth();
+        $summary = array();
+        $template = array(
+            'name' => $this->category,
+            'date' => Carbon::now(),
+            'factDay' => 0,
+            'planDay' => 0,
+            'planMonth' => 0,
+            'factMonth' => 0,
+            'factYear' => 0,
+            'planYear' => 0
+        );
+        while($monthStart <= $currentDate) {
+            $consolidated = $template;
+            $consolidated['date'] = $monthStart->format('d.m.Y');
+            $consolidated['name'] = $this->category;
+            array_push($summary,$consolidated);
+            $monthStart = $monthStart->addDays(1);
         }
         return $summary;
     }
 
-    private function getSummaryByCategory($item,$category)
+    private function getSummaryByCategories($categoryName)
     {
-        $this->dzoName = $item['dzo'];
-        $this->factField = $item['fact'];
-        $this->planField = $item['plan'];
+        $category = $this->allCategories[$categoryName];
+        $this->dzoName = $category['dzo'];
+        $this->factField = $category['fact'];
+        $this->planField = $category['plan'];
         $dailyFact = $this->getDailyFact();
         $dailyPlan = $this->getDailyPlan();
         $yearlyData = $this->getYearly();
+        return $this->getMonthlyByCategory($category,$this->category,$dailyFact,$dailyPlan,$yearlyData);
+    }
+
+    private function getMonthlyByCategory($item,$category,$dailyFact,$dailyPlan,$yearlyData)
+    {
         $dailyCompared = $this->getCompared($dailyFact,$dailyPlan,$item,$category);
         return $this->getMonthly($dailyCompared,$yearlyData);
     }

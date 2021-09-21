@@ -185,15 +185,21 @@ export default {
                 },
                 {
                     id: 16,
+                    ticker: 'ТШО',
+                    name: 'ТОО "Тенгизшевройл"',
+                },
+                {
+                    id: 17,
                     ticker: 'НККМГ',
                     name: 'НК КМГ (консолид.)',
                 },
-                ,
                 {
-                    id: 17,
+                    id: 18,
                     ticker: 'НККМГОП',
                     name: 'Опер. активы НК КМГ (консолид.)',
+                    isFiltered: true
                 },
+
             ],
             monthes: [],
             tableData: [],
@@ -219,7 +225,7 @@ export default {
                     this.trans("visualcenter.Plan"),
                     this.trans("visualcenter.Fact"),
                 ]
-            }
+            },
         };
     },
     async mounted() {
@@ -230,7 +236,8 @@ export default {
         async getDaily() {
             let uri = this.localeUrl("/oil-dynamic-daily");
             let queryOptions = {
-                'month': this.selectedMonth
+                'month': this.selectedMonth,
+                'type' : this.selectedDzo.ticker
             };
             const response = await axios.get(uri,{params:queryOptions});
             if (response.status !== 200) {
@@ -241,8 +248,7 @@ export default {
 
         async updateDailyView() {
             this.SET_LOADING(true);
-            this.summaryData = await this.getDaily();
-            this.tableData = this.summaryData[this.selectedDzo.ticker];
+            this.tableData = await this.getDaily();
             this.SET_LOADING(false);
         },
 
@@ -255,7 +261,7 @@ export default {
             this.SET_LOADING(true);
             let filteredDzo = _.filter(_.cloneDeep(this.dzoCompanies), (dzo) => dzo.id == value);
             this.selectedDzo = filteredDzo[0];
-            this.tableData = this.summaryData[this.selectedDzo.ticker];
+            this.updateDailyView();
             this.SET_LOADING(false);
         },
 

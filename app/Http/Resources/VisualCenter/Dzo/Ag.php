@@ -53,4 +53,9 @@ class Ag extends Dzo {
         array_push($summary,$summaryByCondensate);
         return $summary;
     }
+
+    public function getDzoDynamicByMultiplier($fields,$summary)
+    {
+        return $summary;
+    }
 }
