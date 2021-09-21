@@ -38,10 +38,13 @@ export default {
             bounds: [[0, 15000], [0,15000]],
             center: [85000, 52000],
             zoom: -6,
-            minZoom: -6,
+            minZoom: -20,
             maxZoom: 0,
             renderer: L.canvas({ padding: 0.5 }),
             searchSector: '',
+            startPoint: null,
+            endPoint: null,
+            isRulerActive: false
         };
     },
 
@@ -92,8 +95,26 @@ export default {
                     this.closePopup();
                 });
                 this.rectangle.on('click', (e) => {
-                    this.onMapClick(maps[i]['sector']);
+                    if(this.isRulerActive) {
+                        this.onMeasureDistance(e);
+                    } else {
+                        this.onMapClick(maps[i]['sector']);
+                    }
                 })
+            }
+        },
+
+        onMeasureDistance(event) {
+            if (this.startPoint) {
+                this.endPoint = event.latlng;
+                const res = Math.sqrt(
+                  Math.pow(this.startPoint?.lat - this.endPoint.lat, 2)
+                  + Math.pow(this.startPoint.lng - this.endPoint.lng, 2)
+                );
+                event.target.bindTooltip(res.toFixed(1)+'м').openTooltip()
+                this.startPoint = this.endPoint = null;
+            } else {
+                this.startPoint = event.latlng;
             }
         },
 
@@ -184,7 +205,7 @@ export default {
             this.map.eachLayer(function(layer) {
                 if (layer?._popup?._content === this.searchSector?.toString()) {
                     const {lat, lng} = layer._bounds?._northEast;
-                    this.map.setView([lat, lng], -3);
+                    this.map.setView([lat, lng], -2);
                     layer.openPopup();
                 }
             }, this);
