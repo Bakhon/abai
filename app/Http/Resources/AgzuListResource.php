@@ -29,6 +29,7 @@ class AgzuListResource extends CrudListResource
                 'date_of_repair' => $this->date_of_repair,
                 'type_of_repair' => $this->type_of_repair,
                 'passport_pdf' => $this->passport_pdf,
+                'certificate' => $this->certificate,
                 ]
         ];
 

@@ -78,6 +78,10 @@ class AgzuController extends CrudController
                     'title' => trans('monitoring.buffer_tank.type_of_repair'),
                     'type' => 'string',
                 ],
+                'certificate' => [
+                    'title' => trans('monitoring.certificate'),
+                    'type' => 'string',
+                ],
                 
             ]
         ];
