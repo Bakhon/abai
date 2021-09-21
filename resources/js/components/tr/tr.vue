@@ -297,7 +297,7 @@
                                   
                                   
                                   @click="saveadd()"
-                                  :class="{'save_but_modal': haveData, 'save_but_modal_no_activ': !haveData}"
+                                  :class="{'save_but_modal': isExpMethButton, 'save_but_modal_no_activ': !isExpMethButton}"
                                   @click.prevent="reRender"
                                   v-if="isDeleted && isShowAdd"
                                   ><svg width="24" 
@@ -6784,13 +6784,13 @@ tr:nth-child(even) td {
   pointer-events: none;
   cursor: not-allowed;
   background: #272953;
-  color: #fff;
+  color: #656A8A;
   border: none;
   margin-left: 11px;
 }
 .save_but_modal {
   background: #272953;
-  color:#2E50E9;
+  color:#fff;
   border: none;
   margin-left: 11px;
 }
