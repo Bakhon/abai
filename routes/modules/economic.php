@@ -213,5 +213,10 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                     ]);
             });
         });
+
+        Route::group(['prefix' => 'analysis'], function () {
+            Route::get('', 'EconomicAnalysisController@index')
+                ->name('economic.analysis');
+        });
     });
 });

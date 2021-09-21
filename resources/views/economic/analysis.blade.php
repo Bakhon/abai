@@ -8,9 +8,10 @@
 
 @section('content')
     <div class="col-sm-12">
-        <economic-nrs></economic-nrs>
+        <economic-analysis></economic-analysis>
     </div>
 @endsection
+
 <style>
     .main {
         background-color: #0F1430;

@@ -100,7 +100,7 @@
               class="col-6 d-flex flex-column position-relative">
             <divider v-if="subBlockIndex % 2 === 1"/>
 
-            <div class="font-weight-bold font-size-32px line-height-38px">
+            <div class="font-weight-bold font-size-32px">
               {{ subBlock.sum.value[0].toLocaleString() }}
             </div>
 
