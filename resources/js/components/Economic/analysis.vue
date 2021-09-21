@@ -133,29 +133,24 @@
                class="col-6 d-flex flex-column position-relative">
             <divider v-if="subBlockIndex % 2 === 1"/>
 
-            <div class="d-flex align-items-center font-size-32px text-nowrap">
-              <div class="d-flex align-items-center">
-                <span class="font-weight-bold">
-                  {{ +subBlock.value.toFixed(2) }}
-                </span>
+            <div class="font-size-32px text-nowrap font-weight-bold">
+              {{ +subBlock.value.toFixed(2) }}
+            </div>
 
-                <span class="ml-2 d-flex flex-column text-blue font-size-14px line-height-16px">
-                  <div>{{ subBlock.dimension }}</div>
+            <div class="flex-grow-1 font-weight-bold line-height-20px font-size-16px">
+              <div>
+                <span>{{ subBlock.name }}</span>,
 
-                  <div v-if="subBlock.dimensionSuffix">
-                    {{ subBlock.dimensionSuffix }}
-                  </div>
+                <span>{{ subBlock.dimension }}</span>
+
+                <span v-if="subBlock.dimensionSuffix">
+                    {{ subBlock.dimensionSuffix }}.
                 </span>
               </div>
-            </div>
 
-            <div class="flex-grow-1 font-weight-bold line-height-20px font-size-16px">
-
-            </div>
-
-            <div class="flex-grow-1 font-weight-bold line-height-20px font-size-16px">
-              <div>{{ subBlock.name }}</div>
-              <div>Предлагаемый вариант вариант</div>
+              <div v-if="!subBlock.diff">
+                Предлагаемый вариант
+              </div>
             </div>
 
             <percent-progress :percent="subBlock.percent"/>
@@ -382,6 +377,7 @@ export default {
                 this.scenario.Operating_profit[this.scenarioValueKey],
                 this.scenario.Operating_profit.original_value
             ),
+            diff: true,
           },
         ],
       ]
@@ -391,6 +387,8 @@ export default {
     ...globalloadingMutations(['SET_LOADING']),
 
     async getData() {
+      return
+
       this.SET_LOADING(true);
 
       try {

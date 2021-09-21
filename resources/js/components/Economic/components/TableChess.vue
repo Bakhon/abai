@@ -1,7 +1,7 @@
 <template>
   <div class="text-white">
     <subtitle font-size="18" style="line-height: 26px">
-      <div>{{ trans('economic_reference.table_chess_title') }}</div>
+      {{ trans('economic_reference.table_chess_title') }}
     </subtitle>
 
     <div class="mt-3 border-grey bg-header">

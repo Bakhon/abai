@@ -12,17 +12,22 @@
     </div>
 
     <div class="mt-3 w-100">
+      <table-production-loss
+          v-if="activeTab === 'production_loss'"
+          class="text-white"/>
     </div>
   </div>
 </template>
 
 <script>
 import ChartButton from "../ChartButton";
+import TableProductionLoss from "./TableProductionLoss";
 
 export default {
   name: "Tables",
   components: {
     ChartButton,
+    TableProductionLoss,
   },
   props: {
     scenario: {
