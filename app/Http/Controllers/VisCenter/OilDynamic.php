@@ -141,7 +141,6 @@ class OilDynamic extends Controller
     private function getConsolidated($companies)
     {
         $consolidatedSummary = $this->getConsolidatedTemplate();
-        $summary = array();
         foreach($companies as $dzoName) {
             if ($dzoName === 'ПКИ') {
                 continue;
@@ -157,15 +156,19 @@ class OilDynamic extends Controller
                     $consolidatedSummary[$consolidatedKey][$fieldName] += $dzoSummary[$key][$fieldName];
                 }
             }
-            array_push($summary,$dzoSummary);
         }
         return $consolidatedSummary;
     }
 
     private function getConsolidatedTemplate()
     {
-        $currentDate = Carbon::now()->subDays(1);
-        $monthStart = Carbon::now()->startOfMonth();
+        $currentDate = Carbon::createFromDate(Carbon::now()->year, $this->monthNumber);
+        if ($currentDate->month !== Carbon::now()->month) {
+            $currentDate = $currentDate->endOfMonth();
+        } else {
+            $currentDate = $currentDate->subDays(1);
+        }
+        $monthStart = $currentDate->copy()->startOfMonth();
         $summary = array();
         $template = array(
             'name' => $this->category,
@@ -184,6 +187,7 @@ class OilDynamic extends Controller
             array_push($summary,$consolidated);
             $monthStart = $monthStart->addDays(1);
         }
+     
         return $summary;
     }
 

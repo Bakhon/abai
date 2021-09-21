@@ -103,9 +103,9 @@ export default {
             yearlyChartName: 'Динамика накопленной добычи нефти с начала года',
             selectedMonth: moment().month() + 1,
             selectedDzo: {
-                id: 1,
-                ticker: 'ЭМГ',
-                name: 'АО "Эмбамунайгаз"'
+                id: 17,
+                ticker: 'НККМГ',
+                name: 'НК КМГ (консолид.)',
             },
             dzoCompanies: [
                 {
