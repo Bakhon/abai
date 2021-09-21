@@ -179,6 +179,8 @@ Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').de
 Vue.component('well-card', require('./components/bigdata/wellCard/wellCard.vue').default);
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
+Vue.component('tkrs-main', require('./components/tkrs/tkrsMain.vue').default);
+
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
 Vue.component('pf-upload-monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
 Vue.component('pf-data-analysis', require('./components/PlastFluids/views/PfDataAnalysis').default);

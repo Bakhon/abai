@@ -21,6 +21,7 @@ export default new Vuex.Store({
             'plastFluids',
             'techMode',
             'tr',
+            'tkrs',
             'digitalDrilling',
             'pgno'
         ]

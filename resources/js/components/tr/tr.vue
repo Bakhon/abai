@@ -297,7 +297,7 @@
                                   
                                   
                                   @click="saveadd()"
-                                  :class="{'save_but_modal': isExpMeth, 'save_but_modal_2': !isExpMeth}"
+                                  :class="{'save_but_modal': haveData, 'save_but_modal_no_activ': !haveData}"
                                   @click.prevent="reRender"
                                   v-if="isDeleted && isShowAdd"
                                   ><svg width="24" 
@@ -311,7 +311,7 @@
 
                                   
                                   <button
-                                  :class="{'save_but_modal': isExpMeth, 'save_but_modal_2': !isExpMeth}"
+                                  :class="{'save_but_modal': isExpMethButton, 'save_but_modal_no_activ': !isExpMethButton}"
                                   @click="saveadd()"
                                   @click.prevent="reRender"
                                   v-if="isSaved && isShowAdd"
@@ -325,7 +325,7 @@
                                   </svg>{{trans('tr.save_changes')}} </button>
 
                                 <a
-                                  class="save_but_modal"
+                                  class="delete_but_modal"
                                   @click="deleteWell"
                                   @click.prevent="reRender"
                                   v-if="isSaved && isShowAdd"
@@ -379,7 +379,7 @@
                             <td><input data-key="rus_wellname" v-model="row.rus_wellname" class="input_edit_modal"></td>
                             <td><b-form-select data-key="horizon" v-model="row.horizon"  :options="horizonFilterData" @change="editAddWell(row, row_index)" class="select_edit"></b-form-select></td>
                             <td><input data-key="object" v-model="row.object" class="input_edit_modal"></td>
-                            <td><input data-key="exp_meth" v-model="row.exp_meth" :class="{'input_edit_modal_2': !haveData(row),'input_edit_modal': haveData(row)}"></td>
+                            <td><input data-key="exp_meth" v-model="row.exp_meth" :class="{'input_edit_modal_2': !isExpMethInput(row),'input_edit_modal': isExpMethInput(row)}"></td>
                             <td><input data-key="type_text" v-model="row.type_text" class="input_edit_modal"></td>
                             <td><input data-key="block" v-model="row.block" class="input_edit_modal"></td>
                             <td><input data-key="cas_OD" v-model="row.cas_OD" class="input_edit_modal"></td>
@@ -6498,7 +6498,7 @@
 .select_pages {
   color: white;
 }
-.save_but_modal {
+.delete_but_modal {
   margin-left: 10px; 
   cursor: pointer; 
   color:white; 
@@ -6780,9 +6780,19 @@ tr:nth-child(even) td {
   font-size: 12px;
   height: 31px;
 }
-.save_but_modal_2 {
+.save_but_modal_no_activ {
   pointer-events: none;
   cursor: not-allowed;
+  background: #272953;
+  color: #fff;
+  border: none;
+  margin-left: 11px;
+}
+.save_but_modal {
+  background: #272953;
+  color:#2E50E9;
+  border: none;
+  margin-left: 11px;
 }
 
 

@@ -31,7 +31,16 @@ export default {
     Multiselect,
   },
   computed: {
-    
+    isExpMethButton() {
+      for (const key in this.lonelywell) {
+        if (this.lonelywell[key].exp_meth === "") {
+          return false;
+        }
+        else{
+          return true;
+        }
+      }
+    },
     isFilterChecked() {
       for (let column of this.filterList) {
         if (this.$store.state.tr[column].length !== 0) {
@@ -870,7 +879,7 @@ export default {
             
         
     },
-    haveData(row) {
+    isExpMethInput(row) {
       this.rowExpMeth = row.exp_meth
       if (row.exp_meth) {
         this.isExpMeth=true
@@ -879,18 +888,8 @@ export default {
         this.isExpMeth=false
         return false
     }
-    },
-    // haveData(row) {
-    //   this.rowExpMeth = row.exp_meth
-    //   if (row.exp_meth.length < 0 || row.exp_meth == '') {
-    //     this.isExpMeth=true
-    //      console.log('empty')
-    // } else {
-    //   console.log('not empty')
-    //     this.isExpMeth=false
-      
-    // }
-    // },
+  },
+
     deleteWell() {
         this.notification(`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
         this.$store.commit("globalloading/SET_LOADING", true);
