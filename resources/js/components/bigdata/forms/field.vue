@@ -19,6 +19,7 @@
           v-on:input="updateValue($event.id)"
           :options="item.values"
           :name="item.code"
+          label="name"
       >
         <template #open-indicator="{ attributes }">
           <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -293,13 +294,13 @@ export default {
 
   .v-select {
     background: #334296;
-    height: 28px;
+    height: auto;
     min-width: 100%;
 
     .vs__search, .vs__selected {
       font-size: 14px;
       font-weight: normal;
-      height: 28px;
+      height: auto;
       line-height: 1;
       margin-top: 0;
       max-width: 95%;

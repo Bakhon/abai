@@ -1160,7 +1160,7 @@ return [
             'mg_ion' => 'Содержание ионов. Магний (Mg), мг/л',
             'nak_ion' => 'Содержание ионов. Натрий+Калий (Na+K), мг/л',
             'sulf_hydro' => 'Содержание сероводорода, м3/т'
-        ],    
+        ],
         'daily_drill_kpc' => [
             'org' => 'Подразделение',
             'company' => 'Подрядчик',
@@ -1275,7 +1275,30 @@ return [
             'pressure' => 'Р-закачки',
             'pressure_sum' => 'Приемистость, м3/сут',
             'worktime' => 'Отработанное время',
-        ]
+        ],
+        'underground_equipment' => [
+            'equip_type' => 'Вид оборудования',
+            'equip_element' => 'Элемент оборудования',
+            'equip_params' => 'Параметры установки',
+            'equip_date' => 'Период действия параметров установки',
+            'installation' => 'Монтаж оборудования',
+            'disassembling' => 'Демонтаж оборудования',
+            'change_equipment' => 'Замена оборудования',
+            'change_params' => 'Замена параметров установки',
+            'repair_equipment' => 'Ремонты оборудования',
+        ],
+        'underground_equipment_installation' => [
+            'equip_type' => 'Вид оборудования',
+            'equip_element' => 'Элемент оборудования',
+            'installation' => 'Монтаж оборудования',
+            'disassembling' => 'Демонтаж оборудования',
+            'installation_date' => 'Дата установки',
+            'installation_parameters' => 'Параметры установки оборудования'
+        ],
+        'underground_equipment_disassembling' => [
+            'disassembling' => 'Демонтаж',
+            'disassembling_date' => 'Дата демонтажа',
+        ],
     ],
     'bigdata_module' => 'Модуль "Прототип БД ABAI"',
     'list' => 'Просмотр списка',
