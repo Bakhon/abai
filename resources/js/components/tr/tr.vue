@@ -293,9 +293,11 @@
                                       </svg>
                                   {{trans('tr.cancel')}}</a> 
 
-                                <a
-                                  class="save_but_modal"
+                                <button
+                                  
+                                  
                                   @click="saveadd()"
+                                  :class="{'save_but_modal': isExpMeth, 'save_but_modal_2': !isExpMeth}"
                                   @click.prevent="reRender"
                                   v-if="isDeleted && isShowAdd"
                                   ><svg width="24" 
@@ -305,12 +307,11 @@
                                   xmlns="http://www.w3.org/2000/svg">
                                   <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
                                   stroke-width="1.5" stroke-linecap="round"/>
-                                  </svg> {{trans('tr.save')}}</a>
+                                  </svg> {{trans('tr.save')}} </button>
 
                                   
-                                  <a
-                                  class="save_but_modal"
-                                  
+                                  <button
+                                  :class="{'save_but_modal': isExpMeth, 'save_but_modal_2': !isExpMeth}"
                                   @click="saveadd()"
                                   @click.prevent="reRender"
                                   v-if="isSaved && isShowAdd"
@@ -321,7 +322,7 @@
                                   xmlns="http://www.w3.org/2000/svg">
                                   <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
                                   stroke-width="1.5" stroke-linecap="round"/>
-                                  </svg>{{trans('tr.save_changes')}}</a>
+                                  </svg>{{trans('tr.save_changes')}} </button>
 
                                 <a
                                   class="save_but_modal"

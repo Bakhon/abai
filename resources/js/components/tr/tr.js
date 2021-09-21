@@ -19,6 +19,7 @@ Vue.component('v-select', vSelect)
 Vue.use(NotifyPlugin);
 export default {
   name: "TrPage",
+  
   props: [
     'params'
   ],
@@ -260,6 +261,7 @@ export default {
               fields: [...fields],
           },
       ],
+      rowExpMeth: null,
       dt: null,
       editedWells: [],
       isShowFirst: true,
@@ -312,6 +314,7 @@ export default {
       editPageNumberLink: "techregime_edit_page_numbers/",
       searchLink: "techregime_totals_test_3/",
       editSearchLink: "techregime_edit_page/",
+      isExpMeth: true, 
       isMaxDate: true,
       isActiveHorizonFilterr: false,
       editedAddWells: [],
@@ -844,30 +847,50 @@ export default {
         this.filter = filter;
     },
     saveadd() {
-        this.notification(`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
-        let output = {};
-        this.$refs.editTable[0].children.forEach((el) => {
-            output[el.children[0].dataset.key] = el.children[0].value;
-        });
-        this.axios
-            .post(
-                this.postApiUrl + "techregime/new_wells/add_well/",
-                this.lonelywell,
-            )
-            .then((response) => {
-                this.loadPage();
-                this.wellAdd();
-                this.reRender();
-                console.log('good')
-            })
+          if(this.rowExpMeth == '') {          
+          } else {
+            this.notification(`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
+            let output = {};
+            this.$refs.editTable[0].children.forEach((el) => {
+                output[el.children[0].dataset.key] = el.children[0].value;
+            });
+            this.axios
+                .post(
+                    this.postApiUrl + "techregime/new_wells/add_well/",
+                    this.lonelywell,
+                )
+                .then((response) => {
+                    this.loadPage();
+                    this.wellAdd();
+                    this.reRender();
+                    console.log('good')
+                })
+            
+          }
+            
+        
     },
     haveData(row) {
+      this.rowExpMeth = row.exp_meth
       if (row.exp_meth) {
+        this.isExpMeth=true
         return true
     } else {
+        this.isExpMeth=false
         return false
     }
     },
+    // haveData(row) {
+    //   this.rowExpMeth = row.exp_meth
+    //   if (row.exp_meth.length < 0 || row.exp_meth == '') {
+    //     this.isExpMeth=true
+    //      console.log('empty')
+    // } else {
+    //   console.log('not empty')
+    //     this.isExpMeth=false
+      
+    // }
+    // },
     deleteWell() {
         this.notification(`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
         this.$store.commit("globalloading/SET_LOADING", true);
