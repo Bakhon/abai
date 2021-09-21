@@ -21,6 +21,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::group([], function () {
             Route::group(['prefix' => 'gtm'], function () {
                 Route::get('get-data', 'EconomicGtmController@getData');
+                Route::get('get-authors', 'EconomicGtmController@getAuthors');
                 Route::get('upload-excel', 'EconomicGtmController@uploadExcel');
                 Route::post('import-excel', 'EconomicGtmController@importExcel')
                     ->name('economic.gtm.import');
@@ -37,6 +38,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::group([], function () {
             Route::group(['prefix' => 'gtm_value'], function () {
                 Route::get('get-data', 'EconomicGtmValueController@getData');
+                Route::get('get-authors', 'EconomicGtmValueController@getAuthors');
                 Route::post('import-excel', 'EconomicGtmValueController@importExcel')
                     ->name('economic.gtm_value.import');
             });
@@ -69,13 +71,6 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
                 Route::post('import-excel', 'EconomicCostController@importExcel')
                     ->name('economic.cost.import');
-
-                Route::resource('log', 'EconomicCostLogController')
-                    ->only(['index', 'destroy'])
-                    ->names([
-                        'index' => 'economic.cost.log.index',
-                        'destroy' => 'economic.cost.log.destroy',
-                    ]);
             });
 
             Route::resource('cost', 'EconomicCostController')
@@ -86,6 +81,17 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                     'store' => 'economic.cost.store',
                     'update' => 'economic.cost.update',
                     'destroy' => 'economic.cost.destroy',
+                ]);
+        });
+
+        Route::group([], function () {
+            Route::get('log/get-data', 'EconomicDataLogController@getData');
+
+            Route::resource('log', 'EconomicDataLogController')
+                ->only(['index', 'destroy'])
+                ->names([
+                    'index' => 'economic.log.index',
+                    'destroy' => 'economic.log.destroy',
                 ]);
         });
 

@@ -66,6 +66,8 @@ use App\Models\BigData\Dictionaries\WellPrsRepairType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Services\BigData\DictionaryServices\UndergroundEquipElement;
+use App\Services\BigData\DictionaryServices\UndergroundEquipType;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -315,10 +317,6 @@ class DictionaryService
         'recording_state' => [
             'class' => RecordingState::class,
             'name_field' => 'name_ru'
-        ],
-        'machine_types' => [
-            'class' => MachineType::class,
-            'name_field' => 'name_ru'
         ]
     ];
 
@@ -429,6 +427,12 @@ class DictionaryService
                     break;
                 case 'las_mnemonics':
                     $dict = $this->getLasMnemonics();
+                    break;
+                case 'underground_equip_type':
+                    $dict = UndergroundEquipType::getDict();
+                    break;
+                case 'underground_equip_element':
+                    $dict = UndergroundEquipElement::getDict();
                     break;
                 default:
                     throw new DictionaryNotFound();

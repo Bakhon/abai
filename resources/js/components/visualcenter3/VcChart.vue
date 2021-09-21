@@ -99,7 +99,7 @@
                 let planChartOptions = {
                     label: chartLabels.plan,
                     borderColor: chartColors.plan,
-                    fill: 1,
+                    fill: false,
                     backgroundColor: fillPattern,
                     showLine: true,
                     data: formattedChartSummary.plan,
@@ -117,7 +117,7 @@
                 let planOpecChartOptions = {
                     label: chartLabels.opecPlan,
                     borderColor: chartColors.opecPlan,
-                    fill: false,
+                    fill: 1,
                     backgroundColor: fillPattern,
                     showLine: true,
                     data: formattedChartSummary.planOpec,

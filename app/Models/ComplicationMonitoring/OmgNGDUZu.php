@@ -5,10 +5,11 @@ namespace App\Models\ComplicationMonitoring;
 use App\Models\Traits\OmgNgduTrait;
 use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OmgNGDUZu extends Model
 {
-    use WithHistory, OmgNgduTrait;
+    use WithHistory, OmgNgduTrait, SoftDeletes;
 
     protected $guarded = ['id'];
 

@@ -13,7 +13,7 @@
                 {{ __('economic_reference.upload_excel') }}
             </a>
 
-            <a href="{{ route('economic.cost.log.index') }}"
+            <a href="{{ route('economic.log.index', ['type_id'=> $logType]) }}"
                class="list-group-item list-group-item-action">
                 {{ __('economic_reference.delete_wrong_uploaded_data') }}
             </a>

@@ -62,6 +62,13 @@ return array (
         'meters' => 'meters',
         'drilled_per_day' => 'Drilling per day',
         'total_drilled' => 'Total drilled',
+        'close' => 'Close',
+        'reset' => 'Cancel',
+        'import' => 'Import',
+        'import_daily-report' => 'Import of daily drilling report',
+        'select_file' => 'Select a file',
+        'or' => 'or',
+        'drag_here' => 'drag the file here',
     ],
     'home' => [
         'operating_oil_pipeline' => 'Operating oil pipeline',
@@ -363,7 +370,8 @@ return array (
         'weight' => 'weight, kg',
     ],
     'daily_raport' => [
-        'DAILY_DRILLING_REPORT' => 'СУТОЧНЫЙ БУРОВОЙ РАПОРТ',
+        'DAILY_DRILLING_REPORT' => 'Daily drilling report',
+        'IMPORT_DRILLING_REPORT' => 'Drilling report import',
         'date' => 'Дата',
         'report' => 'Рапорт',
         'page' => 'Страница',
