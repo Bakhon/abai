@@ -38,7 +38,7 @@ export default {
             bounds: [[0, 15000], [0,15000]],
             center: [85000, 52000],
             zoom: -6,
-            minZoom: -20,
+            minZoom: -6,
             maxZoom: 0,
             renderer: L.canvas({ padding: 0.5 }),
             searchSector: '',
