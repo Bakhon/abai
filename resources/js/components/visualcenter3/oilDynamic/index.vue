@@ -2,7 +2,7 @@
     <div class="page-wrapper">
         <div class="row p-3">
             <div class="col-12">
-                Динамика суточной добычи нефти и конденсата, тонн
+                {{ trans('visualcenter.oilCondensateDynamic') }}
             </div>
             <div class="col-3 p-3">
                 <select
@@ -26,7 +26,7 @@
             <daily-chart class="col-10" :chartData="dailyProductionChart"></daily-chart>
             <div class="col-1 p-3 info-block">
                 <div class="inform-buttons">
-                    Отклонение<br>
+                    {{ trans('visualcenter.deviation') }}<br>
                     <span>
                         {{getFormattedNumber(summaryFact - summaryPlan)}}
                     </span>
@@ -34,7 +34,7 @@
             </div>
             <div class="col-1 p-3 info-block">
                 <div class="inform-buttons">
-                    Выполнение<br>
+                    {{ trans('visualcenter.execution') }}<br>
                     <span>
                         {{summaryExecution.toFixed(1)}}%
                     </span>
@@ -46,21 +46,21 @@
             <table class="col-8 dynamic-table">
                 <thead>
                 <tr>
-                    <th rowspan="2">Дата</th>
-                    <th colspan="3">Суточная</th>
-                    <th colspan="3">С начала месяца</th>
-                    <th colspan="3">С начала года</th>
+                    <th rowspan="2">{{ trans('visualcenter.date') }}</th>
+                    <th colspan="3">{{ trans('visualcenter.daily') }}</th>
+                    <th colspan="3">{{ trans('visualcenter.monthBegin') }}</th>
+                    <th colspan="3">{{ trans('visualcenter.yearBegin') }}</th>
                 </tr>
                 <tr>
-                    <th>План</th>
-                    <th>Факт</th>
-                    <th>Отклонение</th>
-                    <th>План</th>
-                    <th>Факт</th>
-                    <th>Отклонение</th>
-                    <th>План</th>
-                    <th>Факт</th>
-                    <th>Отклонение</th>
+                    <th>{{ trans('visualcenter.Plan') }}</th>
+                    <th>{{ trans('visualcenter.Fact') }}</th>
+                    <th>{{ trans('visualcenter.deviation') }}</th>
+                    <th>{{ trans('visualcenter.Plan') }}</th>
+                    <th>{{ trans('visualcenter.Fact') }}</th>
+                    <th>{{ trans('visualcenter.deviation') }}</th>
+                    <th>{{ trans('visualcenter.Plan') }}</th>
+                    <th>{{ trans('visualcenter.Fact') }}</th>
+                    <th>{{ trans('visualcenter.deviation') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -99,105 +99,104 @@ Vue.component('daily-chart', require('./dailyChart.vue').default);
 export default {
     data: function () {
         return {
-            dailyChartName: 'Динамика суточной добычи нефти',
-            yearlyChartName: 'Динамика накопленной добычи нефти с начала года',
+            dailyChartName: this.trans('visualcenter.oilDynamicDaily'),
+            yearlyChartName: this.trans('visualcenter.accumulatedOilDynamicYearly'),
             selectedMonth: moment().month() + 1,
             selectedDzo: {
                 id: 17,
                 ticker: 'НККМГ',
-                name: 'НК КМГ (консолид.)',
+                name: this.trans('visualcenter.nkKmg'),
             },
             dzoCompanies: [
                 {
                     id: 1,
                     ticker: 'ЭМГ',
-                    name: 'АО "Эмбамунайгаз"',
+                    name: this.trans('visualcenter.emg'),
                 },
                 {
                     id: 2,
                     ticker: 'КОА',
-                    name: 'ТОО "Казахойл Актобе"',
+                    name: this.trans('visualcenter.koa'),
                 },
                 {
                     id: 3,
                     ticker: 'КТМ',
-                    name: 'ТОО "Казахтуркмунай"',
+                    name: this.trans('visualcenter.ktm'),
                 },
                 {
                     id: 4,
                     ticker: 'КБМ',
-                    name: 'АО "КАРАЖАНБАСМУНАЙ"',
+                    name: this.trans('visualcenter.kbm'),
                 },
                 {
                     id: 5,
                     ticker: 'КГМ',
-                    name: 'ТОО СП "КАЗГЕРМУНАЙ"',
+                    name: this.trans('visualcenter.kgm'),
                 },
                 {
                     id: 6,
                     ticker: 'ММГ',
-                    name: 'АО "Мангистаумунайгаз"',
+                    name: this.trans('visualcenter.mmg'),
                 },
                 {
                     id: 7,
                     ticker: 'ОМГ',
-                    name: 'АО "ОзенМунайГаз"',
+                    name: this.trans('visualcenter.omg'),
                 },
                 {
                     id: 8,
                     ticker: 'ОМГ',
-                    name: 'АО "ОзенМунайГаз" Конденсат',
+                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.OMGK'),
                 },
                 {
                     id: 9,
                     ticker: 'УО',
-                    name: 'ТОО "Урихтау Оперейтинг"',
+                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.YO'),
                 },
                 {
                     id: 10,
                     ticker: 'АГ',
-                    name: 'ТОО "Амангельды Газ"',
+                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.AG'),
                 },
                 {
                     id: 11,
                     ticker: 'ПКИ',
-                    name: 'АО "ПетроКазахстан Инк."',
+                    name: this.trans('visualcenter.pki'),
                 },
                 {
                     id: 12,
                     ticker: 'ПКК',
-                    name: 'АО "ПетроКазахстан Кумколь Ресорсиз"',
+                    name: this.trans('visualcenter.pkk'),
                 },
                 {
                     id: 13,
                     ticker: 'ТП',
-                    name: 'АО "Тургай-Петролеум"',
+                    name: this.trans('visualcenter.tp'),
                 },
                 {
                     id: 14,
                     ticker: 'КПО',
-                    name: 'Карачаганак Петролеум Оперейтинг б.в.',
+                    name: this.trans('visualcenter.kpo'),
                 },
                 {
                     id: 15,
                     ticker: 'НКО',
-                    name: 'Норт Каспиан Оперейтинг Компани',
+                    name: this.trans('visualcenter.nko'),
                 },
                 {
                     id: 16,
                     ticker: 'ТШО',
-                    name: 'ТОО "Тенгизшевройл"',
+                    name: this.trans('visualcenter.tsho'),
                 },
                 {
                     id: 17,
                     ticker: 'НККМГ',
-                    name: 'НК КМГ (консолид.)',
+                    name: this.trans('visualcenter.nkKmg'),
                 },
                 {
                     id: 18,
                     ticker: 'НККМГОП',
-                    name: 'Опер. активы НК КМГ (консолид.)',
-                    isFiltered: true
+                    name: this.trans('visualcenter.nkKmgOperating'),
                 },
 
             ],
