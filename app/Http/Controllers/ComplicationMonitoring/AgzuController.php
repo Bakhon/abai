@@ -8,6 +8,7 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\AgzuCreateRequest;
 use App\Http\Requests\AgzuUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
+use App\Http\Resources\AgzuListResource;
 use App\Jobs\ExportAgzuToExcel;
 use App\Models\ComplicationMonitoring\Agzu;
 use App\Models\ComplicationMonitoring\Gu;
@@ -15,8 +16,6 @@ use App\Services\AttachmentService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
-use App\Http\Resources\AgzuListResource;
-use Illuminate\Support\Facades\Storage;
 
 class AgzuController extends CrudController
 {
