@@ -107,7 +107,8 @@ export default {
             dzoNameMappingNormal: _.cloneDeep(dzoCompaniesNameMapping.normalNames),
             timeSelect: "",
             productionData: [],
-            reasonExplanations: {}
+            reasonExplanations: {},
+            troubleCompanies: ['ОМГК','КГМКМГ','ТП','ПККР']
         };
     },
     methods: {
@@ -156,6 +157,10 @@ export default {
                 }
             });
             return reasons;
+        },
+
+        isTroubleCompany(dzoName) {
+            return this.troubleCategories.includes(this.selectedCategory) && this.troubleCompanies.includes(dzoName);
         }
     },
     mixins: [

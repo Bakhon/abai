@@ -7,6 +7,9 @@
       "order": "desc"
     }
   ],
+  "default_values": {
+    "dend": "3333-12-31 00:00:00+06"
+  },
   "tabs": [
     {
       "title": "title",

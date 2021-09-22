@@ -12,10 +12,8 @@
     {
       "title": "org",
       "code": "org",
-      "type": "dict",
-      "dict":"orgs",
-      "is_editable": false,
-      "validation":"exists:tbd.dict.org,id"
+      "type": "text",
+      "is_editable": false
     },
     {
       "title": "company",
@@ -45,9 +43,8 @@
       "title": "geo",
       "code": "geo",
       "type": "dict",
-      "dict":"geos",
-      "is_editable": false,
-      "validation":"exists:tbd.dict.geo,id"
+      "dict": "geo_type_hrz",
+      "is_editable": false
     },
     {
       "title": "repair_work_type",
