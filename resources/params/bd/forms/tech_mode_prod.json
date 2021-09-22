@@ -13,14 +13,7 @@
       "column": "depth",
       "code": "bottom_hole",
       "date_field": "data",
-      "additional_filter": {
-        "bottom_hole_type": {
-          "table": "dict.bottom_hole_type",
-          "fields": {
-            "code": "TD"
-          }
-        }
-      },
+      "metric_code": "TD",
       "type": "text",
       "is_editable": false
     },
@@ -29,14 +22,7 @@
       "code": "horizon",
       "table": "prod.well_geo",
       "column": "name_ru",
-      "additional_filter": {
-        "geo_type": {
-          "table": "dict.geo_type",
-          "fields": {
-            "code": "HRZ"
-          }
-        }
-      },
+      "metric_code": "HRZ",
       "type": "text",
       "is_editable": false
     },
@@ -70,38 +56,20 @@
     },
     {
       "title": "prm",
-      "code": "prm",
+      "code": "param_dian",
       "table": "prod.well_equip_param",
       "column": "prm",
       "type": "float",
-      "additional_filter": {
-        "casing_type": {
-          "table": "dict.metric",
-          "fields": {
-            "code": [
-              "DIAN"
-            ]
-          }
-        }
-      },
+      "metric_code": "DIAN",
       "is_editable": false
     },
     {
       "title": "depth",
-      "code": "prm",
+      "code": "param_psd",
       "table": "prod.well_equip_param",
       "column": "prm",
       "type": "float",
-      "additional_filter": {
-        "casing_type": {
-          "table": "dict.metric",
-          "fields": {
-            "code": [
-              "PSD"
-            ]
-          }
-        }
-      },
+      "metric_code": "PSD",
       "is_editable": false
     },
     {
@@ -124,76 +92,39 @@
     },
     {
       "title": "d_stg",
-      "code": "prm",
+      "code": "param_stg",
       "table": "prod.well_equip_param",
       "column": "prm",
       "type": "float",
-      "additional_filter": {
-        "casing_type": {
-          "table": "dict.metric",
-          "fields": {
-            "code": [
-              "STG"
-            ]
-          }
-        }
-      },
+      "metric_code": "STG",
       "is_editable": false
     },
     {
       "title": "dlina",
-      "code": "prm",
+      "code": "param_plst",
       "table": "prod.well_equip_param",
       "column": "prm",
       "type": "float",
-      "additional_filter": {
-        "casing_type": {
-          "table": "dict.metric",
-          "fields": {
-            "code": [
-              "PLST"
-            ]
-          }
-        }
-      },
+      "metric_code": "PLST",
       "is_editable": false
     },
     {
       "title": "rpm",
-      "code": "prm",
+      "code": "param_rpm",
       "table": "prod.well_equip_param",
       "column": "prm",
       "type": "float",
-      "additional_filter": {
-        "casing_type": {
-          "table": "dict.metric",
-          "fields": {
-            "code": [
-              "RPM"
-            ]
-          }
-        }
-      },
+      "metric_code": "RPM",
       "is_editable": false
     },
     {
       "title": "QZh",
-      "code": "prm",
-      "table": "prod.well_equip_param",
-      "column": "prm",
+      "code": "qzh",
+      "table": "prod.tech_mode_prod_oil",
+      "column": "liquid",
       "type": "float",
       "validation": "gte:0",
       "validate_deviation": true,
-      "additional_filter": {
-        "casing_type": {
-          "table": "dict.metric",
-          "fields": {
-            "code": [
-              "FLR"
-            ]
-          }
-        }
-      },
       "is_editable": true
     },
     {
@@ -208,9 +139,8 @@
     {
       "title": "Qn",
       "code": "Qn",
-      "table": "prod.tech_mode_prod_oil",
-      "column": "Qn",
-      "type": "float",
+      "type": "calc",
+      "formula": "$QZh$ * (1 - $wcut$/100) * $oil_density$",
       "is_editable": false
     },
     {
