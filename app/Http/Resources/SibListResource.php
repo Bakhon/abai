@@ -19,7 +19,7 @@ class SibListResource extends CrudListResource
         $result = [
             'id' => $this->id,
             'fields' => [
-                'gu_id' => $this->gu->name,
+                'gu' => $this->gu ? $this->gu->name : '',
                 'cipher' => $this->cipher,
                 'type' => $this->type,
                 'volume' => $this->volume,
@@ -27,6 +27,7 @@ class SibListResource extends CrudListResource
                 'current_state' => $this->current_state,
                 'date_of_repair' => $this->date_of_repair,
                 'type_of_repair' => $this->type_of_repair,
+                'pdf' => $this->pdf
                 ]
             ];
 

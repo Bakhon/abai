@@ -208,7 +208,7 @@ export default {
         },
 
         getMetricNameByCategorySelected() {
-            if (this.gasProductionButton) {
+            if (!this.isConsolidatedCategoryActive()) {
                 return this.trans('visualcenter.meterCubic');
             } else {
                 return this.trans("visualcenter.tonWithSpace");
@@ -216,7 +216,7 @@ export default {
         },
 
         getThousandMetricNameByCategorySelected() {
-            if (this.gasProductionButton) {
+            if (!this.isConsolidatedCategoryActive()) {
                 return this.trans('visualcenter.thousand') + this.trans('visualcenter.meterCubicWithSpace');
             } else {
                 return this.trans("visualcenter.dzoThousandTon");
