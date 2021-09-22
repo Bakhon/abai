@@ -159,6 +159,47 @@ export default {
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_profitable.original_value),
         },
         {
+          title: `${this.trans('economic_reference.profitless_all')}:`,
+          uwiCount: +this.scenario.uwi_count_profitless_cat_1.original_value +
+              +this.scenario.uwi_count_profitless_cat_2.original_value,
+          prsCount: +this.scenario.prs_profitless_cat_1.original_value +
+              +this.scenario.prs_profitless_cat_2.original_value,
+          prsPerUwi: this.calcPrsPerUwi(
+              +this.scenario.prs_profitless_cat_1.original_value +
+              +this.scenario.prs_profitless_cat_2.original_value,
+              +this.scenario.uwi_count_profitless_cat_1.original_value +
+              +this.scenario.uwi_count_profitless_cat_2.original_value
+          ),
+          liquid: this.calcLiquid(
+              +this.scenario.liquid_profitless_cat_1.original_value +
+              +this.scenario.liquid_profitless_cat_2.original_value,
+              +this.scenario.oil_profitless_cat_1.original_value +
+              +this.scenario.oil_profitless_cat_2.original_value
+          ),
+          avgQn: this.calcAvgQn(
+              +this.scenario.oil_profitless_cat_1.original_value +
+              +this.scenario.oil_profitless_cat_2.original_value,
+              +this.scenario.days_worked_profitless_cat_1.original_value +
+              +this.scenario.days_worked_profitless_cat_2.original_value
+          ),
+          oil: this.calcOil(
+              +this.scenario.oil_profitless_cat_1.original_value +
+              +this.scenario.oil_profitless_cat_2.original_value
+          ),
+          revenueTotal: this.calcRevenueTotal(
+              +this.scenario.Revenue_total_profitless_cat_1.original_value +
+              +this.scenario.Revenue_total_profitless_cat_2.original_value
+          ),
+          overallExpenditures: this.calcOverallExpenditures(
+              +this.scenario.Overall_expenditures_full_profitless_cat_1.original_value +
+              +this.scenario.Overall_expenditures_full_profitless_cat_2.original_value
+          ),
+          operatingProfit: this.calcOperatingProfit(
+              +this.scenario.Operating_profit_profitless_cat_1.original_value +
+              +this.scenario.Operating_profit_profitless_cat_2.original_value
+          ),
+        },
+        {
           title: this.trans('economic_reference.profitless_cat_1'),
           uwiCount: +this.scenario.uwi_count_profitless_cat_1.original_value,
           prsCount: +this.scenario.prs_profitless_cat_1.original_value,
@@ -169,6 +210,7 @@ export default {
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_1.original_value),
           overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_profitless_cat_1.original_value),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_profitless_cat_1.original_value),
+          color: '#313560',
         },
         {
           title: this.trans('economic_reference.profitless_cat_2'),
@@ -181,6 +223,7 @@ export default {
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_2.original_value),
           overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_profitless_cat_2.original_value),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_profitless_cat_2.original_value),
+          color: '#313560',
         },
       ]
     },
@@ -212,6 +255,45 @@ export default {
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario_profitable),
         },
         {
+          title: `${this.trans('economic_reference.profitless_all')}:`,
+          uwiCount: +this.scenario.uwi_count_profitless_cat_1.original_value_optimized + +this.scenario.uwi_count_profitless_cat_2.original_value_optimized,
+          prsCount: +this.scenario.prs_profitless_cat_1.original_value_optimized + +this.scenario.prs_profitless_cat_2.original_value_optimized,
+          prsPerUwi: this.calcPrsPerUwi(
+              +this.scenario.prs_profitless_cat_1.original_value_optimized +
+              +this.scenario.prs_profitless_cat_2.original_value_optimized,
+              +this.scenario.uwi_count_profitless_cat_1.original_value_optimized +
+              +this.scenario.uwi_count_profitless_cat_2.original_value_optimized
+          ),
+          liquid: this.calcLiquid(
+              +this.scenario.liquid_profitless_cat_1.original_value_optimized +
+              +this.scenario.liquid_profitless_cat_2.original_value_optimized,
+              +this.scenario.oil_profitless_cat_1.original_value_optimized +
+              +this.scenario.oil_profitless_cat_2.original_value_optimized
+          ),
+          avgQn: this.calcAvgQn(
+              +this.scenario.oil_profitless_cat_1.original_value_optimized +
+              +this.scenario.oil_profitless_cat_2.original_value_optimized,
+              +this.scenario.days_worked_profitless_cat_1.original_value_optimized +
+              +this.scenario.days_worked_profitless_cat_2.original_value_optimized
+          ),
+          oil: this.calcOil(
+              +this.scenario.oil_profitless_cat_1.original_value_optimized +
+              +this.scenario.oil_profitless_cat_2.original_value_optimized
+          ),
+          revenueTotal: this.calcRevenueTotal(
+              +this.scenario.Revenue_total_profitless_cat_1.original_value_optimized +
+              +this.scenario.Revenue_total_profitless_cat_2.original_value_optimized
+          ),
+          overallExpenditures: this.calcOverallExpenditures(
+              +this.scenario.Overall_expenditures_full_profitless_cat_1.original_value_optimized +
+              +this.scenario.Overall_expenditures_full_profitless_cat_2.original_value_optimized
+          ),
+          operatingProfit: this.calcOperatingProfit(
+              +this.scenario.Operating_profit_profitless_cat_1.original_value_optimized +
+              +this.scenario.Operating_profit_profitless_cat_2.original_value_optimized
+          ),
+        },
+        {
           title: this.trans('economic_reference.profitless_cat_1'),
           uwiCount: +this.scenario.uwi_count_profitless_cat_1.original_value_optimized,
           prsCount: +this.scenario.prs_profitless_cat_1.original_value_optimized,
@@ -222,6 +304,7 @@ export default {
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_1.original_value_optimized),
           overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_scenario_profitless_cat_1),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario_profitless_cat_1),
+          color: '#313560',
         },
         {
           title: this.trans('economic_reference.profitless_cat_2'),
@@ -234,6 +317,7 @@ export default {
           revenueTotal: this.calcRevenueTotal(this.scenario.Revenue_total_profitless_cat_2.original_value_optimized),
           overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_scenario_profitless_cat_2),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario_profitless_cat_2),
+          color: '#313560',
         },
       ]
     },
