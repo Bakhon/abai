@@ -326,20 +326,19 @@ export default {
       this.filters[code].show = true
       this.filterOpened = true
     },
-    getParam(code) {
-      return this.params.fields[code];
-    },
     isShowSort(code) {
-      return _.isUndefined(this.getParam(code).sortable)
-          || (!_.isUndefined(this.getParam(code).sortable) && this.getParam(code).sortable);
+      let param = this.params.fields[code];
+      return _.isUndefined(param.sortable)
+          || (!_.isUndefined(param.sortable) && param.sortable);
     },
     isShowFilter(code) {
+      let param = this.params.fields[code];
       if (!_.isUndefined(this.params.hide_filter)) {
         return !this.params.hide_filter;
       }
 
-      return _.isUndefined(this.getParam(code).filterable)
-          || (!_.isUndefined(this.getParam(code).filterable) && this.getParam(code).filterable);
+      return _.isUndefined(param.filterable)
+          || (!_.isUndefined(param.filterable) && param.filterable);
     },
     hideFilters() {
       this.filterOpened = false
