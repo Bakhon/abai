@@ -71,6 +71,7 @@ return array (
       'weight_after' => 'Масса после извлечения, гр',
       'avg_speed' => 'Средняя скорость коррозии, мм/г',
     ),
+    'volume_fractions' => 'Объемные доли',
   ),
   'fact_common_corrosion_speed' => 'Фактическая общая скорость коррозии',
   'test_coupons' => 'тест купоны',
