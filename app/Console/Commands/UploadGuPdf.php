@@ -40,7 +40,7 @@ class UploadGuPdf extends Command
         $this->service = $service;
     }
 
-    public function pathToUploadedFile( $path, $test = false )
+    private function pathToUploadedFile( $path, $test = false )
     {
         $filesystem = new Filesystem;
 
