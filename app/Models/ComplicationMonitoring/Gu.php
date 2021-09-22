@@ -17,6 +17,7 @@ class Gu extends Model
     protected static $logAttributesToIgnore = ['updated_at', 'created_at', 'deleted_at'];
     protected static $logOnlyDirty = true;
     protected static $submitEmptyLogs = false;
+    protected $connection = 'mysql';
 
     protected $localKey = 'id';
     protected $guarded = ['id'];
