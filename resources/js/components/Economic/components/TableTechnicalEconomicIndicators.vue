@@ -133,7 +133,7 @@ export default {
       let denominator = +scenario.production_local[key] + (+scenario.production_export[key])
 
       return denominator ?
-          +scenario.Overall_expenditures_scenario / denominator
+          +scenario.Overall_expenditures_full_scenario / denominator
           : 0
     },
 
@@ -347,7 +347,7 @@ export default {
           color: '#106B4B',
         },
         {
-          index: '8.1',
+          index: '9',
           title: this.trans('economic_reference.cost_price_including'),
           dimension: `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge_per_ton')}`,
           values: [
@@ -355,10 +355,10 @@ export default {
             ...this.reverseOilPrices.map((oilPrice, index) => this.costPriceValue(index) / 1000)
           ],
           budget2020: this.budget2020Map,
-          color: '#313560'
+          color: '#106B4B',
         },
         {
-          index: '9',
+          index: '10',
           title:  this.trans('economic_reference.operating_profit'),
           dimension: this.trans('economic_reference.million_tenge'),
           values: [

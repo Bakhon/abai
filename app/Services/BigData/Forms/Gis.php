@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Exceptions\BigData\SubmitFormException;
+use App\Services\AttachmentService;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class Gis extends PlainForm
@@ -14,6 +16,123 @@ class Gis extends PlainForm
     protected $configurationFileName = 'gis';
     use DateMoreThanValidationTrait;
     use DepthValidationTrait;
+
+    public function getResults(): array
+    {
+        $wellId = $this->request->get('well_id');
+        try {
+            $rows = $this->getRows($wellId);
+
+            $columns = $this->getColumns();
+
+            $availableActions = $this->getAvailableActions();
+            if ($rows->isNotEmpty()) {
+                $availableActions = array_filter($availableActions, function ($action) {
+                    return !in_array($action, ['create']);
+                });
+            }
+
+            return [
+                'rows' => $rows->values(),
+                'columns' => $columns,
+                'form' => $this->params(),
+                'available_actions' => array_values($availableActions)
+            ];
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage()
+            ];
+        }
+    }
+
+    protected function getRows(): Collection
+    {
+        $wellId = (int)$this->request->get('well_id');
+
+        $rows = collect();
+        $row = [];
+
+        $lasFiles = $this->getLasFiles($wellId);
+        if (!empty($lasFiles)) {
+            $row['las'] = $lasFiles;
+        }
+
+        $row = array_merge($row, $this->getRowFiles($wellId));
+
+        if (!empty($row)) {
+            $rows->push($row);
+        }
+
+        return $rows;
+    }
+
+    private function getLasFiles(int $wellId): ?string
+    {
+        return DB::connection('tbd')
+            ->table('prod.lass_files')
+            ->where('well', $wellId)
+            ->get()
+            ->map(function ($file) {
+                return '<a target="_blank" href="' . route('las.download', ['experiment' => $file->exp_id]
+                    ) . '">' . $file->name_ru . '</a>';
+            })
+            ->join('<br>');
+    }
+
+    private function getRowFiles(int $wellId): ?array
+    {
+        $files = DB::connection('tbd')
+            ->table('prod.conn_files as f')
+            ->select('f.id', 'f.document_id', 'ft.code', 'df.file')
+            ->join('prod.document_file as df', 'f.document_id', 'df.document')
+            ->join('dict.gis_file_type as ft', 'f.type_connect', 'ft.id')
+            ->where('well', $wellId)
+            ->get();
+
+        if ($files->isEmpty()) {
+            return [];
+        }
+
+        $attachmentService = app()->make(AttachmentService::class);
+        $filesInfo = $attachmentService->getInfo($files->pluck('file')->toArray());
+
+        return $files->groupBy('code')
+            ->map(function ($group) use ($filesInfo) {
+                return $group
+                    ->map(function ($file) use ($filesInfo) {
+                        $fileInfo = $filesInfo->where('id', $file->file)->first();
+
+                        return '<a target="_blank" href="' . route('attachment.download', ['attachment' => $file->file]
+                            ) . '">' . $fileInfo->filename . '</a>';
+                    })
+                    ->join('<br>');
+            })
+            ->toArray();
+    }
+
+    protected function getColumns(): Collection
+    {
+        $columns = collect();
+        $columns->push(
+            [
+                'code' => 'las',
+                'form' => 'well_document_short',
+                'title' => trans('bd.forms.gis.las_files'),
+                'type' => 'table'
+            ]
+        );
+
+        $columns = $columns->merge(
+            $this->getFields()
+                ->mapWithKeys(
+                    function ($item) {
+                        return [$item['code'] => $item];
+                    }
+                )
+        );
+
+        return $columns;
+    }
 
     protected function getCustomValidationErrors(): array
     {
@@ -45,89 +164,51 @@ class Gis extends PlainForm
             $this->submitForm();
 
             DB::connection('tbd')->commit();
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
+            return [];
         } catch (\Exception $e) {
             DB::connection('tbd')->rollBack();
             throw new SubmitFormException($e->getMessage());
         }
     }
 
-    private function submitForm()
+    protected function submitForm(): array
     {
         $this->tableFields = $this->getFields()
             ->filter(
                 function ($item) {
-                    return $item['type'] === 'table' && empty($item['form']);
+                    return $item['type'] === 'table';
                 }
             );
 
-        $this->tableFieldCodes = $this->tableFields
+        $fileTypes = $this->getFileTypes();
+
+        $this->tableFields
             ->pluck('code')
+            ->each(function ($code) use ($fileTypes) {
+                $values = $this->request->get($code);
+                if (empty($values)) {
+                    return;
+                }
+                foreach ($values as $value) {
+                    DB::connection('tbd')
+                        ->table('prod.conn_files')
+                        ->insert(
+                            [
+                                'well' => $this->request->get('well'),
+                                'type_connect' => $fileTypes[$code],
+                                'document_id' => $value
+                            ]
+                        );
+                }
+            });
+    }
+
+    private function getFileTypes()
+    {
+        return DB::connection('tbd')
+            ->table('dict.gis_file_type')
+            ->get()
+            ->pluck('id', 'code')
             ->toArray();
-
-        $data = $this->prepareDataToSubmit();
-
-        unset($data['documents']);
-        unset($data['gis_method_type']);
-
-        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-        if (!empty($data['id'])) {
-            $this->checkFormPermission('update');
-
-            $id = $data['id'];
-            unset($data['id']);
-
-            $dbQuery = $dbQuery->where('id', $id);
-
-            $this->originalData = $dbQuery->first();
-            $dbQuery->update($data);
-
-            $this->submittedData['fields'] = $data;
-            $this->submittedData['id'] = $id;
-        } else {
-            $this->checkFormPermission('create');
-
-            $id = $dbQuery->insertGetId($data);
-
-            $this->insertDocuments($id);
-            $this->insertMethodTypes($id);
-        }
-
-        $this->insertInnerTable($id);
-    }
-
-    private function insertDocuments(int $id)
-    {
-        if (!empty($this->request->documents)) {
-            foreach ($this->request->documents as $documentId) {
-                DB::connection('tbd')
-                    ->table('prod.gis_file')
-                    ->insert(
-                        [
-                            'file_type' => 4,
-                            'document' => $documentId,
-                            'gis' => $id
-                        ]
-                    );
-            }
-        }
-    }
-
-    private function insertMethodTypes(int $id)
-    {
-        if (!empty($this->request->gis_method_type)) {
-            $methods = (array)$this->request->gis_method_type;
-            foreach ($methods as $method) {
-                DB::connection('tbd')
-                    ->table('prod.gis_method_link')
-                    ->insert(
-                        [
-                            'method' => $method,
-                            'gis' => $id
-                        ]
-                    );
-            }
-        }
     }
 }

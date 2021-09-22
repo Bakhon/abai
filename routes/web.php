@@ -36,14 +36,6 @@ Route::group(
                     }
                 )->name('mainpage');
 
-                Route::get('/economic/nrs', 'Economic\EconomicNrsController@index')->name('economic_nrs');
-                Route::get('/economic/nrs/get-data', "Economic\EconomicNrsController@getData");
-                Route::post('/economic/nrs/export-data', "Economic\EconomicNrsController@exportData");
-                Route::get('/economic/nrs/wells', 'Economic\EconomicNrsController@indexWells');
-                Route::get('/economic/nrs/get-wells', "Economic\EconomicNrsController@getWells");
-                Route::get('/economic/optimization', 'Economic\EconomicOptimizationController@index')->name('economic_optimization');
-                Route::get('/economic/optimization/get-data', 'Economic\EconomicOptimizationController@getData');
-
                 Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
                 Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
                 Route::get('/calcgtm', 'DruidController@calcGtm')->name('calcgtm');
@@ -55,33 +47,8 @@ Route::group(
                 Route::get('/dob', 'DruidController@dob')->name('dob');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
 
-                Route::get('eco-refs-gtm/get-data', 'Refs\EcoRefsGtmController@getData');
-                Route::get('eco-refs-gtm/upload-excel', 'Refs\EcoRefsGtmController@uploadExcel')->name('eco-refs-gtm-upload');
-                Route::post('eco-refs-gtm/import-excel', 'Refs\EcoRefsGtmController@importExcel')->name('eco-refs-gtm-import');
-                Route::resource('eco-refs-gtm', 'Refs\EcoRefsGtmController');
-
-                Route::get('eco-refs-gtm-value/get-data', 'Refs\EcoRefsGtmValueController@getData');
-                Route::post('eco-refs-gtm-value/import-excel', 'Refs\EcoRefsGtmValueController@importExcel')->name('eco-refs-gtm-value-import');
-                Route::resource('eco-refs-gtm-value', 'Refs\EcoRefsGtmValueController');
-
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
                 Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
-
-                // economic tech data
-                Route::get('tech_data_list', 'Refs\TechnicalDataController@refsList')->name('tech_data_list');
-                Route::resource('tech_struct_source', 'Refs\TechnicalStructureSourceController');
-                Route::get('tech_struct_sources', 'Refs\TechnicalStructureSourceController@getSources');
-                Route::resource('tech_struct_company', 'Refs\TechnicalStructureCompanyController');
-                Route::resource('tech_struct_field', 'Refs\TechnicalStructureFieldController');
-                Route::resource('tech_struct_ngdu', 'Refs\TechnicalStructureNgduController');
-                Route::resource('tech_struct_cdng', 'Refs\TechnicalStructureCdngController');
-                Route::resource('tech_struct_gu', 'Refs\TechnicalStructureGuController');
-                Route::resource('tech_struct_bkns', 'Refs\TechnicalStructureBknsController');
-                Route::resource('tech_data_forecast', 'Refs\TechnicalDataForecastController');
-                Route::resource('tech_data_log', 'Refs\TechnicalDataLogController');
-                Route::get('tech_data_json', 'Refs\TechnicalDataForecastController@techDataJson');
-                Route::get('technical_forecast/upload_excel', 'Refs\TechnicalDataController@uploadExcel')->name('tech_refs_upload');
-                Route::post('technical_forecast/import_excel', 'Refs\TechnicalDataController@importExcel')->name('tech_refs_import');
 
                 Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
                 Route::resource('antiecoone', 'AntiCrisis\AntiEcoOneController');
@@ -105,8 +72,9 @@ Route::group(
                     'gtm'
                 );
 
-                Route::post('attachments', 'AttachmentController@upload');
-                Route::get('attachments/{attachment}', 'AttachmentController@get');
+                Route::post('attachments', 'AttachmentController@upload')->name('attachment.upload');
+                Route::get('attachments/file-info/{attachment}', 'AttachmentController@getFileInfo')->name('attachment.get-file-info');
+                Route::get('attachments/{attachment}', 'AttachmentController@download')->name('attachment.download');
             }
         );
         Auth::routes(

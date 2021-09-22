@@ -14,7 +14,7 @@
         v-show="checkedField[0].field_name == field.field_name"
         v-if="hasChild"
       >
-        <template v-for="horizon in checkedField[0].horizons">
+        <template v-for="horizon in field.horizons">
           <div
             v-if="horizon.horizon_name"
             :key="horizon.horizon_id"

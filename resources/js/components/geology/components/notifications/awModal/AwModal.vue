@@ -12,8 +12,12 @@
           <div :class="getBodyClasses">
             <slot />
           </div>
-          <div v-if="$scopedSlots.footer" class="aw-modal__footer">
-            <slot name="footer"/>
+          <div v-if="$scopedSlots.footer||isConfirm" class="aw-modal__footer">
+            <div v-if="isConfirm" class="d-flex align-items-center justify-content-center">
+              <Button class="mr-3">{{ trans('app.save') }}</Button>
+              <Button ref="cancelBtn" color="primary" @click="cancel">{{ trans('app.cancel') }}</Button>
+            </div>
+            <slot name="footer" v-else/>
           </div>
         </div>
       </transition>
@@ -31,6 +35,7 @@ export default {
   props: {
     title: String,
     isShow: Boolean,
+    isConfirm: Boolean,
     animation: {
       type: String,
       default: "fade"
@@ -74,10 +79,14 @@ export default {
     }
   },
   methods: {
+    cancel(e){
+      this.$emit('cancel');
+      this.closeModal(e);
+    },
     closeModal(e) {
       let {target} = e;
-      let {closeBtn, background} = this.$refs;
-      if(target === background||target === closeBtn.$el) this.$emit("update:is-show", false);
+      let {closeBtn, background, cancelBtn} = this.$refs;
+      if(target === background||target === closeBtn.$el||target === cancelBtn.$el) this.$emit("update:is-show", false);
     }
   }
 }

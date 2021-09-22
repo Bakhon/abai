@@ -12,12 +12,8 @@ class Agzu extends Model
 
     protected $guarded = ['id'];
 
-    public $table = 'agzu';
-
     public function gu()
     {
-        return $this->hasOne(Gu::class, 'id', 'gu_id')->withDefault();
+        return $this->belongsTo(Gu::class);
     }
-
-    
 }

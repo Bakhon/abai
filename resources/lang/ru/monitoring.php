@@ -71,6 +71,7 @@ return array (
       'weight_after' => 'Масса после извлечения, гр',
       'avg_speed' => 'Средняя скорость коррозии, мм/г',
     ),
+    'volume_fractions' => 'Объемные доли',
   ),
   'fact_common_corrosion_speed' => 'Фактическая общая скорость коррозии',
   'test_coupons' => 'тест купоны',
@@ -404,6 +405,7 @@ return array (
       'press_change' => 'Перепад давления, атм/км',
       'break_qty' => 'Количество порывов',
       'height_drop' => 'Перепад высот, м',
+      'check_calc' => 'Сеть трубопроводов',
     ),
     'table_title' => 'Таблица расчета гидравлики ГУ - УПСВ',
     'message' => 
@@ -570,5 +572,10 @@ return array (
     'pipe_types' => 'Размеры трубопроводов',
     'pipes' => 'Трубопроводы',
     'watermeasurement' => 'Промысловая жидкость и газ',
+  ),
+  'calculate_messages' => 
+  array (
+    'no_date' => 'Не выбрана дата',
+    'no_such_pipe' => 'Нет такой трубы с начальной точкой :start_point и конечной точкой :end_point',
   ),
 );

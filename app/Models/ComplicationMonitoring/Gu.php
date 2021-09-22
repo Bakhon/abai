@@ -2,7 +2,7 @@
 
 namespace App\Models\ComplicationMonitoring;
 
-use App\Traits\MapObjectsTrait;
+use App\Models\Traits\MapObjectsTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pipes\GuZuPipe;
 use App\Models\Pipes\ZuWellPipe;
@@ -17,6 +17,7 @@ class Gu extends Model
     protected static $logAttributesToIgnore = ['updated_at', 'created_at', 'deleted_at'];
     protected static $logOnlyDirty = true;
     protected static $submitEmptyLogs = false;
+    protected $connection = 'mysql';
 
     protected $localKey = 'id';
     protected $guarded = ['id'];
@@ -38,6 +39,11 @@ class Gu extends Model
     public function wells()
     {
         return $this->hasManyThrough(Well::class, Zu::class);
+    }
+
+    public function omgngdu()
+    {
+        return $this->hasMany(OmgNGDU::class);
     }
 
     public function omgca()
@@ -150,5 +156,10 @@ class Gu extends Model
     public function metering_units()
     {
         return $this->hasMany(MeteringUnits::class);
+    }
+    
+    public function zu_cleanings()
+    {
+        return $this->hasMany(ZusCLeaning::class);
     }
 }

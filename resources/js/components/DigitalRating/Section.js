@@ -1,12 +1,14 @@
 import L from 'leaflet';
+import { Minichart } from 'leaflet.minichart';
 import 'leaflet/dist/leaflet.css';
 import wellsData from './json/dataWells.json';
 import BtnDropdown from "./components/BtnDropdown";
 import SettingModal from "./components/SettingModal";
 import WellAtlasModal from "./components/WellAtlasModal";
 import Accordion from "./components/Accordion";
+import SearchFormRefresh from "../ui-kit/SearchFormRefresh";
 import mainMenu from "../GTM/mock-data/main_menu.json";
-import { cods, maps, properties, objects, fileActions, mapActions } from './json/data';
+import { legends, maps, properties, objects, fileActions, mapActions } from './json/data';
 import { digitalRatingState, digitalRatingMutations } from '@store/helpers';
 
 export default {
@@ -17,13 +19,14 @@ export default {
         SettingModal,
         WellAtlasModal,
         Accordion,
+        SearchFormRefresh
     },
 
     data() {
         return {
             objects: objects,
             maps: maps,
-            cods: cods,
+            legends: legends,
             properties: properties,
             fileActions: fileActions,
             mapsActions: mapActions,
@@ -34,10 +37,11 @@ export default {
             marker: null,
             bounds: [[0, 15000], [0,15000]],
             center: [85000, 52000],
-            zoom: -5,
-            minZoom: -7,
-            maxZoom: 2,
+            zoom: -6,
+            minZoom: -6,
+            maxZoom: 0,
             renderer: L.canvas({ padding: 0.5 }),
+            searchSector: '',
         };
     },
 
@@ -60,9 +64,11 @@ export default {
                 minZoom: this.minZoom,
                 maxZoom: this.maxZoom,
             });
+
             L.control.zoom({
                 position: 'bottomright'
             }).addTo(this.map);
+
             this.map.fitBounds(this.bounds);
             this.map.setView( this.center, this.zoom);
         },
@@ -74,9 +80,9 @@ export default {
                 this.rectangle = L.rectangle(this.getBounds(maps[i]), {
                     renderer: this.renderer,
                     color: maps[i]['color'],
-                    weight: 3,
+                    weight: 1,
                     fillColor: maps[i]['color'],
-                    fillOpacity: 1,
+                    fillOpacity: 0.7,
                 }).addTo(this.map).bindPopup(maps[i]['sector'].toString());
 
                 this.rectangle.on('mouseover', function (e) {
@@ -101,13 +107,29 @@ export default {
                     weight: 1,
                     fillColor: '#000',
                     fillOpacity: 0,
-                    radius: 5,
+                    radius: 3,
                 }).addTo(this.map).bindPopup(wellsData[i]['well']);
 
                 this.marker.on('mouseover', function (e) {
                     this.openPopup();
                 });
             }
+        },
+
+        initChartOnMap() {
+            function fakeData() {
+                return [Math.random(), Math.random()];
+            }
+
+            const myBarChart = L.minichart([85000, 52000], {
+                data: fakeData(),
+                type: 'pie',
+                width: 40,
+                height: 40,
+                labels: ['Test1', 'Test2']
+            });
+
+            this.map.addLayer(myBarChart);
         },
 
         getBounds(item) {
@@ -143,16 +165,29 @@ export default {
             }
         },
         async selectPanelItem(type, item) {
+            this.map.remove();
             if(type === 'map' && item?.id === 1) {
-                this.initWellOnMap();
+                setTimeout(async() => {
+                    this.initMap();
+                    await this.initSectorOnMap();
+                    this.initWellOnMap();
+                }, 0);
             } else {
-                this.map.remove();
                 this.SET_HORIZON(item?.id);
                 setTimeout(async() => {
                     this.initMap();
                     await this.initSectorOnMap();
                 }, 0);
             }
+        },
+        onSearchSector() {
+            this.map.eachLayer(function(layer) {
+                if (layer?._popup?._content === this.searchSector?.toString()) {
+                    const {lat, lng} = layer._bounds?._northEast;
+                    this.map.setView([lat, lng], -3);
+                    layer.openPopup();
+                }
+            }, this);
         }
     },
 }

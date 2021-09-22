@@ -1,0 +1,70 @@
+{
+  "type": "plain",
+  "table": "prod.meas_water_prod",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
+  "tabs": [
+    {
+      "title": "prod_meas",
+      "blocks": [
+        [
+          {
+            "title": "main_param",
+            "items": [
+              {
+                "code": "dbeg",
+                "type": "date",
+                "title": "dbeg",
+                "validation": "required"
+              },
+              {
+                "code": "dend",
+                "type": "date",
+                "title": "dend",
+                "validation": "required"
+              },
+              {
+                "code": "water_prod_val",
+                "type": "numeric",
+                "title": "water_prod_val",
+                "validation":"required|numeric|gt:0",
+                "validate_deviation": true
+              }
+            ]
+          },
+              {
+                "title":"planned_events",
+                "items":[
+                  {
+                    "code":"events",
+                    "type":"table",
+                    "title":"",
+                    "table":"prod.tech_mode_event",
+                    "parent_column":"well",
+                    "columns":[
+                      {
+                        "code":"event_type",
+                        "type":"dict",
+                        "title":"event",
+                        "dict":"well_activity",
+                        "validation":"exists:tbd.dict.well_activity,id"
+                      },
+                      {
+                        "code":"plan_month",
+                        "type":"date",
+                        "title":"planned_month",
+                        "validation":"date"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+        ]
+    }
+  ]
+}

@@ -25,6 +25,11 @@ export default {
   data: () => ({
     sources: []
   }),
+  computed: {
+    url() {
+      return this.localeUrl('/economic/technical/structure/source/get-data')
+    },
+  },
   created() {
     this.getSources()
   },
@@ -39,9 +44,9 @@ export default {
         name: this.trans('economic_reference.select_item')
       }]
 
-      const {data} = await this.axios.get(this.localeUrl('/tech_struct_sources'))
+      const {data} = await this.axios.get(this.url)
 
-      this.sources = [...this.sources, ...data.sources]
+      this.sources = [...this.sources, ...data]
 
       this.$emit('loaded')
     },

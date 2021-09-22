@@ -56,8 +56,6 @@ export default {
     },
   },
   data: () => ({
-    isVisibleInWork: true,
-    isVisibleInPause: false,
     currentAnnotation: {
       minY: 0,
       maxY: 0
@@ -132,23 +130,15 @@ export default {
     chartSeries() {
       let data = [...this.defaultSeries]
 
-      if (this.isVisibleInWork) {
+      if (this.isVisibleInPause) {
         this.chartKeys.forEach(key => {
-          data.push({
-            name: this.trans(`economic_reference.wells_${key}`),
-            type: 'area',
-            data: this.data[key]
-          })
+          data.push(this.chartArea(key, this.data, this.pausedData))
         })
       }
 
-      if (this.isVisibleInPause) {
+      if (this.isVisibleInWork) {
         this.chartKeys.forEach(key => {
-          data.push({
-            name: `${this.trans(`economic_reference.wells_${key}`)} ${this.trans(`economic_reference.in_pause`).toLowerCase()}`,
-            type: 'area',
-            data: this.pausedData[key]
-          })
+          data.push(this.chartArea(key, this.data))
         })
       }
 
@@ -168,7 +158,7 @@ export default {
         ...this.chartOptions,
         ...{
           chart: {
-            stacked: true,
+            stacked: false,
             foreColor: '#FFFFFF',
             locales: [ru],
             defaultLocale: 'ru',
@@ -183,7 +173,7 @@ export default {
           },
           yaxis: this.isVisibleDefaultSeries
               ? this.chartYaxis
-              : {min: 0, title: {text: this.title}}
+              : {min: 0, title: {text: this.title}},
         }
       }
     }

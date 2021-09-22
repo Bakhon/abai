@@ -2,24 +2,16 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Models\Traits\OmgNgduTrait;
 use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class OmgNGDUZu extends Model
 {
-    use WithHistory;
+    use WithHistory, OmgNgduTrait, SoftDeletes;
 
     protected $guarded = ['id'];
-
-    public function zu()
-    {
-        return $this->hasOne(Zu::class,'id','zu_id');
-    }
-
-    public function manual_zu()
-    {
-        return $this->hasOne(ManualZu::class,'id','zu_id');
-    }
 
     public function getDailyWaterProductionAttribute()
     {

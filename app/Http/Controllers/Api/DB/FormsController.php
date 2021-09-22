@@ -83,16 +83,6 @@ class FormsController extends Controller
         }
     }
 
-    public function getRows(string $formName)
-    {
-        $form = $this->getForm($formName);
-        return $form->getRows();
-        try {
-        } catch (\Exception $exception) {
-            return response()->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
     public function getRowHistory(string $formName, Request $request): array
     {
         /** @var TableForm $form */
@@ -152,7 +142,13 @@ class FormsController extends Controller
     public function getResults(Request $request, string $formName): JsonResponse
     {
         $form = $this->getForm($formName);
-        return $form->getResults($request->get('well_id'));
+        try {
+            return response()->json(
+                $form->getResults()
+            );
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function calcFields(Request $request, string $form): JsonResponse
@@ -167,10 +163,22 @@ class FormsController extends Controller
         return response()->json($form->getUpdatedFields($request->get('well_id'), $request->get('values')));
     }
 
+    public function updateFieldList(Request $request, string $form): JsonResponse
+    {
+        $form = $this->getForm($form);
+        return response()->json($form->getUpdatedFieldList($request->get('well_id'), $request->get('values')));
+    }
+
     public function getFormByRow(Request $request, string $form): JsonResponse
     {
         $form = $this->getForm($form);
         return response()->json($form->getFormByRow(json_decode($request->get('row'), 1)));
+    }
+
+    public function getFormParamsToEdit(Request $request, string $form): JsonResponse
+    {
+        $form = $this->getForm($form);
+        return response()->json($form->getFormParamsToEdit($request->all()));
     }
 
     public function delete(string $form, int $row): JsonResponse

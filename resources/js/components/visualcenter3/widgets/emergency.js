@@ -5,6 +5,10 @@ export default {
         return {
             emergencyHistory: [],
             currentMonth: moment().month() + 1,
+            emergencyFinished: [],
+            emergencyOpen: [],
+            emergencyTable: [],
+            isOpenActive: true
         };
     },
     methods: {
@@ -22,5 +26,11 @@ export default {
             }
             return {};
         },
+
+        fillEmergencyByType() {
+            this.emergencyFinished = _.filter(this.emergencyHistory, (item) => item.approved);
+            this.emergencyOpen = _.filter(this.emergencyHistory, (item) => !item.approved);
+            this.emergencyTable = this.emergencyOpen;
+        }
     }
 }
