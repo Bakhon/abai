@@ -81,7 +81,7 @@ export default {
     },
     updateCurrentSubsoilField(value) {
       this.UPDATE_CURRENT_SUBSOIL_FIELD(value);
-      this.handleTableData(value.field_id);
+      this.handleTableData({ field_id: value.field_id });
     },
   },
   components: {

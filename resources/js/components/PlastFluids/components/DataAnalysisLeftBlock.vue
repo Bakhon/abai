@@ -50,9 +50,6 @@ export default {
     CheckboxDropdown,
   },
   mixins: [setDynamicComponentContent],
-  data() {
-    return {};
-  },
   computed: {
     ...mapState("plastFluids", [
       "currentSubsoil",

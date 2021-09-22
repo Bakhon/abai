@@ -47,18 +47,27 @@ const plastFluidsLocal = {
       }
       commit("SET_FILE_LOG", entries);
     },
-    async getTableData({}, { fieldId, url }) {
+    async getTableData({}, obj) {
       const payload = new FormData();
-      payload.append("field_id", fieldId);
-      const data = await getTemplateData(payload, url);
+      for (let key in obj.mutatedData) {
+        payload.append(key, obj.mutatedData[key]);
+      }
+      const data = await getTemplateData(payload, obj.url);
       return data;
     },
-    async handleTableData({ commit, state, dispatch }, fieldId) {
+    async handleTableData({ commit, state, dispatch }, incomeData) {
+      const postDataMock = {
+        horizons: "None",
+        blocks: "None",
+        row_on_page: 30,
+        page_number: 1,
+      };
+      let merged = { ...postDataMock, ...incomeData };
       const url = state.currentTemplate.api_url ?? undefined;
-      const data = await dispatch("getTableData", { fieldId, url });
+      const data = await dispatch("getTableData", { mutatedData: merged, url });
       commit("SET_CURRENT_TEMPLATE", state.currentTemplate);
-      commit("SET_TABLE_FIELDS", data.columns_name);
-      commit("SET_TABLE_ROWS", data.rows);
+      commit("SET_TABLE_FIELDS", data.header ?? data.data.columns_name);
+      commit("SET_TABLE_ROWS", data.data.rows ?? data.data);
     },
     async handleTableGraphData({ commit, state }, dataToPost) {
       try {
