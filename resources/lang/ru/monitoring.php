@@ -71,7 +71,6 @@ return array (
       'weight_after' => 'Масса после извлечения, гр',
       'avg_speed' => 'Средняя скорость коррозии, мм/г',
     ),
-    'volume_fractions' => 'Объемные доли',
   ),
   'fact_common_corrosion_speed' => 'Фактическая общая скорость коррозии',
   'test_coupons' => 'тест купоны',
@@ -84,12 +83,12 @@ return array (
   'calc_local_corrosion_speed' => 'Расчетная локальная скорость коррозии',
   'table' => 
   array (
+    'export_excel' => 'Выгрузить в excel',
     'reset_filter' => 'Сбросить фильтр',
     'export_error' => 'Ошибка экспорта',
+    'management' => 'Управление',
     'calc_result' => 'Расчитать результат',
     'calc_result_export' => 'Выгрузить результаты',
-    'management' => 'Управление',
-    'export_excel' => 'Выгрузить в Excel',
   ),
   'selection_node' => 'Узел отбора',
   'omgca' => 
@@ -152,21 +151,18 @@ return array (
       'bsw' => 'Обводненность, %',
       'surge_tank_pressure' => 'Давление в буферной емкости, кгс\\см2',
       'pump_discharge_pressure' => 'Давление на выходе насоса, кгс\\см2',
-      'heater_inlet_pressure' => 'Температура на входе в печь, С',
-      'heater_output_pressure' => 'Температура на выходе из печи, С',
       'temperature' => 'Температура на входе в печь, С',
       'heater_output_temperature' => 'Температура на выходе из печи, С',
       'heater_inlet_temperature' => 'Температура на входе в печь, С',
       'gas_factor' => 'Газовый фактор, м3/м3',
+      'heater_inlet_pressure' => 'Температура на входе в печь, С',
+      'heater_output_pressure' => 'Температура на выходе из печи, С',
     ),
   ),
   'all_gus' => 'Все ГУ',
   'show_title' => 'Просмотр карточки',
   'field' => 'Месторождение',
-  'ngdu' => 
-  array (
-    'ngdu' => 'НГДУ',
-  ),
+  'ngdu' => 'НГДУ',
   'cdng' => 'ЦДНГ',
   'history' => 
   array (
@@ -224,34 +220,6 @@ return array (
     ),
   ),
   'corrosion_name' => 'Коррозия',
-  'pipe' => 
-  array (
-    'menu' => 'Трубопроводы',
-    'title' => 'Трубопроводы ГУ кармасс',
-    'create_title' => 'Ввод данных по трубопроводу',
-    'edit_title' => 'Редактирование данных по трубопроводу',
-    'fields' => 
-    array (
-      'length' => 'Длина',
-      'outside_diameter' => 'Внешний диаметр, мм',
-      'inner_diameter' => 'Внутренний диаметр',
-      'thickness' => 'Толщина стенки, мм',
-      'roughness' => 'Жесткость',
-      'material' => 'Материал',
-      'plot' => 'Участок',
-    ),
-    'updated' => 'Трубовровод изменен',
-    'deleted' => 'Трубопровод удален',
-    'deleting_error' => 'Ошибка при удалении трубопровода',
-    'coords' => 'Координаты трубопровода',
-    'add' => 'Добавить трубовровод',
-    'type' => 'Тип размер трубопровода',
-    'params' => 'Параметры трубопровода',
-    'name' => 'Наименование трубопровода',
-    'pipe' => 'Трубопровод',
-    'show-detail-data' => 'Показать подробную информацию',
-    'detail-data' => 'Подробная информация',
-  ),
   'inhibitor' => 
   array (
     'title' => 'Справочник ингибиторов',
@@ -304,8 +272,35 @@ return array (
     'deleting_error' => 'Ошибка при удалении Скважины',
     'name' => 'Имя Скважины',
     'well' => 'Скважина',
-    'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
     'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ Скважина',
+  ),
+  'pipe' => 
+  array (
+    'updated' => 'Трубовровод изменен',
+    'deleted' => 'Трубопровод удален',
+    'deleting_error' => 'Ошибка при удалении трубопровода',
+    'coords' => 'Координаты трубопровода',
+    'add' => 'Добавить трубопровод',
+    'type' => 'Тип трубопровода',
+    'params' => 'Параметры трубопровода',
+    'name' => 'Наименование трубопровода',
+    'fields' => 
+    array (
+      'inner_diameter' => 'Внутренний диаметр',
+      'length' => 'Длина, м',
+      'material' => 'Материал',
+      'outside_diameter' => 'Внешний диаметр',
+      'plot' => 'Участок',
+      'roughness' => 'Жесткость',
+      'thickness' => 'Толщина стенок',
+    ),
+    'edit_title' => 'Редактирование данных по трубопроводу',
+    'pipe' => 'Трубопровод',
+    'menu' => 'Трубопроводы',
+    'title' => 'База данных по трубопроводам',
+    'create_title' => 'Ввод данных по трубопроводу',
+    'show-detail-data' => 'Показать подробную информацию',
+    'detail-data' => 'Подробная информация',
   ),
   'gu' => 
   array (
@@ -314,6 +309,7 @@ return array (
     'name' => 'Имя ГУ',
     'create_title' => 'Ввод данных по ГУ',
     'edit_title' => 'Редактирование ГУ',
+    'gu' => 'ГУ',
     'params' => 'Параметры ГУ',
     'fields' => 
     array (
@@ -329,7 +325,6 @@ return array (
       'daily_gas_production_in_sib' => 'Количество газа в СИБ',
     ),
     'redirect-to' => 'Перейти на',
-    'gu' => 'ГУ',
     'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ ГУ',
   ),
   'zu' => 
@@ -355,19 +350,19 @@ return array (
   'pipe_types' => 
   array (
     'menu' => 'Справочник тип размеров трубопроводов',
+    'title' => 'Справочник тип размеров трубопроводов',
     'fields' => 
     array (
       'name' => 'Тип размер',
       'outside_diameter' => 'Внешний диаметр, мм',
       'inner_diameter' => 'Внутренний диаметр, мм',
       'thickness' => 'Толщина стенки, мм',
-      'roughness' => 'Жесткость',
+      'roughness' => 'Шероховатость',
       'material' => 'Материал',
       'plot' => 'Участок',
     ),
     'edit_title' => 'Редактирование типа трубы',
     'create_title' => 'Ввод данных по типу трубы',
-    'title' => 'Справочник тип размеров трубопроводов',
   ),
   'omgngdu_well' => 
   array (
@@ -376,7 +371,7 @@ return array (
       'daily_fluid_production' => 'Суточная добыча жидкости, м3/сут',
       'daily_water_production' => 'Суточная добыча воды, м3/сут',
       'daily_oil_production' => 'Суточная добыча нефти, т/сут',
-      'gas_factor' => 'Газовый фактор, м3/м3',
+      'gas_factor' => 'Суточная добыча газа м3\\сут',
       'bsw' => 'Обводненность, %',
       'pressure' => 'Давление, бар',
       'temperature' => 'Температура, °C',
@@ -387,52 +382,8 @@ return array (
     ),
     'menu' => 'ОМГ НГДУ Скважина',
     'title' => 'База данных ОМГ НГДУ Скважина',
-    'create_title' => 'Ввод данных ОМГ НГДУ ЗУ - Скважина',
+    'create_title' => 'Ввод данных ОМГ НГДУ Скважина',
     'edit_title' => 'Редактирование данных ОМГ НГДУ Скважина',
-  ),
-  'hydro_calculcation' => 
-  array (
-    'fields' => 
-    array (
-      'length' => 'Протяженность, м',
-      'pressure_start' => 'Давление начальное, ата',
-      'pressure_end' => 'Давление конечное, ата',
-      'temperature_start' => 'Температура начальная, °С',
-      'temperature_end' => 'Температура конечная, °С',
-      'start_point' => 'Начальная точка',
-      'end_point' => 'Конечная точка',
-      'pipe_name' => 'Трубопровод',
-      'mix_speed_avg' => 'Средняя скорость смеси, м/с',
-      'fluid_speed' => 'Скорость жидкости, м/с',
-      'gaz_speed' => 'Скорость газа, м/с',
-      'flow_type' => 'Режим течения',
-      'press_change' => 'Перепад давления, атм/км',
-      'break_qty' => 'Количество порывов',
-      'height_drop' => 'Перепад высот, м',
-    ),
-    'table_title' => 'Таблица расчета гидравлики',
-  ),
-  'materials' => 
-  array (
-    'title' => 'Справочник материалов трубопроводов',
-    'fields' => 
-    array (
-      'material' => 'Материал',
-      'yield_point' => 'Предел текучести',
-      'roughness' => 'Шероховатость',
-    ),
-    'edit_title' => 'Редактирование материалов трубопровода',
-    'create_title' => 'Добавить материал трубопровода',
-    'reverse_calculation' => 
-    array (
-      'table_title' => 'Таблица расчета гидравлики Скважина - ГУ',
-      'menu' => 'Расчет гидравлики Скважина - ГУ',
-    ),
-    'economical_effect_title' => 'Мониторинг потерянной выгоды',
-    'difference' => 'Разница закачки ИК, г/м3',
-    'inhibitor_price' => 'Стоимость ингибитора, тенге/кг',
-    'economical_effect' => 'Суточная потерянная выгода, тыс. тенге/сут',
-    'economical_effect_sum' => 'Накопленная потерянная выгода, тыс. тенге',
   ),
   'hydro_calculation' => 
   array (
@@ -482,73 +433,16 @@ return array (
       'hydrogen_sulfide' => 'Значение H₂S в газе не должно быть равно 0 !',
     ),
   ),
-  'oilpipes_btw_points' => 'Расстояние между точками',
-  'oilpipes_comment' => 'Комментарий',
-  'oilpipes_start_point' => 'Начальная точка',
-  'oilpipes_end_point' => 'Конечная точка',
-  'oilpipes_material' => 'Материал',
-  'oilpipes_name' => 'Наименование',
-  'oilpipes' => 
+  'reverse_calculation' => 
   array (
-    'title' => 'База данных по нефтепроводам',
+    'table_title' => 'Таблица расчета гидравлики Скважина - ГУ',
+    'menu' => 'Расчет гидравлики Скважина - ГУ',
   ),
-  'lost_profits_title' => 'Мониторинг потерянной выгоды',
   'difference' => 'Разница закачки ИК, г/м3',
   'inhibitor_price' => 'Стоимость ингибитора, тенге/кг',
-  'lost_profits' => 'Суточная потерянная выгода, тыс. тенге/сут',
-  'lost_profits_sum' => 'Накопленная потерянная выгода, тыс. тенге',
-  'economical_effect_title' => 'Экономический эффект',
-  'economical_effect' => 'Суточный экономический эффект, тыс. тенге/сут',
-  'economical_effect_sum' => 'Накопленный экономический эффект, тыс. тенге',
-  'buffer_tank' => 
-  array (
-    'title' => 'База данных по буферным емкостям',
-    'model' => 'Модель',
-    'name' => 'Наименование',
-    'type' => 'Тип',
-    'volume' => 'Объем, м3',
-    'date_of_exploitation' => 'Дата ввода в эксплуатацию',
-    'current_state' => 'Текущее состояние',
-    'external_and_internal_inspection' => 'Наружный и внутренний осмотр',
-    'hydraulic_test' => 'Гидравлическое испытание',
-    'date_of_repair' => 'Дата ремонта',
-    'type_of_repair' => 'Вид ремонта',
-  ),
-  'pumps' => 
-  array (
-    'number' => 'Номер',
-    'perfomance' => 'Производительность, м3/час',
-    'power' => 'Мощность насоса, кВт',
-    'title' => 'База данных по насосам',
-  ),
-  'ovens' => 
-  array (
-    'title' => 'База данных по печам',
-    'cipher' => 'Шифр',
-    'rated_heat_output' => 'Номинальная тепловая мощность, МВт (Гкал/ч)',
-  ),
-  'agzu' => 
-  array (
-    'title' => 'База данных по АГЗУ',
-    'method_of_measurement' => 'Метод измерения',
-    'number_of_connected_wells' => 'Количество подключаемых скважин',
-  ),
-  'sib' => 
-  array (
-    'title' => 'База данных по СИБ',
-  ),
-  'meteringunits' => 
-  array (
-    'title' => 'База данных по узлам учета',
-    'diameter' => 'Диаметр',
-  ),
-  'gu_equipment' => 'Паспортизация оборудования для ГУ',
-  'monitoring_module' => 'Модуль "Мониторинг осложнений"',
-  'metering_units' => 
-  array (
-    'title' => 'База данных по узлам учета',
-    'diameter' => 'Диаметр',
-  ),
+  'lost_profits_title' => 'Мониторинг упущенной выгоды',
+  'lost_profits' => 'Суточная упущенная выгода, тыс. тенге/сут',
+  'lost_profits_sum' => 'Накопленная упущенная выгода, тыс. тенге',
   'map-history' => 
   array (
     'action' => 'Действие',
@@ -594,179 +488,64 @@ return array (
       'title' => 'Сводный отчет',
     ),
   ),
+  'economical_effect_title' => 'Экономический эффект',
+  'economical_effect' => 'Суточный экономический эффект, тыс. тенге/сут',
+  'economical_effect_sum' => 'Накопленный экономический эффект, тыс. тенге',
   'no_data' => 'Нет данных',
-  'zu_cleanings' => 
+  'monitoring_module' => 'Модуль "Мониторинг осложнений"',
+  'agzu' => 
   array (
-    'date' => 'Дата',
-    'number_of_failures' => 'Количество очисток',
-    'title' => 'База данных по очисткам ЗУ',
-    'edit_title' => 'Редактирование данных по очисткам ЗУ',
-    'failure_reason' => 'Причина отказа',
-    'repair_period' => 'Межремонтный период',
+    'title' => 'База данных по АГЗУ',
+    'method_of_measurement' => 'Метод измерения',
+    'number_of_connected_wells' => 'Количество подключаемых скважин',
   ),
-  'reverse_calculation' => 
+  'buffer_tank' => 
   array (
-    'table_title' => 'Таблица расчета гидравлики Скважина - ГУ',
-    'menu' => 'Расчет гидравлики Скважина - ГУ',
-    'monitoring_module' => 'Модуль "Мониторинг осложнений"',
-    'agzu' => 
-    array (
-      'title' => 'База данных по АГЗУ',
-      'method_of_measurement' => 'Метод измерения',
-      'number_of_connected_wells' => 'Количество подключаемых скважин',
-    ),
-    'buffer_tank' => 
-    array (
-      'model' => 'Модель',
-      'date_of_exploitation' => 'Дата ввода в эксплуатацию',
-      'current_state' => 'Текущее состояние',
-      'date_of_repair' => 'Дата ремонта',
-      'type_of_repair' => 'Вид ремонта',
-      'title' => 'База данных по буферным емкостям',
-      'name' => 'Наименование',
-      'type' => 'Тип',
-      'volume' => 'Объем, м3',
-      'external_and_internal_inspection' => 'Наружный и внутренний осмотр',
-      'hydraulic_test' => 'Гидравлическое испытание',
-    ),
-    'metering_units' => 
-    array (
-      'title' => 'База данных по узлам учета',
-      'diameter' => 'Диаметр',
-    ),
-    'ovens' => 
-    array (
-      'title' => 'База данных по печам',
-      'cipher' => 'Шифр',
-      'rated_heat_output' => 'Номинальная тепловая мощность, МВт (Гкал/ч)',
-    ),
-    'pumps' => 
-    array (
-      'title' => 'База данных по насосам',
-      'number' => 'Номер',
-      'perfomance' => 'Производительность, м3/час',
-      'power' => 'Мощность насоса, кВт',
-    ),
-    'sib' => 
-    array (
-      'title' => 'База данных по СИБ',
-    ),
-    'gu_equipment' => 'Паспортизация оборудования для ГУ',
-    'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
-    'omgngdu_zu' => 
-    array (
-      'fields' => 
-      array (
-        'fact_data' => 'Фактические данные ОМГ НГДУ ЗУ',
-      ),
-      'title' => 'База данных ОМГ НГДУ ЗУ',
-      'menu' => 'ОМГ НГДУ ЗУ',
-      'create_title' => 'Ввод данных ОМГ НГДУ ЗУ',
-    ),
+    'model' => 'Модель',
+    'date_of_exploitation' => 'Дата ввода в эксплуатацию',
+    'current_state' => 'Текущее состояние',
+    'date_of_repair' => 'Дата ремонта',
+    'type_of_repair' => 'Вид ремонта',
+    'title' => 'База данных по буферным емкостям',
+    'name' => 'Наименование',
+    'type' => 'Тип',
+    'volume' => 'Объем, м3',
+    'external_and_internal_inspection' => 'Наружный и внутренний осмотр',
+    'hydraulic_test' => 'Гидравлическое испытание',
   ),
-  'inhibitor_salt' => 
+  'metering_units' => 
   array (
-    'title' => 'Фактическая закачка ингибитора солеотложения',
-    'agzu' => 'АГЗУ',
-    'dispenser_type' => 'Тип дозатора',
-    'scale_interval' => 'Цена 1 деления уровня, л',
-    'daily_consumption' => 'Суточный расход по режиму',
-    'level_scale' => 'Уровень, дел.',
-    'level_litre' => 'Уровень, л',
-    'filling' => 'Заправка, л',
-    'consumption' => 'Расход, л',
-    'state' => 'Состояние',
-    'create_title' => 'Ввод данных по фактической закачке ингибитора солеотложения',
-    'edit_title' => 'Редактирование данных по фактической закачке ингибитора солеотложения',
+    'title' => 'База данных по узлам учета',
+    'diameter' => 'Диаметр',
   ),
-  'zu_cleanigs' => 
+  'ovens' => 
   array (
-    'create_title' => 'Ввод данных по очисткам ЗУ',
-    'economical_effect_title' => 'Экономический эффект',
-    'economical_effect' => 'Суточный экономический эффект, тыс. тенге/сут',
-    'economical_effect_sum' => 'Накопленный экономический эффект, тыс. тенге',
-    'no_data' => 'Нет данных',
-    'monitoring_module' => 'Модуль "Мониторинг осложнений"',
-    'agzu' => 
-    array (
-      'title' => 'База данных по АГЗУ',
-      'method_of_measurement' => 'Метод измерения',
-      'number_of_connected_wells' => 'Количество подключаемых скважин',
-    ),
-    'buffer_tank' => 
-    array (
-      'model' => 'Модель',
-      'date_of_exploitation' => 'Дата ввода в эксплуатацию',
-      'current_state' => 'Текущее состояние',
-      'date_of_repair' => 'Дата ремонта',
-      'type_of_repair' => 'Вид ремонта',
-      'title' => 'База данных по буферным емкостям',
-      'name' => 'Наименование',
-      'type' => 'Тип',
-      'volume' => 'Объем, м3',
-      'external_and_internal_inspection' => 'Наружный и внутренний осмотр',
-      'hydraulic_test' => 'Гидравлическое испытание',
-    ),
-    'metering_units' => 
-    array (
-      'title' => 'База данных по узлам учета',
-      'diameter' => 'Диаметр',
-    ),
-    'ovens' => 
-    array (
-      'title' => 'База данных по печам',
-      'cipher' => 'Шифр',
-      'rated_heat_output' => 'Номинальная тепловая мощность, МВт (Гкал/ч)',
-    ),
-    'pumps' => 
-    array (
-      'title' => 'База данных по насосам',
-      'number' => 'Номер',
-      'perfomance' => 'Производительность, м3/час',
-      'power' => 'Мощность насоса, кВт',
-    ),
-    'sib' => 
-    array (
-      'title' => 'База данных по СИБ',
-    ),
-    'gu_equipment' => 'Паспортизация оборудования для ГУ',
-    'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
-    'omgngdu_zu' => 
-    array (
-      'fields' => 
-      array (
-        'fact_data' => 'Фактические данные ОМГ НГДУ ЗУ',
-      ),
-      'title' => 'База данных ОМГ НГДУ ЗУ',
-      'menu' => 'ОМГ НГДУ ЗУ',
-      'create_title' => 'Ввод данных ОМГ НГДУ ЗУ',
-    ),
+    'title' => 'База данных по печам',
+    'cipher' => 'Шифр',
+    'rated_heat_output' => 'Номинальная тепловая мощность, МВт (Гкал/ч)',
   ),
-  'omgcazu' => 
+  'pumps' => 
   array (
-    'title' => 'База данных ИСО ОМГ ДДНГ',
-    'menu' => 'ИСО ОМГ ДДНГ',
+    'title' => 'База данных по насосам',
+    'number' => 'Номер',
+    'perfomance' => 'Производительность, м3/час',
+    'power' => 'Мощность насоса, кВт',
   ),
-  'omguhezu' => 
+  'sib' => 
   array (
-    'title' => 'База данных ИСО ОМГ УХЭ',
-    'menu' => 'ИСО ОМГ УХЭ',
+    'title' => 'База данных по СИБ',
   ),
-  'salt' => 
+  'gu_equipment' => 'Паспортизация оборудования для ГУ',
+  'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
+  'omgngdu_zu' => 
   array (
-    'title' => 'База данных по солеотложениям',
-    'start_date_of_salt_velocity_with_inhibitor_measure' => 'Дата начало замера скорости солеотложения с реагентом',
     'fields' => 
     array (
-      'final_date_of_salt_velocity_with_inhibitor_measure' => 'Дата окончания замера скорости солеотложения с реагентом',
-      'salt_velocity_with_inhibitor' => 'Скорость солеотложения с игибитором',
-      'avg_speed' => 'Средняя скорость солеотложения, мм/г',
+      'fact_data' => 'Фактические данные ОМГ НГДУ ЗУ',
     ),
-    'saturation_index' => 'Индекс насыщенности',
-  ),
-  'zu-cleanings' => 
-  array (
-    'section-name' => 'База данных по очисткам ЗУ',
+    'title' => 'База данных ОМГ НГДУ ЗУ',
+    'menu' => 'ОМГ НГДУ ЗУ',
+    'create_title' => 'Ввод данных ОМГ НГДУ ЗУ',
   ),
   'manual_hydro_calculation' => 
   array (
@@ -793,21 +572,9 @@ return array (
     'pipes' => 'Трубопроводы',
     'watermeasurement' => 'Промысловая жидкость и газ',
   ),
-  'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
-  'omgngdu_zu' => 
-  array (
-    'fields' => 
-    array (
-      'fact_data' => 'Фактические данные ОМГ НГДУ ЗУ',
-    ),
-    'title' => 'База данных ОМГ НГДУ ЗУ',
-    'menu' => 'ОМГ НГДУ ЗУ',
-    'create_title' => 'Ввод данных ОМГ НГДУ ЗУ',
-  ),
   'calculate_messages' => 
   array (
     'no_date' => 'Не выбрана дата',
     'no_such_pipe' => 'Нет такой трубы с начальной точкой :start_point и конечной точкой :end_point',
   ),
-  'certificate' => 'Сертификат',
 );

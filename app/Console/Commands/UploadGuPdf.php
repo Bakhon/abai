@@ -15,6 +15,7 @@ use Illuminate\Http\UploadedFile;
 
 class UploadGuPdf extends Command
 {
+    private $path = '/gu_devices/sib/';
     /**
      * The name and signature of the console command.
      *
@@ -40,7 +41,7 @@ class UploadGuPdf extends Command
         $this->service = $service;
     }
 
-    private function pathToUploadedFile( $path, $test = false )
+    private function pathToUploadedFile( $path )
     {
         $filesystem = new Filesystem;
 
@@ -50,7 +51,7 @@ class UploadGuPdf extends Command
         $mimeType = $filesystem->mimeType( $path );
         $error = null;
 
-        return new UploadedFile( $path, $originalName, $mimeType, $error, $test );
+        return new UploadedFile( $path, $originalName, $mimeType, $error, false );
     }
 
     /**
@@ -60,8 +61,7 @@ class UploadGuPdf extends Command
      */
     public function handle()
     {
-        $path = '/gu_devices/sib/';
-        $files = Storage::disk('public')->files($path);
+        $files = Storage::disk('public')->files($this->path);
 
         $query = [
             'origin' => 'document',

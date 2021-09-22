@@ -326,17 +326,20 @@ export default {
       this.filters[code].show = true
       this.filterOpened = true
     },
+    getParam(code) {
+      return this.params.fields[code];
+    },
     isShowSort(code) {
-      return _.isUndefined(this.params.fields[code].sortable)
-          || (!_.isUndefined(this.params.fields[code].sortable) && this.params.fields[code].sortable);
+      return _.isUndefined(this.getParam(code).sortable)
+          || (!_.isUndefined(this.getParam(code).sortable) && this.getParam(code).sortable);
     },
     isShowFilter(code) {
       if (!_.isUndefined(this.params.hide_filter)) {
         return !this.params.hide_filter;
       }
 
-      return _.isUndefined(this.params.fields[code].filterable)
-          || (!_.isUndefined(this.params.fields[code].filterable) && this.params.fields[code].filterable);
+      return _.isUndefined(this.getParam(code).filterable)
+          || (!_.isUndefined(this.getParam(code).filterable) && this.getParam(code).filterable);
     },
     hideFilters() {
       this.filterOpened = false
