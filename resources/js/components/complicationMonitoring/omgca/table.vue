@@ -212,7 +212,7 @@
             <template v-if="field.type == 'download'">
               <a v-if="row.fields[code]"
                  class="item_download"
-                 @click="downloadItem(row.fields[code])"
+                 @click="downloadFile(row.fields[code])"
               />
             </template>
 
@@ -576,12 +576,7 @@ export default {
     checkAllToggle() {
       this.checkboxSelected = this.checkedAll ? this.getCheckboxValues() : []
     },
-    downloadFile(file_id) {
-      let currentWindow = window;
-      let myWindow = window.open(this.localeUrl('/attachments/' + file_id), '_blank');
-      currentWindow.focus();
-    },
-    async downloadItem(file_id) {
+    async downloadFile(file_id) {
       this.SET_LOADING(true);
       let fileInfo = await this.getFileInfo(file_id);
       let label = fileInfo.filename;
