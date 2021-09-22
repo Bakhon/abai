@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
 use App\Services\BigData\DictionaryService;
@@ -63,14 +62,14 @@ abstract class PlainForm extends BaseForm
     {
         DB::connection('tbd')->beginTransaction();
 
-        try {
-            $result = $this->submitForm();
-            DB::connection('tbd')->commit();
-            return $result;
-        } catch (\Exception $e) {
-            DB::connection('tbd')->rollBack();
-            throw new SubmitFormException($e->getMessage());
-        }
+//        try {
+        $result = $this->submitForm();
+        DB::connection('tbd')->commit();
+        return $result;
+//        } catch (\Exception $e) {
+//            DB::connection('tbd')->rollBack();
+//            throw new SubmitFormException($e->getMessage());
+//        }
     }
 
     protected function submitForm(): array

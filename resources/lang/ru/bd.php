@@ -369,7 +369,9 @@ return [
             'akts' => 'АКЦ',
             'inclinometry' => 'Инклинометрия',
             'conclusion' => 'Заключение от подрядчика',
-            'las_files' => 'LAS файлы'
+            'las_files' => 'LAS файлы',
+            'doc_date' => 'Дата документа',
+            'files' => 'Файлы'
         ],
         'well_incl' => [
             'title' => 'Инклинометрия скважины',
@@ -861,6 +863,10 @@ return [
             'uploaded_files' => 'Загружаемые файлы',
             'tag' => 'Наименование тэга',
             'value' => 'Значение'
+        ],
+        'well_document_short' => [
+            'document_date' => 'Дата документа',
+            'uploaded_files' => 'Загружаемые файлы',
         ],
         'gdis' => [
             'main' => 'Главная',
