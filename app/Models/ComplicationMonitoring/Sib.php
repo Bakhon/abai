@@ -12,11 +12,9 @@ class Sib extends Model
 
     protected $guarded = ['id'];
 
-    public $table = 'sib';
-
     public function gu()
     {
-        return $this->hasOne(Gu::class, 'id', 'gu_id')->withDefault();
+        return $this->belongsTo(Gu::class);
     }
 
     

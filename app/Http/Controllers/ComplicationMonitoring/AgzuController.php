@@ -8,18 +8,24 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\AgzuCreateRequest;
 use App\Http\Requests\AgzuUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
+use App\Http\Resources\AgzuListResource;
 use App\Jobs\ExportAgzuToExcel;
 use App\Models\ComplicationMonitoring\Agzu;
 use App\Models\ComplicationMonitoring\Gu;
+use App\Services\AttachmentService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
-use App\Http\Resources\AgzuListResource;
-use Illuminate\Support\Facades\Storage;
 
 class AgzuController extends CrudController
 {
     use WithFieldsValidation;
+
+    public function __construct(AttachmentService $service)
+    {
+        parent::__construct();
+        $this->service = $service;
+    }
 
     protected $modelName = 'agzu';
 
@@ -31,8 +37,8 @@ class AgzuController extends CrudController
                 'list' => route('agzu.list'),
             ],
             'title' => trans('monitoring.agzu.title'),
-            'fields' => [               
-                'gu_id' => [
+            'fields' => [
+                'gu' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
@@ -78,22 +84,20 @@ class AgzuController extends CrudController
                     'title' => trans('monitoring.buffer_tank.type_of_repair'),
                     'type' => 'string',
                 ],
-                'certificate' => [
+                'pdf' => [
                     'title' => trans('monitoring.certificate'),
-                    'type' => 'string',
-                ],
-                
+                    'type' => 'download',
+                    'filterable' => false
+                ]
+
             ]
         ];
 
-        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+        if (auth()->user()->can('monitoring create ' . $this->modelName)) {
             $params['links']['create'] = route('agzu.create');
         }
-        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+        if (auth()->user()->can('monitoring export ' . $this->modelName)) {
             $params['links']['export'] = route('agzu.export');
-        }
-        if(auth()->user()->can('monitoring download '.$this->modelName)) {
-            $params['links']['download'] = route('agzu.download');
         }
 
         return view('complicationMonitoring.agzu.index', compact('params'));
@@ -168,10 +172,9 @@ class AgzuController extends CrudController
     public function destroy(Request $request, Agzu $agzu)
     {
         $agzu->delete();
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return response()->json([], Response::HTTP_NO_CONTENT);
-        }
-        else {
+        } else {
             return redirect()->route('agzu.index')->with('success', __('app.deleted'));
         }
     }
@@ -180,5 +183,4 @@ class AgzuController extends CrudController
     {
         return (new AgzuFilter($query, $filter))->filter();
     }
-
 }

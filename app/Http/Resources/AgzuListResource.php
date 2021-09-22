@@ -20,7 +20,7 @@ class AgzuListResource extends CrudListResource
             'id' => $this->id,
 
             'fields' => [
-                'gu_id' => $this->gu->name,
+                'gu' => $this->gu ? $this->gu->name : '',
                 'model' => $this->model,
                 'method_of_measurement' => $this->method_of_measurement,
                 'number_of_connected_wells' => $this->number_of_connected_wells,
@@ -28,18 +28,12 @@ class AgzuListResource extends CrudListResource
                 'current_state' => $this->current_state,
                 'date_of_repair' => $this->date_of_repair,
                 'type_of_repair' => $this->type_of_repair,
-                'passport_pdf' => $this->passport_pdf,
-                'certificate' => $this->certificate,
-                ]
+                'pdf' => $this->pdf,
+            ]
         ];
 
         $result['links'] = $this->getLinks();
 
-        
-
         return $result;
-
     }
-    
-
 }

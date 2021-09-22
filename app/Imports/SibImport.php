@@ -43,8 +43,12 @@ class SibImport implements ToModel
     public function model(array $row)
     {
         $gu = Gu::where('name', $row[self::GU])->first();
+        if (!$gu) {
+            return null;
+        }
+
         return new Sib([
-            'gu_id' => empty($gu) ? null : $gu->id,
+            'gu_id' => $gu->id,
             'cipher' => $row[self::CIPHER],
             'type' => $row[self::TYPE],
             'volume' => $row[self::VOLUME],
