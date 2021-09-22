@@ -16,7 +16,7 @@ export default {
             showBlock: 2,
             menuArrowUp: '/img/GTM/icon_menu_arrow_up.svg',
             menuArrowDown: '/img/GTM/icon_menu_arrow_down.svg',
-            url: 'http://172.20.103.51:7577/api/gtmfinder',
+            url: process.env.MIX_PODBOR_GTM_URL,
             bswVal: [],
             liquidRate: [],
             oilRate: [],
@@ -200,12 +200,7 @@ export default {
                 main_data: this.clickable,
             }
             this.SET_LOADING(true);
-            this.axios({
-                method: 'POST',
-                headers: {'content-type': 'application/json'},
-                data: body,
-                url: this.url
-            })
+            axios.post(this.url, {action_type: 'finder_item_clicked', main_data: this.clickable,})
                 .then((res) => {
                     this.table.main_data.header = res.data.main_data.header
                     this.table.main_data.data = res.data.main_data.data
@@ -223,18 +218,8 @@ export default {
             this.wellNumber = v
             this.setNotify(`Вы нажали на скважину ${v}`, "Success", "success")
 
-            const body = {
-                action_type: 'well_name_clicked',
-                main_data: v,
-                distance: 500
-            }
             this.SET_LOADING(true);
-            this.axios({
-                method: 'POST',
-                headers: {'content-type': 'application/json'},
-                data: body,
-                url: this.url
-            })
+            axios.post(this.url, {action_type: 'well_name_clicked', main_data: v, distance: 500})
                 .then((res) => {
                     this.lineChartOptions.xaxis.categories = Object.values(res.data.main_data.dt)
                     this.lineChartSeries = [
@@ -292,12 +277,7 @@ export default {
         },
         getTreeData() {
             this.SET_LOADING(true);
-            this.axios({
-                method: 'POST',
-                headers: {'content-type': 'application/json'},
-                data: this.body,
-                url: this.url
-            })
+                axios.post(this.url, {action_type: 'page_initialized', main_data: "\"название страницы\""})
                 .then((res) => {
                     this.dataRange = res.data.date_range_model;
                     this.treeData = res.data.finder_model.children;
@@ -317,12 +297,17 @@ export default {
                 }
             }
             this.SET_LOADING(true);
-            this.axios({
-                method: 'POST',
-                headers: {'content-type': 'application/json'},
-                data: body,
-                url: this.url
-            })
+            axios.post(this.url, {action_type: 'calc_button_pressed', date_range_model: this.dataRange, fieldName: this.fieldName,
+                finder_model: {
+                    name: "root",
+                    children: v
+                }})
+            // this.axios({
+            //     method: 'POST',
+            //     headers: {'content-type': 'application/json'},
+            //     data: body,
+            //     url: this.url
+            // })
                 .then((res) => {
                     if (res.status === 200) {
                         this.setNotify("Скважины пришли", "Success", "success")
