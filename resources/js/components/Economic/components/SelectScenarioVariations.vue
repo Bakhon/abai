@@ -1,18 +1,6 @@
 <template>
-  <div :class="isInline ? 'd-flex' : ''"
+  <div :class="isInline ? 'd-flex flex-wrap' : ''"
        class="bg-main1 text-white text-wrap">
-    <div :class="isInline ? 'd-flex align-items-center' : 'mb-2'"
-         class="form-check">
-      <input v-model="scenarioVariation.isFullScreen"
-             id="isFullScreen"
-             type="checkbox"
-             class="form-check-input">
-
-      <label for="isFullScreen" class="form-check-label">
-        {{ trans('economic_reference.full_screen') }}
-      </label>
-    </div>
-
     <div :class="isInline ? 'flex-grow-1 ml-2' : ''">
       <label for="oil_price">
         {{ trans('economic_reference.oil_price') }}
@@ -101,6 +89,18 @@
           {{ item.label }}
         </option>
       </select>
+    </div>
+
+    <div :class="isInline ? 'w-100' : 'mb-2'"
+         class="form-check">
+      <input v-model="scenarioVariation.isFullScreen"
+             id="isFullScreen"
+             type="checkbox"
+             class="form-check-input">
+
+      <label for="isFullScreen" class="form-check-label">
+        {{ trans('economic_reference.full_screen') }}
+      </label>
     </div>
   </div>
 </template>
