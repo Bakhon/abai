@@ -13,7 +13,7 @@
                       stroke-linecap="round" stroke-width="1.4"/>
               </svg>
             </button>
-            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu">
+            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu scrollable" style="max-height: 220px">
               <template v-for="action in form.actions">
                 <a v-if="action.action === 'create'" class="dropdown-item" href="#"
                    @click="showForm(action.form)">{{ action.title }}</a>
@@ -467,5 +467,9 @@ export default {
     border-top: none;
     vertical-align: middle;
   }
+}
+
+.dropdown-menu {
+  overflow: auto;
 }
 </style>
