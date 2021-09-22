@@ -15,71 +15,91 @@
         </div>
         <div class="data-analysis__wrapper-header-export">
           <img src="/img/PlastFluids/download.svg" alt="" />
-          <img src="/img/PlastFluids/share.svg" alt="" />
+          <img src="/img/PlastFluids/openModal.svg" alt="" />
         </div>
       </div>
       <div class="data-analysis__wrapper-img" v-bind:class="{ full: cartFull }">
-        <img src="/img/PlastFluids/FluidCompositionGraph.svg" alt="" />
+        <img src="/img/PlastFluids/fluidComposition.jpg" alt="" />
       </div>
     </div>
-    <br />
-    <div class="data-analysis__wrapper-first next">
-      <div class="data-analysis__wrapper-title">
-        <img src="/img/PlastFluids/sampleDataIcon.png" alt="" />
-        <span>Качество состава нефти</span>
-      </div>
-      <div
-        class="data-analysis__row_bottom"
-        v-bind:class="{ active: cartFull }"
-        @click="cartFull = !cartFull"
-      >
-        <img src="/img/PlastFluids/row_bottom.svg" alt="" />
-      </div>
-    </div>
-    <div class="data-analysis__wrapper">
-      <div class="row">
-        <div class="col-sm-12">
-          <table class="table defaultTable" v-if="!cartFull">
-            <tbody>
-              <tr>
-                <th>Скважина</th>
-                <th>Дата отбора</th>
-                <th>H2S</th>
-                <th>CO2</th>
-                <th>N2</th>
-                <th>C1</th>
-                <th>C2</th>
-                <th>C3</th>
-                <th>IC4</th>
-                <th>NC4</th>
-                <th>IC6</th>
-                <th>NC5</th>
-                <th v-for="(i, index) in 31">C{{ i + 5 }}</th>
-              </tr>
-              <tr v-for="i in 10">
-                <td class="head">П-2</td>
-                <td v-for="i in 42">2.32</td>
-              </tr>
-            </tbody>
-          </table>
+    <div class="table-holder">
+      <div class="first next">
+        <div class="data-analysis__wrapper-title">
+          <img src="/img/PlastFluids/sampleDataIcon.png" alt="" />
+          <span>Качество состава нефти</span>
+        </div>
+        <div
+          class="data-analysis__row_bottom"
+          v-bind:class="{ active: cartFull }"
+          @click="cartFull = !cartFull"
+        >
+          <img src="/img/PlastFluids/row_bottom.svg" alt="" />
         </div>
       </div>
+      <BaseTable :items="items" :fields="fields" />
     </div>
   </div>
 </template>
 
 <script>
+import BaseTable from "./BaseTable.vue";
+
 export default {
   name: "DataAnalysisFluidComposition",
+  components: {
+    BaseTable,
+  },
   data() {
     return {
       cartFull: false,
+      items: [],
+      fields: [
+        "Скважина",
+        "Дата отбора",
+        "H2S",
+        "CO2",
+        "N2",
+        "C1",
+        "C2",
+        "C3",
+        "IC4",
+        "NC4",
+        "IC6",
+        "NC5",
+      ],
     };
+  },
+  methods: {
+    pushData() {
+      for (let i = 0; i < 40; i++) {
+        this.items.push([
+          "П-2",
+          2.32,
+          2.32,
+          2.32,
+          2.32,
+          2.32,
+          2.32,
+          2.32,
+          2.32,
+          2.32,
+          2.32,
+          2.32,
+        ]);
+      }
+    },
+  },
+  mounted() {
+    this.pushData();
   },
 };
 </script>
 
 <style scoped lang="scss">
+span {
+  color: #fff;
+}
+
 .data-analysis {
   display: flex;
   color: #fff;
@@ -91,12 +111,21 @@ export default {
 .data-analysis__wrapper-first {
   background-color: #272953;
   padding: 4px 4px 0;
+  color: #fff;
   height: 34px;
 }
+
+.table-holder {
+  height: 350px;
+  width: 100%;
+}
+
 .data-analysis__wrapper {
+  flex: 2 1 auto;
   background: transparent;
   padding: 4px;
   border: 6px solid #272953;
+  color: #fff;
 
   &-title {
     display: flex;
@@ -127,7 +156,6 @@ export default {
   }
 
   &-img {
-    height: 454px;
     width: 100%;
     background: #272953;
     border: 1px solid #545580;

@@ -1,25 +1,28 @@
 <template>
-  <div class="data-analysis-data-table">
+  <div
+    class="data-analysis-data-table"
+    :style="tableState === 'hidden' ? 'height: 38px;' : ''"
+  >
     <div class="data-analysis-table-header">
       <div>
         <div class="title-holder">
           <img src="/img/PlastFluids/tableIcon.svg" />
-          <p>{{ tableTitle }}</p>
+          <p>{{ trans("plast_fluids." + tableTitle) }}</p>
         </div>
         <img src="/img/PlastFluids/settings.svg" alt="customize table" />
       </div>
       <div class="header-hide-expand-buttons">
-        <button>
+        <button @click="setTableState('common')">
           <img
             src="/img/PlastFluids/tableArrow.svg"
             alt="expand table"
           /></button
-        ><button>
+        ><button @click="setTableState('hidden')">
           <img src="/img/PlastFluids/tableArrow.svg" alt="hide table" />
         </button>
       </div>
     </div>
-    <div class="data-analysis-table-holder">
+    <div v-show="tableState !== 'hidden'" class="data-analysis-table-holder">
       <SmallCatLoader v-if="loading" :loading="loading" />
       <BaseTable
         v-else
@@ -36,9 +39,11 @@
 import BaseTable from "./BaseTable.vue";
 import SmallCatLoader from "./SmallCatLoader.vue";
 import { mapState } from "vuex";
+import { handleTableChange } from "../mixins";
 
 export default {
   name: "DataAnalysisDataTable",
+  mixins: [handleTableChange],
   props: {
     tableTitle: String,
     items: [Array, Object],
@@ -60,6 +65,7 @@ export default {
   height: 350px;
   display: flex;
   flex-flow: column;
+  transition: 0.2s ease-in;
 }
 
 .data-analysis-table-header {

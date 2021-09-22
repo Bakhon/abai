@@ -1,5 +1,5 @@
 <template>
-  <div>DataAnalysisApprovedParameters qwewqeq</div>
+  <div class="data-analysis-approved-parameters"></div>
 </template>
 
 <script>

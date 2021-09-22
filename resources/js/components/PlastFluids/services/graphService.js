@@ -8,7 +8,7 @@ export const getTableGraphData = async (postData) => {
     );
     return response.data;
   } catch (error) {
-    throw(error);
+    throw error;
   }
 };
 
@@ -20,6 +20,6 @@ export const getGraphApproximation = async (postData) => {
     );
     return response.data;
   } catch (error) {
-    throw(error);
+    console.log(error);
   }
 };

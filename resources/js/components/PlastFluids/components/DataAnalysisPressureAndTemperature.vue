@@ -1,7 +1,5 @@
 <template>
-  <div>
-      qwe
-  </div>
+  <div class="data-analysis-pressure-and-temperature"></div>
 </template>
 
 <script>

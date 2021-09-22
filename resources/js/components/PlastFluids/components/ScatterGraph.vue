@@ -3,7 +3,9 @@
     <div class="scatter-graph-header">
       <p>{{ title }}</p>
       <div class="scatter-graph-toolbar">
-        <button @click.stop="isApproximationOpen = true">Аппроксимация</button>
+        <button @click.stop="isApproximationOpen = true">
+          {{ trans("plast_fluids.approximation") }}
+        </button>
         <img
           src="/img/PlastFluids/download.svg"
           @click="saveToPng"
@@ -22,7 +24,7 @@
     ></ApexCharts>
     <ScatterGraphApproximation
       v-show="isApproximationOpen"
-      :series="series.data"
+      :series="graphSeries[0].data"
       :graphType="graphType"
       @close-approximation="isApproximationOpen = false"
       @get-approximation="getApproximation"
@@ -52,6 +54,8 @@ export default {
       isApproximationOpen: false,
       graphSeries: [],
       approximation: [],
+      minX: "",
+      minY: "",
       maxX: "",
       maxY: "",
       chartOptions: {
@@ -71,7 +75,7 @@ export default {
           events: {},
         },
         markers: {
-          size: [4, 0, 0],
+          size: [4, 0],
         },
         tooltip: {
           shared: false,
@@ -116,7 +120,7 @@ export default {
         },
         yaxis: {
           labels: {
-            formatter: (value) => value.toFixed(),
+            formatter: this.labelFormatter,
           },
           lines: {
             show: true,
@@ -130,26 +134,41 @@ export default {
   watch: {
     series: {
       handler(obj) {
-        this.maxX = this.getMaxInObjectArray(obj.data, "x");
-        this.maxY = this.getMaxInObjectArray(obj.data, "y");
-        Vue.set(this.chartOptions.xaxis, "max", this.maxX + 50);
-        Vue.set(this.chartOptions.yaxis, "max", this.maxY + 5);
+        const filtered = obj.data.filter((item) => item.x && item.y);
+        this.minX = this.getMaxMinInObjectArray(filtered, "x")[0];
+        this.minY = this.getMaxMinInObjectArray(filtered, "y")[0];
+        this.maxX = this.getMaxMinInObjectArray(filtered, "x")[1];
+        this.maxY = this.getMaxMinInObjectArray(filtered, "y")[1];
+        Vue.set(this.chartOptions.xaxis, "min", this.minX - this.minX * 0.2);
+        Vue.set(this.chartOptions.yaxis, "min", this.minY - this.minY * 0.2);
+        Vue.set(this.chartOptions.xaxis, "max", this.maxX + this.maxX * 0.2);
+        Vue.set(this.chartOptions.yaxis, "max", this.maxY + this.maxY * 0.2);
         this.graphSeries = [];
-        this.graphSeries.push(obj);
+        this.graphSeries.push({
+          name: obj.name,
+          type: obj.type,
+          data: filtered,
+        });
       },
       immediate: true,
     },
   },
   methods: {
-    getMaxInObjectArray(obj, property) {
-      let max = 0;
+    labelFormatter(value) {
+      return value.toFixed(this.maxY + this.maxY * 0.2 < 4 ? 1 : "");
+    },
+    getMaxMinInObjectArray(obj, property) {
+      let max = Number.NEGATIVE_INFINITY;
+      let min = Number.POSITIVE_INFINITY;
       obj.forEach((dot) => {
         if (dot[property] > max) max = dot[property];
+        if (dot[property] < min) min = dot[property];
       });
-      return max;
+      return [min, max];
     },
     getApproximation(data) {
       if (data.approximation) {
+        this.chartOptions.markers.size.push(0);
         this.type = "line";
         this.chartOptions.stroke.curve = "smooth";
         this.graphSeries.push(data.approximation);
@@ -163,13 +182,13 @@ export default {
           ...this.chartOptions,
           yaxis: {
             min: data.graphOptions.ordinateFrom
-              ? parseInt(data.graphOptions.ordinateFrom)
+              ? Number(data.graphOptions.ordinateFrom)
               : minY,
             max: data.graphOptions.ordinateTo
-              ? parseInt(data.graphOptions.ordinateTo)
+              ? Number(data.graphOptions.ordinateTo)
               : maxY,
             labels: {
-              formatter: (value) => value.toFixed(),
+              formatter: this.labelFormatter,
             },
             lines: {
               show: true,
@@ -179,10 +198,10 @@ export default {
           xaxis: {
             ...this.chartOptions.xaxis,
             min: data.graphOptions.abscissaFrom
-              ? parseInt(data.graphOptions.abscissaFrom)
+              ? Number(data.graphOptions.abscissaFrom)
               : this.chartOptions.xaxis.min,
             max: data.graphOptions.abscissaTo
-              ? parseInt(data.graphOptions.abscissaTo)
+              ? Number(data.graphOptions.abscissaTo)
               : this.chartOptions.xaxis.max,
           },
         };
@@ -193,7 +212,6 @@ export default {
       chartContext,
       { seriesIndex, dataPointIndex, config }
     ) {
-      console.log(max);
       console.log(event, chartContext, { seriesIndex, dataPointIndex, config });
     },
     saveToPng() {

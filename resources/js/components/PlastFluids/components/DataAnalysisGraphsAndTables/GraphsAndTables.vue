@@ -4,23 +4,22 @@
       <div class="heading-title">
         <div>
           <img src="/img/PlastFluids/graphs.svg" />
-          <p>Графики</p>
+          <p>{{ trans("plast_fluids.graphs") }}</p>
         </div>
       </div>
-      <div class="content">
+      <div v-if="isDataReady" class="content">
         <div v-for="(graph, key) in graphData" :key="key" class="content-child">
           <ScatterGraph
-            v-if="graph.data.length"
             :series="graph"
             :title="trans(`plast_fluids.${graphType}_graph_${key}`)"
             :graphType="key"
           />
-          <SmallCatLoader :loading="loading" v-else />
         </div>
       </div>
+      <SmallCatLoader :loading="loading" v-else />
     </div>
     <DataAnalysisDataTable
-      tableTitle="Таблица качества пробоотбора"
+      tableTitle="sampling_quality_table"
       :items="tableRows"
       :fields="tableFields"
     />
@@ -28,9 +27,9 @@
 </template>
 
 <script>
-import SmallCatLoader from "./SmallCatLoader.vue";
-import ScatterGraph from "./ScatterGraph.vue";
-import DataAnalysisDataTable from "./DataAnalysisDataTable.vue";
+import SmallCatLoader from "../SmallCatLoader.vue";
+import ScatterGraph from "../ScatterGraph.vue";
+import DataAnalysisDataTable from "../DataAnalysisDataTable.vue";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -59,13 +58,18 @@ export default {
         ds: { name: "Данные", data: [], type: "scatter" },
         ms: { name: "Данные", data: [], type: "scatter" },
       };
-      this.tableRows.map((row) => {
+      this.tableRows.forEach((row) => {
         allGraphData.bs.data.push(row.Bs);
         allGraphData.ms.data.push(row.Ms);
         allGraphData.ps.data.push(row.Ps);
         allGraphData.ds.data.push(row.Ds);
       });
       return allGraphData;
+    },
+    isDataReady() {
+      return !Object.keys(this.graphData).some(
+        (key) => !this.graphData[key].data.length
+      );
     },
   },
   methods: {

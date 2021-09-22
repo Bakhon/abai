@@ -6,7 +6,7 @@
           src="/img/PlastFluids/chooseParameters.svg"
           alt="choose parameters icon"
         />
-        <span>Выбор параметров</span>
+        <span>{{ trans("plast_fluids.parameter_selection") }}</span>
       </div>
       <button class="collapse-left__sidebar">
         <img src="/img/PlastFluids/backArrow.svg" alt="collapse menu" />
@@ -32,12 +32,13 @@
         @dropdown-select="updateCurrentHorizon"
       />
       <Dropdown :placeholder="trans('plast_fluids.block')" />
-      <Dropdown :placeholder="trans('plast_fluids.wells')" />
     </div>
+    <component :is="currentComponent[0]"></component>
   </div>
 </template>
 
 <script>
+import { setDynamicComponentContent } from "../mixins";
 import { mapState, mapMutations, mapActions } from "vuex";
 import Dropdown from "./Dropdown.vue";
 import CheckboxDropdown from "./CheckboxDropdown.vue";
@@ -48,6 +49,7 @@ export default {
     Dropdown,
     CheckboxDropdown,
   },
+  mixins: [setDynamicComponentContent],
   data() {
     return {};
   },
