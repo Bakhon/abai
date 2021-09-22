@@ -48,7 +48,8 @@
                 dzoList: [
                     'КБМ',
                     'ММГ',
-                    'ОМГ'
+                    'ОМГ',
+                    'КТМ'
                 ],
                 selectedDzo: '',
                 selectedType: 'DzoImportOtm',

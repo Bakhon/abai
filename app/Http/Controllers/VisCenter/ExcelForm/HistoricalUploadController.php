@@ -12,6 +12,7 @@ class HistoricalUploadController extends Controller
 {
     private $fields = array();
     private $dzoName;
+    private $type;
 
     public function uploadHistoricalData()
     {
@@ -21,6 +22,7 @@ class HistoricalUploadController extends Controller
     public function storeHistoricalDataByDzo(Request $request)
     {
         $this->dzoName = $request->dzo;
+        $this->type = $request->type;
         $parsedFile = SimpleXLSX::parseFile($request->file->getRealPath());
         if (!$parsedFile) {
             return 'Error!';
@@ -55,7 +57,9 @@ class HistoricalUploadController extends Controller
             'dzo_name' => $this->dzoName
         );
         foreach($this->fields as $index => $fieldName) {
-            $values[$fieldName] = $row[$index];
+            if ($row[$index] !== '') {
+                $values[$fieldName] = $row[$index];
+            }
         }
         return $values;
     }
@@ -63,12 +67,20 @@ class HistoricalUploadController extends Controller
 
     private function store($model,$data)
     {
-        foreach($data as $dayData) {
-            $existRecord = $this->getRecord($model,$dayData);
+        foreach($data as $index => $dayData) {
+            if ($this->type === 'DzoImportOtm') {
+                $existRecord = $this->getRecordByOtm($model,$dayData);
+            } else {
+                $existRecord = $this->getRecord($model,$dayData);
+            }
+
             if (is_null($existRecord)) {
                 $model->create($dayData);
             } else {
-                $existRecord->update($dayData);
+                $result = $existRecord->update($dayData);
+            }
+            if ($index > 0 && $index % 10 == 0) {
+                sleep(5);
             }
         }
     }
@@ -76,7 +88,17 @@ class HistoricalUploadController extends Controller
     private function getRecord($model,$data)
     {
         return $model::query()
-            ->whereDate('date',$data['date'])
+            ->whereDate('date',Carbon::parse($data['date']))
+            ->where('dzo_name',$this->dzoName)
+            ->first();
+    }
+
+    private function getRecordByOtm($model,$data)
+    {
+        $date = Carbon::parse($data['date']);
+        return $model::query()
+            ->whereYear('date',$date->year)
+            ->whereMonth('date',$date->month)
             ->where('dzo_name',$this->dzoName)
             ->first();
     }
