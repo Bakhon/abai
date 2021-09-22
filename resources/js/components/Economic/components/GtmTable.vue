@@ -1,30 +1,51 @@
 <template>
-  <vue-table-dynamic
-      ref="table"
-      :params="params"
-      class="height-fit-content height-unset">
-    <div slot="column-6" slot-scope="{ props }" class="mx-auto">
-      <delete-button @click.native="deleteItem(props.rowData[0].data)"/>
-    </div>
-  </vue-table-dynamic>
+  <div>
+    <select-author
+        :form="form"
+        :url="localeUrl('/economic/gtm/get-authors')"/>
+
+    <select-log
+        v-if="form.author_id"
+        :form="form"
+        :fetch-params="{author_id: form.author_id, type_id: EconomicDataLogTypeModel.GTM}"
+        class="mt-3"
+        @change="getData()"/>
+
+    <vue-table-dynamic
+        ref="table"
+        :params="params"
+        class="height-fit-content height-unset">
+      <div slot="column-6" slot-scope="{ props }" class="mx-auto">
+        <delete-button @click.native="deleteItem(props.rowData[0].data)"/>
+      </div>
+    </vue-table-dynamic>
+  </div>
 </template>
 
 <script>
 import {globalloadingMutations} from '@store/helpers';
 
+import SelectAuthor from "./SelectAuthor";
+import SelectLog from "./SelectLog";
 import DeleteButton from "./DeleteButton";
+
+import {EconomicDataLogTypeModel} from "../models/EconomicDataLogTypeModel";
 
 export default {
   name: "GtmTable",
   components: {
+    SelectAuthor,
+    SelectLog,
     DeleteButton
   },
   data: () => ({
+    EconomicDataLogTypeModel,
     data: [],
+    form: {
+      author_id: null,
+      log_id: null
+    }
   }),
-  created() {
-    this.getData()
-  },
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
 
@@ -32,7 +53,7 @@ export default {
       this.SET_LOADING(true);
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/gtm/get-data'))
+        const {data} = await this.axios.get(this.url, {params: this.form})
 
         this.data = [...[this.headers], ...data.data]
       } catch (e) {
@@ -88,6 +109,10 @@ export default {
         '',
       ]
     },
+
+    url() {
+      return this.localeUrl('/economic/gtm/get-data')
+    }
   }
 }
 </script>

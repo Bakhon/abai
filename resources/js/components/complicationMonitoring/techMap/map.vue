@@ -44,13 +44,13 @@
       <div class="tech-map__filter_input mt-15px" v-if="activeFilter == 'pressure' || activeFilter == 'temperature'">
         <b-form-input
             v-model="referentValue"
-            @input="mapRedraw"
+            @input="debounceMapRedraw"
             type="number"
             :placeholder="trans('monitoring.map.referent_value')"></b-form-input>
       </div>
     </div>
 
-    <map-legend :variant="mapColorsMode"/>
+    <map-legend :variant="mapColorsMode" :referentValue="+referentValue" />
 
     <div id="map"></div>
 
@@ -114,7 +114,7 @@
         modal-class="long-modal"
         :title="trans('monitoring.pipe.detail-data') + ' ' + (selectedPipe ? selectedPipe.name : '')"
         :ok-only="true"
-        @hide="resetSelectedObjects()"
+        @ok="resetSelectedObjects()"
     >
       <pipe-long-info
           :pipe="selectedPipe"
@@ -135,7 +135,7 @@
         modal-class="long-modal"
         :title="omgNgduFormModalTitle"
         :ok-only="true"
-        @hide="resetSelectedObjects()"
+        @ok="resetSelectedObjects()"
     >
       <wellOmgNgduForm v-if="selectedWell" :well="selectedWell" />
       <guOmgNgduForm v-if="selectedGu" :gu="selectedGu" />
@@ -310,6 +310,9 @@ export default {
       this.selectedWell = null;
       this.selectedGu = null;
       this.selectedZu = null;
+      this.objectHovered = null;
+      this.pipeHovered = null;
+      this.pipeHoveredParameter = null;
     },
     async initMap() {
       this.SET_LOADING(true);
@@ -588,26 +591,27 @@ export default {
           return pipeColors[this.mapColorsMode].no_data;
           break;
 
-        case speed_flow.fluid_speed < 0.5:
+        case +speed_flow.fluid_speed < 0.5:
           return pipeColors[this.mapColorsMode].danger;
           break;
 
-        case speed_flow.fluid_speed >= 0.5 && speed_flow.fluid_speed < 0.9:
+        case +speed_flow.fluid_speed >= 0.5 && +speed_flow.fluid_speed < 0.9:
           return pipeColors[this.mapColorsMode].warning;
           break;
 
-        case speed_flow.fluid_speed > 0.9:
+        case +speed_flow.fluid_speed > 0.9:
           return pipeColors[this.mapColorsMode].good;
           break;
       }
     },
     getColorByPressure(pipe) {
       let pressure = pipe.hydro_calc ? pipe.hydro_calc : null;
+
       switch (true) {
         case pressure == null:
           return pipeColors[this.mapColorsMode].no_data;
 
-        case pressure.press_start >= this.referentValue || pressure.press_end >= this.referentValue:
+        case (+pressure.press_start >= +this.referentValue || +pressure.press_end >= +this.referentValue):
           return pipeColors[this.mapColorsMode].danger;
 
         default:
@@ -615,12 +619,12 @@ export default {
       }
     },
     getColorByTemperature(pipe) {
-      let temperature = pipe.hydro_calc ? pipe.hydro_calc.temperature_end : null;
+      let temperature = pipe.hydro_calc ? +pipe.hydro_calc.temperature_end : null;
       switch (true) {
         case temperature == null:
           return pipeColors[this.mapColorsMode].no_data;
 
-        case temperature <= this.referentValue:
+        case temperature <= +this.referentValue:
           return pipeColors[this.mapColorsMode].danger;
 
         default:
@@ -1276,6 +1280,11 @@ export default {
       }
 
       this.mapRedraw();
+    },
+    debounceMapRedraw() {
+      _.debounce(() => {
+        this.mapRedraw();
+      },500)()
     },
     mapRedraw() {
       this.layerRedraw('path-layer', 'pipe', this.pipes);

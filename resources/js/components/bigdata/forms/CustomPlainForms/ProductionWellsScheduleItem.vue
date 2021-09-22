@@ -146,11 +146,12 @@ export default {
                     locales: [ru],
                     defaultLocale: 'ru',
                 },
-                markers: {
-                    size: [1, 1.5, 2, 2.5],
-                },
                 xaxis: {
+                    type: 'datetime',
                     tickAmount: 10,
+                    labels: {
+                        format: 'dd-MM-yyyy',
+                    }
                 },
                 yaxis: [
                     {
@@ -166,10 +167,13 @@ export default {
                         labels: {
                             style: {
                                 colors: '#000000',
+                            },
+                            formatter: function (value) {
+                                return value.toFixed(1);
                             }
                         },
                         title: {
-                            text: '',
+                            text: this.trans('app.liquidOil'),
                             style: {
                                 color: '#000000',
                             }
@@ -177,6 +181,11 @@ export default {
                     },
                     {
                         seriesName: this.trans('app.oil'),
+                        labels: {
+                            formatter: function (value) {
+                                return value.toFixed(1);
+                            }
+                        },
                         show: false
                     },
                     {
@@ -192,6 +201,9 @@ export default {
                         labels: {
                             style: {
                                 colors: '#000000',
+                            },
+                            formatter: function (value) {
+                                return value.toFixed(1);
                             }
                         },
                         title: {
@@ -214,6 +226,9 @@ export default {
                         labels: {
                             style: {
                                 colors: '#000000',
+                            },
+                            formatter: function (value) {
+                                return value.toFixed(1);
                             }
                         },
                         title: {
@@ -227,6 +242,9 @@ export default {
                 tooltip: {
                     shared: true,
                     intersect: false,
+                    x: {
+                        format: 'dd-MM-yyyy'
+                    }
                 },
                 annotations: {
                     points: this.chartPoints,
