@@ -6463,9 +6463,7 @@
               </tbody>
             </table>
           </div>
-          
           <div class="overflow-auto">
-            
             <paginate
                 v-model="this.$store.state.tr.pageNumber"
                 :page-count="this.pageCount"

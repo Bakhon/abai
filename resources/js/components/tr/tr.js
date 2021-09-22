@@ -872,9 +872,7 @@ export default {
                     this.loadPage();
                     this.wellAdd();
                     this.reRender();
-                    console.log('good')
                 })
-            
           }
             
         
