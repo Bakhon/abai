@@ -547,7 +547,7 @@ export default {
         },
         {
           name: this.trans('economic_reference.profitless_all'),
-          value: +this.scenario.uwi_count_profitless_cat_1.original_value
+          value: (+this.scenario.uwi_count_profitless_cat_1.original_value)
               + (+this.scenario.uwi_count_profitless_cat_2.original_value),
           value_optimized: (+this.scenario.uwi_count_profitless_cat_1.original_value_optimized)
               + (+this.scenario.uwi_count_profitless_cat_2.original_value_optimized)
