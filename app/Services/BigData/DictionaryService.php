@@ -162,10 +162,6 @@ class DictionaryService
             'class' => TybeNom::class,
             'name_field' => 'model'
         ],
-        'well_tech_state_type' => [
-            'class' => TechStateType::class,
-            'name_field' => 'name_ru'
-        ],
         'blocks' => [
             'class' => Block::class,
             'name_field' => 'name_ru'
@@ -393,7 +389,7 @@ class DictionaryService
         }
 
         if (key_exists($dict, self::DICTIONARIES)) {
-            $dict = $this->getPlainDict($dict);
+            $dict = $this->getPlainDict($dict); 
         } elseif (key_exists($dict, self::TREE_DICTIONARIES)) {
             $dict = $this->getTreeDict($dict);
         } else {
@@ -427,6 +423,9 @@ class DictionaryService
                     break;
                 case 'las_mnemonics':
                     $dict = $this->getLasMnemonics();
+                    break;
+                case 'well_tech_state_type':
+                    $dict = $this->getWellTechStateDict();
                     break;
                 case 'underground_equip_type':
                     $dict = UndergroundEquipType::getDict();
@@ -564,6 +563,30 @@ class DictionaryService
                     $join->on('gp.geo', '=', 'g.id');
                     $join->on('gp.dbeg', '<=', DB::raw("NOW()"));
                     $join->on('gp.dend', '>=', DB::raw("NOW()"));
+                }
+            )
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
+        return $this->generateTree((array)$items);
+    }
+
+    private function getWellTechStateDict(): array
+    {
+        $items = DB::connection('tbd')
+            ->table('dict.well_tech_state_type as w')
+            ->select('w.id', 'w.name_ru as label')
+            ->distinct()
+            ->orderBy('label', 'asc')
+            ->leftJoin(
+                'dict.well_tech_state_type as wp',
+                function ($join) {
+                    $join->on('wp.parent', '=', 'w.id');
                 }
             )
             ->get()

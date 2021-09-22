@@ -42,7 +42,7 @@
               },
               {
                 "code": "state",
-                "type": "dict",
+                "type": "dict_tree",
                 "dict": "well_tech_state_type",
                 "title": "state",
                 "validation": "required|exists:tbd.dict.well_tech_state_type,id"
