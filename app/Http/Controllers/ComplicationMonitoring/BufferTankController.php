@@ -31,7 +31,7 @@ class BufferTankController extends CrudController
             ],
             'title' => trans('monitoring.buffer_tank.title'),
             'fields' => [
-                'gu_id' => [
+                'gu' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
@@ -89,7 +89,11 @@ class BufferTankController extends CrudController
                     'title' => trans('monitoring.buffer_tank.type_of_repair'),
                     'type' => 'string',
                 ],
-                
+                'pdf' => [
+                    'title' => trans('monitoring.certificate'),
+                    'type' => 'download',
+                    'filterable' => false
+                ]
             ]
         ];
 
