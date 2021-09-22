@@ -327,16 +327,16 @@ export default {
       this.filterOpened = true
     },
     isShowSort(code) {
-      return typeof this.params.fields[code].sortable == 'undefined'
-          || (typeof this.params.fields[code].sortable != 'undefined' && this.params.fields[code].sortable);
+      return _.isUndefined(this.params.fields[code].sortable)
+          || (!_.isUndefined(this.params.fields[code].sortable) && this.params.fields[code].sortable);
     },
     isShowFilter(code) {
       if (!_.isUndefined(this.params.hide_filter)) {
         return !this.params.hide_filter;
       }
 
-      return typeof this.params.fields[code].filterable == 'undefined'
-          || (typeof this.params.fields[code].filterable != 'undefined' && this.params.fields[code].filterable);
+      return _.isUndefined(this.params.fields[code].filterable)
+          || (!_.isUndefined(this.params.fields[code].filterable) && this.params.fields[code].filterable);
     },
     hideFilters() {
       this.filterOpened = false
