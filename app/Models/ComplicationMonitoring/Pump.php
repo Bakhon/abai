@@ -13,7 +13,7 @@ class Pump extends Model
 
     public function gu()
     {
-        return $this->hasOne(Gu::class, 'id', 'gu_id');
+        return $this->belongsTo(Gu::class);
     }
 
     
