@@ -159,7 +159,7 @@ export default {
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_profitable.original_value),
         },
         {
-          title: `${this.trans('economic_reference.profitless_all')}:`,
+          title: this.trans('economic_reference.profitless_all'),
           uwiCount: +this.scenario.uwi_count_profitless_cat_1.original_value +
               +this.scenario.uwi_count_profitless_cat_2.original_value,
           prsCount: +this.scenario.prs_profitless_cat_1.original_value +
@@ -255,7 +255,7 @@ export default {
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario_profitable),
         },
         {
-          title: `${this.trans('economic_reference.profitless_all')}:`,
+          title: this.trans('economic_reference.profitless_all'),
           uwiCount: +this.scenario.uwi_count_profitless_cat_1.original_value_optimized + +this.scenario.uwi_count_profitless_cat_2.original_value_optimized,
           prsCount: +this.scenario.prs_profitless_cat_1.original_value_optimized + +this.scenario.prs_profitless_cat_2.original_value_optimized,
           prsPerUwi: this.calcPrsPerUwi(

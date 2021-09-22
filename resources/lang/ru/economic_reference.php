@@ -122,7 +122,7 @@ return array (
   'profitable' => 'Рентабельные',
   'profitless_cat_1' => 'Категория 1',
   'profitless_cat_2' => 'Категория 2',
-  'profitless_all' => 'Нерентабельные, в т.ч.',
+  'profitless_all' => 'Нерентабельные, в т.ч.:',
   'new_wells' => 'Новые скважины',
   'select_optimization_scenarios' => 'Выберите сценарии оптимизации',
   'water_cut' => 'Обводненность',
