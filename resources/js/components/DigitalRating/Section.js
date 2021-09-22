@@ -111,7 +111,7 @@ export default {
                   Math.pow(this.startPoint?.lat - this.endPoint.lat, 2)
                   + Math.pow(this.startPoint.lng - this.endPoint.lng, 2)
                 );
-                event.target.bindTooltip(res.toFixed(1)+'м').openTooltip()
+                event.target.bindTooltip(res.toFixed(1)+'м').openTooltip();
                 this.startPoint = this.endPoint = null;
             } else {
                 this.startPoint = event.latlng;
@@ -128,9 +128,8 @@ export default {
                     weight: 1,
                     fillColor: '#000',
                     fillOpacity: 0,
-                    radius: 3,
+                    radius: 5,
                 }).addTo(this.map).bindPopup(wellsData[i]['well']);
-
                 this.marker.on('mouseover', function (e) {
                     this.openPopup();
                 });
