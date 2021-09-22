@@ -27,6 +27,7 @@ use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
 use App\Models\VisCenter\EmergencyHistory;
 use App\Models\VisCenter\InboundIntegration\KGM\Monthly\ChemistryForKGM;
 use App\Models\VisCenter\InboundIntegration\KGM\Monthly\RepairsForKGM;
+use App\Console\Commands\StoreKGMReportsFromAvocetByDay;
 
 class VisualCenterController extends Controller
 {
@@ -542,5 +543,25 @@ class VisualCenterController extends Controller
     public function dailyApprove()
     {
         return view('visualcenter.daily_approve');
+    }
+
+    public function storeKgmArhive(Request $request)
+    {
+        $date1 = Carbon::parse($request->date1);
+        $date2 = Carbon::parse($request->date2);
+        $date1 = $date1->subDay();
+        $difference = $date1->diffInDays($date2);
+        $StoreKGMReportsFromAvocetByDay = new StoreKGMReportsFromAvocetByDay();
+
+        for (
+            $i = 1;
+            $i <= $difference;
+            $i++
+        ) {
+            $date1 = $date1->addDay();
+            echo $date1 .'<br>';
+            $StoreKGMReportsFromAvocetByDay->storeKGMReportsFromAvocetByDay($date1);
+            echo '<br><br>';
+        }
     }
 }

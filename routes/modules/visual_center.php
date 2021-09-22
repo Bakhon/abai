@@ -65,6 +65,7 @@ Route::group(
                 Route::get('store-kgm-reports-from-avocet', function() {
                     Artisan::call('store-kgm-reports-from-avocet:cron');
                 });
+                Route::get('/store-kgm-arhive', 'VisCenter\VisualCenterController@storeKgmArhive');
                 Route::post('dzo-excel-form', 'VisCenter\ExcelForm\ExcelFormController@store');
                 Route::post('dzo-chemistry-excel-form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
                 Route::get('/get-production-details', 'VisCenter\VisualCenterController@getProductionDetails');
@@ -89,7 +90,7 @@ Route::group(
                 Route::get('/kpd-tree-catalog', 'VisCenter\Kpd\KpdTreeController@getAll');
                 Route::post('/kpd-tree-catalog-store', 'VisCenter\Kpd\KpdTreeController@storeKpd');
                 Route::get('/get-fond-daily-chart', 'VisCenter\AdditionalParams\ProductionFondController@getDailyDataByDzo');
-                Route::get('/get-production-params-by-category', 'VisCenter\ProductionParams\VisualCenterController@getProductionParamsByCategory');
+                Route::get('/get-production-params-by-category', 'VisCenter\ProductionParams\VisualCenterController@getProductionParamsByCategory');                
             }
         );
     }

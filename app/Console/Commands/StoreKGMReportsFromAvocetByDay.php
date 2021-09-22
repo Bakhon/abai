@@ -27,9 +27,9 @@ class StoreKGMReportsFromAvocetByDay extends Command
     }
     
 
-    public function storeKGMReportsFromAvocetByDay()
-    {        
-        $this->yesterdayDate=Carbon::yesterday();
+    public function storeKGMReportsFromAvocetByDay($date)
+    {    
+        $this->yesterdayDate = $date;
         $pathToJsonFieldsMapping = resource_path() . "/js/components/visualcenter3/dailyReportImport/fields_kgm_reports_mapping.json";
         $this->fieldsMapping = json_decode(file_get_contents($pathToJsonFieldsMapping), true);  
         $dzoImportFieldFonds = new FondsForKGM;
@@ -226,9 +226,17 @@ class StoreKGMReportsFromAvocetByDay extends Command
         $lastDataOil = $lastDataOil[0];
         if (($lastDataOil['dzo_name'] != self::DZO_NAME) || ($lastDataOil['date'] != $this->yesterdayDate)) {
             return;
-        } 
-        
-        if (($lastDataOil['oil_production_fact'] != 0) && ($lastDataOil['oil_delivery_fact'] != 0)) {
+        }
+
+        if (($lastDataOil['oil_production_fact'] != 0) &&
+            ($lastDataOil['oil_delivery_fact'] != 0) &&
+            ($lastDataOil['stock_of_goods_delivery_fact'] != 0) &&
+            ($lastDataOil['associated_gas_production_fact'] != 0) &&
+            ($lastDataOil['associated_gas_delivery_fact'] != 0) &&
+            ($lastDataOil['associated_gas_expenses_for_own_fact'] != 0) &&
+            ($lastDataOil['otm_well_workover_fact'] != 0) &&
+            ($lastDataOil['otm_underground_workover'] != 0)
+        ) {
             echo "No update needed";
             return;
         }
@@ -246,6 +254,6 @@ class StoreKGMReportsFromAvocetByDay extends Command
 
     public function handle()
     {
-        $this->storeKGMReportsFromAvocetByDay();
+        $this->storeKGMReportsFromAvocetByDay(Carbon::yesterday());
     }
 }
