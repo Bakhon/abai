@@ -30,7 +30,7 @@ class AgzuController extends CrudController
 
     protected $modelName = 'agzu';
 
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         $params = [
             'success' => Session::get('success'),
