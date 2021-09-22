@@ -25,7 +25,7 @@
                     </div>
                     <div class="reason-container row p-2">
                         <div
-                                class="row"
+                                class="row col-12 p-0"
                                 v-for="(item, index) in reasons"
                         >
                             <div class="col-12 d-flex p-2 reason-description" v-for="reason in item">
