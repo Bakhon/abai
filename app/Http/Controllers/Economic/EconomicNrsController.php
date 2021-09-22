@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\EconomicNrsDataRequest;
 use App\Http\Requests\Economic\EconomicNrsWellsRequest;
 use App\Jobs\ExportEconomicDataToExcel;
+use App\Models\BigData\Well;
 use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
@@ -47,6 +48,7 @@ class EconomicNrsController extends Controller
         'sum_year_top_by_operating_profit' => '$builderSumYearTopByOperatingProfit',
         'oil_production' => '$builderOilProduction',
         'production_expenditures' => '$builderProductionExpenditures',
+        'wells' => '$builderWells',
     ];
 
     const DOLLAR_RATES_URL = 'https://www.nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut/report';
@@ -191,12 +193,19 @@ class EconomicNrsController extends Controller
                 ->whereIn($column, $profitabilities);
         }
 
+        $builderWells = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::YEAR)
+            ->interval($intervalMonths)
+            ->select('uwi');
+
         $builders = [
             self::BUILDERS['sum_month_operating_profit_and_count_uwi'] => $builderSumMonthOperatingProfitAndCountUwi,
             self::BUILDERS['sum_year_operating_profit_and_prs'] => $builderSumYearOperatingProfitAndPrs,
             self::BUILDERS['sum_year_top_by_operating_profit'] => $builderSumYearTopByOperatingProfit,
             self::BUILDERS['oil_production'] => $builderOilProduction,
             self::BUILDERS['production_expenditures'] => $builderProductionExpenditures,
+            self::BUILDERS['wells'] => $builderWells,
         ];
 
         foreach ($buildersProfitabilityCount as $key => $builder) {
@@ -226,9 +235,11 @@ class EconomicNrsController extends Controller
                 self::BUILDERS['production_expenditures'],
             ];
 
+            $groupBy = $key === self::BUILDERS['wells'] ? ['uwi'] : [];
+
             $result[$key] = in_array($key, $timeseries)
                 ? $builder->timeseries()->data()
-                : $builder->groupBy()->data();
+                : $builder->groupBy($groupBy)->data();
         }
 
         $dataWithProfitability = ['dt' => []];
@@ -369,6 +380,7 @@ class EconomicNrsController extends Controller
                 'operatingProfitTop' => $dataWithOperatingProfitTop,
                 'liquidProduction' => $dataWithLiquidProduction,
                 'pausedProfitability' => $dataWithPausedProfitability,
+                'wells' => $this->getWellsCoordinatesByUwi($result[self::BUILDERS['wells']])
             ],
             'oilPrices' => self::getOilPrices($intervalMonthsStart, $intervalMonthsEnd),
             'dollarRates' => self::getDollarRates($intervalMonthsStart, $intervalMonthsEnd),
@@ -450,6 +462,35 @@ class EconomicNrsController extends Controller
         $wellsByDates['dates'] = array_keys($wellsByDates['dates']);
 
         return $wellsByDates;
+    }
+
+    private function getWellsCoordinatesByUwi(array $wells): array
+    {
+        $uwis = [];
+
+        foreach ($wells as $well) {
+            $uwis[$well['uwi']] = 1;
+        }
+
+        $uwis = array_keys($uwis);
+
+        $coordinates = Well::query()
+            ->whereIn('uwi', $uwis)
+            ->whereNotNull('whc')
+            ->with('spatialObject')
+            ->get()
+            ->groupBy('uwi');
+
+        $wells = [];
+
+        foreach ($uwis as $uwi) {
+            $wells[] = [
+                'uwi' => $uwi,
+                'coordinates' => $coordinates->get($uwi)[0]['spatialObject'][0]['coord_point'] ?? null
+            ];
+        }
+
+        return $wells;
     }
 
     public function exportData(EconomicNrsDataRequest $request)
