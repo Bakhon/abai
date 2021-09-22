@@ -76,6 +76,8 @@
 
     Vue.component('home', require('./bd/home').default);
     Vue.component('passport', require('./bd/passport').default);
+    Vue.component('gis', require('./bd/gis').default);
+    Vue.component('inclino', require('./bd/inclino').default);
 
 </script>
 

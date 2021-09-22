@@ -11,7 +11,7 @@ class BDController extends Controller
     {
         $this->middleware('can:digitalDrilling view main')
             ->only([
-                'index',
+//                'index',
                 'info',
                 'passport',
                 'gis',
@@ -20,7 +20,7 @@ class BDController extends Controller
                 'inclino',
                 'inclinoGraph',
                 'projectData',
-                'home'
+//                'home'
             ]);
     }
 

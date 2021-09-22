@@ -1641,6 +1641,9 @@ td.border-right-none{
 .decryption-content-right{
     margin-left: 100px;
 }
+
+
+
 @media (max-width: 1625px) {
     .tables{
         width: 1625px;

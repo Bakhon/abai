@@ -121,6 +121,12 @@ return array (
       'date_last_workover' => 'Дата последнего КРС',
       'date_last_ORS' => 'Дата последнего ПРС',
       'date_last_GIS' => 'Дата последнего ГИС',
+      'designation_according_project' => 'Назначение скважины по проекту',
+      'drainage_radius' => 'Радиус дренирования',
+      'date_last_well_GDIS' => 'Дата последнего ГДИС',
+      'contract_date' => 'Дата договора',
+      'contract_amount' => 'Сумма договора',
+      'select_date' => 'Выберите дату:',
   ],
 
   'inclino' => [

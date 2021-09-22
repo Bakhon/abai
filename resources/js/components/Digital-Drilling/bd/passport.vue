@@ -1,7 +1,7 @@
 <template>
     <div class="digitalDrillingWindow">
         <div class="row">
-            <div class="col-sm-4 pr-0">
+            <div class="col-sm-4 pr-0 rightTable">
                <div class="table">
                    <table class="table defaultTable">
                        <tbody>
@@ -32,23 +32,10 @@
                    <table class="table defaultTable">
                        <tbody>
                        <tr>
-                           <th colspan="2">{{trans(passportWell.summary.name)}}</th>
+                           <th colspan="2">{{trans('digital_drilling.passport.drilling_summary')}}</th>
                        </tr>
-                       <tr v-for="td in passportWell.summary.child">
-                           <td>{{trans(td.name)}}</td>
-                           <td></td>
-                       </tr>
-                       </tbody>
-                   </table>
-               </div>
-               <div class="table">
-                   <table class="table defaultTable">
-                       <tbody>
                        <tr>
-                           <th colspan="2">{{trans(passportWell.casing_information.name)}}</th>
-                       </tr>
-                       <tr v-for="td in passportWell.casing_information.child">
-                           <td>{{trans(td.name)}}</td>
+                           <td>{{trans('digital_drilling.passport.select_date')}}</td>
                            <td></td>
                        </tr>
                        </tbody>
@@ -104,6 +91,9 @@
                             },
                             {
                                 name: 'digital_drilling.passport.contract_date'
+                            },
+                            {
+                                name: 'digital_drilling.passport.contract_amount'
                             },
                         ]
 
@@ -178,25 +168,29 @@
                                 name: 'digital_drilling.passport.downhole_coordinates_Y'
                             },
                             {
+                                name: 'digital_drilling.passport.designation_according_project'
+                            },
+
+                            {
                                 name: 'digital_drilling.passport.category'
                             },
                             {
                                 name: 'digital_drilling.passport.commissioning_date'
                             },
                             {
+                                name: 'digital_drilling.daily_raport.drilling_contractor'
+                            },
+                            {
                                 name: 'digital_drilling.passport.design_depth'
+                            },
+                            {
+                                name: 'digital_drilling.passport.drainage_radius'
                             },
                             {
                                 name: 'digital_drilling.passport.state'
                             },
                             {
                                 name: 'digital_drilling.passport.method_operation'
-                            },
-                            {
-                                name: 'digital_drilling.passport.dean_level'
-                            },
-                            {
-                                name: 'digital_drilling.passport.stat_level'
                             },
                             {
                                 name: 'digital_drilling.passport.Rpl_date_measurement'
@@ -216,6 +210,9 @@
                             {
                                 name: 'digital_drilling.passport.date_last_GIS'
                             },
+                            {
+                                name: 'digital_drilling.passport.date_last_well_GDIS'
+                            },
                         ]
 
                     }
@@ -234,5 +231,14 @@
 </script>
 
 <style scoped>
-
+    .defaultTable tr td{
+        width: 50%;
+    }
+    .rightTable{
+        display: flex;
+        flex-direction: column;
+    }
+    .table:last-child{
+        flex: auto;
+    }
 </style>

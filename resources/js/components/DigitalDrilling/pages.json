@@ -24,7 +24,7 @@
       "id": 3,
       "component": {
         "name": "main-table",
-        "template": "<gis></gis>"
+        "template": "<gis1></gis1>"
       }
     },
     {
