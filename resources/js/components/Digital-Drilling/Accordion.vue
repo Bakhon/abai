@@ -14,7 +14,7 @@
       <div v-show="isOpen" class="page-accordion__body">
         <ul class="list">
           <li v-for="page in content.child">
-            <input type="radio" :id="page.id" v-model="page.checked" @click="page.checked=!page.checked">
+            <input type="radio" :id="page.id" v-model="page.checked" @click="changePage(page)">
             <label :for="page.id">{{trans(page.name)}}</label>
           </li>
         </ul>
@@ -38,13 +38,20 @@ export default {
   data() {
     return {
       isOpen: false,
-        test: false,
+      test: false,
     }
   },
-
   methods: {
     handleToggle() {
       this.isOpen = !this.isOpen;
+      this.$emit('changePage', this.content.child[0])
+    },
+    changePage(page){
+        for (let i=0; i<this.content.child.length; i++){
+            this.content.child[i].checked = false
+        }
+        page.checked=!page.checked
+        this.$emit('changePage', page)
     }
   }
 }

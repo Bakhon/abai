@@ -29,17 +29,17 @@
                    </table>
                </div>
                <div class="table">
-                   <table class="table defaultTable">
+                   <table class="table defaultTable mb-0">
                        <tbody>
                        <tr>
                            <th colspan="2">{{trans('digital_drilling.passport.drilling_summary')}}</th>
                        </tr>
-                       <tr>
-                           <td>{{trans('digital_drilling.passport.select_date')}}</td>
-                           <td></td>
-                       </tr>
                        </tbody>
                    </table>
+                   <div class="date-picker">
+                       <span>{{trans('digital_drilling.passport.select_date')}}</span>
+                       <date-picker />
+                   </div>
                </div>
             </div>
             <div class="col-sm-8 leftTable">
@@ -63,8 +63,13 @@
 </template>
 
 <script>
+    import  DatePicker from '../components/DatePicker'
+
     export default {
         name: "passport",
+        components:{
+            DatePicker
+        },
         data() {
             return{
                 passportWell: {
@@ -233,6 +238,15 @@
 <style scoped>
     .defaultTable tr td{
         width: 50%;
+    }
+    .date-picker{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 14px 9px;
+        border: 1px solid #545580;
+
     }
     .rightTable{
         display: flex;

@@ -5,7 +5,10 @@
                 <img :src="page.img" alt="">
                 <div class="name">{{trans(page.name)}}</div>
             </div>
-            <accordion class="accordion" v-else :content="page"/>
+            <accordion class="accordion"
+                       v-else :content="page"
+                       @changePage="changePageComponent"
+            />
         </div>
     </div>
 </template>

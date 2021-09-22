@@ -41,21 +41,21 @@
       "accordion": true,
       "child": [
         {
-          "name": "digital_drilling.project_data.visualization",
-          "id": 1,
-          "checked": false,
+          "name": "digital_drilling.project_data.tabular_data",
+          "id": 2,
+          "checked": null,
           "component": {
             "name": "main-table",
             "template": "<structure></structure>"
           }
         },
         {
-          "name": "digital_drilling.project_data.tabular_data",
-          "id": 2,
+          "name": "digital_drilling.project_data.visualization",
+          "id": 1,
           "checked": false,
           "component": {
             "name": "main-table",
-            "template": "<structure></structure>"
+            "template": "<structure-graph></structure-graph>"
           }
         }
       ]

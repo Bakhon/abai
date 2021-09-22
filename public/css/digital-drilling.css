@@ -684,7 +684,7 @@ input.rangeInput {
     font-size: 14px;
     line-height: 12px;
     border: 1px solid #545580;
-    padding: 20px 0;
+    padding: 20px 5px;
     margin: 0;
 }
 .defaultTable tr{
