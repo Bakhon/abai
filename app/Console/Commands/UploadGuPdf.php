@@ -41,19 +41,6 @@ class UploadGuPdf extends Command
         $this->service = $service;
     }
 
-    private function pathToUploadedFile( $path )
-    {
-        $filesystem = new Filesystem;
-
-        $name = $filesystem->name( $path );
-        $extension = $filesystem->extension( $path );
-        $originalName = $name . '.' . $extension;
-        $mimeType = $filesystem->mimeType( $path );
-        $error = null;
-
-        return new UploadedFile( $path, $originalName, $mimeType, $error, false );
-    }
-
     /**
      * Execute the console command.
      *
@@ -101,5 +88,18 @@ class UploadGuPdf extends Command
                 $sib->save();
             }
         }
+    }
+
+    private function pathToUploadedFile( $path )
+    {
+        $filesystem = new Filesystem;
+
+        $name = $filesystem->name( $path );
+        $extension = $filesystem->extension( $path );
+        $originalName = $name . '.' . $extension;
+        $mimeType = $filesystem->mimeType( $path );
+        $error = null;
+
+        return new UploadedFile( $path, $originalName, $mimeType, $error, false );
     }
 }
