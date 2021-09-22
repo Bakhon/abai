@@ -44,7 +44,7 @@ export default {
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
-            selectedObjects: {'org':{}, 'geo':{}, 'tech':{}},
+            selectedObjects: {'org': {}, 'geo': {}, 'tech': {}},
             startDate: null,
             endDate: null,
             dateFlow: ['year', 'month', 'date'],
@@ -192,7 +192,7 @@ export default {
                 this.SET_LOADING(false)
                 return
             }
-            
+
             let params = await this.getStatisticsRequestParams();
 
             this.axios.post(this.baseUrl + "get_statistics", JSON.stringify(params), {
@@ -218,16 +218,16 @@ export default {
         },
         isHasSelectedObjects() {
             let content = this.selectedObjects;
-            for(let structureType in content) {
-                for(let option in content[structureType]) {
-                    for(let node of content[structureType][option]) {
-                        if(node.isChecked) {
+            for (let structureType in content) {
+                for (let option in content[structureType]) {
+                    for (let node of content[structureType][option]) {
+                        if (node.isChecked) {
                             return true;
                         }
                         this.getSelectedChildren(node)
-                        .then((target) => {
-                            if(target) return true;
-                        });
+                            .then((target) => {
+                                if (target) return true;
+                            });
                     }
                 }
             }
@@ -298,45 +298,45 @@ export default {
         },
         async getSelectedObjects() {
             let selectedObjects = [];
-            for(let structureType in this.selectedObjects) {
-                for(let option in this.selectedObjects[structureType]) {
-                    for(let node of this.selectedObjects[structureType][option]) {
-                        if(node.isChecked) {
+            for (let structureType in this.selectedObjects) {
+                for (let option in this.selectedObjects[structureType]) {
+                    for (let node of this.selectedObjects[structureType][option]) {
+                        if (node.isChecked) {
                             selectedObjects.push(node);
                         }
                         selectedObjects = selectedObjects.concat(await this.getSelectedChildren(node));
                     }
                 }
             }
-            for(let node of selectedObjects) {
-                if(node.type === "well") continue;
+            for (let node of selectedObjects) {
+                if (node.type === "well") continue;
                 await this.$refs.itemSelectTree.loadChildren(node)
-                .then(async () => {
-                    await this.updateChildrenOfNode(node, node.level)
-                })
-                .then(async () => {
-                    selectedObjects = selectedObjects.concat(await this.getSelectedChildren(node));
-                });
+                    .then(async () => {
+                        await this.updateChildrenOfNode(node, node.level)
+                    })
+                    .then(async () => {
+                        selectedObjects = selectedObjects.concat(await this.getSelectedChildren(node));
+                    });
             }
 
             return selectedObjects;
         },
         async updateChildrenOfNode(node, level) {
-            if(!node?.children) return;
-            for(let child of node.children) {
-                if(!('isChecked' in child)) {
+            if (!node?.children) return;
+            for (let child of node.children) {
+                if (!('isChecked' in child)) {
                     child.isChecked = node.isChecked;
                 }
-                child.level = level+1;
-                await this.updateChildrenOfNode(child, level+1);
+                child.level = level + 1;
+                await this.updateChildrenOfNode(child, level + 1);
             }
         },
         async getSelectedChildren(node) {
-            if(!node || !('children' in node)) return [];
+            if (!node || !('children' in node)) return [];
             let selectedChildren = [];
 
-            for(let child of node.children) {
-                if(child.isChecked) {
+            for (let child of node.children) {
+                if (child.isChecked) {
                     selectedChildren.push(child);
                 }
                 selectedChildren = selectedChildren.concat(await this.getSelectedChildren(child));
@@ -464,7 +464,7 @@ export default {
             return attribute.maxChildrenNumber
         },
         getOptionName() {
-            return this.currentOption?.name ? this.currentOption.name : 'Выбор объекта'; 
+            return this.currentOption?.name ? this.currentOption.name : 'Выбор объекта';
         },
         onMenuClick(currentStructureType) {
             this.currentStructureType = currentStructureType;
@@ -596,6 +596,35 @@ export default {
                 }
             }
             return false
+        },
+        isContainsData(row){
+            if (row.length === 0) {
+                return false
+            }
+            for (const [key, value] of Object.entries(row))
+            {
+                if (!value.match(/None/)) {
+                    return true
+                }
+            }
+            return false
+        },
+        formatCell(string) {
+            if (string.match(/None/)) {
+                return ""
+            }
+
+            let myRegexp = new RegExp(/(\d{4}-\d{2}-\d{2})/, "g")
+            let match = myRegexp.exec(string);
+            if (match != null) {
+                return match[0]
+            }
+
+            if (!isNaN(+string)) {
+                return +parseFloat(string).toFixed(2)
+            }
+
+            return string
         }
     }
 }
