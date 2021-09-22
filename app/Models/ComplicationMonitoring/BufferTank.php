@@ -11,11 +11,9 @@ class BufferTank extends Model
 
     protected $guarded = ['id'];
 
-    public $table = 'buffer_tank';
-
     public function gu()
     {
-        return $this->hasOne(Gu::class,'id','gu_id')->withDefault();
+        return $this->hasOne(Gu::class,'id','gu_id');
     }
 
     

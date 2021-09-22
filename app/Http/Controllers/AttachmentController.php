@@ -26,18 +26,21 @@ class AttachmentController extends Controller
         return response()->json(['files' => $files]);
     }
 
-    public function get(int $attachment)
+    public function download(int $attachment)
     {
-        $response = $this->service->get($attachment);
-        $body = $response->getBody();
-        foreach ($response->getHeaders() as $key => $header) {
-            header("$key:{$header[0]}");
-        }
+        $file = $this->service->get($attachment);
+        $filename = $this->service->getInfo([$attachment])[0]->filename;
+        $fileUrl = $file->getBody()->getMetadata('uri');
 
-        while (!$body->eof()) {
-            echo Utils::readline($body);
-            ob_flush();
-            flush();
-        }
+        return response()->streamDownload(function () use ($fileUrl) {
+            echo file_get_contents($fileUrl);
+        }, $filename);
+    }
+
+    public function getFileInfo(int $attachment)
+    {
+        $fileInfo = $this->service->getInfo([$attachment])[0];
+
+        return response()->json(['file_info' => $fileInfo]);
     }
 }
