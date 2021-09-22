@@ -21,8 +21,9 @@ class BottomHole extends PlainForm
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
 
-    protected function getResultsQuery(int $wellId): Collection
+    protected function getRows(): Collection
     {
+        $wellId = $this->request->get('well_id');
         $bottomHole = $this->getBottomHole();
 
         $query = DB::connection('tbd')

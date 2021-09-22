@@ -436,5 +436,6 @@ return array (
   'resolvingDate' => 'Дата устранения инцидента',
   'emergencyFinished' => 'Завершенные',
   'emergencyOpen' => 'Открытые',
-  'streamInjection' => 'Закачка пара'
+  'streamInjection' => 'Закачка пара',
+  'companyName' => 'Наименование компаний'
 );
