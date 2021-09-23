@@ -553,13 +553,9 @@ class VisualCenterController extends Controller
         $difference = $dateStart->diffInDays($dateEnd);
         $StoreKGMReportsFromAvocetByDay = new StoreKGMReportsFromAvocetByDay();
 
-        for (
-            $i = 1;
-            $i <= $difference;
-            $i++
-        ) {
+        for ($i = 1; $i <= $difference; $i++) {
             $dateStart = $dateStart->addDay();
-            echo $dateStart .'<br>';
+            echo $dateStart.'<br>';
             $StoreKGMReportsFromAvocetByDay->storeKGMReportsFromAvocetByDay($dateStart);
             echo '<br><br>';
         }

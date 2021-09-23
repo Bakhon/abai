@@ -233,14 +233,14 @@ class StoreKGMReportsFromAvocetByDay extends Command
             'associated_gas_delivery_fact', 'associated_gas_expenses_for_own_fact', 'otm_well_workover_fact', 'otm_underground_workover'
         ];
 
-        $rowsCound = 1;
+        $rowsCount = 1;
         for ($i = 0; $i < count($fieldsInDataBase); $i++) {
             if ($lastDataOil[$fieldsInDataBase[$i]] <= 0) {
-                $rowsCound = $rowsCound + $i;
+                $rowsCount = $rowsCount + $i;
             }
         };
         
-        if ($rowsCound === 0) {
+        if ($rowsCount === 0) {
             echo "No update needed";
             return;
         }
