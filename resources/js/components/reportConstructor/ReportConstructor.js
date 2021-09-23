@@ -598,7 +598,7 @@ export default {
             return false
         },
         isContainsData(row){
-            if (row.length === 0) {
+            if (Object.keys(row).length === 0) {
                 return false
             }
             for (const [key, value] of Object.entries(row))
