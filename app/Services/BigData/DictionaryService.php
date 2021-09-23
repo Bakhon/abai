@@ -430,6 +430,10 @@ class DictionaryService
                 case 'las_mnemonics':
                     $dict = $this->getLasMnemonics();
                     break;
+                case 'repair_type_prs':
+                    $dict = $this->getRepairTypeDict('WLO'); 
+                case 'repair_type_krs':
+                        $dict = $this->getRepairTypeDict('CWO');           
                 default:
                     throw new DictionaryNotFound();
             }
@@ -661,4 +665,24 @@ class DictionaryService
 
         return $items;
     }
+
+    private function getRepairTypeDict(string $type){
+        $items = DB::connection('tbd')
+            ->table('prod.well_workover as pw')
+            ->select('dr.id','dr.name_ru as name')
+            ->join('dict.repair_work_type as dr', 'pw.repair_work_type', 'dr.id')
+            ->join('dict.well_repair_type as dw', 'pw.repair_type', 'dw.id')
+            ->where('dw.code', $type)
+            ->distinct()
+            ->orderBy('name', 'asc')           
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+        return $items;
+    }
+
 }    

@@ -25,7 +25,7 @@
                 "type": "dict",
                 "title": "type_rep_work",
                 "validation": "required|exists:tbd.dict.repair_work_type,id",
-                "dict": "repair_work_types"
+                "dict": "repair_type_prs"
               },
               {
                 "code": "work_plan",

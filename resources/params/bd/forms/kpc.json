@@ -33,7 +33,7 @@
               "type": "dict",
               "title": "work_type",
               "validation": "required|exists:tbd.dict.repair_work_type,id",
-              "dict": "repair_work_types",
+              "dict": "repair_type_krs",
               "is_editable": true
             },
             {
