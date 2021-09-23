@@ -41,7 +41,7 @@ export default {
         chartOptions() {
             return {
                 grid: {
-                    show: true,
+                    show: false,
                     borderColor: "#90A4AE",
                     padding: {
                         top: 0,
@@ -64,7 +64,7 @@ export default {
                     labels: {
                         formatter: (num) => {
                             if (this.isDaily) {
-                                return num;
+                                return new Intl.NumberFormat("ru-RU").format(num);
                             }
                             if (num >= 1000) {
                                 num = (num / 1000).toFixed(0);
@@ -78,6 +78,15 @@ export default {
                                 num = 0;
                             }
                             return new Intl.NumberFormat("ru-RU").format(num);
+                        }
+                    },
+                },
+                xaxis: {
+                    tickAmount: 5,
+                    labels: {
+                        rotate: 0,
+                        formatter: (num) => {
+                            return moment(num,'DD.MM.YYYY').format('DD MMM');
                         }
                     },
                 },

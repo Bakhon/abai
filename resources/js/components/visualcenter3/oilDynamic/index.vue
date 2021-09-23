@@ -28,7 +28,7 @@
                 <div class="inform-buttons">
                     {{ trans('visualcenter.deviation') }}<br>
                     <div class="d-flex justify-content-center">
-                        <span :class="[summaryFact - summaryPlan < 0 ? 'fall-indicator-production-data' : 'growth-indicator-production-data','mt-4 triangle']"></span>
+                        <span :class="[summaryFact - summaryPlan < 0 ? 'fall-indicator-production-data' : 'growth-indicator-production-data','triangle']"></span>
                         <span class="pl-2">{{getFormattedNumber(summaryFact - summaryPlan)}}</span>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                 <div class="inform-buttons">
                     {{ trans('visualcenter.execution') }}<br>
                     <div class="d-flex justify-content-center">
-                        <span :class="[summaryExecution < 100 ? 'triangle fall-indicator-production-data' : 'triangle growth-indicator-production-data','mt-4 triangle']"></span>
+                        <span :class="[summaryExecution < 100 ? 'triangle fall-indicator-production-data' : 'triangle growth-indicator-production-data','triangle']"></span>
                         <span class="pl-2">{{summaryExecution.toFixed(1)}}% </span>
                     </div>
                 </div>
@@ -417,12 +417,15 @@ export default {
     background-color: #333975;
     text-align: center;
     height: 100%;
-    font-size: 20px;
+    font-size: 26px;
     border-radius: 10px;
     span {
         font-family: "Bold";
         font-size: 34px;
         font-weight: 550;
+        &:last-child {
+            font-size: 45px;
+        }
     }
 }
 .info-block {
@@ -433,13 +436,14 @@ export default {
     font-weight: bold;
 }
 .triangle {
-    border: 6px solid transparent;
+    border: 16px solid transparent;
+    margin-top: 30px;
 }
 .growth-indicator-production-data {
-    border-bottom: 8px solid #009846;
+    border-bottom: 16px solid #009846;
 }
 .fall-indicator-production-data {
-    border-top: 8px solid #e31e24;
+    border-top: 16px solid #e31e24;
 }
 .daily-chart {
     margin-bottom: -5px;
