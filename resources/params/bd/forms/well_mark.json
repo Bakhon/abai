@@ -1,6 +1,9 @@
 {
   "type": "plain",
   "table": "prod.mark",
+  "default_values": {
+    "dend": "3333-12-31 00:00:00+06"
+  },
   "sort": [
     {
       "field": "dbeg",
