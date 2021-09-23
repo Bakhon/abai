@@ -1,8 +1,6 @@
 <?php
 
 return array (
-  'government_border' => 'Граница государства',
-  'gas_oil_field_borders' => 'Границы нефтегазосносных НГП',
   'occurance_borders' => 'Границы месторождении',
   'downloads_monitoring' => 'Мониторинг загрузок',
   'creating_new_download_templates' => 'Создание новых шаблонов загрузок',
@@ -91,4 +89,10 @@ return array (
   'ordinate_axis_settings' => 'Настройка оси ординат',
   'degree' => 'Степень',
   'done' => 'Готово',
+  'actual_oil_pipeline' => 'Действующий нефтепровод',
+  'actual_gas_pipeline' => 'Действующий газопровод',
+  'construction_gas_pipeline' => 'Строящийся газопровод',
+  'exploration_and_production' => 'Разведка и Добыча',
+  'processing' => 'Переработка',
+  'subsidiaries_affiliates_factories' => 'ДЗО и Заводы',
 );

@@ -2,7 +2,7 @@
   <div class="data-analysis-study">
     <div class="study-title">
       <div class="icon-title">
-        <i><img src="/img/PlastFluids/tableIcon.png" alt=""/></i>
+        <img src="/img/PlastFluids/tableIcon.png" alt=""/>
       </div>
       <span>Детальная статистика изученности по видам исследований</span>
     </div>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import BaseTable from "./BaseTable.vue";
+import BaseTable from "../BaseTable.vue";
 
 export default {
   name: "DataAnalysisStudy",
@@ -78,8 +78,9 @@ export default {
   margin-right: 8px;
 }
 
-.icon-title img {
-  width: 26px;
+.icon-title > img {
+  width: 18px;
+  height: 14px;
 }
 
 .study-title {
@@ -87,6 +88,8 @@ export default {
   align-items: center;
   color: #fff;
   width: 100%;
+  background-color: #323370;
+  border: 1px solid #545580;
   height: 47px;
   padding: 4px;
 }

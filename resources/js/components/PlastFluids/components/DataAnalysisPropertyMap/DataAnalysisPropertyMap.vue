@@ -1,32 +1,21 @@
 <template>
-  <div class="">
-    <div class="data-analysis__wrapper-first">
+  <div class="data-analysis-property-map">
+    <div class="data-analysis__wrapper">
       <div class="data-analysis__wrapper-title">
         <div class="icon-title">
-          <i><img src="/img/PlastFluids/tableIcon.png" alt=""/></i>
+          <img src="/img/PlastFluids/tableIcon.png" alt="" />
         </div>
-        <span>График</span>
-      </div>
-    </div>
-    <div class="data-analysis__wrapper">
-      <div class="data-analysis__wrapper-header">
-        <div class="data-analysis__wrapper-header-title">
-          Углеводородная фракция
-        </div>
-        <div class="data-analysis__wrapper-header-export">
-          <img src="/img/PlastFluids/download.svg" alt="" />
-          <img src="/img/PlastFluids/openModal.svg" alt="" />
-        </div>
+        <span>Детальная статистика изученности по видам исследований</span>
       </div>
       <div class="data-analysis__wrapper-img" v-bind:class="{ full: cartFull }">
-        <img src="/img/PlastFluids/fluidComposition.jpg" alt="" />
+        <img src="/img/PlastFluids/mapProperty.svg" alt="" />
       </div>
     </div>
     <div class="table-holder">
-      <div class="first next">
+      <div class="data-analysis__wrapper next">
         <div class="data-analysis__wrapper-title">
           <img src="/img/PlastFluids/sampleDataIcon.png" alt="" />
-          <span>Качество состава нефти</span>
+          <span>Данные по пробам</span>
         </div>
         <div
           class="data-analysis__row_bottom"
@@ -42,31 +31,37 @@
 </template>
 
 <script>
-import BaseTable from "./BaseTable.vue";
+import BaseTable from "../BaseTable.vue";
 
 export default {
-  name: "DataAnalysisFluidComposition",
+  name: "DataAnalysisPropertyMap",
   components: {
     BaseTable,
   },
   data() {
     return {
       cartFull: false,
-      items: [],
       fields: [
-        "Скважина",
+        "№ скважины",
         "Дата отбора",
-        "H2S",
-        "CO2",
-        "N2",
-        "C1",
-        "C2",
-        "C3",
-        "IC4",
-        "NC4",
-        "IC6",
-        "NC5",
+        "Абс. отм. середины инт. перф., середина, м",
+        "Давление исследования, МПа",
+        "Температура исследования, С°",
+        "Давление насыщения, МПа",
+        "Вязкость пластовой нефти, мПа* с",
+        "Вязкость пластовой нефти при Ps, мПа* с",
+        "Плотность пластовой нефти при Рисл, кг/м3",
+        "Плотность пластовой нефти при Ps, кг/м3",
+        "Газосодержание, м3/м3",
+        "Газосодержание, м3/т",
+        "Объёмный коэффициент при Рисл",
+        "Объёмный коэффициент при Рb",
+        "Плотность сепарированной нефти, кг/м3",
+        "Плотность сепарированного газа, кг/м3",
+        "Отклонение от материального баланса, %",
+        "Исполнитель",
       ],
+      items: [],
     };
   },
   methods: {
@@ -74,17 +69,23 @@ export default {
       for (let i = 0; i < 40; i++) {
         this.items.push([
           "П-2",
-          2.32,
-          2.32,
-          2.32,
-          2.32,
-          2.32,
-          2.32,
-          2.32,
-          2.32,
-          2.32,
-          2.32,
-          2.32,
+          "01.01.1983",
+          -3419,
+          33.34,
+          33.34,
+          33.34,
+          33.34,
+          33.34,
+          33.34,
+          33.34,
+          33.34,
+          33.34,
+          33.34,
+          33.34,
+          33.34,
+          33.34,
+          33.34,
+          33.34,
         ]);
       }
     },
@@ -96,10 +97,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-span {
-  color: #fff;
-}
-
 .data-analysis {
   display: flex;
   color: #fff;
@@ -108,24 +105,16 @@ span {
     width: calc(100% - 340px);
   }
 }
-.data-analysis__wrapper-first {
-  background-color: #272953;
-  padding: 4px 4px 0;
-  color: #fff;
-  height: 34px;
-}
 
 .table-holder {
   height: 350px;
-  width: 100%;
-}
+} 
 
 .data-analysis__wrapper {
+  background: #272953;
+  padding: 8px;
   flex: 2 1 auto;
-  background: transparent;
-  padding: 4px;
-  border: 6px solid #272953;
-  color: #fff;
+  margin-bottom: 10px;
 
   &-title {
     display: flex;
@@ -133,7 +122,6 @@ span {
     background: #323370;
     border: 1px solid #545580;
     padding: 8px;
-    margin-bottom: 8px;
     height: 30px;
     /*width: calc(100% - 42px);*/
 
@@ -152,15 +140,14 @@ span {
 
     span {
       font-size: 16px;
+      color: #fff;
     }
   }
 
   &-img {
-    width: 100%;
-    background: #272953;
-    border: 1px solid #545580;
+    height: 100%;
+    background: #000;
     text-align: center;
-    padding: 6px;
     overflow: hidden;
   }
 
@@ -169,40 +156,32 @@ span {
     width: 100%;
   }
 }
+
 .full {
   height: 700px;
 }
+
+.full img {
+  height: 100%;
+}
+
 .next {
   display: flex;
   justify-content: space-between;
   /*align-items: center;*/
 }
-.data-analysis .row {
-}
+
 .next .data-analysis__wrapper-title {
   width: calc(100% - 35px);
 }
+
 .data-analysis__wrapper-title img {
   display: block;
   width: 17px;
   height: auto;
   margin-right: 10px;
 }
-.data-analysis__wrapper-header {
-  background: #323370;
-  padding: 7px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.data-analysis__wrapper-header-export {
-  display: flex;
-  align-items: center;
-}
-.data-analysis__wrapper-header-export img {
-  width: 14px;
-  margin-left: 12px;
-}
+
 .data-analysis__row_bottom {
   width: 31px;
   height: 30px;
@@ -221,6 +200,7 @@ span {
   margin: 0 auto;
   transition: all 0.3s ease-in-out;
 }
+
 .data-analysis__row_bottom.active img {
   transform: rotate(180deg);
 }
@@ -244,6 +224,7 @@ span {
 .data-analysis table.defaultTable tr:nth-child(even) {
   background: rgba(69, 77, 125, 0.7);
 }
+
 .data-analysis table.defaultTable tr:nth-child(odd) {
   background: #34365d;
 }
@@ -259,14 +240,17 @@ span {
   background: #333975;
   height: 26px;
 }
+
 .data-analysis table.defaultTable th {
   font-size: 11px;
   background: #333975;
 }
+
 .data-analysis table.defaultTable::-webkit-scrollbar-thumb {
   background-color: #000000;
   border: 2px solid #ffffff;
 }
+
 .data-analysis table.defaultTable::-webkit-scrollbar {
   width: 4px;
 }

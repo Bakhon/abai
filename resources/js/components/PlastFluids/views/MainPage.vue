@@ -4,7 +4,6 @@
     <div class="main-content-holder">
       <div class="map-and-page-footer">
         <OilMap />
-        <Footer />
       </div>
       <div class="area-choose-block-and-map-statistics">
         <div class="map-statistics">
@@ -88,7 +87,6 @@ export default {
   components: {
     Header,
     OilMap,
-    Footer,
     SubsoilTreeMain,
     SubsoilTreeChildren,
   },
@@ -140,13 +138,6 @@ export default {
   },
   mounted() {
     this.getOwners();
-    leafMap((e) => {
-      if (e.target.feature.properties.type === "field") {
-        this.selectedField = e.target.feature.properties.id;
-      } else {
-        this.selectedField = null;
-      }
-    });
   },
 };
 </script>
