@@ -67,7 +67,7 @@ class ResearchLabResearch extends PlainForm
         return $this->formatRows($rows);
     }
 
-    protected function getCustomValidationErrors(string $field = null): array
+    protected function getCustomValidationErrors(): array
     {
         $errors = [];
         if (!$this->isValidDepth($this->request->get('well'), $this->request->get('depth'))) {

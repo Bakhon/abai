@@ -37,11 +37,11 @@ class WellZone extends PlainForm
     }
 
     
-    protected function getCustomValidationErrors(string $field = null): array
+    protected function getCustomValidationErrors(): array
     {
         $errors = [];
 
-        if (!$this->isValidDate($this->request->get('well'), $this->request->get('dbeg'), 'prod.well_zone', 'dbeg')) {
+        if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'),'prod.well_zone' , 'dbeg')){
             $errors['dbeg'][] = trans('bd.validation.dbeg_well_zone');
         }
 

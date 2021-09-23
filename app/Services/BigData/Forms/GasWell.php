@@ -23,11 +23,11 @@ class GasWell extends PlainForm
 
     }
 
-    protected function getCustomValidationErrors(string $field = null): array
+    protected function getCustomValidationErrors(): array
     {
         $errors = [];
 
-        if (!$this->isValidDate($this->request->get('well'), $this->request->get('dbeg'))) {
+        if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'))){
             $errors['dbeg'] = trans('bd.validation.dbeg');
         }
 

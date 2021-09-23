@@ -75,7 +75,7 @@ abstract class BaseForm
 
     public function validateSingleField(string $field): void
     {
-        $errors = $this->getCustomValidationErrors($field);
+        $errors = $this->getCustomValidationErrors();
         $this->validator->validateSingleField(
             $this->request,
             $this->getValidationRules(),
@@ -123,7 +123,7 @@ abstract class BaseForm
         return $this->localizeParams($params);
     }
 
-    protected function getCustomValidationErrors(string $field = null): array
+    protected function getCustomValidationErrors(): array
     {
         return [];
     }

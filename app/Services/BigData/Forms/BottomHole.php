@@ -53,7 +53,7 @@ class BottomHole extends PlainForm
         return $data;
     }
 
-    protected function getCustomValidationErrors(string $field = null): array
+    protected function getCustomValidationErrors(): array
     {
         $errors = [];
 

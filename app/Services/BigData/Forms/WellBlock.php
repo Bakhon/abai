@@ -38,7 +38,7 @@ class WellBlock extends PlainForm
         ];
     }
 
-    protected function getCustomValidationErrors(string $field = null): array
+    protected function getCustomValidationErrors(): array
     {
         $errors = [];
 

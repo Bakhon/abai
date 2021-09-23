@@ -14,7 +14,7 @@ class Kpc extends KrsPrs
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
 
-    protected function getCustomValidationErrors(string $field = null): array
+    protected function getCustomValidationErrors(): array
     {
         $errors = [];
 

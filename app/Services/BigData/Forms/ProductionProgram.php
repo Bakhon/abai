@@ -160,7 +160,7 @@ class ProductionProgram extends TableForm
         return $columns;
     }
 
-    protected function getCustomValidationErrors(string $field = null): array
+    protected function getCustomValidationErrors(): array
     {
         $errors = [];
         $request = $this->request->all();
