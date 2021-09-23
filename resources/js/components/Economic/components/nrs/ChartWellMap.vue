@@ -93,8 +93,8 @@ export default {
     async getWells() {
       this.SET_LOADING(true);
 
-      this.currentDate = this.formattedDates.original.length
-          ? this.formattedDates.original[0]
+      this.currentDate = this.filteredDates.length
+          ? this.formattedDates[0]
           : null
 
       try {
