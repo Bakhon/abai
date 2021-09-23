@@ -50,4 +50,9 @@ class Pki extends Dzo {
        array_push($summary,$daySummary);
        return $summary;
     }
+
+    public function getDzoDynamicByMultiplier($fields,$summary)
+    {
+        return $summary;
+    }
 }
