@@ -107,6 +107,8 @@ Route::group(
 
                 Route::post('attachments', 'AttachmentController@upload');
                 Route::get('attachments/{attachment}', 'AttachmentController@get');
+
+                Route::post('map_constructor/import', 'MapConstructor@importFile');
             }
         );
         Auth::routes(
