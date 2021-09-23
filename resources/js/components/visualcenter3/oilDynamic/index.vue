@@ -416,7 +416,6 @@ export default {
 .inform-buttons {
     background-color: #333975;
     text-align: center;
-    padding-top: 15px;
     height: 100%;
     font-size: 20px;
     border-radius: 10px;

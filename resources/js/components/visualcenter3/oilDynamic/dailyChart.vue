@@ -53,6 +53,18 @@ export default {
                 },
                 yaxis: {
                     show: true,
+                    labels: {
+                        style: {
+                            fontSize: '14px'
+                        }
+                    }
+                },
+                xaxis: {
+                    labels: {
+                        formatter: (num) => {
+                            return new Intl.NumberFormat("ru-RU").format(num);
+                        }
+                    },
                 },
                 chart: {
                     type: 'bar',
