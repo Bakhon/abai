@@ -50,7 +50,7 @@
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          :org_id="org_id"
+          :org_id="form.org_id"
           class="bg-economic-chart"/>
 
       <chart-with-liquid-production
@@ -64,8 +64,7 @@
 
       <chart-well-map
           v-else-if="activeTab === 'well_map'"
-          :wells="charts.wells"
-          class="bg-economic-chart"/>
+          :org-form="form"/>
     </div>
   </div>
 </template>
@@ -109,9 +108,9 @@ export default {
       required: true,
       type: Array
     },
-    org_id: {
+    form: {
       required: true,
-      type: Number
+      type: Object
     }
   },
   data: () => ({
