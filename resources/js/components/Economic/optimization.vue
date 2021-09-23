@@ -1,23 +1,12 @@
 <template>
   <div class="position-relative">
     <div class="row">
-      <div class="col-12 p-2 bg-main1 mb-10px text-white">
-        <div class="d-flex align-items-center">
-          <div class="flex-grow-1 mx-2 font-size-16px line-height-22px font-weight-bold text-nowrap">
-            {{ trans('economic_reference.select_optimization_scenarios') }}
-          </div>
-
-          <select-organization :form="form" class="flex-grow-1 ml-2" @change="getData"/>
-
-          <select-scenario :form="form" class="flex-grow-1 ml-2" @change="selectScenario"/>
-        </div>
-
+      <div class="col-12 px-2 py-3 bg-main1 mb-10px">
         <select-scenario-variations
-            v-if="form.scenario_id"
+            :form="form"
             :scenario-variation="scenarioVariation"
             :scenario-variations="scenarioVariations"
-            class="mt-3"
-            is-inline/>
+            @changeOrg="getData()"/>
       </div>
 
       <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
@@ -679,20 +668,6 @@ export default {
       }
 
       this.SET_LOADING(false);
-    },
-
-    selectScenario() {
-      this.scenarioVariation.dollar_rate = this.scenarioVariations.dollar_rates[0]
-
-      this.scenarioVariation.oil_price = this.scenarioVariations.oil_prices[0]
-
-      this.scenarioVariation.salary_percent = this.scenarioVariations.salary_percents[0].value
-
-      this.scenarioVariation.retention_percent = this.scenarioVariations.retention_percents[0].value
-
-      this.scenarioVariation.optimization_percent.cat_1 = this.scenarioVariations.optimization_percents[0].value.cat_1
-
-      this.scenarioVariation.optimization_percent.cat_2 = this.scenarioVariations.optimization_percents[0].value.cat_2
     },
 
     liquidValue(optimized = true) {

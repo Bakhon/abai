@@ -1,16 +1,23 @@
 <template>
-  <select
-      v-model="form.org_id"
-      class="form-control text-white bg-main4-important border-0"
-      @change="$emit('change')"
-  >
-    <option
-        v-for="org in organizations"
-        :key="org.id"
-        :value="org.id">
-      {{ org.name }}
-    </option>
-  </select>
+  <div>
+    <label for="org">
+      {{ trans('economic_reference.org') }}
+    </label>
+
+    <select
+        id="org"
+        v-model="form.org_id"
+        class="form-control text-white bg-main4-important border-0"
+        @change="$emit('change')"
+    >
+      <option
+          v-for="org in organizations"
+          :key="org.id"
+          :value="org.id">
+        {{ org.name }}
+      </option>
+    </select>
+  </div>
 </template>
 
 <script>
