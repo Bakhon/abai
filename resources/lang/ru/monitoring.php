@@ -325,6 +325,7 @@ return array (
       'heater_output_temperature' => 'Температура печи',
       'surge_tank_pressure' => 'Давление в буферной емкости',
       'daily_gas_production_in_sib' => 'Количество газа в СИБ',
+      'gas_factor' => 'Газовый фактор',
     ),
     'redirect-to' => 'Перейти на',
     'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ ГУ',

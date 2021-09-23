@@ -21,7 +21,7 @@
       </p>
       <p>{{ trans('monitoring.gu.fields.bsw') }}: {{ pipe.hydro_calc.bsw.toFixed(2) + trans('measurements.percent') }}
       </p>
-      <p>{{ trans('monitoring.omgngdu.fields.gas_factor') }}:
+      <p>{{ trans('monitoring.gu.fields.gas_factor') + ' ' + trans('measurements.m3/m3') }}:
         {{ pipe.hydro_calc.gazf.toFixed(2) }}
       </p>
     </div>
