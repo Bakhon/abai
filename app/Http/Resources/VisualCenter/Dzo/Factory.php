@@ -19,7 +19,9 @@ class Factory {
         'УО' => 'Yo',
         'ЭМГ' => 'Emg',
         'КТМ' => 'Ktm',
-        'ПКК' => 'Pkk'
+        'ПКК' => 'Pkk',
+        'ОМГК' => 'Omgk',
+        'КГМКМГ' => 'Kgmkmg'
     );
     protected $categoryMapping = array (
         'oilCondensateProduction' => 'OilCondensateConsolidated',

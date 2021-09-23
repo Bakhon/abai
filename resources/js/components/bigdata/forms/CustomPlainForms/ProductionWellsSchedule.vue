@@ -101,7 +101,7 @@ export default {
         ),
         selectWell(well) {
             this.options = [];
-            this.wells.push(well)
+            this.wells.unshift(well)
         },
         removeWellSchedule(well) {
             this.wells.splice(
