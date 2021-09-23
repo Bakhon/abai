@@ -15,21 +15,20 @@ class StoreKGMReportsFromAvocetByDay extends Command
     protected $signature = 'store-kgm-reports-from-avocet:cron';
     const ROUNDING_FEW_VALUE = 1000;
     const DZO_NAME = 'КГМ';
-    private $yesterdayDate = ''; 
+    public $reportDate = ''; 
     private $fieldsMapping = '';    
 
     private function getlastRecord()
     {
         return DzoImportData::query()->select('*')
             ->where('dzo_name', '=', self::DZO_NAME)
-            ->where('date', '=', $this->yesterdayDate)
+            ->where('date', '=', $this->reportDate)
             ->whereNull('is_corrected')->first()->id;
     }
     
 
-    public function storeKGMReportsFromAvocetByDay($date)
+    public function storeKGMReportsFromAvocetByDay()
     {    
-        $this->yesterdayDate = $date;
         $pathToJsonFieldsMapping = resource_path() . "/js/components/visualcenter3/dailyReportImport/fields_kgm_reports_mapping.json";
         $this->fieldsMapping = json_decode(file_get_contents($pathToJsonFieldsMapping), true);  
         $dzoImportFieldFonds = new FondsForKGM;
@@ -43,7 +42,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
         $dzoImportFieldData = new DzoImportData();
         $this->updateFields($this->fieldsMapping['getWaterOilDeliveryAndGasMore'], $dzoImportFieldData, 'getWaterOilDeliveryAndGasMore');
 
-        $dzoImportFieldData->date = $this->yesterdayDate;
+        $dzoImportFieldData->date = $this->reportDate;
         $dzoImportFieldData->dzo_name = self::DZO_NAME;
         $dzoImportFieldData->oil_production_fact = $this->getOilAndGas('fact_oil_mass');
         $dzoImportFieldData->associated_gas_production_fact = $this->getOilAndGas('fact_gas_vol') * self::ROUNDING_FEW_VALUE;
@@ -89,7 +88,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
     private function getWellsWorkover($dzoImportFieldData, $dzoImportFieldFonds)
     {
         return count($dzoImportFieldFonds::query()->select('*')
-            ->WHERE('start_datetime', 'LIKE', $this->yesterdayDate . '%')
+            ->WHERE('start_datetime', 'LIKE', $this->reportDate.'%')
             ->WHERE('status', 'SHUT_IN')
             ->WHERE('cattegory_code', 'P_WORK_W_2')
             ->get()->toArray());
@@ -115,7 +114,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
     private function getDataByType($nameData)
     {
         return $nameData::query()->select('*')
-            ->WHERE('start_datetime', 'LIKE', $this->yesterdayDate . '%')
+            ->WHERE('start_datetime', 'LIKE', $this->reportDate.'%')
             ->get()->toArray();
     }
 
@@ -211,7 +210,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
     {
         $lastDataOil = $dzoImportFieldData
             ->where('dzo_name', '=', self::DZO_NAME)
-            ->where('date', '=', $this->yesterdayDate)
+            ->where('date', '=', $this->reportDate)
             ->get()->toArray();
             
 
@@ -224,7 +223,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
         }
 
         $lastDataOil = $lastDataOil[0];
-        if (($lastDataOil['dzo_name'] != self::DZO_NAME) || ($lastDataOil['date'] != $this->yesterdayDate)) {
+        if (($lastDataOil['dzo_name'] != self::DZO_NAME) || ($lastDataOil['date'] != $this->reportDate)) {
             return;
         }
 
@@ -247,7 +246,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
 
         $dzoImportFieldData
             ->where('dzo_name', '=', self::DZO_NAME)
-            ->where('date', '=', $this->yesterdayDate)->update($dzoImportFieldData->getAttributes());
+            ->where('date', '=', $this->reportDate)->update($dzoImportFieldData->getAttributes());
 
         unset($dzoImportFieldDowntimeReason['dzo_import_data_id']);
         $dzoImportFieldDowntimeReason
@@ -258,6 +257,7 @@ class StoreKGMReportsFromAvocetByDay extends Command
 
     public function handle()
     {
-        $this->storeKGMReportsFromAvocetByDay(Carbon::yesterday());
+        $this->reportDate = Carbon::yesterday();
+        $this->storeKGMReportsFromAvocetByDay();
     }
 }

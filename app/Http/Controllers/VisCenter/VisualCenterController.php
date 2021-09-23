@@ -545,7 +545,7 @@ class VisualCenterController extends Controller
         return view('visualcenter.daily_approve');
     }
 
-    public function storeKgmArhive(Request $request)
+    public function storeKgmArchive(Request $request)
     {
         $dateStart = Carbon::parse($request->dateStart);
         $dateEnd = Carbon::parse($request->dateEnd);
@@ -556,7 +556,8 @@ class VisualCenterController extends Controller
         for ($i = 1; $i <= $difference; $i++) {
             $dateStart = $dateStart->addDay();
             echo $dateStart.'<br>';
-            $StoreKGMReportsFromAvocetByDay->storeKGMReportsFromAvocetByDay($dateStart);
+            $StoreKGMReportsFromAvocetByDay->reportDate = $dateStart;
+            $StoreKGMReportsFromAvocetByDay->storeKGMReportsFromAvocetByDay();
             echo '<br><br>';
         }
     }
