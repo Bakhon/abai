@@ -547,10 +547,10 @@ class VisualCenterController extends Controller
 
     public function storeKgmArhive(Request $request)
     {
-        $date1 = Carbon::parse($request->date1);
-        $date2 = Carbon::parse($request->date2);
-        $date1 = $date1->subDay();
-        $difference = $date1->diffInDays($date2);
+        $dateStart = Carbon::parse($request->dateStart);
+        $dateEnd = Carbon::parse($request->dateEnd);
+        $dateStart = $dateStart->subDay();
+        $difference = $dateStart->diffInDays($dateEnd);
         $StoreKGMReportsFromAvocetByDay = new StoreKGMReportsFromAvocetByDay();
 
         for (
@@ -558,9 +558,9 @@ class VisualCenterController extends Controller
             $i <= $difference;
             $i++
         ) {
-            $date1 = $date1->addDay();
-            echo $date1 .'<br>';
-            $StoreKGMReportsFromAvocetByDay->storeKGMReportsFromAvocetByDay($date1);
+            $dateStart = $dateStart->addDay();
+            echo $dateStart .'<br>';
+            $StoreKGMReportsFromAvocetByDay->storeKGMReportsFromAvocetByDay($dateStart);
             echo '<br><br>';
         }
     }

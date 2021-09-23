@@ -228,15 +228,19 @@ class StoreKGMReportsFromAvocetByDay extends Command
             return;
         }
 
-        if (($lastDataOil['oil_production_fact'] != 0) &&
-            ($lastDataOil['oil_delivery_fact'] != 0) &&
-            ($lastDataOil['stock_of_goods_delivery_fact'] != 0) &&
-            ($lastDataOil['associated_gas_production_fact'] != 0) &&
-            ($lastDataOil['associated_gas_delivery_fact'] != 0) &&
-            ($lastDataOil['associated_gas_expenses_for_own_fact'] != 0) &&
-            ($lastDataOil['otm_well_workover_fact'] != 0) &&
-            ($lastDataOil['otm_underground_workover'] != 0)
-        ) {
+        $fieldsInDataBase = [
+            'oil_production_fact', 'oil_delivery_fact', 'stock_of_goods_delivery_fact', 'associated_gas_production_fact',
+            'associated_gas_delivery_fact', 'associated_gas_expenses_for_own_fact', 'otm_well_workover_fact', 'otm_underground_workover'
+        ];
+
+        $rowsCound = 1;
+        for ($i = 0; $i < count($fieldsInDataBase); $i++) {
+            if ($lastDataOil[$fieldsInDataBase[$i]] <= 0) {
+                $rowsCound = $rowsCound + $i;
+            }
+        };
+        
+        if ($rowsCound === 0) {
             echo "No update needed";
             return;
         }
