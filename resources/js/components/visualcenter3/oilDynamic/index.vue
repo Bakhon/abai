@@ -1,10 +1,10 @@
 <template>
     <div class="page-wrapper">
-        <div class="row p-3">
-            <div class="col-12">
+        <div class="row pl-3 mr-0">
+            <div class="col-12 title pb-2">
                 {{ trans('visualcenter.oilCondensateDynamic') }}
             </div>
-            <div class="col-3 p-3">
+            <div class="col-4 p-0 ml-3">
                 <select
                         class="form-select dropdown_list"
                         @change="handleDzo($event.target.value)"
@@ -12,7 +12,7 @@
                     <option v-for="company in dzoCompanies" :value="company.id">{{company.name}}</option>
                 </select>
             </div>
-            <div class="col-3 p-3">
+            <div class="col-4">
                 <select
                         class="form-select dropdown_list"
                         v-model="selectedMonth"
@@ -22,27 +22,29 @@
                 </select>
             </div>
         </div>
-        <div class="row p-3">
-            <daily-chart class="col-10" :chartData="dailyProductionChart"></daily-chart>
-            <div class="col-1 p-3 info-block">
+        <div class="d-flex px-3 pt-3 daily-chart">
+            <daily-chart class="col-8 pr-0" :chartData="dailyProductionChart"></daily-chart>
+            <div class="col-2 py-3 info-block ml-3 mb-1">
                 <div class="inform-buttons">
                     {{ trans('visualcenter.deviation') }}<br>
-                    <span>
-                        {{getFormattedNumber(summaryFact - summaryPlan)}}
-                    </span>
+                    <div class="d-flex justify-content-center">
+                        <span :class="[summaryFact - summaryPlan < 0 ? 'fall-indicator-production-data' : 'growth-indicator-production-data','mt-4 triangle']"></span>
+                        <span class="pl-2">{{getFormattedNumber(summaryFact - summaryPlan)}}</span>
+                    </div>
                 </div>
             </div>
-            <div class="col-1 p-3 info-block">
+            <div class="col-2 py-3 info-block mb-1">
                 <div class="inform-buttons">
                     {{ trans('visualcenter.execution') }}<br>
-                    <span>
-                        {{summaryExecution.toFixed(1)}}%
-                    </span>
+                    <div class="d-flex justify-content-center">
+                        <span :class="[summaryExecution < 100 ? 'triangle fall-indicator-production-data' : 'triangle growth-indicator-production-data','mt-4 triangle']"></span>
+                        <span class="pl-2">{{summaryExecution.toFixed(1)}}% </span>
+                    </div>
                 </div>
             </div>
 
         </div>
-        <div class="d-flex p-3">
+        <div class="d-flex pl-3">
             <table class="col-8 dynamic-table">
                 <thead>
                 <tr>
@@ -81,7 +83,7 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="col-4 row">
+            <div class="col-4 row m-0 px-0">
                 <chart class="col-12" :name="dailyChartName" :chartData="dailyChart" :is-daily="true"></chart>
                 <chart class="col-12" :name="yearlyChartName" :chartData="yearlyChart" :is-daily="false"></chart>
             </div>
@@ -100,7 +102,7 @@ export default {
     data: function () {
         return {
             dailyChartName: this.trans('visualcenter.oilDynamicDaily'),
-            yearlyChartName: this.trans('visualcenter.accumulatedOilDynamicYearly'),
+            yearlyChartName: this.trans('visualcenter.accumulatedOilDynamicYearly') + ' (' + this.trans('visualcenter.dzoThousandTon') + ')',
             selectedMonth: moment().month() + 1,
             selectedDzo: {
                 id: 17,
@@ -352,6 +354,9 @@ export default {
     }
     td {
         border-right: 1px solid #696e96;
+        &:not(:first-child) {
+            font-weight: bold;
+        }
     }
 }
 .month-summary-table {
@@ -413,11 +418,30 @@ export default {
     text-align: center;
     padding-top: 15px;
     height: 100%;
+    font-size: 20px;
     span {
-        font-size: 26px;
+        font-family: "Bold";
+        font-size: 34px;
+        font-weight: 550;
     }
 }
 .info-block {
-    margin-top: -40px;
+    margin-top: -20px;
+}
+.title {
+    font-size: 20px;
+    font-weight: bold;
+}
+.triangle {
+    border: 6px solid transparent;
+}
+.growth-indicator-production-data {
+    border-bottom: 8px solid #009846;
+}
+.fall-indicator-production-data {
+    border-top: 8px solid #e31e24;
+}
+.daily-chart {
+    margin-bottom: -5px;
 }
 </style>

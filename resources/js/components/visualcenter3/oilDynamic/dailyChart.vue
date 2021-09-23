@@ -3,7 +3,7 @@
         <apexchart
                 height="120"
                 :options="chartOptions"
-                style="margin-top:-50px"
+                style="margin-top:-30px"
                 :series="seriesDrilling"
         ></apexchart>
     </div>
@@ -40,7 +40,7 @@ export default {
                 legend: {
                     show: false,
                 },
-                colors: ['#009847','#2E50E9'],
+                colors: ['#999DC0','#2E50E9'],
                 dataLabels: {
                     enabled: true,
                     formatter: function(num) {
