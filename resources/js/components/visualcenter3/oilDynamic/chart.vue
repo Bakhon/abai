@@ -32,7 +32,7 @@ export default {
     components: {
         "apexchart": VueApexCharts
     },
-    props: ["chartData", "name"],
+    props: ["chartData", "name",'isDaily'],
     data: function () {
         return {
         };
@@ -61,6 +61,25 @@ export default {
                 },
                 yaxis: {
                     show: true,
+                    labels: {
+                        formatter: (num) => {
+                            if (this.isDaily) {
+                                return num;
+                            }
+                            if (num >= 1000) {
+                                num = (num / 1000).toFixed(0);
+                            } else if (num >= 100) {
+                                num = Math.round((num / 1000) * 10) / 10;
+                            } else if (num >= 10) {
+                                num = Math.round((num / 1000) * 100) / 100;
+                            } else if (num > 0) {
+                                num = 0.01;
+                            } else {
+                                num = 0;
+                            }
+                            return new Intl.NumberFormat("ru-RU").format(num);
+                        }
+                    },
                 },
                 chart: {
                     type: 'line',
@@ -85,6 +104,6 @@ export default {
         series() {
             return this.chartData.series;
         }
-    },
+    }
 };
 </script>

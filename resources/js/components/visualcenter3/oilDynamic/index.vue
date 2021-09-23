@@ -82,8 +82,8 @@
                 </tbody>
             </table>
             <div class="col-4 row">
-                <chart class="col-12" :name="dailyChartName" :chartData="dailyChart"></chart>
-                <chart class="col-12" :name="yearlyChartName" :chartData="yearlyChart"></chart>
+                <chart class="col-12" :name="dailyChartName" :chartData="dailyChart" :is-daily="true"></chart>
+                <chart class="col-12" :name="yearlyChartName" :chartData="yearlyChart" :is-daily="false"></chart>
             </div>
         </div>
     </div>
