@@ -152,8 +152,8 @@ class GTMController extends Controller
 
         $query->when($request->filled('dateStart') && $request->filled('dateEnd'), function ($q) use ($request) {
             return $q->whereBetween('date', [
-                $request->input('dateStart', '2021-01-01 00:00:00'),
-                $request->input('dateEnd', '2021-12-31 00:00:00'),
+                $request->input('dateStart'),
+                $request->input('dateEnd'),
             ]);
         });
 
