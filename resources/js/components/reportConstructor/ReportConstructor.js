@@ -614,8 +614,8 @@ export default {
                 return ""
             }
 
-            let myRegexp = new RegExp(/(\d{4}-\d{2}-\d{2})/, "g")
-            let match = myRegexp.exec(string);
+            let dateRegexp = new RegExp(/(\d{4}-\d{2}-\d{2})/, "g")
+            let match = dateRegexp.exec(string);
             if (match != null) {
                 return match[0]
             }
