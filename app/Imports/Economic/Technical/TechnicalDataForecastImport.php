@@ -9,6 +9,7 @@ use App\Models\Refs\TechnicalStructureCompany;
 use App\Models\Refs\TechnicalStructureField;
 use App\Models\Refs\TechnicalStructureGu;
 use App\Models\Refs\TechnicalStructureNgdu;
+use App\Models\Refs\TechnicalStructurePes;
 use App\Models\Refs\TechnicalStructureSource;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
@@ -33,18 +34,21 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
 
     protected $companyIds = [];
 
+    protected $pesIds = [];
+
     const COLUMNS = [
         'well_id' => 0,
-        'date' => 1,
-        'oil' => 2,
-        'liquid' => 3,
-        'days_worked' => 4,
-        'prs' => 5,
-        'company_id' => 6,
-        'field_id' => 7,
-        'ngdu_id' => 8,
-        'gu_id' => 9,
-        'cdng_id' => 10,
+        'pes_id' => 1,
+        'date' => 2,
+        'oil' => 3,
+        'liquid' => 4,
+        'days_worked' => 5,
+        'prs' => 6,
+        'company_id' => 7,
+        'field_id' => 8,
+        'ngdu_id' => 9,
+        'gu_id' => 10,
+        'cdng_id' => 11,
     ];
 
     const CHUNK = 1000;
@@ -79,6 +83,7 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
             "liquid" => round($row[self::COLUMNS['liquid']], 2),
             "days_worked" => round($row[self::COLUMNS['days_worked']], 2),
             "prs" => $row[self::COLUMNS['prs']],
+            "pes_id" => $this->getPesId($row)
         ]);
     }
 
@@ -170,6 +175,28 @@ class TechnicalDataForecastImport implements ToModel, WithBatchInserts, WithChun
             ->id;
 
         return $this->companyIds[$name];
+    }
+
+    private function getPesId(array $row): ?int
+    {
+        $name = $row[self::COLUMNS['pes_id']];
+
+        if (!$name) {
+            return null;
+        }
+
+        if (isset($this->pesIds[$name])) {
+            return $this->pesIds[$name];
+        }
+
+        $this->pesIds[$name] = TechnicalStructurePes::query()
+            ->firstOrCreate(
+                ['name' => $name],
+                ['user_id' => $this->userId]
+            )
+            ->id;
+
+        return $this->pesIds[$name];
     }
 
     public function batchSize(): int

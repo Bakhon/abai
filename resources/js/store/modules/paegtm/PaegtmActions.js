@@ -28,5 +28,8 @@ export const paegtmActions = {
     },
     changeDzoName ({commit}, value) {
         commit('CHANGE_DZO_NAME', value);
+    },
+    changeClickable ({commit}, value) {
+        commit('CHANGE_CLICKABLE', value)
     }
 }

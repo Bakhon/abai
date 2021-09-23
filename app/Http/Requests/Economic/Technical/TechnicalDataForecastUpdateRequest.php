@@ -22,6 +22,7 @@ class TechnicalDataForecastUpdateRequest extends FormRequest
             'liquid' => 'nullable|numeric',
             'days_worked' => 'nullable|numeric',
             'prs' => 'nullable|numeric',
+            'pes_id' => 'nullable|integer|min:1',
         ];
     }
 }

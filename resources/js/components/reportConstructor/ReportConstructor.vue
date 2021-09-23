@@ -358,9 +358,11 @@
 
                         </thead>
                         <tbody>
-                        <tr v-for="row in statisticsOfSheet">
+                        <tr v-for="row in statisticsOfSheet" v-if="isContainsData(row)">
                           <td class="table-body" v-for="column in statisticsColumns[sheetType]">
-                            <div class="centered">{{ row[column] }}</div>
+                            <div class="centered">
+                              {{ formatCell(row[column]) }}
+                            </div>
                           </td>
                         </tr>
                         </tbody>

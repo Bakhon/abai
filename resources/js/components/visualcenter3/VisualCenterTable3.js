@@ -87,6 +87,7 @@ export default {
                 'УО': this.trans("visualcenter.uo"),
                 'ПКК': this.trans("visualcenter.pkk"),
                 'КГМКМГ': this.trans("visualcenter.kgm"),
+                'ПККР': this.trans("visualcenter.pkk"),
             },
             chartHeadName: this.trans("visualcenter.oilCondensateProductionChartName"),
             chartSecondaryName: this.trans('visualcenter.oilCondensateProduction'),
@@ -106,7 +107,8 @@ export default {
             dzoNameMappingNormal: _.cloneDeep(dzoCompaniesNameMapping.normalNames),
             timeSelect: "",
             productionData: [],
-            reasonExplanations: {}
+            reasonExplanations: {},
+            troubleCompanies: ['ОМГК','КГМКМГ','ТП','ПККР']
         };
     },
     methods: {
@@ -155,6 +157,10 @@ export default {
                 }
             });
             return reasons;
+        },
+
+        isTroubleCompany(dzoName) {
+            return this.troubleCategories.includes(this.selectedCategory) && this.troubleCompanies.includes(dzoName);
         }
     },
     mixins: [

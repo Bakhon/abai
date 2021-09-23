@@ -103,6 +103,7 @@ Route::group(
 
                 Route::post('forms/{form}/calc-fields', 'Api\DB\FormsController@calcFields');
                 Route::post('forms/{form}/update-fields', 'Api\DB\FormsController@updateFields');
+                Route::post('forms/{form}/update-field-list', 'Api\DB\FormsController@updateFieldList');
 
                 Route::get('forms/{form}/results', 'Api\DB\FormsController@getResults');
                 Route::delete('forms/{form}/{row}', 'Api\DB\FormsController@delete');

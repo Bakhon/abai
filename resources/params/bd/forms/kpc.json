@@ -2,7 +2,7 @@
   "table": "prod.well_workover",
   "sort": [
     {
-      "field": "request_date",
+      "field": "dbeg",
       "order": "desc"
     }
   ],

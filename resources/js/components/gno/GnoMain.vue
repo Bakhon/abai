@@ -53,10 +53,10 @@
 
               <div class="choosing-well-data top-border-line  col-7">{{ trans('pgno.horizon') }}</div>
               <div class="choosing-well-data left-border-line top-border-line right-block-data  col-5"
-                   v-if="!isEditing">
+                   v-if="!mainSettings.isEditing">
                 {{ horizon }}
               </div>
-              <select v-if="isEditing"
+              <select v-if="mainSettings.isEditing"
                       class="devices-data left-border-line right-block-data no-gutter col-5 select-edit"
                       v-model="horizon">
                 <option v-for="hor in this.horizons" :value="hor.hor_value" :key="hor.id">
@@ -90,21 +90,21 @@
             <div class="construction-block">
               <div class="construction no-gutter col-12"><b>{{ trans('pgno.construction') }}</b></div>
               <div class="construction-data no-gutter col-7">{{ trans('pgno.naruznii_diametr_ex_col') }}</div>
-              <div v-if="!isEditing" class="construction-data left-border-line right-block-data no-gutter col-5">
+              <div v-if="!mainSettings.isEditing" class="construction-data left-border-line right-block-data no-gutter col-5">
                 {{ well.casOd }} {{ trans('measurements.mm') }}
               </div>
-              <input v-if="isEditing" v-model="well.casOd"
+              <input v-if="mainSettings.isEditing" v-model="well.casOd"
                      class="construction-data left-border-line right-block-data no-gutter col-5 editable-input"
                      type="text"/>
 
               <div class="construction-data top-border-line no-gutter col-7">
                 {{ trans('pgno.vnutrenii_diametr_ex_col') }}
               </div>
-              <div v-if="!isEditing"
+              <div v-if="!mainSettings.isEditing"
                    class="construction-data left-border-line top-border-line right-block-data no-gutter col-5">
                 {{ well.casId }} {{ trans('measurements.mm') }}
               </div>
-              <input v-if="isEditing" v-model="well.casId"
+              <input v-if="mainSettings.isEditing" v-model="well.casId"
                      class="construction-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                      type="text"/>
 
@@ -114,33 +114,33 @@
                   {{ trans('pgno.interval_perf') }}: <b v-for="item in well.hPerfRange">{{ item }}</b>
                 </div>
               </div>
-              <div v-if="!isEditing"
+              <div v-if="!mainSettings.isEditing"
                    class="construction-data left-border-line top-border-line right-block-data no-gutter col-5">
                 {{ well.hUpPerfVd }} {{ trans('measurements.m') }}
               </div>
-              <input v-if="isEditing" v-model="well.hUpPerfVd"
+              <input v-if="mainSettings.isEditing" v-model="well.hUpPerfVd"
                      class="construction-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                      type="text"/>
 
               <div class="construction-data top-border-line no-gutter col-7">
                 {{ trans('pgno.udlinenie_perf') }}
               </div>
-              <div v-if="!isEditing"
+              <div v-if="!mainSettings.isEditing"
                    class="construction-data left-border-line top-border-line right-block-data no-gutter col-5">
                 {{ well.hVdpUdl }} {{ trans('measurements.m') }}
               </div>
-              <input v-if="isEditing" v-model="well.hVdpUdl"
+              <input v-if="mainSettings.isEditing" v-model="well.hVdpUdl"
                      class="construction-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                      type="text"/>
 
               <div class="construction-data top-border-line no-gutter col-7">
                 {{ trans('pgno.tekushii_zaboi') }}
               </div>
-              <div v-if="!isEditing"
+              <div v-if="!mainSettings.isEditing"
                    class="construction-data left-border-line top-border-line right-block-data no-gutter col-5">
                 {{ well.currBh }} {{ trans('measurements.m') }}
               </div>
-              <input v-if="isEditing" v-model="well.currBh"
+              <input v-if="mainSettings.isEditing" v-model="well.currBh"
                      class="construction-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                      type="text"/>
             </div>
@@ -151,11 +151,11 @@
             <!-- Кнопка инклонометрии end-->
 
             <div class="spoiler"
-                 :class="{ 'opened': activeRightTabName === 'devices' }">
+                 :class="{ 'opened': mainSettings.activeRightTabName === 'devices' }">
               <input class="hidden-checkbox"
                      type="checkbox"
                      tabindex="-1"
-                     :checked="activeRightTabName === 'devices'"
+                     :checked="mainSettings.activeRightTabName === 'devices'"
                      @change="setActiveRightTabName($event, 'devices')"/>
               <div class="right-side-box">
                 <div class="right-title-block no-gutter col-12">
@@ -168,16 +168,16 @@
                   <img src="/img/gno/bottom-arrow.svg" alt="">
                 </span>
 
-                <div class="right-block-details" v-show="activeRightTabName === 'devices'">
+                <div class="right-block-details" v-show="mainSettings.activeRightTabName === 'devices'">
                   <div class="devices-data no-gutter col-7">
                     {{ trans('pgno.stanok_kachalka') }}
                   </div>
-                  <div v-if="!isEditing" class="devices-data left-border-line right-block-data no-gutter col-5">
+                  <div v-if="!mainSettings.isEditing" class="devices-data left-border-line right-block-data no-gutter col-5">
                     {{ skType }}
                   </div>
-                  <select v-if="isEditing"
+                  <select v-if="mainSettings.isEditing"
                           class="devices-data left-border-line right-block-data no-gutter col-5 select-edit"
-                          v-model="skType" @change="isSkError = false">
+                          v-model="skType" @change="mainSettings.isSkError = false">
                     <option v-for="sk in this.skTypes" :value="sk.sk_value" :key="sk.id">
                       {{ sk.sk_name }}
                     </option>
@@ -187,11 +187,11 @@
                     <div class="devices-data top-border-line no-gutter col-7">
                       {{ trans('pgno.dlina_hoda') }}
                     </div>
-                    <div v-if="!isEditing"
+                    <div v-if="!mainSettings.isEditing"
                          class="devices-data left-border-line top-border-line right-block-data no-gutter col-5">
                       {{ well.strokeLen }} {{ trans('measurements.m') }}
                     </div>
-                    <input v-if="isEditing" v-model="well.strokeLen"
+                    <input v-if="mainSettings.isEditing" v-model="well.strokeLen"
                            class="devices-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                            type="text"/>
                   </div>
@@ -200,22 +200,22 @@
                     <div class="devices-data top-border-line no-gutter col-7">
                       {{ trans('pgno.pumpRateShgn') }}
                     </div>
-                    <div v-if="!isEditing"
+                    <div v-if="!mainSettings.isEditing"
                          class="devices-data left-border-line top-border-line right-block-data no-gutter col-5">
                       {{ well.spm }} {{ trans('measurements.1/min') }}
                     </div>
-                    <input v-if="isEditing" v-model="well.spm"
+                    <input v-if="mainSettings.isEditing" v-model="well.spm"
                            class="devices-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                            type="text"/>
 
                     <div class="devices-data top-border-line no-gutter col-7">
                       {{ trans('pgno.pumpTypeShgn') }}
                     </div>
-                    <div v-if="!isEditing"
+                    <div v-if="!mainSettings.isEditing"
                          class="devices-data left-border-line top-border-line right-block-data no-gutter col-5">
                       {{ well.pumpType }} {{ trans('measurements.mm') }}
                     </div>
-                    <input v-if="isEditing" v-model="well.pumpType"
+                    <input v-if="mainSettings.isEditing" v-model="well.pumpType"
                            class="devices-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                            type="text"/>
                   </div>
@@ -224,22 +224,22 @@
                     <div class="devices-data top-border-line no-gutter col-7">
                       {{ trans('pgno.pumpTypeEcn') }}
                     </div>
-                    <div v-if="!isEditing"
+                    <div v-if="!mainSettings.isEditing"
                          class="devices-data left-border-line top-border-line right-block-data no-gutter col-5">
                       {{ devBlockRatedFeed }} {{ trans('measurements.gc') }}
                     </div>
-                    <input v-if="isEditing" v-model="spmDev"
+                    <input v-if="mainSettings.isEditing" v-model="spmDev"
                            class="devices-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                            type="text"/>
 
                     <div class="devices-data top-border-line no-gutter col-7">
                       {{ trans('pgno.pumpTypeEcn') }}
                     </div>
-                    <div v-if="!isEditing"
+                    <div v-if="!mainSettings.isEditing"
                          class="devices-data left-border-line top-border-line right-block-data no-gutter col-5">
                       {{ devBlockFrequency }} {{ trans('measurements.m3/day') }}
                     </div>
-                    <input v-if="isEditing" v-model="well.pumpType"
+                    <input v-if="mainSettings.isEditing" v-model="well.pumpType"
                            class="devices-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                            type="text"/>
                   </div>
@@ -247,33 +247,33 @@
                   <div class="devices-data top-border-line no-gutter col-7">
                     {{ trans('pgno.h_spuska') }}
                   </div>
-                  <div v-if="!isEditing"
+                  <div v-if="!mainSettings.isEditing"
                        class="devices-data left-border-line top-border-line right-block-data no-gutter col-5">
                     {{ well.hPumpSet }} {{ trans('measurements.m') }}
                   </div>
-                  <input v-if="isEditing" v-model="well.hPumpSet"
+                  <input v-if="mainSettings.isEditing" v-model="well.hPumpSet"
                          class="devices-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                          type="text"/>
 
                   <div class="devices-data top-border-line no-gutter col-7">
                     {{ trans('pgno.naruzhnii_nkt') }}
                   </div>
-                  <div v-if="!isEditing"
+                  <div v-if="!mainSettings.isEditing"
                        class="devices-data left-border-line top-border-line right-block-data no-gutter col-5">
                     {{ well.tubOd }} {{ trans('measurements.mm') }}
                   </div>
-                  <input v-if="isEditing" v-model="well.tubOd"
+                  <input v-if="mainSettings.isEditing" v-model="well.tubOd"
                          class="devices-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                          type="text"/>
 
                   <div class="devices-data top-border-line no-gutter col-7">
                     {{ trans('pgno.vnutrenii_nkt') }}
                   </div>
-                  <div v-if="!isEditing"
+                  <div v-if="!mainSettings.isEditing"
                        class="devices-data left-border-line top-border-line right-block-data no-gutter col-5">
                     {{ well.tubId }} {{ trans('measurements.mm') }}
                   </div>
-                  <input v-if="isEditing" v-model="well.tubId"
+                  <input v-if="mainSettings.isEditing" v-model="well.tubId"
                          class="devices-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                          type="text"/>
 
@@ -289,11 +289,11 @@
             </div>
 
             <div class="spoiler"
-                 :class="{ 'opened': activeRightTabName === 'pvt' }">
+                 :class="{ 'opened': mainSettings.activeRightTabName === 'pvt' }">
               <input class="hidden-checkbox"
                      type="checkbox"
                      tabindex="-1"
-                     :checked="activeRightTabName === 'pvt'"
+                     :checked="mainSettings.activeRightTabName === 'pvt'"
                      @change="setActiveRightTabName($event, 'pvt')"/>
               <div class="right-side-box">
                 <div class="right-title-block no-gutter col-12">
@@ -307,74 +307,74 @@
                   <img src="/img/gno/bottom-arrow.svg" alt="">
                 </span>
 
-                <div class="right-block-details" v-show="activeRightTabName === 'pvt'">
+                <div class="right-block-details" v-show="mainSettings.activeRightTabName === 'pvt'">
                   <div class="pvt-data no-gutter col-7">{{ trans('pgno.p_nas') }}</div>
-                  <div v-if="!isEditing" class="pvt-data left-border-line right-block-data no-gutter col-5">
+                  <div v-if="!mainSettings.isEditing" class="pvt-data left-border-line right-block-data no-gutter col-5">
                     {{ well.PBubblePoint }} {{ trans('measurements.atm') }}
                   </div>
-                  <input v-if="isEditing" v-model="well.PBubblePoint"
+                  <input v-if="mainSettings.isEditing" v-model="well.PBubblePoint"
                          class="pvt-data left-border-line right-block-data no-gutter col-5 editable-input"
                          type="text"/>
 
                   <div class="pvt-data top-border-line no-gutter col-7">{{ trans('pgno.gf') }}</div>
-                  <div v-if="!isEditing"
+                  <div v-if="!mainSettings.isEditing"
                        class="pvt-data left-border-line top-border-line right-block-data no-gutter col-5">
                     {{ well.gor }} {{ trans('measurements.m3/t') }}
                   </div>
-                  <input v-if="isEditing" v-model="well.gor"
+                  <input v-if="mainSettings.isEditing" v-model="well.gor"
                          class="pvt-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                          type="text"/>
 
                   <div class="pvt-data top-border-line no-gutter col-7">{{ trans('pgno.t_pl') }}</div>
-                  <div v-if="!isEditing"
+                  <div v-if="!mainSettings.isEditing"
                        class="pvt-data left-border-line top-border-line right-block-data no-gutter col-5">
                     {{ well.tRes }} {{ trans('measurements.celsius') }}
                   </div>
-                  <input v-if="isEditing" v-model="well.tRes"
+                  <input v-if="mainSettings.isEditing" v-model="well.tRes"
                          class="pvt-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                          type="text"/>
 
                   <div class="pvt-data top-border-line no-gutter col-7">
                     {{ trans('pgno.vyazkost_nefti') }}
                   </div>
-                  <div v-if="!isEditing"
+                  <div v-if="!mainSettings.isEditing"
                        class="pvt-data left-border-line top-border-line right-block-data no-gutter col-5">
                     {{ well.viscOilRc }} {{ trans('measurements.spz') }}
                   </div>
-                  <input v-if="isEditing" v-model="well.viscOilRc"
+                  <input v-if="mainSettings.isEditing" v-model="well.viscOilRc"
                          class="pvt-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                          type="text"/>
 
                   <div class="pvt-data top-border-line no-gutter col-7">
                     {{ trans('pgno.vyazkost_vody') }}
                   </div>
-                  <div v-if="!isEditing"
+                  <div v-if="!mainSettings.isEditing"
                        class="pvt-data left-border-line top-border-line right-block-data no-gutter col-5">
                     {{ well.viscWatRc }} {{ trans('measurements.spz') }}
                   </div>
-                  <input v-if="isEditing" v-model="well.viscWatRc"
+                  <input v-if="mainSettings.isEditing" v-model="well.viscWatRc"
                          class="pvt-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                          type="text"/>
 
                   <div class="pvt-data top-border-line no-gutter col-7">
                     {{ trans('pgno.plotnost_nefti') }}
                   </div>
-                  <div v-if="!isEditing"
+                  <div v-if="!mainSettings.isEditing"
                        class="pvt-data left-border-line top-border-line right-block-data no-gutter col-5">
                     {{ well.densOil }} {{ trans('measurements.g/sm3') }}
                   </div>
-                  <input v-if="isEditing" v-model="well.densOil"
+                  <input v-if="mainSettings.isEditing" v-model="well.densOil"
                          class="pvt-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                          type="text" @change="changeValue('dens_oil', densOil)"/>
 
                   <div class="pvt-data top-border-line no-gutter col-7">
                     {{ trans('pgno.plotnost_vody') }}
                   </div>
-                  <div v-if="!isEditing"
+                  <div v-if="!mainSettings.isEditing"
                        class="pvt-data left-border-line top-border-line right-block-data no-gutter col-5">
                     {{ well.densLiq }} {{ trans('measurements.g/sm3') }}
                   </div>
-                  <input v-if="isEditing" v-model="well.densLiq"
+                  <input v-if="mainSettings.isEditing" v-model="well.densLiq"
                          class="pvt-data left-border-line top-border-line right-block-data no-gutter col-5 editable-input"
                          type="text"/>
                 </div>
@@ -382,11 +382,11 @@
             </div>
 
             <div class="spoiler"
-                 :class="{ 'opened': activeRightTabName === 'techmode' || (windowWidth <= 1300 && windowWidth > 991) }">
+                 :class="{ 'opened': mainSettings.activeRightTabName === 'techmode' || (windowWidth <= 1300 && windowWidth > 991) }">
               <input style="width: 845px; height: 45px;"
                      type="checkbox"
                      tabindex="-1"
-                     :checked="activeRightTabName === 'techmode'"
+                     :checked="mainSettings.activeRightTabName === 'techmode'"
                      @click="setActiveRightTabName($event, 'techmode')"/>
               <div class="right-side-box">
                 <div class="right-title-block no-gutter col-12">
@@ -402,7 +402,7 @@
                    <img src="/img/gno/bottom-arrow.svg" alt="">
                   </span>
                 <div class="right-block-details"
-                     v-show="activeRightTabName === 'techmode' || (windowWidth <= 1300 && windowWidth > 991)">
+                     v-show="mainSettings.activeRightTabName === 'techmode' || (windowWidth <= 1300 && windowWidth > 991)">
                   <div class="tech-data no-gutter col-7">{{ trans('pgno.q_zhidkosti') }}</div>
                   <div class="tech-data left-border-line right-block-data no-gutter col-5">
                     {{ well.qL }} {{ trans('measurements.m3/day') }}
@@ -469,7 +469,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <inclinometry @update-hpump="closeInclModal($event)">
+                    <inclinometry @update-hpump="closeInclModal()" @no-incl="closeInclModal('noIncl')">
                     </inclinometry>
                   </div>
                 </div>
@@ -645,7 +645,7 @@
             </modal>
 
 
-              <div class="gno-line-chart" v-if="isVisibleChart">
+              <div class="gno-line-chart" v-if="mainSettings.isVisibleChart">
                 <div class="flex pt-2">
 
                   <div class="gno-curve-table-title pl-4 pr-4 fg-0">
@@ -671,7 +671,7 @@
               </div>
 
 
-              <div class="shgn-composition-wrapper" v-if="!isVisibleChart">
+              <div class="shgn-composition-wrapper" v-if="!mainSettings.isVisibleChart">
                 <div class="gno-shgn-block-title">
                   {{ trans('pgno.komponovka_shgn') }}
                 </div>
@@ -1295,10 +1295,10 @@
                 <!--Конец параметров подбора-->
                 <div class="col-12 px-2 gno-main-green-button">
                   <div v-if="curveSettings.expChoosen!=='ФОН'" class="podbor-gno-button col-12" @click="onPgnoClick()">
-                    {{ isVisibleChart ? podborGnoTitle : inflowCurveTitle }}
+                    {{ mainSettings.isVisibleChart ? this.trans("pgno.podbor_gno") : this.trans("pgno.krivaya_pritoka") }}
                   </div>
                   <div v-if="curveSettings.expChoosen==='ФОН'" class="podbor-gno-button col-12" @click="openSensAnalysisModal()">
-                    {{ curveSettings.expChoosen==='ФОН' ? "Анализ чувствительности" : inflowCurveTitle }}
+                    {{ curveSettings.expChoosen==='ФОН' ? "Анализ чувствительности" : this.trans("pgno.krivaya_pritoka") }}
                   </div>
                 </div>
               </div>

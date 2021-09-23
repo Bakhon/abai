@@ -224,12 +224,14 @@ Vue.component('admin-user-settings', require('./components/admin/user/Settings.v
 Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);
 Vue.component('visual-center-daily-approve', require('./components/visualcenter3/importForm/dailyApprove/index.vue').default);
 Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/index.vue').default);
+Vue.component('visual-center-oil-dynamic', require('./components/visualcenter3/oilDynamic/index.vue').default);
 
 Vue.component('digital-drilling', require('./components/DigitalDrilling/digital-drilling').default);
 Vue.component('digital-drilling-menu', require('./components/DigitalDrilling/menu').default);
 Vue.component('window-head', require('./components/DigitalDrilling/WindowHead').default);
 
 Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
+Vue.component('import-daily-raport', require('./components/DigitalDrilling/ImportDailyRaport').default);
 
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 
@@ -246,6 +248,10 @@ Vue.prototype.currentLang = window.current_lang;
 Vue.prototype.$urlLink = url => urlLink(url);
 Vue.prototype.$currentPageUrl = currentUrlPage;
 Vue.prototype.trans = require('./VueTranslation/Translation').default.translate;
+
+String.prototype.toFixed = function (decimalPlaces) {
+    return parseFloat(this).toFixed(decimalPlaces);
+};
 
 
 /**

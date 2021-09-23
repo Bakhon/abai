@@ -11,6 +11,9 @@ use App\Models\ComplicationMonitoring\ManualWell;
 use App\Models\ComplicationMonitoring\ManualZu;
 use App\Models\ComplicationMonitoring\Ngdu;
 use App\Models\ComplicationMonitoring\OilPipe;
+use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\OmgNGDUWell;
+use App\Models\ComplicationMonitoring\OmgNGDUZu;
 use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\ComplicationMonitoring\Well;
@@ -512,7 +515,7 @@ class TechMapController extends Controller
         }
 
         $gu = $id >= 10000 ? ManualGu::find($id) : Gu::find($id);
-
+        OmgNGDU::where('gu_id', $gu->id)->delete();
         $gu->delete();
 
         return response()->json(
@@ -534,7 +537,7 @@ class TechMapController extends Controller
         }
 
         $zu = $id >= 10000 ? ManualZu::find($id) : Zu::find($id);
-
+        OmgNGDUZu::where('zu_id', $zu->id)->delete();
         $zu->delete();
 
         return response()->json(
@@ -556,7 +559,7 @@ class TechMapController extends Controller
         }
 
         $well = $id >= 10000 ? ManualWell::find($id) : Well::find($id);
-
+        OmgNGDUWell::where('well_id', $well->id)->delete();
         $well->delete();
 
         return response()->json(
@@ -631,9 +634,9 @@ class TechMapController extends Controller
         ];
     }
 
-    public function updatePipePoints(\Illuminate\Database\Eloquent\Collection $pipes, string $name, string $point) :void
+    public function updatePipePoints(\Illuminate\Database\Eloquent\Collection $pipes, string $name, string $point): void
     {
-        if ($pipes){
+        if ($pipes) {
             foreach ($pipes as $pipe) {
                 $pipe->$point = $name;
                 $pipe->save();

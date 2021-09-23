@@ -12,7 +12,7 @@
                class="color-box"
                :style="{backgroundColor: getColorArray(legend.color)}"></div>
 
-          <span>{{ legend.name }}</span>
+          <span>{{ legend.name.replace('{referentValue}', referentValue) }}</span>
         </div>
       </b-card>
     </b-collapse>
@@ -30,6 +30,10 @@ export default {
       type: String,
       default: 'default',
     },
+    referentValue: {
+      type: Number,
+      default: 10,
+    }
   },
   methods: {
     getMapLegends () {

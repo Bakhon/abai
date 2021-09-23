@@ -22,6 +22,7 @@ class AgzuCreateRequest extends FormRequest
             'current_state' => 'nullable|string',
             'date_of_repair' => 'nullable|date',
             'type_of_repair' => 'nullable|date',
+            'certificate' => 'nullable|string'
         ];
     }
 }

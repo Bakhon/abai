@@ -435,5 +435,13 @@ return array (
   'reasonExplanations' => 'Причины отклонений',
   'resolvingDate' => 'Дата устранения инцидента',
   'emergencyFinished' => 'Завершенные',
-  'emergencyOpen' => 'Открытые'
+  'emergencyOpen' => 'Открытые',
+  'streamInjection' => 'Закачка пара',
+  'oilCondensateDynamic' => 'Динамика суточной добычи нефти и конденсата, тонн',
+  'execution' => 'Выполнение',
+  'oilDynamicDaily' => 'Динамика суточной добычи нефти',
+  'accumulatedOilDynamicYearly' => 'Динамика накопленной добычи нефти с начала года',
+  'nkKmg' => 'НК КМГ (консолид.)',
+  'nkKmgOperating' => 'Опер. активы НК КМГ (консолид.)',
+  'companyName' => 'Наименование компаний'
 );

@@ -33,7 +33,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "oil",
-                "validation" : "gte:0|lte:1000000",
+                "validation": "required|gte:0|lte:1000000",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -48,7 +48,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "water",
-                "validation" : "gte:0|lte:100000",
+                "validation": "required|gte:0|lte:100000",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -63,7 +63,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "volume",
-                "validation" : "gte:0.9|lte:10",
+                "validation": "required|gte:0.9|lte:10",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -78,7 +78,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "r_oil",
-                "validation" : "gte:0.7|lte:1.05",
+                "validation": "required|gte:0.7|lte:1.05",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -108,7 +108,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "pnac",
-                "validation" : "gte:0|lte:1500",
+                "validation": "required|gte:0|lte:1500",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -123,7 +123,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "gf",
-                "validation" : "gte:0",
+                "validation": "required|gte:0",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -138,7 +138,7 @@
                 "table": "prod.pvt_data",
                 "type": "numeric",
                 "title": "tpl",
-                "validation" : "gte:0|lte:250",
+                "validation": "required|gte:0|lte:250",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -1440,7 +1440,7 @@
                 "table": "prod.res_gas_char",
                 "type": "numeric",
                 "title": "density",
-                "validation":"gte:0|lte:1",
+                "validation":"required|gte:0|lte:1",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -1470,7 +1470,7 @@
                 "table": "prod.res_gas_char",
                 "type": "numeric",
                 "title": "viscosity",
-                "validation":"gte:0|lte:10",
+                "validation":"required|gte:0|lte:10",
                 "depends_on": [
                   {
                     "field": "research_type",
