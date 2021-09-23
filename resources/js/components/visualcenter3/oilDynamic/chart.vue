@@ -54,7 +54,7 @@ export default {
                     enabled: false,
                 },
                 labels: this.chartData.labels,
-                colors: ['#009847','#2E50E9'],
+                colors: ['#999DC0','#2E50E9'],
                 tooltip: {
                     enabled: true,
                     theme: 'dark',

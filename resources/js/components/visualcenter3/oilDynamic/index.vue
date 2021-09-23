@@ -419,6 +419,7 @@ export default {
     padding-top: 15px;
     height: 100%;
     font-size: 20px;
+    border-radius: 10px;
     span {
         font-family: "Bold";
         font-size: 34px;
