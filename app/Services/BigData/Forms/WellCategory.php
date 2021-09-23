@@ -288,7 +288,7 @@ class WellCategory extends PlainForm
 
     use DateMoreThanValidationTrait;
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 

@@ -14,7 +14,7 @@ class InjectionWells extends PlainForm
 
     protected $configurationFileName = 'injection_wells';
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 

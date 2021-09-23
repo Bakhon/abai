@@ -103,7 +103,7 @@ abstract class DailyReports extends TableForm
         return $startDate;
     }
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 
