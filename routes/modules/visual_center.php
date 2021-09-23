@@ -90,6 +90,8 @@ Route::group(
                 Route::get('/kpd-tree-catalog', 'VisCenter\Kpd\KpdTreeController@getAll');
                 Route::post('/kpd-tree-catalog-store', 'VisCenter\Kpd\KpdTreeController@storeKpd');
                 Route::get('/get-fond-daily-chart', 'VisCenter\AdditionalParams\ProductionFondController@getDailyDataByDzo');
+                Route::get('/oil-dynamic', 'VisCenter\OilDynamic@oilDynamic')->name('oil-dynamic');
+                Route::get('/oil-dynamic-daily', 'VisCenter\OilDynamic@getDailyProductionData');
                 Route::get('/get-production-params-by-category', 'VisCenter\ProductionParams\VisualCenterController@getProductionParamsByCategory');
             }
         );
