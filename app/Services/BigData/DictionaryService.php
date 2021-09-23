@@ -580,13 +580,13 @@ class DictionaryService
     {
         $items = DB::connection('tbd')
             ->table('dict.well_tech_state_type as w')
-            ->select('w.id', 'w.name_ru as label')
+            ->select('w.id', 'w.name_ru as label', 'w.parent as parent')
             ->distinct()
             ->orderBy('label', 'asc')
             ->leftJoin(
                 'dict.well_tech_state_type as wp',
                 function ($join) {
-                    $join->on('wp.parent', '=', 'w.id');
+                    $join->on('wp.id', '=', 'w.parent');
                 }
             )
             ->get()
@@ -596,7 +596,7 @@ class DictionaryService
                 }
             )
             ->toArray();
-
+        
         return $this->generateTree((array)$items);
     }
 
