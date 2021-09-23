@@ -67,7 +67,7 @@ export default {
 
         let lon = +point[1].replace(')', '')
 
-        if (Math.abs(lat) > 90 || Math.abs(lon) > 90) return;
+        if (Math.abs(lat) > 90 || Math.abs(lon) > 180) return;
 
         points.push({
           uwi: well.uwi,
