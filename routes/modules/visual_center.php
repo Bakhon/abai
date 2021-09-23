@@ -62,8 +62,8 @@ Route::group(
                 Route::post('/dzo-excel-otm', 'VisCenter\ExcelForm\ExcelFormOtmController@store');
                 Route::get('/get-dzo-current-chemistry', 'VisCenter\ExcelForm\ExcelFormChemistryController@getDzoCurrentChemistry');
                 Route::get('/get-dzo-current-otm', 'VisCenter\ExcelForm\ExcelFormOtmController@getDzoCurrentOtm');
-                Route::get('hive-data-from-avocet', function() {
-                    Artisan::call('hive-data-from-avocet:cron');
+                Route::get('store-kgm-reports-from-avocet', function() {
+                    Artisan::call('store-kgm-reports-from-avocet:cron');
                 });
                 Route::post('dzo-excel-form', 'VisCenter\ExcelForm\ExcelFormController@store');
                 Route::post('dzo-chemistry-excel-form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
@@ -89,6 +89,9 @@ Route::group(
                 Route::get('/kpd-tree-catalog', 'VisCenter\Kpd\KpdTreeController@getAll');
                 Route::post('/kpd-tree-catalog-store', 'VisCenter\Kpd\KpdTreeController@storeKpd');
                 Route::get('/get-fond-daily-chart', 'VisCenter\AdditionalParams\ProductionFondController@getDailyDataByDzo');
+                Route::get('/oil-dynamic', 'VisCenter\OilDynamic@oilDynamic')->name('oil-dynamic');
+                Route::get('/oil-dynamic-daily', 'VisCenter\OilDynamic@getDailyProductionData');
+                Route::get('/get-production-params-by-category', 'VisCenter\ProductionParams\VisualCenterController@getProductionParamsByCategory');
             }
         );
     }

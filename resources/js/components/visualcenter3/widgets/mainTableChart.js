@@ -22,36 +22,7 @@ export default {
                 differenceOnEachMonth: 0,
             },
             chartOutput: [],
-            consolidatedOptions: {
-                'ОМГ': {
-                    'dzo': 'ОМГК',
-                    'plan': 'gk_plan',
-                    'fact': 'gk_fact',
-                    'opek': 'gk_plan',
-                    'formula': (fieldName,input) => input[fieldName]
-                },
-                'ПКК': {
-                    'dzo': 'ПККР',
-                    'plan': 'oil_plan',
-                    'fact': 'oil_fact',
-                    'opek': 'oil_opek_plan',
-                    'formula': (fieldName,input) => Math.round(input[fieldName] * 0.33)
-                },
-                'КГМ': {
-                    'dzo': 'КГМКМГ',
-                    'plan': 'oil_plan',
-                    'fact': 'oil_fact',
-                    'opek': 'oil_opek_plan',
-                    'formula': (fieldName,input) => Math.round(input[fieldName] * 0.5 * 0.33)
-                },
-                'АГ': {
-                    'dzo': 'АГ',
-                    'plan': 'gk_plan',
-                    'fact': 'gk_fact',
-                    'opek': 'gk_plan',
-                    'formula': (fieldName,input) => input[fieldName]
-                },
-            }
+            oilResidueChartName: this.trans('visualcenter.ostatokNefti'),
         };
     },
     methods: {
@@ -80,7 +51,9 @@ export default {
             } else {
                 this.buttonTargetPlan = "button-tab-highlighted";
             }
-            this.changeMenu2('yearly');
+            this.switchView('year');
+            this.productionChartData = this.getSummaryForChart();
+            this.exportDzoCompaniesSummaryForChart(this.productionChartData);
         },
 
         getMonthlyPlansInYear(summaryForChart,dzoName) {
@@ -158,24 +131,8 @@ export default {
                 this.dzoYearlyData.differenceOnEachMonth = Math.round((this.dzoYearlyData.plan - this.dzoYearlyData.totallyFact) / monthsLeftInYear);
                 this.setTotalFact(monthlyFact);
             }
+
             return this.dzoYearlyData.differenceOnEachMonth;
-        },
-
-        setTotalFact(monthlyFact) {
-            this.dzoYearlyData.totallyFact += monthlyFact;
-        },
-
-        getProductionData(data, dzoName) {
-            let summary = data.filter(row => dzoName === row.dzo);
-            let groupedByTime = _(summary)
-                .groupBy("__time")
-                .map((items, time) => ({
-                    time: time,
-                    productionFactForChart: _.round(_.sumBy(items, this.factFieldName), 0),
-                    productionPlanForChart: _.round(_.sumBy(items, this.planFieldName), 0),
-                }))
-                .value();
-            return this.getMonthlyPlansInYear(groupedByTime,dzoName);
         },
 
         getSummaryTargetPlan(yearlyData) {
@@ -188,29 +145,8 @@ export default {
             return targetPlan;
         },
 
-        getProductionForChart(data) {
-            let summary = this.getFilteredCompaniesList(data);
-            if (summary.length === 0) {
-                summary = data;
-            }
-
-            let summaryForChart = _(summary)
-                .groupBy("date")
-                .map((__time, id) => ({
-                    time: id,
-                    dzo: 'dzo',
-                    productionFactForChart: _.round(_.sumBy(__time, this.factFieldName), 0),
-                    productionPlanForChart: _.round(_.sumBy(__time, this.planFieldName), 0),
-                    productionPlanForChart2: _.round(_.sumBy(__time, this.opecFieldNameForChart), 0),
-                }))
-                .value();
-
-            if (this.isFilterTargetPlanActive) {
-                let monthlyPlansInYear = this.getMonthlyPlansInYear(summaryForChart);
-                summaryForChart = monthlyPlansInYear;
-            }
-
-            return summaryForChart;
+        setTotalFact(monthlyFact) {
+            this.dzoYearlyData.totallyFact += monthlyFact;
         },
     }
 }

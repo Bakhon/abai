@@ -1,82 +1,188 @@
+<script src="js/PodborGTM.js"></script>
 <template>
   <div>
     <div class="row mx-0 mt-lg-2 gtm">
-      <div class="gtm-dark col-lg-10 p-0" @click="closeTree()">
+      <div class="col-lg-10 lg-border-block" @click="closeTree()">
         <div class="row col-12 p-0 m-0">
-          <div class="col-6 d-none d-lg-block p-0 pl-1">
-            <div class="h-100">
-              <div class="block-header pb-0 pl-2 pt-1">
-                {{ trans("paegtm.wells-candidates") }}
-              </div>
-              <div class="p-1 pl-2">
-                <table class="table text-center text-white podbor-middle-table">
-                  <thead>
-                  <tr>
-                    <th class="align-middle" rowspan="2">{{ trans("paegtm.borehole_number") }}</th>
-                    <th class="align-middle" rowspan="2">{{ trans("paegtm.gtmType") }}</th>
-                    <th colspan="3">{{ trans("paegtm.forecast_indicators") }}</th>
-                  </tr>
-                  <tr>
-                    <th>{{ trans("paegtm.q_liq") }}</th>
-                    <th>{{ trans("paegtm.q_oil") }}</th>
-                    <th>{{ trans("paegtm.water_cut") }} %</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr v-for="candidate in candidates">
-                    <td>{{ candidate[0] }}</td>
-                    <td>{{ candidate[1] }}</td>
-                    <td>{{ candidate[2] }}</td>
-                    <td>{{ candidate[3] }}</td>
-                    <td>{{ candidate[4] }}</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
           <div class="col-6 d-none d-lg-block p-0">
-            <div class="h-100">
-              <div class="block-header pb-0 pl-2 pt-1">
-                {{ trans("paegtm.current_qualifiers_map") }}
+            <div class="gtm-dark h-100">
+              <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
+                <div>
+                  {{ this.trans("paegtm.wells-candidates") }}
+                </div>
+                <div class="d-flex">
+                  <div class="pr-3 pb-1">
+                    <img src="/img/GTM/download.svg" alt="">
+                  </div>
+                  <div class="pr-3 pb-1">
+                    <img src="/img/GTM/maximize.svg" alt="">
+                  </div>
+                </div>
               </div>
-              <div class="p-3">
-                <img src="/img/GTM/map.svg" class="gtm-map-img">
+              <div class="p-0 pl-0 table-pgtm">
+                <div v-if="!table.main_data.data" >
+                  <div class="border-block-out">
+                    <div class="border-block-in">
+                  <div class="p-3 empty-data-title">
+                    {{ this.trans("paegtm.calc-empty-well") }}
+                  </div>
+                      </div>
+                    </div>
+                </div>
+                <div v-else>
+                  <div class="border-block-out">
+                    <div class="border-block-in">
+                    <table class="table text-center text-white podbor-middle-table">
+                    <thead>
+                    <tr>
+                      <th v-for="(row, idx) in table.main_data.header" :key="idx"
+                          :colspan="Array.isArray(row) ? row.length : ''"
+                          :rowspan="Array.isArray(row) ? '' : 2"
+                      >
+                        {{ idx }}
+                      </th>
+                    </tr>
+                    <tr>
+                      <template v-for="(row) in table.main_data.header">
+                        <template v-if="Array.isArray(row)">
+                          <th v-for="r in row">
+                            {{ r }}
+                          </th>
+                        </template>
+                      </template>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="c in table.main_data.data">
+                      <th class="bg-body" v-for="row in c" @click="onClickWell(row)">{{ row }}</th>
+                    </tr>
+                    </tbody>
+                  </table>
+                      </div>
+                    </div>
+                </div>
               </div>
             </div>
           </div>
+
+
+          <div class="col-6 d-none d-lg-block p-0 pl-1">
+            <div class="gtm-dark h-100">
+              <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
+                <div>
+                  {{ this.trans("paegtm.current_qualifiers_map") }}
+                </div>
+                <div class="d-flex">
+                  <div class="pr-3">
+                    <img src="/img/GTM/download.svg" alt="">
+                  </div>
+                  <div class="pr-3">
+                    <img src="/img/GTM/maximize.svg" alt="">
+                  </div>
+                  <div class="pr-3 pb-1" @click="onMinimizeChart">
+                    <img src="/img/GTM/maximize-arrow.svg" alt="">
+                  </div>
+                </div>
+
+              </div>
+                <div class="border-block-out">
+                  <div class="border-block-in">
+                    <div class="p-3">
+                      <img src="/img/GTM/map.svg" class="gtm-map-img">
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </div>
         </div>
-        <div class="row col-12 p-0 m-0 pb-2">
-          <div class="col-6 d-none d-lg-block p-0 pl-1">
-            <div class="h-100">
-              <div class="block-header pb-0 pl-2 pt-1">
-                {{ trans("paegtm.well") }} 4931
+        <div class="row col-12 p-0 m-0 pt-1">
+          <div v-if="lineChartSeries === null" class="col-6 d-none d-lg-block p-0">
+            <div class="border-block-out">
+              <div class="border-block-in">
+            <div class="p-3 gtm-dark empty-data-title">
+              {{ this.trans("paegtm.empty-well-chart") }}
+            </div>
+                </div>
               </div>
-              <div class="p-1 pl-2 mh-370">
-                <gtm-line-chart :chartdata="{labels: lineLabels, datasets: lineChartData}" :options="lineChartOptions" :height="360"></gtm-line-chart>
+          </div>
+
+          <div v-else class="col-6 d-none d-lg-block p-0 pt-1">
+            <div class="gtm-dark h-100">
+              <div  class="block-header pb-0 pl-2 pt-1 d-flex border-color">
+                <div>
+                  {{ this.trans("paegtm.well") }} {{ wellNumber }}
+                </div>
+
+              <div class="d-flex">
+                <div class="pr-3 pb-1">
+                  <img src="/img/GTM/download.svg" alt="">
+                </div>
+                <div class="pr-3">
+                  <img src="/img/GTM/maximize.svg" alt="">
+                </div>
+              </div>
+              </div>
+              <div class="border-block-out">
+                <div class="border-block-in" >
+                  <apexchart
+                      :height="360"
+                      :options="lineChartOptions"
+                      :series="lineChartSeries"
+                  ></apexchart>
+                  </div>
               </div>
             </div>
           </div>
-          <div class="col-6 d-none d-lg-block p-0">
-            <div class="h-100 pb-2">
-              <div class="block-header pb-0 pl-2">
-                {{ trans("paegtm.factor_analysis") }}, {{ trans("measurements.thousand_tons") }}
-              </div>
-              <div class="p-1 pl-2">
-                <img class="demo-img" src="/img/GTM/podbo_demo_graph.svg" height="350">
+
+          <div v-if="waterFallChartSeries === null" class="col-6 d-none d-lg-block p-0 pl-1">
+            <div class="border-block-out">
+              <div class="border-block-in">
+                <div class="p-3 gtm-dark empty-data-title">
+                  {{ this.trans("paegtm.empty-well-chart") }}
+                </div>
               </div>
             </div>
           </div>
+
+          <div v-else class="col-6 d-none d-lg-block p-0 pt-1 pl-1">
+            <div class="gtm-dark h-100">
+              <div  class="block-header pb-0 pl-2 pt-1 d-flex border-color">
+                <div>
+                  {{ this.trans("paegtm.factor_analysis") }}, {{ this.trans("measurements.thousand_tons") }}
+                </div>
+
+                <div class="d-flex">
+                  <div class="pr-3 pb-1">
+                    <img src="/img/GTM/download.svg" alt="">
+                  </div>
+                  <div class="pr-3">
+                    <img src="/img/GTM/maximize.svg" alt="">
+                  </div>
+                </div>
+              </div>
+              <div class="border-block-out">
+                <div class="border-block-in">
+                  <apexchart
+                      :height="360"
+                      :options="waterFallChartOptions"
+                      :series="waterFallChartSeries"
+                  ></apexchart>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
       </div>
       <div class="col-lg-2 p-0 pl-2 pr-1">
         <div class="block-header gtm-dark p-2">
           <div class="block-header p-2">
-            {{ trans("paegtm.period") }}
+            {{ this.trans("paegtm.period") }}
           </div>
-          <div class="mt-2 row m-0">
-            <gtm-date-picker></gtm-date-picker>
-          </div>
+          <gtm-date-picker
+          :showSettings="true"
+          ></gtm-date-picker>
         </div>
 
         <div class="block-header gtm-dark">
@@ -118,8 +224,8 @@
           </div>
         </div>
 
-        <div class="gtm-dark mt-2">
-          <div class="block-header p-2 text-center calc-button">
+        <div class="gtm-dark mt-2 p-2" @click="postTreeData(treeData)">
+          <div class="block-header p-2 text-center calc-button" >
             {{ trans("paegtm.calc") }}
           </div>
         </div>
@@ -132,7 +238,8 @@
               {{ trans("paegtm.potentialSearch") }}
             </div>
 
-            <img class="menu-item-arrow tabs-arrow m-2 my-auto"  :src="showBlock === 1 ? menuArrowUp : menuArrowDown" width="12" height="12" alt="">
+            <img class="menu-item-arrow tabs-arrow m-2 my-auto" :src="showBlock === 1 ? menuArrowUp : menuArrowDown"
+                 width="12" height="12" alt="">
 
           </div>
           <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 2 }">
@@ -151,6 +258,7 @@
                   :treeData="treeDataChild"
                   :key="treeDataChild.name"
                   @node-click="nodeClick"
+                  @event-emit="onClickableValue()"
               ></gtm-tree>
             </div>
           </div>
@@ -162,7 +270,8 @@
               {{ trans("paegtm.nearWells") }}
             </div>
 
-            <img class="menu-item-arrow tabs-arrow m-2 my-auto"  :src="showBlock === 2 ? menuArrowUp : menuArrowDown" width="12" height="12" alt="">
+            <img class="menu-item-arrow tabs-arrow m-2 my-auto" :src="showBlock === 2 ? menuArrowUp : menuArrowDown"
+                 width="12" height="12" alt="">
 
           </div>
 
@@ -175,7 +284,7 @@
                 <input class="search-input w-75" type="text" placeholder="Поиск по скважине">
                 <button class="search-button pl-2 pr-2">{{ trans("paegtm.search") }}</button>
               </div>
-              <div class="gtm-dark text-white pl-2" style="min-height: 213px;">
+              <div class="gtm-dark text-white h-233 pl-2">
                 {{ trans("paegtm.all_wells") }}
               </div>
             </div>
@@ -185,176 +294,59 @@
     </div>
   </div>
 </template>
-<script>
-import structureMain from '../mock-data/structure_main.json'
-import vSelect from 'vue-select'
-import 'vue-select/dist/vue-select.css'
-export default {
-    components: {
-      vSelect
-    },
-    data: function () {
-        return {
-          showBlock: 2,
-          menuArrowUp: '/img/GTM/icon_menu_arrow_up.svg',
-          menuArrowDown: '/img/GTM/icon_menu_arrow_down.svg',
-          dzosForFilter: [
-            { name: 'АО "Озенмунайгаз"', code: 'omg'},
-            { name: 'АО "ЭмбаМунайГаз"',code: 'emba'},
-            { name: 'АО "Мангистаумунайгаз"',code: 'mmg'},
-            { name: 'АО "Каражанбасмунай"',code: 'krm'},
-            { name: 'ТОО "СП "Казгермунай"',code: 'kazger'},
-            { name: 'ТОО "Казтуркмунай"',code: 'ktm'},
-            { name: 'ТОО "Казахойл Актобе"',code: 'koa'},
-          ],
-          oilFieldsForFilter: [
-            { name: 'Акшабулак', code: 'oil_1'},
-            { name: 'Актобе', code: 'oil_2'},
-            { name: 'Алтыколь', code: 'oil_3'},
-            { name: 'Жетыбай', code: 'oil_4'},
-            { name: 'Жыланды', code: 'oil_5'},
-            { name: 'Жыланды', code: 'oil_6'},
-            { name: 'Каламкас', code: 'oil_7'},
-            { name: 'Каражанбас', code: 'oil_8'},
-          ],
-          objectsForFilter: [{ name: 'Вариант 1'}],
-          structuresForFilter: [{ name: 'Вариант 1'}],
-          gusForFilter: [{ name: 'Вариант 1'}],
-            candidates: [
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-                [4320, 'ГРП', 7.9, 5.53, 70],
-            ],
-            treeData: structureMain.finder_model.children,
-            lineLabels: ['Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июнь', 'Июль', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.'],
-            lineChartData: [
-                {
-                    label: 'Пласт',
-                    borderColor: "rgba(242, 126, 49, 1)",
-                    data: [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500],
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 0,
-                    pointBorderColor: "#FFFFFF",
-                },
-                {
-                    label: 'Обводненность',
-                    borderColor: "rgba(57, 81, 206, 1)",
-                    data: [3200, 4700, 1950, 2800, 2400, 3300, 800, 1100, 3100, 4400, 1000, 2700],
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 0,
-                    pointBorderColor: "#FFFFFF",
-                },
-                {
-                    label: 'Qн (По МЭР), м3/сут',
-                    borderColor: "rgba(239, 83, 80, 1)",
-                    backgroundColor: 'rgba(239, 83, 80, 0.2)',
-                    data: [500, 700, 900, 500, 1100, 1500, 1000, 560, 780, 1300, 2000, 1750],
-                    fill: true,
-                    showLine: true,
-                    pointRadius: 0,
-                    pointBorderColor: "#FFFFFF",
-                },
-                {
-                    label: 'Qж (По МЭР), м3/сут',
-                    borderColor: "rgba(76, 175, 80, 1)",
-                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
-                    data: [2800, 4700, 2400, 1000, 2400, 200, 2800, 3400, 2450, 2000, 1000, 800],
-                    fill: true,
-                    showLine: true,
-                    pointRadius: 0,
-                    pointBorderColor: "#FFFFFF",
-                }
-            ],
-            lineChartOptions: {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend: {
-                    position: 'bottom',
-                },
-                scales: {
-                    yAxes: [{
-                        gridLines: {
-                            color: '#3C4270',
-                        },
-                        ticks: {
-                            display: false,
-                        },
-                    }],
-                    xAxes: [{
-                        gridLines: {
-                            color: '#3C4270',
-                        },
-                        ticks: {
-                            display: false,
-                        },
-                    }],
-                }
-            },
-            treeSettingHeader: '',
-            treeSettingBody: '',
-          treeSettingComponent: null,
-          treeChildrenComponent: null
-        };
-    },
-    methods: {
-        closeTree() {
-          this.treeChildrenComponent = 0;
-          this.treeSettingComponent = 0;
-        },
-        nodeClick (data) {
-            this.$_setTreeChildrenComponent(data);
-            this.treeSettingComponent = {
-                name: 'gtm-tree-setting',
-                data: function () {
-                    return {
-                        treeData: {
-                            children: data.node.setting_model.children
-                        },
-                    }
-                },
-                template: '<div class="block-header text-center"><div>'+ data.node.name + '</div><gtm-tree :treeData="treeData"></gtm-tree></div>',
-            };
-        },
-        $_setTreeChildrenComponent(data) {
-            let node = data.node;
-            if (node.ioi_finder_model === undefined) {
-                if (data.hideIoiMenu) {
-                    this.treeChildrenComponent = null;
-                    return;
-                } else {
-                    return;
-                }
-            }
-            this.treeChildrenComponent = {
-                name: 'gtm-tree-setting',
-                data: function () {
-                    return {
-                        treeData: {
-                            children: node.ioi_finder_model.children
-                        },
-                    }
-                },
-                template: '<div>' +
-                          '       <div class="block-header text-center">'+ data.node.name +
-                                '</div><gtm-tree :treeData="treeData" @node-click="handleClick">' +
-                                '</gtm-tree></div>',
-                methods: {
-                    handleClick (data) {
-                        this.$emit('node-click', {node: data.node, hideIoiMenu: false});
-                    },
-                }
-            };
-        },
-    },
+<script src="./js/PodborGTM.js"></script>
+<style scoped>
+.h-233 {
+  min-height: 233px;
 }
-</script>
+
+.lg-border-block {
+  padding: 4px;
+  border: 6px solid #272953;
+}
+
+.empty-data-title {
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  padding-top: 20px;
+}
+
+.border-color {
+  background-color: #323370
+}
+
+.border-block-out {
+  border: 8px solid #363B68
+}
+
+.border-block-in {
+  border: 8px solid #1A214A
+}
+
+.table-pgtm {
+  height: 400px;
+  overflow: auto;
+}
+
+.p-3 {
+  height: 368px;
+}
+
+.bg-body {
+  background-color: #20274f;
+}
+
+::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #272953;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #656a8a;
+}
+</style>

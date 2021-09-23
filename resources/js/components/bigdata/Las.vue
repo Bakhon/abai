@@ -1,6 +1,6 @@
 <template>
   <div class="table-container">
-    <div class="container container-main" v-if="isPermission">
+    <div v-if="hasPermission" class="container container-main">
       <transition name="fade">
         <div>
           <div v-if="isFilesUploadedOnPreApproval && !isLastFileProcessed">

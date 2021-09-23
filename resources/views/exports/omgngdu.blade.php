@@ -29,9 +29,9 @@
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->field->name }}</td>
                 <td style="border: 1px solid black; height: 15px">{{ $item->ngdu->name }}</td>
                 <td style="border: 1px solid black; height: 15px">{{ $item->cdng->name }}</td>
-                <td style="border: 1px solid black; height: 15px">{{ $item->gu->name }}</td>
-                <td style="border: 1px solid black; height: 15px">{{ $item->zu->name }}</td>
-                <td style="border: 1px solid black; height: 15px">{{ $item->well->name }}</td>
+                <td style="border: 1px solid black; height: 15px">{{ $item->gu ? $item->gu->name : ($item->manualGu ? $item->manualGu->name : '')  }}</td>
+                <td style="border: 1px solid black; height: 15px">{{ $item->zu ? $item->zu->name : '' }}</td>
+                <td style="border: 1px solid black; height: 15px">{{ $item->well ? $item->well->name : ''}}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->date }}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->daily_fluid_production }}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->daily_water_production }}</td>

@@ -216,6 +216,9 @@ export default {
       ],
       this.point = []
       this.SET_LOADING(false);
+      if (this.inclinometry === "NoIncl"){
+        this.$emit('no-incl');
+      }
     },
     async onClickHpump() {
       await this.sethPumpValue(this.hPump)

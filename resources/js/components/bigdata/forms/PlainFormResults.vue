@@ -13,7 +13,7 @@
                       stroke-linecap="round" stroke-width="1.4"/>
               </svg>
             </button>
-            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu">
+            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu scrollable" style="max-height: 220px">
               <template v-for="action in form.actions">
                 <a v-if="action.action === 'create'" class="dropdown-item" href="#"
                    @click="showForm(action.form)">{{ action.title }}</a>
@@ -209,7 +209,7 @@ export default {
         data.params.tabs.forEach(tab => {
           tab.blocks.forEach(blocks => {
             blocks.forEach(block => {
-
+              if (!block.items) return
               block.items
                   .filter(item => ['dict', 'dict_tree'].includes(item.type))
                   .map(item => {
@@ -231,6 +231,9 @@ export default {
         this.rows = data.rows
         this.columns = data.columns
         this.form = data.form
+        if (data.available_actions) {
+          this.availableActions = data.available_actions
+        }
 
       }).catch(() => {
         this.rows = null
@@ -464,5 +467,9 @@ export default {
     border-top: none;
     vertical-align: middle;
   }
+}
+
+.dropdown-menu {
+  overflow: auto;
 }
 </style>

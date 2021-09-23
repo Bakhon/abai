@@ -31,7 +31,7 @@ class SibController extends CrudController
             ],
             'title' => trans('monitoring.sib.title'),
             'fields' => [               
-                'gu_id' => [
+                'gu' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
@@ -77,7 +77,11 @@ class SibController extends CrudController
                     'title' => trans('monitoring.buffer_tank.type_of_repair'),
                     'type' => 'string',
                 ],
-                
+                'pdf' => [
+                    'title' => trans('monitoring.certificate'),
+                    'type' => 'download',
+                    'filterable' => false
+                ]
             ]
         ];
 

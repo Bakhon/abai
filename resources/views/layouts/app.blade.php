@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -29,7 +28,7 @@
 
 <body class="@yield('body_class')">
 @include('layouts.navbar')
-<div class="no-row row" id="app" >
+<div class="row flex-nowrap m-0" id="app">
 
     @include('layouts.head-sidebar')
 

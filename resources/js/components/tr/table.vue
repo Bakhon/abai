@@ -67,9 +67,9 @@
                 <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('field')"></i>
                       <div>
-                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                        <b-dropdown no-caret ref="dropdown" toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectField.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -86,7 +86,7 @@
                                 </b-form-checkbox-group>
                               </b-form-group>
                               <div class="field_filter_text">
-                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                <a href="#" class="form_text" @click.prevent="chooseFilter"
                                   >{{trans('tr.form')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_FIELD')"
@@ -101,9 +101,9 @@
                 <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('rus_wellname')"></i>
                       <div>
-                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                        <b-dropdown no-caret toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectWellName.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_well_filter">
                               <b-form-group
@@ -137,7 +137,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectWellType.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -171,7 +171,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectHorizon.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -205,7 +205,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectObject.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -239,7 +239,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectBlock.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -278,7 +278,7 @@
                       <div>
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
-                            <i class="fas fa-filter icon_filter" ></i>
+                            <i class="fas fa-filter" :class="selectExpMeth.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
                           </template>
                             <b-dropdown-form class="external_field_filter">
                               <b-form-group
@@ -341,7 +341,40 @@
                 <td @click="sortBy('planned_monthly_water')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3')}}</td>
                 <td @click="sortBy('planned_diff_oil')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}</td>
                 <td @click="sortBy('planned_diff_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}</td>
-                <td @click="sortBy('planned_events')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('planned_events')"></i>
+                      <div>
+                        <b-dropdown no-caret toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter" :class="selectWellName.length > 0 ? 'icon_filter_active' : 'icon_filter'" />
+                          </template>
+                            <b-dropdown-form class="plan_events_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="p_events_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                v-model="selectEvent"
+                                :options="eventFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="plan_event_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFilter('tr/SET_EVENT')"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                    </div>
+                </td>
             </tr>
         </thead>
         <tbody class="table_tbody">
@@ -738,6 +771,7 @@ export default {
         wellTypeFilterData: Array,
         expMethFilterData: Array,
         wellNameFilterData: Array,
+        eventFilterData: Array,
     },
     computed: {
         selectHorizon: {
@@ -796,10 +830,19 @@ export default {
                 this.$store.commit("tr/SET_BLOCK", newVal);
             }, 
         },
+        selectEvent: {
+            get(){
+                return this.$store.state.tr.plannedEvents;
+            }, 
+            set(newVal){
+                this.$store.commit("tr/SET_EVENT", newVal);
+            }, 
+        },
     },
     data: function () {
         return {
             isEdit: false,
+            show: false,
         }
     },
     methods: {
@@ -808,6 +851,7 @@ export default {
         },
         dropFilter(x) {
             this.$emit('dropFilters', x);
+            this.toggle();
         },
         getColor(status) {
             if (status === "1") return "#ffff00";
@@ -818,6 +862,7 @@ export default {
         },
         chooseFilter() {
              this.$emit('filter');
+             this.toggle();
         },
         getRowWidthSpan (row) {
             return row.rus_wellname ? 0 : 2;
@@ -828,11 +873,20 @@ export default {
             this.wells[row_index] &&
             this.wells[row_index][value][1][0] !== '0';
         },
+        
         isActiveClass (row) {
             if (row.rus_wellname) {
                 return false
             } else {
                 return true
+            }
+        },
+        toggle() {
+            this.show = !this.show
+            if (!this.show) {
+                this.$refs.dropdown.show()
+            } else {
+                this.$refs.dropdown.hide()
             }
         },
     }
@@ -867,10 +921,10 @@ tr:nth-child(even) {
 }
 .table tr:first-child .th {
     top: -1px;
-    z-index: 3000;
+    z-index: 4000;
 }
 .table.table tr:not(.notsticky) .th:nth-child(-n + 3) {
-  z-index: 4000;
+  z-index: 4001;
 }
 .table tr:nth-child(2) .th {
     top: 22px;
@@ -886,7 +940,7 @@ tr:nth-child(even) {
 }
 .table tr:nth-child(5) .th {
     top: 88px;
-    z-index: 3000;
+    z-index: 4000;
 }
 .trtablerow {
     position: relative;
@@ -929,7 +983,8 @@ position: static;
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
+  height: 5px;
 }
 
 /* Track */
@@ -940,11 +995,16 @@ position: static;
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #656A8A;
+  width: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #272953;
+  background: #656A8A;
+}
+/* the bottom corner of the scrollbar, where both horizontal and vertical scrollbars meet This is often the bottom-right corner of the browser window.*/
+::-webkit-scrollbar-corner {
+  background: #333975;
 }
 .activ {
   border-bottom: 2px solid rgb(145, 145, 145) ;

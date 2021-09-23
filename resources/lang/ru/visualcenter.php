@@ -258,6 +258,7 @@ return array (
       'dataIsNotValid' => 'В данных найдены ошибки!',
       'verifySumByDzo' => 'Ошибка! Проверьте общие суммы по параметрам.',
       'sendedToApprove' => 'Отправлено на согласование',
+      'emptyData' => 'Заполните пожалуйста все параметры!'
     ),
     'chemistry' => 'Химизация производства, т/мес',
     'enterChemistryButton' => 'Химизация производства',
@@ -421,7 +422,6 @@ return array (
   'notes' => 'Примечания',
   'kpdModuleTitle' => 'КПД Upstream',
   'condensateDelivery' => 'Сдача конденсата',
-  'notes' => 'Примечания',
   'countOfProductionWells' => 'Количество добывающих скважин, скв.',
   'countOfInjectionWells' => 'Количество нагнетательных скважин, скв.',
   'countDrillingWells' => 'Количество скважин из бурения, скв.',
@@ -432,5 +432,16 @@ return array (
   'countDrilling' => 'Бурение проходка, м.',
   'emergency' => 'Инцидент',
   'emergencyDate' => 'Дата инцидента',
-  'resolvingDate' => 'Дата устранения инцидента'
+  'reasonExplanations' => 'Причины отклонений',
+  'resolvingDate' => 'Дата устранения инцидента',
+  'emergencyFinished' => 'Завершенные',
+  'emergencyOpen' => 'Открытые',
+  'streamInjection' => 'Закачка пара',
+  'oilCondensateDynamic' => 'Динамика суточной добычи нефти и конденсата, тонн',
+  'execution' => 'Выполнение',
+  'oilDynamicDaily' => 'Динамика суточной добычи нефти',
+  'accumulatedOilDynamicYearly' => 'Динамика накопленной добычи нефти с начала года',
+  'nkKmg' => 'НК КМГ (консолид.)',
+  'nkKmgOperating' => 'Опер. активы НК КМГ (консолид.)',
+  'companyName' => 'Наименование компаний'
 );

@@ -55,6 +55,29 @@
           </div>
         </template>
       </template>
+
+      <template v-if="form && form.actions && form.actions.length > 0">
+        <div class="dropdown">
+          <button id="dropdownMenuButton" aria-expanded="false" aria-haspopup="true" class="download-curve-button"
+                  data-toggle="dropdown" type="button">
+            {{ trans('bd.actions') }}
+            <svg fill="none" height="6" viewBox="0 0 12 6" width="12" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white"
+                    stroke-linecap="round" stroke-width="1.4"/>
+            </svg>
+          </button>
+          <div aria-labelledby="dropdownMenuButton" class="dropdown-menu">
+            <template v-for="action in form.actions">
+              <a v-if="action.action === 'create'" class="dropdown-item" href="#"
+                 @click="showForm(action.form)">{{ action.title }}</a>
+              <a v-else-if="action.action === 'edit'" class="dropdown-item" href="#"
+                 @click="editRow(selectedRow, action.form)">{{ action.title }}</a>
+              <a v-else-if="action.action === 'delete'" class="dropdown-item" href="#"
+                 @click="deleteRow(selectedRow, action.form)">{{ action.title }}</a>
+            </template>
+          </div>
+        </div>
+      </template>
     </div>
     <div class="bd-main-block__body">
       <BigDataTableForm
@@ -62,6 +85,7 @@
           :filter="filter"
           :params="params"
           :type="type"
+          :key="params.code"
           @initialized="init"
       >
       </BigDataTableForm>
@@ -412,6 +436,7 @@ body.fixed {
     border-radius: 8px;
     color: #fff;
     left: 50%;
+    max-width: 90%;
     min-width: 730px;
     padding: 20px 25px;
     position: absolute;

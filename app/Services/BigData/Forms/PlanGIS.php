@@ -14,7 +14,7 @@ class PlanGIS extends TableForm
 {
     protected $configurationFileName = 'plan_g_i_s';
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
         if (empty($filter->date) || empty($filter->date_to)) {
@@ -25,18 +25,13 @@ class PlanGIS extends TableForm
             throw new \Exception(trans('bd.select_dzo_ngdu'));
         }
 
-        $org = Org::find($this->request->get('id'));
-        if (!$org->type || !in_array($org->type->code, ['SUBC', 'FOFS'])) {
-            throw new \Exception(trans('bd.select_dzo_ngdu'));
-        }
+        $org = $this->getOrganization();
 
-        $orgChildren = $org->children()->whereHas('type', function ($query) {
-            $query->whereIn('code', ['FOFS']);
-        })->get();
+        $orgChildren = $org->children()->get();
 
         $columns = $this->getColumns($filter, $org, $orgChildren);
 
-        $rows = $this->getRowData($filter, $org, $orgChildren);
+        $rows = $this->getRows($filter, $org, $orgChildren);
 
         return [
             'columns' => $columns['columns'],
@@ -47,6 +42,24 @@ class PlanGIS extends TableForm
             ),
             'rows' => $rows
         ];
+    }
+
+    private function getOrganization(): Org
+    {
+        $org = Org::find($this->request->get('id'));
+        if (!$org->type) {
+            throw new \Exception(trans('bd.select_dzo'));
+        }
+
+        if ($org->type->code === 'SUBC' || $org->parentOrg->name_short_ru === 'ММГ') {
+            return $org;
+        }
+
+        if ($org->parentOrg->type->code === 'SUBC') {
+            return $org->parentOrg;
+        }
+
+        throw new \Exception(trans('bd.select_dzo'));
     }
 
     private function getColumns($filter, $org, $children)
@@ -73,7 +86,7 @@ class PlanGIS extends TableForm
         while (true) {
             $mergeColumns['date_' . $date->format('n_Y')] = [
                 'code' => 'date_' . $date->format('n_Y'),
-                'title' => $date->format('F Y')
+                'title' => trans('app.months.' . $date->format('n')) . ' ' . $date->format('Y')
             ];
 
             $childCodes = [];
@@ -86,30 +99,19 @@ class PlanGIS extends TableForm
                     'title' => $child->name_short_ru,
                     'parent_column' => 'date_' . $date->format('n_Y'),
                     'type' => 'integer',
-                    'is_editable' => true
+                    'is_editable' => $org->name_short_ru === 'ММГ' ? false : true
                 ];
             }
 
             $orgCode = "date_{$date->format('n_Y')}_" . $org->id;
-            if ($org->type->code === 'FOFS') {
-                $totalColumnCodes[] = $orgCode;
-                $columns[] = [
-                    'code' => $orgCode,
-                    'title' => $org->name_short_ru,
-                    'parent_column' => 'date_' . $date->format('n_Y'),
-                    'type' => 'integer',
-                    'is_editable' => true
-                ];
-            } else {
-                $formula = $this->getSumFormula($childCodes);
-                $columns[] = [
-                    'code' => $orgCode,
-                    'title' => $org->name_short_ru,
-                    'parent_column' => 'date_' . $date->format('n_Y'),
-                    'type' => 'calc',
-                    'formula' => $formula
-                ];
-            }
+            $formula = $this->getSumFormula($childCodes);
+            $columns[] = [
+                'code' => $orgCode,
+                'title' => $org->name_short_ru,
+                'parent_column' => 'date_' . $date->format('n_Y'),
+                'type' => 'calc',
+                'formula' => $formula
+            ];
 
             $date->addMonth();
             if ($date >= $dateTo) {
@@ -161,7 +163,7 @@ class PlanGIS extends TableForm
             ->join(' + ');
     }
 
-    private function getRowData(\stdClass $filter, Org $org, Collection $orgChildren): array
+    private function getRows(\stdClass $filter, Org $org, Collection $orgChildren): array
     {
         $plans = DB::connection('tbd')
             ->table('prod.plan_gis')

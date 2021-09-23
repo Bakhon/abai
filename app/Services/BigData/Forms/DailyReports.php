@@ -17,7 +17,7 @@ abstract class DailyReports extends TableForm
 
     protected $metricCode = '';
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         $result = [
             'id' => $this->request->get('id')

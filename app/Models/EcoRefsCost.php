@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Refs\TechnicalStructurePes;
 use Illuminate\Database\Eloquent\Model;
 
 class EcoRefsCost extends Model
@@ -9,7 +10,7 @@ class EcoRefsCost extends Model
     protected $fillable = [
         'sc_fa', 'company_id', 'date', 'variable', 'fix_noWRpayroll', 'fix_payroll',
         'fix_nopayroll', 'fix', 'gaoverheads', 'wr_nopayroll', 'wr_payroll', 'wo',
-        'comment', 'author_id', 'log_id', 'net_back', 'amort', 'variable_processing'
+        'comment', 'author_id', 'log_id', 'net_back', 'amort', 'variable_processing', 'pes_id'
     ];
 
     const FILLABLE_FLOAT_KEYS = [
@@ -35,5 +36,10 @@ class EcoRefsCost extends Model
     public function editor()
     {
         return $this->belongsTo('App\User', 'editor_id');
+    }
+
+    public function pes()
+    {
+        return $this->belongsTo(TechnicalStructurePes::class, 'pes_id');
     }
 }

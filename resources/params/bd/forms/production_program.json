@@ -1,6 +1,12 @@
 {
   "type": "table",
   "table_type": "plan",
+  "sort": [
+    {
+      "field": "date",
+      "order": "desc"
+    }
+  ],
   "filter": [
     {
       "code": "date",

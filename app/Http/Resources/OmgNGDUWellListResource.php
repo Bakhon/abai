@@ -19,8 +19,8 @@ class OmgNGDUWellListResource extends CrudListResource
         $result = [
             'id' => $this->id,
             'fields' => [
-                'zu' => $this->zu->name,
-                'well' => $this->well->name,
+                'zu' => $this->zu ? $this->zu->name : ($this->manualZu ? $this->manualZu->name : ''),
+                'well' => $this->well ? $this->well->name : ($this->manualWell ? $this->manualWell->name : ''),
                 'date' => $this->date,
                 'bsw' => $this->bsw,
                 'daily_fluid_production' => $this->daily_fluid_production,

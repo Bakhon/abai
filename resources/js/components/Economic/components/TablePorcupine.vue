@@ -1,7 +1,7 @@
 <template>
   <div>
     <subtitle font-size="18" style="line-height: 26px">
-      <div>{{ trans('economic_reference.table_porcupine_title') }}</div>
+      {{ trans('economic_reference.table_porcupine_title') }}
     </subtitle>
 
     <apexchart
@@ -19,6 +19,23 @@ import chart from "vue-apexcharts";
 import Subtitle from "./Subtitle";
 
 const ru = require("apexcharts/dist/locales/ru.json");
+
+const COLORS = [
+  '#34558C',
+  '#9C7300',
+  '#666666',
+  '#A3480E',
+  '#374AB4',
+  '#79B44E',
+  '#82BAFF',
+  '#FFC607',
+  '#A9A9A9',
+  '#F37F31',
+  '#436DB0',
+  '#81B9FE',
+  '#374AB4',
+  '#436B2A',
+]
 
 export default {
   name: "TablePorcupine",
@@ -72,21 +89,47 @@ export default {
         this.scenarioVariations.retention_percents.forEach(retention_percent => {
           let retentionScenarios = salaryScenarios.filter(scenario =>
               scenario.coef_Fixed_nopayroll === retention_percent.value
-          )
+          ).reverse()
 
-          data.push({
-            salary_percent: salary_percent,
-            retention_percent: retention_percent,
-            series: retentionScenarios.reverse().map(scenario => {
-              return {
-                uwi_count: scenario.uwi_count_optimize,
-                cat_1: scenario.percent_stop_cat_1,
-                cat_2: scenario.percent_stop_cat_2,
-                oil: scenario.oil.original_value_optimized,
-                operating_profit_12m: (+scenario.operating_profit_12m.original_value_optimized / 1000000000).toFixed(2),
-              }
-            }),
+          let series = []
+
+          let seriesGtm = []
+
+          retentionScenarios.forEach(scenario => {
+            let operating_profit = +scenario.Operating_profit_scenario
+
+            let dimension = 1000000000
+
+            series.push({
+              uwi_count: scenario.uwi_count_optimize,
+              cat_1: scenario.percent_stop_cat_1,
+              cat_2: scenario.percent_stop_cat_2,
+              oil: +scenario.oil.original_value_optimized,
+              operating_profit: (operating_profit / dimension).toFixed(2),
+            })
+
+            seriesGtm.push({
+              uwi_count: scenario.uwi_count_optimize,
+              cat_1: scenario.percent_stop_cat_1,
+              cat_2: scenario.percent_stop_cat_2,
+              oil: +scenario.oil.original_value_optimized + (+scenario.gtm_oil),
+              operating_profit: ((operating_profit + (+scenario.gtm_operating_profit_12m)) / dimension).toFixed(2),
+            })
           })
+
+          data.push(
+              {
+                salary_percent: salary_percent,
+                retention_percent: retention_percent,
+                series: series
+              },
+              {
+                salary_percent: salary_percent,
+                retention_percent: retention_percent,
+                series: seriesGtm,
+                is_gtm: true
+              },
+          )
         })
       })
 
@@ -96,11 +139,15 @@ export default {
     chartSeries() {
       return this.filteredData.map(item => {
         return {
-          name: `${item.salary_percent.value}, ${item.retention_percent.value}`,
+          name: `
+          ${this.trans('economic_reference.fot_optimization')} - ${+item.salary_percent.value * 100}%,
+          ${this.trans('economic_reference.non_optimizable_costs_share')} - ${+item.retention_percent.value * 100}%
+          ${item.is_gtm ? this.trans('economic_reference.with_gtm') : this.trans('economic_reference.without_gtm')}
+          `,
           type: 'line',
           data: item.series.map(item => {
             return {
-              y: item.operating_profit_12m,
+              y: item.operating_profit,
               x: item.oil
             }
           })
@@ -108,11 +155,20 @@ export default {
       })
     },
 
+    chartColors() {
+      let result = []
+
+      COLORS.forEach(color => result.push(color, color))
+
+      return result
+    },
+
     chartOptions() {
       return {
         stroke: {
           width: 4,
           curve: 'straight',
+          dashArray: this.chartSeries.map((item, index) => index % 2 === 0 ? 0 : 5)
         },
         chart: {
           foreColor: '#FFFFFF',
@@ -148,6 +204,7 @@ export default {
           },
         },
         xaxis: {
+          type: 'numeric',
           labels: {
             formatter: (val) => (+val / 1000).toFixed(0),
           },
@@ -178,22 +235,7 @@ export default {
             colors: ['#fff']
           },
         },
-        colors: [
-          '#34558C',
-          '#9C7300',
-          '#666666',
-          '#A3480E',
-          '#374AB4',
-          '#79B44E',
-          '#82BAFF',
-          '#FFC607',
-          '#A9A9A9',
-          '#F37F31',
-          '#436DB0',
-          '#81B9FE',
-          '#374AB4',
-          '#436B2A',
-        ],
+        colors: this.chartColors
       }
     },
   }

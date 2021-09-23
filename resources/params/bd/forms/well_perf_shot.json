@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.well_perf",
+  "sort": [
+    {
+      "field": "perf_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main",
@@ -27,45 +33,45 @@
                 "code": "hole_count",
                 "type": "numeric",
                 "title": "count",
-                "validation": "required|numeric|gte:0|lte:100"
+                "validation": "numeric|gte:0|lte:100"
               },
               {
                 "code": "hole_diameter",
                 "type": "numeric",
                 "title": "diame_c",
-                "validation": "required|numeric|gte:0|lte:50"
+                "validation": "numeric|gte:0|lte:50"
               },
               {
                 "code": "perforator_type",
                 "type": "dict",
                 "dict": "perforator_types",
                 "title": "perf_y",
-                "validation": "required|exists:tbd.dict.perforator_type,id"
+                "validation": "exists:tbd.dict.perforator_type,id"
               },
               {
                 "code": "patron_type",
                 "type": "dict",
                 "dict": "patron_types",
                 "title": "marka",
-                "validation": "required|exists:tbd.dict.patron_type,id"
+                "validation": "exists:tbd.dict.patron_type,id"
               },
               {
                 "code": "liquid",
                 "type": "numeric",
                 "title": "liquid",
-                "validation": "required|numeric|gte:0"
+                "validation": "numeric|gte:0"
               },
               {
                 "code": "bsw",
                 "type": "numeric",
                 "title": "bsw_p",
-                "validation": "required|numeric|gte:0|lte:100"
+                "validation": "numeric|gte:0|lte:100"
               },
               {
                 "code": "reservoir_count",
                 "type": "numeric",
                 "title": "reserv_c",
-                "validation": "required|numeric|gte:1"
+                "validation": "numeric|gte:1"
               },
               {
                 "code": "perf_date",
@@ -91,13 +97,14 @@
                 "dict": "perf_types",
                 "title": "perf_t",
                 "table": "prod.well_perf_interval",
+                "parent_column": "well_perf",
                 "columns": [
                   {
-                    "code": "horizon",
-                    "type": "dict_tree",
+                    "code": "geo",
+                    "type": "dict",
                     "title": "horizon",
-                    "dict": "geos",
-                    "validation": "required|exists:tbd.dict.org,id"
+                    "dict": "geo_type_hrz",
+                    "validation": "required|exists:tbd.dict.geo,id"
                   },
                   {
                     "code": "top",

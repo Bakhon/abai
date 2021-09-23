@@ -3,7 +3,7 @@
   "table": "drill.well_daily_drill",
   "sort": [
     {
-      "field": "date_drill",
+      "field": "dbeg",
       "order": "desc"
     }
   ],

@@ -1,0 +1,121 @@
+{
+  "type": "table",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
+  "columns": [
+    {
+      "title": "uwi_number",
+      "code": "uwi",
+      "type": "link",
+      "is_editable": false
+    },
+    {
+      "title": "bottom_hole",
+      "table": "prod.bottom_hole",
+      "column": "depth",
+      "code": "bottom_hole",
+      "date_field": "data",
+      "additional_filter": {
+        "bottom_hole_type": {
+          "table": "dict.bottom_hole_type",
+          "fields": {
+            "code": "TD"
+          }
+        }
+      },
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "horizon",
+      "code": "horizon",
+      "table": "prod.well_geo",
+      "column": "name_ru",
+      "additional_filter": {
+        "geo_type": {
+          "table": "dict.geo_type",
+          "fields": {
+            "code": "HRZ"
+          }
+        }
+      },
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "diameter",
+      "code": "diameter",
+      "table": "prod.well_constr",
+      "column": "od",
+      "additional_filter": {
+        "casing_type": {
+          "table": "dict.equip_type",
+          "fields": {
+            "code": [
+              "ECS",
+              "BECS",
+              "AECS"
+            ]
+          }
+        }
+      },
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "worktime",
+      "code": "worktime",
+      "table": "prod.well_status",
+      "column": "well_status_type_id",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "avg_water_prev_month",
+      "code": "avg_water_prev_month",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "sum_water_prev_month",
+      "code": "sum_water_prev_month",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "water_prod",
+      "code": "water_prod",
+      "table": "prod.meas_water_prod",
+      "column": "water_prod_val",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "dbeg",
+      "code": "dbeg",
+      "table": "prod.meas_water_prod",
+      "column": "dbeg",
+      "type": "date",
+      "is_editable": false
+    },
+    {
+      "title": "dend",
+      "code": "dend",
+      "table": "prod.meas_water_prod",
+      "column": "dend",
+      "type": "date",
+      "is_editable": false
+    },
+    {
+      "title": "events",
+      "code": "events",
+      "type": "form",
+      "form": "tech_events",
+      "is_editable": false
+    }
+  ]
+}

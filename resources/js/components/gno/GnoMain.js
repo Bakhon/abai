@@ -12,9 +12,9 @@ import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import Vue from "vue";
 import FullPageLoader from "@ui-kit/FullPageLoader";
 import * as htmlToImage from "html-to-image";
-import jsPDF from "jspdf";
 import Tabs from "./components/tabs/Tabs.vue";
 import { globalloadingMutations } from "@store/helpers";
+import _ from 'lodash'
 
 const fileDownload = require("js-file-download");
 
@@ -22,7 +22,7 @@ Vue.use(NotifyPlugin);
 
 export default {
   components: { PerfectScrollbar, FullPageLoader, Tabs, Plotly },
-  props: ["params"],
+  props: ["user"],
   computed: {
     ...pgnoMapState([
       "calcedWell",
@@ -34,6 +34,8 @@ export default {
       "points",
       "analysisSettings",
       "centralizer_range",
+      'sensetiveSettings',
+      "mainSettings",
     ]),
     ...pgnoMapGetters([
       'curveSettingsStore',
@@ -44,31 +46,20 @@ export default {
     return {
       apiUrl: process.env.MIX_PGNO_API_URL,
       updateCurveTrigger: true,
-
       devBlockRatedFeed: null,
       devBlockFrequency: null,
-
       steel: null,
       techmodeDate: null,
-      404: require("./images/404.svg"),
-      isSkError: false,
-      isEditing: false,
-      activeRightTabName: "technological-mode",
       curveSettings: {},
       lines_analysis: {},
       points_analysis: {},
-      isVisibleChart: true,
+      construction: {},
       shgnPumpType: null,
       shgnSPM: null,
       shgnLen: null,
       wellNumber: null,
       curveSelect: "pi",
       curveQselect: null,
-      expChoose: null,
-      targetButton: "ql",
-      qlTargetValue: null,
-      bhpCelValue: null,
-      piCelValue: null,
       fieldsByOrgId: {
         "АО «ОзенМунайГаз»": [
           {
@@ -96,7 +87,6 @@ export default {
         ],
       },
       shgnTubOD: null,
-      hasGrp: false,
       expAnalysisData: {
         NNO1: null,
         NNO2: null,
@@ -115,25 +105,11 @@ export default {
         nno1: null,
         nno2: null,
       },
-
-      qZhExpEcn: null,
-      qOilExpEcn: null,
-      qZhExpShgn: null,
-      qOilExpShgn: null,
-      q1ZhidM3: null,
-      q2ZhidM3: null,
-      param_eco: null,
-      param_org: null,
-      param_fact: null,
-
       field: null,
       windowWidth: null,
       ao: null,
       organizations: [],
-      nkt: null,
-
       centratorsRequiredValue: null,
-      centratorsRecommendedValue: null,
       nkt_choose: [
         {
           for_calc_value: 50.3,
@@ -160,22 +136,15 @@ export default {
           show_value: "114x7",
         },
       ],
-
-      inflowCurveTitle: this.trans("pgno.krivaya_pritoka"),
-      podborGnoTitle: this.trans("pgno.podbor_gno"),
       isServiceOnline: true,
-      isIntervals: false,
       skTypes: null,
       horizons: null,
       skType: null,
       horizon: null,
-      isNktError: null,
       spm: null,
-      qLforKpod: null,
-      pumpTypeforKpod: null,
       calcKpodTrigger: true,
       shgnResult: {},
-      centratorsType: String
+      centratorsType: String,
     };
   },
   watch: {
@@ -195,11 +164,10 @@ export default {
   beforeCreate: function () {
     this.apiUrl = process.env.MIX_PGNO_API_URL;
     this.axios.get("/ru/organizations").then(({ data }) => {
-      console.log(this.fieldsByOrgId)
       var orgs = data.organizations
       if (orgs.length === 0) {
         this.orgs = [...this.fieldsByOrgId["АО «ОзенМунайГаз»"], ...this.fieldsByOrgId["АО «Мангистаумунайгаз»"]]
-      } 
+      }
       for (let orgName in this.fieldsByOrgId) {
         if (orgs.some(org => org['name'] === orgName)) {
           this.organizations = [...this.organizations, ...this.fieldsByOrgId[orgName]]
@@ -207,13 +175,13 @@ export default {
         }
       }),
 
-    this.axios.get(this.apiUrl + "status/").then((response) => {
+    this.axios.get(this.apiUrl + "status").then((response) => {
       this.isServiceOnline = true;
     }).catch((error) => {
       this.isServiceOnline = false
     });
 
-    this.axios.get(this.apiUrl + "lastdate/").then((response) => {
+    this.axios.get(this.apiUrl + "lastdate").then((response) => {
       this.techmodeDate = response.data["date"];
     });
 
@@ -236,7 +204,7 @@ export default {
   mounted() {
     this.windowWidth = window.innerWidth;
     if (this.windowWidth <= 1300 && this.windowWidth > 991) {
-      this.activeRightTabName = "devices";
+      this.mainSettings.activeRightTabName = "devices";
     }
   },
   methods: {
@@ -249,6 +217,7 @@ export default {
       "setCurveSettings",
       "getInclinometry",
     ]),
+
     setNotify(message, title, type) {
       this.$bvToast.toast(message, {
         title: title,
@@ -282,7 +251,7 @@ export default {
         if (val === "get") {
           type = "warning";
           title = "Warning";
-        } 
+        }
         if (val === "pgno") {
           title = "Error";
           type = "danger";
@@ -296,11 +265,11 @@ export default {
         this.setNotify("Выберите скважину", "Error", "danger");
         return
       }
-      if (this.isEditing) {
+      if (this.mainSettings.isEditing) {
         this.well.skType = this.skType
         this.well.horizon = this.horizon
       }
-      this.isEditing = !this.isEditing
+      this.mainSettings.isEditing = !this.mainSettings.isEditing
     },
     isSkExist(skType) {
       return this.skTypes.some(function (sk) {
@@ -321,8 +290,7 @@ export default {
       
       this.curveSettings.whpInput = well.whp.toFixed(0);
       this.curveSettings.expChoosen = well.expMeth;
-      this.curveSettings.pBuff = well.whp.toFixed(0);
-      this.curveSettings.hPumpValue = well.hPumpSet.toFixed(0);
+
 
       this.curveSettings.es = (well.es * 100).toFixed(0);
       this.curveSettings.mechanicalSeparation = well.mechanicalSeparation;
@@ -342,9 +310,8 @@ export default {
 
     },
     async getWellData(wellnumber) {
-      this.isIntervals = true;
       this.SET_LOADING(true);
-      this.isVisibleChart = true;
+      this.mainSettings.isVisibleChart = true;
       this.calcKpodTrigger = true;
       this.setDefault();
       if (["JET", "ASA"].includes(this.field)) {
@@ -361,7 +328,7 @@ export default {
       if (this.well.expMeth === "ШГН") {
         var kpod = this.well.qL / (1440 * 3.14 * this.well.pumpType ** 2 * this.well.strokeLen * (this.well.spm / 4000000))
 			  if (kpod < 0.4 || kpod > 0.9) {
-				  var message = this.trans('pgno.kpodWarning', {kpod: kpod.toFixed(2)}) 
+				  var message = this.trans('pgno.kpodWarning', {kpod: kpod.toFixed(2)})
 				  this.setNotify(message, "Warning", "warning")
 			  }
         this.curveSelect = "hdyn";
@@ -393,6 +360,8 @@ export default {
       this.curveSettings.targetButton = "ql";
       this.curveSettings.nkt = this.well.tubId;
       this.curveSettings.hPumpManomInput = this.well.hPumpSet.toFixed(0);
+      this.curveSettings.pBuff = this.well.whp.toFixed(0);
+      this.curveSettings.hPumpValue = this.well.hPumpSet.toFixed(0);
       this.skType = this.well.skType;
       this.horizon = this.well.horizon;
       if (this.well.wellError === "no_well_data") {
@@ -405,12 +374,35 @@ export default {
       this.updateCurveTrigger = !this.updateCurveTrigger;
       this.SET_LOADING(false);
     },
+    preparePost() {
+      var payload = {};
+      payload.url = this.apiUrl + "calculate";
+      if (this.curveSettings.expChoosen ==="ФОН") {
+        payload.data = {
+          shgn_settings: this.shgnSettings,
+          well: this.well,
+          curve_settings: this.curveSettings,
+          analysis_settings: this.analysisSettings,
+          sensetive_settings: this.sensetiveSettings
+        };
+      } else {
+        payload.data = {
+          shgn_settings: this.shgnSettings,
+          well: this.well,
+          curve_settings: this.curveSettings,
+          analysis_settings: this.analysisSettings,
+        };
+      }
+
+      return payload
+    },
+
     async postCurveData() {
       if (!this.wellNumber) {
         this.setNotify("Выберите скважину", "Error", "danger");
         return
       }
-      this.isVisibleChart = true;
+      this.mainSettings.isVisibleChart = true;
       this.SET_LOADING(true);
       if (this.well.casOd < 127) {
         this.setNotify(
@@ -438,14 +430,7 @@ export default {
       }
       this.curveSettings.es = this.curveSettings.es / 100
       this.curveSettings.curveSelect = this.curveSelect
-      var payload = {};
-      payload.url = this.apiUrl + "calculate";
-      payload.data = {
-        shgn_settings: this.shgnSettings,
-        well: this.well,
-        curve_settings: this.curveSettings,
-        analysis_settings: this.analysisSettings,
-      };
+      var payload = this.preparePost()
       var isPostSuccess = await this.postWell(payload);
       if (!isPostSuccess) {
         this.curveSettings.es = this.curveSettings.es * 100
@@ -482,7 +467,7 @@ export default {
         this.setNotify(this.trans("pgno.notify_error_sk"), "Error", "danger");
       } else if (errorCheck || nktError) {
         if (this.curveSettings.expChoosen == "ШГН") {
-          if (this.isVisibleChart) {
+          if (this.mainSettings.isVisibleChart) {
             this.SET_LOADING(true);
             var payload = {
               shgn_settings: this.shgnSettings,
@@ -491,9 +476,7 @@ export default {
               analysis_settings: this.analysisSettings,
               points: this.points,
             };
-            this.axios
-              .post(this.apiUrl + "shgn", payload)
-              .then((response) => {
+            this.axios.post(this.apiUrl + "shgn", payload).then((response) => {
                 let data = response.data;
                 this.shgnResult = data
                 if (!this.well.newWell) {
@@ -526,9 +509,8 @@ export default {
                   );
                 } else {
                   this.shgnPumpType = data.kPodData["pump_type"]
-
                   this.freegasCel = this.points.freegasCelValue.toFixed(1),
-                    this.qoilShgnTable = this.points.qoCelValue.toFixed(1);
+                  this.qoilShgnTable = this.points.qoCelValue.toFixed(1);
                   this.construction = data.construction;
                   this.shgnSPM = data.kPodData["spm_calc"].toFixed(1);
                   this.shgnLen = data.kPodData["stroke_lens"].toFixed(1);
@@ -576,7 +558,7 @@ export default {
                       "danger"
                     );
                   }
-                  this.isVisibleChart = !this.isVisibleChart;
+                  this.mainSettings.isVisibleChart = !this.mainSettings.isVisibleChart;
                 }
               })
               .catch((error) => {
@@ -607,7 +589,7 @@ export default {
                 this.SET_LOADING(false);
               });
           } else {
-            this.isVisibleChart = !this.isVisibleChart;
+            this.mainSettings.isVisibleChart = !this.mainSettings.isVisibleChart;
             this.postCurveData();
           }
         } else {
@@ -648,6 +630,9 @@ export default {
 
     closeModal(modalName) {
       this.$modal.hide(modalName);
+    },
+    openSensAnalysisModal() {
+      this.$modal.show('sensAnalysisModal')
     },
     openEcoModal() {
       if (!this.wellNumber) {
@@ -695,7 +680,10 @@ export default {
         this.$modal.show("modalIncl");
       }
     },
-    closeInclModal() {
+    closeInclModal(value) {
+      if (value==='noIncl') {
+        this.setNotify(this.trans("pgno.no_incl_data"), "Warning", "warning");
+      }
       this.$modal.hide("modalIncl");
       this.curveSettings.hPumpValue = this.curveSettingsStore.hPumpValue;
       this.postCurveData();
@@ -742,6 +730,13 @@ export default {
       this.postCurveData();
       this.calcKpodTrigger = false
     },
+    openSensAnalysisModal() {
+      this.$modal.show("sensitiveSettings");
+    },
+    openSensitiveResult() {
+      this.$modal.hide("sensitiveSettings");
+      this.$modal.show("sensitiveResult");
+    },
     downloadExcel(menu) {
       this.SET_LOADING(true);
       if (menu === "analysis") {
@@ -754,7 +749,7 @@ export default {
           lines: this.linesAnalysis,
         };
         var url = this.apiUrl + "excel/download"
-        var filename = "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx"
+        var filename = "ПГНО_АНАЛИЗ_" + this.field + "_" + this.wellNumber + ".xlsx"
       } else if (menu === "main") {
         var payload = {
           shgn_settings: this.shgnSettings,
@@ -765,9 +760,11 @@ export default {
           lines: this.lines,
         };
         var url = this.apiUrl + "excel/download"
-        var filename = "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx"
-      } else if (menu === "gno") {
+        var filename = "ПГНО_КРИВЫЕ_" + this.field + "_" + this.wellNumber + ".xlsx"
+      } else if (menu === "gno" || menu === "report") {
         this.shgnResult.centralizer_range = this.centralizer_range
+        this.shgnResult.shgnImg = this.shgnImg
+        this.shgnResult.user = this.user
         var payload = {
           shgn_settings: this.shgnSettings,
           well: this.well,
@@ -776,8 +773,9 @@ export default {
           points: this.points,
           result: this.shgnResult,
         };
-        var url = this.apiUrl + "shgn/download"
-        var filename = "ПГНО_" + this.field + "_" + this.wellNumber + "_ШГН.xlsx"
+        var url = menu === "gno" ? this.apiUrl + "shgn/download": this.apiUrl + "report/download"
+        var startline = menu === "gno" ? "ПГНО_РЕЗУЛЬТАТ_" : "ПГНО_ОТЧЁТ_"
+        var filename = startline + this.field + "_" + this.wellNumber + "_ШГН.xlsx"
       }
       this.axios.post(url, payload, { responseType: "blob" }).then((response) => {
         fileDownload(response.data, filename)
@@ -811,31 +809,31 @@ export default {
 
     setActiveRightTabName: function (e, val) {
       if (
-        val === this.activeRightTabName &&
+        val === this.mainSettings.activeRightTabName &&
         (this.windowWidth > 1300 || this.windowWidth <= 991)
       ) {
-        this.activeRightTabName = "technological-mode";
+        this.mainSettings.activeRightTabName = "techmode";
         return;
       }
 
       if (
-        val === this.activeRightTabName &&
+        val === this.mainSettings.activeRightTabName &&
         this.windowWidth <= 1300 &&
         this.windowWidth > 991
       ) {
-        this.activeRightTabName = "devices";
+        this.mainSettings.activeRightTabName = "devices";
         return;
       }
 
       if (
-        val === "technological-mode" &&
+        val === "techmode" &&
         this.windowWidth <= 1300 &&
         this.windowWidth > 991
       ) {
         return;
       }
 
-      this.activeRightTabName = val;
+      this.mainSettings.activeRightTabName = val;
     },
     takePhoto() {
       this.SET_LOADING(true);

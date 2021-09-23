@@ -1,13 +1,16 @@
 import L from 'leaflet';
+import { Minichart } from 'leaflet.minichart';
 import 'leaflet/dist/leaflet.css';
-import mapsData from './json/test_grid.json';
 import wellsData from './json/dataWells.json';
 import BtnDropdown from "./components/BtnDropdown";
 import SettingModal from "./components/SettingModal";
 import WellAtlasModal from "./components/WellAtlasModal";
 import Accordion from "./components/Accordion";
+import SearchFormRefresh from "../ui-kit/SearchFormRefresh";
 import mainMenu from "../GTM/mock-data/main_menu.json";
-import { cods, maps, properties, objects, fileActions, mapActions } from './json/data';
+import { legends, maps, properties, objects, fileActions, mapActions } from './json/data';
+import { digitalRatingState, digitalRatingMutations } from '@store/helpers';
+
 export default {
     name: "Sections",
 
@@ -16,13 +19,14 @@ export default {
         SettingModal,
         WellAtlasModal,
         Accordion,
+        SearchFormRefresh
     },
 
     data() {
         return {
             objects: objects,
             maps: maps,
-            cods: cods,
+            legends: legends,
             properties: properties,
             fileActions: fileActions,
             mapsActions: mapActions,
@@ -33,10 +37,14 @@ export default {
             marker: null,
             bounds: [[0, 15000], [0,15000]],
             center: [85000, 52000],
-            zoom: -5,
+            zoom: -6,
             minZoom: -6,
-            maxZoom: 1,
+            maxZoom: 0,
             renderer: L.canvas({ padding: 0.5 }),
+            searchSector: '',
+            startPoint: null,
+            endPoint: null,
+            isRulerActive: false
         };
     },
 
@@ -45,7 +53,13 @@ export default {
         await this.initSectorOnMap();
     },
 
+    computed: {
+        ...digitalRatingState(['horizonNumber'])
+    },
+
     methods: {
+        ...digitalRatingMutations(['SET_SECTOR', 'SET_HORIZON']),
+
         initMap() {
             this.map = L.map('map', {
                 crs: L.CRS.Simple,
@@ -53,22 +67,26 @@ export default {
                 minZoom: this.minZoom,
                 maxZoom: this.maxZoom,
             });
+
             L.control.zoom({
                 position: 'bottomright'
             }).addTo(this.map);
+
             this.map.fitBounds(this.bounds);
             this.map.setView( this.center, this.zoom);
         },
 
-        initSectorOnMap() {
-            for (let i = 0; i < mapsData.length; i++) {
-                this.rectangle = L.rectangle(this.getBounds(mapsData[i]), {
+        async initSectorOnMap() {
+            const maps = await import(`./json/grid_${this.horizonNumber}.json`).then(module => module.default);
+            if(maps?.length === 0) return;
+            for (let i = 0; i < maps.length; i++) {
+                this.rectangle = L.rectangle(this.getBounds(maps[i]), {
                     renderer: this.renderer,
-                    color: mapsData[i]['color'],
-                    weight: 3,
-                    fillColor: mapsData[i]['color'],
-                    fillOpacity: 1,
-                }).addTo(this.map).bindPopup(mapsData[i]['sector'].toString());
+                    color: maps[i]['color'],
+                    weight: 1,
+                    fillColor: maps[i]['color'],
+                    fillOpacity: 0.7,
+                }).addTo(this.map).bindPopup(maps[i]['sector'].toString());
 
                 this.rectangle.on('mouseover', function (e) {
                     this.openPopup();
@@ -77,8 +95,26 @@ export default {
                     this.closePopup();
                 });
                 this.rectangle.on('click', (e) => {
-                    this.onMapClick();
+                    if(this.isRulerActive) {
+                        this.onMeasureDistance(e);
+                    } else {
+                        this.onMapClick(maps[i]['sector']);
+                    }
                 })
+            }
+        },
+
+        onMeasureDistance(event) {
+            if (this.startPoint) {
+                this.endPoint = event.latlng;
+                const res = Math.sqrt(
+                  Math.pow(this.startPoint?.lat - this.endPoint.lat, 2)
+                  + Math.pow(this.startPoint.lng - this.endPoint.lng, 2)
+                );
+                event.target.bindTooltip(res.toFixed(1)+'м').openTooltip();
+                this.startPoint = this.endPoint = null;
+            } else {
+                this.startPoint = event.latlng;
             }
         },
 
@@ -94,11 +130,26 @@ export default {
                     fillOpacity: 0,
                     radius: 5,
                 }).addTo(this.map).bindPopup(wellsData[i]['well']);
-
                 this.marker.on('mouseover', function (e) {
                     this.openPopup();
                 });
             }
+        },
+
+        initChartOnMap() {
+            function fakeData() {
+                return [Math.random(), Math.random()];
+            }
+
+            const myBarChart = L.minichart([85000, 52000], {
+                data: fakeData(),
+                type: 'pie',
+                width: 40,
+                height: 40,
+                labels: ['Test1', 'Test2']
+            });
+
+            this.map.addLayer(myBarChart);
         },
 
         getBounds(item) {
@@ -114,7 +165,8 @@ export default {
             }
             return yx(y, x);
         },
-        onMapClick() {
+        onMapClick(sector) {
+            this.SET_SECTOR(sector);
             this.$bvModal.show('modalAtlas');
         },
         closeAtlasModal() {
@@ -132,12 +184,30 @@ export default {
                 window.location.href = this.localeUrl(data.url);
             }
         },
-        async selectPanelItem(item) {
-            if(item === 'Скважина') {
-                this.initWellOnMap();
+        async selectPanelItem(type, item) {
+            this.map.remove();
+            if(type === 'map' && item?.id === 1) {
+                setTimeout(async() => {
+                    this.initMap();
+                    await this.initSectorOnMap();
+                    this.initWellOnMap();
+                }, 0);
             } else {
-                document.location.reload();
+                this.SET_HORIZON(item?.id);
+                setTimeout(async() => {
+                    this.initMap();
+                    await this.initSectorOnMap();
+                }, 0);
             }
+        },
+        onSearchSector() {
+            this.map.eachLayer(function(layer) {
+                if (layer?._popup?._content === this.searchSector?.toString()) {
+                    const {lat, lng} = layer._bounds?._northEast;
+                    this.map.setView([lat, lng], -2);
+                    layer.openPopup();
+                }
+            }, this);
         }
     },
 }

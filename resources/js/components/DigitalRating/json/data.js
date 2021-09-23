@@ -43,9 +43,9 @@ const histories = [
     }
 ]
 
-const indicators = [
+const indicatorList = [
     {
-        number: 'UZN_0001',
+        uwi: 'UZN_0001',
         liquid: 32,
         water: 45,
         oil: '14,8',
@@ -91,7 +91,44 @@ const secondIndicators = [
     }
 ]
 
-const cods = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+const legends = [
+    {
+        color: '#008000',
+        title: 'Нефтяная зона, не вовлеченная в разработку'
+    },
+    {
+        color: '#20B2AA',
+        title: 'Водо-нефтяная зона, не вовлеченная в разработку'
+    },
+    {
+        color: '#F0E68C',
+        title: 'Выработка запасов менее 50%'
+    },
+    {
+        color: '#BDB76B',
+        title: 'Возможно бурение дублеров'
+    },
+    {
+        color: '#FFFF00',
+        title: 'Возможны возвраты с выше- или нижележащих горизонтов'
+    },
+    {
+        color: '#8B4513',
+        title: 'Выработка запасов более 50%'
+    },
+    {
+        color: '#FF0000',
+        title: 'Имеются действущие скважины'
+    },
+    {
+        color: '#FF6347',
+        title: 'Возможно углубления забоя вышележащих скважин'
+    },
+    {
+        color: '#FFA500',
+        title: 'Имеются проектные скважины'
+    }
+]
 
 const maps = [
     {
@@ -110,51 +147,51 @@ const maps = [
 
 const objects = [
     {
-        id: 1,
+        id: 13,
         title: '13 горизонт'
     },
     {
-        id: 2,
+        id: 14,
         title: '14 горизонт'
     },
     {
-        id: 3,
+        id: 15,
         title: '15 горизонт'
     },
     {
-        id: 4,
+        id: 16,
         title: '16 горизонт'
     },
     {
-        id: 5,
+        id: 17,
         title: '17 горизонт'
     },
     {
-        id: 6,
+        id: 18,
         title: '18 горизонт'
     },
     {
-        id: 7,
+        id: 19,
         title: '19 горизонт'
     },
     {
-        id: 8,
+        id: 20,
         title: '20 горизонт'
     },
     {
-        id: 9,
+        id: 21,
         title: '21 горизонт'
     },
     {
-        id: 10,
+        id: 22,
         title: '22 горизонт'
     },
     {
-        id: 11,
+        id: 23,
         title: '23 горизонт'
     },
     {
-        id: 12,
+        id: 24,
         title: '24 горизонт'
     }
 ]
@@ -175,9 +212,8 @@ const mapActions = [
 export {
     overviews,
     histories,
-    indicators,
     secondIndicators,
-    cods,
+    legends,
     maps,
     properties,
     objects,

@@ -23,8 +23,6 @@ abstract class TableForm extends BaseForm
     protected $jsonValidationSchemeFileName = 'table_form.json';
     protected $tableHeaderService;
 
-    abstract public function getRows(array $params = []): array;
-
     abstract protected function saveSingleFieldInDB(array $params): void;
 
     public function __construct(Request $request)
@@ -190,6 +188,7 @@ abstract class TableForm extends BaseForm
         ];
 
         $dateField = $fieldParams['date_field'] ?? 'dbeg';
+
         if ($this->isCurrentDay($row->{$dateField})) {
             $result['value'] = $value;
         } else {
@@ -255,6 +254,36 @@ abstract class TableForm extends BaseForm
                         ->orderBy('dbeg', 'desc')
                         ->get()
                         ->groupBy('well_id');
+
+                    break;
+                case 'prod.bottom_hole':
+                    $result[$table] = DB::connection('tbd')
+                        ->table('prod.bottom_hole as bh')
+                        ->whereIn('bh.well', $wellIds)
+                        ->whereDate('data', '<=', $date)
+                        ->orderBy('data', 'desc')
+                        ->get()
+                        ->groupBy('well');
+
+                    break;
+                case 'prod.well_geo':
+                    $result[$table] = DB::connection('tbd')
+                        ->table('prod.well_geo as wg')
+                        ->whereIn('wg.well', $wellIds)
+                        ->whereDate('dbeg', '<=', $date)
+                        ->join('dict.geo as g', 'g.id', 'wg.geo')
+                        ->orderBy('dbeg', 'desc')
+                        ->get()
+                        ->groupBy('well');
+
+                    break;
+                case 'prod.well_constr':
+                    $result[$table] = DB::connection('tbd')
+                        ->table('prod.well_constr as wc')
+                        ->whereIn('wc.well', $wellIds)
+                        ->join('dict.tube_nom as tn', 'tn.id', 'wc.casing_nom')
+                        ->get()
+                        ->groupBy('well');
 
                     break;
                 default:

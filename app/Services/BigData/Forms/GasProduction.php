@@ -9,7 +9,7 @@ class GasProduction extends MeasurementLogForm
 {
     protected $configurationFileName = 'gas_production';
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
         $params['filter']['well_category'] = ['GAS'];

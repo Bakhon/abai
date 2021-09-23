@@ -10,6 +10,7 @@
         <select-organization
             :form="form"
             class="col ml-2"
+            hide-label
             @change="getData"/>
 
         <select-field
@@ -22,31 +23,37 @@
 
       <div class="mt-3 d-flex align-items-center">
         <chart-button
-            v-for="(tab, index) in tabs"
+            v-for="(tab, index) in Object.keys(tabs)"
             :key="index"
-            :text="tab"
-            :active="activeTab === index"
+            :text="tabs[tab]"
+            :active="activeTab === tab"
             :class="index ? 'ml-2' : ''"
             class="col"
-            @click.native="activeTab = index"/>
+            @click.native="activeTab = tab"/>
       </div>
     </div>
 
-    <div v-if="res" class="mx-auto max-width-88vw">
+    <div v-if="!loading && res" class="mx-auto max-width-88vw">
       <table-wells
-          v-if="activeTab === 0"
+          v-if="activeTab === 'revenue'"
           :data="res"
           property="NetBack_bf_pr_exp"/>
 
       <table-wells
-          v-else-if="activeTab === 1"
+          v-else-if="activeTab === 'costs'"
           :data="res"
           property="Overall_expenditures"/>
 
       <table-wells
-          v-else-if="activeTab === 2"
+          v-else-if="activeTab === 'operating_profit'"
           :data="res"
           property="Operating_profit"
+          is-colorful/>
+
+      <table-tree-map
+          v-else-if="activeTab === 'treemap'"
+          :data="res"
+          :property="activeTab"
           is-colorful/>
     </div>
   </div>
@@ -60,10 +67,12 @@ import SelectInterval from "./components/SelectInterval";
 import SelectOrganization from "./components/SelectOrganization";
 import SelectField from "./components/SelectField";
 import TableWells from "./components/nrs/TableWells";
+import TableTreeMap from "./components/nrs/TableTreeMap";
 
 export default {
   name: "economic-nrs-wells",
   components: {
+    TableTreeMap,
     ChartButton,
     SelectInterval,
     SelectOrganization,
@@ -75,10 +84,10 @@ export default {
       org_id: null,
       field_id: null,
       interval_start: '2021-01-01T00:00:00.000Z',
-      interval_end: '2021-09-01T00:00:00.000Z',
+      interval_end: '2021-02-01T00:00:00.000Z',
     },
     res: null,
-    activeTab: 0
+    activeTab: 'treemap'
   }),
   computed: {
     ...globalloadingState(['loading']),
@@ -86,11 +95,12 @@ export default {
     tabs() {
       let dimension = `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge')}`
 
-      return [
-        `${this.trans('economic_reference.Revenue')}, ${dimension}`,
-        `${this.trans('economic_reference.costs')}, ${dimension}`,
-        `${this.trans('economic_reference.operating_profit')}, ${dimension}`,
-      ]
+      return {
+        treemap: 'TreeMap',
+        revenue: `${this.trans('economic_reference.Revenue')}, ${dimension}`,
+        costs: `${this.trans('economic_reference.costs')}, ${dimension}`,
+        operating_profit: `${this.trans('economic_reference.operating_profit')}, ${dimension}`,
+      }
     },
   },
   methods: {

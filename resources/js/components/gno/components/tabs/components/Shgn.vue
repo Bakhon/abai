@@ -5,12 +5,12 @@
       <div class="title__block__min__1">
         <span class="pr-87 pl-2">{{ trans('pgno.minimum') }}</span>
         <input v-model="settings.spmMin" class="shgn-input" type="text">
-        {{ trans('measurements.m3/day') }}
+        {{ trans('measurements.1/min') }}
       </div>
       <div class="title__block__max__1">
         <span class="pr-80 pl-2">{{ trans('pgno.maximum') }}</span>
         <input v-model="settings.spmMax" class="shgn-input" type="text">
-        {{ trans('measurements.m3/day') }}
+        {{ trans('measurements.1/min') }}
       </div>
     </div>
 
@@ -19,12 +19,12 @@
       <div class="title__block__min__1">
         <span class="pr-87 pl-2">{{ trans('pgno.minimum') }}</span>
         <input v-model="settings.strokeLenMin" class="shgn-input" type="text">
-        {{ trans('measurements.m3/day') }}
+        {{ trans('measurements.m') }}
       </div>
       <div class="title__block__max__1">
         <span class="pr-80 pl-2">{{ trans('pgno.maximum') }}</span>
         <input v-model="settings.strokeLenMax" class="shgn-input" type="text">
-        {{ trans('measurements.m3/day') }}
+        {{ trans('measurements.m') }}
       </div>
     </div>
 
@@ -140,7 +140,7 @@
     <div class="flex__item__block__1">
 
       <div class="title__block"><u>{{ trans('pgno.group_posadka') }}</u>
-        <img @click="onClick()" src="../../../images/info-shgn.svg" alt="">
+        <img @click="onClick()" src="/img/gno/info-shgn.svg" alt="">
       </div>
 
       <div class="title__block__pump">
@@ -214,7 +214,8 @@
         <div class="title__block__pump_list">
 
           <div class="title__block__pump__1">
-            <input value="1" class="checkbox__block__1" v-model="settings.stupColumns" name="stup" type="radio"/>
+            <input value="1" class="checkbox__block__1" v-model="settings.stupColumns" name="stup" type="radio"
+                   @change="settings.heavyDown = false"/>
             <label class="checkbox__block__label__1">1 {{ trans('pgno.stup') }}</label>
           </div>
 
@@ -225,14 +226,15 @@
 
           <div class="title__block__pump__1">
             <input value="3" class="checkbox__block__1" v-model="settings.stupColumns" name="stup" type="radio"
-                   :disabled="true"/>
+                   :disabled="false"/>
             <label class="checkbox__block__label__1">3 {{ trans('pgno.stup') }}</label>
           </div>
 
         </div>
         <div class="title__block__pump_list__2">
           <div class="title__block__pump__1__heavy__down">
-            <input class="checkbox__block__1" v-model="settings.heavyDown" name="stup" type="checkbox"/>
+            <input class="checkbox__block__1" v-model="settings.heavyDown" name="stup" type="checkbox"
+                   :disabled="Number(settings.stupColumns) === 1"/>
             <label class="checkbox__block__label__1">{{ trans('pgno.heavy_down') }}</label>
           </div>
         </div>
@@ -282,7 +284,7 @@
 
     <div class="flex__item__block__1">
       <div class="title__block"><u>{{ trans('pgno.marki_stali_shtang') }}</u>
-        <img @click="onClickI1()" src="../../../images/info-shgn.svg" alt="">
+        <img @click="onClickI1()" src="/img/gno/info-shgn.svg" alt="">
       </div>
       <div class="title__block__pump kpod-multiselect" style="display: flex;">
 
@@ -316,7 +318,7 @@
     <div class="flex__item__block__1__koroz">
       <div class="title__block__koroz">
         <u>{{ trans('pgno.korozinost_dob_prod') }}</u>
-        <img @click="onClickI2()" src="../../../images/info-shgn.svg" alt="">
+        <img @click="onClickI2()" src="/img/gno/info-shgn.svg" alt="">
       </div>
       <div class="title__block__koroz__checkbox">
         <input class="checkbox__block__1" value="antiCorrosion" type="radio" name="korprod1"
@@ -363,7 +365,7 @@
 			<input v-model="settings.inclStep" class="shgn-input block__1__input" type="text"></div>
       <div class="measurements-shgn-3">{{ trans('measurements.m')}}</div>
     </div>
-				<button type="button" class="submit_button" @click="onSubmitParams('getDefault')">
+				<button type="button" class="submit_button_red" @click="onSubmitParams('getDefault')">
                         {{trans('pgno.primenit_default')}}
                 </button>
 
@@ -441,7 +443,7 @@
       <div>
         <div class="nno-modal-button-wrapper">
           <div class="svg__image">
-            <img :src="svgTableN1"/>
+            <img src="/img/gno/tableN1.svg" />
           </div>
         </div>
       </div>
@@ -460,7 +462,7 @@
       <div>
         <div class="nno-modal-button-wrapper" style="overflow: auto;">
           <div class="svg__image">
-            <img :src="svgTableN2"/>
+            <img src="/img/gno/tableN2.svg" />
           </div>
         </div>
       </div>

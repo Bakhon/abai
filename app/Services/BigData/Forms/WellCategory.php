@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\WellCategory as WellCategoryDictionary;
 use App\Models\BigData\Well;
@@ -33,45 +32,45 @@ class WellCategory extends PlainForm
 
     protected $configurationFileName = 'well_category';
 
-    public function submit(): array
+    protected function submitForm(): array
     {
-        DB::connection('tbd')->beginTransaction();
+        $data = $this->request->except('org');
+        $data['dend'] = Well::DEFAULT_END_DATE;
 
-        try {
-            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-            $oldCategory = $dbQuery->where('well', $this->request->get('well'))
-                ->where('dend', Well::DEFAULT_END_DATE)
-                ->first();
-            if ($oldCategory !== null) {
-                $dbQuery->where('id', $oldCategory->id)->update(
+        $oldCategory = DB::connection('tbd')->table($this->params()['table'])
+            ->where('well', $this->request->get('well'))
+            ->where('dend', Well::DEFAULT_END_DATE)
+            ->where('id', '!=', $data['id'])
+            ->first();
+        if ($oldCategory !== null) {
+            DB::connection('tbd')
+                ->table($this->params()['table'])
+                ->where('id', $oldCategory->id)->update(
                     [
                         'dend' => $this->request->get('dbeg')
                     ]
                 );
-            }
-
-            $data = $this->request->except('org');
-            $data['dend'] = Well::DEFAULT_END_DATE;
-
-            if (!empty($data['id'])) {
-                $id = $dbQuery->where('id', $data['id'])->update($data);
-            } else {
-                $id = $dbQuery->insertGetId($data);
-            }
-
-            $this->saveOrganization();
-
-            DB::connection('tbd')->commit();
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
-        } catch (\Exception $e) {
-            DB::connection('tbd')->rollBack();
-            throw new SubmitFormException($e->getMessage());
         }
+
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+
+        if (!empty($data['id'])) {
+            $id = $dbQuery->where('id', $data['id'])->update($data);
+        } else {
+            $id = $dbQuery->insertGetId($data);
+        }
+
+        $this->saveOrganization();
+
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
     public function saveOrganization()
     {
+        if (!$this->request->get('org')) {
+            return;
+        }
+
         $dbQuery = DB::connection('tbd')->table('prod.well_org');
 
         $oldOrg = $dbQuery
@@ -147,7 +146,7 @@ class WellCategory extends PlainForm
         return [
             'connected_wells' => [
                 'rows' => $otherWells,
-                'columns' => $this->getColumns($category)
+                'columns' => $this->getConnectedWellColumns($category)
             ]
         ];
     }
@@ -198,7 +197,7 @@ class WellCategory extends PlainForm
         return $result->toArray();
     }
 
-    private function getColumns(WellCategoryDictionary $category): array
+    private function getConnectedWellColumns(WellCategoryDictionary $category): array
     {
         $columns = [
             [

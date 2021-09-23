@@ -38,7 +38,6 @@
         },
         methods: {
             updateChartOptions: function (chartSummary) {
-                let opec = chartSummary.opec;
                 let color1;
                 let color2;
                 let plan1;
@@ -52,11 +51,12 @@
                     labels: []
                 };
                 let self = this;
+
                 _.forEach(chartSummary.dzoCompaniesSummaryForChart, function (item) {
                     formattedChartSummary.labels.push(self.getFormattedDate(item.time));
-                    formattedChartSummary.plan.push(item.productionPlanForChart);
+                    formattedChartSummary.plan.push(item.productionPlanForChart2);
                     formattedChartSummary.fact.push(item.productionFactForChart);
-                    formattedChartSummary.planOpec.push(item.productionPlanForChart2);
+                    formattedChartSummary.planOpec.push(item.productionPlanForChart);
                     formattedChartSummary.monthlyPlan.push(item.monthlyPlan);
                 });
 
@@ -99,7 +99,7 @@
                 let planChartOptions = {
                     label: chartLabels.plan,
                     borderColor: chartColors.plan,
-                    fill: 1,
+                    fill: false,
                     backgroundColor: fillPattern,
                     showLine: true,
                     data: formattedChartSummary.plan,
@@ -117,7 +117,7 @@
                 let planOpecChartOptions = {
                     label: chartLabels.opecPlan,
                     borderColor: chartColors.opecPlan,
-                    fill: false,
+                    fill: 1,
                     backgroundColor: fillPattern,
                     showLine: true,
                     data: formattedChartSummary.planOpec,
@@ -134,7 +134,7 @@
                 };
 
                 let datasets = [planChartOptions,factChartOptions,planOpecChartOptions];
-                if (chartSummary.isFilterTargetPlanActive && !chartSummary.isOilResidueActive) {
+                if (chartSummary.isFilterTargetPlanActive) {
                     datasets = [planChartOptions,factChartOptions,planOpecChartOptions,monthlyPlan];
                 }
 
@@ -160,19 +160,8 @@
                                 {
                                     ticks: {
                                         fontColor: "#fff",
-                                        callback: function (num) {
-                                            if (num >= 1000) {
-                                                num = (num / 1000).toFixed(0);
-                                            } else if (num >= 100) {
-                                                num = Math.round((num / 1000) * 10) / 10;
-                                            } else if (num >= 10) {
-                                                num = Math.round((num / 1000) * 100) / 100;
-                                            } else if (num > 0) {
-                                                num = 0.01;
-                                            } else {
-                                                num = 0;
-                                            }
-                                            return new Intl.NumberFormat("ru-RU").format(num);
+                                        callback: (num) => {
+                                            return this.getFormattedNumber(num);
                                         },
                                     },
                                 },
@@ -187,9 +176,32 @@
                         },
                         tooltips: {
                             intersect: false,
+                            callbacks: {
+                                label: (tooltipItem,data) => {
+                                    if (data.datasets.length !== 4) {
+                                        return tooltipItem.value;
+                                    }
+                                    return this.getFormattedNumber(tooltipItem.value);
+                                }
+                            }
                         }
                     }
                 );
+            },
+
+            getFormattedNumber(num) {
+                if (num >= 1000) {
+                    num = (num / 1000).toFixed(0);
+                } else if (num >= 100) {
+                    num = Math.round((num / 1000) * 10) / 10;
+                } else if (num >= 10) {
+                    num = Math.round((num / 1000) * 100) / 100;
+                } else if (num > 0) {
+                    num = 0.01;
+                } else {
+                    num = 0;
+                }
+                return new Intl.NumberFormat("ru-RU").format(num);
             },
 
             getLabelsByDatasets(chart,chartSummary,fillPattern) {
@@ -205,12 +217,10 @@
                         fillStyle: style.borderColor,
                     };
                 });
-                if (!chartSummary.isOilResidueActive) {
-                    labels.push({
-                        text: this.trans("visualcenter.deviation"),
-                        fillStyle: fillPattern,
-                    });
-                }
+                labels.push({
+                    text: this.trans("visualcenter.deviation"),
+                    fillStyle: fillPattern,
+                });
                 return labels;
             },
 

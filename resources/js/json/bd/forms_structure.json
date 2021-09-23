@@ -56,7 +56,8 @@
           "well_tech",
           "tech_state",
           "distribution_substation",
-          "joint_wells"
+          "joint_wells",
+          "well_block"
         ]
       },{
         "code": "measurement_schedule",
@@ -88,7 +89,8 @@
         "forms": [
           "production_well",
           "injection_wells",
-          "gas_well"
+          "gas_well",
+          "meas_water_prod"
         ]
       },
       {
@@ -117,7 +119,6 @@
       }
     ],
     "forms": [
-      "well_block",
       "gis_type"
     ]
   },

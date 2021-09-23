@@ -10,6 +10,7 @@ use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Extractions\ExtractionBuilder;
@@ -67,6 +68,15 @@ class EconomicNrsController extends Controller
     public function indexWells()
     {
         return view('economic.nrs_wells');
+    }
+
+    public function indexWell(Request $request)
+    {
+        $orgId = $request->route('org_id');
+
+        $wellId = $request->route('well_id');
+
+        return view('economic.nrs_well', compact('orgId', 'wellId'));
     }
 
     public function getData(EconomicNrsDataRequest $request): array
@@ -382,6 +392,14 @@ class EconomicNrsController extends Controller
 
         $interval = self::formatInterval($intervalStart->copy(), $intervalEnd->copy());
 
+        $sumKeys = [
+            "Operating_profit",
+            "Overall_expenditures",
+            "NetBack_bf_pr_exp",
+            "oil",
+            "liquid"
+        ];
+
         $builder = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
@@ -389,10 +407,11 @@ class EconomicNrsController extends Controller
             ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) {
                 $extBuilder->timeFormat(self::GRANULARITY_DAILY_FORMAT);
             })
-            ->select("uwi")
-            ->sum("Operating_profit")
-            ->sum("Overall_expenditures")
-            ->sum("NetBack_bf_pr_exp");
+            ->select("uwi");
+
+        foreach ($sumKeys as $key) {
+            $builder->sum($key);
+        }
 
         if ($org->druid_id) {
             $builder->where('org_id2', '=', $org->druid_id);
@@ -402,9 +421,13 @@ class EconomicNrsController extends Controller
             $builder->where('dpz', '=', $dpz);
         }
 
+        if ($request->well_id) {
+            $builder->where('uwi', '=', $request->well_id);
+        }
+
         $wells = $builder->groupBy()->data();
 
-        $wellsByDates = ['dates' => [], 'uwis' => []];
+        $wellsByDates = ['org' => $org, 'dates' => [], 'uwis' => []];
 
         foreach ($wells as &$well) {
             $uwi = $well['uwi'];
@@ -413,11 +436,15 @@ class EconomicNrsController extends Controller
 
             $wellsByDates['dates'][$date] = 1;
 
-            $wellsByDates['uwis'][$uwi]['NetBack_bf_pr_exp'][$date] = $well['NetBack_bf_pr_exp'];
+            foreach ($sumKeys as $key) {
+                $wellsByDates['uwis'][$uwi][$key][$date] = $well[$key];
 
-            $wellsByDates['uwis'][$uwi]['Overall_expenditures'][$date] = $well['Overall_expenditures'];
+                if (!isset($wellsByDates['uwis'][$uwi][$key]['sum'])) {
+                    $wellsByDates['uwis'][$uwi][$key]['sum'] = 0;
+                }
 
-            $wellsByDates['uwis'][$uwi]['Operating_profit'][$date] = $well['Operating_profit'];
+                $wellsByDates['uwis'][$uwi][$key]['sum'] += $well[$key];
+            }
         }
 
         $wellsByDates['dates'] = array_keys($wellsByDates['dates']);

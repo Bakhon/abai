@@ -2,7 +2,7 @@
   "table": "prod.well_workover",
   "sort": [
     {
-      "field": "request_date",
+      "field": "dbeg",
       "order": "desc"
     }
   ],
@@ -127,6 +127,19 @@
               "is_editable": true
             },
             {
+              "code": "gtm_type",
+              "type": "dict",
+              "title": "gtm_type",
+              "validation": "exists:tbd.dict.gtm_type,id",
+              "dict": "gtm_types",
+              "depends_on": [
+                {
+                  "field": "gtm_duplicate",
+                  "value": true
+                }
+              ]
+            },
+            {
               "code": "pit",
               "type": "checkbox",
               "title": "opi",
@@ -151,7 +164,10 @@
               "type": "datetime",
               "title": "work_end_date",
               "validation": "required|nullable|date|after:dbeg",
-              "is_editable": true
+              "is_editable": true,
+              "callbacks": {
+                "fillCalculatedFields": ""
+              }
             },
             {
               "code": "work_list",
@@ -188,7 +204,7 @@
               "code": "td",
               "type": "numeric",
               "title": "actual_bottomhole_m",
-              "validation": "numeric|max:255",
+              "validation": "numeric|max:10000|gte:0",
               "prefix": "",
               "is_editable": true
             },
@@ -211,7 +227,7 @@
               "code": "hud",
               "type": "text",
               "title": "artificial_slaughter_m",
-              "validation": "max:255",
+              "validation": "numeric|max:10000|gte:0",
               "prefix": "",
               "is_editable": true
             },
@@ -231,7 +247,7 @@
               "is_editable": true
             },
             {
-              "code": "status",
+              "code": "well_previous_status_type",
               "table": "prod.well_status",
               "type":"calc",
               "title": "status_before_selected_date",
@@ -239,7 +255,7 @@
               "is_editable": false
             },
             {
-              "code": "category",
+              "code": "well_previous_category",
               "table": "prod.well_category",
               "type":"calc",
               "title": "well_previous_category",
@@ -257,7 +273,7 @@
             {
               "code": "no_change_state",
               "type": "checkbox",
-              "title": "not_change_technical_condition",
+              "title": "not_change_state",
               "validation":"",
               "is_editable": true
             }
@@ -293,13 +309,6 @@
               "type": "text",
               "title": "reason_type",
               "validation": "required"
-            },
-            {
-              "code": "stop_reason",
-              "type": "dict",
-              "title": "reason_stopping",
-              "validation": "required|exists:tbd.dict.reason,id",
-              "dict": "reason_rst"
             }
           ]
         }
