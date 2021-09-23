@@ -463,7 +463,7 @@ class EconomicNrsController extends Controller
 
         $interval = self::formatInterval(
             Carbon::parse($request->interval_start),
-            Carbon::parse($request->interval_end)
+            Carbon::parse($request->interval_end)->addDay()
         );
 
         $builder = $this

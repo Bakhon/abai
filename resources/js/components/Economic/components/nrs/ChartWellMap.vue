@@ -28,15 +28,15 @@
 
     <div v-if="wells.length" class="mt-3 d-flex">
       <button
-          v-for="(date, index) in intervalDates.original"
+          v-for="(date, index) in formattedDates"
           :key="date"
           :class="[
               date === currentDate ? 'bg-blue' : 'bg-grey',
               index ? 'ml-2' : ''
               ]"
           class="btn text-white"
-          @click="updateDate(date)">
-        {{ intervalDates.formatted[index] }}
+          @click="updateDate(filteredDates[index])">
+        {{ formattedDates[index] }}
       </button>
     </div>
 
@@ -93,8 +93,8 @@ export default {
     async getWells() {
       this.SET_LOADING(true);
 
-      this.currentDate = this.intervalDates.original.length
-          ? this.intervalDates.original[0]
+      this.currentDate = this.formattedDates.original.length
+          ? this.formattedDates.original[0]
           : null
 
       try {
@@ -114,7 +114,7 @@ export default {
       this.map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
-        center: this.filteredWells[0].coordinates,
+        center: this.filteredWells[this.currentDate][0].coordinates,
         zoom: 11,
         bearing: 0,
         pitch: 30,
@@ -122,7 +122,7 @@ export default {
       })
 
       this.map.on('load', () => {
-        this.filteredWells.forEach(well => {
+        this.filteredWells[this.currentDate].forEach(well => {
           let marker = document.createElement('div');
 
           marker.id = this.getId(well)
@@ -145,7 +145,7 @@ export default {
 
       this.currentDate = date
 
-      this.filteredWells.forEach(well => {
+      this.filteredWells[this.currentDate].forEach(well => {
         let marker = document.getElementById(this.getId(well))
 
         if (!marker) return
@@ -171,39 +171,10 @@ export default {
       return date.toISOString()
     },
 
-    intervalDates() {
-      let dates = {
-        formatted: [],
-        original: [],
-      }
-
-      if (!this.form.interval_start || !this.form.interval_end) {
-        return dates
-      }
-
-      let start = new Date(this.form.interval_start)
-
-      let end = new Date(this.form.interval_end)
-
-      for (let dt = start; dt <= end; dt.setDate(dt.getDate() + 1)) {
-        let date = (new Date(dt))
-
-        dates.formatted.push(date.toLocaleDateString('ru', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-        }))
-
-        dates.original.push(date.toISOString().split('T')[0])
-      }
-
-      return dates;
-    },
-
     filteredWells() {
-      let points = []
+      let points = {}
 
-      this.wells.filter(well => well.dt === this.currentDate).forEach(well => {
+      this.wells.forEach(well => {
         if (!well.coordinates) return
 
         let point = well.coordinates.split(',')
@@ -214,7 +185,11 @@ export default {
 
         if (Math.abs(lat) > 90 || Math.abs(lon) > 180) return;
 
-        points.push({
+        if (!points.hasOwnProperty(well.dt)) {
+          points[well.dt] = []
+        }
+
+        points[well.dt].push({
           uwi: well.uwi,
           color: this.getColor(well),
           coordinates: {lat: lat, lon: lon}
@@ -222,6 +197,20 @@ export default {
       })
 
       return points
+    },
+
+    filteredDates() {
+      return Object.keys(this.filteredWells)
+    },
+
+    formattedDates() {
+      return this.filteredDates.map(date => {
+        (new Date(date)).toLocaleDateString('ru', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        })
+      })
     },
   }
 }
