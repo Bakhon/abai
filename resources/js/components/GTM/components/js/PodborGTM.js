@@ -121,11 +121,11 @@ export default {
                 },
                 yaxis: [
                     {
-                        seriesName: 'Qн т/сут.',
+                        seriesName: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.t/d')}`,
                         axisTicks: {show: true},
                         axisBorder: {show: true,},
                         title: {
-                            text: "Qн т/сут.", style: {
+                            text: `${this.trans('pgno.q_nefti')} ${this.trans('measurements.t/d')}`, style: {
                                 color: undefined,
                                 fontSize: '15px',
                                 fontFamily: 'Helvetica, Arial, sans-serif',
@@ -135,11 +135,11 @@ export default {
                         }
                     },
                     {
-                        seriesName: 'Qж м3/сут',
+                        seriesName: `${this.trans('pgno.q_liq')} ${this.trans('measurements.m3/day')}`,
                         axisTicks: {show: true},
                         axisBorder: {show: true,},
                         title: {
-                            text: "Qж м3/сут.", style: {
+                            text: `${this.trans('pgno.q_liq')} ${this.trans('measurements.m3/day')}`, style: {
                                 color: undefined,
                                 fontSize: '15px',
                                 fontFamily: 'Helvetica, Arial, sans-serif',
@@ -149,11 +149,11 @@ export default {
                         }
                     },
                     {
-                        seriesName: 'Обводненность',
+                        seriesName: `${this.trans('pgno.obvodnenost')} %`,
                         opposite: true,
                         max: 100,
                         title: {
-                            text: "Обв. %", style: {
+                            text: `${this.trans('pgno.obvodnenost')} %`, style: {
                                 color: undefined,
                                 fontSize: '15px',
                                 fontFamily: 'Helvetica, Arial, sans-serif',
@@ -193,6 +193,9 @@ export default {
                 toaster: "b-toaster-top-center",
                 autoHideDelay: 8000,
             });
+        },
+        onMinimizeChart() {
+            console.log('asd')
         },
         onClickableValue() {
             const body = {

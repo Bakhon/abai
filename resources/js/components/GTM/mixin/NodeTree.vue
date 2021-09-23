@@ -1,7 +1,6 @@
 <template>
-  <li class="text-white list-style-none mt-2 pl-3">
+  <li class="text-white list-style-none mt-2 pl-4 pb-1">
     <div
-        class="pb-1"
         v-if="node.name"
         v-bind:class="{ 'cursor-pointer': pointerClass }"
         @click.stop="handleClick(node)">

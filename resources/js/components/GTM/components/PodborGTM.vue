@@ -2,21 +2,37 @@
 <template>
   <div>
     <div class="row mx-0 mt-lg-2 gtm">
-      <div class="gtm-dark col-lg-10 p-0" @click="closeTree()">
+      <div class="col-lg-10" style="padding: 4px; border: 6px solid #272953;" @click="closeTree()">
         <div class="row col-12 p-0 m-0">
-          <div class="col-6 d-none d-lg-block p-0 pl-1">
-            <div class="h-100">
-              <div class="block-header pb-0 pl-2 pt-1">
-                {{ trans("paegtm.wells-candidates") }}
-              </div>
-              <div class="p-1 pl-2 table-pgtm">
-                <div v-if="!table.main_data.data" >
-                  <div style="color: white; text-align: center; font-size: 16px; padding-top: 150px;">
-                    Сделайте расчет прежде чем получить скважины
+          <div class="col-6 d-none d-lg-block p-0">
+            <div class="gtm-dark h-100">
+              <div class="block-header pb-0 pl-2 pt-1 d-flex" style="background-color: #323370">
+                <div>
+                  {{ trans("paegtm.wells-candidates") }}
+                </div>
+                <div class="d-flex">
+                  <div class="pr-3 pb-1">
+                    <img src="/img/GTM/download.svg" alt="">
+                  </div>
+                  <div class="pr-3 pb-1">
+                    <img src="/img/GTM/maximize.svg" alt="">
                   </div>
                 </div>
+              </div>
+              <div class="p-0 pl-0 table-pgtm">
+                <div v-if="!table.main_data.data" >
+                  <div style="border: 8px solid #363B68">
+                    <div style="border: 8px solid #1A214A">
+                  <div class="p-3" style="color: white; text-align: center; font-size: 16px; padding-top: 20px;">
+                    Сделайте расчет прежде чем получить скважины
+                  </div>
+                      </div>
+                    </div>
+                </div>
                 <div v-else>
-                  <table class="table text-center text-white podbor-middle-table">
+                  <div style="border: 8px solid #363B68">
+                    <div style="border: 8px solid #1A214A">
+                    <table class="table text-center text-white podbor-middle-table">
                     <thead>
                     <tr>
                       <th v-for="(row, idx) in table.main_data.header" :key="idx"
@@ -42,58 +58,121 @@
                     </tr>
                     </tbody>
                   </table>
+                      </div>
+                    </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-6 d-none d-lg-block p-0">
-            <div class="h-100">
-              <div class="block-header pb-0 pl-2 pt-1">
-                {{ trans("paegtm.current_qualifiers_map") }}
+
+
+          <div class="col-6 d-none d-lg-block p-0 pl-1">
+            <div class="gtm-dark h-100">
+              <div class="block-header pb-0 pl-2 pt-1 d-flex" style="background-color: #323370">
+                <div>
+                  {{ trans("paegtm.current_qualifiers_map") }}
+                </div>
+                <div class="d-flex">
+                  <div class="pr-3">
+                    <img src="/img/GTM/download.svg" alt="">
+                  </div>
+                  <div class="pr-3">
+                    <img src="/img/GTM/maximize.svg" alt="">
+                  </div>
+                  <div class="pr-3 pb-1" @click="onMinimizeChart">
+                    <img src="/img/GTM/maximize-arrow.svg" alt="">
+                  </div>
+                </div>
+
               </div>
-              <div class="p-3">
-                <img src="/img/GTM/map.svg" class="gtm-map-img">
-              </div>
+                <div style="border: 8px solid #363B68">
+                  <div style="border: 8px solid #1A214A">
+                    <div class="p-3">
+                      <img src="/img/GTM/map.svg" class="gtm-map-img">
+                    </div>
+                  </div>
+                </div>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="row col-12 p-0 m-0 pb-2">
-          <div v-if="lineChartSeries === null" class="col-6 d-none d-lg-block p-0 pl-1">
-            <div style="color: white; text-align: center; font-size: 16px; padding-top: 150px;">
+        <div class="row col-12 p-0 m-0 pt-1">
+          <div v-if="lineChartSeries === null" class="col-6 d-none d-lg-block p-0">
+            <div style="border: 8px solid #363B68">
+              <div style="border: 8px solid #1A214A">
+            <div class="p-3 gtm-dark" style="color: white; text-align: center; font-size: 16px; padding-top: 20px;">
               Нажмите на скважину чтобы получить данные
             </div>
-          </div>
-          <div v-else class="col-6 d-none d-lg-block p-0 pl-1">
-            <div class="h-100">
-              <div class="block-header pb-0 pl-2 pt-1">
-                {{ trans("paegtm.well") }} {{ wellNumber }}
+                </div>
               </div>
-              <div class="p-1 pl-2 mh-370">
-                <apexchart
-                    :height="360"
-                    :options="lineChartOptions"
-                    :series="lineChartSeries"
-                ></apexchart>
+          </div>
+
+          <div v-else class="col-6 d-none d-lg-block p-0 pt-1">
+            <div class="gtm-dark h-100">
+              <div  class="block-header pb-0 pl-2 pt-1 d-flex" style="background-color: #323370">
+                <div>
+                  {{ trans("paegtm.well") }} {{ wellNumber }}
+                </div>
+
+              <div class="d-flex">
+                <div class="pr-3 pb-1">
+                  <img src="/img/GTM/download.svg" alt="">
+                </div>
+                <div class="pr-3">
+                  <img src="/img/GTM/maximize.svg" alt="">
+                </div>
+              </div>
+              </div>
+              <div style="border: 8px solid #363B68">
+                <div style="border: 8px solid #1A214A">
+                  <apexchart
+                      :height="360"
+                      :options="lineChartOptions"
+                      :series="lineChartSeries"
+                  ></apexchart>
+                  </div>
               </div>
             </div>
           </div>
-          <div class="col-6 d-none d-lg-block p-0">
-            <div v-if="waterFallChartSeries === null" class="h-100 pb-2">
-              None
-            </div>
-            <div v-else class="h-100 pb-2">
-              <div class="block-header pb-0 pl-2">
-                {{ trans("paegtm.factor_analysis") }}, {{ trans("measurements.thousand_tons") }}
-              </div>
-              <div class="p-1 pl-2">
-                <apexchart
-                  :height="320"
-                  :options="waterFallChartOptions"
-                  :series="waterFallChartSeries"
-                ></apexchart>
+
+          <div v-if="waterFallChartSeries === null" class="col-6 d-none d-lg-block p-0 pl-1">
+            <div style="border: 8px solid #363B68">
+              <div style="border: 8px solid #1A214A">
+                <div class="p-3 gtm-dark" style="color: white; text-align: center; font-size: 16px; padding-top: 20px;">
+                  Нажмите на скважину чтобы получить данные
+                </div>
               </div>
             </div>
           </div>
+
+          <div v-else class="col-6 d-none d-lg-block p-0 pt-1 pl-1">
+            <div class="gtm-dark h-100">
+              <div  class="block-header pb-0 pl-2 pt-1 d-flex" style="background-color: #323370">
+                <div>
+                  {{ trans("paegtm.factor_analysis") }}, {{ trans("measurements.thousand_tons") }}
+                </div>
+
+                <div class="d-flex">
+                  <div class="pr-3 pb-1">
+                    <img src="/img/GTM/download.svg" alt="">
+                  </div>
+                  <div class="pr-3">
+                    <img src="/img/GTM/maximize.svg" alt="">
+                  </div>
+                </div>
+              </div>
+              <div style="border: 8px solid #363B68">
+                <div style="border: 8px solid #1A214A">
+                  <apexchart
+                      :height="360"
+                      :options="waterFallChartOptions"
+                      :series="waterFallChartSeries"
+                  ></apexchart>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
       </div>
       <div class="col-lg-2 p-0 pl-2 pr-1">
@@ -145,8 +224,8 @@
           </div>
         </div>
 
-        <div class="gtm-dark mt-2">
-          <div class="block-header p-2 text-center calc-button" @click="postTreeData(treeData)">
+        <div class="gtm-dark mt-2 p-2" @click="postTreeData(treeData)">
+          <div class="block-header p-2 text-center calc-button" >
             {{ trans("paegtm.calc") }}
           </div>
         </div>
@@ -224,6 +303,10 @@
 .table-pgtm {
   height: 400px;
   overflow: auto;
+}
+
+.p-3 {
+  height: 368px;
 }
 
 .bg-body {
