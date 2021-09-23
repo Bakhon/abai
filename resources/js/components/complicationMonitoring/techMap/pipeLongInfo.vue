@@ -13,7 +13,7 @@
     </table>
 
     <div class="color-white">
-      <p>{{ trans('monitoring.pipe.fields.sizes')}}:
+      <p>{{ trans('monitoring.pipe.fields.sizes') }}:
         {{ pipe.pipe_type.outside_diameter + ' x ' + pipe.pipe_type.thickness }}
       </p>
       <p>{{ trans('monitoring.gu.fields.daily_fluid_production') }}:
@@ -21,8 +21,8 @@
       </p>
       <p>{{ trans('monitoring.gu.fields.bsw') }}: {{ pipe.hydro_calc.bsw.toFixed(2) + trans('measurements.percent') }}
       </p>
-      <p>{{ trans('monitoring.gu.fields.gas_factor') + ' ' + trans('measurements.m3/m3') }}:
-        {{ pipe.hydro_calc.gazf.toFixed(2) }}
+      <p>{{ trans('monitoring.gu.fields.gas_factor') }}:
+        {{ pipe.hydro_calc.gazf.toFixed(2) + ' ' + trans('measurements.m3/m3') }}
       </p>
     </div>
   </div>
