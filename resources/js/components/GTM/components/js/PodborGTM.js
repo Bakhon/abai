@@ -195,7 +195,7 @@ export default {
             });
         },
         onMinimizeChart() {
-            console.log('asd')
+
         },
         onClickableValue() {
             const body = {
@@ -305,12 +305,6 @@ export default {
                     name: "root",
                     children: v
                 }})
-            // this.axios({
-            //     method: 'POST',
-            //     headers: {'content-type': 'application/json'},
-            //     data: body,
-            //     url: this.url
-            // })
                 .then((res) => {
                     if (res.status === 200) {
                         this.setNotify("Скважины пришли", "Success", "success")
