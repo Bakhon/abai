@@ -125,7 +125,7 @@
                  :key="index"
                  :class="wellCount.name ? '' : 'font-weight-bold text-grey'"
                  class="d-flex">
-              <div class="font-size-12px" style="width: 150px;">
+              <div :class="wellCount.nameClass" class="font-size-12px" style="width: 150px;">
                 {{ wellCount.name }}
               </div>
 
@@ -555,12 +555,14 @@ export default {
         {
           name: this.trans('economic_reference.profitless_cat_1'),
           value: this.scenario.uwi_count_profitless_cat_1.original_value,
-          value_optimized: this.scenario.uwi_count_profitless_cat_1.original_value_optimized
+          value_optimized: this.scenario.uwi_count_profitless_cat_1.original_value_optimized,
+          nameClass: 'pl-3'
         },
         {
           name: this.trans('economic_reference.profitless_cat_2'),
           value: this.scenario.uwi_count_profitless_cat_2.original_value,
           value_optimized: this.scenario.uwi_count_profitless_cat_2.original_value_optimized,
+          nameClass: 'pl-3'
         },
         {
           name: this.trans('economic_reference.new_wells'),

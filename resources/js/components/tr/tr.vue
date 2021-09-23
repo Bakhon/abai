@@ -293,9 +293,11 @@
                                       </svg>
                                   {{trans('tr.cancel')}}</a> 
 
-                                <a
-                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                                <button
+                                  
+                                  
                                   @click="saveadd()"
+                                  :class="{'save_but_modal': isExpMethButton, 'save_but_modal_no_activ': !isExpMethButton}"
                                   @click.prevent="reRender"
                                   v-if="isDeleted && isShowAdd"
                                   ><svg width="24" 
@@ -305,11 +307,11 @@
                                   xmlns="http://www.w3.org/2000/svg">
                                   <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
                                   stroke-width="1.5" stroke-linecap="round"/>
-                                  </svg> {{trans('tr.save')}}</a>
+                                  </svg> {{trans('tr.save')}} </button>
 
                                   
-                                  <a
-                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                                  <button
+                                  :class="{'save_but_modal': isExpMethButton, 'save_but_modal_no_activ': !isExpMethButton}"
                                   @click="saveadd()"
                                   @click.prevent="reRender"
                                   v-if="isSaved && isShowAdd"
@@ -320,14 +322,14 @@
                                   xmlns="http://www.w3.org/2000/svg">
                                   <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
                                   stroke-width="1.5" stroke-linecap="round"/>
-                                  </svg>{{trans('tr.save_changes')}}</a>
+                                  </svg>{{trans('tr.save_changes')}} </button>
 
                                 <a
-                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                                  class="delete_but_modal"
                                   @click="deleteWell"
                                   @click.prevent="reRender"
                                   v-if="isSaved && isShowAdd"
-
+                                  disabled
                                   ><svg width="24"
                                   height="24" 
                                   viewBox="0 0 24 24" 
@@ -377,7 +379,7 @@
                             <td><input data-key="rus_wellname" v-model="row.rus_wellname" class="input_edit_modal"></td>
                             <td><b-form-select data-key="horizon" v-model="row.horizon"  :options="horizonFilterData" @change="editAddWell(row, row_index)" class="select_edit"></b-form-select></td>
                             <td><input data-key="object" v-model="row.object" class="input_edit_modal"></td>
-                            <td><input data-key="exp_meth" v-model="row.exp_meth" class="input_edit_modal"></td>
+                            <td><input data-key="exp_meth" v-model="row.exp_meth" :class="{'input_edit_modal_2': !isExpMethInput(row),'input_edit_modal': isExpMethInput(row)}"></td>
                             <td><input data-key="type_text" v-model="row.type_text" class="input_edit_modal"></td>
                             <td><input data-key="block" v-model="row.block" class="input_edit_modal"></td>
                             <td><input data-key="cas_OD" v-model="row.cas_OD" class="input_edit_modal"></td>
@@ -6461,9 +6463,7 @@
               </tbody>
             </table>
           </div>
-          
           <div class="overflow-auto">
-            
             <paginate
                 v-model="this.$store.state.tr.pageNumber"
                 :page-count="this.pageCount"
@@ -6496,7 +6496,12 @@
 .select_pages {
   color: white;
 }
-
+.delete_but_modal {
+  margin-left: 10px; 
+  cursor: pointer; 
+  color:white; 
+  margin-top: 5px;
+}
 .form-controll-from {
   background-color: #333975;
   border-color: #333975;
@@ -6773,6 +6778,20 @@ tr:nth-child(even) td {
   font-size: 12px;
   height: 31px;
 }
+.save_but_modal_no_activ {
+  pointer-events: none;
+  cursor: not-allowed;
+  background: #272953;
+  color: #656A8A;
+  border: none;
+  margin-left: 11px;
+}
+.save_but_modal {
+  background: #272953;
+  color:#fff;
+  border: none;
+  margin-left: 11px;
+}
 
 
 ::-webkit-scrollbar {
@@ -6868,6 +6887,11 @@ table::-webkit-scrollbar-corner {
   cursor: pointer; 
   color:white; 
   margin-top: 5px;
+}
+.input_edit_modal_2 {
+  border-color: red;
+  font-size: 12px;
+  height: 31px;
 }
 .modal_table {
   height: 240px !important;

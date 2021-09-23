@@ -40,6 +40,9 @@
         </div>
         <div class="rating-content__wrapper">
           <div id="map"></div>
+          <button class="ruler" @click="isRulerActive = !isRulerActive">
+            <i class="fas fa-ruler" :class="{'active': isRulerActive}"/>
+          </button>
         </div>
       </div>
       <div class="rating-panel">
@@ -99,6 +102,7 @@
 
     &__wrapper {
       height: calc(100% - 40px);
+      position: relative;
       img {
         width: 80%;
       }
@@ -148,5 +152,28 @@
 .leaflet-div-icon {
   background: #fff;
   border: 1px solid #666;
+}
+
+.ruler {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 4001;
+  background-color: #fff;
+  width: 28px;
+  height: 24px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+
+  .fa-ruler {
+    color: #000;
+    &.active {
+      color: #198cff;
+    }
+  }
 }
 </style>

@@ -265,4 +265,7 @@ export default {
   -webkit-transform: scale(1);
   transform: scale(1);
 }
+#modalSetting___BV_modal_outer_ {
+  z-index: 4002 !important;
+}
 </style>
