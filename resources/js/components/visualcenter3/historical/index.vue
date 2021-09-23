@@ -49,7 +49,8 @@
                     'КБМ',
                     'ММГ',
                     'ОМГ',
-                    'КТМ'
+                    'КТМ',
+                    'КОА'
                 ],
                 selectedDzo: '',
                 selectedType: 'DzoImportOtm',
