@@ -15,7 +15,7 @@ class PolygonsService
     {
         $this->client = new Client(
             [
-                'base_uri' => 'http://172.20.103.203:8650/'
+                'base_uri' => env('MAP_POLYGON_SERVICE_HOST')
             ]
         );
     }
