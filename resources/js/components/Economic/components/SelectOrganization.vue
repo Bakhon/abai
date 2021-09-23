@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label for="org">
+    <label v-if="!hideLabel" for="org">
       {{ trans('economic_reference.org') }}
     </label>
 
@@ -28,6 +28,10 @@ export default {
       required: true,
       type: Object
     },
+    hideLabel: {
+      required: false,
+      type: Boolean
+    }
   },
   data: () => ({
     organizations: []
