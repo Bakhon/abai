@@ -25,7 +25,7 @@
                 "code": "dend",
                 "type": "date",
                 "title": "dend",
-                "validation": "required|after:dbeg"
+                "validation": "after:dbeg"
               },
               {
                 "code": "geo",
