@@ -118,22 +118,22 @@
 
     <template v-if="object.id && editMode == 'gu'">
       <h5>{{ trans('monitoring.gu.params') }}</h5>
-      <div class="params_block">
+      <div class="color-white">
         <p>{{ trans('monitoring.gu.fields.date') }}: {{ guParams.date }}</p>
         <p>{{ trans('monitoring.gu.fields.daily_fluid_production') }}:
-          {{ guParams.daily_fluid_production + ' ' + trans('measurements.m3/day') }}</p>
+          {{ +guParams.daily_fluid_production.toFixed(2) + ' ' + trans('measurements.m3/day') }}</p>
         <p>{{ trans('monitoring.gu.fields.daily_oil_production') }}:
-          {{ guParams.daily_oil_production + ' ' + trans('measurements.m3/day') }}</p>
+          {{ +guParams.daily_oil_production.toFixed(2) + ' ' + trans('measurements.m3/day') }}</p>
         <p>{{ trans('monitoring.gu.fields.daily_water_production') }}:
-          {{ guParams.daily_water_production + ' ' + trans('measurements.m3/day') }}</p>
+          {{ +guParams.daily_water_production.toFixed(2) + ' ' + trans('measurements.m3/day') }}</p>
         <p>{{ trans('monitoring.gu.fields.bsw') }}: {{ guParams.bsw + trans('measurements.percent') }}</p>
         <p>{{ trans('monitoring.gu.fields.pump_discharge_pressure') }}:
-          {{ guParams.pump_discharge_pressure + ' ' + trans('measurements.pressure_bar') }}</p>
+          {{ +guParams.pump_discharge_pressure.toFixed(2) + ' ' + trans('measurements.pressure_bar') }}</p>
         <p>{{ trans('monitoring.gu.fields.heater_output_temperature') }}:
-          {{ guParams.heater_output_temperature + ' ' + trans('measurements.celsius') }}</p>
-        <p>{{ trans('monitoring.gu.fields.daily_gas_production_in_sib') }}: {{ guParams.daily_gas_production_in_sib }}
+          {{ +guParams.heater_output_temperature.toFixed(2) + ' ' + trans('measurements.celsius') }}</p>
+        <p>{{ trans('monitoring.gu.fields.daily_gas_production_in_sib') }}: {{ +guParams.daily_gas_production_in_sib.toFixed(2) }}
           {{ trans('measurements.st.m3/day') }}</p>
-        <p>{{ trans('monitoring.gu.fields.surge_tank_pressure') }}: {{ guParams.surge_tank_pressure }}
+        <p>{{ trans('monitoring.gu.fields.surge_tank_pressure') }}: {{ +guParams.surge_tank_pressure.toFixed(2) }}
           {{ trans('measurements.pressure_bar') }}</p>
       </div>
     </template>
@@ -321,9 +321,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-.params_block {
-  color: white;
-}
-</style>
