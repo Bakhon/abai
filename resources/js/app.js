@@ -249,6 +249,10 @@ Vue.prototype.$urlLink = url => urlLink(url);
 Vue.prototype.$currentPageUrl = currentUrlPage;
 Vue.prototype.trans = require('./VueTranslation/Translation').default.translate;
 
+String.prototype.toFixed = function (decimalPlaces) {
+    return parseFloat(this).toFixed(decimalPlaces);
+};
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
