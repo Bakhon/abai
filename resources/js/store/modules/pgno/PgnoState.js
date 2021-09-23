@@ -11,6 +11,12 @@ export const pgnoState = {
         wellAnalysis: {},
         linesAnalysis: {},
         pointsAnalysis: {},
+        mainSettings: {
+            isSkError: false,
+            isEditing: false,
+            activeRightTabName: "techmode",
+            isVisibleChart: true,
+        },
         shgnSettings: {
             spmMin: 3,
             spmMax: 8,
