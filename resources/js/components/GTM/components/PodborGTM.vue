@@ -2,13 +2,13 @@
 <template>
   <div>
     <div class="row mx-0 mt-lg-2 gtm">
-      <div class="col-lg-10" style="padding: 4px; border: 6px solid #272953;" @click="closeTree()">
+      <div class="col-lg-10 lg-border-block" @click="closeTree()">
         <div class="row col-12 p-0 m-0">
           <div class="col-6 d-none d-lg-block p-0">
             <div class="gtm-dark h-100">
-              <div class="block-header pb-0 pl-2 pt-1 d-flex" style="background-color: #323370">
+              <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
                 <div>
-                  {{ trans("paegtm.wells-candidates") }}
+                  {{ this.trans("paegtm.wells-candidates") }}
                 </div>
                 <div class="d-flex">
                   <div class="pr-3 pb-1">
@@ -21,17 +21,17 @@
               </div>
               <div class="p-0 pl-0 table-pgtm">
                 <div v-if="!table.main_data.data" >
-                  <div style="border: 8px solid #363B68">
-                    <div style="border: 8px solid #1A214A">
-                  <div class="p-3" style="color: white; text-align: center; font-size: 16px; padding-top: 20px;">
-                    Сделайте расчет прежде чем получить скважины
+                  <div class="border-block-out">
+                    <div class="border-block-in">
+                  <div class="p-3 empty-data-title">
+                    {{ this.trans("paegtm.calc-empty-well") }}
                   </div>
                       </div>
                     </div>
                 </div>
                 <div v-else>
-                  <div style="border: 8px solid #363B68">
-                    <div style="border: 8px solid #1A214A">
+                  <div class="border-block-out">
+                    <div class="border-block-in">
                     <table class="table text-center text-white podbor-middle-table">
                     <thead>
                     <tr>
@@ -68,9 +68,9 @@
 
           <div class="col-6 d-none d-lg-block p-0 pl-1">
             <div class="gtm-dark h-100">
-              <div class="block-header pb-0 pl-2 pt-1 d-flex" style="background-color: #323370">
+              <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
                 <div>
-                  {{ trans("paegtm.current_qualifiers_map") }}
+                  {{ this.trans("paegtm.current_qualifiers_map") }}
                 </div>
                 <div class="d-flex">
                   <div class="pr-3">
@@ -85,8 +85,8 @@
                 </div>
 
               </div>
-                <div style="border: 8px solid #363B68">
-                  <div style="border: 8px solid #1A214A">
+                <div class="border-block-out">
+                  <div class="border-block-in">
                     <div class="p-3">
                       <img src="/img/GTM/map.svg" class="gtm-map-img">
                     </div>
@@ -97,10 +97,10 @@
         </div>
         <div class="row col-12 p-0 m-0 pt-1">
           <div v-if="lineChartSeries === null" class="col-6 d-none d-lg-block p-0">
-            <div style="border: 8px solid #363B68">
-              <div style="border: 8px solid #1A214A">
-            <div class="p-3 gtm-dark" style="color: white; text-align: center; font-size: 16px; padding-top: 20px;">
-              Нажмите на скважину чтобы получить данные
+            <div class="border-block-out">
+              <div class="border-block-in">
+            <div class="p-3 gtm-dark empty-data-title">
+              {{ this.trans("paegtm.empty-well-chart") }}
             </div>
                 </div>
               </div>
@@ -108,9 +108,9 @@
 
           <div v-else class="col-6 d-none d-lg-block p-0 pt-1">
             <div class="gtm-dark h-100">
-              <div  class="block-header pb-0 pl-2 pt-1 d-flex" style="background-color: #323370">
+              <div  class="block-header pb-0 pl-2 pt-1 d-flex border-color">
                 <div>
-                  {{ trans("paegtm.well") }} {{ wellNumber }}
+                  {{ this.trans("paegtm.well") }} {{ wellNumber }}
                 </div>
 
               <div class="d-flex">
@@ -122,8 +122,8 @@
                 </div>
               </div>
               </div>
-              <div style="border: 8px solid #363B68">
-                <div style="border: 8px solid #1A214A">
+              <div class="border-block-out">
+                <div class="border-block-in" >
                   <apexchart
                       :height="360"
                       :options="lineChartOptions"
@@ -135,10 +135,10 @@
           </div>
 
           <div v-if="waterFallChartSeries === null" class="col-6 d-none d-lg-block p-0 pl-1">
-            <div style="border: 8px solid #363B68">
-              <div style="border: 8px solid #1A214A">
-                <div class="p-3 gtm-dark" style="color: white; text-align: center; font-size: 16px; padding-top: 20px;">
-                  Нажмите на скважину чтобы получить данные
+            <div class="border-block-out">
+              <div class="border-block-in">
+                <div class="p-3 gtm-dark empty-data-title">
+                  {{ this.trans("paegtm.empty-well-chart") }}
                 </div>
               </div>
             </div>
@@ -146,9 +146,9 @@
 
           <div v-else class="col-6 d-none d-lg-block p-0 pt-1 pl-1">
             <div class="gtm-dark h-100">
-              <div  class="block-header pb-0 pl-2 pt-1 d-flex" style="background-color: #323370">
+              <div  class="block-header pb-0 pl-2 pt-1 d-flex border-color">
                 <div>
-                  {{ trans("paegtm.factor_analysis") }}, {{ trans("measurements.thousand_tons") }}
+                  {{ this.trans("paegtm.factor_analysis") }}, {{ this.trans("measurements.thousand_tons") }}
                 </div>
 
                 <div class="d-flex">
@@ -160,8 +160,8 @@
                   </div>
                 </div>
               </div>
-              <div style="border: 8px solid #363B68">
-                <div style="border: 8px solid #1A214A">
+              <div class="border-block-out">
+                <div class="border-block-in">
                   <apexchart
                       :height="360"
                       :options="waterFallChartOptions"
@@ -178,7 +178,7 @@
       <div class="col-lg-2 p-0 pl-2 pr-1">
         <div class="block-header gtm-dark p-2">
           <div class="block-header p-2">
-            {{ trans("paegtm.period") }}
+            {{ this.trans("paegtm.period") }}
           </div>
           <gtm-date-picker
           :showSettings="true"
@@ -298,6 +298,30 @@
 <style scoped>
 .h-233 {
   min-height: 233px;
+}
+
+.lg-border-block {
+  padding: 4px;
+  border: 6px solid #272953;
+}
+
+.empty-data-title {
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  padding-top: 20px;
+}
+
+.border-color {
+  background-color: #323370
+}
+
+.border-block-out {
+  border: 8px solid #363B68
+}
+
+.border-block-in {
+  border: 8px solid #1A214A
 }
 
 .table-pgtm {
