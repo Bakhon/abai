@@ -9,6 +9,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::get('get-data', "EconomicNrsController@getData");
             Route::post('export-data', "EconomicNrsController@exportData");
             Route::get('wells', 'EconomicNrsController@indexWells');
+            Route::get('wells/{org_id}/{well_id}', 'EconomicNrsController@indexWell');
             Route::get('get-wells', "EconomicNrsController@getWells");
         });
 
