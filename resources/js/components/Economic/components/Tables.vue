@@ -141,7 +141,7 @@ export default {
     }
   },
   data: () => ({
-    activeTab: 'well_overview_map',
+    activeTab: 'specific_indicators',
   }),
   computed: {
     tabs() {
