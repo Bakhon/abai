@@ -195,6 +195,7 @@ class GasProduction {
             $filteredNaturalGas = array_filter($naturalGas, function($item) use($dzoName) {
                 return $dzoName === $item['name'];
             });
+            $summary = [];
             foreach($filteredAssociatedGas as $value) {
                 $summary = $value;
                 $summary['fact'] += array_sum(array_column($filteredNaturalGas,'fact'));

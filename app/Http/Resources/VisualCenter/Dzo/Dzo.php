@@ -237,7 +237,7 @@ class Dzo {
         $ordered = array();
         foreach(array_keys($numberMapping[$type]) as $value) {
             $key = array_search($value, array_column($data, 'name'));
-            if ($data[$key]) {
+            if ($key && $data[$key]) {
                 array_push($ordered,$data[$key]);
             }
         }

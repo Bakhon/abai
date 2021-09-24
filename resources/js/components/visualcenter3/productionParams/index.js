@@ -251,7 +251,7 @@ export default {
                 });
             } else {
                 chartData = _.filter(chartData, (item) => {
-                   return this.companiesWithData.includes(item.name)
+                   return this.selectedDzoCompanies.includes(item.name)
                 });
             }
             _.forEach(chartData, (item) => {
