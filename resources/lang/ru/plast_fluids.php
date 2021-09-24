@@ -95,4 +95,10 @@ return array (
   'exploration_and_production' => 'Разведка и Добыча',
   'processing' => 'Переработка',
   'subsidiaries_affiliates_factories' => 'ДЗО и Заводы',
+  'depth_of_occurrence' => 'Глубина залегания (м)',
+  'reservoir_pressure' => 'Пластовое давление (МПа):',
+  'reservoir_temperature' => 'Пластовая температура (oC) (МПа):',
+  'density_of_oil' => 'Плотностьнефти в ст. усл. (кг/м3)',
+  'gas_content' => 'Газосодержание (м3/м3):',
+  'reservoir_oil_viscosity' => 'Вязкость пластовой нефти (мПа*с)',
 );

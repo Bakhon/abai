@@ -9,13 +9,13 @@
         <div class="map-statistics">
           <div class="statistics-container">
             <p>
-              {{ selectedField ? fieldData[selectedField].field : 0 }}
+              {{ subsoilFieldCounters.wells ? subsoilFieldCounters.wells : 0 }}
             </p>
             <p>{{ trans("plast_fluids.wells") }}</p>
           </div>
           <div class="statistics-container">
             <p>
-              {{ selectedField ? fieldData[selectedField].deep : 0 }}
+              {{ subsoilFieldCounters.deep ? subsoilFieldCounters.deep : 0 }}
             </p>
             <p>
               {{ trans("plast_fluids.deep_samples") }}
@@ -23,13 +23,21 @@
           </div>
           <div class="statistics-container">
             <p>
-              {{ selectedField ? fieldData[selectedField].recombine : 0 }}
+              {{
+                subsoilFieldCounters.recombined
+                  ? subsoilFieldCounters.recombined
+                  : 0
+              }}
             </p>
             <p>{{ trans("plast_fluids.recombined") }}</p>
           </div>
           <div class="statistics-container">
             <p>
-              {{ selectedField ? fieldData[selectedField].estuarine : 0 }}
+              {{
+                subsoilFieldCounters.wellhead
+                  ? subsoilFieldCounters.wellhead
+                  : 0
+              }}
             </p>
             <p>
               {{ trans("plast_fluids.well_head_samples") }}
@@ -66,6 +74,7 @@
             </div>
           </template>
         </div>
+        <SearchForFluids />
       </div>
     </div>
   </div>
@@ -77,6 +86,7 @@ import OilMap from "../components/OilMapKz.vue";
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
 import SubsoilTreeMain from "../components/SubsoilTreeMain.vue";
+import SearchForFluids from "../components/SearchForFluids.vue";
 import { handleSearch } from "../helpers";
 import { getMapOwners } from "../services/mapService";
 import { mapState, mapMutations } from "vuex";
@@ -89,6 +99,7 @@ export default {
     OilMap,
     SubsoilTreeMain,
     SubsoilTreeChildren,
+    SearchForFluids,
   },
   data() {
     return {
@@ -107,7 +118,12 @@ export default {
     };
   },
   computed: {
-    ...mapState("plastFluids", ["currentSubsoil", "subsoils", "subsoilFields"]),
+    ...mapState("plastFluids", [
+      "currentSubsoil",
+      "subsoils",
+      "subsoilFields",
+      "subsoilFieldCounters",
+    ]),
     filteredSubsoilUsers() {
       return handleSearch(this.subsoils, this.subsoilUserSearch);
     },

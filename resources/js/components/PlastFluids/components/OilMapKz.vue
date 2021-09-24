@@ -50,6 +50,7 @@
     <img
       src="/img/PlastFluids/presentation3d.jpg"
       v-else-if="currentScreen === 2"
+      @click="setSubsoilField"
       style="flex: 2 1 auto; margin: 14px 10px 10px 10px; width: unset; height: unset;"
       alt=""
     />
@@ -63,6 +64,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
   name: "OilMapKz",
   data() {
@@ -72,6 +75,29 @@ export default {
       currentProvince: undefined,
       currentScreen: 0,
     };
+  },
+  computed: {
+    ...mapState("plastFluids", ["subsoils", "subsoilFields"]),
+  },
+  methods: {
+    ...mapActions("plastFluids", [
+      "UPDATE_CURRENT_SUBSOIL",
+      "UPDATE_CURRENT_SUBSOIL_FIELD",
+      "GET_SUBSOIL_FIELD_COUNTERS",
+    ]),
+    setSubsoilField() {
+      const foundSubsoil = this.subsoils.find(
+        (subsoil) => subsoil.owner_short_name === "КОА"
+      );
+      this.UPDATE_CURRENT_SUBSOIL(foundSubsoil).then((res) => {
+        const foundField = this.subsoilFields.find(
+          (field) => field.field_name === "Кожасай"
+        );
+        this.UPDATE_CURRENT_SUBSOIL_FIELD(foundField).then(() =>
+          this.GET_SUBSOIL_FIELD_COUNTERS()
+        );
+      });
+    },
   },
 };
 </script>
@@ -93,8 +119,8 @@ label {
 }
 
 .main-page-map > img {
-  width: 85%;
-  height: 90%;
+  width: 84%;
+  height: calc(100% - 86px);
   cursor: pointer;
 }
 
@@ -103,8 +129,8 @@ label {
   background-repeat: no-repeat;
   background-position: center;
   position: relative;
-  width: 85%;
-  height: 90%;
+  width: 84%;
+  height: calc(100% - 86px);
   cursor: pointer;
 }
 
@@ -168,6 +194,7 @@ label {
 
 .input-holder {
   display: flex;
+  align-items: center;
 }
 
 .input-holder > label > img {
