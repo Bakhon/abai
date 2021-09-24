@@ -85,8 +85,8 @@ class VisualCenterController extends Controller
     private function getDzoPlan($startDate,$endDate)
     {
         $query = DzoPlan::query()
-            ->whereDate('date', '>=', $startDate->firstOfMonth()->startOfDay())
-            ->whereDate('date', '<=', $endDate->firstOfMonth()->startOfDay());
+            ->whereDate('date', '>=', $startDate->copy()->firstOfMonth()->startOfDay())
+            ->whereDate('date', '<=', $endDate->copy()->lastOfMonth()->endOfDay());
         if (!is_null($this->dzoName)) {
             $query->where('dzo', $this->dzoName);
         }
@@ -101,6 +101,7 @@ class VisualCenterController extends Controller
         if ($this->periodRange > 0) {
             $chartData = $factory->makeCategory($this->category)->getChartData($fact,$plan,$this->dzoName,$this->category);
         }
+
         return array (
             'table' => $this->getTableData($factory,$fact,$plan,$historicalFact,$historicalPlan),
             'chart' => $chartData
