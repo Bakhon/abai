@@ -25,5 +25,8 @@ export const paegtmMutations = {
     },
     CHANGE_DZO_NAME (state, value) {
         state.dzoName = value;
+    },
+    CHANGE_CLICKABLE (state, value) {
+        state.clickable = value
     }
 }

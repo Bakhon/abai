@@ -1,11 +1,10 @@
 <template>
-  <li class="text-white list-style-none mt-2 pl-3">
+  <li class="text-white list-style-none mt-2 pl-4 pb-1">
     <div
         v-if="node.name"
         v-bind:class="{ 'cursor-pointer': pointerClass }"
         @click.stop="handleClick(node)">
             <span v-if="nodeHasChildren" @click="toggleUl()">
-
               <img width="20" height="20" :src="showChildren ? '/img/GTM/arrow_down.svg' : '/img/GTM/arrow_right.svg'">
               <img width="20" height="20" src='../img/folder.svg'>
             </span>
@@ -30,6 +29,8 @@
   </li>
 </template>
 <script>
+import {paegtmMapActions} from "../../../store/helpers";
+
 export default {
     name: "node",
     props: {
@@ -37,12 +38,21 @@ export default {
         handleClick: Function,
     },
     methods: {
+      ...paegtmMapActions([
+        'changeClickable',
+      ]),
         toggleUl: function () {
             this.showChildren = !this.showChildren;
         },
         toggleCheckState: function () {
+          let clickable = this.node.clickable
+            if (this.node.clickable) {
+              this.changeClickable(clickable)
+              this.$emit('emitValue', clickable)
+            }
+
             if (this.checkable) {
-                this.checkState = !this.checkState;
+              this.checkState = !this.checkState;
             }
         },
     },
@@ -51,7 +61,7 @@ export default {
         return {
             showChildren: showChildren,
             checkState: this.node.check_state,
-            checkable: this.node.checkable
+            checkable: this.node.checkable,
         };
     },
     computed: {
@@ -60,7 +70,7 @@ export default {
         },
         nodeHasChildren: function () {
             return this.node.children && this.node.children.length;
-        }
+        },
     }
 }
 </script>
