@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const service = axios.create({
-    baseURL: process.env.MIX_API_URL
+    baseURL: process.env.MIX_MICROSERVICE_WELLS_DATA
 });
 
 service.interceptors.request.use(
