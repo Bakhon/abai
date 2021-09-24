@@ -190,11 +190,15 @@ export default {
   },
   mounted() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
-      if (this.dict === null) {
-        this.loadDict(this.item.dict).then(result => {
-          this.dict = result
-        })
+      let dict = this.getDict(this.item.dict)
+      if (dict) {
+        this.dict = dict
+        return
       }
+
+      this.loadDict(this.item.dict).then(result => {
+        this.dict = result
+      })
     }
 
     this.formatedValue = this.getFormatedValue(this.value)
@@ -203,6 +207,9 @@ export default {
     ...bdFormActions([
       'loadDict',
     ]),
+    getDict(code) {
+      return this.$store.getters['bdform/dict'](code);
+    },
     changeDate(date) {
       if (date) {
         let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')
