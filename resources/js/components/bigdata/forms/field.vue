@@ -122,7 +122,7 @@
       >
       </BigdataTableField>
     </template>
-    <template v-else-if="item.type === 'calc'">
+    <template v-else-if="['calc', 'label'].includes(item.type)">
       <label>{{ value }}</label>
     </template>
     <template v-else-if="item.type === 'checkbox_table'">
