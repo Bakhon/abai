@@ -79,7 +79,7 @@ const plastFluidsLocal = {
         commit("SET_LOADING", false);
       }
     },
-    async handleTableGraphData({ commit, state }, dataToPost) {
+    async handleTableGraphData({ commit, rootState }, dataToPost) {
       try {
         commit("SET_LOADING", true);
         const postDataMock = {
@@ -88,6 +88,7 @@ const plastFluidsLocal = {
           vid_fluid: "None",
           data_start: "None",
           data_end: "None",
+          graph_type: "ps_bs_ds_ms",
         };
         let merged = { ...postDataMock, ...dataToPost };
         const postData = new FormData();

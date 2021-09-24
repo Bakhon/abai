@@ -70,7 +70,11 @@ export default {
     },
   },
   mounted() {
-    if (this.currentSubsoilField[0].field_id && !this.tableRows.length)
+    if (
+      this.currentSubsoilField[0].field_id &&
+      !this.tableRows.length &&
+      !this.tableFields.length
+    )
       this.handleTableData({ field_id: this.currentSubsoilField[0].field_id });
   },
 };
