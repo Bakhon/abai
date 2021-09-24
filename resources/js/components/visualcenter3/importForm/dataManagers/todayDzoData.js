@@ -64,6 +64,7 @@ export default {
         },
         processTodayData() {
             if (Object.keys(this.todayData).length === 0) {
+                this.changeDefaultDzo();
                 return;
             }
             this.isDataExist = true;
