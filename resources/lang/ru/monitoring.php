@@ -273,7 +273,6 @@ return array (
     'deleting_error' => 'Ошибка при удалении Скважины',
     'name' => 'Имя Скважины',
     'well' => 'Скважина',
-    'add-omg-ngdu-data' => 'Внести данные по ОМГ НГДУ',
     'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ Скважина',
   ),
   'pipe' => 
@@ -295,6 +294,7 @@ return array (
       'plot' => 'Участок',
       'roughness' => 'Жесткость',
       'thickness' => 'Толщина стенок',
+      'sizes' => 'Внешний диаметр х толщина стенки мм',
     ),
     'edit_title' => 'Редактирование данных по трубопроводу',
     'pipe' => 'Трубопровод',
@@ -325,6 +325,7 @@ return array (
       'heater_output_temperature' => 'Температура печи',
       'surge_tank_pressure' => 'Давление в буферной емкости',
       'daily_gas_production_in_sib' => 'Количество газа в СИБ',
+      'gas_factor' => 'Газовый фактор',
     ),
     'redirect-to' => 'Перейти на',
     'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ ГУ',

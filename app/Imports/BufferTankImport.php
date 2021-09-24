@@ -46,8 +46,12 @@ class BufferTankImport implements ToModel
     public function model(array $row)
     {
         $gu = Gu::where('name', $row[self::GU])->first();
+        if (!$gu) {
+            return null;
+        }
+
         return new BufferTank([
-            'gu_id' => empty($gu) ? null : $gu->id,
+            'gu_id' => $gu->id,
             'model' => $row[self::MODEL],
             'name' => $row[self::NAME],
             'type' => $row[self::TYPE],

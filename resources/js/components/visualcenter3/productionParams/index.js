@@ -29,10 +29,12 @@ export default {
             selectedView: 'day',
             productionTableData: [],
             productionChartData: [],
-            marginMapping: {
-                'oilCondensateProduction': [1,13,14,15],
-                'oilCondensateDelivery': [1,11,12,13],
-            },
+            troubleCategories: [
+                'oilCondensateProduction',
+                'oilCondensateDelivery',
+                'oilCondensateProductionWithoutKMG',
+                'oilCondensateDeliveryWithoutKMG'
+            ],
             datePickerModel: {
                 start: moment().startOf('day').subtract(1, "days").format(),
                 end: moment().endOf('day').subtract(1, "days").format(),

@@ -122,7 +122,7 @@ return array (
   'profitable' => 'Рентабельные',
   'profitless_cat_1' => 'Категория 1',
   'profitless_cat_2' => 'Категория 2',
-  'profitless_all' => 'Нерентабельные, в т.ч.',
+  'profitless_all' => 'Нерентабельные, в т.ч.:',
   'new_wells' => 'Новые скважины',
   'select_optimization_scenarios' => 'Выберите сценарии оптимизации',
   'water_cut' => 'Обводненность',
@@ -204,7 +204,7 @@ return array (
   'tenge_per_cube_liquid' => 'тенге / куб жидкости',
   'economic_module_short' => 'ТЭАиОРС',
   'economic_module_full' => 'Технико-экономический анализ и оптимизация работы скважин',
-  'table_well_changes' => 'Таблица изменений скважины «Светофор»',
+  'table_well_changes' => 'Таблица выборочного отключения скважин «Светофор»',
   'economic_efficiency' => 'Экономическая эффективность',
   'table_economic_efficiency_title' => 'Зависимость экономической эффективности от остановки нерентабельных скважин и доли оплаты простаивающего персонала',
   'gross_income' => 'Валовый доход',
@@ -284,4 +284,5 @@ return array (
   'non_optimizable_costs_share' => 'неоптимизируемая доля затрат',
   'well_overview_map' => 'Обзорная карта скважин',
   'table_well_overview_map' => 'Обзорная карта расположений скважин по экономической эффективности',
+  'count_shutdown_wells' => 'Количество отключенных скважин',
 );
