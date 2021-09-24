@@ -36,7 +36,7 @@
               ]"
           class="btn text-white"
           @click="updateDate(filteredDates[index])">
-        {{ formattedDates[index] }}
+        {{ date }}
       </button>
     </div>
 
@@ -93,10 +93,6 @@ export default {
     async getWells() {
       this.SET_LOADING(true);
 
-      this.currentDate = this.filteredDates.length
-          ? this.formattedDates[0]
-          : null
-
       try {
         const {data} = await this.axios.get(this.url, {params: {...this.orgForm, ...this.form}})
 
@@ -111,6 +107,8 @@ export default {
     },
 
     plotMap() {
+      this.currentDate = this.filteredDates[0]
+
       this.map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
@@ -166,7 +164,7 @@ export default {
 
       let date = new Date(this.form.interval_start)
 
-      date.setDate(date.getDate() + 7)
+      date.setDate(date.getDate() + 6)
 
       return date.toISOString()
     },
@@ -205,7 +203,7 @@ export default {
 
     formattedDates() {
       return this.filteredDates.map(date => {
-        (new Date(date)).toLocaleDateString('ru', {
+        return (new Date(date)).toLocaleDateString('ru', {
           day: '2-digit',
           month: 'short',
           year: 'numeric',
@@ -227,7 +225,6 @@ export default {
   height: 20px;
   width: 20px;
   border-radius: 50%;
-  display: inline-block;
 }
 
 .bg-blue {
