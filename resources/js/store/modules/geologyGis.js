@@ -126,7 +126,7 @@ const geologyGis = {
 function forDropDownMap(arr) {
     return arr.map((item) => {
         return {
-            label: item.name.replace(/[a-zA-Z0-9]+_/g, ''),
+            label: item.name.replace(/[a-zA-Z0-9]+_/, ''),
             value: item.id || item.name
         }
     })
