@@ -51,23 +51,39 @@ export default {
       })
 
       this.map.on('load', () => {
-        this.wellPoints.forEach(wellPoint => {
+        this.wellPoints.forEach(well => {
           let marker = document.createElement('div');
+
+          marker.id = this.getMarkerId(well)
+
+          marker.style.backgroundColor = well.color;
 
           marker.className = 'well-map-circle';
 
-          marker.style.cssText = `background-color: ${wellPoint.color}`;
-
           new mapboxgl
               .Marker(marker)
-              .setLngLat(wellPoint.coordinates)
-              .setPopup(new mapboxgl.Popup({closeButton: false}).setText(wellPoint.uwi))
+              .setLngLat(well.coordinates)
+              .setPopup(new mapboxgl.Popup({closeButton: false}).setText(well.uwi))
               .addTo(this.map)
         })
       })
     },
 
-    getColor({profitability_12m}) {
+    updateMap() {
+      this.wellPoints.forEach(well => {
+        let marker = document.getElementById(this.getMarkerId(well))
+
+        if (!marker) return
+
+        marker.style.backgroundColor = well.color;
+      })
+    },
+
+    getColor({uwi, profitability_12m}) {
+      if (this.scenario.uwi_stop.includes(uwi)) {
+        return '#8125B0'
+      }
+
       if (profitability_12m === 'profitable') {
         return '#387249'
       }
@@ -75,7 +91,11 @@ export default {
       return profitability_12m === 'profitless_cat_1'
           ? '#8D2540'
           : '#F7BB2E'
-    }
+    },
+
+    getMarkerId({uwi}) {
+      return `well-map-circle-${uwi}`
+    },
   },
   computed: {
     wellPoints() {
@@ -98,6 +118,14 @@ export default {
             }
           })
     },
+  },
+  watch: {
+    scenario: {
+      handler(val) {
+        this.updateMap()
+      },
+      deep: true
+    }
   }
 }
 </script>
