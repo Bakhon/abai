@@ -335,7 +335,7 @@ export default {
         {
           title: this.trans('economic_reference.indicators'),
           value: 'title',
-          flexWidth: '180px',
+          flexWidth: '185px',
           flexGrow: 0,
         },
         {
@@ -359,7 +359,7 @@ export default {
         {
           title: this.trans('economic_reference.water_cut'),
           value: 'liquid',
-          flexWidth: '140px',
+          flexWidth: '135px',
           flexGrow: 1,
         },
         {
