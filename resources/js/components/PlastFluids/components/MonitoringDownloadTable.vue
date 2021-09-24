@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 import BaseTable from "./BaseTable.vue";
 import Modal from "./MonitoringDownloadTableModal.vue";
 import _ from "lodash";
@@ -64,14 +64,13 @@ export default {
     ...mapState("plastFluids", ["currentSubsoilField"]),
   },
   methods: {
-    ...mapMutations("plastFluidsLocal", ["SET_TABLE_FIELDS", "SET_TABLE_ROWS"]),
     ...mapActions("plastFluidsLocal", ["handleTableData"]),
     isEmpty(obj) {
       return _.isEmpty(obj);
     },
   },
   mounted() {
-    if (this.currentSubsoilField[0].field_id)
+    if (this.currentSubsoilField[0].field_id && !this.tableRows.length)
       this.handleTableData({ field_id: this.currentSubsoilField[0].field_id });
   },
 };
