@@ -81,32 +81,28 @@ export default {
         onMapZoom(e) {
             switch (e.target._zoom) {
                 case -5:
-                    this.circle.forEach((circleMarker) => {
-                        circleMarker.setRadius(3);
-                    });
+                    this.setRadiusCircle(3);
                     break;
                 case -4:
-                    this.circle.forEach((circleMarker) => {
-                        circleMarker.setRadius(6);
-                    });
+                    this.setRadiusCircle(6)
                     break;
                 case -3:
-                    this.circle.forEach((circleMarker) => {
-                        circleMarker.setRadius(8);
-                    });
+                    this.setRadiusCircle(8);
                     break;
                 case -2:
                 case -1:
-                    this.circle.forEach((circleMarker) => {
-                        circleMarker.setRadius(10);
-                    });
+                    this.setRadiusCircle(10);
                     break;
                 default:
-                    this.circle.forEach((circleMarker) => {
-                        circleMarker.setRadius(1);
-                    });
+                    this.setRadiusCircle();
                     break;
             }
+        },
+
+        setRadiusCircle(radius = 1) {
+            this.circle.forEach((circleMarker) => {
+                circleMarker.setRadius(radius);
+            });
         },
 
         async initSectorOnMap() {
