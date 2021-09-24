@@ -37,7 +37,7 @@ export default {
           children: [
             {
               name: "Нефть",
-              imagePath: "/img/PlastFluids/oil.svg",
+              imagePath: "/img/PlastFluids/Oil.svg",
               showArrow: false,
               position: "right",
               children: [
@@ -87,7 +87,7 @@ export default {
             },
             {
               name: "Газоконденсат",
-              imagePath: "/img/PlastFluids/gasCondensate.svg",
+              imagePath: "/img/PlastFluids/GasCondensate.svg",
               showArrow: false,
               position: "right",
               children: [
