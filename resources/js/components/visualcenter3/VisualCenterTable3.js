@@ -164,7 +164,7 @@ export default {
         getProductionDataByOpekRestriction() {
             let updatedByOpek = _.cloneDeep(this.productionTableData);
             _.forEach(updatedByOpek, (item) => {
-                if (this.dzoWithOpekRestriction.includes(item.name)) {
+                if (item.decreaseReasonExplanations && this.dzoWithOpekRestriction.includes(item.name)) {
                     item.decreaseReasonExplanations.push(this.trans('visualcenter.opekExplanationReason'));
                 }
             });
