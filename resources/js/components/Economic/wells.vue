@@ -33,21 +33,9 @@
     </div>
 
     <div v-if="!loading && res" class="mx-auto max-width-88vw">
-      <table-wells
-          v-if="activeTab === 'revenue'"
-          :data="res"
-          property="NetBack_bf_pr_exp"/>
-
-      <table-wells
-          v-else-if="activeTab === 'costs'"
-          :data="res"
-          property="Overall_expenditures"/>
-
-      <table-wells
-          v-else-if="activeTab === 'operating_profit'"
-          :data="res"
-          property="Operating_profit"
-          is-colorful/>
+      <table-matrix
+          v-if="activeTab === 'matrix'"
+          :data="res"/>
 
       <table-tree-map
           v-else-if="activeTab === 'treemap'"
@@ -65,7 +53,7 @@ import ChartButton from "./components/ChartButton";
 import SelectInterval from "./components/SelectInterval";
 import SelectOrganization from "./components/SelectOrganization";
 import SelectField from "./components/SelectField";
-import TableWells from "./components/nrs/TableWells";
+import TableMatrix from "./components/nrs/TableMatrix";
 import TableTreeMap from "./components/nrs/TableTreeMap";
 
 export default {
@@ -76,7 +64,7 @@ export default {
     SelectInterval,
     SelectOrganization,
     SelectField,
-    TableWells
+    TableMatrix
   },
   data: () => ({
     form: {
@@ -86,19 +74,15 @@ export default {
       interval_end: '2021-02-01T00:00:00.000Z',
     },
     res: null,
-    activeTab: 'treemap'
+    activeTab: 'matrix'
   }),
   computed: {
     ...globalloadingState(['loading']),
 
     tabs() {
-      let dimension = `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge')}`
-
       return {
+        matrix: this.trans('economic_reference.matrix'),
         treemap: 'TreeMap',
-        revenue: `${this.trans('economic_reference.Revenue')}, ${dimension}`,
-        costs: `${this.trans('economic_reference.costs')}, ${dimension}`,
-        operating_profit: `${this.trans('economic_reference.operating_profit')}, ${dimension}`,
       }
     },
   },
