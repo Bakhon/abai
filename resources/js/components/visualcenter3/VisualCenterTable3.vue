@@ -2488,7 +2488,7 @@
           width: 20px;
         }
         &:nth-child(2) {
-          width: 370px;
+          width: 390px;
         }
       }
       td:first-child {
