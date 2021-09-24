@@ -3,7 +3,7 @@
         <apexchart
                 height="120"
                 :options="chartOptions"
-                style="margin-top:-50px"
+                style="margin-top:-30px"
                 :series="seriesDrilling"
         ></apexchart>
     </div>
@@ -28,7 +28,7 @@ export default {
         chartOptions() {
             return {
                 grid: {
-                    show: true,
+                    show: false,
                     borderColor: "#90A4AE",
                     padding: {
                         top: 0,
@@ -40,11 +40,14 @@ export default {
                 legend: {
                     show: false,
                 },
-                colors: ['#009847','#2E50E9'],
+                colors: ['#999DC0','#2E50E9'],
                 dataLabels: {
                     enabled: true,
                     formatter: function(num) {
                         return (new Intl.NumberFormat("ru-RU").format(Math.round(num)));
+                    },
+                    style: {
+                        fontSize: '24px',
                     }
                 },
                 labels: this.chartData.labels,
@@ -53,6 +56,33 @@ export default {
                 },
                 yaxis: {
                     show: true,
+                    labels: {
+                        style: {
+                            fontSize: '14px',
+                            fontFamily: 'HarmoniaSansProCyr-Regular, Harmonia-sans',
+                            colors: ['#999DC0','#82BAFF'],
+                        }
+                    },
+                    axisTicks: {
+                        show: false
+                    },
+                    axisBorder: {
+                        show: false
+                    },
+                },
+                xaxis: {
+                    labels: {
+                        show: false,
+                        formatter: (num) => {
+                            return new Intl.NumberFormat("ru-RU").format(num);
+                        },
+                    },
+                    axisTicks: {
+                        show: false
+                    },
+                    axisBorder: {
+                        show: false
+                    },
                 },
                 chart: {
                     type: 'bar',
@@ -60,12 +90,16 @@ export default {
                         show: false,
                     },
                     foreColor: "#FFFFFF",
+                    height: '150px',
                 },
                 plotOptions: {
                     bar: {
                         horizontal: true,
                         dataLabels: {
                             position: 'top',
+                            style: {
+                                fontFamily: 'HarmoniaSansProCyr-Regular, Harmonia-sans',
+                            },
                         },
                         distributed: true
                     }

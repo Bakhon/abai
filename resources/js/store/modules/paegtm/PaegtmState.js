@@ -7,6 +7,7 @@ export const paegtmState = {
                 dateStart: '2018-01-01',
                 dateEnd: '2019-12-01',
                 dzoId: 112,
-                dzoName: ''
+                dzoName: '',
+                clickable: null,
         }
 }
