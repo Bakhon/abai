@@ -37,7 +37,7 @@
           v-for="(date, index) in formattedDates"
           :key="date"
           :class="[
-              date === currentDate ? 'bg-blue' : 'bg-grey',
+              filteredDates[index] === currentDate ? 'bg-blue' : 'bg-grey',
               index ? 'ml-2' : ''
               ]"
           class="btn text-white"
