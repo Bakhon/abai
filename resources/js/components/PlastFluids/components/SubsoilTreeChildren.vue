@@ -14,30 +14,30 @@
         v-show="checkedField[0].field_name == field.field_name"
         v-if="hasChild"
       >
-        <div
-          v-for="horizon in field.horizons"
-          :key="horizon.horizon_id"
-          class="subsoil-horizons"
-        >
-          <template v-if="horizon.horizon_name">
+        <template v-for="horizon in field.horizons">
+          <div
+            v-if="horizon.horizon_name"
+            :key="horizon.horizon_id"
+            class="subsoil-horizons"
+          >
             <input
-              type="radio"
+              type="checkbox"
               :id="horizon.horizon_name"
-              :value="horizon.horizon_name"
-              v-model="pickedSubsoilHorizon"
+              :value="horizon"
+              v-model="checkedSubsoilHorizon"
             />
             <label :for="horizon.horizon_name">{{
               horizon.horizon_name
-            }}</label></template
-          >
-        </div>
+            }}</label>
+          </div>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "SubsoilTreeChildren",
@@ -54,8 +54,7 @@ export default {
         return this.currentSubsoilField;
       },
       set(value) {
-        this.SET_CURRENT_SUBSOIL_HORIZON("");
-        this.SET_CURRENT_SUBSOIL_FIELD(value[value.length - 1]);
+        this.UPDATE_CURRENT_SUBSOIL_FIELD(value[value.length - 1]);
       },
     },
     hasChild() {
@@ -63,7 +62,7 @@ export default {
         this.checkedField[0]?.horizons && this.checkedField[0]?.horizons.length
       );
     },
-    pickedSubsoilHorizon: {
+    checkedSubsoilHorizon: {
       get() {
         return this.currentSubsoilHorizon;
       },
@@ -75,12 +74,12 @@ export default {
   methods: {
     ...mapMutations("plastFluids", [
       "SET_CURRENT_SUBSOIL_HORIZON",
-      "SET_CURRENT_SUBSOIL_FIELD",
       "SET_SUBSOIL_FIELDS",
     ]),
+    ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL_FIELD"]),
   },
   beforeDestroy() {
-    this.SET_CURRENT_SUBSOIL_FIELD({});
+    this.UPDATE_CURRENT_SUBSOIL_FIELD({});
     this.SET_SUBSOIL_FIELDS([]);
   },
 };

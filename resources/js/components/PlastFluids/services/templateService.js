@@ -65,14 +65,14 @@ export const getUploadTemplates = async () => {
 
 export const getTemplateData = async (
   payload,
-  url = "/number-reservoir-oil-samples"
+  url = "/reservoir-oil-study-of-samples"
 ) => {
   try {
     const response = await axios.post(
       `${process.env.MIX_PLAST_FLUIDS_API}/api/reports${url}`,
       payload
     );
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.log(error);
   }

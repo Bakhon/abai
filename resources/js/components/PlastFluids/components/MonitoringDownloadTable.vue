@@ -72,7 +72,7 @@ export default {
   },
   mounted() {
     if (this.currentSubsoilField[0].field_id)
-      this.handleTableData(this.currentSubsoilField[0].field_id);
+      this.handleTableData({ field_id: this.currentSubsoilField[0].field_id });
   },
 };
 </script>
