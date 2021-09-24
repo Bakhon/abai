@@ -47,4 +47,14 @@ class Mmg extends Dzo {
        array_push($summary,$daySummary);
        return $summary;
     }
+
+    public function getDzoDynamicByMultiplier($fields,$summary)
+    {
+        $oilSummary = $summary;
+        foreach($fields as $fieldName) {
+            $oilSummary[$fieldName] *= $this->oilCondensateMultiplier;
+        }
+
+        return $oilSummary;
+    }
 }

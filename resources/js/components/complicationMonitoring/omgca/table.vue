@@ -104,7 +104,7 @@
                   @click="showFilter(code)"
                   class="fa fa-filter"
                   aria-hidden="true"
-                  v-if="!params.hide_filter"
+                  v-if="isShowFilter(code)"
               ></i>
               <div class="filter-wrap" v-if="filters[code] && filters[code].show">
                 <template v-if="params.fields[code].type === 'select'">
@@ -208,6 +208,14 @@
               >
               </b-form-checkbox>
             </template>
+
+            <template v-if="field.type == 'download'">
+              <a v-if="row.fields[code]"
+                 class="item_download"
+                 @click="downloadFile(row.fields[code])"
+              />
+            </template>
+
             <template v-else>
               {{ row.fields[code] }}
             </template>
@@ -319,8 +327,18 @@ export default {
       this.filterOpened = true
     },
     isShowSort(code) {
-      return typeof this.params.fields[code].sortable == 'undefined'
-          || (typeof this.params.fields[code].sortable != 'undefined' && this.params.fields[code].sortable);
+      let param = this.params.fields[code];
+      return _.isUndefined(param.sortable)
+          || (!_.isUndefined(param.sortable) && param.sortable);
+    },
+    isShowFilter(code) {
+      let param = this.params.fields[code];
+      if (!_.isUndefined(this.params.hide_filter)) {
+        return !this.params.hide_filter;
+      }
+
+      return _.isUndefined(param.filterable)
+          || (!_.isUndefined(param.filterable) && param.filterable);
     },
     hideFilters() {
       this.filterOpened = false
@@ -559,6 +577,36 @@ export default {
     },
     checkAllToggle() {
       this.checkboxSelected = this.checkedAll ? this.getCheckboxValues() : []
+    },
+    async downloadFile(file_id) {
+      this.SET_LOADING(true);
+      let fileInfo = await this.getFileInfo(file_id);
+      let label = fileInfo.filename;
+      let url = this.localeUrl('/attachments/' + file_id);
+
+      this.axios.get(url, {responseType: 'blob'})
+          .then(response => {
+            const blob = new Blob([response.data])
+            const link = document.createElement('a')
+            link.href = URL.createObjectURL(blob)
+            link.download = label
+            link.click()
+            URL.revokeObjectURL(link.href)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+          .finally(() => {
+            this.SET_LOADING(false)
+          });
+    },
+    async getFileInfo(file_id) {
+      let url_info = this.localeUrl('/attachments/file-info/' + file_id);
+
+      return await this.axios.get(url_info)
+          .then(response => {
+            return response.data.file_info;
+          });
     }
   },
 };
@@ -566,5 +614,5 @@ export default {
 
 
 <style lang="scss">
-  @import '@sass/components/table.scss';
+@import '@sass/components/table.scss';
 </style>

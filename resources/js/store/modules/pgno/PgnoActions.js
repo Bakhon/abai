@@ -61,6 +61,12 @@ export const pgnoActions = {
             hasGrp: false,
         })
         commit("SET_SETTINGS_MODE", "getDefault")
+        commit("SET_MAIN_SETTINGS", {
+            isSkError: false,
+            isEditing: false,
+            activeRightTabName: "techmode",
+            isVisibleChart: true,
+        })
         commit("SET_SENSETIVE_SETTINGS", {
             option1: {
                 name: null,

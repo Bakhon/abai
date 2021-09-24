@@ -152,6 +152,7 @@
           <select-organization
               :form="form"
               class="mb-3"
+              hide-label
               @change="getData"/>
 
           <select-field

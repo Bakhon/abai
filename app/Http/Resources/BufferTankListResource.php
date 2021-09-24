@@ -19,7 +19,7 @@ class BufferTankListResource extends CrudListResource
         $result = [
             'id' => $this->id,
             'fields' => [
-                'gu_id' => $this->gu->name,
+                'gu' => $this->gu ? $this->gu->name : '',
                 'model' => $this->model,
                 'name' => $this->name,
                 'type' => $this->type,
@@ -30,6 +30,7 @@ class BufferTankListResource extends CrudListResource
                 'hydraulic_test' => $this->hydraulic_test,
                 'date_of_repair' => $this->date_of_repair,
                 'type_of_repair' => $this->type_of_repair,
+                'pdf' => $this->pdf,
                 ]  
         ];
 
