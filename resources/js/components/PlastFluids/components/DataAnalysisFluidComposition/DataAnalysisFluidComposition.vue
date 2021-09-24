@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import BaseTable from "./BaseTable.vue";
+import BaseTable from "../BaseTable.vue";
 
 export default {
   name: "DataAnalysisFluidComposition",

@@ -1,14 +1,14 @@
 <template>
-  <div class="data-analysis-maps-and-tables">
+  <div class="data-analysis-property-map">
     <div class="data-analysis__wrapper">
       <div class="data-analysis__wrapper-title">
         <div class="icon-title">
-          <i><img src="/img/PlastFluids/tableIcon.png" alt=""/></i>
+          <img src="/img/PlastFluids/tableIcon.png" alt="" />
         </div>
         <span>Детальная статистика изученности по видам исследований</span>
       </div>
       <div class="data-analysis__wrapper-img" v-bind:class="{ full: cartFull }">
-        <img src="/img/PlastFluids/mapsAndTables.jpg" alt="" />
+        <img src="/img/PlastFluids/mapProperty.svg" alt="" />
       </div>
     </div>
     <div class="table-holder">
@@ -25,16 +25,16 @@
           <img src="/img/PlastFluids/row_bottom.svg" alt="" />
         </div>
       </div>
-      <BaseTable :fields="fields" :items="items" />
+      <BaseTable :items="items" :fields="fields" />
     </div>
   </div>
 </template>
 
 <script>
-import BaseTable from "./BaseTable.vue";
+import BaseTable from "../BaseTable.vue";
 
 export default {
-  name: "DataAnalysisMapsAndTables",
+  name: "DataAnalysisPropertyMap",
   components: {
     BaseTable,
   },
@@ -68,10 +68,9 @@ export default {
     pushData() {
       for (let i = 0; i < 40; i++) {
         this.items.push([
-          "П2",
+          "П-2",
           "01.01.1983",
-          "-3419",
-          "Pgor",
+          -3419,
           33.34,
           33.34,
           33.34,
@@ -97,4 +96,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss" src="./DataAnalysisMapsAndTablesStyles.scss"></style>
+<style scoped lang="scss" src="./DataAnalysisPropertyMapStyles.scss"></style>

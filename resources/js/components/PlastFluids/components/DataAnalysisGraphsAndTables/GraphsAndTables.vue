@@ -1,28 +1,35 @@
 <template>
   <div class="data-analysis-graphs-and-tables">
-    <div class="graph-holder">
-      <div class="heading-title">
-        <div>
-          <img src="/img/PlastFluids/graphs.svg" />
-          <p>{{ trans("plast_fluids.graphs") }}</p>
+    <template v-if="currentSubsoilField[0] && currentSubsoilField[0].field_id">
+      <div class="graph-holder">
+        <div class="heading-title">
+          <div>
+            <img src="/img/PlastFluids/graphs.svg" />
+            <p>{{ trans("plast_fluids.graphs") }}</p>
+          </div>
         </div>
-      </div>
-      <div v-if="isDataReady" class="content">
-        <div v-for="(graph, key) in graphData" :key="key" class="content-child">
-          <ScatterGraph
-            :series="graph"
-            :title="trans(`plast_fluids.${graphType}_graph_${key}`)"
-            :graphType="key"
-          />
+        <div v-if="isDataReady" class="content">
+          <div
+            v-for="(graph, key) in graphData"
+            :key="key"
+            class="content-child"
+          >
+            <ScatterGraph
+              :series="graph"
+              :title="trans(`plast_fluids.${graphType}_graph_${key}`)"
+              :graphType="key"
+            />
+          </div>
         </div>
+        <SmallCatLoader :loading="loading" v-else />
       </div>
-      <SmallCatLoader :loading="loading" v-else />
-    </div>
-    <DataAnalysisDataTable
-      tableTitle="sampling_quality_table"
-      :items="tableRows"
-      :fields="tableFields"
-    />
+      <DataAnalysisDataTable
+        tableTitle="sampling_quality_table"
+        :items="tableRows"
+        :fields="tableFields"
+      />
+    </template>
+    <p v-else>{{ trans("plast_fluids.no_field_selected") }}</p>
   </div>
 </template>
 
@@ -81,10 +88,12 @@ export default {
     },
   },
   mounted() {
-    this.handleTableGraphData({
-      field_id: this.currentSubsoilField[0].field_id,
-      graph_type: this.graphType,
-    });
+    if (this.currentSubsoilField[0]?.field_id) {
+      this.handleTableGraphData({
+        field_id: this.currentSubsoilField[0].field_id,
+        graph_type: this.graphType,
+      });
+    }
   },
 };
 </script>
@@ -96,6 +105,12 @@ export default {
   width: 100%;
   height: 100%;
   color: #fff;
+}
+
+.data-analysis-graphs-and-tables > p {
+  font-size: 34px;
+  color: #fff;
+  align-self: center;
 }
 
 .graph-holder {

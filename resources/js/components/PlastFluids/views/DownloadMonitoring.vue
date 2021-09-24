@@ -5,15 +5,18 @@
     </div>
     <div class="central-wrapper">
       <MonitoringLeftBlock :templates="templates" />
-      <MonitoringDownloadTable />
+      <SmallCatLoader v-if="loading" :loading="loading" />
+      <MonitoringDownloadTable v-else />
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import Header from "../components/Header.vue";
 import MonitoringLeftBlock from "../components/MonitoringLeftBlock.vue";
 import MonitoringDownloadTable from "../components/MonitoringDownloadTable.vue";
+import SmallCatLoader from "../components/SmallCatLoader.vue";
 import { getUploadTemplates } from "../services/templateService";
 import { convertTemplateData } from "../helpers";
 
@@ -23,6 +26,7 @@ export default {
     Header,
     MonitoringLeftBlock,
     MonitoringDownloadTable,
+    SmallCatLoader,
   },
   data() {
     return {
@@ -31,6 +35,9 @@ export default {
       perPage: 15,
       pageOptions: [15, 20, 25, { value: 100, text: "Показать больше" }],
     };
+  },
+  computed: {
+    ...mapState("plastFluidsLocal", ["loading"]),
   },
   methods: {
     async getTemplates() {

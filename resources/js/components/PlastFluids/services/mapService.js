@@ -8,3 +8,15 @@ export const getMapOwners = async () => {
     console.log(error);
   }
 };
+
+export const getSubsoilCounters = async (payload) => {
+  try {
+    const response = await axios.post(
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/home/counters`,
+      payload
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

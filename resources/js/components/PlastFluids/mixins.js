@@ -2,17 +2,22 @@ const DataAnalysisPressureAndTemperature = () =>
   import("./components/DataAnalysisPressureAndTemperature.vue");
 const DataAnalysisApprovedParameters = () =>
   import("./components/DataAnalysisApprovedParameters.vue");
-const DataAnalysisStudy = () => import("./components/DataAnalysisStudy.vue");
+const DataAnalysisStudySideMenu = () => import("./components/DataAnalysisStudy/LeftMenu.vue");
+const DataAnalysisStudy = () => import("./components/DataAnalysisStudy/DataAnalysisStudy.vue");
+const DataAnalysisMapsAndTablesSideMenu = () =>
+  import("./components/DataAnalysisMapsAndTables/LeftMenu.vue");
 const DataAnalysisMapsAndTables = () =>
-  import("./components/DataAnalysisMapsAndTables.vue");
+  import("./components/DataAnalysisMapsAndTables/DataAnalysisMapsAndTables.vue");
 const DataAnalysisPropertyMap = () =>
-  import("./components/DataAnalysisPropertyMap.vue");
+  import("./components/DataAnalysisPropertyMap/DataAnalysisPropertyMap.vue");
 const DataAnalysisGraphsAndTablesSideMenu = () =>
   import("./components/DataAnalysisGraphsAndTables/LeftMenu.vue");
 const DataAnalysisGraphsAndTables = () =>
   import("./components/DataAnalysisGraphsAndTables/GraphsAndTables.vue");
+  const DataAnalysisFluidCompositionSideMenu = () =>
+  import("./components/DataAnalysisFluidComposition/LeftMenu.vue");
 const DataAnalysisFluidComposition = () =>
-  import("./components/DataAnalysisFluidComposition.vue");
+  import("./components/DataAnalysisFluidComposition/DataAnalysisFluidComposition.vue");
 const DataAnalysisGasCondensateStudies = () =>
   import("./components/DataAnalysisGasCondensateStudies.vue");
 
@@ -29,15 +34,15 @@ const setDynamicComponentContent = {
       if (this.headingKey === "reservoir-oil-samples-analysis") {
         switch (this.reservoilOilInfo[1]) {
           case "study":
-            sidemenu = DataAnalysisGraphsAndTablesSideMenu;
+            sidemenu = DataAnalysisStudySideMenu;
             content = DataAnalysisStudy;
             break;
           case "maps-and-tables":
-            sidemenu = DataAnalysisGraphsAndTablesSideMenu;
+            sidemenu = DataAnalysisMapsAndTablesSideMenu;
             content = DataAnalysisMapsAndTables;
             break;
           case "property-map":
-            sidemenu = DataAnalysisGraphsAndTablesSideMenu;
+            sidemenu = DataAnalysisMapsAndTablesSideMenu;
             content = DataAnalysisPropertyMap;
             break;
           case "graphs-and-tables":
@@ -45,7 +50,7 @@ const setDynamicComponentContent = {
             content = DataAnalysisGraphsAndTables;
             break;
           case "fluid-composition":
-            sidemenu = DataAnalysisGraphsAndTablesSideMenu;
+            sidemenu = DataAnalysisFluidCompositionSideMenu;
             content = DataAnalysisFluidComposition;
             break;
           case "gas-condensate-studies":

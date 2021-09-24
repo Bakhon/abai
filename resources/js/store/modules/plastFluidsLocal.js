@@ -56,20 +56,30 @@ const plastFluidsLocal = {
       return data;
     },
     async handleTableData({ commit, state, dispatch }, incomeData) {
-      const postDataMock = {
-        horizons: "None",
-        blocks: "None",
-        row_on_page: 30,
-        page_number: 1,
-      };
-      let merged = { ...postDataMock, ...incomeData };
-      const url = state.currentTemplate.api_url ?? undefined;
-      const data = await dispatch("getTableData", { mutatedData: merged, url });
-      commit("SET_CURRENT_TEMPLATE", state.currentTemplate);
-      commit("SET_TABLE_FIELDS", data.header ?? data.data.columns_name);
-      commit("SET_TABLE_ROWS", data.data.rows ?? data.data);
+      try {
+        commit("SET_LOADING", true);
+        const postDataMock = {
+          horizons: "None",
+          blocks: "None",
+          row_on_page: 30,
+          page_number: 1,
+        };
+        let merged = { ...postDataMock, ...incomeData };
+        const url = state.currentTemplate.api_url ?? undefined;
+        const data = await dispatch("getTableData", {
+          mutatedData: merged,
+          url,
+        });
+        commit("SET_CURRENT_TEMPLATE", state.currentTemplate);
+        commit("SET_TABLE_FIELDS", data.header ?? data.data.columns_name);
+        commit("SET_TABLE_ROWS", data.data.rows ?? data.data);
+      } catch (error) {
+        alert(error);
+      } finally {
+        commit("SET_LOADING", false);
+      }
     },
-    async handleTableGraphData({ commit, state }, dataToPost) {
+    async handleTableGraphData({ commit, rootState }, dataToPost) {
       try {
         commit("SET_LOADING", true);
         const postDataMock = {
@@ -78,6 +88,7 @@ const plastFluidsLocal = {
           vid_fluid: "None",
           data_start: "None",
           data_end: "None",
+          graph_type: "ps_bs_ds_ms",
         };
         let merged = { ...postDataMock, ...dataToPost };
         const postData = new FormData();
