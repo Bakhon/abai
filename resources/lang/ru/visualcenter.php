@@ -443,5 +443,6 @@ return array (
   'accumulatedOilDynamicYearly' => 'Динамика накопленной добычи нефти с начала года',
   'nkKmg' => 'НК КМГ (консолид.)',
   'nkKmgOperating' => 'Опер. активы НК КМГ (консолид.)',
-  'companyName' => 'Наименование компаний'
+  'companyName' => 'Наименование компаний',
+  'dailyDynamic' => 'Динамика суточной добычи'
 );
