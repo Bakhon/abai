@@ -453,7 +453,7 @@ class EconomicNrsController extends Controller
         return $wellsByDates;
     }
 
-    public function getWellsWithCoordinates(EconomicNrsDataRequest $request): array
+    public function getWellsMap(EconomicNrsDataRequest $request): array
     {
         $org = self::getOrg($request->org_id, $this->structureService);
 

@@ -127,7 +127,7 @@ export default {
         oil_production: this.trans('economic_reference.distribution_oil_production_by_profitability'),
         operating_profit_top: this.trans('economic_reference.rating_top_10_wells_by_profitability'),
         liquid_production: this.trans('economic_reference.distribution_liquid_production_by_profitability'),
-        well_map: 'Карта скважин',
+        well_map: this.trans('economic_reference.well_overview_map'),
       }
     },
 

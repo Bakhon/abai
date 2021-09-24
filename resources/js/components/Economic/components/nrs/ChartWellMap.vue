@@ -2,6 +2,12 @@
   <div>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet'/>
 
+    <h5 v-if="wells.length" class="subtitle text-wrap">
+      {{ trans('economic_reference.total') }}
+      {{ filteredWells[currentDate].length }}
+      {{ trans('economic_reference.wells_count').toLocaleLowerCase() }}
+    </h5>
+
     <div class="d-flex align-items-center white-placeholder">
       <datetime
           v-model="form.interval_start"
@@ -72,6 +78,8 @@ export default {
     this.form.interval_start = this.orgForm.interval_start
 
     this.form.interval_end = this.maxIntervalEnd
+
+    this.getWells()
   },
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
@@ -154,7 +162,7 @@ export default {
   },
   computed: {
     url() {
-      return this.localeUrl('/economic/nrs/get-wells-with-coordinates')
+      return this.localeUrl('/economic/nrs/get-wells-map')
     },
 
     maxIntervalEnd() {

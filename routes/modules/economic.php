@@ -10,7 +10,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::post('export-data', "EconomicNrsController@exportData");
             Route::get('wells', 'EconomicNrsController@indexWells');
             Route::get('get-wells', "EconomicNrsController@getWells");
-            Route::get('get-wells-with-coordinates', "EconomicNrsController@getWellsWithCoordinates");
+            Route::get('get-wells-map', "EconomicNrsController@getWellsMap");
         });
 
         Route::group(['prefix' => 'optimization'], function () {

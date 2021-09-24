@@ -282,4 +282,7 @@ return array (
   'without_gtm' => 'без учета ГТМ',
   'fot_optimization' => 'Оптимизация ФОТ',
   'non_optimizable_costs_share' => 'неоптимизируемая доля затрат',
+  'well_overview_map' => 'Обзорная карта скважин',
+  'table_well_overview_map' => 'Обзорная карта расположений скважин по экономической эффективности',
+  'count_shutdown_wells' => 'Количество отключенных скважин',
 );
