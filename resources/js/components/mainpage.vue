@@ -132,7 +132,7 @@ export default {
         },
         {
           name: this.trans('economy_pf.economy'),
-          icon: 'ecomony-kenje.svg',
+          icon: 'economy-kenje.svg',
           url: this.localeUrl('/module_economy/proactive-factors/')
         }
       ],
