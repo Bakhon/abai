@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use App\Services\AttachmentService;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
@@ -83,9 +82,10 @@ class Gis extends PlainForm
     {
         $files = DB::connection('tbd')
             ->table('prod.conn_files as f')
-            ->select('f.id', 'f.document_id', 'ft.code', 'df.file')
+            ->select('f.id', 'f.document_id', 'ft.code', 'df.file', 'd.doc_date')
             ->join('prod.document_file as df', 'f.document_id', 'df.document')
             ->join('dict.gis_file_type as ft', 'f.type_connect', 'ft.id')
+            ->join('prod.document as d', 'f.document_id', 'd.id')
             ->where('well', $wellId)
             ->get();
 
@@ -100,12 +100,22 @@ class Gis extends PlainForm
             ->map(function ($group) use ($filesInfo) {
                 return $group
                     ->map(function ($file) use ($filesInfo) {
-                        $fileInfo = $filesInfo->where('id', $file->file)->first();
-
-                        return '<a target="_blank" href="' . route('attachment.download', ['attachment' => $file->file]
-                            ) . '">' . $fileInfo->filename . '</a>';
+                        $file->info = $filesInfo->where('id', $file->file)->first();
+                        $file->filename = $file->info->filename;
+                        return $file;
                     })
-                    ->join('<br>');
+                    ->groupBy('document_id')
+                    ->map(function ($items) {
+                        $text = $items->pluck('filename')->join(', ');
+                        return [
+                            'id' => $items->first()->document_id,
+                            'values' => [
+                                'file' => $items,
+                                'filenames' => $text,
+                                'doc_date' => $items->first()->doc_date
+                            ]
+                        ];
+                    })->values();
             })
             ->toArray();
     }
@@ -134,7 +144,7 @@ class Gis extends PlainForm
         return $columns;
     }
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
         if (!$this->isValidDepth($this->request->get('well'), $this->request->get('matering_from'))) {
@@ -154,21 +164,6 @@ class Gis extends PlainForm
 
 
         return $errors;
-    }
-
-    public function submit(): array
-    {
-        DB::connection('tbd')->beginTransaction();
-
-        try {
-            $this->submitForm();
-
-            DB::connection('tbd')->commit();
-            return [];
-        } catch (\Exception $e) {
-            DB::connection('tbd')->rollBack();
-            throw new SubmitFormException($e->getMessage());
-        }
     }
 
     protected function submitForm(): array
@@ -201,6 +196,8 @@ class Gis extends PlainForm
                         );
                 }
             });
+
+        return [];
     }
 
     private function getFileTypes()
