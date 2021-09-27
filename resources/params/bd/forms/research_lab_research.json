@@ -29,6 +29,12 @@
                 "validation": "required|exists:tbd.dict.lab_research_type,id"
               },
               {
+                "code": "research_results",
+                "type": "label",
+                "title": "research_results",
+                "validation": ""
+              },
+              {
                 "code": "oil_viscosity",
                 "table": "prod.pvt_data",
                 "type": "numeric",
@@ -1440,7 +1446,7 @@
                 "table": "prod.res_gas_char",
                 "type": "numeric",
                 "title": "density",
-                "validation":"gte:0|lte:1",
+                "validation":"required|gte:0|lte:1",
                 "depends_on": [
                   {
                     "field": "research_type",
@@ -1470,7 +1476,7 @@
                 "table": "prod.res_gas_char",
                 "type": "numeric",
                 "title": "viscosity",
-                "validation":"gte:0|lte:10",
+                "validation":"required|gte:0|lte:10",
                 "depends_on": [
                   {
                     "field": "research_type",

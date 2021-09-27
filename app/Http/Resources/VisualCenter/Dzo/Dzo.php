@@ -171,11 +171,23 @@ class Dzo {
         $chartData = array();
         foreach($fact as $item) {
             $date = Carbon::parse($item['date'])->startOfDay()->format('d/m/Y');
-            $daySummary = array();
+            $daySummary = array(
+                'plan' => 0,
+                'fact' => 0,
+                'opek' => 0
+            );
             $formattedDate = Carbon::parse($item['date'])->copy()->firstOfMonth()->startOfDay()->format('d/m/Y');
             $dzoName = $item['dzo_name'];
-            $planRecord = $formattedPlan[$formattedDate][$dzoName];
             $daySummary['fact'] = $item[$this->consolidatedFieldsMapping[$type]['fact']];
+            $planRecord = array(
+                'plan_oil' => 0,
+                'plan_oil_opek' => 0,
+                'plan_kondensat' => 0
+            );
+
+            if (count($formattedPlan) !== 0 && array_key_exists($dzoName,$formattedPlan[$formattedDate])) {
+                $planRecord = $formattedPlan[$formattedDate][$dzoName];
+            }
             $daySummary['plan'] = $planRecord[$this->consolidatedFieldsMapping[$type]['plan']];
             $daySummary['opek'] = $planRecord[$this->consolidatedFieldsMapping[$type]['opek']];
             $daySummary['date'] = $date;
@@ -237,7 +249,7 @@ class Dzo {
         $ordered = array();
         foreach(array_keys($numberMapping[$type]) as $value) {
             $key = array_search($value, array_column($data, 'name'));
-            if ($data[$key]) {
+            if ($key !== FALSE && $data[$key]) {
                 array_push($ordered,$data[$key]);
             }
         }

@@ -34,7 +34,8 @@ export default {
       "points",
       "analysisSettings",
       "centralizer_range",
-      'sensetiveSettings'
+      'sensetiveSettings',
+      "mainSettings",
     ]),
     ...pgnoMapGetters([
       'curveSettingsStore',
@@ -45,30 +46,20 @@ export default {
     return {
       apiUrl: process.env.MIX_PGNO_API_URL,
       updateCurveTrigger: true,
-
       devBlockRatedFeed: null,
       devBlockFrequency: null,
-
       steel: null,
       techmodeDate: null,
-      isSkError: false,
-      isEditing: false,
-      activeRightTabName: "techmode",
       curveSettings: {},
       lines_analysis: {},
       points_analysis: {},
       construction: {},
-      isVisibleChart: true,
       shgnPumpType: null,
       shgnSPM: null,
       shgnLen: null,
       wellNumber: null,
       curveSelect: "pi",
       curveQselect: null,
-      expChoose: null,
-      targetButton: "ql",
-      qlTargetValue: null,
-      piCelValue: null,
       fieldsByOrgId: {
         "АО «ОзенМунайГаз»": [
           {
@@ -96,7 +87,6 @@ export default {
         ],
       },
       shgnTubOD: null,
-      hasGrp: false,
       expAnalysisData: {
         NNO1: null,
         NNO2: null,
@@ -115,23 +105,10 @@ export default {
         nno1: null,
         nno2: null,
       },
-
-      qZhExpEcn: null,
-      qOilExpEcn: null,
-      qZhExpShgn: null,
-      qOilExpShgn: null,
-      q1ZhidM3: null,
-      q2ZhidM3: null,
-      param_eco: null,
-      param_org: null,
-      param_fact: null,
-
       field: null,
       windowWidth: null,
       ao: null,
       organizations: [],
-      nkt: null,
-
       centratorsRequiredValue: null,
       nkt_choose: [
         {
@@ -159,25 +136,15 @@ export default {
           show_value: "114x7",
         },
       ],
-
-      inflowCurveTitle: this.trans("pgno.krivaya_pritoka"),
-      podborGnoTitle: this.trans("pgno.podbor_gno"),
       isServiceOnline: true,
-      isIntervals: false,
       skTypes: null,
       horizons: null,
       skType: null,
       horizon: null,
-      isNktError: null,
       spm: null,
-      qLforKpod: null,
-      pumpTypeforKpod: null,
       calcKpodTrigger: true,
       shgnResult: {},
       centratorsType: String,
-
-      hperfKompShgn: null,
-
     };
   },
   watch: {
@@ -208,13 +175,13 @@ export default {
         }
       }),
 
-    this.axios.get(this.apiUrl + "status/").then((response) => {
+    this.axios.get(this.apiUrl + "status").then((response) => {
       this.isServiceOnline = true;
     }).catch((error) => {
       this.isServiceOnline = false
     });
 
-    this.axios.get(this.apiUrl + "lastdate/").then((response) => {
+    this.axios.get(this.apiUrl + "lastdate").then((response) => {
       this.techmodeDate = response.data["date"];
     });
 
@@ -237,7 +204,7 @@ export default {
   mounted() {
     this.windowWidth = window.innerWidth;
     if (this.windowWidth <= 1300 && this.windowWidth > 991) {
-      this.activeRightTabName = "devices";
+      this.mainSettings.activeRightTabName = "devices";
     }
   },
   methods: {
@@ -298,11 +265,11 @@ export default {
         this.setNotify("Выберите скважину", "Error", "danger");
         return
       }
-      if (this.isEditing) {
+      if (this.mainSettings.isEditing) {
         this.well.skType = this.skType
         this.well.horizon = this.horizon
       }
-      this.isEditing = !this.isEditing
+      this.mainSettings.isEditing = !this.mainSettings.isEditing
     },
     isSkExist(skType) {
       return this.skTypes.some(function (sk) {
@@ -343,9 +310,8 @@ export default {
 
     },
     async getWellData(wellnumber) {
-      this.isIntervals = true;
       this.SET_LOADING(true);
-      this.isVisibleChart = true;
+      this.mainSettings.isVisibleChart = true;
       this.calcKpodTrigger = true;
       this.setDefault();
       if (["JET", "ASA"].includes(this.field)) {
@@ -436,7 +402,7 @@ export default {
         this.setNotify("Выберите скважину", "Error", "danger");
         return
       }
-      this.isVisibleChart = true;
+      this.mainSettings.isVisibleChart = true;
       this.SET_LOADING(true);
       if (this.well.casOd < 127) {
         this.setNotify(
@@ -501,7 +467,7 @@ export default {
         this.setNotify(this.trans("pgno.notify_error_sk"), "Error", "danger");
       } else if (errorCheck || nktError) {
         if (this.curveSettings.expChoosen == "ШГН") {
-          if (this.isVisibleChart) {
+          if (this.mainSettings.isVisibleChart) {
             this.SET_LOADING(true);
             var payload = {
               shgn_settings: this.shgnSettings,
@@ -592,7 +558,7 @@ export default {
                       "danger"
                     );
                   }
-                  this.isVisibleChart = !this.isVisibleChart;
+                  this.mainSettings.isVisibleChart = !this.mainSettings.isVisibleChart;
                 }
               })
               .catch((error) => {
@@ -623,7 +589,7 @@ export default {
                 this.SET_LOADING(false);
               });
           } else {
-            this.isVisibleChart = !this.isVisibleChart;
+            this.mainSettings.isVisibleChart = !this.mainSettings.isVisibleChart;
             this.postCurveData();
           }
         } else {
@@ -714,7 +680,10 @@ export default {
         this.$modal.show("modalIncl");
       }
     },
-    closeInclModal() {
+    closeInclModal(value) {
+      if (value==='noIncl') {
+        this.setNotify(this.trans("pgno.no_incl_data"), "Warning", "warning");
+      }
       this.$modal.hide("modalIncl");
       this.curveSettings.hPumpValue = this.curveSettingsStore.hPumpValue;
       this.postCurveData();
@@ -840,19 +809,19 @@ export default {
 
     setActiveRightTabName: function (e, val) {
       if (
-        val === this.activeRightTabName &&
+        val === this.mainSettings.activeRightTabName &&
         (this.windowWidth > 1300 || this.windowWidth <= 991)
       ) {
-        this.activeRightTabName = "techmode";
+        this.mainSettings.activeRightTabName = "techmode";
         return;
       }
 
       if (
-        val === this.activeRightTabName &&
+        val === this.mainSettings.activeRightTabName &&
         this.windowWidth <= 1300 &&
         this.windowWidth > 991
       ) {
-        this.activeRightTabName = "devices";
+        this.mainSettings.activeRightTabName = "devices";
         return;
       }
 
@@ -864,7 +833,7 @@ export default {
         return;
       }
 
-      this.activeRightTabName = val;
+      this.mainSettings.activeRightTabName = val;
     },
     takePhoto() {
       this.SET_LOADING(true);
@@ -910,7 +879,6 @@ export default {
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
     });
-
     this.setDefault();
   },
 };

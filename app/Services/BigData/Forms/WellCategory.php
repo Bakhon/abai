@@ -34,21 +34,25 @@ class WellCategory extends PlainForm
 
     protected function submitForm(): array
     {
-        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-        $oldCategory = $dbQuery->where('well', $this->request->get('well'))
-            ->where('dend', Well::DEFAULT_END_DATE)
-            ->first();
-        if ($oldCategory !== null) {
-            $dbQuery->where('id', $oldCategory->id)->update(
-                [
-                    'dend' => $this->request->get('dbeg')
-                ]
-            );
-        }
-
         $data = $this->request->except('org');
         $data['dend'] = Well::DEFAULT_END_DATE;
+
+        $oldCategory = DB::connection('tbd')->table($this->params()['table'])
+            ->where('well', $this->request->get('well'))
+            ->where('dend', Well::DEFAULT_END_DATE)
+            ->where('id', '!=', $data['id'])
+            ->first();
+        if ($oldCategory !== null) {
+            DB::connection('tbd')
+                ->table($this->params()['table'])
+                ->where('id', $oldCategory->id)->update(
+                    [
+                        'dend' => $this->request->get('dbeg')
+                    ]
+                );
+        }
+
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
         if (!empty($data['id'])) {
             $id = $dbQuery->where('id', $data['id'])->update($data);
@@ -63,6 +67,10 @@ class WellCategory extends PlainForm
 
     public function saveOrganization()
     {
+        if (!$this->request->get('org')) {
+            return;
+        }
+
         $dbQuery = DB::connection('tbd')->table('prod.well_org');
 
         $oldOrg = $dbQuery
@@ -138,7 +146,7 @@ class WellCategory extends PlainForm
         return [
             'connected_wells' => [
                 'rows' => $otherWells,
-                'columns' => $this->getColumns($category)
+                'columns' => $this->getConnectedWellColumns($category)
             ]
         ];
     }
@@ -189,7 +197,7 @@ class WellCategory extends PlainForm
         return $result->toArray();
     }
 
-    private function getColumns(WellCategoryDictionary $category): array
+    private function getConnectedWellColumns(WellCategoryDictionary $category): array
     {
         $columns = [
             [
@@ -288,7 +296,7 @@ class WellCategory extends PlainForm
 
     use DateMoreThanValidationTrait;
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 

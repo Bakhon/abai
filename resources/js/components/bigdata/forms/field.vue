@@ -19,6 +19,7 @@
           v-on:input="updateValue($event.id)"
           :options="item.values"
           :name="item.code"
+          label="name"
       >
         <template #open-indicator="{ attributes }">
           <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -117,11 +118,12 @@
           :id="id"
           :form="form"
           :params="item"
+          :values="value || null"
           v-on:change="updateValue($event)"
       >
       </BigdataTableField>
     </template>
-    <template v-else-if="item.type === 'calc'">
+    <template v-else-if="['calc', 'label'].includes(item.type)">
       <label>{{ value }}</label>
     </template>
     <template v-else-if="item.type === 'checkbox_table'">
@@ -293,13 +295,13 @@ export default {
 
   .v-select {
     background: #334296;
-    height: 28px;
+    height: auto;
     min-width: 100%;
 
     .vs__search, .vs__selected {
       font-size: 14px;
       font-weight: normal;
-      height: 28px;
+      height: auto;
       line-height: 1;
       margin-top: 0;
       max-width: 95%;

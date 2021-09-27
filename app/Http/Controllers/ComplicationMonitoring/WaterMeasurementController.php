@@ -117,6 +117,24 @@ class WaterMeasurementController extends CrudController
                             ->toArray()
                     ]
                 ],
+                'well' => [
+                    'title' => trans('monitoring.well.well'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => Well::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
 
                 'hydrocarbonate_ion' => [
                     'title' => 'НСО3-',
@@ -144,6 +162,14 @@ class WaterMeasurementController extends CrudController
                 ],
                 'potassium_ion_sodium_ion' => [
                     'title' => 'Na+K+',
+                    'type' => 'numeric',
+                ],
+                'strontium_content' => [
+                    'title' => trans('monitoring.wm.fields.strontium_content'),
+                    'type' => 'numeric',
+                ],
+                'barium_content' => [
+                    'title' => trans('monitoring.wm.fields.barium_content'),
                     'type' => 'numeric',
                 ],
                 'density' => [
@@ -186,14 +212,6 @@ class WaterMeasurementController extends CrudController
                 ],
                 'mechanical_impurities' => [
                     'title' => trans('monitoring.wm.fields.mechanical_impurities'),
-                    'type' => 'numeric',
-                ],
-                'strontium_content' => [
-                    'title' => trans('monitoring.wm.fields.strontium_content'),
-                    'type' => 'numeric',
-                ],
-                'barium_content' => [
-                    'title' => trans('monitoring.wm.fields.barium_content'),
                     'type' => 'numeric',
                 ],
                 'total_iron_content' => [

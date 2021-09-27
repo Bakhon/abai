@@ -17,7 +17,7 @@ class Tech extends TBDModel
     const TYPE_KNS = 'GPST';
     const TYPE_BKNS = 'MGPST';
 
-    public function parent()
+    public function parentItem()
     {
         return $this->belongsTo(Tech::class, 'parent', 'id');
     }

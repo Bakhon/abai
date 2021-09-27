@@ -1,0 +1,13 @@
+<svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 1V21H21" stroke="#A1A4DE" stroke-linecap="round"/>
+<path d="M19 3C16.3333 3 11.7333 4.26667 8 8C4.26667 11.7333 3 15.8 3 19" stroke="#F27E31" stroke-linecap="round"/>
+<circle cx="18.5" cy="5.69995" r="0.5" transform="rotate(-180 18.5 5.69995)" fill="#A1A4DE"/>
+<circle cx="15.5" cy="13.1667" r="0.5" transform="rotate(-180 15.5 13.1667)" fill="#A1A4DE"/>
+<circle cx="13.5" cy="8.8999" r="0.5" transform="rotate(-180 13.5 8.8999)" fill="#A1A4DE"/>
+<circle cx="11.5" cy="16.3667" r="0.5" transform="rotate(-180 11.5 16.3667)" fill="#A1A4DE"/>
+<circle cx="8.5" cy="3.56665" r="0.5" transform="rotate(-180 8.5 3.56665)" fill="#A1A4DE"/>
+<circle cx="4.5" cy="6.2334" r="0.5" transform="rotate(-180 4.5 6.2334)" fill="#A1A4DE"/>
+<circle cx="3.5" cy="8.8999" r="0.5" transform="rotate(-180 3.5 8.8999)" fill="#A1A4DE"/>
+<circle cx="4.5" cy="3.56665" r="0.5" transform="rotate(-180 4.5 3.56665)" fill="#A1A4DE"/>
+<circle cx="9.5" cy="12.1001" r="0.5" transform="rotate(-180 9.5 12.1001)" fill="#A1A4DE"/>
+</svg>

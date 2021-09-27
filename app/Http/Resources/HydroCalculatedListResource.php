@@ -27,8 +27,8 @@ class HydroCalculatedListResource extends CrudListResource
                 'qliq' => $this->qliq,
                 'wc' => $this->bsw,
                 'gazf' => $this->gazf,
-                'press_start' => $this->press_start,
-                'press_end' => $this->press_end,
+                'press_start' => $this->press_start * 1.01325, //ата в бар
+                'press_end' => $this->press_end * 1.01325, //ата в бар
                 'temp_start' => $this->temperature_start,
                 'temp_end' => $this->temperature_end,
                 'mix_speed_avg' => $this->mix_speed_avg,
