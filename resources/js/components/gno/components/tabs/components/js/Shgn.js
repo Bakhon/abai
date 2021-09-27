@@ -180,13 +180,12 @@ export default {
 		},
 		onChangeCorrosion(e) {
 			this.settings.corrosion = e.target.value
-			this.settings.steelMark = this.steelMarkStore
+			this.settings.steelMark = []
 			this.steelMarks = this.steelMarksTypes[this.settings.corrosion]
 		}
 	},
 	created: function() {
 		this.settings = _.cloneDeep(this.shgnSettings)
-		this.settings.steelMark = this.steelMarkStore
 		this.steelMarks = this.steelMarksTypes[this.settings.corrosion]
 		this.calKpod()
 	}

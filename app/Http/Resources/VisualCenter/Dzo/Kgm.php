@@ -84,4 +84,14 @@ class Kgm extends Dzo {
        array_push($summary,$chartSummary);
        return $summary;
     }
+
+    public function getDzoDynamicByMultiplier($fields,$summary)
+    {
+        $oilSummary = $summary;
+        foreach($fields as $fieldName) {
+            $oilSummary[$fieldName] *= $this->oilCondensateMultiplier;
+        }
+
+        return $oilSummary;
+    }
 }

@@ -11,11 +11,9 @@ class Pump extends Model
 
     protected $guarded = ['id'];
 
-    public $table = 'pumps';
-
     public function gu()
     {
-        return $this->hasOne(Gu::class, 'id', 'gu_id')->withDefault();
+        return $this->belongsTo(Gu::class);
     }
 
     
