@@ -381,6 +381,8 @@ class VisualCenterController extends Controller
         return DzoImportOtm::query()
             ->whereMonth('date', '>=', $request->startPeriod)
             ->whereMonth('date', '<=', $request->endPeriod)
+            ->whereYear('date',Carbon::now()->year)
+            ->orderBy('date', 'ASC')
             ->get()
             ->toArray();
     }
@@ -390,6 +392,8 @@ class VisualCenterController extends Controller
         return DzoImportChemistry::query()
             ->whereMonth('date', '>=', $request->startPeriod)
             ->whereMonth('date', '<=', $request->endPeriod)
+            ->whereYear('date',Carbon::now()->year)
+            ->orderBy('date', 'ASC')
             ->get()
             ->toArray();
     }
