@@ -42,21 +42,39 @@
                 "type": "dict",
                 "title": "contractor",
                 "validation": "required|exists:tbd.dict.company,id",
-                "dict": "companies"
+                "dict": "companies",
+                "depends_on": [
+                  {
+                    "field": "by_ourselves",
+                    "value": false
+                  }
+                ]
               },
               {
                 "code": "brigadier",
                 "type": "dict",
                 "title": "brigade",
                 "validation": "exists:tbd.dict.brigade,id",
-                "dict": "brigades"
+                "dict": "brigades",
+                "depends_on": [
+                  {
+                    "field": "by_ourselves",
+                    "value": true
+                  }
+                ]
               },
               {
                 "code": "full_name",
                 "type": "dict",
                 "title": "brigade_master",
                 "validation": "exists:tbd.dict.brigadier,id",
-                "dict": "brigadiers"
+                "dict": "brigadiers",
+                "depends_on": [
+                  {
+                    "field": "by_ourselves",
+                    "value": true
+                  }
+                ]
               },
               {
                 "code": "gtm_dublicate",

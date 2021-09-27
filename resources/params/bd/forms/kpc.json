@@ -101,7 +101,13 @@
               "title": "contractor",
               "validation": "required|exists:tbd.dict.company,id",
               "dict": "companies",
-              "is_editable": true
+              "is_editable": true,
+              "depends_on": [
+                {
+                  "field": "by_ourselves",
+                  "value": false
+                }
+              ]
             },
             {
               "code": "brigade",
@@ -109,7 +115,14 @@
               "title": "brigade",
               "validation": "exists:tbd.dict.brigade,id",
               "dict": "brigades",
-              "is_editable": true
+              "is_editable": true,
+              "depends_on": [
+                {
+                  "field": "by_ourselves",
+                  "value": true
+                }
+              ]
+              
             },
             {
               "code": "brigadier",
@@ -117,7 +130,13 @@
               "title": "brigade_master",
               "validation": "exists:tbd.dict.brigadier,id",
               "dict": "brigadiers",
-              "is_editable": true
+              "is_editable": true,
+              "depends_on": [
+                {
+                  "field": "by_ourselves",
+                  "value": true
+                }
+              ]
             },
             {
               "code": "gtm_duplicate",
@@ -221,7 +240,13 @@
               "title": "no_slaughter_reason",
               "validation": "exists:tbd.dict.reason,id",
               "dict": "reason_rls",
-              "is_editable": true
+              "is_editable": true,
+              "depends_on": [
+                {
+                  "field": "no_btm",
+                  "value": true
+                }
+              ]
             },
             {
               "code": "hud",
