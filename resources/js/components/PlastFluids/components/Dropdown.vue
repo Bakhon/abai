@@ -10,7 +10,11 @@
         v-for="item in items"
         :key="item[dropKey]"
       >
-        {{ item[dropKey] }}
+        {{
+          isParentShortNameExist
+            ? item[dropKey] + " - " + parentShortName
+            : item[dropKey]
+        }}
       </button>
     </div>
   </div>
@@ -23,6 +27,7 @@ export default {
     items: Array,
     placeholder: String,
     dropKey: String,
+    parentShortName: String,
     selectedValue: {
       type: String,
       default: null,
@@ -32,6 +37,11 @@ export default {
     return {
       isOpen: false,
     };
+  },
+  computed: {
+    isParentShortNameExist() {
+      return this.parentShortName && this.parentShortName !== "Unknown";
+    },
   },
   methods: {
     closeDropdown() {
@@ -56,6 +66,7 @@ button {
 .dropdown {
   display: flex;
   width: 100%;
+  height: 30px;
   position: relative;
   background: #1f2142;
   color: #fff;
@@ -65,6 +76,7 @@ button {
 
 .dropdown > button {
   width: 100%;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -72,6 +84,7 @@ button {
 
 .dropdown > button > img {
   transform: rotate(270deg);
+  width: 16px;
 }
 
 .dropdown > div {
@@ -81,7 +94,7 @@ button {
   display: flex;
   flex-flow: column;
   width: 100%;
-  top: 100%;
+  top: calc(100% + 2px);
   left: 0;
   z-index: 2;
 }
