@@ -895,6 +895,12 @@
                               :class="isTroubleCompany(item.name)  ? 'troubled-companies' : ''"
                       >
                         {{ getDzoName(item.name,dzoNameMapping) }}
+                        <span
+                                v-if="additionalCompanies.includes(item.name)"
+                                class="additional-title"
+                        >
+                          &nbsp{{getAdditionalName(item.name)}}
+                        </span>
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span v-else>
@@ -3069,5 +3075,13 @@
     border-radius: 5px;
     padding: 5px;
     text-align: center;
+  }
+
+  .additional-title {
+    background: #3366FF;
+    border-radius: 10px;
+    line-height: 24px;
+    font-weight: 700;
+    padding: 2px 5px;
   }
 </style>
