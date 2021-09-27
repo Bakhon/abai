@@ -80,11 +80,11 @@ class WellTreat extends TableForm
         }
     }
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 
-        if (!$this->isValidDepth($this->request->get('well'),$this->request->get('scraper_income'))) {
+        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('scraper_income'))) {
             $errors['scraper_income'][] = trans('bd.validation.depth');
         }
 

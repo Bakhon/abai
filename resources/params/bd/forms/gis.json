@@ -32,7 +32,18 @@
                 "code": "table",
                 "type": "table",
                 "form": "well_document_short",
-                "title": "table"
+                "title": "table",
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
               }
             ]
           }
@@ -50,7 +61,18 @@
                 "code": "results",
                 "type": "table",
                 "form": "well_document_short",
-                "title": "results"
+                "title": "results",
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
               }
             ]
           }
@@ -68,7 +90,18 @@
                 "code": "akts",
                 "type": "table",
                 "form": "well_document_short",
-                "title": "akts"
+                "title": "akts",
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
               }
             ]
           }
@@ -86,7 +119,18 @@
                 "code": "inclinometry",
                 "type": "table",
                 "form": "well_document_short",
-                "title": "inclinometry"
+                "title": "inclinometry",
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
               }
             ]
           }
@@ -105,7 +149,7 @@
                 "type": "table",
                 "form": "well_document_short",
                 "title": "conclusion",
-                "table_fields": [
+                "columns": [
                   {
                     "code": "name_ru",
                     "title": "scan_doc"

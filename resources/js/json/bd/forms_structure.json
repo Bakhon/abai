@@ -102,7 +102,7 @@
         "forms": [
           "bottom_hole",
           "bottom_hole_artificial",
-          "lab_research",
+          "research_lab_research",
           "well_mark",
           "gdis",
           "current_g_d_i_s"

@@ -29,6 +29,12 @@
                 "validation": "required|exists:tbd.dict.lab_research_type,id"
               },
               {
+                "code": "research_results",
+                "type": "label",
+                "title": "research_results",
+                "validation": ""
+              },
+              {
                 "code": "oil_viscosity",
                 "table": "prod.pvt_data",
                 "type": "numeric",

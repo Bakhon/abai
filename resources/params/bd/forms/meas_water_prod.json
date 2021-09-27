@@ -1,6 +1,9 @@
 {
   "type": "plain",
   "table": "prod.meas_water_prod",
+  "default_values":{
+    "dend": "3333-12-31 00:00:00+06"
+  },
   "sort": [
     {
       "field": "dbeg",
@@ -25,7 +28,7 @@
                 "code": "dend",
                 "type": "date",
                 "title": "dend",
-                "validation": "required"
+                "validation": ""
               },
               {
                 "code": "water_prod_val",
