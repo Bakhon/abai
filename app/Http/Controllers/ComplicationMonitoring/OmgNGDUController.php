@@ -191,18 +191,6 @@ class OmgNGDUController extends CrudController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function history(OmgNGDU $omgngdu)
-    {
-        $omgngdu->load('history');
-        return view('omgngdu.history', compact('omgngdu'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param int $id

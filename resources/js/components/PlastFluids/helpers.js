@@ -23,4 +23,8 @@ function handleSearch(arrayForSearch, query, type) {
   return filtered;
 }
 
-export { handleSearch, convertTemplateData };
+function compareNumbers(a, b) {
+  return a - b;
+}
+
+export { handleSearch, convertTemplateData, compareNumbers };

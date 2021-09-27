@@ -13,15 +13,15 @@ class WellPerf extends PlainForm
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 
-        if (!$this->isValidDepth($this->request->get('well'),$this->request->get('depth'))) {
+        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('depth'))) {
             $errors['depth'] = trans('bd.validation.depth');
         }
 
-        if (!$this->isValidDepth($this->request->get('well'),$this->request->get('base'))) {
+        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('base'))) {
             $errors['base'] = trans('bd.validation.depth');
         }
 

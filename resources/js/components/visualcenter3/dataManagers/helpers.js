@@ -188,6 +188,15 @@ export default {
             return this.mainMenu.oilCondensateProduction || this.mainMenu.oilCondensateDelivery;
         },
 
+        isHoverShouldBeShown() {
+            return this.isConsolidatedCategoryActive() &&
+                !this.mainMenu.oilCondensateProductionWithoutKMG &&
+                !this.mainMenu.oilCondensateProductionCondensateOnly &&
+                !this.mainMenu.oilCondensateDeliveryCondensateOnly &&
+                !this.mainMenu.oilCondensateDeliveryOilResidue &&
+                !this.mainMenu.oilCondensateDeliveryWithoutKMG;
+        },
+
         getNumberFormat(num) {
             return (new Intl.NumberFormat("ru-RU").format(num))
         },

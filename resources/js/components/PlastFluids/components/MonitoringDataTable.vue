@@ -3,6 +3,7 @@
     <p class="monitoring-table-title">
       {{ trans("plast_fluids.downloads_monitoring") }}
     </p>
+
     <BaseTable
       :fields="fields"
       :items="items"
