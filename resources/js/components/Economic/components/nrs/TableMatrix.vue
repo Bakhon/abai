@@ -1,35 +1,69 @@
 <template>
-  <div class="text-white container-fluid bg-light p-4">
-    <vue-table-dynamic
-        ref="table"
-        :params="tableParams"
-        class="height-fit-content height-unset">
-      <template :slot="`column-1`" slot-scope="{ props }">
-        <div :style="`color: ${props.cellData.color}`">
-          {{ props.cellData.label }}
-        </div>
-      </template>
+  <div>
+    <chart-matrix
+        v-for="uwi in chartUwis"
+        :key="uwi"
+        :uwi="uwi"
+        :well="data.uwis[uwi]"
+        :dates="data.dates"
+        class="text-white container-fluid bg-main1 p-4 mb-3"/>
 
-      <template
-          v-for="(date, index) in data.dates"
-          :slot="`column-${index+2}`"
-          slot-scope="{ props }">
-        <div :style="`color: ${props.cellData.color}`">
-          {{ props.cellData.label }}
-        </div>
-      </template>
-    </vue-table-dynamic>
+    <div class="text-white container-fluid bg-light p-4">
+      <vue-table-dynamic
+          ref="table"
+          :params="tableParams"
+          class="height-fit-content height-unset">
+        <template :slot="`column-0`" slot-scope="{ props }">
+          <div class="d-flex align-items-center w-100">
+            <div> {{ props.cellData.label }}</div>
+
+            <div v-if="props.cellData.isCheckbox" class="d-flex align-items-center ml-2">
+              <input
+                  v-model="selectedUwis[props.cellData.label]"
+                  type="checkbox"
+                  class="form-check-input m-0"
+                  @change="toggleUwi(props.cellData.label)">
+            </div>
+          </div>
+        </template>
+
+        <template :slot="`column-1`" slot-scope="{ props }">
+          <div :style="`color: ${props.cellData.color}`">
+            {{ props.cellData.label }}
+          </div>
+        </template>
+
+        <template
+            v-for="(date, index) in data.dates"
+            :slot="`column-${index+2}`"
+            slot-scope="{ props }">
+          <div :style="`color: ${props.cellData.color}`">
+            {{ props.cellData.label }}
+          </div>
+        </template>
+      </vue-table-dynamic>
+    </div>
   </div>
 </template>
 
 <script>
+import ChartMatrix from "./ChartMatrix";
+
 export default {
   name: "TableMatrix",
+  components: {ChartMatrix},
   props: {
     data: {
       required: true,
       type: Object
     },
+  },
+  data: () => ({
+    selectedUwis: {},
+    chartUwis: []
+  }),
+  created() {
+    this.uwis.forEach(uwi => this.selectedUwis[uwi] = false)
   },
   computed: {
     uwis() {
@@ -52,7 +86,7 @@ export default {
         fixed: 1,
         columnWidth: this.tableHeaders.map((col, index) => ({
           column: index,
-          width: index > 0 ? 90 : 110
+          width: index > 0 ? 90 : 120
         })),
         highlight: {column: [0, 1]},
         highlightedColor: '#E6E6E6'
@@ -85,20 +119,25 @@ export default {
           tableRows.uwi.push({value: '', label: ''})
         })
 
-        tableRows.uwi.unshift({value: '', label: ''})
-
-        tableRows.uwi.unshift(uwi)
+        tableRows.uwi.unshift(
+            {value: uwi, label: uwi, isCheckbox: true},
+            {value: '', label: ''}
+        )
 
         rows.push(tableRows.uwi)
 
         this.wellKeys.forEach(key => {
-          tableRows[key.prop].unshift({
-            value: +well[key.prop]['sum'],
-            label: this.getLabel(+well[key.prop]['sum']),
-            color: this.getColor(key, +well[key.prop]['sum'])
-          })
-
-          tableRows[key.prop].unshift(key.name)
+          tableRows[key.prop].unshift(
+              {
+                value: key.name,
+                label: key.name,
+              },
+              {
+                value: +well[key.prop]['sum'],
+                label: this.getLabel(+well[key.prop]['sum']),
+                color: this.getColor(key, +well[key.prop]['sum'])
+              }
+          )
 
           rows.push(tableRows[key.prop])
         })
@@ -108,7 +147,13 @@ export default {
     },
 
     tableHeaders() {
-      return [...['', this.trans('economic_reference.total')], ...this.data.dates]
+      return [
+        ...[
+          '',
+          `${this.trans('economic_reference.total')}, ${this.trans('economic_reference.thousand_tenge')}`
+        ],
+        ...this.data.dates
+      ]
     },
 
     wellKeys() {
@@ -127,7 +172,7 @@ export default {
           colorful: true
         }
       ]
-    }
+    },
   },
   methods: {
     getColor(key, value) {
@@ -139,6 +184,14 @@ export default {
     getLabel(value) {
       return value ? (+(value / 1000).toFixed(1)).toLocaleString() : value
     },
+
+    toggleUwi(uwi) {
+      let index = this.chartUwis.findIndex(well => well === uwi)
+
+      index === -1
+          ? this.chartUwis.push(uwi)
+          : this.chartUwis.splice(index, 1);
+    }
   }
 }
 </script>
