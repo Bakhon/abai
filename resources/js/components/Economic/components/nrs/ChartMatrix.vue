@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h4>{{ trans('economic_reference.well') }}: {{ uwi }}</h4>
+    <h4 class="m-0">
+      {{ trans('economic_reference.well') }}: {{ uwi }}
+    </h4>
 
     <apexchart
         ref="chart"
