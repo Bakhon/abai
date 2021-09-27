@@ -5,11 +5,7 @@ namespace App\Services\BigData\Forms;
 class DailyReportsGasProduction extends DailyReports
 {
 
-    const CITS = 0;
-    const GS = 1;
-    const ALL = 2;
     protected $metricCode = 'GASPR';
-    protected $configurationFileName = 'daily_reports_gas_prod';
 
     protected function getData(\stdClass $filter): array
     {
@@ -32,7 +28,7 @@ class DailyReportsGasProduction extends DailyReports
                 break;
         }
 
-        if ($filter->optionId === self::GS) {
+        if ($filter->type === self::GS) {
             $result['fact'] = ['value' => 0];
             $result['month_fact'] = ['value' => 0];
             $result['year_fact'] = ['value' => 0];

@@ -15,7 +15,12 @@ abstract class DailyReports extends TableForm
     const MONTH = 1;
     const YEAR = 2;
 
+    const CITS = 'ЦИТС';
+    const GS = 'ГС';
+    const ALL = 'ЦИТС/ГС';
+
     protected $metricCode = '';
+    protected $configurationFileName = 'daily_reports';
 
     public function getResults(): array
     {
@@ -30,14 +35,19 @@ abstract class DailyReports extends TableForm
             }
             $result['org_name'] = ['value' => $org->name_ru];
         }
-        $filter->optionId = $filter->optionId ?? 0;
 
         foreach ([self::DAY, self::MONTH, self::YEAR] as $period) {
             $filter->period = $period;
             $data = $this->getData($filter);
             $result += $data;
         }
-        return ['rows' => [$result]];
+
+        $columns = $this->getColumns($filter);
+
+        return [
+            'columns' => $columns,
+            'rows' => [$result]
+        ];
     }
 
     protected function saveSingleFieldInDB(array $params): void
@@ -149,5 +159,20 @@ abstract class DailyReports extends TableForm
 
         $fieldLimitsService = app()->make(FieldLimitsService::class);
         return $fieldLimitsService->calculateColumnLimits('fact', $reports);
+    }
+
+    private function getColumns(\stdClass $filter): Collection
+    {
+        $type = $filter->type;
+
+        $columns = $this->getFields()->filter(function ($column) use ($type) {
+            if (empty($column['show_if'])) {
+                return true;
+            }
+
+            return in_array($type, $column['show_if']['type']);
+        })->values();
+
+        return $columns;
     }
 }

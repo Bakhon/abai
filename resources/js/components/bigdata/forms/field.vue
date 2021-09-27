@@ -16,9 +16,10 @@
     </template>
     <template v-else-if="item.type === 'list'">
       <v-select
-          v-on:input="updateValue($event.id)"
+          :value="value"
           :options="item.values"
           :name="item.code"
+          v-on:input="updateValue($event)"
           label="name"
       >
         <template #open-indicator="{ attributes }">
@@ -211,6 +212,7 @@ export default {
       }
     },
     updateValue(value) {
+      console.log(value)
       this.formatedValue = this.getFormatedValue(value)
       this.$emit('change', value)
       this.$emit('input', value)

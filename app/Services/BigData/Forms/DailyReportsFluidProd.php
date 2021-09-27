@@ -5,11 +5,7 @@ namespace App\Services\BigData\Forms;
 class DailyReportsFluidProd extends DailyReports
 {
 
-    const CITS = 0;
-    const GS = 1;
-    const ALL = 2;
     protected $metricCode = 'FLR';
-    protected $configurationFileName = 'daily_reports_fluid_prod';
 
     protected function getData($filter): array {
         $data = parent::getReports($filter);
@@ -31,7 +27,7 @@ class DailyReportsFluidProd extends DailyReports
                 break;
         }
 
-        if ($filter->optionId === self::GS) {
+        if ($filter->type === self::GS) {
             $result['fact'] = ['value' => 0];
             $result['month_fact'] = ['value' => 0];
             $result['year_fact'] = ['value' => 0];
