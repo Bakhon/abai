@@ -170,8 +170,8 @@ class ExcelFormController extends Controller
     {
         $emails = $request->toList;
         $request->request->remove('toList');
-        $approveIsNeeded = $this->isProductionRecordExist($request->get('dzo_name'),$request->get('date'));
-        if (!$approveIsNeeded) {
+        $isApproveRequired = $this->isProductionRecordExist($request->get('dzo_name'),$request->get('date'));
+        if (!$isApproveRequired) {
             $request->request->set('is_corrected', null);
         }
         $this->saveDzoSummaryData($request);
@@ -188,7 +188,7 @@ class ExcelFormController extends Controller
         $decrease_data = $request->request->get('decreaseReason');
         $dzo_decrease_reason = $this->getDzoChildSummaryData($dzo_decrease_reason,$decrease_data,$dzo_summary_last_record);
         $dzo_decrease_reason->save();
-        if ($approveIsNeeded) {
+        if ($isApproveRequired) {
             $client = $this->getEmailClient();
             foreach($emails as $item) {
                 $this->sendEmailToMaster($request->request, $client, $item);
