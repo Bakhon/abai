@@ -160,7 +160,7 @@ export default {
                     const fileData = reader.result.split("\r\n").splice(1);
                     this.drawLines(fileData)
                 } else {
-                    alert('Необходимо импортировать карту!');
+                    this.$notifyError(this.trans('map_constructor.map_required'));
                     this.SET_LOADING(false);
                 }
             });
@@ -207,9 +207,10 @@ export default {
         },
         sendFileToAPI(file) {
             let formData = new FormData();
+            let $self = this;
             formData.append('file', file);
             formData.append('number_of_levels', '10');
-            axios.post(this.localeUrl('map_constructor/import'),
+            axios.post(this.localeUrl('map-constructor/import'),
               formData,
               {
                   headers: {
@@ -223,8 +224,8 @@ export default {
                 this.SET_LOADING(false);
             })
             .catch(function(e){
-                alert('Ошибка импорта!');
-                this.SET_LOADING(false);
+                $self.$notifyError($self.trans('map_constructor.import_error'));
+                $self.SET_LOADING(false);
             });
         },
         initMap(projection) {

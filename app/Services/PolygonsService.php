@@ -15,7 +15,7 @@ class PolygonsService
     {
         $this->client = new Client(
             [
-                'base_uri' => env('MAP_POLYGON_SERVICE_HOST')
+                'base_uri' => config('map_constructor.map_polygon_service_host')
             ]
         );
     }
