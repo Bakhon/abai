@@ -10,6 +10,7 @@
         <select-organization
             :form="form"
             class="col ml-2"
+            hide-label
             @change="getData"/>
 
         <select-field

@@ -89,7 +89,8 @@
         "forms": [
           "production_well",
           "injection_wells",
-          "gas_well"
+          "gas_well",
+          "meas_water_prod"
         ]
       },
       {

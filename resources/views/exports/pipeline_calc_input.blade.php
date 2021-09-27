@@ -19,7 +19,7 @@
                 <td>{{ $item->gu ? 0 : ''}}</td>
                 <td>{{ $item->omgngdu ? $item->omgngdu->pump_discharge_pressure + 1: ''}}</td>
                 <td></td>
-                <td>{{ $item->omgngdu ? $item->omgngdu->heater_output_temperature : '' }}</td>
+                <td>{{ $item->omgngdu ? ($item->omgngdu->heater_output_temperature ? $item->omgngdu->heater_output_temperature : $item->omgngdu->heater_inlet_temperature) : '' }}</td>
                 <td></td>
                 <td>{{ $item->name }}</td>
                 <td>{{ $item->trunkline_end_point->name }}</td>

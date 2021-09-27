@@ -583,6 +583,7 @@
                           {{trans("visualcenter.injectionArtesianWater")}}
                         </a>
                       </li>
+                      <hr class="m-0 mt-1 mx-2 dropdown-splitter" />
                       <li
                               class="center-li row px-4"
                               @click="switchCategory('streamWaterInjection','waterInjection')"
@@ -784,9 +785,9 @@
                   <thead>
                   <tr>
                     <th>№</th>
-                    <th>{{ trans("visualcenter.dzo") }}</th>
+                    <th>{{ trans("visualcenter.companyName") }}</th>
                     <th v-if="buttonMonthlyTab && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoMonthlyPlan") }}
+                      {{ trans("visualcenter.dzoMonthlyPlan") }},
                       <div v-if="periodRange === 0">
                         {{ getMetricNameByCategorySelected() }}
                       </div>
@@ -795,7 +796,7 @@
                       </div>
                     </th>
                     <th v-if="buttonYearlyTab && !mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoYearlyPlan") }}
+                      {{ trans("visualcenter.dzoYearlyPlan") }},
                       <div v-if="periodRange === 0">
                         {{ getMetricNameByCategorySelected() }}
                       </div>
@@ -834,7 +835,7 @@
                       </div>
                     </th>
                     <th v-if="!mainMenu.oilCondensateDeliveryOilResidue">
-                      {{ trans("visualcenter.dzoDifference") }}
+                      {{ trans("visualcenter.dzoDifference") }},
                       <div v-if="periodRange !== 0">
                         {{ getThousandMetricNameByCategorySelected() }}
                       </div>
@@ -881,20 +882,20 @@
                             :class="[index % 2 === 0 ? 'tdStyle' : '','cursor-pointer']"
                     >
                       <span
-                              v-if="isConsolidatedCategoryActive()"
-                              :class="marginMapping[selectedCategory] &&
-                                marginMapping[selectedCategory].includes(index) ? 'troubled-companies' : ''
-                              "
+                              v-if="mainMenu.oilCondensateProductionWithoutKMG || mainMenu.oilCondensateDeliveryWithoutKMG"
+                              :class="isTroubleCompany(item.name) ? 'troubled-companies' : ''"
+                      >
+                        {{ getDzoName(item.name,dzoNameMappingWithoutKMG) }}
+                        <img src="/img/icons/link.svg" />
+                      </span>
+                      <span
+                              v-else-if="isConsolidatedCategoryActive()"
+                              :class="isTroubleCompany(item.name)  ? 'troubled-companies' : ''"
                       >
                         {{ getDzoName(item.name,dzoNameMapping) }}
                         <img src="/img/icons/link.svg" />
                       </span>
-                      <span
-                              v-if="!isConsolidatedCategoryActive()"
-                              :class="marginMapping[selectedCategory] &&
-                                marginMapping[selectedCategory].includes(index) ? 'troubled-companies' : ''
-                              "
-                      >
+                      <span v-else>
                         {{ getNameDzoFull(item.name) }}
                         <img src="/img/icons/link.svg" />
                       </span>
@@ -1184,6 +1185,7 @@
                         class="oil-condensate-chart-secondary-name"
                 >
                   {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
+                  <span v-if="isFilterTargetPlanActive">/{{trans("visualcenter.Month").toLowerCase()}}</span>
                 </div>
                 <div
                         v-else-if="mainMenu.oilCondensateDeliveryOilResidue"
@@ -2483,6 +2485,7 @@
       td:first-child {
         width: 20px;
       }
+
     }
 
     .table4 {
@@ -2842,6 +2845,12 @@
     }
   }
   @media (max-width: 2000px) {
+    .table4 {
+      tr td:not(:first-child) {
+        min-width: 5.3em !important;
+      }
+    }
+
     .row-name_width_40 {
       width: 80%;
     }
@@ -3016,7 +3025,7 @@
     background-size: 100%;
   }
   .decrease-reason {
-    width: 171px;
+    width: 180px;
   }
   .emergency-table__body {
     overflow-y: auto;

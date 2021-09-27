@@ -18,14 +18,26 @@ class ZuGzuProduction extends TableForm
     {
         $filter = json_decode($this->request->get('filter'));
 
-        $gu = $this->getGU();
-        $zus = $gu->children()
-            ->where('dbeg', '<=', $filter->date)
-            ->where('dend', '>=', $filter->date)
-            ->whereHas('type', function ($query) {
-                $query->whereIn('code', ['MS', 'GMS']);
-            })
-            ->get();
+        $guName = '';
+
+        $tech = $this->getTech();
+        if ($tech->type->code === 'GU') {
+            $zus = $tech->children()
+                ->where('dbeg', '<=', $filter->date)
+                ->where('dend', '>=', $filter->date)
+                ->whereHas('type', function ($query) {
+                    $query->whereIn('code', ['MS', 'GMS']);
+                })
+                ->get();
+            $guName = $tech->name_ru;
+        } else {
+            $parent = $tech->parentItem;
+            if ($parent && $parent->type->code === 'GU') {
+                $guName = $parent->name_ru;
+            }
+
+            $zus = collect([$tech]);
+        }
 
         $measurements = DB::connection('tbd')
             ->table('prod.meas_gzu_prod')
@@ -55,11 +67,11 @@ class ZuGzuProduction extends TableForm
                     continue;
                 }
 
-                $row['gu'] = ['value' => $gu->name_ru];
+                $row['gu'] = ['value' => $guName];
                 $row['zu_gzu'] = ['value' => $zu->name_ru];
 
                 $structureService = app()->make(StructureService::class);
-                $path = $structureService->getPath($gu->id, 'tech');
+                $path = $structureService->getPath($tech->id, 'tech');
                 $pf = $path->where('sub_type', 'SUBC')->first();
                 $ngdu = $path->where('sub_type', 'FOFS')->first();
                 $cdng = $path->where('sub_type', 'OGPU')->first();
@@ -79,7 +91,7 @@ class ZuGzuProduction extends TableForm
         ];
     }
 
-    private function getGU(): Tech
+    private function getTech(): Tech
     {
         if ($this->request->get('type') !== 'tech') {
             throw new \Exception(trans('bd.select_gu'));
@@ -89,7 +101,7 @@ class ZuGzuProduction extends TableForm
         $gu = Tech::query()
             ->where('id', $this->request->get('id'))
             ->whereHas('type', function ($query) {
-                $query->where('code', 'GU');
+                $query->whereIn('code', ['GU', 'GMS', 'MS']);
             })
             ->first();
 

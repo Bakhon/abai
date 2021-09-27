@@ -365,7 +365,7 @@
 			<input v-model="settings.inclStep" class="shgn-input block__1__input" type="text"></div>
       <div class="measurements-shgn-3">{{ trans('measurements.m')}}</div>
     </div>
-				<button type="button" class="submit_button" @click="onSubmitParams('getDefault')">
+				<button type="button" class="submit_button_red" @click="onSubmitParams('getDefault')">
                         {{trans('pgno.primenit_default')}}
                 </button>
 
