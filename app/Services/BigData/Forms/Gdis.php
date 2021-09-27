@@ -135,7 +135,7 @@ class Gdis extends PlainForm
             );
     }
 
-    protected function formatRows(Collection $rows)
+    protected function formatRows(Collection $rows): Collection
     {
         $rowIds = $rows->pluck('id')->toArray();
 
