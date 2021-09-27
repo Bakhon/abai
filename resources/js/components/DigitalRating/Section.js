@@ -79,27 +79,16 @@ export default {
         },
 
         onMapZoom(e) {
-            switch (e.target._zoom) {
-                case -5:
-                    this.setRadiusCircle(3);
-                    break;
-                case -4:
-                    this.setRadiusCircle(6)
-                    break;
-                case -3:
-                    this.setRadiusCircle(8);
-                    break;
-                case -2:
-                case -1:
-                    this.setRadiusCircle(10);
-                    break;
-                default:
-                    this.setRadiusCircle();
-                    break;
+            const radiusByZoom = { '-1': 10,'-2': 10,'-3': 8, '-4': 6, '-5': 3, '-6': 1};
+
+            for (let key in radiusByZoom) {
+                if(e.target._zoom == key) {
+                    this.setRadiusCircle(radiusByZoom[key])
+                }
             }
         },
 
-        setRadiusCircle(radius = 1) {
+        setRadiusCircle(radius) {
             this.circle.forEach((circleMarker) => {
                 circleMarker.setRadius(radius);
             });
