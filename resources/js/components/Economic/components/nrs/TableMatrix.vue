@@ -5,7 +5,7 @@
         :params="tableParams"
         class="height-fit-content height-unset">
       <template :slot="`column-1`" slot-scope="{ props }">
-        <div :style="isColorful ? `color: ${props.cellData.color}` : ''">
+        <div :style="`color: ${props.cellData.color}`">
           {{ props.cellData.label }}
         </div>
       </template>
@@ -14,7 +14,7 @@
           v-for="(date, index) in data.dates"
           :slot="`column-${index+2}`"
           slot-scope="{ props }">
-        <div :style="isColorful ? `color: ${props.cellData.color}` : ''">
+        <div :style="`color: ${props.cellData.color}`">
           {{ props.cellData.label }}
         </div>
       </template>
@@ -24,20 +24,12 @@
 
 <script>
 export default {
-  name: "TableWells",
+  name: "TableMatrix",
   props: {
     data: {
       required: true,
       type: Object
     },
-    property: {
-      required: true,
-      type: String
-    },
-    isColorful: {
-      required: false,
-      type: Boolean
-    }
   },
   computed: {
     uwis() {
@@ -60,7 +52,7 @@ export default {
         fixed: 1,
         columnWidth: this.tableHeaders.map((col, index) => ({
           column: index,
-          width: index > 0 ? 90 : 100
+          width: index > 0 ? 90 : 110
         })),
         highlight: {column: [0, 1]},
         highlightedColor: '#E6E6E6'
@@ -68,41 +60,79 @@ export default {
     },
 
     tableData() {
-      return this.uwis.map(uwi => {
-        let tableRow = []
+      let rows = []
+
+      this.uwis.forEach(uwi => {
+        let tableRows = {uwi: []}
+
+        this.wellKeys.forEach(key => tableRows[key.prop] = [])
 
         let well = this.data.uwis[uwi]
 
         this.data.dates.forEach(date => {
-          let value = well[this.property].hasOwnProperty(date)
-              ? +well[this.property][date]
-              : ''
+          this.wellKeys.forEach(key => {
+            let value = well[key.prop].hasOwnProperty(date)
+                ? +well[key.prop][date]
+                : ''
 
-          tableRow.push({
-            value: value,
-            label: this.getLabel(value),
-            color: this.getColor(value)
+            tableRows[key.prop].push({
+              value: value,
+              label: this.getLabel(value),
+              color: this.getColor(key, value)
+            })
           })
+
+          tableRows.uwi.push({value: '', label: ''})
         })
 
-        tableRow.unshift({
-          value: +well[this.property]['sum'],
-          label: this.getLabel(+well[this.property]['sum']),
-          color: this.getColor(+well[this.property]['sum'])
+        tableRows.uwi.unshift({value: '', label: ''})
+
+        tableRows.uwi.unshift(uwi)
+
+        rows.push(tableRows.uwi)
+
+        this.wellKeys.forEach(key => {
+          tableRows[key.prop].unshift({
+            value: +well[key.prop]['sum'],
+            label: this.getLabel(+well[key.prop]['sum']),
+            color: this.getColor(key, +well[key.prop]['sum'])
+          })
+
+          tableRows[key.prop].unshift(key.name)
+
+          rows.push(tableRows[key.prop])
         })
-
-        tableRow.unshift(uwi)
-
-        return tableRow
       })
+
+      return rows
     },
 
     tableHeaders() {
-      return [...['UWI', this.trans('economic_reference.total')], ...this.data.dates]
+      return [...['', this.trans('economic_reference.total')], ...this.data.dates]
     },
+
+    wellKeys() {
+      return [
+        {
+          prop: 'NetBack_bf_pr_exp',
+          name: this.trans('economic_reference.Revenue')
+        },
+        {
+          prop: 'Overall_expenditures',
+          name: this.trans('economic_reference.costs')
+        },
+        {
+          prop: 'Operating_profit',
+          name: this.trans('economic_reference.operating_profit'),
+          colorful: true
+        }
+      ]
+    }
   },
   methods: {
-    getColor(value) {
+    getColor(key, value) {
+      if (!key.colorful) return ''
+
       return value && value > 0 ? '#13B062' : '#AB130E'
     },
 
@@ -119,6 +149,6 @@ export default {
 }
 
 .height-unset >>> .v-table-row {
-  height: 30px !important;
+  height: 40px !important;
 }
 </style>
