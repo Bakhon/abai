@@ -36,7 +36,7 @@ class OmgNGDUListResource extends CrudListResource
             ],
         ];
 
-        $result['links'] = $this->getLinks();
+        $result['links'] = $this->getLinks('read', 'update', 'delete');
 
         return $result;
     }
