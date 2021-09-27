@@ -18,7 +18,7 @@
       "code": "date_to",
       "title": "date_to",
       "type": "date",
-      "default": "last day of this month"
+      "default": "today"
     }
   ],
   "columns": [
