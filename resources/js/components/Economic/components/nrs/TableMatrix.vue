@@ -3,6 +3,7 @@
     <chart-matrix
         v-for="uwi in chartUwis"
         :key="uwi"
+        :uwi="uwi"
         :well="data.uwis[uwi]"
         :dates="data.dates"
         class="text-white container-fluid bg-main1 p-4 mb-3"/>

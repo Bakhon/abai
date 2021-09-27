@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h4>{{ trans('economic_reference.well') }}: {{ uwi }}</h4>
+
     <apexchart
         ref="chart"
         :options="chartOptions"
@@ -34,6 +36,10 @@ export default {
   name: "ChartMatrix",
   components: {apexchart: chart},
   props: {
+    uwi: {
+      required: true,
+      type: String
+    },
     well: {
       required: true,
       type: Object
