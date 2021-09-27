@@ -355,6 +355,15 @@ table::-webkit-scrollbar-corner {
           text-align: center;
           vertical-align: middle;
 
+          a.item_download {
+            background: url(/img/icons/download.svg);
+            height: 18px;
+            width: 14px;
+            display: block;
+            background-repeat: no-repeat;
+            margin: 0 auto;
+          }
+
           &.row__links {
             padding-left: 20px;
             padding-right: 20px;
@@ -369,9 +378,16 @@ table::-webkit-scrollbar-corner {
 
             &__item {
               display: block;
+              background-repeat: no-repeat;
 
               &_edit {
                 background: url(/img/icons/edit.svg);
+                height: 14px;
+                width: 14px;
+              }
+
+              &_download {
+                background: url(/img/icons/download.svg);
                 height: 14px;
                 width: 14px;
               }

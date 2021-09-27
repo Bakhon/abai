@@ -66,6 +66,8 @@ use App\Models\BigData\Dictionaries\WellPrsRepairType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Services\BigData\DictionaryServices\UndergroundEquipElement;
+use App\Services\BigData\DictionaryServices\UndergroundEquipType;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -159,10 +161,6 @@ class DictionaryService
         'tube_nom' => [
             'class' => TybeNom::class,
             'name_field' => 'model'
-        ],
-        'well_tech_state_type' => [
-            'class' => TechStateType::class,
-            'name_field' => 'name_ru'
         ],
         'blocks' => [
             'class' => Block::class,
@@ -315,10 +313,6 @@ class DictionaryService
         'recording_state' => [
             'class' => RecordingState::class,
             'name_field' => 'name_ru'
-        ],
-        'machine_types' => [
-            'class' => MachineType::class,
-            'name_field' => 'name_ru'
         ]
     ];
 
@@ -395,7 +389,7 @@ class DictionaryService
         }
 
         if (key_exists($dict, self::DICTIONARIES)) {
-            $dict = $this->getPlainDict($dict);
+            $dict = $this->getPlainDict($dict); 
         } elseif (key_exists($dict, self::TREE_DICTIONARIES)) {
             $dict = $this->getTreeDict($dict);
         } else {
@@ -434,6 +428,15 @@ class DictionaryService
                     $dict = $this->getRepairTypeDict('WLO'); 
                 case 'repair_type_krs':
                         $dict = $this->getRepairTypeDict('CWO');           
+                case 'well_tech_state_type':
+                    $dict = $this->getWellTechStateDict();
+                    break;
+                case 'underground_equip_type':
+                    $dict = UndergroundEquipType::getDict();
+                    break;
+                case 'underground_equip_element':
+                    $dict = UndergroundEquipElement::getDict();
+                    break;
                 default:
                     throw new DictionaryNotFound();
             }
@@ -574,6 +577,30 @@ class DictionaryService
             )
             ->toArray();
 
+        return $this->generateTree((array)$items);
+    }
+
+    private function getWellTechStateDict(): array
+    {
+        $items = DB::connection('tbd')
+            ->table('dict.well_tech_state_type as w')
+            ->select('w.id', 'w.name_ru as label', 'w.parent as parent')
+            ->distinct()
+            ->orderBy('label', 'asc')
+            ->leftJoin(
+                'dict.well_tech_state_type as wp',
+                function ($join) {
+                    $join->on('wp.id', '=', 'w.parent');
+                }
+            )
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+        
         return $this->generateTree((array)$items);
     }
 
