@@ -4,7 +4,8 @@
       <dropdown block class="w-100 mb-2" @selected="selectedDropDown($event, 'dzos')" :loading="loadingStates.dzos"
                 button-text="Выбор ДЗО" :options="getDZOSList" />
 
-      <dropdown block class="w-100 mb-2" @selected="selectedDropDown($event, 'field')" :loading="loadingStates.field"
+      <dropdown ref="dropDawnFields" block class="w-100 mb-2" @selected="selectedDropDown($event, 'field')"
+                :loading="loadingStates.field"
                 button-text="Выбор месторождения" :options="getFiledsList" />
     </template>
     <ToolBlock class="mb-2 toolBlock__auto-height" title="Скважины">
@@ -108,7 +109,7 @@ import Button from "../components/buttons/Button";
 import AwIcon from "../components/icons/AwIcon";
 
 import PageSide from "../components/pageSide/PageSide";
-import {FETCH_DZOS, FETCH_FIELDS, FETCH_WELLS} from "../../../store/modules/geologyGis.const";
+import {FETCH_DZOS, FETCH_FIELDS, FETCH_WELLS, SET_WELLS} from "../../../store/modules/geologyGis.const";
 
 export default {
   name: "Geology-LSide",
@@ -151,21 +152,24 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch(FETCH_DZOS);
-
   },
   methods: {
     async selectedDropDown(e, t) {
       switch (t) {
-        case "dzos":
+        case "dzos": {
           this.loadingStates.field = true
+          this.$refs.dropDawnFields.selectedLocal = null;
+          this.$store.commit(SET_WELLS, []);
           await this.$store.dispatch(FETCH_FIELDS, e);
           this.loadingStates.field = false
-          break
-        case "field":
+          break;
+        }
+        case "field": {
           this.loadingStates.wells = true
           await this.$store.dispatch(FETCH_WELLS, e);
           this.loadingStates.wells = false
-        break
+          break;
+        }
       }
     },
     selectedHandle(item) {
