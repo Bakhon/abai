@@ -110,7 +110,7 @@ export default {
             reasonExplanations: {},
             troubleCompanies: ['ОМГК','КГМКМГ','ТП','ПККР'],
             dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ'],
-            additionalCompanies: ['ОМГК','ОМГ','АГ']
+            additionalCompanies: ['ОМГК','АГ']
         };
     },
     methods: {
@@ -176,10 +176,7 @@ export default {
             return this.troubleCategories.includes(this.selectedCategory) && this.troubleCompanies.includes(dzoName);
         },
         getAdditionalName(dzoName) {
-            if (['ОМГК','АГ'].includes(dzoName)) {
-                return this.trans('visualcenter.condensate');
-            }
-            return this.trans('visualcenter.oil');
+            return this.trans('visualcenter.condensate');
         }
     },
     mixins: [
