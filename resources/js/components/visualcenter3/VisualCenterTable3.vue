@@ -3080,8 +3080,6 @@
   .additional-title {
     background: #3366FF;
     border-radius: 10px;
-    line-height: 24px;
-    font-weight: 700;
     padding: 2px 5px;
   }
 </style>
