@@ -144,7 +144,7 @@ class Gis extends PlainForm
         return $columns;
     }
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
         if (!$this->isValidDepth($this->request->get('well'), $this->request->get('matering_from'))) {
