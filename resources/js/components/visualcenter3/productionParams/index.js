@@ -29,10 +29,12 @@ export default {
             selectedView: 'day',
             productionTableData: [],
             productionChartData: [],
-            marginMapping: {
-                'oilCondensateProduction': [1,13,14,15],
-                'oilCondensateDelivery': [1,11,12,13],
-            },
+            troubleCategories: [
+                'oilCondensateProduction',
+                'oilCondensateDelivery',
+                'oilCondensateProductionWithoutKMG',
+                'oilCondensateDeliveryWithoutKMG'
+            ],
             datePickerModel: {
                 start: moment().startOf('day').subtract(1, "days").format(),
                 end: moment().endOf('day').subtract(1, "days").format(),
@@ -58,7 +60,8 @@ export default {
                 'waterInjection': false,
                 'seaWaterInjection': false,
                 'wasteWaterInjection': false,
-                'artezianWaterInjection': false
+                'artezianWaterInjection': false,
+                'streamWaterInjection': false
             },
             flagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +
@@ -184,18 +187,13 @@ export default {
             let isFilterChanged = category === this.selectedCategory;
             let shouldRecalculateSummary = false;
             for (let item in this.mainMenu) {
-                if (item === category || this.doubleFilter.includes(item)) {
+                if (item === category) {
                     continue;
                 }
                 this.mainMenu[item] = false;
             }
 
-            if (!isWithoutKmg) {
-                this.mainMenu[category] = !this.mainMenu[category];
-            } else {
-                this.mainMenu['oilCondensateProductionWithoutKMG'] = !this.mainMenu['oilCondensateProductionWithoutKMG'];
-                this.mainMenu['oilCondensateDeliveryWithoutKMG'] = !this.mainMenu['oilCondensateDeliveryWithoutKMG'];
-            }
+            this.mainMenu[category] = !this.mainMenu[category];
             this.mainMenu[parent] = true;
 
             if (isWithoutKmg && this.mainMenu[category]) {
@@ -225,6 +223,7 @@ export default {
                 this.productionTableData = _.cloneDeep(this.productionParams.tableData.current[parent]);
                 this.selectedCategory = parent;
             }
+            this.reasonExplanations = this.getReasonExplanations();
             this.productionData = _.cloneDeep(this.productionTableData);
             if (this.periodRange !== 0) {
                 this.companiesWithData = _.map(this.productionTableData, 'name');
@@ -253,7 +252,7 @@ export default {
                 });
             } else {
                 chartData = _.filter(chartData, (item) => {
-                   return this.companiesWithData.includes(item.name)
+                   return this.selectedDzoCompanies.includes(item.name)
                 });
             }
             _.forEach(chartData, (item) => {

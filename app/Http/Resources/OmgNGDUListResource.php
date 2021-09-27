@@ -21,7 +21,7 @@ class OmgNGDUListResource extends CrudListResource
                 'field' => $this->field->name,
                 'ngdu' => $this->ngdu->name,
                 'cdng' => $this->cdng->name,
-                'gu' => $this->gu ? $this->gu->name : $this->manualGu->name,
+                'gu' => $this->gu ? $this->gu->name : ($this->manualGu ? $this->manualGu->name : ''),
                 'date' => $this->date,
                 'bsw' => $this->bsw,
                 'daily_fluid_production' => $this->daily_fluid_production,
@@ -36,9 +36,8 @@ class OmgNGDUListResource extends CrudListResource
             ],
         ];
 
-        $result['links'] = $this->getLinks();
+        $result['links'] = $this->getLinks('read', 'update', 'delete');
 
         return $result;
-
     }
 }

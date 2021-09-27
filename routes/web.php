@@ -72,8 +72,11 @@ Route::group(
                     'gtm'
                 );
 
-                Route::post('attachments', 'AttachmentController@upload');
-                Route::get('attachments/{attachment}', 'AttachmentController@get')->name('attachment.download');
+                Route::post('attachments', 'AttachmentController@upload')->name('attachment.upload');
+                Route::get('attachments/file-info/{attachment}', 'AttachmentController@getFileInfo')->name('attachment.get-file-info');
+                Route::get('attachments/{attachment}', 'AttachmentController@download')->name('attachment.download');
+
+                Route::post('map-constructor/import', 'MapConstructor@importFile');
             }
         );
         Auth::routes(

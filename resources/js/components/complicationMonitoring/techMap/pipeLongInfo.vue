@@ -1,16 +1,37 @@
 <template>
   <div class="table-page">
     <table class="table table-bordered table-dark">
-      <tbody v-if="longInfoRows">
-      <tr v-for="(row, rIndex) in longInfoRows">
-        <template v-for="(column, cIndex) in row">
-          <th v-if="cIndex == 0" scope="row">{{ column.name }}</th>
-          <td v-else-if="rIndex == 0" :style="{backgroundColor: arrayToColor(column)}"></td>
-          <td v-else :style="{color: paramColor(rIndex, cIndex)}">{{ column }}</td>
-        </template>
-      </tr>
+      <tbody v-if="longInfoRows.length">
+      <template v-for="(row, rIndex) in longInfoRows">
+        <tr v-if="row[0].field != 'height_drop'">
+          <template v-for="(column, cIndex) in row">
+            <th v-if="cIndex == 0" scope="row">{{ column.name }}</th>
+            <td v-else-if="rIndex == 0" :style="{backgroundColor: arrayToColor(column)}"></td>
+            <td v-else :style="{color: paramColor(rIndex, cIndex)}">{{ column }}</td>
+          </template>
+        </tr>
+
+        <tr v-else>
+          <th scope="row">{{ row[0].name }}</th>
+          <td colspan="10">{{ pipe.hydro_calc.height_drop }}</td>
+        </tr>
+      </template>
       </tbody>
     </table>
+
+    <div class="color-white">
+      <p>{{ trans('monitoring.pipe.fields.sizes') }}:
+        {{ pipe.pipe_type.outside_diameter + ' x ' + pipe.pipe_type.thickness }}
+      </p>
+      <p>{{ trans('monitoring.gu.fields.daily_fluid_production') }}:
+        {{ pipe.hydro_calc.qliq.toFixed(2) + ' ' + trans('measurements.m3/day') }}
+      </p>
+      <p>{{ trans('monitoring.gu.fields.bsw') }}: {{ pipe.hydro_calc.bsw.toFixed(2) + trans('measurements.percent') }}
+      </p>
+      <p>{{ trans('monitoring.gu.fields.gas_factor') }}:
+        {{ pipe.hydro_calc.gazf.toFixed(2) + ' ' + trans('measurements.m3/m3') }}
+      </p>
+    </div>
   </div>
 </template>
 
@@ -34,6 +55,10 @@ export default {
         {
           name: 'Distance',
           field: 'distance'
+        },
+        {
+          name: this.trans('monitoring.hydro_calculation.fields.height_drop'),
+          field: 'height_drop'
         },
         {
           name: 'Pin (atm)',
@@ -83,6 +108,10 @@ export default {
     longInfoRows() {
       let longInfoRows = [];
 
+      if (!this.pipe) {
+        return longInfoRows;
+      }
+
       this.fields.forEach((field, fIndex) => {
         longInfoRows[fIndex] = [field];
 
@@ -90,6 +119,9 @@ export default {
           switch (field.field) {
             case "color":
               longInfoRows[fIndex].push(this.getPipeColor(segment));
+              break;
+
+            case "height_drop":
               break;
 
             case "distance":
@@ -186,7 +218,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

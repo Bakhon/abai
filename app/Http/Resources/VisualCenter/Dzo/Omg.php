@@ -62,4 +62,9 @@ class Omg extends Dzo {
         array_push($summary,$summaryByOil);
         return $summary;
     }
+
+    public function getDzoDynamicByMultiplier($fields,$summary)
+    {
+        return $summary;
+    }
 }

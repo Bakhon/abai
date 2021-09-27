@@ -68,4 +68,9 @@
   'research_lab_research' => '\\App\\Services\\BigData\\Forms\\ResearchLabResearch',
   'meas_water_prod' => '\\App\\Services\\BigData\\Forms\\MeasWaterProd',
   'fluid_production_month' => '\\App\\Services\\BigData\\Forms\\FluidProductionMonth',
+  'meas_water_inj' => '\\App\\Services\\BigData\\Forms\\MeasWaterInj',
+  'underground_equipment' => '\\App\\Services\\BigData\\Forms\\UndergroundEquipment',
+  'underground_equipment_installation' => '\\App\\Services\\BigData\\Forms\\UndergroundEquipmentInstallation',
+  'underground_equipment_disassembling' => '\\App\\Services\\BigData\\Forms\\UndergroundEquipmentDisassembling',
+  'tech_mode_prod' => '\\App\\Services\\BigData\\Forms\\TechModeProd',
 );

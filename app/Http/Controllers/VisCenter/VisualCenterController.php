@@ -27,6 +27,7 @@ use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
 use App\Models\VisCenter\EmergencyHistory;
 use App\Models\VisCenter\InboundIntegration\KGM\Monthly\ChemistryForKGM;
 use App\Models\VisCenter\InboundIntegration\KGM\Monthly\RepairsForKGM;
+use App\Console\Commands\StoreKGMReportsFromAvocetByDay;
 
 class VisualCenterController extends Controller
 {
@@ -380,6 +381,8 @@ class VisualCenterController extends Controller
         return DzoImportOtm::query()
             ->whereMonth('date', '>=', $request->startPeriod)
             ->whereMonth('date', '<=', $request->endPeriod)
+            ->whereYear('date',Carbon::now()->year)
+            ->orderBy('date', 'ASC')
             ->get()
             ->toArray();
     }
@@ -389,6 +392,8 @@ class VisualCenterController extends Controller
         return DzoImportChemistry::query()
             ->whereMonth('date', '>=', $request->startPeriod)
             ->whereMonth('date', '<=', $request->endPeriod)
+            ->whereYear('date',Carbon::now()->year)
+            ->orderBy('date', 'ASC')
             ->get()
             ->toArray();
     }
@@ -454,19 +459,15 @@ class VisualCenterController extends Controller
     }
     public function getEmergencyHistory(Request $request)
     {
-        $emergencySituations = EmergencyHistory::query()
+        $query = EmergencyHistory::query()
             ->select(DB::raw('DATE_FORMAT(date,"%d.%m.%Y") as date'),'title','description','approved',DB::raw('DATE_FORMAT(approve_date,"%d.%m.%Y %H:%i:%s") as approve_date'))
-            ->where('type',1)
-            ->orderBy('id', 'desc')
-            ->take(10);
+            ->orderBy('id', 'desc');
 
         if (!empty($request->dzoName)){
-        return $emergencySituations->where('description','like', "%".$request->dzoName."%")
-            ->get()
-            ->toArray();              
+            $query->where('description','like', "%".$request->dzoName."%");
         } 
 
-        return $emergencySituations
+        return $query
             ->get()
             ->toArray();
                 
@@ -546,5 +547,22 @@ class VisualCenterController extends Controller
     public function dailyApprove()
     {
         return view('visualcenter.daily_approve');
+    }
+
+    public function storeKgmArchive(Request $request)
+    {
+        $dateStart = Carbon::parse($request->dateStart);
+        $dateEnd = Carbon::parse($request->dateEnd);
+        $dateStart = $dateStart->subDay();
+        $difference = $dateStart->diffInDays($dateEnd);
+        $StoreKGMReportsFromAvocetByDay = new StoreKGMReportsFromAvocetByDay();
+
+        for ($i = 1; $i <= $difference; $i++) {
+            $dateStart = $dateStart->addDay();
+            echo $dateStart.'<br>';
+            $StoreKGMReportsFromAvocetByDay->reportDate = $dateStart;
+            $StoreKGMReportsFromAvocetByDay->storeKGMReportsFromAvocetByDay();
+            echo '<br><br>';
+        }
     }
 }

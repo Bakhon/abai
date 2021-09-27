@@ -43,11 +43,11 @@ class ProductionWell extends PlainForm
         return true;
     }
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 
-        if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'))){
+        if (!$this->isValidDate($this->request->get('well'), $this->request->get('dbeg'))) {
             $errors[$this->request->get('dbeg')][] = trans('bd.validation.dbeg');
         }
 

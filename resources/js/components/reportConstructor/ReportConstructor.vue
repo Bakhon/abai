@@ -347,7 +347,7 @@
                         <tr v-for="(attributesOnDepth, index) in getHeaders(sheetType)">
                           <th
                               v-for="attribute in attributesOnDepth"
-                              :rowspan="getRowHeightSpan(attribute, index)"
+                              :rowspan="getRowHeightSpan(attribute, index, sheetType)"
                               :colspan="getRowWidthSpan(attribute)"
                           >
                             <div class="centered">
@@ -358,9 +358,11 @@
 
                         </thead>
                         <tbody>
-                        <tr v-for="row in statisticsOfSheet">
+                        <tr v-for="row in statisticsOfSheet" v-if="isContainsData(row)">
                           <td class="table-body" v-for="column in statisticsColumns[sheetType]">
-                            <div class="centered">{{ row[column] }}</div>
+                            <div class="centered">
+                              {{ formatCell(row[column]) }}
+                            </div>
                           </td>
                         </tr>
                         </tbody>

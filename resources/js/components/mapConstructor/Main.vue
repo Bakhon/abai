@@ -1,20 +1,21 @@
 <template>
     <div class="map-constructor">
         <RightClickMenu
-                @openRightMap="openRightMap"
-                @closeMenu="closeMenu"
-                @openRightLayers="openRightLayers"
-                @closeMenuLayers="closeMenuLayers"
-                ref="rightClickMenu"
-                :right-map="rightMap"
-                :right-layers="rightLayers"
-                :top="top"
-                :left="left"
-                :viewMenu="viewMenu"
-                :viewMenuLayers="viewMenuLayers">
+            v-if="viewMenu || viewMenuLayers"
+            @openRightMap="openRightMap"
+            @closeMenu="closeMenu"
+            @openRightLayers="openRightLayers"
+            @closeMenuLayers="closeMenuLayers"
+            ref="rightClickMenu"
+            :right-map="rightMap"
+            :right-layers="rightLayers"
+            :top="top"
+            :left="left"
+            :viewMenu="viewMenu"
+            :viewMenuLayers="viewMenuLayers">
         </RightClickMenu>
-        <TopMenu @addFile="addFile"></TopMenu>
-        <div class="col-lg-12 px-1 py-3">
+        <TopMenu @importFile="importFile"></TopMenu>
+        <div class="col-lg-12 px-0 pt-1">
             <div class="dashboard">
                 <div class="tools">
                     <div class="left-tools" >
@@ -36,7 +37,6 @@
                                         input-class="form-control filter-input calendar"
                                         format="MM/yy"
                                         :phrases="{ok: '', cancel: ''}"
-                                        :disabled="isLoading"
                                         auto
                                         :flow="['year', 'month']"
                                 >
@@ -56,7 +56,7 @@
                             </div>
                             <span>{{ trans('map_constructor.select_kto') }}</span>
                         </div>
-                        <div class="tool" @click="mapInit">
+                        <div class="tool">
                             <div class="box">
                                 <i class="fas fa-map"></i>
                             </div>
@@ -70,21 +70,19 @@
                             <span class="fa fa-search form-control-feedback"></span>
                             <input type="text" class="form-control" placeholder="Поиск">
                         </div>
-                        <div class="layers-info" @click="showFiles">
-                            <i id="arrow" class="fas fa-caret-right ml-2"></i>
-                            <i class="fas fa-vector-square ml-2"></i>
-                            <span class="ml-2">Info</span>
-                        </div>
-                        <div id="files" class="files">
-                            <template v-for="file in files">
-                                <div class="single-file">
-                                    <i class="fas fa-file"></i>
-                                    <span class="ml-2 text-white">File</span>
-                                </div>
-                            </template>
+                        <div class="layers-info">
+                          <i class="fas fa-caret-down ml-2"></i>
+                          <i class="fas fa-vector-square ml-2"></i>
+                          <span class="ml-2">Группа</span>
+                          <ul class="text-white list-style-none ml-4">
+                            <li v-for="(layerGroup, index) in layersList">
+                              <input type="checkbox" checked="1" @change="toggleOpacity(layerGroup)">
+                              layer_{{ index }}
+                            </li>
+                          </ul>
                         </div>
                     </div>
-                    <div v-if="mapInitialized" class="main-map" @contextmenu="openMenu">
+                    <div class="main-map" @contextmenu="openMenu">
                         <div id="olmap" style="width: 100%; height: 100vh"></div>
                         <div style="display: none;">
                             <div id="marker" title="Marker"></div>
@@ -98,7 +96,8 @@
         <BuildMapModal></BuildMapModal>
         <BuildMapSpecificModal></BuildMapSpecificModal>
         <ReportModal></ReportModal>
-        <ExportModal></ExportModal>    </div>
+        <ExportModal></ExportModal>
+    </div>
 </template>
 <script src="./main.js"></script>
 

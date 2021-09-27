@@ -78,13 +78,13 @@
         </div>
 
         <charts
-            v-if="!loading"
+            v-if="res.charts.profitability"
             :charts="res.charts"
             :granularity="form.granularity"
             :profitability="form.profitability"
             :oil-prices="res.oilPrices"
             :dollar-rates="res.dollarRates"
-            :org_id="form.org_id"/>
+            :form="form"/>
       </div>
 
       <div class="col-3 pr-0 pl-10px">
@@ -152,6 +152,7 @@
           <select-organization
               :form="form"
               class="mb-3"
+              hide-label
               @change="getData"/>
 
           <select-field
