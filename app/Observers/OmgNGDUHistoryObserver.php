@@ -72,8 +72,4 @@ class OmgNGDUHistoryObserver extends EditHistoryObserver
 
         return $history;
     }
-
-    public function getClassName () {
-
-    }
 }
