@@ -129,6 +129,7 @@ export default {
                   Math.pow(this.startPoint?.lat - this.endPoint.lat, 2)
                   + Math.pow(this.startPoint.lng - this.endPoint.lng, 2)
                 );
+                event.target.closePopup();
                 event.target.bindTooltip(res.toFixed(1)+'м').openTooltip();
                 this.startPoint = this.endPoint = null;
             } else {
