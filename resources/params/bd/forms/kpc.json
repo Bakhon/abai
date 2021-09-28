@@ -262,7 +262,13 @@
               "title": "machine_technical_condition",
               "validation": "exists:tbd.dict.tech_state_casing,id",
               "dict": "tech_state_casings",
-              "is_editable": true
+              "is_editable": true,
+              "depends_on":[
+                {
+                  "field": "no_change_tech_state",
+                  "value": false
+                }
+              ]
             },
             {
               "code": "no_change_tech_state",
@@ -293,7 +299,13 @@
               "title": "condition",
               "validation": "exists:tbd.dict.well_status_type,id",
               "dict": "well_statuses",
-              "is_editable": true
+              "is_editable": true,
+              "depends_on":[
+                {
+                  "field": "no_change_state",
+                  "value": false
+                }
+              ]
             },
             {
               "code": "no_change_state",
