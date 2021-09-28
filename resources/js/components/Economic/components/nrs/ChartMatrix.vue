@@ -56,7 +56,7 @@ export default {
       let series = []
 
       this.wellKeys.forEach(key => {
-        series.push({name: key.name, type: 'line', data: [],})
+        series.push({name: key.name, type: 'line', data: []})
       })
 
       this.dates.forEach(date => {
@@ -69,7 +69,7 @@ export default {
             value = (value / key.dimension).toFixed(2)
           }
 
-          series[keyIndex].data.push(value)
+          series[keyIndex].data.push(+value)
         })
       })
 
@@ -101,6 +101,7 @@ export default {
         xaxis: {
           type: 'date'
         },
+        yaxis: this.yaxis,
         tooltip: {
           shared: true,
           intersect: false,
@@ -138,6 +139,15 @@ export default {
         }
       ]
     },
+
+    yaxis() {
+      return this.chartSeries.map((item, index) => {
+        return {
+          seriesName: index < 3 ? this.chartSeries[0].name : this.chartSeries[index].name,
+          show: index === 0,
+        }
+      })
+    }
   }
 }
 </script>
