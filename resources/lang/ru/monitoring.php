@@ -393,8 +393,8 @@ return array (
     'fields' => 
     array (
       'length' => 'Протяженность, м',
-      'pressure_start' => 'Давление начальное, ата',
-      'pressure_end' => 'Давление конечное, ата',
+      'pressure_start' => 'Давление начальное, бар',
+      'pressure_end' => 'Давление конечное, бар',
       'temperature_start' => 'Температура начальная, °С',
       'temperature_end' => 'Температура конечная, °С',
       'start_point' => 'Начальная точка',

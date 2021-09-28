@@ -56,7 +56,6 @@ use App\Models\BigData\Dictionaries\Tag;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateCasing;
-use App\Models\BigData\Dictionaries\TechStateType;
 use App\Models\BigData\Dictionaries\TreatType;
 use App\Models\BigData\Dictionaries\Well;
 use App\Models\BigData\Dictionaries\WellActivity;
@@ -431,6 +430,9 @@ class DictionaryService
                 case 'well_tech_state_type':
                     $dict = $this->getWellTechStateDict();
                     break;
+                case 'well_statuses_drill':
+                    $dict = $this->getWellStatusesForDrill();
+                    break;
                 case 'underground_equip_type':
                     $dict = UndergroundEquipType::getDict();
                     break;
@@ -712,4 +714,12 @@ class DictionaryService
         return $items;
     }
 
+    private function getWellStatusesForDrill()
+    {
+        return array_values(
+            array_filter($this->get('well_statuses'), function ($item) {
+                return in_array($item['code'], ['WRK', 'DWN']);
+            })
+        );
+    }
 }    

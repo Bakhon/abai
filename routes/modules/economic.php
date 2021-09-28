@@ -9,7 +9,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
             Route::get('get-data', "EconomicNrsController@getData");
             Route::post('export-data', "EconomicNrsController@exportData");
             Route::get('wells', 'EconomicNrsController@indexWells');
+            Route::get('wells/{org_id}/{well_id}', 'EconomicNrsController@indexWell');
             Route::get('get-wells', "EconomicNrsController@getWells");
+            Route::get('get-wells-map', "EconomicNrsController@getWellsMap");
         });
 
         Route::group(['prefix' => 'optimization'], function () {
@@ -140,7 +142,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                         'destroy' => 'economic.technical.source.destroy',
                     ]);
 
-                Route::get('company/get-data', 'TechnicalStructureSourceController@getData');
+                Route::get('company/get-data', 'TechnicalStructureCompanyController@getData');
 
                 Route::resource('company', 'TechnicalStructureCompanyController')
                     ->names([
@@ -152,7 +154,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                         'destroy' => 'economic.technical.company.destroy',
                     ]);
 
-                Route::get('bkns/get-data', 'TechnicalStructureSourceController@getData');
+                Route::get('bkns/get-data', 'TechnicalStructureBknsController@getData');
 
                 Route::resource('bkns', 'TechnicalStructureBknsController')
                     ->names([
@@ -164,7 +166,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
                         'destroy' => 'economic.technical.bkns.destroy',
                     ]);
 
-                Route::get('cdng/get-data', 'TechnicalStructureSourceController@getData');
+                Route::get('cdng/get-data', 'TechnicalStructureCdngController@getData');
 
                 Route::resource('cdng', 'TechnicalStructureCdngController')
                     ->names([

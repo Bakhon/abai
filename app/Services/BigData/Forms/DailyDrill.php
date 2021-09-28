@@ -14,7 +14,7 @@ class DailyDrill extends PlainForm
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 

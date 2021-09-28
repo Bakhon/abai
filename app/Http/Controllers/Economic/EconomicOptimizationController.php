@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
+use App\Models\BigData\Well;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\Org;
@@ -131,7 +132,7 @@ class EconomicOptimizationController extends Controller
             'org' => $org,
             'scenarios' => $this->getScenarios(),
             'specificIndicator' => $this->getSpecificIndicatorData($org),
-            'wellChanges' => $this->getWellChangesData(),
+            'wells' => $this->getWells(),
             'dollarRate' => [
                 'value' => $this->getDollarRate() ?? '0',
                 'url' => self::DOLLAR_RATE_URL
@@ -210,7 +211,7 @@ class EconomicOptimizationController extends Controller
         return $query->get()->first()->toArray();
     }
 
-    private function getWellChangesData(): array
+    private function getWells(): array
     {
         $builder = $this
             ->druidClient
@@ -234,7 +235,28 @@ class EconomicOptimizationController extends Controller
             $builder->doubleSum($column);
         }
 
-        return $builder->groupBy($columns)->data();
+        $wells = $builder->groupBy($columns)->data();
+
+        $uwis = [];
+
+        foreach ($wells as &$well) {
+            $well['uwi_tbd'] = str_replace('W', 'KZH_', $well['uwi']);
+
+            $uwis[$well['uwi_tbd']] = 1;
+        }
+
+        $coordinates = Well::query()
+            ->whereIn('uwi', array_keys($uwis))
+            ->whereNotNull('whc')
+            ->with('spatialObject')
+            ->get()
+            ->groupBy('uwi');
+
+        foreach ($wells as &$well) {
+            $well['coordinates'] = $coordinates->get($well['uwi_tbd'])[0]['spatialObject'][0]['coord_point'] ?? null;
+        }
+
+        return $wells;
     }
 
     private function getDollarRate(): ?string
