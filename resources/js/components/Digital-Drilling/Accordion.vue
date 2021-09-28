@@ -29,7 +29,9 @@ import { TransitionExpand } from 'vue-transition-expand';
 export default {
   name: "Accordion",
 
-  props: ['content'],
+  props: {
+      content: Object,
+      isOpen: Boolean},
 
   components: {
     TransitionExpand,
@@ -37,21 +39,28 @@ export default {
 
   data() {
     return {
-      isOpen: false,
-      test: false,
+      // isOpen: false,
+      // test: false,
     }
+  },
+  mounted(){
+
   },
   methods: {
     handleToggle() {
-      this.isOpen = !this.isOpen;
-      this.$emit('changePage', this.content.child[0])
+      // this.isOpen = !this.isOpen
+      this.$emit('changePage', this.content.child[0], this.content.id)
+      for (let i=0; i<this.content.child.length; i++){
+          this.content.child[i].checked = false
+      }
+      this.content.child[0].checked = null
     },
     changePage(page){
         for (let i=0; i<this.content.child.length; i++){
             this.content.child[i].checked = false
         }
         page.checked=!page.checked
-        this.$emit('changePage', page)
+        this.$emit('changePage', page, this.content.id)
     }
   }
 }
@@ -77,7 +86,7 @@ export default {
     transition: transform 0.2s ease;
   }
 
-  .page-accordion.is-active .page-accordion__header {
+  .page-accordion.is-active .page-accordion__header, .page-accordion .page-accordion__header:hover {
     background: #2E50E9;
     border-radius: 5px 5px 0 0;
   }

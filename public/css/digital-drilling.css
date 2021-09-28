@@ -1,6 +1,9 @@
 #sidebar-container2 .left-panel {
     min-height: calc(100vh - 90px)!important;
 }
+.digital_drilling{
+    width: 97vw;
+}
 .digital_drilling *{
     box-sizing: border-box;
     color: #FFFFFF;
@@ -149,12 +152,9 @@
     width: calc(100% - 300px);
     height: 100%;
     min-height: calc(100vh - 155px);
-    padding: 0 10px 0 15px;
+    padding: 0 0 0 5px;
     /*overflow-y: auto;*/
     /*overflow-x: hidden;*/
-}
-.digital_drilling .mainBlock__content{
-
 }
 .digital_drilling .defaultScroll::-webkit-scrollbar-thumb{
     background-color: #000000;
@@ -251,6 +251,9 @@
     background: #3A4280;
     border-radius: 5px;
     margin-bottom: 8px;
+}
+.digital_drilling .left__menu .page.active{
+
 }
 .digital_drilling .left__menu .page .name{
     margin-left: 22px;
@@ -718,4 +721,225 @@ input.rangeInput {
 }
 .w-default{
     width: calc(60% - 23px) !important;
+}
+.project-btn{
+    background-color: transparent!important;
+    position: relative!important;
+}
+.project-btn .settings{
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #333975;
+    border-radius: 0px 4px 4px 0px;
+}
+.project-btn .settings img{
+    margin-right: 0!important;
+}
+.project-btn .btn-name{
+    display: flex;
+    align-items: center;
+    background: #333975;
+    height: 40px;
+    width: calc(100% - 44px);
+    padding-left: 20px;
+}
+.newWell{
+    position: fixed;
+    top: -78px;
+    left: -57px;
+    width: calc(100% + 57px);
+    height: calc(100% + 78px);
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 3000;
+}
+.well_content{
+    width: 526px;
+    min-height: 504px;
+    background: #272953;
+    border: 2px solid #656A8A;
+    border-radius: 8px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 14px 14px;
+}
+.well_body-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+.well_body-header-title{
+    font-size: 18px;
+    line-height: 22px;
+}
+.well_body-header-close{
+    font-size: 14px;
+    line-height: 15px;
+    background: #656A8A;
+    padding: 5px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.well_body-content{
+    margin-top: 30px;
+}
+.well_body-content-title span{
+    background: #363B68;
+    border: 6px solid #363B68;
+    padding: 8px 18px;
+    border-radius: 10px 10px 0 0;
+}
+.well_body-inner{
+    border: 6px solid #363B68;
+    margin: 10px 0 0;
+    padding: 4px;
+}
+.well_body-form{
+    background: #363B68;
+    padding: 18px 34px 18px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.well_body-form-input{
+    margin-bottom: 14px;
+    position: relative;
+}
+.well_body-form-input select, .well_body-form-input input{
+    background: #334296;
+    border: 0.5px solid #454FA1;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 224px;
+    height: 28px;
+    margin-left: 10px;
+}
+.well_body-form-input input{
+    background: #1F2142;
+    padding: 5px 14px;
+}
+.well_body-form-input input::placeholder{
+    color: rgba(255, 255, 255, 0.5);
+}
+.well_body-form-input select:focus{
+    outline: none;
+}
+.input-size{
+    position: absolute;
+    top: 0;
+    left: calc(100% + 6px);
+}
+.well_body-form-checkbox{
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+}
+.well_body-form-checkbox label{
+    margin-right: 10px;
+    margin-bottom: 0;
+}
+.Ground, .Marine{
+    margin-right: 24px;
+    display: flex;
+    align-items: center;
+}
+.Marine{
+    width: 185px;
+    margin-right: 0;
+}
+.well_body-form-coordinates{
+    display: flex;
+    align-items: center;
+}
+.well_body-form-coordinates:last-child{
+    margin-top: 14px;
+}
+.coordinates-form{
+    margin-left: 10px;
+    width: 224px;
+    display: flex;
+    align-items: center;
+}
+.coordinates-form-input{
+    margin-right: 14px;
+    display: flex;
+    align-items: center;
+}
+.coordinates-form-input:last-child{
+    margin-right: 0;
+}
+.coordinates-form-input input{
+    width: 80px;
+    height: 26px;
+    background: #1F2142;
+    border: 0.5px solid #454FA1;
+    box-sizing: border-box;
+    border-radius: 4px;
+    padding: 5px 14px;
+}
+.coordinates-form-input input::placeholder{
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.coordinates-form-input label{
+    margin-right: 6px;
+    margin-bottom: 0;
+}
+.oldWell{
+    position: fixed;
+    top: -78px;
+    left: -57px;
+    width: calc(100% + 57px);
+    height: calc(100% + 78px);
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 3000;
+}
+.oldWell-body{
+    position: absolute;
+    width: 1171px;
+    height: 578px;
+    background: #272953;
+    border: 1px solid #656A8A;
+    box-sizing: border-box;
+    border-radius: 8px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 18px 32px;
+}
+.oldWell-body-content{
+    margin-top: 18px;
+    height: 425px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.oldWell-body-btns{
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.oldWell-body-btns button{
+    width: 170px;
+    text-align: center;
+    background: #2E50E9;
+    border-radius: 6px;
+    border: 0;
+    padding: 8px 0;
+}
+.oldWell-body-btns button:focus{
+    outline: none;
+}
+.oldWell-body-btns .cancel{
+    background: #656A8A;
+    margin-left: 6px;
 }

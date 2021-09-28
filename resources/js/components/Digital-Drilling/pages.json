@@ -3,7 +3,7 @@
     {
       "name": "digital_drilling.well_data_sheet",
       "img": "/img/digital-drilling/menu3.svg",
-      "id": 2,
+      "id": 1,
       "component": {
         "name": "main-table",
         "template": "<passport></passport>"
@@ -13,7 +13,7 @@
     {
       "name": "digital_drilling.open_hole_logging",
       "img": "/img/digital-drilling/menu4.svg",
-      "id": 3,
+      "id": 2,
       "component": {
         "name": "main-table",
         "template": "<gis></gis>"
@@ -23,7 +23,7 @@
     {
       "name": "digital_drilling.survey",
       "img": "/img/digital-drilling/menu5.svg",
-      "id": 4,
+      "id": 3,
       "component": {
         "name": "main-table",
         "template": "<inclino></inclino>"
@@ -33,7 +33,7 @@
     {
       "name": "digital_drilling.well_design_menu",
       "img": "/img/digital-drilling/menu6.svg",
-      "id": 5,
+      "id": 4,
       "component": {
         "name": "main-table",
         "template": "<structure></structure>"
@@ -42,7 +42,7 @@
       "child": [
         {
           "name": "digital_drilling.project_data.tabular_data",
-          "id": 2,
+          "id": 5,
           "checked": null,
           "component": {
             "name": "main-table",
@@ -51,7 +51,7 @@
         },
         {
           "name": "digital_drilling.project_data.visualization",
-          "id": 1,
+          "id": 6,
           "checked": false,
           "component": {
             "name": "main-table",
@@ -63,17 +63,73 @@
     {
       "name": "digital_drilling.project_fact_data",
       "img": "/img/digital-drilling/menu7.svg",
-      "id": 6,
+      "id": 7,
       "component": {
         "name": "main-table",
-        "template": "<project-data></project-data>"
+        "template": "<technical-task></technical-task>"
       },
-      "accordion": false
+      "accordion": true,
+      "child": [
+        {
+          "name":  "digital_drilling.project_data.technical_task",
+          "id": 8,
+          "checked": null,
+          "component": {
+            "name": "main-table",
+            "template": "<technical-task></technical-task>"
+          }
+        },
+        {
+          "name": "digital_drilling.project_data.geology",
+          "id": 9,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<geology></geology>"
+          }
+        },
+        {
+          "name": "digital_drilling.project_data.well_design",
+          "id": 10,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<well-design></well-design>"
+          }
+        },
+        {
+          "name": "digital_drilling.project_data.barrel_profile",
+          "id": 11,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<barrel-profile></barrel-profile>"
+          }
+        },
+        {
+          "name": "digital_drilling.project_data.drilling_fluids",
+          "id": 12,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<pd-drilling-fluids></pd-drilling-fluids>"
+          }
+        },
+        {
+          "name": "digital_drilling.project_data.well_casing",
+          "id": 13,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<well-casing></well-casing>"
+          }
+        }
+      ]
     },
     {
       "name": "digital_drilling.drilling_problems",
       "img": "/img/digital-drilling/menu7.svg",
-      "id": 7,
+      "id": 18,
       "component": {
         "name": "main-table",
         "template": "<complications></complications>"
@@ -85,7 +141,7 @@
     {
       "name": "digital_drilling.hole_profile",
       "img": "/img/digital-drilling/menu12.svg",
-      "id": 1,
+      "id": 19,
       "component": {
         "name": "main-table",
         "template": "<project></project>"
@@ -94,7 +150,7 @@
     {
       "name": "digital_drilling.design_calculation",
       "img": "/img/digital-drilling/menu13.svg",
-      "id": 2,
+      "id": 20,
       "component": {
         "name": "main-table",
         "template": "<structural-analysis></structural-analysis>"
@@ -103,7 +159,7 @@
     {
       "name": "digital_drilling.drilling_mud",
       "img": "/img/digital-drilling/menu14.svg",
-      "id": 3,
+      "id": 21,
       "component": {
         "name": "main-table",
         "template": "<drilling-fluids></drilling-fluids>"
@@ -112,7 +168,7 @@
     {
       "name": "digital_drilling.borehole_deepening",
       "img": "/img/digital-drilling/menu15.svg",
-      "id": 4,
+      "id": 22,
       "component": {
         "name": "main-table",
         "template": "<well-deepening></well-deepening>"
@@ -121,7 +177,7 @@
     {
       "name": "digital_drilling.cementing_jobs",
       "img": "/img/digital-drilling/menu12.svg",
-      "id": 5,
+      "id": 23,
       "component": {
         "name": "main-table",
         "template": "<well-fastening></well-fastening>"

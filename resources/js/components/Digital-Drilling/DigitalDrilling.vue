@@ -1,7 +1,7 @@
 <template>
     <div class="row digital_drilling">
         <div class="col-sm-12 centerBlock">
-            <menuHead @changePage="changePage"/>
+            <menuHead @changePage="changePage" @createNewWel="createNewWel" @openNewWell="openNewWell"/>
         </div>
         <div class="col-sm-12 mainBlock">
             <div class="mainBlock__body">
@@ -30,11 +30,15 @@
                 </div>
             </div>
         </div>
+        <new-well v-if="newWellOpen" @closeNewWell="newWellOpen=false"/>
+        <old-well v-if="oldWellOpen" @closeOldWell="oldWellOpen=false"/>
     </div>
 </template>
 
 <script>
     import menuHead from './menu'
+    import NewWell from './project/NewWell'
+    import OldWell from './project/OldWell'
     import leftMenu from './leftMenu'
     import pages from './pages'
     import Vue from 'vue';
@@ -42,10 +46,12 @@
 
     export default {
         name: "DigitalDrilling",
-        components: {menuHead, leftMenu, Main},
+        components: {menuHead, leftMenu, Main, NewWell, OldWell},
         data(){
             return{
                 leftMenuOpen: true,
+                newWellOpen: false,
+                oldWellOpen: true,
                 pages: pages,
                 pageComponent: null,
                 mainPage: {
@@ -69,7 +75,13 @@
             },
             toggleLeftMenu(){
                 this.leftMenuOpen = !this.leftMenuOpen
-            }
+            },
+            createNewWel(){
+                this.newWellOpen = true
+            },
+            openNewWell(){
+                this.oldWellOpen = true
+            },
         }
     }
 
@@ -80,6 +92,14 @@
     Vue.component('inclino', require('./bd/inclino').default);
     Vue.component('structure', require('./bd/structure').default);
     Vue.component('structure-graph', require('./bd/structure-graph').default);
+    Vue.component('complications', require('./bd/complications').default);
+    Vue.component('technical-task', require('./bd/ProjectData/TechnicalTask').default);
+    Vue.component('geology', require('./bd/ProjectData/Geology').default);
+    Vue.component('well-design', require('./bd/ProjectData/WellDesign').default);
+    Vue.component('barrel-profile', require('./bd/ProjectData/BarrelProfile').default);
+    Vue.component('pd-drilling-fluids', require('./bd/ProjectData/DrillingFluids').default);
+    Vue.component('well-casing', require('./bd/ProjectData/WellСasing').default);
+    Vue.component('technical-casing', require('./bd/ProjectData/TechnicalCasing').default);
 
 </script>
 

@@ -14,13 +14,17 @@
         </div>
         <div class="block">
             <div class="dropdown">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    <img src="/img/digital-drilling/menu8.svg" alt="">{{ trans('digital_drilling.designing') }} <i class="fas fa-chevron-down"></i>
+                <button type="button" class="dropdown-toggle project-btn" data-toggle="dropdown">
+                    <div class="btn-name">
+                        <img src="/img/digital-drilling/menu8.svg" alt="">{{ trans('digital_drilling.designing') }}
+                    </div>
+                    <div class="settings">
+                        <img src="/img/digital-drilling/settings.png" alt="" class="">
+                    </div>
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" v-for="page in pages.project" @click="changePage(page)"><img :src="page.img" alt="">{{ trans(page.name) }}</a>
-                    <a class="dropdown-item"><img src="/img/digital-drilling/menu24.svg" alt="">{{ trans('digital_drilling.drilling_time') }}</a>
-                    <a class="dropdown-item"><img src="/img/digital-drilling/menu25.svg" alt="">{{ trans('digital_drilling.resource_estimate') }}</a>
+                    <a class="dropdown-item"  @click="createNewWell">Создать новую скважину</a>
+                    <a class="dropdown-item" @click="openNewWell">Открыть недавно созданнуюскважину</a>
                 </div>
             </div>
         </div>
@@ -76,7 +80,13 @@
             openHome(){
                 this.homeOpen = !this.homeOpen
                 this.$emit('changePage', 'home')
-            }
+            },
+            createNewWell(){
+                this.$emit('createNewWel')
+            },
+            openNewWell(){
+                this.$emit('openNewWell')
+            },
         },
     }
 </script>

@@ -105,6 +105,7 @@
 
 <style scoped>
 .ml-10{
-    padding-left: 10px;
+    padding: 0 10px 0 18px!important;
 }
+
 </style>

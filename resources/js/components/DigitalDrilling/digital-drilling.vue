@@ -130,14 +130,11 @@
         },
     }
     Vue.component('home-t', require('./bd/home').default);
+
     Vue.component('project-data', require('./bd/ProjectData').default);
-    Vue.component('technical-task', require('./bd/ProjectData/TechnicalTask').default);
-    Vue.component('geology', require('./bd/ProjectData/Geology').default);
-    Vue.component('well-design', require('./bd/ProjectData/WellDesign').default);
-    Vue.component('barrel-profile', require('./bd/ProjectData/BarrelProfile').default);
-    Vue.component('pd-drilling-fluids', require('./bd/ProjectData/DrillingFluids').default);
-    Vue.component('well-casing', require('./bd/ProjectData/WellСasing').default);
-    Vue.component('technical-casing', require('./bd/ProjectData/TechnicalCasing').default);
+
+
+
     Vue.component('passport', require('./bd/passport').default);
     Vue.component('gis1', require('./bd/gis').default);
     Vue.component('inclino', require('./bd/inclino').default);
@@ -198,7 +195,6 @@
     Vue.component('fastening-first', require('./analytics/fastening-first').default);
     Vue.component('fastening-second', require('./analytics/fastening-second').default);
     Vue.component('fastening-third', require('./analytics/fastening-third').default);
-    Vue.component('complications', require('./analytics/complications').default);
     Vue.component('analytics-akc', require('./analytics/akc').default);
     Vue.component('balance', require('./analytics/balance').default);
 

@@ -183,6 +183,9 @@
 </script>
 
 <style scoped>
+    th, td{
+        font-size: 12px!important;
+    }
     .inc__left_functions{
         display: flex;
         align-items: center;
