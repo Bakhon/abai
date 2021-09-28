@@ -30,6 +30,6 @@ class DatabaseSeeder extends Seeder
         $this->call(BactericideTableSeeder::class);
         $this->call(BufferTankTableSeeder::class);
         $this->call(PumpsTableSeeder::class);
-
+        $this->call(PlastFluidsPermissionsSeeder::class);
     }
 }

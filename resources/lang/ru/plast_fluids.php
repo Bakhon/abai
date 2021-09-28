@@ -102,4 +102,5 @@ return array (
   'gas_content' => 'Газосодержание (м3/м3):',
   'reservoir_oil_viscosity' => 'Вязкость пластовой нефти (мПа*с)',
   'pf' => 'Пластовые флюиды',
+  'module_whole_pages' => 'Все страницы модуля',
 );
