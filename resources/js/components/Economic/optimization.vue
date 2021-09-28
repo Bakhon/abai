@@ -18,8 +18,8 @@
             <divider v-if="index"/>
 
             <economic-title
-                font-size="58"
-                line-height="72"
+                font-size="32"
+                line-height="46"
                 class="text-nowrap">
               <span> {{ header.value.toFixed(2) }} </span>
 
@@ -59,8 +59,8 @@
               :key="`remote_${index}`"
               class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column position-relative">
             <economic-title
-                font-size="58"
-                line-height="72"
+                font-size="32"
+                line-height="46"
                 flex-grow="0"
                 class="text-nowrap">
               <span> {{ header.value }} </span>
@@ -109,6 +109,15 @@
       <div v-show="!scenarioVariation.isFullScreen"
            :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right:0'"
            class="col-3">
+        <economic-block
+            v-for="(block, index) in blocks"
+            :key="index"
+            :index="index"
+            :block="block"
+            :form="form"
+            :style="form.scenario_id ? 'min-height: 180px' : 'min-height: 120px'"
+        />
+
         <div class="bg-main1 text-white text-wrap p-3 mb-10px">
           <subtitle>
             {{ trans('economic_reference.production_wells_fund') }}
@@ -139,71 +148,6 @@
             </div>
           </div>
         </div>
-
-        <div
-            v-for="(block, index) in blocks"
-            :key="index"
-            :style="form.scenario_id ? 'min-height: 175px' : 'min-height: 100px'"
-            class="d-flex bg-main1 text-white text-wrap p-3 mb-10px">
-          <div
-              v-for="(subBlock, subBlockIndex) in block"
-              :key="subBlock.title"
-              :class="subBlockIndex % 2 === 1 ? '' : 'pl-0 pr-2'"
-              class="col-6 d-flex flex-column position-relative">
-            <divider v-if="subBlockIndex % 2 === 1"/>
-
-            <div class="d-flex align-items-center font-size-32px line-height-38px text-nowrap">
-              <img :src="`/img/economic/${subBlock.icon}`" alt="">
-
-              <div class="ml-2 d-flex align-items-center">
-                <span class="font-weight-bold">
-                  {{ subBlock.value }}
-                </span>
-
-                <span class="ml-2 d-flex flex-column text-blue font-size-14px line-height-16px">
-                  <div>{{ subBlock.dimension }}</div>
-
-                  <div v-if="subBlock.dimensionSuffix">
-                    {{ subBlock.dimensionSuffix }}
-                  </div>
-                </span>
-              </div>
-            </div>
-
-            <div v-if="form.scenario_id"
-                 class="text-grey font-size-14px line-height-14px font-weight-bold mb-3">
-              {{ trans('economic_reference.optimized') }}
-            </div>
-
-            <div v-if="form.scenario_id"
-                 class="d-flex align-items-center font-size-12px line-height-14px text-nowrap">
-              <percent-badge-icon
-                  :percent="subBlock.reversePercent ? -subBlock.percent : subBlock.percent"
-                  :reverse="subBlock.reverse"
-                  class="font-size-22px line-height-26px mr-1"/>
-
-              <span class="font-size-24px line-height-28px font-weight-bold">
-                {{ Math.abs(+subBlock.percent) }}
-              </span>
-
-              <span class="ml-2 d-flex flex-column font-size-12px line-height-12px">
-                 <div>{{ subBlock.percentDimension || subBlock.dimension }}</div>
-
-                  <div v-if="subBlock.dimensionSuffix">
-                    {{ subBlock.dimensionSuffix }}
-                  </div>
-              </span>
-
-              <span class="ml-1 font-size-12px line-height-14px text-blue">
-                {{ trans('economic_reference.vs_base') }}
-              </span>
-            </div>
-
-            <div class="flex-grow-1 mt-3 font-weight-bold line-height-20px font-size-16px">
-              {{ subBlock.title }}
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -227,6 +171,7 @@ import SelectOrganization from "./components/SelectOrganization";
 import SelectScenario from "./components/SelectScenario";
 import SelectScenarioVariations from "./components/SelectScenarioVariations";
 import Tables from "./components/Tables";
+import EconomicBlock from "./components/EconomicBlock";
 
 const optimizedColumns = [
   'Revenue_total',
@@ -356,6 +301,7 @@ export default {
     SelectScenario,
     SelectScenarioVariations,
     Tables,
+    EconomicBlock
   },
   mixins: [formatValueMixin],
   data: () => ({
@@ -436,7 +382,7 @@ export default {
           {
             title: this.trans('economic_reference.oil_production'),
             icon: 'oil_production.svg',
-            value: this.formatValue(this.scenario.oil[this.scenarioValueKey]).value,
+            value: this.formatValue(this.scenario.oil[this.scenarioValueKey]).value.toFixed(2),
             dimension: this.formatValue(this.scenario.oil[this.scenarioValueKey]).dimension,
             dimensionSuffix: this.trans('economic_reference.tons'),
             percent: this.formatValue(this.oilPercent).value,
@@ -445,21 +391,24 @@ export default {
             reversePercent: true
           },
           {
-            title: this.trans('economic_reference.water_cut'),
-            icon: 'liquid.svg',
-            value: this.liquidValue(true),
-            dimension: '%',
-            percent: this.liquidPercent,
-            reversePercent: true
-          }
-        ],
-        [
-          {
             title: this.trans('economic_reference.total_prs'),
             icon: 'total_prs.svg',
             value: +this.scenario.prs[this.scenarioValueKey],
             dimension: this.trans('economic_reference.units'),
             percent: this.prsPercent,
+            reversePercent: true
+          },
+        ],
+        [
+          {
+            title: this.trans('economic_reference.liquid_production'),
+            icon: 'oil_production.svg',
+            value: this.formatValue(this.scenario.liquid[this.scenarioValueKey]).value.toFixed(2),
+            dimension: this.formatValue(this.scenario.liquid[this.scenarioValueKey]).dimension,
+            dimensionSuffix: this.trans('economic_reference.tons'),
+            percent: this.formatValue(this.liquidPercent).value,
+            percentDimension: this.formatValue(this.liquidPercent).dimension,
+            reverse: true,
             reversePercent: true
           },
           {
@@ -470,6 +419,24 @@ export default {
             percent: this.avgPrsPercent,
             reversePercent: true
           }
+        ],
+        [
+          {
+            title: this.trans('economic_reference.water_cut'),
+            icon: 'liquid.svg',
+            value: this.waterCutValue(true),
+            dimension: '%',
+            percent: this.waterCutPercent,
+            reversePercent: true
+          },
+          {
+            title: this.trans('economic_reference.mrp'),
+            icon: 'liquid.svg',
+            value: this.mrpValue(true),
+            dimension: '%',
+            percent: this.mrpPercent,
+            reversePercent: true
+          },
         ],
         [
           {
@@ -631,12 +598,12 @@ export default {
       return this.scenario.oil.original_value - this.scenario.oil.original_value_optimized
     },
 
-    prsPercent() {
-      return this.scenario.prs.original_value_optimized - this.scenario.prs.original_value
+    liquidPercent() {
+      return this.scenario.liquid.original_value - this.scenario.liquid.original_value_optimized
     },
 
-    liquidPercent() {
-      return (this.liquidValue() - this.liquidValue(false)).toFixed(2)
+    prsPercent() {
+      return this.scenario.prs.original_value_optimized - this.scenario.prs.original_value
     },
 
     avgOilPercent() {
@@ -649,7 +616,15 @@ export default {
 
     avgPrsPercent() {
       return (this.avgPrsValue(true, 4) - this.avgPrsValue(false, 4)).toFixed(2)
-    }
+    },
+
+    waterCutPercent() {
+      return (this.waterCutValue() - this.waterCutValue(false)).toFixed(2)
+    },
+
+    mrpPercent() {
+      return (this.mrpValue() - this.mrpValue(false)).toFixed(2)
+    },
   },
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
@@ -670,7 +645,43 @@ export default {
       this.SET_LOADING(false);
     },
 
-    liquidValue(optimized = true) {
+    updateTab(tab) {
+      this.isVisibleWellChanges = tab === 'well_changes'
+    },
+
+    calcPercent(last, prev) {
+      last = +last
+
+      prev = +prev
+
+      if (!prev) {
+        return last ? 100 : 0;
+      }
+
+      return prev < 0
+          ? (prev - last) * 100 / prev
+          : (last - prev) * 100 / prev
+    },
+
+    mrpValue(optimized = true) {
+      if (!this.form.scenario_id) {
+        optimized = false
+      }
+
+      let workedDays = optimized
+          ? +this.scenario.days_worked.original_value_optimized
+          : +this.scenario.days_worked.original_value
+
+      let prs = optimized
+          ? +this.scenario.prs.original_value_optimized
+          : +this.scenario.prs.original_value
+
+      return prs
+          ? (workedDays / prs).toFixed(2)
+          : 0
+    },
+
+    waterCutValue(optimized = true) {
       if (!this.form.scenario_id) {
         optimized = false
       }
@@ -742,24 +753,6 @@ export default {
           ? (prs / uwi_count).toFixed(fractionDigits)
           : 0
     },
-
-    updateTab(tab) {
-      this.isVisibleWellChanges = tab === 'well_changes'
-    },
-
-    calcPercent(last, prev) {
-      last = +last
-
-      prev = +prev
-
-      if (!prev) {
-        return last ? 100 : 0;
-      }
-
-      return prev < 0
-          ? (prev - last) * 100 / prev
-          : (last - prev) * 100 / prev
-    }
   }
 };
 </script>
@@ -768,28 +761,12 @@ export default {
   font-size: 12px;
 }
 
-.font-size-14px {
-  font-size: 14px;
-}
-
 .font-size-16px {
   font-size: 16px;
 }
 
-.font-size-22px {
-  font-size: 22px;
-}
-
 .font-size-24px {
   font-size: 24px;
-}
-
-.font-size-32px {
-  font-size: 32px;
-}
-
-.line-height-12px {
-  line-height: 12px;
 }
 
 .line-height-14px {
@@ -802,14 +779,6 @@ export default {
 
 .line-height-20px {
   line-height: 20px;
-}
-
-.line-height-22px {
-  line-height: 22px;
-}
-
-.line-height-26px {
-  line-height: 26px;
 }
 
 .line-height-28px {
