@@ -15,7 +15,12 @@ abstract class DailyReports extends TableForm
     const MONTH = 1;
     const YEAR = 2;
 
+    const CITS = 'ЦИТС';
+    const GS = 'ГС';
+    const ALL = 'ЦИТС/ГС';
+
     protected $metricCode = '';
+    protected $configurationFileName = 'daily_reports';
 
     public function getResults(): array
     {
@@ -30,14 +35,19 @@ abstract class DailyReports extends TableForm
             }
             $result['org_name'] = ['value' => $org->name_ru];
         }
-        $filter->optionId = $filter->optionId ?? 0;
 
         foreach ([self::DAY, self::MONTH, self::YEAR] as $period) {
             $filter->period = $period;
             $data = $this->getData($filter);
             $result += $data;
         }
-        return ['rows' => [$result]];
+
+        $columns = $this->getColumns($filter);
+
+        return [
+            'columns' => $columns,
+            'rows' => [$result]
+        ];
     }
 
     protected function saveSingleFieldInDB(array $params): void
@@ -150,4 +160,53 @@ abstract class DailyReports extends TableForm
         $fieldLimitsService = app()->make(FieldLimitsService::class);
         return $fieldLimitsService->calculateColumnLimits('fact', $reports);
     }
+
+    private function getColumns(\stdClass $filter): Collection
+    {
+        $type = $filter->type;
+
+        $columns = $this->getFields()->filter(function ($column) use ($type) {
+            if (empty($column['show_if'])) {
+                return true;
+            }
+
+            return in_array($type, $column['show_if']['type']);
+        })->values();
+
+        return $columns;
+    }
+
+    protected function getData(\stdClass $filter): array
+    {
+        $data = $this->getReports($filter);
+        $result = [];
+        $plan = $data->sum('plan');
+        $fact = $data->sum('fact');
+        switch ($filter->period) {
+            case self::DAY:
+                $result['plan'] = ['value' => $plan];
+                $result['fact'] = $result['daily_fact_cits'] = ['value' => $fact];
+                break;
+            case self::MONTH:
+                $result['month_plan'] = ['value' => $plan];
+                $result['month_fact'] = $result['month_fact_cits'] = ['value' => $fact];
+                break;
+            case self::YEAR:
+                $result['year_plan'] = ['value' => $plan];
+                $result['year_fact'] = $result['year_fact_cits'] = ['value' => $fact];
+                break;
+        }
+
+        if ($filter->type === self::GS) {
+            $result['fact'] = ['value' => 0];
+            $result['month_fact'] = ['value' => 0];
+            $result['year_fact'] = ['value' => 0];
+        }
+        $result['daily_fact_gs'] = ['value' => 0];
+        $result['month_fact_gs'] = ['value' => 0];
+        $result['year_fact_gs'] = ['value' => 0];
+
+        return $result;
+    }
+
 }
