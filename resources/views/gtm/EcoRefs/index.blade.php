@@ -17,7 +17,7 @@
     </div>
 
     <div class="container p-4 mb-3 bg-light max-width-90vw">
-        <a href="{{ route('paegtm-gtm-fact-costs-upload-excel') }}" class="text-decoration-none">
+        <a href="{{ route('gtm-decline-rates.index') }}" class="text-decoration-none">
             <h4 class="text-secondary cursor-pointer mb-0">
                 {{ __('paegtm.gtm_decline_rate') }}
             </h4>

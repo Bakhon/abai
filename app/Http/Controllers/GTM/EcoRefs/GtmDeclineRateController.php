@@ -3,92 +3,91 @@
 namespace App\Http\Controllers\GTM\EcoRefs;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Paegtm\EcoRefs\GtmDeclineRateCreateRequest;
+use App\Http\Requests\Paegtm\EcoRefs\GtmDeclineRateUpdateRequest;
+use App\Models\BigData\Dictionaries\Org;
+use App\Models\Paegtm\EcoRefs\GtmDeclineRates;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class GtmDeclineRateController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
-        $declineRates = [];
-        return view('gtm.EcoRefs.GtmDeclineRate.index',compact('declineRates'));
+        $declineRates = GtmDeclineRates::simplePaginate(20);
+
+        return view('gtm.EcoRefs.GtmDeclineRate.index', compact('declineRates'));
     }
 
+    /**
+     * @return View
+     */
     public function create()
     {
-        $sc_fa = EcoRefsScFa::get();
-        $branch = EcoRefsBranchId::get();
-        $company = EcoRefsCompaniesId::get();
-        $direction = EcoRefsDirectionId::get();
-        $route = EcoRefsRoutesId::get();
-        $routetn = EcoRefsRouteTnId::get();
-        $exc = EcoRefsExc::get();
-        return view('economy_kenzhe/ecorefstarifytn.create',compact('sc_fa', 'branch', 'company', 'direction', 'route', 'routetn', 'exc'));
+        $orgs = Org::whereNull('parent')->orderBy('id')->get();
+        $geos = $orgs;
+
+        return view('gtm.EcoRefs.GtmDeclineRate.create', compact('orgs', 'geos'));
     }
 
-    public function store(Request $request)
+    /**
+     * @param GtmDeclineRateCreateRequest $request
+     * @return RedirectResponse
+     */
+    public function store(GtmDeclineRateCreateRequest $request)
     {
-        $request->validate([
-            'sc_fa' => 'required',
-            'branch_id' => 'required',
-            'company_id' => 'required',
-            'direction_id' => 'required',
-            'route_id' => 'required',
-            'route_tn_id' => 'required',
-            'exc_id' => 'required',
-            'date' => 'required',
-            'tn_rate' => 'required',
-        ]);
+        $validated = $request->validated();
 
-        EcoRefsTarifyTn::create($request->all());
+        $validated['date'] = Carbon::create($validated['date'], 1, 1);
 
-        return redirect()->route('ecorefstarifytn.index')->with('success',__('app.created'));
+        GtmDeclineRates::create($validated);
+
+        return redirect()->route('gtm-decline-rates.index')->with('success',__('app.created'));
     }
 
-    public function edit($id)
+    /**
+     * @param GtmDeclineRates $declineRate
+     * @return View
+     */
+    public function edit(GtmDeclineRates $gtmDeclineRate)
     {
-        $row = EcoRefsTarifyTn::find($id);
-        $sc_fa = EcoRefsScFa::get();
-        $branch = EcoRefsBranchId::get();
-        $company = EcoRefsCompaniesId::get();
-        $direction = EcoRefsDirectionId::get();
-        $route = EcoRefsRoutesId::get();
-        $routetn = EcoRefsRouteTnId::get();
-        $exc = EcoRefsExc::get();
+        $orgs = Org::whereNull('parent')->orderBy('id')->get();
+        $geos = $orgs;
 
-        return view('economy_kenzhe/ecorefstarifytn.edit',compact('row', 'sc_fa', 'branch', 'company', 'direction', 'route', 'routetn', 'exc'));
+        return view('gtm.EcoRefs.GtmDeclineRate.edit', compact('gtmDeclineRate', 'orgs', 'geos'));
     }
 
-    public function update(UpdateEcoRefsTarifyTnRequest $request, $id)
+    /**
+     * @param GtmDeclineRateUpdateRequest $request
+     * @param GtmDeclineRates $declineRate
+     * @return RedirectResponse
+     */
+    public function update(GtmDeclineRateUpdateRequest $request, GtmDeclineRates $gtmDeclineRate)
 
     {
-        $EcoRefsTarifyTn=EcoRefsTarifyTn::find($id);
-        $request->validate([
-            'sc_fa' => 'required',
-            'branch_id' => 'required',
-            'company_id' => 'required',
-            'direction_id' => 'required',
-            'route_id' => 'required',
-            'route_tn_id' => 'required',
-            'exc_id' => 'required',
-            'date' => 'required',
-            'tn_rate' => 'required',
-        ]);
+        $validated = $request->validated();
 
-        $EcoRefsTarifyTn->update($request->all());
+        $validated['date'] = Carbon::create($validated['date'], 1, 1);
 
-        return redirect()->route('ecorefstarifytn.index')->with('success',__('app.updated'));
+        $gtmDeclineRate->update($validated);
+
+        return redirect()->route('gtm-decline-rates.index')->with('success',__('app.updated'));
     }
 
-    public function destroy($id)
+    /**
+     * @param GtmDeclineRates $declineRate
+     * @return RedirectResponse
+     * @throws Exception
+     */
+    public function destroy(GtmDeclineRates $gtmDeclineRate)
     {
-        $row = EcoRefsTarifyTn::find($id);
-        $row->delete();
+        $gtmDeclineRate->delete();
 
-        return redirect()->route('ecorefstarifytn.index')->with('success',__('app.deleted'));
+        return redirect()->route('gtm-decline-rates.index')->with('success',__('app.deleted'));
     }
 }

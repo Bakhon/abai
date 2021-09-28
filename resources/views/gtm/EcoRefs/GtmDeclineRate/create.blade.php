@@ -3,117 +3,141 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
+            @if (count($errors) > 0)
+                <div class="col-md-12">
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @endif
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <a class="btn btn-primary" href="{{ route('ecorefstarifytn.index') }}">{{__('app.back')}}</a>
+                        <a class="btn btn-primary" href="{{ route('gtm-decline-rates.index') }}">{{__('app.back')}}</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('ecorefstarifytn.store') }}" method="POST">
+                        <form action="{{ route('gtm-decline-rates.store') }}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Сценарий/Факт:</strong>
-                                        <select class="form-control" name="sc_fa">
-                                            <option>Select Item</option>
-                                            @foreach ($sc_fa as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->name }}
-                                                </option>
+                                        <strong>ДЗО:</strong>
+                                        <select class="form-control" name="org_id" required="required">
+                                            <option value="">Выберите ДЗО</option>
+                                            @foreach($orgs as $org)
+                                                <option value="{{ $org->id }}">{{ $org->name_ru }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Филиал:</strong>
-                                        <select class="form-control" name="branch_id">
-                                            <option>Select Item</option>
-                                            @foreach ($branch as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->name }}
-                                                </option>
+                                        <strong>Месторождение:</strong>
+                                        <select class="form-control" name="geo_id" required="required">
+                                            <option value="">Выберите месторождение</option>
+                                            @foreach($geos as $geo)
+                                                <option value="{{ $geo->id }}">{{ $geo->name_ru }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Компания:</strong>
-                                        <select class="form-control" name="company_id">
-                                            <option>Select Item</option>
-                                            @foreach ($company as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->name }}
-                                                </option>
+                                        <strong>Год:</strong>
+                                        <select class="form-control" name="date" required="required">
+                                            <option value="">Выберите год</option>
+                                            @foreach(range(date('Y', strtotime('+2 year')), date('Y', strtotime('-2 year'))) as $year)
+                                                <option value="{{ $year }}">{{ $year }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Направление:</strong>
-                                        <select class="form-control" name="direction_id">
-                                            <option>Select Item</option>
-                                            @foreach ($direction as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <strong>Базового фонда:</strong>
+                                        <input value="{{ old('base_fund') }}" type="number" name="base_fund" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Маршрут:</strong>
-                                        <select class="form-control" name="route_id">
-                                            <option>Select Item</option>
-                                            @foreach ($route as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <strong>ВНС:</strong>
+                                        <input value="{{ old('vns') }}" type="number" name="vns" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Маршрут ТН:</strong>
-                                        <select class="form-control" name="route_tn_id">
-                                            <option>Select Item</option>
-                                            @foreach ($routetn as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <strong>ВНС ГРП:</strong>
+                                        <input value="{{ old('vns_grp') }}" type="number" name="vns_grp" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Валюта:</strong>
-                                        <select class="form-control" name="exc_id">
-                                            <option>Select Item</option>
-                                            @foreach ($exc as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <strong>ГС:</strong>
+                                        <input value="{{ old('gs') }}" type="number" name="gs" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Дата:</strong>
-                                        <input type="date" name="date" class="form-control">
+                                        <strong>ГС ГРП:</strong>
+                                        <input value="{{ old('gs_grp') }}" type="number" name="gs_grp" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Тариф за тонну:</strong>
-                                        <input type="float" name="tn_rate" class="form-control"
-                                               placeholder="Пример: 128">
+                                        <strong>ЗБС:</strong>
+                                        <input value="{{ old('zbs') }}" type="number" name="zbs" class="form-control" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>ЗБГС:</strong>
+                                        <input value="{{ old('zbgs') }}" type="number" name="zbgs" class="form-control" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>УГЛ:</strong>
+                                        <input value="{{ old('ugl') }}" type="number" name="ugl" class="form-control" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>ГРП:</strong>
+                                        <input value="{{ old('grp') }}" type="number" name="grp" class="form-control" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>ВБД:</strong>
+                                        <input value="{{ old('vbd') }}" type="number" name="vbd" class="form-control" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>ПВЛГ:</strong>
+                                        <input value="{{ old('pvlg') }}" type="number" name="pvlg" class="form-control" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>РИР:</strong>
+                                        <input value="{{ old('rir') }}" type="number" name="rir" class="form-control" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>ПВР:</strong>
+                                        <input value="{{ old('pvr') }}" type="number" name="pvr" class="form-control" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>ОПЗ:</strong>
+                                        <input value="{{ old('opz') }}" type="number" name="opz" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

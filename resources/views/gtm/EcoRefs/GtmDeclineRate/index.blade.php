@@ -11,26 +11,13 @@
         </div>
     </div>
 
-    <div class="container my-4">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="list-group text-center">
-                    <a href="{{ route('tarifytn_data_upload') }}"
-                       class="list-group-item list-group-item-action">
-                        {{ __('economic_reference.upload_excel') }}
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="container-fluid">
         <div class="row justify-content-center mt-5">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header ecorefs-header">
-                        <a class="btn btn-success" href="{{ route('ecorefstarifytn.create') }}">+</a>
-                        <div class="ecorefs-title">{{__('economic_reference.eco_refs_tarify_tn')}}</div>
+                        <a class="btn btn-success" href="{{ route('gtm-decline-rates.create') }}">+</a>
+                        <div class="ecorefs-title">{{__('paegtm.gtm_decline_rate')}}</div>
                     </div>
                     <div class="card-body">
                         @if ($message = Session::get('success'))
@@ -42,32 +29,48 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
-                                <th>Сценарий/Факт:</th>
-                                <th>Филиал:</th>
-                                <th>Компания:</th>
-                                <th>Направление:</th>
-                                <th>Маршрут:</th>
-                                <th>Маршрут ТН:</th>
-                                <th>Валюта:</th>
-                                <th>Дата:</th>
-                                <th>Тариф за тонну:</th>
+                                <th>ДЗО:</th>
+                                <th>Месторождение:</th>
+                                <th>Год:</th>
+                                <th>Базового фонда:</th>
+                                <th>ВНС:</th>
+                                <th>ВНС ГРП:</th>
+                                <th>ГС:</th>
+                                <th>ГС ГРП:</th>
+                                <th>ЗБС:</th>
+                                <th>ЗБГС:</th>
+                                <th>УГЛ:</th>
+                                <th>ГРП:</th>
+                                <th>ВБД:</th>
+                                <th>ПВЛГ:</th>
+                                <th>РИР:</th>
+                                <th>ПВР:</th>
+                                <th>ОПЗ:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
-                            @foreach ($ecorefstarifytn as $item)
+                            @foreach ($declineRates as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ $item->scfa->name}}</td>
-                                    <td>{{ $item->branch->name}}</td>
-                                    <td>{{ $item->company->name}}</td>
-                                    <td>{{ $item->direction->name }}</td>
-                                    <td>{{ $item->route->name }}</td>
-                                    <td>{{ $item->routetn->name }}</td>
-                                    <td>{{ $item->exc->name }}</td>
-                                    <td>{{ $item->date }}</td>
-                                    <td>{{ $item->tn_rate }}</td>
+                                    <td>{{ $item->org->name_ru }}</td>
+                                    <td>{{ $item->geo->name_ru }}</td>
+                                    <td>{{ $item->date->format('Y') }}</td>
+                                    <td>{{ $item->base_fund }}</td>
+                                    <td>{{ $item->vns }}</td>
+                                    <td>{{ $item->vns_grp }}</td>
+                                    <td>{{ $item->gs }}</td>
+                                    <td>{{ $item->gs_grp }}</td>
+                                    <td>{{ $item->zbs }}</td>
+                                    <td>{{ $item->zbgs }}</td>
+                                    <td>{{ $item->ugl }}</td>
+                                    <td>{{ $item->grp }}</td>
+                                    <td>{{ $item->vbd }}</td>
+                                    <td>{{ $item->pvlg }}</td>
+                                    <td>{{ $item->rir }}</td>
+                                    <td>{{ $item->pvr }}</td>
+                                    <td>{{ $item->opz }}</td>
                                     <td>
-                                        <form action="{{ route('ecorefstarifytn.destroy',$item->id) }}" method="POST">
-                                            <a class="btn btn-primary" href="{{ route('ecorefstarifytn.edit',$item->id) }}">{{__('app.edit')}}</a>
+                                        <form action="{{ route('gtm-decline-rates.destroy',$item->id) }}" method="POST">
+                                            <a class="btn btn-primary" href="{{ route('gtm-decline-rates.edit',$item->id) }}">{{__('app.edit')}}</a>
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger mt-2">{{__('app.delete')}}</button>
@@ -76,13 +79,15 @@
                                 </tr>
                             @endforeach
                         </table>
-                        {!! $ecorefstarifytn->links() !!}
                     </div>
                 </div>
+                <div class="mt-2">
+                    {{ $declineRates->links() }}
+                </div>
             </div>
+        </div>
     </div>
 @endsection
-
 <style>
-    @import "../../css/ecorefs.css";
+    @import "/css/ecorefs.css";
 </style>
