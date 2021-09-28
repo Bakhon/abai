@@ -211,25 +211,9 @@ import {bdFormActions, globalloadingMutations} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
 import BigDataPlainForm from './PlainForm'
-import upperFirst from 'lodash/upperFirst'
-import camelCase from 'lodash/camelCase'
 import BigdataFormField from './field'
 import forms from '../../../json/bd/forms.json'
 
-
-const requireComponent = require.context('./CustomColumns', true, /\.vue$/i);
-requireComponent.keys().forEach(fileName => {
-  const componentConfig = requireComponent(fileName)
-  const componentName = upperFirst(
-      camelCase(
-          fileName
-              .split('/')
-              .pop()
-              .replace(/\.\w+$/, '')
-      )
-  );
-  Vue.component(componentName, componentConfig.default || componentConfig);
-});
 Vue.use(Datetime);
 
 export default {
