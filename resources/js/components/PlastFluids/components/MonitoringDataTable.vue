@@ -67,8 +67,8 @@ export default {
       currentPage: 1,
       allPageCount: 1,
       tableDataFilterOptions: {
-        owner: this.currentSubsoil?.owner_name || "all",
-        field: this.currentSubsoilField?.field_name || "all",
+        id_owner: this.currentSubsoil?.owner_id || "all",
+        id_field: this.currentSubsoilField?.field_id || "all",
         row_on_page: 30,
         page_number: 1,
         author: "None",
@@ -86,15 +86,15 @@ export default {
     currentSubsoil(value) {
       this.tableDataFilterOptions = {
         ...this.tableDataFilterOptions,
-        owner: value?.owner_name || "all",
-        field: "all",
+        id_owner: value?.owner_id || "all",
+        id_field: "all",
       };
       this.handleTemplateHistory();
     },
     currentSubsoilField(value) {
       this.tableDataFilterOptions = {
         ...this.tableDataFilterOptions,
-        field: value?.field_name || "all",
+        id_field: value?.field_id || "all",
       };
       this.handleTemplateHistory();
     },
