@@ -10,11 +10,16 @@ class WellPerfDrillPacker extends PlainForm
     protected $configurationFileName = 'well_perf_drill_packer';
     use DateMoreThanValidationTrait;    
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
-        
-        if (!$this->isValidDate($this->request->get('well'), $this->request->get('perf_date'), 'dict.well' , 'drill_end_date')) {
+
+        if (!$this->isValidDate(
+            $this->request->get('well'),
+            $this->request->get('perf_date'),
+            'dict.well',
+            'drill_end_date'
+        )) {
             $errors['perf_date'] = trans('bd.validation.perf_date');
         }
         return $errors;

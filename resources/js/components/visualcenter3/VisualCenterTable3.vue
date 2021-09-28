@@ -878,11 +878,13 @@
                       {{item.id + (index + 1)}}
                     </td>
                     <td
+                            @mouseover="dzoHoverIndex = index"
+                            @mouseout="dzoHoverIndex = null"
                             @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.name)}` : `${selectAllDzoCompanies()}`"
                             :class="[index % 2 === 0 ? 'tdStyle' : '','cursor-pointer']"
                     >
                       <span
-                              v-if="mainMenu.oilCondensateProductionWithoutKMG || mainMenu.oilCondensateDeliveryWithoutKMG"
+                              v-if="mainMenu.oilCondensateProductionWithoutKMG || mainMenu.oilCondensateDeliveryWithoutKMG || mainMenu.oilCondensateDeliveryOilResidue"
                               :class="isTroubleCompany(item.name) ? 'troubled-companies' : ''"
                       >
                         {{ getDzoName(item.name,dzoNameMappingWithoutKMG) }}
@@ -898,6 +900,13 @@
                       <span v-else>
                         {{ getNameDzoFull(item.name) }}
                         <img src="/img/icons/link.svg" />
+                      </span>
+                      <span
+                              v-if="isHoverShouldBeShown()"
+                              v-show="dzoHoverIndex === index"
+                              class="dzo-hovered-tooltip"
+                      >
+                        {{trans('visualcenter.participation')}}: {{dzoHoverMapping[item.name]}}
                       </span>
                     </td>
                     <td
@@ -2479,7 +2488,7 @@
           width: 20px;
         }
         &:nth-child(2) {
-          width: 370px;
+          width: 390px;
         }
       }
       td:first-child {
@@ -3049,5 +3058,16 @@
     &::-webkit-scrollbar-corner {
       background: #333975;
     }
+  }
+  .dzo-hovered-tooltip {
+    background: #272953;
+    z-index: 1000;
+    position: absolute;
+    width: 50%;
+    margin-left: 10px;
+    border: 1px solid #575975;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
   }
 </style>
