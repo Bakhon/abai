@@ -16,10 +16,19 @@ export const SELECTED_COLOR = "#8125B0"
 
 export const treemapMixin = {
     data: () => ({
-        chartTrees: []
+        chartTrees: [],
+        loadingTreemap: true
     }),
     computed: {
         charts() {
+            return []
+        },
+
+        chartsSum() {
+            return {}
+        },
+
+        chartSeries() {
             return []
         }
     },
@@ -32,13 +41,18 @@ export const treemapMixin = {
     },
     methods: {
         plotCharts() {
+            this.loadingTreemap = true
+
             this.charts.forEach((chart, index) => {
                 this.chartTrees[index] = anychart.data.tree([{
-                    name: chart.title,
                     children: this.chartSeries[chart.title]
                 }], "as-tree")
 
                 let treemap = anychart.treeMap(this.chartTrees[index])
+
+                treemap.title().useHtml(true);
+
+                treemap.title(this.getChartTitle(chart));
 
                 treemap.listen("pointDblClick", (event) => this.selectPoint(event, index))
 
@@ -48,6 +62,10 @@ export const treemapMixin = {
                     return `<span style="color: #fff; font-weight: bold"> ${this.name} </span>`
                 });
 
+                treemap.tooltip().format(function () {
+                    return `${this.value.toLocaleString()}`
+                });
+
                 treemap.container(chart.title)
 
                 treemap.hovered().fill(SELECTED_COLOR)
@@ -55,11 +73,49 @@ export const treemapMixin = {
                 treemap.selected().fill(SELECTED_COLOR)
 
                 treemap.draw()
+
+                treemap.listenOnce('chartDraw', () => this.loadingTreemap = false);
             })
         },
 
         getColor(well, key) {
             return +well[key] > 0 ? '#13B062' : '#AB130E'
+        },
+
+        getChartSubtitle({title}) {
+            if (!this.chartsSum[title]) {
+                return ''
+            }
+
+            let name = ''
+
+            if (this.chartsSum[title].profitable) {
+                name += `
+                ${this.trans('economic_reference.profitable')}: 
+                ${this.chartsSum[title].profitable.toLocaleString()}
+                `
+            }
+
+            if (this.chartsSum[title].profitless) {
+                name += `
+                ${this.trans('economic_reference.profitless')}: 
+                ${this.chartsSum[title].profitless.toLocaleString()}
+                `
+            }
+
+            return name
+        },
+
+        getChartTitle(chart) {
+            let subtitle = this.getChartSubtitle(chart)
+
+            let title = `<div> ${chart.title} </div>`
+
+            if (subtitle) {
+                title += `<br><br><div>${this.getChartSubtitle(chart)}</div>`
+            }
+
+            return title
         },
 
         selectPoint(event, index) {
