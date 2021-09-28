@@ -146,4 +146,5 @@ return array (
   'download_example' => 'Скачать шаблон',
   'upload_validation_error' => 'Ошибка загрузки файла',
   'import_data_from_excel' => 'Импорт данных из Excel в базу данных MySQL',
+  'gtm_decline_rate' => 'Темпы падения',
 );

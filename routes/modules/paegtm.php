@@ -20,6 +20,7 @@ Route::group(
                     Route::get('/', 'GTM\EcoRefs\BaseController@index')->name('paegtm-refs-list');
                     Route::get('/gtm-fact-costs-ref/upload-excel', 'GTM\EcoRefs\GtmFactCostsController@uploadExcel')->name('paegtm-gtm-fact-costs-upload-excel');
                     Route::post('/gtm-fact-costs-ref/import-excel', 'GTM\EcoRefs\GtmFactCostsController@importExcel')->name('paegtm-gtm-fact-costs-import-excel');
+                    Route::get('/gtm-decline-rate', 'GTM\EcoRefs\GtmDeclineRateController@index')->name('paegtm-gtm-decline-rate-index');
                 });
             }
         );
