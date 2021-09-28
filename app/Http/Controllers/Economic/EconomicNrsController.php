@@ -384,14 +384,10 @@ class EconomicNrsController extends Controller
             ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
             : null;
 
-        /** @var Carbon $intervalStart */
-        /** @var Carbon $intervalEnd */
-        list($intervalStart, $intervalEnd) = self::calcIntervalMonthsStartEnd(
-            $request->interval_start,
-            $request->interval_end
+        $interval = self::formatInterval(
+            Carbon::parse($request->interval_start),
+            Carbon::parse($request->interval_end)->addDay(),
         );
-
-        $interval = self::formatInterval($intervalStart->copy(), $intervalEnd->copy());
 
         $sumKeys = [
             "Operating_profit",

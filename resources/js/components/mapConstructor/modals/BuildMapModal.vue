@@ -157,8 +157,12 @@
                     </b-card>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary"> {{ trans('map_constructor.apply') }}</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> {{ trans('map_constructor.close') }}</button>
+                    <button type="button" class="btn btn-primary">
+                      {{ trans('map_constructor.apply') }}
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                      {{ trans('map_constructor.close') }}
+                    </button>
                 </div>
             </div>
         </div>
