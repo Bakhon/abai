@@ -33,10 +33,10 @@
                 "validation": "required|date"
               },
               {
-                "code":"work_status",
-                "type":"dict",
-                "title":"well_status_type",
-                "validation":"required|exists:tbd.dict.work_status,id",
+                "code": "work_status",
+                "type": "dict",
+                "title": "well_status_type",
+                "validation": "required|exists:tbd.dict.drill_work_status,id",
                 "dict": "work_status"
               },
               {
