@@ -27,21 +27,36 @@ class Kpc extends KrsPrs
 
         return $errors;
     }
+    protected function submitForm(): array
+    {
+        $formFields = $this->request->except('by_ourselves');
 
-    protected function submit(){
-      
-       DB::connection('tbd')
-       ->table('prod.gtm')
-       ->insert(
-           [
-                'well' => $this->request->get('well'),
-                'dbeg' => $this->request->get('dbeg'),
-                'dend' => $this->request->get('dend'),
-                'gtm_type' => $this->request->get('gtm_type'),
-                'company' => $this->request->get('contractor'),
-                'well_previous_status_type' => $this->request->get('well_previous_status_type'),
-                'well_previous_category' => $this->request->get('well_previous_category')
-           ]
-       );
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+
+        if (!empty($formFields['id'])) {
+            $id = $dbQuery->where('id', $formFields['id'])->update($formFields);
+        } else {
+            $id = $dbQuery->insertGetId($formFields);
+        }
+        if($this->request->get('gtm_type')){
+            DB::connection('tbd')
+                ->table('prod.gtm')
+                ->insert(
+                    [
+                            'well' => $this->request->get('well'),
+                            'dbeg' => $this->request->get('dbeg'),
+                            'dend' => $this->request->get('dend'),
+                            'gtm_type' => $this->request->get('gtm_type'),
+                            'company' => $this->request->get('contractor'),
+                            'well_previous_status_type' => $this->request->get('well_previous_status_type'),
+                            'well_previous_category' => $this->request->get('well_previous_category')
+                    ]
+            );
+        }
+        
+       
+        DB::commit();
+
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 }
