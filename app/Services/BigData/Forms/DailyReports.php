@@ -20,7 +20,6 @@ abstract class DailyReports extends TableForm
     const ALL = 'ЦИТС/ГС';
 
     protected $metricCode = '';
-    protected $configurationFileName = 'daily_reports';
 
     public function getResults(): array
     {
@@ -168,13 +167,21 @@ abstract class DailyReports extends TableForm
     {
         $type = $filter->type;
 
-        $columns = $this->getFields()->filter(function ($column) use ($type) {
-            if (empty($column['show_if'])) {
-                return true;
-            }
+        $columns = $this->getFields()
+            ->filter(function ($column) use ($type) {
+                if (empty($column['show_if'])) {
+                    return true;
+                }
 
-            return in_array($type, $column['show_if']['type']);
-        })->values();
+                return in_array($type, $column['show_if']['type']);
+            })
+            ->map(function ($column) use ($type) {
+                if ($type === self::GS && $column['code'] === 'fact') {
+                    $column['is_editable'] = false;
+                }
+                return $column;
+            })
+            ->values();
 
         return $columns;
     }
