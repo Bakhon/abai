@@ -1,0 +1,210 @@
+{
+  "type": "table",
+  "columns": [
+    {
+      "title": "uwi_number",
+      "code": "uwi",
+      "type": "link",
+      "is_editable": false
+    },
+    {
+      "title": "bottom_hole",
+      "table": "prod.bottom_hole",
+      "column": "depth",
+      "code": "bottom_hole",
+      "date_field": "data",
+      "metric_code": "TD",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "horizon",
+      "code": "horizon",
+      "table": "prod.well_geo",
+      "column": "name_ru",
+      "metric_code": "HRZ",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "diameter",
+      "code": "od",
+      "table": "prod.well_constr",
+      "column": "od",
+      "additional_filter": {
+        "casing_type": {
+          "table": "dict.equip_type",
+          "fields": {
+            "code": [
+              "ECS",
+              "BECS",
+              "AECS"
+            ]
+          }
+        }
+      },
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "sk_type",
+      "code": "equip_type",
+      "table": "prod.well_equip",
+      "column": "equip_type",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "prm",
+      "code": "param_dian",
+      "table": "prod.well_equip_param",
+      "column": "prm",
+      "type": "float",
+      "metric_code": "DIAN",
+      "is_editable": false
+    },
+    {
+      "title": "depth",
+      "code": "param_psd",
+      "table": "prod.well_equip_param",
+      "column": "prm",
+      "type": "float",
+      "metric_code": "PSD",
+      "is_editable": false
+    },
+    {
+      "title": "diameter_nkt",
+      "code": "od",
+      "table": "prod.well_constr",
+      "column": "od",
+      "type": "float",
+      "additional_filter": {
+        "casing_type": {
+          "table": "dict.equip_type",
+          "fields": {
+            "name_ru": [
+              "НКТ"
+            ]
+          }
+        }
+      },
+      "is_editable": false
+    },
+    {
+      "title": "d_stg",
+      "code": "param_stg",
+      "table": "prod.well_equip_param",
+      "column": "prm",
+      "type": "float",
+      "metric_code": "STG",
+      "is_editable": false
+    },
+    {
+      "title": "dlina",
+      "code": "param_plst",
+      "table": "prod.well_equip_param",
+      "column": "prm",
+      "type": "float",
+      "metric_code": "PLST",
+      "is_editable": false
+    },
+    {
+      "title": "rpm",
+      "code": "param_rpm",
+      "table": "prod.well_equip_param",
+      "column": "prm",
+      "type": "float",
+      "metric_code": "RPM",
+      "is_editable": false
+    },
+    {
+      "title": "QZh",
+      "code": "qzh",
+      "table": "prod.tech_mode_prod_oil",
+      "column": "liquid",
+      "type": "float",
+      "validation": "gte:0",
+      "validate_deviation": true,
+      "is_editable": true
+    },
+    {
+      "title": "wcut",
+      "code": "wcut",
+      "table": "prod.tech_mode_prod_oil",
+      "column": "wcut",
+      "validation":"gte:0|lte:100",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "Qn",
+      "code": "Qn",
+      "type": "calc",
+      "formula": "Math.round($qzh$ * (1 - $wcut$/100) * $oil_density$)",
+      "is_editable": false
+    },
+    {
+      "title": "worktime",
+      "code": "worktime",
+      "table": "prod.well_status",
+      "column": "well_status_type_id",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "avg_liquid_prev_month",
+      "code": "avg_liquid_prev_month",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "avg_wcut_prev_month",
+      "code": "avg_wcut_prev_month",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "avg_oil_prev_month",
+      "code": "avg_oil_prev_month",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "sum_oil_prev_month",
+      "code": "sum_oil_prev_month",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "oil_density",
+      "code": "oil_density",
+      "table": "prod.tech_mode_prod_oil",
+      "column": "oil_density",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "dbeg",
+      "code": "dbeg",
+      "table": "prod.tech_mode_prod_oil",
+      "column": "dbeg",
+      "type": "date",
+      "is_editable": false
+    },
+    {
+      "title": "dend",
+      "code": "dend",
+      "table": "prod.tech_mode_prod_oil",
+      "column": "dend",
+      "type": "date",
+      "is_editable": false
+    },
+    {
+      "title": "events",
+      "code": "events",
+      "type": "form",
+      "form": "tech_events",
+      "is_editable": true
+    }
+  ]
+}

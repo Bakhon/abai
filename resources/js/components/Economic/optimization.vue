@@ -1,16 +1,16 @@
 <template>
   <div class="position-relative">
     <div class="row">
-      <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
+      <div class="col-12 px-2 py-3 bg-main1 mb-10px">
         <select-scenario-variations
-            v-if="scenarioVariation.isFullScreen"
+            :form="form"
             :scenario-variation="scenarioVariation"
             :scenario-variations="scenarioVariations"
-            class="row p-3"
-            is-inline/>
+            @changeOrg="getData()"/>
+      </div>
 
-        <div v-else
-             class="row text-white text-wrap flex-nowrap mb-10px">
+      <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
+        <div class="row text-white text-wrap flex-nowrap mb-10px">
           <div
               v-for="(header, index) in calculatedHeaders"
               :key="`calculated_${index}`"
@@ -204,39 +204,6 @@
             </div>
           </div>
         </div>
-
-        <div class="bg-main1 p-3 text-white text-wrap">
-          <div class="font-size-16px line-height-22px font-weight-bold mb-3">
-            {{ trans('economic_reference.select_optimization_scenarios') }}
-          </div>
-
-          <select-organization
-              :form="form"
-              class="mb-3"
-              @change="getData"/>
-
-          <select
-              v-model="form.scenario_id"
-              id="scenarios"
-              class="mb-3 form-control text-white border-0 bg-dark-blue"
-              @change="selectScenario">
-            <option
-                v-for="item in scenarios"
-                :key="item.value"
-                :value="item.value">
-              {{ item.label }}
-            </option>
-          </select>
-
-          <select-scenario-variations
-              v-if="form.scenario_id"
-              :scenario-variation="scenarioVariation"
-              :scenario-variations="scenarioVariations"/>
-
-          <button class="btn btn-primary mt-4 py-2 w-100 border-0 bg-export">
-            {{ trans('economic_reference.export_excel') }}
-          </button>
-        </div>
       </div>
     </div>
   </div>
@@ -257,6 +224,7 @@ import PercentBadge from "./components/PercentBadge";
 import PercentBadgeIcon from "./components/PercentBadgeIcon";
 import PercentProgress from "./components/PercentProgress";
 import SelectOrganization from "./components/SelectOrganization";
+import SelectScenario from "./components/SelectScenario";
 import SelectScenarioVariations from "./components/SelectScenarioVariations";
 import Tables from "./components/Tables";
 
@@ -385,6 +353,7 @@ export default {
     PercentBadgeIcon,
     PercentProgress,
     SelectOrganization,
+    SelectScenario,
     SelectScenarioVariations,
     Tables,
   },
@@ -572,19 +541,6 @@ export default {
       ]
     },
 
-    scenarios() {
-      return [
-        {
-          label: this.trans('economic_reference.basic_variant'),
-          value: null,
-        },
-        {
-          label: this.trans('economic_reference.test_scenario'),
-          value: 6,
-        }
-      ]
-    },
-
     scenario() {
       let scenario = this.res.scenarios.find(item =>
           item.oil_price === this.scenarioVariation.oil_price &&
@@ -712,20 +668,6 @@ export default {
       }
 
       this.SET_LOADING(false);
-    },
-
-    selectScenario() {
-      this.scenarioVariation.dollar_rate = this.scenarioVariations.dollar_rates[0]
-
-      this.scenarioVariation.oil_price = this.scenarioVariations.oil_prices[0]
-
-      this.scenarioVariation.salary_percent = this.scenarioVariations.salary_percents[0].value
-
-      this.scenarioVariation.retention_percent = this.scenarioVariations.retention_percents[0].value
-
-      this.scenarioVariation.optimization_percent.cat_1 = this.scenarioVariations.optimization_percents[0].value.cat_1
-
-      this.scenarioVariation.optimization_percent.cat_2 = this.scenarioVariations.optimization_percents[0].value.cat_2
     },
 
     liquidValue(optimized = true) {

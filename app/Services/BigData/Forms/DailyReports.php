@@ -15,6 +15,10 @@ abstract class DailyReports extends TableForm
     const MONTH = 1;
     const YEAR = 2;
 
+    const CITS = 'ЦИТС';
+    const GS = 'ГС';
+    const ALL = 'ЦИТС/ГС';
+
     protected $metricCode = '';
 
     public function getResults(): array
@@ -23,21 +27,29 @@ abstract class DailyReports extends TableForm
             'id' => $this->request->get('id')
         ];
         $filter = json_decode($this->request->get('filter'));
-        if ($this->request->get('id')) {
-            $org = Org::find($this->request->get('id'));
-            if (!$org) {
-                return ['rows' => []];
-            }
-            $result['org_name'] = ['value' => $org->name_ru];
+        if (!$this->request->get('id')) {
+            return ['rows' => []];
         }
-        $filter->optionId = $filter->optionId ?? 0;
+
+        $org = Org::find($this->request->get('id'));
+        if (!$org) {
+            return ['rows' => []];
+        }
+        $result['org_name'] = ['value' => $org->name_ru];
+
 
         foreach ([self::DAY, self::MONTH, self::YEAR] as $period) {
             $filter->period = $period;
-            $data = $this->getData($filter);
+            $data = $this->getData($org, $filter);
             $result += $data;
         }
-        return ['rows' => [$result]];
+
+        $columns = $this->getColumns($filter);
+
+        return [
+            'columns' => $columns,
+            'rows' => [$result]
+        ];
     }
 
     protected function saveSingleFieldInDB(array $params): void
@@ -103,7 +115,7 @@ abstract class DailyReports extends TableForm
         return $startDate;
     }
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 
@@ -150,4 +162,61 @@ abstract class DailyReports extends TableForm
         $fieldLimitsService = app()->make(FieldLimitsService::class);
         return $fieldLimitsService->calculateColumnLimits('fact', $reports);
     }
+
+    protected function getColumns(\stdClass $filter): Collection
+    {
+        $type = $filter->type;
+
+        $columns = $this->getFields()
+            ->filter(function ($column) use ($type) {
+                if (empty($column['show_if'])) {
+                    return true;
+                }
+
+                return in_array($type, $column['show_if']['type']);
+            })
+            ->map(function ($column) use ($type) {
+                if ($type === self::GS && $column['code'] === 'fact') {
+                    $column['is_editable'] = false;
+                }
+                return $column;
+            })
+            ->values();
+
+        return $columns;
+    }
+
+    protected function getData(Org $org, \stdClass $filter): array
+    {
+        $data = $this->getReports($filter);
+        $result = [];
+        $plan = $data->sum('plan');
+        $fact = $data->sum('fact');
+        switch ($filter->period) {
+            case self::DAY:
+                $result['plan'] = ['value' => $plan];
+                $result['fact'] = $result['daily_fact_cits'] = ['value' => $fact];
+                break;
+            case self::MONTH:
+                $result['month_plan'] = ['value' => $plan];
+                $result['month_fact'] = $result['month_fact_cits'] = ['value' => $fact];
+                break;
+            case self::YEAR:
+                $result['year_plan'] = ['value' => $plan];
+                $result['year_fact'] = $result['year_fact_cits'] = ['value' => $fact];
+                break;
+        }
+
+        if ($filter->type === self::GS) {
+            $result['fact'] = ['value' => 0];
+            $result['month_fact'] = ['value' => 0];
+            $result['year_fact'] = ['value' => 0];
+        }
+        $result['daily_fact_gs'] = ['value' => 0];
+        $result['month_fact_gs'] = ['value' => 0];
+        $result['year_fact_gs'] = ['value' => 0];
+
+        return $result;
+    }
+
 }

@@ -7,14 +7,15 @@
       <template v-if="filter">
         <template v-if="formParams && formParams.filter">
           <template v-for="filterItem in formParams.filter">
-            <span class="bd-main-block__filter-title">{{ filterItem.title }}:</span>
+
+            <span v-if="filterItem.title" class="bd-main-block__filter-title">{{ filterItem.title }}:</span>
             <div
                 v-if="filterItem.type === 'date'"
                 class="bd-main-block__filter-input bd-main-block__filter-input_date"
             >
               <datetime
                   v-model="filter[filterItem.code]"
-                  :flow="['year', 'month']"
+                  :flow="filterItem.flow || ['year', 'month', 'date']"
                   :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                   :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
                   auto
@@ -26,12 +27,13 @@
               </datetime>
             </div>
             <div
-                v-else-if="filterItem.type === 'dict'"
+                v-else
                 class="bd-main-block__filter-input"
             >
               <bigdata-form-field
                   v-model="filter[filterItem.code]"
                   :item="filterItem"
+                  :value="filterItem.default || null"
               >
               </bigdata-form-field>
             </div>
@@ -54,29 +56,6 @@
             </datetime>
           </div>
         </template>
-      </template>
-
-      <template v-if="form && form.actions && form.actions.length > 0">
-        <div class="dropdown">
-          <button id="dropdownMenuButton" aria-expanded="false" aria-haspopup="true" class="download-curve-button"
-                  data-toggle="dropdown" type="button">
-            {{ trans('bd.actions') }}
-            <svg fill="none" height="6" viewBox="0 0 12 6" width="12" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white"
-                    stroke-linecap="round" stroke-width="1.4"/>
-            </svg>
-          </button>
-          <div aria-labelledby="dropdownMenuButton" class="dropdown-menu">
-            <template v-for="action in form.actions">
-              <a v-if="action.action === 'create'" class="dropdown-item" href="#"
-                 @click="showForm(action.form)">{{ action.title }}</a>
-              <a v-else-if="action.action === 'edit'" class="dropdown-item" href="#"
-                 @click="editRow(selectedRow, action.form)">{{ action.title }}</a>
-              <a v-else-if="action.action === 'delete'" class="dropdown-item" href="#"
-                 @click="deleteRow(selectedRow, action.form)">{{ action.title }}</a>
-            </template>
-          </div>
-        </div>
       </template>
     </div>
     <div class="bd-main-block__body">
@@ -167,7 +146,8 @@ export default {
 
       let filter = {}
       this.formParams.filter.forEach(filterItem => {
-        filter[filterItem.code] = filterItem.type === 'date' ? moment(filterItem.default || null).toISOString() : null
+        let value = filterItem.default || null
+        filter[filterItem.code] = filterItem.type === 'date' ? moment(value).toISOString() : value
       })
 
       this.filter = filter

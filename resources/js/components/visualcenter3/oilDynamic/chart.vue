@@ -32,7 +32,7 @@ export default {
     components: {
         "apexchart": VueApexCharts
     },
-    props: ["chartData", "name"],
+    props: ["chartData", "name",'isDaily'],
     data: function () {
         return {
         };
@@ -41,7 +41,7 @@ export default {
         chartOptions() {
             return {
                 grid: {
-                    show: true,
+                    show: false,
                     borderColor: "#90A4AE",
                     padding: {
                         top: 0,
@@ -54,13 +54,41 @@ export default {
                     enabled: false,
                 },
                 labels: this.chartData.labels,
-                colors: ['#009847','#2E50E9'],
+                colors: ['#999DC0','#2E50E9'],
                 tooltip: {
                     enabled: true,
                     theme: 'dark',
                 },
                 yaxis: {
                     show: true,
+                    labels: {
+                        formatter: (num) => {
+                            if (this.isDaily) {
+                                return new Intl.NumberFormat("ru-RU").format(num);
+                            }
+                            if (num >= 1000) {
+                                num = (num / 1000).toFixed(0);
+                            } else if (num >= 100) {
+                                num = Math.round((num / 1000) * 10) / 10;
+                            } else if (num >= 10) {
+                                num = Math.round((num / 1000) * 100) / 100;
+                            } else if (num > 0) {
+                                num = 0.01;
+                            } else {
+                                num = 0;
+                            }
+                            return new Intl.NumberFormat("ru-RU").format(num);
+                        }
+                    },
+                },
+                xaxis: {
+                    tickAmount: 5,
+                    labels: {
+                        rotate: 0,
+                        formatter: (num) => {
+                            return moment(num,'DD.MM.YYYY').format('DD MMM');
+                        }
+                    },
                 },
                 chart: {
                     type: 'line',
@@ -85,6 +113,6 @@ export default {
         series() {
             return this.chartData.series;
         }
-    },
+    }
 };
 </script>

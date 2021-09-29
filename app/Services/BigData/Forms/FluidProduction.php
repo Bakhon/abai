@@ -14,7 +14,7 @@ class FluidProduction extends MeasurementLogForm
     public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
-        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
+        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, []);
 
         $tables = $this->getFields()->pluck('table')->filter()->unique();
         $rowData = $this->fetchRowData(

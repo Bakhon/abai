@@ -373,6 +373,7 @@ return array (
         'DAILY_DRILLING_REPORT' => 'Суточный буровой рапорт',
         'IMPORT_DRILLING_REPORT' => 'Импорт бурового рапорта',
         'date' => 'Дата',
+        'save' => 'Сохранить',
         'report' => 'Рапорт',
         'page' => 'Страница',
         'unit_name' => 'Название Установки',
@@ -611,9 +612,10 @@ return array (
         'TB_meeting' => 'Собрание по Т/Б',
         'drilling_supervisor' => 'Супервайзер по бурению:',
         'drilling_fluid_engineer' => 'Инженер по буровым раствором:',
+        'drilling_fluid_engineer' => 'Инженер по буровым раствором:',
 
 
-        'explanation_abbreviation' => 'Расшифровка сокрашении для персонала КТМ',
+        'explanation_abbreviation' => 'Расшифровка сокрашении',
         'ea_bo' => 'БО - буровое оборудование',
         'ea_pvo' => 'ПВО - противовыбросовое оборудование',
         'ea_ou' => 'ОУ - оборудование устья',

@@ -33,7 +33,7 @@ import {
     rightwardsArrow,
     downwardsArrow,
     upwardsArrow,
-    copy, returnButton, AppendXYHingeToXSection, AddPaddingToTheXScreen, minus, plus
+    copy, returnButton, AppendXYHingeToXSection, AddPaddingToTheXScreen, minus, plus,loading
 } from "./iconsPack.js";
 
 export default {
@@ -65,5 +65,6 @@ export default {
     u1,
     welltops,
     ybs,
-    zoneStatic
+    zoneStatic,
+    loading
 }

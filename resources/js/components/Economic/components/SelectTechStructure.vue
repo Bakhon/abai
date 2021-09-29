@@ -39,7 +39,7 @@ export default {
   }),
   computed: {
     url() {
-      return this.localeUrl(`/tech-struct-${this.formKey}/get-data`)
+      return this.localeUrl(`/economic/technical/structure/${this.formKey}/get-data`)
     }
   },
   created() {

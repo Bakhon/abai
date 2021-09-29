@@ -294,6 +294,7 @@ return array (
       'plot' => 'Участок',
       'roughness' => 'Жесткость',
       'thickness' => 'Толщина стенок',
+      'sizes' => 'Внешний диаметр х толщина стенки мм',
     ),
     'edit_title' => 'Редактирование данных по трубопроводу',
     'pipe' => 'Трубопровод',
@@ -324,6 +325,7 @@ return array (
       'heater_output_temperature' => 'Температура печи',
       'surge_tank_pressure' => 'Давление в буферной емкости',
       'daily_gas_production_in_sib' => 'Количество газа в СИБ',
+      'gas_factor' => 'Газовый фактор',
     ),
     'redirect-to' => 'Перейти на',
     'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ ГУ',
@@ -391,8 +393,8 @@ return array (
     'fields' => 
     array (
       'length' => 'Протяженность, м',
-      'pressure_start' => 'Давление начальное, ата',
-      'pressure_end' => 'Давление конечное, ата',
+      'pressure_start' => 'Давление начальное, бар',
+      'pressure_end' => 'Давление конечное, бар',
       'temperature_start' => 'Температура начальная, °С',
       'temperature_end' => 'Температура конечная, °С',
       'start_point' => 'Начальная точка',

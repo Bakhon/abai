@@ -152,7 +152,7 @@ class CalculateHydroDynamics implements ShouldQueue
                 break;
             }
 
-            $temperature = $points[$key]->omgngdu->heater_output_temperature;
+            $temperature = $points[$key]->omgngdu->heater_output_temperature ? $points[$key]->omgngdu->heater_output_temperature : $points[$key]->omgngdu->heater_inlet_temperature;
             $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
             $points[$key]->omgngdu->heater_output_temperature = $temperature;
 

@@ -16,8 +16,10 @@ class Tech extends TBDModel
     const TYPE_SPGU = 'SSU';
     const TYPE_KNS = 'GPST';
     const TYPE_BKNS = 'MGPST';
+    const TYPE_OPPS = 'OPPS';
+    const TYPE_OTU = 'OTU';
 
-    public function parent()
+    public function parentItem()
     {
         return $this->belongsTo(Tech::class, 'parent', 'id');
     }

@@ -38,6 +38,10 @@ body{
     background-color: $color;
   }
 
+  .color-#{$name} {
+    color: $color;
+  }
+
 }
 
 .bg-dark{
