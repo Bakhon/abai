@@ -10,262 +10,264 @@
                 <span class="header_icon ml-1"></span>
                 <div class="d-flex justify-content-between">
                     <span class="header_icon-switch mr-1"></span>
-                    <span class="underline cursor-pointer header_title px-1">Исторические сведения по добыче нефти</span>
+                    <span class="underline cursor-pointer header_title px-1" @click="SET_VISIBLE(true)">Исторические сведения по добыче нефти</span>
                 </div>
             </div>
-            <div class="d-flex mt-1">
-                <div class="col-12 center_block d-flex justify-content-between">
-                    <div class="col-11">Сводная информация</div>
-                    <div class="col-1 d-flex rounded" @click="isFreeInfoShown = !isFreeInfoShown">
-                        <div class="col-2 splitter"></div>
-                        <div :class="[isFreeInfoShown ? 'arrow-expand' : 'arrow-cut-down','col-10']"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex mt-1">
-                <div :class="[!isFreeInfoShown ? 'd-none' : '','col-12 p-0']">
-                    <table class="table table-striped text-white text-nowrap">
-                        <tbody>
-                            <tr>
-                                <td>Гор (проект/факт): Ю4</td>
-                                <td rowspan="3">Инт.перф:</td>
-                                <td rowspan="2">Г/ф: 0.0</td>
-                                <td>Ø экс.к.: 0.0</td>
-                                <td>дата обустройства:</td>
-                            </tr>
-                            <tr>
-                                <td>Зона/Рнас: /69</td>
-                                <td>Вид скважины: Вертикальная</td>
-                                <td>дата в действ.фонд: 27.03.2021</td>
-                            </tr>
-                            <tr>
-                                <td>Иск. заб.: 0.0</td>
-                                <td rowspan="2">ТПН: 66.5</td>
-                                <td>ЦДНГ/ГУ/ряд: ЦДНГ-02/ГУ-45/15-18</td>
-                                <td>Тип.УО:</td>
-                            </tr>
-                            <tr>
-                                <td>Факт.заб.: 0.0</td>
-                                <td>НКТ: /-/-/-</td>
-                                <td>Спут./отвод:</td>
-                                <td>Экс.г:</td>
-                            </tr>
-                            <tr>
-                                <td>Вл.наг:</td>
-                                <td>Штанги: /-/-/-</td>
-                                <td>ГИС: ГИС в открытом стволе/25.01.2021</td>
-                                <td>Примечание:</td>
-                                <td>К/Г: Заводская</td>
-                            </tr>
-                            <tr>
-                                <td>ПФП:</td>
-                                <td>Тип. СК:</td>
-                                <td>Lх или Ø шкива:</td>
-                                <td></td>
-                                <td>обр.кл.: Нет</td>
-                            </tr>
-                            <tr>
-                                <td>Посл. ПРС:</td>
-                                <td>Тип и Ø насоса: -/-</td>
-                                <td>ГРП:</td>
-                                <td></td>
-                                <td>Доп. оборудования:</td>
-                            </tr>
-                            <tr>
-                                <td>Посл. Рпл:</td>
-                                <td></td>
-                                <td>Совм.скв.:</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Посл. КРС:</td>
-                                <td>Sк:</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="d-flex mt-1">
-                <div class="col-12 center_block d-flex">
-                    <div class="col-12">График замеров</div>
-                </div>
-            </div>
-            <div v-for="periodItem in historicalData" class="historical-container">
-                <div class="row m-0 mt-1">
-                    <div class="col-12 center_block d-flex">
-                        <div class="col-12">{{periodItem.measurementSchedule.title}}</div>
-                    </div>
-                    <div class="col-12 p-0 d-flex historical-info">
-                        <div class="p-0">
-                            <table class="table text-center text-white text-nowrap historical-table">
-                                <thead>
-                                    <tr>
-                                        <th>Год /<br>Месяц</th>
-                                        <th>По</th>
-                                        <th>L</th>
-                                        <th>Ø<br>штуцера</th>
-                                        <th>Вид<br>агента</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="background_light">
-                                        <td v-for="(scheduleItem,key,index) in periodItem.measurementSchedule">
-                                            {{scheduleItem}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td v-for="emptyItem in 5">
-                                            &nbsp;
-                                        </td>
-                                    </tr>
-                                    <tr class="background_dark">
-                                        <td v-for="emptyItem in 5">
-                                            &nbsp;
-                                        </td>
-                                    </tr>
-                                    <tr class="background_light">
-                                        <td v-for="emptyItem in 5">
-                                            &nbsp;
-                                        </td>
-                                    </tr>
-                                    <tr class="background_dark">
-                                        <td v-for="emptyItem in 5">
-                                            &nbsp;
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="p-0">
-                            <table class="table text-center text-white text-nowrap historical-table">
-                                <thead>
-                                    <tr>
-                                        <th>Показатель</th>
-                                        <th>Тех. <br>Режим</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr
-                                            v-for="(techModeItem,index) in periodItem.techMode"
-                                            :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
-                                    >
-                                        <td v-if="techModeItem.value">
-                                            {{techModeItem.label}}
-                                        </td>
-                                        <td v-else colspan="2">
-                                            {{techModeItem.label}}
-                                        </td>
-                                        <td v-if="techModeItem.value">
-                                            {{techModeItem.value}}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="p-0" id="monthly-parent">
-                            <table class="table text-center text-white text-nowrap historical-table" id="monthly-info">
-                                <thead>
-                                    <tr>
-                                        <th v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)">{{dayNumber}}<br>&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(dayData,index) in periodItem.monthlyData" :class="index % 2 === 0 ? 'background_light' : 'background_dark'">
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                v-if="dayData.injectivity[dayNumber-1]"
-                                        >
-                                            {{dayData.injectivity[dayNumber-1]}}
-                                        </td>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                v-if="dayData.injectionPressure[dayNumber-1]"
-                                        >
-                                            {{dayData.injectionPressure[dayNumber-1]}}
-                                        </td>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                v-if="dayData.wellCondition[dayNumber-1]"
-                                        >
-                                            {{dayData.wellCondition[dayNumber-1]}}
-                                        </td>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                v-if="dayData.processedTime[dayNumber-1]"
-                                        >
-                                            {{dayData.processedTime[dayNumber-1]}}
-                                        </td>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                v-if="dayData.gtm[dayNumber-1]"
-                                        >
-                                            {{dayData.gtm[dayNumber-1]}}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+            <div class="TEST">
+                <div class="d-flex mt-1">
+                    <div class="col-12 center_block d-flex justify-content-between">
+                        <div class="col-11">Сводная информация</div>
+                        <div class="col-1 d-flex rounded" @click="isFreeInfoShown = !isFreeInfoShown">
+                            <div class="col-2 splitter"></div>
+                            <div :class="[isFreeInfoShown ? 'arrow-expand' : 'arrow-cut-down','col-10']"></div>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex mt-1">
-                    <div class="col-3 form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="activityCheck" @click="isActivityShown = !isActivityShown">
-                        <label class="form-check-label" for="activityCheck">
-                            Показать мероприятия
-                        </label>
-                    </div>
-                    <div v-if="isActivityShown" class="col-9 p-0">
-                        <table class="table text-center text-white text-nowrap historical-table">
-                            <thead>
-                                <tr>
-                                    <th>№</th>
-                                    <th>Дата</th>
-                                    <th>Тип<br>мероприятия</th>
-                                    <th>Доп. информация</th>
-                                    <th>Состояние</th>
-                                    <th>Категория<br>скважины</th>
-                                    <th>Способ<br>эксплуатации</th>
-                                </tr>
-                            </thead>
+                    <div :class="[!isFreeInfoShown ? 'd-none' : '','col-12 p-0']">
+                        <table class="table table-striped text-white text-nowrap">
                             <tbody>
-                                <tr
-                                        v-for="(activity,index) in periodItem.activity"
-                                        :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
-                                >
-                                    <td>{{index+1}}</td>
-                                    <td>{{activity.date}}</td>
-                                    <td>{{activity.explanation}}</td>
-                                    <td>{{activity.additionalInfo}}</td>
-                                    <td>{{activity.condition}}</td>
-                                    <td>{{activity.category}}</td>
-                                    <td>{{activity.operationWay}}</td>
+                                <tr>
+                                    <td>Гор (проект/факт): Ю4</td>
+                                    <td rowspan="3">Инт.перф:</td>
+                                    <td rowspan="2">Г/ф: 0.0</td>
+                                    <td>Ø экс.к.: 0.0</td>
+                                    <td>дата обустройства:</td>
+                                </tr>
+                                <tr>
+                                    <td>Зона/Рнас: /69</td>
+                                    <td>Вид скважины: Вертикальная</td>
+                                    <td>дата в действ.фонд: 27.03.2021</td>
+                                </tr>
+                                <tr>
+                                    <td>Иск. заб.: 0.0</td>
+                                    <td rowspan="2">ТПН: 66.5</td>
+                                    <td>ЦДНГ/ГУ/ряд: ЦДНГ-02/ГУ-45/15-18</td>
+                                    <td>Тип.УО:</td>
+                                </tr>
+                                <tr>
+                                    <td>Факт.заб.: 0.0</td>
+                                    <td>НКТ: /-/-/-</td>
+                                    <td>Спут./отвод:</td>
+                                    <td>Экс.г:</td>
+                                </tr>
+                                <tr>
+                                    <td>Вл.наг:</td>
+                                    <td>Штанги: /-/-/-</td>
+                                    <td>ГИС: ГИС в открытом стволе/25.01.2021</td>
+                                    <td>Примечание:</td>
+                                    <td>К/Г: Заводская</td>
+                                </tr>
+                                <tr>
+                                    <td>ПФП:</td>
+                                    <td>Тип. СК:</td>
+                                    <td>Lх или Ø шкива:</td>
+                                    <td></td>
+                                    <td>обр.кл.: Нет</td>
+                                </tr>
+                                <tr>
+                                    <td>Посл. ПРС:</td>
+                                    <td>Тип и Ø насоса: -/-</td>
+                                    <td>ГРП:</td>
+                                    <td></td>
+                                    <td>Доп. оборудования:</td>
+                                </tr>
+                                <tr>
+                                    <td>Посл. Рпл:</td>
+                                    <td></td>
+                                    <td>Совм.скв.:</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Посл. КРС:</td>
+                                    <td>Sк:</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
-            <div class="d-flex justify-content-end bottom-buttons">
-                <div class="p-1 d-flex align-items-center">
-                    <img class="pr-1" src="/img/icons/repeat.svg" alt="">
-                    Сформировать
+                <div class="d-flex mt-1">
+                    <div class="col-12 center_block d-flex">
+                        <div class="col-12">График замеров</div>
+                    </div>
                 </div>
-                <div class="p-1 ml-2 d-flex align-items-center">
-                    <img class="pr-1" src="/img/icons/help.svg" alt="">
-                    Легенда
+                <div v-for="periodItem in historicalData" class="historical-container">
+                    <div class="row m-0 mt-1">
+                        <div class="col-12 center_block d-flex">
+                            <div class="col-12">{{periodItem.measurementSchedule.title}}</div>
+                        </div>
+                        <div class="col-12 p-0 d-flex historical-info">
+                            <div class="p-0">
+                                <table class="table text-center text-white text-nowrap historical-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Год /<br>Месяц</th>
+                                            <th>По</th>
+                                            <th>L</th>
+                                            <th>Ø<br>штуцера</th>
+                                            <th>Вид<br>агента</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="background_light">
+                                            <td v-for="(scheduleItem,key,index) in periodItem.measurementSchedule">
+                                                {{scheduleItem}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td v-for="emptyItem in 5">
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr class="background_dark">
+                                            <td v-for="emptyItem in 5">
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr class="background_light">
+                                            <td v-for="emptyItem in 5">
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                        <tr class="background_dark">
+                                            <td v-for="emptyItem in 5">
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="p-0">
+                                <table class="table text-center text-white text-nowrap historical-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Показатель</th>
+                                            <th>Тех. <br>Режим</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                                v-for="(techModeItem,index) in periodItem.techMode"
+                                                :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
+                                        >
+                                            <td v-if="techModeItem.value">
+                                                {{techModeItem.label}}
+                                            </td>
+                                            <td v-else colspan="2">
+                                                {{techModeItem.label}}
+                                            </td>
+                                            <td v-if="techModeItem.value">
+                                                {{techModeItem.value}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="p-0" id="monthly-parent">
+                                <table class="table text-center text-white text-nowrap historical-table" id="monthly-info">
+                                    <thead>
+                                        <tr>
+                                            <th v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)">{{dayNumber}}<br>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(dayData,index) in periodItem.monthlyData" :class="index % 2 === 0 ? 'background_light' : 'background_dark'">
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
+                                                    v-if="dayData.injectivity[dayNumber-1]"
+                                            >
+                                                {{dayData.injectivity[dayNumber-1]}}
+                                            </td>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
+                                                    v-if="dayData.injectionPressure[dayNumber-1]"
+                                            >
+                                                {{dayData.injectionPressure[dayNumber-1]}}
+                                            </td>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
+                                                    v-if="dayData.wellCondition[dayNumber-1]"
+                                            >
+                                                {{dayData.wellCondition[dayNumber-1]}}
+                                            </td>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
+                                                    v-if="dayData.processedTime[dayNumber-1]"
+                                            >
+                                                {{dayData.processedTime[dayNumber-1]}}
+                                            </td>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
+                                                    v-if="dayData.gtm[dayNumber-1]"
+                                            >
+                                                {{dayData.gtm[dayNumber-1]}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex mt-1">
+                        <div class="col-3 form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="activityCheck" @click="isActivityShown = !isActivityShown">
+                            <label class="form-check-label" for="activityCheck">
+                                Показать мероприятия
+                            </label>
+                        </div>
+                        <div v-if="isActivityShown" class="col-9 p-0">
+                            <table class="table text-center text-white text-nowrap historical-table">
+                                <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Дата</th>
+                                        <th>Тип<br>мероприятия</th>
+                                        <th>Доп. информация</th>
+                                        <th>Состояние</th>
+                                        <th>Категория<br>скважины</th>
+                                        <th>Способ<br>эксплуатации</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                            v-for="(activity,index) in periodItem.activity"
+                                            :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
+                                    >
+                                        <td>{{index+1}}</td>
+                                        <td>{{activity.date}}</td>
+                                        <td>{{activity.explanation}}</td>
+                                        <td>{{activity.additionalInfo}}</td>
+                                        <td>{{activity.condition}}</td>
+                                        <td>{{activity.category}}</td>
+                                        <td>{{activity.operationWay}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="p-1 ml-2 d-flex align-items-center">
-                    <img class="pr-1" src="/img/icons/chart.svg" alt="">
-                    <a class="text-white cursor-pointer"
-                       @click="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(false)">Показать график</a>
-                </div>
-                <div class="p-1 ml-2 d-flex align-items-center">
-                    <img class="pr-1" src="/img/icons/page_excel.svg" alt="">
-                    Скачать в MS-Excel
+                <div class="d-flex justify-content-end bottom-buttons">
+                    <div class="p-1 d-flex align-items-center">
+                        <img class="pr-1" src="/img/icons/repeat.svg" alt="">
+                        Сформировать
+                    </div>
+                    <div class="p-1 ml-2 d-flex align-items-center">
+                        <img class="pr-1" src="/img/icons/help.svg" alt="">
+                        Легенда
+                    </div>
+                    <div class="p-1 ml-2 d-flex align-items-center">
+                        <img class="pr-1" src="/img/icons/chart.svg" alt="">
+                        <a class="text-white cursor-pointer"
+                           @click="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(false)">Показать график</a>
+                    </div>
+                    <div class="p-1 ml-2 d-flex align-items-center">
+                        <img class="pr-1" src="/img/icons/page_excel.svg" alt="">
+                        Скачать в MS-Excel
+                    </div>
                 </div>
             </div>
             <div class="content-block content-block-scrollable p-2" style="display:none">
@@ -433,7 +435,7 @@ export default {
     components: {ProductionWellsSchedule},
     props: {
         well: {},
-        changeColumnsVisible: Function
+        changeColumnsVisible: Function,
     },
     data() {
         return {

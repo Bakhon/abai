@@ -152,7 +152,7 @@
         </div>
       </div>
       <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
-        <div class="bg-dark-transparent">
+        <div v-if="!isHistoricalVisible" class="bg-dark-transparent">
           <template>
             <div>
               <div class="col">
@@ -211,6 +211,9 @@
             </div>
           </div>
         </div>
+        <HistoricalData
+                :mainWell="{id: well.id, name: well.wellInfo.uwi}"
+        ></HistoricalData>
       </div>
     </div>
   </div>
@@ -225,7 +228,8 @@ import moment from 'moment'
 import WellCardTree from './WellCardTree'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import {globalloadingMutations} from '@store/helpers';
+import {globalloadingMutations,bigdatahistoricalVisibleState,bigdatahistoricalVisibleMutations} from '@store/helpers';
+import HistoricalData from "./HistoricalData";
 
 
 const requireComponent = require.context('../forms/CustomPlainForms', true, /\.vue$/i);
@@ -246,7 +250,8 @@ export default {
   components: {
     BigDataPlainFormResult,
     vSelect,
-    WellCardTree
+    WellCardTree,
+    HistoricalData
   },
   data() {
     return {
@@ -369,6 +374,7 @@ export default {
     }
   },
   mounted() {
+    console.log(this.isHistoricalVisible)
     this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
       this.formsStructure = data.tree
     })
@@ -380,10 +386,12 @@ export default {
             this.dzoSelectOptions = data.organizations;
         }
     })
+    this.SET_VISIBLE(true);
+    console.log(this.isHistoricalVisible);
   },
   methods: {
-    ...globalloadingMutations([
-      'SET_LOADING'
+    ...bigdatahistoricalVisibleMutations([
+      'SET_VISIBLE'
     ]),
     onColumnFoldingEvent(method) {
       if (method === 'left') {
@@ -531,6 +539,7 @@ export default {
     }
   },
   computed: {
+    ...bigdatahistoricalVisibleState(['isHistoricalVisible']),
     tableData() {
       return [
         {
