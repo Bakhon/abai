@@ -17,8 +17,8 @@
           @click.native="openMatrix"/>
     </div>
 
-    <div class="w-100">
-      <subtitle class="text-wrap text-white my-2">
+    <div class="w-100 mt-2">
+      <subtitle class="text-wrap text-white">
         {{ tabs[activeTab] }}
       </subtitle>
 
@@ -31,7 +31,7 @@
           :title="trans('economic_reference.count_well')"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          class="bg-economic-chart"/>
+          class="bg-economic-chart mt-2"/>
 
       <chart-with-oil-production
           v-if="activeTab === 'oil_production'"
@@ -42,7 +42,7 @@
           :tooltip-text="trans('economic_reference.thousand_tons')"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          class="bg-economic-chart"/>
+          class="bg-economic-chart mt-2"/>
 
       <chart-with-operating-profit-top
           v-else-if="activeTab === 'operating_profit_top'"
@@ -52,7 +52,7 @@
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
           :org_id="form.org_id"
-          class="bg-economic-chart"/>
+          class="bg-economic-chart mt-2"/>
 
       <chart-with-liquid-production
           v-else-if="activeTab === 'liquid_production'"
@@ -61,7 +61,7 @@
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          class="bg-economic-chart"/>
+          class="bg-economic-chart mt-2"/>
 
       <chart-well-map
           v-else-if="activeTab === 'well_map'"
