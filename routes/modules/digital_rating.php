@@ -12,6 +12,7 @@ Route::group(
             Route::get('/reports', function () {
                 return view('digital_rating.reports');
             })->name('digital-rating-report');
-            Route::get('/search_wells', 'DigitalRating\DigitalRatingContoller@search_wells')->name('search_wells');   
+            Route::get('/get_environment_data', 'DigitalRating\DigitalRatingContoller@get_environment_data')->name('search_wells');   
+            Route::get('/get_injection_wells', 'DigitalRating\DigitalRatingContoller@get_injection_wells')->name('get_injection_wells');   
         });
     });
