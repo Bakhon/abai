@@ -2,12 +2,16 @@ const bidataWellLevel = {
     namespaced: true,
 
     state: {
-        isHistoricalVisible: false,
+        isInjectionWellsHistoricalVisible: false,
+        isProductionWellsHistoricalVisible: false,
     },
 
     mutations: {
-        SET_VISIBLE: (state, val) => {
-            state.isHistoricalVisible = val;
+        SET_VISIBLE_INJECTION: (state, val) => {
+            state.isInjectionWellsHistoricalVisible = val;
+        },
+        SET_VISIBLE_PRODUCTION: (state, val) => {
+            state.isProductionWellsHistoricalVisible = val;
         },
     },
 };

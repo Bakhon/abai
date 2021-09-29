@@ -10,7 +10,7 @@
                 <span class="header_icon ml-1"></span>
                 <div class="d-flex justify-content-between">
                     <span class="header_icon-switch mr-1"></span>
-                    <span class="underline cursor-pointer header_title px-1" @click="SET_VISIBLE(true)">Исторические сведения по добыче нефти</span>
+                    <span class="underline cursor-pointer header_title px-1" @click="SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)">Исторические сведения по добыче нефти</span>
                 </div>
             </div>
             <div class="TEST">
@@ -431,6 +431,8 @@
 <script>
 import ProductionWellsSchedule from "./ProductionWellsSchedule";
 import moment from "moment";
+import {bigdatahistoricalVisibleMutations} from '@store/helpers';
+
 export default {
     components: {ProductionWellsSchedule},
     props: {
@@ -541,6 +543,9 @@ export default {
         getDaysCountInMonth(monthYearString) {
             return moment(monthYearString, 'YYYY/MMM').daysInMonth();
         },
+        ...bigdatahistoricalVisibleMutations([
+            'SET_VISIBLE_INJECTION'
+        ]),
     }
 }
 </script>

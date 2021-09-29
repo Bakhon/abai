@@ -45,7 +45,7 @@
           </div>
         </div>
       </div>
-      <div :class="{'right-column_folded': isRightColumnFolded, 'both-pressed_folded' : isBothColumnFolded}"
+      <div :class="{'right-column_folded': isRightColumnFolded, 'both-pressed_folded' : isBothColumnFolded && !isInjectionWellsHistoricalVisible && !isProductionWellsHistoricalVisible}"
            class="right-column__inner bg-dark" style="display:none"></div>
       <div class="col-md-6 mid-col">
         <div class="row mid-col__main">
@@ -151,8 +151,8 @@
           </div>
         </div>
       </div>
-      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
-        <div v-if="!isHistoricalVisible" class="bg-dark-transparent">
+      <div v-if="!isInjectionWellsHistoricalVisible && !isProductionWellsHistoricalVisible" :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
+        <div class="bg-dark-transparent">
           <template>
             <div>
               <div class="col">
@@ -211,10 +211,12 @@
             </div>
           </div>
         </div>
-        <HistoricalData
-                :mainWell="{id: well.id, name: well.wellInfo.uwi}"
-        ></HistoricalData>
       </div>
+      <HistoricalData
+              v-if="isInjectionWellsHistoricalVisible"
+              :mainWell="{id: well.id, name: well.wellInfo.uwi}"
+              :changeColumnsVisible="changeColumnsVisible()"
+      ></HistoricalData>
     </div>
   </div>
 </template>
@@ -228,7 +230,7 @@ import moment from 'moment'
 import WellCardTree from './WellCardTree'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import {globalloadingMutations,bigdatahistoricalVisibleState,bigdatahistoricalVisibleMutations} from '@store/helpers';
+import {globalloadingMutations,bigdatahistoricalVisibleState} from '@store/helpers';
 import HistoricalData from "./HistoricalData";
 
 
@@ -374,7 +376,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.isHistoricalVisible)
     this.axios.get(this.localeUrl('api/bigdata/forms/tree')).then(({data}) => {
       this.formsStructure = data.tree
     })
@@ -386,12 +387,10 @@ export default {
             this.dzoSelectOptions = data.organizations;
         }
     })
-    this.SET_VISIBLE(true);
-    console.log(this.isHistoricalVisible);
   },
   methods: {
-    ...bigdatahistoricalVisibleMutations([
-      'SET_VISIBLE'
+    ...globalloadingMutations([
+      'SET_LOADING'
     ]),
     onColumnFoldingEvent(method) {
       if (method === 'left') {
@@ -536,10 +535,10 @@ export default {
       this.selectedUserDzo = event.target.value;
       this.options = [];
       this.wellUwi = null;
-    }
+    },
   },
   computed: {
-    ...bigdatahistoricalVisibleState(['isHistoricalVisible']),
+    ...bigdatahistoricalVisibleState(['isInjectionWellsHistoricalVisible','isProductionWellsHistoricalVisible']),
     tableData() {
       return [
         {
@@ -1839,7 +1838,6 @@ h4 {
 .bg-dark-transparent {
   background-color: rgba(39, 41, 83, 0.85);
   padding-bottom: 20px;
-  margin-bottom: 20px;
 
   .graphics {
     height: 333px;
@@ -1990,6 +1988,13 @@ h4 {
 
 .title-container {
   display: flex;
+}
+
+.historical-data {
+  height: 100%;
+  margin-left: 15px;
+  min-width: 440px;
+  max-width: 440px;
 }
 
 .right-column {
