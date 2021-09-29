@@ -116,14 +116,14 @@
       "title": "volume",
       "code": "water_inj_volume",
       "column": "water_inj_volume",
-      "table":"prod.meas_water_inj",
-      "type": "numeric",
+      "table":"prod.tech_mode_inj",
+      "type": "float",
       "is_editable": true
     },
     {
       "title": "agent_type",
       "code": "agent_type",
-      "table":"prod.meas_water_inj",
+      "table":"prod.tech_mode_inj",
       "column":"agent_type",
       "type": "dict",
       "validation": "required|exists:tbd.dict.inj_agent_type,id",      
@@ -131,7 +131,7 @@
     },
     {
       "title": "agent_temp",
-      "table":"prod.meas_water_inj",
+      "table":"prod.tech_mode_inj",
       "code": "agent_temperature",
       "type": "float",
       "column":"agent_temperature",
@@ -141,7 +141,7 @@
     },
     {
       "title": "pressure",
-      "table":"prod.meas_water_inj",
+      "table":"prod.tech_mode_inj",
       "code": "pressure_inj",
       "type": "float",
       "column":"pressure_inj",
@@ -151,7 +151,7 @@
     },
     {
       "title": "data",
-      "table": "prod.meas_water_inj",
+      "table": "prod.tech_mode_inj",
       "code": "dbeg",
       "type": "date",
       "column": "dbeg",
@@ -159,7 +159,7 @@
     },
     {
       "title": "data",
-      "table": "prod.meas_water_inj",
+      "table": "prod.tech_mode_inj",
       "code": "dend",
       "type": "date",
       "column": "dend",

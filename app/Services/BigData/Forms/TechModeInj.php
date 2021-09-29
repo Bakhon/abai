@@ -5,36 +5,89 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 use App\Models\BigData\Well;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class TechModeInj extends TableForm
 {
     
     protected $configurationFileName = 'tech_mode_inj';
-    protected function getCustomFieldValue(array $field, array $rowData, Model $item): ?array
-    {
-        if (isset($field['table']) && $field['table'] === 'prod.well_equip_param') {
-            $equipParams = $this->equipParams->get($item->id);
-            if (empty($equipParams)) {
-                return ['value' => null];
-            }
+    protected $oilMeasurements;
 
-            $param = $equipParams->where('code', $field['metric_code'])->first();
-            return ['value' => $param ? ($param->value_double ?? $param->value_string) : null];
-        }
+    public function getResults(): array
+    {
+        $filter = json_decode($this->request->get('filter'));
+        $params['filter']['well_category'] = ['OIL', 'GAS'];
+        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
+
+        $tables = $this->getFields()
+            ->pluck('table')
+            ->filter(function ($table) {
+                if (empty($table)) {
+                    return false;
+                }
+            })
+            ->unique();
+
+        $rowData = $this->fetchRowData(
+            $tables,
+            $wells->pluck('id')->toArray(),
+            Carbon::parse($this->request->get('date'))
+        );
+
+        $this->oilMeasurements = DB::connection('tbd')
+            ->table('prod.tech_mode_inj')
+            ->whereIn('well', $wells->pluck('id')->toArray())
+            ->where('dbeg', '<=', Carbon::parse($this->request->get('date'))->subMonthNoOverflow()->firstOfMonth())
+            ->where('dbeg', '>=', Carbon::parse($this->request->get('date'))->subMonthNoOverflow()->lastOfMonth())
+            ->get()
+            ->groupBy('well')
+            ->map(function ($measurements) {
+                return [
+                    'liquid(avg)' => round($measurements->avg('liquid'), 2),
+                    'pressure(avg)' => round($measurements->avg('pressure'), 2),
+                    'temp(avg)' => round($measurements->avg('temp'), 2)
+                ];
+            });
+
+        
+        $wells->transform(
+            function ($item) use ($rowData) {
+                $result = [];
+
+                foreach ($this->getFields() as $field) {
+                    $value = $this->getFieldValue($field, $rowData, $item);
+                    if (!empty($value)) {
+                        $result[$field['code']] = $value;
+                    }
+                }
+
+                $result['id'] = $result['uwi']['id'];
+                return $result;
+            }
+        );
+
+        $this->addLimits($wells);
+
+        return [
+            'rows' => $wells->toArray()
+        ];
+    }
+    protected function getCustomFieldValue(array $field, array $rowData, Model $item): ?array
+    {      
 
         switch ($field['code']) {
             case 'worktime':    
-                    return $this->getWorktime($item);
+                return $this->getWorktime($item);
             case 'avg_liquid_prev_month':
                 $measurement = $this->oilMeasurements->get($item->id);
                 return !empty($measurement) ? ['value' => $measurement['liquid(avg)']] : null;
             case 'avg_pressure_month':
                 $measurement = $this->oilMeasurements->get($item->id);
-                return !empty($measurement) ? ['value' => $measurement['wcut(avg)']] : null;
+                return !empty($measurement) ? ['value' => $measurement['pressure(avg)']] : null;
             case 'avg_temp_prev_month':
                 $measurement = $this->oilMeasurements->get($item->id);
-                return !empty($measurement) ? ['value' => $measurement['oil(avg)']] : null;
+                return !empty($measurement) ? ['value' => $measurement['temp(avg)']] : null;
             case 'events':
                 return DB::connection('tbd')
                     ->table('prod.tech_mode_event')
