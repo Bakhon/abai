@@ -139,12 +139,6 @@ abstract class MeasurementLogForm extends TableForm
                 'dbeg' => $params['date']->toDateTimeString()
             ];
 
-            if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $val) {
-                    $data[$key] = $val;
-                }
-            }
-
             DB::connection('tbd')
                 ->table($column['table'])
                 ->insert($data);
