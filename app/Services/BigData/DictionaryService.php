@@ -697,13 +697,12 @@ class DictionaryService
 
     private function getRepairTypeDict(string $type){
         $items = DB::connection('tbd')
-            ->table('prod.well_workover as pw')
+            ->table('dict.repair_work_type as dr')
             ->select('dr.id','dr.name_ru as name')
-            ->join('dict.repair_work_type as dr', 'pw.repair_work_type', 'dr.id')
-            ->join('dict.well_repair_type as dw', 'pw.repair_type', 'dw.id')
             ->where('dw.code', $type)
             ->distinct()
-            ->orderBy('name', 'asc')           
+            ->orderBy('name', 'asc')
+            ->join('dict.well_repair_type as dw', 'dr.well_repair_type', 'dw.id')           
             ->get()
             ->map(
                 function ($item) {
@@ -711,6 +710,8 @@ class DictionaryService
                 }
             )
             ->toArray();
+
+
         return $items;
     }
 

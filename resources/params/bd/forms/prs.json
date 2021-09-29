@@ -41,14 +41,8 @@
                 "code": "contractor",
                 "type": "dict",
                 "title": "contractor",
-                "validation": "required|exists:tbd.dict.company,id",
                 "dict": "companies",
-                "depends_on": [
-                  {
-                    "field": "by_ourselves",
-                    "value": false
-                  }
-                ]
+                "validation": "required_unless:by_ourselves,true"
               },
               {
                 "code": "brigadier",

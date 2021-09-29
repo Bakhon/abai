@@ -7,12 +7,15 @@ namespace App\Services\BigData\Forms;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
 use Illuminate\Support\Facades\DB;
+
 class Kpc extends KrsPrs
 {
     protected $configurationFileName = 'kpc';
     protected $repairType = 'CWO';
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
+    
+
 
     protected function getCustomValidationErrors(string $field = null): array
     {
@@ -29,15 +32,7 @@ class Kpc extends KrsPrs
     }
     protected function submitForm(): array
     {
-        $formFields = $this->request->except('by_ourselves');
-
-        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-        if (!empty($formFields['id'])) {
-            $id = $dbQuery->where('id', $formFields['id'])->update($formFields);
-        } else {
-            $id = $dbQuery->insertGetId($formFields);
-        }
+       
         if($this->request->get('gtm_type')){
             DB::connection('tbd')
                 ->table('prod.gtm')

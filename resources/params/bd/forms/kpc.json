@@ -33,7 +33,7 @@
               "type": "dict",
               "title": "work_type",
               "validation": "required|exists:tbd.dict.repair_work_type,id",
-              "dict": "repair_work_types",
+              "dict": "repair_type_krs",
               "is_editable": true
             },
             {
@@ -77,7 +77,7 @@
               "type": "dict",
               "title": "repair_work_type",
               "validation": "required|exists:tbd.dict.repair_work_type,id",
-              "dict": "repair_work_types",
+              "dict": "repair_type_krs",
               "is_editable": true
             },
             {
@@ -99,15 +99,9 @@
               "code": "contractor",
               "type": "dict",
               "title": "contractor",
-              "validation": "exists:tbd.dict.company,id",
               "dict": "companies",
               "is_editable": true,
-              "depends_on": [
-                {
-                  "field": "by_ourselves",
-                  "value": false
-                }
-              ]
+              "validation": "required_unless:by_ourselves,true"
             },
             {
               "code": "brigade",
