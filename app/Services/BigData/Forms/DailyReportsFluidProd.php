@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 class DailyReportsFluidProd extends DailyReports
 {
     protected $metricCode = 'FLR';
+    protected $configurationFileName = 'daily_reports_fluid_prod';
     protected $planField = 'liquid_production';
 
     protected function getData(Org $org, \stdClass $filter): array
