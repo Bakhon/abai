@@ -143,7 +143,6 @@ export default {
     margin-top: 15px;
 }
 .historical-table {
-    width: 100%;
     text-align: center;
     border: 2px solid #293688;
     thead tr {
@@ -158,8 +157,8 @@ export default {
     }
     tbody {
         display:block;
-        width: 100%;
-        overflow: auto;
+        width: 98%;
+        overflow-y: auto;
         height: 725px;
     }
     td {
