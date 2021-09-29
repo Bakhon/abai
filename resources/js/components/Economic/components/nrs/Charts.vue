@@ -1,5 +1,5 @@
 <template>
-  <div class="row p-3 bg-main1">
+  <div class="row px-3 py-2 bg-main1">
     <div class="d-flex">
       <chart-button
           v-for="(tab, index) in Object.keys(tabs)"
@@ -13,13 +13,14 @@
       <chart-button
           :text="trans('economic_reference.matrix')"
           class="ml-2 col"
+          style="font-size: 12px"
           @click.native="openMatrix"/>
     </div>
 
-    <div class="mt-3 w-100">
-      <h5 class="subtitle text-wrap">
+    <div class="w-100">
+      <subtitle class="text-wrap text-white my-2">
         {{ tabs[activeTab] }}
-      </h5>
+      </subtitle>
 
       <chart-with-profitability
           v-if="activeTab === 'profitability'"
@@ -76,6 +77,7 @@ import ChartWithOilProduction from "./ChartWithOilProduction";
 import ChartWithOperatingProfitTop from "./ChartWithOperatingProfitTop";
 import ChartWithLiquidProduction from "./ChartWithLiquidProduction";
 import ChartWellMap from "./ChartWellMap";
+import Subtitle from "../Subtitle";
 
 export default {
   name: "Charts",
@@ -86,6 +88,7 @@ export default {
     ChartWithOperatingProfitTop,
     ChartWithLiquidProduction,
     ChartWellMap,
+    Subtitle
   },
   props: {
     charts: {
