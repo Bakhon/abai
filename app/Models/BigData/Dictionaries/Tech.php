@@ -16,6 +16,7 @@ class Tech extends TBDModel
     const TYPE_SPGU = 'SSU';
     const TYPE_KNS = 'GPST';
     const TYPE_BKNS = 'MGPST';
+    const TYPE_OPPS = 'OPPS';
 
     public function parentItem()
     {
