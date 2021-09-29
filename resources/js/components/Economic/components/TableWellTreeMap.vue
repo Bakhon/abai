@@ -74,11 +74,13 @@ export default {
         },
         {
           title: this.trans('economic_reference.liquid_production'),
-          key: 'liquid_12m'
+          key: 'liquid_12m',
+          hasSubtitle: true,
         },
         {
           title: this.trans('economic_reference.oil_production'),
-          key: 'oil_12m'
+          key: 'oil_12m',
+          hasSubtitle: true,
         },
       ]
     },

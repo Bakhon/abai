@@ -116,7 +116,7 @@ export default {
         {
           title: this.trans('economic_reference.operating_profit') + '+',
           key: 'Operating_profit',
-          positive: true
+          positive: true,
         },
         {
           title: this.trans('economic_reference.operating_profit') + '-',
@@ -125,11 +125,13 @@ export default {
         },
         {
           title: this.trans('economic_reference.liquid_production'),
-          key: 'liquid'
+          key: 'liquid',
+          hasSubtitle: true,
         },
         {
           title: this.trans('economic_reference.oil_production'),
-          key: 'oil'
+          key: 'oil',
+          hasSubtitle: true,
         },
         {
           title: this.trans('economic_reference.water_cut'),

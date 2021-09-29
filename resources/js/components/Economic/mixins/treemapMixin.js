@@ -82,22 +82,22 @@ export const treemapMixin = {
             return +well[key] > 0 ? '#13B062' : '#AB130E'
         },
 
-        getChartSubtitle({title}) {
-            if (!this.chartsSum[title]) {
+        getChartSubtitle({title, hasSubtitle}) {
+            if (!hasSubtitle || !this.chartsSum[title]) {
                 return ''
             }
 
             let name = ''
 
             if (this.chartsSum[title].profitable) {
-                name += `
+                name += `<br>
                 ${this.trans('economic_reference.profitable')}: 
                 ${this.chartsSum[title].profitable.toLocaleString()}
                 `
             }
 
             if (this.chartsSum[title].profitless) {
-                name += `
+                name += `<br>
                 ${this.trans('economic_reference.profitless')}: 
                 ${this.chartsSum[title].profitless.toLocaleString()}
                 `
@@ -112,7 +112,7 @@ export const treemapMixin = {
             let title = `<div> ${chart.title} </div>`
 
             if (subtitle) {
-                title += `<br><br><div>${this.getChartSubtitle(chart)}</div>`
+                title += `<div style="font-size: 14px">${subtitle}</div>`
             }
 
             return title
