@@ -12,17 +12,6 @@
         "day"
       ],
       "default": "today"
-    },
-    {
-      "code": "type",
-      "type": "list",
-      "default": "ЦИТС",
-      "values": [
-        "ЦИТС",
-        "ГС",
-        "ЦИТС/ГС"
-      ],
-      "title": ""
     }
   ],
   "columns": [
