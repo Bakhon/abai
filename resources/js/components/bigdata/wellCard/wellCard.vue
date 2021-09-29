@@ -47,7 +47,7 @@
       </div>
       <div :class="{'right-column_folded': isRightColumnFolded, 'both-pressed_folded' : isBothColumnFolded && !isInjectionWellsHistoricalVisible && !isProductionWellsHistoricalVisible}"
            class="right-column__inner bg-dark" style="display:none"></div>
-      <div class="col-md-6 mid-col">
+      <div :class="[isInjectionWellsHistoricalVisible || isProductionWellsHistoricalVisible ? 'fixed-mid-col' : 'mid-col','col-md-6']">
         <div class="row mid-col__main">
           <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
             <div class="row">
@@ -961,6 +961,11 @@ $rightColumnFoldedWidth: 84px;
   &__wrapper {
     height: calc(100vh - 90px);
   }
+}
+.fixed-mid-col {
+  min-width: calc(100% - 385px - 348px - 24px);
+  padding: 0 15px;
+  height: calc(100vh - 90px);
 }
 
 ::-webkit-scrollbar {
