@@ -22,11 +22,11 @@
                 "validation": "required|date"
               },
               {
-                "code":"well_status_type",
+                "code":"work_status",
                 "type":"dict",
                 "title":"well_status_type",
-                "validation":"required|exists:tbd.dict.well_status_type,id",
-                "dict": "well_statuses_drill"
+                "validation":"required|exists:tbd.dict.work_status,id",
+                "dict": "work_status"
               },
               {
                 "code":"reason_dowtime",
