@@ -6,11 +6,6 @@
       "code": "date",
       "title": "date",
       "type": "date",
-      "flow": [
-        "year",
-        "month",
-        "day"
-      ],
       "default": "today"
     },
     {
