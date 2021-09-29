@@ -75,6 +75,7 @@ Route::group(
                 Route::get('omgngdu/history/{omgngdu}', 'ComplicationMonitoring\OmgNGDUController@history')->name(
                     'omgngdu.history'
                 );
+
                 Route::post('omgngdu/get-omgngdu', 'ComplicationMonitoring\OmgNGDUController@getOmgNgdu')->name(
                     'omgngdu.get-omg-ngdu'
                 );

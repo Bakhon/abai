@@ -1,6 +1,6 @@
 <template>
-  <div class="table-container">
-    <div class="table-div">
+  <div class="table-container" :style="isAnalysisTable ? 'height: 100%;' : ''">
+    <div class="table-div" :style="!pagination ? 'height: 100%' : ''">
       <div>
         <table>
           <thead>
@@ -48,6 +48,13 @@
               <tr v-for="item in items" :key="item.id">
                 <td v-for="fieldKey in fieldKeys" :key="fieldKey">
                   {{ item[fieldKey] }}
+                </td>
+              </tr>
+            </template>
+            <template v-else-if="isAnalysisTable">
+              <tr v-for="(item, index) in items" :key="index">
+                <td v-for="(itemTD, ind) in item.table_data" :key="ind">
+                  {{ itemTD }}
                 </td>
               </tr>
             </template>
@@ -111,6 +118,7 @@ export default {
     fields: Array,
     items: Array,
     handlePageChange: Function,
+    isAnalysisTable: Boolean,
   },
   data() {
     return {

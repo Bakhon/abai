@@ -45,7 +45,7 @@
                 "type":"dict",
                 "title":"contractor",
                 "dict":"companies",
-                "validation":"required|exists:tbd.dict.company,id"
+                "validation": "required_unless:own_forces,true|exists:tbd.dict.company,id"
               }
             ]
           }

@@ -72,4 +72,5 @@
   'underground_equipment' => '\\App\\Services\\BigData\\Forms\\UndergroundEquipment',
   'underground_equipment_installation' => '\\App\\Services\\BigData\\Forms\\UndergroundEquipmentInstallation',
   'underground_equipment_disassembling' => '\\App\\Services\\BigData\\Forms\\UndergroundEquipmentDisassembling',
+  'tech_mode_prod' => '\\App\\Services\\BigData\\Forms\\TechModeProd',
 );

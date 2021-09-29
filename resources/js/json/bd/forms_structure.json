@@ -89,7 +89,8 @@
         "forms": [
           "production_well",
           "injection_wells",
-          "gas_well"
+          "gas_well",
+          "meas_water_prod"
         ]
       },
       {
@@ -101,8 +102,20 @@
         "forms": [
           "bottom_hole",
           "bottom_hole_artificial",
-          "lab_research",
-          "well_mark"
+          "research_lab_research",
+          "well_mark",
+          "gdis",
+          "current_g_d_i_s"
+        ]
+      },
+      {
+        "code": "well_treats",
+        "name": "Обработка",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "forms": [
+          "well_treat"
         ]
       },
       {
@@ -114,6 +127,16 @@
         "forms": [
           "kpc",
           "prs"
+        ]
+      },
+      {
+        "code": "well_equips",
+        "name": "Оборудование",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "forms": [
+          "underground_equipment"
         ]
       }
     ],

@@ -29,6 +29,12 @@
                 "validation": "required|exists:tbd.dict.lab_research_type,id"
               },
               {
+                "code": "research_results",
+                "type": "label",
+                "title": "research_results",
+                "validation": ""
+              },
+              {
                 "code": "oil_viscosity",
                 "table": "prod.pvt_data",
                 "type": "numeric",
@@ -1349,7 +1355,7 @@
                 "code": "paraf_share",
                 "table": "prod.surf_oil_characteristics",
                 "type": "numeric",
-                "title": "research_type",
+                "title": "paraf_share",
                 "validation":"gte:0|lte:100",
                 "depends_on": [
                   {
@@ -1576,21 +1582,6 @@
                 "type": "numeric",
                 "title": "nitro_rare_mol",
                 "validation":"gte:0",
-                "depends_on": [
-                  {
-                    "field": "research_type",
-                    "value": {
-                      "code": "CPG"
-                    }
-                  }
-                ]
-              },
-              {
-                "code": "nitro_rare_share",
-                "table": "prod.petro_gas_char",
-                "type": "numeric",
-                "title": "nitro_rare_share",
-                "validation":"gte:0|lte:100",
                 "depends_on": [
                   {
                     "field": "research_type",

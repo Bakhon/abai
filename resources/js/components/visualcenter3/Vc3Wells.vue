@@ -146,16 +146,11 @@ export default {
                     },
                     labels: {
                         formatter: function (val) {
-                            return moment(val).format("DD / MMM / YYYY");
+                            return moment(val).format("DD MMM");
                         },
-                        type: datetime,
-                        datetimeFormatter: {
-                            day: "dd MMM yy",
-                            month: "dd MMM yy",
-                            year: "yy",
-                        },
-
+                        rotate: 0,
                     },
+                    tickAmount: 3,
                     position: "bottom",
                     axisBorder: {
                         show: false,
