@@ -64,6 +64,7 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellPrsRepairType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
+use App\Models\BigData\Dictionaries\WorkStatus;
 use App\Models\BigData\Dictionaries\Zone;
 use App\Services\BigData\DictionaryServices\UndergroundEquipElement;
 use App\Services\BigData\DictionaryServices\UndergroundEquipType;
@@ -311,6 +312,10 @@ class DictionaryService
         ],
         'recording_state' => [
             'class' => RecordingState::class,
+            'name_field' => 'name_ru'
+        ],
+        'work_status' => [
+            'class' => WorkStatus::class,
             'name_field' => 'name_ru'
         ]
     ];
