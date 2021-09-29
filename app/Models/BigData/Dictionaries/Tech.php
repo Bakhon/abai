@@ -18,6 +18,8 @@ class Tech extends TBDModel
     const TYPE_BKNS = 'MGPST';
     const TYPE_OPPS = 'OPPS';
     const TYPE_OTU = 'OTU';
+    const TYPE_WIDM = 'WIDM';
+    const TYPE_WDM = 'WDM';
 
     public function parentItem()
     {
