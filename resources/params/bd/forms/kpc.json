@@ -33,7 +33,7 @@
               "type": "dict",
               "title": "work_type",
               "validation": "required|exists:tbd.dict.repair_work_type,id",
-              "dict": "repair_type_krs",
+              "dict": "repair_work_types",
               "is_editable": true
             },
             {
@@ -99,7 +99,7 @@
               "code": "contractor",
               "type": "dict",
               "title": "contractor",
-              "validation": "required|exists:tbd.dict.company,id",
+              "validation": "exists:tbd.dict.company,id",
               "dict": "companies",
               "is_editable": true,
               "depends_on": [

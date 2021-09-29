@@ -6,7 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
-
+use Illuminate\Support\Facades\DB;
 class Kpc extends KrsPrs
 {
     protected $configurationFileName = 'kpc';
