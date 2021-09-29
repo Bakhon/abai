@@ -11,8 +11,9 @@ class EconomicNrsWellsRequest extends FormRequest
         return [
             'org_id' => 'required|integer|min:1',
             'field_id' => 'nullable|integer|min:1',
-            'interval_start' => 'nullable|date',
-            'interval_end' => 'nullable|date',
+            'interval_start' => 'required|date',
+            'interval_end' => 'required|date',
+            'well_id' => 'nullable|string'
         ];
     }
 }

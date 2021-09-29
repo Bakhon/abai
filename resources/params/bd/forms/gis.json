@@ -15,217 +15,33 @@
       "blocks": [
         [
           {
-            "title": "main",
-            "items": [
-              {
-                "code": "gis_date",
-                "type": "datetime",
-                "title": "data",
-                "validation": "required"
-              },
-              {
-                "code": "contractor",
-                "type": "dict",
-                "dict": "companies",
-                "title": "podr",
-                "validation":"required|exists:tbd.dict.company,id"
-              },
-              {
-                "code": "matering_from",
-                "type": "numeric",
-                "title": "intr_ot",
-                "validation": "required"
-              },
-              {
-                "code": "matering_to",
-                "type": "numeric",
-                "title": "intr_do",
-                "validation": "required|gt:matering_from"
-              },
-              {
-                "code": "process_from",
-                "type": "numeric",
-                "title": "intr_obr_ot",
-                "validation": "required"
-              },
-              {
-                "code": "process_to",
-                "type": "numeric",
-                "title": "intr_obr_do",
-                "validation": "required|gt:process_from"
-              }
-            ]
+            "title": "",
+            "component": "gis-form-las"
           }
         ]
       ]
     },
     {
-      "title": "types",
+      "title": "table",
       "blocks": [
         [
           {
             "title": "",
             "items": [
               {
-                "code": "gis_method_type",
-                "type": "dict",
-                "dict": "gis_method_types",
-                "title": "gis_methods",
-                "validation": "required"
-              }
-            ]
-          }
-        ]
-      ]
-    },
-    {
-      "title": "interpretation",
-      "blocks": [
-        [
-          {
-            "title": "",
-            "items": [
-              {
-                "code": "interpretation",
+                "code": "table",
                 "type": "table",
-                "title": "",
-                "table": "prod.gis_interpretation",
-                "parent_column": "gis",
+                "form": "well_document_short",
+                "title": "table",
+                "document_list": true,
                 "columns": [
                   {
-                    "code": "ri_horizont",
-                    "type": "dict",
-                    "dict": "geo_type_hrz",
-                    "title": "geo",
-                    "validation": "required|exists:tbd.dict.geo_type,id"
+                    "code": "doc_date",
+                    "title": "doc_date"
                   },
                   {
-                    "code": "ri_top",
-                    "type": "numeric",
-                    "title": "top",
-                    "validation": "required"
-                  },
-                  {
-                    "code": "ri_bottom",
-                    "type": "numeric",
-                    "title": "Botton",
-                    "validation": "required|gt:ri_top"
-                  },
-                  {
-                    "code": "ri_thickness",
-                    "type": "numeric",
-                    "title": "Thickness",
-                    "validation": "required|gte:0|lte:1000"
-                  },
-                  {
-                    "code": "ri_permeability",
-                    "type": "numeric",
-                    "title": "pronik",
-                    "validation": "gte:0|lte:1000"
-                  },
-                  {
-                    "code": "ri_cali",
-                    "type": "numeric",
-                    "title": "cali",
-                    "validation": "gte:0|lte:1000"
-                  },
-                  {
-                    "code": "ri_lls",
-                    "type": "numeric",
-                    "title": "lls",
-                    "validation": "gte:0|lte:10000"
-                  },
-                  {
-                    "code": "ri_vec_5",
-                    "type": "numeric",
-                    "title": "vec5",
-                    "validation": "gte:0|lte:10000"
-                  },
-                  {
-                    "code": "ri_mll",
-                    "type": "numeric",
-                    "title": "Ohmm",
-                    "validation": "gte:0|lte:10000"
-                  },
-                  {
-                    "code": "ri_gr",
-                    "type": "numeric",
-                    "title": "h",
-                    "validation": "gte:0|lte:25"
-                  },
-                  {
-                    "code": "ri_ngr",
-                    "type": "numeric",
-                    "title": "c",
-                    "validation": "gte:0|lte:25"
-                  },
-                  {
-                    "code": "ri_dt",
-                    "type": "numeric",
-                    "title": "m",
-                    "validation": "gte:0|lte:1000"
-                  },
-                  {
-                    "code": "ri_den",
-                    "type": "numeric",
-                    "title": "g",
-                    "validation": "gte:0|lte:3"
-                  },
-                  {
-                    "code": "ri_nphi",
-                    "type": "numeric",
-                    "title": "nphi",
-                    "validation": "gte:0|lte:100"
-                  },
-                  {
-                    "code": "ri_phit_den",
-                    "type": "numeric",
-                    "title": "phit_den",
-                    "validation": "gte:0|lte:100"
-                  },
-                  {
-                    "code": "ri_phit_son",
-                    "type": "numeric",
-                    "title": "phit_son",
-                    "validation": "gte:0|lte:100"
-                  },
-                  {
-                    "code": "ri_phit",
-                    "type": "numeric",
-                    "title": "phit",
-                    "validation": "gte:0|lte:100"
-                  },
-                  {
-                    "code": "ri_phie",
-                    "type": "numeric",
-                    "title": "phie",
-                    "validation": "gte:0|lte:100"
-                  },
-                  {
-                    "code": "ri_vsh",
-                    "type": "numeric",
-                    "title": "vsh",
-                    "validation": "gte:0|lte:100"
-                  },
-                  {
-                    "code": "ri_saturation",
-                    "type": "numeric",
-                    "title": "factor",
-                    "validation": "gte:0|lte:100"
-                  },
-                  {
-                    "code": "ri_saturation_type",
-                    "type": "dict",
-                    "dict": "saturation_types",
-                    "title": "typeofsaturation",
-                    "validation": "exists:tbd.dict.saturation_type,id"
-                  },
-                  {
-                    "code": "ri_lithology",
-                    "type": "dict",
-                    "dict": "geo_rock_types",
-                    "title": "lithology",
-                    "validation": "exists:tbd.dict.geo_rock_type,id"
+                    "code": "filenames",
+                    "title": "files"
                   }
                 ]
               }
@@ -235,17 +51,28 @@
       ]
     },
     {
-      "title": "zakl",
+      "title": "results",
       "blocks": [
         [
           {
             "title": "",
             "items": [
               {
-                "code": "conclusion",
-                "type": "text",
-                "title": "zakl",
-                "validation": "required"
+                "code": "results",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "results",
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
               }
             ]
           }
@@ -253,18 +80,76 @@
       ]
     },
     {
-      "title": "files_gis",
+      "title": "akts",
       "blocks": [
         [
           {
             "title": "",
             "items": [
               {
-                "code": "documents",
+                "code": "akts",
                 "type": "table",
-                "form": "well_document",
-                "title": "files",
-                "table_fields": [
+                "form": "well_document_short",
+                "title": "akts",
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "inclinometry",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "inclinometry",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "inclinometry",
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "conclusion",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "conclusion",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "conclusion",
+                "columns": [
                   {
                     "code": "name_ru",
                     "title": "scan_doc"

@@ -54,7 +54,7 @@
                 "dict": "orgs",
                 "title": "org",
                 "is_editable": true,
-                "validation": "required|exists:tbd.dict.org,id"
+                "validation": "nullable|exists:tbd.dict.org,id"
               }
             ]
           }

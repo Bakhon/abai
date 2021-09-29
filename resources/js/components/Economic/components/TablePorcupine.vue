@@ -138,10 +138,12 @@ export default {
 
     chartSeries() {
       return this.filteredData.map(item => {
-        const prefix = item.is_gtm ? 'GTM:' : ''
-
         return {
-          name: `${prefix}${item.salary_percent.value}, ${item.retention_percent.value}`,
+          name: `
+          ${this.trans('economic_reference.fot_optimization')} - ${+item.salary_percent.value * 100}%,
+          ${this.trans('economic_reference.non_optimizable_costs_share')} - ${+item.retention_percent.value * 100}%
+          ${item.is_gtm ? this.trans('economic_reference.with_gtm') : this.trans('economic_reference.without_gtm')}
+          `,
           type: 'line',
           data: item.series.map(item => {
             return {
@@ -202,6 +204,7 @@ export default {
           },
         },
         xaxis: {
+          type: 'numeric',
           labels: {
             formatter: (val) => (+val / 1000).toFixed(0),
           },

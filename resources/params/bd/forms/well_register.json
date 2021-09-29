@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "dict.well",
+  "sort": [
+    {
+      "field": "drill_start_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main",

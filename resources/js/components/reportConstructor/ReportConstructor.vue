@@ -107,7 +107,8 @@
                 <ul>
 
                   <li @click="onClickOption(structureType);"
-                      v-for="structureType in structureTypes[currentStructureType]" class="dropdown-item">
+                      v-for="structureType in structureTypes[currentStructureType]" 
+                      class="dropdown-item">
 
                     <div class="dropdown-item-inner">
                       <a href="#">
@@ -127,7 +128,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="left-section-select-area">
+          <div class="col left-section-select-area">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
                  xmlns="http://www.w3.org/2000/svg">
               <path d="M0 0.000249982L4.66665 5.3335V10.6667L7.33335 12V5.33325L12 0H6.00012L0 0.000249982Z"
@@ -155,13 +156,16 @@
               <div class="table-container-element">
                 <template>
                   <report-constructor-item-select-tree
+                      v-if="currentOption"
                       @modalChangeVisible="(value) => modalChangeVisible(value)"
                       @changeOrgSelector="changeOrgSelector()"
                       :structureType="currentStructureType"
                       :itemType="currentItemType"
                       :isShowCheckboxes="true"
+                      :currentOption="currentOption"
+                      :selectedObjects="selectedObjects[currentStructureType]"
                       :isCheckedCheckbox="isCheckedCheckbox"
-                      :onCheckboxClick="updateSelectedNodes"
+                      ref="itemSelectTree"
                   >
                   </report-constructor-item-select-tree>
                 </template>
@@ -343,7 +347,7 @@
                         <tr v-for="(attributesOnDepth, index) in getHeaders(sheetType)">
                           <th
                               v-for="attribute in attributesOnDepth"
-                              :rowspan="getRowHeightSpan(attribute, index)"
+                              :rowspan="getRowHeightSpan(attribute, index, sheetType)"
                               :colspan="getRowWidthSpan(attribute)"
                           >
                             <div class="centered">
@@ -354,9 +358,11 @@
 
                         </thead>
                         <tbody>
-                        <tr v-for="row in statisticsOfSheet">
+                        <tr v-for="row in statisticsOfSheet" v-if="isContainsData(row)">
                           <td class="table-body" v-for="column in statisticsColumns[sheetType]">
-                            <div class="centered">{{ row[column] }}</div>
+                            <div class="centered">
+                              {{ formatCell(row[column]) }}
+                            </div>
                           </td>
                         </tr>
                         </tbody>
@@ -875,28 +881,6 @@ body {
         border-radius: 6px;
         border: 0px;
       }
-    }
-  }
-
-  .right-section-select-area {
-    margin: 20px 10px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 19px;
-
-    input[type="checkbox"] {
-      height: 15px;
-      width: 15px;
-      background-color: white;
-      border-radius: 3.5px;
-      margin-bottom: auto;
-      margin-top: auto;
-      margin-right: 5px;
-      cursor: pointer;
     }
   }
 

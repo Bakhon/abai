@@ -17,6 +17,7 @@ class Gu extends Model
     protected static $logAttributesToIgnore = ['updated_at', 'created_at', 'deleted_at'];
     protected static $logOnlyDirty = true;
     protected static $submitEmptyLogs = false;
+    protected $connection = 'mysql';
 
     protected $localKey = 'id';
     protected $guarded = ['id'];
@@ -62,6 +63,7 @@ class Gu extends Model
             'bsw',
             'pump_discharge_pressure',
             'heater_output_temperature',
+            'heater_inlet_temperature',
             'daily_gas_production_in_sib',
             'surge_tank_pressure',
             'sg_oil',
@@ -155,5 +157,10 @@ class Gu extends Model
     public function metering_units()
     {
         return $this->hasMany(MeteringUnits::class);
+    }
+    
+    public function zu_cleanings()
+    {
+        return $this->hasMany(ZusCLeaning::class);
     }
 }

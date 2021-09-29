@@ -20,12 +20,10 @@ export default {
     },
     methods: {
         updateCurrentOilPrices(period) {
-            this.isPricesChartLoading = true;
             this.oilPeriod = period;
             this.usdPeriod = period;
             let uri = this.localeUrl("/get-oil-rates");
             this.setDataAndChart(uri, 'oil');
-            this.isPricesChartLoading = false;
         },
 
         setDailyOilPriceChange(currentPrice, previousPrice) {
@@ -48,6 +46,24 @@ export default {
 
         oilRatesDataChartForCurrentPeriod() {
             return this.oilRatesData.for_chart.slice(this.oilPeriod * -1);
+        },
+
+        periodSelect() {
+            if (this.period === 0) {
+                return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(7, 'days'), 'days') + 1;
+            }
+            if (this.period === 1) {
+                return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(1, 'months'), 'days') + 1;
+            }
+            if (this.period === 2) {
+                return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(3, 'months'), 'days') + 1;
+            }
+            if (this.period === 3) {
+                return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(1, 'years'), 'days') + 1;
+            }
+            if (this.period === 4) {
+                return null;
+            }
         },
     },
     computed: {

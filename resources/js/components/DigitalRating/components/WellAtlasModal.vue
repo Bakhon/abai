@@ -37,24 +37,24 @@
         <div class="sector-form">
           <div class="sector-form__item">
             <div class="sector-form__label">
-              {{ trans('digital_rating.sectorNumber') }}
+              {{ trans('digital_rating.sector') }}
             </div>
             <input
               type="text"
               class="sector-form__input"
-              v-model="sectorNumber"
+              v-model="sector"
               @blur="handleBlur"
               @keypress="restrictChars($event)"
             />
           </div>
           <div class="sector-form__item">
             <div class="sector-form__label">
-              {{ trans('digital_rating.horizonNumber') }}
+              {{ trans('digital_rating.horizon') }}
             </div>
             <input
               type="text"
               class="sector-form__input"
-              v-model="horizonNumber"
+              v-model="horizon"
               @blur="handleBlur"
               @keypress="restrictChars($event)"
             />
@@ -159,7 +159,8 @@ export default {
     ]),
     ...digitalRatingMutations([
       'SET_SECTOR',
-      'SET_HORIZON'
+      'SET_HORIZON',
+      'CLEAR_ATLAS'
     ]),
     fetchData() {
       this.fetchIndicators({});
@@ -169,6 +170,7 @@ export default {
     },
     close() {
       this.currentTab = 'overview';
+      this.CLEAR_ATLAS();
       this.$emit('close');
     },
     handleBlur() {
@@ -179,6 +181,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+#modalAtlas___BV_modal_outer_ {
+  z-index: 4002 !important;
+}
 .content {
   background: #363B68;
   border: 1px solid #545580;

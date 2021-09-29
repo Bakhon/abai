@@ -1,25 +1,34 @@
 <template>
     <div class="container-main">
         <div class="col-sm-12">
+            <div class="daily_raport_block-header">
+                <div class="daily_raport_block-header-first">
+                    <div class="daily_raport_block-header-input">
+                        <label for="">{{trans('digital_drilling.daily_raport.date')}}</label>
+                        <input type="text">
+                    </div>
+                    <div class="daily_raport_block-header-input">
+                        <label for="">{{trans('digital_drilling.daily_raport.report')}}</label>
+                        <input type="text">
+                    </div>
+                    <div class="daily_raport_block-header-input">
+                        <label for="">{{trans('digital_drilling.daily_raport.page')}}</label>
+                        <input type="text">
+                    </div>
+                </div>
+                <div class="daily_raport_block-header-center">
+                    {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
+                </div>
+                <div class="daily_raport_block-header-save">
+                    <button class="save">
+                        {{trans('digital_drilling.daily_raport.save')}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
             <div class="daily_raport_block">
                 <table class="tables table defaultTable">
-                    <thead>
-                        <tr>
-                            <th rowspan="3" colspan="10" class="align-middle text-center border-right-0 title">
-                                {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
-                            </th>
-                            <th class="text-right border-left-0 border-right-0 border-bottom-0">{{trans('digital_drilling.daily_raport.date')}}</th>
-                            <th><input type="text"></th>
-                        </tr>
-                        <tr>
-                            <th class="text-right border-0">{{trans('digital_drilling.daily_raport.report')}} №</th>
-                            <th><input type="text"></th>
-                        </tr>
-                        <tr>
-                            <th class="text-right border-0">{{trans('digital_drilling.daily_raport.page')}}</th>
-                            <th><input type="text"></th>
-                        </tr>
-                    </thead>
                     <tbody>
                         <tr>
                             <td colspan="2">
@@ -1650,7 +1659,7 @@
                             <td colspan="4">CHC I,b/100ft2</td>
                             <td rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.crust')}}</td>
                             <td rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.total_hardness')}}</td>
-                            <td colspan="4">{{trans('digital_drilling.concentration')}}</td>
+                            <td colspan="4">{{trans('digital_drilling.daily_raport.concentration')}}</td>
                         </tr>
                         <tr>
                             <td colspan="2">10 {{trans('digital_drilling.daily_raport.sec')}}</td>
@@ -1804,18 +1813,16 @@
                     <tbody>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.altitude')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.coal')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.angle')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.azimuth')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.three_instruments')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.type_instrument')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.altitude')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.coal')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.angle')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.azimuth')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.three_instruments')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.type_instrument')}}</td>
                         </tr>
                         <tr v-for="i in 20">
-                            <td v-for="i in 10"><input type="text"></td>
+                            <td v-for="i in 8"><input type="text"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -2036,4 +2043,18 @@
 .add:hover{
     opacity: 0.5;
 }
+    .save{
+        border: 0;
+        background: #2E50E9;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 14px;
+        text-align: center;
+
+        color: #FFFFFF;
+        width: 170px;
+        padding: 8px;
+
+    }
 </style>

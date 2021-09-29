@@ -31,7 +31,7 @@ abstract class MeasurementLogForm extends TableForm
             case 'density_oil':
 
                 return [
-                    'value' => floatval($item->geo->first()->density_oil)
+                    'value' => $item->geo->first() ? floatval($item->geo->first()->density_oil) : null
                 ];
 
             case 'other_uwi':
@@ -104,8 +104,12 @@ abstract class MeasurementLogForm extends TableForm
         ];
     }
 
-    private function getGeoBreadcrumbs($geo)
+    private function getGeoBreadcrumbs($geo = null)
     {
+        if (empty($geo)) {
+            return '';
+        }
+
         if (Cache::has('bd_geo_breadcrumb_' . $geo->id)) {
             return Cache::get('bd_geo_breadcrumb_' . $geo->id);
         }
@@ -134,12 +138,6 @@ abstract class MeasurementLogForm extends TableForm
                 $column['column'] => $params['value'],
                 'dbeg' => $params['date']->toDateTimeString()
             ];
-
-            if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $val) {
-                    $data[$key] = $val;
-                }
-            }
 
             DB::connection('tbd')
                 ->table($column['table'])

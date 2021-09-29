@@ -1,91 +1,96 @@
 <template>
   <div class="subsoil-secondary-tree">
-    <div
-      class="subsoil-input-label-holder"
-      v-show="pickedSubsoil == subsoil.owner_id"
-    >
+    <div v-for="field in treeData" :key="field.field_id">
       <input
-        v-if="hasChild"
         type="checkbox"
-        :name="subsoil.field_name"
-        :id="subsoil.field_name"
-        :value="subsoil.field_id"
-        v-model="checkedSubsoilChild"
-        @click="clearCheckboxArray"
+        :name="field.field_name"
+        :id="field.field_name"
+        :value="field"
+        v-model="checkedField"
+        @click="checkedField = []"
       />
-      <input
-        v-else
-        type="radio"
-        :name="subsoil.field_name"
-        :id="subsoil.field_name"
-        :value="subsoil.field_id"
-        v-model="pickedSubsoilChild"
-      />
-      <label :for="subsoil.field_name">{{ subsoil.field_name }}</label>
-    </div>
-
-    <div v-show="pickedSubsoil" v-if="hasChild">
-      <SubsoilTreeChildren
-        v-for="child in subsoil.childNodes"
-        :key="child.field_id"
-        :subsoil="child"
-        :pickedSubsoil="hasChild ? checkedSubsoilChild[0] : pickedSubsoilChild"
-      ></SubsoilTreeChildren>
+      <label :for="field.field_name">{{ field.field_name }}</label>
+      <div
+        v-show="checkedField[0].field_name == field.field_name"
+        v-if="hasChild"
+      >
+        <template v-for="horizon in field.horizons">
+          <div
+            v-if="horizon.horizon_name"
+            :key="horizon.horizon_id"
+            class="subsoil-horizons"
+          >
+            <input
+              type="checkbox"
+              :id="horizon.horizon_name"
+              :value="horizon"
+              v-model="checkedSubsoilHorizon"
+            />
+            <label :for="horizon.horizon_name">{{
+              horizon.horizon_name
+            }}</label>
+          </div>
+        </template>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "SubsoilTreeChildren",
   props: {
-    subsoil: Object,
-    pickedSubsoil: [Array, Number],
-  },
-  data() {
-    return {
-      checkedSubsoilChild: [],
-    };
+    treeData: Array,
   },
   computed: {
-    ...mapState("plastFluids", ["pickedSubsoilChildRadio"]),
-    hasChild() {
-      return this.subsoil.childNodes && this.subsoil.childNodes.length;
-    },
-    pickedSubsoilChild: {
+    ...mapState("plastFluids", [
+      "currentSubsoilField",
+      "currentSubsoilHorizon",
+    ]),
+    checkedField: {
       get() {
-        return this.pickedSubsoilChildRadio;
+        return this.currentSubsoilField;
       },
       set(value) {
-        this.SET_PICKED_SUBSOIL_CHILD_RADIO(value);
+        this.UPDATE_CURRENT_SUBSOIL_FIELD(value[value.length - 1]);
+      },
+    },
+    hasChild() {
+      return (
+        this.checkedField[0]?.horizons && this.checkedField[0]?.horizons.length
+      );
+    },
+    checkedSubsoilHorizon: {
+      get() {
+        return this.currentSubsoilHorizon;
+      },
+      set(value) {
+        this.SET_CURRENT_SUBSOIL_HORIZON(value);
       },
     },
   },
   methods: {
-    ...mapMutations("plastFluids", ["SET_PICKED_SUBSOIL_CHILD_RADIO"]),
-    clearCheckboxArray() {
-      this.checkedSubsoilChild = [];
-    },
+    ...mapMutations("plastFluids", [
+      "SET_CURRENT_SUBSOIL_HORIZON",
+      "SET_SUBSOIL_FIELDS",
+    ]),
+    ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL_FIELD"]),
   },
   beforeDestroy() {
-    this.SET_PICKED_SUBSOIL_CHILD_RADIO("");
+    this.UPDATE_CURRENT_SUBSOIL_FIELD({});
+    this.SET_SUBSOIL_FIELDS([]);
   },
 };
 </script>
 
 <style scoped>
-.subsoil-secondary-tree {
+.subsoil-secondary-tree > div {
   margin: 15px;
 }
 
-.subsoil-input-label-holder > label,
-.subsoil-input-label-holder > input {
-  cursor: pointer;
-}
-
-.subsoil-input-label-holder > label {
-  margin-left: 10px;
+.subsoil-horizons {
+  margin: 10px 10px 10px 15px;
 }
 </style>

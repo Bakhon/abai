@@ -19,6 +19,7 @@ Vue.component('v-select', vSelect)
 Vue.use(NotifyPlugin);
 export default {
   name: "TrPage",
+  
   props: [
     'params'
   ],
@@ -30,6 +31,24 @@ export default {
     Multiselect,
   },
   computed: {
+    isExpMethButton() {
+      for (const key in this.lonelywell) {
+        if (this.lonelywell[key].exp_meth === "") {
+          return false;
+        }
+        else{
+          return true;
+        }
+      }
+    },
+    isFilterChecked() {
+      for (let column of this.filterList) {
+        if (this.$store.state.tr[column].length !== 0) {
+          return true;
+        }
+      }
+      return false;
+    },
     selectHorizon: {
       get(){
         return this.$store.state.tr.horizon;
@@ -84,6 +103,14 @@ export default {
       }, 
       set(newVal){
         this.$store.commit("tr/SET_BLOCK", newVal);
+      }, 
+    },
+    selectEvent: {
+      get(){
+        return this.$store.state.tr.plannedEvents;
+      }, 
+      set(newVal){
+        this.$store.commit("tr/SET_EVENT", newVal);
       }, 
     },
     addWellData() {
@@ -243,6 +270,7 @@ export default {
               fields: [...fields],
           },
       ],
+      rowExpMeth: null,
       dt: null,
       editedWells: [],
       isShowFirst: true,
@@ -281,6 +309,7 @@ export default {
       blockFilterData: [],
       expMethFilterData: [],
       wellNameFilterData: [],
+      eventFilterData: [],
       perPage: 3,
       currentPage: 1,
       isAscSort: "",
@@ -294,10 +323,12 @@ export default {
       editPageNumberLink: "techregime_edit_page_numbers/",
       searchLink: "techregime_totals_test_3/",
       editSearchLink: "techregime_edit_page/",
+      isExpMeth: true, 
       isMaxDate: true,
       isActiveHorizonFilterr: false,
       editedAddWells: [],
-      checkAllFilters: false,
+      filterList: ['field','horizon','wellType', 'object','block', 'expMeth','plannedEvents'],
+
     };
   },
   methods: {
@@ -333,6 +364,7 @@ export default {
         this.$store.commit("tr/SET_BLOCK", []);
         this.$store.commit("tr/SET_EXPMETH", []);
         this.$store.commit("tr/SET_WELLNAME", []);
+        this.$store.commit("tr/SET_EVENT", []);
         this.axios
             .post(
                 this.postApiUrl + this.searchLink,
@@ -359,66 +391,14 @@ export default {
                 }
                 this.isPermission = this.params.includes(this.permissionName);
             });
-        this.axios
-            .get(
-                this.postApiUrl + "techregime/tr_parameter_filters/"
-            )
-            .then((response) => {
-                let data = response.data;
-                if (data) {
-                    this.filter_column = data;
-                    this.horizonFilterData = data.horizon;
-                    this.objectFilterData = data.object;
-                    this.fieldFilterData = data.field;
-                    this.wellTypeFilterData = data.well_type;
-                    this.blockFilterData = data.block;
-                    this.expMethFilterData = data.exp_meth;
-                    this.wellNameFilterData = data.rus_wellname;
-                } else {
-                    console.log("No data");
-                }
-            });
         this.pageInfo(this.pageNumberLink);
+        this.getFilter();
     },
     getPageData() {
         if (this.isDynamic) {
-            return {
-                field: this.$store.state.tr.field,
-                is_dynamic: this.$store.state.tr.isDynamic,
-                object: this.$store.state.tr.object,
-                searchString: this.$store.state.tr.searchString,
-                sortType: this.$store.state.tr.isSortType,
-                sortParam: this.$store.state.tr.sortParam,
-                wellType: this.$store.state.tr.wellType,
-                pageNum: this.$store.state.tr.pageNumber,
-                block: this.$store.state.tr.block,
-                expMeth: this.$store.state.tr.expMeth,
-                horizon: this.$store.state.tr.horizon,
-                year_1: this.$store.state.tr.year_dyn_start,
-                month_1: this.$store.state.tr.month_dyn_start,
-                day_1: this.$store.state.tr.day_dyn_start,
-                year_2: this.$store.state.tr.year_dyn_end,
-                month_2: this.$store.state.tr.month_dyn_end,
-                day_2: this.$store.state.tr.day_dyn_end,
-                wellName: this.$store.state.tr.wellName,
-            };
+            return this.$store.getters['tr/Dynamic'];
         } else {
-            return {
-                month: this.$store.state.tr.month,
-                year: this.$store.state.tr.year,
-                sortType: this.$store.state.tr.isSortType,
-                sortParam: this.$store.state.tr.sortParam,
-                field: this.$store.state.tr.field,
-                horizon: this.$store.state.tr.horizon,
-                wellType: this.$store.state.tr.wellType,
-                object: this.$store.state.tr.object,
-                block: this.$store.state.tr.block,
-                expMeth: this.$store.state.tr.expMeth,
-                searchString: this.$store.state.tr.searchString,
-                is_dynamic: this.$store.state.tr.isDynamic,
-                pageNum: this.$store.state.tr.pageNumber,
-                wellName: this.$store.state.tr.wellName,
-            }
+            return this.$store.getters['tr/notDynamic'];
         };
     },
     clickCallback(pageNum) {
@@ -435,17 +415,10 @@ export default {
       this.$store.commit("tr/SET_BLOCK", []);
       this.$store.commit("tr/SET_EXPMETH", []);
       this.$store.commit("tr/SET_WELLNAME", []);
+      this.$store.commit("tr/SET_EVENT", []);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
       this.pageNumber = 1;
       this.pushChooseParameter();
-    },
-    checkFilter() {
-      if (this.$store.state.tr.field.length === 0 && this.$store.state.tr.horizon.length === 0 && this.$store.state.tr.wellType.length === 0 && this.$store.state.tr.object.length === 0 && this.$store.state.tr.block.length === 0 && this.$store.state.tr.expMeth.length === 0) {
-        this.checkAllFilters = false;
-      }
-      else {
-        this.checkAllFilters = true;
-      }
     },
     dropFilter(x) {
         this.$store.commit("globalloading/SET_LOADING", true),
@@ -462,6 +435,8 @@ export default {
             this.$store.commit(x, []);
         } else if (x === 'tr/SET_WELLTYPE') {
             this.$store.commit(x, []);
+        } else if (x === 'tr/SET_EVENT') {
+            this.$store.commit(x, []);            
         } else {
             this.$store.commit("tr/SET_WELLNAME", []);
         };
@@ -478,14 +453,15 @@ export default {
         this.pushChooseParameter();
     },
     pushChooseParameter() {
-        if (this.isDynamic) {
-            this.formingDynamicTR();
-        } else if (this.isEdit) {
-            this.axiosEdit();
-        } else {
-            this.requestFilter();
-        }
-        this.checkFilter();
+      if (this.isDynamic) {
+        this.formingDynamicTR();
+      } else if (this.isEdit) {
+        this.axiosEdit();
+      } else {
+        this.requestFilter();
+      }
+      this.checkFilter();
+      this.getFilter();
     },
     axiosEdit() {
         this.axios
@@ -522,6 +498,29 @@ export default {
             });
         this.pageInfo(this.pageNumberLink);
     },
+    getFilter() {
+        this.axios
+            .post(
+                this.postApiUrl + "techregime/tr_parameter_filters_2/",
+                this.getPageData(),
+            )
+            .then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.filter_column = data;
+                    this.horizonFilterData = data.horizon;
+                    this.objectFilterData = data.object;
+                    this.fieldFilterData = data.field;
+                    this.wellTypeFilterData = data.well_type;
+                    this.blockFilterData = data.block;
+                    this.expMethFilterData = data.exp_meth;
+                    this.wellNameFilterData = data.rus_wellname;
+                    this.eventFilterData = data.planned_events;
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
     pageInfo(link) {
         this.axios
             .post(
@@ -537,7 +536,6 @@ export default {
                 }
             });
     },
-    // Режим месячного формирования
     requestFilter() {
         this.axios
             .post(
@@ -624,6 +622,7 @@ export default {
         this.isShowSecond = true;
         this.loadPage();
     },
+
     reRender() {
         this.filteredWellData = [];
         this.lonelywell = [];
@@ -739,6 +738,7 @@ export default {
             this.$store.commit("tr/SET_WELLTYPE", []);
             this.$store.commit("tr/SET_BLOCK", []);
             this.$store.commit("tr/SET_EXPMETH", []);
+            this.$store.commit("tr/SET_EVENT", []);
             this.$store.commit("tr/SET_PAGENUMBER", 1);
             this.$store.commit("tr/SET_SEARCH", "");
             this.$store.commit("tr/SET_SORTTYPE", true);
@@ -767,6 +767,7 @@ export default {
         this.$store.commit("tr/SET_WELLTYPE", []);
         this.$store.commit("tr/SET_BLOCK", []);
         this.$store.commit("tr/SET_EXPMETH", []);
+        this.$store.commit("tr/SET_EVENT", []);
         this.$store.commit("tr/SET_PAGENUMBER", 1);
         this.$store.commit("tr/SET_SORTTYPE", true);
         this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
@@ -855,23 +856,38 @@ export default {
         this.filter = filter;
     },
     saveadd() {
-        this.notification(`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
-        let output = {};
-        this.$refs.editTable[0].children.forEach((el) => {
-            output[el.children[0].dataset.key] = el.children[0].value;
-        });
-        this.axios
-            .post(
-                this.postApiUrl + "techregime/new_wells/add_well/",
-                this.lonelywell,
-            )
-            .then((response) => {
-                this.loadPage();
-                this.wellAdd();
-                this.reRender();
-                console.log('good')
-            })
+          if(this.rowExpMeth == '') {          
+          } else {
+            this.notification(`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
+            let output = {};
+            this.$refs.editTable[0].children.forEach((el) => {
+                output[el.children[0].dataset.key] = el.children[0].value;
+            });
+            this.axios
+                .post(
+                    this.postApiUrl + "techregime/new_wells/add_well/",
+                    this.lonelywell,
+                )
+                .then((response) => {
+                    this.loadPage();
+                    this.wellAdd();
+                    this.reRender();
+                })
+          }
+            
+        
     },
+    isExpMethInput(row) {
+      this.rowExpMeth = row.exp_meth
+      if (row.exp_meth) {
+        this.isExpMeth=true
+        return true
+    } else {
+        this.isExpMeth=false
+        return false
+    }
+  },
+
     deleteWell() {
         this.notification(`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
         this.$store.commit("globalloading/SET_LOADING", true);

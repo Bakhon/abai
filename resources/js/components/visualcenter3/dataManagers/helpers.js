@@ -8,12 +8,6 @@ export default {
         };
     },
     methods: {
-        filterDzoInputForSeparateCompany(data, company) {
-            return _.filter(data, function (item) {
-                return (item.dzo === company);
-            })
-        },
-
         getDzoColumnsClass(rowIndex, columnName) {
             if (this.getColumnIndex(columnName) % 2 === 0) {
                 return this.getDarkColorClass(rowIndex);
@@ -26,37 +20,22 @@ export default {
             if (num == null) {
                 return 0;
             }
-            if (this.quantityRange < 2) {
+            if (this.periodRange === 0) {
                 this.thousand = '';
                 return new Intl.NumberFormat("ru-RU").format(Math.round(num));
             } else {
                 this.thousand = this.trans("visualcenter.thousand");
                 if (num >= 1000) {
                     num = (num / 1000).toFixed(0)
-                } else if (num >= 100) {
-                    num = Math.round((num / 1000) * 10) / 10
                 } else if (num >= 10) {
-                    num = Math.round((num / 1000) * 100) / 100
+                    num = num / 1000;
                 } else if (num > 0) {
-                    num = 0.01
+                    num = 0.01;
                 } else {
                     num = 0;
                 }
-                return new Intl.NumberFormat("ru-RU").format(num)
+                return new Intl.NumberFormat("ru-RU").format(num);
             }
-        },
-
-        ISODateString(d) {
-            function pad(n) {
-                return n < 10 ? '0' + n : n
-            }
-
-            return d.getUTCFullYear() + '-'
-                + pad(d.getUTCMonth() + 1) + '-'
-                + pad(d.getUTCDate()) + 'T'
-                + pad(d.getUTCHours()) + ':'
-                + pad(d.getUTCMinutes()) + ':'
-                + pad(d.getUTCSeconds()) + '+06:00'
         },
 
         getDiffProcentLastBigN(a, b) {
@@ -74,10 +53,6 @@ export default {
             return 0;
         },
 
-        pad(n) {
-            return n < 10 ? "0" + n : n;
-        },
-
         getNameDzoFull: function (dzo) {
             if (Array.isArray(dzo)) {
                 dzo = dzo['0']
@@ -92,34 +67,12 @@ export default {
             return moment(date, "YYYY-MM").daysInMonth();
         },
 
-        getQuarter(d) {
-            return [parseInt(d.getMonth() / 3) + 1, d.getFullYear()];
-        },
-
-        getPreviousWorkday(){
-            let workday = moment();
-            let day = workday.day();
-            let diff = 2;
-            if (day === 0 || day === 1){
-                diff = day + 2;
-            }
-            return workday.subtract(diff, 'days').endOf('day').format();
-        },
-
-        getPercentDifference(a, b) {
-            if (a && b) {
-                return new Intl.NumberFormat("ru-RU").format(Math.abs(((a - b) / b) * 100).toFixed(1))
-            } else {
-                return 0
-            }
-        },
-
         getFormattedNumber(num) {
             return (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
         },
 
         getColumnIndex(columnName) {
-            return this.dzoColumns[this.currentDzoList].indexOf(columnName);
+            return this.dzoColumns.indexOf(columnName);
         },
 
         getDarkColorClass(rowIndex) {
@@ -172,13 +125,6 @@ export default {
             }
         },
 
-        getDataOrderedByAsc(data) {
-            return _.orderBy(data,
-                ["__time"],
-                ["asc"]
-            );
-        },
-
         getFilteredData(data, type) {
             _.forEach(this.dzoType[type], function (dzoName) {
                 data = _.reject(data, _.iteratee({dzo: dzoName}));
@@ -190,33 +136,6 @@ export default {
             _.forEach(this.dzoRegionsMapping, function(region) {
                 _.set(region, 'isActive', false);
             });
-        },
-
-        getProductionDataInPeriodRange(data, periodStart, periodEnd) {
-            return _.filter(data, function (item) {
-                return _.every([
-                    _.inRange(
-                        item.__time,
-                        periodStart,
-                        periodEnd
-                    ),
-                ]);
-            });
-        },
-
-        getFilteredDataByOneDay(filteredDataByCompanies,dayType,periodStart,periodEnd) {
-            let dayTypeMapping = {
-                'today': {
-                    'start': periodStart,
-                    'end': periodEnd
-                },
-                'yesterday': {
-                    'start': moment(new Date(periodStart)).subtract(1, 'days').valueOf(),
-                    'end': periodStart
-                }
-            };
-            let filteredDataByOneDay = this.getProductionDataInPeriodRange(filteredDataByCompanies,dayTypeMapping[dayType].start,dayTypeMapping[dayType].end);
-            return this.getDataOrderedByAsc(filteredDataByOneDay);
         },
 
         getFormattedNumberToThousand(plan,fact) {
@@ -247,27 +166,16 @@ export default {
             return arrowClass;
         },
 
-        getFilteredDataByOneCompany(data) {
-            let self = this;
-            return _.filter(data, function (item) {
-                return self.company == item.dzo;
-            });
-        },
-
         getDzoName(acronym,mapping) {
+            if (!mapping[acronym]) {
+                return acronym;
+            }
             return this.trans(mapping[acronym]);
         },
 
-        getOilProductionKmgParticipationDzoTitle(percentParticipation){
-            if (percentParticipation) {
-                return " (" + percentParticipation * 100 + "%)";
-            }
-            return "";
-        },
-
         getProductionTableClass() {
-            let classes = 'table4';
-            if (!this.isOilResidueActive) {
+            let classes = 'table4 production-table';
+            if (!this.mainMenu.oilCondensateDeliveryOilResidue) {
                 classes += ' w-100';
             }
             if (!this.buttonDailyTab) {
@@ -277,40 +185,20 @@ export default {
         },
 
         isConsolidatedCategoryActive() {
-            return this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0;
+            return this.mainMenu.oilCondensateProduction || this.mainMenu.oilCondensateDelivery;
         },
 
-        getNumberByDzo(dzoName, index){
-            if (this.oilCondensateFilters.isCondensateOnly) {
-                return this.dzoNumbers['condensateOnly'][dzoName];
-            }
-            if (this.isOilResidueActive) {
-                return this.dzoNumbers['oilResidue'][dzoName];
-            }
-            if (this.oilCondensateProductionButton && this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return this.dzoNumbers['productionConsolidated'][dzoName];
-            }
-            if (this.oilCondensateProductionButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return this.dzoNumbers['productionKMG'][dzoName];
-            }
-            if (this.oilCondensateDeliveryButton && this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return this.dzoNumbers['deliveryConsolidated'][dzoName];
-            }
-            if (this.oilCondensateDeliveryButton && !this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return this.dzoNumbers['deliveryKMG'][dzoName];
-            }
-            return '1.' + index + '.';
+        isHoverShouldBeShown() {
+            return this.isConsolidatedCategoryActive() &&
+                !this.mainMenu.oilCondensateProductionWithoutKMG &&
+                !this.mainMenu.oilCondensateProductionCondensateOnly &&
+                !this.mainMenu.oilCondensateDeliveryCondensateOnly &&
+                !this.mainMenu.oilCondensateDeliveryOilResidue &&
+                !this.mainMenu.oilCondensateDeliveryWithoutKMG;
         },
 
         getNumberFormat(num) {
             return (new Intl.NumberFormat("ru-RU").format(num))
-        },
-
-        getDzoNameFormatting(dzo) {
-            if (this.troubledCompanies.includes(dzo) && !this.oilCondensateFilters.isCondensateOnly) {
-                return 'troubled-companies';
-            }
-            return '';
         },
 
         getIndicatorClass(plan,fact) {
@@ -318,7 +206,37 @@ export default {
                 return 'triangle fall-indicator-production-data';
             }
             return 'triangle growth-indicator-production-data';
-        }
+        },
+
+        getHighlightClassForSummary(isEven) {
+            if (isEven) {
+                return 'tdStyle3';
+            } else {
+                return 'tdStyleLight3';
+            }
+        },
+
+        getMetricNameByCategorySelected() {
+            if (!this.isConsolidatedCategoryActive()) {
+                return this.trans('visualcenter.meterCubic');
+            } else {
+                return this.trans("visualcenter.tonWithSpace");
+            }
+        },
+
+        getThousandMetricNameByCategorySelected() {
+            if (!this.isConsolidatedCategoryActive()) {
+                return this.trans('visualcenter.thousand') + this.trans('visualcenter.meterCubicWithSpace');
+            } else {
+                return this.trans("visualcenter.dzoThousandTon");
+            }
+        },
+
+        getFilteredTableData() {
+            return _.filter(_.cloneDeep(this.productionTableData), (item) => {
+                return this.selectedDzoCompanies.includes(item.name);
+            });
+        },
     },
     computed: {
         periodSelectFunc() {

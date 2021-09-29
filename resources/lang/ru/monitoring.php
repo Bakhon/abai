@@ -71,6 +71,7 @@ return array (
       'weight_after' => 'Масса после извлечения, гр',
       'avg_speed' => 'Средняя скорость коррозии, мм/г',
     ),
+    'volume_fractions' => 'Объемные доли',
   ),
   'fact_common_corrosion_speed' => 'Фактическая общая скорость коррозии',
   'test_coupons' => 'тест купоны',
@@ -293,6 +294,7 @@ return array (
       'plot' => 'Участок',
       'roughness' => 'Жесткость',
       'thickness' => 'Толщина стенок',
+      'sizes' => 'Внешний диаметр х толщина стенки мм',
     ),
     'edit_title' => 'Редактирование данных по трубопроводу',
     'pipe' => 'Трубопровод',
@@ -323,6 +325,7 @@ return array (
       'heater_output_temperature' => 'Температура печи',
       'surge_tank_pressure' => 'Давление в буферной емкости',
       'daily_gas_production_in_sib' => 'Количество газа в СИБ',
+      'gas_factor' => 'Газовый фактор',
     ),
     'redirect-to' => 'Перейти на',
     'enter-omg-ngdu-data' => 'Ввод данных по ОМГ НГДУ ГУ',
@@ -390,8 +393,8 @@ return array (
     'fields' => 
     array (
       'length' => 'Протяженность, м',
-      'pressure_start' => 'Давление начальное, ата',
-      'pressure_end' => 'Давление конечное, ата',
+      'pressure_start' => 'Давление начальное, бар',
+      'pressure_end' => 'Давление конечное, бар',
       'temperature_start' => 'Температура начальная, °С',
       'temperature_end' => 'Температура конечная, °С',
       'start_point' => 'Начальная точка',
@@ -404,6 +407,7 @@ return array (
       'press_change' => 'Перепад давления, атм/км',
       'break_qty' => 'Количество порывов',
       'height_drop' => 'Перепад высот, м',
+      'check_calc' => 'Сеть трубопроводов',
     ),
     'table_title' => 'Таблица расчета гидравлики ГУ - УПСВ',
     'message' => 
@@ -570,5 +574,10 @@ return array (
     'pipe_types' => 'Размеры трубопроводов',
     'pipes' => 'Трубопроводы',
     'watermeasurement' => 'Промысловая жидкость и газ',
+  ),
+  'calculate_messages' => 
+  array (
+    'no_date' => 'Не выбрана дата',
+    'no_such_pipe' => 'Нет такой трубы с начальной точкой :start_point и конечной точкой :end_point',
   ),
 );

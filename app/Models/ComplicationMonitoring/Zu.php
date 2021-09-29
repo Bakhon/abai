@@ -52,6 +52,11 @@ class Zu extends Model
         return $this->hasMany(OmgNGDUZu::class);
     }
 
+    public function zu_cleanings()
+    {
+        return $this->hasMany(ZusCLeaning::class);
+    }    
+
     public function omgngdu_well()
     {
         return $this->hasMany(OmgNGDUWell::class, 'zu_id');

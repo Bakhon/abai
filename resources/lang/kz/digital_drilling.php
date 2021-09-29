@@ -1,6 +1,7 @@
 <?php
 
 return array (
+    'module_title'=> 'Сандық бұрғылау',
     'database' => 'Мәліметтер базасы',
     'general_information' => 'жалпы ақпарат',
     'well_data_sheet' => 'ұңғыманың паспорты',
@@ -61,6 +62,13 @@ return array (
         'meters' => 'метр',
         'drilled_per_day' => 'Тәулігіне бұрғыланады',
         'total_drilled' => 'Барлығы бұрғыланған',
+        'close' => 'Жабу',
+        'reset' => 'Бас тарту',
+        'import' => 'Импорт',
+        'import_daily-report' => 'Күнделікті бұрғылау есебінің импорты',
+        'select_file' => 'Файлды таңдаңыз',
+        'or' => 'немесе',
+        'drag_here' => 'файлды осында апарыңыз',
     ],
     'home' => [
         'operating_oil_pipeline' => 'Жұмыс істейтін мұнай құбыры',
@@ -361,8 +369,10 @@ return array (
         'weight' => 'салмағы, кг',
     ],
     'daily_raport' => [
-        'DAILY_DRILLING_REPORT' => 'СУТОЧНЫЙ БУРОВОЙ РАПОРТ',
+        'DAILY_DRILLING_REPORT' => 'Күнделікті рапорттар / тәүлік ақпарат',
+        'IMPORT_DRILLING_REPORT' => 'Бұрғылау есебін енгізу',
         'date' => 'Дата',
+        'save' => 'Сақтау',
         'report' => 'Рапорт',
         'page' => 'Страница',
         'unit_name' => 'Название Установки',
@@ -603,7 +613,7 @@ return array (
         'drilling_fluid_engineer' => 'Инженер по буровым раствором:',
 
 
-        'explanation_abbreviation' => 'Расшифровка сокрашении для персонала КТМ',
+        'explanation_abbreviation' => 'Расшифровка сокрашении',
         'ea_bo' => 'БО - буровое оборудование',
         'ea_pvo' => 'ПВО - противовыбросовое оборудование',
         'ea_ou' => 'ОУ - оборудование устья',

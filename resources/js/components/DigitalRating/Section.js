@@ -6,6 +6,7 @@ import BtnDropdown from "./components/BtnDropdown";
 import SettingModal from "./components/SettingModal";
 import WellAtlasModal from "./components/WellAtlasModal";
 import Accordion from "./components/Accordion";
+import SearchFormRefresh from "../ui-kit/SearchFormRefresh";
 import mainMenu from "../GTM/mock-data/main_menu.json";
 import { legends, maps, properties, objects, fileActions, mapActions } from './json/data';
 import { digitalRatingState, digitalRatingMutations } from '@store/helpers';
@@ -18,6 +19,7 @@ export default {
         SettingModal,
         WellAtlasModal,
         Accordion,
+        SearchFormRefresh
     },
 
     data() {
@@ -32,13 +34,17 @@ export default {
             menu: mainMenu,
             map: null,
             rectangle: null,
-            marker: null,
+            circle: [],
             bounds: [[0, 15000], [0,15000]],
             center: [85000, 52000],
             zoom: -6,
             minZoom: -6,
-            maxZoom: 0,
+            maxZoom: -1,
             renderer: L.canvas({ padding: 0.5 }),
+            searchSector: '',
+            startPoint: null,
+            endPoint: null,
+            isRulerActive: false
         };
     },
 
@@ -61,12 +67,31 @@ export default {
                 minZoom: this.minZoom,
                 maxZoom: this.maxZoom,
             });
+
             L.control.zoom({
                 position: 'bottomright'
             }).addTo(this.map);
 
             this.map.fitBounds(this.bounds);
             this.map.setView( this.center, this.zoom);
+
+            this.map.on('zoom', this.onMapZoom);
+        },
+
+        onMapZoom(e) {
+            const radiusByZoom = { '-1': 10,'-2': 10,'-3': 8, '-4': 6, '-5': 3, '-6': 1};
+
+            for (let key in radiusByZoom) {
+                if(e.target._zoom == key) {
+                    this.setRadiusCircle(radiusByZoom[key])
+                }
+            }
+        },
+
+        setRadiusCircle(radius) {
+            this.circle.forEach((circleMarker) => {
+                circleMarker.setRadius(radius);
+            });
         },
 
         async initSectorOnMap() {
@@ -76,9 +101,9 @@ export default {
                 this.rectangle = L.rectangle(this.getBounds(maps[i]), {
                     renderer: this.renderer,
                     color: maps[i]['color'],
-                    weight: 3,
+                    weight: 1,
                     fillColor: maps[i]['color'],
-                    fillOpacity: 1,
+                    fillOpacity: 0.7,
                 }).addTo(this.map).bindPopup(maps[i]['sector'].toString());
 
                 this.rectangle.on('mouseover', function (e) {
@@ -88,28 +113,48 @@ export default {
                     this.closePopup();
                 });
                 this.rectangle.on('click', (e) => {
-                    this.onMapClick(maps[i]['sector']);
-                })
+                    if(this.isRulerActive) {
+                        this.onMeasureDistance(e);
+                    } else {
+                        this.onMapClick(maps[i]['sector']);
+                    }
+                });
             }
-            this.initChartOnMap();
+        },
+
+        onMeasureDistance(event) {
+            if (this.startPoint) {
+                this.endPoint = event.latlng;
+                const res = Math.sqrt(
+                  Math.pow(this.startPoint?.lat - this.endPoint.lat, 2)
+                  + Math.pow(this.startPoint.lng - this.endPoint.lng, 2)
+                );
+                event.target.closePopup();
+                event.target.bindTooltip(res.toFixed(1)+'м').openTooltip();
+                this.startPoint = this.endPoint = null;
+            } else {
+                this.startPoint = event.latlng;
+            }
         },
 
         initWellOnMap() {
             for(let i = 0; i < wellsData.length; i++) {
                 const coordinate = this.xy(wellsData[i]['x'], wellsData[i]['y']);
-                this.marker = L.circleMarker(coordinate,{
+                const circleMarker = L.circleMarker(coordinate,{
                     renderer: this.renderer,
                     color: '#000',
                     opacity: 1,
                     weight: 1,
                     fillColor: '#000',
                     fillOpacity: 0,
-                    radius: 3,
+                    radius: 1,
                 }).addTo(this.map).bindPopup(wellsData[i]['well']);
 
-                this.marker.on('mouseover', function (e) {
+                circleMarker.on('mouseover', function (e) {
                     this.openPopup();
                 });
+
+                this.circle.push(circleMarker);
             }
         },
 
@@ -162,16 +207,29 @@ export default {
             }
         },
         async selectPanelItem(type, item) {
+            this.map.remove();
             if(type === 'map' && item?.id === 1) {
-                this.initWellOnMap();
+                setTimeout(async() => {
+                    this.initMap();
+                    await this.initSectorOnMap();
+                    this.initWellOnMap();
+                }, 0);
             } else {
-                this.map.remove();
                 this.SET_HORIZON(item?.id);
                 setTimeout(async() => {
                     this.initMap();
                     await this.initSectorOnMap();
                 }, 0);
             }
+        },
+        onSearchSector() {
+            this.map.eachLayer(function(layer) {
+                if (layer?._popup?._content === this.searchSector?.toString()) {
+                    const {lat, lng} = layer._bounds?._northEast;
+                    this.map.setView([lat, lng], -2);
+                    layer.openPopup();
+                }
+            }, this);
         }
     },
 }

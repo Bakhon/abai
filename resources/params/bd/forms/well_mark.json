@@ -1,6 +1,15 @@
 {
   "type": "plain",
   "table": "prod.mark",
+  "default_values": {
+    "dend": "3333-12-31 00:00:00+06"
+  },
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "mark",
@@ -19,7 +28,7 @@
                 "code": "dend",
                 "type": "date",
                 "title": "dend",
-                "validation": "required|after:dbeg"
+                "validation": "after:dbeg"
               },
               {
                 "code": "geo",

@@ -10,6 +10,12 @@
         <div class="rating-content__title">
           <div>{{ trans('digital_rating.sectorMap') }}</div>
           <div class="d-flex align-items-center">
+            <SearchFormRefresh
+              @input="(val) => this.searchSector = val"
+              placeholder="Поиск"
+              @start-search="onSearchSector()"
+              class="mr-10px"
+            />
             <btn-dropdown :list="fileActions">
               <template #icon>
                 <i class="far fa-file"/>
@@ -34,10 +40,13 @@
         </div>
         <div class="rating-content__wrapper">
           <div id="map"></div>
+          <button class="ruler" @click="isRulerActive = !isRulerActive">
+            <i class="fas fa-ruler" :class="{'active': isRulerActive}"/>
+          </button>
         </div>
       </div>
       <div class="rating-panel">
-        <accordion title="digital_rating.object">
+        <accordion title="digital_rating.horizon">
           <ul class="list">
             <li
               v-for="(item, index) in objects" :key="index"
@@ -57,7 +66,9 @@
           <ul class="list">
             <li
               v-for="(item, index) in legends" :key="index">
-              <div :style="`background: ${item.color}`" class="legend"/>
+              <span>{{index+1}}</span>
+              <div :style="`background: ${item.color}`" class="legend">
+              </div>
               <span>{{ item.title }}</span>
             </li>
           </ul>
@@ -91,6 +102,7 @@
 
     &__wrapper {
       height: calc(100% - 40px);
+      position: relative;
       img {
         width: 80%;
       }
@@ -140,5 +152,28 @@
 .leaflet-div-icon {
   background: #fff;
   border: 1px solid #666;
+}
+
+.ruler {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 998;
+  background-color: #fff;
+  width: 28px;
+  height: 24px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+
+  .fa-ruler {
+    color: #000;
+    &.active {
+      color: #198cff;
+    }
+  }
 }
 </style>

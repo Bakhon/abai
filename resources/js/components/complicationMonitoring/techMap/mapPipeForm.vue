@@ -21,6 +21,7 @@
           id="gu"
           v-model="pipe.gu_id"
           :options="guOptions"
+          @change="updateEndPoints"
       ></b-form-select>
 
       <b-form-invalid-feedback id="input-live-feedback" :state="!($v.pipe.gu_id.$dirty && !$v.pipe.gu_id.required)">
@@ -35,6 +36,7 @@
           id="gu"
           v-model="pipe.zu_id"
           :options="zuOptions"
+          @change="updateEndPoints"
       ></b-form-select>
 
       <b-form-invalid-feedback id="input-live-feedback" :state="!($v.pipe.zu_id.$dirty && !$v.pipe.zu_id.required)">
@@ -51,6 +53,7 @@
           id="gu"
           v-model="pipe.well_id"
           :options="wellOptions"
+          @change="updateEndPoints"
       ></b-form-select>
     </b-form-group>
 
@@ -184,9 +187,13 @@ export default {
     wellOptions: function () {
       let options = [];
       this.wellPoints.forEach((item) => {
-        options.push(
-            {value: item.id, text: item.name}
-        );
+        if (_.isUndefined(this.pipe.zu_id) ||
+            item.zu_id == this.pipe.zu_id
+        ) {
+          options.push(
+              {value: item.id, text: item.name}
+          );
+        }
       });
 
       return options;
@@ -214,9 +221,13 @@ export default {
     zuOptions: function () {
       let options = [];
       this.zuPoints.forEach((item) => {
-        options.push(
-            {value: item.id, text: item.name}
-        );
+        if (_.isUndefined(this.pipe.gu_id) ||
+            item.gu_id == this.pipe.gu_id
+        ) {
+          options.push(
+              {value: item.id, text: item.name}
+          );
+        }
       });
 
       return options;
@@ -243,6 +254,33 @@ export default {
       this.$v.$touch();
 
       return this.$v.$invalid;
+    },
+    updateEndPoints () {
+      let well, zu, gu;
+
+      zu = this.zuPoints.find((zu) => {
+        return zu.id == this.pipe.zu_id;
+      });
+
+      switch (this.pipe.between_points) {
+        case 'well-zu':
+          well = this.wellPoints.find((well) => {
+            return well.id == this.pipe.well_id;
+          });
+
+          this.pipe.start_point = well.name
+          this.pipe.end_point = zu.name;
+          break;
+
+        case 'zu-gu':
+          gu = this.guPoints.find((gu) => {
+            return gu.id == this.pipe.gu_id;
+          });
+
+          this.pipe.end_point = gu.name
+          this.pipe.start_point = zu.name;
+          break;
+      }
     }
   }
 }

@@ -168,12 +168,12 @@ class ExcelFormController extends Controller
 
     public function storeCorrected(Request $request)
     {
-        $client = $this->getEmailClient();
-        foreach($request->toList as $item) {
-            $this->sendEmailToMaster($request->request, $client, $item);
-        }
-
+        $emails = $request->toList;
         $request->request->remove('toList');
+        $isApproveRequired = $this->isProductionRecordExist($request->get('dzo_name'),$request->get('date'));
+        if (!$isApproveRequired) {
+            $request->request->set('is_corrected', null);
+        }
         $this->saveDzoSummaryData($request);
         $dzo_summary_last_record = DzoImportData::latest('id')->where('is_corrected', true)->first();
 
@@ -188,6 +188,22 @@ class ExcelFormController extends Controller
         $decrease_data = $request->request->get('decreaseReason');
         $dzo_decrease_reason = $this->getDzoChildSummaryData($dzo_decrease_reason,$decrease_data,$dzo_summary_last_record);
         $dzo_decrease_reason->save();
+        if ($isApproveRequired) {
+            $client = $this->getEmailClient();
+            foreach($emails as $item) {
+                $this->sendEmailToMaster($request->request, $client, $item);
+            }
+        }
+    }
+
+    private function isProductionRecordExist($dzoName,$date)
+    {
+        $existRecord = DzoImportData::query()
+            ->whereNull('is_corrected')
+            ->where('dzo_name', $dzoName)
+            ->whereDate('date', $date)
+            ->first();
+        return !is_null($existRecord);
     }
 
     public function getDailyProductionForApprove()

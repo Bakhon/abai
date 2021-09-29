@@ -7,14 +7,15 @@
       <template v-if="filter">
         <template v-if="formParams && formParams.filter">
           <template v-for="filterItem in formParams.filter">
-            <span class="bd-main-block__filter-title">{{ filterItem.title }}:</span>
+
+            <span v-if="filterItem.title" class="bd-main-block__filter-title">{{ filterItem.title }}:</span>
             <div
                 v-if="filterItem.type === 'date'"
                 class="bd-main-block__filter-input bd-main-block__filter-input_date"
             >
               <datetime
                   v-model="filter[filterItem.code]"
-                  :flow="['year', 'month']"
+                  :flow="filterItem.flow || ['year', 'month', 'date']"
                   :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                   :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
                   auto
@@ -26,12 +27,13 @@
               </datetime>
             </div>
             <div
-                v-else-if="filterItem.type === 'dict'"
+                v-else
                 class="bd-main-block__filter-input"
             >
               <bigdata-form-field
                   v-model="filter[filterItem.code]"
                   :item="filterItem"
+                  :value="filterItem.default || null"
               >
               </bigdata-form-field>
             </div>
@@ -144,7 +146,8 @@ export default {
 
       let filter = {}
       this.formParams.filter.forEach(filterItem => {
-        filter[filterItem.code] = filterItem.type === 'date' ? moment(filterItem.default || null).toISOString() : null
+        let value = filterItem.default || null
+        filter[filterItem.code] = filterItem.type === 'date' ? moment(value).toISOString() : value
       })
 
       this.filter = filter
@@ -413,6 +416,7 @@ body.fixed {
     border-radius: 8px;
     color: #fff;
     left: 50%;
+    max-width: 90%;
     min-width: 730px;
     padding: 20px 25px;
     position: absolute;
