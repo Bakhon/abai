@@ -1,25 +1,34 @@
 <template>
     <div class="container-main">
         <div class="col-sm-12">
+            <div class="daily_raport_block-header">
+                <div class="daily_raport_block-header-first">
+                    <div class="daily_raport_block-header-input">
+                        <label for="">{{trans('digital_drilling.daily_raport.date')}}</label>
+                        <input type="text">
+                    </div>
+                    <div class="daily_raport_block-header-input">
+                        <label for="">{{trans('digital_drilling.daily_raport.report')}}</label>
+                        <input type="text">
+                    </div>
+                    <div class="daily_raport_block-header-input">
+                        <label for="">{{trans('digital_drilling.daily_raport.page')}}</label>
+                        <input type="text">
+                    </div>
+                </div>
+                <div class="daily_raport_block-header-center">
+                    {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
+                </div>
+                <div class="daily_raport_block-header-save">
+                    <button class="save">
+                        {{trans('digital_drilling.daily_raport.save')}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
             <div class="daily_raport_block">
                 <table class="tables table defaultTable">
-                    <thead>
-                        <tr>
-                            <th rowspan="3" colspan="10" class="align-middle text-center border-right-0 title">
-                                {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
-                            </th>
-                            <th class="text-right border-left-0 border-right-0 border-bottom-0">{{trans('digital_drilling.daily_raport.date')}}</th>
-                            <th><input type="text"></th>
-                        </tr>
-                        <tr>
-                            <th class="text-right border-0">{{trans('digital_drilling.daily_raport.report')}} №</th>
-                            <th><input type="text"></th>
-                        </tr>
-                        <tr>
-                            <th class="text-right border-0">{{trans('digital_drilling.daily_raport.page')}}</th>
-                            <th><input type="text"></th>
-                        </tr>
-                    </thead>
                     <tbody>
                         <tr>
                             <td colspan="2">
@@ -2034,4 +2043,18 @@
 .add:hover{
     opacity: 0.5;
 }
+    .save{
+        border: 0;
+        background: #2E50E9;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 14px;
+        text-align: center;
+
+        color: #FFFFFF;
+        width: 170px;
+        padding: 8px;
+
+    }
 </style>

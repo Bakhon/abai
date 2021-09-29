@@ -8,10 +8,11 @@
     <div class="mt-3">
       <div class="text-center border-grey d-flex bg-header">
         <div
-            v-for="item in tableKeys"
+            v-for="(item, index) in tableKeys"
             :key="item.value"
             :style="`flex: ${item.flexGrow} 0 ${item.flexWidth}`"
-            class="px-3 border-grey d-flex align-items-center justify-content-center"
+            :class="index ? 'justify-content-center' : ''"
+            class="px-3 py-1 border-grey d-flex align-items-center line-height-16px"
             style="white-space: normal">
           {{ item.title }}
         </div>
@@ -21,15 +22,18 @@
            :key="index"
            :style="`background: ${item.color}`"
            class="d-flex">
-        <div v-for="key in tableKeys"
+        <div v-for="(key, keyIndex) in tableKeys"
              :key="key.value"
-             :class="index ? 'p-3' : 'px-3 py-1'"
-             :style="`flex: ${key.flexGrow} 0 ${key.flexWidth}`"
-             class="border-grey text-center line-height-14px d-flex align-items-center justify-content-center">
+             :class="[
+                 index ? 'px-3 py-2' : 'px-3 py-1',
+                 keyIndex ? 'text-center justify-content-center' : '',
+                 ]"
+             :style="`flex: ${key.flexGrow} 0 ${key.flexWidth}; ${keyIndex ? '' : item.style}`"
+             class="border-grey line-height-14px d-flex align-items-center">
           {{
             typeof item[key.value] === 'string'
                 ? item[key.value]
-                : (+(item[key.value]).toFixed(2)).toLocaleString()
+                : +item[key.value].toFixed(2).toLocaleString()
           }}
         </div>
       </div>
@@ -45,15 +49,15 @@
            :key="index"
            :style="`background: ${item.color}`"
            class="d-flex">
-        <div v-for="key in tableKeys"
+        <div v-for="(key, keyIndex) in tableKeys"
              :key="key.value"
-             :class="index ? 'p-3' : 'px-3 py-1'"
-             :style="`flex: ${key.flexGrow} 0 ${key.flexWidth}`"
-             class="border-grey text-center line-height-14px">
+             :class="keyIndex ? 'text-center justify-content-center' : ''"
+             :style="`flex: ${key.flexGrow} 0 ${key.flexWidth}; ${keyIndex ? '' : item.style}`"
+             class="px-3 py-2 border-grey line-height-14px d-flex align-items-center">
           {{
             typeof item[key.value] === 'string'
                 ? item[key.value]
-                : (+(item[key.value]).toFixed(2)).toLocaleString()
+                : +item[key.value].toFixed(2).toLocaleString()
           }}
         </div>
       </div>
@@ -211,6 +215,7 @@ export default {
           overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_profitless_cat_1.original_value),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_profitless_cat_1.original_value),
           color: '#313560',
+          style: 'padding-left: 30px !important;',
         },
         {
           title: this.trans('economic_reference.profitless_cat_2'),
@@ -224,6 +229,7 @@ export default {
           overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_profitless_cat_2.original_value),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_profitless_cat_2.original_value),
           color: '#313560',
+          style: 'padding-left: 30px !important;',
         },
       ]
     },
@@ -305,6 +311,7 @@ export default {
           overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_scenario_profitless_cat_1),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario_profitless_cat_1),
           color: '#313560',
+          style: 'padding-left: 30px !important;',
         },
         {
           title: this.trans('economic_reference.profitless_cat_2'),
@@ -318,6 +325,7 @@ export default {
           overallExpenditures: this.calcOverallExpenditures(this.scenario.Overall_expenditures_full_scenario_profitless_cat_2),
           operatingProfit: this.calcOperatingProfit(this.scenario.Operating_profit_scenario_profitless_cat_2),
           color: '#313560',
+          style: 'padding-left: 30px !important;',
         },
       ]
     },
@@ -327,7 +335,7 @@ export default {
         {
           title: this.trans('economic_reference.indicators'),
           value: 'title',
-          flexWidth: '180px',
+          flexWidth: '185px',
           flexGrow: 0,
         },
         {
@@ -351,7 +359,7 @@ export default {
         {
           title: this.trans('economic_reference.water_cut'),
           value: 'liquid',
-          flexWidth: '140px',
+          flexWidth: '135px',
           flexGrow: 1,
         },
         {
@@ -401,6 +409,10 @@ export default {
 
 .line-height-14px {
   line-height: 14px;
+}
+
+.line-height-16px {
+  line-height: 16px;
 }
 
 .line-height-26px {

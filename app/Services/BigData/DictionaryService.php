@@ -56,7 +56,6 @@ use App\Models\BigData\Dictionaries\Tag;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateCasing;
-use App\Models\BigData\Dictionaries\TechStateType;
 use App\Models\BigData\Dictionaries\TreatType;
 use App\Models\BigData\Dictionaries\Well;
 use App\Models\BigData\Dictionaries\WellActivity;
@@ -161,10 +160,6 @@ class DictionaryService
         'tube_nom' => [
             'class' => TybeNom::class,
             'name_field' => 'model'
-        ],
-        'well_tech_state_type' => [
-            'class' => TechStateType::class,
-            'name_field' => 'name_ru'
         ],
         'blocks' => [
             'class' => Block::class,
@@ -393,7 +388,7 @@ class DictionaryService
         }
 
         if (key_exists($dict, self::DICTIONARIES)) {
-            $dict = $this->getPlainDict($dict);
+            $dict = $this->getPlainDict($dict); 
         } elseif (key_exists($dict, self::TREE_DICTIONARIES)) {
             $dict = $this->getTreeDict($dict);
         } else {
@@ -427,6 +422,12 @@ class DictionaryService
                     break;
                 case 'las_mnemonics':
                     $dict = $this->getLasMnemonics();
+                    break;
+                case 'well_tech_state_type':
+                    $dict = $this->getWellTechStateDict();
+                    break;
+                case 'well_statuses_drill':
+                    $dict = $this->getWellStatusesForDrill();
                     break;
                 case 'underground_equip_type':
                     $dict = UndergroundEquipType::getDict();
@@ -577,6 +578,30 @@ class DictionaryService
         return $this->generateTree((array)$items);
     }
 
+    private function getWellTechStateDict(): array
+    {
+        $items = DB::connection('tbd')
+            ->table('dict.well_tech_state_type as w')
+            ->select('w.id', 'w.name_ru as label', 'w.parent as parent')
+            ->distinct()
+            ->orderBy('label', 'asc')
+            ->leftJoin(
+                'dict.well_tech_state_type as wp',
+                function ($join) {
+                    $join->on('wp.id', '=', 'w.parent');
+                }
+            )
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+        
+        return $this->generateTree((array)$items);
+    }
+
     private function getEquipTypeCascDict()
     {
         $dictClass = self::DICTIONARIES['equip_type']['class'];
@@ -664,5 +689,14 @@ class DictionaryService
             ->toArray();
 
         return $items;
+    }
+
+    private function getWellStatusesForDrill()
+    {
+        return array_values(
+            array_filter($this->get('well_statuses'), function ($item) {
+                return in_array($item['code'], ['WRK', 'DWN']);
+            })
+        );
     }
 }    

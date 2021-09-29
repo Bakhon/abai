@@ -57,6 +57,6 @@ return array (
   'injectionPressure' => 'Давление закачки',
   'distance' => 'Расстояние',
   'throttleResponse' => 'Приемистость',
-  'stitchDiameter' => 'Диаметр штучера',
+  'stitchDiameter' => 'Диаметр штуцера',
   'horizonNumber' => 'Номер горизонта',
 );

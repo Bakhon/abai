@@ -1,5 +1,6 @@
 <script>
     import {Line, mixins} from "vue-chartjs";
+    import moment from "moment";
 
     const {reactiveProp} = mixins;
 
@@ -170,6 +171,11 @@
                                 {
                                     ticks: {
                                         fontColor: "#fff",
+                                        maxTicksLimit: 8,
+                                        callback: (date) => {
+                                            return moment(date,'DD / MMM / YYYY').format('DD MMM')
+                                        },
+                                        maxRotation: 0,
                                     },
                                 },
                             ],

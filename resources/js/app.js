@@ -243,11 +243,17 @@ Vue.component('water-flooding-management-map', require('./components/waterfloodi
 Vue.component('water-flooding-management-forecasting', require('./components/waterfloodingManagement/forecastingOptimization').default);
 Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);
 
+Vue.component('upload-historical-data', require('./components/visualcenter3/historical/index.vue').default);
+
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
 Vue.prototype.$urlLink = url => urlLink(url);
 Vue.prototype.$currentPageUrl = currentUrlPage;
 Vue.prototype.trans = require('./VueTranslation/Translation').default.translate;
+
+String.prototype.toFixed = function (decimalPlaces) {
+    return parseFloat(this).toFixed(decimalPlaces);
+};
 
 
 /**

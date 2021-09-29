@@ -34,12 +34,12 @@ export default {
             menu: mainMenu,
             map: null,
             rectangle: null,
-            marker: null,
+            circle: [],
             bounds: [[0, 15000], [0,15000]],
             center: [85000, 52000],
             zoom: -6,
             minZoom: -6,
-            maxZoom: 0,
+            maxZoom: -1,
             renderer: L.canvas({ padding: 0.5 }),
             searchSector: '',
             startPoint: null,
@@ -74,6 +74,24 @@ export default {
 
             this.map.fitBounds(this.bounds);
             this.map.setView( this.center, this.zoom);
+
+            this.map.on('zoom', this.onMapZoom);
+        },
+
+        onMapZoom(e) {
+            const radiusByZoom = { '-1': 10,'-2': 10,'-3': 8, '-4': 6, '-5': 3, '-6': 1};
+
+            for (let key in radiusByZoom) {
+                if(e.target._zoom == key) {
+                    this.setRadiusCircle(radiusByZoom[key])
+                }
+            }
+        },
+
+        setRadiusCircle(radius) {
+            this.circle.forEach((circleMarker) => {
+                circleMarker.setRadius(radius);
+            });
         },
 
         async initSectorOnMap() {
@@ -100,7 +118,7 @@ export default {
                     } else {
                         this.onMapClick(maps[i]['sector']);
                     }
-                })
+                });
             }
         },
 
@@ -111,6 +129,7 @@ export default {
                   Math.pow(this.startPoint?.lat - this.endPoint.lat, 2)
                   + Math.pow(this.startPoint.lng - this.endPoint.lng, 2)
                 );
+                event.target.closePopup();
                 event.target.bindTooltip(res.toFixed(1)+'м').openTooltip();
                 this.startPoint = this.endPoint = null;
             } else {
@@ -121,18 +140,21 @@ export default {
         initWellOnMap() {
             for(let i = 0; i < wellsData.length; i++) {
                 const coordinate = this.xy(wellsData[i]['x'], wellsData[i]['y']);
-                this.marker = L.circleMarker(coordinate,{
+                const circleMarker = L.circleMarker(coordinate,{
                     renderer: this.renderer,
                     color: '#000',
                     opacity: 1,
                     weight: 1,
                     fillColor: '#000',
                     fillOpacity: 0,
-                    radius: 5,
+                    radius: 1,
                 }).addTo(this.map).bindPopup(wellsData[i]['well']);
-                this.marker.on('mouseover', function (e) {
+
+                circleMarker.on('mouseover', function (e) {
                     this.openPopup();
                 });
+
+                this.circle.push(circleMarker);
             }
         },
 

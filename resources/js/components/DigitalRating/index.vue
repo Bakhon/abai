@@ -46,7 +46,7 @@
         </div>
       </div>
       <div class="rating-panel">
-        <accordion title="digital_rating.object">
+        <accordion title="digital_rating.horizon">
           <ul class="list">
             <li
               v-for="(item, index) in objects" :key="index"
@@ -158,7 +158,7 @@
   position: absolute;
   right: 10px;
   top: 10px;
-  z-index: 4001;
+  z-index: 998;
   background-color: #fff;
   width: 28px;
   height: 24px;

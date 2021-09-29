@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\EconomicNrsDataRequest;
 use App\Http\Requests\Economic\EconomicNrsWellsRequest;
 use App\Jobs\ExportEconomicDataToExcel;
+use App\Models\BigData\Well;
 use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
@@ -383,14 +384,10 @@ class EconomicNrsController extends Controller
             ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
             : null;
 
-        /** @var Carbon $intervalStart */
-        /** @var Carbon $intervalEnd */
-        list($intervalStart, $intervalEnd) = self::calcIntervalMonthsStartEnd(
-            $request->interval_start,
-            $request->interval_end
+        $interval = self::formatInterval(
+            Carbon::parse($request->interval_start),
+            Carbon::parse($request->interval_end)->addDay(),
         );
-
-        $interval = self::formatInterval($intervalStart->copy(), $intervalEnd->copy());
 
         $sumKeys = [
             "Operating_profit",
@@ -450,6 +447,61 @@ class EconomicNrsController extends Controller
         $wellsByDates['dates'] = array_keys($wellsByDates['dates']);
 
         return $wellsByDates;
+    }
+
+    public function getWellsMap(EconomicNrsDataRequest $request): array
+    {
+        $org = self::getOrg($request->org_id, $this->structureService);
+
+        $dpz = $request->field_id
+            ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
+            : null;
+
+        $interval = self::formatInterval(
+            Carbon::parse($request->interval_start),
+            Carbon::parse($request->interval_end)->addDay()
+        );
+
+        $builder = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::DAY)
+            ->interval($interval)
+            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) {
+                $extBuilder->timeFormat(self::GRANULARITY_DAILY_FORMAT);
+            })
+            ->select('uwi')
+            ->select('profitability');
+
+        if ($org->druid_id) {
+            $builder->where('org_id2', '=', $org->druid_id);
+        }
+
+        if ($dpz) {
+            $builder->where('dpz', '=', $dpz);
+        }
+
+        $wells = $builder->groupBy()->data();
+
+        $uwis = [];
+
+        foreach ($wells as &$well) {
+            $uwis[$well['uwi']] = 1;
+        }
+
+        $uwis = array_keys($uwis);
+
+        $coordinates = Well::query()
+            ->whereIn('uwi', $uwis)
+            ->whereNotNull('whc')
+            ->with('spatialObject')
+            ->get()
+            ->groupBy('uwi');
+
+        foreach ($wells as &$well) {
+            $well['coordinates'] = $coordinates->get($well['uwi'])[0]['spatialObject'][0]['coord_point'] ?? null;
+        }
+
+        return $wells;
     }
 
     public function exportData(EconomicNrsDataRequest $request)

@@ -52,7 +52,13 @@ export default {
         location.reload();
         return;
       }
-      location.href = origin + this.localeUrl(url);
+      location.href =
+        origin +
+        this.localeUrl(
+          url === "/pf-data-analysis"
+            ? "pf-data-analysis/pressure-and-temperature"
+            : url
+        );
     },
     goToMainPage() {
       location.href = location.origin + this.localeUrl("/pf");
@@ -92,7 +98,7 @@ export default {
 .plast-fluids-header > a {
   display: flex;
   border-radius: 4px;
-  height: 35px;
+  height: 40px;
   justify-content: flex-start;
   align-items: center;
   padding: 8px 14px;
