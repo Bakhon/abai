@@ -17,6 +17,7 @@ class Tech extends TBDModel
     const TYPE_KNS = 'GPST';
     const TYPE_BKNS = 'MGPST';
     const TYPE_OPPS = 'OPPS';
+    const TYPE_OTU = 'OTU';
 
     public function parentItem()
     {
