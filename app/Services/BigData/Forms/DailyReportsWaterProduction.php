@@ -53,7 +53,9 @@ class DailyReportsWaterProduction extends DailyReports
                         }
 
 
-                        return $item->liquid * $currentBsw->water_cut / 100;
+                        return $item->liquid * $workTime[$item->well][$date->format(
+                                'd.m.Y'
+                            )] * $currentBsw->water_cut / 100;
                     })->sum();
 
                 return [
