@@ -15,7 +15,7 @@
             >
               <datetime
                   v-model="filter[filterItem.code]"
-                  :flow="['year', 'month']"
+                  :flow="filterItem.flow || ['year', 'month', 'date']"
                   :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                   :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
                   auto

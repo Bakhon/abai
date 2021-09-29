@@ -6,6 +6,11 @@
       "code": "date",
       "title": "date",
       "type": "date",
+      "flow": [
+        "year",
+        "month",
+        "day"
+      ],
       "default": "today"
     },
     {
@@ -38,7 +43,7 @@
       "title": "plan",
       "code": "plan",
       "type": "float",
-      "is_editable": true,
+      "is_editable": false,
       "validation": "numeric",
       "validate_deviation": true
     },
