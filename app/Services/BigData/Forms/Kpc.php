@@ -47,9 +47,7 @@ class Kpc extends KrsPrs
                             'dbeg' => $this->request->get('dbeg'),
                             'dend' => $this->request->get('dend'),
                             'gtm_type' => $this->request->get('gtm_type'),
-                            'company' => $this->request->get('contractor'),
-                            'well_previous_status_type' => $this->request->get('well_previous_status_type'),
-                            'well_previous_category' => $this->request->get('well_previous_category')
+                            'company' => $this->request->get('contractor')
                     ]
             );
         }
