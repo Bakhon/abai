@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="loadingTreemap" class="text-white">
+    <div v-if="loadingTreemap" class="w-100 text-white text-center mb-3">
       {{ trans('economic_reference.loading_treemap') }}...
     </div>
 
@@ -59,12 +59,13 @@ export default {
         {
           title: this.trans('economic_reference.operating_profit') + '-',
           key: this.profitabilityKey,
-          negative: true
+          positive: true,
         },
         {
           title: this.trans('economic_reference.operating_profit') + '+',
           key: this.profitabilityKey,
-          positive: true
+          negative: true,
+          sort: 'asc'
         },
         {
           title: this.trans('economic_reference.liquid_production'),

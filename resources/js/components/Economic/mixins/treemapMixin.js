@@ -146,6 +146,10 @@ export const treemapMixin = {
 
                 treemap.selected().fill(SELECTED_COLOR)
 
+                if (chart.sort) {
+                    treemap.sort(chart.sort)
+                }
+
                 treemap.draw()
 
                 treemap.listenOnce('chartDraw', () => this.loadingTreemap = false);

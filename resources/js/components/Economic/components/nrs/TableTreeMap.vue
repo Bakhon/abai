@@ -22,7 +22,7 @@
         class="mb-3"
         @change="getWells"/>
 
-    <div v-if="loadingTreemap" class="text-white">
+    <div v-if="loadingTreemap" class="w-100 text-white text-center mb-3">
       {{ trans('economic_reference.loading_treemap') }}...
     </div>
 
@@ -89,13 +89,14 @@ export default {
       return [
         {
           title: this.trans('economic_reference.operating_profit') + '+',
-          key: 'Operating_profit',
+          key: this.profitabilityKey,
           positive: true,
         },
         {
           title: this.trans('economic_reference.operating_profit') + '-',
-          key: 'Operating_profit',
-          negative: true
+          key: this.profitabilityKey,
+          negative: true,
+          sort: 'asc'
         },
         {
           title: this.trans('economic_reference.liquid_production'),
@@ -109,7 +110,7 @@ export default {
         },
         {
           title: this.trans('economic_reference.water_cut'),
-          key: 'water_cut',
+          key: this.waterCutKey,
           hasSubtitle: true,
         },
       ]
