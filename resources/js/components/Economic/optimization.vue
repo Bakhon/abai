@@ -433,9 +433,9 @@ export default {
             title: this.trans('economic_reference.mrp'),
             icon: 'total_prs.svg',
             value: this.mrpValue(true),
-            dimension: 'сут/прс',
+            dimension: this.trans('economic_reference.days_declination'),
             percent: this.mrpPercent,
-            reversePercent: true
+            reverse: true
           },
         ],
         [

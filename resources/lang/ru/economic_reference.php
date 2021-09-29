@@ -288,4 +288,5 @@ return array (
   'loading_treemap' => 'Загрузка TreeMap',
   'profitless' => 'Нерентабельные',
   'mrp' => 'МРП',
+  'days_declination' => 'дней',
 );
