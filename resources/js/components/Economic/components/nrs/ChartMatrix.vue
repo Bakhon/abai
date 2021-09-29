@@ -18,11 +18,11 @@ import chart from "vue-apexcharts";
 
 const RU = require("apexcharts/dist/locales/ru.json");
 const COLORS = [
-  '#ee6002',
-  '#ee0290',
-  '#90ee02',
-  '#6002ee',
-  '#d602ee',
+  '#008A1F',
+  '#D6091D',
+  '#2309D6',
+  '#000000',
+  '#23CBD6',
 ]
 
 export default {
