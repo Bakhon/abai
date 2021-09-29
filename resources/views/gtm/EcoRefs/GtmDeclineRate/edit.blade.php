@@ -57,85 +57,85 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Базового фонда:</strong>
-                                        <input value="{{ $gtmDeclineRate->base_fund }}" type="number" name="base_fund" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->base_fund }}" type="text" name="base_fund" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>ВНС:</strong>
-                                        <input value="{{ $gtmDeclineRate->vns }}" type="number" name="vns" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->vns }}" type="text" name="vns" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>ВНС ГРП:</strong>
-                                        <input value="{{ $gtmDeclineRate->vns_grp  }}" type="number" name="vns_grp" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->vns_grp  }}" type="text" name="vns_grp" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>ГС:</strong>
-                                        <input value="{{ $gtmDeclineRate->gs }}" type="number" name="gs" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->gs }}" type="text" name="gs" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>ГС ГРП:</strong>
-                                        <input value="{{ $gtmDeclineRate->gs_grp }}" type="number" name="gs_grp" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->gs_grp }}" type="text" name="gs_grp" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>ЗБС:</strong>
-                                        <input value="{{ $gtmDeclineRate->zbs }}" type="number" name="zbs" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->zbs }}" type="text" name="zbs" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>ЗБГС:</strong>
-                                        <input value="{{ $gtmDeclineRate->zbgs }}" type="number" name="zbgs" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->zbgs }}" type="text" name="zbgs" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>УГЛ:</strong>
-                                        <input value="{{ $gtmDeclineRate->ugl }}" type="number" name="ugl" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->ugl }}" type="text" name="ugl" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>ГРП:</strong>
-                                        <input value="{{ $gtmDeclineRate->grp }}" type="number" name="grp" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->grp }}" type="text" name="grp" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>ВБД:</strong>
-                                        <input value="{{ $gtmDeclineRate->vbd }}" type="number" name="vbd" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->vbd }}" type="text" name="vbd" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>ПВЛГ:</strong>
-                                        <input value="{{ $gtmDeclineRate->pvlg }}" type="number" name="pvlg" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->pvlg }}" type="text" name="pvlg" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>РИР:</strong>
-                                        <input value="{{ $gtmDeclineRate->rir }}" type="number" name="rir" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->rir }}" type="text" name="rir" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>ПВР:</strong>
-                                        <input value="{{ $gtmDeclineRate->pvr }}" type="number" name="pvr" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->pvr }}" type="text" name="pvr" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>ОПЗ:</strong>
-                                        <input value="{{ $gtmDeclineRate->opz }}" type="number" name="opz" class="form-control" required="required">
+                                        <input value="{{ $gtmDeclineRate->opz }}" type="text" name="opz" class="form-control" required="required">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
