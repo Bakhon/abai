@@ -4,7 +4,7 @@
     <div class="row mx-0 mt-lg-2 gtm">
       <div class="col-lg-10 lg-border-block" @click="closeTree()">
         <div class="row col-12 p-0 m-0">
-          <div class="col-6 d-none d-lg-block p-0">
+          <div :class="!isMinimize ? 'col-6 d-none d-lg-block p-0' : 'maximize-block d-none d-lg-block p-0'">
             <div class="gtm-dark h-100">
               <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
                 <div>
@@ -20,53 +20,85 @@
                 </div>
               </div>
               <div class="p-0 pl-0 table-pgtm">
-                <div v-if="!table.main_data.data" >
+                <div v-if="!table.main_data.data">
                   <div class="border-block-out">
                     <div class="border-block-in">
-                  <div class="p-3 empty-data-title">
-                    {{ this.trans("paegtm.calc-empty-well") }}
-                  </div>
+                      <div class="p-3 empty-data-title">
+                        {{ this.trans("paegtm.calc-empty-well") }}
                       </div>
                     </div>
+                  </div>
                 </div>
                 <div v-else>
-                  <div class="border-block-out">
-                    <div class="border-block-in">
-                    <table class="table text-center text-white podbor-middle-table">
-                    <thead>
-                    <tr>
-                      <th v-for="(row, idx) in table.main_data.header" :key="idx"
-                          :colspan="Array.isArray(row) ? row.length : ''"
-                          :rowspan="Array.isArray(row) ? '' : 2"
-                      >
-                        {{ idx }}
-                      </th>
-                    </tr>
-                    <tr>
-                      <template v-for="(row) in table.main_data.header">
-                        <template v-if="Array.isArray(row)">
-                          <th v-for="r in row">
-                            {{ r }}
+                  <div class="border-block-out" style="width: max-content;">
+                    <div class="border-block-in" style="width: max-content;">
+                      <table class="table text-center text-white podbor-middle-table">
+                        <thead class="thead">
+                        <tr>
+                          <th class="th" v-for="(row, idx) in table.main_data.header" :key="idx"
+                              :colspan="Array.isArray(row) ? row.length : ''"
+                              :rowspan="Array.isArray(row) ? '' : 2"
+                          >
+                            {{ idx }}
                           </th>
-                        </template>
-                      </template>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="c in table.main_data.data">
-                      <th class="bg-body" v-for="row in c" @click="onClickWell(row)">{{ row }}</th>
-                    </tr>
-                    </tbody>
-                  </table>
-                      </div>
+                        </tr>
+                        <tr>
+                          <template v-for="(row) in table.main_data.header">
+                            <template v-if="Array.isArray(row)">
+                              <th class="th" v-for="r in row">
+                                {{ r }}
+                              </th>
+                            </template>
+                          </template>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="c in table.main_data.data" @click="onClickWell(c[0])">
+                          <th class="bg-body" v-for="row in c" >{{ row }}</th>
+                        </tr>
+                        </tbody>
+                      </table>
                     </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
+          <div v-if="isMinimize" class="pl-1" style="display: block;" @click="onMinimizeChart()">
+            <div class="pb-1">
+              <img src="/img/GTM/maximize-arrow.svg" alt="">
+            </div>
+            <div class="pb-1 gtm-dark minimized-block" style="height: 408px;">
+              <div style="transform: rotate(90deg); color: white; position: absolute; width: 205px;
+    right: -93px;
+    bottom: 176px;">
+                {{ this.trans("paegtm.current_qualifiers_map") }}
+              </div>
+            </div>
 
-          <div class="col-6 d-none d-lg-block p-0 pl-1">
+
+            <!--            <div class="gtm-dark h-100">-->
+            <!--              <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">-->
+            <!--                <div>-->
+            <!--                  {{ this.trans("paegtm.current_qualifiers_map") }}-->
+            <!--                </div>-->
+            <!--                <div class="d-flex">-->
+            <!--                  <div class="pr-3">-->
+            <!--                    <img src="/img/GTM/download.svg" alt="">-->
+            <!--                  </div>-->
+            <!--                  <div class="pr-3">-->
+            <!--                    <img src="/img/GTM/maximize.svg" alt="">-->
+            <!--                  </div>-->
+            <!--                  <div class="pr-3 pb-1" @click="onMinimizeChart()">-->
+            <!--                    <img src="/img/GTM/maximize-arrow.svg" alt="">-->
+            <!--                  </div>-->
+            <!--                </div>-->
+            <!--              </div>-->
+            <!--            </div>-->
+          </div>
+
+          <div v-else class="col-6 d-none d-lg-block p-0 pl-1">
             <div class="gtm-dark h-100">
               <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
                 <div>
@@ -79,57 +111,56 @@
                   <div class="pr-3">
                     <img src="/img/GTM/maximize.svg" alt="">
                   </div>
-                  <div class="pr-3 pb-1" @click="onMinimizeChart">
+                  <div class="pr-3 pb-1" @click="onMinimizeChart()">
                     <img src="/img/GTM/maximize-arrow.svg" alt="">
                   </div>
                 </div>
-
               </div>
-                <div class="border-block-out">
-                  <div class="border-block-in">
-                    <div class="p-3">
-                      <img src="/img/GTM/map.svg" class="gtm-map-img">
-                    </div>
+              <div class="border-block-out">
+                <div class="border-block-in">
+                  <div class="p-3">
+                    <img src="/img/GTM/map.svg" class="gtm-map-img">
                   </div>
                 </div>
-                </div>
+              </div>
             </div>
+          </div>
         </div>
         <div class="row col-12 p-0 m-0 pt-1">
           <div v-if="lineChartSeries === null" class="col-6 d-none d-lg-block p-0">
             <div class="border-block-out">
               <div class="border-block-in">
-            <div class="p-3 gtm-dark empty-data-title">
-              {{ this.trans("paegtm.empty-well-chart") }}
-            </div>
+                <div class="p-3 gtm-dark empty-data-title">
+                  {{ this.trans("paegtm.empty-well-chart") }}
                 </div>
               </div>
+            </div>
           </div>
 
           <div v-else class="col-6 d-none d-lg-block p-0 pt-1">
             <div class="gtm-dark h-100">
-              <div  class="block-header pb-0 pl-2 pt-1 d-flex border-color">
+              <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
                 <div>
                   {{ this.trans("paegtm.well") }} {{ wellNumber }}
                 </div>
 
-              <div class="d-flex">
-                <div class="pr-3 pb-1">
-                  <img src="/img/GTM/download.svg" alt="">
+                <div class="d-flex">
+                  <div class="pr-3 pb-1">
+                    <img src="/img/GTM/download.svg" alt="">
+                  </div>
+                  <div class="pr-3">
+                    <img src="/img/GTM/maximize.svg" alt="">
+                  </div>
                 </div>
-                <div class="pr-3">
-                  <img src="/img/GTM/maximize.svg" alt="">
-                </div>
-              </div>
               </div>
               <div class="border-block-out">
-                <div class="border-block-in" >
+                <div class="border-block-in">
                   <apexchart
                       :height="360"
                       :options="lineChartOptions"
                       :series="lineChartSeries"
                   ></apexchart>
-                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -146,7 +177,7 @@
 
           <div v-else class="col-6 d-none d-lg-block p-0 pt-1 pl-1">
             <div class="gtm-dark h-100">
-              <div  class="block-header pb-0 pl-2 pt-1 d-flex border-color">
+              <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
                 <div>
                   {{ this.trans("paegtm.factor_analysis") }}, {{ this.trans("measurements.thousand_tons") }}
                 </div>
@@ -181,7 +212,7 @@
             {{ this.trans("paegtm.period") }}
           </div>
           <gtm-date-picker
-          :showSettings="true"
+              :showSettings="true"
           ></gtm-date-picker>
         </div>
 
@@ -225,7 +256,7 @@
         </div>
 
         <div class="gtm-dark mt-2 p-2" @click="postTreeData(treeData)">
-          <div class="block-header p-2 text-center calc-button" >
+          <div class="block-header p-2 text-center calc-button">
             {{ trans("paegtm.calc") }}
           </div>
         </div>
@@ -349,4 +380,44 @@
 ::-webkit-scrollbar-thumb {
   background: #656a8a;
 }
+
+.maximize-block {
+  width: 1670px;
+}
+
+.minimized-block {
+  height: 408px;
+}
+
+@media screen and (min-width: 1904px) {
+  .maximize-block {
+    width: 1480px;
+  }
+}
+/**/
+.table {
+  overflow-y: auto;
+  height: 110px;
+}
+.table .thead .th {
+  position: sticky;
+}
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.th {
+  padding: 8px 15px;
+  border: 2px solid #529432;
+}
+
+thead tr:nth-child(1) .th { position: sticky; top: -1px; }
+thead tr:nth-child(2) .th { position: sticky; top: 31px; }
+/**/
+/*@media screen and (min-width: 1904px) {*/
+/*  .maximize-block {*/
+/*    width: 1213px;*/
+/*  }*/
+/*}*/
+
 </style>

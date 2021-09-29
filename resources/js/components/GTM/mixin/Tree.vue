@@ -27,3 +27,27 @@ export default {
     },
 }
 </script>
+<style scoped>
+/*.tree-main-ul, li { list-style: none; margin: 0; padding: 0; }*/
+/*.tree-main-ul { padding-left: 1em; }*/
+/*li { padding-left: 1em;*/
+/*  border: 1px dotted white;*/
+/*  border-width: 0 0 1px 1px;*/
+/*}*/
+/*li.container { border-bottom: 0px; }*/
+
+/*li p { margin: 0;*/
+/*  background: white;*/
+/*  position: relative;*/
+/*  top: 0.5em;*/
+/*}*/
+/*li .tree-main-ul {*/
+/*  border-top: 1px dotted white;*/
+/*  margin-left: -1em;*/
+/*  padding-left: 2em;*/
+/*}*/
+/*.tree-main-ul li:last-child ul {*/
+/*  border-left: 1px solid white;*/
+/*  margin-left: -17px;*/
+/*}*/
+</style>

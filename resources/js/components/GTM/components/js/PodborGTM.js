@@ -94,13 +94,25 @@ export default {
                     type: 'area',
                     foreColor: '#fff'
                 },
+                // stroke: {
+                //     // width: [5, 7, 5],
+                //     // curve: 'straight',
+                //     dashArray: [0, 0, 1]
+                // },
                 options: {
                     legend: {
                         fontSize: '5px',
                         horizontalAlign: "left",
                     },
                 },
+                // markers: {
+                //     size: 1,
+                //     hover: {
+                //         sizeOffset: 6
+                //     }
+                // },
                 colors: ["#04f689", "#fa4202", '#0253fa'],
+
                 dataLabels: {
                     enabled: false
                 },
@@ -112,6 +124,7 @@ export default {
                         tickAmount: 20,
                         min: 10,
                         max: 20,
+
                     },
                     labels: {
                         style: {
@@ -132,7 +145,7 @@ export default {
                                 fontWeight: 700,
                                 cssClass: 'apexcharts-yaxis-title',
                             },
-                        }
+                        },
                     },
                     {
                         seriesName: `${this.trans('pgno.q_liq')} ${this.trans('measurements.m3/day')}`,
@@ -174,12 +187,16 @@ export default {
             treeSettingBody: '',
             treeSettingComponent: null,
             treeChildrenComponent: null,
+            isMinimize: false
         };
     },
     computed: {
         ...paegtmMapState([
             'clickable',
         ]),
+    },
+    watch: {
+
     },
     methods: {
         ...globalloadingMutations([
@@ -195,7 +212,8 @@ export default {
             });
         },
         onMinimizeChart() {
-
+            this.isMinimize = !this.isMinimize;
+            console.log(this.isMinimize)
         },
         onClickableValue() {
             const body = {
@@ -264,15 +282,15 @@ export default {
                             ]
                         }]
 
-                    if (res.status === 200) {
-                        this.setNotify("Таблица пришла", "Success", "success")
-                    } else {
-                        this.setNotify("Что-то пошло не так", "Error", "danger")
-                    }
-                })
-                .finally(() => {
-                    this.SET_LOADING(false);
-                })
+                        if (res.status === 200) {
+                            this.setNotify("Таблица пришла", "Success", "success")
+                        } else {
+                            this.setNotify("Что-то пошло не так", "Error", "danger")
+                        }
+                    })
+                    .finally(() => {
+                        this.SET_LOADING(false);
+                    })
         },
         closeTree() {
             this.treeChildrenComponent = 0;

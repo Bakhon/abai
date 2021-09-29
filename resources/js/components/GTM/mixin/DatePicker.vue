@@ -57,7 +57,7 @@
       </template>
 
       <div class="ml-1 calendar-filter-block d-flex" v-if="showSettings" @click="showModal('modalPeriod')">
-        <img class="gear-icon-svg" src="/img/GTM/gear-icon.svg" alt="">
+        <img class="gear-icon-svg" src="/img/GTM/gear.svg" alt="">
       </div>
 
       <modal class="modal-bign-wrapper" name="modalPeriod" draggable=".modal-bign-header" :width="250"
