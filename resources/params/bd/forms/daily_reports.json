@@ -6,7 +6,12 @@
       "code": "date",
       "title": "date",
       "type": "date",
-      "default": "first day of january this year"
+      "flow": [
+        "year",
+        "month",
+        "day"
+      ],
+      "default": "today"
     },
     {
       "code": "type",
