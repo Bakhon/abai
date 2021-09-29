@@ -36,7 +36,8 @@
 <script>
 import {globalloadingMutations, globalloadingState} from '@store/helpers';
 
-import {SELECTED_COLOR, treemapMixin} from "../../mixins/treemapMixin";
+import {treemapMixin} from "../../mixins/treemapMixin";
+import {waterCutMixin} from "../../mixins/wellMixin";
 
 import SelectTechStructure from "../SelectTechStructure";
 
@@ -45,7 +46,7 @@ export default {
   components: {
     SelectTechStructure
   },
-  mixins: [treemapMixin],
+  mixins: [treemapMixin, waterCutMixin],
   props: {
     data: {
       required: true,
@@ -78,37 +79,10 @@ export default {
           }
         })
 
-        well.water_cut = +this.calcWaterCut(well)
+        well[this.waterCutKey] = +this.calcWaterCut(well.liquid, well.oil)
 
         return well
       })
-    },
-
-    chartSeries() {
-      let series = {}
-
-      this.charts.forEach(chart => series[chart.title] = [])
-
-      this.wells.forEach(well => {
-        this.charts.forEach(chart => {
-          let value = +well[chart.key]
-
-          if (chart.hasOwnProperty('positive') && value < 0) return
-
-          if (chart.hasOwnProperty('negative') && value >= 0) return
-
-          let color = this.getColor(well, 'Operating_profit')
-
-          series[chart.title].push({
-            name: well.uwi,
-            value: Math.abs(value),
-            fill: this.selectedWells.includes(well.uwi) ? SELECTED_COLOR : color,
-            fillOriginal: color
-          })
-        })
-      })
-
-      return series
     },
 
     charts() {
@@ -135,33 +109,10 @@ export default {
         },
         {
           title: this.trans('economic_reference.water_cut'),
-          key: 'water_cut'
+          key: 'water_cut',
+          hasSubtitle: true,
         },
       ]
-    },
-
-    chartsSum() {
-      let sum = {}
-
-      this.charts.forEach(chart => {
-        sum[chart.title] = {profitable: 0, profitless: 0}
-      })
-
-      this.wells.forEach(well => {
-        let sumKey = +well.Operating_profit > 0 ? 'profitable' : 'profitless'
-
-        this.charts.forEach(chart => {
-          let value = +well[chart.key]
-
-          if (chart.hasOwnProperty('positive') && value < 0) return
-
-          if (chart.hasOwnProperty('negative') && value >= 0) return
-
-          sum[chart.title][sumKey] += value
-        })
-      })
-
-      return sum
     },
   },
   methods: {
@@ -187,29 +138,11 @@ export default {
       this.$nextTick(() => this.plotCharts())
     },
 
-    selectWells(wells) {
-      wells.forEach(well => {
-        this.chartTrees.forEach(tree => {
-          let item = tree.search('name', well)
-
-          if (!item) return
-
-          item.set("fill", SELECTED_COLOR)
-        })
-      })
-    },
-
     updateForm(key) {
       this.form[key] = null
 
       this.getWells()
     },
-
-    calcWaterCut({liquid, oil}) {
-      return liquid
-          ? (100 * (liquid - oil) / liquid).toFixed(2)
-          : 0
-    }
   }
 }
 </script>
