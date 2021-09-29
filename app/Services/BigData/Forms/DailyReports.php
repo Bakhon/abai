@@ -28,17 +28,20 @@ abstract class DailyReports extends TableForm
             'id' => $this->request->get('id')
         ];
         $filter = json_decode($this->request->get('filter'));
-        if ($this->request->get('id')) {
-            $org = Org::find($this->request->get('id'));
-            if (!$org) {
-                return ['rows' => []];
-            }
-            $result['org_name'] = ['value' => $org->name_ru];
+        if (!$this->request->get('id')) {
+            return ['rows' => []];
         }
+
+        $org = Org::find($this->request->get('id'));
+        if (!$org) {
+            return ['rows' => []];
+        }
+        $result['org_name'] = ['value' => $org->name_ru];
+
 
         foreach ([self::DAY, self::MONTH, self::YEAR] as $period) {
             $filter->period = $period;
-            $data = $this->getData($filter);
+            $data = $this->getData($org, $filter);
             $result += $data;
         }
 
@@ -161,7 +164,7 @@ abstract class DailyReports extends TableForm
         return $fieldLimitsService->calculateColumnLimits('fact', $reports);
     }
 
-    private function getColumns(\stdClass $filter): Collection
+    protected function getColumns(\stdClass $filter): Collection
     {
         $type = $filter->type;
 
@@ -176,7 +179,7 @@ abstract class DailyReports extends TableForm
         return $columns;
     }
 
-    protected function getData(\stdClass $filter): array
+    protected function getData(Org $org, \stdClass $filter): array
     {
         $data = $this->getReports($filter);
         $result = [];
