@@ -150,7 +150,7 @@
       "validate_deviation": true
     },
     {
-      "title": "data",
+      "title": "dbeg",
       "table": "prod.tech_mode_inj",
       "code": "dbeg",
       "type": "date",
@@ -158,7 +158,7 @@
       "is_editable": false
     },
     {
-      "title": "data",
+      "title": "dend",
       "table": "prod.tech_mode_inj",
       "code": "dend",
       "type": "date",
