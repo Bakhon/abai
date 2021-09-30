@@ -133,8 +133,13 @@ abstract class MeasurementLogForm extends TableForm
             $data = [
                 'well' => $params['wellId'],
                 $column['column'] => $params['value'],
-                'dbeg' => $params['date']->toDateTimeString()
+                'dbeg' => $params['date']->toDateTimeString(),
+                'dend' => $params['date']->toDateTimeString(),
             ];
+
+            if (!empty($column['additional_filter'])) {
+                $data = array_merge($this->addDefaultData($column['additional_filter']), $data);
+            }
 
             DB::connection('tbd')
                 ->table($column['table'])
@@ -149,5 +154,23 @@ abstract class MeasurementLogForm extends TableForm
                     ]
                 );
         }
+    }
+
+    private function addDefaultData($source)
+    {
+        $data = [];
+        foreach ($source as $key => $value) {
+            if (is_array($value)) {
+                $query = DB::connection('tbd')->table($value['table']);
+                foreach ($value['fields'] as $fieldName => $fieldValue) {
+                    $query->where($fieldName, $fieldValue);
+                }
+                $entity = $query->first();
+                if (!empty($entity)) {
+                    $data[$key] = $entity->id;
+                }
+            }
+        }
+        return $data;
     }
 }

@@ -458,11 +458,11 @@ abstract class TableForm extends BaseForm
                     }
                     $entity = $entityQuery->first();
                     if (!empty($entity)) {
-                        $query->where($key, $entity->id);
+                        $query = $query->where($key, $entity->id);
                     }
                     continue;
                 }
-                $query->where($key, $value);
+                $query = $query->where($key, $value);
             }
         }
         return $query;
