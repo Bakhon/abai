@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Helpers\WorktimeHelper;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
@@ -54,7 +55,7 @@ abstract class MeasLogByMonth extends TableForm
             $endOfDay = $monthDay->endOfDay();
             foreach ($wellIds as $wellId) {
                 $result[$wellId][$monthDay->format('j')] = [
-                    'value' => $this->getHoursForOneDay($wellStatuses, $endOfDay, $startOfDay, $wellId)
+                    'value' => WorktimeHelper::getHoursForOneDay($wellStatuses, $startOfDay, $endOfDay, $wellId)
                 ];
             }
 
@@ -62,30 +63,6 @@ abstract class MeasLogByMonth extends TableForm
         }
 
         return $result;
-    }
-
-    private function getHoursForOneDay(
-        Collection $wellStatuses,
-        CarbonImmutable $endOfDay,
-        CarbonImmutable $startOfDay,
-        $wellId
-    ): int {
-        $hours = 0;
-        $dailyStatuses = $wellStatuses
-            ->where('dbeg', '<=', $endOfDay)
-            ->where('dend', '>=', $startOfDay)
-            ->where('well', $wellId);
-
-        foreach ($dailyStatuses as $status) {
-            if ($status->dbeg <= $startOfDay && $status->dend >= $endOfDay) {
-                $hours += 24;
-            } elseif ($status->dbeg > $startOfDay) {
-                $hours += $status->dbeg->diffInHours($status->dend < $endOfDay ? $status->dend : $endOfDay);
-            } elseif ($status->dend < $endOfDay) {
-                $hours += $startOfDay->diffInHours($status->dend);
-            }
-        }
-        return $hours;
     }
 
     private function getTechMode(array $wellIds, CarbonImmutable $date): Collection

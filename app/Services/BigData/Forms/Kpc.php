@@ -13,6 +13,8 @@ class Kpc extends KrsPrs
     protected $repairType = 'CWO';
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
+    
+
 
     protected function getCustomValidationErrors(string $field = null): array
     {
@@ -27,4 +29,5 @@ class Kpc extends KrsPrs
 
         return $errors;
     }
+
 }

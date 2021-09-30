@@ -211,25 +211,9 @@ import {bdFormActions, globalloadingMutations} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
 import BigDataPlainForm from './PlainForm'
-import upperFirst from 'lodash/upperFirst'
-import camelCase from 'lodash/camelCase'
 import BigdataFormField from './field'
 import forms from '../../../json/bd/forms.json'
 
-
-const requireComponent = require.context('./CustomColumns', true, /\.vue$/i);
-requireComponent.keys().forEach(fileName => {
-  const componentConfig = requireComponent(fileName)
-  const componentName = upperFirst(
-      camelCase(
-          fileName
-              .split('/')
-              .pop()
-              .replace(/\.\w+$/, '')
-      )
-  );
-  Vue.component(componentName, componentConfig.default || componentConfig);
-});
 Vue.use(Datetime);
 
 export default {
@@ -401,7 +385,7 @@ export default {
           if (column.type === 'calc') {
             value = this.calculateCellValue(column, cellRow, rowIndex)
           } else if (this.isEditable(cellRow, column)) {
-            value = cellRow[column.code].value
+            value = cellRow[column.code].old_value || cellRow[column.code].value
           } else {
             value = cellRow[column.code].old_value || cellRow[column.code].value
           }
