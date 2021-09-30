@@ -122,6 +122,8 @@ Route::group(
                 Route::get('/las/wells/{well}', 'Api\DB\LasController@getWellForLas')->name('las.well');
                 Route::post('/las/gis', 'Api\DB\LasController@attachFileToGis')->name('las.attach_to_gis');
                 Route::get('/las/download/{experiment}', 'Api\DB\LasController@downloadFile')->name('las.download');
+
+                Route::get('wells/injectionHistory/{well}', 'Api\DB\WellsController@getInjectionHistory');
             }
         );
     }

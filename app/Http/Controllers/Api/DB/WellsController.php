@@ -8,6 +8,7 @@ use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
+use App\Models\BigData\Dictionaries\Well as dictWell;
 use App\Models\BigData\GdisCurrent;
 use App\Models\BigData\GdisCurrentValue;
 use App\Models\BigData\WellStatus;
@@ -607,5 +608,14 @@ class WellsController extends Controller
         }
 
         return $result;
+    }
+
+    public function getInjectionHistory($well)
+    {
+        $wellInfo = dictWell::query()
+            ->where('id',$well)
+            ->join('dmart.mer_inj', 'dmart.mer_inj.well', '=', 'dict.well.uwi')
+            ->get();
+        return $wellInfo;
     }
 }

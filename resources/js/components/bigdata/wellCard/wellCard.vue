@@ -214,12 +214,10 @@
       </div>
       <InjectionHistoricalData
               v-if="isInjectionWellsHistoricalVisible"
-              :mainWell="{id: well.id, name: well.wellInfo.uwi}"
               :changeColumnsVisible="changeColumnsVisible()"
       ></InjectionHistoricalData>
       <ProductionHistoricalData
               v-if="isProductionWellsHistoricalVisible"
-              :mainWell="{id: well.id, name: well.wellInfo.uwi}"
               :changeColumnsVisible="changeColumnsVisible()"
       ></ProductionHistoricalData>
     </div>

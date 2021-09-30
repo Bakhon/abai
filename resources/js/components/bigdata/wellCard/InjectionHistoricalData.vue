@@ -17,17 +17,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(date,index) in dates">
+                        <tr v-for="(date,index) in dates" v-if="date.isVisible">
                             <td>
-                                <label v-if="!date.month" class="form-check-label">{{date.year}}</label>
-                                <label v-else class="form-check-label">{{date.name}}</label>
+                                <label v-if="date.month === null" class="form-check-label" @click="handleYearSelect(date,index)">{{date.year}}</label>
+                                <label v-else class="form-check-label">{{date.month}}</label>
                                 <span class="ml-1"></span>
-                                <input class="ml-2" type="checkbox" :value="date.isChecked" @click="handleDateSelect(date,index)">
+                                <input class="ml-2" type="checkbox" v-model="date.isChecked" @click="handleDateSelect(date,index)">
                             </td>
-                            <td>{{date.waterInjection}}</td>
-                            <td>{{date.dailyWaterInjection}}</td>
+                            <td>{{date.waterInjection.toFixed(2)}}</td>
+                            <td>{{date.dailyWaterInjection.toFixed(2)}}</td>
                             <td>{{date.accumulateWaterInjection}}</td>
-                            <td>{{date.hoursWorked}}</td>
+                            <td>{{date.hoursWorked}} часов</td>
                         </tr>
                     </tbody>
                 </table>
@@ -38,16 +38,14 @@
 
 <script>
 import moment from "moment";
-import {bigdatahistoricalVisibleMutations} from '@store/helpers';
+import {bigdatahistoricalVisibleMutations,bigdatahistoricalVisibleState} from '@store/helpers';
 
 export default {
     props: {
-        mainWell: {},
         changeColumnsVisible: Function,
     },
     data() {
         return {
-            selectedWell: {},
             dates: [],
             selectedDates: [],
             monthMapping: {
@@ -63,64 +61,101 @@ export default {
                 10: 'Октябрь',
                 11: 'Ноябрь',
                 12: 'Декабрь'
-            }
+            },
         };
     },
     methods: {
         ...bigdatahistoricalVisibleMutations([
-            'SET_VISIBLE_INJECTION'
+            'SET_VISIBLE_INJECTION','SET_INJECTION_HISTORICAL_PERIOD'
         ]),
-        handleDateSelect(date,parentIndex) {
-            let fullDate = {year: date.year, month: undefined};
-            if (date.month) {
-                fullDate['month'] = date.month;
-            }
-            let index = this.selectedDates.findIndex(item => item.year === fullDate.year && item.month === fullDate.month);
-            if (index !== -1) {
-                this.selectedDates.splice(index, 1);
-                if (date.months) {
-                    this.dates = _.filter(this.dates, (item) => (!item.month && item.year === date.year) || item.year !== date.year);
+        handleYearSelect(date) {
+            _.forEach(this.dates, (item) => {
+                if (item.month !== null && parseInt(item.year) === date.year) {
+                    item.isVisible = !item.isVisible;
                 }
-            } else {
-                if (date.months) {
-                    this.dates = this.arrayMerge(this.dates,date.months,parentIndex+1);
-                }
-                this.selectedDates.push(fullDate);
-            }
+            });
         },
-        arrayMerge(parentArray, childArray, i) {
-            return parentArray.slice(0, i).concat(childArray, parentArray.slice(i));
+        handleDateSelect(date,parentIndex) {
+            let filtered = [];
+            if (date.id.toString().length === 4) {
+                _.forEach(this.dates, (item) => {
+                    if (item.month !== null && parseInt(item.year) === date.year) {
+                        item.isChecked = !item.isChecked;
+                    }
+                });
+                filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
+            } else {
+                this.dates[parentIndex].isChecked = !this.dates[parentIndex].isChecked;
+                filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
+            }
+            this.selectedDates = filtered;
+            this.SET_INJECTION_HISTORICAL_PERIOD(this.selectedDates);
         },
         fillDates() {
             for (let i = 2008; i <= 2021; i++) {
                 let obj = {
+                    'id': i,
+                    'month': null,
                     'year': i,
                     'isChecked': false,
+                    'isVisible': true,
                     'waterInjection': 0,
                     'dailyWaterInjection': 0,
                     'accumulateWaterInjection': 0,
-                    'hoursWorked': '0 дней 0 часов',
-                    'months': []
+                    'hoursWorked': 0,
+                    'params': {
+                        'techMode': [
+                            {
+                                'label': 'Приемистость',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Давление закачки',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Состояние скважины',
+                            },
+                            {
+                                'label': 'Обработанное время',
+                            },
+                            {
+                                'label': 'ГТМ',
+                            }
+                        ],
+                    }
                 };
-                for (let y = 1; y <=12; y++) {
-                    obj.months.push({
-                        'name': this.monthMapping[y],
-                        'month': y,
-                        'year': i,
-                        'isChecked': true,
-                        'waterInjection': 0,
-                        'dailyWaterInjection': 0,
-                        'accumulateWaterInjection': 0,
-                        'hoursWorked': '0 дней 0 часов',
-                    });
-                }
                 this.dates.push(obj);
             }
+        },
+        getHistorical() {
+            let calculated = [];
+            _.forEach(this.dates, (yearItem) => {
+                let summary = this.getSummaryBy(yearItem.year,yearItem);
+                let filtered = _.filter(this.injectionHistoricalData, (item) => parseInt(item.year) === yearItem.year);
+                calculated.push(summary);
+                calculated = calculated.concat(filtered);
+            });
+            return calculated;
+        },
+        getSummaryBy(year, template) {
+            let filtered = _.filter(this.injectionHistoricalData, (item) => parseInt(item.year) === year);
+            let summary = template;
+            summary['waterInjection'] = _.sumBy(filtered, 'waterInjection');
+            summary['dailyWaterInjection'] = _.sumBy(filtered, 'dailyWaterInjection');
+            summary['accumulateWaterInjection'] = _.sumBy(filtered, 'accumulateWaterInjection');
+            summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
+            return summary;
         }
     },
     mounted() {
-        this.selectedWell = this.mainWell;
         this.fillDates();
+        this.dates = this.getHistorical();
+        console.log('dates')
+        console.log(this.dates);
+    },
+    computed: {
+        ...bigdatahistoricalVisibleState(['injectionHistoricalData','injectionMeasurementSchedule']),
     }
 }
 </script>
@@ -170,5 +205,6 @@ export default {
 }
 .left-block {
     overflow-y: scroll;
+    height: 810px;
 }
 </style>

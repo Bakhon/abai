@@ -50,12 +50,10 @@ import {bigdatahistoricalVisibleMutations} from '@store/helpers';
 
 export default {
     props: {
-        mainWell: {},
         changeColumnsVisible: Function,
     },
     data() {
         return {
-            selectedWell: {},
             dates: [],
             selectedDates: [],
             monthMapping: {
@@ -76,7 +74,7 @@ export default {
     },
     methods: {
         ...bigdatahistoricalVisibleMutations([
-            'SET_VISIBLE_INJECTION'
+            'SET_VISIBLE_PRODUCTION'
         ]),
         handleYearClick(date,parentIndex) {
             let fullDate = {year: date.year, month: undefined};
@@ -146,7 +144,6 @@ export default {
         }
     },
     mounted() {
-        this.selectedWell = this.mainWell;
         this.fillDates();
     }
 }
