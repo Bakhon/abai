@@ -114,8 +114,8 @@
     {
       "title": "volume",
       "code": "agent_vol",
-      "column": "agent_vol",
       "table":"prod.tech_mode_inj",
+      "column": "agent_vol",      
       "type": "float",
       "is_editable": true
     },
@@ -123,9 +123,10 @@
       "title": "agent_type",
       "code": "agent_type",
       "table":"prod.tech_mode_inj",
-      "column":"agent_type",
-      "type": "text",
-      "validation": "required|exists:tbd.dict.inj_agent_type,id",      
+      "column": "agent_type",
+      "type": "dict",
+      "dict": "inj_agent_types",
+      "validation": "required|exists:tbd.dict.inj_agent_type,id",
       "is_editable": true
     },
     {
