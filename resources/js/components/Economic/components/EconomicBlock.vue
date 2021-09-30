@@ -37,7 +37,7 @@
             :reverse="subBlock.reverse"
             class="font-size-16px line-height-18px mr-1"/>
 
-        <span class="font-size-24px line-height-28px font-weight-bold">
+        <span class="font-size-20px line-height-28px font-weight-bold">
             {{ Math.abs(+subBlock.percent) }}
         </span>
 
@@ -101,7 +101,7 @@ export default {
   font-size: 16px;
 }
 
-.font-size-24px {
+.font-size-20px {
   font-size: 24px;
 }
 
