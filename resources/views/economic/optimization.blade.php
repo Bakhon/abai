@@ -22,6 +22,6 @@
 
     #app {
         flex-wrap: nowrap;
-        overflow-x: hidden;
+        overflow: hidden;
     }
 </style>
