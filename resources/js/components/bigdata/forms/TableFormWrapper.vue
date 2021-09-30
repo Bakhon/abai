@@ -107,11 +107,13 @@ export default {
   },
   data() {
     return {
-      filter: null
+      filter: null,
+      formParams: null
     }
   },
   watch: {
     params() {
+      this.filter = null
       this.init()
     },
     filter: {
@@ -156,8 +158,8 @@ export default {
     init(formParams) {
       if (formParams) {
         this.formParams = formParams
+        this.initFilter()
       }
-      this.initFilter()
     },
   },
 };

@@ -2,6 +2,7 @@
 
 namespace App\Services\BigData\Forms;
 
+use App\Helpers\WorktimeHelper;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\ReportOrgDailyCits;
@@ -168,7 +169,7 @@ abstract class DailyReports extends TableForm
 
     protected function getColumns(\stdClass $filter): Collection
     {
-        $type = $filter->type;
+        $type = $filter->type ?? self::CITS;
 
         $columns = $this->getFields()
             ->filter(function ($column) use ($type) {
@@ -253,8 +254,9 @@ abstract class DailyReports extends TableForm
     protected function getGSData($filter, Org $org): array
     {
         $result = [];
+        $type = $filter->type ?? self::CITS;
 
-        if (!in_array($filter->type, [self::GS, self::ALL])) {
+        if (!in_array($type, [self::GS, self::ALL])) {
             return $result;
         }
 
@@ -353,10 +355,10 @@ abstract class DailyReports extends TableForm
             $startOfDay = $currentDate->startOfDay();
             $endOfDay = $currentDate->endOfDay();
             foreach ($wellIds as $wellId) {
-                $result[$wellId][$currentDate->format('d.m.Y')] = $this->getHoursForOneDay(
+                $result[$wellId][$currentDate->format('d.m.Y')] = WorktimeHelper::getHoursForOneDay(
                         $wellStatuses,
-                        $endOfDay,
                         $startOfDay,
+                        $endOfDay,
                         $wellId
                     ) / 24;
             }
@@ -367,27 +369,4 @@ abstract class DailyReports extends TableForm
         return $result;
     }
 
-    private function getHoursForOneDay(
-        Collection $wellStatuses,
-        CarbonImmutable $endOfDay,
-        CarbonImmutable $startOfDay,
-        $wellId
-    ): int {
-        $hours = 0;
-        $dailyStatuses = $wellStatuses
-            ->where('dbeg', '<=', $endOfDay)
-            ->where('dend', '>=', $startOfDay)
-            ->where('well', $wellId);
-
-        foreach ($dailyStatuses as $status) {
-            if ($status->dbeg <= $startOfDay && $status->dend >= $endOfDay) {
-                $hours += 24;
-            } elseif ($status->dbeg > $startOfDay) {
-                $hours += $status->dbeg->diffInHours($status->dend < $endOfDay ? $status->dend : $endOfDay);
-            } elseif ($status->dend < $endOfDay) {
-                $hours += $startOfDay->diffInHours($status->dend);
-            }
-        }
-        return $hours;
-    }
 }

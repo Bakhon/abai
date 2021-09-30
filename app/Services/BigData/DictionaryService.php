@@ -414,20 +414,26 @@ class DictionaryService
                     $dict = $this->getReasonTypeDict("REF");
                     break;
                 case 'reason_rst':
-                    $dict = $this->getReasonTypeDict('RST');
+                    $dict = $this->getReasonTypeDict("RST");
                     break;
                 case 'reason_type_rtr':
-                    $dict = $this->getReasonTypeDict('RTR');
+                    $dict = $this->getReasonTypeDict("RTR");
                     break;
                 case 'reason_rls':
-                    $dict = $this->getReasonTypeDict('RLS');
+                    $dict = $this->getReasonTypeDict("RLS");
                     break;
                 case 'reason_rrd':
-                    $dict = $this->getReasonTypeDict('RRD');
+                    $dict = $this->getReasonTypeDict("RRD");
                     break;
                 case 'las_mnemonics':
                     $dict = $this->getLasMnemonics();
                     break;
+                case 'repair_type_prs':
+                    $dict = $this->getRepairTypeDict("WLO"); 
+                    break;
+                case 'repair_type_krs':
+                    $dict = $this->getRepairTypeDict("CWO");
+                    break;           
                 case 'well_tech_state_type':
                     $dict = $this->getWellTechStateDict();
                     break;
@@ -692,6 +698,26 @@ class DictionaryService
                 }
             )
             ->toArray();
+
+        return $items;
+    }
+
+    private function getRepairTypeDict(string $type){
+        $items = DB::connection('tbd')
+            ->table('dict.repair_work_type as dr')
+            ->select('dr.id','dr.name_ru as name')
+            ->where('dw.code', $type)
+            ->distinct()
+            ->orderBy('name', 'asc')
+            ->join('dict.well_repair_type as dw', 'dr.well_repair_type', 'dw.id')           
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
 
         return $items;
     }

@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div v-if="loadingTreemap" class="w-100 text-white text-center mb-3">
+      {{ trans('economic_reference.loading_treemap') }}...
+    </div>
+
     <div v-for="chart in charts"
          :key="chart.title"
          :id="chart.title">
@@ -8,11 +12,12 @@
 </template>
 
 <script>
-import {SELECTED_COLOR, treemapMixin} from "../mixins/treemapMixin";
+import {treemapMixin} from "../mixins/treemapMixin";
+import {waterCutMixin} from "../mixins/wellMixin";
 
 export default {
   name: "TableWellTreeMap",
-  mixins: [treemapMixin],
+  mixins: [treemapMixin, waterCutMixin],
   props: {
     scenario: {
       required: true,
@@ -24,61 +29,58 @@ export default {
     },
   },
   computed: {
-    filteredData() {
-      return this.data.filter(x =>
-          +x.dollar_rate === +this.scenario.dollar_rate &&
-          +x.oil_price === +this.scenario.oil_price
-      )
+    wells() {
+      return this.data
+          .filter(well =>
+              +well.dollar_rate === +this.scenario.dollar_rate &&
+              +well.oil_price === +this.scenario.oil_price
+          )
+          .map(well => {
+            well[this.waterCutKey] = +this.calcWaterCut(well.liquid_12m, well.oil_12m)
+
+            return well
+          })
     },
 
-    chartSeries() {
-      let series = {}
+    selectedWells() {
+      return this.scenario.uwi_stop
+    },
 
-      this.charts.forEach(chart => {
-        let wells = []
+    profitabilityKey() {
+      return 'Operating_profit_12m'
+    },
 
-        this.filteredData.forEach(well => {
-          let value = +well[chart.key]
-
-          if (chart.hasOwnProperty('positive') && value < 0) return
-
-          if (chart.hasOwnProperty('negative') && value >= 0) return
-
-          let color = this.getColor(well, 'Operating_profit_12m')
-
-          wells.push({
-            name: well.uwi,
-            value: Math.abs(value),
-            fill: this.scenario.uwi_stop.includes(well.uwi) ? SELECTED_COLOR : color,
-            fillOriginal: color
-          })
-        })
-
-        series[chart.title] = wells
-      })
-
-      return series
+    waterCutKey() {
+      return 'water_cut_12m'
     },
 
     charts() {
       return [
         {
-          title: this.trans('economic_reference.operating_profit') + '-',
-          key: 'Operating_profit_12m',
-          negative: true
+          title: this.trans('economic_reference.operating_profit') + '+',
+          key: this.profitabilityKey,
+          positive: true,
         },
         {
-          title: this.trans('economic_reference.operating_profit') + '+',
-          key: 'Operating_profit_12m',
-          positive: true
+          title: this.trans('economic_reference.operating_profit') + '-',
+          key: this.profitabilityKey,
+          negative: true,
+          sort: 'asc'
         },
         {
           title: this.trans('economic_reference.liquid_production'),
-          key: 'liquid_12m'
+          key: 'liquid_12m',
+          hasSubtitle: true,
         },
         {
           title: this.trans('economic_reference.oil_production'),
-          key: 'oil_12m'
+          key: 'oil_12m',
+          hasSubtitle: true,
+        },
+        {
+          title: this.trans('economic_reference.water_cut'),
+          key: this.waterCutKey,
+          hasSubtitle: true,
         },
       ]
     },
