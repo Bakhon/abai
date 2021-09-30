@@ -100,6 +100,8 @@
 </template>
 
 <script>
+import {formatValueMixin} from "../mixins/formatMixin";
+
 import Subtitle from "./Subtitle";
 
 export default {
@@ -107,6 +109,9 @@ export default {
   components: {
     Subtitle
   },
+  mixins: [
+    formatValueMixin
+  ],
   props: {
     org: {
       required: true,
@@ -352,11 +357,14 @@ export default {
         {
           index: '8',
           title: this.trans('economic_reference.income'),
-          dimension: this.trans('economic_reference.million_tenge'),
+          dimension: `
+            ${this.formatValue(this.baseScenario.Revenue_total.original_value_optimized).dimension}
+            ${this.trans('economic_reference.tenge')}
+          `,
           values: [
-            ...[+this.baseScenario.Revenue_total.original_value_optimized / 1000000],
+            ...[this.formatValue(this.baseScenario.Revenue_total.original_value_optimized).value],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                +this.oilPriceScenarios[index].Revenue_total.original_value_optimized / 1000000
+                this.formatValue(this.oilPriceScenarios[index].Revenue_total.original_value_optimized).value
             )
           ],
           budget2020: this.budget2020Map,
@@ -365,11 +373,14 @@ export default {
         {
           index: '9',
           title: this.trans('economic_reference.total_expenses'),
-          dimension: this.trans('economic_reference.million_tenge'),
+          dimension: `
+            ${this.formatValue(this.baseScenario.Overall_expenditures_scenario).dimension}
+            ${this.trans('economic_reference.tenge')}
+          `,
           values: [
-            ...[+this.baseScenario.Overall_expenditures_scenario / 1000000],
+            ...[this.formatValue(this.baseScenario.Overall_expenditures_scenario).value],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                +this.oilPriceScenarios[index].Overall_expenditures_scenario / 1000000
+                this.formatValue(this.oilPriceScenarios[index].Overall_expenditures_scenario).value
             )
           ],
           budget2020: this.budget2020Map,
@@ -389,11 +400,14 @@ export default {
         {
           index: '11',
           title: this.trans('economic_reference.operating_profit'),
-          dimension: this.trans('economic_reference.million_tenge'),
+          dimension: `
+            ${this.formatValue(this.baseScenario.Operating_profit_scenario).dimension}
+            this.trans('economic_reference.tenge')
+          `,
           values: [
-            ...[+this.baseScenario.Operating_profit_scenario / 1000000],
+            ...[this.formatValue(this.baseScenario.Operating_profit_scenario).value],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                +this.oilPriceScenarios[index].Operating_profit_scenario / 1000000
+                this.formatValue(this.oilPriceScenarios[index].Operating_profit_scenario).value
             )
           ],
           budget2020: this.budget2020Map,
