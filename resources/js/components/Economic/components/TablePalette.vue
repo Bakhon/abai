@@ -1,10 +1,10 @@
 <template>
   <div>
-    <subtitle font-size="18" style="line-height: 26px">
+    <subtitle font-size="16" style="line-height: 18px">
       {{ trans('economic_reference.palette') }}
     </subtitle>
 
-    <div class="mt-3 text-center border-grey">
+    <div class="mt-2 text-center border-grey">
       <div class="d-flex bg-header font-weight-600">
         <div class="py-3 border-grey d-flex align-items-center justify-content-center flex-350px">
           {{ trans('economic_reference.course') }}

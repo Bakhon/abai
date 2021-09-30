@@ -1,6 +1,6 @@
 <template>
   <div>
-    <subtitle font-size="18" style="line-height: 26px">
+    <subtitle font-size="16" style="line-height: 18px">
       {{ trans('economic_reference.table_economic_efficiency_title') }}
     </subtitle>
 

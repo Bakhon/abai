@@ -1,12 +1,12 @@
 <template>
   <div>
-    <subtitle font-size="18" style="line-height: 26px">
+    <subtitle font-size="16" style="line-height: 18px">
       {{ trans('economic_reference.technical_economic_indicators') }}
       “{{ org.name }}”
     </subtitle>
 
-    <div class="mt-3 text-center border-grey">
-      <div class="d-flex bg-header">
+    <div class="mt-2 text-center border-grey">
+      <div class="d-flex bg-header" style="padding-right: 10px">
         <div class="p-3 border-grey d-flex align-items-center flex-80px">
           {{ trans('economic_reference.item_number') }}
         </div>
@@ -57,38 +57,41 @@
         </div>
       </div>
 
-      <div v-for="(item, itemIndex) in tableData"
-           :key="itemIndex"
-           :style="`background: ${item.color}`"
-           class="d-flex">
-        <div class="py-2 px-3 border-grey border-top-0 d-flex align-items-center justify-content-center flex-80px">
-          {{ item.index }}
-        </div>
-
-        <div
-            class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-start flex-320px">
-          {{ item.title }}
-        </div>
-
-        <div
-            class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-start flex-150px">
-          {{ item.dimension }}
-        </div>
-
-        <div class="d-flex flex-200px">
-          <div v-for="(budget, index) in item.budget2020"
-               :key="index"
-               class="py-2 px-3 border-grey border-top-0 border-left-0 flex-grow-1 text-right">
-            {{ budget.value }}
+      <div class="overflow-auto customScroll"
+           style="height: 405px">
+        <div v-for="(item, itemIndex) in tableData"
+             :key="itemIndex"
+             :style="`background: ${item.color}`"
+             class="d-flex">
+          <div class="py-2 px-3 border-grey border-top-0 d-flex align-items-center justify-content-center flex-80px">
+            {{ item.index }}
           </div>
-        </div>
 
-        <div class="d-flex flex-grow-1">
-          <div v-for="(value, index) in item.values"
-               :key="index"
-               class="py-2 px-3 border-grey border-top-0 border-left-0 text-right"
-               style="flex: 1 0 100px; white-space: pre-line"
-          >{{ typeof value === 'string' ? value : (+(value).toFixed(2)).toLocaleString() }}
+          <div
+              class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-start flex-320px">
+            {{ item.title }}
+          </div>
+
+          <div
+              class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-start flex-150px">
+            {{ item.dimension }}
+          </div>
+
+          <div class="d-flex flex-200px">
+            <div v-for="(budget, index) in item.budget2020"
+                 :key="index"
+                 class="py-2 px-3 border-grey border-top-0 border-left-0 flex-grow-1 text-right">
+              {{ budget.value }}
+            </div>
+          </div>
+
+          <div class="d-flex flex-grow-1">
+            <div v-for="(value, index) in item.values"
+                 :key="index"
+                 class="py-2 px-3 border-grey border-top-0 border-left-0 text-right"
+                 style="flex: 1 0 100px; white-space: pre-line"
+            >{{ typeof value === 'string' ? value : (+(value).toFixed(2)).toLocaleString() }}
+            </div>
           </div>
         </div>
       </div>
@@ -477,5 +480,9 @@ export default {
 
 .line-height-14px {
   line-height: 14px;
+}
+
+.customScroll::-webkit-scrollbar {
+  width: 10px;
 }
 </style>

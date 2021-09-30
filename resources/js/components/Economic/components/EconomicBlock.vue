@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex bg-main1 text-white text-wrap p-3 mb-10px">
+  <div class="d-flex bg-main1 text-white text-wrap px-3 py-2">
     <div
         v-for="(subBlock, subBlockIndex) in block"
         :key="subBlock.title"
@@ -7,7 +7,7 @@
         class="col-6 d-flex flex-column position-relative">
       <divider v-if="subBlockIndex % 2 === 1"/>
 
-      <div class="d-flex align-items-center font-size-32px text-nowrap">
+      <div class="d-flex align-items-center font-size-26px text-nowrap">
         <img :src="`/img/economic/${subBlock.icon}`" alt="">
 
         <div class="ml-2 d-flex align-items-center">
@@ -26,7 +26,7 @@
       </div>
 
       <div v-if="form.scenario_id"
-           class="text-grey font-size-14px line-height-14px font-weight-bold mb-3">
+           class="text-grey font-size-12px line-height-14px font-weight-bold mb-2">
         {{ trans('economic_reference.optimized') }}
       </div>
 
@@ -35,7 +35,7 @@
         <percent-badge-icon
             :percent="subBlock.reversePercent ? -subBlock.percent : subBlock.percent"
             :reverse="subBlock.reverse"
-            class="font-size-22px line-height-26px mr-1"/>
+            class="font-size-16px line-height-18px mr-1"/>
 
         <span class="font-size-24px line-height-28px font-weight-bold">
             {{ Math.abs(+subBlock.percent) }}
@@ -54,7 +54,7 @@
         </span>
       </div>
 
-      <div class="flex-grow-1 mt-3 font-weight-bold line-height-20px font-size-16px">
+      <div class="flex-grow-1 mt-2 font-weight-bold font-size-16px line-height-18px">
         {{ subBlock.title }}
       </div>
     </div>
@@ -78,7 +78,7 @@ export default {
     },
     block: {
       required: true,
-      type: Object
+      type: Array
     },
     index: {
       required: true,
@@ -97,16 +97,16 @@ export default {
   font-size: 14px;
 }
 
-.font-size-22px {
-  font-size: 22px;
+.font-size-16px {
+  font-size: 16px;
 }
 
 .font-size-24px {
   font-size: 24px;
 }
 
-.font-size-32px {
-  font-size: 32px;
+.font-size-26px {
+  font-size: 26px;
 }
 
 .line-height-12px {
@@ -121,12 +121,8 @@ export default {
   line-height: 16px;
 }
 
-.line-height-20px {
-  line-height: 20px;
-}
-
-.line-height-26px {
-  line-height: 26px;
+.line-height-18px {
+  line-height: 18px;
 }
 
 .line-height-28px {

@@ -1,7 +1,7 @@
 <template>
   <div class="position-relative">
     <div class="row">
-      <div class="col-12 px-2 mb-10px">
+      <div class="col-12 px-3 mb-10px">
         <div class="row text-white text-wrap flex-nowrap ">
           <calculated-header
               v-for="(header, index) in calculatedHeaders"
@@ -9,18 +9,21 @@
               :header="header"
               :form="form"
               :class="index ? 'ml-2' : ''"
-              class="flex-grow-1"/>
+              class="flex-grow-1"
+              style="min-height: 135px"/>
 
           <remote-header
               v-for="(header, index) in remoteHeaders"
               :key="`remote_${index}`"
               :header="header"
               :form="form"
-              class="flex-grow-1 ml-2"/>
+              class="flex-grow-1 ml-2"
+              style="min-height: 135px"/>
         </div>
       </div>
 
-      <div class="col-12 px-2 py-3 bg-main1 mb-10px">
+      <div :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right: 0'"
+           class="col-12 px-2 py-3 bg-main1 mb-10px">
         <select-scenario-variations
             :form="form"
             :scenario-variation="scenarioVariation"
@@ -38,7 +41,7 @@
       </div>
 
       <div v-show="!scenarioVariation.isFullScreen"
-           :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right:0'"
+           :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right: 0'"
            class="col-3">
         <economic-block
             v-for="(block, index) in blocks"
@@ -46,10 +49,11 @@
             :index="index"
             :block="block"
             :form="form"
-            :style="form.scenario_id ? 'min-height: 180px' : 'min-height: 120px'"
+            :class="index === blocks.length - 1 ? '' : 'mb-10px'"
+            :style="form.scenario_id ? 'min-height: 150px' : 'min-height: 155px'"
         />
 
-        <div class="bg-main1 text-white text-wrap p-3 mb-10px">
+        <div v-if="0" class="bg-main1 text-white text-wrap p-3 mb-10px">
           <subtitle>
             {{ trans('economic_reference.production_wells_fund') }}
           </subtitle>

@@ -2,7 +2,7 @@
   <div>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet'/>
 
-    <subtitle font-size="18" class="mb-3 text-white" style="line-height: 26px">
+    <subtitle font-size="16" class="mb-2 text-white" style="line-height: 18px">
       {{ trans('economic_reference.table_well_overview_map') }}
     </subtitle>
 
@@ -30,7 +30,7 @@ export default {
     wells: {
       required: true,
       type: Array
-    }
+    },
   },
   data: () => ({
     map: null,

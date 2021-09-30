@@ -1,8 +1,8 @@
 <template>
-  <div class="p-3 bg-blue-dark d-flex flex-column position-relative">
+  <div class="px-3 py-2 bg-blue-dark d-flex flex-column position-relative">
     <economic-title
-        font-size="32"
-        line-height="46"
+        font-size="26"
+        line-height="36"
         flex-grow="0"
         class="text-nowrap">
       <span> {{ header.value }} </span>
@@ -12,7 +12,7 @@
       </span>
     </economic-title>
 
-    <subtitle font-size="18">
+    <subtitle font-size="16" class="line-height-18px">
       {{ header.name }}
     </subtitle>
 
@@ -21,12 +21,12 @@
     </span>
 
     <div v-if="form.scenario_id" class="d-flex align-items-center">
-      <div class="font-size-24px line-height-28px font-weight-bold text-nowrap">
+      <div class="font-size-16px line-height-18px font-weight-bold text-nowrap">
         <percent-badge-icon :percent="header.percent" reverse/>
 
         <span>{{ header.percent }}</span>
 
-        <span class="font-size-16px">{{ header.dimension }}</span>
+        <span class="font-size-14px">{{ header.dimension }}</span>
       </div>
 
       <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
@@ -78,20 +78,16 @@ export default {
   font-size: 16px;
 }
 
-.font-size-24px {
-  font-size: 24px;
-}
-
 .line-height-14px {
   line-height: 14px;
 }
 
-.line-height-20px {
-  line-height: 20px;
+.line-height-18px {
+  line-height: 18px;
 }
 
-.line-height-28px {
-  line-height: 28px;
+.line-height-20px {
+  line-height: 20px;
 }
 
 .text-blue {

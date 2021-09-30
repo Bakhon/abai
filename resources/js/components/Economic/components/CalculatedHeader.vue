@@ -1,8 +1,8 @@
 <template>
-  <div class="p-3 bg-blue-dark position-relative">
+  <div class="px-3 py-2 bg-blue-dark position-relative">
     <economic-title
-        font-size="32"
-        line-height="46"
+        font-size="26"
+        line-height="36"
         class="text-nowrap">
       <span> {{ header.value.toFixed(2) }} </span>
 
@@ -11,7 +11,7 @@
       </span>
     </economic-title>
 
-    <subtitle font-size="18"> {{ header.name }}</subtitle>
+    <subtitle font-size="16" class="line-height-18px"> {{ header.name }}</subtitle>
 
     <percent-progress v-if="form.scenario_id" :percent="header.percent"/>
 
@@ -28,7 +28,7 @@
          class="d-flex align-items-center">
       <percent-badge
           :percent="header.percent.toFixed(2)"
-          class="text-nowrap mr-2"
+          class="text-nowrap mr-2 font-size-16px line-height-18px"
           reverse/>
 
       <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
@@ -84,6 +84,10 @@ export default {
 
 .line-height-16px {
   line-height: 16px;
+}
+
+.line-height-18px {
+  line-height: 18px;
 }
 
 .line-height-20px {

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <subtitle font-size="18" style="line-height: 26px">
+    <subtitle font-size="16" style="line-height: 18px">
       {{ trans('economic_reference.technological_indicators') }}
     </subtitle>
 
-    <div class="mt-3 text-center border-grey">
-      <div class="d-flex bg-header" style="font-weight: 600">
+    <div class="mt-2 text-center border-grey">
+      <div class="d-flex bg-header" style="padding-right: 10px">
         <div class="py-2 px-3 border-grey text-center flex-300px">
           {{ trans('economic_reference.indicators') }}
         </div>
@@ -22,25 +22,28 @@
         </div>
       </div>
 
-      <div v-for="(item, index) in tableData"
-           :key="index"
-           :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-deep-blue'"
-           class="d-flex">
-        <div
-            :class="item.bold ? 'font-weight-bold' : ''"
-            class="py-2 px-3 border-grey text-center flex-300px">
-          {{ item.title }}
-        </div>
+      <div class="overflow-auto customScroll"
+           style="height: 465px">
+        <div v-for="(item, index) in tableData"
+             :key="index"
+             :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-deep-blue'"
+             class="d-flex">
+          <div
+              :class="item.bold ? 'font-weight-bold' : ''"
+              class="py-2 px-3 border-grey text-center flex-300px">
+            {{ item.title }}
+          </div>
 
-        <div class="py-2 px-3 border-grey text-center flex-150px">
-          {{ item.dimension }}
-        </div>
+          <div class="py-2 px-3 border-grey text-center flex-150px">
+            {{ item.dimension }}
+          </div>
 
-        <div v-for="(price, priceIndex) in reverseOilPrices"
-             :key="`${index}_${priceIndex}`"
-             :style="`flex-basis: ${100 / reverseOilPrices.length}%`"
-             class="py-2 px-3 border-grey text-center">
-          {{ item.values[priceIndex].toLocaleString() }}
+          <div v-for="(price, priceIndex) in reverseOilPrices"
+               :key="`${index}_${priceIndex}`"
+               :style="`flex-basis: ${100 / reverseOilPrices.length}%`"
+               class="py-2 px-3 border-grey text-center">
+            {{ item.values[priceIndex].toLocaleString() }}
+          </div>
         </div>
       </div>
     </div>
@@ -259,5 +262,9 @@ export default {
 
 .flex-150px {
   flex: 0 0 150px;
+}
+
+.customScroll::-webkit-scrollbar {
+  width: 10px;
 }
 </style>
