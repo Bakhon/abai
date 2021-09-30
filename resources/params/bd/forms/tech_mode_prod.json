@@ -140,7 +140,7 @@
       "title": "Qn",
       "code": "Qn",
       "type": "calc",
-      "formula": "$QZh$ * (1 - $wcut$/100) * $oil_density$",
+      "formula": "Math.round($qzh$ * (1 - $wcut$/100) * $oil_density$)",
       "is_editable": false
     },
     {

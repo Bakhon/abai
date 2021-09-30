@@ -175,7 +175,7 @@ abstract class PlainForm extends BaseForm
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function getHistory(int $id, \DateTimeInterface $date = null): array
+    public function getHistory($id, \DateTimeInterface $date = null): array
     {
         $historyItems = History::query()
             ->where('row_id', $id)

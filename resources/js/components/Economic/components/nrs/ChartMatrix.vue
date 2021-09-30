@@ -9,7 +9,6 @@
         :options="chartOptions"
         :series="chartSeries"
         :height="400"
-        type="line"
         style="color: #000"/>
   </div>
 </template>
@@ -19,19 +18,11 @@ import chart from "vue-apexcharts";
 
 const RU = require("apexcharts/dist/locales/ru.json");
 const COLORS = [
-  '#B629FE',
-  '#FC35B0',
-  '#79B44E',
-  '#A3480E',
-  '#374AB4',
-  '#82BAFF',
-  '#FFC607',
-  '#A9A9A9',
-  '#F37F31',
-  '#436DB0',
-  '#81B9FE',
-  '#374AB4',
-  '#436B2A',
+  '#008A1F',
+  '#D6091D',
+  '#2309D6',
+  '#000000',
+  '#23CBD6',
 ]
 
 export default {
@@ -56,7 +47,7 @@ export default {
       let series = []
 
       this.wellKeys.forEach(key => {
-        series.push({name: key.name, type: 'line', data: [],})
+        series.push({name: key.name, type: key.chartType, data: []})
       })
 
       this.dates.forEach(date => {
@@ -65,11 +56,15 @@ export default {
               ? +this.well[key.prop][date]
               : 0
 
+          if (key.isNegative && value > 0) {
+            value = -value
+          }
+
           if (key.dimension) {
             value = (value / key.dimension).toFixed(2)
           }
 
-          series[keyIndex].data.push(value)
+          series[keyIndex].data.push(+value)
         })
       })
 
@@ -101,6 +96,7 @@ export default {
         xaxis: {
           type: 'date'
         },
+        yaxis: this.yaxis,
         tooltip: {
           shared: true,
           intersect: false,
@@ -116,28 +112,43 @@ export default {
         {
           prop: 'NetBack_bf_pr_exp',
           name: this.trans('economic_reference.Revenue'),
-          dimension: 1000
+          dimension: 1000,
+          chartType: 'column',
         },
         {
           prop: 'Overall_expenditures',
           name: this.trans('economic_reference.costs'),
-          dimension: 1000
+          dimension: 1000,
+          chartType: 'column',
+          isNegative: true
         },
         {
           prop: 'Operating_profit',
           name: this.trans('economic_reference.operating_profit'),
-          dimension: 1000
+          dimension: 1000,
+          chartType: 'area'
         },
         {
           prop: 'oil',
           name: this.trans('economic_reference.oil_production'),
+          chartType: 'line',
         },
         {
           prop: 'liquid',
           name: this.trans('economic_reference.liquid_production'),
+          chartType: 'line',
         }
       ]
     },
+
+    yaxis() {
+      return this.chartSeries.map((item, index) => {
+        return {
+          seriesName: index < 3 ? this.chartSeries[0].name : this.chartSeries[index].name,
+          show: index === 0,
+        }
+      })
+    }
   }
 }
 </script>

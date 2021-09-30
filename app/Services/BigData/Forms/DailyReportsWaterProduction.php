@@ -2,45 +2,82 @@
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\Org;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+
 class DailyReportsWaterProduction extends DailyReports
 {
-
-    const CITS = 0;
-    const GS = 1;
-    const ALL = 2;
     protected $metricCode = 'WPRD';
     protected $configurationFileName = 'daily_reports_water_prod';
+    protected $planField = 'water_production';
 
-    protected function getData($filter): array {
-        $data = parent::getReports($filter);
-        $result = [];
-        $plan = $data->sum('plan');
-        $fact = $data->sum('fact');
-        switch ($filter->period) {
-            case self::DAY:
-                $result['plan'] = ['value' => $plan];
-                $result['fact'] = $result['daily_fact_cits'] = ['value' => $fact];
-                break;
-            case self::MONTH:
-                $result['month_plan'] = ['value' => $plan];
-                $result['month_fact'] = $result['month_fact_cits'] = ['value' => $fact];
-                break;
-            case self::YEAR:
-                $result['year_plan'] = ['value' => $plan];
-                $result['year_fact'] = $result['year_fact_cits'] = ['value' => $fact];
-                break;
-        }
+    protected function getMeasuredFieldValues(Org $org, CarbonImmutable $date): Collection
+    {
+        $wells = $this->getOrgWells($org, $date);
 
-        if ($filter->optionId === self::GS) {
-            $result['fact'] = ['value' => 0];
-            $result['month_fact'] = ['value' => 0];
-            $result['year_fact'] = ['value' => 0];
-        }
-        $result['daily_fact_gs'] = ['value' => 0];
-        $result['month_fact_gs'] = ['value' => 0];
-        $result['year_fact_gs'] = ['value' => 0];
+        $workTime = $this->getWorkTime($wells, $date);
+        $bsw = $this->getBsw($wells, $date);
 
-        return $result;
+        return DB::connection('tbd')
+            ->table('prod.meas_liq')
+            ->select('dbeg', 'liquid', 'well')
+            ->where('dbeg', '>=', $date->startOfYear())
+            ->where('dbeg', '<=', $date)
+            ->whereIn('well', $wells)
+            ->get()
+            ->groupBy(function ($item) {
+                return Carbon::parse($item->dbeg)->format('d.m.Y');
+            })
+            ->map(function ($items, $currentDate) use ($workTime, $bsw) {
+                $dateOil = $items
+                    ->map(function ($item) use ($workTime, $bsw) {
+                        $date = Carbon::parse($item->dbeg);
+
+                        if (!isset($workTime[$item->well])) {
+                            return 0;
+                        }
+                        if (!isset($workTime[$item->well][$date->format('d.m.Y')])) {
+                            return 0;
+                        }
+
+                        $currentBsw = $bsw
+                            ->where('well', $item->well)
+                            ->where('dbeg', '<=', $date)
+                            ->where('dend', '>=', $date)
+                            ->first();
+                        if (empty($currentBsw)) {
+                            return 0;
+                        }
+
+
+                        return $item->liquid * $workTime[$item->well][$date->format(
+                                'd.m.Y'
+                            )] * $currentBsw->water_cut / 100;
+                    })->sum();
+
+                return [
+                    'date' => Carbon::parse($currentDate),
+                    'value' => $dateOil
+                ];
+            });
+    }
+
+    private function getBsw(array $wells, CarbonImmutable $date): Collection
+    {
+        return DB::connection('tbd')
+            ->table('prod.meas_water_cut as mwc')
+            ->select('mwc.well', 'mwc.water_cut', 'mwc.dbeg', 'mwc.dend')
+            ->join('dict.well_activity as wa', 'mwc.activity', 'wa.id')
+            ->join('dict.value_type as vt', 'mwc.value_type', 'vt.id')
+            ->whereIn('mwc.well', $wells)
+            ->where('mwc.dbeg', '>=', $date->startOfYear())
+            ->where('mwc.dend', '<=', $date)
+            ->where('wa.code', 'PMSR')
+            ->where('vt.code', 'MNT')
+            ->get();
     }
 
 }

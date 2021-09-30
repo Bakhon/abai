@@ -109,7 +109,8 @@ export default {
             productionData: [],
             reasonExplanations: {},
             troubleCompanies: ['ОМГК','КГМКМГ','ТП','ПККР'],
-            dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ']
+            dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ'],
+            additionalCompanies: ['ОМГК','АГ']
         };
     },
     methods: {
@@ -173,6 +174,9 @@ export default {
 
         isTroubleCompany(dzoName) {
             return this.troubleCategories.includes(this.selectedCategory) && this.troubleCompanies.includes(dzoName);
+        },
+        getAdditionalName(dzoName) {
+            return this.trans('visualcenter.condensate');
         }
     },
     mixins: [

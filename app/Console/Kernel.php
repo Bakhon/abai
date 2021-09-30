@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\CalculateHydroDinamicGuUpsvYesterday::class,
         \App\Console\Commands\CalculateGuCorrosionCron::class,
         \App\Console\Commands\FinalizeEmergencySituation::class,
+        \App\Console\Commands\EmergencySituationsChemistryWells::class,
     ];
 
     /**
@@ -52,6 +53,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('parse_omg_ngdu_well_data:cron')
             ->dailyAt('07:00')
             ->timezone('Asia/Almaty');
+        $schedule->command('create-emergency-chemistry-wells:cron')->monthlyOn(11, '10:00')->timezone('Asia/Almaty');
     }
 
     /**

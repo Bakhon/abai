@@ -127,6 +127,19 @@ class OmgNGDUController extends CrudController
         return response()->json(json_decode(OmgNGDUListResource::collection($omgngdu)->toJson()));
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(OmgNGDU $omgngdu)
+    {
+        $omgngdu->load('history');
+        return view('omgngdu.history', compact('omgngdu'));
+    }
+
+
     public function export(IndexTableRequest $request)
     {
         $job = new ExportOmgNGDUToExcel($request->validated());

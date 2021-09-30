@@ -287,4 +287,6 @@ return array (
   'count_shutdown_wells' => 'Количество отключенных скважин',
   'loading_treemap' => 'Загрузка TreeMap',
   'profitless' => 'Нерентабельные',
+  'mrp' => 'МРП',
+  'days_declination' => 'дней',
 );
