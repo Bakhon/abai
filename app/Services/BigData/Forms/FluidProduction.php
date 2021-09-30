@@ -21,7 +21,7 @@ class FluidProduction extends MeasurementLogForm
         $rowData = $this->fetchRowData(
             $tables,
             $wells->pluck('id')->toArray(),
-            Carbon::parse($this->request->get('date'))
+            Carbon::parse($filter->date)
         );
 
         $wells->transform(
