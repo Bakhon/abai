@@ -1,6 +1,30 @@
 {
   "type": "table",
   "table_type": "wells",
+  "filter": [
+    {
+      "code": "date",
+      "title": "date",
+      "type": "date",
+      "flow": [
+        "year",
+        "month",
+        "day"
+      ],
+      "default": "today"
+    },
+    {
+      "code": "type",
+      "type": "list",
+      "default": "ЦИТС",
+      "values": [
+        "ЦИТС",
+        "ГС",
+        "ЦИТС/ГС"
+      ],
+      "title": ""
+    }
+  ],
   "columns": [
     {
       "title": "id",
@@ -19,7 +43,7 @@
       "title": "plan",
       "code": "plan",
       "type": "float",
-      "is_editable": true,
+      "is_editable": false,
       "validation": "numeric",
       "validate_deviation": true
     },
@@ -29,36 +53,60 @@
       "type": "float",
       "is_editable": true,
       "validation": "numeric",
-      "validate_deviation": true
+      "validate_deviation": true,
+      "show_if": {
+        "type": [
+          "ЦИТС",
+          "ГС"
+        ]
+      }
     },
     {
       "title": "daily_fact_cits",
       "code": "daily_fact_cits",
       "type": "float",
-      "visible": false,
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС/ГС"
+        ]
+      }
     },
     {
       "title": "daily_fact_gs",
       "code": "daily_fact_gs",
       "type": "float",
-      "visible": false,
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС/ГС"
+        ]
+      }
     },
     {
       "title": "daily_deviation",
       "code": "daily_deviation",
       "type": "calc",
       "formula": "$fact$ - $plan$",
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС",
+          "ГС"
+        ]
+      }
     },
     {
       "title": "cits_gs_daily_deviation",
       "code": "cits_gs_daily_deviation",
       "type": "calc",
       "formula": "$daily_fact_cits$ - $daily_fact_gs$",
-      "visible": false,
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС/ГС"
+        ]
+      }
     },
     {
       "title": "month_plan",
@@ -70,36 +118,60 @@
       "title": "month_fact",
       "code": "month_fact",
       "type": "float",
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС",
+          "ГС"
+        ]
+      }
     },
     {
       "title": "month_fact_cits",
       "code": "month_fact_cits",
       "type": "float",
-      "visible": false,
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС/ГС"
+        ]
+      }
     },
     {
       "title": "month_fact_gs",
       "code": "month_fact_gs",
       "type": "float",
-      "visible": false,
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС/ГС"
+        ]
+      }
     },
     {
       "title": "month_deviation",
       "code": "month_deviation",
       "type": "calc",
       "formula": "$month_fact$ - $month_plan$",
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС",
+          "ГС"
+        ]
+      }
     },
     {
       "title": "cits_gs_month_deviation",
       "code": "cits_gs_month_deviation",
       "type": "calc",
       "formula": "$month_fact_cits$ - $month_fact_gs$",
-      "visible": false,
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС/ГС"
+        ]
+      }
     },
     {
       "title": "year_plan",
@@ -111,36 +183,60 @@
       "title": "year_fact",
       "code": "year_fact",
       "type": "float",
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС",
+          "ГС"
+        ]
+      }
     },
     {
       "title": "year_fact_cits",
       "code": "year_fact_cits",
       "type": "float",
-      "visible": false,
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС/ГС"
+        ]
+      }
     },
     {
       "title": "year_fact_gs",
       "code": "year_fact_gs",
       "type": "float",
-      "visible": false,
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС/ГС"
+        ]
+      }
     },
     {
       "title": "year_deviation",
       "code": "year_deviation",
       "type": "calc",
       "formula": "$year_fact$ - $year_plan$",
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС",
+          "ГС"
+        ]
+      }
     },
     {
       "title": "cits_gs_year_deviation",
       "code": "cits_gs_year_deviation",
       "type": "calc",
       "formula": "$year_fact_cits$ - $year_fact_gs$",
-      "visible": false,
-      "is_editable": false
+      "is_editable": false,
+      "show_if": {
+        "type": [
+          "ЦИТС/ГС"
+        ]
+      }
     }
   ]
 }

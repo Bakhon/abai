@@ -16,9 +16,11 @@
     </template>
     <template v-else-if="item.type === 'list'">
       <v-select
-          v-on:input="updateValue($event.id)"
+          :value="value"
           :options="item.values"
           :name="item.code"
+          v-on:input="updateValue($event)"
+          label="name"
       >
         <template #open-indicator="{ attributes }">
           <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -117,11 +119,12 @@
           :id="id"
           :form="form"
           :params="item"
+          :values="value || null"
           v-on:change="updateValue($event)"
       >
       </BigdataTableField>
     </template>
-    <template v-else-if="item.type === 'calc'">
+    <template v-else-if="['calc', 'label'].includes(item.type)">
       <label>{{ value }}</label>
     </template>
     <template v-else-if="item.type === 'checkbox_table'">
@@ -189,11 +192,15 @@ export default {
   },
   mounted() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
-      if (this.dict === null) {
-        this.loadDict(this.item.dict).then(result => {
-          this.dict = result
-        })
+      let dict = this.getDict(this.item.dict)
+      if (dict) {
+        this.dict = dict
+        return
       }
+
+      this.loadDict(this.item.dict).then(result => {
+        this.dict = result
+      })
     }
 
     this.formatedValue = this.getFormatedValue(this.value)
@@ -202,6 +209,9 @@ export default {
     ...bdFormActions([
       'loadDict',
     ]),
+    getDict(code) {
+      return this.$store.getters['bdform/dict'](code);
+    },
     changeDate(date) {
       if (date) {
         let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')
@@ -209,6 +219,7 @@ export default {
       }
     },
     updateValue(value) {
+      console.log(value)
       this.formatedValue = this.getFormatedValue(value)
       this.$emit('change', value)
       this.$emit('input', value)
@@ -293,13 +304,13 @@ export default {
 
   .v-select {
     background: #334296;
-    height: 28px;
+    height: auto;
     min-width: 100%;
 
     .vs__search, .vs__selected {
       font-size: 14px;
       font-weight: normal;
-      height: 28px;
+      height: auto;
       line-height: 1;
       margin-top: 0;
       max-width: 95%;

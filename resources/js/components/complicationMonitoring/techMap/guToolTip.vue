@@ -26,6 +26,10 @@
       {{ getValueOrNoData(gu.last_omgngdu.pump_discharge_pressure) }} {{ trans('measurements.pressure_bar') }}
     </p>
     <p>
+      {{ trans('monitoring.omgngdu.fields.heater_inlet_temperature') }} :
+      {{ getValueOrNoData(gu.last_omgngdu.heater_inlet_temperature) }} {{ trans('measurements.celsius') }}
+    </p>
+    <p>
       {{ trans('monitoring.gu.fields.heater_output_temperature') }} :
       {{ getValueOrNoData(gu.last_omgngdu.heater_output_temperature) }} {{ trans('measurements.celsius') }}
     </p>

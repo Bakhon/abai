@@ -7,7 +7,7 @@
         @change="getData"/>
 
     <vue-table-dynamic v-if="form.source_id" :params="params" ref="table">
-      <a slot="column-11" slot-scope="{ props }" :href="props.cellData">
+      <a slot="column-12" slot-scope="{ props }" :href="props.cellData">
         {{ trans('app.edit') }}
       </a>
     </vue-table-dynamic>
@@ -48,6 +48,7 @@ export default {
           item.source.name,
           item.gu.name,
           item.well_id,
+          item.pes ? item.pes.name : '',
           item.date,
           item.oil,
           item.liquid,
@@ -56,7 +57,7 @@ export default {
           item.comment,
           `${item.created_at} ${item.author.name}`,
           item.editor ? `${item.updated_at} ${item.editor.name}` : '',
-          this.localeUrl(`/tech-data-forecast/${item.id}/edit`),
+          this.localeUrl(`/economic/technical/forecast/${item.id}/edit`),
           item.log_id
         ])
       })
@@ -68,7 +69,7 @@ export default {
     ...globalloadingState(['loading']),
 
     url() {
-      return this.localeUrl('/tech-data-forecast/get-data')
+      return this.localeUrl('/economic/technical/forecast/get-data')
     },
 
     params() {
@@ -94,6 +95,7 @@ export default {
         this.trans('forecast.source_data'),
         this.trans('forecast.gu'),
         this.trans('forecast.well'),
+        this.trans('economic_reference.pes'),
         this.trans('forecast.month-year'),
         this.trans('forecast.oil-production'),
         this.trans('forecast.extraction-liquid'),

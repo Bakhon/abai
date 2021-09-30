@@ -1,0 +1,29 @@
+[
+  {
+    "name": "waterflooding_management.choose_object_area",
+    "icon": "/img/waterfloodingManagement/water-flooding-management-group_1.svg",
+    "component": {
+      "name": "child-component",
+      "template": "<div><water-flooding-management-map></water-flooding-management-map></div>",
+      "parentType": "aegtm"
+    }
+  },
+  {
+    "name": "waterflooding_management.forecasting_optimization",
+    "icon": "/img/waterfloodingManagement/water-flooding-management-group_2.svg",
+    "component": {
+      "name": "child-component",
+      "template": "<div><water-flooding-management-forecasting></water-flooding-management-forecasting></div>",
+      "parentType": "aegtm"
+    }
+  },
+  {
+    "name": "waterflooding_management.assessment_monitoring",
+    "icon": "/img/waterfloodingManagement/water-flooding-management-group_3.svg",
+    "component": {
+      "name": "child-component",
+      "template": "<div><water-flooding-management-assessment></water-flooding-management-assessment></div>",
+      "parentType": "aegtm"
+    }
+  }
+]

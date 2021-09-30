@@ -1,6 +1,7 @@
 <?php
 
 return array (
+    'module_title'=> 'Digital drilling',
     'database' => 'Database',
     'general_information' => 'General information',
     'well_data_sheet' => 'Well data sheet',
@@ -61,6 +62,13 @@ return array (
         'meters' => 'meters',
         'drilled_per_day' => 'Drilling per day',
         'total_drilled' => 'Total drilled',
+        'close' => 'Close',
+        'reset' => 'Cancel',
+        'import' => 'Import',
+        'import_daily-report' => 'Import of daily drilling report',
+        'select_file' => 'Select a file',
+        'or' => 'or',
+        'drag_here' => 'drag the file here',
     ],
     'home' => [
         'operating_oil_pipeline' => 'Operating oil pipeline',
@@ -362,8 +370,10 @@ return array (
         'weight' => 'weight, kg',
     ],
     'daily_raport' => [
-        'DAILY_DRILLING_REPORT' => 'СУТОЧНЫЙ БУРОВОЙ РАПОРТ',
+        'DAILY_DRILLING_REPORT' => 'Daily drilling report',
+        'IMPORT_DRILLING_REPORT' => 'Drilling report import',
         'date' => 'Дата',
+        'save' => 'Save',
         'report' => 'Рапорт',
         'page' => 'Страница',
         'unit_name' => 'Название Установки',
@@ -604,7 +614,7 @@ return array (
         'drilling_fluid_engineer' => 'Инженер по буровым раствором:',
 
 
-        'explanation_abbreviation' => 'Расшифровка сокрашении для персонала КТМ',
+        'explanation_abbreviation' => 'Расшифровка сокрашении',
         'ea_bo' => 'БО - буровое оборудование',
         'ea_pvo' => 'ПВО - противовыбросовое оборудование',
         'ea_ou' => 'ОУ - оборудование устья',

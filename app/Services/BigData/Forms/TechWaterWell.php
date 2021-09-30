@@ -13,7 +13,7 @@ class TechWaterWell extends TableForm
     protected $configurationFileName = 'tech_water_well';
     protected $waterMeasurements;
 
-    public function getRows(array $params = []): array
+    public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
         $params['filter']['well_category'] = ['WTR'];
@@ -68,10 +68,10 @@ class TechWaterWell extends TableForm
         switch ($field['code']) {
             case 'avg_water_prev_month':
                 $measurement = $this->waterMeasurements->get($item->id);
-                return !empty($measurement) ? $measurement['avg'] : null;
+                return !empty($measurement) ? ['value' => $measurement['avg']] : null;
             case 'sum_water_prev_month':
                 $measurement = $this->waterMeasurements->get($item->id);
-                return !empty($measurement) ? $measurement['sum'] : null;
+                return !empty($measurement) ? ['value' => $measurement['sum']] : null;
             case 'events':
                 return DB::connection('tbd')
                     ->table('prod.tech_mode_event')

@@ -10,7 +10,6 @@ use App\Models\BigData\Well;
 use App\Services\BigData\DictionaryService;
 use App\Services\BigData\Forms\History\PlainFormHistory;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -28,7 +27,7 @@ abstract class PlainForm extends BaseForm
     protected $submittedData = [];
 
 
-    protected function getFields(): Collection
+    public function getFields(): Collection
     {
         if ($this->formFields) {
             return $this->formFields;
@@ -38,6 +37,9 @@ abstract class PlainForm extends BaseForm
         foreach ($this->params()['tabs'] as $tab) {
             foreach ($tab['blocks'] as $block) {
                 foreach ($block as $subBlock) {
+                    if (empty($subBlock['items'])) {
+                        continue;
+                    }
                     foreach ($subBlock['items'] as $item) {
                         $fields[] = $item;
                     }
@@ -62,47 +64,53 @@ abstract class PlainForm extends BaseForm
         DB::connection('tbd')->beginTransaction();
 
         try {
-            $this->tableFields = $this->getFields()
-                ->filter(
-                    function ($item) {
-                        return $item['type'] === 'table';
-                    }
-                );
-
-            $this->tableFieldCodes = $this->tableFields
-                ->pluck('code')
-                ->toArray();
-
-            $data = $this->prepareDataToSubmit();
-            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-            if (!empty($data['id'])) {
-                $this->checkFormPermission('update');
-
-                $id = $data['id'];
-                unset($data['id']);
-
-                $dbQuery = $dbQuery->where('id', $id);
-
-                $this->originalData = $dbQuery->first();
-                $dbQuery->update($data);
-
-                $this->submittedData['fields'] = $data;
-                $this->submittedData['id'] = $id;
-            } else {
-                $this->checkFormPermission('create');
-
-                $id = $dbQuery->insertGetId($data);
-            }
-
-            $this->insertInnerTable($id);
-
+            $result = $this->submitForm();
             DB::connection('tbd')->commit();
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
+            return $result;
         } catch (\Exception $e) {
             DB::connection('tbd')->rollBack();
             throw new SubmitFormException($e->getMessage());
         }
+    }
+
+    protected function submitForm(): array
+    {
+        $this->tableFields = $this->getFields()
+            ->filter(
+                function ($item) {
+                    return $item['type'] === 'table';
+                }
+            );
+
+        $this->tableFieldCodes = $this->tableFields
+            ->pluck('code')
+            ->toArray();
+
+        $data = $this->prepareDataToSubmit();
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+
+        if (!empty($data['id'])) {
+            $this->checkFormPermission('update');
+
+            $id = $data['id'];
+            unset($data['id']);
+
+            $dbQuery = $dbQuery->where('id', $id);
+
+            $this->originalData = $dbQuery->first();
+            $dbQuery->update($data);
+
+            $this->submittedData['fields'] = $data;
+            $this->submittedData['id'] = $id;
+        } else {
+            $this->checkFormPermission('create');
+
+            $id = $dbQuery->insertGetId($data);
+        }
+
+        $this->insertInnerTable($id);
+
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
     protected function prepareDataToSubmit()
@@ -126,62 +134,16 @@ abstract class PlainForm extends BaseForm
         }
     }
 
-    public function getResults(int $wellId): JsonResponse
+    public function getResults(): array
     {
-        try {
-            $query = DB::connection('tbd')
-                ->table($this->params()['table'])
-                ->where('well', $wellId)
-                ->orderBy('id', 'desc');
+        $rows = $this->getRows();
+        $columns = $this->getColumns();
 
-            $rows = $query->get();
-
-            if (!empty($this->params()['sort'])) {
-                foreach ($this->params()['sort'] as $sort) {
-                    if ($sort['order'] === 'desc') {
-                        $rows->sortByDesc($sort['field']);
-                    } else {
-                        $rows->sortBy($sort['field']);
-                    }
-                }
-            }
-
-            $rows = $this->formatRows($rows);
-
-            $columns = $this->getFields()->filter(
-                function ($item) {
-                    if (isset($item['depends_on'])) {
-                        return false;
-                    }
-
-                    if (isset($this->params()['table_fields'])) {
-                        return in_array($item['code'], $this->params()['table_fields']);
-                    }
-
-                    return $item['type'] !== 'table';
-                }
-            )
-                ->mapWithKeys(
-                    function ($item) {
-                        return [$item['code'] => $item];
-                    }
-                );
-
-            return response()->json(
-                [
-                    'rows' => $rows->values(),
-                    'columns' => $columns,
-                    'form' => $this->params()
-                ]
-            );
-        } catch (\Exception $e) {
-            return response()->json(
-                [
-                    'error' => $e->getMessage()
-                ],
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
-        }
+        return [
+            'rows' => $rows->values(),
+            'columns' => $columns,
+            'form' => $this->params()
+        ];
     }
 
     public function getCalculatedFields(int $wellId, array $values): array
@@ -190,6 +152,11 @@ abstract class PlainForm extends BaseForm
     }
 
     public function getUpdatedFields(int $wellId, array $values): array
+    {
+        return [];
+    }
+
+    public function getUpdatedFieldList(int $wellId, array $values): array
     {
         return [];
     }
@@ -208,7 +175,7 @@ abstract class PlainForm extends BaseForm
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function getHistory(int $id, \DateTimeInterface $date = null): array
+    public function getHistory($id, \DateTimeInterface $date = null): array
     {
         $historyItems = History::query()
             ->where('row_id', $id)
@@ -257,6 +224,9 @@ abstract class PlainForm extends BaseForm
         foreach ($params['tabs'] as &$tab) {
             foreach ($tab['blocks'] as &$block) {
                 foreach ($block as &$subBlock) {
+                    if (empty($subBlock['items'])) {
+                        continue;
+                    }
                     foreach ($subBlock['items'] as &$item) {
                         if (empty($item['depends_on'])) {
                             continue;
@@ -314,7 +284,7 @@ abstract class PlainForm extends BaseForm
         }
     }
 
-    protected function formatRows(Collection $rows)
+    protected function formatRows(Collection $rows): Collection
     {
         return $rows->map(function ($row) {
             if (isset($row->dend)) {
@@ -335,6 +305,52 @@ abstract class PlainForm extends BaseForm
             $this->originalData,
             $this->submittedData
         );
+    }
+
+    protected function getRows(): Collection
+    {
+        $wellId = $this->request->get('well_id');
+        $query = DB::connection('tbd')
+            ->table($this->params()['table'])
+            ->where('well', $wellId)
+            ->orderBy('id', 'desc');
+
+        $rows = $query->get();
+
+        if (!empty($this->params()['sort'])) {
+            foreach ($this->params()['sort'] as $sort) {
+                if ($sort['order'] === 'desc') {
+                    $rows = $rows->sortByDesc($sort['field']);
+                } else {
+                    $rows = $rows->sortBy($sort['field']);
+                }
+            }
+        }
+
+        return $this->formatRows($rows);
+    }
+
+    protected function getColumns(): Collection
+    {
+        $columns = $this->getFields()->filter(
+            function ($item) {
+                if (isset($item['depends_on'])) {
+                    return false;
+                }
+
+                if (isset($this->params()['table_fields'])) {
+                    return in_array($item['code'], $this->params()['table_fields']);
+                }
+
+                return $item['type'] !== 'table';
+            }
+        )
+            ->mapWithKeys(
+                function ($item) {
+                    return [$item['code'] => $item];
+                }
+            );
+        return $columns;
     }
 
 }

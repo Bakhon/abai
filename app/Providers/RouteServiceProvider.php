@@ -117,6 +117,8 @@ class RouteServiceProvider extends ServiceProvider
             'geology',
             'digital_rating',
             'map_constructor',
+            'waterflooding_management',
+            'economic',
         ];
 
         foreach ($modules as $module) {

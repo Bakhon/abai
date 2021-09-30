@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
+use App\Models\BigData\Well;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EcoRefsGtm;
 use App\Models\Refs\Org;
@@ -19,8 +20,8 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v5_gtm_optimize_v1';
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v4';
+    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v5_gtm_optimize_v2';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v8';
     const DATA_SOURCE_DATE = '2021/01/01';
 
     const SCENARIO_COLUMNS = [
@@ -61,6 +62,24 @@ class EconomicOptimizationController extends Controller
         'Overall_expenditures',
         'Overall_expenditures_full',
         'Operating_profit',
+    ];
+
+    const WELL_COLUMNS = [
+        'Revenue_total_12m',
+        'Revenue_local_12m',
+        'Revenue_export_12m',
+        'oil_12m',
+        'liquid_12m',
+        'prs_12m',
+        'days_worked_12m',
+        'production_export_12m',
+        'production_local_12m',
+        'Fixed_noWRpayroll_expenditures_12m',
+        'Operating_profit_12m',
+        'Overall_expenditures_12m',
+        'Overall_expenditures_full_12m',
+        'Fixed_nopayroll_expenditures_12m',
+        'Fixed_payroll_expenditures_12m',
     ];
 
     const SUFFIX_OPTIMIZE = '_optimize';
@@ -113,7 +132,7 @@ class EconomicOptimizationController extends Controller
             'org' => $org,
             'scenarios' => $this->getScenarios(),
             'specificIndicator' => $this->getSpecificIndicatorData($org),
-            'wellChanges' => $this->getWellChangesData(),
+            'wells' => $this->getWells(),
             'dollarRate' => [
                 'value' => $this->getDollarRate() ?? '0',
                 'url' => self::DOLLAR_RATE_URL
@@ -159,9 +178,6 @@ class EconomicOptimizationController extends Controller
             foreach (self::OPTIMIZED_COLUMNS as $column) {
                 foreach (self::columnPairs($column) as $originalColumn => $optimizedColumn) {
                     $scenarios[$index][$originalColumn] = [
-                        'value' => self::formatMoney($item[$originalColumn]),
-                        'value_optimized' => self::formatMoney($item[$optimizedColumn]),
-                        'percent' => EconomicNrsController::calcPercent($item[$optimizedColumn], $item[$originalColumn], 2),
                         'original_value' => $item[$originalColumn],
                         'original_value_optimized' => $item[$optimizedColumn],
                     ];
@@ -195,7 +211,7 @@ class EconomicOptimizationController extends Controller
         return $query->get()->first()->toArray();
     }
 
-    private function getWellChangesData(): array
+    private function getWells(): array
     {
         $builder = $this
             ->druidClient
@@ -213,13 +229,34 @@ class EconomicOptimizationController extends Controller
             "scenario_id",
         ];
 
-        return $builder
-            ->select($columns)
-            ->doubleSum('Operating_profit_12m')
-            ->doubleSum('oil_12m')
-            ->doubleSum('liquid_12m')
-            ->groupBy($columns)
-            ->data();
+        $builder->select($columns);
+
+        foreach (self::WELL_COLUMNS as $column) {
+            $builder->doubleSum($column);
+        }
+
+        $wells = $builder->groupBy($columns)->data();
+
+        $uwis = [];
+
+        foreach ($wells as &$well) {
+            $well['uwi_tbd'] = str_replace('W', 'KZH_', $well['uwi']);
+
+            $uwis[$well['uwi_tbd']] = 1;
+        }
+
+        $coordinates = Well::query()
+            ->whereIn('uwi', array_keys($uwis))
+            ->whereNotNull('whc')
+            ->with('spatialObject')
+            ->get()
+            ->groupBy('uwi');
+
+        foreach ($wells as &$well) {
+            $well['coordinates'] = $coordinates->get($well['uwi_tbd'])[0]['spatialObject'][0]['coord_point'] ?? null;
+        }
+
+        return $wells;
     }
 
     private function getDollarRate(): ?string
@@ -247,8 +284,10 @@ class EconomicOptimizationController extends Controller
                 }
             }
         } catch (\Throwable $e) {
-            return null;
+
         }
+
+        return null;
     }
 
     private function getOilPrice(): ?string
@@ -278,32 +317,6 @@ class EconomicOptimizationController extends Controller
             self::ORG_KAZ_GER => self::COMPANY_KAZ_GER,
             self::ORG_EMBA => self::COMPANY_EMBA,
             self::ORG_MANGISTAU => self::COMPANY_MANGISTAU,
-        ];
-    }
-
-    static function formatMoney(?float $digit): array
-    {
-        $digit = $digit ?? 0;
-
-        $digitAbs = abs($digit);
-
-        if ($digitAbs < 1000000) {
-            return [
-                number_format($digit / 1000, 2),
-                trans('economic_reference.thousand')
-            ];
-        }
-
-        if ($digitAbs < 1000000000) {
-            return [
-                number_format($digit / 1000000, 2),
-                trans('economic_reference.million')
-            ];
-        }
-
-        return [
-            number_format($digit / 1000000000, 2),
-            trans('economic_reference.billion')
         ];
     }
 
