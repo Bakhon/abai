@@ -402,7 +402,7 @@ export default {
           title: this.trans('economic_reference.operating_profit'),
           dimension: `
             ${this.formatValue(this.baseScenario.Operating_profit_scenario).dimension}
-            this.trans('economic_reference.tenge')
+            ${this.trans('economic_reference.tenge')}
           `,
           values: [
             ...[this.formatValue(this.baseScenario.Operating_profit_scenario).value],
