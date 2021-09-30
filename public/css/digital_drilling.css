@@ -1642,7 +1642,9 @@ td.border-right-none{
     margin-left: 100px;
 }
 
-
+.digitalDrillingWindow{
+    background: #272953!important;
+}
 
 @media (max-width: 1625px) {
     .tables{

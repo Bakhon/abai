@@ -85,6 +85,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="well-create">
+                    Создать
+                </div>
             </div>
         </div>
     </div>

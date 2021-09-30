@@ -24,7 +24,11 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
+                            <td class="padding-0">
+                                <select name="" id="" class="old-well__status">
+                                    <option value="">Планируемые</option>
+                                </select>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -49,5 +53,10 @@
 </script>
 
 <style scoped>
-
+    td{
+        padding: 3px 0 3px 10px!important;
+    }
+    td.padding-0{
+        padding: 0!important;
+    }
 </style>

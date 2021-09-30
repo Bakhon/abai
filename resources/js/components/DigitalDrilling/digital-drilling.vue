@@ -140,21 +140,21 @@
     Vue.component('inclino', require('./bd/inclino').default);
     Vue.component('structure', require('./bd/structure').default);
 
-    Vue.component('project', require('./project/project').default);
+    Vue.component('project1', require('./project/project').default);
     Vue.component('well-profile', require('./project/well-profile').default);
     Vue.component('well-profile-graph', require('./project/well-profile-graph').default);
-    Vue.component('structural-analysis', require('./project/structural-analysis').default);
+    Vue.component('structural-analysis1', require('./project/structural-analysis').default);
     Vue.component('calculation', require('./project/calculation').default);
     Vue.component('calculation-graph', require('./project/calculation-graph').default);
     Vue.component('drilling-fluids', require('./project/drilling-fluids').default);
-    Vue.component('rasters', require('./project/rasters').default);
-    Vue.component('rasters-component', require('./project/rasters-component').default);
-    Vue.component('rasters-params', require('./project/rasters-params').default);
-    Vue.component('well-deepening', require('./project/well-deepening').default);
+    Vue.component('rasters1', require('./project/rasters').default);
+    Vue.component('rasters-component1', require('./project/rasters-component').default);
+    Vue.component('rasters-params1', require('./project/rasters-params').default);
+    Vue.component('well-deepening1', require('./project/well-deepening').default);
     Vue.component('w-deepening', require('./project/deepening').default);
     Vue.component('w-deepening-params', require('./project/deepening-params').default);
     Vue.component('w-deepening-graph', require('./project/deepening-graph').default);
-    Vue.component('well-fastening', require('./project/well-fastening').default);
+    Vue.component('well-fastening1', require('./project/well-fastening').default);
     Vue.component('fastening', require('./project/fastening').default);
     Vue.component('fastening-page2', require('./project/fastening-page2').default);
     Vue.component('fastening-page3', require('./project/fastening-page3').default);

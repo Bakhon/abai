@@ -21,7 +21,7 @@
                         {{ trans('digital_drilling.default.selecting_submodule') }}
                     </div>
                     <div class="mainBlock__left-pages">
-                        <left-menu :pages="pages.bd" @changePageComponent="changePageComponent"/>
+                        <left-menu :pages="leftMenuItems" @changePageComponent="changePageComponent"/>
                     </div>
                 </div>
                 <div class="mainBlock__content" :class="{allPage: !leftMenuOpen}">
@@ -50,8 +50,9 @@
         data(){
             return{
                 leftMenuOpen: true,
+                leftMenuItems: pages.bd,
                 newWellOpen: false,
-                oldWellOpen: true,
+                oldWellOpen: false,
                 pages: pages,
                 pageComponent: null,
                 mainPage: {
@@ -68,7 +69,13 @@
         },
         methods:{
             changePage(page){
-                this.pageComponent = null
+                if (page=='home'){
+                    this.pageComponent = null
+                    this.leftMenuItems = this.pages.bd
+                } else if(page=='project'){
+                    this.leftMenuItems = this.pages.project
+                    this.pageComponent = this.pages.project[0]
+                }
             },
             changePageComponent(component){
                 this.pageComponent = component
@@ -86,6 +93,7 @@
     }
 
 
+    Vue.component('note', require('./components/Note').default);
     Vue.component('home', require('./bd/home').default);
     Vue.component('passport', require('./bd/passport').default);
     Vue.component('gis', require('./bd/gis').default);
@@ -100,6 +108,13 @@
     Vue.component('pd-drilling-fluids', require('./bd/ProjectData/DrillingFluids').default);
     Vue.component('well-casing', require('./bd/ProjectData/WellСasing').default);
     Vue.component('technical-casing', require('./bd/ProjectData/TechnicalCasing').default);
+    Vue.component('project', require('./project/project').default);
+    Vue.component('structural-analysis', require('./project/structural-analysis').default);
+    Vue.component('rasters', require('./project/rasters').default);
+    Vue.component('rasters-component', require('./project/rasters-component').default);
+    Vue.component('rasters-params', require('./project/rasters-params').default);
+    Vue.component('well-deepening', require('./project/well-deepening').default);
+    Vue.component('well-fastening', require('./project/well-fastening').default);
 
 </script>
 

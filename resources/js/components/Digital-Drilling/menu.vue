@@ -1,5 +1,5 @@
 <template>
-    <div class="controlBlock">
+    <div class="controlBlock d-flex">
 
         <div class="block">
             <div class="dropdown active">
@@ -24,7 +24,7 @@
                 </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item"  @click="createNewWell">Создать новую скважину</a>
-                    <a class="dropdown-item" @click="openNewWell">Открыть недавно созданнуюскважину</a>
+                    <a class="dropdown-item" @click="openNewWell">Открыть недавно созданную скважину</a>
                 </div>
             </div>
         </div>
@@ -85,7 +85,8 @@
                 this.$emit('createNewWel')
             },
             openNewWell(){
-                this.$emit('openNewWell')
+                // this.$emit('openNewWell')
+                this.$emit('changePage', 'project')
             },
         },
     }
