@@ -14,9 +14,8 @@ class DigitalRatingContoller extends Controller
    const WELL_ENVIRONMENY_CATEGORY_TYPE_ID = 1;
    const WELL_INJECTION_CATEGORY_TYPE_ID = 2;
    const PARAM_GDIS_HDIN_ID= [217,5000000587];
-   const PARAM_GDIS_CONCLUSION_GDM_ID = 5000000587;
 
-   public function get_environment_data(Request $request):JsonResponse
+   public function get_environment(Request $request):JsonResponse
    {
 
          $sector_number = $request->input('sector');
@@ -48,7 +47,7 @@ class DigitalRatingContoller extends Controller
             SELECT well_id, param_gdis_id, max( dbeg)
             FROM tbdi.current_gdis_value 
             where 1=1
-            and param_gdis_id in (5000000587, 217)
+            and param_gdis_id in (".implode(',',self::PARAM_GDIS_HDIN_ID).")
             and well_id in (".implode(',',$well_id).")
             GROUP BY well_id, param_gdis_id
          ) b ON cgv.well_id = b.well_id AND cgv.param_gdis_id = b.param_gdis_id AND cgv.dbeg = b.max
