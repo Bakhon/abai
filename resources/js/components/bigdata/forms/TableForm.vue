@@ -385,7 +385,7 @@ export default {
           if (column.type === 'calc') {
             value = this.calculateCellValue(column, cellRow, rowIndex)
           } else if (this.isEditable(cellRow, column)) {
-            value = cellRow[column.code].value
+            value = cellRow[column.code].old_value || cellRow[column.code].value
           } else {
             value = cellRow[column.code].old_value || cellRow[column.code].value
           }
