@@ -597,7 +597,7 @@ class DictionaryService
     }
 
     public function getUserTechPermissionIds() {
-        $orgIds = $this->getOrgWithChildrenIds();
+        $orgIds = $this->getUserOrgPermissionIds();
         $result = [];
         foreach($orgIds as $id) {
             $itemElements = DB::connection('tbd')
@@ -615,7 +615,7 @@ class DictionaryService
         return $result;
     }
 
-    public function getOrgWithChildrenIds() {
+    public function getUserOrgPermissionIds() {
         $orgIds = array_filter(auth()->user()->org_structure, function($item) {
             return substr($item, 0, strpos($item, ":")) == 'org';
         });
@@ -629,11 +629,11 @@ class DictionaryService
                 ->get()
                 ->toArray();
 
-        $orgIds = array_unique(array_merge($orgIds, $this->helper($orgIds, $items)));
+        $orgIds = array_unique(array_merge($orgIds, $this->getOrgWithChildrenIds($orgIds, $items)));
         return $orgIds;
     }
 
-    private function helper($orgIds, &$items) {
+    private function getOrgWithChildrenIds($orgIds, &$items) {
         $result = [];
         foreach($orgIds as $id) {
             $tmp = [];
@@ -643,7 +643,7 @@ class DictionaryService
                 }
             }
             
-            $result = array_merge($result, $tmp, $this->helper($tmp, $items));
+            $result = array_merge($result, $tmp, $this->getOrgWithChildrenIds($tmp, $items));
         }
 
         return $result;
