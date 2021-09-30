@@ -50,18 +50,18 @@ class KrsPrs extends PlainForm
             $result['well_previous_category'] = $oldState->category;
         }
 
-        $newState = DB::connection('tbd')
-            ->table('prod.well_status as ws')
-            ->select('wst.name_ru as state')
-            ->where('ws.dbeg', '>=', Carbon::parse($values['dend'])->timezone('Asia/Almaty')->startOfDay())
-            ->where('ws.well', $wellId)
-            ->leftJoin('dict.well_status_type as wst', 'wst.id', 'ws.status')
-            ->orderBy('ws.dbeg', 'asc')
-            ->limit(1)
-            ->first();
-
-        if (!empty($newState)) {
-            $result['well_status'] = $newState->state;
+        if ($this->request->get('gtm_dublicate') && $this->request->get('gtm_type')) {
+            DB::connection('tbd')
+                ->table('prod.gtm')
+                ->insert(
+                    [
+                        'well' => $this->request->get('well'),
+                        'dbeg' => $this->request->get('dbeg'),
+                        'dend' => $this->request->get('dend'),
+                        'gtm_type' => $this->request->get('gtm_type'),
+                        'company' => $this->request->get('contractor')
+                    ]
+                );
         }
 
         return $result;
