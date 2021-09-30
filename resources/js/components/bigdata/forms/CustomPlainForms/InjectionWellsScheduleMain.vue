@@ -384,16 +384,23 @@ export default {
         assignInfoByDates(data) {
             _.forEach(data, (item) => {
                 let date = moment(item.date, 'YYYY-MM-DD');
+                let waterInjection = 0;
+                let dailyWaterInjection = 0;
+                if (item.pump_vol) {
+                    waterInjection = parseFloat(item.pump_vol);
+                    dailyWaterInjection = item.pump_vol / date.daysInMonth();
+                    workDays = item.work_days;
+                }
                 let obj = {
                     'id': date.format('YYYY/MMM'),
                     'month': date.format('MMM'),
                     'year': date.format('YYYY'),
                     'isChecked': false,
                     'isVisible': false,
-                    'waterInjection': parseFloat(item.pump_vol),
-                    'dailyWaterInjection': item.pump_vol / date.daysInMonth(),
+                    'waterInjection': waterInjection,
+                    'dailyWaterInjection': dailyWaterInjection,
                     'accumulateWaterInjection': 0,
-                    'hoursWorked': item.work_days,
+                    'hoursWorked': workDays,
                     'params': {
                         'techMode': [
                             {
