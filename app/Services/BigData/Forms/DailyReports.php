@@ -168,7 +168,7 @@ abstract class DailyReports extends TableForm
 
     protected function getColumns(\stdClass $filter): Collection
     {
-        $type = $filter->type;
+        $type = $filter->type ?? self::CITS;
 
         $columns = $this->getFields()
             ->filter(function ($column) use ($type) {
@@ -253,8 +253,9 @@ abstract class DailyReports extends TableForm
     protected function getGSData($filter, Org $org): array
     {
         $result = [];
+        $type = $filter->type ?? self::CITS;
 
-        if (!in_array($filter->type, [self::GS, self::ALL])) {
+        if (!in_array($type, [self::GS, self::ALL])) {
             return $result;
         }
 
