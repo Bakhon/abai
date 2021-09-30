@@ -129,9 +129,9 @@ abstract class PlainForm extends BaseForm
 
     protected function checkFormPermission(string $action)
     {
-        // if (auth()->user()->cannot("bigdata {$action} {$this->configurationFileName}")) {
-        //     throw new \Exception("You don't have permissions");
-        // }
+        if (auth()->user()->cannot("bigdata {$action} {$this->configurationFileName}")) {
+            throw new \Exception("You don't have permissions");
+        }
     }
 
     public function getResults(): array
