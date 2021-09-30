@@ -82,9 +82,9 @@
       "title": "avg_liquid_prev_month",
       "code": "sum(water_inj_val)",
       "column": "sum(water_inj_val)",
-      "table":"prod.meas_water_inj",
+      "table": "prod.meas_water_inj",
       "type": "calc",
-      "formula": "$water_inj_val$/$worktime$",
+      "formula": "Math.round($water_inj_val$ * $worktime$/24 * 100)/100$",
       "is_editable": false
     },
     {
