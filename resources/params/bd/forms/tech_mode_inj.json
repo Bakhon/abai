@@ -130,20 +130,20 @@
     },
     {
       "title": "agent_temp",
-      "table":"prod.tech_mode_inj",
+      "table": "prod.tech_mode_inj",
       "code": "agent_temperature",
       "type": "float",
-      "column":"agent_temperature",
+      "column": "agent_temp",
       "is_editable": true,
       "validation": "numeric|gte:0",
       "validate_deviation": true
     },
     {
       "title": "pressure",
-      "table":"prod.tech_mode_inj",
+      "table": "prod.tech_mode_inj",
       "code": "pressure_inj",
       "type": "float",
-      "column":"pressure_inj",
+      "column": "inj_pressure",
       "is_editable": true,
       "validation": "numeric|gte:0",
       "validate_deviation": true

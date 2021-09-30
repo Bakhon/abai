@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
+use App\Helpers\WorktimeHelper;
 use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class TechModeInj extends TableForm
 {
-    
+
     protected $configurationFileName = 'tech_mode_inj';
     protected $oilMeasurements;
 
@@ -23,9 +24,7 @@ class TechModeInj extends TableForm
         $tables = $this->getFields()
             ->pluck('table')
             ->filter(function ($table) {
-                if (empty($table)) {
-                    return false;
-                }
+                return !empty($table);
             })
             ->unique();
 
@@ -49,7 +48,7 @@ class TechModeInj extends TableForm
                 ];
             });
 
-        
+
         $wells->transform(
             function ($item) use ($rowData) {
                 $result = [];
@@ -72,16 +71,16 @@ class TechModeInj extends TableForm
             'rows' => $wells->toArray()
         ];
     }
-    protected function getCustomFieldValue(array $field, array $rowData, Model $item): ?array
-    {      
 
+    protected function getCustomFieldValue(array $field, array $rowData, Model $item): ?array
+    {
         switch ($field['code']) {
-            case 'worktime':    
+            case 'worktime':
                 return $this->getWorktime($item);
             case 'avg(pressure_inj)':
                 $measurement = $this->oilMeasurements->get($item->id);
                 return !empty($measurement) ? ['value' => $measurement['avg(pressure_inj)']] : null;
-            case 'avg(agent_temperature)':      
+            case 'avg(agent_temperature)':
                 $measurement = $this->oilMeasurements->get($item->id);
                 return !empty($measurement) ? ['value' => $measurement['avg(agent_temperature)']] : null;
             case 'events':
@@ -99,9 +98,9 @@ class TechModeInj extends TableForm
     private function getWorktime(Model $well)
     {
         $filter = json_decode($this->request->get('filter'));
-        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty');
-        $startOfDay = clone ($date)->startOfDay();
-        $endOfDay = clone ($date)->endOfDay();
+        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
+        $startOfDay = $date->startOfDay();
+        $endOfDay = $date->endOfDay();
 
         $wellStatuses = DB::connection('tbd')
             ->table('prod.well_status as s')
@@ -110,7 +109,7 @@ class TechModeInj extends TableForm
             ->where('dbeg', '<=', $endOfDay)
             ->where('dend', '>=', $startOfDay)
             ->where('well', $well->id)
-            ->whereIn('dict.well_status_type.code', 'WRK')
+            ->where('dict.well_status_type.code', 'WRK')
             ->get()
             ->map(
                 function ($item) {
@@ -120,16 +119,7 @@ class TechModeInj extends TableForm
                 }
             );
 
-        $hours = 0;
-        foreach ($wellStatuses as $status) {
-            if ($status->dbeg <= $startOfDay && $status->dend >= $endOfDay) {
-                $hours += 24;
-            } elseif ($status->dbeg > $startOfDay) {
-                $hours += $status->dbeg->diffInHours($status->dend < $endOfDay ? $status->dend : $endOfDay);
-            } elseif ($status->dend < $endOfDay) {
-                $hours += $startOfDay->diffInHours($status->dend);
-            }
-        }
+        $hours = WorktimeHelper::getHoursForOneDay($wellStatuses, $startOfDay, $endOfDay, $well->id);
 
         return [
             'value' => $hours
@@ -179,11 +169,9 @@ class TechModeInj extends TableForm
                 ->where('dbeg', Carbon::parse($date))
                 ->where('well', $this->request->get('well_id'))
                 ->sum('water_inj_val');
-                $result = [];
-                $result['water_inj_val'] = $water_inj_val;
-            
-
+            $result = [];
+            $result['water_inj_val'] = $water_inj_val;
         }
     }
-    
+
 }
