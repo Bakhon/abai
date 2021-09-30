@@ -26,8 +26,13 @@ class PlanGIS extends TableForm
         }
 
         $org = $this->getOrganization();
-
+        $orgChild = Org::find($this->request->get('id'));
         $orgChildren = $org->children()->get();
+
+        if(!($orgChild->type->code === 'SUBC') && $orgChild->parentOrg->type->code === 'SUBC') {
+            $tmp[] = $orgChild;
+            $orgChildren = collect($tmp);
+        }
 
         $columns = $this->getColumns($filter, $org, $orgChildren);
 
@@ -194,6 +199,8 @@ class PlanGIS extends TableForm
 
             $rows[] = $row;
         }
+
+        usort($rows, function($a, $b) {return $a['num'] > $b['num'];});
         return $rows;
     }
 
