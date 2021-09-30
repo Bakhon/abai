@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Helpers\WorktimeHelper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -51,13 +52,13 @@ abstract class MeasurementLogForm extends TableForm
     private function getWorktime(Model $well)
     {
         $filter = json_decode($this->request->get('filter'));
-        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty');
-        $startOfDay = clone ($date)->startOfDay();
-        $endOfDay = clone ($date)->endOfDay();
+        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
+        $startOfDay = $date->startOfDay();
+        $endOfDay = $date->endOfDay();
 
         $wellStatuses = DB::connection('tbd')
             ->table('prod.well_status as s')
-            ->select('s.status', 's.dbeg', 's.dend')
+            ->select('s.status', 's.dbeg', 's.dend', 's.well')
             ->join('dict.well_status_type', 'dict.well_status_type.id', 's.status')
             ->where('dbeg', '<=', $endOfDay)
             ->where('dend', '>=', $startOfDay)
@@ -72,19 +73,15 @@ abstract class MeasurementLogForm extends TableForm
                 }
             );
 
-        $hours = 0;
-        foreach ($wellStatuses as $status) {
-            if ($status->dbeg <= $startOfDay && $status->dend >= $endOfDay) {
-                $hours += 24;
-            } elseif ($status->dbeg > $startOfDay) {
-                $hours += $status->dbeg->diffInHours($status->dend < $endOfDay ? $status->dend : $endOfDay);
-            } elseif ($status->dend < $endOfDay) {
-                $hours += $startOfDay->diffInHours($status->dend);
-            }
-        }
+        $hours = WorktimeHelper::getHoursForOneDay(
+            $wellStatuses,
+            $startOfDay,
+            $endOfDay,
+            $well->id
+        );
 
         return [
-            'value' => $hours
+            'value' => min($hours, 24)
         ];
     }
 
