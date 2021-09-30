@@ -28,6 +28,10 @@ export default {
 }
 </script>
 <style scoped>
+.tree-setting-block div {
+  min-width: 30rem !important;
+}
+
 /*.tree-main-ul, li { list-style: none; margin: 0; padding: 0; }*/
 /*.tree-main-ul { padding-left: 1em; }*/
 /*li { padding-left: 1em;*/

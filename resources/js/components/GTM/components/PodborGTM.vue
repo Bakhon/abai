@@ -1,8 +1,7 @@
-<script src="js/PodborGTM.js"></script>
 <template>
   <div>
     <div class="row mx-0 mt-lg-2 gtm">
-      <div class="col-lg-10 lg-border-block" @click="closeTree()">
+      <div class="col-lg-9 lg-border-block" @mouseover="closeTree()">
         <div class="row col-12 p-0 m-0">
           <div :class="!isMinimize ? 'col-6 d-none d-lg-block p-0' : 'maximize-block d-none d-lg-block p-0'">
             <div class="gtm-dark h-100">
@@ -15,7 +14,7 @@
                     <img src="/img/GTM/download.svg" alt="">
                   </div>
                   <div class="pr-3 pb-1">
-                    <img src="/img/GTM/maximize.svg" alt="">
+                    <img src="/img/GTM/full-screen.svg" alt="">
                   </div>
                 </div>
               </div>
@@ -30,10 +29,10 @@
                   </div>
                 </div>
                 <div v-else>
-                  <div class="border-block-out" style="width: max-content;">
-                    <div class="border-block-in" style="width: max-content;">
+                  <div class="border-block-out">
+                    <div class="border-block-in">
                       <table class="table text-center text-white podbor-middle-table">
-                        <thead class="thead">
+                        <thead class="thead" :class="isMinimize">
                         <tr>
                           <th class="th" v-for="(row, idx) in table.main_data.header" :key="idx"
                               :colspan="Array.isArray(row) ? row.length : ''"
@@ -65,37 +64,15 @@
             </div>
           </div>
 
-          <div v-if="isMinimize" class="pl-1" style="display: block;" @click="onMinimizeChart()">
+          <div v-if="isMinimize" class="pl-1 d-block" @click="onMinimizeChart()">
             <div class="pb-1">
-              <img src="/img/GTM/maximize-arrow.svg" alt="">
+              <img src="/img/GTM/minimize.svg" alt="">
             </div>
-            <div class="pb-1 gtm-dark minimized-block" style="height: 408px;">
-              <div style="transform: rotate(90deg); color: white; position: absolute; width: 205px;
-    right: -93px;
-    bottom: 176px;">
+            <div class="pb-1 gtm-dark minimized-block">
+              <div class="minimized-title">
                 {{ this.trans("paegtm.current_qualifiers_map") }}
               </div>
             </div>
-
-
-            <!--            <div class="gtm-dark h-100">-->
-            <!--              <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">-->
-            <!--                <div>-->
-            <!--                  {{ this.trans("paegtm.current_qualifiers_map") }}-->
-            <!--                </div>-->
-            <!--                <div class="d-flex">-->
-            <!--                  <div class="pr-3">-->
-            <!--                    <img src="/img/GTM/download.svg" alt="">-->
-            <!--                  </div>-->
-            <!--                  <div class="pr-3">-->
-            <!--                    <img src="/img/GTM/maximize.svg" alt="">-->
-            <!--                  </div>-->
-            <!--                  <div class="pr-3 pb-1" @click="onMinimizeChart()">-->
-            <!--                    <img src="/img/GTM/maximize-arrow.svg" alt="">-->
-            <!--                  </div>-->
-            <!--                </div>-->
-            <!--              </div>-->
-            <!--            </div>-->
           </div>
 
           <div v-else class="col-6 d-none d-lg-block p-0 pl-1">
@@ -109,17 +86,17 @@
                     <img src="/img/GTM/download.svg" alt="">
                   </div>
                   <div class="pr-3">
-                    <img src="/img/GTM/maximize.svg" alt="">
+                    <img src="/img/GTM/full-screen.svg" alt="">
                   </div>
                   <div class="pr-3 pb-1" @click="onMinimizeChart()">
-                    <img src="/img/GTM/maximize-arrow.svg" alt="">
+                    <img src="/img/GTM/maximize.svg" alt="">
                   </div>
                 </div>
               </div>
               <div class="border-block-out">
                 <div class="border-block-in">
                   <div class="p-3">
-                    <img src="/img/GTM/map.svg" class="gtm-map-img">
+                    <img src="/img/GTM/map.svg" class="gtm-map-img img-fluid">
                   </div>
                 </div>
               </div>
@@ -128,6 +105,19 @@
         </div>
         <div class="row col-12 p-0 m-0 pt-1">
           <div v-if="lineChartSeries === null" class="col-6 d-none d-lg-block p-0">
+            <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
+              <div>
+                {{ this.trans("paegtm.well") }}
+              </div>
+              <div class="d-flex">
+                <div class="pr-3 pb-1">
+                  <img src="/img/GTM/download.svg" alt="">
+                </div>
+                <div class="pr-3 pb-1">
+                  <img src="/img/GTM/full-screen.svg" alt="">
+                </div>
+              </div>
+            </div>
             <div class="border-block-out">
               <div class="border-block-in">
                 <div class="p-3 gtm-dark empty-data-title">
@@ -156,7 +146,7 @@
               <div class="border-block-out">
                 <div class="border-block-in">
                   <apexchart
-                      :height="360"
+                      :height="365"
                       :options="lineChartOptions"
                       :series="lineChartSeries"
                   ></apexchart>
@@ -166,6 +156,19 @@
           </div>
 
           <div v-if="waterFallChartSeries === null" class="col-6 d-none d-lg-block p-0 pl-1">
+            <div class="block-header pb-0 pl-2 pt-1 d-flex border-color">
+              <div>
+                {{ this.trans("paegtm.factor_analysis") }}
+              </div>
+              <div class="d-flex">
+                <div class="pr-3 pb-1">
+                  <img src="/img/GTM/download.svg" alt="">
+                </div>
+                <div class="pr-3 pb-1">
+                  <img src="/img/GTM/full-screen.svg" alt="">
+                </div>
+              </div>
+            </div>
             <div class="border-block-out">
               <div class="border-block-in">
                 <div class="p-3 gtm-dark empty-data-title">
@@ -187,14 +190,14 @@
                     <img src="/img/GTM/download.svg" alt="">
                   </div>
                   <div class="pr-3">
-                    <img src="/img/GTM/maximize.svg" alt="">
+                    <img src="/img/GTM/full-screen.svg" alt="">
                   </div>
                 </div>
               </div>
               <div class="border-block-out">
                 <div class="border-block-in">
                   <apexchart
-                      :height="360"
+                      :height="365"
                       :options="waterFallChartOptions"
                       :series="waterFallChartSeries"
                   ></apexchart>
@@ -206,7 +209,7 @@
 
         </div>
       </div>
-      <div class="col-lg-2 p-0 pl-2 pr-1">
+      <div class="col-lg-3 p-0 pl-2 pr-1">
         <div class="block-header gtm-dark p-2">
           <div class="block-header p-2">
             {{ this.trans("paegtm.period") }}
@@ -255,17 +258,15 @@
           </div>
         </div>
 
-        <div class="gtm-dark mt-2 p-2" @click="postTreeData(treeData)">
-          <div class="block-header p-2 text-center calc-button">
+        <div class="gtm-dark mt-2 p-2 calc-button text-center" @click="postTreeData(treeData)">
             {{ trans("paegtm.calc") }}
-          </div>
         </div>
 
         <div class="gtm-dark mt-2 p-2">
           <div class="block-header p-2 d-flex">
 
             <div class="title-block-tree" @click="showBlock = 1">
-              <img style="padding-right: 10px;" src="../img/potencial-icon.svg" alt="">
+              <img class="pr-10px" src="../img/potencial-icon.svg" alt="">
               {{ trans("paegtm.potentialSearch") }}
             </div>
 
@@ -300,10 +301,8 @@
             <div @click="showBlock = 2">
               {{ trans("paegtm.nearWells") }}
             </div>
-
             <img class="menu-item-arrow tabs-arrow m-2 my-auto" :src="showBlock === 2 ? menuArrowUp : menuArrowDown"
                  width="12" height="12" alt="">
-
           </div>
 
           <div class="table-border-gtm-top p-0" :class="{ 'display-none': showBlock === 1 }">
@@ -348,11 +347,11 @@
 }
 
 .border-block-out {
-  border: 8px solid #363B68
+  border: 8px solid #363B68;
 }
 
 .border-block-in {
-  border: 8px solid #1A214A
+  border: 8px solid #1A214A;
 }
 
 .table-pgtm {
@@ -366,11 +365,26 @@
 
 .bg-body {
   background-color: #20274f;
+  font-weight: normal;
+}
+
+.minimized-block {
+  position: relative;
+  height: 408px;
+}
+
+.minimized-title {
+  transform: rotate(90deg);
+  color: white;
+  position: absolute;
+  width: 205px;
+  right: -93px;
+  bottom: 176px;
 }
 
 ::-webkit-scrollbar {
-  height: 4px;
-  width: 4px;
+  height: 10px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -381,27 +395,43 @@
   background: #656a8a;
 }
 
+.gtm-filter .v-select {
+  margin-bottom: 15px;
+}
 .maximize-block {
-  width: 1670px;
+  flex: 1;
 }
 
-.minimized-block {
-  height: 408px;
+.calc-button {
+  background: #3366FF;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  line-height: 2.5em;
+  font-size: 17px;
 }
 
-@media screen and (min-width: 1904px) {
-  .maximize-block {
-    width: 1480px;
-  }
+.calc-button:active {
+  background-color: #144079;
+  box-shadow: 0 2px #666;
+  transform: translateY(0.02px);
+  filter: blur(0.3px);
 }
-/**/
+
+.calc-button:hover {
+  background-color: #484749;
+}
+
 .table {
   overflow-y: auto;
   height: 110px;
 }
+
 .table .thead .th {
-  position: sticky;
+  font-size: 11.5px;
+  font-weight: normal;
 }
+
 .table {
   border-collapse: collapse;
   width: 100%;
@@ -412,12 +442,18 @@
 }
 
 thead tr:nth-child(1) .th { position: sticky; top: -1px; }
-thead tr:nth-child(2) .th { position: sticky; top: 31px; }
-/**/
-/*@media screen and (min-width: 1904px) {*/
-/*  .maximize-block {*/
-/*    width: 1213px;*/
-/*  }*/
-/*}*/
+thead tr:nth-child(2) .th { position: sticky; top: 26px; }
+
+tr:last-child td {
+  border-bottom: 1px solid #454d7d !important;
+}
+
+tr:nth-child(odd) td {
+  background: rgba(69, 77, 125, 0.32) !important;
+}
+
+tr:nth-child(even) td {
+  background: #272953 !important;
+}
 
 </style>

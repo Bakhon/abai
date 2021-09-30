@@ -19,7 +19,7 @@
       <span class="margin-input" @click="toggleCheckState()">{{ node.name }} </span>
       <input class="input-tree" v-if="node.value || node.value === ''" type="text" v-model="node.value">
     </div>
-    <ul class="treeUl" v-if="nodeHasChildren && showChildren">
+    <ul class="treeUl pl-4" v-if="nodeHasChildren && showChildren">
       <node
           v-for="child in node.children"
           :node="child"

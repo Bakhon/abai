@@ -187,7 +187,7 @@ export default {
             treeSettingBody: '',
             treeSettingComponent: null,
             treeChildrenComponent: null,
-            isMinimize: false
+            isMinimize: true
         };
     },
     computed: {
@@ -226,7 +226,7 @@ export default {
                     this.table.main_data.header = res.data.main_data.header
                     this.table.main_data.data = res.data.main_data.data
                     if (res.status === 200) {
-                        this.setNotify("Таблица пришла", "Success", "success")
+                        this.setNotify("Данные получены", "Success", "success")
                     } else {
                         this.setNotify("Что-то пошло не так", "Error", "danger")
                     }
@@ -237,7 +237,7 @@ export default {
         },
         onClickWell(v) {
             this.wellNumber = v
-            this.setNotify(`Вы нажали на скважину ${v}`, "Success", "success")
+            this.setNotify(`Выбрана скважина ${v}`, "Success", "success")
 
             this.SET_LOADING(true);
             axios.post(this.url, {action_type: 'well_name_clicked', main_data: v, distance: 500})
@@ -283,7 +283,7 @@ export default {
                         }]
 
                         if (res.status === 200) {
-                            this.setNotify("Таблица пришла", "Success", "success")
+                            this.setNotify("Данные получены", "Success", "success")
                         } else {
                             this.setNotify("Что-то пошло не так", "Error", "danger")
                         }
@@ -325,7 +325,7 @@ export default {
                 }})
                 .then((res) => {
                     if (res.status === 200) {
-                        this.setNotify("Скважины пришли", "Success", "success")
+                        this.setNotify("Информация о скважинах получена", "Success", "success")
                     } else {
                         this.setNotify("Что-то пошло не так", "Error", "danger")
                     }
