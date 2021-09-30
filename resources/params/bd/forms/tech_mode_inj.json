@@ -1,0 +1,175 @@
+{
+  "type": "table",
+  "sort": [
+    {
+      "field": "dbeg",
+      "order": "desc"
+    }
+  ],
+  "columns": [
+    {
+      "title": "uwi_number",
+      "code": "uwi",
+      "type": "link",
+      "is_editable": false
+    },
+    {
+      "title": "bottom_hole",
+      "table": "prod.bottom_hole",
+      "column": "depth",
+      "code": "bottom_hole",
+      "date_field": "data",
+      "metric_code": "TD",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "horizon",
+      "code": "horizon",
+      "table": "prod.well_geo",
+      "column": "name_ru",
+      "metric_code": "HRZ",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "diameter",
+      "code": "diameter",
+      "table": "prod.well_constr",
+      "column": "od",
+      "additional_filter": {
+        "casing_type": {
+          "table": "dict.equip_type",
+          "fields": {
+            "code": [
+              "ECS",
+              "BECS",
+              "AECS"
+            ]
+          }
+        }
+      },
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "diameter_nkt",
+      "code": "od",
+      "table": "prod.well_constr",
+      "column": "od",
+      "type": "float",
+      "additional_filter": {
+        "casing_type": {
+          "table": "dict.equip_type",
+          "fields": {
+            "name_ru": [
+              "НКТ"
+            ]
+          }
+        }
+      },
+      "is_editable": false
+    },
+    {
+      "title": "worktime",
+      "code": "worktime",
+      "table": "prod.well_status",
+      "column": "well_status_type_id",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "avg_liquid_prev_month",
+      "code": "sum(water_inj_val)",
+      "column": "sum(water_inj_val)",
+      "table":"prod.meas_water_inj",
+      "type": "calc",
+      "formula": "$water_inj_val$/$worktime$",
+      "is_editable": false
+    },
+    {
+      "title": "avg_pressure_month",
+      "table":"prod.meas_water_inj",
+      "column": "avg(pressure_inj)",
+      "code": "avg(pressure_inj)",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "avg_temp_prev_month",
+      "table":"prod.meas_water_inj",
+      "column": "avg(agent_temperature)",
+      "code": "avg(agent_temperature)",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "water_inj",
+      "table":"prod.meas_water_inj",
+      "code": "water_inj_val",
+      "type": "float",
+      "column":"water_inj_val",
+      "is_editable": false
+    },
+    {
+      "title": "volume",
+      "code": "water_inj_volume",
+      "column": "water_inj_volume",
+      "table":"prod.tech_mode_inj",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "agent_type",
+      "code": "agent_type",
+      "table":"prod.tech_mode_inj",
+      "column":"agent_type",
+      "type": "dict",
+      "validation": "required|exists:tbd.dict.inj_agent_type,id",      
+      "is_editable": true
+    },
+    {
+      "title": "agent_temp",
+      "table": "prod.tech_mode_inj",
+      "code": "agent_temperature",
+      "type": "float",
+      "column": "agent_temp",
+      "is_editable": true,
+      "validation": "numeric|gte:0",
+      "validate_deviation": true
+    },
+    {
+      "title": "pressure",
+      "table": "prod.tech_mode_inj",
+      "code": "pressure_inj",
+      "type": "float",
+      "column": "inj_pressure",
+      "is_editable": true,
+      "validation": "numeric|gte:0",
+      "validate_deviation": true
+    },
+    {
+      "title": "dbeg",
+      "table": "prod.tech_mode_inj",
+      "code": "dbeg",
+      "type": "date",
+      "column": "dbeg",
+      "is_editable": false
+    },
+    {
+      "title": "dend",
+      "table": "prod.tech_mode_inj",
+      "code": "dend",
+      "type": "date",
+      "column": "dend",
+      "is_editable": false
+    },
+    {
+      "title": "events",
+      "code": "events",
+      "type": "form",
+      "form": "tech_events",
+      "is_editable": true
+    }
+  ]
+}

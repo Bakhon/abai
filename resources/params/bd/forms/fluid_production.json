@@ -170,7 +170,7 @@
       "title": "oil_debit",
       "code": "oil_debit",
       "type": "calc",
-      "formula": "$liquid_debit$ * (1 - $bsw_tech$/100) * $density_oil$",
+      "formula": "Math.round($liquid_debit$ * (1 - $bsw_tech$/100) * $oil_density$)",
       "is_editable": false
     },
     {
@@ -465,7 +465,9 @@
     },
     {
       "title": "Плотность нефти",
-      "code": "density_oil",
+      "code": "oil_density",
+      "table": "prod.tech_mode_prod_oil",
+      "column": "oil_density",
       "type": "hidden",
       "is_editable": false
     },

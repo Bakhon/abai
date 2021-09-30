@@ -2,46 +2,44 @@
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\Org;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+
 class DailyReportsGasProduction extends DailyReports
 {
-
-    const CITS = 0;
-    const GS = 1;
-    const ALL = 2;
     protected $metricCode = 'GASPR';
     protected $configurationFileName = 'daily_reports_gas_prod';
+    protected $planField = 'gas_production';
 
-    protected function getData(\stdClass $filter): array
+
+    protected function getMeasuredFieldValues(Org $org, CarbonImmutable $date): Collection
     {
-        $data = parent::getReports($filter);
-        $result = [];
-        $plan = $data->sum('plan');
-        $fact = $data->sum('fact');
-        switch ($filter->period) {
-            case self::DAY:
-                $result['plan'] = ['value' => $plan];
-                $result['fact'] = $result['daily_fact_cits'] = ['value' => $fact];
-                break;
-            case self::MONTH:
-                $result['month_plan'] = ['value' => $plan];
-                $result['month_fact'] = $result['month_fact_cits'] = ['value' => $fact];
-                break;
-            case self::YEAR:
-                $result['year_plan'] = ['value' => $plan];
-                $result['year_fact'] = $result['year_fact_cits'] = ['value' => $fact];
-                break;
-        }
+        $wells = $this->getOrgWells($org, $date);
 
-        if ($filter->optionId === self::GS) {
-            $result['fact'] = ['value' => 0];
-            $result['month_fact'] = ['value' => 0];
-            $result['year_fact'] = ['value' => 0];
-        }
-        $result['daily_fact_gs'] = ['value' => 0];
-        $result['month_fact_gs'] = ['value' => 0];
-        $result['year_fact_gs'] = ['value' => 0];
+        return DB::connection('tbd')
+            ->table('prod.meas_gas_prod')
+            ->select('dbeg', 'gas_prod_val', 'well')
+            ->where('dbeg', '>=', $date->startOfYear())
+            ->where('dbeg', '<=', $date)
+            ->whereIn('well', $wells)
+            ->get()
+            ->groupBy(function ($item) {
+                return Carbon::parse($item->dbeg)->format('d.m.Y');
+            })
+            ->map(function ($items, $currentDate) {
+                $dateGas = $items
+                    ->map(function ($item) {
+                        return $item->gas_prod_val;
+                    })->sum();
 
-        return $result;
+                return [
+                    'date' => Carbon::parse($currentDate),
+                    'value' => $dateGas
+                ];
+            });
     }
 
 }
