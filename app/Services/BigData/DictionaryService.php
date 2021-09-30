@@ -597,7 +597,7 @@ class DictionaryService
     }
 
     public function getUserTechPermissionIds() {
-        $orgIds = $this->getUserOrgPermissionIds();
+        $orgIds = $this->getOrgWithChildrenIds();
         $result = [];
         foreach($orgIds as $id) {
             $itemElements = DB::connection('tbd')
@@ -615,7 +615,7 @@ class DictionaryService
         return $result;
     }
 
-    public function getUserOrgPermissionIds() {
+    public function getOrgWithChildrenIds() {
         $orgIds = array_filter(auth()->user()->org_structure, function($item) {
             return substr($item, 0, strpos($item, ":")) == 'org';
         });
