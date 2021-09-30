@@ -14,13 +14,14 @@ class FluidProduction extends MeasurementLogForm
     public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
+        $params['filter']['well_category'] = ['OIL'];
         $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
 
         $tables = $this->getFields()->pluck('table')->filter()->unique();
         $rowData = $this->fetchRowData(
             $tables,
             $wells->pluck('id')->toArray(),
-            Carbon::parse($this->request->get('date'))
+            Carbon::parse($filter->date)
         );
 
         $wells->transform(

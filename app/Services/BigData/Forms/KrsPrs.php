@@ -8,6 +8,7 @@ use App\Models\BigData\Well;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class KrsPrs extends PlainForm
@@ -16,7 +17,14 @@ class KrsPrs extends PlainForm
 
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
-
+    protected function getRows(): Collection
+    {
+        $rows = parent::getRows();
+        return $rows->map(function ($item) {
+            $item->by_ourselves = empty($item->contractor);
+            return $item;
+        });
+    }
     public function getCalculatedFields(int $wellId, array $values): array
     {
         if (empty($values['dend'])) {
@@ -42,18 +50,18 @@ class KrsPrs extends PlainForm
             $result['well_previous_category'] = $oldState->category;
         }
 
-        $newState = DB::connection('tbd')
-            ->table('prod.well_status as ws')
-            ->select('wst.name_ru as state')
-            ->where('ws.dbeg', '>=', Carbon::parse($values['dend'])->timezone('Asia/Almaty')->startOfDay())
-            ->where('ws.well', $wellId)
-            ->leftJoin('dict.well_status_type as wst', 'wst.id', 'ws.status')
-            ->orderBy('ws.dbeg', 'asc')
-            ->limit(1)
-            ->first();
-
-        if (!empty($newState)) {
-            $result['well_status'] = $newState->state;
+        if ($this->request->get('gtm_dublicate') && $this->request->get('gtm_type')) {
+            DB::connection('tbd')
+                ->table('prod.gtm')
+                ->insert(
+                    [
+                        'well' => $this->request->get('well'),
+                        'dbeg' => $this->request->get('dbeg'),
+                        'dend' => $this->request->get('dend'),
+                        'gtm_type' => $this->request->get('gtm_type'),
+                        'company' => $this->request->get('contractor')
+                    ]
+                );
         }
 
         return $result;
