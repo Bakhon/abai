@@ -16,9 +16,11 @@ use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\Well;
 use App\Services\BigData\StructureService;
+use App\Services\BigData\MeasLogByMonth;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class WellsController extends Controller
 {
@@ -613,8 +615,9 @@ class WellsController extends Controller
     public function getInjectionHistory($well)
     {
         $wellInfo = dictWell::query()
-            ->where('id',$well)
-            ->join('dmart.mer_inj', 'dmart.mer_inj.well', '=', 'dict.well.uwi')
+            ->where('dict.well.id',$well)
+            ->leftJoin('dmart.mer_inj', 'dict.well.uwi', '=', 'dmart.mer_inj.well')
+            ->leftJoin('prod.meas_water_inj as mwi', 'dict.well.id', '=', 'mwi.well')
             ->get();
         return $wellInfo;
     }

@@ -27,7 +27,7 @@
                             <td>{{date.waterInjection.toFixed(2)}}</td>
                             <td>{{date.dailyWaterInjection.toFixed(2)}}</td>
                             <td>{{date.accumulateWaterInjection}}</td>
-                            <td>{{date.hoursWorked}} часов</td>
+                            <td>{{(date.hoursWorked*24).toFixed(0)}} часов</td>
                         </tr>
                     </tbody>
                 </table>

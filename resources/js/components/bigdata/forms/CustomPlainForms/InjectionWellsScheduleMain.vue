@@ -186,7 +186,7 @@
                                             <td
                                                     v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                             >
-                                                <span v-if="dayData[dayNumber-1]">{{dayData[dayNumber-1]}}</span>
+                                                <span v-if="dayData[dayNumber-1]">{{dayData[dayNumber-1].toFixed(2)}}</span>
                                                 <span v-else>&nbsp</span>
                                             </td>
                                         </tr>
@@ -384,7 +384,6 @@ export default {
         assignInfoByDates(data) {
             _.forEach(data, (item) => {
                 let date = moment(item.date, 'YYYY-MM-DD');
-                var duration = moment.duration(moment(item.drill_end_date,'YYYY-MM-DD').diff(moment(item.drill_start_date,'YYYY-MM-DD')));
                 let obj = {
                     'id': date.format('YYYY/MMM'),
                     'month': date.format('MMM'),
@@ -394,7 +393,7 @@ export default {
                     'waterInjection': parseFloat(item.pump_vol),
                     'dailyWaterInjection': item.pump_vol / date.daysInMonth(),
                     'accumulateWaterInjection': 0,
-                    'hoursWorked': duration.asHours(),
+                    'hoursWorked': item.work_days,
                     'params': {
                         'techMode': [
                             {
@@ -415,8 +414,23 @@ export default {
                                 'label': 'ГТМ',
                             }
                         ],
+                        'monthlyData': []
                     }
                 };
+                let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
+                let injectivity = [];
+                let pressure = [];
+                let status = [];
+                let workHours = [];
+                let gtm = [];
+                for (let i =1; i <= daysCount; i++) {
+                    injectivity.push(item.injectivity/daysCount);
+                    pressure.push(item.whc_alt/daysCount);
+                    status.push('');
+                    workHours.push(item.work_days/daysCount);
+                    gtm.push('');
+                }
+                obj.params.monthlyData.push(injectivity,pressure,status,workHours,gtm);
                 this.historicalInfo.push(obj);
             });
             this.SET_INJECTION_HISTORICAL(this.historicalInfo);
