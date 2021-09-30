@@ -294,37 +294,41 @@ abstract class DailyReports extends TableForm
 
     protected function getOrgWells(Org $org, CarbonImmutable $date)
     {
-        $orgIds = $this->getOrgIds($org->id);
+        $techIds = $this->getTechIds($org->id);
         return DB::connection('tbd')
-            ->table('prod.well_org')
-            ->select('id')
-            ->whereIn('org', $orgIds)
+            ->table('prod.well_tech')
+            ->select('well')
+            ->whereIn('tech', $techIds)
             ->where('dbeg', '<=', $date)
             ->where('dend', '>=', $date)
             ->get()
-            ->pluck('id')
+            ->pluck('well')
             ->toArray();
     }
 
-    private function getOrgIds(int $orgId)
+    private function getTechIds(int $parentId)
     {
         $structureService = app()->make(StructureService::class);
         $orgStructure = $structureService->getFlattenTreeWithPermissions();
-        $org = array_filter($orgStructure, function ($item) use ($orgId) {
-            return $item['type'] === 'org' && $item['id'] === $orgId;
+        $org = array_filter($orgStructure, function ($item) use ($parentId) {
+            return $item['type'] === 'org' && $item['id'] === $parentId;
         });
         $org = reset($org);
-        return $this->getOrgWithChildren($orgStructure, $org['id']);
+        return $this->getTechWithChildren($orgStructure, $org);
     }
 
-    private function getOrgWithChildren(array $orgStructure, $orgId)
+    private function getTechWithChildren(array $orgStructure, $parent)
     {
-        $ids = [$orgId];
-        $children = array_filter($orgStructure, function ($item) use ($orgId) {
-            return $item['type'] === 'org' && $item['parent_id'] === $orgId;
+        $ids = [];
+        if ($parent['type'] === 'tech') {
+            $ids[] = $parent['id'];
+        }
+
+        $children = array_filter($orgStructure, function ($item) use ($parent) {
+            return isset($item['parent_type']) && $item['parent_type'] === $parent['type'] && $item['parent_id'] === $parent['id'];
         });
         foreach ($children as $child) {
-            $ids = array_merge($ids, $this->getOrgWithChildren($orgStructure, $child['id']));
+            $ids = array_merge($ids, $this->getTechWithChildren($orgStructure, $child));
         }
         return $ids;
     }

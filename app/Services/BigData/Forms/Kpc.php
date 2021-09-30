@@ -6,7 +6,6 @@ namespace App\Services\BigData\Forms;
 
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
-use Illuminate\Support\Facades\DB;
 
 class Kpc extends KrsPrs
 {
@@ -30,26 +29,5 @@ class Kpc extends KrsPrs
 
         return $errors;
     }
-    protected function submitForm(): array
-    {
-       
-        if($this->request->get('gtm_type')){
-            DB::connection('tbd')
-                ->table('prod.gtm')
-                ->insert(
-                    [
-                            'well' => $this->request->get('well'),
-                            'dbeg' => $this->request->get('dbeg'),
-                            'dend' => $this->request->get('dend'),
-                            'gtm_type' => $this->request->get('gtm_type'),
-                            'company' => $this->request->get('contractor')
-                    ]
-            );
-        }
-        
-       
-        DB::commit();
 
-        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
-    }
 }

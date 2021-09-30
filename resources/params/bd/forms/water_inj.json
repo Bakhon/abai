@@ -42,11 +42,11 @@
     {
       "title": "agent_type",
       "code": "agent_type",
-      "table":"prod.meas_water_inj",
-      "column":"agent_type",
-      "type": "text",
+      "table": "prod.meas_water_inj",
+      "column": "agent_type",
+      "type": "dict",
+      "dict": "inj_agent_types",
       "validation": "required|exists:tbd.dict.inj_agent_type,id",
-      
       "is_editable": true
     },
     {
@@ -76,46 +76,6 @@
       "type": "text",
       "column":"comment",
       "is_editable": true
-    },
-    {
-      "title": "data",
-      "table": "prod.meas_water_inj",
-      "code": "dbeg",
-      "type": "date",
-      "column": "dbeg",
-      "is_editable": true
-    },
-    {
-      "title": "water_inj",
-      "table":"prod.meas_water_inj",
-      "code": "water_inj_val",
-      "type": "float",
-      "column":"water_inj_val",
-      "is_editable": true
-    },
-    {
-      "title": "agent_temp",
-      "table":"prod.meas_water_inj",
-      "code": "agent_temperature",
-      "type": "float",
-      "column":"agent_temperature",
-      "is_editable": true
-    },
-    {
-      "title": "pressure",
-      "table":"prod.meas_water_inj",
-      "code": "pressure_inj",
-      "column":"pressure_inj",
-      "type": "float",
-      "is_editable": true
-    },
-    {
-      "title": "worktime",
-      "code": "worktime",
-      "table": "prod.well_status",
-      "column": "well_status_type_id",
-      "type": "text",
-      "is_editable": false
     }
   ]
 }

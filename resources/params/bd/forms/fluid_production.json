@@ -430,7 +430,7 @@
       "title": "gas_output",
       "code": "gas_output",
       "type": "calc",
-      "formula": "Math.round($gas_factor$ * $worktime$/24 * 100)/100",
+      "formula": "Math.round($gas_factor$ * $oil_val$ * 100)/100",
       "is_editable": false
     },
     {

@@ -163,10 +163,6 @@
                         <a class="text-white cursor-pointer"
                            @click="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(false)">Показать график</a>
                     </div>
-                    <div class="pl-3 d-flex align-items-center">
-                        <img class="pr-1" src="/img/icons/page_excel.svg" alt="">
-                        Скачать в MS-Excel
-                    </div>
                 </div>
             </div>
         </div>
