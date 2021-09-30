@@ -18,7 +18,7 @@ class TechModeInj extends TableForm
     public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
-        $params['filter']['well_category'] = ['OIL', 'GAS'];
+        $params['filter']['well_category'] = ['INJ'];
         $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
 
         $tables = $this->getFields()

@@ -142,13 +142,13 @@ class FormsController extends Controller
     public function getResults(Request $request, string $formName): JsonResponse
     {
         $form = $this->getForm($formName);
-//        try {
-        return response()->json(
-            $form->getResults()
-        );
-//        } catch (\Exception $exception) {
-//            return response()->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
-//        }
+        try {
+            return response()->json(
+                $form->getResults()
+            );
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function calcFields(Request $request, string $form): JsonResponse
