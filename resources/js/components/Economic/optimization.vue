@@ -530,15 +530,15 @@ export default {
     },
 
     oilPercent() {
-      return this.scenario.oil.original_value - this.scenario.oil.original_value_optimized
+      return +this.scenario.oil.original_value - +this.scenario.oil.original_value_optimized
     },
 
     liquidPercent() {
-      return this.scenario.liquid.original_value - this.scenario.liquid.original_value_optimized
+      return +this.scenario.liquid.original_value - +this.scenario.liquid.original_value_optimized
     },
 
     prsPercent() {
-      return this.scenario.prs.original_value_optimized - this.scenario.prs.original_value
+      return +this.scenario.prs.original_value_optimized - +this.scenario.prs.original_value
     },
 
     avgOilPercent() {
