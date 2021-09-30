@@ -37,11 +37,16 @@ class WellCategory extends PlainForm
         $data = $this->request->except('org');
         $data['dend'] = Well::DEFAULT_END_DATE;
 
-        $oldCategory = DB::connection('tbd')->table($this->params()['table'])
+        $oldCategoryQuery = DB::connection('tbd')->table($this->params()['table'])
             ->where('well', $this->request->get('well'))
-            ->where('dend', Well::DEFAULT_END_DATE)
-            ->where('id', '!=', $data['id'])
-            ->first();
+            ->where('dend', Well::DEFAULT_END_DATE);
+
+        if (isset($data['id'])) {
+            $oldCategoryQuery->where('id', '!=', $data['id']);
+        }
+
+        $oldCategory = $oldCategoryQuery->first();
+
         if ($oldCategory !== null) {
             DB::connection('tbd')
                 ->table($this->params()['table'])

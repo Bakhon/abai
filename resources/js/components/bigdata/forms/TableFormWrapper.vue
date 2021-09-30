@@ -15,7 +15,7 @@
             >
               <datetime
                   v-model="filter[filterItem.code]"
-                  :flow="['year', 'month']"
+                  :flow="filterItem.flow || ['year', 'month', 'date']"
                   :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                   :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
                   auto
@@ -107,11 +107,13 @@ export default {
   },
   data() {
     return {
-      filter: null
+      filter: null,
+      formParams: null
     }
   },
   watch: {
     params() {
+      this.filter = null
       this.init()
     },
     filter: {
@@ -156,8 +158,8 @@ export default {
     init(formParams) {
       if (formParams) {
         this.formParams = formParams
+        this.initFilter()
       }
-      this.initFilter()
     },
   },
 };

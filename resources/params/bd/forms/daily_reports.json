@@ -6,7 +6,7 @@
       "code": "date",
       "title": "date",
       "type": "date",
-      "default": "first day of january this year"
+      "default": "today"
     },
     {
       "code": "type",

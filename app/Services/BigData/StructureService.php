@@ -127,7 +127,11 @@ class StructureService
                                 Tech::TYPE_AGZU,
                                 Tech::TYPE_SPGU,
                                 Tech::TYPE_KNS,
-                                Tech::TYPE_BKNS
+                                Tech::TYPE_BKNS,
+                                Tech::TYPE_OPPS,
+                                Tech::TYPE_OTU,
+                                Tech::TYPE_WIDM,
+                                Tech::TYPE_WDM,
                             ]
                         );
                 }

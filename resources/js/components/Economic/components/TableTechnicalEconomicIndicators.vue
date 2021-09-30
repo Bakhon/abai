@@ -11,16 +11,16 @@
           {{ trans('economic_reference.item_number') }}
         </div>
 
-        <div class="p-3 border-grey d-flex align-items-center justify-content-center flex-320px">
+        <div class="p-3 border-grey d-flex align-items-center justify-content-start flex-320px">
           {{ trans('economic_reference.nomination') }}
         </div>
 
-        <div class="p-3 border-grey d-flex align-items-center justify-content-center flex-150px">
+        <div class="p-3 border-grey d-flex align-items-center justify-content-start flex-150px">
           {{ trans('economic_reference.unit_of_measurement_short') }}
         </div>
 
         <div class="border-grey flex-200px">
-          <div class="p-3 line-height-14px">
+          <div class="p-3 line-height-14px text-left">
             {{ trans('economic_reference.approved_budget_2020') }}
           </div>
 
@@ -28,7 +28,7 @@
             <div v-for="(budget, index) in budget2020"
                  :key="index"
                  :class="index % 2 === 1 ? 'border-grey-left' : ''"
-                 class="p-2 flex-grow-1">
+                 class="p-2 flex-grow-1 text-left">
               {{ budget }}
               {{ trans('economic_reference.dollar_per_bar') }}
             </div>
@@ -36,12 +36,12 @@
         </div>
 
         <div class="border-grey flex-grow-1">
-          <div class="p-3">
+          <div class="p-3 text-left">
             {{ trans('economic_reference.when_changing_macro_indicators') }}
           </div>
 
           <div class="d-flex">
-            <div class="p-2 flex-grow-1 line-height-14px" style="white-space: pre-line"
+            <div class="p-2 flex-grow-1 line-height-14px text-left" style="white-space: pre-line"
             > {{ (+baseScenario.oil_price).toLocaleString() }} {{ trans('economic_reference.dollar_per_bar') }}
               {{ trans('economic_reference.basic').toLocaleLowerCase() }}
             </div>
@@ -49,7 +49,7 @@
             <div v-for="(price, index) in reverseOilPrices"
                  :key="index"
                  :class="index % 2 === 0 ? 'border-grey-left' : ''"
-                 class="p-2 flex-grow-1 d-flex align-items-center justify-content-center">
+                 class="p-2 flex-grow-1 d-flex align-items-center justify-content-start">
               {{ (+price).toLocaleString() }}
               {{ trans('economic_reference.dollar_per_bar') }}
             </div>
@@ -66,19 +66,19 @@
         </div>
 
         <div
-            class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-center flex-320px">
+            class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-start flex-320px">
           {{ item.title }}
         </div>
 
         <div
-            class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-center flex-150px">
+            class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-start flex-150px">
           {{ item.dimension }}
         </div>
 
         <div class="d-flex flex-200px">
           <div v-for="(budget, index) in item.budget2020"
                :key="index"
-               class="py-2 px-3 border-grey border-top-0 border-left-0 flex-grow-1">
+               class="py-2 px-3 border-grey border-top-0 border-left-0 flex-grow-1 text-right">
             {{ budget.value }}
           </div>
         </div>
@@ -86,7 +86,7 @@
         <div class="d-flex flex-grow-1">
           <div v-for="(value, index) in item.values"
                :key="index"
-               class="py-2 px-3 border-grey border-top-0 border-left-0"
+               class="py-2 px-3 border-grey border-top-0 border-left-0 text-right"
                style="flex: 1 0 100px; white-space: pre-line"
           >{{ typeof value === 'string' ? value : (+(value).toFixed(2)).toLocaleString() }}
           </div>

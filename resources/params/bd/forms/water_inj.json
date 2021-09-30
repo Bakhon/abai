@@ -34,9 +34,9 @@
       "title": "volume",
       "code": "water_inj_volume",
       "column": "water_inj_volume",
-      "table":"prod.meas_water_inj",
+      "table": "prod.meas_water_inj",
       "type": "calc",
-      "formula": "$worktime$ * $water_inj_val$",
+      "formula": "Math.round($water_inj_val$ * $worktime$/24 * 100)/100",
       "is_editable": false
     },
     {

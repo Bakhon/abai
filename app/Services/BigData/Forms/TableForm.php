@@ -286,6 +286,16 @@ abstract class TableForm extends BaseForm
                         ->groupBy('well');
 
                     break;
+                case 'prod.tech_mode_prod_oil':
+                    $result[$table] = DB::connection('tbd')
+                        ->table($table)
+                        ->whereIn('well', $wellIds)
+                        ->whereDate('dbeg', '<=', $date)
+                        ->orderBy('dbeg', 'desc')
+                        ->limit(20)
+                        ->get()
+                        ->groupBy('well');
+                    break;
                 default:
                     $result[$table] = DB::connection('tbd')
                         ->table($table)
