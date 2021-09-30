@@ -2,6 +2,8 @@
 
 namespace App\Observers;
 
+use App\Models\ComplicationMonitoring\Gu;
+use App\Models\ComplicationMonitoring\ManualGu;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 
 class OmgNGDUHistoryObserver extends EditHistoryObserver
@@ -44,7 +46,12 @@ class OmgNGDUHistoryObserver extends EditHistoryObserver
                 case 'gu_id':
                 case 'zu_id':
                 case 'well_id':
-                    $classname = self::$classNames[$field];
+                    if ($original[$field] >= 10000) {
+                        $classname = "App\Models\ComplicationMonitoring\Manual".ucfirst(str_replace('_id', '', $field));
+                    } else {
+                        $classname = self::$classNames[$field];
+                    }
+
                     $oldValue = $original[$field] ? $classname::find($original[$field])->name : null;
                     $newValue = isset($changes[$field]) ? $classname::find(
                         $changes[$field]

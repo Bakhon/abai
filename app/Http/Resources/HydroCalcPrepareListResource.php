@@ -28,7 +28,7 @@ class HydroCalcPrepareListResource extends CrudListResource
                 'wc' => $this->omgngdu ? $this->omgngdu->bsw : '',
                 'gazf' => $this->gu ? 0 : '',
                 'press_start' => $this->omgngdu ? $this->omgngdu->pump_discharge_pressure + 1 : '',
-                'temp_start' => $this->omgngdu ? $this->omgngdu->heater_output_temperature : '',
+                'temp_start' => $this->omgngdu ? ($this->omgngdu->heater_output_temperature ? $this->omgngdu->heater_output_temperature : $this->omgngdu->heater_inlet_temperature) : ''
             ],
         ];
 
