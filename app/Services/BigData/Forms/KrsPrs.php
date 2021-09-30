@@ -8,6 +8,7 @@ use App\Models\BigData\Well;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class KrsPrs extends PlainForm
@@ -16,7 +17,14 @@ class KrsPrs extends PlainForm
 
     use DepthValidationTrait;
     use DateMoreThanValidationTrait;
-
+    protected function getRows(): Collection
+    {
+        $rows = parent::getRows();
+        return $rows->map(function ($item) {
+            $item->by_ourselves = empty($item->contractor);
+            return $item;
+        });
+    }
     public function getCalculatedFields(int $wellId, array $values): array
     {
         if (empty($values['dend'])) {
