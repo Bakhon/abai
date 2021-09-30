@@ -212,11 +212,16 @@
           </div>
         </div>
       </div>
-      <HistoricalData
+      <InjectionHistoricalData
               v-if="isInjectionWellsHistoricalVisible"
               :mainWell="{id: well.id, name: well.wellInfo.uwi}"
               :changeColumnsVisible="changeColumnsVisible()"
-      ></HistoricalData>
+      ></InjectionHistoricalData>
+      <ProductionHistoricalData
+              v-if="isProductionWellsHistoricalVisible"
+              :mainWell="{id: well.id, name: well.wellInfo.uwi}"
+              :changeColumnsVisible="changeColumnsVisible()"
+      ></ProductionHistoricalData>
     </div>
   </div>
 </template>
@@ -231,7 +236,8 @@ import WellCardTree from './WellCardTree'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
 import {globalloadingMutations,bigdatahistoricalVisibleState} from '@store/helpers';
-import HistoricalData from "./HistoricalData";
+import InjectionHistoricalData from "./InjectionHistoricalData";
+import ProductionHistoricalData from "./ProductionHistoricalData";
 
 
 const requireComponent = require.context('../forms/CustomPlainForms', true, /\.vue$/i);
@@ -253,7 +259,8 @@ export default {
     BigDataPlainFormResult,
     vSelect,
     WellCardTree,
-    HistoricalData
+    InjectionHistoricalData,
+    ProductionHistoricalData
   },
   data() {
     return {

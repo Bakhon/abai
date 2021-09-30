@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12 d-flex header justify-content-between">
                 <div class="col-11 p-2">Исторические сведения по добыче нефти</div>
-                <div class="col-1 cancel-icon" @click="SET_VISIBLE_INJECTION(true)"></div>
+                <div class="col-1 cancel-icon" @click="SET_VISIBLE_PRODUCTION(false)"></div>
             </div>
             <div class="col-12 p-0">
                 <table class="historical-table">

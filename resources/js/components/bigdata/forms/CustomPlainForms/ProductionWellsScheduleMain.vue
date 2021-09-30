@@ -10,7 +10,7 @@
                 <span class="header_icon ml-1"></span>
                 <div class="d-flex justify-content-between">
                     <span class="header_icon-switch mr-1"></span>
-                    <span class="underline cursor-pointer header_title px-1">Исторические сведения по добыче нефти</span>
+                    <span class="underline cursor-pointer header_title px-1" @click="SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)">Исторические сведения по добыче нефти</span>
                 </div>
             </div>
             <div class="d-flex mt-1">
@@ -24,64 +24,53 @@
             </div>
             <div class="d-flex mt-1">
                 <div :class="[!isFreeInfoShown ? 'd-none' : '','col-12 p-0']">
-                    <table class="table table-striped text-white text-nowrap">
+                    <table class="table table-striped text-white text-nowrap free-inform-table">
                         <tbody>
                             <tr>
-                                <td>Гор (проект/факт): Ю4</td>
-                                <td rowspan="3">Инт.перф:</td>
-                                <td rowspan="2">Г/ф: 0.0</td>
-                                <td>Ø экс.к.: 0.0</td>
-                                <td>дата обустройства:</td>
+                                <td>Гор: {{freeInfo.gor}}</td>
+                                <td>Отб.забоя: {{freeInfo.otbSlaughter}}</td>
+                                <td>Иск. Забой: {{freeInfo.iskSlaughter}}</td>
+                                <td>ГИС: {{freeInfo.GIS}}</td>
+                                <td>Примечание: {{freeInfo.comment}}</td>
                             </tr>
                             <tr>
-                                <td>Зона/Рнас: /69</td>
-                                <td>Вид скважины: Вертикальная</td>
-                                <td>дата в действ.фонд: 27.03.2021</td>
-                            </tr>
-                            <tr>
-                                <td>Иск. заб.: 0.0</td>
-                                <td rowspan="2">ТПН: 66.5</td>
-                                <td>ЦДНГ/ГУ/ряд: ЦДНГ-02/ГУ-45/15-18</td>
-                                <td>Тип.УО:</td>
-                            </tr>
-                            <tr>
-                                <td>Факт.заб.: 0.0</td>
-                                <td>НКТ: /-/-/-</td>
-                                <td>Спут./отвод:</td>
-                                <td>Экс.г:</td>
-                            </tr>
-                            <tr>
-                                <td>Вл.наг:</td>
-                                <td>Штанги: /-/-/-</td>
-                                <td>ГИС: ГИС в открытом стволе/25.01.2021</td>
-                                <td>Примечание:</td>
-                                <td>К/Г: Заводская</td>
-                            </tr>
-                            <tr>
-                                <td>ПФП:</td>
-                                <td>Тип. СК:</td>
-                                <td>Lх или Ø шкива:</td>
-                                <td></td>
-                                <td>обр.кл.: Нет</td>
-                            </tr>
-                            <tr>
-                                <td>Посл. ПРС:</td>
-                                <td>Тип и Ø насоса: -/-</td>
-                                <td>ГРП:</td>
-                                <td></td>
-                                <td>Доп. оборудования:</td>
-                            </tr>
-                            <tr>
-                                <td>Посл. Рпл:</td>
-                                <td></td>
-                                <td>Совм.скв.:</td>
-                                <td></td>
+                                <td>Вид скважины: {{freeInfo.wellType}}</td>
+                                <td>Рпласта: {{freeInfo.plastRadius}}</td>
+                                <td>Ø экс.колонны: {{freeInfo.diamaterColumn}}</td>
+                                <td>Посл.ПФП: {{freeInfo.pfp}}</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>Посл. КРС:</td>
-                                <td>Sк:</td>
+                                <td rowspan="2">Вл.скв:	{{freeInfo.vlWell}}</td>
+                                <td>КШД тип/Ø: {{freeInfo.kshd}}</td>
+                                <td>НКТ: {{freeInfo.nkt}}</td>
+                                <td>Посл.СКО: {{freeInfo.sko}}</td>
                                 <td></td>
+                            </tr>
+                            <tr>
+                                <td>Инт.перф: {{freeInfo.intPerf}}</td>
+                                <td>Штанги: {{freeInfo.rod}}</td>
+                                <td>Тип к/г: {{freeInfo.type}}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Дата ввода в экспл.: {{freeInfo.entryDate}}</td>
+                                <td>Н.р: {{freeInfo.nr}}</td>
+                                <td>Дата посл. КРС: {{freeInfo.krsDate}}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Qмакс.прием: {{freeInfo.qMaxReceive}}</td>
+                                <td>БКНС/ГУ/ряд: {{freeInfo.bkns}}</td>
+                                <td>Дата посл. ПРС: {{freeInfo.prsDate}}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>ГРП: {{freeInfo.grp}}</td>
+                                <td>Компенсация: {{freeInfo.compensation}}</td>
+                                <td>Доп. оборудования: {{freeInfo.additionalEquipment}}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -268,161 +257,6 @@
                     Скачать в MS-Excel
                 </div>
             </div>
-            <div class="content-block content-block-scrollable p-2" style="display:none">
-                <div class="small-fixed-block table-responsive">
-                    <table class="table table-striped text-white text-nowrap">
-                        <thead>
-                        <th colspan="5">Сводная информация</th>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Гор (проект/факт): Ю4</td>
-                            <td rowspan="3">Инт.перф:</td>
-                            <td rowspan="2">Г/ф: 0.0</td>
-                            <td>Ø экс.к.: 0.0</td>
-                            <td>дата обустройства:</td>
-                        </tr>
-                        <tr>
-                            <td>Зона/Рнас: /69</td>
-                            <td>Вид скважины: Вертикальная</td>
-                            <td>дата в действ.фонд: 27.03.2021</td>
-                        </tr>
-                        <tr>
-                            <td>Иск. заб.: 0.0</td>
-                            <td rowspan="2">ТПН: 66.5</td>
-                            <td>ЦДНГ/ГУ/ряд: ЦДНГ-02/ГУ-45/15-18</td>
-                            <td>Тип.УО:</td>
-                        </tr>
-                        <tr>
-                            <td>Факт.заб.: 0.0</td>
-                            <td>НКТ: /-/-/-</td>
-                            <td>Спут./отвод:</td>
-                            <td>Экс.г:</td>
-                        </tr>
-                        <tr>
-                            <td>Вл.наг:</td>
-                            <td>Штанги: /-/-/-</td>
-                            <td>ГИС: ГИС в открытом стволе/25.01.2021</td>
-                            <td>Примечание:</td>
-                            <td>К/Г: Заводская</td>
-                        </tr>
-                        <tr>
-                            <td>ПФП:</td>
-                            <td>Тип. СК:</td>
-                            <td>Lх или Ø шкива:</td>
-                            <td></td>
-                            <td>обр.кл.: Нет</td>
-                        </tr>
-                        <tr>
-                            <td>Посл. ПРС:</td>
-                            <td>Тип и Ø насоса: -/-</td>
-                            <td>ГРП:</td>
-                            <td></td>
-                            <td>Доп. оборудования:</td>
-                        </tr>
-                        <tr>
-                            <td>Посл. Рпл:</td>
-                            <td></td>
-                            <td>Совм.скв.:</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Посл. КРС:</td>
-                            <td>Sк:</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="table-responsive">
-                    <table class="table text-center text-white text-nowrap">
-                        <thead>
-                        <th colspan="33" class="text-left">2021/январь</th>
-                        <th colspan="2">Итоговые показатели</th>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Показатель</td>
-                            <td>Тех. режим</td>
-                            <td v-for="n in 31" class="red-col">{{ n }}</td>
-                            <td>Средние (по методике)</td>
-                            <td>Суммарные (по методике)</td>
-                        </tr>
-                        <tr>
-                            <td>Жидкость</td>
-                            <td></td>
-                            <td v-for="n in 31" class="red-col"></td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                        </tr>
-                        <tr>
-                            <td>Нефть</td>
-                            <td></td>
-                            <td v-for="n in 31" class="red-col"></td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                        </tr>
-                        <tr>
-                            <td>Обводненность</td>
-                            <td></td>
-                            <td v-for="n in 31" class="red-col"></td>
-                            <td>0.00</td>
-                            <td>0.00</td>
-                        </tr>
-                        <tr>
-                            <td>Аном. обв.</td>
-                            <td></td>
-                            <td v-for="n in 31" class="red-col"></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Жидкость, м3/сут (телеметрия)</td>
-                            <td></td>
-                            <td v-for="n in 31" class="red-col"></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Показать поля</td>
-                            <td></td>
-                            <td v-for="n in 31" class="red-col"></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Мероприятия</td>
-                            <td></td>
-                            <td v-for="n in 31" class="red-col"></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="d-flex justify-content-end">
-                    <div class="pl-3 d-flex align-items-center">
-                        <img class="pr-1" src="/img/icons/repeat.svg" alt="">
-                        Сформировать
-                    </div>
-                    <div class="pl-3 d-flex align-items-center">
-                        <img class="pr-1" src="/img/icons/help.svg" alt="">
-                        Легенда
-                    </div>
-                    <div class="pl-3 d-flex align-items-center">
-                        <img class="pr-1" src="/img/icons/chart.svg" alt="">
-                        <a class="text-white cursor-pointer"
-                           @click="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(false)">Показать график</a>
-                    </div>
-                    <div class="pl-3 d-flex align-items-center">
-                        <img class="pr-1" src="/img/icons/page_excel.svg" alt="">
-                        Скачать в MS-Excel
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </template>
@@ -438,6 +272,33 @@ export default {
     data() {
         return {
             isScheduleVisible: false,
+            freeInfo: {
+                'gor': 'Ю4',
+                'otbSlaughter': 888.07,
+                'iskSlaughter': 888.07,
+                'GIS': 'ГИС в открытом стволе/25.01.2021',
+                'comment': '',
+                'wellType': 'Вертикальная',
+                'diamaterColumn': '',
+                'plastRadius': '',
+                'pfp': '',
+                'vlWell': '',
+                'kshd': '/',
+                'nkt': '25.03.2021/76/73/766,88',
+                'sko': '',
+                'intPerf': '846-848,5',
+                'rod': '05.04.2021/96/19/768',
+                'type': 'Заводская',
+                'entryDate': '',
+                'nr': 5.43,
+                'krsDate': '24.03.2021-25.03.2021/Освоение',
+                'qMaxReceive': '',
+                'bkns': '/ГУ-45/15-18',
+                'prsDate': '04.04.2021',
+                'grp': '',
+                'compensation': '',
+                'additionalEquipment': ''
+            },
             historicalData: [
                 {
                     'measurementSchedule': {
@@ -651,5 +512,13 @@ export default {
     background: #293688;
     border: 1px solid #3366FF;
     border-radius: 5px;
+}
+.free-inform-table {
+    td:first-child,td:nth-child(2),td:nth-child(5) {
+        width: 150px;
+    }
+    td {
+        width: 250px;
+    }
 }
 </style>
