@@ -94,23 +94,12 @@ export default {
                     type: 'area',
                     foreColor: '#fff'
                 },
-                // stroke: {
-                //     // width: [5, 7, 5],
-                //     // curve: 'straight',
-                //     dashArray: [0, 0, 1]
-                // },
                 options: {
                     legend: {
                         fontSize: '5px',
                         horizontalAlign: "left",
                     },
                 },
-                // markers: {
-                //     size: 1,
-                //     hover: {
-                //         sizeOffset: 6
-                //     }
-                // },
                 colors: ["#04f689", "#fa4202", '#0253fa'],
 
                 dataLabels: {
@@ -195,9 +184,7 @@ export default {
             'clickable',
         ]),
     },
-    watch: {
-
-    },
+    watch: {},
     methods: {
         ...globalloadingMutations([
             'SET_LOADING'
@@ -282,15 +269,15 @@ export default {
                             ]
                         }]
 
-                        if (res.status === 200) {
-                            this.setNotify("Данные получены", "Success", "success")
-                        } else {
-                            this.setNotify("Что-то пошло не так", "Error", "danger")
-                        }
-                    })
-                    .finally(() => {
-                        this.SET_LOADING(false);
-                    })
+                    if (res.status === 200) {
+                        this.setNotify("Данные получены", "Success", "success")
+                    } else {
+                        this.setNotify("Что-то пошло не так", "Error", "danger")
+                    }
+                })
+                .finally(() => {
+                    this.SET_LOADING(false);
+                })
         },
         closeTree() {
             this.treeChildrenComponent = 0;
@@ -298,7 +285,7 @@ export default {
         },
         getTreeData() {
             this.SET_LOADING(true);
-                axios.post(this.url, {action_type: 'page_initialized', main_data: "\"название страницы\""})
+            axios.post(this.url, {action_type: 'page_initialized', main_data: "\"название страницы\""})
                 .then((res) => {
                     this.dataRange = res.data.date_range_model;
                     this.treeData = res.data.finder_model.children;
@@ -318,11 +305,13 @@ export default {
                 }
             }
             this.SET_LOADING(true);
-            axios.post(this.url, {action_type: 'calc_button_pressed', date_range_model: this.dataRange, fieldName: this.fieldName,
+            axios.post(this.url, {
+                action_type: 'calc_button_pressed', date_range_model: this.dataRange, fieldName: this.fieldName,
                 finder_model: {
                     name: "root",
                     children: v
-                }})
+                }
+            })
                 .then((res) => {
                     if (res.status === 200) {
                         this.setNotify("Информация о скважинах получена", "Success", "success")
