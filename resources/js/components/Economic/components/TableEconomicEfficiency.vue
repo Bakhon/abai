@@ -8,7 +8,7 @@
         ref="chart"
         :options="chartOptions"
         :series="chartSeries"
-        type="line"
+        :height="520"
         class="apexcharts-custom-legend"
         style="color: #000"/>
   </div>

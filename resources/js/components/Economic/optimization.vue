@@ -1,85 +1,81 @@
 <template>
-  <div class="position-relative">
-    <div class="row">
-      <div class="col-12 px-3 mb-10px">
-        <div class="row text-white text-wrap flex-nowrap ">
-          <calculated-header
-              v-for="(header, index) in calculatedHeaders"
-              :key="`calculated_${index}`"
-              :header="header"
-              :form="form"
-              :class="index ? 'ml-2' : ''"
-              class="flex-grow-1"
-              style="min-height: 135px"/>
-
-          <remote-header
-              v-for="(header, index) in remoteHeaders"
-              :key="`remote_${index}`"
-              :header="header"
-              :form="form"
-              class="flex-grow-1 ml-2"
-              style="min-height: 135px"/>
-        </div>
-      </div>
-
-      <div :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right: 0'"
-           class="col-12 px-2 py-3 bg-main1 mb-10px">
-        <select-scenario-variations
+  <div :style="isVisibleWellChanges ? 'padding-right: 75px !important' : 'padding-right: 0'"
+       class="position-relative row">
+    <div class="col-12 px-3 mb-10px">
+      <div class="row text-white text-wrap flex-nowrap ">
+        <calculated-header
+            v-for="(header, index) in calculatedHeaders"
+            :key="`calculated_${index}`"
+            :header="header"
             :form="form"
-            :scenario-variation="scenarioVariation"
-            :scenario-variations="scenarioVariations"
-            @changeOrg="getData()"/>
-      </div>
+            :class="index ? 'ml-2' : ''"
+            class="flex-grow-1"
+            style="min-height: 135px"/>
 
-      <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
-        <tables
-            v-if="!loading"
-            :scenario="scenario"
-            :scenario-variations="scenarioVariations"
-            :res="res"
-            @updateTab="updateTab"/>
-      </div>
-
-      <div v-show="!scenarioVariation.isFullScreen"
-           :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right: 0'"
-           class="col-3">
-        <economic-block
-            v-for="(block, index) in blocks"
-            :key="index"
-            :index="index"
-            :block="block"
+        <remote-header
+            v-for="(header, index) in remoteHeaders"
+            :key="`remote_${index}`"
+            :header="header"
             :form="form"
-            :class="index === blocks.length - 1 ? '' : 'mb-10px'"
-            :style="form.scenario_id ? 'min-height: 150px' : 'min-height: 155px'"
-        />
+            class="flex-grow-1 ml-2"
+            style="min-height: 135px"/>
+      </div>
+    </div>
 
-        <div v-if="0" class="bg-main1 text-white text-wrap p-3 mb-10px">
-          <subtitle>
-            {{ trans('economic_reference.production_wells_fund') }}
-          </subtitle>
+    <div class="col-12 px-2 py-3 bg-main1 mb-10px">
+      <select-scenario-variations
+          :form="form"
+          :scenario-variation="scenarioVariation"
+          :scenario-variations="scenarioVariations"
+          @changeOrg="getData()"/>
+    </div>
 
-          <div class="mt-4 position-relative">
-            <divider style="left: 150px; height: 100%; top: 0;"/>
+    <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
+      <tables
+          v-if="!loading"
+          :scenario="scenario"
+          :scenario-variations="scenarioVariations"
+          :res="res"
+          @updateTab="updateTab"/>
+    </div>
 
-            <divider
-                v-if="form.scenario_id"
-                style="left: 230px; height: 100%; top: 0;"/>
+    <div v-show="!scenarioVariation.isFullScreen" class="col-3 pr-0">
+      <economic-block
+          v-for="(block, index) in blocks"
+          :key="index"
+          :index="index"
+          :block="block"
+          :form="form"
+          :class="index === blocks.length - 1 ? '' : 'mb-10px'"
+          :style="form.scenario_id ? 'min-height: 150px' : 'min-height: 155px'"
+      />
 
-            <div v-for="(wellCount, index) in wellsCount"
-                 :key="index"
-                 :class="wellCount.name ? '' : 'font-weight-bold text-grey'"
-                 class="d-flex">
-              <div :class="wellCount.nameClass" class="font-size-12px" style="width: 150px;">
-                {{ wellCount.name }}
-              </div>
+      <div v-if="0" class="bg-main1 text-white text-wrap p-3 mb-10px">
+        <subtitle>
+          {{ trans('economic_reference.production_wells_fund') }}
+        </subtitle>
 
-              <div class="ml-2" style="width: 80px">
-                {{ wellCount.value }}
-              </div>
+        <div class="mt-4 position-relative">
+          <divider style="left: 150px; height: 100%; top: 0;"/>
 
-              <div v-if="form.scenario_id">
-                {{ wellCount.value_optimized }}
-              </div>
+          <divider
+              v-if="form.scenario_id"
+              style="left: 230px; height: 100%; top: 0;"/>
+
+          <div v-for="(wellCount, index) in wellsCount"
+               :key="index"
+               :class="wellCount.name ? '' : 'font-weight-bold text-grey'"
+               class="d-flex">
+            <div :class="wellCount.nameClass" class="font-size-12px" style="width: 150px;">
+              {{ wellCount.name }}
+            </div>
+
+            <div class="ml-2" style="width: 80px">
+              {{ wellCount.value }}
+            </div>
+
+            <div v-if="form.scenario_id">
+              {{ wellCount.value_optimized }}
             </div>
           </div>
         </div>
@@ -324,7 +320,7 @@ export default {
             value: this.formatValue(this.scenario.oil[this.scenarioValueKey]).value.toFixed(2),
             dimension: this.formatValue(this.scenario.oil[this.scenarioValueKey]).dimension,
             dimensionSuffix: this.trans('economic_reference.tons'),
-            percent: this.formatValue(this.oilPercent).value,
+            percent: +(this.formatValue(this.oilPercent).value.toFixed(2)),
             percentDimension: this.formatValue(this.oilPercent).dimension,
             reverse: true,
             reversePercent: true
@@ -345,7 +341,7 @@ export default {
             value: this.formatValue(this.scenario.liquid[this.scenarioValueKey]).value.toFixed(2),
             dimension: this.formatValue(this.scenario.liquid[this.scenarioValueKey]).dimension,
             dimensionSuffix: this.trans('economic_reference.tons'),
-            percent: this.formatValue(this.liquidPercent).value,
+            percent: +(this.formatValue(this.liquidPercent).value.toFixed(2)),
             percentDimension: this.formatValue(this.liquidPercent).dimension,
             reverse: true,
             reversePercent: true

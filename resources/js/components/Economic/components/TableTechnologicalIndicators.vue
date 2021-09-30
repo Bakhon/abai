@@ -22,8 +22,8 @@
         </div>
       </div>
 
-      <div class="overflow-auto customScroll"
-           style="height: 465px">
+      <div class="customScroll"
+           style="overflow-y: scroll; height: 465px">
         <div v-for="(item, index) in tableData"
              :key="index"
              :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-deep-blue'"
@@ -193,8 +193,10 @@ export default {
             values: this.filteredData.map(item => {
               let gtmsCount = 0
 
-              for (const [month, gtms] of Object.entries(JSON.parse(item.gtms))) {
-                gtms.forEach(gtm => gtmsCount += (+gtm.amount))
+              if (item.gtms) {
+                for (const [month, gtms] of Object.entries(JSON.parse(item.gtms))) {
+                  gtms.forEach(gtm => gtmsCount += (+gtm.amount))
+                }
               }
 
               return gtmsCount
@@ -210,6 +212,8 @@ export default {
       let data = {}
 
       this.filteredData.forEach(item => {
+        if (!item.gtms) return
+
         for (const [month, gtms] of Object.entries(JSON.parse(item.gtms))) {
           gtms.forEach(gtm => {
             let name = `GTM_${gtm.id}`

@@ -19,8 +19,8 @@
         </div>
       </div>
 
-      <div class="overflow-auto customScroll"
-           style="height: 450px">
+      <div class="customScroll"
+           style="overflow-y: scroll; height: 450px">
         <div class="d-flex bg-blue">
           <div class="flex-50 px-3 py-1 border-grey border-bottom-0 d-flex align-items-center justify-content-center">
             {{ trans('economic_reference.course_prices') }}

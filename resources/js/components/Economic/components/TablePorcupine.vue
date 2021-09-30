@@ -108,28 +108,31 @@ export default {
               operating_profit: (operating_profit / dimension).toFixed(2),
             })
 
-            seriesGtm.push({
-              uwi_count: scenario.uwi_count_optimize,
-              cat_1: scenario.percent_stop_cat_1,
-              cat_2: scenario.percent_stop_cat_2,
-              oil: +scenario.oil.original_value_optimized + (+scenario.gtm_oil),
-              operating_profit: ((operating_profit + (+scenario.gtm_operating_profit_12m)) / dimension).toFixed(2),
-            })
+            if (scenario.gtms) {
+              seriesGtm.push({
+                uwi_count: scenario.uwi_count_optimize,
+                cat_1: scenario.percent_stop_cat_1,
+                cat_2: scenario.percent_stop_cat_2,
+                oil: +scenario.oil.original_value_optimized + (+scenario.gtm_oil),
+                operating_profit: ((operating_profit + (+scenario.gtm_operating_profit_12m)) / dimension).toFixed(2),
+              })
+            }
           })
 
-          data.push(
-              {
-                salary_percent: salary_percent,
-                retention_percent: retention_percent,
-                series: series
-              },
-              {
-                salary_percent: salary_percent,
-                retention_percent: retention_percent,
-                series: seriesGtm,
-                is_gtm: true
-              },
-          )
+          data.push({
+            salary_percent: salary_percent,
+            retention_percent: retention_percent,
+            series: series
+          })
+
+          if (seriesGtm.length) {
+            data.push({
+              salary_percent: salary_percent,
+              retention_percent: retention_percent,
+              series: seriesGtm,
+              is_gtm: true
+            })
+          }
         })
       })
 

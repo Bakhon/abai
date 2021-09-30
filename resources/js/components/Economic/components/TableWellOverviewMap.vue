@@ -133,7 +133,7 @@ export default {
 <style scoped>
 .well-map {
   position: relative;
-  height: 550px;
+  height: 510px;
   width: 100%;
 }
 
