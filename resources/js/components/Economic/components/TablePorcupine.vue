@@ -238,7 +238,10 @@ export default {
             colors: ['#fff']
           },
         },
-        colors: this.chartColors
+        colors: this.chartColors,
+        legend: {
+          height: 50
+        }
       }
     },
   }
