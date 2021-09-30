@@ -71,14 +71,6 @@
       "is_editable": false
     },
     {
-      "title": "equip",
-      "code": "",
-      "table": "",
-      "column": "",
-      "type": "text",
-      "is_editable": false
-    },
-    {
       "title": "worktime",
       "code": "worktime",
       "table": "prod.well_status",
@@ -88,19 +80,26 @@
     },
     {
       "title": "avg_liquid_prev_month",
-      "code": "avg_liquid_prev_month",
-      "type": "text",
+      "code": "sum(water_inj_val)",
+      "column": "sum(water_inj_val)",
+      "table":"prod.meas_water_inj",
+      "type": "calc",
+      "formula": "$water_inj_val$/$worktime$",
       "is_editable": false
     },
     {
       "title": "avg_pressure_month",
-      "code": "avg_pressure_month",
+      "table":"prod.meas_water_inj",
+      "column": "avg(pressure_inj)",
+      "code": "avg(pressure_inj)",
       "type": "text",
       "is_editable": false
     },
     {
       "title": "avg_temp_prev_month",
-      "code": "avg_temp_prev_month",
+      "table":"prod.meas_water_inj",
+      "column": "avg(agent_temperature)",
+      "code": "avg(agent_temperature)",
       "type": "text",
       "is_editable": false
     },

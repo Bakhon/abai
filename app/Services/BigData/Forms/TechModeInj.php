@@ -36,7 +36,7 @@ class TechModeInj extends TableForm
         );
 
         $this->oilMeasurements = DB::connection('tbd')
-            ->table('prod.tech_mode_inj')
+            ->table('prod.meas_water_inj')
             ->whereIn('well', $wells->pluck('id')->toArray())
             ->where('dbeg', '<=', Carbon::parse($this->request->get('date'))->subMonthNoOverflow()->firstOfMonth())
             ->where('dbeg', '>=', Carbon::parse($this->request->get('date'))->subMonthNoOverflow()->lastOfMonth())
@@ -44,9 +44,8 @@ class TechModeInj extends TableForm
             ->groupBy('well')
             ->map(function ($measurements) {
                 return [
-                    'liquid(avg)' => round($measurements->avg('liquid'), 2),
-                    'pressure(avg)' => round($measurements->avg('pressure'), 2),
-                    'temp(avg)' => round($measurements->avg('temp'), 2)
+                    'avg(pressure_inj)' => round($measurements->avg('pressure_inj'), 2),
+                    'avg(agent_temperature)' => round($measurements->avg('agent_temperature'), 2),
                 ];
             });
 
@@ -79,15 +78,12 @@ class TechModeInj extends TableForm
         switch ($field['code']) {
             case 'worktime':    
                 return $this->getWorktime($item);
-            case 'avg_liquid_prev_month':
+            case 'avg(pressure_inj)':
                 $measurement = $this->oilMeasurements->get($item->id);
-                return !empty($measurement) ? ['value' => $measurement['liquid(avg)']] : null;
-            case 'avg_pressure_month':
+                return !empty($measurement) ? ['value' => $measurement['avg(pressure_inj)']] : null;
+            case 'avg(agent_temperature)':      
                 $measurement = $this->oilMeasurements->get($item->id);
-                return !empty($measurement) ? ['value' => $measurement['pressure(avg)']] : null;
-            case 'avg_temp_prev_month':
-                $measurement = $this->oilMeasurements->get($item->id);
-                return !empty($measurement) ? ['value' => $measurement['temp(avg)']] : null;
+                return !empty($measurement) ? ['value' => $measurement['avg(agent_temperature)']] : null;
             case 'events':
                 return DB::connection('tbd')
                     ->table('prod.tech_mode_event')
@@ -178,34 +174,15 @@ class TechModeInj extends TableForm
         $field = $this->request->get('params')['field'];
         $date = $this->request->get('params')['date'];
         if ($field === 'water_inj_val') {
-            $pressure = DB::connection('tbd')
+            $water_inj_val = DB::connection('tbd')
                 ->table('prod.meas_water_inj')
                 ->where('dbeg', Carbon::parse($date))
                 ->where('well', $this->request->get('well_id'))
-                ->first();
+                ->sum('water_inj_val');
+                $result = [];
+                $result['water_inj_val'] = $water_inj_val;
+            
 
-            if (empty($pressure)) {
-                DB::connection('tbd')
-                    ->table('prod.meas_water_inj')
-                    ->insert(
-                        [
-                            'dbeg' => Carbon::parse($date),
-                            'dend' => Well::DEFAULT_END_DATE,
-                            'well' => $this->request->get('well_id'),
-                            'water_inj_val' => $params['value']
-                        ]
-                    );
-                return;
-            }
-
-            DB::connection('tbd')
-                ->table('prod.meas_water_inj')
-                ->where('id', $pressure->id)
-                ->update(
-                    [
-                        'pressure_inj' => $params['value']
-                    ]
-                );
         }
     }
     
