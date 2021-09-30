@@ -223,7 +223,6 @@ export default {
                 this.SET_LOADING(false);
             })
             .catch(function(e){
-                console.log(e)
                 $self.$notifyError($self.trans('map_constructor.import_error'));
                 $self.SET_LOADING(false);
             });
