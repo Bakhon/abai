@@ -57,12 +57,12 @@ export default {
     charts() {
       return [
         {
-          title: this.trans('economic_reference.operating_profit') + '-',
+          title: this.trans('economic_reference.operating_profit') + '+',
           key: this.profitabilityKey,
           positive: true,
         },
         {
-          title: this.trans('economic_reference.operating_profit') + '+',
+          title: this.trans('economic_reference.operating_profit') + '-',
           key: this.profitabilityKey,
           negative: true,
           sort: 'asc'
