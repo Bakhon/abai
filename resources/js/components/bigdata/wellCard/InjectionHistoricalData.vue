@@ -5,7 +5,7 @@
                 <div class="col-11 p-2">Исторические сведения по добыче нефти</div>
                 <div class="col-1 cancel-icon" @click="SET_VISIBLE_INJECTION(false)"></div>
             </div>
-            <div class="col-12 p-0">
+            <div class="col-12 p-0 left-block">
                 <table class="historical-table">
                     <thead>
                         <tr>
@@ -107,7 +107,7 @@ export default {
                         'name': this.monthMapping[y],
                         'month': y,
                         'year': i,
-                        'isChecked': false,
+                        'isChecked': true,
                         'waterInjection': 0,
                         'dailyWaterInjection': 0,
                         'accumulateWaterInjection': 0,
@@ -127,7 +127,6 @@ export default {
 <style scoped lang="scss">
 .main-block {
     margin-left: 30px;
-    margin-top: 7px;
     height: 100%;
     min-width: 610px;
     max-width: 610px;
@@ -145,36 +144,31 @@ export default {
 .historical-table {
     text-align: center;
     border: 2px solid #293688;
-    thead tr {
-        display: block;
-    }
+    width: 100%;
     th {
         background: #37408B;
         border: 1px solid rgba(161, 164, 222, 0.3);
         border-top: none;
         padding: 5px;
-        min-width: 127px;
     }
     tbody {
-        display:block;
-        width: 98%;
-        overflow-y: auto;
         height: 725px;
     }
     td {
         padding: 5px;
         background: #4D5092;
         border: 1px solid #A1A4DE;
-        min-width: 127px;
         span {
             border-left: 1px solid #A1A4DE;
-            padding-top: 10px;
-            padding-bottom: 10px
+            padding-top: 17px;
+            padding-bottom: 17px
         }
         label {
             min-width: 61px;
         }
     }
 }
-
+.left-block {
+    overflow-y: scroll;
+}
 </style>

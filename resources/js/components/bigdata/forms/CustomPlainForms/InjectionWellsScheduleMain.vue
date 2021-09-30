@@ -178,33 +178,9 @@
                                         <tr v-for="(dayData,index) in periodItem.monthlyData" :class="index % 2 === 0 ? 'background_light' : 'background_dark'">
                                             <td
                                                     v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                    v-if="dayData.injectivity[dayNumber-1]"
                                             >
-                                                {{dayData.injectivity[dayNumber-1]}}
-                                            </td>
-                                            <td
-                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                    v-if="dayData.injectionPressure[dayNumber-1]"
-                                            >
-                                                {{dayData.injectionPressure[dayNumber-1]}}
-                                            </td>
-                                            <td
-                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                    v-if="dayData.wellCondition[dayNumber-1]"
-                                            >
-                                                {{dayData.wellCondition[dayNumber-1]}}
-                                            </td>
-                                            <td
-                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                    v-if="dayData.processedTime[dayNumber-1]"
-                                            >
-                                                {{dayData.processedTime[dayNumber-1]}}
-                                            </td>
-                                            <td
-                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                    v-if="dayData.gtm[dayNumber-1]"
-                                            >
-                                                {{dayData.gtm[dayNumber-1]}}
+                                                <span v-if="dayData[dayNumber-1]">{{dayData[dayNumber-1]}}</span>
+                                                <span v-else>&nbsp</span>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -351,41 +327,11 @@ export default {
                         }
                     ],
                     'monthlyData': [
-                        {
-                            'injectivity': [1],
-                            'injectionPressure': [2],
-                            'wellCondition': [3],
-                            'processedTime': [4],
-                            'gtm': ['Начало ГТМ']
-                        },
-                        {
-                            'injectivity': [11],
-                            'injectionPressure': [22],
-                            'wellCondition': [33],
-                            'processedTime': [44],
-                            'gtm': ['Начало ГТМ 2']
-                        },
-                        {
-                            'injectivity': [11],
-                            'injectionPressure': [22],
-                            'wellCondition': [33],
-                            'processedTime': [44],
-                            'gtm': ['Начало ГТМ 2']
-                        },
-                        {
-                            'injectivity': [11],
-                            'injectionPressure': [22],
-                            'wellCondition': [33],
-                            'processedTime': [44],
-                            'gtm': ['Начало ГТМ 2']
-                        },
-                        {
-                            'injectivity': [11],
-                            'injectionPressure': [22],
-                            'wellCondition': [33],
-                            'processedTime': [44],
-                            'gtm': ['Начало ГТМ 2']
-                        },
+                        [50,65,67,50,51],
+                        [4.41,4.34,4.41],
+                        ['','','','',67],
+                        ['','','','',''],
+                        ['Начало ГТМ','Начало ГТМ','Начало ГТМ','Начало ГТМ','Начало ГТМ'],
                     ],
                     'activity': [
                         {

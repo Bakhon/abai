@@ -5,28 +5,36 @@
                 <div class="col-11 p-2">Исторические сведения по добыче нефти</div>
                 <div class="col-1 cancel-icon" @click="SET_VISIBLE_PRODUCTION(false)"></div>
             </div>
-            <div class="col-12 p-0">
+            <div class="col-12 p-0 left-block">
                 <table class="historical-table">
                     <thead>
                         <tr>
-                            <th>Год</th>
-                            <th>Закачка воды<br>за период, м3</th>
-                            <th>Среднесуточнаяя<br>закачка воды за<br>период, м3/сут.</th>
-                            <th>Накопленная<br>закачка воды за<br>период, м3/сут.</th>
-                            <th>Отработанное<br>время</th>
+                            <th rowspan="2">Год</th>
+                            <th colspan="2">Добыча за<br>период</th>
+                            <th colspan="3">Ср. сут. показатели за период</th>
+                            <th rowspan="2">Отработанное<br>время</th>
+                        </tr>
+                        <tr>
+                            <th>Жидкость<br>(м3)</th>
+                            <th>Нефть<br>(т)</th>
+                            <th>Дебит<br>жидкости<br>(м3/сут.)</th>
+                            <th>Обводненность<br>(%)</th>
+                            <th>Дебит нефти<br>(т/сут.)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(date,index) in dates">
                             <td>
-                                <label v-if="!date.month" class="form-check-label">{{date.year}}</label>
+                                <label v-if="!date.month" class="form-check-label" @click="handleYearClick(date,index)">{{date.year}}</label>
                                 <label v-else class="form-check-label">{{date.name}}</label>
                                 <span class="ml-1"></span>
-                                <input class="ml-2" type="checkbox" :value="date.isChecked" @click="handleDateSelect(date,index)">
+                                <input class="ml-2" type="checkbox" v-model="date.isChecked" @click="handleDateSelect(date)">
                             </td>
-                            <td>{{date.waterInjection}}</td>
-                            <td>{{date.dailyWaterInjection}}</td>
-                            <td>{{date.accumulateWaterInjection}}</td>
+                            <td>{{date.water}}</td>
+                            <td>{{date.oil}}</td>
+                            <td>{{date.waterDebit}}</td>
+                            <td>{{date.waterCut}}</td>
+                            <td>{{date.oilDebit}}</td>
                             <td>{{date.hoursWorked}}</td>
                         </tr>
                     </tbody>
@@ -70,7 +78,7 @@ export default {
         ...bigdatahistoricalVisibleMutations([
             'SET_VISIBLE_INJECTION'
         ]),
-        handleDateSelect(date,parentIndex) {
+        handleYearClick(date,parentIndex) {
             let fullDate = {year: date.year, month: undefined};
             if (date.month) {
                 fullDate['month'] = date.month;
@@ -85,7 +93,20 @@ export default {
                 if (date.months) {
                     this.dates = this.arrayMerge(this.dates,date.months,parentIndex+1);
                 }
-                this.selectedDates.push(fullDate);
+            }
+        },
+        handleDateSelect(date) {
+            let ids = [date.id];
+            if (date.months) {
+                ids = _.map(date.months, 'id');
+            }
+            if (!date.isChecked) {
+                this.selectedDates.push(ids);
+            } else {
+                for (let i in ids) {
+                    let index = this.selectedDates.findIndex(item => item === ids[i]);
+                    this.selectedDates.splice(index, 1);
+                }
             }
         },
         arrayMerge(parentArray, childArray, i) {
@@ -94,24 +115,30 @@ export default {
         fillDates() {
             for (let i = 2008; i <= 2021; i++) {
                 let obj = {
+                    'id': i,
                     'year': i,
                     'isChecked': false,
-                    'waterInjection': 0,
-                    'dailyWaterInjection': 0,
-                    'accumulateWaterInjection': 0,
-                    'hoursWorked': '0 дней 0 часов',
+                    'water': 0,
+                    'oil': 0,
+                    'waterDebit': 0,
+                    'waterCut': 0,
+                    'oilDebit': 0,
+                    'hoursWorked': '0 часов',
                     'months': []
                 };
                 for (let y = 1; y <=12; y++) {
                     obj.months.push({
                         'name': this.monthMapping[y],
+                        'id': y + '.' + i,
                         'month': y,
                         'year': i,
                         'isChecked': false,
-                        'waterInjection': 0,
-                        'dailyWaterInjection': 0,
-                        'accumulateWaterInjection': 0,
-                        'hoursWorked': '0 дней 0 часов',
+                        'water': 0,
+                        'oil': 0,
+                        'waterDebit': 0,
+                        'waterCut': 0,
+                        'oilDebit': 0,
+                        'hoursWorked': '0 часов',
                     });
                 }
                 this.dates.push(obj);
@@ -127,7 +154,6 @@ export default {
 <style scoped lang="scss">
 .main-block {
     margin-left: 30px;
-    margin-top: 7px;
     height: 100%;
     min-width: 610px;
     max-width: 610px;
@@ -145,36 +171,31 @@ export default {
 .historical-table {
     text-align: center;
     border: 2px solid #293688;
-    thead tr {
-        display: block;
-    }
+    width: 100%;
     th {
         background: #37408B;
         border: 1px solid rgba(161, 164, 222, 0.3);
         border-top: none;
         padding: 5px;
-        min-width: 127px;
     }
     tbody {
-        display:block;
-        width: 98%;
-        overflow-y: auto;
         height: 725px;
     }
     td {
         padding: 5px;
         background: #4D5092;
         border: 1px solid #A1A4DE;
-        min-width: 127px;
         span {
             border-left: 1px solid #A1A4DE;
-            padding-top: 10px;
-            padding-bottom: 10px
+            padding-top: 17px;
+            padding-bottom: 17px
         }
         label {
             min-width: 61px;
         }
     }
 }
-
+.left-block {
+    overflow-y: scroll;
+}
 </style>

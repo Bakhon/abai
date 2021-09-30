@@ -10,7 +10,7 @@
                 <span class="header_icon ml-1"></span>
                 <div class="d-flex justify-content-between">
                     <span class="header_icon-switch mr-1"></span>
-                    <span class="underline cursor-pointer header_title px-1" @click="SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)">Исторические сведения по добыче нефти</span>
+                    <span class="underline cursor-pointer header_title px-1" @click="SET_VISIBLE_PRODUCTION(true),changeColumnsVisible(false)">Исторические сведения по добыче нефти</span>
                 </div>
             </div>
             <div class="d-flex mt-1">
@@ -93,46 +93,6 @@
                             <table class="table text-center text-white text-nowrap historical-table">
                                 <thead>
                                     <tr>
-                                        <th>Год /<br>Месяц</th>
-                                        <th>По</th>
-                                        <th>L</th>
-                                        <th>Ø<br>штуцера</th>
-                                        <th>Вид<br>агента</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="background_light">
-                                        <td v-for="(scheduleItem,key,index) in periodItem.measurementSchedule">
-                                            {{scheduleItem}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td v-for="emptyItem in 5">
-                                            &nbsp;
-                                        </td>
-                                    </tr>
-                                    <tr class="background_dark">
-                                        <td v-for="emptyItem in 5">
-                                            &nbsp;
-                                        </td>
-                                    </tr>
-                                    <tr class="background_light">
-                                        <td v-for="emptyItem in 5">
-                                            &nbsp;
-                                        </td>
-                                    </tr>
-                                    <tr class="background_dark">
-                                        <td v-for="emptyItem in 5">
-                                            &nbsp;
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="p-0">
-                            <table class="table text-center text-white text-nowrap historical-table">
-                                <thead>
-                                    <tr>
                                         <th>Показатель</th>
                                         <th>Тех. <br>Режим</th>
                                     </tr>
@@ -142,13 +102,10 @@
                                             v-for="(techModeItem,index) in periodItem.techMode"
                                             :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
                                     >
-                                        <td v-if="techModeItem.value">
+                                        <td>
                                             {{techModeItem.label}}
                                         </td>
-                                        <td v-else colspan="2">
-                                            {{techModeItem.label}}
-                                        </td>
-                                        <td v-if="techModeItem.value">
+                                        <td>
                                             {{techModeItem.value}}
                                         </td>
                                     </tr>
@@ -166,33 +123,9 @@
                                     <tr v-for="(dayData,index) in periodItem.monthlyData" :class="index % 2 === 0 ? 'background_light' : 'background_dark'">
                                         <td
                                                 v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                v-if="dayData.injectivity[dayNumber-1]"
                                         >
-                                            {{dayData.injectivity[dayNumber-1]}}
-                                        </td>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                v-if="dayData.injectionPressure[dayNumber-1]"
-                                        >
-                                            {{dayData.injectionPressure[dayNumber-1]}}
-                                        </td>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                v-if="dayData.wellCondition[dayNumber-1]"
-                                        >
-                                            {{dayData.wellCondition[dayNumber-1]}}
-                                        </td>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                v-if="dayData.processedTime[dayNumber-1]"
-                                        >
-                                            {{dayData.processedTime[dayNumber-1]}}
-                                        </td>
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
-                                                v-if="dayData.gtm[dayNumber-1]"
-                                        >
-                                            {{dayData.gtm[dayNumber-1]}}
+                                            <span v-if="dayData[dayNumber-1]">{{dayData[dayNumber-1]}}</span>
+                                            <span v-else>&nbsp</span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -263,6 +196,8 @@
 <script>
 import ProductionWellsSchedule from "./ProductionWellsSchedule";
 import moment from "moment";
+import {bigdatahistoricalVisibleMutations} from '@store/helpers';
+
 export default {
     components: {ProductionWellsSchedule},
     props: {
@@ -303,66 +238,78 @@ export default {
                 {
                     'measurementSchedule': {
                             'title':'2021/январь',
-                            'po':'Воронки НКТ',
-                            'l':1200,
-                            'union':5,
-                            'agentType':'Вода морская',
                     },
                     'techMode': [
                         {
-                            'label': 'Приемистость',
-                            'value': 240,
+                            'label': 'Жидкость',
+                            'value': 65,
                         },
                         {
-                            'label': 'Давление закачки',
-                            'value': 125,
+                            'label': 'Нефть',
+                            'value': 2.9,
                         },
                         {
-                            'label': 'Состояние скважины',
+                            'label': 'Обводненность',
+                            'value': 95,
                         },
                         {
-                            'label': 'Обработанное время',
+                            'label': 'Аном. обв.',
+                            'value': '-',
                         },
                         {
-                            'label': 'ГТМ',
+                            'label': 'Добыча газа',
+                            'value': 65,
+                        },
+                        {
+                            'label': 'Жидкость, м3/сут.\n' + '(телеметрия)',
+                            'value': 2.9,
+                        },
+                        {
+                            'label': 'Pбуфф.',
+                            'value': 95,
+                        },
+                        {
+                            'label': 'Pзатр.',
+                            'value': '-',
+                        },
+                        {
+                            'label': 'Pбуфф.\n' +
+                                'до штуцера',
+                            'value': '-',
+                        },
+                        {
+                            'label': 'Pбуфф. после\n' + 'штуцера',
+                            'value': '-',
+                        },
+                        {
+                            'label': 'Н дин./\n' +
+                                'Pзаб/Pзатр',
+                            'value': '-',
+                        },
+                        {
+                            'label': 'Н стат / Рпл / \n' +
+                                'Pзатр',
+                            'value': '-',
+                        },
+                        {
+                            'label': 'Рез. ГДМ / Дл.х.при\n' + 'ГДМ/ ЧК при ГДМ',
+                            'value': '-',
                         }
                     ],
                     'monthlyData': [
-                        {
-                            'injectivity': [1],
-                            'injectionPressure': [2],
-                            'wellCondition': [3],
-                            'processedTime': [4],
-                            'gtm': ['Начало ГТМ']
-                        },
-                        {
-                            'injectivity': [11],
-                            'injectionPressure': [22],
-                            'wellCondition': [33],
-                            'processedTime': [44],
-                            'gtm': ['Начало ГТМ 2']
-                        },
-                        {
-                            'injectivity': [11],
-                            'injectionPressure': [22],
-                            'wellCondition': [33],
-                            'processedTime': [44],
-                            'gtm': ['Начало ГТМ 2']
-                        },
-                        {
-                            'injectivity': [11],
-                            'injectionPressure': [22],
-                            'wellCondition': [33],
-                            'processedTime': [44],
-                            'gtm': ['Начало ГТМ 2']
-                        },
-                        {
-                            'injectivity': [11],
-                            'injectionPressure': [22],
-                            'wellCondition': [33],
-                            'processedTime': [44],
-                            'gtm': ['Начало ГТМ 2']
-                        },
+                        [50,65,67,50,51],
+                        [4.41,4.34,4.41],
+                        ['','','','',67],
+                        ['','','','',''],
+                        [66,65,66,67,65],
+                        [4.41,4.34,4.44],
+                        ['','','','',97],
+                        ['','','','',''],
+                        ['','','','',''],
+                        ['','','','',''],
+                        ['','','','',''],
+                        ['','','','',''],
+                        ['','','','',''],
                     ],
                     'activity': [
                         {
@@ -400,6 +347,9 @@ export default {
         getDaysCountInMonth(monthYearString) {
             return moment(monthYearString, 'YYYY/MMM').daysInMonth();
         },
+        ...bigdatahistoricalVisibleMutations([
+            'SET_VISIBLE_PRODUCTION'
+        ]),
     }
 }
 </script>
