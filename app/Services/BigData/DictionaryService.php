@@ -325,10 +325,6 @@ class DictionaryService
             'class' => Org::class,
             'name_field' => 'name_ru'
         ],
-        'techs' => [
-            'class' => Tech::class,
-            'name_field' => 'name_ru'
-        ],
         'expl_type_plan_gdis' => [
             'class' => ExplTypePlanGDIS::class,
             'name_field' => 'name',
@@ -439,6 +435,9 @@ class DictionaryService
                     break;
                 case 'well_statuses_drill':
                     $dict = $this->getWellStatusesForDrill();
+                    break;
+                case 'techs':
+                    $dict = $this->getWellTechsDict();
                     break;
                 case 'underground_equip_type':
                     $dict = UndergroundEquipType::getDict();
@@ -587,6 +586,91 @@ class DictionaryService
             ->toArray();
 
         return $this->generateTree((array)$items);
+    }
+
+    private function getWellTechsDict(): array
+    {
+        $dictClass = Tech::class;
+
+        $items = $dictClass::query()
+            ->select('id', "parent as parent")
+            ->selectRaw("name_ru as label")
+            ->orderBy('parent', 'asc')
+            ->orderBy('name_ru', 'asc')
+            ->get()
+            ->toArray();
+        
+        $tree = [];
+        $items = $this->generateTree($items);
+        $techPermissionsIds = $this->getUserTechPermissionIds();
+        $this->filterTree($items, $tree, $techPermissionsIds);
+        return $tree;
+    }
+
+    public function getUserTechPermissionIds() {
+        $orgIds = $this->getUserOrgPermissionIds();
+        $result = [];
+        foreach($orgIds as $id) {
+            $itemElements = DB::connection('tbd')
+                ->table('prod.org_tech_link as otl')
+                ->select('otl.tech as tech')
+                ->where('otl.org', $id)
+                ->get()
+                ->toArray();
+            $result = array_merge($result, $itemElements);
+        }
+        $result = array_unique(array_map(function ($item) {
+            return (int)$item->tech;
+        }, $result));
+        
+        return $result;
+    }
+
+    public function getUserOrgPermissionIds() {
+        $orgIds = array_filter(auth()->user()->org_structure, function($item) {
+            return substr($item, 0, strpos($item, ":")) == 'org';
+        });
+        $orgIds = array_map(function ($item) {
+            return (int)substr($item, strpos($item, ":") + 1);
+        }, $orgIds);
+
+        $items = DB::connection('tbd')
+                ->table('dict.org as o')
+                ->select('o.id', 'o.parent as parent')
+                ->get()
+                ->toArray();
+
+        $orgIds = array_unique(array_merge($orgIds, $this->getOrgWithChildrenIds($orgIds, $items)));
+        return $orgIds;
+    }
+
+    private function getOrgWithChildrenIds($orgIds, &$items) {
+        $result = [];
+        foreach($orgIds as $id) {
+            $tmp = [];
+            foreach($items as $item) {
+                if($item->parent == $id) {
+                    $tmp[] = $item->id;
+                }
+            }
+            
+            $result = array_merge($result, $tmp, $this->getOrgWithChildrenIds($tmp, $items));
+        }
+
+        return $result;
+    }
+
+    public function filterTree($items, &$tree, &$userTreeAccessedItems)
+    {
+        foreach($items as $item) {
+            if(in_array($item['id'], $userTreeAccessedItems)) {
+                $tree[] = $item;
+                continue;
+            }
+            if(!empty($item['children'])) {
+                $this->filterTree($item['children'], $tree, $userTreeAccessedItems);
+            }
+        }
     }
 
     private function getWellTechStateDict(): array
