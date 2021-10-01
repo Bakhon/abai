@@ -87,7 +87,7 @@
       <vue-table-dynamic
           v-if="isVisibleWells"
           :params="tableParams"
-          class="matrix-table">
+          class="matrix-table mt-3">
         <template :slot="`column-0`" slot-scope="{ props }">
           <div class="d-flex align-items-center w-100">
             <div> {{ props.cellData.label }}</div>
@@ -157,7 +157,6 @@ export default {
     tableParams() {
       return {
         data: [...[this.tableHeaders], ...this.tableData.wells],
-        enableSearch: true,
         whiteSpace: 'normal',
         header: 'row',
         border: true,
@@ -451,10 +450,6 @@ export default {
 .matrix-table >>> .v-table .table-cell {
   background: #272953;
   color: #fff;
-}
-
-.matrix-table >>> .tools-search {
-  background: #272953;
 }
 
 .font-weight-600 {
