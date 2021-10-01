@@ -25,7 +25,7 @@ class DailyReportsFluidProd extends DailyReports
             ->table('prod.meas_liq')
             ->select('dbeg', 'liquid', 'well')
             ->where('dbeg', '>=', $date->startOfYear())
-            ->where('dbeg', '<=', $date)
+            ->where('dbeg', '<=', $date->endOfDay())
             ->whereIn('well', $wells)
             ->get()
             ->groupBy(function ($item) {
