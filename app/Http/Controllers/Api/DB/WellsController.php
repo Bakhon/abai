@@ -617,16 +617,6 @@ class WellsController extends Controller
         $wellInfo = dictWell::query()
             ->where('dict.well.id',$well)
             ->leftJoin('dmart.mer_inj as mi', 'dict.well.uwi', '=', 'mi.well')
-            //->leftJoin('prod.meas_water_inj as mwi', 'dict.well.id', '=', 'mwi.well')
-           // ->leftJoin('prod.meas_water_inj',function ($join) {
-           //     $join->on('prod.meas_water_inj.well', '=' , 'dict.well.id');
-              //  ->select(DB::raw('SUM(prod.meas_water_inj.pressure_inj) As summary'));
-                //->where(DB::raw('DATE_FORMAT(prod.meas_water_inj.dbeg, "%Y-%m-1")'),'=','dmart.mer_inj.date');
-               // ->whereDate('prod.meas_water_inj.dbeg','=',DB::raw('DATE_FORMAT(dmart.mer_inj.date)'));
-                //$join->on("DB::raw('MONTH(prod.meas_water_inj.dbeg) month')","=","DB::raw('MONTH(mi.date) month2)");
-                //$join->whereMonth('prod.meas_water_inj.dbeg','=','mi.date');
-                //$join->whereYear('prod.meas_water_inj.dbeg','=','mi.date');
-          //  })
             ->get();
         return $wellInfo;
     }

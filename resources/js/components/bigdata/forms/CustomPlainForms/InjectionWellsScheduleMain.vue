@@ -440,7 +440,7 @@ export default {
                 this.historicalInfo.push(obj);
             });
             this.SET_INJECTION_HISTORICAL(this.historicalInfo);
-        }
+        },
     },
     async mounted() {
         const response = await axios.get(this.localeUrl(`/api/bigdata/wells/injectionHistory/${this.well.id}`));
