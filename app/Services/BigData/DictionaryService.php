@@ -66,14 +66,13 @@ use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\WorkStatus;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\TubeNom;
 use App\Services\BigData\DictionaryServices\UndergroundEquipElement;
 use App\Services\BigData\DictionaryServices\UndergroundEquipType;
-use App\Models\BigData\Dictionaries\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-
 
 class DictionaryService
 {
@@ -159,7 +158,7 @@ class DictionaryService
             'name_field' => 'name_ru'
         ],
         'tube_nom' => [
-            'class' => TybeNom::class,
+            'class' => TubeNom::class,
             'name_field' => 'model'
         ],
         'blocks' => [
