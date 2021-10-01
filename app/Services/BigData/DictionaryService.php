@@ -68,7 +68,7 @@ use App\Models\BigData\Dictionaries\WorkStatus;
 use App\Models\BigData\Dictionaries\Zone;
 use App\Services\BigData\DictionaryServices\UndergroundEquipElement;
 use App\Services\BigData\DictionaryServices\UndergroundEquipType;
-use App\TybeNom;
+use App\Models\BigData\Dictionaries\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
