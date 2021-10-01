@@ -43,8 +43,8 @@ abstract class MeasLogByMonth extends TableForm
             ->get()
             ->map(
                 function ($item) {
-                    $item->dbeg = Carbon::parse($item->dbeg);
-                    $item->dend = Carbon::parse($item->dend);
+                    $item->dbeg = Carbon::parse($item->dbeg, 'Asia/Almaty');
+                    $item->dend = Carbon::parse($item->dend, 'Asia/Almaty');
                     return $item;
                 }
             );
