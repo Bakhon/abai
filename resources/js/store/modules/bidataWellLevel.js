@@ -6,6 +6,8 @@ const bidataWellLevel = {
         isProductionWellsHistoricalVisible: false,
         injectionHistoricalData: [],
         injectionMeasurementSchedule: [],
+        productionMeasurementSchedule: [],
+        productionHistoricalData: [],
     },
 
     mutations: {
@@ -18,8 +20,14 @@ const bidataWellLevel = {
         SET_INJECTION_HISTORICAL(state, payload) {
             state.injectionHistoricalData = payload;
         },
+        SET_PRODUCTION_HISTORICAL(state, payload) {
+            state.productionHistoricalData = payload;
+        },
         SET_INJECTION_HISTORICAL_PERIOD(state, payload) {
             state.injectionMeasurementSchedule = payload;
+        },
+        SET_PRODUCTION_HISTORICAL_PERIOD(state, payload) {
+            state.productionMeasurementSchedule = payload;
         }
     },
 };

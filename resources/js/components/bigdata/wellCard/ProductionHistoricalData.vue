@@ -23,19 +23,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(date,index) in dates">
+                        <tr v-for="(date,index) in dates" v-if="date.isVisible">
                             <td>
-                                <label v-if="!date.month" class="form-check-label" @click="handleYearClick(date,index)">{{date.year}}</label>
-                                <label v-else class="form-check-label">{{date.name}}</label>
+                                <label v-if="date.month === null" class="form-check-label" @click="handleYearSelect(date,index)">{{date.year}}</label>
+                                <label v-else class="form-check-label">{{date.month}}</label>
                                 <span class="ml-1"></span>
-                                <input class="ml-2" type="checkbox" v-model="date.isChecked" @click="handleDateSelect(date)">
+                                <input class="ml-2" type="checkbox" v-model="date.isChecked" @click="handleDateSelect(date,index)">
                             </td>
-                            <td>{{date.water}}</td>
-                            <td>{{date.oil}}</td>
-                            <td>{{date.waterDebit}}</td>
+                            <td>{{date.water.toFixed(2)}}</td>
+                            <td v-if="date.oil !== null && date.oil > 0">{{date.oil.toFixed(2)}}</td>
+                            <td v-else>{{date.oil}}</td>
+                            <td>{{date.waterDebit.toFixed(2)}}</td>
                             <td>{{date.waterCut}}</td>
-                            <td>{{date.oilDebit}}</td>
-                            <td>{{date.hoursWorked}}</td>
+                            <td>{{date.oilDebit.toFixed(2)}}</td>
+                            <td>{{(date.hoursWorked*24).toFixed(0)}} часов</td>
                         </tr>
                     </tbody>
                 </table>
@@ -46,7 +47,7 @@
 
 <script>
 import moment from "moment";
-import {bigdatahistoricalVisibleMutations} from '@store/helpers';
+import {bigdatahistoricalVisibleMutations,bigdatahistoricalVisibleState} from '@store/helpers';
 
 export default {
     props: {
@@ -74,77 +75,136 @@ export default {
     },
     methods: {
         ...bigdatahistoricalVisibleMutations([
-            'SET_VISIBLE_PRODUCTION'
+            'SET_VISIBLE_PRODUCTION','SET_PRODUCTION_HISTORICAL_PERIOD'
         ]),
-        handleYearClick(date,parentIndex) {
-            let fullDate = {year: date.year, month: undefined};
-            if (date.month) {
-                fullDate['month'] = date.month;
-            }
-            let index = this.selectedDates.findIndex(item => item.year === fullDate.year && item.month === fullDate.month);
-            if (index !== -1) {
-                this.selectedDates.splice(index, 1);
-                if (date.months) {
-                    this.dates = _.filter(this.dates, (item) => (!item.month && item.year === date.year) || item.year !== date.year);
+        handleYearSelect(date) {
+            _.forEach(this.dates, (item) => {
+                if (item.month !== null && parseInt(item.year) === date.year) {
+                    item.isVisible = !item.isVisible;
                 }
-            } else {
-                if (date.months) {
-                    this.dates = this.arrayMerge(this.dates,date.months,parentIndex+1);
-                }
-            }
+            });
         },
-        handleDateSelect(date) {
-            let ids = [date.id];
-            if (date.months) {
-                ids = _.map(date.months, 'id');
-            }
-            if (!date.isChecked) {
-                this.selectedDates.push(ids);
+        handleDateSelect(date,parentIndex) {
+            let filtered = [];
+            if (date.id.toString().length === 4) {
+                _.forEach(this.dates, (item) => {
+                    if (item.month !== null && parseInt(item.year) === date.year) {
+                        item.isChecked = !item.isChecked;
+                    }
+                });
+                filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
             } else {
-                for (let i in ids) {
-                    let index = this.selectedDates.findIndex(item => item === ids[i]);
-                    this.selectedDates.splice(index, 1);
-                }
+                this.dates[parentIndex].isChecked = !this.dates[parentIndex].isChecked;
+                filtered = _.filter(this.dates, (item) => item.isChecked && item.month !== null);
             }
-        },
-        arrayMerge(parentArray, childArray, i) {
-            return parentArray.slice(0, i).concat(childArray, parentArray.slice(i));
+            this.selectedDates = filtered;
+            this.SET_PRODUCTION_HISTORICAL_PERIOD(this.selectedDates);
         },
         fillDates() {
             for (let i = 2008; i <= 2021; i++) {
                 let obj = {
                     'id': i,
+                    'month': null,
                     'year': i,
                     'isChecked': false,
+                    'isVisible': true,
                     'water': 0,
                     'oil': 0,
                     'waterDebit': 0,
                     'waterCut': 0,
                     'oilDebit': 0,
-                    'hoursWorked': '0 часов',
-                    'months': []
+                    'hoursWorked': 0,
+                    'params': {
+                        'techMode': [
+                            {
+                                'label': 'Жидкость',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Нефть',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Обводненность',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Аном. обв.',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Добыча газа',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Жидкость, м3/сут. (телеметрия)',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Pбуфф.',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Pзатр.',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Pбуфф.\n' +
+                                    'до штуцера',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Pбуфф. после\n' + 'штуцера',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Н дин./\n' +
+                                    'Pзаб/Pзатр',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Н стат / Рпл / \n' +
+                                    'Pзатр',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Рез. ГДМ / Дл.х.при\n' + 'ГДМ/ ЧК при ГДМ',
+                                'value': 0,
+                            }
+                        ],
+                    }
                 };
-                for (let y = 1; y <=12; y++) {
-                    obj.months.push({
-                        'name': this.monthMapping[y],
-                        'id': y + '.' + i,
-                        'month': y,
-                        'year': i,
-                        'isChecked': false,
-                        'water': 0,
-                        'oil': 0,
-                        'waterDebit': 0,
-                        'waterCut': 0,
-                        'oilDebit': 0,
-                        'hoursWorked': '0 часов',
-                    });
-                }
                 this.dates.push(obj);
             }
+        },
+        getHistorical() {
+            let calculated = [];
+            _.forEach(this.dates, (yearItem) => {
+                let summary = this.getSummaryBy(yearItem.year,yearItem);
+                let filtered = _.filter(this.productionHistoricalData, (item) => parseInt(item.year) === yearItem.year);
+                calculated.push(summary);
+                calculated = calculated.concat(filtered);
+            });
+            return calculated;
+        },
+        getSummaryBy(year, template) {
+            let filtered = _.filter(this.productionHistoricalData, (item) => parseInt(item.year) === year);
+            let summary = template;
+            summary['water'] = _.sumBy(filtered, 'water');
+            summary['oil'] = _.sumBy(filtered, 'oil');
+            summary['waterDebit'] = _.sumBy(filtered, 'waterDebit');
+            summary['waterCut'] = _.sumBy(filtered, 'waterCut');
+            summary['oilDebit'] = _.sumBy(filtered, 'oilDebit');
+            summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
+            return summary;
         }
     },
     mounted() {
         this.fillDates();
+        this.dates = this.getHistorical();
+    },
+    computed: {
+        ...bigdatahistoricalVisibleState(['productionHistoricalData']),
     }
 }
 </script>

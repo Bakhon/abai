@@ -614,10 +614,22 @@ class WellsController extends Controller
 
     public function getInjectionHistory($well)
     {
-        $wellInfo = dictWell::query()
+        return dictWell::query()
             ->where('dict.well.id',$well)
             ->leftJoin('dmart.mer_inj as mi', 'dict.well.uwi', '=', 'mi.well')
             ->get();
-        return $wellInfo;
+
+    }
+
+    public function getProductionHistory($well)
+    {
+        return dictWell::query()
+            ->where('dict.well.id',$well)
+            //->leftJoin('dmart.mer_prod_oil as mi', 'dict.well.uwi', '=', 'mi.well')
+            ->leftJoin('dmart.mer_prod_oil as mi', function($leftJoin) {
+                $leftJoin->on('dict.well.uwi', '=', 'mi.well')
+                ->whereYear('mi.date', '>=', 2008);
+            })
+            ->get();
     }
 }

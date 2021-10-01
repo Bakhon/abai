@@ -124,6 +124,7 @@ Route::group(
                 Route::get('/las/download/{experiment}', 'Api\DB\LasController@downloadFile')->name('las.download');
 
                 Route::get('wells/injectionHistory/{well}', 'Api\DB\WellsController@getInjectionHistory');
+                Route::get('wells/productionHistory/{well}', 'Api\DB\WellsController@getProductionHistory');
             }
         );
     }

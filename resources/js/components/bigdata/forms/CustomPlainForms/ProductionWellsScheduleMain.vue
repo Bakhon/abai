@@ -83,23 +83,25 @@
                     <div class="col-12">График замеров</div>
                 </div>
             </div>
-            <div v-for="periodItem in historicalData" class="historical-container">
-                <div class="row m-0 mt-1">
-                    <div class="col-12 center_block d-flex">
-                        <div class="col-12">{{periodItem.measurementSchedule.title}}</div>
-                    </div>
-                    <div class="col-12 p-0 d-flex historical-info">
-                        <div class="p-0">
-                            <table class="table text-center text-white text-nowrap historical-table">
-                                <thead>
+            <div class="historical-container">
+                <div v-if="productionMeasurementSchedule.length > 0" v-for="periodItem in productionMeasurementSchedule">
+                    <div class="row m-0 mt-1">
+                        <div class="col-12 center_block d-flex">
+                            <div class="col-12">{{periodItem.id}}</div>
+                        </div>
+                        <div class="col-12 p-0 d-flex historical-info">
+                            <div class="p-0">
+                                <table class="table text-center text-white text-nowrap historical-table">
+                                    <thead>
                                     <tr>
                                         <th>Показатель</th>
                                         <th>Тех. <br>Режим</th>
                                     </tr>
-                                </thead>
-                                <tbody>
+                                    </thead>
+                                    <tbody>
                                     <tr
-                                            v-for="(techModeItem,index) in periodItem.techMode"
+                                            v-if="periodItem.params.techMode"
+                                            v-for="(techModeItem,index) in periodItem.params.techMode"
                                             :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
                                     >
                                         <td>
@@ -109,40 +111,40 @@
                                             {{techModeItem.value}}
                                         </td>
                                     </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="p-0" id="monthly-parent">
-                            <table class="table text-center text-white text-nowrap historical-table" id="monthly-info">
-                                <thead>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="p-0">
+                                <table class="table text-center text-white text-nowrap historical-table">
+                                    <thead>
                                     <tr>
-                                        <th v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)">{{dayNumber}}<br>&nbsp;</th>
+                                        <th v-for="dayNumber in getDaysCountInMonth(periodItem.id)">{{dayNumber}}<br>&nbsp;</th>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(dayData,index) in periodItem.monthlyData" :class="index % 2 === 0 ? 'background_light' : 'background_dark'">
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(dayData,index) in periodItem.params.monthlyData" :class="index % 2 === 0 ? 'background_light' : 'background_dark'">
                                         <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.measurementSchedule.title)"
+                                                v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                         >
                                             <span v-if="dayData[dayNumber-1]">{{dayData[dayNumber-1]}}</span>
                                             <span v-else>&nbsp</span>
                                         </td>
                                     </tr>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="d-flex mt-1">
-                    <div class="col-3 form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="activityCheck" @click="isActivityShown = !isActivityShown">
-                        <label class="form-check-label" for="activityCheck">
-                            Показать мероприятия
-                        </label>
-                    </div>
-                    <div v-if="isActivityShown" class="col-9 p-0">
-                        <table class="table text-center text-white text-nowrap historical-table">
-                            <thead>
+                    <div class="d-flex mt-1">
+                        <div class="col-3 form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="activityCheck" @click="isActivityShown = !isActivityShown">
+                            <label class="form-check-label" for="activityCheck">
+                                Показать мероприятия
+                            </label>
+                        </div>
+                        <div v-if="isActivityShown" class="col-9 p-0">
+                            <table class="table text-center text-white text-nowrap historical-table">
+                                <thead>
                                 <tr>
                                     <th>№</th>
                                     <th>Дата</th>
@@ -152,8 +154,8 @@
                                     <th>Категория<br>скважины</th>
                                     <th>Способ<br>эксплуатации</th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 <tr
                                         v-for="(activity,index) in periodItem.activity"
                                         :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
@@ -166,11 +168,13 @@
                                     <td>{{activity.category}}</td>
                                     <td>{{activity.operationWay}}</td>
                                 </tr>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <div class="d-flex justify-content-end bottom-buttons">
                 <div class="p-1 d-flex align-items-center">
                     <img class="pr-1" src="/img/icons/repeat.svg" alt="">
@@ -196,7 +200,7 @@
 <script>
 import ProductionWellsSchedule from "./ProductionWellsSchedule";
 import moment from "moment";
-import {bigdatahistoricalVisibleMutations} from '@store/helpers';
+import {bigdatahistoricalVisibleMutations,bigdatahistoricalVisibleState} from '@store/helpers';
 
 export default {
     components: {ProductionWellsSchedule},
@@ -340,7 +344,8 @@ export default {
                 },
             ],
             isActivityShown: false,
-            isFreeInfoShown: true
+            isFreeInfoShown: true,
+            historicalInfo: []
         };
     },
     methods: {
@@ -348,8 +353,126 @@ export default {
             return moment(monthYearString, 'YYYY/MMM').daysInMonth();
         },
         ...bigdatahistoricalVisibleMutations([
-            'SET_VISIBLE_PRODUCTION'
+            'SET_VISIBLE_PRODUCTION','SET_PRODUCTION_HISTORICAL'
         ]),
+        assignInfoByDates(data) {
+            _.forEach(data, (item) => {
+                let date = moment(item.date, 'YYYY-MM-DD');
+                let oil = item.oil;
+                let gas = item.free_gas;
+                if (oil && oil !== null) {
+                    oil = parseFloat(oil);
+                }
+                if (gas && gas !== null) {
+                    gas = parseFloat(gas);
+                }
+                console.log(date.format('MMM'));
+                let obj = {
+                    'id': date.format('YYYY/MMM'),
+                    'month': date.format('MMM'),
+                    'year': date.format('YYYY'),
+                    'isChecked': false,
+                    'isVisible': false,
+                    'water': parseFloat(item.liq),
+                    'oil': oil,
+                    'oilDebit': parseFloat(item.oil_avg_month),
+                    'waterDebit': parseFloat(item.liq_avg_month),
+                    'waterCut': parseFloat(item.wcut),
+                    'hoursWorked': parseFloat(item.work_days),
+                    'gas': gas,
+                    'params': {
+                        'monthlyData': [],
+                        'techMode': [
+                            {
+                                'label': 'Жидкость',
+                                'value': parseFloat(item.liq),
+                            },
+                            {
+                                'label': 'Нефть',
+                                'value': oil,
+                            },
+                            {
+                                'label': 'Обводненность',
+                                'value': parseFloat(item.wcut),
+                            },
+                            {
+                                'label': 'Аном. обв.',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Добыча газа',
+                                'value': gas,
+                            },
+                            {
+                                'label': 'Жидкость, м3/сут. (телеметрия)',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Pбуфф.',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Pзатр.',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Pбуфф.\n' +
+                                    'до штуцера',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Pбуфф. после\n' + 'штуцера',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Н дин./\n' +
+                                    'Pзаб/Pзатр',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Н стат / Рпл / \n' +
+                                    'Pзатр',
+                                'value': 0,
+                            },
+                            {
+                                'label': 'Рез. ГДМ / Дл.х.при\n' + 'ГДМ/ ЧК при ГДМ',
+                                'value': 0,
+                            }
+                        ]
+                    }
+                };
+                let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
+                let oilSummary = [];
+                let oilDebit = [];
+                let waterDebit = [];
+                let workHours = [];
+                let waterCut = [];
+                let water = [];
+                let gasSummary = [];
+                let onomobvod = [];
+                for (let i =1; i <= daysCount; i++) {
+                    oilSummary.push(item.oil/daysCount);
+                    oilDebit.push(item.oilDebit/daysCount);
+                    workHours.push(item.work_days/daysCount);
+                    waterDebit.push(item.waterDebit/daysCount);
+                    waterCut.push(item.waterCut/daysCount);
+                    water.push(item.water/daysCount);
+                    gasSummary.push(item.gas/daysCount);
+                }
+                obj.params.monthlyData.push(oilSummary,water,waterCut,onomobvod,gasSummary,oilDebit,waterDebit,workHours);
+                this.historicalInfo.push(obj);
+            });
+            console.log('this.historicalInfo')
+            console.log(this.historicalInfo)
+            this.SET_PRODUCTION_HISTORICAL(this.historicalInfo);
+        },
+    },
+    async mounted() {
+        const response = await axios.get(this.localeUrl(`/api/bigdata/wells/productionHistory/${this.well.id}`));
+        this.assignInfoByDates(response.data);
+    },
+    computed: {
+        ...bigdatahistoricalVisibleState(['productionMeasurementSchedule']),
     }
 }
 </script>

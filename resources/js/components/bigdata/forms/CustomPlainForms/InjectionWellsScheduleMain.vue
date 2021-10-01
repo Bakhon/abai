@@ -174,8 +174,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="p-0" id="monthly-parent">
-                                <table class="table text-center text-white text-nowrap historical-table" id="monthly-info">
+                            <div class="p-0">
+                                <table class="table text-center text-white text-nowrap historical-table">
                                     <thead>
                                         <tr>
                                             <th v-for="dayNumber in getDaysCountInMonth(periodItem.id)">{{dayNumber}}<br>&nbsp;</th>

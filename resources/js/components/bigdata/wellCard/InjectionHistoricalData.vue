@@ -151,11 +151,9 @@ export default {
     mounted() {
         this.fillDates();
         this.dates = this.getHistorical();
-        console.log('dates')
-        console.log(this.dates);
     },
     computed: {
-        ...bigdatahistoricalVisibleState(['injectionHistoricalData','injectionMeasurementSchedule']),
+        ...bigdatahistoricalVisibleState(['injectionHistoricalData']),
     }
 }
 </script>
