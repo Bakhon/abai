@@ -1,6 +1,6 @@
 <template>
   <div>
-    <subtitle font-size="18" style="line-height: 26px">
+    <subtitle font-size="16" style="line-height: 18px">
       {{ trans('economic_reference.table_economic_efficiency_title') }}
     </subtitle>
 
@@ -8,7 +8,7 @@
         ref="chart"
         :options="chartOptions"
         :series="chartSeries"
-        type="line"
+        :height="520"
         class="apexcharts-custom-legend"
         style="color: #000"/>
   </div>

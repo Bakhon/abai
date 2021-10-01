@@ -1,18 +1,23 @@
 <template>
-  <div>
-    <subtitle font-size="18" class="line-height-26px">
-      <div>{{ trans('economic_reference.table_oil_price_options_title') }}</div>
-      <div>“{{ org.name }}”</div>
+  <div style="height: 535px">
+    <subtitle>
+      <div class="font-size-16px line-height-18px">
+        {{ trans('economic_reference.table_oil_price_options_title') }}
+      </div>
+
+      <div class="font-size-16px line-height-18px">
+        “{{ org.name }}”
+      </div>
     </subtitle>
 
-    <div class="mt-3">
+    <div class="mt-2">
       <div class="text-center border-grey d-flex bg-header">
         <div
             v-for="(item, index) in tableKeys"
             :key="item.value"
             :style="`flex: ${item.flexGrow} 0 ${item.flexWidth}`"
             :class="index ? 'justify-content-center' : ''"
-            class="px-3 py-1 border-grey d-flex align-items-center line-height-16px"
+            class="p-3 border-grey d-flex align-items-center line-height-16px"
             style="white-space: normal">
           {{ item.title }}
         </div>
@@ -24,12 +29,9 @@
            class="d-flex">
         <div v-for="(key, keyIndex) in tableKeys"
              :key="key.value"
-             :class="[
-                 index ? 'px-3 py-2' : 'px-3 py-1',
-                 keyIndex ? 'text-center justify-content-center' : '',
-                 ]"
+             :class="keyIndex ? 'text-center justify-content-center' : ''"
              :style="`flex: ${key.flexGrow} 0 ${key.flexWidth}; ${keyIndex ? '' : item.style}`"
-             class="border-grey line-height-14px d-flex align-items-center">
+             class="border-grey line-height-14px d-flex align-items-center px-3 py-2">
           {{
             typeof item[key.value] === 'string'
                 ? item[key.value]
@@ -39,21 +41,24 @@
       </div>
     </div>
 
-    <subtitle font-size="18" class="line-height-26px mt-3">
+    <subtitle font-size="16" class="line-height-18px mt-3">
       {{ trans('economic_reference.cat_1_trips') }}: {{ scenario.percent_stop_cat_1 * 100 }}%,
       {{ trans('economic_reference.cat_2_trips') }}: {{ scenario.percent_stop_cat_2 * 100 }}%
     </subtitle>
 
-    <div class="mt-3">
+    <div class="mt-2">
       <div v-for="(item, index) in tableDataOptimized"
            :key="index"
            :style="`background: ${item.color}`"
            class="d-flex">
         <div v-for="(key, keyIndex) in tableKeys"
              :key="key.value"
-             :class="keyIndex ? 'text-center justify-content-center' : ''"
+             :class="[
+                 index ? 'px-3 py-2' : 'p-3',
+                 keyIndex ? 'text-center justify-content-center' : ''
+                 ]"
              :style="`flex: ${key.flexGrow} 0 ${key.flexWidth}; ${keyIndex ? '' : item.style}`"
-             class="px-3 py-2 border-grey line-height-14px d-flex align-items-center">
+             class="border-grey line-height-14px d-flex align-items-center">
           {{
             typeof item[key.value] === 'string'
                 ? item[key.value]
@@ -415,7 +420,11 @@ export default {
   line-height: 16px;
 }
 
-.line-height-26px {
-  line-height: 26px;
+.line-height-18px {
+  line-height: 18px;
+}
+
+.font-size-16px {
+  font-size: 16px;
 }
 </style>

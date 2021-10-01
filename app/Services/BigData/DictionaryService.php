@@ -64,10 +64,11 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellPrsRepairType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
+use App\Models\BigData\Dictionaries\WorkStatus;
 use App\Models\BigData\Dictionaries\Zone;
 use App\Services\BigData\DictionaryServices\UndergroundEquipElement;
 use App\Services\BigData\DictionaryServices\UndergroundEquipType;
-use App\TybeNom;
+use App\Models\BigData\Dictionaries\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -312,16 +313,16 @@ class DictionaryService
         'recording_state' => [
             'class' => RecordingState::class,
             'name_field' => 'name_ru'
+        ],
+        'work_status' => [
+            'class' => WorkStatus::class,
+            'name_field' => 'name_ru'
         ]
     ];
 
     const TREE_DICTIONARIES = [
         'orgs' => [
             'class' => Org::class,
-            'name_field' => 'name_ru'
-        ],
-        'techs' => [
-            'class' => Tech::class,
             'name_field' => 'name_ru'
         ],
         'expl_type_plan_gdis' => [
@@ -409,25 +410,34 @@ class DictionaryService
                     $dict = $this->getReasonTypeDict("REF");
                     break;
                 case 'reason_rst':
-                    $dict = $this->getReasonTypeDict('RST');
+                    $dict = $this->getReasonTypeDict("RST");
                     break;
                 case 'reason_type_rtr':
-                    $dict = $this->getReasonTypeDict('RTR');
+                    $dict = $this->getReasonTypeDict("RTR");
                     break;
                 case 'reason_rls':
-                    $dict = $this->getReasonTypeDict('RLS');
+                    $dict = $this->getReasonTypeDict("RLS");
                     break;
                 case 'reason_rrd':
-                    $dict = $this->getReasonTypeDict('RRD');
+                    $dict = $this->getReasonTypeDict("RRD");
                     break;
                 case 'las_mnemonics':
                     $dict = $this->getLasMnemonics();
                     break;
+                case 'repair_type_prs':
+                    $dict = $this->getRepairTypeDict("WLO"); 
+                    break;
+                case 'repair_type_krs':
+                    $dict = $this->getRepairTypeDict("CWO");
+                    break;           
                 case 'well_tech_state_type':
                     $dict = $this->getWellTechStateDict();
                     break;
                 case 'well_statuses_drill':
                     $dict = $this->getWellStatusesForDrill();
+                    break;
+                case 'techs':
+                    $dict = $this->getWellTechsDict();
                     break;
                 case 'underground_equip_type':
                     $dict = UndergroundEquipType::getDict();
@@ -578,6 +588,91 @@ class DictionaryService
         return $this->generateTree((array)$items);
     }
 
+    private function getWellTechsDict(): array
+    {
+        $dictClass = Tech::class;
+
+        $items = $dictClass::query()
+            ->select('id', "parent as parent")
+            ->selectRaw("name_ru as label")
+            ->orderBy('parent', 'asc')
+            ->orderBy('name_ru', 'asc')
+            ->get()
+            ->toArray();
+        
+        $tree = [];
+        $items = $this->generateTree($items);
+        $techPermissionsIds = $this->getUserTechPermissionIds();
+        $this->filterTree($items, $tree, $techPermissionsIds);
+        return $tree;
+    }
+
+    public function getUserTechPermissionIds() {
+        $orgIds = $this->getUserOrgPermissionIds();
+        $result = [];
+        foreach($orgIds as $id) {
+            $itemElements = DB::connection('tbd')
+                ->table('prod.org_tech_link as otl')
+                ->select('otl.tech as tech')
+                ->where('otl.org', $id)
+                ->get()
+                ->toArray();
+            $result = array_merge($result, $itemElements);
+        }
+        $result = array_unique(array_map(function ($item) {
+            return (int)$item->tech;
+        }, $result));
+        
+        return $result;
+    }
+
+    public function getUserOrgPermissionIds() {
+        $orgIds = array_filter(auth()->user()->org_structure, function($item) {
+            return substr($item, 0, strpos($item, ":")) == 'org';
+        });
+        $orgIds = array_map(function ($item) {
+            return (int)substr($item, strpos($item, ":") + 1);
+        }, $orgIds);
+
+        $items = DB::connection('tbd')
+                ->table('dict.org as o')
+                ->select('o.id', 'o.parent as parent')
+                ->get()
+                ->toArray();
+
+        $orgIds = array_unique(array_merge($orgIds, $this->getOrgWithChildrenIds($orgIds, $items)));
+        return $orgIds;
+    }
+
+    private function getOrgWithChildrenIds($orgIds, &$items) {
+        $result = [];
+        foreach($orgIds as $id) {
+            $tmp = [];
+            foreach($items as $item) {
+                if($item->parent == $id) {
+                    $tmp[] = $item->id;
+                }
+            }
+            
+            $result = array_merge($result, $tmp, $this->getOrgWithChildrenIds($tmp, $items));
+        }
+
+        return $result;
+    }
+
+    public function filterTree($items, &$tree, &$userTreeAccessedItems)
+    {
+        foreach($items as $item) {
+            if(in_array($item['id'], $userTreeAccessedItems)) {
+                $tree[] = $item;
+                continue;
+            }
+            if(!empty($item['children'])) {
+                $this->filterTree($item['children'], $tree, $userTreeAccessedItems);
+            }
+        }
+    }
+
     private function getWellTechStateDict(): array
     {
         $items = DB::connection('tbd')
@@ -687,6 +782,26 @@ class DictionaryService
                 }
             )
             ->toArray();
+
+        return $items;
+    }
+
+    private function getRepairTypeDict(string $type){
+        $items = DB::connection('tbd')
+            ->table('dict.repair_work_type as dr')
+            ->select('dr.id','dr.name_ru as name')
+            ->where('dw.code', $type)
+            ->distinct()
+            ->orderBy('name', 'asc')
+            ->join('dict.well_repair_type as dw', 'dr.well_repair_type', 'dw.id')           
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+
 
         return $items;
     }

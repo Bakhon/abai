@@ -2,13 +2,13 @@
   <div>
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css' rel='stylesheet'/>
 
-    <h5 v-if="wells.length" class="subtitle text-wrap">
+    <subtitle v-if="wells.length" class="text-white text-wrap">
       {{ trans('economic_reference.total') }}
       {{ filteredWells[currentDate].length }}
       {{ trans('economic_reference.wells_count').toLocaleLowerCase() }}
-    </h5>
+    </subtitle>
 
-    <div class="d-flex align-items-center white-placeholder">
+    <div class="d-flex align-items-center white-placeholder mt-2">
       <datetime
           v-model="form.interval_start"
           :placeholder="trans('economic_reference.interval_start')"
@@ -32,7 +32,7 @@
          @click="getWells"></i>
     </div>
 
-    <div v-if="wells.length" class="mt-3 d-flex">
+    <div v-if="wells.length" class="mt-2 d-flex">
       <button
           v-for="(date, index) in formattedDates"
           :key="date"
@@ -46,7 +46,7 @@
       </button>
     </div>
 
-    <div class="mt-3 well-map">
+    <div class="mt-2 well-map">
       <div id="map"></div>
     </div>
   </div>
@@ -57,8 +57,13 @@ import mapboxgl from "mapbox-gl";
 
 import {globalloadingMutations} from '@store/helpers';
 
+import Subtitle from "../Subtitle";
+
 export default {
   name: "ChartWellMap",
+  components: {
+    Subtitle
+  },
   props: {
     orgForm: {
       required: true,
@@ -225,7 +230,7 @@ export default {
 <style scoped>
 .well-map {
   position: relative;
-  height: 550px;
+  height: 480px;
   width: 100%;
 }
 

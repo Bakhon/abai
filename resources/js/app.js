@@ -219,8 +219,9 @@ Vue.component('page-core', require('./components/geology/core/PageCore.vue').def
 Vue.component('page-visualization', require('./components/geology/visualization/PageVisualization.vue').default);
 Vue.component('page-geophysics', require('./components/geology/geophysics/PageGeophysics.vue').default);
 
-Vue.component('digital-rating', require('./components/DigitalRating/index.vue').default);
-Vue.component('digital-rating-report', require('./components/DigitalRating/DigitalRatingReport.vue').default);
+Vue.component('section-maps', require('./components/DigitalRating/sectionMaps').default);
+Vue.component('digital-rating-report', require('./components/DigitalRating/reports').default);
+Vue.component('compare-drilling', require('./components/DigitalRating/drillingCompare').default);
 
 Vue.component('admin-user-settings', require('./components/admin/user/Settings.vue').default);
 Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);

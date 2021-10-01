@@ -219,7 +219,6 @@ export default {
       }
     },
     updateValue(value) {
-      console.log(value)
       this.formatedValue = this.getFormatedValue(value)
       this.$emit('change', value)
       this.$emit('input', value)
