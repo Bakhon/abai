@@ -119,20 +119,6 @@ abstract class DailyReports extends TableForm
         return $startDate;
     }
 
-    protected function getCustomValidationErrors(string $field = null): array
-    {
-        $errors = [];
-
-        if ($this->request->get('fact')) {
-            $limits = $this->calculateLimits();
-            if (!$this->isValidFactLimits($limits)) {
-                $errors['fact'][] = trans('bd.value_outside') . " ({$limits['min']}, {$limits['max']})";
-            }
-        }
-
-        return $errors;
-    }
-
     private function isValidFactLimits(array $limits): bool
     {
         if (empty($limits)) {
