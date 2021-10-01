@@ -151,8 +151,9 @@ abstract class DailyReports extends TableForm
 
     private function calculateLimits(): array
     {
+        $filter = json_decode($this->request->get('filter'));
         $reports = ReportOrgDailyCits::where('org', $this->request->get('well_id'))
-            ->whereDate('report_date', '<', $this->request->get('date'))
+            ->whereDate('report_date', '<', Carbon::parse($filter->date, 'Asia/Almaty'))
             ->whereHas(
                 'metric',
                 function ($query) {
