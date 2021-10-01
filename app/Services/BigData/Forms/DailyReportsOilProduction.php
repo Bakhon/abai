@@ -19,23 +19,23 @@ class DailyReportsOilProduction extends DailyReports
         $wells = $this->getOrgWells($org, $date);
 
         $workTime = $this->getWorkTime($wells, $date);
-        $bsw = $this->getBsw($wells, $date);
         $oilDensity = $this->getOilDensity($wells, $date);
+        $bsw = $this->getBsw($wells, $date);
 
         return DB::connection('tbd')
             ->table('prod.meas_liq')
             ->select('dbeg', 'liquid', 'well')
             ->where('dbeg', '>=', $date->startOfYear())
-            ->where('dbeg', '<=', $date)
+            ->where('dbeg', '<=', $date->endOfDay())
             ->whereIn('well', $wells)
             ->get()
             ->groupBy(function ($item) {
-                return Carbon::parse($item->dbeg)->format('d.m.Y');
+                return Carbon::parse($item->dbeg, 'Asia/Almaty')->format('d.m.Y');
             })
             ->map(function ($items, $currentDate) use ($workTime, $bsw, $oilDensity) {
                 $dateOil = $items
                     ->map(function ($item) use ($workTime, $bsw, $oilDensity) {
-                        $date = Carbon::parse($item->dbeg);
+                        $date = Carbon::parse($item->dbeg, 'Asia/Almaty');
 
                         if (!isset($workTime[$item->well])) {
                             return 0;
@@ -66,8 +66,8 @@ class DailyReportsOilProduction extends DailyReports
                     })->sum();
 
                 return [
-                    'date' => Carbon::parse($currentDate),
-                    'value' => $dateOil
+                    'date' => Carbon::parse($currentDate, 'Asia/Almaty'),
+                    'value' => round($dateOil, 2)
                 ];
             });
     }
@@ -80,11 +80,16 @@ class DailyReportsOilProduction extends DailyReports
             ->join('dict.well_activity as wa', 'mwc.activity', 'wa.id')
             ->join('dict.value_type as vt', 'mwc.value_type', 'vt.id')
             ->whereIn('mwc.well', $wells)
-            ->where('mwc.dbeg', '>=', $date->startOfYear())
-            ->where('mwc.dend', '<=', $date)
+            ->where('mwc.dend', '>=', $date->startOfYear())
+            ->where('mwc.dbeg', '<=', $date->endOfDay())
             ->where('wa.code', 'PMSR')
             ->where('vt.code', 'MNT')
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                $item->dbeg = Carbon::parse($item->dbeg, 'Asia/Almaty');
+                $item->dend = Carbon::parse($item->dend, 'Asia/Almaty');
+                return $item;
+            });
     }
 
     private function getOilDensity(array $wells, CarbonImmutable $date): Collection
@@ -93,9 +98,14 @@ class DailyReportsOilProduction extends DailyReports
             ->table('prod.tech_mode_prod_oil')
             ->select('dbeg', 'dend', 'oil_density', 'well')
             ->whereIn('well', $wells)
-            ->where('dbeg', '>=', $date->startOfYear())
-            ->where('dend', '<=', $date)
-            ->get();
+            ->where('dend', '>=', $date->startOfYear())
+            ->where('dbeg', '<=', $date->endOfDay())
+            ->get()
+            ->map(function ($item) {
+                $item->dbeg = Carbon::parse($item->dbeg, 'Asia/Almaty');
+                $item->dend = Carbon::parse($item->dend, 'Asia/Almaty');
+                return $item;
+            });
     }
 
 }

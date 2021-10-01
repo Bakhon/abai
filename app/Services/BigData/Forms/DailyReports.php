@@ -278,7 +278,7 @@ abstract class DailyReports extends TableForm
             $result['month_fact'] = ['value' => $month];
             $result['year_fact'] = ['value' => $year];
         } else {
-            $result['daily_fact_gs'] = ['value' => $today ? $today->value : 0];
+            $result['daily_fact_gs'] = ['value' => $today ? $today['value'] : 0];
             $result['month_fact_gs'] = ['value' => $month];
             $result['year_fact_gs'] = ['value' => $year];
         }
