@@ -160,18 +160,6 @@ class TechModeInj extends TableForm
                     ]
                 );
         }
-
-        $field = $this->request->get('params')['field'];
-        $date = $this->request->get('params')['date'];
-        if ($field === 'water_inj_val') {
-            $water_inj_val = DB::connection('tbd')
-                ->table('prod.meas_water_inj')
-                ->where('dbeg', Carbon::parse($date))
-                ->where('well', $this->request->get('well_id'))
-                ->sum('water_inj_val');
-            $result = [];
-            $result['water_inj_val'] = $water_inj_val;
-        }
     }
 
 }
