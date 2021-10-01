@@ -388,8 +388,7 @@ export default {
                 let dailyWaterInjection = 0;
                 if (item.pump_vol) {
                     waterInjection = parseFloat(item.pump_vol);
-                    dailyWaterInjection = item.pump_vol / date.daysInMonth();
-                    workDays = item.work_days;
+                    dailyWaterInjection = waterInjection / date.daysInMonth();
                 }
                 let obj = {
                     'id': date.format('YYYY/MMM'),
@@ -400,7 +399,7 @@ export default {
                     'waterInjection': waterInjection,
                     'dailyWaterInjection': dailyWaterInjection,
                     'accumulateWaterInjection': 0,
-                    'hoursWorked': workDays,
+                    'hoursWorked': item.work_days,
                     'params': {
                         'techMode': [
                             {
