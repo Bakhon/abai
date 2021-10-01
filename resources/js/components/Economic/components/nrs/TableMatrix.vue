@@ -8,7 +8,7 @@
         :dates="data.dates"
         class="text-white container-fluid bg-main1 p-4 mb-3"/>
 
-    <div class="text-white container-fluid bg-light p-4">
+    <div class="text-white container-fluid bg-main1 p-4">
       <div class="d-flex align-items-center mb-3">
         <div class="form-check mr-2">
           <input v-model="isVisibleProfitable"
@@ -16,7 +16,7 @@
                  type="checkbox"
                  class="form-check-input">
           <label for="visible_profitable"
-                 class="form-check-label font-weight-600 text-black">
+                 class="form-check-label font-weight-600">
             {{ trans('economic_reference.profitable') }}
           </label>
         </div>
@@ -27,7 +27,7 @@
                  type="checkbox"
                  class="form-check-input">
           <label for="visible_profitable"
-                 class="form-check-label font-weight-600 text-black">
+                 class="form-check-label font-weight-600">
             {{ trans('economic_reference.profitless') }}
           </label>
         </div>
@@ -38,7 +38,7 @@
                  type="checkbox"
                  class="form-check-input">
           <label for="visible_wells"
-                 class="form-check-label font-weight-600 text-black">
+                 class="form-check-label font-weight-600">
             {{ trans('economic_reference.show_wells') }}
           </label>
         </div>
@@ -57,7 +57,7 @@
                  type="checkbox"
                  class="form-check-input">
           <label :for="wellKey.prop"
-                 class="form-check-label font-weight-600 text-black">
+                 class="form-check-label font-weight-600">
             {{ wellKey.name }}
           </label>
         </div>
@@ -173,7 +173,7 @@ export default {
           width: index > 0 ? 90 : 130
         })),
         highlight: {column: [0, 1]},
-        highlightedColor: '#E6E6E6'
+        highlightedColor: '#2E50E9'
       }
     },
 
@@ -193,7 +193,7 @@ export default {
           width: index > 0 ? 90 : 130
         })),
         highlight: {column: [0, 1]},
-        highlightedColor: '#E6E6E6'
+        highlightedColor: '#2E50E9'
       }
     },
 
@@ -316,7 +316,7 @@ export default {
         return ''
       }
 
-      return value && value > 0 ? '#13B062' : '#AB130E'
+      return value && value > 0 ? '#23E846' : '#E84663'
     },
 
     getLabel(value, dimension) {
@@ -442,11 +442,22 @@ export default {
   line-height: 14px;
 }
 
-.font-weight-600 {
-  font-weight: 600;
+.matrix-table >>> .v-table-fixed {
+  color: #fff;
 }
 
-.text-black {
-  color: #000;
+.matrix-table >>> .table-pagination .page-item,
+.matrix-table >>> .table-pagination .pagination-size,
+.matrix-table >>> .v-table .table-cell {
+  background: #272953;
+  color: #fff;
+}
+
+.matrix-table >>> .tools-search {
+  background: #272953;
+}
+
+.font-weight-600 {
+  font-weight: 600;
 }
 </style>
