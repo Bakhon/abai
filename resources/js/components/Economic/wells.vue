@@ -4,12 +4,12 @@
       <div class="d-flex">
         <select-interval
             :form="form"
-            class="col"
+            class="flex-grow-1 flex-shrink-0"
             @change="getData"/>
 
         <select-organization
             :form="form"
-            class="col ml-2"
+            class="ml-3 flex-grow-1"
             hide-label
             @change="getData"/>
 
@@ -17,7 +17,7 @@
             v-if="form.org_id"
             :org_id="form.org_id"
             :form="form"
-            class="col ml-2"
+            class="ml-2 flex-grow-1"
             @change="getData"/>
       </div>
 

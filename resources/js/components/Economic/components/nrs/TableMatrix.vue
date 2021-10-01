@@ -9,26 +9,81 @@
         class="text-white container-fluid bg-main1 p-4 mb-3"/>
 
     <div class="text-white container-fluid bg-light p-4">
-      <div class="d-flex">
+      <div class="d-flex mb-3">
+        <div class="form-check mr-2">
+          <input v-model="isVisibleProfitable"
+                 id="visible_profitable"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_profitable"
+                 class="form-check-label font-weight-600 text-black">
+            {{ trans('economic_reference.profitable') }}
+          </label>
+        </div>
+
+        <div class="form-check mr-2">
+          <input v-model="isVisibleProfitless"
+                 id="visible_profitless"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_profitable"
+                 class="form-check-label font-weight-600 text-black">
+            {{ trans('economic_reference.profitless') }}
+          </label>
+        </div>
+
+        <div class="form-check mr-2">
+          <input v-model="isVisibleWells"
+                 id="visible_wells"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_wells"
+                 class="form-check-label font-weight-600 text-black">
+            {{ trans('economic_reference.show_wells') }}
+          </label>
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap mb-2">
         <div v-for="(wellKey, index) in wellKeys"
              :key="wellKey.prop"
-             :class="index ? 'ml-2' : ''"
-             class="form-check">
+             class="form-check mr-2 mb-2">
           <input v-model="wellKey.isVisible"
                  :id="wellKey.prop"
                  type="checkbox"
                  class="form-check-input">
           <label :for="wellKey.prop"
-                 class="form-check-label"
-                 style="font-weight: 600; color: #000">
+                 class="form-check-label font-weight-600 text-black">
             {{ wellKey.name }}
           </label>
         </div>
       </div>
 
       <vue-table-dynamic
+          :params="tableSumParams"
+          class="matrix-table">
+        <template :slot="`column-0`" slot-scope="{ props }">
+          <div class="d-flex align-items-center w-100">
+            {{ props.cellData.label }}
+          </div>
+        </template>
+
+        <template :slot="`column-1`" slot-scope="{ props }">
+          <div> {{ props.cellData.label }}</div>
+        </template>
+
+        <template
+            v-for="(date, index) in data.dates"
+            :slot="`column-${index+2}`"
+            slot-scope="{ props }">
+          <div> {{ props.cellData.label }}</div>
+        </template>
+      </vue-table-dynamic>
+
+      <vue-table-dynamic
+          v-if="isVisibleWells"
           :params="tableParams"
-          class="height-fit-content height-unset">
+          class="matrix-table">
         <template :slot="`column-0`" slot-scope="{ props }">
           <div class="d-flex align-items-center w-100">
             <div> {{ props.cellData.label }}</div>
@@ -77,7 +132,10 @@ export default {
   data: () => ({
     selectedUwis: {},
     chartUwis: [],
-    wellKeys: []
+    wellKeys: [],
+    isVisibleWells: false,
+    isVisibleProfitable: true,
+    isVisibleProfitless: true,
   }),
   created() {
     this.initWellKeys()
@@ -86,12 +144,15 @@ export default {
   },
   computed: {
     uwis() {
-      return Object.keys(this.data.uwis)
+      return Object.keys(this.data.uwis).filter(uwi => {
+        return this.isVisibleProfitable && this.data.uwis[uwi].Operating_profit.sum > 0
+            || this.isVisibleProfitless && this.data.uwis[uwi].Operating_profit.sum <= 0
+      })
     },
 
     tableParams() {
       return {
-        data: [...[this.tableHeaders], ...this.tableData],
+        data: [...[this.tableHeaders], ...this.tableData.wells],
         enableSearch: true,
         whiteSpace: 'normal',
         header: 'row',
@@ -112,21 +173,67 @@ export default {
       }
     },
 
+    tableSumParams() {
+      return {
+        data: [...[this.tableHeaders], ...this.tableData.totalSum],
+        whiteSpace: 'normal',
+        header: 'row',
+        border: true,
+        stripe: true,
+        pagination: false,
+        headerHeight: 80,
+        rowHeight: 50,
+        fixed: 1,
+        columnWidth: this.tableHeaders.map((col, index) => ({
+          column: index,
+          width: index > 0 ? 90 : 130
+        })),
+        highlight: {column: [0, 1]},
+        highlightedColor: '#E6E6E6'
+      }
+    },
+
     tableData() {
       let rows = []
 
+      let totalSumRows = []
+
+      let totalSum = {}
+
+      this.visibleWellKeys.forEach(key => {
+        totalSum[key.prop] = [
+          {value: key.name, label: key.name},
+          {value: 0, label: 0},
+        ]
+      })
+
+      this.data.dates.forEach(date => {
+        this.visibleWellKeys.forEach(key => {
+          totalSum[key.prop].push({value: 0, label: 0})
+        })
+      })
+
       this.uwis.forEach(uwi => {
-        let tableRows = {uwi: []}
+        let tableRows = {
+          uwi: [
+            {value: uwi, label: uwi, isCheckbox: true},
+            {value: '', label: ''}
+          ]
+        }
 
         this.visibleWellKeys.forEach(key => tableRows[key.prop] = [])
 
         let well = this.data.uwis[uwi]
 
-        this.data.dates.forEach(date => {
+        this.data.dates.forEach((date, dateIndex) => {
           this.visibleWellKeys.forEach(key => {
-            let value = well[key.prop].hasOwnProperty(date)
-                ? +well[key.prop][date]
-                : ''
+            let value = 0
+
+            key.props
+                ? key.props.forEach(prop => value += +well[prop][date] || 0)
+                : value = +well[key.prop][date] || ''
+
+            totalSum[key.prop][dateIndex + 2].value += +value
 
             tableRows[key.prop].push({
               value: value,
@@ -138,23 +245,26 @@ export default {
           tableRows.uwi.push({value: '', label: ''})
         })
 
-        tableRows.uwi.unshift(
-            {value: uwi, label: uwi, isCheckbox: true},
-            {value: '', label: ''}
-        )
-
         rows.push(tableRows.uwi)
 
         this.visibleWellKeys.forEach(key => {
+          let sum = 0
+
+          key.props
+              ? key.props.forEach(prop => sum += +well[prop]['sum'])
+              : sum = +well[key.prop]['sum']
+
+          totalSum[key.prop][1].value += sum
+
           tableRows[key.prop].unshift(
               {
                 value: key.name,
-                label: key.name,
+                label: key.name
               },
               {
-                value: +well[key.prop]['sum'],
-                label: this.getLabel(+well[key.prop]['sum'], key.dimension),
-                color: this.getColor(key, +well[key.prop]['sum'])
+                value: sum,
+                label: this.getLabel(sum, key.dimension),
+                color: this.getColor(key, sum)
               }
           )
 
@@ -162,7 +272,20 @@ export default {
         })
       })
 
-      return rows
+      this.visibleWellKeys.forEach(key => {
+        totalSum[key.prop][1].label = this.getLabel(totalSum[key.prop][1].value, key.dimension)
+
+        this.data.dates.forEach((date, dateIndex) => {
+          totalSum[key.prop][dateIndex + 2].label = this.getLabel(
+              totalSum[key.prop][dateIndex + 2].value,
+              key.dimension
+          )
+        })
+
+        totalSumRows.push(totalSum[key.prop])
+      })
+
+      return {wells: rows, totalSum: totalSumRows}
     },
 
     tableHeaders() {
@@ -175,13 +298,13 @@ export default {
       ]
     },
 
-    tablePageSize(){
+    tablePageSize() {
       return (this.visibleWellKeys.length + 1) * 3
     },
 
     visibleWellKeys() {
       return this.wellKeys.filter(key => key.isVisible)
-    }
+    },
   },
   methods: {
     getColor(key, value) {
@@ -216,7 +339,7 @@ export default {
       this.wellKeys = [
         {
           prop: 'NetBack_bf_pr_exp',
-          name: this.trans('economic_reference.Revenue'),
+          name: `${this.trans('economic_reference.income')} NetBack`,
           dimension: 1000,
           isVisible: true,
         },
@@ -242,7 +365,56 @@ export default {
           prop: 'liquid',
           name: this.trans('economic_reference.liquid_production'),
           isVisible: false,
-        }
+        },
+        {
+          prop: 'Revenue_export',
+          name: this.trans('economic_reference.revenue_export'),
+          dimension: 1000,
+          isVisible: false,
+        },
+        {
+          prop: 'Revenue_local',
+          name: this.trans('economic_reference.revenue_local'),
+          dimension: 1000,
+          isVisible: false,
+        },
+        {
+          prop: 'Variable_expenditures',
+          name: this.trans('economic_reference.variable_expenditures'),
+          dimension: 1000,
+          isVisible: false,
+        },
+        {
+          prop: 'Fixed_expenditures',
+          name: this.trans('economic_reference.fixed_expenditures'),
+          dimension: 1000,
+          isVisible: false,
+        },
+        {
+          prop: 'Fixed_nopayroll_expenditures',
+          name: this.trans('economic_reference.fixed_nopayroll_expenditures'),
+          dimension: 1000,
+          isVisible: false,
+        },
+        {
+          prop: 'Fixed_payroll_expenditures',
+          name: this.trans('economic_reference.fot'),
+          dimension: 1000,
+          isVisible: false,
+        },
+        {
+          prop: 'tax_costs',
+          props: ['MET_payments', 'ECD_payments', 'ERT_payments'],
+          name: this.trans('economic_reference.tax_costs'),
+          dimension: 1000,
+          isVisible: false,
+        },
+        {
+          prop: 'Trans_expenditures',
+          name: this.trans('economic_reference.trans_expenditures'),
+          dimension: 1000,
+          isVisible: false,
+        },
       ]
     },
 
@@ -254,11 +426,23 @@ export default {
 </script>
 
 <style scoped>
-.height-fit-content >>> .v-table-body {
+.matrix-table >>> .v-table-body {
   height: fit-content !important;
 }
 
-.height-unset >>> .v-table-row {
+.matrix-table >>> .v-table-row {
   height: 40px !important;
+}
+
+.matrix-table >>> .v-table-fixed .table-cell {
+  line-height: 14px;
+}
+
+.font-weight-600 {
+  font-weight: 600;
+}
+
+.text-black {
+  color: #000;
 }
 </style>
