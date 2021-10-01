@@ -240,8 +240,6 @@ class EconomicOptimizationController extends Controller
         $uwis = [];
 
         foreach ($wells as &$well) {
-//            $well['uwi_tbd'] = str_replace('W', 'KZH_', $well['uwi']);
-
             $uwis[$well['uwi']] = 1;
         }
 
