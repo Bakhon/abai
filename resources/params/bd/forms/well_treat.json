@@ -11,7 +11,8 @@
     {
       "code": "date",
       "title": "date",
-      "type": "date"
+      "type": "date",
+      "default": "today"
     }
   ],
   "columns": [
