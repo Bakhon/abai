@@ -163,6 +163,9 @@ class Gis extends PlainForm
                     return;
                 }
                 foreach ($values as $value) {
+                    if (is_array($value)) {
+                        continue;
+                    }
                     DB::connection('tbd')
                         ->table('prod.conn_files')
                         ->insert(
