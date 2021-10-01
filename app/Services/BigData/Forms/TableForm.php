@@ -312,7 +312,9 @@ abstract class TableForm extends BaseForm
     protected function isCurrentDay(string $date)
     {
         $filter = json_decode($this->request->get('filter'));
-        return Carbon::parse($date)->diffInDays(Carbon::parse($filter->date ?? null)) === 0;
+        return Carbon::parse($date, 'Asia/Almaty')->diffInDays(
+                Carbon::parse($filter->date ?? null, 'Asia/Almaty')
+            ) === 0;
     }
 
     protected function addLimits(Collection $rows): void
