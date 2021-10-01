@@ -44,7 +44,15 @@ class FluidProductionMonth extends MeasLogByMonth
 
             $i = 0;
             foreach ($indicators as $code) {
-                $row = $this->getIndicatorRowData($well, $code, $techMode, $date, $liquid, $bsw, $workTime[$well->id]);
+                $row = $this->getIndicatorRowData(
+                    $well,
+                    $code,
+                    $techMode,
+                    $date,
+                    $liquid,
+                    $bsw,
+                    $workTime[$well->id] ?? null
+                );
                 if ($i++ === 0) {
                     $row = array_merge($firstRow, $row);
                 }
@@ -84,7 +92,6 @@ class FluidProductionMonth extends MeasLogByMonth
             ->get()
             ->groupBy('well')
             ->map(function ($items) {
-
                 $items = $items->groupBy(function ($item) {
                     return Carbon::parse($item->dbeg)->format('j');
                 });
@@ -347,7 +354,7 @@ class FluidProductionMonth extends MeasLogByMonth
         }
     }
 
-    private function saveField(string $table, string $field, int $wellId, CarbonImmutable $date, float $value)
+    private function saveField(string $table, string $field, $wellId, CarbonImmutable $date, $value)
     {
         $activity = WellActivity::where('code', 'PMSR')->first();
         $valueType = ValueType::where('code', 'MNT')->first();
