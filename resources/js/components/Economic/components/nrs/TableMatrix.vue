@@ -9,7 +9,7 @@
         class="text-white container-fluid bg-main1 p-4 mb-3"/>
 
     <div class="text-white container-fluid bg-light p-4">
-      <div class="d-flex mb-3">
+      <div class="d-flex align-items-center mb-3">
         <div class="form-check mr-2">
           <input v-model="isVisibleProfitable"
                  id="visible_profitable"
@@ -42,6 +42,10 @@
             {{ trans('economic_reference.show_wells') }}
           </label>
         </div>
+
+        <button class="btn btn-primary ml-auto">
+          {{ trans('economic_reference.export_excel') }}
+        </button>
       </div>
 
       <div class="d-flex flex-wrap mb-2">
