@@ -42,7 +42,7 @@
                :key="`${index}_${priceIndex}`"
                :style="`flex-basis: ${100 / reverseOilPrices.length}%`"
                class="py-2 px-3 border-grey text-center">
-            {{ item.values[priceIndex].toLocaleString() }}
+            {{ item.values[priceIndex] ? (+item.values[priceIndex]).toLocaleString() : '' }}
           </div>
         </div>
       </div>
