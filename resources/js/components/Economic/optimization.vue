@@ -49,37 +49,6 @@
           :class="index === blocks.length - 1 ? '' : 'mb-10px'"
           :style="form.scenario_id ? 'min-height: 150px' : 'min-height: 155px'"
       />
-
-      <div v-if="0" class="bg-main1 text-white text-wrap p-3 mb-10px">
-        <subtitle>
-          {{ trans('economic_reference.production_wells_fund') }}
-        </subtitle>
-
-        <div class="mt-4 position-relative">
-          <divider style="left: 150px; height: 100%; top: 0;"/>
-
-          <divider
-              v-if="form.scenario_id"
-              style="left: 230px; height: 100%; top: 0;"/>
-
-          <div v-for="(wellCount, index) in wellsCount"
-               :key="index"
-               :class="wellCount.name ? '' : 'font-weight-bold text-grey'"
-               class="d-flex">
-            <div :class="wellCount.nameClass" class="font-size-12px" style="width: 150px;">
-              {{ wellCount.name }}
-            </div>
-
-            <div class="ml-2" style="width: 80px">
-              {{ wellCount.value }}
-            </div>
-
-            <div v-if="form.scenario_id">
-              {{ wellCount.value_optimized }}
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -392,54 +361,6 @@ export default {
             reversePercent: true
           },
         ],
-      ]
-    },
-
-    wellsCount() {
-      return [
-        {
-          name: '',
-          value: this.trans('economic_reference.basic'),
-          value_optimized: this.trans('economic_reference.optimized')
-        },
-        {
-          name: this.trans('economic_reference.total'),
-          value: (+this.scenario.uwi_count_profitable.original_value)
-              + (+this.scenario.uwi_count_profitless_cat_1.original_value)
-              + (+this.scenario.uwi_count_profitless_cat_2.original_value),
-          value_optimized: (+this.scenario.uwi_count_profitable.original_value_optimized)
-              + (+this.scenario.uwi_count_profitless_cat_1.original_value_optimized)
-              + (+this.scenario.uwi_count_profitless_cat_2.original_value_optimized),
-        },
-        {
-          name: this.trans('economic_reference.profitable'),
-          value: this.scenario.uwi_count_profitable.original_value,
-          value_optimized: this.scenario.uwi_count_profitable.original_value_optimized,
-        },
-        {
-          name: this.trans('economic_reference.profitless_all'),
-          value: (+this.scenario.uwi_count_profitless_cat_1.original_value)
-              + (+this.scenario.uwi_count_profitless_cat_2.original_value),
-          value_optimized: (+this.scenario.uwi_count_profitless_cat_1.original_value_optimized)
-              + (+this.scenario.uwi_count_profitless_cat_2.original_value_optimized)
-        },
-        {
-          name: this.trans('economic_reference.profitless_cat_1'),
-          value: this.scenario.uwi_count_profitless_cat_1.original_value,
-          value_optimized: this.scenario.uwi_count_profitless_cat_1.original_value_optimized,
-          nameClass: 'pl-3'
-        },
-        {
-          name: this.trans('economic_reference.profitless_cat_2'),
-          value: this.scenario.uwi_count_profitless_cat_2.original_value,
-          value_optimized: this.scenario.uwi_count_profitless_cat_2.original_value_optimized,
-          nameClass: 'pl-3'
-        },
-        {
-          name: this.trans('economic_reference.new_wells'),
-          value: 0,
-          value_optimized: 0
-        }
       ]
     },
 
