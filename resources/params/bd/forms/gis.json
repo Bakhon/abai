@@ -145,8 +145,12 @@
                 "title": "conclusion",
                 "columns": [
                   {
-                    "code": "name_ru",
-                    "title": "scan_doc"
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
                   }
                 ]
               }
