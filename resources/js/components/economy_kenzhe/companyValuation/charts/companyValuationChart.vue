@@ -1,12 +1,12 @@
 <template>
   <div class="chart-border_color mt-3">
     <div>
-      <div class="col px-2 container-col_color" v-if="isDisplay">
+      <div class="col px-2 container-col_color">
         <apexchart
           type="line"
           height="255"
-          :options="chartOptions.chartOptions"
-          :series="chartOptions.series"
+          :options="chartOptions"
+          :series="series"
         ></apexchart>
       </div>
     </div>
@@ -24,22 +24,18 @@ export default {
   data: function () {
     return {
       chartSettings: chartSettings,
-      chartOptions: {},
-      series: {},
-      isDisplay: false,
     };
   },
-  async created() {
-    await this.showChart();
-  },
-  methods: {
-    showChart() {
-      this.chartOptions = this.chartOptionsData;
-      this.chartOptionsData.chartOptions = Object.assign(
+  computed: {
+    series() {
+      return this.chartOptionsData.series;
+    },
+
+    chartOptions() {
+      return _.merge(
         this.chartOptionsData.chartOptions,
         this.chartSettings.chartOptions
       );
-      this.isDisplay = true;
     },
   },
 };

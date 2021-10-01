@@ -6,7 +6,7 @@
         },
         "chart": {
             "foreColor": "#fff",
-            "height": 350,
+            "height": 250,
             "type": "line",
             "stacked": false,
             "toolbar": {

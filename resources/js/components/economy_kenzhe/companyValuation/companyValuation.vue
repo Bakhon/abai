@@ -3,7 +3,7 @@
     <div class="col-10 px-0">
       <div class="row col px-2 container-col_color m-0">      
       <div class="col charts px-0 mb-3">         
-        <div class="chart-one" v-if="isDisplay">
+        <div class="chart-one">
             <company-valuation-chart :chartOptionsData="mainFactorsChartOptions">
           </company-valuation-chart>
         </div>
@@ -11,7 +11,7 @@
            <company-valuation-chart :chartOptionsData="cashFlowDynamicsChartOptions">
           </company-valuation-chart>
         </div>
-        <div class="chart-three mt-2" v-if="isDisplay">
+        <div class="chart-three mt-2">
             <company-valuation-chart :chartOptionsData="sensitivityNpvChartOptions">
           </company-valuation-chart>
          </div > 
@@ -101,8 +101,7 @@ export default {
       ],
     };
   },
-  async created() {
-    await this.showChart();
+mounted() {
 
     this.mainFactorsChartOptions = Object.assign(this.mainFactorsChartOptions, {
       series: [
@@ -184,11 +183,6 @@ export default {
     );
   },
 
-  methods: {
-    showChart() {
-      this.isDisplay = true;
-    },
-  },
 };
 </script>
 <style scoped>
