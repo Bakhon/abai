@@ -1,5 +1,5 @@
 <template>
-  <div class="text-white">
+  <div class="text-white" style="height: 555px;">
     <subtitle font-size="16" style="line-height: 18px">
       {{ trans('economic_reference.production_wells_fund') }}
     </subtitle>
@@ -21,47 +21,29 @@
         </div>
       </div>
 
-      <div v-for="(row, index) in tableData"
-           :key="index"
-           :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
-           :style="row.color ? `color: ${row.color}` : ''"
-           class="d-flex">
-        <div :style="row.bgColor ? `background: ${row.bgColor}` : ''"
-             class="px-3 py-2 border-grey text-center flex-350px">
-          {{ row.title }}
-        </div>
-
-        <div v-for="(column, columnIndex) in row.columns"
-             :key="`${index}_${columnIndex}`"
-             :style="`flex-basis: ${100 / row.columns.length}%; background: ${column.color}`"
-             class="px-3 py-2 border-grey text-center flex-grow-1">
-          {{ column.value.toLocaleString() }}
-        </div>
-      </div>
+      <table-well-stock-row
+          v-for="(row, index) in tableData"
+          :key="index"
+          :index="index"
+          :row="row"
+          :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
+          :style="row.color ? `color: ${row.color}` : ''"/>
     </div>
 
     <div class="mt-3 text-center border-grey">
-      <div class="d-flex bg-header font-weight-600 px-3 py-2">
-        {{ trans('economic_reference.optimized') }}
-      </div>
-
-      <div v-for="(row, index) in tableDataOptimized"
-           :key="index"
-           :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
-           :style="row.color ? `color: ${row.color}` : ''"
-           class="d-flex">
-        <div :style="row.bgColor ? `background: ${row.bgColor}` : ''"
-             class="px-3 py-2 border-grey text-center flex-350px">
-          {{ row.title }}
-        </div>
-
-        <div v-for="(column, columnIndex) in row.columns"
-             :key="`${index}_${columnIndex}`"
-             :style="`flex-basis: ${100 / row.columns.length}%; background: ${column.color}`"
-             class="px-3 py-2 border-grey text-center flex-grow-1">
-          {{ column.value.toLocaleString() }}
+      <div class="d-flex bg-header font-weight-600">
+        <div class="px-3 py-2 border-grey d-flex align-items-center justify-content-center flex-350px">
+          {{ trans('economic_reference.optimized') }}
         </div>
       </div>
+
+      <table-well-stock-row
+          v-for="(row, index) in tableOptimizedData"
+          :key="index"
+          :index="index"
+          :row="row"
+          :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
+          :style="row.color ? `color: ${row.color}` : ''"/>
     </div>
   </div>
 </template>
@@ -70,11 +52,13 @@
 import {paletteMixin} from "../mixins/paletteMixin";
 
 import Subtitle from "./Subtitle";
+import TableWellStockRow from "./TableWellStockRow";
 
 export default {
   name: "TableWellStock",
   components: {
     Subtitle,
+    TableWellStockRow,
   },
   mixins: [paletteMixin],
   computed: {
@@ -126,7 +110,7 @@ export default {
       ]
     },
 
-    tableDataOptimized() {
+    tableOptimizedData() {
       return [
         {
           title: this.trans('economic_reference.total'),
@@ -182,6 +166,10 @@ export default {
   font-weight: 600;
 }
 
+.flex-350px {
+  flex: 0 0 350px;
+}
+
 .border-grey {
   border: 1px solid #454D7D
 }
@@ -196,13 +184,5 @@ export default {
 
 .bg-deep-blue {
   background: #272953;
-}
-
-.flex-350px {
-  flex: 0 0 350px;
-}
-
-.customScroll::-webkit-scrollbar {
-  width: 10px;
 }
 </style>
