@@ -25,16 +25,16 @@ class DailyReportsWaterProduction extends DailyReports
             ->table('prod.meas_liq')
             ->select('dbeg', 'liquid', 'well')
             ->where('dbeg', '>=', $date->startOfYear())
-            ->where('dbeg', '<=', $date)
+            ->where('dbeg', '<=', $date->endOfDay())
             ->whereIn('well', $wells)
             ->get()
             ->groupBy(function ($item) {
-                return Carbon::parse($item->dbeg)->format('d.m.Y');
+                return Carbon::parse($item->dbeg, 'Asia/Almaty')->format('d.m.Y');
             })
             ->map(function ($items, $currentDate) use ($workTime, $bsw) {
-                $dateOil = $items
+                $dateWater = $items
                     ->map(function ($item) use ($workTime, $bsw) {
-                        $date = Carbon::parse($item->dbeg);
+                        $date = Carbon::parse($item->dbeg, 'Asia/Almaty');
 
                         if (!isset($workTime[$item->well])) {
                             return 0;
@@ -59,8 +59,8 @@ class DailyReportsWaterProduction extends DailyReports
                     })->sum();
 
                 return [
-                    'date' => Carbon::parse($currentDate),
-                    'value' => $dateOil
+                    'date' => Carbon::parse($currentDate, 'Asia/Almaty'),
+                    'value' => round($dateWater, 2)
                 ];
             });
     }
@@ -73,11 +73,16 @@ class DailyReportsWaterProduction extends DailyReports
             ->join('dict.well_activity as wa', 'mwc.activity', 'wa.id')
             ->join('dict.value_type as vt', 'mwc.value_type', 'vt.id')
             ->whereIn('mwc.well', $wells)
-            ->where('mwc.dbeg', '>=', $date->startOfYear())
-            ->where('mwc.dend', '<=', $date)
+            ->where('mwc.dend', '>=', $date->startOfYear())
+            ->where('mwc.dbeg', '<=', $date->endOfDay())
             ->where('wa.code', 'PMSR')
             ->where('vt.code', 'MNT')
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                $item->dbeg = Carbon::parse($item->dbeg, 'Asia/Almaty');
+                $item->dend = Carbon::parse($item->dend, 'Asia/Almaty');
+                return $item;
+            });
     }
 
 }
