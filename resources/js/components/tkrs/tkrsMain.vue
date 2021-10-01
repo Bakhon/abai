@@ -1,16 +1,20 @@
 <template>
   <div class="tkrs-main">
     <mainHeader />
+    <indicator />
+    <search />
     <div class="tkrs-content">
-
-      <DataAnalysisHeaderAndContent />
+      <BaseTable :fields="fields" :items="items" :filter="true"/>
     </div>
   </div>
 </template>
 
 <script>
-import mainHeader from "../mainHeader.vue";
-import TkrsHeaderAndContent from "../tkrsHeaderAndContent.vue";
+import mainHeader from "./mainHeader.vue";
+import indicator from "./indicator.vue";
+import search from "./search.vue";
+import BaseTable from './BaseTable.vue'
+
 
 export default {
   name: "tkrsMain",
@@ -19,8 +23,16 @@ export default {
   },
   components: {
     mainHeader,
-    tkrsHeaderAndContent,
+    indicator,
+    search,
+    BaseTable,
   },
+  data(){
+    return {
+      fields: ['№', 'Активность', 'Свзяь', 'Бригада Месторождение', 'Скважина', 'Вид ремонта', 'Оповощение', 'GPS'],
+      items: [['/img/tkrs/eyes.svg', 'Есет', 'Ерасыл'],['Абат', 'Есет', 'Ерасыл']]
+    }
+  }
 };
 </script>
 
@@ -34,5 +46,12 @@ export default {
   display: flex;
   width: 100%;
   height: calc(100vh - 143px);
+}
+table {
+  color: white;
+  background: #333975;
+}
+table, th, td {
+  border:1px solid black;
 }
 </style>

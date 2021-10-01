@@ -1,0 +1,147 @@
+table,
+th,
+td {
+  border: 1px solid #454d7d;
+  color: #fff;
+}
+
+table {
+  width: 100%;
+  position: relative;
+  font-size: 12px;
+}
+
+th {
+  background: #333975;
+  white-space: nowrap;
+}
+
+tr:nth-child(even) {
+  background: #272953;
+}
+
+tr:nth-child(odd) {
+  background: rgba(69, 77, 125, 1);
+}
+
+.table-container {
+  width: 100%;
+  height: calc(100% - 47px);
+  padding-top: 5px;
+}
+
+.table-div {
+  width: 100%;
+  height: calc(100% - 30px);
+  overflow: auto;
+}
+
+.table-div > div {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+th,
+td {
+  padding: 13px 10px;
+}
+
+.table-header-cell {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.table-header-cell > p {
+  margin: 0 10px;
+  text-align: center;
+}
+
+.table-header-cell > div {
+  height: 16px;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+
+.table-header-cell > div > img:last-child {
+  transform: rotate(180deg);
+}
+
+.table-pagination-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 30px;
+}
+
+.per-page-select-div {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  width: 50%;
+  color: #fff;
+}
+
+.per-page-select-div > select {
+  margin: 0 10px;
+  width: 60px;
+  background: #1f2142;
+  border-color: #454fa1;
+  color: #fff;
+}
+
+.per-page-select-div > p {
+  margin: 0;
+}
+
+.pagination {
+  width: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pagination > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.arrow-icons-holder {
+  width: 36px;
+}
+
+.arrow-icons-holder > img {
+  cursor: pointer;
+}
+
+.pagination-page-buttons {
+  width: 125px;
+}
+
+.pagination-page-buttons > a {
+  font-size: 16px;
+  color: #fff;
+  opacity: 0.5;
+}
+
+.flipped-icons > img {
+  transform: rotate(180deg);
+}
+
+::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #272953;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #656a8a;
+}

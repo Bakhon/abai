@@ -17,7 +17,7 @@ class Gdis extends PlainForm
 
     protected $configurationFileName = 'gdis';
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
         if (!$this->isValidDepth($this->request->get('well'), $this->request->get('depth'))) {
@@ -135,7 +135,7 @@ class Gdis extends PlainForm
             );
     }
 
-    protected function formatRows(Collection $rows)
+    protected function formatRows(Collection $rows): Collection
     {
         $rowIds = $rows->pluck('id')->toArray();
 

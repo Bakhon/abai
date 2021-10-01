@@ -59,11 +59,13 @@ export default {
     }
   },
   mounted() {
-    this.files = this.existedFiles.map(file => {
-      file.name = file.filename
-      file.isExist = true
-      return file
-    })
+    if (this.existedFiles) {
+      this.files = this.existedFiles.map(file => {
+        file.name = file.filename
+        file.isExist = true
+        return file
+      })
+    }
   },
   watch: {
     files(val) {

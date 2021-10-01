@@ -20,10 +20,10 @@
       {{ trans('monitoring.omgngdu.fields.gas_factor') }} : {{ getValueOrNoData(pipe[paramKey].gazf) }}</p>
     <p>
       {{ trans('monitoring.hydro_calculation.fields.pressure_start') }} :
-      {{ getValueOrNoData(pipe[paramKey].press_start) }}
+      {{ getValueOrNoData(pipe[paramKey].press_start * 1.01325) }}
     </p>
     <p>
-      {{ trans('monitoring.hydro_calculation.fields.pressure_end') }} : {{ getValueOrNoData(pipe[paramKey].press_end) }}
+      {{ trans('monitoring.hydro_calculation.fields.pressure_end') }} : {{ getValueOrNoData(pipe[paramKey].press_end  * 1.01325) }}
     </p>
     <p>
       {{ trans('monitoring.hydro_calculation.fields.temperature_start') }} :

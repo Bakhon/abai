@@ -58,6 +58,15 @@ class ResearchLabResearch extends PlainForm
                 ->first();
             unset($additionalData->id, $additionalData->well);
 
+            $researchResults = [];
+            if (!empty($additionalData)) {
+                foreach ($additionalData as $key => $value) {
+                    $field = $this->getFields()->where('code', $key)->first();
+                    $researchResults[] = ($field ? $field['title'] : $key) . ': ' . $value;
+                }
+            }
+            $row->research_results = implode(', ', $researchResults);
+
             foreach ((array)$additionalData as $key => $value) {
                 $row->$key = $value;
             }
@@ -67,7 +76,7 @@ class ResearchLabResearch extends PlainForm
         return $this->formatRows($rows);
     }
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
         if (!$this->isValidDepth($this->request->get('well'), $this->request->get('depth'))) {

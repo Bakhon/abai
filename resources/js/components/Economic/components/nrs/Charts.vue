@@ -50,7 +50,7 @@
           :profitability="profitability"
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
-          :org_id="org_id"
+          :org_id="form.org_id"
           class="bg-economic-chart"/>
 
       <chart-with-liquid-production
@@ -61,6 +61,10 @@
           :oil-prices="filteredOilPrices"
           :dollar-rates="filteredDollarRates"
           class="bg-economic-chart"/>
+
+      <chart-well-map
+          v-else-if="activeTab === 'well_map'"
+          :org-form="form"/>
     </div>
   </div>
 </template>
@@ -71,6 +75,7 @@ import ChartWithProfitability from "./ChartWithProfitability";
 import ChartWithOilProduction from "./ChartWithOilProduction";
 import ChartWithOperatingProfitTop from "./ChartWithOperatingProfitTop";
 import ChartWithLiquidProduction from "./ChartWithLiquidProduction";
+import ChartWellMap from "./ChartWellMap";
 
 export default {
   name: "Charts",
@@ -80,6 +85,7 @@ export default {
     ChartWithOilProduction,
     ChartWithOperatingProfitTop,
     ChartWithLiquidProduction,
+    ChartWellMap,
   },
   props: {
     charts: {
@@ -102,9 +108,9 @@ export default {
       required: true,
       type: Array
     },
-    org_id: {
+    form: {
       required: true,
-      type: Number
+      type: Object
     }
   },
   data: () => ({
@@ -121,6 +127,7 @@ export default {
         oil_production: this.trans('economic_reference.distribution_oil_production_by_profitability'),
         operating_profit_top: this.trans('economic_reference.rating_top_10_wells_by_profitability'),
         liquid_production: this.trans('economic_reference.distribution_liquid_production_by_profitability'),
+        well_map: this.trans('economic_reference.well_overview_map'),
       }
     },
 
