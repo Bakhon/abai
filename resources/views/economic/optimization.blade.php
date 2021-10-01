@@ -7,7 +7,7 @@
 @section('module_title', trans('economic_reference.economic_module_full'))
 
 @section('content')
-    <div class="col-sm-12 overflow-auto customScroll">
+    <div class="col-sm-12 overflow-hidden">
         <economic-optimization></economic-optimization>
     </div>
 @endsection
@@ -22,6 +22,10 @@
 
     #app {
         flex-wrap: nowrap;
-        overflow-x: hidden;
+        overflow: hidden;
+    }
+
+    body{
+        overflow: hidden;
     }
 </style>

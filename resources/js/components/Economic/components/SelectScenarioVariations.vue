@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex bg-main1 text-white text-wrap">
-    <div class="mx-2">
-      <div class="text-nowrap" style="font-size: 16px; line-height: 18px; font-weight: 600;">
+    <div class="ml-2">
+      <div class="text-nowrap" style="font-size: 14px; line-height: 18px; font-weight: 600;">
         {{ trans('economic_reference.select_optimization_scenarios') }}
       </div>
 

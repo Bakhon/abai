@@ -1,12 +1,12 @@
 <template>
   <div>
-    <subtitle font-size="18" style="line-height: 26px">
+    <subtitle font-size="16" style="line-height: 18px">
       {{ trans('economic_reference.technical_economic_indicators') }}
       “{{ org.name }}”
     </subtitle>
 
-    <div class="mt-3 text-center border-grey">
-      <div class="d-flex bg-header">
+    <div class="mt-2 text-center border-grey">
+      <div class="d-flex bg-header" style="padding-right: 10px">
         <div class="p-3 border-grey d-flex align-items-center flex-80px">
           {{ trans('economic_reference.item_number') }}
         </div>
@@ -57,38 +57,41 @@
         </div>
       </div>
 
-      <div v-for="(item, itemIndex) in tableData"
-           :key="itemIndex"
-           :style="`background: ${item.color}`"
-           class="d-flex">
-        <div class="py-2 px-3 border-grey border-top-0 d-flex align-items-center justify-content-center flex-80px">
-          {{ item.index }}
-        </div>
-
-        <div
-            class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-start flex-320px">
-          {{ item.title }}
-        </div>
-
-        <div
-            class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-start flex-150px">
-          {{ item.dimension }}
-        </div>
-
-        <div class="d-flex flex-200px">
-          <div v-for="(budget, index) in item.budget2020"
-               :key="index"
-               class="py-2 px-3 border-grey border-top-0 border-left-0 flex-grow-1 text-right">
-            {{ budget.value }}
+      <div class="customScroll"
+           style="overflow-y: scroll; height: 405px">
+        <div v-for="(item, itemIndex) in tableData"
+             :key="itemIndex"
+             :style="`background: ${item.color}`"
+             class="d-flex">
+          <div class="py-2 px-3 border-grey border-top-0 d-flex align-items-center justify-content-center flex-80px">
+            {{ item.index }}
           </div>
-        </div>
 
-        <div class="d-flex flex-grow-1">
-          <div v-for="(value, index) in item.values"
-               :key="index"
-               class="py-2 px-3 border-grey border-top-0 border-left-0 text-right"
-               style="flex: 1 0 100px; white-space: pre-line"
-          >{{ typeof value === 'string' ? value : (+(value).toFixed(2)).toLocaleString() }}
+          <div
+              class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-start flex-320px">
+            {{ item.title }}
+          </div>
+
+          <div
+              class="py-2 px-3 border-grey border-top-0 border-left-0 d-flex align-items-center justify-content-start flex-150px">
+            {{ item.dimension }}
+          </div>
+
+          <div class="d-flex flex-200px">
+            <div v-for="(budget, index) in item.budget2020"
+                 :key="index"
+                 class="py-2 px-3 border-grey border-top-0 border-left-0 flex-grow-1 text-right">
+              {{ budget.value }}
+            </div>
+          </div>
+
+          <div class="d-flex flex-grow-1">
+            <div v-for="(value, index) in item.values"
+                 :key="index"
+                 class="py-2 px-3 border-grey border-top-0 border-left-0 text-right"
+                 style="flex: 1 0 100px; white-space: pre-line"
+            >{{ typeof value === 'string' ? value : (+(value).toFixed(2)).toLocaleString() }}
+            </div>
           </div>
         </div>
       </div>
@@ -97,6 +100,8 @@
 </template>
 
 <script>
+import {formatValueMixin} from "../mixins/formatMixin";
+
 import Subtitle from "./Subtitle";
 
 export default {
@@ -104,6 +109,9 @@ export default {
   components: {
     Subtitle
   },
+  mixins: [
+    formatValueMixin
+  ],
   props: {
     org: {
       required: true,
@@ -349,11 +357,14 @@ export default {
         {
           index: '8',
           title: this.trans('economic_reference.income'),
-          dimension: this.trans('economic_reference.million_tenge'),
+          dimension: `
+            ${this.formatValue(this.baseScenario.Revenue_total.original_value_optimized).dimension}
+            ${this.trans('economic_reference.tenge')}
+          `,
           values: [
-            ...[+this.baseScenario.Revenue_total.original_value_optimized / 1000000],
+            ...[this.formatValue(this.baseScenario.Revenue_total.original_value_optimized).value],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                +this.oilPriceScenarios[index].Revenue_total.original_value_optimized / 1000000
+                this.formatValue(this.oilPriceScenarios[index].Revenue_total.original_value_optimized).value
             )
           ],
           budget2020: this.budget2020Map,
@@ -362,11 +373,14 @@ export default {
         {
           index: '9',
           title: this.trans('economic_reference.total_expenses'),
-          dimension: this.trans('economic_reference.million_tenge'),
+          dimension: `
+            ${this.formatValue(this.baseScenario.Overall_expenditures_scenario).dimension}
+            ${this.trans('economic_reference.tenge')}
+          `,
           values: [
-            ...[+this.baseScenario.Overall_expenditures_scenario / 1000000],
+            ...[this.formatValue(this.baseScenario.Overall_expenditures_scenario).value],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                +this.oilPriceScenarios[index].Overall_expenditures_scenario / 1000000
+                this.formatValue(this.oilPriceScenarios[index].Overall_expenditures_scenario).value
             )
           ],
           budget2020: this.budget2020Map,
@@ -386,11 +400,14 @@ export default {
         {
           index: '11',
           title: this.trans('economic_reference.operating_profit'),
-          dimension: this.trans('economic_reference.million_tenge'),
+          dimension: `
+            ${this.formatValue(this.baseScenario.Operating_profit_scenario).dimension}
+            ${this.trans('economic_reference.tenge')}
+          `,
           values: [
-            ...[+this.baseScenario.Operating_profit_scenario / 1000000],
+            ...[this.formatValue(this.baseScenario.Operating_profit_scenario).value],
             ...this.reverseOilPrices.map((oilPrice, index) =>
-                +this.oilPriceScenarios[index].Operating_profit_scenario / 1000000
+                this.formatValue(this.oilPriceScenarios[index].Operating_profit_scenario).value
             )
           ],
           budget2020: this.budget2020Map,
@@ -477,5 +494,9 @@ export default {
 
 .line-height-14px {
   line-height: 14px;
+}
+
+.customScroll::-webkit-scrollbar {
+  width: 10px;
 }
 </style>

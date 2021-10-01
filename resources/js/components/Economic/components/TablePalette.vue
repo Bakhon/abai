@@ -1,11 +1,11 @@
 <template>
   <div>
-    <subtitle font-size="18" style="line-height: 26px">
+    <subtitle font-size="16" style="line-height: 18px">
       {{ trans('economic_reference.palette') }}
     </subtitle>
 
-    <div class="mt-3 text-center border-grey">
-      <div class="d-flex bg-header font-weight-600">
+    <div class="mt-2 text-center border-grey">
+      <div class="d-flex bg-header font-weight-600" style="padding-right: 10px">
         <div class="py-3 border-grey d-flex align-items-center justify-content-center flex-350px">
           {{ trans('economic_reference.course') }}
           {{ (+scenario.dollar_rate).toLocaleString() }}
@@ -32,25 +32,28 @@
         </div>
       </div>
 
-      <div v-for="(row, index) in tableData"
-           :key="index"
-           :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
-           :style="row.color ? `color: ${row.color}` : ''"
-           class="d-flex">
-        <div :style="row.bgColor ? `background: ${row.bgColor}` : ''"
-             class="px-3 py-2 border-grey text-center flex-350px">
-          {{ row.title }}
-        </div>
+      <div class="customScroll"
+           style="overflow-y: scroll; height: 415px">
+        <div v-for="(row, index) in tableData"
+             :key="index"
+             :class="index % 2 === 1 ? 'bg-light-blue' : 'bg-deep-blue'"
+             :style="row.color ? `color: ${row.color}` : ''"
+             class="d-flex">
+          <div :style="row.bgColor ? `background: ${row.bgColor}` : ''"
+               class="px-3 py-2 border-grey text-center flex-350px">
+            {{ row.title }}
+          </div>
 
-        <div class="px-3 py-2 border-grey text-center flex-150px">
-          {{ row.pp2020 }}
-        </div>
+          <div class="px-3 py-2 border-grey text-center flex-150px">
+            {{ row.pp2020 }}
+          </div>
 
-        <div v-for="(column, columnIndex) in row.columns"
-             :key="`${index}_${columnIndex}`"
-             :style="`flex-basis: ${100 / row.columns.length}%; background: ${column.color}`"
-             class="px-3 py-2 border-grey text-center flex-grow-1">
-          {{ column.value.toLocaleString() }}
+          <div v-for="(column, columnIndex) in row.columns"
+               :key="`${index}_${columnIndex}`"
+               :style="`flex-basis: ${100 / row.columns.length}%; background: ${column.color}`"
+               class="px-3 py-2 border-grey text-center flex-grow-1">
+            {{ column.value.toLocaleString() }}
+          </div>
         </div>
       </div>
     </div>
@@ -186,10 +189,6 @@ export default {
   background: #333975;
 }
 
-.bg-header-light {
-  background: #454D7D;
-}
-
 .bg-light-blue {
   background: #313560;
 }
@@ -204,5 +203,9 @@ export default {
 
 .flex-150px {
   flex: 0 0 150px;
+}
+
+.customScroll::-webkit-scrollbar {
+  width: 10px;
 }
 </style>
