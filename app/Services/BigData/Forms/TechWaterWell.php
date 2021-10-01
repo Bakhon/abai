@@ -30,8 +30,8 @@ class TechWaterWell extends TableForm
         $this->waterMeasurements = DB::connection('tbd')
             ->table('prod.meas_water_prod')
             ->whereIn('well', $wells->pluck('id')->toArray())
-            ->where('dbeg', '<=', Carbon::parse($filter->date, 'Asia/Almaty'))
-            ->where('dbeg', '>=', Carbon::parse($filter->date, 'Asia/Almaty')->subYears(10))
+            ->where('dbeg', '>=', Carbon::parse($filter->date, 'Asia/Almaty')->subMonthNoOverflow()->startOfMonth())
+            ->where('dbeg', '<=', Carbon::parse($filter->date, 'Asia/Almaty')->subMonthNoOverflow()->endOfMonth())
             ->get()
             ->groupBy('well')
             ->map(function ($measurements) {
