@@ -220,6 +220,30 @@
           }
         ]
       ]
+    },
+    {
+      "title": "conclusion",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "conclusion",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "conclusion",
+                "columns": [
+                  {
+                    "code": "name_ru",
+                    "title": "scan_doc"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
     }
   ]
 }

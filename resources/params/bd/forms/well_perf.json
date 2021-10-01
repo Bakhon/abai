@@ -99,6 +99,14 @@
     {
       "action": "delete",
       "title": "Удалить"
+    },
+    {
+      "action": "create",
+      "title": "Прикрепить файл",
+      "form": "well_document_short",
+      "default_values": {
+        "perf_type": 8
+      }
     }
   ],
   "custom_row_edit": true,
