@@ -34,8 +34,8 @@ class MeasWaterInj extends MeasLogByMonth
         return DB::connection('tbd')
             ->table('prod.tech_mode_inj')
             ->whereIn('well', $wellIds)
-            ->where('dbeg', '>=', $date->startOfMonth())
-            ->where('dend', '<=', $date->endOfMonth())
+            ->where('dend', '>=', $date->startOfMonth())
+            ->where('dbeg', '<=', $date->endOfMonth())
             ->get()
             ->groupBy('well')
             ->map(function ($items) {
@@ -75,7 +75,7 @@ class MeasWaterInj extends MeasLogByMonth
             'id' => $well->id,
             'uwi' => ['value' => $well->uwi],
             'indicator' => ['value' => trans('bd.forms.meas_water_inj.pressure')],
-            'tech' => ['value' => $techMode->get($well->id) ?? 0]
+            'tech' => ['value' => $techMode->get($well->id) ? $techMode->get($well->id)->inj_pressure : 0]
         ];
         $workTimeRow = [
             'id' => $well->id,
@@ -87,7 +87,7 @@ class MeasWaterInj extends MeasLogByMonth
         ];
 
         $monthDay = $date->startOfMonth();
-        while ($monthDay < $date) {
+        while ($monthDay <= $date) {
             $pressure = $pressures->get($well->id) ? $pressures->get($well->id)->get($monthDay->format('j')) : 0;
             $workTime = $workTimes[$monthDay->format('j')] ?? null;
 
@@ -113,7 +113,7 @@ class MeasWaterInj extends MeasLogByMonth
         $columns = $this->getFields()->toArray();
 
         $monthDay = $date->startOfMonth();
-        while ($monthDay < $date) {
+        while ($monthDay <= $date) {
             $columns[] = [
                 'code' => $monthDay->format('d.m.Y'),
                 'type' => 'text',
