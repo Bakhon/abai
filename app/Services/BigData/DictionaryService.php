@@ -611,7 +611,6 @@ class DictionaryService
         $result = array_unique(array_map(function ($item) {
             return (int)$item->tech;
         }, $result));
-        
         return $result;
     }
 
@@ -622,28 +621,22 @@ class DictionaryService
         $orgIds = array_map(function ($item) {
             return (int)substr($item, strpos($item, ":") + 1);
         }, $orgIds);
+        $organizations = [];
+        foreach($orgIds as $id) {
+            $organizations[] = Org::find($id);
+        }
 
-        $items = DB::connection('tbd')
-                ->table('dict.org as o')
-                ->select('o.id', 'o.parent as parent')
-                ->get()
-                ->toArray();
-
-        $orgIds = array_unique(array_merge($orgIds, $this->getOrgWithChildrenIds($orgIds, $items)));
+        $orgIds = $this->getOrgWithChildrens($organizations);
         return $orgIds;
     }
 
-    private function getOrgWithChildrenIds($orgIds, &$items) {
+    private function getOrgWithChildrens($organizations) {
         $result = [];
-        foreach($orgIds as $id) {
-            $tmp = [];
-            foreach($items as $item) {
-                if($item->parent == $id) {
-                    $tmp[] = $item->id;
-                }
-            }
+        foreach($organizations as $organization) {
+            $result[] = $organization->id;
+            $children = $organization->children()->get();
             
-            $result = array_merge($result, $tmp, $this->getOrgWithChildrenIds($tmp, $items));
+            $result = array_merge($result, $this->getOrgWithChildrens($children));
         }
 
         return $result;
