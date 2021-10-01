@@ -29,12 +29,12 @@ class DailyReportsFluidProd extends DailyReports
             ->whereIn('well', $wells)
             ->get()
             ->groupBy(function ($item) {
-                return Carbon::parse($item->dbeg)->format('d.m.Y');
+                return Carbon::parse($item->dbeg, 'Asia/Almaty')->format('d.m.Y');
             })
             ->map(function ($items, $key) use ($workTime) {
                 $dateLiquid = $items
                     ->map(function ($item) use ($workTime) {
-                        $date = Carbon::parse($item->dbeg)->format('d.m.Y');
+                        $date = Carbon::parse($item->dbeg, 'Asia/Almaty')->format('d.m.Y');
                         if (!isset($workTime[$item->well])) {
                             return 0;
                         }
@@ -45,7 +45,7 @@ class DailyReportsFluidProd extends DailyReports
                     })
                     ->sum();
                 return [
-                    'date' => Carbon::parse($key),
+                    'date' => Carbon::parse($key, 'Asia/Almaty'),
                     'value' => $dateLiquid
                 ];
             });

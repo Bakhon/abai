@@ -260,22 +260,21 @@ abstract class DailyReports extends TableForm
             return $result;
         }
 
-        $date = Carbon::parse($filter->date)->toImmutable();
+        $currentDate = Carbon::parse($filter->date, 'Asia/Almaty')->toImmutable();
 
-        $measuredFieldValues = $this->getMeasuredFieldValues($org, $date);
-        $now = Carbon::now('Asia/Almaty')->toImmutable();
-        $today = $measuredFieldValues->where('date', $now)->first();
+        $measuredFieldValues = $this->getMeasuredFieldValues($org, $currentDate);
+        $today = $measuredFieldValues->where('date', $currentDate->startOfDay())->first();
         $month = round(
             $measuredFieldValues
-                ->where('date', '>=', $now->startOfMonth())
-                ->where('date', '<=', $now)->sum('value'),
+                ->where('date', '>=', $currentDate->startOfMonth())
+                ->where('date', '<=', $currentDate)->sum('value'),
             2
         );
         $year = round($measuredFieldValues->sum('value'), 2);
 
 
         if ($filter->type === self::GS) {
-            $result['fact'] = ['value' => $today ? $today->value : 0];
+            $result['fact'] = ['value' => $today ? $today['value'] : 0];
             $result['month_fact'] = ['value' => $month];
             $result['year_fact'] = ['value' => $year];
         } else {
@@ -348,14 +347,14 @@ abstract class DailyReports extends TableForm
             ->get()
             ->map(
                 function ($item) {
-                    $item->dbeg = Carbon::parse($item->dbeg);
-                    $item->dend = Carbon::parse($item->dend);
+                    $item->dbeg = Carbon::parse($item->dbeg, 'Asia/Almaty');
+                    $item->dend = Carbon::parse($item->dend, 'Asia/Almaty');
                     return $item;
                 }
             );
 
         $currentDate = $date->startOfYear();
-        while ($currentDate < $date) {
+        while ($currentDate <= $date) {
             $startOfDay = $currentDate->startOfDay();
             $endOfDay = $currentDate->endOfDay();
             foreach ($wellIds as $wellId) {
