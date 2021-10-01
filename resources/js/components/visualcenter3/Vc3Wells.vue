@@ -72,7 +72,7 @@ export default {
                     inverseOrder: false,
                     custom: undefined,
                     fillSeriesColor: false,
-                    theme: false,
+                    theme: 'dark',
                     y: {
                         formatter: function (value) {
                             if (value) {
@@ -90,14 +90,12 @@ export default {
                     defaultLocale: "ru",
                     toolbar: {
                         show: false,
-                        Color: "#373d3f",
                     },
                     foreColor: "#FFFFFF",
                 },
                 stroke: {
                     show: true,
                     width: 2,
-                    colors: ['transparent']
                 },
                 plotOptions: {
                     bar: {
@@ -148,15 +146,11 @@ export default {
                     },
                     labels: {
                         formatter: function (val) {
-                            return moment(val).format("DD / MMM / YYYY");
+                            return moment(val).format("DD MMM");
                         },
-                        type: datetime,
-                        datetimeFormatter: {
-                            day: "dd MMM yy",
-                            month: "dd MMM yy",
-                            year: "yy",
-                        },
+                        rotate: 0,
                     },
+                    tickAmount: 3,
                     position: "bottom",
                     axisBorder: {
                         show: false,
@@ -171,16 +165,21 @@ export default {
             if (!this.chartData) {
                 return [];
             } else {
-                return [
+                let chartData = [
                     {
                         name: this.trans("visualcenter.Fact"),
                         data: this.chartData.series.fact,
-                    },
-                    {
-                        name: this.trans("visualcenter.Plan"),
-                        data: this.chartData.series.plan,
-                    },
+                    }
                 ];
+                if (this.chartData.series.plan) {
+                    chartData.push(
+                        {
+                            name: this.trans("visualcenter.Plan"),
+                            data: this.chartData.series.plan,
+                        }
+                    );
+                }
+                return chartData;
             }
         },
     },

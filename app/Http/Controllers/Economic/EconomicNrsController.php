@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\EconomicNrsDataRequest;
 use App\Http\Requests\Economic\EconomicNrsWellsRequest;
 use App\Jobs\ExportEconomicDataToExcel;
+use App\Models\BigData\Well;
 use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Extractions\ExtractionBuilder;
@@ -67,6 +69,15 @@ class EconomicNrsController extends Controller
     public function indexWells()
     {
         return view('economic.nrs_wells');
+    }
+
+    public function indexWell(Request $request)
+    {
+        $orgId = $request->route('org_id');
+
+        $wellId = $request->route('well_id');
+
+        return view('economic.nrs_well', compact('orgId', 'wellId'));
     }
 
     public function getData(EconomicNrsDataRequest $request): array
@@ -373,14 +384,18 @@ class EconomicNrsController extends Controller
             ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
             : null;
 
-        /** @var Carbon $intervalStart */
-        /** @var Carbon $intervalEnd */
-        list($intervalStart, $intervalEnd) = self::calcIntervalMonthsStartEnd(
-            $request->interval_start,
-            $request->interval_end
+        $interval = self::formatInterval(
+            Carbon::parse($request->interval_start),
+            Carbon::parse($request->interval_end)->addDay(),
         );
 
-        $interval = self::formatInterval($intervalStart->copy(), $intervalEnd->copy());
+        $sumKeys = [
+            "Operating_profit",
+            "Overall_expenditures",
+            "NetBack_bf_pr_exp",
+            "oil",
+            "liquid"
+        ];
 
         $builder = $this
             ->druidClient
@@ -389,10 +404,73 @@ class EconomicNrsController extends Controller
             ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) {
                 $extBuilder->timeFormat(self::GRANULARITY_DAILY_FORMAT);
             })
-            ->select("uwi")
-            ->sum("Operating_profit")
-            ->sum("Overall_expenditures")
-            ->sum("NetBack_bf_pr_exp");
+            ->select("uwi");
+
+        foreach ($sumKeys as $key) {
+            $builder->sum($key);
+        }
+
+        if ($org->druid_id) {
+            $builder->where('org_id2', '=', $org->druid_id);
+        }
+
+        if ($dpz) {
+            $builder->where('dpz', '=', $dpz);
+        }
+
+        if ($request->well_id) {
+            $builder->where('uwi', '=', $request->well_id);
+        }
+
+        $wells = $builder->groupBy()->data();
+
+        $wellsByDates = ['org' => $org, 'dates' => [], 'uwis' => []];
+
+        foreach ($wells as &$well) {
+            $uwi = $well['uwi'];
+
+            $date = $well['dt'];
+
+            $wellsByDates['dates'][$date] = 1;
+
+            foreach ($sumKeys as $key) {
+                $wellsByDates['uwis'][$uwi][$key][$date] = $well[$key];
+
+                if (!isset($wellsByDates['uwis'][$uwi][$key]['sum'])) {
+                    $wellsByDates['uwis'][$uwi][$key]['sum'] = 0;
+                }
+
+                $wellsByDates['uwis'][$uwi][$key]['sum'] += $well[$key];
+            }
+        }
+
+        $wellsByDates['dates'] = array_keys($wellsByDates['dates']);
+
+        return $wellsByDates;
+    }
+
+    public function getWellsMap(EconomicNrsDataRequest $request): array
+    {
+        $org = self::getOrg($request->org_id, $this->structureService);
+
+        $dpz = $request->field_id
+            ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
+            : null;
+
+        $interval = self::formatInterval(
+            Carbon::parse($request->interval_start),
+            Carbon::parse($request->interval_end)->addDay()
+        );
+
+        $builder = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::DAY)
+            ->interval($interval)
+            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) {
+                $extBuilder->timeFormat(self::GRANULARITY_DAILY_FORMAT);
+            })
+            ->select('uwi')
+            ->select('profitability');
 
         if ($org->druid_id) {
             $builder->where('org_id2', '=', $org->druid_id);
@@ -404,25 +482,26 @@ class EconomicNrsController extends Controller
 
         $wells = $builder->groupBy()->data();
 
-        $wellsByDates = ['dates' => [], 'uwis' => []];
+        $uwis = [];
 
         foreach ($wells as &$well) {
-            $uwi = $well['uwi'];
-
-            $date = $well['dt'];
-
-            $wellsByDates['dates'][$date] = 1;
-
-            $wellsByDates['uwis'][$uwi]['NetBack_bf_pr_exp'][$date] = $well['NetBack_bf_pr_exp'];
-
-            $wellsByDates['uwis'][$uwi]['Overall_expenditures'][$date] = $well['Overall_expenditures'];
-
-            $wellsByDates['uwis'][$uwi]['Operating_profit'][$date] = $well['Operating_profit'];
+            $uwis[$well['uwi']] = 1;
         }
 
-        $wellsByDates['dates'] = array_keys($wellsByDates['dates']);
+        $uwis = array_keys($uwis);
 
-        return $wellsByDates;
+        $coordinates = Well::query()
+            ->whereIn('uwi', $uwis)
+            ->whereNotNull('whc')
+            ->with('spatialObject')
+            ->get()
+            ->groupBy('uwi');
+
+        foreach ($wells as &$well) {
+            $well['coordinates'] = $coordinates->get($well['uwi'])[0]['spatialObject'][0]['coord_point'] ?? null;
+        }
+
+        return $wells;
     }
 
     public function exportData(EconomicNrsDataRequest $request)

@@ -14,11 +14,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class CalculateHydroDynamics implements ShouldQueue
 {
@@ -152,7 +152,7 @@ class CalculateHydroDynamics implements ShouldQueue
                 break;
             }
 
-            $temperature = $points[$key]->omgngdu->heater_output_temperature;
+            $temperature = $points[$key]->omgngdu->heater_output_temperature ? $points[$key]->omgngdu->heater_output_temperature : $points[$key]->omgngdu->heater_inlet_temperature;
             $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
             $points[$key]->omgngdu->heater_output_temperature = $temperature;
 

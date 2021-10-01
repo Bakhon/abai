@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
 use Carbon\Carbon;
@@ -18,7 +17,7 @@ class Gdis extends PlainForm
 
     protected $configurationFileName = 'gdis';
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
         if (!$this->isValidDepth($this->request->get('well'), $this->request->get('depth'))) {
@@ -36,22 +35,7 @@ class Gdis extends PlainForm
         return $errors;
     }
 
-    public function submit(): array
-    {
-        DB::connection('tbd')->beginTransaction();
-
-        try {
-            $id = $this->submitData();
-
-            DB::connection('tbd')->commit();
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
-        } catch (\Exception $e) {
-            DB::connection('tbd')->rollBack();
-            throw new SubmitFormException($e->getMessage());
-        }
-    }
-
-    protected function submitData()
+    protected function submitForm(): array
     {
         $this->tableFields = $this->getFields()
             ->filter(
@@ -135,7 +119,7 @@ class Gdis extends PlainForm
 
         $this->insertInnerTable($id);
 
-        return $id;
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 
     protected function insertComplexValue(int $id, int $metricId, $value)
@@ -151,7 +135,7 @@ class Gdis extends PlainForm
             );
     }
 
-    protected function formatRows(Collection $rows)
+    protected function formatRows(Collection $rows): Collection
     {
         $rowIds = $rows->pluck('id')->toArray();
 

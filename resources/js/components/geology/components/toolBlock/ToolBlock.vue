@@ -66,7 +66,7 @@ export default {
     display: flex;
     width: 100%;
     height: 100%;
-
+    position: relative;
     &__content {
       overflow-y: auto;
       width: 100%;

@@ -49,17 +49,17 @@ class ManualOilPipe extends Model
 
     public function firstCoords()
     {
-        return $this->setConnection('mysql')->hasOne(PipeCoord::class)->orderBy('m_distance');
+        return $this->setConnection('mysql')->hasOne(PipeCoord::class, 'oil_pipe_id', 'id')->orderBy('m_distance');
     }
 
     public function lastCoords()
     {
-        return $this->setConnection('mysql')->hasOne(PipeCoord::class)->orderByDesc('m_distance');
+        return $this->setConnection('mysql')->hasOne(PipeCoord::class, 'oil_pipe_id', 'id')->orderByDesc('m_distance');
     }
 
     public function hydroCalc()
     {
-        return $this->hasOne(HydroCalcResult::class, 'oil_pipe_id');
+        return $this->hasOne(ManualHydroCalcResult::class, 'oil_pipe_id');
     }
 
     public function reverseCalc()
@@ -69,7 +69,7 @@ class ManualOilPipe extends Model
 
     public function hydroCalcLong()
     {
-        return $this->hasMany(HydroCalcLong::class, 'oil_pipe_id')->orderby('segment');
+        return $this->hasMany(ManualHydroCalcLong::class, 'oil_pipe_id')->orderby('segment');
     }
 
     public static function boot() {
@@ -83,14 +83,14 @@ class ManualOilPipe extends Model
 
     public function lastHydroCalc()
     {
-        return $this->belongsTo(HydroCalcResult::class, 'oil_pipe_id');
+        return $this->belongsTo(ManualHydroCalcResult::class);
     }
 
     public function scopeWithLastHydroCalc($query)
     {
         $query->addSelect(
             [
-                'last_hydro_calc_id' => HydroCalcResult::select('id')
+                'last_hydro_calc_id' => ManualHydroCalcResult::select('id')
                     ->whereColumn('oil_pipe_id', 'manual_oil_pipes.id')
                     ->orderBy('date', 'desc')
                     ->take(1)

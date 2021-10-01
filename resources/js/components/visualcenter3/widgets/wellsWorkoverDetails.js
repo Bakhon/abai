@@ -56,6 +56,13 @@ export default {
                     this.trans("visualcenter.Fact")
                 ]
             },
+            wellsWorkoverDzo: ['КБМ','КОА','ММГ','КГМ','ОМГ','ЭМГ','КТМ'],
+            wellsWorkoverTemplate: {
+                'date': moment().subtract(1,'months').format('YYYY-MM-DD'),
+                'dzo_name': '',
+                'otm_underground_workover': 0,
+                'otm_well_workover_fact': 0
+            }
         };
     },
     methods: {
@@ -66,16 +73,21 @@ export default {
             };
             let uri = this.localeUrl("/get-otm-details");
             const response = await axios.get(uri,{params:queryOptions});
+            if (response.status !== 200) {
+                return [];
+            }
+            let wellsWorkoverData = response.data;
 
-            if (response.data && response.data.length === 0) {
-                this.wellsWorkoverPeriodStartMonth = moment(this.wellsWorkoverPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
-                this.wellsWorkoverPeriodEndMonth = moment(this.wellsWorkoverPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
-                return await this.getWellsWorkoverByMonth();
+            if (wellsWorkoverData && wellsWorkoverData.length !== this.wellsWorkoverDzo.length) {
+                let presentCompanies = wellsWorkoverData.map(a => a.dzo_name);
+                let difference = this.wellsWorkoverDzo.filter(dzoName => !presentCompanies.includes(dzoName));
+                for (let dzo of difference) {
+                    let template = this.wellsWorkoverTemplate;
+                    template['dzo_name'] = dzo;
+                    wellsWorkoverData.push(template);
+                }
             }
-            if (response.status === 200) {
-                return response.data;
-            }
-            return {};
+            return wellsWorkoverData;
         },
 
         async switchWellsWorkoverPeriod(buttonType) {
@@ -121,7 +133,7 @@ export default {
             if (this.wellsWorkoverMonthlyPeriod.length > 0) {
                 this.wellsWorkoverDailyChart.series = [];
                 for (let wellsWorkover of this.wellsWorkoverData) {
-                    this.wellsWorkoverDailyChart.series.push(wellsWorkover.fact,wellsWorkover.plan);
+                    this.wellsWorkoverDailyChart.series.push(wellsWorkover.plan,wellsWorkover.fact);
                 }
             } else {
                 this.wellsWorkoverChartData = this.getWellsWorkoverWidgetChartData(temporaryWellsWorkoverDetails);

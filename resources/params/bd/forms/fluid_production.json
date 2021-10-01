@@ -1,17 +1,6 @@
 {
   "type": "table",
   "table_type": "wells",
-  "merge_columns": {
-    "merge_2": {
-      "code": "merge_2",
-      "title": "Объединение 2",
-      "parent_column": "merge_1"
-    },
-    "merge_1": {
-      "code": "merge_1",
-      "title": "Объединение 1"
-    }
-  },
   "columns": [
     {
       "title": "uwi_number",
@@ -23,8 +12,7 @@
       "title": "other_uwi",
       "code": "other_uwi",
       "type": "text",
-      "is_editable": false,
-      "parent_column": "merge_1"
+      "is_editable": false
     },
     {
       "title": "worktime",
@@ -32,8 +20,7 @@
       "table": "prod.well_status",
       "column": "well_status_type_id",
       "type": "text",
-      "is_editable": false,
-      "parent_column": "merge_2"
+      "is_editable": false
     },
     {
       "title": "exp_type",
@@ -41,8 +28,7 @@
       "table": "prod.well_expl",
       "column": "name",
       "type": "text",
-      "is_editable": false,
-      "parent_column": "merge_2"
+      "is_editable": false
     },
     {
       "title": "lease",
@@ -50,8 +36,7 @@
       "table": "prod.well_tech",
       "column": "tap",
       "type": "integer",
-      "is_editable": false,
-      "parent_column": "merge_2"
+      "is_editable": false
     },
     {
       "title": "geostructure",
@@ -87,14 +72,14 @@
       "title": "liquid_val",
       "code": "liquid_val",
       "type": "calc",
-      "formula": "$liquid_debit$ * $worktime$",
+      "formula": "Math.round($liquid_debit$ * $worktime$/24 * 100)/100",
       "is_editable": false
     },
     {
       "title": "oil_val",
       "code": "oil_val",
       "type": "calc",
-      "formula": "$oil_debit$ * $worktime$",
+      "formula": "Math.round($oil_debit$ * $worktime$/24 * 100)/100",
       "is_editable": false
     },
     {
@@ -185,7 +170,7 @@
       "title": "oil_debit",
       "code": "oil_debit",
       "type": "calc",
-      "formula": "$liquid_debit$ * (1 - $bsw_tech$/100) * $density_oil$",
+      "formula": "Math.round($liquid_debit$ * (1 - $bsw$/100) * $oil_density$ * 100)/100",
       "is_editable": false
     },
     {
@@ -445,7 +430,7 @@
       "title": "gas_output",
       "code": "gas_output",
       "type": "calc",
-      "formula": "$gas_factor$ * $worktime$",
+      "formula": "Math.round($gas_factor$ * $oil_val$ * 100)/100",
       "is_editable": false
     },
     {
@@ -480,7 +465,9 @@
     },
     {
       "title": "Плотность нефти",
-      "code": "density_oil",
+      "code": "oil_density",
+      "table": "prod.tech_mode_prod_oil",
+      "column": "oil_density",
       "type": "hidden",
       "is_editable": false
     },

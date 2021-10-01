@@ -12,10 +12,10 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 class AgzuImport implements ToModel
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
 
     const GU = 0;
     const MODEL = 1;
@@ -28,25 +28,28 @@ class AgzuImport implements ToModel
 
 
     public function transformDate($value, $format = 'd.m.Y')
-{
-    if(empty($value)){
-        return null;
-    }
-    try {
-        return Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
-    } catch (\ErrorException $e) {
-        return Carbon::createFromFormat($format, $value);
-    }
-    
-}
+    {
+        if (empty($value)) {
+            return null;
+        }
+        try {
+            return Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
+        } catch (\ErrorException $e) {
+            return Carbon::createFromFormat($format, $value);
+        }
 
+    }
 
 
     public function model(array $row)
     {
         $gu = Gu::where('name', $row[self::GU])->first();
+        if (!$gu) {
+            return null;
+        }
+
         return new Agzu([
-            'gu_id' => empty($gu) ? null : $gu->id,
+            'gu_id' => $gu->id,
             'model' => $row[self::MODEL],
             'method_of_measurement' => $row[self::METHOD_OF_MEASUREMENT],
             'number_of_connected_wells' => $row[self::NUMBER_OF_CONNECTED_WELLS],
@@ -55,6 +58,5 @@ class AgzuImport implements ToModel
             'date_of_repair' => $this->transformDate($row[self::DATE_OF_REPAIR]),
             'type_of_repair' => $row[self::TYPE_OF_REPAIR],
         ]);
-
     }
 }

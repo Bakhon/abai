@@ -7,6 +7,9 @@
       "order": "desc"
     }
   ],
+  "default_values": {
+    "dend": "9999-12-31 00:00:00+06"
+  },
   "tabs": [
     {
       "title": "Main",
@@ -25,7 +28,7 @@
                 "code": "dend",
                 "type": "date",
                 "title": "date_end",
-                "validation": "required|date|after:dbeg"
+                "validation": "date|after:dbeg"
               }
             ]
           },
@@ -53,7 +56,7 @@
                 "code": "agent_temp",
                 "type": "numeric",
                 "title": "agent_temperature",
-                "validation": "required|numeric|gt:0",
+                "validation": "numeric|gt:0",
                 "prefix": "",
                 "validate_deviation": true
               },
@@ -61,7 +64,7 @@
                 "code": "inj_pressure",
                 "type": "numeric",
                 "title": "injection_pressure",
-                "validation": "required|numeric|gt:0",
+                "validation": "numeric|gt:0",
                 "prefix": "",
                 "validate_deviation": true
               },
@@ -69,7 +72,7 @@
                 "code": "q_max_intake",
                 "type": "numeric",
                 "title": "qmax_reception",
-                "validation": "required|numeric|gt:0|gte:agent_vol",
+                "validation": "numeric|gt:0|gte:agent_vol",
                 "prefix": ""
               }
             ]

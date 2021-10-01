@@ -1,25 +1,34 @@
 <template>
     <div class="container-main">
         <div class="col-sm-12">
+            <div class="daily_raport_block-header">
+                <div class="daily_raport_block-header-first">
+                    <div class="daily_raport_block-header-input">
+                        <label for="">{{trans('digital_drilling.daily_raport.date')}}</label>
+                        <input type="text">
+                    </div>
+                    <div class="daily_raport_block-header-input">
+                        <label for="">{{trans('digital_drilling.daily_raport.report')}}</label>
+                        <input type="text">
+                    </div>
+                    <div class="daily_raport_block-header-input">
+                        <label for="">{{trans('digital_drilling.daily_raport.page')}}</label>
+                        <input type="text">
+                    </div>
+                </div>
+                <div class="daily_raport_block-header-center">
+                    {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
+                </div>
+                <div class="daily_raport_block-header-save">
+                    <button class="save">
+                        {{trans('digital_drilling.daily_raport.save')}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
             <div class="daily_raport_block">
                 <table class="tables table defaultTable">
-                    <thead>
-                        <tr>
-                            <th rowspan="3" colspan="10" class="align-middle text-center border-right-0 title">
-                                {{trans('digital_drilling.daily_raport.DAILY_DRILLING_REPORT')}}
-                            </th>
-                            <th class="text-right border-left-0 border-right-0 border-bottom-0">{{trans('digital_drilling.daily_raport.date')}}</th>
-                            <th><input type="text"></th>
-                        </tr>
-                        <tr>
-                            <th class="text-right border-0">{{trans('digital_drilling.daily_raport.report')}} №</th>
-                            <th><input type="text"></th>
-                        </tr>
-                        <tr>
-                            <th class="text-right border-0">{{trans('digital_drilling.daily_raport.page')}}</th>
-                            <th><input type="text"></th>
-                        </tr>
-                    </thead>
                     <tbody>
                         <tr>
                             <td colspan="2">
@@ -978,10 +987,43 @@
                             <td rowspan="2" class="align-middle">
                                 {{trans('digital_drilling.daily_raport.bit_wear_according_IADC')}}
                             </td>
-                            <td rowspan="2" colspan="2" class="align-middle">
-                                <select name="" id="">
-                                    <option value="">Test</option>
-                                </select>
+                            <td rowspan="2" colspan="2" class="align-middle bit-ware">
+                                <div class="select__name">
+                                    <div>I</div>
+                                    <div>O</div>
+                                    <div>D</div>
+                                    <div>L</div>
+                                    <div>B</div>
+                                    <div>G</div>
+                                    <div>D</div>
+                                    <div>R</div>
+                                </div>
+                                <div class="selects">
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.I">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.O">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.D">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.L">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.B">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.G">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.D">{{opt}}</option>
+                                    </select>
+                                    <select name="" id="">
+                                        <option value="" v-for="opt in bitWare.R">{{opt}}</option>
+                                    </select>
+                                </div>
                             </td>
                             <td rowspan="2" colspan="2" class="align-middle">
                                 <select name="" id="">
@@ -1617,7 +1659,7 @@
                             <td colspan="4">CHC I,b/100ft2</td>
                             <td rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.crust')}}</td>
                             <td rowspan="2" colspan="2" class="align-middle">{{trans('digital_drilling.daily_raport.total_hardness')}}</td>
-                            <td colspan="4">{{trans('digital_drilling.concentration')}}</td>
+                            <td colspan="4">{{trans('digital_drilling.daily_raport.concentration')}}</td>
                         </tr>
                         <tr>
                             <td colspan="2">10 {{trans('digital_drilling.daily_raport.sec')}}</td>
@@ -1771,18 +1813,16 @@
                     <tbody>
                         <tr>
                             <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.altitude')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.coal')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.angle')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.azimuth')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.three_instruments')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.type_instrument')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.depth_m')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.altitude')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.coal')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.angle')}}</td>
                             <td>{{trans('digital_drilling.daily_raport.azimuth')}}</td>
-                            <td>{{trans('digital_drilling.daily_raport.three_instruments')}}</td>
+                            <td>{{trans('digital_drilling.daily_raport.type_instrument')}}</td>
                         </tr>
                         <tr v-for="i in 20">
-                            <td v-for="i in 10"><input type="text"></td>
+                            <td v-for="i in 8"><input type="text"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -1900,6 +1940,19 @@
                         active: false
                     },
                 ],
+                bitWare: {
+                    I: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                    O: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                    D: ["BC", "BF", "BT", "BU", "CC", "CD", "CI", "CR", "CT", "ER", "FC", "HC", "JD", "LC", "LN",
+                        "LT", "OC", "PB", "PN", "RG", "RO", "SD", "SS", "TR", "WO", "WT", "NO"],
+                    L: ["C", "N", "T", "S", "G", "A" ],
+                    B: [0, 1, 2, 3, 4, 5, 6, 7, 8, "E", "F", "N", "X"],
+                    G: [1, "1/16", "1/8", "1/4"],
+                    D:  ["BC", "BF", "BT", "BU", "CC", "CD", "CI", "CR", "CT", "ER", "FC", "HC", "JD", "LC", "LN",
+                        "LT", "OC", "PB", "PN", "RG", "RO", "SD", "SS", "TR", "WO", "WT", "NO"],
+                    R: ["BHA", "CM", "CP", "DMF", "DP", "DSF", "DST", "DTF", "FM", "HP", "HR",
+                        "LIH”", "LOG;", "PP”", "PR”", "RIG", "TD”", "TQ", "TW", "WC"],
+                },
                 Expenses: [
                     {operation1: 'digital_drilling.daily_raport.drilling', operation2: 'digital_drilling.daily_raport.organiz_simple'},
                     {operation1: 'digital_drilling.daily_raport.build_up', operation2: 'digital_drilling.daily_raport.repair_after_21'},
@@ -1939,6 +1992,38 @@
 </script>
 
 <style scoped>
+    .bit-ware{
+        width: 140px;
+    }
+    .select__name{
+        height: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #454d7d;
+        padding: 2px 2px 0;
+        border-radius: 5px;
+        color: #000000;
+    }
+    .select__name div{
+        text-align: center;
+        width: 15px;
+        max-width: 12%;
+        margin-left: 2px
+    }
+    .bit-ware .selects{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #454d7d;
+        border-radius: 5px;
+        margin-top: 2px;
+    }
+    .selects select{
+        width: 15px;
+        max-width: 12%;
+        margin-left: 2px;
+    }
 .pump td{
     width: 7.35%!important
 }
@@ -1958,4 +2043,18 @@
 .add:hover{
     opacity: 0.5;
 }
+    .save{
+        border: 0;
+        background: #2E50E9;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 14px;
+        text-align: center;
+
+        color: #FFFFFF;
+        width: 170px;
+        padding: 8px;
+
+    }
 </style>

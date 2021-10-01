@@ -1,0 +1,143 @@
+{
+  "type": "table",
+  "columns": [
+    {
+      "title": "pf",
+      "code": "pf",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "ngdu",
+      "code": "ngdu",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "cdng",
+      "code": "cdng",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "gu",
+      "code": "gu",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "zu_gzu",
+      "code": "zu_gzu",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "liquid_prod",
+      "code": "liquid_prod",
+      "table": "prod.meas_gzu_prod",
+      "column": "liquid_prod",
+      "type": "text",
+      "is_editable": true,
+      "validation": "required|numeric|gt:0"
+    },
+    {
+      "title": "mark",
+      "code": "liquid_mark",
+      "type": "copy",
+      "copy": {
+        "from": "liquid_prod_tel",
+        "to": "liquid_prod"
+      },
+      "table": "prod.meas_gzu_prod",
+      "column": "liquid_mark",
+      "is_editable": false
+    },
+    {
+      "title": "liquid_prod_tel",
+      "code": "liquid_prod_tel",
+      "table": "prod.meas_gzu_prod",
+      "column": "liquid_prod_tel",
+      "type": "text",
+      "is_editable": true,
+      "validation": "required|numeric|gt:0"
+    },
+    {
+      "title": "water_cut",
+      "code": "water_cut",
+      "table": "prod.meas_gzu_prod",
+      "column": "water_cut",
+      "type": "text",
+      "is_editable": true,
+      "validation": "required|numeric|between:0,100"
+    },
+    {
+      "title": "mark",
+      "code": "liquid_mark_tel",
+      "type": "copy",
+      "copy": {
+        "from": "water_cut_tel",
+        "to": "water_cut"
+      },
+      "table": "prod.meas_gzu_prod",
+      "column": "liquid_mark_tel",
+      "is_editable": false
+    },
+    {
+      "title": "water_cut_tel",
+      "code": "water_cut_tel",
+      "table": "prod.meas_gzu_prod",
+      "column": "water_cut_tel",
+      "type": "text",
+      "is_editable": true,
+      "validation": "required|numeric|between:0,100"
+    },
+    {
+      "title": "oil_prod",
+      "code": "oil_prod",
+      "table": "prod.meas_gzu_prod",
+      "column": "oil_prod",
+      "type": "text",
+      "is_editable": true,
+      "validation": "required|numeric|gt:0"
+    },
+    {
+      "title": "oil_prod_tel",
+      "code": "oil_prod_tel",
+      "table": "prod.meas_gzu_prod",
+      "column": "oil_prod_tel",
+      "type": "text",
+      "is_editable": true,
+      "validation": "required|numeric|gt:0"
+    },
+    {
+      "title": "gaz_prod",
+      "code": "gaz_prod",
+      "table": "prod.meas_gzu_prod",
+      "column": "gaz_prod",
+      "type": "text",
+      "is_editable": true,
+      "validation": "required|numeric|gt:0"
+    },
+    {
+      "title": "mark",
+      "code": "gaz_mark",
+      "type": "copy",
+      "copy": {
+        "from": "gaz_prod_tel",
+        "to": "gaz_prod"
+      },
+      "table": "prod.meas_gzu_prod",
+      "column": "gaz_mark",
+      "is_editable": false
+    },
+    {
+      "title": "gaz_prod_tel",
+      "code": "gaz_prod_tel",
+      "table": "prod.meas_gzu_prod",
+      "column": "gaz_prod_tel",
+      "type": "text",
+      "is_editable": true,
+      "validation": "required|numeric|gt:0"
+    }
+  ]
+}

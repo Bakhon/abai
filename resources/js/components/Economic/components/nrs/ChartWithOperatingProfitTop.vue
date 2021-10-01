@@ -2,8 +2,7 @@
   <apexchart
       :options="options"
       :series="chartSeries"
-      :height="740"
-      type="bar"/>
+      :height="575"/>
 </template>
 
 <script>
@@ -14,6 +13,12 @@ export default {
   name: 'ChartWithOperatingProfitTop',
   mixins: [chartInitMixin],
   components: {apexchart: chart},
+  props: {
+    org_id: {
+      required: true,
+      type: Number
+    }
+  },
   computed: {
     chartSeries() {
       return [
@@ -43,7 +48,10 @@ export default {
             type: 'bar',
             height: 440,
             stacked: true,
-            foreColor: '#FFFFFF'
+            foreColor: '#FFFFFF',
+            events: {
+              dataPointSelection: (event, chartContext, config) => this.pointSelection(config)
+            }
           },
           colors: ['#AB130E', '#13B062'],
           dataLabels: {
@@ -72,7 +80,13 @@ export default {
       return '<div class="arrow_box">' +
           '<span>' + this.data.uwi[seriesIndex + dataPointIndex * 2] + '</span>' +
           '</div>'
-    }
+    },
+
+    pointSelection({seriesIndex, dataPointIndex}) {
+      let well = this.data.uwi[seriesIndex + dataPointIndex * 2]
+
+      window.open(this.localeUrl(`/economic/nrs/wells/${this.org_id}/${well}`), '_blank')
+    },
   }
 }
 </script>

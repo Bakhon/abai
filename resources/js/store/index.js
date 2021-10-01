@@ -16,13 +16,13 @@ export default new Vuex.Store({
             'fa',
             'guMap',
             'index',
-            'paegtmMap',
+            'paegtm',
             'pgno',
+            'plastFluids',
             'techMode',
             'tr',
             'digitalDrilling',
-            'pgno',
-            'digitalRating'
+            'pgno'
         ]
     })],
 });

@@ -11,6 +11,12 @@ export const pgnoState = {
         wellAnalysis: {},
         linesAnalysis: {},
         pointsAnalysis: {},
+        mainSettings: {
+            isSkError: false,
+            isEditing: false,
+            activeRightTabName: "techmode",
+            isVisibleChart: true,
+        },
         shgnSettings: {
             spmMin: 3,
             spmMax: 8,
@@ -53,6 +59,28 @@ export const pgnoState = {
             kPodMode: true,
             kPodCalced: null,
         },
+        sensetiveSettings:
+        {
+            option1: {
+                name: null,
+                value1: null,
+                value2: null,
+                value3: null,
+            },
+
+            option2: {
+                name: null,
+                value1: null,
+                value2: null,
+                value3: null,
+            },
+            option3: {
+                name: null,
+                option1: null,
+                value2: null,
+                value3: null,
+            },
+        },
 
         curveSettings: {},
 
@@ -61,7 +89,7 @@ export const pgnoState = {
         inclinometry: {},
         centralizer: {},
         centralizer_range: {},
-        
+
         isEditing: false,
         isIntervals: false,
         kPodSettings: {},

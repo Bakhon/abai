@@ -4,68 +4,56 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use App\Models\BigData\Well;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class WellRegister extends PlainForm
 {
     protected $configurationFileName = 'well_register';
 
-    public function submit(): array
+    protected function submitForm(): array
     {
-        DB::connection('tbd')->beginTransaction();
-
-        try {
-            $data = $this->request->except(
-                [
-                    'well',
-                    'org',
-                    'geo',
-                    'category',
-                    'coord_system',
-                    'whc.coord_point.x',
-                    'whc.coord_point.y',
-                    'bottom_coord.coord_point.x',
-                    'bottom_coord.coord_point.y',
-                ]
-            );
-            if (!empty($this->params()['default_values'])) {
-                $data = array_merge($this->params()['default_values'], $data);
-            }
-
-            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-            $wellId = $dbQuery->insertGetId($data);
-
-            $this->submittedData['fields'] = $data;
-            $this->submittedData['id'] = $wellId;
-
-            $this->insertWellRelation($wellId, 'org');
-            $this->insertWellRelation($wellId, 'category');
-            $this->insertGeoFields($wellId);
-
-            DB::connection('tbd')->commit();
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $wellId)->first();
-        } catch (\Exception $e) {
-            DB::connection('tbd')->rollBack();
-            throw new SubmitFormException($e->getMessage());
-        }
-    }
-
-    public function getResults(int $wellId): JsonResponse
-    {
-        return response()->json(
+        $data = $this->request->except(
             [
-                'rows' => [],
-                'columns' => [],
-                'form' => $this->params()
+                'well',
+                'org',
+                'geo',
+                'category',
+                'coord_system',
+                'whc.coord_point.x',
+                'whc.coord_point.y',
+                'bottom_coord.coord_point.x',
+                'bottom_coord.coord_point.y',
             ]
         );
+        if (!empty($this->params()['default_values'])) {
+            $data = array_merge($this->params()['default_values'], $data);
+        }
+
+        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+        $wellId = $dbQuery->insertGetId($data);
+
+        $this->submittedData['fields'] = $data;
+        $this->submittedData['id'] = $wellId;
+
+        $this->insertWellRelation($wellId, 'org');
+        $this->insertWellRelation($wellId, 'category');
+        $this->insertGeoFields($wellId);
+
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $wellId)->first();
     }
 
-    protected function getCustomValidationErrors(): array
+    public function getResults(): array
+    {
+        return [
+            'rows' => [],
+            'columns' => [],
+            'form' => $this->params()
+        ];
+    }
+
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 

@@ -2,12 +2,12 @@
     <table class="table defaultTable ">
         <tbody>
         <tr>
-            <th>Стратиграфия</th>
-            <th>Литология</th>
-            <th>Пластовое давление</th>
-            <th>Поровое давление</th>
-            <th>Гидроразрыв пород</th>
-            <th>Горное давление</th>
+            <th>{{ trans('digital_drilling.rasters.stratigraphy') }}</th>
+            <th>{{ trans('digital_drilling.rasters.lithology') }}</th>
+            <th>{{ trans('digital_drilling.rasters.reservoir_pressure') }}</th>
+            <th>{{ trans('digital_drilling.rasters.pore_pressure') }}</th>
+            <th>{{ trans('digital_drilling.rasters.hydraulic_fracturing_rocks') }}</th>
+            <th>{{ trans('digital_drilling.rasters.rock_pressure') }}</th>
         </tr>
         <tr v-for="i in 20">
             <td></td>

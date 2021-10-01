@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.well_tech",
+  "sort": [
+    {
+      "field": "dend",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main",

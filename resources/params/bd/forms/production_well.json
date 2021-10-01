@@ -6,6 +6,9 @@
       "order": "desc"
     }
   ],
+  "default_values": {
+    "dend": "9999-12-31 00:00:00+06"
+  },
   "tabs": [
     {
       "title": "Основное",
@@ -24,7 +27,7 @@
                 "code": "dend",
                 "type": "date",
                 "title": "date_end",
-                "validation": "required|date|after:dbeg"
+                "validation": "nullable|date|after:dbeg"
               }
             ]
           },
@@ -36,19 +39,28 @@
                 "type": "numeric",
                 "title": "liquid",
                 "validation": "numeric|gt:0",
-                "validate_deviation": true
-              },
-              {
-                "code": "oil",
-                "type": "numeric",
-                "submit_value": true,
-                "title": "oil"
+                "validate_deviation": true,
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
                 "code": "wcut",
                 "type": "numeric",
                 "title": "water_cut",
-                "validation": "numeric|min:0|max:100"
+                "validation": "numeric|min:0|max:100",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
+              },
+              {
+                "code": "oil_density",
+                "type": "numeric",
+                "title": "oil_density",
+                "validation": "numeric|min:0.7|max:1.05",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               }
             ]
           },
@@ -56,10 +68,11 @@
             "title": "calculated_fields",
             "items": [
               {
-                "code": "oil_density",
-                "type": "numeric",
-                "title": "oil_density",
-                "validation": "numeric|min:0.7|max:1.05"
+                "code": "oil",
+                "type": "calc",
+                "submit_value": true,
+                "title": "oil",
+                "formula": "Math.round($liquid$ * (1 - $wcut$/100) * $oil_density$)"
               }
             ]
           },

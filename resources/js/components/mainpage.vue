@@ -16,7 +16,7 @@
             v-for="(block, index) in filteredBlocks"
             :key="`mainpage_block_${index}`"
         >
-            <div v-if="typeof block.children !== 'undefined'"
+            <div v-if="block.children && block.children.length"
                  class="main-page__blocks-item-bg position-relative mb-3 mx-auto">
                 <a :href="block.url">
                     <span class="main-page__blocks-item-bg-img p-1 pb-3">
@@ -130,6 +130,16 @@ export default {
 
           url: this.localeUrl('/digital-drilling/')
         },
+        {
+          name: this.trans('economy_pf.economy'),
+          icon: 'economy-kenje.svg',
+          url: this.localeUrl('/module_economy/proactive-factors/')
+        },
+        {
+          name: this.trans('plast_fluids.pf'),
+          icon: 'plastFluidsMain.svg',
+          url: this.localeUrl('/pf')
+        }
       ],
         childMenuCollapseList: [
             {

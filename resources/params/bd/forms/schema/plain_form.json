@@ -39,7 +39,8 @@
                             "checkbox_table",
                             "calc",
                             "label",
-                            "file"
+                            "file",
+                            "list"
                           ]
                         },
                         "title": {
@@ -82,7 +83,8 @@
                                 "checkbox_table",
                                 "calc",
                                 "label",
-                                "file"
+                                "file",
+                                "list"
                               ]
                             }
                           }
@@ -96,8 +98,17 @@
                     }
                   }
                 },
-                "required": [
-                  "items"
+                "oneOf": [
+                  {
+                    "required": [
+                      "component"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "items"
+                    ]
+                  }
                 ]
               }
             }

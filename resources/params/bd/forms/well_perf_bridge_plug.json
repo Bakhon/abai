@@ -1,6 +1,12 @@
 {
   "type": "plain",
   "table": "prod.well_perf",
+  "sort": [
+    {
+      "field": "perf_date",
+      "order": "desc"
+    }
+  ],
   "tabs": [
     {
       "title": "main",
@@ -14,7 +20,7 @@
                 "type": "dict",
                 "dict": "companies",
                 "title": "podr",
-                "validation": "exists:tbd.dict.company,id"
+                "validation": "required|exists:tbd.dict.company,id"
               },
               {
                 "code": "reservoir_count",

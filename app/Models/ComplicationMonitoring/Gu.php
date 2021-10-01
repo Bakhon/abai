@@ -2,6 +2,7 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Models\Traits\MapObjectsTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pipes\GuZuPipe;
 use App\Models\Pipes\ZuWellPipe;
@@ -10,12 +11,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Gu extends Model
 {
-    use LogsActivity, SoftDeletes;
+    use LogsActivity, SoftDeletes, MapObjectsTrait;
 
     protected static $logAttributes = ['*'];
     protected static $logAttributesToIgnore = ['updated_at', 'created_at', 'deleted_at'];
     protected static $logOnlyDirty = true;
     protected static $submitEmptyLogs = false;
+    protected $connection = 'mysql';
 
     protected $localKey = 'id';
     protected $guarded = ['id'];
@@ -29,11 +31,6 @@ class Gu extends Model
         return $this->belongsTo(Cdng::class);
     }
 
-    public function ngdu()
-    {
-        return $this->belongsTo(Ngdu::class);
-    }
-
     public function zus()
     {
         return $this->hasMany(Zu::class);
@@ -44,14 +41,14 @@ class Gu extends Model
         return $this->hasManyThrough(Well::class, Zu::class);
     }
 
-    public function omgca()
-    {
-        return $this->hasMany(OmgCA::class);
-    }
-
     public function omgngdu()
     {
         return $this->hasMany(OmgNGDU::class);
+    }
+
+    public function omgca()
+    {
+        return $this->hasMany(OmgCA::class);
     }
 
     public function lastOmgngdu()
@@ -66,6 +63,7 @@ class Gu extends Model
             'bsw',
             'pump_discharge_pressure',
             'heater_output_temperature',
+            'heater_inlet_temperature',
             'daily_gas_production_in_sib',
             'surge_tank_pressure',
             'sg_oil',
@@ -84,11 +82,6 @@ class Gu extends Model
                     ->take(1)
             ]
         )->with('lastOmgngdu');
-    }
-
-    public function watermeasurement()
-    {
-        return $this->hasMany(WaterMeasurement::class);
     }
 
     public function oilgas()
@@ -164,5 +157,10 @@ class Gu extends Model
     public function metering_units()
     {
         return $this->hasMany(MeteringUnits::class);
+    }
+    
+    public function zu_cleanings()
+    {
+        return $this->hasMany(ZusCLeaning::class);
     }
 }

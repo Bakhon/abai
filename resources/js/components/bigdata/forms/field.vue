@@ -16,9 +16,11 @@
     </template>
     <template v-else-if="item.type === 'list'">
       <v-select
-          v-on:input="updateValue($event.id)"
+          :value="value"
           :options="item.values"
           :name="item.code"
+          v-on:input="updateValue($event)"
+          label="name"
       >
         <template #open-indicator="{ attributes }">
           <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,30 +43,35 @@
       </div>
     </template>
     <template v-else-if="item.type === 'checkbox'">
-       <label :for="`${item.code}`"></label>
-        <input
-            :name="item.code"
-            type="checkbox"
-            :id="`${item.code}`"
-            v-bind:checked="value"
-            v-on:input="$emit('input', $event.target.checked); $emit('change', $event.target.checked)"
-        >
+      <label :for="`${item.code}`"></label>
+      <input
+          :id="`${item.code}`"
+          :name="item.code"
+          type="checkbox"
+          v-bind:checked="value"
+          v-on:input="$emit('input', $event.target.checked); $emit('change', $event.target.checked)"
+      >
     </template>
     <template v-else-if="item.type === 'dict' && dict">
-      <v-select
-          :value="formatedValue"
-          label="name"
-          :options="dict"
-          @input="updateValue($event.id)"
-          :name="item.code"
-      >
-        <template #open-indicator="{ attributes }">
-          <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.5 1.00024L5.93356 4.94119C5.97145 4.97487 6.02855 4.97487 6.06644 4.94119L10.5 1.00024"
-                  stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-        </template>
-      </v-select>
+      <template v-if="item.is_editable === false">
+        <span>{{ formatedValue.text }}</span>
+      </template>
+      <template v-else>
+        <v-select
+            :name="item.code"
+            :options="dict"
+            :value="formatedValue"
+            label="name"
+            @input="updateValue($event.id)"
+        >
+          <template #open-indicator="{ attributes }">
+            <svg fill="none" height="6" viewBox="0 0 12 6" width="12" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1.5 1.00024L5.93356 4.94119C5.97145 4.97487 6.02855 4.97487 6.06644 4.94119L10.5 1.00024"
+                    stroke="white" stroke-linecap="round" stroke-width="1.4"/>
+            </svg>
+          </template>
+        </v-select>
+      </template>
     </template>
     <template v-else-if="item.type === 'dict_tree'">
       <treeselect
@@ -112,18 +119,24 @@
           :id="id"
           :form="form"
           :params="item"
+          :values="value || null"
           v-on:change="updateValue($event)"
       >
       </BigdataTableField>
     </template>
-    <template v-else-if="item.type === 'calc'">
+    <template v-else-if="['calc', 'label'].includes(item.type)">
       <label>{{ value }}</label>
     </template>
     <template v-else-if="item.type === 'checkbox_table'">
       <BigdataCheckboxTableField :params="item" v-on:change="updateValue($event)"></BigdataCheckboxTableField>
     </template>
     <template v-else-if="item.type === 'file'">
-      <BigdataFileUploadField :params="item" v-on:change="updateValue($event)"></BigdataFileUploadField>
+      <BigdataFileUploadField
+          :existed-files="value || null"
+          :params="item"
+          v-on:change="updateValue($event)"
+      >
+      </BigdataFileUploadField>
     </template>
     <div v-if="error" class="text-danger error" v-html="showError(error)"></div>
   </div>
@@ -179,11 +192,15 @@ export default {
   },
   mounted() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
-      if (this.dict === null) {
-        this.loadDict(this.item.dict).then(result => {
-          this.dict = result
-        })
+      let dict = this.getDict(this.item.dict)
+      if (dict) {
+        this.dict = dict
+        return
       }
+
+      this.loadDict(this.item.dict).then(result => {
+        this.dict = result
+      })
     }
 
     this.formatedValue = this.getFormatedValue(this.value)
@@ -192,6 +209,9 @@ export default {
     ...bdFormActions([
       'loadDict',
     ]),
+    getDict(code) {
+      return this.$store.getters['bdform/dict'](code);
+    },
     changeDate(date) {
       if (date) {
         let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')
@@ -283,13 +303,13 @@ export default {
 
   .v-select {
     background: #334296;
-    height: 28px;
+    height: auto;
     min-width: 100%;
 
     .vs__search, .vs__selected {
       font-size: 14px;
       font-weight: normal;
-      height: 28px;
+      height: auto;
       line-height: 1;
       margin-top: 0;
       max-width: 95%;

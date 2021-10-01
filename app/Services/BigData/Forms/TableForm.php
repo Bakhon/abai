@@ -23,8 +23,6 @@ abstract class TableForm extends BaseForm
     protected $jsonValidationSchemeFileName = 'table_form.json';
     protected $tableHeaderService;
 
-    abstract public function getRows(array $params = []): array;
-
     abstract protected function saveSingleFieldInDB(array $params): void;
 
     public function __construct(Request $request)
@@ -257,6 +255,46 @@ abstract class TableForm extends BaseForm
                         ->groupBy('well_id');
 
                     break;
+                case 'prod.bottom_hole':
+                    $result[$table] = DB::connection('tbd')
+                        ->table('prod.bottom_hole as bh')
+                        ->whereIn('bh.well', $wellIds)
+                        ->whereDate('data', '<=', $date)
+                        ->orderBy('data', 'desc')
+                        ->get()
+                        ->groupBy('well');
+
+                    break;
+                case 'prod.well_geo':
+                    $result[$table] = DB::connection('tbd')
+                        ->table('prod.well_geo as wg')
+                        ->whereIn('wg.well', $wellIds)
+                        ->whereDate('dbeg', '<=', $date)
+                        ->join('dict.geo as g', 'g.id', 'wg.geo')
+                        ->orderBy('dbeg', 'desc')
+                        ->get()
+                        ->groupBy('well');
+
+                    break;
+                case 'prod.well_constr':
+                    $result[$table] = DB::connection('tbd')
+                        ->table('prod.well_constr as wc')
+                        ->whereIn('wc.well', $wellIds)
+                        ->join('dict.tube_nom as tn', 'tn.id', 'wc.casing_nom')
+                        ->get()
+                        ->groupBy('well');
+
+                    break;
+                case 'prod.tech_mode_prod_oil':
+                    $result[$table] = DB::connection('tbd')
+                        ->table($table)
+                        ->whereIn('well', $wellIds)
+                        ->whereDate('dbeg', '<=', $date)
+                        ->orderBy('dbeg', 'desc')
+                        ->limit(20)
+                        ->get()
+                        ->groupBy('well');
+                    break;
                 default:
                     $result[$table] = DB::connection('tbd')
                         ->table($table)
@@ -273,7 +311,10 @@ abstract class TableForm extends BaseForm
 
     protected function isCurrentDay(string $date)
     {
-        return Carbon::parse($date)->diffInDays(Carbon::parse($this->request->get('date'))) === 0;
+        $filter = json_decode($this->request->get('filter'));
+        return Carbon::parse($date, 'Asia/Almaty')->diffInDays(
+                Carbon::parse($filter->date ?? null, 'Asia/Almaty')
+            ) === 0;
     }
 
     protected function addLimits(Collection $rows): void
@@ -419,11 +460,11 @@ abstract class TableForm extends BaseForm
                     }
                     $entity = $entityQuery->first();
                     if (!empty($entity)) {
-                        $query->where($key, $entity->id);
+                        $query = $query->where($key, $entity->id);
                     }
                     continue;
                 }
-                $query->where($key, $value);
+                $query = $query->where($key, $value);
             }
         }
         return $query;

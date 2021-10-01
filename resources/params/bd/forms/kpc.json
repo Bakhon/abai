@@ -2,7 +2,7 @@
   "table": "prod.well_workover",
   "sort": [
     {
-      "field": "request_date",
+      "field": "dbeg",
       "order": "desc"
     }
   ],
@@ -33,7 +33,7 @@
               "type": "dict",
               "title": "work_type",
               "validation": "required|exists:tbd.dict.repair_work_type,id",
-              "dict": "repair_work_types",
+              "dict": "repair_type_krs",
               "is_editable": true
             },
             {
@@ -77,7 +77,7 @@
               "type": "dict",
               "title": "repair_work_type",
               "validation": "required|exists:tbd.dict.repair_work_type,id",
-              "dict": "repair_work_types",
+              "dict": "repair_type_krs",
               "is_editable": true
             },
             {
@@ -99,25 +99,37 @@
               "code": "contractor",
               "type": "dict",
               "title": "contractor",
-              "validation": "required|exists:tbd.dict.company,id",
               "dict": "companies",
-              "is_editable": true
+              "is_editable": true,
+              "validation": "required_unless:by_ourselves,true"
             },
             {
               "code": "brigade",
               "type": "dict",
               "title": "brigade",
-              "validation": "exists:tbd.dict.brigade,id",
+              "validation": "nullable|exists:tbd.dict.brigade,id",
               "dict": "brigades",
-              "is_editable": true
+              "is_editable": true,
+              "depends_on": [
+                {
+                  "field": "by_ourselves",
+                  "value": true
+                }
+              ]
             },
             {
               "code": "brigadier",
               "type": "dict",
               "title": "brigade_master",
-              "validation": "exists:tbd.dict.brigadier,id",
+              "validation": "nullable|exists:tbd.dict.brigadier,id",
               "dict": "brigadiers",
-              "is_editable": true
+              "is_editable": true,
+              "depends_on": [
+                {
+                  "field": "by_ourselves",
+                  "value": true
+                }
+              ]
             },
             {
               "code": "gtm_duplicate",
@@ -125,6 +137,19 @@
               "title": "duplicate_in_gts",
               "validation":"",
               "is_editable": true
+            },
+            {
+              "code": "gtm_type",
+              "type": "dict",
+              "title": "gtm_type",
+              "validation": "exists:tbd.dict.gtm_type,id",
+              "dict": "gtm_types",
+              "depends_on": [
+                {
+                  "field": "gtm_duplicate",
+                  "value": true
+                }
+              ]
             },
             {
               "code": "pit",
@@ -151,13 +176,16 @@
               "type": "datetime",
               "title": "work_end_date",
               "validation": "required|nullable|date|after:dbeg",
-              "is_editable": true
+              "is_editable": true,
+              "callbacks": {
+                "fillCalculatedFields": ""
+              }
             },
             {
               "code": "work_list",
               "type": "text",
               "title": "done_work_description",
-              "validation": "max:255",
+              "validation": "nullable|max:255",
               "prefix": "",
               "is_editable": true
             },
@@ -172,7 +200,7 @@
               "code": "cnl_new",
               "type": "numeric",
               "title": "new_run_down_nkt",
-              "validation": "numeric|max:255|gte:0",
+              "validation": "nullable|numeric|max:255|gte:0",
               "prefix": "",
               "is_editable": true
             },
@@ -180,7 +208,7 @@
               "code": "cnl_used",
               "type": "numeric",
               "title": "used_run_down_nkt",
-              "validation": "numeric|max:255|gte:0",
+              "validation": "nullable|numeric|max:255|gte:0",
               "prefix": "",
               "is_editable": true
             },
@@ -188,7 +216,7 @@
               "code": "td",
               "type": "numeric",
               "title": "actual_bottomhole_m",
-              "validation": "numeric|max:255",
+              "validation": "nullable|numeric|max:10000|gte:0",
               "prefix": "",
               "is_editable": true
             },
@@ -203,15 +231,21 @@
               "code": "no_btm_reason",
               "type": "dict",
               "title": "no_slaughter_reason",
-              "validation": "exists:tbd.dict.reason,id",
+              "validation": "nullable|exists:tbd.dict.reason,id",
               "dict": "reason_rls",
-              "is_editable": true
+              "is_editable": true,
+              "depends_on": [
+                {
+                  "field": "no_btm",
+                  "value": true
+                }
+              ]
             },
             {
               "code": "hud",
               "type": "text",
               "title": "artificial_slaughter_m",
-              "validation": "max:255",
+              "validation": "nullable|numeric|max:10000|gte:0",
               "prefix": "",
               "is_editable": true
             },
@@ -219,9 +253,15 @@
               "code": "tech_state",
               "type": "dict",
               "title": "machine_technical_condition",
-              "validation": "exists:tbd.dict.tech_state_casing,id",
+              "validation": "nullable|exists:tbd.dict.tech_state_casing,id",
               "dict": "tech_state_casings",
-              "is_editable": true
+              "is_editable": true,
+              "depends_on": [
+                {
+                  "field": "no_change_tech_state",
+                  "value": false
+                }
+              ]
             },
             {
               "code": "no_change_tech_state",
@@ -231,33 +271,39 @@
               "is_editable": true
             },
             {
-              "code": "status",
+              "code": "well_previous_status_type",
               "table": "prod.well_status",
-              "type":"calc",
+              "type": "calc",
               "title": "status_before_selected_date",
-              "validation": "exists:tbd.dict.well_status_type,id",
+              "validation": "nullable|exists:tbd.dict.well_status_type,id",
               "is_editable": false
             },
             {
-              "code": "category",
+              "code": "well_previous_category",
               "table": "prod.well_category",
-              "type":"calc",
+              "type": "calc",
               "title": "well_previous_category",
-              "validation": "exists:tbd.dict.well_category_type,id",
+              "validation": "nullable|exists:tbd.dict.well_category_type,id",
               "is_editable": false
             },
             {
               "code": "well_status",
               "type": "dict",
               "title": "condition",
-              "validation": "exists:tbd.dict.well_status_type,id",
+              "validation": "nullable|exists:tbd.dict.well_status_type,id",
               "dict": "well_statuses",
-              "is_editable": true
+              "is_editable": true,
+              "depends_on": [
+                {
+                  "field": "no_change_state",
+                  "value": false
+                }
+              ]
             },
             {
               "code": "no_change_state",
               "type": "checkbox",
-              "title": "not_change_technical_condition",
+              "title": "not_change_state",
               "validation":"",
               "is_editable": true
             }
@@ -293,13 +339,6 @@
               "type": "text",
               "title": "reason_type",
               "validation": "required"
-            },
-            {
-              "code": "stop_reason",
-              "type": "dict",
-              "title": "reason_stopping",
-              "validation": "required|exists:tbd.dict.reason,id",
-              "dict": "reason_rst"
             }
           ]
         }

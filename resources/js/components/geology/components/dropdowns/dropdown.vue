@@ -3,9 +3,10 @@
     <Button :disabled="disabled" @click.native.stop="dropDownOpened = !dropDownOpened" ref="aDropdownTrigger" color="accent-100"
             :class="cDropDownClassTarget">
       <span>{{ cSelected.label || cSelected.value || buttonText }}</span>
-      <AwIcon width="12" height="9" name="arrowDown" />
+      <AwIcon width="12" height="9" name="arrowDown" v-if="!loading"/>
+      <AwIcon width="20" height="20" name="loading" v-else/>
     </Button>
-    <div v-show="dropDownOpened" v-click-outside="closeDropDown" ref="aDropdownTarget" class="a-dropdown__target">
+    <div v-show="dropDownOpened" v-click-outside="closeDropDown" ref="aDropdownTarget" class="a-dropdown__target customScroll">
       <button :disabled="disabled" @click="selectOption(option)" :data-value="option.value" v-for="(option, i) in cOptions" :key="i">
         {{ option.label || option.value  }}
       </button>
@@ -27,6 +28,7 @@ export default {
     block: Boolean,
     position: String,
     disabled: Boolean,
+    loading: Boolean,
     options: {
       type: Array
     },
@@ -34,7 +36,8 @@ export default {
   },
   data() {
     return {
-      dropDownOpened: false
+      dropDownOpened: false,
+      selectedLocal: null
     }
   },
   components: {
@@ -46,6 +49,7 @@ export default {
       return {
         'a-dropdown': true,
         "block": this.block,
+        "loading": this.loading,
         [this.size]: this.size,
         [this.position]: this.position,
       }
@@ -61,11 +65,13 @@ export default {
     },
     cSelected: {
       get() {
-        return this.cOptions.find(({value}) => value === this.selectedValue)||{};
+        return this.cOptions.find(({value}) => value === this.selectedValue||this.selectedLocal)||{};
       },
       set(option) {
+        this.selectedLocal = option.value;
         this.$emit('update:selected-value', option.value)
         this.$emit('update:selected-object', option)
+        this.$emit('selected', option.value)
       }
     }
   },
@@ -135,6 +141,8 @@ export default {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     border: 0.5px solid #454FA1;
     z-index: 2;
+    max-height: 400px;
+    overflow-y: auto;
     button{
       width: 100%;
       white-space: nowrap;

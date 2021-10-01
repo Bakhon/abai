@@ -53,21 +53,9 @@ class OmgNGDUController extends CrudController
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => Gu::whereHas('omgngdu')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
+                        'values' => getAllObjectsWithOmgngdu('Gu')
                     ]
                 ],
-
                 'date' => [
                     'title' => trans('app.date'),
                     'type' => 'date',
@@ -130,7 +118,7 @@ class OmgNGDUController extends CrudController
         parent::list($request);
         
         $query = OmgNGDU::query()
-            ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well');
+            ->with('field', 'ngdu', 'cdng', 'gu', 'manualGu');
 
         $omgngdu = $this
             ->getFilteredQuery($request->validated(), $query)
@@ -138,6 +126,19 @@ class OmgNGDUController extends CrudController
 
         return response()->json(json_decode(OmgNGDUListResource::collection($omgngdu)->toJson()));
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(OmgNGDU $omgngdu)
+    {
+        $omgngdu->load('history');
+        return view('omgngdu.history', compact('omgngdu'));
+    }
+
 
     public function export(IndexTableRequest $request)
     {
@@ -200,18 +201,6 @@ class OmgNGDUController extends CrudController
             ->first();
 
         return view('omgngdu.show', compact('omgngdu'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function history(OmgNGDU $omgngdu)
-    {
-        $omgngdu->load('history');
-        return view('omgngdu.history', compact('omgngdu'));
     }
 
     /**

@@ -35,13 +35,6 @@ Route::group(
                 Route::resource('ecorefsprocdob', 'EcoRefsProcDobController');
                 Route::resource('ecorefsavgprs', 'EcoRefsAvgPrsController');                                 
                 
-                Route::resource('eco_refs_cost', 'EcoRefsCostController');
-                Route::get('eco_refs_costs', 'EcoRefsCostController@getData');                
-                Route::resource('eco_refs_scenario', 'Refs\EcoRefsScenarioController');
-                Route::get('eco_refs_scenarios', 'Refs\EcoRefsScenarioController@getData');   
-                Route::get('economic_data/upload_excel', 'EcoRefsCostController@uploadExcel')->name('economic_data_upload');
-                Route::post('economic_data/import_excel', 'EcoRefsCostController@importExcel')->name('economic_data_import');             
-                Route::resource('economic_data_log', 'Refs\EconomicDataLogController');
                 Route::resource('ecorefsmacro', 'EcoRefsMacroController');
                 Route::get('eco_refs_macros', 'EcoRefsMacroController@list') ->name('ecorefsmacro.list');
                 Route::get('economic_data/upload_excel_macro', 'EcoRefsMacroController@uploadExcel')->name('macro_data_upload');
