@@ -35,7 +35,7 @@
           {{
             typeof item[key.value] === 'string'
                 ? item[key.value]
-                : +item[key.value].toFixed(2).toLocaleString()
+                : (+(item[key.value].toFixed(2))).toLocaleString()
           }}
         </div>
       </div>
@@ -62,7 +62,7 @@
           {{
             typeof item[key.value] === 'string'
                 ? item[key.value]
-                : +item[key.value].toFixed(2).toLocaleString()
+                : (+(item[key.value].toFixed(2))).toLocaleString()
           }}
         </div>
       </div>

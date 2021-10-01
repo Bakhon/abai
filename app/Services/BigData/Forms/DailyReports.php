@@ -119,20 +119,6 @@ abstract class DailyReports extends TableForm
         return $startDate;
     }
 
-    protected function getCustomValidationErrors(string $field = null): array
-    {
-        $errors = [];
-
-        if ($this->request->get('fact')) {
-            $limits = $this->calculateLimits();
-            if (!$this->isValidFactLimits($limits)) {
-                $errors['fact'][] = trans('bd.value_outside') . " ({$limits['min']}, {$limits['max']})";
-            }
-        }
-
-        return $errors;
-    }
-
     private function isValidFactLimits(array $limits): bool
     {
         if (empty($limits)) {
@@ -151,9 +137,8 @@ abstract class DailyReports extends TableForm
 
     private function calculateLimits(): array
     {
-        $filter = json_decode($this->request->get('filter'));
         $reports = ReportOrgDailyCits::where('org', $this->request->get('well_id'))
-            ->whereDate('report_date', '<', Carbon::parse($filter->date, 'Asia/Almaty'))
+            ->whereDate('report_date', '<', Carbon::parse($this->request->get('date'), 'Asia/Almaty'))
             ->whereHas(
                 'metric',
                 function ($query) {

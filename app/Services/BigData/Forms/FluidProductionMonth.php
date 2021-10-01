@@ -44,7 +44,15 @@ class FluidProductionMonth extends MeasLogByMonth
 
             $i = 0;
             foreach ($indicators as $code) {
-                $row = $this->getIndicatorRowData($well, $code, $techMode, $date, $liquid, $bsw, $workTime[$well->id]);
+                $row = $this->getIndicatorRowData(
+                    $well,
+                    $code,
+                    $techMode,
+                    $date,
+                    $liquid,
+                    $bsw,
+                    $workTime[$well->id] ?? null
+                );
                 if ($i++ === 0) {
                     $row = array_merge($firstRow, $row);
                 }
@@ -84,7 +92,6 @@ class FluidProductionMonth extends MeasLogByMonth
             ->get()
             ->groupBy('well')
             ->map(function ($items) {
-
                 $items = $items->groupBy(function ($item) {
                     return Carbon::parse($item->dbeg)->format('j');
                 });
@@ -174,7 +181,7 @@ class FluidProductionMonth extends MeasLogByMonth
                 continue;
             case 'note':
                 $monthDay = $date->startOfMonth();
-                while ($monthDay < $date) {
+                while ($monthDay <= $date) {
                     $liquidValue = $this->getLiquidValueForDay($liquid, $well->id, $monthDay->format('j'));
                     $row[$monthDay->format('d.m.Y')] = ['value' => $liquidValue['note'] ?? null];
                     $monthDay = $monthDay->addDay();
@@ -182,7 +189,7 @@ class FluidProductionMonth extends MeasLogByMonth
                 break;
             case 'reason_decline':
                 $monthDay = $date->startOfMonth();
-                while ($monthDay < $date) {
+                while ($monthDay <= $date) {
                     $liquidValue = $this->getLiquidValueForDay($liquid, $well->id, $monthDay->format('j'));
                     $row[$monthDay->format('d.m.Y')] = [
                         'value' => $liquidValue['reason_decline'] ?? null,
@@ -195,7 +202,7 @@ class FluidProductionMonth extends MeasLogByMonth
                 break;
             case 'worktime':
                 $monthDay = $date->startOfMonth();
-                while ($monthDay < $date) {
+                while ($monthDay <= $date) {
                     $row[$monthDay->format('d.m.Y')] = $workTime[$monthDay->format('j')];
                     $monthDay = $monthDay->addDay();
                 }
@@ -213,7 +220,7 @@ class FluidProductionMonth extends MeasLogByMonth
 
         $count = $sum = 0;
         $monthDay = $date->startOfMonth();
-        while ($monthDay < $date) {
+        while ($monthDay <= $date) {
             $wellLiquid = $liquid->get($well->id);
             if ($wellLiquid) {
                 $liquidValue = $wellLiquid->get($monthDay->format('j'));
@@ -242,7 +249,7 @@ class FluidProductionMonth extends MeasLogByMonth
 
         $count = $sum = 0;
         $monthDay = $date->startOfMonth();
-        while ($monthDay < $date) {
+        while ($monthDay <= $date) {
             $wellBsw = $bsw->get($well->id);
             $bswValue = $wellBsw ? $wellBsw->get($monthDay->format('j')) : null;
             $row[$monthDay->format('d.m.Y')] = [
@@ -276,7 +283,7 @@ class FluidProductionMonth extends MeasLogByMonth
 
         $count = $sum = 0;
         $monthDay = $date->startOfMonth();
-        while ($monthDay < $date) {
+        while ($monthDay <= $date) {
             $day = $monthDay->format('d.m.Y');
 
             $liquidValue = isset($liquidRow[$day]) ? $liquidRow[$day]['value'] : 0;
@@ -347,7 +354,7 @@ class FluidProductionMonth extends MeasLogByMonth
         }
     }
 
-    private function saveField(string $table, string $field, int $wellId, CarbonImmutable $date, float $value)
+    private function saveField(string $table, string $field, $wellId, CarbonImmutable $date, $value)
     {
         $activity = WellActivity::where('code', 'PMSR')->first();
         $valueType = ValueType::where('code', 'MNT')->first();

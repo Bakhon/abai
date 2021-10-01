@@ -58,7 +58,7 @@
       </div>
 
       <div class="customScroll"
-           style="overflow-y: scroll; height: 405px">
+           style="overflow-y: scroll; overflow-x: hidden; height: 405px">
         <div v-for="(item, itemIndex) in tableData"
              :key="itemIndex"
              :style="`background: ${item.color}`"
