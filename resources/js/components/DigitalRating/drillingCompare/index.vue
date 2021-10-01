@@ -7,7 +7,7 @@
     />
     <div class="rating-compare">
       <div class="rating-compare__title">
-        <span>Сравнение фактических точек бурения с ПТД</span>
+        <span>{{ trans('digital_rating.comparisonActualDrillingPoints') }}</span>
         <div class="d-flex align-items-center">
           <btn-dropdown :list="horizonList" class="mr-10px">
             <template #title>
@@ -16,24 +16,24 @@
           </btn-dropdown>
           <btn-dropdown :list="yearList" class="mr-10px">
             <template #title>
-              {{ trans('Год') }}
+              {{ trans('digital_rating.year') }}
             </template>
           </btn-dropdown>
           <btn-dropdown :list="['Test1', 'Test2']" class="mr-10px">
             <template #title>
-              Совпадение проектных скважин в пределах
+              {{ trans('digital_rating.coincidencePlannedWellsWithin') }}
             </template>
           </btn-dropdown>
           <btn-dropdown :list="['Test1', 'Test2']">
             <template #title>
-              Сравнение проектных и фактических показателей
+              {{ trans('digital_rating.comparisonDesignActualIndicators') }}
             </template>
           </btn-dropdown>
         </div>
       </div>
       <div class="rating-compare__wrapper">
         <div class="rating-compare__wrapper-maps">
-          <h5>Карта</h5>
+          <h5>{{ trans('digital_rating.map') }}</h5>
           <img src="/img/digital-rating/compare-maps.svg" alt="">
         </div>
         <div class="rating-compare__wrapper-table">
