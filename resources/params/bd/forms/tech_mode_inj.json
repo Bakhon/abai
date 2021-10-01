@@ -113,9 +113,9 @@
     },
     {
       "title": "volume",
-      "code": "water_inj_volume",
-      "column": "water_inj_volume",
+      "code": "agent_vol",
       "table":"prod.tech_mode_inj",
+      "column": "agent_vol",      
       "type": "float",
       "is_editable": true
     },
@@ -123,15 +123,16 @@
       "title": "agent_type",
       "code": "agent_type",
       "table":"prod.tech_mode_inj",
-      "column":"agent_type",
+      "column": "agent_type",
       "type": "dict",
-      "validation": "required|exists:tbd.dict.inj_agent_type,id",      
+      "dict": "inj_agent_types",
+      "validation": "required|exists:tbd.dict.inj_agent_type,id",
       "is_editable": true
     },
     {
       "title": "agent_temp",
       "table": "prod.tech_mode_inj",
-      "code": "agent_temperature",
+      "code": "agent_temp",
       "type": "float",
       "column": "agent_temp",
       "is_editable": true,
@@ -141,7 +142,7 @@
     {
       "title": "pressure",
       "table": "prod.tech_mode_inj",
-      "code": "pressure_inj",
+      "code": "inj_pressure",
       "type": "float",
       "column": "inj_pressure",
       "is_editable": true,
