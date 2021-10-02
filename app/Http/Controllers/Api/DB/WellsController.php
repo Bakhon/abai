@@ -15,6 +15,7 @@ use App\Models\BigData\WellStatus;
 use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\Well;
+use App\Models\BigData\WellWorkover;
 use App\Services\BigData\StructureService;
 use App\Services\BigData\MeasLogByMonth;
 use Carbon\Carbon;
@@ -625,11 +626,19 @@ class WellsController extends Controller
     {
         return dictWell::query()
             ->where('dict.well.id',$well)
-            //->leftJoin('dmart.mer_prod_oil as mi', 'dict.well.uwi', '=', 'mi.well')
             ->leftJoin('dmart.mer_prod_oil as mi', function($leftJoin) {
                 $leftJoin->on('dict.well.uwi', '=', 'mi.well')
                 ->whereYear('mi.date', '>=', 2008);
             })
+            ->get();
+    }
+    public function getActivityByWell(Request $request,$wellId)
+    {
+        return WellWorkover::query()
+            ->select(['dbeg','well','repair_type','more_info_reason_fail','well_status'])
+            ->whereYear('dbeg',$request->year)
+            ->whereMonth('dbeg',$request->month)
+            ->where('well',$wellId)
             ->get();
     }
 }

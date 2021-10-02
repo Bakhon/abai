@@ -142,7 +142,7 @@
                                 Показать мероприятия
                             </label>
                         </div>
-                        <div v-if="isActivityShown" class="col-9 p-0">
+                        <div v-if="isActivityShown && periodItem.params.activity" class="col-9 p-0">
                             <table class="table text-center text-white text-nowrap historical-table">
                                 <thead>
                                 <tr>
@@ -157,16 +157,16 @@
                                 </thead>
                                 <tbody>
                                 <tr
-                                        v-for="(activity,index) in periodItem.activity"
+                                        v-for="(activity,index) in periodItem.params.activity"
                                         :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
                                 >
                                     <td>{{index+1}}</td>
                                     <td>{{activity.date}}</td>
-                                    <td>{{activity.explanation}}</td>
-                                    <td>{{activity.additionalInfo}}</td>
-                                    <td>{{activity.condition}}</td>
-                                    <td>{{activity.category}}</td>
-                                    <td>{{activity.operationWay}}</td>
+                                    <td>{{activity.repair_type}}</td>
+                                    <td>{{activity.more_info_reason_fail}}</td>
+                                    <td>{{activity.well_status}}</td>
+                                    <td>{{well.category.name_ru}}</td>
+                                    <td>&nbsp;</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -224,9 +224,20 @@ export default {
                 return moment(data).format('DD/MM/YYYY')
             }
         },
-        nahdleMeasurementSchedule() {
+        async nahdleMeasurementSchedule() {
             this.historicalData = this.productionMeasurementSchedule;
+            _.forEach(this.historicalData, (item) => {
+                 item.params['activity'] = this.getActivityByWell(item.month,item.year);
+            });
             this.isMeasurementScheduleActive = true;
+        },
+        async getActivityByWell(month,year) {
+            let queryOptions = {
+                'month': moment(month,'MMM').month() + 1,
+                'year': year
+            };
+            const response = await axios.get(this.localeUrl(`/api/bigdata/wells/get-activity/${this.well.id}`),{params:queryOptions});
+            return response.data;
         },
         getDaysCountInMonth(monthYearString) {
             return moment(monthYearString, 'YYYY/MMM').daysInMonth();
