@@ -10,19 +10,18 @@
                 <span class="header_icon ml-1"></span>
                 <div class="d-flex justify-content-between">
                     <span class="header_icon-switch mr-1"></span>
-                    <span class="underline cursor-pointer header_title px-1" @click="SET_VISIBLE_INJECTION(true),changeColumnsVisible(false)">Исторические сведения по добыче нефти</span>
+                    <span class="underline cursor-pointer header_title px-1" @click="SET_VISIBLE_INJECTION(true),changeColumnsVisible(false),isMeasurementScheduleActive = false">Исторические сведения по добыче нефти</span>
                 </div>
             </div>
-            <div class="TEST">
-                <div class="d-flex mt-1">
-                    <div class="col-12 center_block d-flex justify-content-between">
-                        <div class="col-11">Сводная информация</div>
-                        <div class="col-1 d-flex rounded" @click="isFreeInfoShown = !isFreeInfoShown">
-                            <div class="col-2 splitter"></div>
-                            <div :class="[isFreeInfoShown ? 'arrow-expand' : 'arrow-cut-down','col-10']"></div>
-                        </div>
+            <div class="d-flex mt-1">
+                <div class="col-12 center_block d-flex justify-content-between">
+                    <div class="col-11">Сводная информация</div>
+                    <div class="col-1 d-flex rounded" @click="isFreeInfoShown = !isFreeInfoShown">
+                        <div class="col-2 splitter"></div>
+                        <div :class="[isFreeInfoShown ? 'arrow-expand' : 'arrow-cut-down','col-10']"></div>
                     </div>
                 </div>
+            </div>
                 <div class="d-flex mt-1">
                     <div :class="[!isFreeInfoShown ? 'd-none' : '','col-12 p-0']">
                         <table class="table table-striped text-white text-nowrap">
@@ -96,7 +95,7 @@
                     </div>
                 </div>
                 <div class="historical-container">
-                    <div v-if="injectionMeasurementSchedule.length > 0" v-for="periodItem in injectionMeasurementSchedule">
+                    <div v-if="isMeasurementScheduleActive" v-for="periodItem in historicalData">
                     <div class="row m-0 mt-1">
                         <div class="col-12 center_block d-flex">
                             <div class="col-12">{{periodItem.id}}</div>
@@ -235,7 +234,7 @@
                 </div>
                 </div>
                 <div class="d-flex justify-content-end bottom-buttons">
-                    <div class="p-1 d-flex align-items-center">
+                    <div class="p-1 d-flex align-items-center" @click="nahdleMeasurementSchedule()">
                         <img class="pr-1" src="/img/icons/repeat.svg" alt="">
                         Сформировать
                     </div>
@@ -306,75 +305,18 @@ export default {
                 'lastKrs': '',
                 'sk': '',
             },
-            historicalData: [
-                {
-                    'measurementSchedule': {
-                            'title':'2021/январь',
-                            'po':'Воронки НКТ',
-                            'l':1200,
-                            'union':5,
-                            'agentType':'Вода морская',
-                    },
-                    'techMode': [
-                        {
-                            'label': 'Приемистость',
-                            'value': 240,
-                        },
-                        {
-                            'label': 'Давление закачки',
-                            'value': 125,
-                        },
-                        {
-                            'label': 'Состояние скважины',
-                        },
-                        {
-                            'label': 'Обработанное время',
-                        },
-                        {
-                            'label': 'ГТМ',
-                        }
-                    ],
-                    'monthlyData': [
-                        [50,65,67,50,51],
-                        [4.41,4.34,4.41],
-                        ['','','','',67],
-                        ['','','','',''],
-                        ['Начало ГТМ','Начало ГТМ','Начало ГТМ','Начало ГТМ','Начало ГТМ'],
-                    ],
-                    'activity': [
-                        {
-                            'date': '07.08.2021 10:00',
-                            'explanation': 'Текущие исследования ГДИС',
-                            'additionalInfo': '',
-                            'condition': 'В работе',
-                            'category': 'Нефтяная',
-                            'operationWay': 'ШГН'
-                        },
-                        {
-                            'date': '08.08.2021 10:00',
-                            'explanation': 'Запрос скважины',
-                            'additionalInfo': '',
-                            'condition': 'В работе',
-                            'category': 'Нефтяная',
-                            'operationWay': 'ШГН'
-                        },
-                        {
-                            'date': '09.08.2021 12:00',
-                            'explanation': 'Простой',
-                            'additionalInfo': '',
-                            'condition': 'В работе',
-                            'category': 'Нефтяная',
-                            'operationWay': 'ШГН'
-                        }
-                    ]
-                },
-            ],
             isActivityShown: false,
             isFreeInfoShown: true,
-            historicalInfo: []
+            historicalInfo: [],
+            historicalData: [],
+            isMeasurementScheduleActive: false
         };
     },
     methods: {
+        nahdleMeasurementSchedule() {
+            this.historicalData = this.injectionMeasurementSchedule;
+            this.isMeasurementScheduleActive = true;
+        },
         getDaysCountInMonth(monthYearString) {
             return moment(monthYearString, 'YYYY/MMM').daysInMonth();
         },

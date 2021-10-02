@@ -10,7 +10,7 @@
                 <span class="header_icon ml-1"></span>
                 <div class="d-flex justify-content-between">
                     <span class="header_icon-switch mr-1"></span>
-                    <span class="underline cursor-pointer header_title px-1" @click="SET_VISIBLE_PRODUCTION(true),changeColumnsVisible(false)">Исторические сведения по добыче нефти</span>
+                    <span class="underline cursor-pointer header_title px-1" @click="SET_VISIBLE_PRODUCTION(true),changeColumnsVisible(false),isMeasurementScheduleActive = false">Исторические сведения по добыче нефти</span>
                 </div>
             </div>
             <div class="d-flex mt-1">
@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="historical-container">
-                <div v-if="productionMeasurementSchedule.length > 0" v-for="periodItem in productionMeasurementSchedule">
+                <div v-if="isMeasurementScheduleActive" v-for="periodItem in historicalData">
                     <div class="row m-0 mt-1">
                         <div class="col-12 center_block d-flex">
                             <div class="col-12">{{periodItem.id}}</div>
@@ -126,7 +126,7 @@
                                         <td
                                                 v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
                                         >
-                                            <span v-if="dayData[dayNumber-1]">{{dayData[dayNumber-1]}}</span>
+                                            <span v-if="dayData[dayNumber-1]">{{dayData[dayNumber-1].toFixed(2)}}</span>
                                             <span v-else>&nbsp</span>
                                         </td>
                                     </tr>
@@ -176,7 +176,7 @@
             </div>
 
             <div class="d-flex justify-content-end bottom-buttons">
-                <div class="p-1 d-flex align-items-center">
+                <div class="p-1 d-flex align-items-center cursor-pointer" @click="nahdleMeasurementSchedule()">
                     <img class="pr-1" src="/img/icons/repeat.svg" alt="">
                     Сформировать
                 </div>
@@ -238,117 +238,18 @@ export default {
                 'compensation': '',
                 'additionalEquipment': ''
             },
-            historicalData: [
-                {
-                    'measurementSchedule': {
-                            'title':'2021/январь',
-                    },
-                    'techMode': [
-                        {
-                            'label': 'Жидкость',
-                            'value': 65,
-                        },
-                        {
-                            'label': 'Нефть',
-                            'value': 2.9,
-                        },
-                        {
-                            'label': 'Обводненность',
-                            'value': 95,
-                        },
-                        {
-                            'label': 'Аном. обв.',
-                            'value': '-',
-                        },
-                        {
-                            'label': 'Добыча газа',
-                            'value': 65,
-                        },
-                        {
-                            'label': 'Жидкость, м3/сут.\n' + '(телеметрия)',
-                            'value': 2.9,
-                        },
-                        {
-                            'label': 'Pбуфф.',
-                            'value': 95,
-                        },
-                        {
-                            'label': 'Pзатр.',
-                            'value': '-',
-                        },
-                        {
-                            'label': 'Pбуфф.\n' +
-                                'до штуцера',
-                            'value': '-',
-                        },
-                        {
-                            'label': 'Pбуфф. после\n' + 'штуцера',
-                            'value': '-',
-                        },
-                        {
-                            'label': 'Н дин./\n' +
-                                'Pзаб/Pзатр',
-                            'value': '-',
-                        },
-                        {
-                            'label': 'Н стат / Рпл / \n' +
-                                'Pзатр',
-                            'value': '-',
-                        },
-                        {
-                            'label': 'Рез. ГДМ / Дл.х.при\n' + 'ГДМ/ ЧК при ГДМ',
-                            'value': '-',
-                        }
-                    ],
-                    'monthlyData': [
-                        [50,65,67,50,51],
-                        [4.41,4.34,4.41],
-                        ['','','','',67],
-                        ['','','','',''],
-                        [66,65,66,67,65],
-                        [4.41,4.34,4.44],
-                        ['','','','',97],
-                        ['','','','',''],
-                        ['','','','',''],
-                        ['','','','',''],
-                        ['','','','',''],
-                        ['','','','',''],
-                        ['','','','',''],
-                    ],
-                    'activity': [
-                        {
-                            'date': '07.08.2021 10:00',
-                            'explanation': 'Текущие исследования ГДИС',
-                            'additionalInfo': '',
-                            'condition': 'В работе',
-                            'category': 'Нефтяная',
-                            'operationWay': 'ШГН'
-                        },
-                        {
-                            'date': '08.08.2021 10:00',
-                            'explanation': 'Запрос скважины',
-                            'additionalInfo': '',
-                            'condition': 'В работе',
-                            'category': 'Нефтяная',
-                            'operationWay': 'ШГН'
-                        },
-                        {
-                            'date': '09.08.2021 12:00',
-                            'explanation': 'Простой',
-                            'additionalInfo': '',
-                            'condition': 'В работе',
-                            'category': 'Нефтяная',
-                            'operationWay': 'ШГН'
-                        }
-                    ]
-                },
-            ],
+            historicalData: [],
+            isMeasurementScheduleActive: false,
             isActivityShown: false,
             isFreeInfoShown: true,
             historicalInfo: []
         };
     },
     methods: {
+        nahdleMeasurementSchedule() {
+            this.historicalData = this.productionMeasurementSchedule;
+            this.isMeasurementScheduleActive = true;
+        },
         getDaysCountInMonth(monthYearString) {
             return moment(monthYearString, 'YYYY/MMM').daysInMonth();
         },
@@ -366,7 +267,6 @@ export default {
                 if (gas && gas !== null) {
                     gas = parseFloat(gas);
                 }
-                console.log(date.format('MMM'));
                 let obj = {
                     'id': date.format('YYYY/MMM'),
                     'month': date.format('MMM'),
@@ -441,31 +341,37 @@ export default {
                         ]
                     }
                 };
-                let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
-                let oilSummary = [];
-                let oilDebit = [];
-                let waterDebit = [];
-                let workHours = [];
-                let waterCut = [];
-                let water = [];
-                let gasSummary = [];
-                let onomobvod = [];
-                for (let i =1; i <= daysCount; i++) {
-                    oilSummary.push(item.oil/daysCount);
-                    oilDebit.push(item.oilDebit/daysCount);
-                    workHours.push(item.work_days/daysCount);
-                    waterDebit.push(item.waterDebit/daysCount);
-                    waterCut.push(item.waterCut/daysCount);
-                    water.push(item.water/daysCount);
-                    gasSummary.push(item.gas/daysCount);
-                }
-                obj.params.monthlyData.push(oilSummary,water,waterCut,onomobvod,gasSummary,oilDebit,waterDebit,workHours);
+
+                obj.params.monthlyData = this.getDailyParams(obj,date);
                 this.historicalInfo.push(obj);
             });
-            console.log('this.historicalInfo')
-            console.log(this.historicalInfo)
             this.SET_PRODUCTION_HISTORICAL(this.historicalInfo);
         },
+        getDailyParams(summary,date) {
+            let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
+            let oilSummary = [];
+            let oilDebit = [];
+            let waterDebit = [];
+            let workHours = [];
+            let waterCut = [];
+            let water = [];
+            let gas = [];
+            let onomobvod = [];
+            let empty = [];
+            let total = [];
+            for (let i =1; i <= daysCount; i++) {
+                empty.push(0);
+                oilSummary.push(summary.oil/daysCount);
+                oilDebit.push(summary.oilDebit/daysCount);
+                workHours.push(summary.hoursWorked/daysCount);
+                waterDebit.push(summary.waterDebit/daysCount);
+                waterCut.push(summary.waterCut/daysCount);
+                water.push(summary.water/daysCount);
+                gas.push(summary.gas/daysCount);
+            }
+            total.push(water,oilSummary,waterCut,empty,gas,empty,empty,empty,empty,empty,empty,empty,empty);
+            return total;
+        }
     },
     async mounted() {
         const response = await axios.get(this.localeUrl(`/api/bigdata/wells/productionHistory/${this.well.id}`));
