@@ -633,7 +633,10 @@ class DictionaryService
         }, $orgIds);
         $organizations = [];
         foreach($orgIds as $id) {
-            $organizations[] = Org::find($id);
+            $organization = Org::find($id);
+            if(isset($organization)) {
+                $organizations[] = $organization;
+            }
         }
 
         $orgIds = $this->getOrgWithChildrens($organizations);
@@ -643,6 +646,7 @@ class DictionaryService
     private function getOrgWithChildrens($organizations) {
         $result = [];
         foreach($organizations as $organization) {
+            if(!isset($organization->id)) continue;
             $result[] = $organization->id;
             $children = $organization->children()->get();
             
@@ -655,7 +659,7 @@ class DictionaryService
     public function filterTree($items, &$tree, &$userTreeAccessedItems)
     {
         foreach($items as $item) {
-            if(in_array($item['id'], $userTreeAccessedItems)) {
+            if(isset($item['id']) && in_array($item['id'], $userTreeAccessedItems)) {
                 $tree[] = $item;
                 continue;
             }
