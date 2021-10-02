@@ -72,14 +72,14 @@
       "title": "liquid_val",
       "code": "liquid_val",
       "type": "calc",
-      "formula": "$liquid_debit$ * $worktime$",
+      "formula": "Math.round($liquid_debit$ * $worktime$/24 * 100)/100",
       "is_editable": false
     },
     {
       "title": "oil_val",
       "code": "oil_val",
       "type": "calc",
-      "formula": "$oil_debit$ * $worktime$",
+      "formula": "Math.round($oil_debit$ * $worktime$/24 * 100)/100",
       "is_editable": false
     },
     {
@@ -170,7 +170,7 @@
       "title": "oil_debit",
       "code": "oil_debit",
       "type": "calc",
-      "formula": "$liquid_debit$ * (1 - $bsw_tech$/100) * $density_oil$",
+      "formula": "Math.round($liquid_debit$ * (1 - $bsw$/100) * $oil_density$ * 100)/100",
       "is_editable": false
     },
     {
@@ -430,7 +430,7 @@
       "title": "gas_output",
       "code": "gas_output",
       "type": "calc",
-      "formula": "$gas_factor$ * $worktime$",
+      "formula": "Math.round($gas_factor$ * $oil_val$ * 100)/100",
       "is_editable": false
     },
     {
@@ -465,7 +465,9 @@
     },
     {
       "title": "Плотность нефти",
-      "code": "density_oil",
+      "code": "oil_density",
+      "table": "prod.tech_mode_prod_oil",
+      "column": "oil_density",
       "type": "hidden",
       "is_editable": false
     },

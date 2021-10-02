@@ -62,4 +62,8 @@ return array (
   'legend' => 'Легенда',
   'sector' => 'Сектор',
   'dateAnalysis' => 'Дата анализа',
+  'comparisonActualDrillingPoints' => 'Сравнение фактических точек бурения с ПТД',
+  'coincidencePlannedWellsWithin' => 'Совпадение проектных скважин в пределах',
+  'year' => 'Год',
+  'comparisonDesignActualIndicators' => 'Сравнение проектных и фактических показателей'
 );

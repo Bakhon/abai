@@ -144,28 +144,6 @@ class Gis extends PlainForm
         return $columns;
     }
 
-    protected function getCustomValidationErrors(string $field = null): array
-    {
-        $errors = [];
-        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('matering_from'))) {
-            $errors['matering_from'][] = trans('bd.validation.depth');
-        }
-        if (!$this->isValidDate(
-            $this->request->get('well'),
-            $this->request->get('gis_date'),
-            'dict.well',
-            'drill_start_date'
-        )) {
-            $errors['gis_date'][] = trans('bd.validation.date');
-        }
-        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('process_from'))) {
-            $errors['process_from'][] = trans('bd.validation.depth');
-        }
-
-
-        return $errors;
-    }
-
     protected function submitForm(): array
     {
         $this->tableFields = $this->getFields()
@@ -185,6 +163,9 @@ class Gis extends PlainForm
                     return;
                 }
                 foreach ($values as $value) {
+                    if (is_array($value)) {
+                        continue;
+                    }
                     DB::connection('tbd')
                         ->table('prod.conn_files')
                         ->insert(

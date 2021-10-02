@@ -285,4 +285,13 @@ return array (
   'well_overview_map' => 'Обзорная карта скважин',
   'table_well_overview_map' => 'Обзорная карта расположений скважин по экономической эффективности',
   'count_shutdown_wells' => 'Количество отключенных скважин',
+  'loading_treemap' => 'Загрузка TreeMap',
+  'profitless' => 'Нерентабельные',
+  'mrp' => 'МРП',
+  'days_declination' => 'дней',
+  'trans_expenditures' => 'Транспортные расходы',
+  'fot' => 'ФОТ',
+  'fixed_nopayroll_expenditures' => 'Условно-постоянные затраты без учета ФОТ',
+  'tax_costs' => 'Налоговые затраты',
+  'show_wells' => 'Показать скважины',
 );

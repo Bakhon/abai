@@ -127,7 +127,11 @@ class StructureService
                                 Tech::TYPE_AGZU,
                                 Tech::TYPE_SPGU,
                                 Tech::TYPE_KNS,
-                                Tech::TYPE_BKNS
+                                Tech::TYPE_BKNS,
+                                Tech::TYPE_OPPS,
+                                Tech::TYPE_OTU,
+                                Tech::TYPE_WIDM,
+                                Tech::TYPE_WDM,
                             ]
                         );
                 }
@@ -268,10 +272,10 @@ class StructureService
         return $this->generateFullTree();
     }
 
-    public function getFlattenTree(): array
+    public function getFlattenTree(): Collection
     {
         $tree = $this->getFullTree();
-        return $this->getFlatten($tree);
+        return collect($this->getFlatten($tree));
     }
 
     public function generateFullTree(): array
@@ -281,9 +285,9 @@ class StructureService
         return $tree;
     }
 
-    public static function getChildIds(array $orgs, int $selectedUserDzo): array
+    public static function getChildIds(array $orgs, int $parentId): array
     {
-        self::$childrenIds[] = $selectedUserDzo;
+        self::$childrenIds[] = $parentId;
         foreach ($orgs as $child) {
             self::getChildsRecursive($child);
         }
@@ -311,7 +315,7 @@ class StructureService
 
     public function getPath(int $id, string $type): ?Collection
     {
-        $tree = collect($this->getFlattenTree());
+        $tree = $this->getFlattenTree();
         $item = $tree->where('id', $id)->where('type', $type)->first();
         if (empty($item)) {
             return null;
