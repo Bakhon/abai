@@ -124,6 +124,7 @@ Vue.component('gu-form', require('./components/complicationMonitoring/gu/form.vu
 Vue.component('zu-form', require('./components/complicationMonitoring/zu/form.vue').default);
 Vue.component('pipe-passport-form', require('./components/complicationMonitoring/pipePassport/form.vue').default);
 Vue.component('zu-cleanings-form', require('./components/complicationMonitoring/zuCleanings/form.vue').default);
+Vue.component('salt-table', require('./components/complicationMonitoring/saltDashboard/DashboardTable.vue').default);
 
 
 Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);

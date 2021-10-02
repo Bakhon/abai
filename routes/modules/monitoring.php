@@ -259,6 +259,9 @@ Route::group(
                 Route::resource('zu-cleanings', 'ComplicationMonitoring\ZusCleaningController');
                 
                 Route::post('/corrosion-dosage', 'ComplicationMonitoring\CorrosionRateAndDoseCalculationController@calculate');
+
+                Route::get('/salt-dashboard/{gu?}', 'DruidController@saltDashboard')->name('saltDashboard');
+
             }
         );
     }
