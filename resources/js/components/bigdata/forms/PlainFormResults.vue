@@ -16,7 +16,7 @@
             <div aria-labelledby="dropdownMenuButton" class="dropdown-menu scrollable" style="max-height: 220px">
               <template v-for="action in form.actions">
                 <a v-if="action.action === 'create'" class="dropdown-item" href="#"
-                   @click="showForm(action.form)">{{ action.title }}</a>
+                   @click="showForm(action.form, action.default_values || null)">{{ action.title }}</a>
                 <a v-else-if="action.action === 'edit'" class="dropdown-item" href="#"
                    @click="editRow(selectedRow, action.form)">{{ action.title }}</a>
                 <a v-else-if="action.action === 'delete'" class="dropdown-item" href="#"
@@ -257,9 +257,9 @@ export default {
     getDictFlat(code) {
       return this.$store.getters['bdform/dictFlat'](code);
     },
-    showForm(formCode = null) {
+    showForm(formCode = null, defaultValues = null) {
       this.formParams = this.forms.find(form => form.code === (formCode || this.code))
-      this.formValues = null
+      this.formValues = defaultValues
       this.isFormOpened = true
     },
     editRow(row, formCode = null) {

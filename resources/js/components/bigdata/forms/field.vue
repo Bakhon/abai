@@ -125,7 +125,7 @@
       </BigdataTableField>
     </template>
     <template v-else-if="['calc', 'label'].includes(item.type)">
-      <label>{{ value }}</label>
+      <label v-html="value"></label>
     </template>
     <template v-else-if="item.type === 'checkbox_table'">
       <BigdataCheckboxTableField :params="item" v-on:change="updateValue($event)"></BigdataCheckboxTableField>

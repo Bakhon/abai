@@ -39,7 +39,10 @@
                 "type": "dict",
                 "dict": "packer_types",
                 "title": "packer_t",
-                "validation": "exists:tbd.dict.packer_type,id"
+                "validation": "exists:tbd.dict.packer_type,id",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
                 "code": "new_intervals",
