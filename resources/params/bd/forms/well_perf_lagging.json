@@ -16,13 +16,6 @@
             "title": "",
             "items": [
               {
-                "code": "perf_type",
-                "type": "dict",
-                "dict": "perf_types",
-                "title": "perf_t",
-                "validation": "required|exists:tbd.dict.perf_type,id"
-              },
-              {
                 "code": "company",
                 "type": "dict",
                 "dict": "companies",
@@ -30,48 +23,10 @@
                 "validation": "required|exists:tbd.dict.company,id"
               },
               {
-                "code": "hole_count",
-                "type": "numeric",
-                "title": "count",
-                "validation": "numeric|gte:0|lte:100"
-              },
-              {
-                "code": "hole_diameter",
-                "type": "numeric",
-                "title": "diame_c",
-                "validation": "numeric|gte:0|lte:50"
-              },
-              {
-                "code": "perforator_type",
+                "code": "iso_material_type",
                 "type": "dict",
-                "dict": "perforator_types",
-                "title": "perf_y",
-                "validation": "exists:tbd.dict.perforator_type,id"
-              },
-              {
-                "code": "patron_type",
-                "type": "dict",
-                "dict": "patron_types",
-                "title": "marka",
-                "validation": "exists:tbd.dict.patron_type,id"
-              },
-              {
-                "code": "liquid",
-                "type": "numeric",
-                "title": "liquid",
-                "validation": "numeric|gte:0"
-              },
-              {
-                "code": "bsw",
-                "type": "numeric",
-                "title": "bsw_p",
-                "validation": "numeric|gte:0|lte:100"
-              },
-              {
-                "code": "reservoir_count",
-                "type": "numeric",
-                "title": "reserv_c",
-                "validation": "numeric|gte:1"
+                "dict": "iso_material_types",
+                "title": "iso_mat_type"
               },
               {
                 "code": "perf_date",
