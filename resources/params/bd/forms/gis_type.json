@@ -8,11 +8,11 @@
   ],
   "tabs": [
     {
-      "title": "title",
+      "title": "main",
       "blocks": [
         [
           {
-            "title": "main",
+            "title": "",
             "items": [
               {
                 "code": "gis_date",
@@ -25,13 +25,13 @@
                 "type": "dict",
                 "dict": "companies",
                 "title": "podr",
-                "validation":"required|exists:tbd.dict.company,id"
+                "validation":"exists:tbd.dict.company,id"
               },
               {
                 "code": "matering_from",
                 "type": "numeric",
                 "title": "intr_ot",
-                "validation": "required"
+                "validation": ""
               },
               {
                 "code": "matering_to",
@@ -50,7 +50,12 @@
                 "type": "numeric",
                 "title": "intr_obr_do",
                 "validation": ""
-              },
+              }
+            ]
+          },
+          {
+            "title":"title",
+            "items": [
               {
                 "code": "liquid_vol",
                 "type": "numeric",
@@ -68,7 +73,12 @@
                 "type": "numeric",
                 "title": "water_cut",
                 "validation": ""
-              },
+              }
+            ]
+          },
+          {
+            "title":"param",
+            "items": [
               {
                 "code": "intake",
                 "type": "numeric",
@@ -117,7 +127,7 @@
                 "type": "dict",
                 "dict": "gis_method_types",
                 "title": "gis_methods",
-                "validation": "required|exists:tbd.dict.gis_method_type,id"
+                "validation": "exists:tbd.dict.gis_method_type,id"
               }
             ]
           }
@@ -135,7 +145,7 @@
                 "code": "conclusion",
                 "type": "text",
                 "title": "zakl",
-                "validation": "required"
+                "validation": ""
               },
               {
                 "code": "liquid_level",
