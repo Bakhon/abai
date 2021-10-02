@@ -27,50 +27,50 @@
                     <table class="table table-striped text-white text-nowrap free-inform-table">
                         <tbody>
                             <tr>
-                                <td>Гор: {{freeInfo.gor}}</td>
-                                <td>Отб.забоя: {{freeInfo.otbSlaughter}}</td>
-                                <td>Иск. Забой: {{freeInfo.iskSlaughter}}</td>
-                                <td>ГИС: {{freeInfo.GIS}}</td>
-                                <td>Примечание: {{freeInfo.comment}}</td>
+                                <td>Гор: {{well.category.name_ru}}</td>
+                                <td>Отб.забоя: </td>
+                                <td>Иск. Забой: </td>
+                                <td>ГИС: {{well.gis.gis_date}}</td>
+                                <td>Примечание: {{well.gdisCurrent.note}}</td>
                             </tr>
                             <tr>
-                                <td>Вид скважины: {{freeInfo.wellType}}</td>
-                                <td>Рпласта: {{freeInfo.plastRadius}}</td>
-                                <td>Ø экс.колонны: {{freeInfo.diamaterColumn}}</td>
-                                <td>Посл.ПФП: {{freeInfo.pfp}}</td>
+                                <td>Вид скважины: {{well.wellType.name_ru}}</td>
+                                <td>Рпласта: </td>
+                                <td>Ø экс.колонны: </td>
+                                <td>Посл.ПФП: {{well.treatmentDate.treat_date}}</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td rowspan="2">Вл.скв:	{{freeInfo.vlWell}}</td>
-                                <td>КШД тип/Ø: {{freeInfo.kshd}}</td>
-                                <td>НКТ: {{freeInfo.nkt}}</td>
-                                <td>Посл.СКО: {{freeInfo.sko}}</td>
+                                <td rowspan="2">Вл.скв:	{{well.wellReactInfl.well_influencing}}</td>
+                                <td>КШД тип/Ø: </td>
+                                <td>НКТ: </td>
+                                <td>Посл.СКО: {{well.treatmentSko.treat_date}}</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>Инт.перф: {{freeInfo.intPerf}}</td>
-                                <td>Штанги: {{freeInfo.rod}}</td>
-                                <td>Тип к/г: {{freeInfo.type}}</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Дата ввода в экспл.: {{freeInfo.entryDate}}</td>
-                                <td>Н.р: {{freeInfo.nr}}</td>
-                                <td>Дата посл. КРС: {{freeInfo.krsDate}}</td>
+                                <td>Инт.перф: {{well.perfActual.top}}</td>
+                                <td>Штанги: </td>
+                                <td>Тип к/г: </td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td></td>
-                                <td>Qмакс.прием: {{freeInfo.qMaxReceive}}</td>
-                                <td>БКНС/ГУ/ряд: {{freeInfo.bkns}}</td>
-                                <td>Дата посл. ПРС: {{freeInfo.prsDate}}</td>
+                                <td>Дата ввода в экспл.: {{well.expl.dbeg}}</td>
+                                <td>Н.р:</td>
+                                <td>Дата посл. КРС: {{getFormatedDate(this.well.krsWorkover.dbeg)}}</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>ГРП: {{freeInfo.grp}}</td>
-                                <td>Компенсация: {{freeInfo.compensation}}</td>
-                                <td>Доп. оборудования: {{freeInfo.additionalEquipment}}</td>
+                                <td></td>
+                                <td>Qмакс.прием: </td>
+                                <td>БКНС/ГУ/ряд: {{well.gu.name_ru}}</td>
+                                <td>Дата посл. ПРС: {{getFormatedDate(this.well.prsWellWorkover.dbeg)}}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>ГРП: {{getFormatedDate(this.well.gtm.dbeg)}}</td>
+                                <td>Компенсация: </td>
+                                <td>Доп. оборудования: </td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -211,33 +211,6 @@ export default {
     data() {
         return {
             isScheduleVisible: false,
-            freeInfo: {
-                'gor': 'Ю4',
-                'otbSlaughter': 888.07,
-                'iskSlaughter': 888.07,
-                'GIS': 'ГИС в открытом стволе/25.01.2021',
-                'comment': '',
-                'wellType': 'Вертикальная',
-                'diamaterColumn': '',
-                'plastRadius': '',
-                'pfp': '',
-                'vlWell': '',
-                'kshd': '/',
-                'nkt': '25.03.2021/76/73/766,88',
-                'sko': '',
-                'intPerf': '846-848,5',
-                'rod': '05.04.2021/96/19/768',
-                'type': 'Заводская',
-                'entryDate': '',
-                'nr': 5.43,
-                'krsDate': '24.03.2021-25.03.2021/Освоение',
-                'qMaxReceive': '',
-                'bkns': '/ГУ-45/15-18',
-                'prsDate': '04.04.2021',
-                'grp': '',
-                'compensation': '',
-                'additionalEquipment': ''
-            },
             historicalData: [],
             isMeasurementScheduleActive: false,
             isActivityShown: false,
@@ -246,6 +219,11 @@ export default {
         };
     },
     methods: {
+        getFormatedDate(data) {
+            if (data != null && data != '') {
+                return moment(data).format('DD/MM/YYYY')
+            }
+        },
         nahdleMeasurementSchedule() {
             this.historicalData = this.productionMeasurementSchedule;
             this.isMeasurementScheduleActive = true;
