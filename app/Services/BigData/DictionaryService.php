@@ -649,7 +649,7 @@ class DictionaryService
     public function filterTree($items, &$tree, &$userTreeAccessedItems)
     {
         foreach($items as $item) {
-            if(in_array($item['id'], $userTreeAccessedItems)) {
+            if(isset($item['id']) && in_array($item['id'], $userTreeAccessedItems)) {
                 $tree[] = $item;
                 continue;
             }
