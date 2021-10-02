@@ -190,10 +190,6 @@
                     <a class="text-white cursor-pointer"
                        @click="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(false)">Показать график</a>
                 </div>
-                <div class="p-1 ml-2 d-flex align-items-center">
-                    <img class="pr-1" src="/img/icons/page_excel.svg" alt="">
-                    Скачать в MS-Excel
-                </div>
             </div>
         </div>
     </div>
@@ -247,6 +243,91 @@ export default {
             'SET_VISIBLE_PRODUCTION','SET_PRODUCTION_HISTORICAL'
         ]),
         assignInfoByDates(data) {
+            let summary = [];
+            _.forEach(data, (year, key) => {
+                _.forEach(year, (month, monthNumber) => {
+                    let date = moment(item.date, 'YYYY-MM-DD');
+                    let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
+                    let monthSummary = {
+                        'id': date.format('YYYY/MMM'),
+                        'month': date.format('MMM'),
+                        'year': date.format('YYYY'),
+                        'isChecked': false,
+                        'isVisible': false,
+                        'water': _.sumBy(month, 'liq'),
+                        'oil': _.sumBy(month, 'oil'),
+                        'oilDebit': _.sumBy(month, 'oil') / _.sumBy(month, 'workHours'),
+                        'waterDebit': _.sumBy(month, 'liq') / _.sumBy(month, 'workHours'),
+                        'waterCut': _.sumBy(month, 'liqCut'),
+                        'hoursWorked': _.sumBy(month, 'workHours'),
+                        'gas': 0,
+                        'params': {
+                            'techMode': [
+                                {
+                                    'label': 'Жидкость',
+                                    'value': parseFloat(month.liq),
+                                },
+                                {
+                                    'label': 'Нефть',
+                                    'value': parseFloat(month.oil),
+                                },
+                                {
+                                    'label': 'Обводненность',
+                                    'value': parseFloat(month.liqCut),
+                                },
+                                {
+                                    'label': 'Аном. обв.',
+                                    'value': 0,
+                                },
+                                {
+                                    'label': 'Добыча газа',
+                                    'value': 0,
+                                },
+                                {
+                                    'label': 'Жидкость, м3/сут. (телеметрия)',
+                                    'value': 0,
+                                },
+                                {
+                                    'label': 'Pбуфф.',
+                                    'value': 0,
+                                },
+                                {
+                                    'label': 'Pзатр.',
+                                    'value': 0,
+                                },
+                                {
+                                    'label': 'Pбуфф.\n' +
+                                        'до штуцера',
+                                    'value': 0,
+                                },
+                                {
+                                    'label': 'Pбуфф. после\n' + 'штуцера',
+                                    'value': 0,
+                                },
+                                {
+                                    'label': 'Н дин./\n' +
+                                        'Pзаб/Pзатр',
+                                    'value': 0,
+                                },
+                                {
+                                    'label': 'Н стат / Рпл / \n' +
+                                        'Pзатр',
+                                    'value': 0,
+                                },
+                                {
+                                    'label': 'Рез. ГДМ / Дл.х.при\n' + 'ГДМ/ ЧК при ГДМ',
+                                    'value': 0,
+                                }
+                            ],
+                            'monthlyData': month
+                        }
+                    };
+                    this.historicalInfo.push(monthSummary);
+                });
+            });
+
+            this.SET_PRODUCTION_HISTORICAL(this.historicalInfo);
+            return;
             _.forEach(data, (item) => {
                 let date = moment(item.date, 'YYYY-MM-DD');
                 let oil = item.oil;

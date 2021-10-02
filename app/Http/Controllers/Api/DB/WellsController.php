@@ -14,6 +14,7 @@ use App\Models\BigData\GdisCurrentValue;
 use App\Models\BigData\WellStatus;
 use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
+use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
 use App\Services\BigData\StructureService;
@@ -583,6 +584,7 @@ class WellsController extends Controller
                 $wellStatus['status_type']['name_ru'],
             ];
         }
+
         foreach ($measLiqs as $measLiq) {
             $measWaterCutVal = $oilVal = $gdisCurrentVal = 0;
             $dateTime = DateTime::createFromFormat('Y-m-d H:i:sP', $measLiq['dbeg']);
@@ -613,24 +615,94 @@ class WellsController extends Controller
         return $result;
     }
 
-    public function getInjectionHistory($well)
+    public function getInjectionHistory($wellId)
     {
-        return dictWell::query()
-            ->where('dict.well.id',$well)
-            ->leftJoin('dmart.mer_inj as mi', 'dict.well.uwi', '=', 'mi.well')
+        $measLiqs = MeasLiq::where('well', $wellId)
+            ->orderBy('dbeg', 'asc')
+            ->get();
+        $groupedLiq = $measLiqs->groupBy(function($val) {
+            return Carbon::parse($val->dbeg)->format('Y');
+        });
+        $liqByMonths = array();
+        foreach($groupedLiq as $yearNumber => $value) {
+            $liqByMonths[$yearNumber] = $value->groupBy(function($val) {
+                   return Carbon::parse($val->dbeg)->format('m');
+            });
+        }
+        $measLiqInjection = MeasLiqInjection::where('well',$wellId)
+            ->orderBy('dbeg', 'asc')
             ->get();
 
+        $result = array();
+        foreach($liqByMonths as $yearNumber => $monthes) {
+           foreach($monthes as $monthNumber => $month) {
+              $result[$yearNumber][$monthNumber] = array();
+              foreach($month as $dayNumber => $day) {
+                 $date = Carbon::parse($day['dbeg']);
+                 $dateEnd = Carbon::parse($day['dend']);
+                 $liqInjection = $measLiqInjection->filter(function ($val) use ($date) {
+                     return Carbon::parse($val->dbeg)->format('d m Y') === $date->format('d m Y');
+                 });
+
+                 array_push($result[$yearNumber][$monthNumber], array (
+                    'liq' => $day['liquid'],
+                    'date' => $date->format('Y-m-d'),
+                    'workHours' => $date->diffInDays($dateEnd),
+                    'pressure' => $liqInjection->sum('pressure_inj')
+                 ));
+              }
+           }
+        }
+        return $result;
     }
 
-    public function getProductionHistory($well)
+    public function getProductionHistory($wellId)
     {
-        return dictWell::query()
-            ->where('dict.well.id',$well)
-            ->leftJoin('dmart.mer_prod_oil as mi', function($leftJoin) {
-                $leftJoin->on('dict.well.uwi', '=', 'mi.well')
-                ->whereYear('mi.date', '>=', 2008);
-            })
+        $measLiqs = MeasLiq::where('well', $wellId)
+            ->orderBy('dbeg', 'asc')
             ->get();
+        $groupedLiq = $measLiqs->groupBy(function($val) {
+            return Carbon::parse($val->dbeg)->format('Y');
+        });
+        $liqByMonths = array();
+        foreach($groupedLiq as $yearNumber => $value) {
+            $liqByMonths[$yearNumber] = $value->groupBy(function($val) {
+                   return Carbon::parse($val->dbeg)->format('m');
+            });
+        }
+
+        $measWaterCuts = MeasWaterCut::where('well', $wellId)
+            ->orderBy('dbeg', 'asc')
+            ->get();
+
+        $result = array();
+        foreach($liqByMonths as $yearNumber => $monthes) {
+           foreach($monthes as $monthNumber => $month) {
+              $result[$yearNumber][$monthNumber] = array();
+              foreach($month as $dayNumber => $day) {
+                 $date = Carbon::parse($day['dbeg']);
+                 $dateEnd = Carbon::parse($day['dend']);
+                 $liqCut = $measWaterCuts->filter(function ($val) use ($date) {
+                    return Carbon::parse($val->dbeg)->format('d m Y') === $date->format('d m Y');
+                 })->sum('water_cut');
+                 array_push($result[$yearNumber][$monthNumber], array (
+                    'liq' => $day['liquid'],
+                    'date' => $date->format('Y-m-d'),
+                    'liqCut' => $liqCut,
+                    'workHours' => $date->diffInDays($dateEnd) * 24,
+                    'oil' => round(abs($day['liquid'] * (1 - $liqCut / 100) * 0.86))
+                 ));
+              }
+           }
+        }
+        return $result;
+       // return dictWell::query()
+        //    ->where('dict.well.id',$well)
+        //    ->leftJoin('dmart.mer_prod_oil as mi', function($leftJoin) {
+        //        $leftJoin->on('dict.well.uwi', '=', 'mi.well')
+        //        ->whereYear('mi.date', '>=', 2008);
+       //     })
+        //    ->get();
     }
     public function getActivityByWell(Request $request,$wellId)
     {

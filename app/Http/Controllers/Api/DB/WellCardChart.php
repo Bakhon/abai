@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 
 class WellCardChart extends Controller
 {
+    private $labels = array();
     public function getWellEvents(Request $request)
     {
         $wellId = $request->get('wellId');
@@ -34,11 +35,27 @@ class WellCardChart extends Controller
         }
         
         $wellWorkover = $wellWorkover->whereIn('repair_type', [1, 3])->orderBy('dbeg', 'asc')->get();
-        $gtms = $gtms->with('gtmType')->orderBy('dbeg', 'asc')->get()->toArray();        
+        $gtms = $gtms->with('gtmType')->orderBy('dbeg', 'asc')->get()->toArray();
+        foreach($gtms as $gtm) {
+            $this->labels[] = DateTime::createFromFormat('Y-m-d H:i:sP', $gtm['dbeg']);
+        }
         $wellPerfs = $wellPerfs->with('intervals')->get()->toArray();
+        foreach($wellPerfs as $wellPerf) {
+            $this->labels[] = DateTime::createFromFormat('Y-m-d', $wellPerf['perf_date'])->format('Y-m-d');
+        }
 
         $events['perforations'] = $this->getIntervals($wellPerfs);
+        foreach(array_keys($events['perforations']) as $perfKey) {
+            $this->labels[] = DateTime::createFromFormat('Y-m-d', $perfKey)->format('Y-m-d');
+        }
         $events['workovers'] = $this->getWorkovers($wellWorkover);
+        foreach(array_keys($events['workovers']['prs']) as $prsKey) {
+            $this->labels[] = DateTime::createFromFormat('Y-m-d', $prsKey)->format('Y-m-d');
+        }
+        foreach(array_keys($events['workovers']['krs']) as $krsKey) {
+            $this->labels[] = DateTime::createFromFormat('Y-m-d', $krsKey)->format('Y-m-d');
+        }
+        $events['labels'] = $this->labels;
         $events['gtms'] = $this->getGtms($gtms);
 
 

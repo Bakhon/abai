@@ -1,10 +1,10 @@
 <template>
     <div>
-        <ProductionWellsSchedule
+        <InjectionWellsSchedule
             v-if="isScheduleVisible"
             :mainWell="{id: well.id, name: well.wellInfo.uwi}"
              @changeScheduleVisible="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(true)"
-        ></ProductionWellsSchedule>
+        ></InjectionWellsSchedule>
         <div v-else class="main-block w-100 px-2 py-3">
             <div class="d-flex justify-content-between header_info">
                 <span class="header_icon ml-1"></span>
@@ -160,13 +160,19 @@
                                                 v-for="(techModeItem,index) in periodItem.params.techMode"
                                                 :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
                                         >
-                                            <td v-if="techModeItem.value">
+                                            <td v-if="index < 2">
                                                 {{techModeItem.label}}
                                             </td>
                                             <td v-else colspan="2">
                                                 {{techModeItem.label}}
                                             </td>
-                                            <td v-if="techModeItem.value">
+<!--                                            <td v-if="techModeItem.value">-->
+<!--                                                {{techModeItem.label}}-->
+<!--                                            </td>-->
+<!--                                            <td v-else colspan="2">-->
+<!--                                                {{techModeItem.label}}-->
+<!--                                            </td>-->
+                                            <td v-if="index < 2">
                                                 {{techModeItem.value}}
                                             </td>
                                         </tr>
@@ -181,14 +187,60 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-if="periodItem.params.monthlyData" v-for="(dayData,index) in periodItem.params.monthlyData" :class="index % 2 === 0 ? 'background_light' : 'background_dark'">
+                                        <tr>
                                             <td
                                                     v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
                                             >
-                                                <span v-if="dayData[dayNumber-1]">{{dayData[dayNumber-1].toFixed(2)}}</span>
-                                                <span v-else>&nbsp</span>
+                                                {{periodItem.params.monthlyData[dayNumber-1].throttle}}
                                             </td>
+                                            <td v-else>&nbsp;</td>
                                         </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                {{periodItem.params.monthlyData[dayNumber-1].pressure}}
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                {{periodItem.params.monthlyData[dayNumber-1].status}}
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                {{periodItem.params.monthlyData[dayNumber-1].workHours}}
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                {{periodItem.params.monthlyData[dayNumber-1].gtm}}
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+<!--                                        <tr v-if="periodItem.params.monthlyData" v-for="(dayData,index) in periodItem.params.monthlyData" :class="index % 2 === 0 ? 'background_light' : 'background_dark'">-->
+<!--                                            <td-->
+<!--                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"-->
+<!--                                            >-->
+<!--                                                {{dayData[dayNumber-1]}}-->
+<!--                                                <span v-if="dayData[dayNumber-1]">{{dayData[dayNumber-1]}}</span>-->
+<!--                                                <span v-else>&nbsp</span>-->
+<!--                                            </td>-->
+<!--                                        </tr>-->
                                     </tbody>
                                 </table>
                             </div>
@@ -247,22 +299,18 @@
                         <a class="text-white cursor-pointer"
                            @click="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(false)">Показать график</a>
                     </div>
-                    <div class="p-1 ml-2 d-flex align-items-center">
-                        <img class="pr-1" src="/img/icons/page_excel.svg" alt="">
-                        Скачать в MS-Excel
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-import ProductionWellsSchedule from "./ProductionWellsSchedule";
+import InjectionWellsSchedule from "./InjectionWellsSchedule";
 import moment from "moment";
-import {bigdatahistoricalVisibleMutations,bigdatahistoricalVisibleState} from '@store/helpers';
+import {bigdatahistoricalVisibleMutations,bigdatahistoricalVisibleState,globalloadingMutations} from '@store/helpers';
 
 export default {
-    components: {ProductionWellsSchedule},
+    components: {InjectionWellsSchedule},
     props: {
         well: {},
         changeColumnsVisible: Function,
@@ -300,74 +348,124 @@ export default {
             'SET_VISIBLE_INJECTION','SET_INJECTION_HISTORICAL'
         ]),
         assignInfoByDates(data) {
-            _.forEach(data, (item) => {
-                let date = moment(item.date, 'YYYY-MM-DD');
-                let waterInjection = 0;
-                let dailyWaterInjection = 0;
-                if (item.pump_vol) {
-                    waterInjection = parseFloat(item.pump_vol);
-                    dailyWaterInjection = waterInjection / date.daysInMonth();
-                }
-                let obj = {
-                    'id': date.format('YYYY/MMM'),
-                    'month': date.format('MMM'),
-                    'year': date.format('YYYY'),
-                    'isChecked': false,
-                    'isVisible': false,
-                    'waterInjection': waterInjection,
-                    'dailyWaterInjection': dailyWaterInjection,
-                    'accumulateWaterInjection': 0,
-                    'hoursWorked': item.work_days,
-                    'params': {
-                        'techMode': [
-                            {
-                                'label': 'Приемистость',
-                                'value': item.injectivity,
-                            },
-                            {
-                                'label': 'Давление закачки',
-                                'value': item.whc_alt,
-                            },
-                            {
-                                'label': 'Состояние скважины',
-                            },
-                            {
-                                'label': 'Обработанное время',
-                            },
-                            {
-                                'label': 'ГТМ',
-                            }
-                        ],
-                        'monthlyData': []
-                    }
-                };
-                let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
-                let injectivity = [];
-                let pressure = [];
-                let status = [];
-                let workHours = [];
-                let gtm = [];
-                for (let i =1; i <= daysCount; i++) {
-                    injectivity.push(item.injectivity/daysCount);
-                    pressure.push(item.whc_alt/daysCount);
-                    status.push('');
-                    workHours.push(item.work_days/daysCount);
-                    gtm.push('');
-                }
-                obj.params.monthlyData.push(injectivity,pressure,status,workHours,gtm);
-                this.historicalInfo.push(obj);
+            let summary = [];
+            _.forEach(data, (year, key) => {
+                _.forEach(year, (month, monthNumber) => {
+                    let date = moment(month[0].date, 'YYYY-MM-DD');
+                    let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
+                    let monthSummary = {
+                        'id': date.format('YYYY/MMM'),
+                        'month': date.format('MMM'),
+                        'year': date.format('YYYY'),
+                        'isChecked': false,
+                        'isVisible': false,
+                        'waterInjection': _.sumBy(month, item => Number(item.liq)),
+                        'dailyWaterInjection': _.sumBy(month, item => Number(item.liq)) / daysCount,
+                        'accumulateWaterInjection': 0,
+                        'hoursWorked': _.sumBy(month, 'workHours'),
+                        'params': {
+                            'techMode': [
+                                {
+                                    'label': 'Приемистость',
+                                    'value': 0,
+                                },
+                                {
+                                    'label': 'Давление закачки',
+                                    'value': 0,
+                                },
+                                {
+                                    'label': 'Состояние скважины',
+                                },
+                                {
+                                    'label': 'Обработанное время',
+                                },
+                                {
+                                    'label': 'ГТМ',
+                                }
+                            ],
+                            'monthlyData': month
+                        }
+                    };
+                    this.historicalInfo.push(monthSummary);
+                });
             });
+
             this.SET_INJECTION_HISTORICAL(this.historicalInfo);
+            return;
+
+            // _.forEach(data, (item) => {
+            //     let date = moment(item.date, 'YYYY-MM-DD');
+            //     let waterInjection = 0;
+            //     let dailyWaterInjection = 0;
+            //     if (item.liq) {
+            //         waterInjection = parseFloat(item.liq);
+            //         dailyWaterInjection = waterInjection / date.daysInMonth();
+            //     }
+            //     let obj = {
+            //         'id': date.format('YYYY/MMM'),
+            //         'month': date.format('MMM'),
+            //         'year': date.format('YYYY'),
+            //         'isChecked': false,
+            //         'isVisible': false,
+            //         'waterInjection': waterInjection,
+            //         'dailyWaterInjection': dailyWaterInjection,
+            //         'accumulateWaterInjection': 0,
+            //         'hoursWorked': item.work_days,
+            //         'params': {
+            //             'techMode': [
+            //                 {
+            //                     'label': 'Приемистость',
+            //                     'value': item.injectivity,
+            //                 },
+            //                 {
+            //                     'label': 'Давление закачки',
+            //                     'value': item.whc_alt,
+            //                 },
+            //                 {
+            //                     'label': 'Состояние скважины',
+            //                 },
+            //                 {
+            //                     'label': 'Обработанное время',
+            //                 },
+            //                 {
+            //                     'label': 'ГТМ',
+            //                 }
+            //             ],
+            //             'monthlyData': []
+            //         }
+            //     };
+            //     let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
+            //     let injectivity = [];
+            //     let pressure = [];
+            //     let status = [];
+            //     let workHours = [];
+            //     let gtm = [];
+            //     for (let i =1; i <= daysCount; i++) {
+            //         injectivity.push(item.injectivity/daysCount);
+            //         pressure.push(item.whc_alt/daysCount);
+            //         status.push('');
+            //         workHours.push(item.work_days/daysCount);
+            //         gtm.push('');
+            //     }
+            //     obj.params.monthlyData.push(injectivity,pressure,status,workHours,gtm);
+            //     this.historicalInfo.push(obj);
+            // });
+           // this.SET_INJECTION_HISTORICAL(this.historicalInfo);
         },
         getFormatedDate(data) {
             if (data != null && data != '') {
                 return moment(data).format('DD/MM/YYYY')
             }
         },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
     },
     async mounted() {
+        this.SET_LOADING(true);
         const response = await axios.get(this.localeUrl(`/api/bigdata/wells/injectionHistory/${this.well.id}`));
         this.assignInfoByDates(response.data);
+        this.SET_LOADING(false);
     },
     computed: {
         ...bigdatahistoricalVisibleState(['injectionMeasurementSchedule']),
