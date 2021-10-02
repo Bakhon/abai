@@ -126,6 +126,10 @@ Route::group(
                 Route::get('wells/injectionHistory/{well}', 'Api\DB\WellsController@getInjectionHistory');
                 Route::get('wells/productionHistory/{well}', 'Api\DB\WellsController@getProductionHistory');
                 Route::get('wells/get-activity/{activityInfo}', 'Api\DB\WellsController@getActivityByWell');
+                Route::get(
+                    'well-events',
+                    'Api\DB\WellCardChart@getWellEvents'
+                );
             }
         );
     }

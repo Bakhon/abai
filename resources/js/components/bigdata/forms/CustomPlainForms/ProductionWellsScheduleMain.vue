@@ -135,6 +135,7 @@
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div class="d-flex mt-1">
                         <div class="col-3 form-check">
                             <input class="form-check-input" type="checkbox" value="" id="activityCheck" @click="isActivityShown = !isActivityShown">

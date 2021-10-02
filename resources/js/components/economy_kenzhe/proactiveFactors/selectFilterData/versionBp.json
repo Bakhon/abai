@@ -4,18 +4,18 @@
     },
     {
         "value": 1,
-        "option": "versionBp.option1"
+        "option": "versionBp.correction1"
     },
     {
         "value": 2,
-        "option": "versionBp.option2"
+        "option": "versionBp.correction2"
     },
     {
         "value": 1,
-        "option": "versionBp.option3"
+        "option": "versionBp.correction3"
     },
     {
         "value": 2,
-        "option": "versionBp.option4"
+        "option": "versionBp.correction4"
     }
 ]

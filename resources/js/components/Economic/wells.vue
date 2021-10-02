@@ -4,12 +4,12 @@
       <div class="d-flex">
         <select-interval
             :form="form"
-            class="col"
+            class="flex-grow-1 flex-shrink-0"
             @change="getData"/>
 
         <select-organization
             :form="form"
-            class="col ml-2"
+            class="ml-3 flex-grow-1"
             hide-label
             @change="getData"/>
 
@@ -17,7 +17,7 @@
             v-if="form.org_id"
             :org_id="form.org_id"
             :form="form"
-            class="col ml-2"
+            class="ml-2 flex-grow-1"
             @change="getData"/>
       </div>
 
@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div v-if="!loading && res" class="mx-auto max-width-88vw">
+    <div v-if="res" class="mx-auto max-width-88vw">
       <table-matrix
           v-if="activeTab === 'matrix'"
           :data="res"/>
@@ -93,7 +93,9 @@ export default {
     async getData() {
       if (this.form.org_id === 2) return
 
-      this.SET_LOADING(true);
+      this.SET_LOADING(true)
+
+      this.res = null
 
       try {
         const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-wells'), {params: this.form})
@@ -105,7 +107,7 @@ export default {
         console.log(e)
       }
 
-      this.SET_LOADING(false);
+      this.SET_LOADING(false)
     },
   }
 };
