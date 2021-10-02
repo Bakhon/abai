@@ -21,7 +21,7 @@
                 "validation": "required"
               },
               {
-                "code": "name_ru",
+                "code": "contractor",
                 "type": "dict",
                 "dict": "companies",
                 "title": "podr",
@@ -104,7 +104,7 @@
             "title": "",
             "items": [
               {
-                "code": "name_ru",
+                "code": "gis_type",
                 "type": "dict",
                 "dict": "gis_kinds",
                 "title": "gis_types",
