@@ -247,6 +247,35 @@
           }
         ]
       ]
+    },
+    {
+      "title": "table",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "table",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "table",
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
     }
   ]
 }
