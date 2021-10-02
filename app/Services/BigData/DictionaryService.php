@@ -623,7 +623,10 @@ class DictionaryService
         }, $orgIds);
         $organizations = [];
         foreach($orgIds as $id) {
-            $organizations[] = Org::find($id);
+            $organization = Org::find($id);
+            if(isset($organization)) {
+                $organizations[] = $organization;
+            }
         }
 
         $orgIds = $this->getOrgWithChildrens($organizations);
@@ -633,6 +636,7 @@ class DictionaryService
     private function getOrgWithChildrens($organizations) {
         $result = [];
         foreach($organizations as $organization) {
+            if(!isset($organization->id)) continue;
             $result[] = $organization->id;
             $children = $organization->children()->get();
             
