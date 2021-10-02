@@ -108,7 +108,7 @@
                                             {{techModeItem.label}}
                                         </td>
                                         <td>
-                                            {{techModeItem.value}}
+                                            {{techModeItem.value.toFixed(0)}}
                                         </td>
                                     </tr>
                                     </tbody>
@@ -122,20 +122,128 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="(dayData,index) in periodItem.params.monthlyData" :class="index % 2 === 0 ? 'background_light' : 'background_dark'">
-                                        <td
-                                                v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
-                                        >
-                                            <span v-if="dayData[dayNumber-1]">{{dayData[dayNumber-1].toFixed(2)}}</span>
-                                            <span v-else>&nbsp</span>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                {{periodItem.params.monthlyData[dayNumber-1].liq}}
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                {{periodItem.params.monthlyData[dayNumber-1].oil}}
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                {{periodItem.params.monthlyData[dayNumber-1].liqCut}}
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                &nbsp;
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                &nbsp;
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                &nbsp;
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                &nbsp;
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                &nbsp;
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                &nbsp;
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                &nbsp;
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                &nbsp;
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                &nbsp;
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"
+                                                    v-if="periodItem.params.monthlyData[dayNumber-1]"
+                                            >
+                                                &nbsp;
+                                            </td>
+                                            <td v-else>&nbsp;</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-<<<<<<< HEAD
                     <div class="d-flex mt-1">
                         <div class="col-3 form-check">
                             <input class="form-check-input" type="checkbox" value="" id="activityCheck" @click="isActivityShown = !isActivityShown">
@@ -197,7 +305,7 @@
 <script>
 import ProductionWellsSchedule from "./ProductionWellsSchedule";
 import moment from "moment";
-import {bigdatahistoricalVisibleMutations,bigdatahistoricalVisibleState} from '@store/helpers';
+import {bigdatahistoricalVisibleMutations,bigdatahistoricalVisibleState,globalloadingMutations} from '@store/helpers';
 
 export default {
     components: {ProductionWellsSchedule},
@@ -246,7 +354,7 @@ export default {
             let summary = [];
             _.forEach(data, (year, key) => {
                 _.forEach(year, (month, monthNumber) => {
-                    let date = moment(item.date, 'YYYY-MM-DD');
+                    let date = moment(month[0].date, 'YYYY-MM-DD');
                     let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
                     let monthSummary = {
                         'id': date.format('YYYY/MMM'),
@@ -254,10 +362,10 @@ export default {
                         'year': date.format('YYYY'),
                         'isChecked': false,
                         'isVisible': false,
-                        'water': _.sumBy(month, 'liq'),
+                        'water': _.sumBy(month, item => Number(item.liq)),
                         'oil': _.sumBy(month, 'oil'),
                         'oilDebit': _.sumBy(month, 'oil') / _.sumBy(month, 'workHours'),
-                        'waterDebit': _.sumBy(month, 'liq') / _.sumBy(month, 'workHours'),
+                        'waterDebit': _.sumBy(month, item => Number(item.liq)) / _.sumBy(month, 'workHours'),
                         'waterCut': _.sumBy(month, 'liqCut'),
                         'hoursWorked': _.sumBy(month, 'workHours'),
                         'gas': 0,
@@ -265,15 +373,15 @@ export default {
                             'techMode': [
                                 {
                                     'label': 'Жидкость',
-                                    'value': parseFloat(month.liq),
+                                    'value': _.sumBy(month, item => Number(item.liq)) / month.length,
                                 },
                                 {
                                     'label': 'Нефть',
-                                    'value': parseFloat(month.oil),
+                                    'value': _.sumBy(month, 'oil') / month.length,
                                 },
                                 {
                                     'label': 'Обводненность',
-                                    'value': parseFloat(month.liqCut),
+                                    'value': _.sumBy(month, 'liqCut') / month.length,
                                 },
                                 {
                                     'label': 'Аном. обв.',
@@ -325,97 +433,6 @@ export default {
                     this.historicalInfo.push(monthSummary);
                 });
             });
-
-            this.SET_PRODUCTION_HISTORICAL(this.historicalInfo);
-            return;
-            _.forEach(data, (item) => {
-                let date = moment(item.date, 'YYYY-MM-DD');
-                let oil = item.oil;
-                let gas = item.free_gas;
-                if (oil && oil !== null) {
-                    oil = parseFloat(oil);
-                }
-                if (gas && gas !== null) {
-                    gas = parseFloat(gas);
-                }
-                let obj = {
-                    'id': date.format('YYYY/MMM'),
-                    'month': date.format('MMM'),
-                    'year': date.format('YYYY'),
-                    'isChecked': false,
-                    'isVisible': false,
-                    'water': parseFloat(item.liq),
-                    'oil': oil,
-                    'oilDebit': parseFloat(item.oil_avg_month),
-                    'waterDebit': parseFloat(item.liq_avg_month),
-                    'waterCut': parseFloat(item.wcut),
-                    'hoursWorked': parseFloat(item.work_days),
-                    'gas': gas,
-                    'params': {
-                        'monthlyData': [],
-                        'techMode': [
-                            {
-                                'label': 'Жидкость',
-                                'value': parseFloat(item.liq),
-                            },
-                            {
-                                'label': 'Нефть',
-                                'value': oil,
-                            },
-                            {
-                                'label': 'Обводненность',
-                                'value': parseFloat(item.wcut),
-                            },
-                            {
-                                'label': 'Аном. обв.',
-                                'value': 0,
-                            },
-                            {
-                                'label': 'Добыча газа',
-                                'value': gas,
-                            },
-                            {
-                                'label': 'Жидкость, м3/сут. (телеметрия)',
-                                'value': 0,
-                            },
-                            {
-                                'label': 'Pбуфф.',
-                                'value': 0,
-                            },
-                            {
-                                'label': 'Pзатр.',
-                                'value': 0,
-                            },
-                            {
-                                'label': 'Pбуфф.\n' +
-                                    'до штуцера',
-                                'value': 0,
-                            },
-                            {
-                                'label': 'Pбуфф. после\n' + 'штуцера',
-                                'value': 0,
-                            },
-                            {
-                                'label': 'Н дин./\n' +
-                                    'Pзаб/Pзатр',
-                                'value': 0,
-                            },
-                            {
-                                'label': 'Н стат / Рпл / \n' +
-                                    'Pзатр',
-                                'value': 0,
-                            },
-                            {
-                                'label': 'Рез. ГДМ / Дл.х.при\n' + 'ГДМ/ ЧК при ГДМ',
-                                'value': 0,
-                            }
-                        ]
-                    }
-                };
-
-                obj.params.monthlyData = this.getDailyParams(obj,date);
-                this.historicalInfo.push(obj);
-            });
             this.SET_PRODUCTION_HISTORICAL(this.historicalInfo);
         },
         getDailyParams(summary,date) {
@@ -442,11 +459,16 @@ export default {
             }
             total.push(water,oilSummary,waterCut,empty,gas,empty,empty,empty,empty,empty,empty,empty,empty);
             return total;
-        }
+        },
+        ...globalloadingMutations([
+            'SET_LOADING'
+        ]),
     },
     async mounted() {
+        this.SET_LOADING(true);
         const response = await axios.get(this.localeUrl(`/api/bigdata/wells/productionHistory/${this.well.id}`));
         this.assignInfoByDates(response.data);
+        this.SET_LOADING(false);
     },
     computed: {
         ...bigdatahistoricalVisibleState(['productionMeasurementSchedule']),

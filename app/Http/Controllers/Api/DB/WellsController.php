@@ -629,9 +629,6 @@ class WellsController extends Controller
                    return Carbon::parse($val->dbeg)->format('m');
             });
         }
-        $measLiqInjection = MeasLiqInjection::where('well',$wellId)
-            ->orderBy('dbeg', 'asc')
-            ->get();
 
         $result = array();
         foreach($liqByMonths as $yearNumber => $monthes) {
@@ -640,15 +637,11 @@ class WellsController extends Controller
               foreach($month as $dayNumber => $day) {
                  $date = Carbon::parse($day['dbeg']);
                  $dateEnd = Carbon::parse($day['dend']);
-                 $liqInjection = $measLiqInjection->filter(function ($val) use ($date) {
-                     return Carbon::parse($val->dbeg)->format('d m Y') === $date->format('d m Y');
-                 });
 
                  array_push($result[$yearNumber][$monthNumber], array (
                     'liq' => $day['liquid'],
                     'date' => $date->format('Y-m-d'),
                     'workHours' => $date->diffInDays($dateEnd),
-                    'pressure' => $liqInjection->sum('pressure_inj')
                  ));
               }
            }

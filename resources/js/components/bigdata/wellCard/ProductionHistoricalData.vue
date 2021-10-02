@@ -234,6 +234,9 @@ export default {
         border: 1px solid rgba(161, 164, 222, 0.3);
         border-top: none;
         padding: 5px;
+        &:first-child {
+            min-width: 100px;
+        }
     }
     tbody {
         height: 725px;
@@ -242,17 +245,19 @@ export default {
         padding: 5px;
         background: #4D5092;
         border: 1px solid #A1A4DE;
+        height: 49px;
         span {
             border-left: 1px solid #A1A4DE;
             padding-top: 17px;
             padding-bottom: 17px
         }
         label {
-            min-width: 61px;
+            min-width: 51px;
         }
     }
 }
 .left-block {
     overflow-y: scroll;
+    height: 810px;
 }
 </style>

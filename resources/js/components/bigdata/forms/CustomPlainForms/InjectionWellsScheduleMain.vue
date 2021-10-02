@@ -166,12 +166,6 @@
                                             <td v-else colspan="2">
                                                 {{techModeItem.label}}
                                             </td>
-<!--                                            <td v-if="techModeItem.value">-->
-<!--                                                {{techModeItem.label}}-->
-<!--                                            </td>-->
-<!--                                            <td v-else colspan="2">-->
-<!--                                                {{techModeItem.label}}-->
-<!--                                            </td>-->
                                             <td v-if="index < 2">
                                                 {{techModeItem.value}}
                                             </td>
@@ -232,15 +226,6 @@
                                             </td>
                                             <td v-else>&nbsp;</td>
                                         </tr>
-<!--                                        <tr v-if="periodItem.params.monthlyData" v-for="(dayData,index) in periodItem.params.monthlyData" :class="index % 2 === 0 ? 'background_light' : 'background_dark'">-->
-<!--                                            <td-->
-<!--                                                    v-for="dayNumber in getDaysCountInMonth(periodItem.id)"-->
-<!--                                            >-->
-<!--                                                {{dayData[dayNumber-1]}}-->
-<!--                                                <span v-if="dayData[dayNumber-1]">{{dayData[dayNumber-1]}}</span>-->
-<!--                                                <span v-else>&nbsp</span>-->
-<!--                                            </td>-->
-<!--                                        </tr>-->
                                     </tbody>
                                 </table>
                             </div>
