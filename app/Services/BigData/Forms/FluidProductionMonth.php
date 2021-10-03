@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\ValueType;
 use App\Models\BigData\Dictionaries\WellActivity;
 use Carbon\Carbon;
@@ -14,15 +15,41 @@ use Illuminate\Support\Facades\DB;
 class FluidProductionMonth extends MeasLogByMonth
 {
     protected $configurationFileName = 'fluid_production_month';
+    protected $techMode;
+    protected $liquid;
+    protected $bsw;
+    protected $workTime;
+
+    public function getResults(array $params = []): array
+    {
+        if ($this->request->get('type') !== 'tech') {
+            throw new \Exception(trans('bd.select_gu'));
+        }
+
+        $filter = json_decode($this->request->get('filter'));
+        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
+
+        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
+
+        $rows = $this->getRows($date, $wells);
+        $columns = $this->getColumns($date);
+        $summary = $this->getSummary($date, $wells);
+
+        return [
+            'columns' => $columns,
+            'rows' => $rows,
+            'summary' => $summary
+        ];
+    }
 
     protected function getRows(CarbonImmutable $date, Collection $wells): array
     {
         $wellIds = $wells->pluck('id')->toArray();
 
-        $techMode = $this->getTechMode($wellIds, $date);
-        $liquid = $this->getLiquid($wellIds, $date);
-        $bsw = $this->getBsw($wellIds, $date);
-        $workTime = $this->getWorkTime($wellIds, $date);
+        $this->techMode = $this->getTechMode($wellIds, $date);
+        $this->liquid = $this->getLiquid($wellIds, $date);
+        $this->bsw = $this->getBsw($wellIds, $date);
+        $this->workTime = $this->getWorkTime($wellIds, $date);
         $otherUwis = $this->getOtherUwis($wellIds);
 
         $indicators = [
@@ -47,11 +74,7 @@ class FluidProductionMonth extends MeasLogByMonth
                 $row = $this->getIndicatorRowData(
                     $well,
                     $code,
-                    $techMode,
                     $date,
-                    $liquid,
-                    $bsw,
-                    $workTime[$well->id] ?? null
                 );
                 if ($i++ === 0) {
                     $row = array_merge($firstRow, $row);
@@ -86,7 +109,7 @@ class FluidProductionMonth extends MeasLogByMonth
             ->join('dict.value_type as vt', 'ml.value_type', 'vt.id')
             ->whereIn('ml.well', $wellIds)
             ->where('ml.dbeg', '>=', $date->startOfMonth())
-            ->where('ml.dend', '<=', $date)
+            ->where('ml.dend', '<=', $date->endOfDay())
             ->where('wa.code', 'PMSR')
             ->where('vt.code', 'MNT')
             ->get()
@@ -114,7 +137,7 @@ class FluidProductionMonth extends MeasLogByMonth
             ->join('dict.value_type as vt', 'mwc.value_type', 'vt.id')
             ->whereIn('mwc.well', $wellIds)
             ->where('mwc.dbeg', '>=', $date->startOfMonth())
-            ->where('mwc.dend', '<=', $date)
+            ->where('mwc.dend', '<=', $date->endOfDay())
             ->where('wa.code', 'PMSR')
             ->where('vt.code', 'MNT')
             ->get()
@@ -158,12 +181,10 @@ class FluidProductionMonth extends MeasLogByMonth
     private function getIndicatorRowData(
         $well,
         string $code,
-        Collection $techMode,
-        CarbonImmutable $date,
-        Collection $liquid,
-        Collection $bsw,
-        $workTime
+        CarbonImmutable $date
     ): array {
+        $workTime = $this->workTime[$well->id] ?? null;
+
         $row = [
             'id' => $well->id . '|' . $code,
             'indicator' => ['value' => trans('bd.forms.fluid_production_month.' . $code)]
@@ -171,18 +192,18 @@ class FluidProductionMonth extends MeasLogByMonth
 
         switch ($code) {
             case 'liquid':
-                $row = array_merge($row, $this->getLiquidRowData($techMode, $well, $date, $liquid));
+                $row = array_merge($row, $this->getLiquidRowData($well, $date));
                 break;
             case 'bsw':
-                $row = array_merge($row, $this->getBswRowData($techMode, $well, $date, $bsw));
+                $row = array_merge($row, $this->getBswRowData($well, $date));
                 break;
             case 'oil':
-                $row = array_merge($row, $this->getOilRowData($techMode, $well, $date, $bsw, $liquid));
-                continue;
+                $row = array_merge($row, $this->getOilRowData($well, $date));
+                break;
             case 'note':
                 $monthDay = $date->startOfMonth();
                 while ($monthDay <= $date) {
-                    $liquidValue = $this->getLiquidValueForDay($liquid, $well->id, $monthDay->format('j'));
+                    $liquidValue = $this->getLiquidValueForDay($well->id, $monthDay->format('j'));
                     $row[$monthDay->format('d.m.Y')] = ['value' => $liquidValue['note'] ?? null];
                     $monthDay = $monthDay->addDay();
                 }
@@ -190,7 +211,7 @@ class FluidProductionMonth extends MeasLogByMonth
             case 'reason_decline':
                 $monthDay = $date->startOfMonth();
                 while ($monthDay <= $date) {
-                    $liquidValue = $this->getLiquidValueForDay($liquid, $well->id, $monthDay->format('j'));
+                    $liquidValue = $this->getLiquidValueForDay($well->id, $monthDay->format('j'));
                     $row[$monthDay->format('d.m.Y')] = [
                         'value' => $liquidValue['reason_decline'] ?? null,
                         'is_editable' => true,
@@ -211,17 +232,17 @@ class FluidProductionMonth extends MeasLogByMonth
         return $row;
     }
 
-    private function getLiquidRowData(Collection $techMode, $well, CarbonImmutable $date, Collection $liquid): array
+    private function getLiquidRowData($well, CarbonImmutable $date): array
     {
         $row = [];
         $row['tech'] = [
-            'value' => $techMode->get($well->id) ? $techMode->get($well->id)->liquid : null
+            'value' => $this->techMode->get($well->id) ? $this->techMode->get($well->id)->liquid : null
         ];
 
         $count = $sum = 0;
         $monthDay = $date->startOfMonth();
         while ($monthDay <= $date) {
-            $wellLiquid = $liquid->get($well->id);
+            $wellLiquid = $this->liquid->get($well->id);
             if ($wellLiquid) {
                 $liquidValue = $wellLiquid->get($monthDay->format('j'));
                 $row[$monthDay->format('d.m.Y')] = ['value' => $liquidValue['liquid'] ?? null];
@@ -240,17 +261,17 @@ class FluidProductionMonth extends MeasLogByMonth
         return $row;
     }
 
-    private function getBswRowData(Collection $techMode, $well, CarbonImmutable $date, Collection $bsw): array
+    private function getBswRowData($well, CarbonImmutable $date): array
     {
         $row = [];
         $row['tech'] = [
-            'value' => $techMode->get($well->id) ? $techMode->get($well->id)->wcut : null
+            'value' => $this->techMode->get($well->id) ? $this->techMode->get($well->id)->wcut : null
         ];
 
         $count = $sum = 0;
         $monthDay = $date->startOfMonth();
         while ($monthDay <= $date) {
-            $wellBsw = $bsw->get($well->id);
+            $wellBsw = $this->bsw->get($well->id);
             $bswValue = $wellBsw ? $wellBsw->get($monthDay->format('j')) : null;
             $row[$monthDay->format('d.m.Y')] = [
                 'is_editable' => true,
@@ -271,15 +292,12 @@ class FluidProductionMonth extends MeasLogByMonth
     }
 
     private function getOilRowData(
-        Collection $techMode,
         $well,
-        CarbonImmutable $date,
-        Collection $bsw,
-        Collection $liquid
+        CarbonImmutable $date
     ) {
-        $liquidRow = $this->getLiquidRowData($techMode, $well, $date, $liquid);
-        $bswRow = $this->getLiquidRowData($techMode, $well, $date, $bsw);
-        $oilDensity = $techMode->get($well->id) ? $techMode->get($well->id)->oil_density : 0;
+        $liquidRow = $this->getLiquidRowData($well, $date);
+        $bswRow = $this->getLiquidRowData($well, $date);
+        $oilDensity = $this->techMode->get($well->id) ? $this->techMode->get($well->id)->oil_density : 0;
 
         $count = $sum = 0;
         $monthDay = $date->startOfMonth();
@@ -309,12 +327,18 @@ class FluidProductionMonth extends MeasLogByMonth
         return $row;
     }
 
+    private function getLiquidValueForDay(int $wellId, string $day)
+    {
+        $wellLiquid = $this->liquid->get($wellId);
+        return $wellLiquid ? $wellLiquid->get($day) : null;
+    }
+
     protected function getColumns(CarbonImmutable $date): array
     {
         $columns = $this->getFields()->toArray();
 
         $monthDay = $date->startOfMonth();
-        while ($monthDay < $date) {
+        while ($monthDay <= $date) {
             $columns[] = [
                 'code' => $monthDay->format('d.m.Y'),
                 'type' => 'text',
@@ -338,6 +362,73 @@ class FluidProductionMonth extends MeasLogByMonth
         ];
 
         return $columns;
+    }
+
+    private function getSummary(CarbonImmutable $date, Collection $wells)
+    {
+        $tech = Tech::find($this->request->get('id'));
+
+        $workingWells = $this->getWorkingWellsCount($wells);
+        dd($this->liquid);
+        $result = [
+            'org' => $tech ? $tech->name_ru : '',
+            'wells' => [
+                'total' => $wells->count(),
+                'working' => $workingWells,
+                'stopped' => $wells->count() - $workingWells,
+            ],
+            'daily' => [
+                'plan' => [
+                    'liquid' => 0,
+                    'liquid_avg' => 0,
+                    'oil' => 0
+                ],
+                'fact' => [
+                    'liquid' => 0,
+                    'liquid_avg' => 0,
+                    'oil' => 0,
+                    'bsw' => 0,
+                ],
+                'diff' => [
+                    'liquid' => 0,
+                    'liquid_avg' => 0,
+                    'oil' => 0
+                ],
+            ],
+            'monthly' => [
+                'plan' => [
+                    'liquid' => 0,
+                    'liquid_avg' => 0,
+                    'oil' => 0
+                ],
+                'fact' => [
+                    'liquid' => 0,
+                    'liquid_avg' => 0,
+                    'oil' => 0,
+                    'bsw' => 0,
+                ],
+                'diff' => [
+                    'liquid' => 0,
+                    'liquid_avg' => 0,
+                    'oil' => 0
+                ],
+            ]
+        ];
+        dd($result);
+    }
+
+    private function getWorkingWellsCount(Collection $wells)
+    {
+        return $wells->filter(function ($well) {
+            if (empty($this->workTime[$well->id])) {
+                return false;
+            }
+            $totalTime = 0;
+            foreach ($this->workTime[$well->id] as $time) {
+                $totalTime += $time['value'];
+            }
+            return !empty($totalTime);
+        })->count();
     }
 
     protected function saveSingleFieldInDB(array $params): void
@@ -391,12 +482,6 @@ class FluidProductionMonth extends MeasLogByMonth
                     ]
                 );
         }
-    }
-
-    private function getLiquidValueForDay(Collection $liquid, int $wellId, string $day)
-    {
-        $wellLiquid = $liquid->get($wellId);
-        return $wellLiquid ? $wellLiquid->get($day) : null;
     }
 
 }
