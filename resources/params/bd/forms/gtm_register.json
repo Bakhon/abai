@@ -105,17 +105,17 @@
       ]
     },
     {
-      "title": "conclusion",
+      "title": "doc",
       "blocks": [
         [
           {
             "title": "",
             "items": [
               {
-                "code": "conclusion",
+                "code": "",
                 "type": "table",
                 "form": "well_document_short",
-                "title": "conclusion",
+                "title": "doc",
                 "columns": [
                   {
                     "code": "name_ru",

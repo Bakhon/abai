@@ -120,7 +120,9 @@ return [
             'add_f' => 'Детальная причина отказа',
             'reason_type' => 'Дополнительная информация',
             'reason_stopping' => 'Причина остановки',
-            'well_previous_category' => 'Категория до выбранной даты'
+            'well_previous_category' => 'Категория до выбранной даты',
+            'doc' => 'Документы',
+            'scan_doc' => 'Прикрепить файл'
         ],
         'injection_wells' => [
             'title' => 'Тех.Режим - Нагнетательные скважины',
@@ -153,7 +155,9 @@ return [
             'well_previous_status' => 'Статус до выбранной даты',
             'well_previous_category' => 'Категория до выбранной даты',
             'well_current_status' => 'Новое состояние',
-            'status' => 'Состояние'
+            'status' => 'Состояние',
+            'doc' => 'Документы',
+            'scan_doc' => 'Прикрепить файл'
         ],
         'well_design' => [
             'title' => 'Конструкция скважины по проекту',
@@ -199,7 +203,9 @@ return [
             'on_our_own' => 'Собственными силами',
             'gtm_type' => 'Вид ГТМ',
             'status_before_selected_date' => 'Статус до выбранной даты',
-            'well_previous_category' => 'Категория до выбранной даты'
+            'well_previous_category' => 'Категория до выбранной даты',
+            'doc' => 'Документы',
+            'scan_doc' => 'Прикрепить файл'
         ],
         'gas_well' => [
             'title' => 'Тех. режим - газовые скважины',
