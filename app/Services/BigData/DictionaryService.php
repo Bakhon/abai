@@ -815,17 +815,11 @@ class DictionaryService
     }
 
     private function getResTypeDict(){
-        $codes = ['PVTD','ADSPO','AEF','OCRC','COSC','CPIW','CRG','CPG'];
+        $codes = ['CAO','SCWA','PVTPD','PVTP'];
         $items = DB::connection('tbd')
             ->table('dict.lab_research_type as r')
-            ->select('r.name_ru as name')
-            ->where([
-                ['r.code', '!=', 'CAO'],
-                ['r.code', '!=', 'SCWA'],
-                ['r.code', '!=', 'PVTPD'],
-                ['r.code', '!=', 'PVTP'],
-            ])
-            // ->whereIn('r.code', $codes)
+            ->select('r.id, r.name_ru as name')
+            ->whereNotIn('r.code', $codes)
             ->orderBy('name', 'asc')
             ->get()
             ->map(
