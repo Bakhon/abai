@@ -36,7 +36,7 @@
                             <td>{{date.waterDebit.toFixed(2)}}</td>
                             <td>{{date.waterCut.toFixed(0)}}</td>
                             <td>{{date.oilDebit.toFixed(2)}}</td>
-                            <td>{{(date.hoursWorked*24).toFixed(0)}} часов</td>
+                            <td>{{(date.hoursWorked*24).toFixed(0)}} дней</td>
                         </tr>
                     </tbody>
                 </table>
@@ -193,11 +193,11 @@ export default {
             summary['water'] = _.sumBy(filtered, 'water');
             summary['oil'] = _.sumBy(filtered, 'oil');
             summary['waterDebit'] = _.sumBy(filtered, 'waterDebit');
-            summary['waterCut'] = _.sumBy(filtered, 'waterCut');
+            summary['waterCut'] = _.sumBy(filtered, 'waterCut') / 12;
             summary['oilDebit'] = _.sumBy(filtered, 'oilDebit');
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
-        }
+        },
     },
     mounted() {
         this.fillDates();

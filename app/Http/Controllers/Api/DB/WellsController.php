@@ -479,16 +479,16 @@ class WellsController extends Controller
         $selectedUserDzo = $request->get('selectedUserDzo');
         $childrenIds = [];
         $orgsTree = $service->getTree(Carbon::now());
-        if ($selectedUserDzo) {
-            $childrenIds = $service::getChildIds($orgsTree, $selectedUserDzo);
-        } else {
-            $userDzoIds = array_map(function ($item) {
-                return substr($item, strpos($item, ":") + 1);
-            }, auth()->user()->org_structure);
-            foreach ($userDzoIds as $userDzoId) {
-                $childrenIds = array_merge($childrenIds, $service::getChildIds($orgsTree, $userDzoId));
-            }
-        }
+        //if ($selectedUserDzo) {
+       //     $childrenIds = $service::getChildIds($orgsTree, $selectedUserDzo);
+       // } else {
+       //     $userDzoIds = array_map(function ($item) {
+       //         return substr($item, strpos($item, ":") + 1);
+       //     }, auth()->user()->org_structure);
+       //     foreach ($userDzoIds as $userDzoId) {
+       //         $childrenIds = array_merge($childrenIds, $service::getChildIds($orgsTree, $userDzoId));
+      //      }
+      //  }
         $wells = Well::query()
             ->whereRaw("LOWER(uwi) LIKE '%" . strtolower($request->get('query')) . "%'");
         if ($childrenIds) {
