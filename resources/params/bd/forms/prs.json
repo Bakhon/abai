@@ -61,7 +61,7 @@
                 ]
               },
               {
-                "code": "full_name",
+                "code": "brigadier",
                 "type": "dict",
                 "title": "brigade_master",
                 "validation": "exists:tbd.dict.brigadier,id",
