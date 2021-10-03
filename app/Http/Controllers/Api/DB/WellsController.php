@@ -23,6 +23,7 @@ use App\Services\BigData\MeasLogByMonth;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class WellsController extends Controller
@@ -34,7 +35,12 @@ class WellsController extends Controller
 
     public function wellInfo(well $well)
     {
-        return array(
+
+        if (Cache::has('well_' . $well->id)) {
+            return Cache::get('well_' . $well->id);
+        }
+
+        $wellInfo = [
             'wellInfo' => $this->get($well),
             'status' => $this->status($well),
             'tube_nom' => $this->tubeNom($well),
@@ -77,7 +83,10 @@ class WellsController extends Controller
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
             'gu' => $this->getTechsByCode($well, 'GU'),
             'agms' => $this->getTechsByCode($well, 'AGMS'),
-        );
+        ];
+
+        Cache::put('well_' . $well->id, $wellInfo, 1440);
+        return $wellInfo;
     }
 
     private function getToday(): Carbon
