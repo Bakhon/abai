@@ -1,15 +1,14 @@
 <template>
   <div>
-    <subtitle font-size="18" style="line-height: 26px">
+    <subtitle font-size="16" style="line-height: 18px">
       {{ trans('economic_reference.table_well_changes') }}
     </subtitle>
 
-    <div id="table-well-changes" class="mt-3 overflow-auto customScroll d-flex">
+    <div id="table-well-changes" class="mt-2 overflow-auto customScroll d-flex">
       <div v-for="(chunk, index) in tableDataChunks"
            :key="index">
-        <div
-            :style="`width: ${columnWidth}px`"
-            class="text-center border-grey d-flex bg-header">
+        <div :style="`width: ${columnWidth}px`"
+             class="text-center border-grey d-flex bg-header">
           <div class="text-center border-grey flex-100px">
             {{ trans('economic_reference.well_short') }}
           </div>
@@ -216,7 +215,7 @@ export default {
     },
 
     chunkStep() {
-      return 25
+      return 20
     },
 
     columnWidth() {

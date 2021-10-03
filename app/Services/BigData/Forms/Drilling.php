@@ -35,7 +35,7 @@ class Drilling extends TableForm
                 'w.uwi',
                 'wdd.daily_drill_progress',
                 'bh.depth',
-                'wdd.well_status_type',
+                'wdd.work_status',
                 'wdd.work_name'
             )
             ->join('drill.well_daily_drill as wdd', 'rodd.drill', 'wdd.id')

@@ -1,11 +1,5 @@
 {
   "type": "table",
-  "sort": [
-    {
-      "field": "date",
-      "order": "desc"
-    }
-  ],
   "filter": [
     {
       "code": "date",
@@ -17,7 +11,7 @@
       "code": "date_to",
       "title": "date_to",
       "type": "date",
-      "default": "current"
+      "default": "last day of this month"
     }
   ],
   "columns": [

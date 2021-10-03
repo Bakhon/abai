@@ -394,7 +394,17 @@ class EconomicNrsController extends Controller
             "Overall_expenditures",
             "NetBack_bf_pr_exp",
             "oil",
-            "liquid"
+            "liquid",
+            "Revenue_export",
+            "Revenue_local",
+            "Variable_expenditures",
+            "Fixed_expenditures",
+            "Fixed_nopayroll_expenditures",
+            "Fixed_payroll_expenditures",
+            "MET_payments",
+            "ECD_payments",
+            "ERT_payments",
+            "Trans_expenditures",
         ];
 
         $builder = $this

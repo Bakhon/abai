@@ -289,4 +289,9 @@ return array (
   'profitless' => 'Нерентабельные',
   'mrp' => 'МРП',
   'days_declination' => 'дней',
+  'trans_expenditures' => 'Транспортные расходы',
+  'fot' => 'ФОТ',
+  'fixed_nopayroll_expenditures' => 'Условно-постоянные затраты без учета ФОТ',
+  'tax_costs' => 'Налоговые затраты',
+  'show_wells' => 'Показать скважины',
 );

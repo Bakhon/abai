@@ -37,10 +37,6 @@
                         <input id="show_events" type="checkbox" :checked="isShowEvents" @change="toggleShowEvents">
                         <label for="show_events" class="pl-1">{{ trans('bd.show_events') }}</label>
                     </div>
-                    <div class="checkbox-inline pl-3">
-                        <input id="show_full_history" type="checkbox">
-                        <label for="show_full_history" class="pl-1">{{ trans('bd.show_full_history') }}</label>
-                    </div>
                 </div>
             </div>
             <div class="content-block-scrollable">
@@ -101,7 +97,7 @@ export default {
         ),
         selectWell(well) {
             this.options = [];
-            this.wells.unshift(well)
+            this.wells.push(well)
         },
         removeWellSchedule(well) {
             this.wells.splice(

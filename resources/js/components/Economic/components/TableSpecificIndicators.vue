@@ -1,11 +1,11 @@
 <template>
   <div>
-    <subtitle font-size="18" style="line-height: 26px">
+    <subtitle font-size="16" style="line-height: 18px">
       {{ trans('economic_reference.table_specific_indicators_title') }}
     </subtitle>
 
-    <div class="mt-3 text-center border-grey">
-      <div class="d-flex bg-blue">
+    <div class="mt-2 text-center border-grey">
+      <div class="d-flex bg-blue" style="padding-right: 10px">
         <div class="flex-50 p-3 border-grey ">
           {{ trans('economic_reference.specific_indicators') }}
         </div>
@@ -19,82 +19,85 @@
         </div>
       </div>
 
-      <div class="d-flex bg-blue">
-        <div class="flex-50 px-3 py-1 border-grey border-bottom-0 d-flex align-items-center justify-content-center">
-          {{ trans('economic_reference.course_prices') }}
-        </div>
-
-        <div class="flex-25 px-3 py-1 border-grey d-flex align-items-center justify-content-center">
-          {{ trans('economic_reference.tenge') }}
-        </div>
-
-        <div class="flex-25 border-grey d-flex flex-column">
-          <div v-for="(item, index) in dollarRates"
-               :key="index"
-               :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
-               class="px-2 py-1">
-            {{ (+item).toLocaleString() }}
+      <div class="customScroll"
+           style="overflow-y: scroll; height: 450px">
+        <div class="d-flex bg-blue">
+          <div class="flex-50 px-3 py-1 border-grey border-bottom-0 d-flex align-items-center justify-content-center">
+            {{ trans('economic_reference.course_prices') }}
           </div>
-        </div>
-      </div>
 
-      <div class="d-flex bg-dark-blue">
-        <div class="flex-50 px-3 py-1 border-grey d-flex align-items-center justify-content-center">
-          {{ trans('economic_reference.avg_oil_price_brent') }}
-        </div>
-
-        <div class="flex-25 px-3 py-1 border-grey d-flex align-items-center justify-content-center">
-          $ / bbl
-        </div>
-
-        <div class="flex-25 border-grey d-flex flex-column">
-          <div v-for="(item, index) in oilPrices"
-               :key="index"
-               :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
-               class="px-2 py-1 ">
-            {{ (+item).toLocaleString() }}
+          <div class="flex-25 px-3 py-1 border-grey d-flex align-items-center justify-content-center">
+            {{ trans('economic_reference.tenge') }}
           </div>
-        </div>
-      </div>
 
-      <div v-for="(item, index) in sumData"
-           :key="index"
-           :class="index % 2 === 0 ? 'bg-dark-blue' : 'bg-light-blue'"
-           class="d-flex white-space-normal">
-        <div class="flex-50 px-3 py-2">
-          {{ item.label }}
-        </div>
-
-        <div
-            class="flex-25 px-3 py-2 border-grey border-bottom-0 border-top-0 d-flex align-items-center justify-content-center">
-          {{ item.dimension }}
-        </div>
-
-        <div class="flex-25 px-3 py-2">
-          {{ (+item.value.toFixed(2)).toLocaleString() }}
-        </div>
-      </div>
-
-      <div class="d-flex white-space-normal">
-        <div class="flex-50 border-grey d-flex flex-column">
-          <div v-for="(gtm, index) in gtms"
-               :key="gtm.id"
-               :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
-               class="px-2 py-1 ">
-            {{ gtm.name }}
+          <div class="flex-25 border-grey d-flex flex-column">
+            <div v-for="(item, index) in dollarRates"
+                 :key="index"
+                 :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
+                 class="px-2 py-1">
+              {{ (+item).toLocaleString() }}
+            </div>
           </div>
         </div>
 
-        <div class="flex-25 border-grey bg-dark-blue px-3 py-1 d-flex align-items-center justify-content-center">
-          {{ trans('economic_reference.million_tenge_for_operation') }}
+        <div class="d-flex bg-dark-blue">
+          <div class="flex-50 px-3 py-1 border-grey d-flex align-items-center justify-content-center">
+            {{ trans('economic_reference.avg_oil_price_brent') }}
+          </div>
+
+          <div class="flex-25 px-3 py-1 border-grey d-flex align-items-center justify-content-center">
+            $ / bbl
+          </div>
+
+          <div class="flex-25 border-grey d-flex flex-column">
+            <div v-for="(item, index) in oilPrices"
+                 :key="index"
+                 :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
+                 class="px-2 py-1 ">
+              {{ (+item).toLocaleString() }}
+            </div>
+          </div>
         </div>
 
-        <div class="flex-25 border-grey d-flex flex-column">
-          <div v-for="(gtm, index) in gtms"
-               :key="index"
-               :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
-               class="px-2 py-1 ">
-            {{ (+gtm.price / 1000000).toLocaleString() }}
+        <div v-for="(item, index) in sumData"
+             :key="index"
+             :class="index % 2 === 0 ? 'bg-dark-blue' : 'bg-light-blue'"
+             class="d-flex white-space-normal">
+          <div class="flex-50 px-3 py-2">
+            {{ item.label }}
+          </div>
+
+          <div
+              class="flex-25 px-3 py-2 border-grey border-bottom-0 border-top-0 d-flex align-items-center justify-content-center">
+            {{ item.dimension }}
+          </div>
+
+          <div class="flex-25 px-3 py-2">
+            {{ (+item.value.toFixed(2)).toLocaleString() }}
+          </div>
+        </div>
+
+        <div class="d-flex white-space-normal">
+          <div class="flex-50 border-grey d-flex flex-column">
+            <div v-for="(gtm, index) in gtms"
+                 :key="gtm.id"
+                 :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
+                 class="px-2 py-1 ">
+              {{ gtm.name }}
+            </div>
+          </div>
+
+          <div class="flex-25 border-grey bg-dark-blue px-3 py-1 d-flex align-items-center justify-content-center">
+            {{ trans('economic_reference.million_tenge_for_operation') }}
+          </div>
+
+          <div class="flex-25 border-grey d-flex flex-column">
+            <div v-for="(gtm, index) in gtms"
+                 :key="index"
+                 :class="index % 2 === 0 ? 'bg-light-blue' : 'bg-dark-blue'"
+                 class="px-2 py-1 ">
+              {{ (+gtm.price / 1000000).toLocaleString() }}
+            </div>
           </div>
         </div>
       </div>
@@ -134,7 +137,7 @@ export default {
     gtms: {
       required: true,
       type: Array
-    }
+    },
   },
   computed: {
     sumData() {
@@ -212,4 +215,7 @@ export default {
   white-space: normal;
 }
 
+.customScroll::-webkit-scrollbar {
+  width: 10px;
+}
 </style>
