@@ -21,7 +21,7 @@
                             <th>Обводненность<br>(%)</th>
                             <th>Дебит нефти<br>(т/сут.)</th>
                         </tr>
-                    </thead>
+                        </thead>
                     <tbody>
                         <tr v-for="(date,index) in dates" v-if="date.isVisible">
                             <td>
@@ -36,7 +36,7 @@
                             <td>{{date.waterDebit.toFixed(2)}}</td>
                             <td>{{date.waterCut.toFixed(0)}}</td>
                             <td>{{date.oilDebit.toFixed(2)}}</td>
-                            <td>{{(date.hoursWorked*24).toFixed(0)}} часов</td>
+                            <td>{{(date.hoursWorked*24).toFixed(0)}} дней</td>
                         </tr>
                     </tbody>
                 </table>
@@ -193,11 +193,11 @@ export default {
             summary['water'] = _.sumBy(filtered, 'water');
             summary['oil'] = _.sumBy(filtered, 'oil');
             summary['waterDebit'] = _.sumBy(filtered, 'waterDebit');
-            summary['waterCut'] = _.sumBy(filtered, 'waterCut');
+            summary['waterCut'] = _.sumBy(filtered, 'waterCut') / 12;
             summary['oilDebit'] = _.sumBy(filtered, 'oilDebit');
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
-        }
+        },
     },
     mounted() {
         this.fillDates();
@@ -219,6 +219,7 @@ export default {
 }
 .header {
     background: #293688;
+    max-width: 630px;
 }
 .cancel-icon {
     background: url(/img/bd/cancel-icon.svg) no-repeat;
@@ -228,18 +229,23 @@ export default {
 .historical-table {
     text-align: center;
     border: 2px solid #293688;
-    width: 100%;
+    width: 630px;
+
+    tbody {
+        height: 680px;
+        display: block;
+        overflow-y:scroll;
+    }
+    thead, tbody tr {
+        display: table;
+        table-layout:fixed;
+        width: 100%;
+    }
     th {
         background: #37408B;
         border: 1px solid rgba(161, 164, 222, 0.3);
         border-top: none;
         padding: 5px;
-        &:first-child {
-            min-width: 100px;
-        }
-    }
-    tbody {
-        height: 725px;
     }
     td {
         padding: 5px;
@@ -252,12 +258,11 @@ export default {
             padding-bottom: 17px
         }
         label {
-            min-width: 51px;
+            min-width: 40px;
         }
     }
 }
 .left-block {
-    overflow-y: scroll;
     height: 810px;
 }
 </style>
