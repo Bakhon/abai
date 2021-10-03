@@ -24,11 +24,11 @@ class FormService
     public function getForms()
     {
         $forms = collect(json_decode(File::get(resource_path('js/json/bd/forms.json'))));
-      //  $forms = $forms->filter(
-       //     function ($form) {
-      //          return auth()->user()->can('bigdata list ' . $form->code);
-     //       }
-    //    );
+        $forms = $forms->filter(
+            function ($form) {
+                return auth()->user()->can('bigdata list ' . $form->code);
+            }
+        );
 
         return $forms;
     }
