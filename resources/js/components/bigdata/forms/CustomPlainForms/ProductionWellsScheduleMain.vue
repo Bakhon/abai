@@ -473,16 +473,13 @@ export default {
             'SET_LOADING'
         ]),
         getColorByCell(currentValue,techMode,dayNumber,activity) {
-            let isWellStopped = this.isWellStopped(dayNumber,activity);
-            if (isWellStopped) {
+            if (this.isWellStopped(dayNumber,activity)) {
                 return 'background__red';
             }
-            if (techMode) {
-                let isTechModeBigger = this.isTechModeBigger(currentValue,techMode);
-                if (isTechModeBigger) {
-                    return 'background__yellow';
-                }
+            if (techMode && this.isTechModeBigger(currentValue,techMode)) {
+                return 'background__yellow';
             }
+            return '';
         },
         isWellStopped(dayNumber,activity) {
             let startDay = 0;
@@ -492,9 +489,9 @@ export default {
                      if (dayActivity.dbeg) {
                          startDay = moment(dayActivity.dbeg).date();
                      }
-                    if (dayActivity.dend) {
-                        endDay = moment(dayActivity.dend).date();
-                    }
+                     if (dayActivity.dend) {
+                         endDay = moment(dayActivity.dend).date();
+                     }
                 });
             }
             return dayNumber >= startDay && dayNumber <= endDay;
