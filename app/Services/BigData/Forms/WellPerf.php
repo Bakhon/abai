@@ -74,6 +74,7 @@ class WellPerf extends PlainForm
             ->map(function ($interval) {
                 return (float)$interval->top . ' - ' . (float)$interval->base . ';';
             })
+            ->unique()
             ->join('<br>');
     }
 
