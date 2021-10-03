@@ -232,7 +232,7 @@ export default {
     width: 630px;
 
     tbody {
-        height: 725px;
+        height: 680px;
         display: block;
         overflow-y:scroll;
     }

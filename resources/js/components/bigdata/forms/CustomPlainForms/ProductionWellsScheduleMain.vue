@@ -90,7 +90,7 @@
                             <div class="col-12">{{periodItem.id}}</div>
                         </div>
                         <div class="col-12 p-0 d-flex historical-info">
-                            <div class="p-0">
+                            <div class="p-0 daily-table">
                                 <table class="table text-center text-white text-nowrap historical-table">
                                     <thead>
                                     <tr>
@@ -635,5 +635,8 @@ export default {
 }
 .background__red {
     background-color: #E94580 !important;
+}
+.daily-table {
+    width: 100%;
 }
 </style>
