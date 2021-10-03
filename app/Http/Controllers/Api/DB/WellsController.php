@@ -652,6 +652,8 @@ class WellsController extends Controller
 
     public function getProductionHistory($wellId)
     {
+        ini_set('max_execution_time', 600);
+
         $measLiqs = MeasLiq::where('well', $wellId)
             ->orderBy('dbeg', 'asc')
             ->get();
