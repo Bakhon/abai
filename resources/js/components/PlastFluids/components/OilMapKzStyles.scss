@@ -2,7 +2,6 @@ label {
   margin: 0;
 }
 
-#map,
 .main-page-map {
   height: 100%;
   width: 100%;
@@ -11,39 +10,18 @@ label {
   flex-flow: column;
   justify-content: space-between;
   align-items: center;
+  background-size: 35px 35px;
+  background-image: linear-gradient(
+      to right,
+      rgba(51, 57, 117, 0.329412) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(51, 57, 117, 0.329412) 1px, transparent 1px);
 }
 
-.main-page-map > img {
-  width: 84%;
-  height: calc(100% - 86px);
-  cursor: pointer;
-}
-
-.province {
-  background-image: url("/img/PlastFluids/province.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  position: relative;
-  width: 84%;
-  height: calc(100% - 86px);
-  cursor: pointer;
-}
-
-.province > img {
-  width: 103%;
+#map {
   height: 100%;
-  position: absolute;
-  right: 0%;
-  top: 0%;
-}
-
-.province > p {
-  margin: 0;
-  text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
-  font-size: 18px;
-  color: #ffffff;
-  position: absolute;
-  z-index: 2;
+  width: 100%;
 }
 
 .map-header {

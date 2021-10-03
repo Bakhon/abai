@@ -1,5 +1,4 @@
 <template>
-  <!-- <div id="map"></div> -->
   <div class="main-page-map">
     <div class="map-header">
       <p>Карта размещений нефтегазоносных провинций и областей</p>
@@ -26,45 +25,25 @@
       <button v-if="currentScreen > 0" @click="currentScreen--">
         Назад
       </button>
-      <button>
+      <button @click="addScale">
         <img src="/img/PlastFluids/satelite.svg" alt="" />
         <span>Спутник</span>
       </button>
     </div>
-    <div class="province" v-if="currentScreen === 1">
-      <p style="top: 8%; left: 50%;">Северобортовая НГО</p>
-      <p style="top: 40%; left: 30%;">Центрально-Каспийская НГО</p>
-      <p style="top: 40%; right: 10%;">
-        Восточно-Эмбинская НГО
-      </p>
-      <p style="top: 55%; right: 25%;">Северо-Эмбинская НГО</p>
-      <p style="top: 70%; left: 33%;">Астрахань-Макатская НГО</p>
-      <p style="top: 80%; right: 20%;">Южно-Эмбинская НГО</p>
-      <p style="top: 88%; left: 55%;">Приморско-Эмбинская НГО</p>
-      <img
-        @click="currentScreen = 2"
-        src="/img/PlastFluids/MaskGroup.svg"
-        alt=""
-      />
-    </div>
-    <img
-      src="/img/PlastFluids/presentation3d.jpg"
-      v-else-if="currentScreen === 2"
-      @click="setSubsoilField"
-      style="flex: 2 1 auto; margin: 14px 10px 10px 10px; width: unset; height: unset;"
-      alt=""
-    />
-    <img
-      @click="currentScreen = 1"
-      v-else
-      src="/img/PlastFluids/map.svg"
-      alt=""
-    />
+    <div id="map"></div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import {
+  getInitialMapNPG,
+  getMapDataByField,
+  getMapGeoJSONCoords,
+} from "../services/mapService";
+import RK from "../plugins/rk_border";
 
 export default {
   name: "OilMapKz",
@@ -74,6 +53,15 @@ export default {
       province: undefined,
       currentProvince: undefined,
       currentScreen: 0,
+      mapSettings: {
+        scrollWheelZoom: false,
+        dragging: false,
+        doubleClickZoom: false,
+        boxZoom: false,
+        zoomControl: false,
+        center: [47.78333, 67.76667],
+        zoom: 5,
+      },
     };
   },
   computed: {
@@ -98,6 +86,49 @@ export default {
         );
       });
     },
+    addScale() {
+      // const baseLayers = {
+      //   Mapbox: mapbox,
+      //   OpenStreetMap: osm,
+      // };
+
+      // const overlays = {
+      //   Marker: marker,
+      //   Roads: roadsLayer,
+      // };
+      const littleton = L.marker([50, 45]).bindPopup("This is Littleton, CO."),
+        denver = L.marker([56, 51]).bindPopup("This is Denver, CO."),
+        aurora = L.marker([76, 54]).bindPopup("This is Aurora, CO."),
+        golden = L.marker([86, 49]).bindPopup("This is Golden, CO.");
+      var cities = L.layerGroup([littleton, denver, aurora, golden]);
+      L.Util.setOptions(this.map, { zoom: 13 });
+      if (this.map.zoom instanceof L.Handler) {
+        this.map.zoom.enable();
+      }
+      // L.control.layers(baseLayers, overlays).addTo(this.map);
+      L.control.scale().addTo(this.map);
+    },
+    async initMap() {
+      const payload = new FormData();
+      payload.append("geo_array", "1400");
+      payload.append("geo_array", "1662");
+      const response = await getMapGeoJSONCoords(payload);
+      this.map = L.map("map", this.mapSettings);
+      L.geoJson(RK, { style: { color: "#2D89DA", opacity: 0.5 } }).addTo(
+        this.map
+      );
+      L.geoJson(response, {
+        style: { fillColor: "#43487A", color: "#5c6090", fillOpacity: 1 },
+      }).addTo(this.map);
+    },
+  },
+  mounted() {
+    this.$nextTick(() => this.initMap());
+  },
+  beforeDestroy() {
+    if (this.map) {
+      this.map.remove();
+    }
   },
 };
 </script>

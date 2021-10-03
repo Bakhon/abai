@@ -3,8 +3,13 @@ import { kzRegions } from "../plugins/global";
 import RK from "../plugins/rk_border";
 import { field } from "../plugins/field";
 import "leaflet/dist/leaflet.css";
+import {
+  getInitialMapNPG,
+  getMapDataByField,
+  getMapGeoJSONCoords,
+} from "../services/mapService";
 
-const initMap = (click) => {
+const initMap = async (click) => {
   let selectedPolygon;
   let targetPolygon;
   let zoomLevel;
@@ -13,7 +18,10 @@ const initMap = (click) => {
     direction: "center",
     className: "my-label",
   };
-
+  const payload = new FormData();
+  payload.append("geo_array", "1400");
+  payload.append("geo_array", "1662");
+  const response = await getMapGeoJSONCoords(payload);
   let mapSettings = {
     scrollWheelZoom: false,
     dragging: false,
@@ -29,20 +37,22 @@ const initMap = (click) => {
 
   let map = L.map("map", mapSettings).setView([47.78333, 67.76667], 5);
 
-  let regionsGroup = new L.featureGroup();
+  let regionsGroup = new L.featureGroup(response.features);
   let fieldGroup = new L.featureGroup();
   let regionFieldGroup = new L.featureGroup();
 
   L.geoJson(RK, { style: { color: "#2D89DA", opacity: 0.5 } }).addTo(map);
-  L.geoJson(kzRegions, { onEachFeature, style: polygonsStyle }).addTo(map);
-  L.geoJson(field, { onEachFeature, style: polygonsStyle }).addTo(map);
+  // L.geoJson(response, { onEachFeature, style: polygonsStyle }).addTo(map);
+  // L.geoJson(kzRegions, { onEachFeature, style: polygonsStyle }).addTo(map);
+  // L.geoJson(field, { onEachFeature, style: polygonsStyle }).addTo(map);
 
   toggleTooltips();
   map.on("zoomend moveend", () => {
     toggleTooltips();
   });
 
-  function zoomToFeature(e) {
+  function zoomToFeature(e, a) {
+    console.log(e);
     let { target } = e;
     targetPolygon = target;
     zoomLevel = target.feature.properties?.type || null;
@@ -88,7 +98,7 @@ const initMap = (click) => {
 
   function onEachFeature(feature, layer) {
     let type = feature.properties?.type;
-    if (type === "region") {
+    if (type === "FLD") {
       regionsGroup.addLayer(layer);
     }
     if (type === "field") {
