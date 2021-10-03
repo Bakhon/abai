@@ -103,6 +103,30 @@
           }
         ]
       ]
+    },
+    {
+      "title": "doc",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "doc",
+                "columns": [
+                  {
+                    "code": "name_ru",
+                    "title": "scan_doc"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
     }
   ]
 }

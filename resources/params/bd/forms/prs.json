@@ -1,5 +1,8 @@
 {
   "table": "prod.well_workover",
+  "default_values":{
+    "file_type": 4
+  },
   "sort": [
     {
       "field": "dbeg",
@@ -215,6 +218,30 @@
                 "type": "text",
                 "title": "reason_type",
                 "validation": "required"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "doc",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "prs",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "doc",
+                "columns": [
+                  {
+                    "code": "name_ru",
+                    "title": "scan_doc"
+                  }
+                ]
               }
             ]
           }
