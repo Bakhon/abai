@@ -723,12 +723,22 @@ class WellsController extends Controller
     {
 
         $wellWorkover = WellWorkover::query()
-            ->select(['dbeg','well','repair_type','more_info_reason_fail','well_status'])
+            ->select(['dbeg','well','repair_type','work_plan','well_status'])
             ->whereIn('repair_type', [1,3])
             ->whereYear('dbeg',$request->year)
             ->whereMonth('dbeg',$request->month)
             ->where('well',$wellId)
             ->get();
+        $wellWorkoverEnd = WellWorkover::query()
+            ->select(['dend','well','repair_type','well_status','work_list'])
+            ->whereIn('repair_type', [1,3])
+            ->whereYear('dend',$request->year)
+            ->whereMonth('dend',$request->month)
+            ->where('well',$wellId)
+            ->get();
+        foreach($wellWorkoverEnd as $workEnd) {
+            $wellWorkover->push($workEnd);
+        }
         $gtms = Gtm::query()
             ->select(['param_result','gtm_type','dbeg'])
             ->where('well', $wellId)

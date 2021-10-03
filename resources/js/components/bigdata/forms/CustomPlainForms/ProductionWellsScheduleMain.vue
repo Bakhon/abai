@@ -270,9 +270,11 @@
                                         :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
                                 >
                                     <td>{{index+1}}</td>
-                                    <td>{{getFormatedDate(activity.dbeg)}}</td>
+                                    <td v-if="activity.dbeg">{{getFormatedDate(activity.dbeg)}}</td>
+                                    <td v-else>{{getFormatedDate(activity.dend)}}</td>
                                     <td>{{repairType[activity.repair_type]}}</td>
-                                    <td>{{activity.more_info_reason_fail}}</td>
+                                    <td v-if="activity.dbeg">{{activity.work_plan}}</td>
+                                    <td v-else>{{activity.work_list}}</td>
                                     <td>{{activity.well_status}}</td>
                                     <td>{{well.category.name_ru}}</td>
                                     <td>&nbsp;</td>
