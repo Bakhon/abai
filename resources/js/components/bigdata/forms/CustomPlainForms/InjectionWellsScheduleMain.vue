@@ -231,7 +231,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex mt-1">
+                    <div class="d-flex mt-1" v-if="periodItem.params.activity.length > 0">
                         <div class="col-3 form-check">
                             <input class="form-check-input" type="checkbox" value="" id="activityCheck" @click="isActivityShown = !isActivityShown">
                             <label class="form-check-label" for="activityCheck">
@@ -257,9 +257,11 @@
                                             :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
                                     >
                                         <td>{{index+1}}</td>
-                                        <td>{{activity.date}}</td>
-                                        <td>{{activity.repair_type}}</td>
-                                        <td>{{activity.more_info_reason_fail}}</td>
+                                        <td v-if="activity.dbeg">{{getFormatedDate(activity.dbeg)}}</td>
+                                        <td v-else>{{getFormatedDate(activity.dend)}}</td>
+                                        <td>{{repairType[activity.repair_type]}}</td>
+                                        <td v-if="activity.dbeg">{{activity.work_plan}}</td>
+                                        <td v-else>{{activity.work_list}}</td>
                                         <td>{{activity.well_status}}</td>
                                         <td>{{well.category.name_ru}}</td>
                                         <td>&nbsp;</td>
@@ -307,15 +309,22 @@ export default {
             isFreeInfoShown: true,
             historicalInfo: [],
             historicalData: [],
-            isMeasurementScheduleActive: false
+            isMeasurementScheduleActive: false,
+            repairType: {
+                1: 'КРС',
+                3: 'ПРС',
+            }
         };
     },
     methods: {
-        nahdleMeasurementSchedule() {
+        async nahdleMeasurementSchedule() {
             this.historicalData = this.injectionMeasurementSchedule;
-            _.forEach(this.historicalData, (item) => {
-                item.params['activity'] = this.getActivityByWell(item.month,item.year);
-            });
+            this.SET_LOADING(true);
+            for (let i in this.historicalData) {
+                this.historicalData[i].params['activity'] = await this.getActivityByWell(this.historicalData[i].month,this.historicalData[i].year);
+            }
+            this.historicalData = _.orderBy(this.historicalData, ['date'],['asc']);
+            this.SET_LOADING(false);
             this.isMeasurementScheduleActive = true;
         },
         async getActivityByWell(month,year) {
@@ -342,6 +351,7 @@ export default {
                         'id': date.format('YYYY/MMM'),
                         'month': date.format('MMM'),
                         'year': date.format('YYYY'),
+                        'date': date,
                         'isChecked': false,
                         'isVisible': false,
                         'waterInjection': _.sumBy(month, item => Number(item.liq)),
@@ -374,68 +384,7 @@ export default {
                     this.historicalInfo.push(monthSummary);
                 });
             });
-
             this.SET_INJECTION_HISTORICAL(this.historicalInfo);
-            return;
-
-            // _.forEach(data, (item) => {
-            //     let date = moment(item.date, 'YYYY-MM-DD');
-            //     let waterInjection = 0;
-            //     let dailyWaterInjection = 0;
-            //     if (item.liq) {
-            //         waterInjection = parseFloat(item.liq);
-            //         dailyWaterInjection = waterInjection / date.daysInMonth();
-            //     }
-            //     let obj = {
-            //         'id': date.format('YYYY/MMM'),
-            //         'month': date.format('MMM'),
-            //         'year': date.format('YYYY'),
-            //         'isChecked': false,
-            //         'isVisible': false,
-            //         'waterInjection': waterInjection,
-            //         'dailyWaterInjection': dailyWaterInjection,
-            //         'accumulateWaterInjection': 0,
-            //         'hoursWorked': item.work_days,
-            //         'params': {
-            //             'techMode': [
-            //                 {
-            //                     'label': 'Приемистость',
-            //                     'value': item.injectivity,
-            //                 },
-            //                 {
-            //                     'label': 'Давление закачки',
-            //                     'value': item.whc_alt,
-            //                 },
-            //                 {
-            //                     'label': 'Состояние скважины',
-            //                 },
-            //                 {
-            //                     'label': 'Обработанное время',
-            //                 },
-            //                 {
-            //                     'label': 'ГТМ',
-            //                 }
-            //             ],
-            //             'monthlyData': []
-            //         }
-            //     };
-            //     let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
-            //     let injectivity = [];
-            //     let pressure = [];
-            //     let status = [];
-            //     let workHours = [];
-            //     let gtm = [];
-            //     for (let i =1; i <= daysCount; i++) {
-            //         injectivity.push(item.injectivity/daysCount);
-            //         pressure.push(item.whc_alt/daysCount);
-            //         status.push('');
-            //         workHours.push(item.work_days/daysCount);
-            //         gtm.push('');
-            //     }
-            //     obj.params.monthlyData.push(injectivity,pressure,status,workHours,gtm);
-            //     this.historicalInfo.push(obj);
-            // });
-           // this.SET_INJECTION_HISTORICAL(this.historicalInfo);
         },
         getFormatedDate(data) {
             if (data != null && data != '') {
