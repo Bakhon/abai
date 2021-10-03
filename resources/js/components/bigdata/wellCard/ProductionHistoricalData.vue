@@ -34,7 +34,7 @@
                             <td v-if="date.oil !== null && date.oil > 0">{{date.oil.toFixed(2)}}</td>
                             <td v-else>{{date.oil}}</td>
                             <td>{{date.waterDebit.toFixed(2)}}</td>
-                            <td>{{date.waterCut}}</td>
+                            <td>{{date.waterCut.toFixed(0)}}</td>
                             <td>{{date.oilDebit.toFixed(2)}}</td>
                             <td>{{(date.hoursWorked*24).toFixed(0)}} часов</td>
                         </tr>

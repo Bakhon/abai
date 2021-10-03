@@ -17,6 +17,7 @@ use App\Models\BigData\MeasWaterCut;
 use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
+use App\Models\BigData\Gtm;
 use App\Services\BigData\StructureService;
 use App\Services\BigData\MeasLogByMonth;
 use Carbon\Carbon;
@@ -667,6 +668,27 @@ class WellsController extends Controller
         $measWaterCuts = MeasWaterCut::where('well', $wellId)
             ->orderBy('dbeg', 'asc')
             ->get();
+        $gdisCurrent = GdisCurrent::where('well', $wellId)
+            ->select(['id'])
+            ->get()
+            ->toArray();
+        $gdisCurrentValueResult = [];
+        $gdisCurrent = array_map(function ($item) {
+            return $item['id'];
+        }, $gdisCurrent);
+
+        $metric = Metric::where('code', 'FLVL')->first();
+        $gdisCurrentValue = GdisCurrentValue::where('metric', $metric->id)
+            ->whereIn('gdis_curr', $gdisCurrent)
+            ->with('gdisCurrent')
+            ->get();
+
+        foreach ($gdisCurrentValue as $gdisCurrentValueItem) {
+            $gdisCurrentValueResult[] = [
+                'value_double' => $gdisCurrentValueItem['value_double'],
+                'meas_date' => $gdisCurrentValueItem->gdisCurrent->meas_date
+            ];
+        }
 
         $result = array();
         foreach($liqByMonths as $yearNumber => $monthes) {
@@ -678,6 +700,13 @@ class WellsController extends Controller
                  $liqCut = $measWaterCuts->filter(function ($val) use ($date) {
                     return Carbon::parse($val->dbeg)->format('d m Y') === $date->format('d m Y');
                  })->sum('water_cut');
+                 $gdis = array_filter(
+                     $gdisCurrentValueResult,
+                     function ($val) use ($date) {
+                          return Carbon::parse($val['meas_date'])->format('d m Y') === $date->format('d m Y');
+                     },
+                     ARRAY_FILTER_USE_KEY
+                 );
                  array_push($result[$yearNumber][$monthNumber], array (
                     'liq' => $day['liquid'],
                     'date' => $date->format('Y-m-d'),
@@ -689,21 +718,29 @@ class WellsController extends Controller
            }
         }
         return $result;
-       // return dictWell::query()
-        //    ->where('dict.well.id',$well)
-        //    ->leftJoin('dmart.mer_prod_oil as mi', function($leftJoin) {
-        //        $leftJoin->on('dict.well.uwi', '=', 'mi.well')
-        //        ->whereYear('mi.date', '>=', 2008);
-       //     })
-        //    ->get();
     }
     public function getActivityByWell(Request $request,$wellId)
     {
-        return WellWorkover::query()
+
+        $wellWorkover = WellWorkover::query()
             ->select(['dbeg','well','repair_type','more_info_reason_fail','well_status'])
+            ->whereIn('repair_type', [1,3])
             ->whereYear('dbeg',$request->year)
             ->whereMonth('dbeg',$request->month)
             ->where('well',$wellId)
             ->get();
+        $gtms = Gtm::query()
+            ->select(['param_result','gtm_type','dbeg'])
+            ->where('well', $wellId)
+            ->whereYear('dbeg',$request->year)
+            ->whereMonth('dbeg',$request->month)
+            ->get();
+        foreach($gtms as $gtm) {
+            $wellWorkover->push(array(
+                'dbeg' => $gtm->dbeg,
+                'repair_type' => $gtm->gtm_type->name_ru
+            ));
+        }
+        return $wellWorkover;
     }
 }

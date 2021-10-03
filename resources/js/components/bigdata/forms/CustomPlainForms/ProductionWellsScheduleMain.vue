@@ -244,7 +244,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex mt-1">
+                    <div class="d-flex mt-1" v-if="periodItem.params.activity.length > 0">
                         <div class="col-3 form-check">
                             <input class="form-check-input" type="checkbox" value="" id="activityCheck" @click="isActivityShown = !isActivityShown">
                             <label class="form-check-label" for="activityCheck">
@@ -270,8 +270,8 @@
                                         :class="index % 2 === 0 ? 'header-background_light' : 'header-background_dark'"
                                 >
                                     <td>{{index+1}}</td>
-                                    <td>{{activity.date}}</td>
-                                    <td>{{activity.repair_type}}</td>
+                                    <td>{{getFormatedDate(activity.dbeg)}}</td>
+                                    <td>{{repairType[activity.repair_type]}}</td>
                                     <td>{{activity.more_info_reason_fail}}</td>
                                     <td>{{activity.well_status}}</td>
                                     <td>{{well.category.name_ru}}</td>
@@ -320,7 +320,11 @@ export default {
             isMeasurementScheduleActive: false,
             isActivityShown: false,
             isFreeInfoShown: true,
-            historicalInfo: []
+            historicalInfo: [],
+            repairType: {
+                1: 'КРС',
+                3: 'ПРС',
+            }
         };
     },
     methods: {
@@ -331,9 +335,12 @@ export default {
         },
         async nahdleMeasurementSchedule() {
             this.historicalData = this.productionMeasurementSchedule;
-            _.forEach(this.historicalData, (item) => {
-                 item.params['activity'] = this.getActivityByWell(item.month,item.year);
-            });
+            this.SET_LOADING(true);
+            for (let i in this.historicalData) {
+                this.historicalData[i].params['activity'] = await this.getActivityByWell(this.historicalData[i].month,this.historicalData[i].year);
+            }
+            this.historicalData = _.orderBy(this.historicalData, ['date'],['asc']);
+            this.SET_LOADING(false);
             this.isMeasurementScheduleActive = true;
         },
         async getActivityByWell(month,year) {
@@ -360,13 +367,14 @@ export default {
                         'id': date.format('YYYY/MMM'),
                         'month': date.format('MMM'),
                         'year': date.format('YYYY'),
+                        'date': date,
                         'isChecked': false,
                         'isVisible': false,
                         'water': _.sumBy(month, item => Number(item.liq)),
                         'oil': _.sumBy(month, 'oil'),
                         'oilDebit': _.sumBy(month, 'oil') / _.sumBy(month, 'workHours'),
                         'waterDebit': _.sumBy(month, item => Number(item.liq)) / _.sumBy(month, 'workHours'),
-                        'waterCut': _.sumBy(month, 'liqCut'),
+                        'waterCut': _.sumBy(month, 'liqCut') / month.length,
                         'hoursWorked': _.sumBy(month, 'workHours'),
                         'gas': 0,
                         'params': {
@@ -434,31 +442,6 @@ export default {
                 });
             });
             this.SET_PRODUCTION_HISTORICAL(this.historicalInfo);
-        },
-        getDailyParams(summary,date) {
-            let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
-            let oilSummary = [];
-            let oilDebit = [];
-            let waterDebit = [];
-            let workHours = [];
-            let waterCut = [];
-            let water = [];
-            let gas = [];
-            let onomobvod = [];
-            let empty = [];
-            let total = [];
-            for (let i =1; i <= daysCount; i++) {
-                empty.push(0);
-                oilSummary.push(summary.oil/daysCount);
-                oilDebit.push(summary.oilDebit/daysCount);
-                workHours.push(summary.hoursWorked/daysCount);
-                waterDebit.push(summary.waterDebit/daysCount);
-                waterCut.push(summary.waterCut/daysCount);
-                water.push(summary.water/daysCount);
-                gas.push(summary.gas/daysCount);
-            }
-            total.push(water,oilSummary,waterCut,empty,gas,empty,empty,empty,empty,empty,empty,empty,empty);
-            return total;
         },
         ...globalloadingMutations([
             'SET_LOADING'
