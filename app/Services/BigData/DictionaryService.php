@@ -444,6 +444,9 @@ class DictionaryService
                 case 'underground_equip_element':
                     $dict = UndergroundEquipElement::getDict();
                     break;
+                case 'res_type_dict':
+                    $dict = $this->getResTypeDict();
+                    break;    
                 default:
                     throw new DictionaryNotFound();
             }
@@ -809,5 +812,28 @@ class DictionaryService
                 return in_array($item['code'], ['WRK', 'DWN']);
             })
         );
+    }
+
+    private function getResTypeDict(){
+        $codes = ['PVTD','ADSPO','AEF','OCRC','COSC','CPIW','CRG','CPG'];
+        $items = DB::connection('tbd')
+            ->table('dict.lab_research_type as r')
+            ->select('r.name_ru as name')
+            ->where([
+                ['r.code', '!=', 'CAO'],
+                ['r.code', '!=', 'SCWA'],
+                ['r.code', '!=', 'PVTPD'],
+                ['r.code', '!=', 'PVTP'],
+            ])
+            // ->whereIn('r.code', $codes)
+            ->orderBy('name', 'asc')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+        return $items;
     }
 }    
