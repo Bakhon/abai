@@ -1,8 +1,9 @@
 <template>
     <div>
         <InjectionWellsSchedule
-            v-if="isScheduleVisible"
+            v-if="isScheduleVisible && chartData"
             :mainWell="{id: well.id, name: well.wellInfo.uwi}"
+            :historicalData="chartData"
              @changeScheduleVisible="isScheduleVisible = !isScheduleVisible; changeColumnsVisible(true)"
         ></InjectionWellsSchedule>
         <div v-else class="main-block w-100 px-2 py-3">
@@ -313,7 +314,8 @@ export default {
             repairType: {
                 1: 'КРС',
                 3: 'ПРС',
-            }
+            },
+            chartData: []
         };
     },
     methods: {
@@ -398,6 +400,7 @@ export default {
     async mounted() {
         this.SET_LOADING(true);
         const response = await axios.get(this.localeUrl(`/api/bigdata/wells/injectionHistory/${this.well.id}`));
+        this.chartData = response.data;
         this.assignInfoByDates(response.data);
         this.SET_LOADING(false);
     },

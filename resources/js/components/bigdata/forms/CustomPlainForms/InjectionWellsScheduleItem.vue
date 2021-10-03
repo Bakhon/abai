@@ -24,13 +24,15 @@
 <script>
 import chart from "vue-apexcharts";
 import {globalloadingMutations} from '@store/helpers';
+import moment from "moment";
 
 const ru = require("apexcharts/dist/locales/ru.json");
 export default {
     components: {apexchart: chart},
     props: {
         well: {},
-        isShowEvents: Boolean
+        isShowEvents: Boolean,
+        data: []
     },
     data: function() {
         return {
@@ -66,6 +68,7 @@ export default {
                 },
             ],
             activePeriod: 90,
+            currentPeriodData: []
         }
     },
     methods: {
@@ -74,9 +77,17 @@ export default {
         ]),
         changePeriod(value) {
             this.activePeriod = value;
-            this.getSchuduleData();
+            this.currentPeriodData = this.getFilteredByPeriod();
+            this.labels = this.currentPeriodData.map(item => item.date);
+            this.updateScheduleData();
+            this.chartSeries = [
+                {
+                    name: this.trans('app.liquid'),
+                    data: this.currentPeriodData.map(item => item.liq)
+                }
+            ];
         },
-        getSchuduleData() {
+        updateScheduleData() {
             this.SET_LOADING(true);
             this.axios.get(this.localeUrl('api/bigdata/well-events'), {
                 params: {
@@ -84,39 +95,38 @@ export default {
                     period: this.activePeriod,
                 }
             }).then(({data}) => {
-                this.chartSeries = [
-                    data.gtms,
-                    data.perforations,
-                    data.workovers,
-                ];
-                // if (data.wellStatuses) {
-                //     this.chartPoints = [];
-                //     data.wellStatuses.forEach(status => {
-                //         this.chartPoints.push({
-                //             x: status[0],
-                //             y: 0,
-                //             marker: {
-                //                 size: 10,
-                //                 fillColor: '#fff'
-                //             },
-                //             label: {
-                //                 text: status[2],
-                //                 style: {
-                //                     color: '#000'
-                //                 }
-                //             }
-                //         });
-                //     });
-                // }
-                this.labels = data.labels;
+
             }).finally(() => {
                 this.SET_LOADING(false);
             });
         },
+        getFilteredByPeriod() {
+            let date = moment().subtract(this.activePeriod,'days');
+            let filteredByYear = [];
+            _.forEach(this.data, (year,key) => {
+                if (key >= date.year()) {
+                    _.forEach(year, (months,key) => {
+                        filteredByYear = filteredByYear.concat(Object.values(months));
+                    });
+                }
+            });
+            let result = _.filter(filteredByYear, (item) => {
+                return moment(item.date, 'YYYY-MM-DD') >= date;
+            });
+            return result;
+        }
     },
     mounted() {
-        this.getSchuduleData();
         this.title = this.well.name;
+        this.currentPeriodData = this.getFilteredByPeriod();
+        this.labels = this.currentPeriodData.map(item => item.date);
+        this.updateScheduleData();
+        this.chartSeries = [
+            {
+                name: this.trans('app.liquid'),
+                data: this.currentPeriodData.map(item => item.liq)
+            }
+        ];
     },
     computed: {
         chartOptions() {
@@ -172,71 +182,12 @@ export default {
                             }
                         },
                         title: {
-                            text: this.trans('app.liquidOil'),
+                            text: this.trans('app.liquid'),
                             style: {
                                 color: '#000000',
                             }
                         },
                     },
-                    {
-                        seriesName: this.trans('app.oil'),
-                        labels: {
-                            formatter: function (value) {
-                                return value.toFixed(1);
-                            }
-                        },
-                        show: false
-                    },
-                    {
-                        seriesName: this.trans('app.waterCut'),
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#000000',
-                            },
-                            formatter: function (value) {
-                                return value.toFixed(1);
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.waterCut'),
-                            style: {
-                                color: '#000000',
-                            }
-                        },
-                    },
-                    {
-                        seriesName: this.trans('app.ndin'),
-                        opposite: true,
-                        axisTicks: {
-                            show: true,
-                        },
-                        axisBorder: {
-                            show: true,
-                            color: 'rgba(69, 77, 125, 1)'
-                        },
-                        labels: {
-                            style: {
-                                colors: '#000000',
-                            },
-                            formatter: function (value) {
-                                return value.toFixed(1);
-                            }
-                        },
-                        title: {
-                            text: this.trans('app.ndin'),
-                            style: {
-                                color: '#000000',
-                            }
-                        },
-                    }
                 ],
                 tooltip: {
                     shared: true,

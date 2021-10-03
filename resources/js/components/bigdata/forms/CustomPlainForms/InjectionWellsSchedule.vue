@@ -45,6 +45,7 @@
                     :well="well"
                     :key="index"
                     :isShowEvents="isShowEvents"
+                    :data="historicalData"
                 />
             </div>
         </div>
@@ -60,9 +61,7 @@ export default {
         vSelect,
         InjectionWellsScheduleItem
     },
-    props: {
-        mainWell: {}
-    },
+    props: ['mainWell','historicalData'],
     data: function() {
         return {
             wells: [],
