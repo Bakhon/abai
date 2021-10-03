@@ -66,14 +66,13 @@ use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\WorkStatus;
 use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\TubeNom;
 use App\Services\BigData\DictionaryServices\UndergroundEquipElement;
 use App\Services\BigData\DictionaryServices\UndergroundEquipType;
-use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-
 
 class DictionaryService
 {
@@ -100,7 +99,7 @@ class DictionaryService
         ],
         'casings' => [
             'class' => CasingType::class,
-            'name_field' => 'CONCAT(\'Условный диаметр трубы(мм): \', od, \', Толщина стенки с норм. резьбой(мм):\', wt, \', Внутренний диаметр трубы с норм. резьбой (мм)\' , vd, \', Группа прочности: \', sg)'
+            'name_field' => 'CONCAT(\'Наружный диаметр, (мм): \', od, \', Внутренний диаметр, (мм):\', vd, \', Класс прочности / Марка стали:\' , sg, \', Погонный вес, (кг/м): \', wpm, \', Проходной диаметр, (мм): \', td, \', Предел текучести, (т): \', ys, \', Номинальный вес, (кг/м): \', nw, \', Номинальный диаметр, дюйм: \', nd)'
         ],
         'repair_work_types' => [
             'class' => RepairWorkType::class,
@@ -159,7 +158,7 @@ class DictionaryService
             'name_field' => 'name_ru'
         ],
         'tube_nom' => [
-            'class' => TybeNom::class,
+            'class' => TubeNom::class,
             'name_field' => 'model'
         ],
         'blocks' => [
@@ -622,7 +621,6 @@ class DictionaryService
         $result = array_unique(array_map(function ($item) {
             return (int)$item->tech;
         }, $result));
-        
         return $result;
     }
 
@@ -633,28 +631,26 @@ class DictionaryService
         $orgIds = array_map(function ($item) {
             return (int)substr($item, strpos($item, ":") + 1);
         }, $orgIds);
+        $organizations = [];
+        foreach($orgIds as $id) {
+            $organization = Org::find($id);
+            if(isset($organization)) {
+                $organizations[] = $organization;
+            }
+        }
 
-        $items = DB::connection('tbd')
-                ->table('dict.org as o')
-                ->select('o.id', 'o.parent as parent')
-                ->get()
-                ->toArray();
-
-        $orgIds = array_unique(array_merge($orgIds, $this->getOrgWithChildrenIds($orgIds, $items)));
+        $orgIds = $this->getOrgWithChildrens($organizations);
         return $orgIds;
     }
 
-    private function getOrgWithChildrenIds($orgIds, &$items) {
+    private function getOrgWithChildrens($organizations) {
         $result = [];
-        foreach($orgIds as $id) {
-            $tmp = [];
-            foreach($items as $item) {
-                if($item->parent == $id) {
-                    $tmp[] = $item->id;
-                }
-            }
+        foreach($organizations as $organization) {
+            if(!isset($organization->id)) continue;
+            $result[] = $organization->id;
+            $children = $organization->children()->get();
             
-            $result = array_merge($result, $tmp, $this->getOrgWithChildrenIds($tmp, $items));
+            $result = array_merge($result, $this->getOrgWithChildrens($children));
         }
 
         return $result;
@@ -663,7 +659,7 @@ class DictionaryService
     public function filterTree($items, &$tree, &$userTreeAccessedItems)
     {
         foreach($items as $item) {
-            if(in_array($item['id'], $userTreeAccessedItems)) {
+            if(isset($item['id']) && in_array($item['id'], $userTreeAccessedItems)) {
                 $tree[] = $item;
                 continue;
             }

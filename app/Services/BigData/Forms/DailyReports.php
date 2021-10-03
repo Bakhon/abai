@@ -119,20 +119,6 @@ abstract class DailyReports extends TableForm
         return $startDate;
     }
 
-    protected function getCustomValidationErrors(string $field = null): array
-    {
-        $errors = [];
-
-        if ($this->request->get('fact')) {
-            $limits = $this->calculateLimits();
-            if (!$this->isValidFactLimits($limits)) {
-                $errors['fact'][] = trans('bd.value_outside') . " ({$limits['min']}, {$limits['max']})";
-            }
-        }
-
-        return $errors;
-    }
-
     private function isValidFactLimits(array $limits): bool
     {
         if (empty($limits)) {
@@ -152,7 +138,7 @@ abstract class DailyReports extends TableForm
     private function calculateLimits(): array
     {
         $reports = ReportOrgDailyCits::where('org', $this->request->get('well_id'))
-            ->whereDate('report_date', '<', $this->request->get('date'))
+            ->whereDate('report_date', '<', Carbon::parse($this->request->get('date'), 'Asia/Almaty'))
             ->whereHas(
                 'metric',
                 function ($query) {
@@ -278,7 +264,7 @@ abstract class DailyReports extends TableForm
             $result['month_fact'] = ['value' => $month];
             $result['year_fact'] = ['value' => $year];
         } else {
-            $result['daily_fact_gs'] = ['value' => $today ? $today->value : 0];
+            $result['daily_fact_gs'] = ['value' => $today ? $today['value'] : 0];
             $result['month_fact_gs'] = ['value' => $month];
             $result['year_fact_gs'] = ['value' => $year];
         }

@@ -60,7 +60,7 @@
     },
     {
       "action": "create",
-      "title": "add_bridge_plug",
+      "title": "add_explosive_packer",
       "form": "well_perf_bridge_plug",
       "default_values": {
         "perf_type": 7
@@ -89,7 +89,10 @@
     {
       "action": "create",
       "title": "add_lagging",
-      "form": "well_perf_other"
+      "form": "well_perf_lagging",
+      "default_values": {
+        "perf_type": 2
+      }
     },
     {
       "action": "edit",
@@ -113,7 +116,7 @@
   "sort": [
     {
       "field": "perf_date",
-      "order": "desc"
+      "order": "asc"
     }
   ],
   "tabs": [
@@ -127,114 +130,88 @@
               {
                 "code": "perf_date",
                 "type": "date",
-                "title": "data",
-                "validation": "required"
+                "title": "data"
               },
               {
                 "code": "perf_type",
                 "type": "dict",
                 "dict": "perf_types",
-                "title": "perf_t",
-                "validation": "required|exists:tbd.dict.perf_type,id"
+                "title": "perf_t"
               },
               {
                 "code": "company",
                 "type": "dict",
                 "dict": "companies",
-                "title": "podr",
-                "validation": "required|exists:tbd.dict.company,id"
+                "title": "podr"
               },
               {
                 "code": "perforator_type",
                 "type": "dict",
                 "dict": "perforator_types",
-                "title": "perf_y",
-                "validation": "exists:tbd.dict.perforator_type,id"
+                "title": "perf_y"
               },
               {
                 "code": "patron_type",
                 "type": "dict",
                 "dict": "patron_types",
-                "title": "marka",
-                "validation": "exists:tbd.dict.patron_type,id"
+                "title": "marka"
               },
               {
                 "code": "hole_count",
                 "type": "numeric",
-                "title": "count",
-                "validation": "numeric|gte:0|lte:100"
+                "title": "count"
               },
               {
                 "code": "hole_diameter",
                 "type": "numeric",
-                "title": "diame_c",
-                "validation": "numeric|gte:0|lte:50"
+                "title": "diame_c"
               },
               {
                 "code": "liquid",
                 "type": "numeric",
-                "title": "liquid",
-                "validation": "numeric|gte:0"
+                "title": "liquid"
               },
               {
                 "code": "bsw",
                 "type": "numeric",
-                "title": "bsw_p",
-                "validation": "numeric|gte:0|lte:100"
+                "title": "bsw_p"
               },
               {
                 "code": "reservoir_count",
                 "type": "numeric",
-                "title": "reserv_c",
-                "validation": "numeric|gte:1"
+                "title": "reserv_c"
               },
               {
                 "code": "packer_type",
                 "type": "dict",
                 "dict": "packer_types",
-                "title": "packer_t",
-                "validation": "exists:tbd.dict.packer_type,id"
+                "title": "packer_t"
               },
               {
                 "code": "depth",
                 "type": "numeric",
-                "title": "depth",
-                "validation": "numeric|gte:0"
+                "title": "depth"
               },
               {
                 "code": "iso_material_type",
                 "type": "dict",
                 "dict": "iso_material_types",
-                "title": "iso_mat_type",
-                "validation": "exists:tbd.dict.iso_material_type,id"
+                "title": "iso_mat_type"
               },
               {
                 "code": "intervals",
-                "type": "numeric",
-                "title": "intervals",
-                "validation": "numeric"
+                "type": "text",
+                "title": "intervals"
               },
               {
-                "code": "top",
-                "table": "prod.well_perf_actual",
-                "type": "numeric",
-                "title": "interv_actual",
-                "validation": "required|numeric|gte:0|lte:base"
-              },
-              {
-                "code": "base",
-                "table": "prod.well_perf_actual",
-                "type": "numeric",
-                "title": "interv_actual",
-                "validation": "required|numeric|gte:0|lte:10000"
+                "code": "actual_intervals",
+                "type": "text",
+                "title": "interv_actual"
               },
               {
                 "code": "well",
-                "table": "prod.well_status",
-                "type": "calc",
-                "formula": "$base$ - $top$",
-                "title": "well_e",
-                "validation": "numeric"
+                "type": "numeric",
+                "title": "well_e"
               }
             ]
           }

@@ -26,8 +26,13 @@ class PlanGIS extends TableForm
         }
 
         $org = $this->getOrganization();
-
+        $orgChild = Org::find($this->request->get('id'));
         $orgChildren = $org->children()->get();
+
+        if(!$this->isOrganization($orgChild) && $orgChild->parentOrg->type->code === 'SUBC') {
+            $tmp[] = $orgChild;
+            $orgChildren = collect($tmp);
+        }
 
         $columns = $this->getColumns($filter, $org, $orgChildren);
 
@@ -51,7 +56,7 @@ class PlanGIS extends TableForm
             throw new \Exception(trans('bd.select_dzo'));
         }
 
-        if ($org->type->code === 'SUBC' || $org->parentOrg->name_short_ru === 'ММГ') {
+        if ($this->isOrganization($org)) {
             return $org;
         }
 
@@ -60,6 +65,10 @@ class PlanGIS extends TableForm
         }
 
         throw new \Exception(trans('bd.select_dzo'));
+    }
+
+    private function isOrganization($org) {
+        return ($org->type->code === 'SUBC' || $org->parentOrg->name_short_ru === 'ММГ');
     }
 
     private function getColumns($filter, $org, $children)
@@ -194,6 +203,8 @@ class PlanGIS extends TableForm
 
             $rows[] = $row;
         }
+
+        usort($rows, function($a, $b) {return $a['num'] > $b['num'];});
         return $rows;
     }
 

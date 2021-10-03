@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-if="loadingTreemap" class="w-100 text-white text-center mb-3">
+  <div class="overflow-auto customScroll" style="height: 550px;">
+    <div v-if="loadingTreemap" class="w-100 text-white text-center my-2">
       {{ trans('economic_reference.loading_treemap') }}...
     </div>
 
@@ -89,5 +89,7 @@ export default {
 </script>
 
 <style scoped>
-
+.customScroll::-webkit-scrollbar {
+  width: 10px;
+}
 </style>

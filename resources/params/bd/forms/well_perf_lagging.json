@@ -1,0 +1,84 @@
+{
+  "type": "plain",
+  "table": "prod.well_perf",
+  "sort": [
+    {
+      "field": "perf_date",
+      "order": "desc"
+    }
+  ],
+  "tabs": [
+    {
+      "title": "main",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "company",
+                "type": "dict",
+                "dict": "companies",
+                "title": "podr",
+                "validation": "required|exists:tbd.dict.company,id"
+              },
+              {
+                "code": "iso_material_type",
+                "type": "dict",
+                "dict": "iso_material_types",
+                "title": "iso_mat_type"
+              },
+              {
+                "code": "perf_date",
+                "type": "date",
+                "title": "data",
+                "validation": "required"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "intervals",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "intervals",
+                "type": "table",
+                "dict": "perf_types",
+                "title": "perf_t",
+                "table": "prod.well_perf_interval",
+                "parent_column": "well_perf",
+                "columns": [
+                  {
+                    "code": "geo",
+                    "type": "dict_tree",
+                    "title": "horizon",
+                    "dict": "geos",
+                    "validation": "required|exists:tbd.dict.org,id"
+                  },
+                  {
+                    "code": "top",
+                    "type": "numeric",
+                    "title": "top",
+                    "validation": "required|numeric|gte:0|lte:base"
+                  },
+                  {
+                    "code": "base",
+                    "type": "numeric",
+                    "title": "base",
+                    "validation": "required|numeric|gte:0|lte:10000"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

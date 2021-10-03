@@ -33,45 +33,45 @@
                 "code": "hole_count",
                 "type": "numeric",
                 "title": "count",
-                "validation": "numeric|gte:0|lte:100"
+                "validation": "nullable|numeric|gte:0|lte:100"
               },
               {
                 "code": "hole_diameter",
                 "type": "numeric",
                 "title": "diame_c",
-                "validation": "numeric|gte:0|lte:50"
+                "validation": "nullable|numeric|gte:0|lte:50"
               },
               {
                 "code": "perforator_type",
                 "type": "dict",
                 "dict": "perforator_types",
                 "title": "perf_y",
-                "validation": "exists:tbd.dict.perforator_type,id"
+                "validation": "nullable|exists:tbd.dict.perforator_type,id"
               },
               {
                 "code": "patron_type",
                 "type": "dict",
                 "dict": "patron_types",
                 "title": "marka",
-                "validation": "exists:tbd.dict.patron_type,id"
+                "validation": "nullable|exists:tbd.dict.patron_type,id"
               },
               {
                 "code": "liquid",
                 "type": "numeric",
                 "title": "liquid",
-                "validation": "numeric|gte:0"
+                "validation": "nullable|numeric|gte:0"
               },
               {
                 "code": "bsw",
                 "type": "numeric",
                 "title": "bsw_p",
-                "validation": "numeric|gte:0|lte:100"
+                "validation": "nullable|numeric|gte:0|lte:100"
               },
               {
                 "code": "reservoir_count",
                 "type": "numeric",
                 "title": "reserv_c",
-                "validation": "numeric|gte:1"
+                "validation": "nullable|numeric|gte:1"
               },
               {
                 "code": "perf_date",
