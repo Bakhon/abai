@@ -4,3 +4,8 @@
 @import 'rating-accordion__body';
 @import 'rating-tabs';
 @import 'rating-table';
+
+
+.leaflet-top, .leaflet-bottom {
+  z-index: 998 !important;
+}

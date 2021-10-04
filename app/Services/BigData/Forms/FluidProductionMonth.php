@@ -15,7 +15,6 @@ class FluidProductionMonth extends MeasLogByMonth
 {
     protected $configurationFileName = 'fluid_production_month';
 
-
     protected function getRows(CarbonImmutable $date, Collection $wells): array
     {
         $wellIds = $wells->pluck('id')->toArray();
@@ -45,7 +44,15 @@ class FluidProductionMonth extends MeasLogByMonth
 
             $i = 0;
             foreach ($indicators as $code) {
-                $row = $this->getIndicatorRowData($well, $code, $techMode, $date, $liquid, $bsw, $workTime[$well->id]);
+                $row = $this->getIndicatorRowData(
+                    $well,
+                    $code,
+                    $techMode,
+                    $date,
+                    $liquid,
+                    $bsw,
+                    $workTime[$well->id] ?? null
+                );
                 if ($i++ === 0) {
                     $row = array_merge($firstRow, $row);
                 }
@@ -122,67 +129,6 @@ class FluidProductionMonth extends MeasLogByMonth
             });
     }
 
-    private function getWorkTime(array $wellIds, CarbonImmutable $date): array
-    {
-        $result = [];
-
-        $wellStatuses = DB::connection('tbd')
-            ->table('prod.well_status as s')
-            ->select('s.status', 's.dbeg', 's.dend', 's.well')
-            ->join('dict.well_status_type', 'dict.well_status_type.id', 's.status')
-            ->where('dbeg', '<=', $date->startOfMonth())
-            ->where('dend', '>=', $date)
-            ->whereIn('well', $wellIds)
-            ->whereIn('dict.well_status_type.code', MeasurementLogForm::WELL_ACTIVE_STATUSES)
-            ->get()
-            ->map(
-                function ($item) {
-                    $item->dbeg = Carbon::parse($item->dbeg);
-                    $item->dend = Carbon::parse($item->dend);
-                    return $item;
-                }
-            );
-
-        $monthDay = $date->startOfMonth();
-        while ($monthDay < $date) {
-            $startOfDay = $monthDay->startOfDay();
-            $endOfDay = $monthDay->endOfDay();
-            foreach ($wellIds as $wellId) {
-                $result[$wellId][$monthDay->format('j')] = [
-                    'value' => $this->getHoursForOneDay($wellStatuses, $endOfDay, $startOfDay, $wellId)
-                ];
-            }
-
-            $monthDay = $monthDay->addDay();
-        }
-
-        return $result;
-    }
-
-    private function getHoursForOneDay(
-        Collection $wellStatuses,
-        CarbonImmutable $endOfDay,
-        CarbonImmutable $startOfDay,
-        $wellId
-    ): int {
-        $hours = 0;
-        $dailyStatuses = $wellStatuses
-            ->where('dbeg', '<=', $endOfDay)
-            ->where('dend', '>=', $startOfDay)
-            ->where('well', $wellId);
-
-        foreach ($dailyStatuses as $status) {
-            if ($status->dbeg <= $startOfDay && $status->dend >= $endOfDay) {
-                $hours += 24;
-            } elseif ($status->dbeg > $startOfDay) {
-                $hours += $status->dbeg->diffInHours($status->dend < $endOfDay ? $status->dend : $endOfDay);
-            } elseif ($status->dend < $endOfDay) {
-                $hours += $startOfDay->diffInHours($status->dend);
-            }
-        }
-        return $hours;
-    }
-
     private function getOtherUwis(array $wellIds): array
     {
         $uwis = DB::connection('tbd')
@@ -231,19 +177,20 @@ class FluidProductionMonth extends MeasLogByMonth
                 $row = array_merge($row, $this->getBswRowData($techMode, $well, $date, $bsw));
                 break;
             case 'oil':
+                $row = array_merge($row, $this->getOilRowData($techMode, $well, $date, $bsw, $liquid));
                 continue;
             case 'note':
                 $monthDay = $date->startOfMonth();
-                while ($monthDay < $date) {
-                    $liquidValue = $liquid->get($well->id)->get($monthDay->format('j'));
+                while ($monthDay <= $date) {
+                    $liquidValue = $this->getLiquidValueForDay($liquid, $well->id, $monthDay->format('j'));
                     $row[$monthDay->format('d.m.Y')] = ['value' => $liquidValue['note'] ?? null];
                     $monthDay = $monthDay->addDay();
                 }
                 break;
             case 'reason_decline':
                 $monthDay = $date->startOfMonth();
-                while ($monthDay < $date) {
-                    $liquidValue = $liquid->get($well->id)->get($monthDay->format('j'));
+                while ($monthDay <= $date) {
+                    $liquidValue = $this->getLiquidValueForDay($liquid, $well->id, $monthDay->format('j'));
                     $row[$monthDay->format('d.m.Y')] = [
                         'value' => $liquidValue['reason_decline'] ?? null,
                         'is_editable' => true,
@@ -255,7 +202,7 @@ class FluidProductionMonth extends MeasLogByMonth
                 break;
             case 'worktime':
                 $monthDay = $date->startOfMonth();
-                while ($monthDay < $date) {
+                while ($monthDay <= $date) {
                     $row[$monthDay->format('d.m.Y')] = $workTime[$monthDay->format('j')];
                     $monthDay = $monthDay->addDay();
                 }
@@ -273,7 +220,7 @@ class FluidProductionMonth extends MeasLogByMonth
 
         $count = $sum = 0;
         $monthDay = $date->startOfMonth();
-        while ($monthDay < $date) {
+        while ($monthDay <= $date) {
             $wellLiquid = $liquid->get($well->id);
             if ($wellLiquid) {
                 $liquidValue = $wellLiquid->get($monthDay->format('j'));
@@ -302,7 +249,7 @@ class FluidProductionMonth extends MeasLogByMonth
 
         $count = $sum = 0;
         $monthDay = $date->startOfMonth();
-        while ($monthDay < $date) {
+        while ($monthDay <= $date) {
             $wellBsw = $bsw->get($well->id);
             $bswValue = $wellBsw ? $wellBsw->get($monthDay->format('j')) : null;
             $row[$monthDay->format('d.m.Y')] = [
@@ -320,6 +267,45 @@ class FluidProductionMonth extends MeasLogByMonth
 
         $row['meas_count'] = ['value' => $count];
         $row['avg'] = ['value' => $count > 0 ? round($sum / $count, 2) : 0];
+        return $row;
+    }
+
+    private function getOilRowData(
+        Collection $techMode,
+        $well,
+        CarbonImmutable $date,
+        Collection $bsw,
+        Collection $liquid
+    ) {
+        $liquidRow = $this->getLiquidRowData($techMode, $well, $date, $liquid);
+        $bswRow = $this->getLiquidRowData($techMode, $well, $date, $bsw);
+        $oilDensity = $techMode->get($well->id) ? $techMode->get($well->id)->oil_density : 0;
+
+        $count = $sum = 0;
+        $monthDay = $date->startOfMonth();
+        while ($monthDay <= $date) {
+            $day = $monthDay->format('d.m.Y');
+
+            $liquidValue = isset($liquidRow[$day]) ? $liquidRow[$day]['value'] : 0;
+            $bswValue = isset($bswRow[$day]) ? $bswRow[$day]['value'] : 0;
+            $oil = $liquidValue * (1 - $bswValue / 100) * $oilDensity;
+
+            $row[$day] = [
+                'is_editable' => false,
+                'value' => $oil
+            ];
+
+            if (!empty($oil)) {
+                $count++;
+                $sum += $bswValue;
+            }
+
+            $monthDay = $monthDay->addDay();
+        }
+
+        $row['meas_count'] = ['value' => $count];
+        $row['avg'] = ['value' => $count > 0 ? round($sum / $count, 2) : 0];
+
         return $row;
     }
 
@@ -368,7 +354,7 @@ class FluidProductionMonth extends MeasLogByMonth
         }
     }
 
-    private function saveField(string $table, string $field, int $wellId, CarbonImmutable $date, float $value)
+    private function saveField(string $table, string $field, $wellId, CarbonImmutable $date, $value)
     {
         $activity = WellActivity::where('code', 'PMSR')->first();
         $valueType = ValueType::where('code', 'MNT')->first();
@@ -406,4 +392,11 @@ class FluidProductionMonth extends MeasLogByMonth
                 );
         }
     }
+
+    private function getLiquidValueForDay(Collection $liquid, int $wellId, string $day)
+    {
+        $wellLiquid = $liquid->get($wellId);
+        return $wellLiquid ? $wellLiquid->get($day) : null;
+    }
+
 }

@@ -12,12 +12,12 @@ export default {
     fontSize: {
       required: false,
       type: [Number, String],
-      default: 68
+      default: 48
     },
     lineHeight: {
       required: false,
       type: [Number, String],
-      default: 82
+      default: 56
     },
     flexGrow: {
       required: false,

@@ -384,21 +384,27 @@ class EconomicNrsController extends Controller
             ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
             : null;
 
-        /** @var Carbon $intervalStart */
-        /** @var Carbon $intervalEnd */
-        list($intervalStart, $intervalEnd) = self::calcIntervalMonthsStartEnd(
-            $request->interval_start,
-            $request->interval_end
+        $interval = self::formatInterval(
+            Carbon::parse($request->interval_start),
+            Carbon::parse($request->interval_end)->addDay(),
         );
-
-        $interval = self::formatInterval($intervalStart->copy(), $intervalEnd->copy());
 
         $sumKeys = [
             "Operating_profit",
             "Overall_expenditures",
             "NetBack_bf_pr_exp",
             "oil",
-            "liquid"
+            "liquid",
+            "Revenue_export",
+            "Revenue_local",
+            "Variable_expenditures",
+            "Fixed_expenditures",
+            "Fixed_nopayroll_expenditures",
+            "Fixed_payroll_expenditures",
+            "MET_payments",
+            "ECD_payments",
+            "ERT_payments",
+            "Trans_expenditures",
         ];
 
         $builder = $this

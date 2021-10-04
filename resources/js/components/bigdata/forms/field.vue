@@ -16,9 +16,10 @@
     </template>
     <template v-else-if="item.type === 'list'">
       <v-select
-          v-on:input="updateValue($event.id)"
+          :value="value"
           :options="item.values"
           :name="item.code"
+          v-on:input="updateValue($event)"
           label="name"
       >
         <template #open-indicator="{ attributes }">
@@ -124,7 +125,7 @@
       </BigdataTableField>
     </template>
     <template v-else-if="['calc', 'label'].includes(item.type)">
-      <label>{{ value }}</label>
+      <label v-html="value"></label>
     </template>
     <template v-else-if="item.type === 'checkbox_table'">
       <BigdataCheckboxTableField :params="item" v-on:change="updateValue($event)"></BigdataCheckboxTableField>
@@ -191,11 +192,15 @@ export default {
   },
   mounted() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
-      if (this.dict === null) {
-        this.loadDict(this.item.dict).then(result => {
-          this.dict = result
-        })
+      let dict = this.getDict(this.item.dict)
+      if (dict) {
+        this.dict = dict
+        return
       }
+
+      this.loadDict(this.item.dict).then(result => {
+        this.dict = result
+      })
     }
 
     this.formatedValue = this.getFormatedValue(this.value)
@@ -204,6 +209,9 @@ export default {
     ...bdFormActions([
       'loadDict',
     ]),
+    getDict(code) {
+      return this.$store.getters['bdform/dict'](code);
+    },
     changeDate(date) {
       if (date) {
         let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')

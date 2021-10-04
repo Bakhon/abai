@@ -2,45 +2,56 @@
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\Org;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+
 class DailyReportsWaterProduction extends DailyReports
 {
-
-    const CITS = 0;
-    const GS = 1;
-    const ALL = 2;
     protected $metricCode = 'WPRD';
     protected $configurationFileName = 'daily_reports_water_prod';
+    protected $planField = 'water_production';
 
-    protected function getData($filter): array {
-        $data = parent::getReports($filter);
-        $result = [];
-        $plan = $data->sum('plan');
-        $fact = $data->sum('fact');
-        switch ($filter->period) {
-            case self::DAY:
-                $result['plan'] = ['value' => $plan];
-                $result['fact'] = $result['daily_fact_cits'] = ['value' => $fact];
-                break;
-            case self::MONTH:
-                $result['month_plan'] = ['value' => $plan];
-                $result['month_fact'] = $result['month_fact_cits'] = ['value' => $fact];
-                break;
-            case self::YEAR:
-                $result['year_plan'] = ['value' => $plan];
-                $result['year_fact'] = $result['year_fact_cits'] = ['value' => $fact];
-                break;
-        }
+    protected function getMeasuredFieldValues(Org $org, CarbonImmutable $date): Collection
+    {
+        $wells = $this->getOrgWells($org, $date);
 
-        if ($filter->optionId === self::GS) {
-            $result['fact'] = ['value' => 0];
-            $result['month_fact'] = ['value' => 0];
-            $result['year_fact'] = ['value' => 0];
-        }
-        $result['daily_fact_gs'] = ['value' => 0];
-        $result['month_fact_gs'] = ['value' => 0];
-        $result['year_fact_gs'] = ['value' => 0];
+        $workTime = $this->getWorkTime($wells, $date);
 
-        return $result;
+        return DB::connection('tbd')
+            ->table('prod.meas_water_prod')
+            ->select('dbeg', 'water_prod_val', 'well')
+            ->where('dbeg', '>=', $date->startOfYear())
+            ->where('dbeg', '<=', $date->endOfDay())
+            ->whereIn('well', $wells)
+            ->get()
+            ->groupBy(function ($item) {
+                return Carbon::parse($item->dbeg, 'Asia/Almaty')->format('d.m.Y');
+            })
+            ->map(function ($items, $currentDate) use ($workTime) {
+                $dateWater = $items
+                    ->map(function ($item) use ($workTime) {
+                        $date = Carbon::parse($item->dbeg, 'Asia/Almaty');
+
+                        if (!isset($workTime[$item->well])) {
+                            return 0;
+                        }
+                        if (!isset($workTime[$item->well][$date->format('d.m.Y')])) {
+                            return 0;
+                        }
+
+                        return $item->water_prod_val * $workTime[$item->well][$date->format(
+                                'd.m.Y'
+                            )];
+                    })->sum();
+
+                return [
+                    'date' => Carbon::parse($currentDate, 'Asia/Almaty'),
+                    'value' => round($dateWater, 2)
+                ];
+            });
     }
 
 }

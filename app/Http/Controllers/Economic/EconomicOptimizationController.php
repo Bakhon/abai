@@ -20,8 +20,8 @@ class EconomicOptimizationController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_scenario_KBM_Scenario_Steam_Test_short_v5_gtm_optimize_v2';
-    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_KBM_Scenario_Steam_Test_short_v8';
+    const DATA_SOURCE = 'economic_scenario_MMG_Scenario_Test_v3';
+    const DATA_SOURCE_WELL_CHANGES = 'economic_well_changes_scenario_MMG_Scenario_Test_v3';
     const DATA_SOURCE_DATE = '2021/01/01';
 
     const SCENARIO_COLUMNS = [
@@ -240,9 +240,7 @@ class EconomicOptimizationController extends Controller
         $uwis = [];
 
         foreach ($wells as &$well) {
-            $well['uwi_tbd'] = str_replace('W', 'KZH_', $well['uwi']);
-
-            $uwis[$well['uwi_tbd']] = 1;
+            $uwis[$well['uwi']] = 1;
         }
 
         $coordinates = Well::query()
@@ -253,7 +251,7 @@ class EconomicOptimizationController extends Controller
             ->groupBy('uwi');
 
         foreach ($wells as &$well) {
-            $well['coordinates'] = $coordinates->get($well['uwi_tbd'])[0]['spatialObject'][0]['coord_point'] ?? null;
+            $well['coordinates'] = $coordinates->get($well['uwi'])[0]['spatialObject'][0]['coord_point'] ?? null;
         }
 
         return $wells;

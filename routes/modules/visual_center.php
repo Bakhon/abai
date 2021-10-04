@@ -93,6 +93,10 @@ Route::group(
                 Route::get('/oil-dynamic', 'VisCenter\OilDynamic@oilDynamic')->name('oil-dynamic');
                 Route::get('/oil-dynamic-daily', 'VisCenter\OilDynamic@getDailyProductionData');
                 Route::get('/get-production-params-by-category', 'VisCenter\ProductionParams\VisualCenterController@getProductionParamsByCategory');
+
+                Route::get('/upload-historical-data', 'VisCenter\ExcelForm\HistoricalUploadController@uploadHistoricalData')->name('upload-historical-data');
+                Route::post('/store-historical-data', 'VisCenter\ExcelForm\HistoricalUploadController@storeHistoricalDataByDzo');
+
             }
         );
     }

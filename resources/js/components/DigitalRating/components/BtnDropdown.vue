@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown btn-dropdown mr-10px">
+  <div class="dropdown btn-dropdown">
     <div class="btn-dropdown__header dropdown-toggle" data-toggle="dropdown">
       <slot name="icon"/>
       <div class="btn-dropdown__title">
@@ -10,8 +10,8 @@
     <div class="dropdown-menu btn-dropdown__area">
       <ul class="btn-dropdown__area-list">
         <li v-for="(item, index) in list" :key="index">
-          <i :class="`fas fa-${item.icon}`"></i>
-          <span>{{ trans(item.title) }}</span>
+          <i :class="`fas fa-${item.icon}`"/>
+          <span>{{ item.title ? trans(item.title) : trans(item) }}</span>
         </li>
       </ul>
     </div>

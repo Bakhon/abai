@@ -11,19 +11,29 @@
       "title": "ngdu",
       "code": "ngdu",
       "type": "text",
-      "is_editable": false
+      "is_editable": false,
+      "form_type": "default"
     },
     {
       "title": "cdng",
       "code": "cdng",
       "type": "text",
-      "is_editable": false
+      "is_editable": false,
+      "form_type": "default"
+    },
+    {
+      "title": "upn",
+      "code": "upn",
+      "type": "text",
+      "is_editable": false,
+      "form_type": "ktm"
     },
     {
       "title": "gu",
       "code": "gu",
       "type": "text",
-      "is_editable": false
+      "is_editable": false,
+      "form_type": "default"
     },
     {
       "title": "zu_gzu",

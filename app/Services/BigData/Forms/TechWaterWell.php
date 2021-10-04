@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -23,14 +24,14 @@ class TechWaterWell extends TableForm
         $rowData = $this->fetchRowData(
             $tables,
             $wells->pluck('id')->toArray(),
-            Carbon::parse($this->request->get('date'))
+            Carbon::parse($filter->date, 'Asia/Almaty')
         );
 
         $this->waterMeasurements = DB::connection('tbd')
             ->table('prod.meas_water_prod')
             ->whereIn('well', $wells->pluck('id')->toArray())
-            ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
-            ->where('dbeg', '>=', Carbon::parse($this->request->get('date'))->subYears(10))
+            ->where('dbeg', '>=', Carbon::parse($filter->date, 'Asia/Almaty')->subMonthNoOverflow()->startOfMonth())
+            ->where('dbeg', '<=', Carbon::parse($filter->date, 'Asia/Almaty')->subMonthNoOverflow()->endOfMonth())
             ->get()
             ->groupBy('well')
             ->map(function ($measurements) {
@@ -94,7 +95,8 @@ class TechWaterWell extends TableForm
             $data = [
                 'well' => $params['wellId'],
                 $column['column'] => $params['value'],
-                'dbeg' => $params['date']->toDateTimeString()
+                'dbeg' => $params['date']->toDateTimeString(),
+                'dend' => Well::DEFAULT_END_DATE
             ];
 
             if (!empty($column['additional_filter'])) {
