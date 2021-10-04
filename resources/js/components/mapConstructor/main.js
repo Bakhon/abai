@@ -150,42 +150,36 @@ export default {
         },
         importFile(file) {
             this.SET_LOADING(true);
-            const reader = new FileReader();
-            reader.addEventListener('load', (event) => {
-                const firstString = reader.result.slice(0, reader.result.indexOf("\r\n"));
-                const firstStringArray = firstString.trim().split(" ");
-                if (firstStringArray.length === 2 && firstStringArray[0] !== '/') {
-                    this.sendFileToAPI(file);
-                } else if (this.map && Object.keys(this.map).length !== 0) {
-                    const fileData = reader.result.split("\r\n").splice(1);
-                    this.drawLines(fileData)
-                } else {
-                    this.$notifyError(this.trans('map_constructor.map_required'));
-                    this.SET_LOADING(false);
+            const extensions = ['irap', 'zmap', 'shp', 'txt'];
+            let fileType = '';
+            extensions.forEach(extension => {
+                if (fileType === '' && file.name.indexOf(extension) !== -1) {
+                    fileType = extension;
                 }
-            });
-            reader.readAsText(file);
+              }
+            )
+            if (fileType === '') {
+                this.$notifyError(this.trans('map_constructor.file_extension_error'));
+                this.SET_LOADING(false);
+            }
+            this.sendFileToAPI(file, fileType);
         },
         drawLines(fileData) {
-            fileData = fileData.map(
-              value => {
-                  if (value !== '') {
-                      return value.split(" ").map(value => parseInt(value, 10));
-                  }
-              }
-            );
-            let linesData = [];
-            for (let i = 1; i < fileData.length; i++) {
-                if (typeof fileData[i + 1] !== "undefined") {
-                    linesData.push([fileData[i], fileData[i + 1]])
-                }
-            }
             let features = [];
-            linesData.forEach(lineData => {
-                features.push(new Feature({
-                    geometry: new LineString(lineData)
-                }))
-            })
+            fileData.forEach(dataItem => {
+                dataItem = dataItem.map(
+                  value => {
+                      if (value !== '') {
+                          return value;
+                      }
+                  }
+                );
+                dataItem.forEach(lineData => {
+                    features.push(new Feature({
+                        geometry: new LineString(lineData)
+                    }))
+                })
+            });
             const newLayer = new VectorLayer({
                 source: new VectorSource({
                     features: features,
@@ -205,11 +199,12 @@ export default {
             this.layersList.push(layerGroup.getLayers());
             this.SET_LOADING(false);
         },
-        sendFileToAPI(file) {
+        sendFileToAPI(file, type) {
             let formData = new FormData();
             let $self = this;
             formData.append('file', file);
             formData.append('number_of_levels', '10');
+            formData.append('type', type);
             axios.post(this.localeUrl('map-constructor/import'),
               formData,
               {
@@ -219,7 +214,11 @@ export default {
               }
             ).then((response) => {
                 if (response.data) {
-                    this.initPolygons(response.data);
+                    if (type === 'shp') {
+                        this.drawLines(response.data)
+                    } else {
+                        this.initPolygons(response.data);
+                    }
                 }
                 this.SET_LOADING(false);
             })
@@ -252,11 +251,11 @@ export default {
             });
             const internalStyle = new Style({
                 stroke: new Stroke({
-                    color: 'rgba(255, 255, 255, 1)',
+                    color: 'rgba(255, 255, 255, 0.1)',
                     width: 1,
                 }),
                 fill: new Fill({
-                    color: 'rgba(255, 255, 255, 1)',
+                    color: 'rgba(255, 255, 255, 0.1)',
                 }),
             });
             let layerGroup = new LayerGroup();
@@ -275,10 +274,18 @@ export default {
                 type: 'empty',
             });
             layerGroup.getLayers().push(emptyLayer);
+            let redColor = 255;
+            let greenColor = 255;
             data.polygons_per_levels.forEach((polygonsPerLevel, levelIndex) => {
                 let internalVectorSource = new VectorSource();
                 let externalVectorSource = new VectorSource();
-                const colorIndex = 255 / (levelIndex + 1);
+                levelIndex = levelIndex !== 0 ? levelIndex : 1;
+                const colorIndex = 255 - 255 / (levelIndex);
+                if (levelIndex % 2 === 0) {
+                    greenColor = colorIndex;
+                } else {
+                    redColor = colorIndex;
+                }
                 polygonsPerLevel.polygons.forEach((polygon) => {
                     const feature = new Feature({
                         geometry: new Polygon([polygon.data])
@@ -291,11 +298,11 @@ export default {
                 });
                 const externalStyle = new Style({
                     stroke: new Stroke({
-                        color: `rgba(0, ${colorIndex}, 0, 0.6)`,
+                        color: `rgba(${redColor}, ${greenColor}, 0, 0.5)`,
                         width: 1,
                     }),
                     fill: new Fill({
-                        color: `rgba(0, ${colorIndex}, 0, 0.6)`,
+                        color: `rgba(${redColor}, ${greenColor}, 0, 0.5)`,
                     }),
                 });
                 let internalVectorLayer = new VectorLayer({

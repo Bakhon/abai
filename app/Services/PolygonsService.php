@@ -11,6 +11,9 @@ class PolygonsService
 {
     protected $client;
 
+    const GRID_MAP_URI = 'polygons/gridmap';
+    const CONTOUR_MAP_URI = 'polygons/contourmap';
+
     public function __construct()
     {
         $this->client = new Client(
@@ -20,15 +23,19 @@ class PolygonsService
         );
     }
 
-    public function getPolygons(UploadedFile $file, int $numberOfLevels)
+    public function getPolygons(UploadedFile $file, int $numberOfLevels, string $type)
     {
-        return $this->client->request('POST', 'polygons/', [
+        $uri = self::GRID_MAP_URI;
+        if ($type === 'shp') {
+            $uri = self::CONTOUR_MAP_URI;
+        }
+        return $this->client->request('POST', $uri, [
             'multipart' => [[
                 'name' => 'file',
                 'contents' => Utils::tryFopen($file->path(), 'r'),
                 'filename' => $file->getClientOriginalName()
             ]],
-            'query' => 'number_of_levels=' . $numberOfLevels,
+            'query' => 'number_of_levels=' . $numberOfLevels . '&type=' . $type,
         ])->getBody()->getContents();
     }
 

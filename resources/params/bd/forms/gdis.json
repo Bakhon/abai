@@ -3,7 +3,7 @@
   "table": "prod.gdis_complex",
   "sort": [
     {
-      "field": "research_date",
+      "field": "dbeg",
       "order": "desc"
     }
   ],
@@ -16,17 +16,40 @@
             "title": "",
             "items": [
               {
-                "code": "research_date",
+                "code": "dbeg",
                 "type": "datetime",
                 "title": "dbeg",
                 "validation": "required"
               },
               {
+                "code": "dend",
+                "type": "datetime",
+                "title": "dend",
+                "validation": "required|after:dbeg"
+              },
+              {
                 "code": "method",
                 "type": "dict",
-                "dict":"research_methods",
+                "dict":"res_method_dict",
                 "title": "research_type",
                 "validation": "required|exists:tbd.dict.research_method,id"
+              },
+              {
+                "code": "depth",
+                "type": "numeric",
+                "title": "depth",
+                "validation": "required"
+              },
+              {
+                "code": "research_target",
+                "type": "text",
+                "title": "aim"
+              },
+              {
+                "code": "conclusion",
+                "type": "text",
+                "title": "conclusion",
+                "validation": "required"
               },
               {
                 "code": "WWP",
@@ -60,7 +83,7 @@
               {
                 "code": "RSMD",
                 "table": "prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "plast_model",
                 "depends_on": [
                   {
@@ -133,7 +156,7 @@
               {
                 "code": "CNCL",
                 "table": "prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "vyvody",
                 "depends_on": [
                   {
@@ -147,7 +170,7 @@
               {
                 "code": "RCM",
                 "table": "prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "recc",
                 "depends_on": [
                   {
@@ -251,7 +274,7 @@
               {
                 "code": "WBMD",
                 "table": "prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "plast_uwi",
                 "depends_on": [
                   {
@@ -265,7 +288,7 @@
               {
                 "code": "BRMD",
                 "table": "prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "model_g",
                 "depends_on": [
                   {
@@ -368,7 +391,7 @@
               {
                 "code": "RSMD",
                 "table":"prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "plast_model",
                 "depends_on": [
                   {
@@ -637,7 +660,7 @@
               {
                 "code": "WBMD",
                 "table":"prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "plast_uwi",
                 "depends_on": [
                   {
@@ -651,7 +674,7 @@
               {
                 "code": "BRMD",
                 "table":"prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "model_g",
                 "depends_on": [
                   {
@@ -813,7 +836,7 @@
               {
                 "code": "RSMD",
                 "table":"prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "plast_model",
                 "depends_on": [
                   {
@@ -1096,7 +1119,7 @@
               {
                 "code": "WBMD",
                 "table":"prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "plast_uwi",
                 "depends_on": [
                   {
@@ -1110,7 +1133,7 @@
               {
                 "code":"BRMD",
                 "table":"prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "model_g",
                 "depends_on": [
                   {
@@ -1226,7 +1249,7 @@
               {
                 "code": "RSMD",
                 "table":"prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "plast_model",
                 "depends_on": [
                   {
@@ -1449,7 +1472,7 @@
               {
                 "code": "WBMD",
                 "table":"prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "plast_uwi",
                 "depends_on": [
                   {
@@ -1463,7 +1486,7 @@
               {
                 "code": "BRMD",
                 "table":"prod.gdis_complex_value",
-                "type": "numeric",
+                "type": "text",
                 "title": "model_g",
                 "depends_on": [
                   {
@@ -1609,7 +1632,7 @@
             {
               "code": "RSMD",
               "table":"prod.gdis_complex_value",
-              "type": "numeric",
+              "type": "text",
               "title": "plast_model",
               "depends_on": [
                 {
@@ -1832,7 +1855,7 @@
             {
               "code": "WBMD",
               "table":"prod.gdis_complex_value",
-              "type": "numeric",
+              "type": "text",
               "title": "plast_uwi",
               "depends_on": [
                 {
@@ -1846,7 +1869,7 @@
             {
               "code": "BRMD",
               "table":"prod.gdis_complex_value",
-              "type": "numeric",
+              "type": "text",
               "title": "model_g",
               "depends_on": [
                 {
@@ -1992,7 +2015,7 @@
             {
               "code": "RSMD",
               "table":"prod.gdis_complex_value",
-              "type": "numeric",
+              "type": "text",
               "title": "plast_model",
               "depends_on": [
                 {
@@ -2215,7 +2238,7 @@
             {
               "code": "WBMD",
               "table":"prod.gdis_complex_value",
-              "type": "numeric",
+              "type": "text",
               "title": "plast_uwi",
               "depends_on": [
                 {
@@ -2229,7 +2252,7 @@
             {
               "code": "BRMD",
               "table":"prod.gdis_complex_value",
-              "type": "numeric",
+              "type": "text",
               "title": "model_g",
               "depends_on": [
                 {
@@ -2854,7 +2877,7 @@
             {
               "code": "RSMD",
               "table":"prod.gdis_complex_value",
-              "type": "numeric",
+              "type": "text",
               "title": "plast_model",
               "depends_on": [
                 {
@@ -3076,7 +3099,7 @@
             {
               "code": "WBMD",
               "table":"prod.gdis_complex_value",
-              "type": "numeric",
+              "type": "text",
               "title": "plast_uwi",
               "depends_on": [
                 {
@@ -3090,7 +3113,7 @@
             {
               "code": "BRMD",
               "table":"prod.gdis_complex_value",
-              "type": "numeric",
+              "type": "text",
               "title": "model_g",
               "depends_on": [
                 {
@@ -3308,26 +3331,7 @@
                   }
                 }
               ]
-            },
-              {
-                "code": "depth",
-                "type": "numeric",
-                "title": "depth",
-                "validation": "required"
-              },
-              {
-                "code": "research_target",
-                "type": "dict",
-                "dict": "research_target",
-                "title": "aim"
-              },
-              {
-                "code": "conclusion",
-                "type": "dict",
-                "dict": "gdis_conclusion",
-                "title": "conclusion",
-                "validation": "required"
-              }
+            }
             ]
           }
         ]
