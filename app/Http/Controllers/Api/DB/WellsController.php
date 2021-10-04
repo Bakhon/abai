@@ -84,7 +84,7 @@ class WellsController extends Controller
             'agms' => $this->getTechsByCode($well, 'AGMS'),
         ];
 
-        Cache::put('well_' . $well->id, $wellInfo, 1440);
+        Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
 
