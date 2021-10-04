@@ -223,7 +223,7 @@ const economicRes = {
         percent: 0
       },
     },
-    MET_payments: {
+    tax_costs: {
       data: [],
       sum: {
         value: [0, ''],
@@ -341,7 +341,7 @@ export default {
         [
           {
             title: this.trans('economic_reference.met_payments'),
-            sum: this.res.lastMonth.MET_payments.sum,
+            sum: this.res.lastMonth.tax_costs.sum,
             reversePercent: true
           },
           {

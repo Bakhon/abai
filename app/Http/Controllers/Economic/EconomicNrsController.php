@@ -163,8 +163,10 @@ class EconomicNrsController extends Controller
             'Revenue_local',
             'Variable_expenditures',
             'Fixed_expenditures',
-            'MET_payments',
             'Production_expenditures',
+            "MET_payments",
+            "ECD_payments",
+            "ERT_payments",
         ];
 
         foreach ($sumKeys as $sumKey) {
@@ -349,6 +351,7 @@ class EconomicNrsController extends Controller
             ];
         }
 
+        $resLastMonth['tax_costs']['sum'] = self::calcTaxCosts($productionExpenditures, $monthsCount);
 
         return [
             'lastYear' => [
@@ -759,5 +762,37 @@ class EconomicNrsController extends Controller
         } catch (\Throwable $e) {
             return [];
         }
+    }
+
+    static function calcTaxCosts(array $productionExpenditures, int $monthsCount): array
+    {
+        $taxCosts = [
+            'value' => 0,
+            'value_prev' => 0,
+        ];
+
+        $taxKeys = [
+            'MET_payments',
+            'ECD_payments',
+            'ERT_payments',
+        ];
+
+        foreach ($taxKeys as $taxKey) {
+            $lastMonth = $productionExpenditures[$monthsCount - 1][$taxKey];
+
+            $prevMonth = $productionExpenditures[$monthsCount - 2][$taxKey];
+
+            $taxCosts['value'] += $lastMonth;
+
+            $taxCosts['value_prev'] += $prevMonth;
+        }
+
+        $taxCosts['percent'] = self::calcPercent($taxCosts['value'], $taxCosts['value_prev']);
+
+        $taxCosts['value'] = self::formatMoney($taxCosts['value']);
+
+        $taxCosts['value_prev'] = self::formatMoney($taxCosts['value_prev']);
+
+        return $taxCosts;
     }
 }
