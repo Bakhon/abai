@@ -6,6 +6,16 @@
       "order": "desc"
     }
   ],
+  "table_fields": [
+    "gis_date",
+    "gis_type",
+    "matering_from",
+    "matering_to",
+    "process_from",
+    "process_to",
+    "conclusion",
+    "table"
+  ],
   "tabs": [
     {
       "title": "main",
@@ -25,7 +35,7 @@
                 "type": "dict",
                 "dict": "companies",
                 "title": "podr",
-                "validation":"exists:tbd.dict.company,id"
+                "validation": "nullable|exists:tbd.dict.company,id"
               },
               {
                 "code": "matering_from",
@@ -37,7 +47,7 @@
                 "code": "matering_to",
                 "type": "numeric",
                 "title": "intr_do",
-                "validation": "required"
+                "validation": ""
               },
               {
                 "code": "process_from",
@@ -54,7 +64,7 @@
             ]
           },
           {
-            "title":"title",
+            "title": "title",
             "items": [
               {
                 "code": "liquid_vol",
@@ -77,7 +87,7 @@
             ]
           },
           {
-            "title":"param",
+            "title": "param",
             "items": [
               {
                 "code": "intake",
@@ -106,6 +116,7 @@
               {
                 "code": "gis_type",
                 "type": "dict",
+                "multiple": true,
                 "dict": "gis_kinds",
                 "title": "gis_types",
                 "validation": ""
@@ -123,11 +134,12 @@
             "title": "",
             "items": [
               {
-                "code": "name_ru",
+                "code": "gis_method",
                 "type": "dict",
+                "multiple": true,
                 "dict": "gis_method_types",
                 "title": "gis_methods",
-                "validation": "exists:tbd.dict.gis_method_type,id"
+                "validation": "nullable|exists:tbd.dict.gis_method_type,id"
               }
             ]
           }
@@ -256,10 +268,16 @@
             "title": "",
             "items": [
               {
-                "code": "table",
+                "code": "documents",
                 "type": "table",
                 "form": "well_document_short",
                 "title": "table",
+                "table": {
+                  "name": "prod.gis_file",
+                  "file_type": 4,
+                  "local_key": "gis",
+                  "document_key": "document"
+                },
                 "document_list": true,
                 "columns": [
                   {
