@@ -2,14 +2,9 @@
   <div>
     <div class="p-3 bg-main1 mb-3 mx-auto max-width-88vw">
       <div class="d-flex">
-        <select-interval
-            :form="form"
-            class="flex-grow-1 flex-shrink-0"
-            @change="getData"/>
-
         <select-organization
             :form="form"
-            class="ml-3 flex-grow-1"
+            class="flex-grow-1"
             hide-label
             @change="getData"/>
 
@@ -18,6 +13,15 @@
             :org_id="form.org_id"
             :form="form"
             class="ml-2 flex-grow-1"
+            @change="getData"/>
+
+        <select-granularity
+            :form="form"
+            class="ml-2 flex-grow-1"/>
+
+        <select-interval
+            :form="form"
+            class="ml-2 flex-grow-1 flex-shrink-0"
             @change="getData"/>
       </div>
 
@@ -54,6 +58,7 @@ import ChartButton from "./components/ChartButton";
 import SelectInterval from "./components/SelectInterval";
 import SelectOrganization from "./components/SelectOrganization";
 import SelectField from "./components/SelectField";
+import SelectGranularity from "./components/SelectGranularity";
 import TableMatrix from "./components/nrs/TableMatrix";
 import TableTreeMap from "./components/nrs/TableTreeMap";
 
@@ -65,6 +70,7 @@ export default {
     SelectInterval,
     SelectOrganization,
     SelectField,
+    SelectGranularity,
     TableMatrix
   },
   data: () => ({
@@ -72,7 +78,8 @@ export default {
       org_id: null,
       field_id: null,
       interval_start: '2021-01-01T00:00:00.000Z',
-      interval_end: '2021-02-01T00:00:00.000Z',
+      interval_end: '2021-07-31T00:00:00.000Z',
+      granularity: 'month'
     },
     res: null,
     activeTab: 'matrix'

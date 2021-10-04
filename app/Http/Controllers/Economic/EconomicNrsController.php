@@ -384,6 +384,9 @@ class EconomicNrsController extends Controller
             ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
             : null;
 
+        $granularity = $request->granularity;
+        $granularityFormat = self::granularityFormat($granularity);
+
         $interval = self::formatInterval(
             Carbon::parse($request->interval_start),
             Carbon::parse($request->interval_end)->addDay(),
@@ -405,14 +408,15 @@ class EconomicNrsController extends Controller
             "ECD_payments",
             "ERT_payments",
             "Trans_expenditures",
+            "Gaoverheads_expenditures",
         ];
 
         $builder = $this
             ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::DAY)
+            ->query(self::DATA_SOURCE, $granularity)
             ->interval($interval)
-            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) {
-                $extBuilder->timeFormat(self::GRANULARITY_DAILY_FORMAT);
+            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
+                $extBuilder->timeFormat($granularityFormat);
             })
             ->select("uwi");
 
