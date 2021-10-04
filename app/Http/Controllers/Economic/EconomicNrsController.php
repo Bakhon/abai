@@ -97,7 +97,10 @@ class EconomicNrsController extends Controller
             $request->interval_end
         );
 
-        $intervalMonths = self::formatInterval($intervalMonthsStart->copy(), $intervalMonthsEnd->copy());
+        $intervalMonths = self::formatInterval(
+            $intervalMonthsStart->copy(),
+            $intervalMonthsEnd->copy()->addDay()
+        );
 
         $granularity = $request->granularity;
         $granularityFormat = self::granularityFormat($granularity);
