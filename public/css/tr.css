@@ -130,7 +130,7 @@ table {
   display: none;
   width: auto;
   position:absolute;
-  z-index:3060;
+  z-index:4500;
   text-align: Left;
   opacity: 0.4;
   transition: opacity 2s;

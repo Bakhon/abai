@@ -57,6 +57,7 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateCasing;
 use App\Models\BigData\Dictionaries\TreatType;
+use App\Models\BigData\Dictionaries\TubeNom;
 use App\Models\BigData\Dictionaries\Well;
 use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\WellCategory;
@@ -66,7 +67,6 @@ use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\WorkStatus;
 use App\Models\BigData\Dictionaries\Zone;
-use App\Models\BigData\Dictionaries\TubeNom;
 use App\Services\BigData\DictionaryServices\UndergroundEquipElement;
 use App\Services\BigData\DictionaryServices\UndergroundEquipType;
 use Carbon\Carbon;
@@ -444,6 +444,9 @@ class DictionaryService
                 case 'underground_equip_element':
                     $dict = UndergroundEquipElement::getDict();
                     break;
+                case 'res_type_dict':
+                    $dict = $this->getResTypeDict();
+                    break;    
                 default:
                     throw new DictionaryNotFound();
             }
@@ -809,5 +812,22 @@ class DictionaryService
                 return in_array($item['code'], ['WRK', 'DWN']);
             })
         );
+    }
+
+    private function getResTypeDict(){
+        $codes = ['CAO','SCWA','PVTPD','PVTP'];
+        $items = DB::connection('tbd')
+            ->table('dict.lab_research_type as r')
+            ->select('r.id', 'r.name_ru as name', 'r.code')
+            ->whereNotIn('r.code', $codes)
+            ->orderBy('name', 'asc')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+        return $items;
     }
 }    

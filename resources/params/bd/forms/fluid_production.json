@@ -90,7 +90,21 @@
       "type": "float",
       "is_editable": true,
       "validation": "numeric|gte:0|lte:10000000",
-      "validate_deviation": true
+      "validate_deviation": true,
+      "additional_filter": {
+        "activity": {
+          "table": "dict.well_activity",
+          "fields": {
+            "code": "PMSR"
+          }
+        },
+        "value_type": {
+          "table": "dict.value_type",
+          "fields": {
+            "code": "MNT"
+          }
+        }
+      }
     },
     {
       "title": "mark",
