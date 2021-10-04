@@ -209,6 +209,134 @@ const mapActions = [
     { title: 'digital_rating.importPlannedWells', icon: 'upload', type: 'importWells' }
 ]
 
+const rowsOil = [
+    {
+        year: '2007',
+        project: '324,5',
+        fact: '251,5',
+        rejection: '-73,3'
+    },
+    {
+        year: '2008',
+        project: '324,5',
+        fact: '251,5',
+        rejection: '-78,6'
+    },
+    {
+        year: '2009',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 19
+    },
+    {
+        year: '2010',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 5
+    },
+    {
+        year: '2011',
+        project: '324,5',
+        fact: '251,5',
+        rejection: '-5,4'
+    },
+    {
+        year: '2012',
+        project: '324,5',
+        fact: '251,5',
+        rejection: '-0,8'
+    },
+    {
+        year: '2013',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 19
+    },
+    {
+        year: '2014',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 5
+    },
+    {
+        year: '2015',
+        project: '324,5',
+        fact: '251,5',
+        rejection: '-0,8'
+    },
+    {
+        year: '2016',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 19
+    },
+    {
+        year: '2017',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 5
+    },
+    {
+        year: '2018',
+        project: '324,5',
+        fact: '251,5',
+        rejection: '-0,8'
+    },
+    {
+        year: '2019',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 19
+    },
+    {
+        year: '2020',
+        project: '324,5',
+        fact: '251,5',
+        rejection: 5
+    },
+];
+
+const rowsHorizon = [
+    {
+        key: 'Действующий добывающий фонд на 30.07.2021',
+        value: 1009
+    },
+    {
+        key: 'Пробуренный фонд до 2007г',
+        value: 1290
+    },
+    {
+        key: 'Проектные скважины ПЗ-2007',
+        value: 1239
+    },
+    {
+        key: 'Плотность сетки, га/скв',
+        value: '18,3'
+    },
+    {
+        key: 'Проектный документ',
+        value: 'Проект разработки 2007 г.'
+    },
+    {
+        key: 'Расстояние между скважинами, м',
+        value1: 50,
+        value2: 100,
+        value3: 200
+    },
+    {
+        key: 'Кол-во пробуренных точек после 2007, ед.',
+        value1: 57,
+        value2: 197,
+        value3: 239
+    },
+    {
+        key: 'Совпадение точек после 2007г, %',
+        value1: '74,3%',
+        value2: '62,2%',
+        value3: 239
+    }
+]
+
 export {
     overviews,
     histories,
@@ -218,5 +346,7 @@ export {
     properties,
     objects,
     fileActions,
-    mapActions
+    mapActions,
+    rowsOil,
+    rowsHorizon
 }

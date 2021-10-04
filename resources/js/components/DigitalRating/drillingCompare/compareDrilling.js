@@ -1,5 +1,6 @@
 import mainMenu from "../../GTM/mock-data/main_menu.json";
 import BtnDropdown from "../components/BtnDropdown";
+import {rowsOil,rowsHorizon} from '../json/data'
 
 export default {
   name: 'CompareDrilling',
@@ -16,7 +17,20 @@ export default {
         '13 горизонт',
         '14 горизонт'
       ],
-      yearList: ['2020', '2021']
+      yearList: ['2020', '2021'],
+      horizon: 12,
+    }
+  },
+
+  computed: {
+    getSelectedHorizon() {
+      return this.horizon;
+    },
+    rowsOil() {
+      return rowsOil;
+    },
+    rowsHorizon() {
+      return rowsHorizon;
     }
   },
 
