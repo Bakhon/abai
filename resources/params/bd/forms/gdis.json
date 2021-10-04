@@ -3317,14 +3317,12 @@
               },
               {
                 "code": "research_target",
-                "type": "dict",
-                "dict": "research_target",
+                "type": "text",
                 "title": "aim"
               },
               {
                 "code": "conclusion",
-                "type": "dict",
-                "dict": "gdis_conclusion",
+                "type": "text",
                 "title": "conclusion",
                 "validation": "required"
               }
