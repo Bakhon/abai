@@ -25,6 +25,9 @@ class WellPerf extends PlainForm
             case 6:
                 $form = 'well_perf_shot';
                 break;
+            case 2:
+                $form = 'well_perf_lagging';
+                break;
             case 13:
                 $form = 'well_perf_drill_packer';
                 break;
@@ -91,14 +94,21 @@ class WellPerf extends PlainForm
             ->where('perf_type', PerfType::EXPLOSIVE_PACKER_ID)
             ->where('perf_date', '<=', $perfDate)
             ->max('depth');
+
         if ($maxDepth) {
-            $currentIntervals = $currentIntervals->where('top', '>', $maxDepth);
+            $currentIntervals = $currentIntervals->where('top', '<', $maxDepth);
         }
         $isolatedIntervals = $this->getIsolatedIntervals($wellPerforations, $currentIntervals);
+
         return $currentIntervals
-            ->filter(function ($interval) use ($isolatedIntervals) {
-                foreach ($isolatedIntervals as $isolatedInterval) {
-                    if ($isolatedInterval->top <= $interval->top && $isolatedInterval->base >= $interval->base) {
+            ->filter(function ($interval) use ($wellPerforations, $isolatedIntervals, $currentIntervals) {
+                $perfDate = $wellPerforations->where('id', $interval->well_perf)->first()->perf_date;
+                $intervalsToCompare = $currentIntervals->merge($isolatedIntervals)
+                    ->where('id', '!=', $interval->id)
+                    ->where('perf_date', '<=', $perfDate);
+
+                foreach ($intervalsToCompare as $intervalToCompare) {
+                    if ($intervalToCompare->top <= $interval->top && $intervalToCompare->base >= $interval->base) {
                         return false;
                     }
                 }
