@@ -33,7 +33,7 @@ export default {
   computed: {
     isExpMethButton() {
       for (const key in this.lonelywell) {
-        if (this.lonelywell[key].exp_meth === "") {
+        if (this.lonelywell[key].exp_meth === null) {
           return false;
         }
         else{

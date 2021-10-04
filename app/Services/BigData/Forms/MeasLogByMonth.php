@@ -36,21 +36,21 @@ abstract class MeasLogByMonth extends TableForm
             ->table('prod.well_status as s')
             ->select('s.status', 's.dbeg', 's.dend', 's.well')
             ->join('dict.well_status_type', 'dict.well_status_type.id', 's.status')
-            ->where('dbeg', '<=', $date->startOfMonth())
-            ->where('dend', '>=', $date)
+            ->where('dend', '>=', $date->startOfMonth())
+            ->where('dbeg', '<=', $date)
             ->whereIn('well', $wellIds)
             ->whereIn('dict.well_status_type.code', MeasurementLogForm::WELL_ACTIVE_STATUSES)
             ->get()
             ->map(
                 function ($item) {
-                    $item->dbeg = Carbon::parse($item->dbeg);
-                    $item->dend = Carbon::parse($item->dend);
+                    $item->dbeg = Carbon::parse($item->dbeg, 'Asia/Almaty');
+                    $item->dend = Carbon::parse($item->dend, 'Asia/Almaty');
                     return $item;
                 }
             );
 
         $monthDay = $date->startOfMonth();
-        while ($monthDay < $date) {
+        while ($monthDay <= $date) {
             $startOfDay = $monthDay->startOfDay();
             $endOfDay = $monthDay->endOfDay();
             foreach ($wellIds as $wellId) {
@@ -61,7 +61,6 @@ abstract class MeasLogByMonth extends TableForm
 
             $monthDay = $monthDay->addDay();
         }
-
         return $result;
     }
 

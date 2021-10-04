@@ -206,3 +206,13 @@ export const waterfloodingManagementMapGetters = arrNames => ({
         ...arrNames,
     ]),
 });
+export const bigdatahistoricalVisibleState = arrNames => ({
+    ...mapState('bidataWellLevel', [
+        ...arrNames,
+    ]),
+});
+export const bigdatahistoricalVisibleMutations = arrNames => ({
+    ...mapMutations('bidataWellLevel', [
+        ...arrNames
+    ]),
+});
