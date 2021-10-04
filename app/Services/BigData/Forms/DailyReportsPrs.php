@@ -26,7 +26,6 @@ class DailyReportsPrs extends TableForm
             );
     }
 
-
     public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
@@ -38,7 +37,8 @@ class DailyReportsPrs extends TableForm
             throw new \Exception(trans('bd.select_dzo_ngdu'));
         }
 
-        $orgIds = $this->getOrgIds((int)$this->request->get('id'));
+        $structureService = app()->make(StructureService::class);
+        $orgIds = $structureService->getOrgIds((int)$this->request->get('id'));
 
         $rows = DB::connection('tbd')
             ->table('prod.report_org_daily_repair as rodr')
@@ -85,29 +85,6 @@ class DailyReportsPrs extends TableForm
             });
 
         return ['rows' => $rows];
-    }
-
-    private function getOrgIds(int $orgId)
-    {
-        $structureService = app()->make(StructureService::class);
-        $orgStructure = $structureService->getFlattenTreeWithPermissions();
-        $org = array_filter($orgStructure, function ($item) use ($orgId) {
-            return $item['type'] === 'org' && $item['id'] === $orgId;
-        });
-        $org = reset($org);
-        return $this->getOrgWithChildren($orgStructure, $org['id']);
-    }
-
-    private function getOrgWithChildren(array $orgStructure, $orgId)
-    {
-        $ids = [$orgId];
-        $children = array_filter($orgStructure, function ($item) use ($orgId) {
-            return $item['type'] === 'org' && $item['parent_id'] === $orgId;
-        });
-        foreach ($children as $child) {
-            $ids = array_merge($ids, $this->getOrgWithChildren($orgStructure, $child['id']));
-        }
-        return $ids;
     }
 
     private function getHorizon($geoId)

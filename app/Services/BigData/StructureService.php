@@ -330,4 +330,54 @@ class StructureService
 
         return collect(array_reverse($path));
     }
+
+    public function getOrgIds(int $orgId)
+    {
+        $orgStructure = $this->getFlattenTreeWithPermissions();
+        $org = array_filter($orgStructure, function ($item) use ($orgId) {
+            return $item['type'] === 'org' && $item['id'] === $orgId;
+        });
+        $org = reset($org);
+        return $this->getOrgWithChildren($orgStructure, $org['id']);
+    }
+
+    private function getOrgWithChildren(array $orgStructure, $orgId)
+    {
+        $ids = [$orgId];
+        $children = array_filter($orgStructure, function ($item) use ($orgId) {
+            return $item['type'] === 'org' && $item['parent_id'] === $orgId;
+        });
+        foreach ($children as $child) {
+            $ids = array_merge($ids, $this->getOrgWithChildren($orgStructure, $child['id']));
+        }
+        return $ids;
+    }
+
+
+    public function getTechIds(int $parentId, string $parentType)
+    {
+        $structureService = app()->make(StructureService::class);
+        $orgStructure = $structureService->getFlattenTreeWithPermissions();
+        $org = array_filter($orgStructure, function ($item) use ($parentId, $parentType) {
+            return $item['type'] === $parentType && $item['id'] === $parentId;
+        });
+        $org = reset($org);
+        return $this->getTechWithChildren($orgStructure, $org);
+    }
+
+    private function getTechWithChildren(array $orgStructure, $parent)
+    {
+        $ids = [];
+        if ($parent['type'] === 'tech') {
+            $ids[] = $parent['id'];
+        }
+
+        $children = array_filter($orgStructure, function ($item) use ($parent) {
+            return isset($item['parent_type']) && $item['parent_type'] === $parent['type'] && $item['parent_id'] === $parent['id'];
+        });
+        foreach ($children as $child) {
+            $ids = array_merge($ids, $this->getTechWithChildren($orgStructure, $child));
+        }
+        return $ids;
+    }
 }
