@@ -139,6 +139,7 @@ export default {
           chartType: 'line',
         }
       ]
+
     },
 
     yaxis() {
