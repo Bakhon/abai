@@ -52,7 +52,7 @@
                :key="`${index}_${columnIndex}`"
                :style="`flex-basis: ${100 / row.columns.length}%; background: ${column.color}`"
                class="px-3 py-2 border-grey text-center flex-grow-1">
-            {{ column.value.toLocaleString() }}
+            {{ column.isString ? column.value : (+column.value).toLocaleString() }}
           </div>
         </div>
       </div>
@@ -123,7 +123,8 @@ export default {
             pp2020: '',
             columns: this.scenariosByOilPrice.map((item, index) => {
               return {
-                value: this.convertToRoman(index + 1)
+                value: this.convertToRoman(index + 1),
+                isString: true
               }
             }),
             color: '#81B9FE'
@@ -164,7 +165,8 @@ export default {
             pp2020: '',
             columns: this.scenariosByOilPrice.map(item => {
               return {
-                value: ''
+                value: '',
+                isString: true
               }
             })
           },

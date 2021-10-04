@@ -92,6 +92,13 @@
           v-else-if="activeTab === 'well_overview_map'"
           :scenario="scenario"
           :wells="res.wells"/>
+
+      <table-well-stock
+          v-else-if="activeTab === 'well_stock'"
+          :scenarios="res.scenarios"
+          :scenario="scenario"
+          :oil-prices="scenarioVariations.oil_prices"
+          :wells="res.wells"/>
     </div>
   </div>
 </template>
@@ -109,6 +116,7 @@ import TableChess from "./TableChess";
 import TablePalette from "./TablePalette";
 import TableWellTreeMap from "./TableWellTreeMap";
 import TableWellOverviewMap from "./TableWellOverviewMap";
+import TableWellStock from "./TableWellStock";
 
 export default {
   name: "Tables",
@@ -124,7 +132,8 @@ export default {
     TableChess,
     TablePalette,
     TableWellTreeMap,
-    TableWellOverviewMap
+    TableWellOverviewMap,
+    TableWellStock
   },
   props: {
     scenario: {
@@ -157,6 +166,7 @@ export default {
         palette: this.trans('economic_reference.palette'),
         well_treemap: 'TreeMap',
         well_overview_map: this.trans('economic_reference.well_overview_map'),
+        well_stock: this.trans('economic_reference.production_wells_fund'),
       }
     },
 

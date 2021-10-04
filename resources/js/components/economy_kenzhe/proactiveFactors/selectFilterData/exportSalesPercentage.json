@@ -4,18 +4,18 @@
     },
     {
         "value": 1,
-        "option": "exportSalesPercentage.option1"
+        "option": "exportSalesPercentage.export1"
     },
     {
         "value": 2,
-        "option": "exportSalesPercentage.option2"
+        "option": "exportSalesPercentage.export2"
     },
     {
         "value": 3,
-        "option": "exportSalesPercentage.option3"
+        "option": "exportSalesPercentage.export3"
     },
     {
         "value": 4,
-        "option": "exportSalesPercentage.option4"
+        "option": "exportSalesPercentage.export4"
     }
 ]

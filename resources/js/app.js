@@ -213,6 +213,7 @@ Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_compan
 Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiveFactors/proactiveFactors.vue').default);
 Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
 Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
+Vue.component('company-valuation', require('./components/economy_kenzhe/companyValuation/companyValuation.vue').default);
 
 Vue.component('page-petrophysics', require('./components/geology/petrophysics/PagePetrophysics.vue').default);
 Vue.component('page-core', require('./components/geology/core/PageCore.vue').default);

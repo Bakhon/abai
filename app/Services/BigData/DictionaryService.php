@@ -57,6 +57,7 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateCasing;
 use App\Models\BigData\Dictionaries\TreatType;
+use App\Models\BigData\Dictionaries\TubeNom;
 use App\Models\BigData\Dictionaries\Well;
 use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\WellCategory;
@@ -68,12 +69,10 @@ use App\Models\BigData\Dictionaries\WorkStatus;
 use App\Models\BigData\Dictionaries\Zone;
 use App\Services\BigData\DictionaryServices\UndergroundEquipElement;
 use App\Services\BigData\DictionaryServices\UndergroundEquipType;
-use App\Models\BigData\Dictionaries\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-
 
 class DictionaryService
 {
@@ -100,7 +99,7 @@ class DictionaryService
         ],
         'casings' => [
             'class' => CasingType::class,
-            'name_field' => 'CONCAT(\'Условный диаметр трубы(мм): \', od, \', Толщина стенки с норм. резьбой(мм):\', wt, \', Внутренний диаметр трубы с норм. резьбой (мм)\' , vd, \', Группа прочности: \', sg)'
+            'name_field' => 'CONCAT(\'Наружный диаметр, (мм): \', od, \', Внутренний диаметр, (мм):\', vd, \', Класс прочности / Марка стали:\' , sg, \', Погонный вес, (кг/м): \', wpm, \', Проходной диаметр, (мм): \', td, \', Предел текучести, (т): \', ys, \', Номинальный вес, (кг/м): \', nw, \', Номинальный диаметр, дюйм: \', nd)'
         ],
         'repair_work_types' => [
             'class' => RepairWorkType::class,
@@ -159,7 +158,7 @@ class DictionaryService
             'name_field' => 'name_ru'
         ],
         'tube_nom' => [
-            'class' => TybeNom::class,
+            'class' => TubeNom::class,
             'name_field' => 'model'
         ],
         'blocks' => [
@@ -445,6 +444,9 @@ class DictionaryService
                 case 'underground_equip_element':
                     $dict = UndergroundEquipElement::getDict();
                     break;
+                case 'res_type_dict':
+                    $dict = $this->getResTypeDict();
+                    break;    
                 default:
                     throw new DictionaryNotFound();
             }
@@ -634,7 +636,10 @@ class DictionaryService
         }, $orgIds);
         $organizations = [];
         foreach($orgIds as $id) {
-            $organizations[] = Org::find($id);
+            $organization = Org::find($id);
+            if(isset($organization)) {
+                $organizations[] = $organization;
+            }
         }
 
         $orgIds = $this->getOrgWithChildrens($organizations);
@@ -644,6 +649,7 @@ class DictionaryService
     private function getOrgWithChildrens($organizations) {
         $result = [];
         foreach($organizations as $organization) {
+            if(!isset($organization->id)) continue;
             $result[] = $organization->id;
             $children = $organization->children()->get();
             
@@ -656,7 +662,7 @@ class DictionaryService
     public function filterTree($items, &$tree, &$userTreeAccessedItems)
     {
         foreach($items as $item) {
-            if(in_array($item['id'], $userTreeAccessedItems)) {
+            if(isset($item['id']) && in_array($item['id'], $userTreeAccessedItems)) {
                 $tree[] = $item;
                 continue;
             }
@@ -806,5 +812,22 @@ class DictionaryService
                 return in_array($item['code'], ['WRK', 'DWN']);
             })
         );
+    }
+
+    private function getResTypeDict(){
+        $codes = ['CAO','SCWA','PVTPD','PVTP'];
+        $items = DB::connection('tbd')
+            ->table('dict.lab_research_type as r')
+            ->select('r.id', 'r.name_ru as name', 'r.code')
+            ->whereNotIn('r.code', $codes)
+            ->orderBy('name', 'asc')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+        return $items;
     }
 }    
