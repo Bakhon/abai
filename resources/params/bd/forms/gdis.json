@@ -3,7 +3,7 @@
   "table": "prod.gdis_complex",
   "sort": [
     {
-      "field": "research_date",
+      "field": "dbeg",
       "order": "desc"
     }
   ],
@@ -16,10 +16,16 @@
             "title": "",
             "items": [
               {
-                "code": "research_date",
+                "code": "dbeg",
                 "type": "datetime",
                 "title": "dbeg",
                 "validation": "required"
+              },
+              {
+                "code": "dend",
+                "type": "datetime",
+                "title": "dend",
+                "validation": "required|after:dbeg"
               },
               {
                 "code": "method",
