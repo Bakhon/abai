@@ -29,6 +29,23 @@
                 "validation": "required|exists:tbd.dict.research_method,id"
               },
               {
+                "code": "depth",
+                "type": "numeric",
+                "title": "depth",
+                "validation": "required"
+              },
+              {
+                "code": "research_target",
+                "type": "text",
+                "title": "aim"
+              },
+              {
+                "code": "conclusion",
+                "type": "text",
+                "title": "conclusion",
+                "validation": "required"
+              },
+              {
                 "code": "WWP",
                 "table": "prod.gdis_complex_value",
                 "type": "numeric",
@@ -3308,24 +3325,7 @@
                   }
                 }
               ]
-            },
-              {
-                "code": "depth",
-                "type": "numeric",
-                "title": "depth",
-                "validation": "required"
-              },
-              {
-                "code": "research_target",
-                "type": "text",
-                "title": "aim"
-              },
-              {
-                "code": "conclusion",
-                "type": "text",
-                "title": "conclusion",
-                "validation": "required"
-              }
+            }
             ]
           }
         ]
