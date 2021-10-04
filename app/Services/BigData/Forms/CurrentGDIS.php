@@ -119,9 +119,7 @@ class CurrentGDIS extends TableForm
             ->get();
 
         if ($dates->isEmpty()) {
-            return [
-                'rows' => []
-            ];
+            return collect();
         }
         $oldestDate = $dates->last()->meas_date;
 
