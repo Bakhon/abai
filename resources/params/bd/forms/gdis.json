@@ -24,7 +24,7 @@
               {
                 "code": "method",
                 "type": "dict",
-                "dict":"research_methods",
+                "dict":"res_method_dict",
                 "title": "research_type",
                 "validation": "required|exists:tbd.dict.research_method,id"
               },

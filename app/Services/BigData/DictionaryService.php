@@ -317,7 +317,7 @@ class DictionaryService
             'class' => WorkStatus::class,
             'name_field' => 'name_ru'
         ]
-        
+
     ];
 
     const TREE_DICTIONARIES = [
@@ -447,7 +447,10 @@ class DictionaryService
                     break;
                 case 'res_type_dict':
                     $dict = $this->getResTypeDict();
-                    break;    
+                    break; 
+                case 'res_method_dict':
+                    $dict = $this->getResMethodDict();
+                    break;        
                 default:
                     throw new DictionaryNotFound();
             }
@@ -819,6 +822,23 @@ class DictionaryService
         $codes = ['CAO','SCWA','PVTPD','PVTP'];
         $items = DB::connection('tbd')
             ->table('dict.lab_research_type as r')
+            ->select('r.id', 'r.name_ru as name', 'r.code')
+            ->whereNotIn('r.code', $codes)
+            ->orderBy('name', 'asc')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+        return $items;
+    }
+
+    private function getResMethodDict(){
+        $codes = ['NONE','PDC','IC'];
+        $items = DB::connection('tbd')
+            ->table('dict.research_method as r')
             ->select('r.id', 'r.name_ru as name', 'r.code')
             ->whereNotIn('r.code', $codes)
             ->orderBy('name', 'asc')
