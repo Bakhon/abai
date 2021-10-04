@@ -395,7 +395,7 @@ export default {
                         'year': date.format('YYYY'),
                         'date': date,
                         'isChecked': false,
-                        'isVisible': true,
+                        'isVisible': false,
                         'water': _.sumBy(month, item => Number(item.liq)),
                         'oil': _.sumBy(month, 'oil'),
                         'oilDebit': _.sumBy(month, 'oil') / workHours,
