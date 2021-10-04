@@ -78,7 +78,7 @@ export default {
       org_id: null,
       field_id: null,
       interval_start: '2021-01-01T00:00:00.000Z',
-      interval_end: '2021-02-28T00:00:00.000Z',
+      interval_end: '2021-07-30T00:00:00.000Z',
       granularity: 'month'
     },
     res: null,
