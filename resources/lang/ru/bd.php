@@ -875,7 +875,6 @@ return [
             'liquid_vol' => 'Qж',
             'oil_vol' => 'Qн',
             'water_cut' => '%',
-            'intake' => 'Qпр',
             'pressure'=> 'Ратм',
             "param" => "Параметры при ремонте",
             'gis_types' => 'Виды ГИС',
