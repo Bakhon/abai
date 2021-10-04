@@ -35,14 +35,14 @@ class TechModeProd extends TableForm
         $rowData = $this->fetchRowData(
             $tables,
             $wells->pluck('id')->toArray(),
-            Carbon::parse($this->request->get('date'))
+            Carbon::parse($filter->date)
         );
 
         $this->oilMeasurements = DB::connection('tbd')
             ->table('prod.tech_mode_prod_oil')
             ->whereIn('well', $wells->pluck('id')->toArray())
-            ->where('dbeg', '<=', Carbon::parse($this->request->get('date'))->subMonthNoOverflow()->firstOfMonth())
-            ->where('dbeg', '>=', Carbon::parse($this->request->get('date'))->subMonthNoOverflow()->lastOfMonth())
+            ->where('dbeg', '<=', Carbon::parse($filter->date)->subMonthNoOverflow()->firstOfMonth())
+            ->where('dbeg', '>=', Carbon::parse($filter->date)->subMonthNoOverflow()->lastOfMonth())
             ->get()
             ->groupBy('well')
             ->map(function ($measurements) {

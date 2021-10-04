@@ -6,11 +6,6 @@
       "code": "date",
       "title": "date",
       "type": "date",
-      "flow": [
-        "year",
-        "month",
-        "day"
-      ],
       "default": "today"
     },
     {
@@ -100,7 +95,7 @@
       "title": "cits_gs_daily_deviation",
       "code": "cits_gs_daily_deviation",
       "type": "calc",
-      "formula": "$daily_fact_cits$ - $daily_fact_gs$",
+      "formula": "Math.round(($daily_fact_cits$ - $daily_fact_gs$) * 100)/100",
       "is_editable": false,
       "show_if": {
         "type": [
@@ -152,7 +147,7 @@
       "title": "month_deviation",
       "code": "month_deviation",
       "type": "calc",
-      "formula": "$month_fact$ - $month_plan$",
+      "formula": "Math.round(($month_fact$ - $month_plan$) * 100)/100",
       "is_editable": false,
       "show_if": {
         "type": [
@@ -217,7 +212,7 @@
       "title": "year_deviation",
       "code": "year_deviation",
       "type": "calc",
-      "formula": "$year_fact$ - $year_plan$",
+      "formula": "Math.round(($year_fact$ - $year_plan$) * 100)/100",
       "is_editable": false,
       "show_if": {
         "type": [
@@ -230,7 +225,7 @@
       "title": "cits_gs_year_deviation",
       "code": "cits_gs_year_deviation",
       "type": "calc",
-      "formula": "$year_fact_cits$ - $year_fact_gs$",
+      "formula": "Math.round(($year_fact_cits$ - $year_fact_gs$) * 100)/100",
       "is_editable": false,
       "show_if": {
         "type": [

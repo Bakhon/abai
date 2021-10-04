@@ -21,7 +21,11 @@ class ResearchLabResearch extends PlainForm
         'ADSPO' => 'prod.reservoir_oil_prob_analysis',
         'AEF' => 'prod.produced_water_analysis',
         'OCRC' => 'prod.res_oil_char',
-        'COSC' => 'prod.surf_oil_characteristics'
+        'COSC' => 'prod.surf_oil_characteristics',
+        'CPG' => 'prod.petro_gas_char',
+        'CRG' => 'prod.res_gas_char',
+        'CPIW' => 'prod.res_water_char',
+        'ARSPO' => 'prod.reservoir_oil_prob_analysis'
     ];
 
     protected $configurationFileName = 'research_lab_research';

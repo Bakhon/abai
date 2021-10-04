@@ -1,154 +1,54 @@
 <template>
-  <div class="position-relative">
-    <div class="row">
-      <div class="col-12 px-2 py-3 bg-main1 mb-10px">
-        <select-scenario-variations
+  <div :style="isVisibleWellChanges ? 'padding-right: 75px !important' : 'padding-right: 0'"
+       class="position-relative row">
+    <div class="col-12 px-3 mb-10px">
+      <div class="row text-white text-wrap flex-nowrap ">
+        <calculated-header
+            v-for="(header, index) in calculatedHeaders"
+            :key="`calculated_${index}`"
+            :header="header"
             :form="form"
-            :scenario-variation="scenarioVariation"
-            :scenario-variations="scenarioVariations"
-            @changeOrg="getData()"/>
-      </div>
+            :class="index ? 'ml-2' : ''"
+            class="flex-grow-1"
+            style="min-height: 135px"/>
 
-      <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
-        <div class="row text-white text-wrap flex-nowrap mb-10px">
-          <div
-              v-for="(header, index) in calculatedHeaders"
-              :key="`calculated_${index}`"
-              class="p-3 bg-blue-dark position-relative">
-            <divider v-if="index"/>
-
-            <economic-title
-                font-size="32"
-                line-height="46"
-                class="text-nowrap">
-              <span> {{ header.value.toFixed(2) }} </span>
-
-              <span class="font-size-16px line-height-20px text-blue">
-               {{ header.dimension }}
-              </span>
-            </economic-title>
-
-            <subtitle font-size="18"> {{ header.name }}</subtitle>
-
-            <percent-progress v-if="form.scenario_id" :percent="header.percent"/>
-
-            <div v-if="form.scenario_id"
-                 class="d-flex font-size-12px line-height-14px mb-2">
-              <div class="flex-grow-1 text-blue">
-                {{ (100 + header.percent).toFixed(2) }} %
-              </div>
-
-              <div>{{ header.baseValue.toFixed(2) }}</div>
-            </div>
-
-            <div v-if="form.scenario_id"
-                 class="d-flex align-items-center">
-              <percent-badge
-                  :percent="header.percent.toFixed(2)"
-                  class="text-nowrap mr-2"
-                  reverse/>
-
-              <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
-                {{ trans('economic_reference.vs_base_case') }}
-              </div>
-            </div>
-          </div>
-
-          <div
-              v-for="(header, index) in remoteHeaders"
-              :key="`remote_${index}`"
-              class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column position-relative">
-            <economic-title
-                font-size="32"
-                line-height="46"
-                flex-grow="0"
-                class="text-nowrap">
-              <span> {{ header.value }} </span>
-
-              <span class="font-size-16px line-height-20px text-blue">
-                {{ header.dimension }}
-              </span>
-            </economic-title>
-
-            <subtitle font-size="18">
-              {{ header.name }}
-            </subtitle>
-
-            <span class="text-grey font-size-12px line-height-14px flex-grow-1">
-              {{ trans('economic_reference.current') }}
-            </span>
-
-            <div v-if="form.scenario_id" class="d-flex align-items-center">
-              <div class="font-size-24px line-height-28px font-weight-bold text-nowrap">
-                <percent-badge-icon :percent="header.percent" reverse/>
-
-                <span>{{ header.percent }}</span>
-
-                <span class="font-size-16px">{{ header.dimension }}</span>
-              </div>
-
-              <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
-                {{ trans('economic_reference.vs_choice') }}
-              </div>
-            </div>
-
-            <a :href="header.url" target="_blank" class="remote-link">
-              <i class="fas fa-external-link-alt text-blue"> </i>
-            </a>
-          </div>
-        </div>
-
-        <tables
-            v-if="!loading"
-            :scenario="scenario"
-            :scenario-variations="scenarioVariations"
-            :res="res"
-            @updateTab="updateTab"/>
-      </div>
-
-      <div v-show="!scenarioVariation.isFullScreen"
-           :style="isVisibleWellChanges ? 'padding-right: 75px' : 'padding-right:0'"
-           class="col-3">
-        <economic-block
-            v-for="(block, index) in blocks"
-            :key="index"
-            :index="index"
-            :block="block"
+        <remote-header
+            v-for="(header, index) in remoteHeaders"
+            :key="`remote_${index}`"
+            :header="header"
             :form="form"
-            :style="form.scenario_id ? 'min-height: 180px' : 'min-height: 120px'"
-        />
-
-        <div class="bg-main1 text-white text-wrap p-3 mb-10px">
-          <subtitle>
-            {{ trans('economic_reference.production_wells_fund') }}
-          </subtitle>
-
-          <div class="mt-4 position-relative">
-            <divider style="left: 150px; height: 100%; top: 0;"/>
-
-            <divider
-                v-if="form.scenario_id"
-                style="left: 230px; height: 100%; top: 0;"/>
-
-            <div v-for="(wellCount, index) in wellsCount"
-                 :key="index"
-                 :class="wellCount.name ? '' : 'font-weight-bold text-grey'"
-                 class="d-flex">
-              <div :class="wellCount.nameClass" class="font-size-12px" style="width: 150px;">
-                {{ wellCount.name }}
-              </div>
-
-              <div class="ml-2" style="width: 80px">
-                {{ wellCount.value }}
-              </div>
-
-              <div v-if="form.scenario_id">
-                {{ wellCount.value_optimized }}
-              </div>
-            </div>
-          </div>
-        </div>
+            class="flex-grow-1 ml-2"
+            style="min-height: 135px"/>
       </div>
+    </div>
+
+    <div class="col-12 px-2 py-3 bg-main1 mb-10px">
+      <select-scenario-variations
+          :form="form"
+          :scenario-variation="scenarioVariation"
+          :scenario-variations="scenarioVariations"
+          @changeOrg="getData()"/>
+    </div>
+
+    <div :class="scenarioVariation.isFullScreen ? 'col-12' : 'col-9 pr-2'">
+      <tables
+          v-if="!loading"
+          :scenario="scenario"
+          :scenario-variations="scenarioVariations"
+          :res="res"
+          @updateTab="updateTab"/>
+    </div>
+
+    <div v-show="!scenarioVariation.isFullScreen" class="col-3 pr-0">
+      <economic-block
+          v-for="(block, index) in blocks"
+          :key="index"
+          :index="index"
+          :block="block"
+          :form="form"
+          :class="index === blocks.length - 1 ? '' : 'mb-10px'"
+          :style="form.scenario_id ? 'min-height: 150px' : 'min-height: 155px'"
+      />
     </div>
   </div>
 </template>
@@ -172,6 +72,8 @@ import SelectScenario from "./components/SelectScenario";
 import SelectScenarioVariations from "./components/SelectScenarioVariations";
 import Tables from "./components/Tables";
 import EconomicBlock from "./components/EconomicBlock";
+import CalculatedHeader from "./components/CalculatedHeader";
+import RemoteHeader from "./components/RemoteHeader";
 
 const optimizedColumns = [
   'Revenue_total',
@@ -301,7 +203,9 @@ export default {
     SelectScenario,
     SelectScenarioVariations,
     Tables,
-    EconomicBlock
+    EconomicBlock,
+    CalculatedHeader,
+    RemoteHeader,
   },
   mixins: [formatValueMixin],
   data: () => ({
@@ -385,7 +289,7 @@ export default {
             value: this.formatValue(this.scenario.oil[this.scenarioValueKey]).value.toFixed(2),
             dimension: this.formatValue(this.scenario.oil[this.scenarioValueKey]).dimension,
             dimensionSuffix: this.trans('economic_reference.tons'),
-            percent: this.formatValue(this.oilPercent).value,
+            percent: +(this.formatValue(this.oilPercent).value.toFixed(2)),
             percentDimension: this.formatValue(this.oilPercent).dimension,
             reverse: true,
             reversePercent: true
@@ -406,7 +310,7 @@ export default {
             value: this.formatValue(this.scenario.liquid[this.scenarioValueKey]).value.toFixed(2),
             dimension: this.formatValue(this.scenario.liquid[this.scenarioValueKey]).dimension,
             dimensionSuffix: this.trans('economic_reference.tons'),
-            percent: this.formatValue(this.liquidPercent).value,
+            percent: +(this.formatValue(this.liquidPercent).value.toFixed(2)),
             percentDimension: this.formatValue(this.liquidPercent).dimension,
             reverse: true,
             reversePercent: true
@@ -457,54 +361,6 @@ export default {
             reversePercent: true
           },
         ],
-      ]
-    },
-
-    wellsCount() {
-      return [
-        {
-          name: '',
-          value: this.trans('economic_reference.basic'),
-          value_optimized: this.trans('economic_reference.optimized')
-        },
-        {
-          name: this.trans('economic_reference.total'),
-          value: (+this.scenario.uwi_count_profitable.original_value)
-              + (+this.scenario.uwi_count_profitless_cat_1.original_value)
-              + (+this.scenario.uwi_count_profitless_cat_2.original_value),
-          value_optimized: (+this.scenario.uwi_count_profitable.original_value_optimized)
-              + (+this.scenario.uwi_count_profitless_cat_1.original_value_optimized)
-              + (+this.scenario.uwi_count_profitless_cat_2.original_value_optimized),
-        },
-        {
-          name: this.trans('economic_reference.profitable'),
-          value: this.scenario.uwi_count_profitable.original_value,
-          value_optimized: this.scenario.uwi_count_profitable.original_value_optimized,
-        },
-        {
-          name: this.trans('economic_reference.profitless_all'),
-          value: (+this.scenario.uwi_count_profitless_cat_1.original_value)
-              + (+this.scenario.uwi_count_profitless_cat_2.original_value),
-          value_optimized: (+this.scenario.uwi_count_profitless_cat_1.original_value_optimized)
-              + (+this.scenario.uwi_count_profitless_cat_2.original_value_optimized)
-        },
-        {
-          name: this.trans('economic_reference.profitless_cat_1'),
-          value: this.scenario.uwi_count_profitless_cat_1.original_value,
-          value_optimized: this.scenario.uwi_count_profitless_cat_1.original_value_optimized,
-          nameClass: 'pl-3'
-        },
-        {
-          name: this.trans('economic_reference.profitless_cat_2'),
-          value: this.scenario.uwi_count_profitless_cat_2.original_value,
-          value_optimized: this.scenario.uwi_count_profitless_cat_2.original_value_optimized,
-          nameClass: 'pl-3'
-        },
-        {
-          name: this.trans('economic_reference.new_wells'),
-          value: 0,
-          value_optimized: 0
-        }
       ]
     },
 
@@ -595,15 +451,15 @@ export default {
     },
 
     oilPercent() {
-      return this.scenario.oil.original_value - this.scenario.oil.original_value_optimized
+      return +this.scenario.oil.original_value - +this.scenario.oil.original_value_optimized
     },
 
     liquidPercent() {
-      return this.scenario.liquid.original_value - this.scenario.liquid.original_value_optimized
+      return +this.scenario.liquid.original_value - +this.scenario.liquid.original_value_optimized
     },
 
     prsPercent() {
-      return this.scenario.prs.original_value_optimized - this.scenario.prs.original_value
+      return +this.scenario.prs.original_value_optimized - +this.scenario.prs.original_value
     },
 
     avgOilPercent() {
@@ -761,54 +617,8 @@ export default {
   font-size: 12px;
 }
 
-.font-size-16px {
-  font-size: 16px;
-}
-
-.font-size-24px {
-  font-size: 24px;
-}
-
-.line-height-14px {
-  line-height: 14px;
-}
-
-.line-height-16px {
-  line-height: 16px;
-}
-
-.line-height-20px {
-  line-height: 20px;
-}
-
-.line-height-28px {
-  line-height: 28px;
-}
-
-.bg-blue-dark {
-  background: #2B2E5E;
-}
-
-.bg-dark-blue {
-  background: #333975;
-}
-
-.bg-export {
-  background: #213181;
-}
-
-.text-blue {
-  color: #82BAFF;
-}
-
 .text-grey {
   color: #656A8A
-}
-
-.remote-link {
-  position: absolute;
-  top: 5px;
-  right: 5px;
 }
 
 .mb-10px {

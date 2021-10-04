@@ -38,7 +38,10 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "depth",
-                "validation": "numeric|gte:0|lte:10000"
+                "validation": "numeric|gte:0|lte:10000",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
                 "code": "new_intervals",
