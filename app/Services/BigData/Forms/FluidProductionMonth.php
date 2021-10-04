@@ -7,6 +7,7 @@ namespace App\Services\BigData\Forms;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\ValueType;
 use App\Models\BigData\Dictionaries\WellActivity;
+use App\Services\BigData\TableFormHeaderService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 class FluidProductionMonth extends MeasLogByMonth
 {
     protected $configurationFileName = 'fluid_production_month';
+    protected $wells;
     protected $techMode;
     protected $liquid;
     protected $bsw;
@@ -29,22 +31,34 @@ class FluidProductionMonth extends MeasLogByMonth
         $filter = json_decode($this->request->get('filter'));
         $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
 
-        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
+        $params['filter']['well_category'] = ['OIL'];
+        $this->wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
 
-        $rows = $this->getRows($date, $wells);
+        $rows = $this->getRows($date);
         $columns = $this->getColumns($date);
-        $summary = $this->getSummary($date, $wells);
+
 
         return [
             'columns' => $columns,
             'rows' => $rows,
-            'summary' => $summary
+            'summary' => [
+                'tables' => [
+                    [
+                        'title' => 'Сводка по узлу',
+                        'data' => $this->getSummaryByTech($date)
+                    ],
+                    [
+                        'title' => 'Итоговые показатели',
+                        'data' => $this->getTotalValues($date, $rows)
+                    ]
+                ]
+            ]
         ];
     }
 
-    protected function getRows(CarbonImmutable $date, Collection $wells): array
+    protected function getRows(CarbonImmutable $date): array
     {
-        $wellIds = $wells->pluck('id')->toArray();
+        $wellIds = $this->wells->pluck('id')->toArray();
 
         $this->techMode = $this->getTechMode($wellIds, $date);
         $this->liquid = $this->getLiquid($wellIds, $date);
@@ -62,7 +76,7 @@ class FluidProductionMonth extends MeasLogByMonth
         ];
 
         $rows = [];
-        foreach ($wells as $well) {
+        foreach ($this->wells as $well) {
             $firstRow = [
                 'uwi' => ['value' => $well->uwi],
                 'other_uwi' => $otherUwis[$well->id],
@@ -91,8 +105,8 @@ class FluidProductionMonth extends MeasLogByMonth
         return DB::connection('tbd')
             ->table('prod.tech_mode_prod_oil')
             ->whereIn('well', $wellIds)
-            ->where('dbeg', '>=', $date->startOfMonth())
-            ->where('dend', '<=', $date->endOfMonth())
+            ->where('dend', '>=', $date->startOfMonth())
+            ->where('dbeg', '<=', $date->endOfMonth())
             ->get()
             ->groupBy('well')
             ->map(function ($items) {
@@ -187,6 +201,7 @@ class FluidProductionMonth extends MeasLogByMonth
 
         $row = [
             'id' => $well->id . '|' . $code,
+            'indicator_code' => $code,
             'indicator' => ['value' => trans('bd.forms.fluid_production_month.' . $code)]
         ];
 
@@ -315,7 +330,7 @@ class FluidProductionMonth extends MeasLogByMonth
 
             if (!empty($oil)) {
                 $count++;
-                $sum += $bswValue;
+                $sum += $oil;
             }
 
             $monthDay = $monthDay->addDay();
@@ -364,62 +379,75 @@ class FluidProductionMonth extends MeasLogByMonth
         return $columns;
     }
 
-    private function getSummary(CarbonImmutable $date, Collection $wells)
+    private function getSummaryByTech(CarbonImmutable $date)
     {
         $tech = Tech::find($this->request->get('id'));
 
-        $workingWells = $this->getWorkingWellsCount($wells);
-        dd($this->liquid);
-        $result = [
-            'org' => $tech ? $tech->name_ru : '',
-            'wells' => [
-                'total' => $wells->count(),
-                'working' => $workingWells,
-                'stopped' => $wells->count() - $workingWells,
-            ],
-            'daily' => [
-                'plan' => [
-                    'liquid' => 0,
-                    'liquid_avg' => 0,
-                    'oil' => 0
-                ],
-                'fact' => [
-                    'liquid' => 0,
-                    'liquid_avg' => 0,
-                    'oil' => 0,
-                    'bsw' => 0,
-                ],
-                'diff' => [
-                    'liquid' => 0,
-                    'liquid_avg' => 0,
-                    'oil' => 0
-                ],
-            ],
-            'monthly' => [
-                'plan' => [
-                    'liquid' => 0,
-                    'liquid_avg' => 0,
-                    'oil' => 0
-                ],
-                'fact' => [
-                    'liquid' => 0,
-                    'liquid_avg' => 0,
-                    'oil' => 0,
-                    'bsw' => 0,
-                ],
-                'diff' => [
-                    'liquid' => 0,
-                    'liquid_avg' => 0,
-                    'oil' => 0
-                ],
+        $workingWells = $this->getWorkingWellsCount();
+
+
+        $dailyPlanLiquid = $this->getDailyPlanField('liquid');
+        $dailyPlanLiquidAvg = $this->getDailyPlanFieldAvg('liquid');
+        $dailyPlanOil = $this->getDailyPlanField('oil');
+
+        $dailyFactLiquid = $this->getDailyFactLiquid($date);
+        $dailyFactLiquidAvg = $this->getDailyFactLiquidAvg($date);
+        $dailyFactBsw = $this->getDailyFactBsw($date);
+        $dailyFactOil = $this->getDailyFactOil($date);
+
+        $monthlyPlanFluid = $dailyPlanLiquid * (int)$date->format('j');
+        $monthlyPlanFluidAvg = $dailyPlanLiquidAvg;
+        $monthlyPlanOil = $dailyPlanOil * (int)$date->format('j');
+
+        $monthlyFactLiquid = $this->getMonthlyFactLiquid($date);
+        $monthlyFactBsw = $this->getMonthlyFactBsw($date);
+        $monthlyFactOil = $this->getMonthlyFactOil($date);
+
+        $rows = [
+            [
+                'tech' => $tech ? $tech->name_ru : '',
+                'wells_all' => $this->wells->count(),
+                'wells_total' => $this->wells->count(),
+                'wells_working' => $workingWells,
+                'wells_stopped' => $this->wells->count() - $workingWells,
+                'daily_plan_liquid' => round($dailyPlanLiquid, 2),
+                'daily_plan_liquid_avg' => round($dailyPlanLiquidAvg, 2),
+                'daily_plan_oil' => round($dailyPlanOil, 2),
+                'daily_fact_liquid' => round($dailyFactLiquid, 2),
+                'daily_fact_liquid_avg' => round($dailyFactLiquidAvg, 2),
+                'daily_fact_oil' => round($dailyFactOil, 2),
+                'daily_fact_bsw' => round($dailyFactBsw, 2),
+                'daily_diff_liquid' => round($dailyFactLiquid - $dailyPlanLiquid, 2),
+                'daily_diff_liquid_avg' => round($dailyFactLiquidAvg - $dailyPlanLiquidAvg, 2),
+                'daily_diff_oil' => round($dailyFactOil - $dailyPlanOil, 2),
+                'monthly_plan_liquid' => round($monthlyPlanFluid, 2),
+                'monthly_plan_liquid_avg' => round($monthlyPlanFluidAvg, 2),
+                'monthly_plan_oil' => round($monthlyPlanOil, 2),
+                'monthly_fact_liquid' => round($monthlyFactLiquid, 2),
+                'monthly_fact_oil' => round($monthlyFactOil, 2),
+                'monthly_fact_bsw' => round($monthlyFactBsw, 2),
+                'monthly_diff_liquid' => 0,
+                'monthly_diff_liquid_avg' => 0,
+                'monthly_diff_oil' => 0
             ]
         ];
-        dd($result);
+
+        $mergeColumns = $this->getSummaryByTechMergeColumns();
+        $columns = $this->getSummaryByTechColumns();
+
+        $tableService = app()->make(TableFormHeaderService::class);
+
+        return [
+            'columns' => $columns,
+            'merge_columns' => $mergeColumns,
+            'complicated_header' => $tableService->getHeader($columns, $mergeColumns),
+            'rows' => $rows
+        ];
     }
 
-    private function getWorkingWellsCount(Collection $wells)
+    private function getWorkingWellsCount()
     {
-        return $wells->filter(function ($well) {
+        return $this->wells->filter(function ($well) {
             if (empty($this->workTime[$well->id])) {
                 return false;
             }
@@ -429,6 +457,356 @@ class FluidProductionMonth extends MeasLogByMonth
             }
             return !empty($totalTime);
         })->count();
+    }
+
+    private function getDailyPlanField(string $field)
+    {
+        return $this->techMode->sum($field);
+    }
+
+    private function getDailyPlanFieldAvg(string $field)
+    {
+        return $this->techMode->avg($field);
+    }
+
+    private function getDailyFactLiquid(CarbonImmutable $date)
+    {
+        return $this->liquid->map(function ($wellLiquid) use ($date) {
+            $currentDayLiquid = $wellLiquid->get($date->format('j'));
+            if (!$currentDayLiquid) {
+                return 0;
+            }
+            return $currentDayLiquid['liquid'];
+        })->sum();
+    }
+
+    private function getDailyFactBsw(CarbonImmutable $date)
+    {
+        return $this->bsw->map(function ($wellBsw) use ($date) {
+            $currentDayBsw = $wellBsw->get($date->format('j'));
+            return $currentDayBsw ?? 0;
+        })->filter()->avg();
+    }
+
+    private function getDailyFactOil(CarbonImmutable $date)
+    {
+        $bswByWell = $this->bsw->map(function ($wellBsw) use ($date) {
+            $currentDayBsw = $wellBsw->get($date->format('j'));
+            return $currentDayBsw ?? 0;
+        });
+
+        return $this->liquid->map(function ($wellLiquid, $wellId) use ($date, $bswByWell) {
+            $currentDayLiquid = $wellLiquid->get($date->format('j'));
+            if (!$currentDayLiquid) {
+                return 0;
+            }
+            if (empty($bswByWell->get($wellId))) {
+                return 0;
+            }
+
+            $oilDensity = $this->techMode->get($wellId) ? $this->techMode->get($wellId)->oil_density : 0;
+            return $currentDayLiquid['liquid'] * (1 - $bswByWell->get($wellId) / 100) * $oilDensity;
+        })->sum();
+    }
+
+    private function getDailyFactLiquidAvg(CarbonImmutable $date)
+    {
+        return $this->liquid->map(function ($wellLiquid) use ($date) {
+            return $wellLiquid->take(-3)->avg('liquid');
+        })->avg();
+    }
+
+    private function getMonthlyFactLiquid(CarbonImmutable $date)
+    {
+        return $this->liquid->map(function ($wellLiquid) use ($date) {
+            return $wellLiquid->map(function ($liquid) {
+                return $liquid['liquid'];
+            })->sum();
+        })->sum();
+    }
+
+    private function getMonthlyFactBsw(CarbonImmutable $date)
+    {
+        $result = $this->bsw->map(function ($wellBsw) use ($date) {
+            $wellBsw = $wellBsw->filter();
+            return [
+                'count' => $wellBsw->count(),
+                'sum' => $wellBsw->sum()
+            ];
+        });
+        if ($result->isEmpty()) {
+            return 0;
+        }
+        return $result->sum('sum') / $result->sum('count');
+    }
+
+    private function getMonthlyFactOil(CarbonImmutable $date)
+    {
+        return $this->liquid->map(function ($wellLiquid, $wellId) use ($date) {
+            return $wellLiquid->map(function ($liquid, $day) use ($wellId) {
+                $wellBsw = $this->bsw->get($wellId);
+                if (empty($wellBsw)) {
+                    return 0;
+                }
+
+                $currentBsw = $wellBsw->get($day);
+                if (empty($currentBsw)) {
+                    return 0;
+                }
+
+                $oilDensity = $this->techMode->get($wellId) ? $this->techMode->get($wellId)->oil_density : 0;
+                return $liquid['liquid'] * (1 - $currentBsw / 100) * $oilDensity;
+            })->sum();
+        })->sum();
+    }
+
+    private function getSummaryByTechMergeColumns(): array
+    {
+        return [
+            'wells' => [
+                'title' => 'Фонд скважин',
+                'code' => 'wells',
+            ],
+            'work_wells' => [
+                'title' => 'Действующий фонд',
+                'code' => 'work_wells',
+                'parent_column' => 'wells'
+            ],
+            'daily' => [
+                'title' => 'Суточная сводка',
+                'code' => 'daily'
+            ],
+            'daily_plan' => [
+                'title' => 'Режим (план)',
+                'code' => 'daily_plan',
+                'parent_column' => 'daily'
+            ],
+            'daily_fact' => [
+                'title' => 'Факт',
+                'code' => 'daily_fact',
+                'parent_column' => 'daily'
+            ],
+            'daily_diff' => [
+                'title' => 'Отклонение от режима',
+                'code' => 'daily_diff',
+                'parent_column' => 'daily'
+            ],
+            'monthly' => [
+                'title' => 'С начала месяца',
+                'code' => 'monthly'
+            ],
+            'monthly_plan' => [
+                'title' => 'Режим (план)',
+                'code' => 'monthly_plan',
+                'parent_column' => 'monthly'
+            ],
+            'monthly_fact' => [
+                'title' => 'Факт',
+                'code' => 'monthly_fact',
+                'parent_column' => 'monthly'
+            ],
+            'monthly_diff' => [
+                'title' => 'Отклонение от режима',
+                'code' => 'monthly_diff',
+                'parent_column' => 'monthly'
+            ],
+        ];
+    }
+
+    private function getSummaryByTechColumns(): array
+    {
+        return [
+            [
+                'title' => 'Узел',
+                'code' => 'tech'
+            ],
+            [
+                'title' => 'Экспл',
+                'code' => 'wells_all',
+                'parent_column' => 'wells'
+            ],
+            [
+                'title' => 'всего',
+                'code' => 'wells_total',
+                'parent_column' => 'work_wells'
+            ],
+            [
+                'title' => 'в работе',
+                'code' => 'wells_working',
+                'parent_column' => 'work_wells'
+            ],
+            [
+                'title' => 'в простое',
+                'code' => 'wells_stopped',
+                'parent_column' => 'work_wells'
+            ],
+            [
+                'title' => 'Добыча жидкости, м3',
+                'code' => 'daily_plan_liquid',
+                'parent_column' => 'daily_plan'
+            ],
+            [
+                'title' => 'Добыча жидкости, всего по средним посл. 3 замерам, м3',
+                'code' => 'daily_plan_liquid_avg',
+                'parent_column' => 'daily_plan'
+            ],
+            [
+                'title' => 'Добыча нефти, т',
+                'code' => 'daily_plan_oil',
+                'parent_column' => 'daily_plan'
+            ],
+            [
+                'title' => 'Добыча жидкости, м3',
+                'code' => 'daily_fact_liquid',
+                'parent_column' => 'daily_fact'
+            ],
+            [
+                'title' => 'Добыча жидкости, всего по средним посл. 3 замерам, м3',
+                'code' => 'daily_fact_liquid_avg',
+                'parent_column' => 'daily_fact'
+            ],
+            [
+                'title' => 'Добыча нефти, т',
+                'code' => 'daily_fact_oil',
+                'parent_column' => 'daily_fact'
+            ],
+            [
+                'title' => 'Средняя обв-ть, %',
+                'code' => 'daily_fact_bsw',
+                'parent_column' => 'daily_fact'
+            ],
+            [
+                'title' => 'Добыча жидкости, м3',
+                'code' => 'daily_diff_liquid',
+                'parent_column' => 'daily_diff'
+            ],
+            [
+                'title' => 'Добыча жидкости, всего по средним посл. 3 замерам, м3',
+                'code' => 'daily_diff_liquid_avg',
+                'parent_column' => 'daily_diff'
+            ],
+            [
+                'title' => 'Добыча нефти, т',
+                'code' => 'daily_diff_oil',
+                'parent_column' => 'daily_diff'
+            ],
+            [
+                'title' => 'Добыча жидкости, м3',
+                'code' => 'monthly_plan_liquid',
+                'parent_column' => 'monthly_plan'
+            ],
+            [
+                'title' => 'Добыча нефти, т',
+                'code' => 'monthly_plan_oil',
+                'parent_column' => 'monthly_plan'
+            ],
+            [
+                'title' => 'Добыча жидкости, м3',
+                'code' => 'monthly_fact_liquid',
+                'parent_column' => 'monthly_fact'
+            ],
+            [
+                'title' => 'Добыча нефти, т',
+                'code' => 'monthly_fact_oil',
+                'parent_column' => 'monthly_fact'
+            ],
+            [
+                'title' => 'Средняя обв-ть, %',
+                'code' => 'monthly_fact_bsw',
+                'parent_column' => 'monthly_fact'
+            ],
+            [
+                'title' => 'Добыча жидкости, м3',
+                'code' => 'monthly_diff_liquid',
+                'parent_column' => 'monthly_diff'
+            ],
+            [
+                'title' => 'Добыча нефти, т',
+                'code' => 'monthly_diff_oil',
+                'parent_column' => 'monthly_diff'
+            ],
+        ];
+    }
+
+    private function getTotalValues(CarbonImmutable $date, array $rows)
+    {
+        return [
+            'rows' => $this->getTotalValuesRows($date, $rows),
+            'columns' => $this->getTotalValuesColumns($date),
+        ];
+    }
+
+    private function getTotalValuesRows(CarbonImmutable $date, array $tableRows): array
+    {
+        $result = [];
+        $indicators = [
+            'liquid',
+            'bsw',
+            'oil'
+        ];
+
+        foreach ($indicators as $code) {
+            $row = [
+                'indicator' => trans('bd.forms.fluid_production_month.' . $code),
+                'wells' => $this->wells->count()
+            ];
+
+            $indicatorRows = array_filter($tableRows, function ($row) use ($code) {
+                return !empty($row['indicator_code']) && $row['indicator_code'] === $code;
+            });
+
+            $monthDay = $date->startOfMonth();
+            while ($monthDay <= $date) {
+                $values = [];
+
+                foreach ($indicatorRows as $indicatorRow) {
+                    if (isset($indicatorRow[$monthDay->format('d.m.Y')])) {
+                        $values[] = $indicatorRow[$monthDay->format('d.m.Y')]['value'];
+                    }
+                }
+
+                $values = array_filter($values);
+
+                if ($code === 'bsw') {
+                    $value = empty($values) ? 0 : array_sum($values) / count($values);
+                } else {
+                    $value = array_sum($values);
+                }
+
+                $row[$monthDay->format('d.m.Y')] = round($value, 2);
+
+                $monthDay = $monthDay->addDay();
+            }
+
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
+    private function getTotalValuesColumns(CarbonImmutable $date): array
+    {
+        $columns = [
+            [
+                'title' => 'Итоговые показатели',
+                'code' => 'indicator'
+            ],
+            [
+                'title' => 'Всего скважин',
+                'code' => 'wells'
+            ]
+        ];
+
+        $monthDay = $date->startOfMonth();
+        while ($monthDay <= $date) {
+            $columns[] = [
+                'code' => $monthDay->format('d.m.Y'),
+                'title' => $monthDay->format('j')
+            ];
+            $monthDay = $monthDay->addDay();
+        }
+
+        return $columns;
     }
 
     protected function saveSingleFieldInDB(array $params): void
