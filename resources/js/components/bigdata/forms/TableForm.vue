@@ -21,38 +21,40 @@
                  :filter="filter">
             </div>
           </div>
-          <div v-for="table in formParams.summary.tables" v-if="formParams.summary" class="summary">
-            <p class="title">{{ table.title }}</p>
-            <div class="summary-table">
-              <table class="table">
-                <thead>
-                <template v-if="table.data.complicated_header">
-                  <tr v-for="row in table.data.complicated_header">
-                    <th
-                        v-for="column in row"
-                        :colspan="column.colspan"
-                        :rowspan="column.rowspan"
-                    >
-                      {{ column.title }}
-                    </th>
+          <template v-if="formParams.summary">
+            <div v-for="table in formParams.summary.tables" class="summary">
+              <p class="title">{{ table.title }}</p>
+              <div class="summary-table">
+                <table class="table">
+                  <thead>
+                  <template v-if="table.data.complicated_header">
+                    <tr v-for="row in table.data.complicated_header">
+                      <th
+                          v-for="column in row"
+                          :colspan="column.colspan"
+                          :rowspan="column.rowspan"
+                      >
+                        {{ column.title }}
+                      </th>
+                    </tr>
+                  </template>
+                  <template v-else>
+                    <tr>
+                      <th v-for="column in table.data.columns">
+                        {{ column.title }}
+                      </th>
+                    </tr>
+                  </template>
+                  </thead>
+                  <tbody>
+                  <tr v-for="row in table.data.rows">
+                    <td v-for="column in table.data.columns"><span v-html="row[column.code]"></span></td>
                   </tr>
-                </template>
-                <template v-else>
-                  <tr>
-                    <th v-for="column in table.data.columns">
-                      {{ column.title }}
-                    </th>
-                  </tr>
-                </template>
-                </thead>
-                <tbody>
-                <tr v-for="row in table.data.rows">
-                  <td v-for="column in table.data.columns"><span v-html="row[column.code]"></span></td>
-                </tr>
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          </template>
           <table v-if="rows.length" class="table">
             <thead>
             <template v-if="formParams.complicated_header">
