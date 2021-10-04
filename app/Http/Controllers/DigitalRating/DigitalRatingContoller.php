@@ -109,6 +109,7 @@ class DigitalRatingContoller extends Controller
             }
          }
       };
+         
 
       $neighboring_wells =   DB::connection('tbd')->table('tbdi.well')
          ->whereIn('tbdi.well.uwi',$neighboring_wells_uwi)
@@ -125,7 +126,8 @@ class DigitalRatingContoller extends Controller
          ->select('tbdi.well.uwi', 'tbdi.well.id','tbdi.well_category.well_category_type_id','tbdi.well_status.well_status_type_id','tbdi.well_status.well_id','tbdi.well_geo.geo_id','tbdi.geo.name')
          ->groupBy('well.uwi','well.id','well_category.well_category_type_id','well_status.well_status_type_id','well_status.well_id','tbdi.well_geo.geo_id','tbdi.geo.name')
          ->get();
-        
+          
+         
          return $neighboring_wells;
          
         
@@ -147,6 +149,8 @@ class DigitalRatingContoller extends Controller
       foreach ($neighboring_wells as $item) {
          $well_id[] = $item->well_id;
       }
+   
+
       $injection_wells =   DB::connection('tbd')->table('tbdi.well')
                ->whereIn('tbdi.well.id',$well_id)
                ->join('tbdi.water_inj', 'tbdi.water_inj.well_id', '=', 'tbdi.well.id')
@@ -170,10 +174,11 @@ class DigitalRatingContoller extends Controller
             }
          }
       }
-
       $headers = [ 'Content-Type' => 'application/json; charset=utf-8'];
       return response()->json($injection_wells,200,$headers,JSON_UNESCAPED_UNICODE);
    
    }
+
+ 
   
 };
