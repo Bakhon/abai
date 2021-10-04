@@ -317,6 +317,7 @@ class DictionaryService
             'class' => WorkStatus::class,
             'name_field' => 'name_ru'
         ]
+        
     ];
 
     const TREE_DICTIONARIES = [
