@@ -10,10 +10,7 @@ class TableFormHeaderService
     {
         $complicatedHeader = [];
         foreach ($columns as $column) {
-            if (isset($column['visible']) && $column['visible'] === false) {
-                continue;
-            }
-            if (isset($column['type']) && $column['type'] === 'hidden') {
+            if ((isset($column['visible']) && $column['visible'] === false) || $column['type'] === 'hidden') {
                 continue;
             }
             if (empty($column['parent_column'])) {

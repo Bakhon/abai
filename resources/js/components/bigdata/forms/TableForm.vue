@@ -12,45 +12,13 @@
           {{ trans('bd.select_dzo') }}
         </p>
         <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
-        <div v-else :class="{'tables_with-summary': formParams.summary}" class="tables scrollable">
+        <div v-else class="table-wrap scrollable">
           <div v-for="custom_column in formParams.custom_columns">
             <div :is="custom_column.component_name"
                  :column="custom_column"
                  :allColumns="formParams.columns"
                  :updateTableData="updateTableData"
                  :filter="filter">
-            </div>
-          </div>
-          <div v-for="table in formParams.summary.tables" v-if="formParams.summary" class="summary">
-            <p class="title">{{ table.title }}</p>
-            <div class="summary-table">
-              <table class="table">
-                <thead>
-                <template v-if="table.data.complicated_header">
-                  <tr v-for="row in table.data.complicated_header">
-                    <th
-                        v-for="column in row"
-                        :colspan="column.colspan"
-                        :rowspan="column.rowspan"
-                    >
-                      {{ column.title }}
-                    </th>
-                  </tr>
-                </template>
-                <template v-else>
-                  <tr>
-                    <th v-for="column in table.data.columns">
-                      {{ column.title }}
-                    </th>
-                  </tr>
-                </template>
-                </thead>
-                <tbody>
-                <tr v-for="row in table.data.rows">
-                  <td v-for="column in table.data.columns"><span v-html="row[column.code]"></span></td>
-                </tr>
-                </tbody>
-              </table>
             </div>
           </div>
           <table v-if="rows.length" class="table">
@@ -277,6 +245,7 @@ export default {
       activeTab: 0,
       currentPage: 1,
       rows: [],
+      columns: [],
       editableCell: {
         row: null,
         column: null
@@ -352,9 +321,6 @@ export default {
             }
             if (data.complicated_header) {
               this.formParams.complicated_header = data.complicated_header
-            }
-            if (data.summary) {
-              this.formParams.summary = data.summary
             }
             this.recalculateCells()
             if (this.formParams.show_history !== false) {
@@ -710,33 +676,11 @@ body.fixed {
     margin: 0;
     padding: 0;
 
-    .tables {
+    .table-wrap {
       height: 100%;
       margin: 0 0 10px;
       overflow-y: auto;
       width: 100%;
-
-      &_with-summary {
-        overflow-x: hidden;
-      }
-    }
-
-    .summary {
-      .title {
-        color: #fff;
-        font-size: 16px;
-        margin: 5px 0;
-        text-align: center;
-      }
-
-      &-table {
-        margin-bottom: 20px;
-        overflow-x: auto;
-
-        .table {
-          margin-bottom: 0;
-        }
-      }
     }
   }
 
@@ -760,7 +704,7 @@ body.fixed {
     }
 
     td {
-      height: 40px;
+      height: 52px;
       position: relative;
 
       .icon-history {
