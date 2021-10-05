@@ -234,8 +234,10 @@ export default {
             let value = 0
 
             key.props
-                ? key.props.forEach(prop => value += +well[prop][date] || 0)
-                : value = +well[key.prop][date] || ''
+                ? key.props.forEach(prop => {
+                  value += well[prop] && well[prop][date] ? +well[prop][date] : 0
+                })
+                : value = well[key.prop] && well[key.prop][date] ? +well[key.prop][date] : ''
 
             totalSum[key.prop][dateIndex + 2].value += +value
 
@@ -255,8 +257,10 @@ export default {
           let sum = 0
 
           key.props
-              ? key.props.forEach(prop => sum += +well[prop]['sum'])
-              : sum = +well[key.prop]['sum']
+              ? key.props.forEach(prop => {
+                sum += well[prop] ? +well[prop]['sum'] : 0
+              })
+              : sum = well[key.prop] ? +well[key.prop]['sum'] : 0
 
           totalSum[key.prop][1].value += sum
 
@@ -349,6 +353,24 @@ export default {
         {
           prop: 'liquid',
           name: this.trans('economic_reference.liquid_production'),
+          isVisible: true,
+        },
+        {
+          prop: 'prs',
+          name: this.trans('economic_reference.prs_count'),
+          dimension: 1000,
+          isVisible: true,
+        },
+        {
+          prop: 'PRS_nopayroll_expenditures',
+          name: this.trans('economic_reference.prs_nopayroll_expenditures'),
+          dimension: 1000,
+          isVisible: true,
+        },
+        {
+          prop: 'PRS_expenditures',
+          name: this.trans('economic_reference.prs_expenditures'),
+          dimension: 1000,
           isVisible: true,
         },
         {
