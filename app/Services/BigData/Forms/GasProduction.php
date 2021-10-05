@@ -7,5 +7,5 @@ namespace App\Services\BigData\Forms;
 class GasProduction extends MeasurementLogForm
 {
     protected $configurationFileName = 'gas_production';
-    protected $wellCategories = ['GAS'];
+    protected $wellCategories = ['OIL'];
 }
