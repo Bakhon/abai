@@ -18,7 +18,7 @@ class PlainFormHistory
         ?\stdClass $originalData,
         array $submittedData
     ) {
-        if (empty($submittedData)) {
+        if (empty($submittedData) || empty($submittedData['fields'])) {
             return;
         }
 

@@ -27,12 +27,27 @@ class GasWell extends PlainForm
     {
         $errors = [];
 
-        if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'))){
+        if (!$this->isValidDate($this->request->get('well'), $this->request->get('dbeg'))) {
             $errors['dbeg'] = trans('bd.validation.dbeg');
         }
 
         return $errors;
     }
 
+    protected function insertInnerTable(int $id)
+    {
+        if (!empty($this->tableFields)) {
+            foreach ($this->tableFields as $field) {
+                if (!empty($this->request->get($field['code']))) {
+                    $this->submittedData['table_fields'][$field['code']] = [];
+                    foreach ($this->request->get($field['code']) as $data) {
+                        $data[$field['parent_column']] = $this->request->get('well');
+                        $this->submittedData['table_fields'][$field['code']][] = $data;
+                        DB::connection('tbd')->table($field['table'])->insert($data);
+                    }
+                }
+            }
+        }
+    }
 
 }
