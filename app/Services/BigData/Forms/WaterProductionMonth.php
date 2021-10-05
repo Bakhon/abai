@@ -86,24 +86,21 @@ class WaterProductionMonth extends MeasLogByMonth
         $waterRow = [
             'id' => $well->id,
             'uwi' => ['value' => $well->uwi],
-            'indicator' => ['value' => trans('bd.forms.meas_water_prod.water_prod_val')]
+            'indicator' => ['value' => trans('bd.forms.water_production_month.water_prod_val')]
         ];
         $workTimeRow = [
             'id' => $well->id,
-            'uwi' => ['value' => $well->uwi],
-            'indicator' => ['value' => trans('bd.forms.meas_water_prod.worktime')]
+            'indicator' => ['value' => trans('bd.forms.water_production_month.worktime')]
         ];
         $waterSumRow = [
             'id' => $well->id,
-            'uwi' => ['value' => $well->uwi],
-            'indicator' => ['value' => trans('bd.forms.meas_water_prod.water_val')]
+            'indicator' => ['value' => trans('bd.forms.water_production_month.water_val')]
         ];
 
         $monthDay = $date->startOfMonth();
         while ($monthDay <= $date) {
             $water_prod_val = $water->get($well->id) ? $water->get($well->id)->get($monthDay->format('j')) : 0;
             $workTime = $workTimes[$monthDay->format('j')] ?? null;
-
             $waterRow[$monthDay->format('d.m.Y')] = [
                 'value' => $water_prod_val,
                 'is_editable' => true,

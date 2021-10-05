@@ -59,7 +59,7 @@ class MeasWaterInj extends MeasLogByMonth
                 });
                 return $items->map(function ($item) {
                     $item = $item->first();
-                    return round($item->pressure_inj, 2);
+                    return round((int)$item->pressure_inj, 2);
                 });
             });
     }
