@@ -10,7 +10,7 @@
         @changeWell="getOmgNgduData"
         @changeZu="changeZu"
         @submit="storeOmgNgdu"
-        @dailyProductionInput="calculateFluidParams"
+        @dailyProductionInput="calculateFluidParams(true)"
     />
   </b-col>
 </template>
@@ -19,6 +19,7 @@
 import {complicationMonitoringState, complicationMonitoringActions, globalloadingMutations} from '@store/helpers';
 import omgNgduWellformFields from '~/json/formFields/omg_ngdu_well.json';
 import EditForm from '@ui-kit/EditForm';
+import calculateFluidParams from '~/mixins/calculateFluidParams';
 
 const averageOilDensity = 853;
 
@@ -37,6 +38,7 @@ export default {
   components: {
     EditForm
   },
+  mixins: [calculateFluidParams],
   data: function () {
     return {
       formFields: _.cloneDeep(omgNgduWellformFields),
@@ -87,20 +89,6 @@ export default {
     setOmgNgduFormFields(omgngdu_well) {
       for (let param in this.formFields) {
         this.formFields[param].value = omgngdu_well[param];
-      }
-    },
-    calculateFluidParams() {
-      let gas_factor = this.formFields.gas_factor.value;
-      let daily_fluid_production = this.formFields.daily_fluid_production.value;
-      let bsw = this.formFields.bsw.value;
-
-      if (daily_fluid_production && bsw) {
-        this.formFields.daily_water_production.value = ((daily_fluid_production * bsw) / 100).toFixed(2);
-        this.formFields.daily_oil_production.value = (((daily_fluid_production * (100 - bsw)) / 100) * averageOilDensity / 1000).toFixed(2);
-      }
-
-      if (daily_fluid_production && gas_factor && bsw) {
-        this.formFields.daily_gas_production.value = (gas_factor * daily_fluid_production * (1 - bsw / 100)).toFixed(2);
       }
     },
     async changeZu() {

@@ -5,7 +5,7 @@
       :formObject="well"
       @selectDate="getOmgNgduData"
       @submit="storeOmgNgdu"
-      @dailyProductionInput="calculateFluidParams"
+      @dailyProductionInput="calculateFluidParams(true)"
   />
 </template>
 
@@ -13,6 +13,7 @@
 import EditForm from '@ui-kit/EditForm';
 import {globalloadingMutations} from '@store/helpers';
 import omgNgduWellformFields from '~/json/formFields/map_omg_ngdu_well.json'
+import calculateFluidParams from '~/mixins/calculateFluidParams';
 
 const averageOilDensity = 853;
 
@@ -40,6 +41,7 @@ export default {
       }
     });
   },
+  mixins: [calculateFluidParams],
   methods: {
     ...globalloadingMutations([
       'SET_LOADING'
@@ -107,20 +109,6 @@ export default {
 
         this.SET_LOADING(false);
       });
-    },
-    calculateFluidParams() {
-      let gas_factor = this.formFields.gas_factor.value;
-      let daily_fluid_production = this.formFields.daily_fluid_production.value;
-      let bsw = this.formFields.bsw.value;
-
-      if (daily_fluid_production && bsw) {
-        this.formFields.daily_water_production.value = ((daily_fluid_production * bsw) / 100).toFixed(2);
-        this.formFields.daily_oil_production.value = (((daily_fluid_production * (100 - bsw)) / 100) * averageOilDensity / 1000).toFixed(2);
-      }
-
-      if (daily_fluid_production && gas_factor && bsw) {
-        this.formFields.daily_gas_production.value = (gas_factor * daily_fluid_production * (1 - bsw / 100)).toFixed(2);
-      }
     }
   }
 }
