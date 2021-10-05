@@ -9,4 +9,8 @@ return array (
   'in_work' => 'В работе',
   'in_idle' => 'В простое',
   'monitoring' => 'Мониторинг',
+  'brigades' => 'Бригады',
+  'analytics' => 'Аналитика',
+  'analysis_pv_npv' => 'Анализ ПВ/НПВ',
+  'documentation' => 'Документация',
 );

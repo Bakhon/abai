@@ -54,193 +54,43 @@ export default {
             },
           ],
         },
+
+        // name: this.trans('tkrs.documentation'),
+        //   imagePath: "/img/tkrs/document_header.svg",
         {
-          name: "Документация",
+          name: this.trans('tkrs.documentation'),
           imagePath: "/img/tkrs/document_header.svg",
           showArrow: true,
           activeKey: "reservoir-oil-samples-analysis",
           position: "bottom",
           children: [
             {
-              name: "Нефть",
-              imagePath: "/img/PlastFluids/oil.svg",
+              name: this.trans('tkrs.daily_summary'),
+              imagePath: "/img/tkrs/daily_summary.svg",
               showArrow: false,
               position: "right",
-              children: [
-                {
-                  name: "Изученность",
-                  imagePath: "/img/PlastFluids/study.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/oil/study",
-                },
-                {
-                  name: "Карты и таблицы",
-                  imagePath: "/img/PlastFluids/mapsAndTables.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/oil/maps-and-tables",
-                },
-                {
-                  name: "Карта свойств",
-                  imagePath: "/img/PlastFluids/propertyMap.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/oil/property-map",
-                },
-                {
-                  name: "Графики и таблицы",
-                  imagePath: "/img/PlastFluids/graphsAndTables.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/oil/graphs-and-tables",
-                },
-                {
-                  name: "Состав жидкости",
-                  imagePath: "/img/PlastFluids/fluidComposition.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/oil/fluid-composition",
-                },
-                {
-                  name: "Газоконденсатные исследования",
-                  imagePath: "/img/PlastFluids/gasCondensateStudies.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/oil/gas-condensate-studies",
-                },
-              ],
             },
             {
-              name: "Документация",
-              imagePath: "/img/tkrs/document_header.svg",
+              name: this.trans('tkrs.por'),
+              imagePath: "/img/tkrs/por.svg",
               showArrow: false,
               position: "right",
-              children: [
-                {
-                  name: "Изученность",
-                  imagePath: "/img/PlastFluids/study.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/gascondensate/study",
-                },
-                {
-                  name: "Карты и таблицы",
-                  imagePath: "/img/PlastFluids/mapsAndTables.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/gascondensate/maps-and-tables",
-                },
-                {
-                  name: "Состав жидкости",
-                  imagePath: "/img/PlastFluids/fluidComposition.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/gascondensate/fluid-composition",
-                },
-                {
-                  name: "Газоконденсатные исследования",
-                  imagePath: "/img/PlastFluids/gasCondensateStudies.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/gascondensate/gas-condensate-studies",
-                },
-              ],
             },
           ],
         },
+
         {
-          name: "Библиотека",
+          name: this.trans('tkrs.library'),
           imagePath: "/img/tkrs/library_header.svg",
           showArrow: true,
           activeKey: "reservoir-oil-samples-analysis",
           position: "bottom",
           children: [
             {
-              name: "Нефть",
-              imagePath: "/img/PlastFluids/oil.svg",
+              name: this.trans('tkrs.daily_summary'),
+              imagePath: "/img/tkrs/daily_summary.svg",
               showArrow: false,
               position: "right",
-              children: [
-                {
-                  name: "Изученность",
-                  imagePath: "/img/PlastFluids/study.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/oil/study",
-                },
-                {
-                  name: "Карты и таблицы",
-                  imagePath: "/img/PlastFluids/mapsAndTables.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/oil/maps-and-tables",
-                },
-                {
-                  name: "Карта свойств",
-                  imagePath: "/img/PlastFluids/propertyMap.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/oil/property-map",
-                },
-                {
-                  name: "Графики и таблицы",
-                  imagePath: "/img/PlastFluids/graphsAndTables.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/oil/graphs-and-tables",
-                },
-                {
-                  name: "Состав жидкости",
-                  imagePath: "/img/PlastFluids/fluidComposition.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/oil/fluid-composition",
-                },
-                {
-                  name: "Газоконденсатные исследования",
-                  imagePath: "/img/PlastFluids/gasCondensateStudies.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/oil/gas-condensate-studies",
-                },
-              ],
-            },
-            {
-              name: "Газоконденсат",
-              imagePath: "/img/PlastFluids/gasCondensate.svg",
-              showArrow: false,
-              position: "right",
-              children: [
-                {
-                  name: "Изученность",
-                  imagePath: "/img/PlastFluids/study.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/gascondensate/study",
-                },
-                {
-                  name: "Карты и таблицы",
-                  imagePath: "/img/PlastFluids/mapsAndTables.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/gascondensate/maps-and-tables",
-                },
-                {
-                  name: "Состав жидкости",
-                  imagePath: "/img/PlastFluids/fluidComposition.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/gascondensate/fluid-composition",
-                },
-                {
-                  name: "Газоконденсатные исследования",
-                  imagePath: "/img/PlastFluids/gasCondensateStudies.svg",
-                  justify: "flex-start",
-                  url:
-                    "pf-data-analysis/reservoir-oil-samples-analysis/gascondensate/gas-condensate-studies",
-                },
-              ],
             },
           ],
         },
