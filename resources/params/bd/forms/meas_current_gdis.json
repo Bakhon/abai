@@ -1,0 +1,11 @@
+{
+  "type": "table",
+  "columns": [
+    {
+      "title": "hello_world",
+      "code": "uwi",
+      "type": "link",
+      "is_editable": false
+    }
+  ]
+}
