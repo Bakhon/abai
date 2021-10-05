@@ -32,7 +32,10 @@
                 "code": "perf_date",
                 "type": "date",
                 "title": "data",
-                "validation": "required"
+                "validation": "required",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
                 "code": "depth",
