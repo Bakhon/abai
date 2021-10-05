@@ -63,6 +63,7 @@ class FluidProductionMonth extends MeasLogByMonth
         $this->techMode = $this->getTechMode($wellIds, $date);
         $this->liquid = $this->getLiquid($wellIds, $date);
         $this->bsw = $this->getBsw($wellIds, $date);
+        $this->gas = $this->getGas($wellIds, $date);
         $this->workTime = $this->getWorkTime($wellIds, $date);
         $otherUwis = $this->getOtherUwis($wellIds);
 
@@ -144,6 +145,29 @@ class FluidProductionMonth extends MeasLogByMonth
     }
 
     private function getBsw(array $wellIds, CarbonImmutable $date): Collection
+    {
+        return DB::connection('tbd')
+            ->table('prod.meas_water_cut as mwc')
+            ->join('dict.well_activity as wa', 'mwc.activity', 'wa.id')
+            ->join('dict.value_type as vt', 'mwc.value_type', 'vt.id')
+            ->whereIn('mwc.well', $wellIds)
+            ->where('mwc.dbeg', '>=', $date->startOfMonth())
+            ->where('mwc.dend', '<=', $date->endOfDay())
+            ->where('wa.code', 'PMSR')
+            ->where('vt.code', 'MNT')
+            ->get()
+            ->groupBy('well')
+            ->map(function ($items) {
+                $items = $items->groupBy(function ($item) {
+                    return Carbon::parse($item->dbeg)->format('j');
+                });
+                return $items->map(function ($item) {
+                    return $item->first()->water_cut;
+                });
+            });
+    }
+
+    private function getGas(array $wellIds, CarbonImmutable $date): Collection
     {
         return DB::connection('tbd')
             ->table('prod.meas_water_cut as mwc')
@@ -260,13 +284,17 @@ class FluidProductionMonth extends MeasLogByMonth
             $wellLiquid = $this->liquid->get($well->id);
             if ($wellLiquid) {
                 $liquidValue = $wellLiquid->get($monthDay->format('j'));
-                $row[$monthDay->format('d.m.Y')] = ['value' => $liquidValue['liquid'] ?? null];
 
                 if (!empty($liquidValue['liquid'])) {
                     $count++;
                     $sum += $liquidValue['liquid'];
                 }
             }
+
+            $row[$monthDay->format('d.m.Y')] = [
+                'is_editable' => true,
+                'value' => $liquidValue['liquid'] ?? null
+            ];
 
             $monthDay = $monthDay->addDay();
         }
@@ -325,7 +353,7 @@ class FluidProductionMonth extends MeasLogByMonth
 
             $row[$day] = [
                 'is_editable' => false,
-                'value' => $oil
+                'value' => round($oil, 2)
             ];
 
             if (!empty($oil)) {
@@ -814,6 +842,9 @@ class FluidProductionMonth extends MeasLogByMonth
         list($wellId, $field) = explode('|', $params['wellId']);
         $date = Carbon::parse($params['field'])->timezone('Asia/Almaty')->toImmutable();
         switch ($field) {
+            case 'liquid':
+                $this->saveField('prod.meas_liq', 'liquid', $wellId, $date, $params['value']);
+                break;
             case 'bsw':
                 $this->saveField('prod.meas_water_cut', 'water_cut', $wellId, $date, $params['value']);
                 break;
