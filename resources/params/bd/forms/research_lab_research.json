@@ -833,7 +833,6 @@
                 "code": "water_density",
                 "table": "prod.produced_water_analysis",
                 "type": "numeric",
-                "validation" : "gte:0.9|lte:2",
                 "title": "water_density",
                 "depends_on": [
                   {
