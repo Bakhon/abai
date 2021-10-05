@@ -54,10 +54,10 @@ export default {
       isApproximationOpen: false,
       graphSeries: [],
       approximation: [],
-      minX: "",
-      minY: "",
-      maxX: "",
-      maxY: "",
+      minXAxisBorder: "",
+      minYAxisBorder: "",
+      maxXAxisBorder: "",
+      maxYAxisBorder: "",
       chartOptions: {
         stroke: {
           show: true,
@@ -87,7 +87,7 @@ export default {
           showForSingleSeries: true,
         },
         noData: {
-          text: "Загрузка...",
+          text: "Нет данных",
         },
         grid: {
           show: true,
@@ -111,6 +111,9 @@ export default {
           },
         },
         xaxis: {
+          labels: {
+            formatter: this.labelFormatterX,
+          },
           type: "numeric",
           lines: {
             show: true,
@@ -120,7 +123,7 @@ export default {
         },
         yaxis: {
           labels: {
-            formatter: this.labelFormatter,
+            formatter: this.labelFormatterY,
           },
           lines: {
             show: true,
@@ -135,14 +138,74 @@ export default {
     series: {
       handler(obj) {
         const filtered = obj.data.filter((item) => item.x && item.y);
-        this.minX = this.getMaxMinInObjectArray(filtered, "x")[0];
-        this.minY = this.getMaxMinInObjectArray(filtered, "y")[0];
-        this.maxX = this.getMaxMinInObjectArray(filtered, "x")[1];
-        this.maxY = this.getMaxMinInObjectArray(filtered, "y")[1];
-        Vue.set(this.chartOptions.xaxis, "min", this.minX - this.minX * 0.2);
-        Vue.set(this.chartOptions.yaxis, "min", this.minY - this.minY * 0.2);
-        Vue.set(this.chartOptions.xaxis, "max", this.maxX + this.maxX * 0.2);
-        Vue.set(this.chartOptions.yaxis, "max", this.maxY + this.maxY * 0.2);
+        const minX = this.getMaxMinInObjectArray(filtered, "x")[0];
+        const maxX = this.getMaxMinInObjectArray(filtered, "x")[1];
+        const minY = this.getMaxMinInObjectArray(filtered, "y")[0];
+        const maxY = this.getMaxMinInObjectArray(filtered, "y")[1];
+
+        const isPositiveX = this.comparePositives(maxX, minX);
+        const isPositiveY = this.comparePositives(maxY, minY);
+
+        const calculate = (isPositive, num1, num2, axis, type) => {
+          let largeDiff, sum, max, min;
+          if (axis === "x") {
+            max = maxX;
+            min = minX;
+          }
+          if (axis === "y") {
+            max = maxY;
+            min = minY;
+          }
+          largeDiff = max - min > max * 0.2;
+
+          if (isPositive) {
+            type === "min"
+              ? (sum = largeDiff ? num2 - num2 * 0.2 : num2 - 10)
+              : (sum = largeDiff ? num2 + num2 * 0.2 : num2 + 10);
+          } else {
+            type === "min"
+              ? (sum = largeDiff ? num1 + num1 * 0.2 : num1 + 10)
+              : (sum = largeDiff ? num1 - num1 * 0.2 : num1 - 10);
+          }
+          return sum;
+        };
+
+        this.minXAxisBorder =
+          obj.config.minX === "auto"
+            ? calculate(isPositiveX, maxX, minX, "x", "min")
+            : obj.config.minX;
+        this.minYAxisBorder =
+          obj.config.minY === "auto"
+            ? calculate(isPositiveY, maxY, minY, "y", "min")
+            : obj.config.minY;
+        this.maxXAxisBorder =
+          obj.config.maxX === "auto"
+            ? calculate(isPositiveX, minX, maxX, "x", "max")
+            : obj.config.maxX;
+        this.maxYAxisBorder =
+          obj.config.maxY === "auto"
+            ? calculate(isPositiveY, minY, maxY, "y", "max")
+            : obj.config.maxY;
+
+        this.chartOptions = {
+          ...this.chartOptions,
+          xaxis: {
+            ...this.chartOptions.xaxis,
+            min: this.minXAxisBorder,
+            max: this.maxXAxisBorder,
+          },
+          yaxis: {
+            min: this.minYAxisBorder,
+            max: this.maxYAxisBorder,
+            labels: {
+              formatter: this.labelFormatterY,
+            },
+            lines: {
+              show: true,
+            },
+            tickAmount: 4,
+          },
+        };
         this.graphSeries = [];
         this.graphSeries.push({
           name: obj.name,
@@ -154,8 +217,14 @@ export default {
     },
   },
   methods: {
-    labelFormatter(value) {
-      return value.toFixed(this.maxY + this.maxY * 0.2 < 4 ? 1 : "");
+    comparePositives(max, min) {
+      return Math.abs(max) > Math.abs(min);
+    },
+    labelFormatterY(value) {
+      return value.toFixed(Math.abs(this.maxYAxisBorder) < 4 ? 1 : "");
+    },
+    labelFormatterX(value) {
+      return value.toFixed(Math.abs(this.maxXAxisBorder) < 4 ? 1 : "");
     },
     getMaxMinInObjectArray(obj, property) {
       let max = Number.NEGATIVE_INFINITY;
@@ -188,7 +257,7 @@ export default {
               ? Number(data.graphOptions.ordinateTo)
               : maxY,
             labels: {
-              formatter: this.labelFormatter,
+              formatter: this.labelFormatterY,
             },
             lines: {
               show: true,

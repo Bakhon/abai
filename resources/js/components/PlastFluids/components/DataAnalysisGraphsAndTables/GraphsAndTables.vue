@@ -46,41 +46,58 @@ export default {
     DataAnalysisDataTable,
     SmallCatLoader,
   },
-  data() {
-    return {
-      graphType: "ps_bs_ds_ms",
-    };
-  },
   computed: {
     ...mapState("plastFluids", [
       "currentSubsoil",
       "currentSubsoilField",
       "currentSubsoilHorizon",
     ]),
-    ...mapState("plastFluidsLocal", ["tableFields", "tableRows", "loading"]),
+    ...mapState("plastFluidsLocal", [
+      "tableFields",
+      "tableRows",
+      "loading",
+      "graphType",
+    ]),
     graphData() {
-      let allGraphData = {
-        ps: { name: "Данные", data: [], type: "scatter" },
-        bs: { name: "Данные", data: [], type: "scatter" },
-        ds: { name: "Данные", data: [], type: "scatter" },
-        ms: { name: "Данные", data: [], type: "scatter" },
-      };
+      const zeroX = ["Ps", "Bs", "Ds", "Ms"];
+      const zeroY = ["Ps", "Rs"];
+      const keys = Object.keys(this.tableRows[0] ?? "");
+      let allGraphData = {};
+      for (let i = 0; i < keys.length; i++) {
+        if (keys[i] === "key" || keys[i] === "table_data") {
+          continue;
+        }
+        allGraphData[keys[i]] = {};
+        allGraphData[keys[i]].name = "Данные";
+        allGraphData[keys[i]].data = [];
+        allGraphData[keys[i]].type = "scatter";
+        allGraphData[keys[i]].config = {
+          minX: zeroX.includes(keys[i]) ? 0 : "auto",
+          maxX: "auto",
+          minY: zeroY.includes(keys[i]) ? 0 : keys[i] === "Bs" ? 1 : "auto",
+          maxY: "auto",
+        };
+      }
+      const fKeys = Object.keys(allGraphData);
       this.tableRows.forEach((row) => {
-        allGraphData.bs.data.push(row.Bs);
-        allGraphData.ms.data.push(row.Ms);
-        allGraphData.ps.data.push(row.Ps);
-        allGraphData.ds.data.push(row.Ds);
+        for (let i = 0; i < fKeys.length; i++) {
+          allGraphData[fKeys[i]].data.push(row[fKeys[i]]);
+        }
       });
       return allGraphData;
     },
     isDataReady() {
-      return !Object.keys(this.graphData).some(
-        (key) => !this.graphData[key].data.length
+      return (
+        Object.keys(this.graphData).length &&
+        !Object.keys(this.graphData).some(
+          (key) => !this.graphData[key].data.length
+        )
       );
     },
   },
   methods: {
     ...mapActions("plastFluidsLocal", ["handleTableGraphData"]),
+    setConfig() {},
     getMaxMin(arrayData) {
       const max = Math.max(...arrayData);
       const min = Math.min(...arrayData);
@@ -91,7 +108,6 @@ export default {
     if (this.currentSubsoilField[0]?.field_id) {
       this.handleTableGraphData({
         field_id: this.currentSubsoilField[0].field_id,
-        graph_type: this.graphType,
       });
     }
   },

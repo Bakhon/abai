@@ -60,10 +60,7 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions("plastFluidsLocal", [
-      "handleTableData",
-      "handleTableGraphData",
-    ]),
+    ...mapActions("plastFluidsLocal", ["handleTableGraphData"]),
     ...mapActions("plastFluids", ["UPDATE_CURRENT_SUBSOIL_FIELD"]),
     ...mapMutations("plastFluids", ["SET_CURRENT_SUBSOIL_HORIZON"]),
     updateCurrentSubsoilField(value) {
