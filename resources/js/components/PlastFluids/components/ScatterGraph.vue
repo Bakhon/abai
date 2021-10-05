@@ -138,54 +138,45 @@ export default {
     series: {
       handler(obj) {
         const filtered = obj.data.filter((item) => item.x && item.y);
-        const minX = this.getMaxMinInObjectArray(filtered, "x")[0];
-        const maxX = this.getMaxMinInObjectArray(filtered, "x")[1];
-        const minY = this.getMaxMinInObjectArray(filtered, "y")[0];
-        const maxY = this.getMaxMinInObjectArray(filtered, "y")[1];
+        let axis = {};
+        axis.minX = this.getMaxMinInObjectArray(filtered, "x")[0];
+        axis.maxX = this.getMaxMinInObjectArray(filtered, "x")[1];
+        axis.minY = this.getMaxMinInObjectArray(filtered, "y")[0];
+        axis.maxY = this.getMaxMinInObjectArray(filtered, "y")[1];
 
-        const isPositiveX = this.comparePositives(maxX, minX);
-        const isPositiveY = this.comparePositives(maxY, minY);
-
-        const calculate = (isPositive, num1, num2, axis, type) => {
+        const calculate = (num, axisLine, type) => {
           let largeDiff, sum, max, min;
-          if (axis === "x") {
-            max = maxX;
-            min = minX;
-          }
-          if (axis === "y") {
-            max = maxY;
-            min = minY;
-          }
+          max = axis["max" + axisLine];
+          min = axis["min" + axisLine];
           largeDiff = max - min > max * 0.2;
-
-          if (isPositive) {
-            type === "min"
-              ? (sum = largeDiff ? num2 - num2 * 0.2 : num2 - 10)
-              : (sum = largeDiff ? num2 + num2 * 0.2 : num2 + 10);
+          if (type === "min") {
+            sum = largeDiff ? num - num * 0.2 : num - 10;
           } else {
-            type === "min"
-              ? (sum = largeDiff ? num1 + num1 * 0.2 : num1 + 10)
-              : (sum = largeDiff ? num1 - num1 * 0.2 : num1 - 10);
+            sum = largeDiff ? num + num * 0.2 : num + 10;
           }
           return sum;
         };
+        const summarize = (axisLine, type, num1, num2) => {
+          if (obj.config[type + axisLine] === "auto") {
+            if (
+              this.comparePositives(
+                axis["max" + axisLine],
+                axis["min" + axisLine]
+              )
+            ) {
+              return calculate(num1, axisLine, type);
+            } else {
+              return calculate(num2, axisLine, type === "min" ? "max" : "min");
+            }
+          } else {
+            obj.config[type + axisLine];
+          }
+        };
 
-        this.minXAxisBorder =
-          obj.config.minX === "auto"
-            ? calculate(isPositiveX, maxX, minX, "x", "min")
-            : obj.config.minX;
-        this.minYAxisBorder =
-          obj.config.minY === "auto"
-            ? calculate(isPositiveY, maxY, minY, "y", "min")
-            : obj.config.minY;
-        this.maxXAxisBorder =
-          obj.config.maxX === "auto"
-            ? calculate(isPositiveX, minX, maxX, "x", "max")
-            : obj.config.maxX;
-        this.maxYAxisBorder =
-          obj.config.maxY === "auto"
-            ? calculate(isPositiveY, minY, maxY, "y", "max")
-            : obj.config.maxY;
+        this.minXAxisBorder = summarize("X", "min", axis.minX, axis.maxX);
+        this.minYAxisBorder = summarize("Y", "min", axis.minY, axis.maxY);
+        this.maxXAxisBorder = summarize("X", "max", axis.maxX, axis.minX);
+        this.maxYAxisBorder = summarize("Y", "max", axis.maxY, axis.minY);
 
         this.chartOptions = {
           ...this.chartOptions,
