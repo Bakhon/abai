@@ -438,6 +438,10 @@ export default {
 
       if (!this.formParams.available_actions.includes('update')) return
 
+      if (row[column.code].value === null && row[column.code].old_value !== null) {
+        row[column.code].value = row[column.code].old_value
+      }
+
       this.editableCell.row = row
       this.editableCell.column = column
     },
