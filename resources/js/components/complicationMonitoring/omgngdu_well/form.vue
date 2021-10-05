@@ -21,8 +21,6 @@ import omgNgduWellformFields from '~/json/formFields/omg_ngdu_well.json';
 import EditForm from '@ui-kit/EditForm';
 import calculateFluidParams from '~/mixins/calculateFluidParams';
 
-const averageOilDensity = 853;
-
 export default {
   name: "omgngdu-well-form",
   props: {

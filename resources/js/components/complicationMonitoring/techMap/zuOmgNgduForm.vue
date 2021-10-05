@@ -15,8 +15,6 @@ import {globalloadingMutations} from '@store/helpers';
 import omgNgduZuformFields from '~/json/formFields/map_omg_ngdu_zu.json';
 import calculateFluidParams from '~/mixins/calculateFluidParams';
 
-const averageOilDensity = 853;
-
 export default {
   name: "zuOmgNgduForm",
   props: {
