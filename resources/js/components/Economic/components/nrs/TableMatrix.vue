@@ -413,7 +413,7 @@ export default {
           name: this.trans('economic_reference.cost_prs'),
           dimension: 1000,
           value: (well, date) => well.cost_WR_nopayroll && well.cost_WR_nopayroll[date]
-              ? well.cost_WR_payroll[date] + well.cost_WR_nopayroll[date]
+              ? well.cost_WR_nopayroll[date] + well.cost_WR_payroll[date]
               : 0,
         },
         {
