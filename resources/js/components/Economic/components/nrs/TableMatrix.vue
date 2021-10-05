@@ -358,7 +358,6 @@ export default {
         {
           prop: 'prs',
           name: this.trans('economic_reference.prs_count'),
-          dimension: 1000,
           isVisible: true,
         },
         {
