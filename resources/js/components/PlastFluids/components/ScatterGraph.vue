@@ -26,6 +26,10 @@
       v-show="isApproximationOpen"
       :series="graphSeries[0].data"
       :graphType="graphType"
+      :minX="minXAxisBorder"
+      :maxX="maxXAxisBorder"
+      :minY="minYAxisBorder"
+      :maxY="maxYAxisBorder"
       @close-approximation="isApproximationOpen = false"
       @get-approximation="getApproximation"
     />
@@ -154,29 +158,40 @@ export default {
           } else {
             sum = largeDiff ? num + num * 0.2 : num + 10;
           }
-          return sum;
-        };
-        const summarize = (axisLine, type, num1, num2) => {
-          if (obj.config[type + axisLine] === "auto") {
-            if (
-              this.comparePositives(
-                axis["max" + axisLine],
-                axis["min" + axisLine]
-              )
-            ) {
-              return calculate(num1, axisLine, type);
-            } else {
-              return calculate(num2, axisLine, type === "min" ? "max" : "min");
-            }
-          } else {
-            obj.config[type + axisLine];
-          }
+          return Number(sum.toFixed(1));
         };
 
-        this.minXAxisBorder = summarize("X", "min", axis.minX, axis.maxX);
-        this.minYAxisBorder = summarize("Y", "min", axis.minY, axis.maxY);
-        this.maxXAxisBorder = summarize("X", "max", axis.maxX, axis.minX);
-        this.maxYAxisBorder = summarize("Y", "max", axis.maxY, axis.minY);
+        const temp = {
+          minX:
+            obj.config.minX === "auto"
+              ? calculate(axis.minX, "X", "min")
+              : obj.config.minX,
+          minY:
+            obj.config.minY === "auto"
+              ? calculate(axis.minY, "Y", "min")
+              : obj.config.minY,
+          maxX:
+            obj.config.maxX === "auto"
+              ? calculate(axis.maxX, "X", "max")
+              : obj.config.maxX,
+          maxY:
+            obj.config.maxY === "auto"
+              ? calculate(axis.maxY, "Y", "max")
+              : obj.config.maxY,
+        };
+
+        this.minXAxisBorder = this.comparePositives(axis.maxX, axis.minX)
+          ? temp.minX
+          : temp.maxX;
+        this.minYAxisBorder = this.comparePositives(axis.maxY, axis.minY)
+          ? temp.minY
+          : temp.maxY;
+        this.maxXAxisBorder = this.comparePositives(axis.maxX, axis.minX)
+          ? temp.maxX
+          : temp.minX;
+        this.maxYAxisBorder = this.comparePositives(axis.maxY, axis.minY)
+          ? temp.maxY
+          : temp.minY;
 
         this.chartOptions = {
           ...this.chartOptions,
@@ -212,10 +227,18 @@ export default {
       return Math.abs(max) > Math.abs(min);
     },
     labelFormatterY(value) {
-      return value.toFixed(Math.abs(this.maxYAxisBorder) < 4 ? 1 : "");
+      return value.toFixed(
+        Math.abs(this.maxYAxisBorder) < 4 && Math.abs(this.minYAxisBorder) < 4
+          ? 1
+          : ""
+      );
     },
     labelFormatterX(value) {
-      return value.toFixed(Math.abs(this.maxXAxisBorder) < 4 ? 1 : "");
+      return value.toFixed(
+        Math.abs(this.maxXAxisBorder) < 4 && Math.abs(this.minXAxisBorder)
+          ? 1
+          : ""
+      );
     },
     getMaxMinInObjectArray(obj, property) {
       let max = Number.NEGATIVE_INFINITY;

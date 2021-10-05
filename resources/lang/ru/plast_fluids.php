@@ -82,8 +82,8 @@ return array (
   'power' => 'Степенная',
   'approximation_ahead_predict' => 'Вперед на',
   'approximation_backward_predict' => 'Назад на',
-  'from' => 'От',
-  'to' => 'До',
+  'from' => 'Минимум',
+  'to' => 'Максимум',
   'properties' => 'Свойств',
   'sample_selection' => 'Отбор проб',
   'custom' => 'Пользовательски',
@@ -102,4 +102,5 @@ return array (
   'ps_bs_ds_ms_graph_Ds' => 'Плотность от газосодержания пластовой нефти КТ-II',
   'ps_bs_ds_ms_graph_Ms' => 'Вязкость от газосодержания пластовой нефти КТ-II',
   'ps_bs_ds_ms_graph_Ps' => 'Давление насыщения от газосодержания пластовой нефти КТ-II',
+  'reset' => 'Сбросить',
 );
