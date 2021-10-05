@@ -5,6 +5,7 @@ return array (
   'database' => 'База данных',
   'general_information' => 'Общая информация',
   'well_data_sheet' => 'Паспорт скважины',
+  'drilling_rigs' => 'Буровые установки',
   'open_hole_logging' => 'ГИС в открытом стволе',
   'survey' => 'Инклинометрия',
   'well_design_menu' => 'Конструкция скважины',

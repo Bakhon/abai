@@ -2,7 +2,15 @@
     <div class="dropdown" :class="{active: isOpen}">
         <div class="dropdown__header" @click="isOpen=!isOpen">
             <div class="dropdown__header-title">
-                {{title}}
+                <div class="dropdown__search" v-if="search">
+                    <input type="text" v-model="query" v-on:input="changeSearch" placeholder="Введите текст |">
+                </div>
+                <span v-if="options.length>0 && !search && currentItem==null">
+                    {{options[0].name}}
+                </span>
+                <span v-if="options.length>0 && !search && currentItem!=null">
+                    {{currentItem}}
+                </span>
             </div>
             <div class="dropdown__header-icon">
                 <img src="/img/digital-drilling/dropdown-toggle-icon.svg" alt="">
@@ -10,8 +18,11 @@
         </div>
         <div class="dropdown__body">
             <div class="dropdown__content">
-                <ul>
-                    <li v-for="item in options" @click="isOpen=false">{{item}}</li>
+                <ul v-if="options.length>0">
+                    <li v-for="item in options" @click="changeCurrentItem(item)">{{item.name}}</li>
+                </ul>
+                <ul v-else>
+                    <li>No result</li>
                 </ul>
             </div>
         </div>
@@ -21,12 +32,27 @@
 <script>
     export default {
         name: "dropdown",
-        props: ['title', 'options'],
+        props: ['title', 'options', 'search'],
         data(){
             return{
-                isOpen: false
+                isOpen: false,
+                currentItem: null,
+                query: '',
             }
         },
+
+        methods:{
+            changeCurrentItem(item){
+                this.isOpen = false
+                this.query = item.name
+                this.currentItem = item.name
+                this.$emit('updateList', item)
+            },
+            changeSearch(){
+                this.$emit('search', this.query)
+            },
+        },
+
     }
 </script>
 
@@ -84,5 +110,18 @@
     }
     .dropdown__body::-webkit-scrollbar{
         width:2px;
+    }
+    .dropdown__search{
+        width: 100%;
+        height: 20px;
+    }
+    .dropdown__search input{
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        border: 0;
+    }
+    .dropdown__search input:focus{
+        outline: none;
     }
 </style>

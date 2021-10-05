@@ -26,11 +26,9 @@ export default {
     }
   },
   mounted() {
-      console.log(this.dateString)
   },
   computed: {
     dateString: function(){
-        console.log(this.dateRange)
         return moment(this.dateRange).format('DD.MM.YYYY');
     }
   },

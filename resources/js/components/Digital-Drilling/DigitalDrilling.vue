@@ -71,6 +71,15 @@
             changePage(page){
                 if (page=='home'){
                     this.pageComponent = null
+                    this.mainPage =  {
+                        "name": "digital_drilling.general_information",
+                        "img": "/img/digital-drilling/menu2.svg",
+                        "id": 1,
+                        "component": {
+                            "name": "main-table",
+                            "template": "<home></home>"
+                        }
+                    }
                     this.leftMenuItems = this.pages.bd
                 } else if(page=='project'){
                     this.leftMenuItems = this.pages.project
@@ -78,7 +87,12 @@
                 }
             },
             changePageComponent(component){
-                this.pageComponent = component
+                if (component.id==27) {
+                    this.pageComponent = null
+                    this.mainPage = component
+                }else{
+                    this.pageComponent = component
+                }
             },
             toggleLeftMenu(){
                 this.leftMenuOpen = !this.leftMenuOpen
@@ -101,6 +115,7 @@
     Vue.component('structure', require('./bd/structure').default);
     Vue.component('structure-graph', require('./bd/structure-graph').default);
     Vue.component('complications', require('./bd/complications').default);
+    Vue.component('drilling-rigs', require('./bd/DrillingRigs').default);
     Vue.component('technical-task', require('./bd/ProjectData/TechnicalTask').default);
     Vue.component('geology', require('./bd/ProjectData/Geology').default);
     Vue.component('well-design', require('./bd/ProjectData/WellDesign').default);

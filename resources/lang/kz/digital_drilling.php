@@ -5,6 +5,7 @@ return array (
     'database' => 'Мәліметтер базасы',
     'general_information' => 'жалпы ақпарат',
     'well_data_sheet' => 'ұңғыманың паспорты',
+    'drilling_rigs' => 'Буровые установки',
     'open_hole_logging' => 'ұңғымасының ашық шұңқырындағы геофизикалық зерттеу жұмыстары',
     'survey' => 'Инклинометрия',
     'well_design_menu' => 'Ұңғыманың Құрылымдығы',

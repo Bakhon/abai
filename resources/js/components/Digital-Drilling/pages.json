@@ -135,6 +135,16 @@
         "template": "<complications></complications>"
       },
       "accordion": false
+    },
+    {
+      "name": "digital_drilling.drilling_rigs",
+      "img": "/img/digital-drilling/drilling-rig.svg",
+      "id": 27,
+      "component": {
+        "name": "main-table",
+        "template": "<drilling-rigs></drilling-rigs>"
+      },
+      "accordion": false
     }
   ],
   "project": [

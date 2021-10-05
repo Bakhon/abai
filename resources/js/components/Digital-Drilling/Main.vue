@@ -7,9 +7,15 @@
                     <img src="/img/digital-drilling/reboot-icon.png" alt="">
                 </div>
                 <div class="main__component-filters">
-                    <dropdown title="ДЗО" :options="options" class="dropdown__area"/>
-                    <dropdown title="Месторождение" :options="options" class="dropdown__area"/>
-                    <dropdown title="Сважина" :options="options" class="dropdown__area"/>
+                    <dropdown title="ДЗО" :options="dzo" class="dropdown__area" @updateList="getField"/>
+                    <dropdown title="Месторождение" :options="fields" class="dropdown__area"
+                              :search="true"
+                              @updateList="getWELL"
+                              @search="filterField"/>
+                    <dropdown title="Сважина" :options="well" class="dropdown__area"
+                              :search="true"
+                              @updateList="changeCurrentWell"
+                              @search="filterWell"/>
                 </div>
             </div>
         </div>
@@ -29,6 +35,7 @@
 </template>
 
 <script>
+    import {digitalDrillingActions, digitalDrillingState} from '@store/helpers';
     import Dropdown from './components/dropdown'
     export default {
         name: "Main",
@@ -36,8 +43,96 @@
         props: ['page'],
         data(){
             return{
-                options: ['Test','Test','Test','Test','Test'],
+                dzo: [],
+                fields: [],
+                well: [],
+                currentDZO: null,
+                currentField: null,
             }
+        },
+        mounted(){
+            this.getDZO()
+        },
+        computed:{
+            ...digitalDrillingState([
+                'currentWell'
+            ]),
+        },
+        methods: {
+            async filterField(query){
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO+'?q='+query).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.fields = data;
+                        if (data.length>0){
+                            this.currentField = data[0].id;
+                            this.getWELL('')
+                        }
+
+                    } else {
+                        console.log('No data');
+                    }
+                });
+            },
+            filterWell(query){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO+'/'+this.currentField+'?q='+query).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.well = data;
+                    } else {
+                        console.log('No data');
+                    }
+                });
+            },
+            getDZO(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search').then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.dzo = data;
+                        this.currentDZO = data[0];
+                        this.getField('')
+                    } else {
+                        console.log('No data');
+                    }
+                });
+
+            },
+            async getField(item){
+                if (item!=''){
+                    this.currentDZO = item
+                }
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.fields = data;
+                        this.currentField = data[0];
+                        this.getWELL('')
+                    } else {
+                        console.log('No data');
+                    }
+                });
+
+            },
+            getWELL(item){
+                if (item!=''){
+                    this.currentField = item
+                }
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/search/'+this.currentDZO.id+'/'+this.currentField.id).then((response) => {
+                    let data = response.data;
+                    if (data) {
+                        this.well = data;
+                    } else {
+                        console.log('No data');
+                    }
+                });
+
+            },
+            changeCurrentWell(item){
+                this.changeCurrentWellValue(item)
+            },
+            ...digitalDrillingActions([
+                'changeCurrentWellValue'
+            ]),
         },
     }
 </script>

@@ -1,12 +1,12 @@
 const digitalDrilling = {
     namespaced: true,
     state: {
-        currentWell: {},
+        currentWell: [],
         currentPage: {},
     },
     mutations: {
         CHANGE_CURRENT_WELL (state, value) {
-            state.currentWell = value;
+            state.currentWell.push(value);
         },
         CHANGE_CURRENT_PAGE (state, value) {
             state.currentPage = value;
