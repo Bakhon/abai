@@ -31,7 +31,7 @@ abstract class BaseForm
 
     abstract public function getResults(): array;
 
-    public function getHistory(int $id, \DateTimeInterface $date = null): array
+    public function getHistory($id, \DateTimeInterface $date = null): array
     {
         if (!$date) {
             $date = Carbon::now();
@@ -75,7 +75,7 @@ abstract class BaseForm
 
     public function validateSingleField(string $field): void
     {
-        $errors = $this->getCustomValidationErrors();
+        $errors = $this->getCustomValidationErrors($field);
         $this->validator->validateSingleField(
             $this->request,
             $this->getValidationRules(),
@@ -123,7 +123,7 @@ abstract class BaseForm
         return $this->localizeParams($params);
     }
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         return [];
     }

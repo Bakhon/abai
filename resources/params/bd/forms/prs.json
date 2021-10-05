@@ -1,5 +1,8 @@
 {
   "table": "prod.well_workover",
+  "default_values":{
+    "file_type": 4
+  },
   "sort": [
     {
       "field": "dbeg",
@@ -25,7 +28,7 @@
                 "type": "dict",
                 "title": "type_rep_work",
                 "validation": "required|exists:tbd.dict.repair_work_type,id",
-                "dict": "repair_work_types"
+                "dict": "repair_type_prs"
               },
               {
                 "code": "work_plan",
@@ -41,34 +44,47 @@
                 "code": "contractor",
                 "type": "dict",
                 "title": "contractor",
-                "validation": "required|exists:tbd.dict.company,id",
-                "dict": "companies"
+                "dict": "companies",
+                "validation": "required_unless:by_ourselves,true"
               },
               {
                 "code": "brigadier",
                 "type": "dict",
                 "title": "brigade",
-                "validation": "exists:tbd.dict.brigade,id",
-                "dict": "brigades"
+                "validation": "nullable|exists:tbd.dict.brigade,id",
+                "dict": "brigades",
+                "depends_on": [
+                  {
+                    "field": "by_ourselves",
+                    "value": true
+                  }
+                ]
               },
               {
-                "code": "full_name",
+                "code": "brigadier",
                 "type": "dict",
                 "title": "brigade_master",
                 "validation": "exists:tbd.dict.brigadier,id",
-                "dict": "brigadiers"
+                "dict": "brigadiers",
+                "depends_on": [
+                  {
+                    "field": "by_ourselves",
+                    "value": true
+                  }
+                ]
               },
               {
                 "code": "gtm_dublicate",
                 "type": "checkbox",
                 "title": "dublicate_to_gtm",
-                "is_editable": true
+                "is_editable": true,
+                "submit_value": false
               },
               {
                 "code": "gtm_type",
                 "type": "dict",
                 "title": "gtm_type",
-                "validation": "exists:tbd.dict.gtm_type,id",
+                "validation": "nullable|exists:tbd.dict.gtm_type,id",
                 "dict": "gtm_types",
                 "depends_on": [
                   {
@@ -107,7 +123,7 @@
                 "code": "prs_repair_type",
                 "type": "dict",
                 "title": "rep_type",
-                "validation": "required|exists:tbd.dict.well_prs_repair_type,id",
+                "validation": "nullable|exists:tbd.dict.well_prs_repair_type,id",
                 "dict": "well_prs_repair_types"
               },
               {
@@ -120,26 +136,26 @@
                 "code": "cnl_new",
                 "type": "numeric",
                 "title": "nkt_new",
-                "validation":"gte:0"
+                "validation": "nullable|gte:0"
               },
               {
                 "code": "cnl_used",
                 "type": "numeric",
                 "title": "nkt_used",
-                "validation":"gte:0"
+                "validation": "nullable|gte:0"
               },
               {
                 "code": "td",
                 "type": "numeric",
                 "title": "actual_bh",
-                "validation": "lte:10000"
+                "validation": "nullable|lte:10000"
               },
               {
                 "code": "tech_state",
                 "type": "dict",
                 "title": "tech_condition",
                 "dict": "tech_state_casings",
-                "validation": "exists:tbd.dict.tech_state_casing,id"
+                "validation": "nullable|exists:tbd.dict.tech_state_casing,id"
               },
               {
                 "code": "no_change_tech_status",
@@ -163,7 +179,7 @@
                 "code": "well_status",
                 "type": "dict",
                 "title": "new_condition",
-                "validation": "exists:tbd.dict.well_status_type,id",
+                "validation": "nullable|exists:tbd.dict.well_status_type,id",
                 "dict": "well_statuses"
               },
               {
@@ -202,6 +218,30 @@
                 "type": "text",
                 "title": "reason_type",
                 "validation": "required"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "doc",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "prs",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "doc",
+                "columns": [
+                  {
+                    "code": "name_ru",
+                    "title": "scan_doc"
+                  }
+                ]
               }
             ]
           }

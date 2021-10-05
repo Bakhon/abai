@@ -16,7 +16,7 @@
             <div aria-labelledby="dropdownMenuButton" class="dropdown-menu scrollable" style="max-height: 220px">
               <template v-for="action in form.actions">
                 <a v-if="action.action === 'create'" class="dropdown-item" href="#"
-                   @click="showForm(action.form)">{{ action.title }}</a>
+                   @click="showForm(action.form, action.default_values || null)">{{ action.title }}</a>
                 <a v-else-if="action.action === 'edit'" class="dropdown-item" href="#"
                    @click="editRow(selectedRow, action.form)">{{ action.title }}</a>
                 <a v-else-if="action.action === 'delete'" class="dropdown-item" href="#"
@@ -257,9 +257,9 @@ export default {
     getDictFlat(code) {
       return this.$store.getters['bdform/dictFlat'](code);
     },
-    showForm(formCode = null) {
+    showForm(formCode = null, defaultValues = null) {
       this.formParams = this.forms.find(form => form.code === (formCode || this.code))
-      this.formValues = null
+      this.formValues = defaultValues
       this.isFormOpened = true
     },
     editRow(row, formCode = null) {
@@ -336,6 +336,15 @@ export default {
       if (column.type === 'file') {
         return row[column.code].map(file => {
           return '<a href="' + this.localeUrl(`/attachments/${file.id}`) + `">${file.filename} (${file.size})</a>`
+        }).join('<br>')
+      }
+
+      if (column.document_list) {
+        if (!row[column.code]) return ''
+        return Object.values(row[column.code]).map(item => {
+          return item.values.file.map(file => {
+            return '<a href="' + this.localeUrl(`/attachments/${file.info.id}`) + `">${file.info.filename} (${file.info.size})</a>`
+          }).join('<br>')
         }).join('<br>')
       }
 

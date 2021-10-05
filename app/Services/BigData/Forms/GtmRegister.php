@@ -7,11 +7,21 @@ namespace App\Services\BigData\Forms;
 use App\Models\BigData\Well;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class GtmRegister extends PlainForm
 {
     protected $configurationFileName = 'gtm_register';
+
+    protected function getRows(): Collection
+    {
+        $rows = parent::getRows();
+        return $rows->map(function ($item) {
+            $item->own_forces = empty($item->company);
+            return $item;
+        });
+    }
 
     protected function submitForm(): array
     {
@@ -103,7 +113,7 @@ class GtmRegister extends PlainForm
 
     use DateMoreThanValidationTrait;
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 

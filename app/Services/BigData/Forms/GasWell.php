@@ -23,7 +23,7 @@ class GasWell extends PlainForm
         return $dbeg >= $dend->dend;
     }
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
 

@@ -35,8 +35,8 @@
               {
                 "code": "model",
                 "type": "dict",
-                "title": "tube_nom",
-                "dict": "tube_nom",
+                "title": "casing_type",
+                "dict": "casings",
                 "validation": "required|exists:tbd.dict.tube_nom,id"
               },
               {

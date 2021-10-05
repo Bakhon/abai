@@ -129,9 +129,12 @@ abstract class PlainForm extends BaseForm
 
     protected function checkFormPermission(string $action)
     {
-        if (auth()->user()->cannot("bigdata {$action} {$this->configurationFileName}")) {
-            throw new \Exception("You don't have permissions");
+        $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();
+        $permission = "bigdata {$action} {$this->configurationFileName}";
+        foreach($permissionNames as $permissionName) {
+            if($permission == $permissionName) return;
         }
+        throw new \Exception("You don't have permissions");
     }
 
     public function getResults(): array
@@ -175,7 +178,7 @@ abstract class PlainForm extends BaseForm
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function getHistory(int $id, \DateTimeInterface $date = null): array
+    public function getHistory($id, \DateTimeInterface $date = null): array
     {
         $historyItems = History::query()
             ->where('row_id', $id)

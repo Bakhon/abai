@@ -54,7 +54,6 @@
                         <div class="col-8">
                             <datetime
                                     v-model="dateBuildMap"
-                                    :disabled="isLoading"
                                     :flow="['year', 'month', 'date']"
                                     :phrases="{ok: '', cancel: ''}"
                                     auto
@@ -82,8 +81,6 @@
         data() {
             return {
                 dateBuildMap : null,
-                isLoading: false,
-
             }
         }
     }

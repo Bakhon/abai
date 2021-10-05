@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Economic\EconomicNrsDataRequest;
 use App\Http\Requests\Economic\EconomicNrsWellsRequest;
 use App\Jobs\ExportEconomicDataToExcel;
+use App\Models\BigData\Well;
 use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
@@ -22,7 +23,7 @@ class EconomicNrsController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_nrs_total_v3';
+    const DATA_SOURCE = 'economic_nrs_total_v4';
 
     const GRANULARITY_DAILY_FORMAT = 'yyyy-MM-dd';
     const GRANULARITY_MONTHLY_FORMAT = 'MM-yyyy';
@@ -35,6 +36,8 @@ class EconomicNrsController extends Controller
     const PROFITABILITY_CAT_2 = 'profitless_cat_2';
     const PROFITABILITY_PROFITABLE = 'profitable';
     const PROFITABILITY_PROFITLESS = 'profitless';
+
+    const PROFITABILITY_PAUSE = '_v_prostoe';
 
     const STATUS_ACTIVE = 'В работе';
     const STATUS_PAUSE = 'В простое';
@@ -96,7 +99,10 @@ class EconomicNrsController extends Controller
             $request->interval_end
         );
 
-        $intervalMonths = self::formatInterval($intervalMonthsStart->copy(), $intervalMonthsEnd->copy());
+        $intervalMonths = self::formatInterval(
+            $intervalMonthsStart->copy(),
+            $intervalMonthsEnd->copy()->addDay()
+        );
 
         $granularity = $request->granularity;
         $granularityFormat = self::granularityFormat($granularity);
@@ -162,8 +168,10 @@ class EconomicNrsController extends Controller
             'Revenue_local',
             'Variable_expenditures',
             'Fixed_expenditures',
-            'MET_payments',
             'Production_expenditures',
+            "MET_payments",
+            "ECD_payments",
+            "ERT_payments",
         ];
 
         foreach ($sumKeys as $sumKey) {
@@ -270,20 +278,29 @@ class EconomicNrsController extends Controller
         }
 
         foreach ($result[self::BUILDERS['oil_production']] as &$item) {
-            $dataWithOilProduction['dt'][$item['dt']] = 1;
+            $date = $item['dt'];
 
-            $dataWithOilProduction[$item[$profitabilityType]][] = $item['oil'] / 1000;
+            $dataWithOilProduction['dt'][$date] = 1;
 
-            $dataWithLiquidProduction[$item[$profitabilityType]][] = self::formatProfitability($item);
+            $dataWithOilProduction[$item[$profitabilityType]][$date] = $item['oil'] / 1000;
+
+            $dataWithLiquidProduction[$item[$profitabilityType]][$date] = self::formatProfitability($item);
         }
 
         $dataWithOilProduction['dt'] = array_keys($dataWithOilProduction['dt']);
+
+        $this->fillZeroValues($dataWithOilProduction, $profitabilities);
+
         $dataWithLiquidProduction['dt'] = $dataWithOilProduction['dt'];
 
-        foreach ($result[self::STATUS_ACTIVE] as &$item) {
-            $dataWithProfitability['dt'][$item['dt']] = 1;
+        $this->fillZeroValues($dataWithLiquidProduction, $profitabilities);
 
-            $dataWithProfitability[$item[$profitabilityType]][] = self::calcProfitabilityCount(
+        foreach ($result[self::STATUS_ACTIVE] as &$item) {
+            $date = $item['dt'];
+
+            $dataWithProfitability['dt'][$date] = 1;
+
+            $dataWithProfitability[$item[$profitabilityType]][$date] = self::calcProfitabilityCount(
                 $item,
                 $granularity,
                 $intervalMonthsStart,
@@ -293,10 +310,16 @@ class EconomicNrsController extends Controller
 
         $dataWithProfitability['dt'] = array_keys($dataWithProfitability['dt']);
 
-        foreach ($result[self::STATUS_PAUSE] as &$item) {
-            $dataWithPausedProfitability['dt'][$item['dt']] = 1;
+        $this->fillZeroValues($dataWithProfitability, $profitabilities);
 
-            $dataWithPausedProfitability[$item[$profitabilityType . '_v_prostoe']][] = self::calcProfitabilityCount(
+        foreach ($result[self::STATUS_PAUSE] as &$item) {
+            $date = $item['dt'];
+
+            $dataWithPausedProfitability['dt'][$date] = 1;
+
+            $key = $item[$profitabilityType . self::PROFITABILITY_PAUSE];
+
+            $dataWithPausedProfitability[$key][$date] = self::calcProfitabilityCount(
                 $item,
                 $granularity,
                 $intervalMonthsStart,
@@ -305,6 +328,8 @@ class EconomicNrsController extends Controller
         }
 
         $dataWithPausedProfitability['dt'] = array_keys($dataWithPausedProfitability['dt']);
+
+        $this->fillZeroValues($dataWithPausedProfitability, $profitabilities);
 
         $monthOperatingProfitAndCountUwi = $result[self::BUILDERS['sum_month_operating_profit_and_count_uwi']];
 
@@ -348,6 +373,7 @@ class EconomicNrsController extends Controller
             ];
         }
 
+        $resLastMonth['tax_costs']['sum'] = self::calcTaxCosts($productionExpenditures, $monthsCount);
 
         return [
             'lastYear' => [
@@ -383,29 +409,39 @@ class EconomicNrsController extends Controller
             ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
             : null;
 
-        /** @var Carbon $intervalStart */
-        /** @var Carbon $intervalEnd */
-        list($intervalStart, $intervalEnd) = self::calcIntervalMonthsStartEnd(
-            $request->interval_start,
-            $request->interval_end
-        );
+        $granularity = $request->granularity;
+        $granularityFormat = self::granularityFormat($granularity);
 
-        $interval = self::formatInterval($intervalStart->copy(), $intervalEnd->copy());
+        $interval = self::formatInterval(
+            Carbon::parse($request->interval_start),
+            Carbon::parse($request->interval_end)->addDay(),
+        );
 
         $sumKeys = [
             "Operating_profit",
             "Overall_expenditures",
             "NetBack_bf_pr_exp",
             "oil",
-            "liquid"
+            "liquid",
+            "Revenue_export",
+            "Revenue_local",
+            "Variable_expenditures",
+            "Fixed_expenditures",
+            "Fixed_nopayroll_expenditures",
+            "Fixed_payroll_expenditures",
+            "MET_payments",
+            "ECD_payments",
+            "ERT_payments",
+            "Trans_expenditures",
+            "Gaoverheads_expenditures",
         ];
 
         $builder = $this
             ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::DAY)
+            ->query(self::DATA_SOURCE, $granularity)
             ->interval($interval)
-            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) {
-                $extBuilder->timeFormat(self::GRANULARITY_DAILY_FORMAT);
+            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
+                $extBuilder->timeFormat($granularityFormat);
             })
             ->select("uwi");
 
@@ -450,6 +486,61 @@ class EconomicNrsController extends Controller
         $wellsByDates['dates'] = array_keys($wellsByDates['dates']);
 
         return $wellsByDates;
+    }
+
+    public function getWellsMap(EconomicNrsDataRequest $request): array
+    {
+        $org = self::getOrg($request->org_id, $this->structureService);
+
+        $dpz = $request->field_id
+            ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
+            : null;
+
+        $interval = self::formatInterval(
+            Carbon::parse($request->interval_start),
+            Carbon::parse($request->interval_end)->addDay()
+        );
+
+        $builder = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::DAY)
+            ->interval($interval)
+            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) {
+                $extBuilder->timeFormat(self::GRANULARITY_DAILY_FORMAT);
+            })
+            ->select('uwi')
+            ->select('profitability');
+
+        if ($org->druid_id) {
+            $builder->where('org_id2', '=', $org->druid_id);
+        }
+
+        if ($dpz) {
+            $builder->where('dpz', '=', $dpz);
+        }
+
+        $wells = $builder->groupBy()->data();
+
+        $uwis = [];
+
+        foreach ($wells as &$well) {
+            $uwis[$well['uwi']] = 1;
+        }
+
+        $uwis = array_keys($uwis);
+
+        $coordinates = Well::query()
+            ->whereIn('uwi', $uwis)
+            ->whereNotNull('whc')
+            ->with('spatialObject')
+            ->get()
+            ->groupBy('uwi');
+
+        foreach ($wells as &$well) {
+            $well['coordinates'] = $coordinates->get($well['uwi'])[0]['spatialObject'][0]['coord_point'] ?? null;
+        }
+
+        return $wells;
     }
 
     public function exportData(EconomicNrsDataRequest $request)
@@ -696,6 +787,49 @@ class EconomicNrsController extends Controller
             return $rates;
         } catch (\Throwable $e) {
             return [];
+        }
+    }
+
+    static function calcTaxCosts(array $productionExpenditures, int $monthsCount): array
+    {
+        $taxCosts = [
+            'value' => 0,
+            'value_prev' => 0,
+        ];
+
+        $taxKeys = [
+            'MET_payments',
+            'ECD_payments',
+            'ERT_payments',
+        ];
+
+        foreach ($taxKeys as $taxKey) {
+            $lastMonth = $productionExpenditures[$monthsCount - 1][$taxKey];
+
+            $prevMonth = $productionExpenditures[$monthsCount - 2][$taxKey];
+
+            $taxCosts['value'] += $lastMonth;
+
+            $taxCosts['value_prev'] += $prevMonth;
+        }
+
+        $taxCosts['percent'] = self::calcPercent($taxCosts['value'], $taxCosts['value_prev']);
+
+        $taxCosts['value'] = self::formatMoney($taxCosts['value']);
+
+        $taxCosts['value_prev'] = self::formatMoney($taxCosts['value_prev']);
+
+        return $taxCosts;
+    }
+
+    private function fillZeroValues(array &$data, array $profitabilities)
+    {
+        foreach ($data['dt'] as $date) {
+            foreach ($profitabilities as $profitability) {
+                $data[$profitability][] = $data[$profitability][$date] ?? 0;
+
+                unset($data[$profitability][$date]);
+            }
         }
     }
 }

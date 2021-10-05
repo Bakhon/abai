@@ -45,9 +45,9 @@
           </div>
         </div>
       </div>
-      <div :class="{'right-column_folded': isRightColumnFolded, 'both-pressed_folded' : isBothColumnFolded}"
+      <div :class="{'right-column_folded': isRightColumnFolded, 'both-pressed_folded' : isBothColumnFolded && !isInjectionWellsHistoricalVisible && !isProductionWellsHistoricalVisible}"
            class="right-column__inner bg-dark" style="display:none"></div>
-      <div class="col-md-6 mid-col">
+      <div :class="[isInjectionWellsHistoricalVisible || isProductionWellsHistoricalVisible ? 'fixed-mid-col' : 'mid-col','col-md-6']">
         <div class="row mid-col__main">
           <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
             <div class="row">
@@ -151,7 +151,7 @@
           </div>
         </div>
       </div>
-      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
+      <div v-if="!isInjectionWellsHistoricalVisible && !isProductionWellsHistoricalVisible" :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
         <div class="bg-dark-transparent">
           <template>
             <div>
@@ -212,6 +212,14 @@
           </div>
         </div>
       </div>
+      <InjectionHistoricalData
+              v-if="isInjectionWellsHistoricalVisible"
+              :changeColumnsVisible="changeColumnsVisible()"
+      ></InjectionHistoricalData>
+      <ProductionHistoricalData
+              v-if="isProductionWellsHistoricalVisible"
+              :changeColumnsVisible="changeColumnsVisible()"
+      ></ProductionHistoricalData>
     </div>
   </div>
 </template>
@@ -225,7 +233,9 @@ import moment from 'moment'
 import WellCardTree from './WellCardTree'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import {globalloadingMutations} from '@store/helpers';
+import {globalloadingMutations,bigdatahistoricalVisibleState} from '@store/helpers';
+import InjectionHistoricalData from "./InjectionHistoricalData";
+import ProductionHistoricalData from "./ProductionHistoricalData";
 
 
 const requireComponent = require.context('../forms/CustomPlainForms', true, /\.vue$/i);
@@ -246,7 +256,9 @@ export default {
   components: {
     BigDataPlainFormResult,
     vSelect,
-    WellCardTree
+    WellCardTree,
+    InjectionHistoricalData,
+    ProductionHistoricalData
   },
   data() {
     return {
@@ -528,9 +540,10 @@ export default {
       this.selectedUserDzo = event.target.value;
       this.options = [];
       this.wellUwi = null;
-    }
+    },
   },
   computed: {
+    ...bigdatahistoricalVisibleState(['isInjectionWellsHistoricalVisible','isProductionWellsHistoricalVisible']),
     tableData() {
       return [
         {
@@ -953,6 +966,11 @@ $rightColumnFoldedWidth: 84px;
   &__wrapper {
     height: calc(100vh - 90px);
   }
+}
+.fixed-mid-col {
+  min-width: calc(100% - 385px - 348px - 24px);
+  padding: 0 15px;
+  height: calc(100vh - 90px);
 }
 
 ::-webkit-scrollbar {
@@ -1830,7 +1848,6 @@ h4 {
 .bg-dark-transparent {
   background-color: rgba(39, 41, 83, 0.85);
   padding-bottom: 20px;
-  margin-bottom: 20px;
 
   .graphics {
     height: 333px;
@@ -1981,6 +1998,13 @@ h4 {
 
 .title-container {
   display: flex;
+}
+
+.historical-data {
+  height: 100%;
+  margin-left: 15px;
+  min-width: 440px;
+  max-width: 440px;
 }
 
 .right-column {

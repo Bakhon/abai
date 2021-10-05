@@ -223,6 +223,7 @@ export default {
                 this.productionTableData = _.cloneDeep(this.productionParams.tableData.current[parent]);
                 this.selectedCategory = parent;
             }
+            this.reasonExplanations = this.getReasonExplanations();
             this.productionData = _.cloneDeep(this.productionTableData);
             if (this.periodRange !== 0) {
                 this.companiesWithData = _.map(this.productionTableData, 'name');
@@ -251,7 +252,7 @@ export default {
                 });
             } else {
                 chartData = _.filter(chartData, (item) => {
-                   return this.companiesWithData.includes(item.name)
+                   return this.selectedDzoCompanies.includes(item.name)
                 });
             }
             _.forEach(chartData, (item) => {

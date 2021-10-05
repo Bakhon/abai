@@ -18,11 +18,12 @@ class PlainFormHistory
         ?\stdClass $originalData,
         array $submittedData
     ) {
-        if (empty($submittedData) || empty($submittedData['fields'])) {
+        if (empty($submittedData) || empty($submittedData['id'])) {
             return;
         }
 
         $payload = [];
+
         $fields = $this->getFieldsPayload($formFields, $originalData, $submittedData['fields']);
 
         if (!empty($fields)) {
