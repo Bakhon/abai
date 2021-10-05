@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Models\BigData\Dictionaries\Tech;
-use App\Models\BigData\Dictionaries\ValueType;
-use App\Models\BigData\Dictionaries\WellActivity;
-use App\Services\BigData\TableFormHeaderService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+use App\Models\BigData\Well;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -17,8 +14,6 @@ class WaterProductionMonth extends MeasLogByMonth
 {
     protected $configurationFileName = 'water_production_month';
   
-    protected $workTime;
-
     public function getResults(array $params = []): array
     {
         if ($this->request->get('type') !== 'tech') {
@@ -44,17 +39,17 @@ class WaterProductionMonth extends MeasLogByMonth
     protected function getRows(CarbonImmutable $date, Collection $wells): array
     {
         $wellIds = $this->wells->pluck('id')->toArray();
-        $this->workTime = $this->getWorkTime($wellIds, $date);
-        $techMode = $this->getTechMode($wellIds, $date);
+        $workTimes = $this->getWorkTime($wellIds, $date);
         $waterProdVal = $this->getWaterProdVal($wellIds, $date);
 
         $indicators = [
             'water_prod_val',           
-            'worktime'
+            'worktime',
+            'water_val'
         ];
         $rows = [];
         foreach ($wells as $well) {
-            $rows = array_merge($rows, $this->getWellRows($well, $date, $techMode, $pressures, $workTimes));
+            $rows = array_merge($rows, $this->getWellRows($well, $date, $waterProdVal, $workTimes));
         }
         return $rows;        
     }   
@@ -76,43 +71,31 @@ class WaterProductionMonth extends MeasLogByMonth
                 });
                 return $items->map(function ($item) {
                     $item = $item->first();                    
-                    return round($item->water_prod_val, 2);
+                    return round((int)$item->water_prod_val, 2);
                 });
             });
     }
-    private function getTechMode(array $wellIds, CarbonImmutable $date): Collection
-    {
-        return DB::connection('tbd')
-            ->table('prod.tech_mode_inj')
-            ->whereIn('well', $wellIds)
-            ->where('dend', '>=', $date->startOfMonth())
-            ->where('dbeg', '<=', $date->endOfMonth())
-            ->get()
-            ->groupBy('well')
-            ->map(function ($items) {
-                return $items->first();
-            });
-    }
+    
 
     private function getWellRows(
         Well $well,
         CarbonImmutable $date,
-        Collection $techMode,
         Collection $water,
         array $workTimes
     ) {
         $waterRow = [
             'id' => $well->id,
             'uwi' => ['value' => $well->uwi],
-            'indicator' => ['value' => trans('bd.forms.meas_water_prod.water_prod_val')],
-            'tech' => ['value' => $techMode->get($well->id) ? $techMode->get($well->id)->inj_pressure : 0]
+            'indicator' => ['value' => trans('bd.forms.meas_water_prod.water_prod_val')]
         ];
         $workTimeRow = [
             'id' => $well->id,
+            'uwi' => ['value' => $well->uwi],
             'indicator' => ['value' => trans('bd.forms.meas_water_prod.worktime')]
         ];
         $waterSumRow = [
             'id' => $well->id,
+            'uwi' => ['value' => $well->uwi],
             'indicator' => ['value' => trans('bd.forms.meas_water_prod.water_val')]
         ];
 

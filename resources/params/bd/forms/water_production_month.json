@@ -14,16 +14,7 @@
       "type": "text",
       "is_editable": false,
       "title": "indicators"
-    },    
-    {
-      "code": "dbeg",
-      "type": "date",
-      "column": "dbeg",
-      "table":"prod.meas_water_prod",
-      "is_editable": false,
-      "title": "dbeg",
-      "is_visible":false
-    },    
+    },     
     {
       "title": "measure_last_month",
       "code": "measure_last_month",
@@ -31,9 +22,9 @@
       "fields": [
         {
           "uwi":{},   
-          "dbeg":{},   
           "water_prod_val": {},
-          "worktime": {}
+          "worktime": {},
+          "indicator":{}
         }
       ],
       "is_editable": false
