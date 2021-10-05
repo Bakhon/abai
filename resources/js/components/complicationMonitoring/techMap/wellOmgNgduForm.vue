@@ -63,7 +63,7 @@ export default {
         if (!_.isEmpty(omgngdu_well)) {
           this.setOmgNgduParams(omgngdu_well);
           this.currentOmgngduWell = omgngdu_well;
-          this.calculateFluidParams();
+          this.calculateFluidParams(true);
         } else {
           let date = this.formFields.date.value;
           this.formFields = _.cloneDeep(omgNgduWellformFields);
