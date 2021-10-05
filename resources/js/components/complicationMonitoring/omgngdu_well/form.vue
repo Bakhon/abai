@@ -72,7 +72,7 @@ export default {
 
       if (this.omgngduWell) {
         this.setOmgNgduFormFields(this.omgngduWell);
-        this.calculateFluidParams();
+        this.calculateFluidParams(true);
       }
     });
 
