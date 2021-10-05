@@ -350,8 +350,8 @@ export default {
         'org': 'org',
         'geo': 'geo',
         'tubeNom': 'tube_nom',
-        'measLiq': 'meas_liq.liquid',
-        'techModeProdOil': 'tech_mode_prod_oil.oil',
+        'measLiq': 'meas_liq',
+        'techModeProdOil': 'techModeProdOil',
         'techModeProdLiquid': 'tech_mode_prod_oil.liquid',
         'injPressure': 'tech_mode_inj.inj_pressure',
         'agentVol': 'tech_mode_inj.agent_vol',
@@ -809,25 +809,25 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.techModeProdLiquid,
-          'neigbor_2': this.well.measLiq,
-          'name': 'Дебит жидкости, м3/сут (режим/факт)',
+          'neigbor_1': this.well.techModeProdOil.liquid,
+          'neigbor_2': this.well.measLiq.liquid.toFixed(1),
+          'name': 'Дебит жидкости, м3/сут (режим-факт)',
           'data': ''
         },
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.techModeProdOil,
+          'neigbor_1': this.well.techModeProdOil.wcut,
           'neigbor_2': this.well.measWaterCut.water_cut,
-          'name': 'Обводненность, % (режим/факт)',
+          'name': 'Обводненность, % (режим-факт)',
           'data': ''
         },
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.techModeProdOil,
-          'neigbor_2': null,
-          'name': 'Дебит нефти, т/сут (режим/факт)',
+          'neigbor_1': this.well.techModeProdOil.oil,
+          'neigbor_2': (this.well.techModeProdOil.liquid * (1 - this.well.measWaterCut.water_cut / 100) * 0.86).toFixed(1),
+          'name': 'Дебит нефти, т/сут (режим-факт)',
           'data': ''
         },
         {
