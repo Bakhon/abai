@@ -43,9 +43,6 @@ export default {
       ...paegtmMapActions([
         'changeClickable',
       ]),
-      onClickVal(e) {
-        console.log(e)
-      },
         toggleUl: function () {
             this.showChildren = !this.showChildren;
         },

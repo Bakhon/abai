@@ -83,7 +83,7 @@ export default {
                     }
                 },
                 dataLabels: {
-                    enabled: true
+                    enabled: false
                 }
             },
             waterFallChartSeries: null,
@@ -200,7 +200,6 @@ export default {
         },
         onMinimizeChart() {
             this.isMinimize = !this.isMinimize;
-            console.log(this.isMinimize)
         },
         onClickableValue() {
             const body = {
@@ -250,21 +249,33 @@ export default {
                         this.waterFallChartSeries = [{
                             data: [
                                 {
-                                    x: this.trans('paegtm.plan'),
-                                    y: [1, 5],
-                                    fillColor: '#ba8c1f'
+                                    x: res.data.fa_plot.labels.pbeg_oil_prod,
+                                    y: res.data.fa_plot.pbeg_oil_prod.values,
+                                    fillColor: res.data.fa_plot.pbeg_oil_prod.color,
                                 }, {
-                                    x: '',
-                                    y: [4, 6],
-                                    fillColor: '#124fba'
+                                    x: res.data.fa_plot.labels.influenceWC,
+                                    y: res.data.fa_plot.influenceWC.values,
+                                    fillColor: res.data.fa_plot.influenceWC.color,
                                 }, {
-                                    x: '',
-                                    y: [5, 8],
-                                    fillColor: '#124fba'
+                                    x: res.data.fa_plot.labels.influencePres,
+                                    y: res.data.fa_plot.influencePres.values,
+                                    fillColor: res.data.fa_plot.influencePres.color,
                                 }, {
-                                    x: this.trans('paegtm.fact'),
-                                    y: [3, 11],
-                                    fillColor: '#029bfa'
+                                    x: res.data.fa_plot.labels.influenceLiquidPI,
+                                    y: res.data.fa_plot.influenceLiquidPI.values,
+                                    fillColor: res.data.fa_plot.influenceLiquidPI.color,
+                                }, {
+                                    x: res.data.fa_plot.labels.influenceBHP,
+                                    y: res.data.fa_plot.influenceBHP.values,
+                                    fillColor: res.data.fa_plot.influenceBHP.color,
+                                }, {
+                                    x: res.data.fa_plot.labels.influenceWorkDay,
+                                    y: res.data.fa_plot.influenceWorkDay.values,
+                                    fillColor: res.data.fa_plot.influenceWorkDay.color,
+                                }, {
+                                    x: res.data.fa_plot.labels.pend_oil_prod,
+                                    y: res.data.fa_plot.pend_oil_prod.values,
+                                    fillColor: res.data.fa_plot.pend_oil_prod.color,
                                 }
                             ]
                         }]

@@ -55,7 +55,7 @@
       </div>
 
       <modal class="modal-bign-wrapper" name="modalPeriod" draggable=".modal-bign-header" :width="250"
-             :height="230"
+             :height="100"
              style="background: transparent;" :adaptive="true">
         <div class="modal-bign modal-bign-container">
           <div class="modal-bign-header">
@@ -64,32 +64,16 @@
               {{ trans('pgno.zakrit') }}
             </button>
           </div>
-          <div class="d-flex jc">
-            <div class="d-flex fd">
-              <div>
-                {{ trans('paegtm.day') }}
-              </div>
-              <div>
-                {{ trans('paegtm.month') }}
-              </div>
-              <div>
-                {{ trans('paegtm.year') }}
-              </div>
+          <div class="d-flex justify-content-start">
+            <div class="d-flex">
+              <input class="mt-7px" type="checkbox" value="">
+              <label class="pl-5px">Шаг</label>
             </div>
-            <div class="d-flex fd">
-              <div>
-                <input class="period-settings-input" type="text">
-              </div>
-              <div>
-                <input class="period-settings-input" type="text">
-              </div>
+            <div class="d-flex pl-4">
               <div>
                 <input class="period-settings-input" type="text">
               </div>
             </div>
-          </div>
-          <div class="block-header p-2 text-center calc-button mt-4" @click="closeModal('modalPeriod')">
-            {{ trans("paegtm.calc") }}
           </div>
         </div>
       </modal>
@@ -153,6 +137,10 @@ export default {
   animation: gear-icon-svg 3s infinite both;
 }
 
+.mt-7px {
+  margin-top: 7px;
+}
+
 @-webkit-keyframes gear-icon-svg {
   0% {
     -webkit-transform: scale(1) rotateZ(0);
@@ -181,6 +169,11 @@ export default {
     -webkit-transform: scale(1) rotateZ(360deg);
     transform: scale(1) rotateZ(360deg);
   }
+}
+
+.modal-bign-wrapper {
+  left: 815px;
+  top: -340px;
 }
 
 .period-settings-input {
