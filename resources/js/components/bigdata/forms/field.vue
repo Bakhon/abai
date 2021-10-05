@@ -244,7 +244,7 @@ export default {
     },
     changeDate(date) {
       if (date) {
-        let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')
+        let formatedDate = moment(date).format('YYYY-MM-DD HH:mm:SS')
         this.updateValue(formatedDate)
       }
     },
