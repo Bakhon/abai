@@ -18,11 +18,9 @@ class GasWell extends PlainForm
             ->orderBy('dend', 'desc')
             ->get('dend')
             ->first();
-        
-        if(!isset($dend)) {
-            return $dbeg >= $dend;
-        }
-        return $dbeg >= $dend -> dend;
+
+        if(!isset($dend->dend)) return true;
+        return $dbeg >= $dend->dend;
     }
 
     protected function getCustomValidationErrors(): array
