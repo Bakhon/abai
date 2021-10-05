@@ -10,28 +10,33 @@
       "title": "uwi"
     },
     {
-      "code": "other_uwi",
-      "type": "text",
-      "is_editable": false,
-      "title": "other_uwi"
-    },
-    {
-      "code": "tap",
-      "type": "text",
-      "is_editable": false,
-      "title": "tap"
-    },
-    {
       "code": "indicator",
       "type": "text",
       "is_editable": false,
       "title": "indicators"
-    },
+    },    
     {
-      "code": "tech",
-      "type": "text",
+      "code": "dbeg",
+      "type": "date",
+      "column": "dbeg",
+      "table":"prod.meas_water_prod",
       "is_editable": false,
-      "title": "tech"
-    }
+      "title": "dbeg",
+      "is_visible":false
+    },    
+    {
+      "title": "measure_last_month",
+      "code": "measure_last_month",
+      "type": "history",
+      "fields": [
+        {
+          "uwi":{},   
+          "dbeg":{},   
+          "water_prod_val": {},
+          "worktime": {}
+        }
+      ],
+      "is_editable": false
+    }    
   ]
 }
