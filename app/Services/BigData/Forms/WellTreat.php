@@ -16,21 +16,35 @@ class WellTreat extends TableForm
     public function getResults(): array
     {
         $filter = json_decode($this->request->get('filter'));
-        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, []);
+        if (empty($filter->treatment_type)) {
+            throw new \Exception('Выберите вид обработки');
+        }
 
-        $tables = $this->getFields()->pluck('table')->filter()->unique();
-        $rowData = $this->fetchRowData(
-            $tables,
-            $wells->pluck('id')->toArray(),
-            Carbon::parse($this->request->get('date'))
-        );
+        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, []);
+        $date = Carbon::parse($this->request->get('date'))->toImmutable();
+
+        $rowData = DB::connection('tbd')
+            ->table('prod.well_treatment')
+            ->whereIn('well', $wells->pluck('id')->toArray())
+            ->where('treatment_type', $filter->treatment_type)
+            ->whereDate('treat_date', '>=', $date->startOfDay())
+            ->whereDate('treat_date', '<=', $date->endOfDay())
+            ->orderBy('treat_date', 'desc')
+            ->get();
 
         $wells->transform(
             function ($item) use ($rowData) {
-                $result = [];
+                $result = [
+                    'id' => $item->id,
+                    'uwi' => ['value' => $item->uwi]
+                ];
 
                 foreach ($this->getFields() as $field) {
-                    $fieldValue = $this->getFieldValue($field, $rowData, $item);
+                    if ($field['code'] === 'uwi') {
+                        continue;
+                    }
+                    $rowItem = $rowData->where('well', $item->id)->first();
+                    $fieldValue = ['value' => $rowItem ? $rowItem->{$field['column']} : null];
                     if (!empty($fieldValue)) {
                         $result[$field['code']] = $fieldValue;
                     }
@@ -50,13 +64,25 @@ class WellTreat extends TableForm
     {
         $column = $this->getFieldByCode($params['field']);
 
-        $item = $this->getFieldRow($column, $params['wellId'], $params['date']);
+        $item = DB::connection('tbd')
+            ->table($column['table'])
+            ->where('well', $params['wellId'])
+            ->where('treatment_type', $this->request->get('treatment_type'))
+            ->whereBetween(
+                'treat_date',
+                [
+                    (clone $params['date'])->startOfDay(),
+                    (clone $params['date'])->endOfDay()
+                ]
+            )
+            ->first();
 
         if (empty($item)) {
             $data = [
                 'well' => $params['wellId'],
+                'treatment_type' => $this->request->get('treatment_type'),
                 $column['column'] => $params['value'],
-                'dbeg' => $params['date']->toDateTimeString()
+                'treat_date' => $params['date']->toDateTimeString()
             ];
 
             if (!empty($column['additional_filter'])) {

@@ -472,7 +472,7 @@ export default {
 
           let data = {
             well_id: row.id,
-            date: this.filter.date,
+            ...this.filter
           }
           data[column.code] = row[column.code].value
 
