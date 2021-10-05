@@ -99,10 +99,7 @@ export default {
         this.formFields.daily_oil_production.value = (((daily_fluid_production * (100 - bsw)) / 100) * averageOilDensity / 1000).toFixed(2);
       }
 
-      if (daily_fluid_production &&
-          gas_factor &&
-          bsw
-      ) {
+      if (daily_fluid_production && gas_factor && bsw) {
         this.formFields.daily_gas_production.value = (gas_factor * daily_fluid_production * (1 - bsw / 100)).toFixed(2);
       }
     },
