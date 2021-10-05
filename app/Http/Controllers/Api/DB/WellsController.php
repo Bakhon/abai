@@ -74,7 +74,6 @@ class WellsController extends Controller
             'gdis_current_value_static' => $this->gdisCurrentValueStatic($well),
             'gdis_current_value_rp' => $this->gdisCurrentValueRp($well),
             'gdis_current_value_bhp' => $this->gdisCurrentValueBhp($well),
-            'gdis_complex' => $this->gdisComplex($well),
             'gis' => $this->gis($well),
             'zone' => $this->zone($well),
             'well_react_infl' => $this->wellReact($well),
@@ -85,7 +84,7 @@ class WellsController extends Controller
             'agms' => $this->getTechsByCode($well, 'AGMS'),
         ];
 
-        Cache::put('well_' . $well->id, $wellInfo, 1440);
+        Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
 

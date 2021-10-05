@@ -326,7 +326,7 @@ export default {
       }
 
       if (row[column.code] && column.type === 'datetime') {
-        return moment(row[column.code]).tz('Asia/Almaty').format('DD.MM.YYYY HH:MM')
+        return moment(row[column.code]).tz('Asia/Almaty').format('DD.MM.YYYY HH:mm')
       }
 
       if (column.type === 'checkbox') {
