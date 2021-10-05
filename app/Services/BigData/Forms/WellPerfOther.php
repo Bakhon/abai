@@ -57,4 +57,12 @@ class WellPerfOther extends WellPerf
         return $result;
     }
 
+    protected function prepareDataToSubmit()
+    {
+        $fieldCodes = $this->getFields()->pluck('code')->toArray();
+        $data = $this->request->only(array_merge($fieldCodes, ['perf_type', 'id']));
+
+        return $data;
+    }
+
 }

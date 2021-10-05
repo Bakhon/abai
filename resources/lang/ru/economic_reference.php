@@ -291,7 +291,7 @@ return array (
   'days_declination' => 'дней',
   'trans_expenditures' => 'Транспортные расходы',
   'fot' => 'ФОТ',
-  'fixed_nopayroll_expenditures' => 'Условно-постоянные затраты без учета ФОТ',
+  'fixed_nopayroll_expenditures' => 'Условно-постоянные затраты без ФОТ',
   'tax_costs' => 'Налоговые затраты',
   'show_wells' => 'Показать скважины',
 );

@@ -37,9 +37,12 @@ class WellPerf extends PlainForm
             case 7:
                 $form = 'well_perf_bridge_plug';
                 break;
-            case 8:
-                $form = 'well_document_short';
-                break;    
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+                $form = 'well_perf_other';
+                break;
         }
         return ['form' => $form];
     }
