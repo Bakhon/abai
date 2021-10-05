@@ -75,8 +75,8 @@ class WaterProductionMonth extends MeasLogByMonth
                     return Carbon::parse($item->dbeg)->format('j');
                 });
                 return $items->map(function ($item) {
-                    $item = $item->first();
-                    return round($item->pressure_inj, 2);
+                    $item = $item->first();                    
+                    return round($item->water_prod_val, 2);
                 });
             });
     }
