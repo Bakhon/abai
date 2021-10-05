@@ -31,7 +31,7 @@
                 <well-card-tree
                     v-for="(item, index) in formsStructure"
                     :key="index"
-                    :active-form-code="activeFormCode"
+                    :active-form-code="activeForm ? activeForm.code : null"
                     :data="item"
                     :switch-form-by-code="switchFormByCode">
                 </well-card-tree>
@@ -86,14 +86,17 @@
             </div>
             <div v-if="wellUwi" class="mid-col__main_row">
               <div v-if="activeFormComponentName">
-                  <div
-                      :is="activeFormComponentName"
-                      :well="well"
-                      :changeColumnsVisible="(value) => changeColumnsVisible(value)"
-                  ></div>
+                <div
+                    :is="activeFormComponentName"
+                    :well="well"
+                    :changeColumnsVisible="(value) => changeColumnsVisible(value)"
+                ></div>
               </div>
-              <div v-else-if="activeFormCode" class="col table-wrapper">
-                <BigDataPlainFormResult :code="activeFormCode" :well-id="this.well.id"></BigDataPlainFormResult>
+              <div v-else-if="activeForm && activeForm.code" class="col table-wrapper">
+                <BigDataPlainFormResult v-if="activeForm.type === 'plain'" :code="activeForm.code"
+                                        :well-id="this.well.id"></BigDataPlainFormResult>
+                <BigDataTableFormWrapper v-else-if="activeForm.type === 'table'"
+                                         :id="this.well.id" :params="activeForm" type="well"></BigDataTableFormWrapper>
               </div>
               <div v-else class="col graphics">
                 <div class="row">
@@ -227,13 +230,14 @@
 <script>
 import Vue from "vue";
 import BigDataPlainFormResult from '../forms/PlainFormResults'
+import BigDataTableFormWrapper from '../forms/TableFormWrapper'
 import vSelect from 'vue-select'
 import axios from 'axios'
 import moment from 'moment'
 import WellCardTree from './WellCardTree'
 import upperFirst from 'lodash/upperFirst'
 import camelCase from 'lodash/camelCase'
-import {globalloadingMutations,bigdatahistoricalVisibleState} from '@store/helpers';
+import {bigdatahistoricalVisibleState, globalloadingMutations} from '@store/helpers';
 import InjectionHistoricalData from "./InjectionHistoricalData";
 import ProductionHistoricalData from "./ProductionHistoricalData";
 
@@ -255,6 +259,7 @@ requireComponent.keys().forEach(fileName => {
 export default {
   components: {
     BigDataPlainFormResult,
+    BigDataTableFormWrapper,
     vSelect,
     WellCardTree,
     InjectionHistoricalData,
@@ -264,7 +269,7 @@ export default {
     return {
       options: [],
       graph: null,
-      activeFormCode: null,
+      activeForm: null,
       activeFormComponentName: null,
       loading: false,
       isLeftColumnFolded: false,
@@ -520,11 +525,8 @@ export default {
       }
     },
     switchFormByCode(data) {
-      this.activeFormCode = data.code;
+      this.activeForm = data;
       this.activeFormComponentName = data.component_name;
-    },
-    setForm(formCode) {
-      this.activeFormCode = formCode
     },
     getFormatedDate(data) {
       if (data != null && data != '') {
