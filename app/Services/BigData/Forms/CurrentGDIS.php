@@ -14,13 +14,6 @@ class CurrentGDIS extends TableForm
     protected $configurationFileName = 'current_g_d_i_s';
     protected $gdisFields = [
         [
-            'code' => 'conclusion',
-            'params' => [
-                'type' => 'dict',
-                'dict' => 'gdis_conclusion',
-            ]
-        ],
-        [
             'code' => 'target',
             'params' => [
                 'type' => 'text'
@@ -63,7 +56,6 @@ class CurrentGDIS extends TableForm
         'HDN',
         'RZAB',
         'PMAX',
-        'PURP',
         'PNS',
         'QJT',
         'QJDM',
