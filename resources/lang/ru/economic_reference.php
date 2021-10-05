@@ -296,4 +296,6 @@ return array (
   'show_wells' => 'Показать скважины',
   'prs_expenditures' => 'Затраты ПРС',
   'prs_nopayroll_expenditures' => 'Затраты ПРС без ФОТ',
+  'cost_prs' => 'Стоимость ПРС',
+  'cost_prs_without_fot' => 'Стоимость ПРС без ФОТ',
 );

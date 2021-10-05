@@ -434,9 +434,11 @@ class EconomicNrsController extends Controller
             "ERT_payments",
             "Trans_expenditures",
             "Gaoverheads_expenditures",
-            "prs",
+            "prs1",
             "PRS_nopayroll_expenditures",
             "PRS_expenditures",
+            "cost_WR_payroll",
+            "cost_WR_nopayroll",
         ];
 
         $builder = $this
