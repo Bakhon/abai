@@ -69,7 +69,8 @@ export default {
       this.SET_LOADING(false);
 
       if (this.omgngduWell) {
-        this.setOmgNgduFormFields(this.omgngduWell)
+        this.setOmgNgduFormFields(this.omgngduWell);
+        this.calculateFluidParams();
       }
     });
 
@@ -90,8 +91,18 @@ export default {
     },
     calculateFluidParams() {
       if (this.formFields.daily_fluid_production.value && this.formFields.bsw.value) {
-        this.formFields.daily_water_production.value = (this.formFields.daily_fluid_production.value * this.formFields.bsw.value) / 100;
-        this.formFields.daily_oil_production.value = ((this.formFields.daily_fluid_production.value * (100 - this.formFields.bsw.value)) / 100) * averageOilDensity / 1000;
+        this.formFields.daily_water_production.value = ((this.formFields.daily_fluid_production.value * this.formFields.bsw.value) / 100).toFixed(2);
+        this.formFields.daily_oil_production.value = (((this.formFields.daily_fluid_production.value * (100 - this.formFields.bsw.value)) / 100) * averageOilDensity / 1000).toFixed(2);
+      }
+
+      if (this.formFields.daily_fluid_production.value &&
+          this.formFields.gas_factor.value &&
+          this.formFields.bsw.value
+      ) {
+        let gas_factor = this.formFields.gas_factor.value;
+        let daily_fluid_production = this.formFields.daily_fluid_production.value;
+        let bsw = this.formFields.bsw.value;
+        this.formFields.daily_gas_production.value = (gas_factor * daily_fluid_production * (1 - bsw / 100)).toFixed(2);
       }
     },
     async changeZu() {
