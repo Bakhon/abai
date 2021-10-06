@@ -809,7 +809,7 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.techModeProdOil.liquid,
+          'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.liquid : null,
           'neigbor_2': this.well.measLiq.liquid.toFixed(1),
           'name': 'Дебит жидкости, м3/сут (режим-факт)',
           'data': ''
@@ -817,7 +817,7 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.techModeProdOil.wcut,
+          'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.wcut : null,
           'neigbor_2': this.well.measWaterCut.water_cut,
           'name': 'Обводненность, % (режим-факт)',
           'data': ''
@@ -825,8 +825,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.well.techModeProdOil.oil,
-          'neigbor_2': (this.well.techModeProdOil.liquid * (1 - this.well.measWaterCut.water_cut / 100) * 0.86).toFixed(1),
+          'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.oil : null,
+          'neigbor_2': this.well.techModeProdOil != null && this.well.measWaterCut != null ? (this.well.techModeProdOil.liquid * (1 - this.well.measWaterCut.water_cut / 100) * 0.86).toFixed(1) : null,
           'name': 'Дебит нефти, т/сут (режим-факт)',
           'data': ''
         },
