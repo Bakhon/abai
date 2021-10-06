@@ -159,8 +159,6 @@ export default {
                     reasons[item.name] = item.decreaseReasonExplanations;
                 }
             });
-            console.log('reasons')
-            console.log(reasons)
             return reasons;
         },
 
