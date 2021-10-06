@@ -60,12 +60,16 @@ export default {
           title: this.trans('economic_reference.operating_profit') + '+',
           key: this.profitabilityKey,
           positive: true,
+          hasSubtitle: true,
+          isShowCount: true
         },
         {
           title: this.trans('economic_reference.operating_profit') + '-',
           key: this.profitabilityKey,
           negative: true,
-          sort: 'asc'
+          sort: 'asc',
+          hasSubtitle: true,
+          isShowCount: true
         },
         {
           title: this.trans('economic_reference.liquid_production'),

@@ -27,3 +27,8 @@ export default {
     },
 }
 </script>
+<style scoped>
+.tree-setting-block div {
+  min-width: 30rem !important;
+}
+</style>
