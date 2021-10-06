@@ -20,6 +20,8 @@ import monthlyOilValue from './data.json'
 import {LineString, Polygon} from "ol/geom";
 import LayerGroup from "ol/layer/Group";
 import {globalloadingMutations} from '@store/helpers';
+import draggable from 'vuedraggable'
+
 export default {
     data() {
         return {
@@ -77,7 +79,6 @@ export default {
             ],
             map: {},
             layerGroups: [],
-            layersList: [],
         }
     },
     components: {
@@ -89,6 +90,7 @@ export default {
         ExportModal,
         RightClickMenu,
         TopMenu,
+        draggable,
     },
     methods: {
         ...globalloadingMutations([
@@ -191,12 +193,13 @@ export default {
                         width: 3,
                     }),
                 }),
-                zIndex: this.layersList.length + 1
+                zIndex: this.layerGroups.length + 1
             });
             let layerGroup = new LayerGroup();
+            layerGroup.name = 'Слой ' + this.layerGroups.length;
             layerGroup.getLayers().push(newLayer);
             this.map.getLayerGroup().getLayers().push(layerGroup);
-            this.layersList.push(layerGroup.getLayers());
+            this.layerGroups.push(layerGroup);
             this.SET_LOADING(false);
         },
         sendFileToAPI(file, type) {
@@ -316,8 +319,8 @@ export default {
                 layerGroup.getLayers().push(externalVectorLayer);
                 layerGroup.getLayers().push(internalVectorLayer);
             });
+            layerGroup.name = 'Слой ' + this.layerGroups.length;
             this.layerGroups.push(layerGroup)
-            this.layersList.push(layerGroup.getLayers());
             this.initMap(projection);
         },
         toggleOpacity(layerGroup) {
@@ -325,6 +328,13 @@ export default {
                 if (layer.values_.type !== 'empty') {
                     layer.setOpacity(layer.getOpacity() ? 0 : 1);
                 }
+            })
+        },
+        layerGroupsChangeOrder() {
+            this.layerGroups.forEach((layerGroup, index) => {
+                layerGroup.getLayers().forEach(layer => {
+                    layer.setZIndex(index);
+                })
             })
         }
     },

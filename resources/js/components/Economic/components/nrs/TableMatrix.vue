@@ -330,7 +330,7 @@ export default {
       return this.isVisibleOperatingPrs
           ? 'Operating_profit_variable_prs'
           : 'Operating_profit'
-    },
+    }
   },
   methods: {
     getColor(key, value) {

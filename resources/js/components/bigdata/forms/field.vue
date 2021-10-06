@@ -161,7 +161,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import moment from 'moment-timezone'
 import vSelect from "vue-select"
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -244,7 +244,7 @@ export default {
     },
     changeDate(date) {
       if (date) {
-        let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')
+        let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:mm:ss Z')
         this.updateValue(formatedDate)
       }
     },

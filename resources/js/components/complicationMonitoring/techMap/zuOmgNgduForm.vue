@@ -12,9 +12,8 @@
 <script>
 import EditForm from '@ui-kit/EditForm';
 import {globalloadingMutations} from '@store/helpers';
-import omgNgduZuformFields from '~/json/formFields/map_omg_ngdu_zu.json'
-
-const averageOilDensity = 853;
+import omgNgduZuformFields from '~/json/formFields/map_omg_ngdu_zu.json';
+import calculateFluidParams from '~/mixins/calculateFluidParams';
 
 export default {
   name: "zuOmgNgduForm",
@@ -24,6 +23,7 @@ export default {
   components: {
     EditForm
   },
+  mixins: [calculateFluidParams],
   data: function () {
     return {
       formFields: _.cloneDeep(omgNgduZuformFields),
@@ -105,13 +105,7 @@ export default {
 
         this.SET_LOADING(false);
       });
-    },
-    calculateFluidParams () {
-      if (this.formFields.daily_fluid_production.value && this.formFields.bsw.value) {
-        this.formFields.daily_water_production.value = (this.formFields.daily_fluid_production.value * this.formFields.bsw.value) / 100;
-        this.formFields.daily_oil_production.value = ((this.formFields.daily_fluid_production.value * (100 - this.formFields.bsw.value)) / 100) * averageOilDensity / 1000;
-      }
-    },
+    }
   }
 }
 </script>
