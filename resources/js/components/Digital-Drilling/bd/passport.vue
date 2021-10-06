@@ -278,21 +278,21 @@
                         this.currentWell[this.currentWell.length-1].id).then((response) => {
                         let data = response.data;
                         if (data) {
-                            this.passport = data[0];
+                            this.passport = data.Общая_информация[0];
                             this.passportWell.all_info.child[0].value =  this.passport.Скважина
                             this.passportWell.all_info.child[1].value =  this.passport.Вид
                             this.passportWell.all_info.child[2].value =  this.passport.Месторождение
                             this.passportWell.all_info.child[3].value =  this.passport.Блок
-                            this.passportWell.all_info.child[4].value =  this.passport.Горизонт
+                            this.passportWell.all_info.child[4].value =  this.passport.Горизонт.join(', ')
                             this.passportWell.all_info.child[5].value =  this.passport.Тех_структура
-                            this.passportWell.all_info.child[6].value =  this.passport.Орг_струтура
+                            this.passportWell.all_info.child[6].value =  this.passport.Орг_струтура.join(', ')
                             this.passportWell.all_info.child[7].value =  this.passport.Зона
                             this.passportWell.all_info.child[8].value =  this.passport.Альтитуда
                             this.passportWell.all_info.child[9].value =  this.passport.Коор_Х_устья
                             this.passportWell.all_info.child[10].value =  this.passport.Коор_У_устья
                             this.passportWell.all_info.child[11].value =  this.passport.Коор_Х_заб
                             this.passportWell.all_info.child[12].value =  this.passport.Коор_У_заб
-                            this.passportWell.all_info.child[13].value =  ''
+                            this.passportWell.all_info.child[13].value =  this.passport.Назначение_скважины
                             this.passportWell.all_info.child[14].value =  this.passport.Категория
                             this.passportWell.all_info.child[15].value =  this.passport.Экспл_дата
                             this.passportWell.all_info.child[16].value =  this.passport.Подрядчик
