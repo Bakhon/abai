@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use App\Models\BigData\Well;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class WaterProductionMonth extends MeasLogByMonth
 {
     protected $configurationFileName = 'water_production_month';
-  
+
     public function getResults(array $params = []): array
     {
         if ($this->request->get('type') !== 'tech') {
@@ -43,7 +43,7 @@ class WaterProductionMonth extends MeasLogByMonth
         $waterProdVal = $this->getWaterProdVal($wellIds, $date);
 
         $indicators = [
-            'water_prod_val',           
+            'water_prod_val',
             'worktime',
             'water_val'
         ];
@@ -51,9 +51,9 @@ class WaterProductionMonth extends MeasLogByMonth
         foreach ($wells as $well) {
             $rows = array_merge($rows, $this->getWellRows($well, $date, $waterProdVal, $workTimes));
         }
-        return $rows;        
-    }   
-   
+        return $rows;
+    }
+
 
     private function getWaterProdVal(array $wellIds, CarbonImmutable $date): Collection
     {
@@ -70,12 +70,12 @@ class WaterProductionMonth extends MeasLogByMonth
                     return Carbon::parse($item->dbeg)->format('j');
                 });
                 return $items->map(function ($item) {
-                    $item = $item->first();                    
+                    $item = $item->first();
                     return round((int)$item->water_prod_val, 2);
                 });
             });
     }
-    
+
 
     private function getWellRows(
         Well $well,
@@ -97,10 +97,12 @@ class WaterProductionMonth extends MeasLogByMonth
             'indicator' => ['value' => trans('bd.forms.water_production_month.water_val')]
         ];
 
+        $workTime = $workTimes[$well->id] ?? null;
+
         $monthDay = $date->startOfMonth();
         while ($monthDay <= $date) {
             $water_prod_val = $water->get($well->id) ? $water->get($well->id)->get($monthDay->format('j')) : 0;
-            $workTime = $workTimes[$monthDay->format('j')] ?? null;
+            $dailyWorkTime = $workTime ? ($workTime[$monthDay->format('j')]['value'] ?? 0) : 0;
             $waterRow[$monthDay->format('d.m.Y')] = [
                 'value' => $water_prod_val,
                 'is_editable' => true,
@@ -109,14 +111,15 @@ class WaterProductionMonth extends MeasLogByMonth
                     'date' => $monthDay->format('d.m.Y')
                 ]
             ];
-            $waterSumRow[$monthDay->format('d.m.Y')] = ['value' => $water_prod_val * $workTime];
-            $workTimeRow[$monthDay->format('d.m.Y')] = ['value' => $workTime ?? 0];
+            $waterSumRow[$monthDay->format('d.m.Y')] = ['value' => round($water_prod_val * $dailyWorkTime / 24, 2)];
+            $workTimeRow[$monthDay->format('d.m.Y')] = ['value' => $dailyWorkTime];
 
             $monthDay = $monthDay->addDay();
         }
 
         return [$waterRow, $waterSumRow, $workTimeRow, []];
     }
+
     protected function getColumns(CarbonImmutable $date): array
     {
         $columns = $this->getFields()->toArray();
@@ -169,6 +172,6 @@ class WaterProductionMonth extends MeasLogByMonth
                     ]
                 );
         }
-    }    
-    
+    }
+
 }
