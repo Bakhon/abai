@@ -2,6 +2,8 @@
 
 namespace App\Traits\BigData\Forms;
 
+use App\Services\AttachmentService;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 trait WithDocumentsUpload
@@ -92,4 +94,47 @@ trait WithDocumentsUpload
             ARRAY_FILTER_USE_KEY
         );
     }
+
+    protected function getAttachedDocuments(array $rowIds): ?Collection
+    {
+        $field = $this->getFields()->where('code', 'documents')->first();
+        $files = DB::connection('tbd')
+            ->table($field['table']['name'] . ' as f')
+            ->select("f.{$field['table']['local_key']} as id", 'd.id as document_id', 'df.file', 'd.doc_date')
+            ->join('prod.document as d', 'f.' . $field['table']['document_key'], 'd.id')
+            ->join('prod.document_file as df', 'd.id', 'df.document')
+            ->where('f.file_type', $field['table']['file_type'])
+            ->whereIn('f.' . $field['table']['local_key'], $rowIds)
+            ->get();
+
+        if ($files->isEmpty()) {
+            return collect();
+        }
+
+        $attachmentService = app()->make(AttachmentService::class);
+        $filesInfo = $attachmentService->getInfo($files->pluck('file')->toArray());
+
+        return $files->map(function ($file) use ($filesInfo) {
+            $file->info = $filesInfo->where('id', $file->file)->first();
+            $file->filename = $file->info->filename;
+            return $file;
+        })
+            ->groupBy('id')
+            ->map(function ($items) {
+                return $items
+                    ->groupBy('document_id')
+                    ->map(function ($items) {
+                        $text = $items->pluck('filename')->join(', ');
+                        return [
+                            'id' => $items->first()->document_id,
+                            'values' => [
+                                'file' => $items,
+                                'filenames' => $text,
+                                'doc_date' => $items->first()->doc_date
+                            ]
+                        ];
+                    });
+            });
+    }
+
 }
