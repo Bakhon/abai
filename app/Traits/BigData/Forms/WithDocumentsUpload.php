@@ -133,7 +133,8 @@ trait WithDocumentsUpload
                                 'doc_date' => $items->first()->doc_date
                             ]
                         ];
-                    });
+                    })
+                    ->values();
             });
     }
 
