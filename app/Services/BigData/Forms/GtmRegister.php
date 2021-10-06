@@ -20,10 +20,19 @@ class GtmRegister extends PlainForm
     protected function getRows(): Collection
     {
         $rows = parent::getRows();
-        return $rows->map(function ($item) {
-            $item->own_forces = empty($item->company);
-            return $item;
-        });
+
+        if (!empty($rows)) {
+            $documents = $this->getAttachedDocuments($rows->pluck('id')->toArray());
+            $rows = $rows->map(function ($row) use ($documents) {
+                if ($documents->get($row->id)->isNotEmpty()) {
+                    $row->documents = $documents->get($row->id)->toArray();
+                }
+                $row->own_forces = empty($item->company);
+                return $row;
+            });
+        }
+
+        return $rows;
     }
 
     protected function submitForm(): array

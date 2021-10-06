@@ -37,6 +37,23 @@ class Gdis extends PlainForm
         return $errors;
     }
 
+    protected function getRows(): Collection
+    {
+        $rows = parent::getRows();
+
+        if (!empty($rows)) {
+            $documents = $this->getAttachedDocuments($rows->pluck('id')->toArray());
+            $rows = $rows->map(function ($row) use ($documents) {
+                if ($documents->get($row->id)->isNotEmpty()) {
+                    $row->documents = $documents->get($row->id)->toArray();
+                }
+                return $row;
+            });
+        }
+
+        return $rows;
+    }
+
     protected function submitForm(): array
     {
         $this->tableFields = $this->getFields()
