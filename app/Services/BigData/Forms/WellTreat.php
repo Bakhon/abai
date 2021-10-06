@@ -21,14 +21,14 @@ class WellTreat extends TableForm
         }
 
         $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, []);
-        $date = Carbon::parse($this->request->get('date'))->toImmutable();
+        $date = Carbon::parse($filter->date)->toImmutable();
 
         $rowData = DB::connection('tbd')
             ->table('prod.well_treatment')
             ->whereIn('well', $wells->pluck('id')->toArray())
             ->where('treatment_type', $filter->treatment_type)
-            ->whereDate('treat_date', '>=', $date->startOfDay())
-            ->whereDate('treat_date', '<=', $date->endOfDay())
+            ->where('treat_date', '>=', $date->startOfDay())
+            ->where('treat_date', '<=', $date->endOfDay())
             ->orderBy('treat_date', 'desc')
             ->get();
 
