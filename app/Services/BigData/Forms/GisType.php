@@ -6,6 +6,8 @@ namespace App\Services\BigData\Forms;
 
 use App\Traits\BigData\Forms\WithDocumentsUpload;
 use App\Traits\BigData\Forms\DepthValidationTrait;
+use Illuminate\Support\Collection;
+
 class GisType extends PlainForm
 {
     protected $configurationFileName = 'gis_type';
@@ -43,5 +45,28 @@ class GisType extends PlainForm
         }       
 
         return $errors;
+    }
+
+    protected function getRows(): Collection
+    {
+        $rows = parent::getRows();
+
+        if (!empty($rows)) {
+            $rows = $this->attachDocuments($rows);
+        }
+
+        return $rows;
+    }
+
+    protected function prepareDataToSubmit()
+    {
+        $data = parent::prepareDataToSubmit();
+        return array_filter(
+            $data,
+            function ($key) {
+                return !in_array($key, ['gis_method', 'gis_type', 'documents']);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }

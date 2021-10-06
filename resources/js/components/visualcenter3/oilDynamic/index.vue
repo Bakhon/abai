@@ -101,7 +101,7 @@ Vue.component('daily-chart', require('./dailyChart.vue').default);
 export default {
     data: function () {
         return {
-            dailyChartName: this.trans('visualcenter.oilDynamicDaily'),
+            dailyChartName: this.trans('visualcenter.oilDynamicDaily') + ' (' + this.trans('visualcenter.chemistryMetricTon') + ')',
             yearlyChartName: this.trans('visualcenter.accumulatedOilDynamicYearly') + ' (' + this.trans('visualcenter.dzoThousandTon') + ')',
             selectedMonth: moment().month() + 1,
             selectedDzo: {
@@ -110,6 +110,16 @@ export default {
                 name: this.trans('visualcenter.nkKmg'),
             },
             dzoCompanies: [
+                {
+                    id: 17,
+                    ticker: 'НККМГ',
+                    name: this.trans('visualcenter.nkKmg'),
+                },
+                {
+                    id: 18,
+                    ticker: 'НККМГОП',
+                    name: this.trans('visualcenter.nkKmgOperating'),
+                },
                 {
                     id: 1,
                     ticker: 'ЭМГ',
@@ -190,17 +200,6 @@ export default {
                     ticker: 'ТШО',
                     name: this.trans('visualcenter.tsho'),
                 },
-                {
-                    id: 17,
-                    ticker: 'НККМГ',
-                    name: this.trans('visualcenter.nkKmg'),
-                },
-                {
-                    id: 18,
-                    ticker: 'НККМГОП',
-                    name: this.trans('visualcenter.nkKmgOperating'),
-                },
-
             ],
             monthes: [],
             tableData: [],
@@ -440,7 +439,7 @@ export default {
     margin-top: 30px;
 }
 .growth-indicator-production-data {
-    border-bottom: 16px solid #009846;
+    border-top: 16px solid #009846;
 }
 .fall-indicator-production-data {
     border-top: 16px solid #e31e24;
