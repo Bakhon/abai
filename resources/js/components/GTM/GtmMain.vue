@@ -85,7 +85,7 @@
           <gtm-date-picker @dateChanged="getData" :showSettings="false" :showPeriodTitle="true"></gtm-date-picker>
         </div>
         <div class="gtm-dark h-360">
-          <table class="table text-center text-white podbor-middle-table h-100 mb-0">
+          <table class="table text-center text-white podbor-middle-table paegtm-gtm-table h-100 mb-0">
             <thead>
             <tr>
               <th class="align-middle" rowspan="2">{{ trans('paegtm.gtmType') }}</th>
@@ -122,7 +122,7 @@
         <apexchart type="line" height="200" :options="chartOptions2" :series="chartData.series_2"></apexchart>
       </div>
       <div>
-        <modal class="modal-bign-wrapper" name="chart1" draggable=".modal-bign-header" :width="1000" :height="500"
+        <modal class="modal-bign-wrapper" name="chart1" draggable=".modal-bign-header" :width="1050" :height="500"
                style="background: transparent;" :adaptive="true">
           <div class="modal-bign modal-bign-container">
             <div class="modal-bign-header">
@@ -134,7 +134,7 @@
                        :series="chartData.series_1"></apexchart>
           </div>
         </modal>
-        <modal class="modal-bign-wrapper" name="chart2" draggable=".modal-bign-header" :width="1000" :height="500"
+        <modal class="modal-bign-wrapper" name="chart2" draggable=".modal-bign-header" :width="1050" :height="500"
                style="background: transparent; color: black" :adaptive="true">
           <div class="modal-bign modal-bign-container">
             <div class="modal-bign-header">

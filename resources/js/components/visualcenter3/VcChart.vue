@@ -1,5 +1,6 @@
 <script>
     import {Line, mixins} from "vue-chartjs";
+    import moment from "moment";
 
     const {reactiveProp} = mixins;
 
@@ -160,19 +161,8 @@
                                 {
                                     ticks: {
                                         fontColor: "#fff",
-                                        callback: function (num) {
-                                            if (num >= 1000) {
-                                                num = (num / 1000).toFixed(0);
-                                            } else if (num >= 100) {
-                                                num = Math.round((num / 1000) * 10) / 10;
-                                            } else if (num >= 10) {
-                                                num = Math.round((num / 1000) * 100) / 100;
-                                            } else if (num > 0) {
-                                                num = 0.01;
-                                            } else {
-                                                num = 0;
-                                            }
-                                            return new Intl.NumberFormat("ru-RU").format(num);
+                                        callback: (num) => {
+                                            return this.getFormattedNumber(num);
                                         },
                                     },
                                 },
@@ -181,15 +171,43 @@
                                 {
                                     ticks: {
                                         fontColor: "#fff",
+                                        maxTicksLimit: 8,
+                                        callback: (date) => {
+                                            return moment(date,'DD / MMM / YYYY').format('DD MMM')
+                                        },
+                                        maxRotation: 0,
                                     },
                                 },
                             ],
                         },
                         tooltips: {
                             intersect: false,
+                            callbacks: {
+                                label: (tooltipItem,data) => {
+                                    if (data.datasets.length !== 4) {
+                                        return tooltipItem.value;
+                                    }
+                                    return this.getFormattedNumber(tooltipItem.value);
+                                }
+                            }
                         }
                     }
                 );
+            },
+
+            getFormattedNumber(num) {
+                if (num >= 1000) {
+                    num = (num / 1000).toFixed(0);
+                } else if (num >= 100) {
+                    num = Math.round((num / 1000) * 10) / 10;
+                } else if (num >= 10) {
+                    num = Math.round((num / 1000) * 100) / 100;
+                } else if (num > 0) {
+                    num = 0.01;
+                } else {
+                    num = 0;
+                }
+                return new Intl.NumberFormat("ru-RU").format(num);
             },
 
             getLabelsByDatasets(chart,chartSummary,fillPattern) {

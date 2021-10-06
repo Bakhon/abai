@@ -107,7 +107,10 @@ export default {
             dzoNameMappingNormal: _.cloneDeep(dzoCompaniesNameMapping.normalNames),
             timeSelect: "",
             productionData: [],
-            reasonExplanations: {}
+            reasonExplanations: {},
+            troubleCompanies: ['ОМГК','КГМКМГ','ТП','ПККР'],
+            dzoWithOpekRestriction: ['ОМГ','ММГ','ЭМГ','КБМ'],
+            additionalCompanies: ['ОМГК','АГ']
         };
     },
     methods: {
@@ -150,12 +153,30 @@ export default {
 
         getReasonExplanations() {
             let reasons = {};
+            this.productionTableData = this.getProductionDataByOpekRestriction();
             _.forEach(this.productionTableData, (item) => {
                 if (item.decreaseReasonExplanations && item.decreaseReasonExplanations.length > 0) {
                     reasons[item.name] = item.decreaseReasonExplanations;
                 }
             });
             return reasons;
+        },
+
+        getProductionDataByOpekRestriction() {
+            let updatedByOpek = _.cloneDeep(this.productionTableData);
+            _.forEach(updatedByOpek, (item) => {
+                if (item.decreaseReasonExplanations && this.dzoWithOpekRestriction.includes(item.name)) {
+                    item.decreaseReasonExplanations.push(this.trans('visualcenter.opekExplanationReason'));
+                }
+            });
+            return updatedByOpek;
+        },
+
+        isTroubleCompany(dzoName) {
+            return this.troubleCategories.includes(this.selectedCategory) && this.troubleCompanies.includes(dzoName);
+        },
+        getAdditionalName(dzoName) {
+            return this.trans('visualcenter.condensate');
         }
     },
     mixins: [
@@ -187,13 +208,17 @@ export default {
         this.productionParams = await this.getProductionParamsByCategory();
         this.updateSummaryFact('oilCondensateProduction','oilCondensateDelivery');
         this.productionTableData = this.productionParams.tableData.current[this.selectedCategory];
-        this.productionData = _.cloneDeep(this.productionTableData);
         this.reasonExplanations = this.getReasonExplanations();
+        this.productionData = _.cloneDeep(this.productionTableData);
         this.selectedDzoCompanies = this.getAllDzoCompanies();
         this.updateDzoMenu();
         localStorage.setItem("selectedPeriod", "undefined");
         this.getCurrencyNow(new Date().toLocaleDateString());
         this.updatePrices(this.period);
+        if (moment().date() < 11) {
+            this.wellsWorkoverPeriodStartMonth = moment(this.wellsWorkoverPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+            this.wellsWorkoverPeriodEndMonth = moment(this.wellsWorkoverPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+        }
         this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
         this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
         this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');

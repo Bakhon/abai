@@ -2,21 +2,26 @@
   <div>
     <div class="p-3 bg-main1 mb-3 mx-auto max-width-88vw">
       <div class="d-flex">
-        <select-interval
-            :form="form"
-            class="col"
-            @change="getData"/>
-
         <select-organization
             :form="form"
-            class="col ml-2"
+            class="flex-grow-1"
+            hide-label
             @change="getData"/>
 
         <select-field
             v-if="form.org_id"
             :org_id="form.org_id"
             :form="form"
-            class="col ml-2"
+            class="ml-2 flex-grow-1"
+            @change="getData"/>
+
+        <select-granularity
+            :form="form"
+            class="ml-2 flex-grow-1"/>
+
+        <select-interval
+            :form="form"
+            class="ml-2 flex-grow-1 flex-shrink-0"
             @change="getData"/>
       </div>
 
@@ -32,22 +37,10 @@
       </div>
     </div>
 
-    <div v-if="!loading && res" class="mx-auto max-width-88vw">
-      <table-wells
-          v-if="activeTab === 'revenue'"
-          :data="res"
-          property="NetBack_bf_pr_exp"/>
-
-      <table-wells
-          v-else-if="activeTab === 'costs'"
-          :data="res"
-          property="Overall_expenditures"/>
-
-      <table-wells
-          v-else-if="activeTab === 'operating_profit'"
-          :data="res"
-          property="Operating_profit"
-          is-colorful/>
+    <div v-if="res" class="mx-auto max-width-88vw">
+      <table-matrix
+          v-if="activeTab === 'matrix'"
+          :data="res"/>
 
       <table-tree-map
           v-else-if="activeTab === 'treemap'"
@@ -65,7 +58,8 @@ import ChartButton from "./components/ChartButton";
 import SelectInterval from "./components/SelectInterval";
 import SelectOrganization from "./components/SelectOrganization";
 import SelectField from "./components/SelectField";
-import TableWells from "./components/nrs/TableWells";
+import SelectGranularity from "./components/SelectGranularity";
+import TableMatrix from "./components/nrs/TableMatrix";
 import TableTreeMap from "./components/nrs/TableTreeMap";
 
 export default {
@@ -76,29 +70,27 @@ export default {
     SelectInterval,
     SelectOrganization,
     SelectField,
-    TableWells
+    SelectGranularity,
+    TableMatrix
   },
   data: () => ({
     form: {
       org_id: null,
       field_id: null,
       interval_start: '2021-01-01T00:00:00.000Z',
-      interval_end: '2021-02-01T00:00:00.000Z',
+      interval_end: '2021-06-30T00:00:00.000Z',
+      granularity: 'month'
     },
     res: null,
-    activeTab: 'treemap'
+    activeTab: 'matrix'
   }),
   computed: {
     ...globalloadingState(['loading']),
 
     tabs() {
-      let dimension = `${this.trans('economic_reference.thousand')} ${this.trans('economic_reference.tenge')}`
-
       return {
+        matrix: this.trans('economic_reference.matrix'),
         treemap: 'TreeMap',
-        revenue: `${this.trans('economic_reference.Revenue')}, ${dimension}`,
-        costs: `${this.trans('economic_reference.costs')}, ${dimension}`,
-        operating_profit: `${this.trans('economic_reference.operating_profit')}, ${dimension}`,
       }
     },
   },
@@ -108,7 +100,9 @@ export default {
     async getData() {
       if (this.form.org_id === 2) return
 
-      this.SET_LOADING(true);
+      this.SET_LOADING(true)
+
+      this.res = null
 
       try {
         const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-wells'), {params: this.form})
@@ -120,7 +114,7 @@ export default {
         console.log(e)
       }
 
-      this.SET_LOADING(false);
+      this.SET_LOADING(false)
     },
   }
 };

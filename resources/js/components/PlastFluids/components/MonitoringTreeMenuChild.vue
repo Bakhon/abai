@@ -63,7 +63,7 @@ export default {
     },
     setTableData() {
       this.SET_CURRENT_TEMPLATE(this.treeChild);
-      this.handleTableData(this.currentSubsoilField[0].field_id);
+      this.handleTableData({ field_id: this.currentSubsoilField[0].field_id });
     },
   },
 };

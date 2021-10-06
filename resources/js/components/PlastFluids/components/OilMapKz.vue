@@ -1,8 +1,71 @@
 <template>
-  <div id="map"></div>
+  <!-- <div id="map"></div> -->
+  <div class="main-page-map">
+    <div class="map-header">
+      <p>Карта размещений нефтегазоносных провинций и областей</p>
+      <div class="map-header-toolbar">
+        <div class="toolbar-search">
+          <div class="input-holder">
+            <label for="main-page-map-search"
+              ><img
+                src="/img/PlastFluids/main-page-search.svg"
+                alt="search for provinces"
+            /></label>
+            <div class="break"></div>
+            <input type="text" id="main-page-map-search" placeholder="Поиск" />
+          </div>
+          <button class="toolbar-search-button">
+            Поиск
+          </button>
+        </div>
+        <img src="/img/PlastFluids/box-icon.svg" alt="" />
+        <img src="/img/PlastFluids/openModal.svg" alt="open map fullscreen" />
+      </div>
+    </div>
+    <div class="satelite-holder">
+      <button v-if="currentScreen > 0" @click="currentScreen--">
+        Назад
+      </button>
+      <button>
+        <img src="/img/PlastFluids/satelite.svg" alt="" />
+        <span>Спутник</span>
+      </button>
+    </div>
+    <div class="province" v-if="currentScreen === 1">
+      <p style="top: 8%; left: 50%;">Северобортовая НГО</p>
+      <p style="top: 40%; left: 30%;">Центрально-Каспийская НГО</p>
+      <p style="top: 40%; right: 10%;">
+        Восточно-Эмбинская НГО
+      </p>
+      <p style="top: 55%; right: 25%;">Северо-Эмбинская НГО</p>
+      <p style="top: 70%; left: 33%;">Астрахань-Макатская НГО</p>
+      <p style="top: 80%; right: 20%;">Южно-Эмбинская НГО</p>
+      <p style="top: 88%; left: 55%;">Приморско-Эмбинская НГО</p>
+      <img
+        @click="currentScreen = 2"
+        src="/img/PlastFluids/MaskGroup.svg"
+        alt=""
+      />
+    </div>
+    <img
+      src="/img/PlastFluids/presentation3d.jpg"
+      v-else-if="currentScreen === 2"
+      @click="setSubsoilField"
+      style="flex: 2 1 auto; margin: 14px 10px 10px 10px; width: unset; height: unset;"
+      alt=""
+    />
+    <img
+      @click="currentScreen = 1"
+      v-else
+      src="/img/PlastFluids/map.svg"
+      alt=""
+    />
+  </div>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
   name: "OilMapKz",
   data() {
@@ -10,48 +73,33 @@ export default {
       map: null,
       province: undefined,
       currentProvince: undefined,
+      currentScreen: 0,
     };
+  },
+  computed: {
+    ...mapState("plastFluids", ["subsoils", "subsoilFields"]),
+  },
+  methods: {
+    ...mapActions("plastFluids", [
+      "UPDATE_CURRENT_SUBSOIL",
+      "UPDATE_CURRENT_SUBSOIL_FIELD",
+      "GET_SUBSOIL_FIELD_COUNTERS",
+    ]),
+    setSubsoilField() {
+      const foundSubsoil = this.subsoils.find(
+        (subsoil) => subsoil.owner_short_name === "КОА"
+      );
+      this.UPDATE_CURRENT_SUBSOIL(foundSubsoil).then((res) => {
+        const foundField = this.subsoilFields.find(
+          (field) => field.field_name === "Кожасай"
+        );
+        this.UPDATE_CURRENT_SUBSOIL_FIELD(foundField).then(() =>
+          this.GET_SUBSOIL_FIELD_COUNTERS()
+        );
+      });
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-#map {
-  height: calc(100% - 45px);
-  width: 100%;
-  background: #2b2e5e;
-}
-
-.info {
-  padding: 6px 8px;
-  font: 14px/16px Arial, Helvetica, sans-serif;
-  background: white;
-  background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-}
-.info h4 {
-  margin: 0 0 5px;
-  color: #777;
-}
-
-.legend {
-  line-height: 18px;
-  color: #555;
-}
-.legend i {
-  width: 18px;
-  height: 18px;
-  float: left;
-  margin-right: 8px;
-  opacity: 0.7;
-}
-
-#map::v-deep .leaflet-tooltip.my-label {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  font-size: 14px;
-  color: #a1a3bc;
-}
-</style>
+<style lang="scss" scoped src="./OilMapKzStyles.scss"></style>

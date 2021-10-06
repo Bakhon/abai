@@ -374,6 +374,7 @@ return array (
         'DAILY_DRILLING_REPORT' => 'Daily drilling report',
         'IMPORT_DRILLING_REPORT' => 'Drilling report import',
         'date' => 'Дата',
+        'save' => 'Save',
         'report' => 'Рапорт',
         'page' => 'Страница',
         'unit_name' => 'Название Установки',
@@ -614,7 +615,7 @@ return array (
         'drilling_fluid_engineer' => 'Инженер по буровым раствором:',
 
 
-        'explanation_abbreviation' => 'Расшифровка сокрашении для персонала КТМ',
+        'explanation_abbreviation' => 'Расшифровка сокрашении',
         'ea_bo' => 'БО - буровое оборудование',
         'ea_pvo' => 'ПВО - противовыбросовое оборудование',
         'ea_ou' => 'ОУ - оборудование устья',

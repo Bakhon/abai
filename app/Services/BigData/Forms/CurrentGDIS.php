@@ -14,16 +14,16 @@ class CurrentGDIS extends TableForm
     protected $configurationFileName = 'current_g_d_i_s';
     protected $gdisFields = [
         [
+            'code' => 'target',
+            'params' => [
+                'type' => 'text'
+            ]
+        ],
+        [
             'code' => 'conclusion',
             'params' => [
                 'type' => 'dict',
                 'dict' => 'gdis_conclusion',
-            ]
-        ],
-        [
-            'code' => 'target',
-            'params' => [
-                'type' => 'text'
             ]
         ],
         [
@@ -60,41 +60,85 @@ class CurrentGDIS extends TableForm
     ];
 
     protected $metricCodes = [
-        'FLVL',
-        'BHP',
-        'MLP',
-        'INJR',
-        'FLRT',
-        'FLRD',
-        'WCUT',
-        'GASR',
-        'ADMCF',
-        'PDCF',
-        'RRP',
-        'RP',
-        'BP',
-        'STP',
-        'OTP',
-        'TBP',
-        'STLV',
-        'RSVT',
-        'RSD',
-        'PRDK',
-        'DBD',
-        'SLHDM',
-        'PSHDM',
-        'PSD',
-        'OTPM',
-        'TPDM',
-        'PLST',
-        'PMPR',
-        'SHDMD',
-        'SHDME',
-        'RPM'
+        'RTR',
+        'RZAT',
+        'HSTA',
+        'HDN',
+        'RPL',
+        'RZAB',
+        'PMAX',
+        'PNS',
+        'QJT',
+        'QJDM',
+        'QJDM',
+        'GAZF',
+        'KNAP',
+        'KPOD',
+        'PRIV',
+        'RBUF',
+        'RSTA',
+        'TPL',
+        'GISL',
+        'KOFP',
+        'HZAB',
+        'DHP',
+        'GDNC',
+        'GSMN',
+        'DNSN',
+        'LMM',
+        'NMIN',
+        'DSPR',
+        'DSEL',
+        'OBOR'
+    ];
+
+    protected $fieldsOrder = [
+        'target',
+        'device',
+        'conclusion',
+        'transcript_dynamogram',
+        'RTR',
+        'RZAT',
+        'HSTA',
+        'HDN',
+        'RZAB',
+        'RPL',
+        'PRIV',
+        'PMAX',
+        'RBUF',
+        'RSTA',
+        'TPL',
+        'PNS',
+        'QJT',
+        'QJDM',
+        'QJDM',
+        'GAZF',
+        'KNAP',
+        'KPOD',
+        'GISL',
+        'KOFP',
+        'HZAB',
+        'DHP',
+        'GDNC',
+        'GSMN',
+        'DNSN',
+        'LMM',
+        'NMIN',
+        'DSPR',
+        'DSEL',
+        'OBOR',
+        'note',
+        'conclusion_text',
+        'file_dynamogram'
     ];
 
     public function getResults(): array
     {
+        if ($this->request->get('type') !== 'well') {
+            //todo: сделать универсальные сообщения, в которые будут передаваться типы объектов
+            throw new \Exception(trans('bd.select_well'));
+        }
+
         $measurements = $this->getMeasurements();
         $rows = $this->getRows($measurements);
         $columns = $this->getColumns($measurements);
@@ -118,9 +162,7 @@ class CurrentGDIS extends TableForm
             ->get();
 
         if ($dates->isEmpty()) {
-            return [
-                'rows' => []
-            ];
+            return collect();
         }
         $oldestDate = $dates->last()->meas_date;
 
@@ -170,10 +212,16 @@ class CurrentGDIS extends TableForm
 
     private function getRows(Collection $measurements): array
     {
-        return array_merge(
-            $this->getGdisFieldRows($measurements),
+        $result = array_merge(
             $this->getGdisMetricRows($measurements),
+            $this->getGdisFieldRows($measurements),
         );
+
+        usort($result, function ($a, $b) {
+            return (array_search($a['code'], $this->fieldsOrder) > array_search($b['code'], $this->fieldsOrder));
+        });
+
+        return $result;
     }
 
     public function getGdisFieldRows(Collection $measurements)
@@ -182,6 +230,7 @@ class CurrentGDIS extends TableForm
         foreach ($this->gdisFields as $field) {
             $row = [
                 'id' => $this->request->get('id'),
+                'code' => $field['code'],
                 'value' => [
                     'name' => trans('bd.forms.current_g_d_i_s.' . $field['code'])
                 ],
@@ -220,6 +269,7 @@ class CurrentGDIS extends TableForm
         foreach ($this->metricCodes as $code) {
             $row = [
                 'id' => $this->request->get('id'),
+                'code' => $code,
                 'value' => [
                     'name' => $metricNames[$code]
                 ],

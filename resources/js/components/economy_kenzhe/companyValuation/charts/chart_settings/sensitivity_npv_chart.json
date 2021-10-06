@@ -1,0 +1,67 @@
+{
+    "series": [
+        {
+            "type": "line",
+            "color": "#fff",
+            "data": [
+                20,
+                29
+            ]
+        },
+        {
+            "type": "line",
+            "data": [
+                30,
+                20
+            ]
+        },
+        {
+            "type": "line",
+            "data": [
+                28,
+                22
+            ]
+        },
+        {
+            "type": "line",
+            "data": [
+                22,
+                28
+            ]
+        }
+    ],
+    "chartOptions": {
+        "stroke": {
+            "width": [
+                2,
+                2,
+                2,
+                2
+            ]
+        },
+        "xaxis": {
+            "categories": [
+                "60%",
+                "90%"
+            ]
+        },
+        "plotOptions": {
+            "bar": {
+                "colors": {
+                    "ranges": [
+                        {
+                            "from": -100,
+                            "to": -46,
+                            "color": "#F15B46"
+                        },
+                        {
+                            "from": -45,
+                            "to": 0,
+                            "color": "#FEB019"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

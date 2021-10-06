@@ -20,17 +20,17 @@
                 </div>
                 <div class="container-fluid">
                     <div class="row p-2 reason-header">
-                        <span class="col-3">{{ trans("visualcenter.dzo") }}</span>
-                        <span class="col-9">{{ trans("visualcenter.importForm.reason") }}</span>
+                        <span class="col-5">{{ trans("visualcenter.dzo") }}</span>
+                        <span class="col-7">{{ trans("visualcenter.importForm.reason") }}</span>
                     </div>
                     <div class="reason-container row p-2">
                         <div
-                                class="row"
+                                class="row col-12 p-0"
                                 v-for="(item, index) in reasons"
                         >
                             <div class="col-12 d-flex p-2 reason-description" v-for="reason in item">
-                                <span class="col-3 font-weight-bold">{{index}}</span>
-                                <span class="col-9">{{reason}}</span>
+                                <span class="col-5 font-weight-bold">{{getDzoName(index)}}</span>
+                                <span class="col-7">{{reason}}</span>
                             </div>
                         </div>
                     </div>
@@ -45,8 +45,33 @@
 export default {
     data: function () {
         return {
-
+            dzo: {
+                'ОМГ': this.trans("visualcenter.omg"),
+                'ЭМГ': this.trans("visualcenter.emg"),
+                'КБМ': this.trans("visualcenter.kbm"),
+                'КГМ': this.trans("visualcenter.kgm"),
+                'ТШ': this.trans("visualcenter.tsho"),
+                'ТШО': this.trans("visualcenter.tsho"),
+                'ММГ': this.trans("visualcenter.mmg"),
+                'КТМ': this.trans("visualcenter.ktm"),
+                'КОА': this.trans("visualcenter.koa"),
+                'ПКИ': this.trans("visualcenter.pki"),
+                'АМГ': this.trans("visualcenter.ag"),
+                'АГ': this.trans("visualcenter.ag"),
+                'КПО': this.trans("visualcenter.kpo"),
+                'НКО': this.trans("visualcenter.nko"),
+                'ТП': this.trans("visualcenter.tp"),
+                'УО': this.trans("visualcenter.uo"),
+                'ПКК': this.trans("visualcenter.pkk"),
+                'КГМКМГ': this.trans("visualcenter.kgm"),
+                'ПККР': this.trans("visualcenter.pkk"),
+            }
         };
+    },
+    methods: {
+        getDzoName(dzoTicker) {
+            return this.dzo[dzoTicker];
+        },
     },
     props: ['reasons'],
 }

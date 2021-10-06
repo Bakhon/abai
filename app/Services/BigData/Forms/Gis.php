@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use App\Services\AttachmentService;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -19,9 +19,8 @@ class Gis extends PlainForm
 
     public function getResults(): array
     {
-        $wellId = $this->request->get('well_id');
         try {
-            $rows = $this->getRows($wellId);
+            $rows = $this->getRows();
 
             $columns = $this->getColumns();
 
@@ -60,6 +59,7 @@ class Gis extends PlainForm
         $row = array_merge($row, $this->getRowFiles($wellId));
 
         if (!empty($row)) {
+            $row['id'] = $wellId;
             $rows->push($row);
         }
 
@@ -83,9 +83,10 @@ class Gis extends PlainForm
     {
         $files = DB::connection('tbd')
             ->table('prod.conn_files as f')
-            ->select('f.id', 'f.document_id', 'ft.code', 'df.file')
+            ->select('f.id', 'f.document_id', 'ft.code', 'df.file', 'd.doc_date')
             ->join('prod.document_file as df', 'f.document_id', 'df.document')
             ->join('dict.gis_file_type as ft', 'f.type_connect', 'ft.id')
+            ->join('prod.document as d', 'f.document_id', 'd.id')
             ->where('well', $wellId)
             ->get();
 
@@ -100,12 +101,22 @@ class Gis extends PlainForm
             ->map(function ($group) use ($filesInfo) {
                 return $group
                     ->map(function ($file) use ($filesInfo) {
-                        $fileInfo = $filesInfo->where('id', $file->file)->first();
-
-                        return '<a target="_blank" href="' . route('attachment.download', ['attachment' => $file->file]
-                            ) . '">' . $fileInfo->filename . '</a>';
+                        $file->info = $filesInfo->where('id', $file->file)->first();
+                        $file->filename = $file->info->filename;
+                        return $file;
                     })
-                    ->join('<br>');
+                    ->groupBy('document_id')
+                    ->map(function ($items) {
+                        $text = $items->pluck('filename')->join(', ');
+                        return [
+                            'id' => $items->first()->document_id,
+                            'values' => [
+                                'file' => $items,
+                                'filenames' => $text,
+                                'doc_date' => $items->first()->doc_date
+                            ]
+                        ];
+                    })->values();
             })
             ->toArray();
     }
@@ -134,43 +145,6 @@ class Gis extends PlainForm
         return $columns;
     }
 
-    protected function getCustomValidationErrors(): array
-    {
-        $errors = [];
-        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('matering_from'))) {
-            $errors['matering_from'][] = trans('bd.validation.depth');
-        }
-        if (!$this->isValidDate(
-            $this->request->get('well'),
-            $this->request->get('gis_date'),
-            'dict.well',
-            'drill_start_date'
-        )) {
-            $errors['gis_date'][] = trans('bd.validation.date');
-        }
-        if (!$this->isValidDepth($this->request->get('well'), $this->request->get('process_from'))) {
-            $errors['process_from'][] = trans('bd.validation.depth');
-        }
-
-
-        return $errors;
-    }
-
-    public function submit(): array
-    {
-        DB::connection('tbd')->beginTransaction();
-
-        try {
-            $this->submitForm();
-
-            DB::connection('tbd')->commit();
-            return [];
-        } catch (\Exception $e) {
-            DB::connection('tbd')->rollBack();
-            throw new SubmitFormException($e->getMessage());
-        }
-    }
-
     protected function submitForm(): array
     {
         $this->tableFields = $this->getFields()
@@ -186,10 +160,17 @@ class Gis extends PlainForm
             ->pluck('code')
             ->each(function ($code) use ($fileTypes) {
                 $values = $this->request->get($code);
+
+                $this->removeExistedFiles($fileTypes, $code, $values);
+
                 if (empty($values)) {
                     return;
                 }
+
                 foreach ($values as $value) {
+                    if (is_array($value)) {
+                        continue;
+                    }
                     DB::connection('tbd')
                         ->table('prod.conn_files')
                         ->insert(
@@ -201,6 +182,8 @@ class Gis extends PlainForm
                         );
                 }
             });
+
+        return [];
     }
 
     private function getFileTypes()
@@ -210,5 +193,48 @@ class Gis extends PlainForm
             ->get()
             ->pluck('id', 'code')
             ->toArray();
+    }
+
+    private function removeExistedFiles(array $fileTypes, string $code, array $values = null)
+    {
+        if ($values === null) {
+            return;
+        }
+
+        $existedFiles = DB::connection('tbd')
+            ->table('prod.conn_files')
+            ->where('well', $this->request->get('well'))
+            ->where('type_connect', $fileTypes[$code])
+            ->get();
+
+        foreach ($existedFiles as $existedFile) {
+            $value = array_filter($values, function ($item) use ($existedFile) {
+                if (is_array($item) && $item['id'] === $existedFile->document_id) {
+                    return true;
+                }
+                return false;
+            });
+            if (empty($value)) {
+                DB::connection('tbd')
+                    ->table('prod.conn_files')
+                    ->where('id', $existedFile->id)
+                    ->delete();
+            }
+        }
+    }
+
+    public function delete(int $rowId)
+    {
+        DB::connection('tbd')
+            ->table('prod.conn_files')
+            ->where('well', $rowId)
+            ->delete();
+
+        DB::connection('tbd')
+            ->table('prod.lass_files')
+            ->where('well', $rowId)
+            ->delete();
+
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }

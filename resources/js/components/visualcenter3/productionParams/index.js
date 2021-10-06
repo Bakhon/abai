@@ -29,10 +29,12 @@ export default {
             selectedView: 'day',
             productionTableData: [],
             productionChartData: [],
-            marginMapping: {
-                'oilCondensateProduction': [1,13,14,15],
-                'oilCondensateDelivery': [1,11,12,13],
-            },
+            troubleCategories: [
+                'oilCondensateProduction',
+                'oilCondensateDelivery',
+                'oilCondensateProductionWithoutKMG',
+                'oilCondensateDeliveryWithoutKMG'
+            ],
             datePickerModel: {
                 start: moment().startOf('day').subtract(1, "days").format(),
                 end: moment().endOf('day').subtract(1, "days").format(),
@@ -221,6 +223,7 @@ export default {
                 this.productionTableData = _.cloneDeep(this.productionParams.tableData.current[parent]);
                 this.selectedCategory = parent;
             }
+            this.reasonExplanations = this.getReasonExplanations();
             this.productionData = _.cloneDeep(this.productionTableData);
             if (this.periodRange !== 0) {
                 this.companiesWithData = _.map(this.productionTableData, 'name');
@@ -249,7 +252,7 @@ export default {
                 });
             } else {
                 chartData = _.filter(chartData, (item) => {
-                   return this.companiesWithData.includes(item.name)
+                   return this.selectedDzoCompanies.includes(item.name)
                 });
             }
             _.forEach(chartData, (item) => {

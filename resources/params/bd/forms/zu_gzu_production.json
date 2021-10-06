@@ -11,19 +11,29 @@
       "title": "ngdu",
       "code": "ngdu",
       "type": "text",
-      "is_editable": false
+      "is_editable": false,
+      "form_type": "default"
     },
     {
       "title": "cdng",
       "code": "cdng",
       "type": "text",
-      "is_editable": false
+      "is_editable": false,
+      "form_type": "default"
+    },
+    {
+      "title": "upn",
+      "code": "upn",
+      "type": "text",
+      "is_editable": false,
+      "form_type": "ktm"
     },
     {
       "title": "gu",
       "code": "gu",
       "type": "text",
-      "is_editable": false
+      "is_editable": false,
+      "form_type": "default"
     },
     {
       "title": "zu_gzu",
@@ -37,7 +47,8 @@
       "table": "prod.meas_gzu_prod",
       "column": "liquid_prod",
       "type": "text",
-      "is_editable": true
+      "is_editable": true,
+      "validation": "required|numeric|gt:0"
     },
     {
       "title": "mark",
@@ -57,7 +68,8 @@
       "table": "prod.meas_gzu_prod",
       "column": "liquid_prod_tel",
       "type": "text",
-      "is_editable": true
+      "is_editable": true,
+      "validation": "required|numeric|gt:0"
     },
     {
       "title": "water_cut",
@@ -65,7 +77,8 @@
       "table": "prod.meas_gzu_prod",
       "column": "water_cut",
       "type": "text",
-      "is_editable": true
+      "is_editable": true,
+      "validation": "required|numeric|between:0,100"
     },
     {
       "title": "mark",
@@ -85,7 +98,8 @@
       "table": "prod.meas_gzu_prod",
       "column": "water_cut_tel",
       "type": "text",
-      "is_editable": true
+      "is_editable": true,
+      "validation": "required|numeric|between:0,100"
     },
     {
       "title": "oil_prod",
@@ -93,7 +107,8 @@
       "table": "prod.meas_gzu_prod",
       "column": "oil_prod",
       "type": "text",
-      "is_editable": true
+      "is_editable": true,
+      "validation": "required|numeric|gt:0"
     },
     {
       "title": "oil_prod_tel",
@@ -101,7 +116,8 @@
       "table": "prod.meas_gzu_prod",
       "column": "oil_prod_tel",
       "type": "text",
-      "is_editable": true
+      "is_editable": true,
+      "validation": "required|numeric|gt:0"
     },
     {
       "title": "gaz_prod",
@@ -109,7 +125,8 @@
       "table": "prod.meas_gzu_prod",
       "column": "gaz_prod",
       "type": "text",
-      "is_editable": true
+      "is_editable": true,
+      "validation": "required|numeric|gt:0"
     },
     {
       "title": "mark",
@@ -129,7 +146,8 @@
       "table": "prod.meas_gzu_prod",
       "column": "gaz_prod_tel",
       "type": "text",
-      "is_editable": true
+      "is_editable": true,
+      "validation": "required|numeric|gt:0"
     }
   ]
 }

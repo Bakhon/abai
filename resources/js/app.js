@@ -211,19 +211,22 @@ Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_compan
 Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiveFactors/proactiveFactors.vue').default);
 Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
 Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
+Vue.component('company-valuation', require('./components/economy_kenzhe/companyValuation/companyValuation.vue').default);
 
 Vue.component('page-petrophysics', require('./components/geology/petrophysics/PagePetrophysics.vue').default);
 Vue.component('page-core', require('./components/geology/core/PageCore.vue').default);
 Vue.component('page-visualization', require('./components/geology/visualization/PageVisualization.vue').default);
 Vue.component('page-geophysics', require('./components/geology/geophysics/PageGeophysics.vue').default);
 
-Vue.component('digital-rating', require('./components/DigitalRating/index.vue').default);
-Vue.component('digital-rating-report', require('./components/DigitalRating/DigitalRatingReport.vue').default);
+Vue.component('section-maps', require('./components/DigitalRating/sectionMaps').default);
+Vue.component('digital-rating-report', require('./components/DigitalRating/reports').default);
+Vue.component('compare-drilling', require('./components/DigitalRating/drillingCompare').default);
 
 Vue.component('admin-user-settings', require('./components/admin/user/Settings.vue').default);
 Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);
 Vue.component('visual-center-daily-approve', require('./components/visualcenter3/importForm/dailyApprove/index.vue').default);
 Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/index.vue').default);
+Vue.component('visual-center-oil-dynamic', require('./components/visualcenter3/oilDynamic/index.vue').default);
 
 Vue.component('digital-drilling', require('./components/Digital-Drilling/DigitalDrilling').default);
 
@@ -240,11 +243,17 @@ Vue.component('water-flooding-management-map', require('./components/waterfloodi
 Vue.component('water-flooding-management-forecasting', require('./components/waterfloodingManagement/forecastingOptimization').default);
 Vue.component('water-flooding-management-assessment', require('./components/waterfloodingManagement/assessmentMonitoring').default);
 
+Vue.component('upload-historical-data', require('./components/visualcenter3/historical/index.vue').default);
+
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
 Vue.prototype.$urlLink = url => urlLink(url);
 Vue.prototype.$currentPageUrl = currentUrlPage;
 Vue.prototype.trans = require('./VueTranslation/Translation').default.translate;
+
+String.prototype.toFixed = function (decimalPlaces) {
+    return parseFloat(this).toFixed(decimalPlaces);
+};
 
 
 /**

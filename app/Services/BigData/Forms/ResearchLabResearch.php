@@ -21,7 +21,11 @@ class ResearchLabResearch extends PlainForm
         'ADSPO' => 'prod.reservoir_oil_prob_analysis',
         'AEF' => 'prod.produced_water_analysis',
         'OCRC' => 'prod.res_oil_char',
-        'COSC' => 'prod.surf_oil_characteristics'
+        'COSC' => 'prod.surf_oil_characteristics',
+        'CPG' => 'prod.petro_gas_char',
+        'CRG' => 'prod.res_gas_char',
+        'CPIW' => 'prod.res_water_char',
+        'ARSPO' => 'prod.reservoir_oil_prob_analysis'
     ];
 
     protected $configurationFileName = 'research_lab_research';
@@ -58,6 +62,15 @@ class ResearchLabResearch extends PlainForm
                 ->first();
             unset($additionalData->id, $additionalData->well);
 
+            $researchResults = [];
+            if (!empty($additionalData)) {
+                foreach ($additionalData as $key => $value) {
+                    $field = $this->getFields()->where('code', $key)->first();
+                    $researchResults[] = ($field ? $field['title'] : $key) . ': ' . $value;
+                }
+            }
+            $row->research_results = implode(', ', $researchResults);
+
             foreach ((array)$additionalData as $key => $value) {
                 $row->$key = $value;
             }
@@ -67,7 +80,7 @@ class ResearchLabResearch extends PlainForm
         return $this->formatRows($rows);
     }
 
-    protected function getCustomValidationErrors(): array
+    protected function getCustomValidationErrors(string $field = null): array
     {
         $errors = [];
         if (!$this->isValidDepth($this->request->get('well'), $this->request->get('depth'))) {

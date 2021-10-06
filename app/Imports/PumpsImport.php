@@ -43,8 +43,12 @@ class PumpsImport implements ToModel
     public function model(array $row)
     {
         $gu = Gu::where('name', $row[self::GU])->first();
+        if (!$gu) {
+            return null;
+        }
+
         return new Pump([
-            'gu_id' => empty($gu) ? null : $gu->id,
+            'gu_id' => $gu->id,
             'number' => $row[self::NUMBER],
             'model' => $row[self::MODEL],
             'type' => $row[self::TYPE],

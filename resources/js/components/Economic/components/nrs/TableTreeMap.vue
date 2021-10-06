@@ -22,6 +22,10 @@
         class="mb-3"
         @change="getWells"/>
 
+    <div v-if="loadingTreemap" class="w-100 text-white text-center mb-3">
+      {{ trans('economic_reference.loading_treemap') }}...
+    </div>
+
     <div v-for="chart in loading ? [] : charts"
          :key="chart.title"
          :id="chart.title">
@@ -30,7 +34,10 @@
 </template>
 
 <script>
-import {SELECTED_COLOR, treemapMixin} from "../../mixins/treemapMixin";
+import {globalloadingMutations, globalloadingState} from '@store/helpers';
+
+import {treemapMixin} from "../../mixins/treemapMixin";
+import {waterCutMixin} from "../../mixins/wellMixin";
 
 import SelectTechStructure from "../SelectTechStructure";
 
@@ -39,7 +46,7 @@ export default {
   components: {
     SelectTechStructure
   },
-  mixins: [treemapMixin],
+  mixins: [treemapMixin, waterCutMixin],
   props: {
     data: {
       required: true,
@@ -54,9 +61,10 @@ export default {
       field_id: null,
     },
     selectedWells: [],
-    loading: false
   }),
   computed: {
+    ...globalloadingState(['loading']),
+
     uwis() {
       return Object.keys(this.data.uwis)
     },
@@ -65,67 +73,54 @@ export default {
       return this.uwis.map(uwi => {
         let well = {uwi: uwi}
 
-        this.charts.forEach(chart => well[chart.key] = this.data.uwis[uwi][chart.key].sum)
+        this.charts.forEach(chart => {
+          if (this.data.uwis[uwi][chart.key]) {
+            well[chart.key] = this.data.uwis[uwi][chart.key].sum
+          }
+        })
+
+        well[this.waterCutKey] = +this.calcWaterCut(well.liquid, well.oil)
 
         return well
       })
-    },
-
-    chartSeries() {
-      let series = {}
-
-      this.charts.forEach(chart => {
-        let wells = []
-
-        this.wells.forEach(well => {
-          let value = +well[chart.key]
-
-          if (chart.hasOwnProperty('positive') && value < 0) return
-
-          if (chart.hasOwnProperty('negative') && value >= 0) return
-
-          let color = this.getColor(well, 'Operating_profit')
-
-          wells.push({
-            name: well.uwi,
-            value: Math.abs(value),
-            fill: this.selectedWells.includes(well.uwi) ? SELECTED_COLOR : color,
-            fillOriginal: color
-          })
-        })
-
-        series[chart.title] = wells
-      })
-
-      return series
     },
 
     charts() {
       return [
         {
           title: this.trans('economic_reference.operating_profit') + '+',
-          key: 'Operating_profit',
-          positive: true
+          key: this.profitabilityKey,
+          positive: true,
         },
         {
           title: this.trans('economic_reference.operating_profit') + '-',
-          key: 'Operating_profit',
-          negative: true
+          key: this.profitabilityKey,
+          negative: true,
+          sort: 'asc'
         },
         {
           title: this.trans('economic_reference.liquid_production'),
-          key: 'liquid'
+          key: 'liquid',
+          hasSubtitle: true,
         },
         {
           title: this.trans('economic_reference.oil_production'),
-          key: 'oil'
+          key: 'oil',
+          hasSubtitle: true,
+        },
+        {
+          title: this.trans('economic_reference.water_cut'),
+          key: this.waterCutKey,
+          hasSubtitle: true,
         },
       ]
-    }
+    },
   },
   methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
     async getWells() {
-      this.loading = true
+      this.SET_LOADING(true)
 
       this.chartTrees = []
 
@@ -137,28 +132,18 @@ export default {
 
       this.selectedWells = data
 
-      this.loading = false
+      this.SET_LOADING(false)
+
+      this.loadingTreemap = true
 
       this.$nextTick(() => this.plotCharts())
-    },
-
-    selectWells(wells) {
-      wells.forEach(well => {
-        this.chartTrees.forEach(tree => {
-          let item = tree.search('name', well)
-
-          if (!item) return
-
-          item.set("fill", SELECTED_COLOR)
-        })
-      })
     },
 
     updateForm(key) {
       this.form[key] = null
 
       this.getWells()
-    }
+    },
   }
 }
 </script>
