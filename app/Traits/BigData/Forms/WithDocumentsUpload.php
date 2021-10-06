@@ -10,7 +10,16 @@ trait WithDocumentsUpload
 {
     protected function insertInnerTable(int $id)
     {
-        if (!empty($this->tableFields)) {
+        if (empty($this->tableFields)) {
+            $this->tableFields = $this->getFields()
+                ->filter(
+                    function ($item) {
+                        return $item['type'] === 'table';
+                    }
+                );
+        }
+
+        if ($this->tableFields && $this->tableFields->isNotEmpty()) {
             foreach ($this->tableFields as $field) {
                 if (!empty($this->request->get($field['code']))) {
                     if ($field['code'] === 'documents') {
