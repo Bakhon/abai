@@ -22,17 +22,13 @@ class GtmRegister extends PlainForm
         $rows = parent::getRows();
 
         if (!empty($rows)) {
-            $documents = $this->getAttachedDocuments($rows->pluck('id')->toArray());
-            $rows = $rows->map(function ($row) use ($documents) {
-                if ($documents->get($row->id)->isNotEmpty()) {
-                    $row->documents = $documents->get($row->id)->toArray();
-                }
-                $row->own_forces = empty($item->company);
-                return $row;
-            });
+            $rows = $this->attachDocuments($rows);
         }
 
-        return $rows;
+        return $rows->map(function ($row) {
+            $row->own_forces = empty($item->company);
+            return $row;
+        });
     }
 
     protected function submitForm(): array
