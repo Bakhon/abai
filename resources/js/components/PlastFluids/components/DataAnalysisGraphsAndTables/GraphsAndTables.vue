@@ -1,7 +1,14 @@
 <template>
   <div class="data-analysis-graphs-and-tables">
     <template v-if="currentSubsoilField[0] && currentSubsoilField[0].field_id">
-      <div class="graph-holder">
+      <div
+        class="graph-holder"
+        :style="
+          tableState === 'hidden'
+            ? 'height: calc(100% - 38px);'
+            : 'height: calc(100% - 350px);'
+        "
+      >
         <div class="heading-title">
           <div>
             <img src="/img/PlastFluids/graphs.svg" />
@@ -13,6 +20,11 @@
             v-for="(graph, key) in graphData"
             :key="key"
             class="content-child"
+            :style="
+              Object.keys(graphData).length > 2
+                ? 'height: calc(50% - 3px);'
+                : 'height: calc(100% - 6px);'
+            "
           >
             <ScatterGraph
               :series="graph"
@@ -55,6 +67,7 @@ export default {
     ...mapState("plastFluidsLocal", [
       "tableFields",
       "tableRows",
+      "tableState",
       "loading",
       "graphType",
     ]),
@@ -132,7 +145,6 @@ export default {
 .graph-holder {
   display: flex;
   flex-flow: column;
-  flex: 2 1 auto;
 }
 
 .heading-title {
@@ -168,11 +180,14 @@ export default {
   height: calc(100% - 38px);
   border: 6px solid #272953;
   padding: 4px;
+  overflow: hidden;
 }
 
 .content-child {
-  min-height: 180px;
   width: calc(50% - 3px);
+  overflow: auto;
+  padding: 0;
+  min-height: 0;
 }
 
 .content-child:nth-of-type(1),

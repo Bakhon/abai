@@ -11,25 +11,29 @@ const plastFluidsLocal = {
     tableFields: [],
     tableRows: [],
     currentTemplate: {},
+    tableState: 'default',
     loading: false,
     graphType: "ps_bs_ds_ms",
   },
 
   mutations: {
-    SET_REPORT_DUPLICATED_STATUS(state, payload) {
-      state.reportDuplicated = payload;
-    },
     SET_FILE_LOG(state, payload) {
       state.fileLog = payload;
     },
-    SET_CURRENT_TEMPLATE(state, payload) {
-      state.currentTemplate = payload;
+    SET_REPORT_DUPLICATED_STATUS(state, payload) {
+      state.reportDuplicated = payload;
     },
     SET_TABLE_FIELDS(state, payload) {
       state.tableFields = payload;
     },
     SET_TABLE_ROWS(state, payload) {
       state.tableRows = payload;
+    },
+    SET_CURRENT_TEMPLATE(state, payload) {
+      state.currentTemplate = payload;
+    },
+    SET_TABLE_STATE(state, payload) {
+      state.tableState = payload;
     },
     SET_LOADING(state, payload) {
       state.loading = payload;

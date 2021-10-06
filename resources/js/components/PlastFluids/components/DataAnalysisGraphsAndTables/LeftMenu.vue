@@ -17,6 +17,20 @@
           :children="category.children"
           :currentGraphic.sync="currentGraphic"
         />
+        <div class="customization-category">
+          <LeftMenuGraphCustomization
+            categoryName="temperature"
+            valueKey="temperature"
+            :children="['μos', 'mod', 'Ds']"
+            :currentGraphic.sync="currentGraphic"
+          />
+          <LeftMenuGraphCustomization
+            categoryName="density_st"
+            valueKey="depth_pi_ps"
+            :children="['mod', 'Mo']"
+            :currentGraphic.sync="currentGraphic"
+          />
+        </div>
       </div>
     </div>
     <div class="correlations-holder">
@@ -85,18 +99,13 @@ export default {
         },
         {
           name: "sampling_time",
-          key: "depth_pi_ps",
+          key: "data_rs_ps_ds",
           children: ["Rs", "Ps", "μ‎o", "po"],
         },
         {
           name: "depth",
           key: "depth_g_vol_rpl_visc_rpl_dso",
           children: ["Ps", "Rs", "Bo", "Do", "mo", "po", "mod"],
-        },
-        {
-          name: "density_st",
-          key: "data_rs_ps_ds",
-          children: ["mod", "Mo"],
         },
       ],
       correlationList: [

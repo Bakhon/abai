@@ -3,9 +3,11 @@
     <div class="scatter-graph-header">
       <p>{{ title }}</p>
       <div class="scatter-graph-toolbar">
-        <button @click.stop="isApproximationOpen = true">
-          {{ trans("plast_fluids.approximation") }}
-        </button>
+        <img
+          @click.stop="isApproximationOpen = true"
+          src="/img/PlastFluids/settings.svg"
+          alt="customize graph"
+        />
         <img
           src="/img/PlastFluids/download.svg"
           @click="saveToPng"
@@ -15,13 +17,15 @@
         <img src="/img/PlastFluids/openModal.svg" width="14" />
       </div>
     </div>
-    <ApexCharts
-      ref="scatterGraph"
-      :options="chartOptions"
-      :series="graphSeries"
-      :type="type"
-      height="100%"
-    ></ApexCharts>
+    <div class="graph-holder">
+      <ApexCharts
+        ref="scatterGraph"
+        :options="chartOptions"
+        :series="graphSeries"
+        :type="type"
+        height="100%"
+      ></ApexCharts>
+    </div>
     <ScatterGraphApproximation
       v-show="isApproximationOpen"
       :series="graphSeries[0].data"
@@ -313,8 +317,19 @@ export default {
 
 <style scoped>
 .scatter-graph {
-  height: calc(100% - 30px);
   width: 100%;
+  height: 100%;
+  flex: 1;
+  padding: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.graph-holder {
+  width: 100%;
+  height: calc(100% - 30px);
+  display: block;
+  overflow: hidden;
 }
 
 .approx-button {
@@ -361,9 +376,10 @@ export default {
   width: 16px;
   height: 16px;
   cursor: pointer;
+  margin-right: 12px;
 }
 
-.scatter-graph-toolbar > img:nth-of-type(1) {
-  margin-right: 12px;
+.scatter-graph-toolbar > img:last-of-type {
+  margin-right: 0;
 }
 </style>
