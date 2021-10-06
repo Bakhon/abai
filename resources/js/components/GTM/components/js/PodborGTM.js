@@ -3,6 +3,7 @@ import 'vue-select/dist/vue-select.css'
 import {globalloadingMutations} from "../../../../store/helpers";
 import VueApexCharts from "vue-apexcharts";
 import {paegtmMapState} from "@store/helpers";
+import {toArray} from "html-to-image/es/util";
 
 
 export default {
@@ -83,7 +84,8 @@ export default {
                     }
                 },
                 dataLabels: {
-                    enabled: false
+                    enabled: true,
+                    // formatter: v => v.toFixed()
                 }
             },
             waterFallChartSeries: null,
@@ -250,31 +252,31 @@ export default {
                             data: [
                                 {
                                     x: res.data.fa_plot.labels.pbeg_oil_prod,
-                                    y: res.data.fa_plot.pbeg_oil_prod.values,
+                                    y: res.data.fa_plot.pbeg_oil_prod.values.map(a => parseInt(a).toFixed(0)),
                                     fillColor: res.data.fa_plot.pbeg_oil_prod.color,
                                 }, {
                                     x: res.data.fa_plot.labels.influenceWC,
-                                    y: res.data.fa_plot.influenceWC.values,
+                                    y: res.data.fa_plot.influenceWC.values.map(a => parseInt(a).toFixed(0)),
                                     fillColor: res.data.fa_plot.influenceWC.color,
                                 }, {
                                     x: res.data.fa_plot.labels.influencePres,
-                                    y: res.data.fa_plot.influencePres.values,
+                                    y: res.data.fa_plot.influencePres.values.map(a => parseInt(a).toFixed(0)),
                                     fillColor: res.data.fa_plot.influencePres.color,
                                 }, {
                                     x: res.data.fa_plot.labels.influenceLiquidPI,
-                                    y: res.data.fa_plot.influenceLiquidPI.values,
+                                    y: res.data.fa_plot.influenceLiquidPI.values.map(a => parseInt(a).toFixed(0)),
                                     fillColor: res.data.fa_plot.influenceLiquidPI.color,
                                 }, {
                                     x: res.data.fa_plot.labels.influenceBHP,
-                                    y: res.data.fa_plot.influenceBHP.values,
+                                    y: res.data.fa_plot.influenceBHP.values.map(a => parseInt(a).toFixed(0)),
                                     fillColor: res.data.fa_plot.influenceBHP.color,
                                 }, {
                                     x: res.data.fa_plot.labels.influenceWorkDay,
-                                    y: res.data.fa_plot.influenceWorkDay.values,
+                                    y: res.data.fa_plot.influenceWorkDay.values.map(a => parseInt(a).toFixed(0)),
                                     fillColor: res.data.fa_plot.influenceWorkDay.color,
                                 }, {
                                     x: res.data.fa_plot.labels.pend_oil_prod,
-                                    y: res.data.fa_plot.pend_oil_prod.values,
+                                    y: res.data.fa_plot.pend_oil_prod.values.map(a => parseInt(a).toFixed(0)),
                                     fillColor: res.data.fa_plot.pend_oil_prod.color,
                                 }
                             ]
