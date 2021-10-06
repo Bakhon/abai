@@ -35,6 +35,17 @@
           </label>
         </div>
 
+        <div class="form-check mr-2">
+          <input v-model="isVisibleOperatingPrs"
+                 id="visible_operating_profit"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_operating_profit"
+                 class="form-check-label text-blue">
+            {{ trans('economic_reference.v2') }}
+          </label>
+        </div>
+
         <button class="btn btn-primary ml-auto">
           {{ trans('economic_reference.export_excel') }}
         </button>
@@ -141,6 +152,7 @@ export default {
     isVisibleWells: false,
     isVisibleProfitable: true,
     isVisibleProfitless: true,
+    isVisibleOperatingPrs: false
   }),
   created() {
     this.initWellKeys()
@@ -150,8 +162,8 @@ export default {
   computed: {
     uwis() {
       return Object.keys(this.data.uwis).filter(uwi => {
-        return this.isVisibleProfitable && this.data.uwis[uwi].Operating_profit.sum > 0
-            || this.isVisibleProfitless && this.data.uwis[uwi].Operating_profit.sum <= 0
+        return this.isVisibleProfitable && this.data.uwis[uwi][this.operatingProfitKey].sum > 0
+            || this.isVisibleProfitless && this.data.uwis[uwi][this.operatingProfitKey].sum <= 0
       })
     },
 
@@ -313,6 +325,12 @@ export default {
     visibleWellKeys() {
       return this.wellKeys.filter(key => key.isVisible)
     },
+
+    operatingProfitKey() {
+      return this.isVisibleOperatingPrs
+          ? 'Operating_profit_variable_prs'
+          : 'Operating_profit'
+    }
   },
   methods: {
     getColor(key, value) {
@@ -356,7 +374,7 @@ export default {
           isVisible: true,
         },
         {
-          prop: 'prs',
+          prop: 'prs1',
           name: this.trans('economic_reference.prs_count'),
           isVisible: true,
         },
