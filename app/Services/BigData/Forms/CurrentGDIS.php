@@ -20,6 +20,13 @@ class CurrentGDIS extends TableForm
             ]
         ],
         [
+            'code' => 'conclusion',
+            'params' => [
+                'type' => 'dict',
+                'dict' => 'gdis_conclusion',
+            ]
+        ],
+        [
             'code' => 'device',
             'params' => [
                 'type' => 'dict',
@@ -53,7 +60,11 @@ class CurrentGDIS extends TableForm
     ];
 
     protected $metricCodes = [
+        'RTR',
+        'RZAT',
+        'HSTA',
         'HDN',
+        'RPL',
         'RZAB',
         'PMAX',
         'PNS',
@@ -64,12 +75,8 @@ class CurrentGDIS extends TableForm
         'KNAP',
         'KPOD',
         'PRIV',
-        'RPL',
         'RBUF',
         'RSTA',
-        'RZAT',
-        'RTR',
-        'HSTA',
         'TPL',
         'GISL',
         'KOFP',
@@ -77,7 +84,6 @@ class CurrentGDIS extends TableForm
         'DHP',
         'GDNC',
         'GSMN',
-        'RZAT',
         'DNSN',
         'LMM',
         'NMIN',
@@ -86,8 +92,53 @@ class CurrentGDIS extends TableForm
         'OBOR'
     ];
 
+    protected $fieldsOrder = [
+        'target',
+        'device',
+        'conclusion',
+        'transcript_dynamogram',
+        'RTR',
+        'RZAT',
+        'HSTA',
+        'HDN',
+        'RZAB',
+        'RPL',
+        'PRIV',
+        'PMAX',
+        'RBUF',
+        'RSTA',
+        'TPL',
+        'PNS',
+        'QJT',
+        'QJDM',
+        'QJDM',
+        'GAZF',
+        'KNAP',
+        'KPOD',
+        'GISL',
+        'KOFP',
+        'HZAB',
+        'DHP',
+        'GDNC',
+        'GSMN',
+        'DNSN',
+        'LMM',
+        'NMIN',
+        'DSPR',
+        'DSEL',
+        'OBOR',
+        'note',
+        'conclusion_text',
+        'file_dynamogram'
+    ];
+
     public function getResults(): array
     {
+        if ($this->request->get('type') !== 'well') {
+            //todo: сделать универсальные сообщения, в которые будут передаваться типы объектов
+            throw new \Exception(trans('bd.select_well'));
+        }
+
         $measurements = $this->getMeasurements();
         $rows = $this->getRows($measurements);
         $columns = $this->getColumns($measurements);
@@ -161,10 +212,16 @@ class CurrentGDIS extends TableForm
 
     private function getRows(Collection $measurements): array
     {
-        return array_merge(
-            $this->getGdisFieldRows($measurements),
+        $result = array_merge(
             $this->getGdisMetricRows($measurements),
+            $this->getGdisFieldRows($measurements),
         );
+
+        usort($result, function ($a, $b) {
+            return (array_search($a['code'], $this->fieldsOrder) > array_search($b['code'], $this->fieldsOrder));
+        });
+
+        return $result;
     }
 
     public function getGdisFieldRows(Collection $measurements)
@@ -173,6 +230,7 @@ class CurrentGDIS extends TableForm
         foreach ($this->gdisFields as $field) {
             $row = [
                 'id' => $this->request->get('id'),
+                'code' => $field['code'],
                 'value' => [
                     'name' => trans('bd.forms.current_g_d_i_s.' . $field['code'])
                 ],
@@ -211,6 +269,7 @@ class CurrentGDIS extends TableForm
         foreach ($this->metricCodes as $code) {
             $row = [
                 'id' => $this->request->get('id'),
+                'code' => $code,
                 'value' => [
                     'name' => $metricNames[$code]
                 ],

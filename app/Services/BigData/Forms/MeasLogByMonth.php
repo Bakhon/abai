@@ -37,7 +37,7 @@ abstract class MeasLogByMonth extends TableForm
             ->select('s.status', 's.dbeg', 's.dend', 's.well')
             ->join('dict.well_status_type', 'dict.well_status_type.id', 's.status')
             ->where('dend', '>=', $date->startOfMonth())
-            ->where('dbeg', '<=', $date)
+            ->where('dbeg', '<=', $date->endOfDay())
             ->whereIn('well', $wellIds)
             ->whereIn('dict.well_status_type.code', MeasurementLogForm::WELL_ACTIVE_STATUSES)
             ->get()
