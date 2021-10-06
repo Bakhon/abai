@@ -160,7 +160,7 @@ export const treemapMixin = {
             return +well[this.profitabilityKey] > 0 ? '#13B062' : '#AB130E'
         },
 
-        getChartSubtitle({title, hasSubtitle, showCount}) {
+        getChartSubtitle({title, hasSubtitle, isShowCount}) {
             if (!hasSubtitle || !this.chartsSum[title]) {
                 return ''
             }
@@ -169,7 +169,7 @@ export const treemapMixin = {
 
             let subtitleKey = 'profitable'
 
-            if (showCount) {
+            if (isShowCount) {
                 subtitleKey += 'Count'
             }
 
@@ -182,7 +182,7 @@ export const treemapMixin = {
 
             subtitleKey = 'profitless'
 
-            if (showCount) {
+            if (isShowCount) {
                 subtitleKey += 'Count'
             }
 

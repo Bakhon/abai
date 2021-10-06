@@ -92,7 +92,7 @@ export default {
           key: this.profitabilityKey,
           positive: true,
           hasSubtitle: true,
-          showCount: true
+          isShowCount: true
         },
         {
           title: this.trans('economic_reference.operating_profit') + '-',
@@ -100,7 +100,7 @@ export default {
           negative: true,
           sort: 'asc',
           hasSubtitle: true,
-          showCount: true
+          isShowCount: true
         },
         {
           title: this.trans('economic_reference.liquid_production'),
