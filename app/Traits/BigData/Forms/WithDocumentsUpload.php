@@ -89,7 +89,7 @@ trait WithDocumentsUpload
         return array_filter(
             $data,
             function ($key) {
-                return !in_array($key, ['gis_method', 'gis_type', 'documents']);
+                return !in_array($key, ['documents']);
             },
             ARRAY_FILTER_USE_KEY
         );
@@ -135,6 +135,17 @@ trait WithDocumentsUpload
                         ];
                     });
             });
+    }
+
+    protected function attachDocuments(Collection $rows)
+    {
+        $documents = $this->getAttachedDocuments($rows->pluck('id')->toArray());
+        return $rows->map(function ($row) use ($documents) {
+            if ($documents->get($row->id)) {
+                $row->documents = $documents->get($row->id)->toArray();
+            }
+            return $row;
+        });
     }
 
 }
