@@ -177,6 +177,24 @@ export default {
         },
         getAdditionalName(dzoName) {
             return this.trans('visualcenter.condensate');
+        },
+        async updateFondsByPreviousDay() {
+            if (this.productionFondDetails.length === 0) {
+                this.productionFondPeriodStart = moment(this.productionFondPeriodStart,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.productionFondPeriodEnd = moment(this.productionFondPeriodStart,'DD.MM.YYYY').clone().endOf('day').format('DD.MM.YYYY');
+                this.productionFondHistoryPeriodStart = moment(this.productionFondHistoryPeriodStart,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.productionFondHistoryPeriodEnd = moment(this.productionFondHistoryPeriodEnd,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
+                this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
+            }
+            if (this.injectionFondDetails.length === 0) {
+                this.injectionFondPeriodStart = moment(this.injectionFondPeriodStart,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.injectionFondPeriodEnd = moment(this.injectionFondPeriodStart,'DD.MM.YYYY').clone().endOf('day').format('DD.MM.YYYY');
+                this.injectionFondHistoryPeriodStart = moment(this.injectionFondHistoryPeriodStart,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.injectionFondHistoryPeriodEnd = moment(this.injectionFondHistoryPeriodEnd,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
+                this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
+            }
         }
     },
     mixins: [
@@ -225,6 +243,9 @@ export default {
         this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
         this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
         this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
+        if (this.productionFondDetails.length === 0 && this.injectionFondDetails.length === 0) {
+            await this.updateFondsByPreviousDay();
+        }
         this.chemistryDetails = await this.getChemistryByMonth();
         this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
         this.drillingDetails = await this.getDrillingByMonth();
