@@ -71,6 +71,7 @@ class FluidProductionMonth extends MeasLogByMonth
             'liquid',
             'bsw',
             'oil',
+            'gas',
             'note',
             'reason_decline',
             'worktime'
@@ -103,6 +104,18 @@ class FluidProductionMonth extends MeasLogByMonth
 
     private function getTechMode(array $wellIds, CarbonImmutable $date): Collection
     {
+        $gasTechMode = DB::connection('tbd')
+            ->table('prod.tech_mode_prod_gas')
+            ->whereIn('well', $wellIds)
+            ->where('dend', '>=', $date->startOfMonth())
+            ->where('dbeg', '<=', $date->endOfMonth())
+            ->get()
+            ->groupBy('well')
+            ->map(function ($items) {
+                $item = $items->first();
+                return $item ? $item->gas : null;
+            });
+
         return DB::connection('tbd')
             ->table('prod.tech_mode_prod_oil')
             ->whereIn('well', $wellIds)
@@ -110,8 +123,12 @@ class FluidProductionMonth extends MeasLogByMonth
             ->where('dbeg', '<=', $date->endOfMonth())
             ->get()
             ->groupBy('well')
-            ->map(function ($items) {
-                return $items->first();
+            ->map(function ($items) use ($gasTechMode) {
+                $item = $items->first();
+                if ($gasTechMode->get($item->well)) {
+                    $item->gas = $gasTechMode->get($item->well);
+                }
+                return $item;
             });
     }
 
@@ -170,14 +187,8 @@ class FluidProductionMonth extends MeasLogByMonth
     private function getGas(array $wellIds, CarbonImmutable $date): Collection
     {
         return DB::connection('tbd')
-            ->table('prod.meas_water_cut as mwc')
-            ->join('dict.well_activity as wa', 'mwc.activity', 'wa.id')
-            ->join('dict.value_type as vt', 'mwc.value_type', 'vt.id')
-            ->whereIn('mwc.well', $wellIds)
-            ->where('mwc.dbeg', '>=', $date->startOfMonth())
-            ->where('mwc.dend', '<=', $date->endOfDay())
-            ->where('wa.code', 'PMSR')
-            ->where('vt.code', 'MNT')
+            ->table('prod.meas_gas_prod')
+            ->whereIn('well', $wellIds)
             ->get()
             ->groupBy('well')
             ->map(function ($items) {
@@ -185,7 +196,7 @@ class FluidProductionMonth extends MeasLogByMonth
                     return Carbon::parse($item->dbeg)->format('j');
                 });
                 return $items->map(function ($item) {
-                    return $item->first()->water_cut;
+                    return $item->first()->gas_prod_val;
                 });
             });
     }
@@ -238,6 +249,9 @@ class FluidProductionMonth extends MeasLogByMonth
                 break;
             case 'oil':
                 $row = array_merge($row, $this->getOilRowData($well, $date));
+                break;
+            case 'gas':
+                $row = array_merge($row, $this->getGasRowData($well, $date));
                 break;
             case 'note':
                 $monthDay = $date->startOfMonth();
@@ -367,6 +381,36 @@ class FluidProductionMonth extends MeasLogByMonth
         $row['meas_count'] = ['value' => $count];
         $row['avg'] = ['value' => $count > 0 ? round($sum / $count, 2) : 0];
 
+        return $row;
+    }
+
+    private function getGasRowData($well, CarbonImmutable $date): array
+    {
+        $row = [];
+        $row['tech'] = [
+            'value' => $this->techMode->get($well->id) ? ($this->techMode->get($well->id)->gas ?? null) : null
+        ];
+
+        $count = $sum = 0;
+        $monthDay = $date->startOfMonth();
+        while ($monthDay <= $date) {
+            $wellGas = $this->gas->get($well->id);
+            $gasValue = $wellGas ? $wellGas->get($monthDay->format('j')) : null;
+            $row[$monthDay->format('d.m.Y')] = [
+                'is_editable' => true,
+                'value' => $gasValue ?? null
+            ];
+
+            if (!empty($gasValue)) {
+                $count++;
+                $sum += $gasValue;
+            }
+
+            $monthDay = $monthDay->addDay();
+        }
+
+        $row['meas_count'] = ['value' => $count];
+        $row['avg'] = ['value' => $count > 0 ? round($sum / $count, 2) : 0];
         return $row;
     }
 
@@ -850,6 +894,36 @@ class FluidProductionMonth extends MeasLogByMonth
                 break;
             case 'reason_decline':
                 $this->saveField('prod.meas_liq', 'reason_decline', $wellId, $date, $params['value']);
+                break;
+            case 'gas':
+                $row = DB::connection('tbd')
+                    ->table('prod.meas_gas_prod')
+                    ->where('well', $wellId)
+                    ->where('dbeg', '>=', $date->startOfDay())
+                    ->where('dbeg', '<=', $date->endOfDay())
+                    ->first();
+
+                if (empty($row)) {
+                    DB::connection('tbd')
+                        ->table('prod.meas_gas_prod')
+                        ->insert(
+                            [
+                                'well' => $wellId,
+                                'gas_prod_val' => $params['value'],
+                                'dbeg' => $date->startOfDay(),
+                                'dend' => $date->endOfDay()
+                            ]
+                        );
+                } else {
+                    DB::connection('tbd')
+                        ->table('prod.meas_gas_prod')
+                        ->where('id', $row->id)
+                        ->update(
+                            [
+                                'gas_prod_val' => $params['value'],
+                            ]
+                        );
+                }
                 break;
         }
     }
