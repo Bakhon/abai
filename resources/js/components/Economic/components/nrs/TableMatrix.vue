@@ -69,7 +69,7 @@
 
       <vue-table-dynamic
           :params="tablePrsParams"
-          class="matrix-table bg-main1 p-4">
+          class="matrix-table bg-main1 pt-4 px-4 pb-0">
         <template :slot="`column-0`" slot-scope="{ props }">
           <div class="d-flex align-items-center w-100">
             {{ props.cellData.label }}
@@ -299,13 +299,7 @@ export default {
 
         this.data.dates.forEach((date, dateIndex) => {
           this.visibleWellKeys.forEach(key => {
-            let value = 0
-
-            key.props
-                ? key.props.forEach(prop => {
-                  value += well[prop] && well[prop][date] ? +well[prop][date] : 0
-                })
-                : value = well[key.prop] && well[key.prop][date] ? +well[key.prop][date] : ''
+            let value = this.getWellValue(well, key, date, true)
 
             totalSum[key.prop][dateIndex + 2].value += +value
 
@@ -317,7 +311,7 @@ export default {
           })
 
           this.prsKeys.forEach(key => {
-            let value = well[key.prop] && well[key.prop][date] ? +well[key.prop][date] : 0
+            let value = this.getWellValue(well, key, date)
 
             if (key.isTotal) {
               return prsSum[key.prop][dateIndex + 2].value += value
@@ -334,13 +328,7 @@ export default {
         rows.push(tableRows.uwi)
 
         this.visibleWellKeys.forEach(key => {
-          let sum = 0
-
-          key.props
-              ? key.props.forEach(prop => {
-                sum += well[prop] ? +well[prop]['sum'] : 0
-              })
-              : sum = well[key.prop] ? +well[key.prop]['sum'] : 0
+          let sum = this.getWellValue(well, key, 'sum')
 
           totalSum[key.prop][1].value += sum
 
@@ -360,15 +348,13 @@ export default {
         })
 
         this.prsKeys.forEach(key => {
-          let sum = well[key.prop] ? +well[key.prop]['sum'] : 0
+          let sum = this.getWellValue(well, key, 'sum')
 
           if (key.isTotal) {
-            return prsSum[key.prop][1].value += +sum
+            return prsSum[key.prop][1].value += sum
           }
 
-          if (!prsSum[key.prop][1].value) {
-            prsSum[key.prop][1].value = +sum
-          }
+          prsSum[key.prop][1].value = prsSum[key.prop][2].value
         })
       })
 
@@ -377,12 +363,18 @@ export default {
       })
 
       this.prsKeys.forEach(key => {
-        if (key.isTotal) {
+        if (key.isTotal || key.isDirect) {
           return prsSumRows.push(this.getTotalRow(key, prsSum))
         }
-      })
 
-      console.log(prsSum)
+        prsSum[key.prop][1].value = key.calcValue(prsSum, 1)
+
+        this.data.dates.forEach((date, dateIndex) => {
+          prsSum[key.prop][dateIndex + 2].value = key.calcValue(prsSum, dateIndex + 2)
+        })
+
+        prsSumRows.push(this.getTotalRow(key, prsSum))
+      })
 
       return {wells: rows, totalSum: totalSumRows, prsSum: prsSumRows}
     },
@@ -421,18 +413,27 @@ export default {
         {
           prop: 'cost_WR_nopayroll',
           name: this.trans('economic_reference.cost_prs_without_fot'),
+          isDirect: true
         },
         {
           prop: 'cost_WR_payroll',
+          props: ['cost_WR_payroll', 'cost_WR_nopayroll'],
           name: this.trans('economic_reference.cost_prs'),
+          isDirect: true
         },
         {
           prop: 'prs_nopayroll_expenditures',
           name: this.trans('economic_reference.prs_nopayroll_expenditures'),
+          calcValue: function (data, index) {
+            return data.prs1[index].value * data.cost_WR_nopayroll[index].value
+          },
         },
         {
           prop: 'prs_expenditures',
           name: this.trans('economic_reference.prs_expenditures'),
+          calcValue: function (data, index) {
+            return data.prs1[index].value * data.cost_WR_payroll[index].value
+          },
         },
       ]
     },
@@ -458,6 +459,24 @@ export default {
       return (+value.toFixed(1)).toLocaleString()
     },
 
+    getWellValue(well, key, date, isString = false) {
+      if (key.props) {
+        let sum = 0
+
+        key.props.forEach(prop => {
+          sum += well[prop] && well[prop][date] ? +well[prop][date] : 0
+        })
+
+        return sum
+      }
+
+      if (well[key.prop] && well[key.prop][date]) {
+        return +well[key.prop][date]
+      }
+
+      return isString ? '' : 0
+    },
+
     toggleUwi(uwi) {
       let index = this.chartUwis.findIndex(well => well === uwi)
 
@@ -476,23 +495,6 @@ export default {
         {
           prop: 'liquid',
           name: this.trans('economic_reference.liquid_production'),
-          isVisible: true,
-        },
-        {
-          prop: 'prs1',
-          name: this.trans('economic_reference.prs_count'),
-          isVisible: true,
-        },
-        {
-          prop: 'PRS_nopayroll_expenditures',
-          name: this.trans('economic_reference.prs_nopayroll_expenditures'),
-          dimension: 1000,
-          isVisible: true,
-        },
-        {
-          prop: 'PRS_expenditures',
-          name: this.trans('economic_reference.prs_expenditures'),
-          dimension: 1000,
           isVisible: true,
         },
         {
