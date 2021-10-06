@@ -719,6 +719,7 @@ body.fixed {
     .tables {
       height: 100%;
       margin: 0 0 10px;
+      overflow-x: auto;
       overflow-y: auto;
       width: 100%;
 
