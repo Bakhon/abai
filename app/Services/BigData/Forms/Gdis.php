@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
+use App\Traits\BigData\Forms\WithDocumentsUpload;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,7 @@ class Gdis extends PlainForm
 {
     use DateMoreThanValidationTrait;
     use DepthValidationTrait;
+    use WithDocumentsUpload;
 
     protected $configurationFileName = 'gdis';
 
