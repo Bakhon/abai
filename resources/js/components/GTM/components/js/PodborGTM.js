@@ -3,6 +3,7 @@ import 'vue-select/dist/vue-select.css'
 import {globalloadingMutations} from "../../../../store/helpers";
 import VueApexCharts from "vue-apexcharts";
 import {paegtmMapState} from "@store/helpers";
+import {toArray} from "html-to-image/es/util";
 
 
 export default {
@@ -77,13 +78,21 @@ export default {
                     type: 'rangeBar',
                     foreColor: '#fff'
                 },
+                stroke: {
+                  show: true,
+                  width: 1,
+                  colors: ['#808080'],
+                    curve: 'smooth',
+                    lineCap: 'butt'
+                },
                 plotOptions: {
                     bar: {
                         horizontal: false
                     }
                 },
                 dataLabels: {
-                    enabled: true
+                    enabled: true,
+                    // formatter: v => v.toFixed()
                 }
             },
             waterFallChartSeries: null,
@@ -101,6 +110,7 @@ export default {
                     },
                 },
                 colors: ["#04f689", "#fa4202", '#0253fa'],
+
                 dataLabels: {
                     enabled: false
                 },
@@ -112,6 +122,7 @@ export default {
                         tickAmount: 20,
                         min: 10,
                         max: 20,
+
                     },
                     labels: {
                         style: {
@@ -132,7 +143,7 @@ export default {
                                 fontWeight: 700,
                                 cssClass: 'apexcharts-yaxis-title',
                             },
-                        }
+                        },
                     },
                     {
                         seriesName: `${this.trans('pgno.q_liq')} ${this.trans('measurements.m3/day')}`,
@@ -174,6 +185,7 @@ export default {
             treeSettingBody: '',
             treeSettingComponent: null,
             treeChildrenComponent: null,
+            isMinimize: true
         };
     },
     computed: {
@@ -181,6 +193,7 @@ export default {
             'clickable',
         ]),
     },
+    watch: {},
     methods: {
         ...globalloadingMutations([
             'SET_LOADING'
@@ -195,7 +208,7 @@ export default {
             });
         },
         onMinimizeChart() {
-
+            this.isMinimize = !this.isMinimize;
         },
         onClickableValue() {
             const body = {
@@ -208,7 +221,7 @@ export default {
                     this.table.main_data.header = res.data.main_data.header
                     this.table.main_data.data = res.data.main_data.data
                     if (res.status === 200) {
-                        this.setNotify("Таблица пришла", "Success", "success")
+                        this.setNotify("Данные получены", "Success", "success")
                     } else {
                         this.setNotify("Что-то пошло не так", "Error", "danger")
                     }
@@ -219,7 +232,7 @@ export default {
         },
         onClickWell(v) {
             this.wellNumber = v
-            this.setNotify(`Вы нажали на скважину ${v}`, "Success", "success")
+            this.setNotify(`Выбрана скважина ${v}`, "Success", "success")
 
             this.SET_LOADING(true);
             axios.post(this.url, {action_type: 'well_name_clicked', main_data: v, distance: 500})
@@ -245,27 +258,39 @@ export default {
                         this.waterFallChartSeries = [{
                             data: [
                                 {
-                                    x: this.trans('paegtm.plan'),
-                                    y: [1, 5],
-                                    fillColor: '#ba8c1f'
+                                    x: res.data.fa_plot.labels.pbeg_oil_prod,
+                                    y: res.data.fa_plot.pbeg_oil_prod.values.map(a => parseInt(a).toFixed(0)),
+                                    fillColor: res.data.fa_plot.pbeg_oil_prod.color,
                                 }, {
-                                    x: '',
-                                    y: [4, 6],
-                                    fillColor: '#124fba'
+                                    x: res.data.fa_plot.labels.influenceWC,
+                                    y: res.data.fa_plot.influenceWC.values.map(a => parseInt(a).toFixed(0)),
+                                    fillColor: res.data.fa_plot.influenceWC.color,
                                 }, {
-                                    x: '',
-                                    y: [5, 8],
-                                    fillColor: '#124fba'
+                                    x: res.data.fa_plot.labels.influencePres,
+                                    y: res.data.fa_plot.influencePres.values.map(a => parseInt(a).toFixed(0)),
+                                    fillColor: res.data.fa_plot.influencePres.color,
                                 }, {
-                                    x: this.trans('paegtm.fact'),
-                                    y: [3, 11],
-                                    fillColor: '#029bfa'
+                                    x: res.data.fa_plot.labels.influenceLiquidPI,
+                                    y: res.data.fa_plot.influenceLiquidPI.values.map(a => parseInt(a).toFixed(0)),
+                                    fillColor: res.data.fa_plot.influenceLiquidPI.color,
+                                }, {
+                                    x: res.data.fa_plot.labels.influenceBHP,
+                                    y: res.data.fa_plot.influenceBHP.values.map(a => parseInt(a).toFixed(0)),
+                                    fillColor: res.data.fa_plot.influenceBHP.color,
+                                }, {
+                                    x: res.data.fa_plot.labels.influenceWorkDay,
+                                    y: res.data.fa_plot.influenceWorkDay.values.map(a => parseInt(a).toFixed(0)),
+                                    fillColor: res.data.fa_plot.influenceWorkDay.color,
+                                }, {
+                                    x: res.data.fa_plot.labels.pend_oil_prod,
+                                    y: res.data.fa_plot.pend_oil_prod.values.map(a => parseInt(a).toFixed(0)),
+                                    fillColor: res.data.fa_plot.pend_oil_prod.color,
                                 }
                             ]
                         }]
 
                     if (res.status === 200) {
-                        this.setNotify("Таблица пришла", "Success", "success")
+                        this.setNotify("Данные получены", "Success", "success")
                     } else {
                         this.setNotify("Что-то пошло не так", "Error", "danger")
                     }
@@ -280,7 +305,7 @@ export default {
         },
         getTreeData() {
             this.SET_LOADING(true);
-                axios.post(this.url, {action_type: 'page_initialized', main_data: "\"название страницы\""})
+            axios.post(this.url, {action_type: 'page_initialized', main_data: "\"название страницы\""})
                 .then((res) => {
                     this.dataRange = res.data.date_range_model;
                     this.treeData = res.data.finder_model.children;
@@ -300,14 +325,16 @@ export default {
                 }
             }
             this.SET_LOADING(true);
-            axios.post(this.url, {action_type: 'calc_button_pressed', date_range_model: this.dataRange, fieldName: this.fieldName,
+            axios.post(this.url, {
+                action_type: 'calc_button_pressed', date_range_model: this.dataRange, fieldName: this.fieldName,
                 finder_model: {
                     name: "root",
                     children: v
-                }})
+                }
+            })
                 .then((res) => {
                     if (res.status === 200) {
-                        this.setNotify("Скважины пришли", "Success", "success")
+                        this.setNotify("Информация о скважинах получена", "Success", "success")
                     } else {
                         this.setNotify("Что-то пошло не так", "Error", "danger")
                     }

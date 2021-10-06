@@ -11,6 +11,7 @@ use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
@@ -106,6 +107,12 @@ class EconomicNrsController extends Controller
 
         $granularity = $request->granularity;
         $granularityFormat = self::granularityFormat($granularity);
+
+        $intervalDates = self::calcIntervalDates(
+            $intervalMonthsStart,
+            $intervalMonthsEnd,
+            $granularity,
+        );
 
         $profitabilityType = $request->profitability;
         list($profitabilities, $profitless) = self::getProfitabilities($profitabilityType);
@@ -239,7 +246,7 @@ class EconomicNrsController extends Controller
                 : $builder->groupBy()->data();
         }
 
-        $dataWithProfitability = ['dt' => []];
+        $dataWithProfitability = ['dt' => $intervalDates];
 
         foreach ($profitabilities as $profitability) {
             $dataWithProfitability[$profitability] = [];
@@ -280,25 +287,17 @@ class EconomicNrsController extends Controller
         foreach ($result[self::BUILDERS['oil_production']] as &$item) {
             $date = $item['dt'];
 
-            $dataWithOilProduction['dt'][$date] = 1;
-
             $dataWithOilProduction[$item[$profitabilityType]][$date] = $item['oil'] / 1000;
 
             $dataWithLiquidProduction[$item[$profitabilityType]][$date] = self::formatProfitability($item);
         }
 
-        $dataWithOilProduction['dt'] = array_keys($dataWithOilProduction['dt']);
-
         $this->fillZeroValues($dataWithOilProduction, $profitabilities);
-
-        $dataWithLiquidProduction['dt'] = $dataWithOilProduction['dt'];
 
         $this->fillZeroValues($dataWithLiquidProduction, $profitabilities);
 
         foreach ($result[self::STATUS_ACTIVE] as &$item) {
             $date = $item['dt'];
-
-            $dataWithProfitability['dt'][$date] = 1;
 
             $dataWithProfitability[$item[$profitabilityType]][$date] = self::calcProfitabilityCount(
                 $item,
@@ -308,14 +307,10 @@ class EconomicNrsController extends Controller
             );
         }
 
-        $dataWithProfitability['dt'] = array_keys($dataWithProfitability['dt']);
-
         $this->fillZeroValues($dataWithProfitability, $profitabilities);
 
         foreach ($result[self::STATUS_PAUSE] as &$item) {
             $date = $item['dt'];
-
-            $dataWithPausedProfitability['dt'][$date] = 1;
 
             $key = $item[$profitabilityType . self::PROFITABILITY_PAUSE];
 
@@ -326,8 +321,6 @@ class EconomicNrsController extends Controller
                 $intervalMonthsEnd,
             );
         }
-
-        $dataWithPausedProfitability['dt'] = array_keys($dataWithPausedProfitability['dt']);
 
         $this->fillZeroValues($dataWithPausedProfitability, $profitabilities);
 
@@ -674,6 +667,21 @@ class EconomicNrsController extends Controller
         }
 
         return [$start, $end];
+    }
+
+    static function calcIntervalDates(Carbon $start, Carbon $end, string $granularity): array
+    {
+        $period = CarbonPeriod::create($start, "1 $granularity", $end);
+
+        $dateFormat = $granularity === Granularity::DAY ? 'Y-m-d' : 'm-Y';
+
+        $dates = [];
+
+        foreach ($period as $date) {
+            $dates[] = $date->format($dateFormat);
+        }
+
+        return $dates;
     }
 
     static function calcProfitabilityCount(

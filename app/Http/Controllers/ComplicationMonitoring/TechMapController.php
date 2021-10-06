@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\ManualGu;
+use App\Models\ComplicationMonitoring\ManualHydroCalcLong;
+use App\Models\ComplicationMonitoring\ManualHydroCalcResult;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
 use App\Models\ComplicationMonitoring\ManualWell;
 use App\Models\ComplicationMonitoring\ManualZu;
@@ -581,6 +583,21 @@ class TechMapController extends Controller
         }
 
         $pipe = $id >= 100000 ? ManualOilPipe::find($id) : OilPipe::find($id);
+
+        if ($id >= 100000) {
+            ManualHydroCalcResult::whereIn('oil_pipe_id', function($query) use ($pipe){
+                $query->select('id')
+                    ->from(with(new ManualOilPipe)->getTable())
+                    ->where('gu_id', $pipe->gu_id);
+            })->delete();
+
+            ManualHydroCalcLong::whereIn('oil_pipe_id', function($query) use ($pipe){
+                $query->select('id')
+                    ->from(with(new ManualOilPipe)->getTable())
+                    ->where('gu_id', $pipe->gu_id);
+            })->delete();
+        }
+
         PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
         $pipe->delete();
 
