@@ -87,7 +87,6 @@
                 this.$emit('createNewWel')
             },
             openNewWell(){
-                // this.$emit('openNewWell')
                 this.$emit('changePage', 'project')
                 this.module = "project"
             },
