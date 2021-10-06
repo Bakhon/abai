@@ -1794,7 +1794,7 @@
                 </div>
                 <div class="row m-0 emergency-table__header">
                   <span class="col-2 py-2">{{ trans("visualcenter.emergencyDate") }}</span>
-                  <span class="col-3 py-2">{{ trans("visualcenter.dzo") }}</span>
+                  <span class="col-3 py-2">{{ trans("visualcenter.companies") }}</span>
                   <span class="col-5 py-2">{{ trans("visualcenter.emergency") }}</span>
                   <span class="col-2 px-0 py-2">{{ trans("visualcenter.resolvingDate") }}</span>
                 </div>

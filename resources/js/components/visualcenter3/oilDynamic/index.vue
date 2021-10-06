@@ -111,6 +111,16 @@ export default {
             },
             dzoCompanies: [
                 {
+                    id: 17,
+                    ticker: 'НККМГ',
+                    name: this.trans('visualcenter.nkKmg'),
+                },
+                {
+                    id: 18,
+                    ticker: 'НККМГОП',
+                    name: this.trans('visualcenter.nkKmgOperating'),
+                },
+                {
                     id: 1,
                     ticker: 'ЭМГ',
                     name: this.trans('visualcenter.emg'),
@@ -190,17 +200,6 @@ export default {
                     ticker: 'ТШО',
                     name: this.trans('visualcenter.tsho'),
                 },
-                {
-                    id: 17,
-                    ticker: 'НККМГ',
-                    name: this.trans('visualcenter.nkKmg'),
-                },
-                {
-                    id: 18,
-                    ticker: 'НККМГОП',
-                    name: this.trans('visualcenter.nkKmgOperating'),
-                },
-
             ],
             monthes: [],
             tableData: [],
