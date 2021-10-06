@@ -39,8 +39,6 @@ export default {
 
   data() {
     return {
-      // isOpen: false,
-      // test: false,
     }
   },
   mounted(){
@@ -48,7 +46,6 @@ export default {
   },
   methods: {
     handleToggle() {
-      // this.isOpen = !this.isOpen
       this.$emit('changePage', this.content.child[0], this.content.id)
       for (let i=0; i<this.content.child.length; i++){
           this.content.child[i].checked = false
