@@ -376,8 +376,7 @@ abstract class TableForm extends BaseForm
         $wellsQuery = Well::query()
             ->with('techs', 'geo')
             ->select('id', 'uwi')
-            ->orderBy('uwi')
-            ->active(Carbon::parse($filter->date));
+            ->orderBy('uwi');
 
 
         if ($type === 'tech') {
