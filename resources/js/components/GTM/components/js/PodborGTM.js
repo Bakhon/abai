@@ -80,7 +80,7 @@ export default {
                 },
                 stroke: {
                   show: true,
-                  width: 2,
+                  width: 1,
                   colors: ['#808080'],
                     curve: 'smooth',
                     lineCap: 'butt'
