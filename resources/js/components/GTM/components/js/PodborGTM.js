@@ -78,6 +78,13 @@ export default {
                     type: 'rangeBar',
                     foreColor: '#fff'
                 },
+                stroke: {
+                  show: true,
+                  width: 2,
+                  colors: ['#808080'],
+                    curve: 'smooth',
+                    lineCap: 'butt'
+                },
                 plotOptions: {
                     bar: {
                         horizontal: false
