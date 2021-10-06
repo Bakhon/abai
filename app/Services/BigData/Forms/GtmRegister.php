@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Well;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
+use App\Traits\BigData\Forms\WithDocumentsUpload;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 class GtmRegister extends PlainForm
 {
     protected $configurationFileName = 'gtm_register';
+
+    use WithDocumentsUpload;
 
     protected function getRows(): Collection
     {
