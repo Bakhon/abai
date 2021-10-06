@@ -49,7 +49,9 @@
   'well_perf_shot' => '\\App\\Services\\BigData\\Forms\\WellPerfShot',
   'well_perf_drill_packer' => '\\App\\Services\\BigData\\Forms\\WellPerfDrillPacker',
   'well_perf_bridge_plug' => '\\App\\Services\\BigData\\Forms\\WellPerfBridgePlug',
+  'well_perf_stab' => '\\App\\Services\\BigData\\Forms\\WellPerfStab',
   'well_perf_other' => '\\App\\Services\\BigData\\Forms\\WellPerfOther',
+  'well_perf_lagging' => '\\App\\Services\\BigData\\Forms\\WellPerfLagging',
   'daily_reports_fluid_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsFluidProd',
   'production_wells_schedule' => '\\App\\Services\\BigData\\Forms\\ProductionWellsSchedule',
   'lab_research' => '\\App\\Services\\BigData\\Forms\\LabResearch',
@@ -73,4 +75,6 @@
   'underground_equipment_installation' => '\\App\\Services\\BigData\\Forms\\UndergroundEquipmentInstallation',
   'underground_equipment_disassembling' => '\\App\\Services\\BigData\\Forms\\UndergroundEquipmentDisassembling',
   'tech_mode_prod' => '\\App\\Services\\BigData\\Forms\\TechModeProd',
+  'tech_mode_inj' => '\\App\\Services\\BigData\\Forms\\TechModeInj',
+  'water_production_month' => '\\App\\Services\\BigData\\Forms\\WaterProductionMonth',
 );

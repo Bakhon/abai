@@ -78,11 +78,6 @@ export default {
             }
             let wellsWorkoverData = response.data;
 
-            if (moment().date() < 11) {
-                this.wellsWorkoverPeriodStartMonth = moment(this.wellsWorkoverPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
-                this.wellsWorkoverPeriodEndMonth = moment(this.wellsWorkoverPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
-                return await this.getWellsWorkoverByMonth();
-            }
             if (wellsWorkoverData && wellsWorkoverData.length !== this.wellsWorkoverDzo.length) {
                 let presentCompanies = wellsWorkoverData.map(a => a.dzo_name);
                 let difference = this.wellsWorkoverDzo.filter(dzoName => !presentCompanies.includes(dzoName));

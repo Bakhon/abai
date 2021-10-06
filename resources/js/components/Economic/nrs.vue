@@ -7,10 +7,10 @@
             <economic-title>
               <span>{{ res.lastMonth.cat1.count.value.toLocaleString() }}</span>
 
-              <div class="d-flex align-items-center">
+              <div class="d-flex align-items-center mt-2">
                 <percent-badge
                     :percent="-res.lastMonth.cat1.count.percent"
-                    class="flex-shrink-0"/>
+                    class="flex-shrink-0 font-size-16px line-height-18px"/>
 
                 <div class="flex-grow-1 text-blue font-size-12px line-height-20px text-right">
                   {{ trans('economic_reference.compare_to_prev_month') }}
@@ -18,7 +18,7 @@
               </div>
             </economic-title>
 
-            <subtitle class="mt-2 line-height-20px">
+            <subtitle :font-size="14" class="mt-2 line-height-18px">
               {{ trans('economic_reference.count_unprofitable_well_last_month') }}
             </subtitle>
           </economic-col>
@@ -33,12 +33,12 @@
               </span>
             </economic-title>
 
-            <subtitle class="mt-2 line-height-20px">
+            <subtitle :font-size="14" class="mt-2 line-height-18px">
               {{ trans('economic_reference.operating_profit_last_year') }}
             </subtitle>
           </economic-col>
 
-          <economic-col>
+          <economic-col :font-size="52" :line-height="54">
             <divider/>
 
             <economic-title>
@@ -50,8 +50,10 @@
                 {{ res.lastMonth.Operating_profit.sum.value[1] }}
               </span>
 
-              <div class="d-flex align-items-center">
-                <percent-badge :percent="-res.lastMonth.Operating_profit.sum.percent"/>
+              <div class="d-flex align-items-center mt-2">
+                <percent-badge
+                    :percent="-res.lastMonth.Operating_profit.sum.percent"
+                    class="font-size-16px line-height-18px"/>
 
                 <div class="flex-grow-1 text-blue font-size-12px line-height-20px text-right">
                   {{ trans('economic_reference.compare_to_prev_month') }}
@@ -59,19 +61,19 @@
               </div>
             </economic-title>
 
-            <subtitle class="mt-2 line-height-20px">
+            <subtitle :font-size="14" class="mt-2 line-height-18px">
               {{ trans('economic_reference.operating_profit_last_month') }}
             </subtitle>
           </economic-col>
 
-          <economic-col>
+          <economic-col :font-size="52" :line-height="54">
             <divider/>
 
             <economic-title>
               {{ res.lastYear.prs1.count.value.toLocaleString() }}
             </economic-title>
 
-            <subtitle class="mt-2 line-height-20px">
+            <subtitle :font-size="14" class="mt-2 line-height-18px">
               {{ trans('economic_reference.count_prs_per_nrs_last_year') }}
             </subtitle>
           </economic-col>
@@ -91,8 +93,8 @@
         <div
             v-for="(block, index) in blocks"
             :key="index"
-            class="d-flex bg-main1 text-white text-wrap p-3 mb-10px"
-            style="min-height: 220px">
+            class="d-flex bg-main1 text-white text-wrap px-3 py-2 mb-10px"
+            style="min-height: 150px">
           <div
               v-for="(subBlock, subBlockIndex) in block"
               :key="subBlock.title"
@@ -100,7 +102,7 @@
               class="col-6 d-flex flex-column position-relative">
             <divider v-if="subBlockIndex % 2 === 1"/>
 
-            <div class="font-weight-bold font-size-32px line-height-38px">
+            <div class="font-weight-bold font-size-26px">
               {{ subBlock.sum.value[0].toLocaleString() }}
             </div>
 
@@ -108,7 +110,7 @@
               {{ subBlock.sum.value[1] }}
             </div>
 
-            <div class="flex-grow-1 mt-3 font-weight-bold line-height-20px font-size-16px">
+            <div class="flex-grow-1 mt-2 font-weight-bold font-size-14px line-height-18px">
               {{ subBlock.title }}
             </div>
 
@@ -125,33 +127,33 @@
             <percent-badge
                 :percent="subBlock.reversePercent ? -subBlock.sum.percent : subBlock.sum.percent"
                 :reverse="subBlock.reverse"
-                class="font-size-22px line-height-26px"/>
+                class="font-size-16px line-height-18px"/>
           </div>
         </div>
 
         <div class="bg-main1 p-3 text-white text-wrap">
-          <div class="font-size-16px line-height-22px font-weight-bold mb-3">
+          <div class="font-size-16px line-height-14px font-weight-bold mb-3">
             {{ trans('economic_reference.select_data_display_options') }}
           </div>
 
           <select-interval
               :form="form"
-              class="mb-3"
+              class="mb-2"
               @change="getData"/>
 
           <select-granularity
               :form="form"
-              class="mb-3"
+              class="mb-2"
               @change="getData"/>
 
           <select-profitability
               :form="form"
-              class="mb-3"
+              class="mb-2"
               @change="getData"/>
 
           <select-organization
               :form="form"
-              class="mb-3"
+              class="mb-2"
               hide-label
               @change="getData"/>
 
@@ -162,7 +164,7 @@
               @change="getData"/>
 
           <button
-              class="btn btn-primary mt-4 py-2 w-100 border-0 bg-export"
+              class="btn btn-primary mt-3 py-2 w-100 border-0 bg-export"
               @click="exportData">
             {{ trans('economic_reference.export_excel') }}
           </button>
@@ -221,7 +223,7 @@ const economicRes = {
         percent: 0
       },
     },
-    MET_payments: {
+    tax_costs: {
       data: [],
       sum: {
         value: [0, ''],
@@ -301,7 +303,7 @@ export default {
       org_id: null,
       field_id: null,
       interval_start: '2020-01-01T00:00:00.000Z',
-      interval_end: '2021-09-01T00:00:00.000Z',
+      interval_end: '2021-06-30T00:00:00.000Z',
       granularity: GRANULARITY_DAY,
       profitability: PROFITABILITY_FULL,
     },
@@ -339,7 +341,7 @@ export default {
         [
           {
             title: this.trans('economic_reference.met_payments'),
-            sum: this.res.lastMonth.MET_payments.sum,
+            sum: this.res.lastMonth.tax_costs.sum,
             reversePercent: true
           },
           {
@@ -357,13 +359,13 @@ export default {
     async getData() {
       this.SET_LOADING(true);
 
+      this.res = economicRes
+
       try {
         const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-data'), {params: this.form})
 
         this.res = data
       } catch (e) {
-        this.res = economicRes
-
         console.log(e)
       }
 
@@ -416,16 +418,16 @@ export default {
   font-size: 16px;
 }
 
-.font-size-22px {
-  font-size: 22px;
-}
-
-.font-size-32px {
-  font-size: 32px;
+.font-size-26px {
+  font-size: 26px;
 }
 
 .line-height-14px {
   line-height: 14px;
+}
+
+.line-height-18px {
+  line-height: 18px;
 }
 
 .line-height-20px {

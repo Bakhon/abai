@@ -32,7 +32,7 @@
                 "code":"new_technology",
                 "type":"checkbox",
                 "title":"new_technologies",
-                "validation":"boolean"
+                "validation": "nullable|boolean"
               },
               {
                 "code": "own_forces",
@@ -45,7 +45,7 @@
                 "type":"dict",
                 "title":"contractor",
                 "dict":"companies",
-                "validation": "required_unless:own_forces,true|exists:tbd.dict.company,id"
+                "validation": "required_unless:own_forces,true"
               }
             ]
           }
@@ -98,6 +98,30 @@
                 "title": "status",
                 "dict": "well_statuses",
                 "validation": "nullable|exists:tbd.dict.well_status_type,id"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "doc",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "doc",
+                "columns": [
+                  {
+                    "code": "name_ru",
+                    "title": "scan_doc"
+                  }
+                ]
               }
             ]
           }

@@ -20,10 +20,10 @@ return array (
   'selectFilterOption2' => 'Значение 2',
   'versionBp' => 
   array (
-    'option1' => 'Осн. план на 2021-2025 г.',
-    'option2' => 'Корр. 1 на 2021-2025 г.',
-    'option3' => 'Корр. 2 на 2021-2025 г.',
-    'option4' => 'Корр. 6 на 2021-2025 г.',
+    'correction1' => 'Осн. план на 2021-2025 г.',
+    'correction2' => 'Корр. 1 на 2021-2025 г.',
+    'correction3' => 'Корр. 2 на 2021-2025 г.',
+    'correction4' => 'Корр. 6 на 2021-2025 г.',
     'name' => 'Версия БП',
   ),
   'priceBrent' => 
@@ -66,10 +66,10 @@ return array (
   'exportSalesPercentage' => 
   array (
     'name' => '% реализации на экспорт',
-    'option1' => 'По принятому плану (указать %)',
-    'option2' => 'Экспорт 30%',
-    'option3' => 'Экспорт 50%',
-    'option4' => 'Экспорт 70%',
+    'export1' => 'По принятому плану (указать %)',
+    'export2' => 'Экспорт 30%',
+    'export3' => 'Экспорт 50%',
+    'export4' => 'Экспорт 70%',
   ),
   'costAllocationBase' => 
   array (
@@ -138,6 +138,19 @@ return array (
     'value' => 'Значения',
   ),
   'economy' => 'Экономика',
+  'companyValuationPage' => 
+  array (
+    'pageName' => 'Оценка стоимости компании',
+    'revenue' => 'Выручка',
+    'extractionOfHydrocarbons' => 'Добыча УВС',
+    'mainFactors' => 'Основные показатели',
+    'sensitivityNPV' => 'Чувствительность NPV (Паук)',
+    'priceBrent' => 'Цена на нефть Brent',
+    'currency' => 'Курс $/Тенге',
+    'CashFlowDynamics' => 'Динамика денежного потока',
+    'mainTechnicalAndEconomicIndicators' => 'Основные технико-экономические показатели',
+    'value' => 'Значения',
+  ),
   'tengeTon' => 'тенге/тонна',
   'specificIncomes' => 'Удельные доходы',
 );

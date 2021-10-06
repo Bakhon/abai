@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Helpers\WorktimeHelper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -21,6 +22,43 @@ abstract class MeasurementLogForm extends TableForm
         self::WELL_STATUS_ACCUMULATION
     ];
 
+    public function getResults(): array
+    {
+        $filter = json_decode($this->request->get('filter'));
+        $params['filter']['well_category'] = $this->wellCategories;
+
+        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
+
+        $tables = $this->getFields()->pluck('table')->filter()->unique();
+        $rowData = $this->fetchRowData(
+            $tables,
+            $wells->pluck('id')->toArray(),
+            Carbon::parse($filter->date)
+        );
+
+        $wells->transform(
+            function ($item) use ($rowData) {
+                $result = [];
+
+                foreach ($this->getFields() as $field) {
+                    $fieldValue = $this->getFieldValue($field, $rowData, $item);
+                    if (!empty($fieldValue)) {
+                        $result[$field['code']] = $fieldValue;
+                    }
+                }
+
+                $result['id'] = $result['uwi']['id'];
+                return $result;
+            }
+        );
+
+        $this->addLimits($wells);
+
+        return [
+            'rows' => $wells->toArray()
+        ];
+    }
+
     protected function getCustomFieldValue(array $field, array $rowData, Model $item): ?array
     {
         switch ($field['code']) {
@@ -31,7 +69,7 @@ abstract class MeasurementLogForm extends TableForm
             case 'density_oil':
 
                 return [
-                    'value' => floatval($item->geo->first()->density_oil)
+                    'value' => $item->geo->first() ? floatval($item->geo->first()->density_oil) : null
                 ];
 
             case 'other_uwi':
@@ -51,13 +89,13 @@ abstract class MeasurementLogForm extends TableForm
     private function getWorktime(Model $well)
     {
         $filter = json_decode($this->request->get('filter'));
-        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty');
-        $startOfDay = clone ($date)->startOfDay();
-        $endOfDay = clone ($date)->endOfDay();
+        $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
+        $startOfDay = $date->startOfDay();
+        $endOfDay = $date->endOfDay();
 
         $wellStatuses = DB::connection('tbd')
             ->table('prod.well_status as s')
-            ->select('s.status', 's.dbeg', 's.dend')
+            ->select('s.status', 's.dbeg', 's.dend', 's.well')
             ->join('dict.well_status_type', 'dict.well_status_type.id', 's.status')
             ->where('dbeg', '<=', $endOfDay)
             ->where('dend', '>=', $startOfDay)
@@ -72,19 +110,15 @@ abstract class MeasurementLogForm extends TableForm
                 }
             );
 
-        $hours = 0;
-        foreach ($wellStatuses as $status) {
-            if ($status->dbeg <= $startOfDay && $status->dend >= $endOfDay) {
-                $hours += 24;
-            } elseif ($status->dbeg > $startOfDay) {
-                $hours += $status->dbeg->diffInHours($status->dend < $endOfDay ? $status->dend : $endOfDay);
-            } elseif ($status->dend < $endOfDay) {
-                $hours += $startOfDay->diffInHours($status->dend);
-            }
-        }
+        $hours = WorktimeHelper::getHoursForOneDay(
+            $wellStatuses,
+            $startOfDay,
+            $endOfDay,
+            $well->id
+        );
 
         return [
-            'value' => $hours
+            'value' => min($hours, 24)
         ];
     }
 
@@ -104,8 +138,12 @@ abstract class MeasurementLogForm extends TableForm
         ];
     }
 
-    private function getGeoBreadcrumbs($geo)
+    private function getGeoBreadcrumbs($geo = null)
     {
+        if (empty($geo)) {
+            return '';
+        }
+
         if (Cache::has('bd_geo_breadcrumb_' . $geo->id)) {
             return Cache::get('bd_geo_breadcrumb_' . $geo->id);
         }
@@ -132,13 +170,12 @@ abstract class MeasurementLogForm extends TableForm
             $data = [
                 'well' => $params['wellId'],
                 $column['column'] => $params['value'],
-                'dbeg' => $params['date']->toDateTimeString()
+                'dbeg' => $params['date']->toDateTimeString(),
+                'dend' => $params['date']->toDateTimeString(),
             ];
 
             if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $val) {
-                    $data[$key] = $val;
-                }
+                $data = array_merge($this->addDefaultData($column['additional_filter']), $data);
             }
 
             DB::connection('tbd')
@@ -154,5 +191,23 @@ abstract class MeasurementLogForm extends TableForm
                     ]
                 );
         }
+    }
+
+    private function addDefaultData($source)
+    {
+        $data = [];
+        foreach ($source as $key => $value) {
+            if (is_array($value)) {
+                $query = DB::connection('tbd')->table($value['table']);
+                foreach ($value['fields'] as $fieldName => $fieldValue) {
+                    $query->where($fieldName, $fieldValue);
+                }
+                $entity = $query->first();
+                if (!empty($entity)) {
+                    $data[$key] = $entity->id;
+                }
+            }
+        }
+        return $data;
     }
 }

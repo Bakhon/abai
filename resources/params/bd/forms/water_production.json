@@ -29,7 +29,7 @@
       "title": "water_val",
       "code": "water_val",
       "type": "calc",
-      "formula": "$water_debit$ * $worktime$",
+      "formula": "Math.round($water_debit$ * $worktime$/24 * 100)/100",
       "is_editable": false
     },
     {
