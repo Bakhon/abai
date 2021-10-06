@@ -68,6 +68,27 @@
       </div>
 
       <vue-table-dynamic
+          :params="tablePrsParams"
+          class="matrix-table bg-main1 p-4">
+        <template :slot="`column-0`" slot-scope="{ props }">
+          <div class="d-flex align-items-center w-100">
+            {{ props.cellData.label }}
+          </div>
+        </template>
+
+        <template :slot="`column-1`" slot-scope="{ props }">
+          <div> {{ props.cellData.label }}</div>
+        </template>
+
+        <template
+            v-for="(date, index) in data.dates"
+            :slot="`column-${index+2}`"
+            slot-scope="{ props }">
+          <div> {{ props.cellData.label }}</div>
+        </template>
+      </vue-table-dynamic>
+
+      <vue-table-dynamic
           :params="tableSumParams"
           class="matrix-table bg-main1 p-4">
         <template :slot="`column-0`" slot-scope="{ props }">
@@ -209,12 +230,36 @@ export default {
       }
     },
 
+    tablePrsParams() {
+      return {
+        data: [...[this.tableHeaders], ...this.tableData.prsSum],
+        whiteSpace: 'normal',
+        header: 'row',
+        border: true,
+        stripe: true,
+        pagination: false,
+        headerHeight: 80,
+        rowHeight: 50,
+        fixed: 1,
+        columnWidth: this.tableHeaders.map((col, index) => ({
+          column: index,
+          width: index > 0 ? 100 : 180
+        })),
+        highlight: {column: [0, 1]},
+        highlightedColor: '#2E50E9'
+      }
+    },
+
     tableData() {
       let rows = []
 
       let totalSumRows = []
 
       let totalSum = {}
+
+      let prsSumRows = []
+
+      let prsSum = {}
 
       this.visibleWellKeys.forEach(key => {
         totalSum[key.prop] = [
@@ -223,9 +268,20 @@ export default {
         ]
       })
 
+      this.prsKeys.forEach(key => {
+        prsSum[key.prop] = [
+          {value: key.name, label: key.name},
+          {value: 0, label: 0},
+        ]
+      })
+
       this.data.dates.forEach(date => {
         this.visibleWellKeys.forEach(key => {
           totalSum[key.prop].push({value: 0, label: 0})
+        })
+
+        this.prsKeys.forEach(key => {
+          prsSum[key.prop].push({value: 0, label: 0})
         })
       })
 
@@ -260,6 +316,18 @@ export default {
             })
           })
 
+          this.prsKeys.forEach(key => {
+            let value = well[key.prop] && well[key.prop][date] ? +well[key.prop][date] : 0
+
+            if (key.isTotal) {
+              return prsSum[key.prop][dateIndex + 2].value += value
+            }
+
+            if (!prsSum[key.prop][dateIndex + 2].value) {
+              prsSum[key.prop][dateIndex + 2].value = value
+            }
+          })
+
           tableRows.uwi.push({value: '', label: ''})
         })
 
@@ -290,22 +358,33 @@ export default {
 
           rows.push(tableRows[key.prop])
         })
+
+        this.prsKeys.forEach(key => {
+          let sum = well[key.prop] ? +well[key.prop]['sum'] : 0
+
+          if (key.isTotal) {
+            return prsSum[key.prop][1].value += +sum
+          }
+
+          if (!prsSum[key.prop][1].value) {
+            prsSum[key.prop][1].value = +sum
+          }
+        })
       })
 
       this.visibleWellKeys.forEach(key => {
-        totalSum[key.prop][1].label = this.getLabel(totalSum[key.prop][1].value, key.dimension)
-
-        this.data.dates.forEach((date, dateIndex) => {
-          totalSum[key.prop][dateIndex + 2].label = this.getLabel(
-              totalSum[key.prop][dateIndex + 2].value,
-              key.dimension
-          )
-        })
-
-        totalSumRows.push(totalSum[key.prop])
+        totalSumRows.push(this.getTotalRow(key, totalSum))
       })
 
-      return {wells: rows, totalSum: totalSumRows}
+      this.prsKeys.forEach(key => {
+        if (key.isTotal) {
+          return prsSumRows.push(this.getTotalRow(key, prsSum))
+        }
+      })
+
+      console.log(prsSum)
+
+      return {wells: rows, totalSum: totalSumRows, prsSum: prsSumRows}
     },
 
     tableHeaders() {
@@ -330,7 +409,33 @@ export default {
       return this.isVisibleOperatingPrs
           ? 'Operating_profit_variable_prs'
           : 'Operating_profit'
-    }
+    },
+
+    prsKeys() {
+      return [
+        {
+          prop: 'prs1',
+          name: this.trans('economic_reference.prs_count'),
+          isTotal: true
+        },
+        {
+          prop: 'cost_WR_nopayroll',
+          name: this.trans('economic_reference.cost_prs_without_fot'),
+        },
+        {
+          prop: 'cost_WR_payroll',
+          name: this.trans('economic_reference.cost_prs'),
+        },
+        {
+          prop: 'prs_nopayroll_expenditures',
+          name: this.trans('economic_reference.prs_nopayroll_expenditures'),
+        },
+        {
+          prop: 'prs_expenditures',
+          name: this.trans('economic_reference.prs_expenditures'),
+        },
+      ]
+    },
   },
   methods: {
     getColor(key, value) {
@@ -470,6 +575,19 @@ export default {
     initSelectedUwis() {
       this.uwis.forEach(uwi => this.selectedUwis[uwi] = false)
     },
+
+    getTotalRow(key, totalSum) {
+      totalSum[key.prop][1].label = this.getLabel(totalSum[key.prop][1].value, key.dimension)
+
+      this.data.dates.forEach((date, dateIndex) => {
+        totalSum[key.prop][dateIndex + 2].label = this.getLabel(
+            totalSum[key.prop][dateIndex + 2].value,
+            key.dimension
+        )
+      })
+
+      return totalSum[key.prop]
+    }
   }
 }
 </script>

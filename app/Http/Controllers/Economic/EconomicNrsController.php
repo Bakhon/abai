@@ -405,6 +405,8 @@ class EconomicNrsController extends Controller
         $granularity = $request->granularity;
         $granularityFormat = self::granularityFormat($granularity);
 
+        $dateFormat = $granularity === Granularity::DAY ? 'Y-m-d' : 'm-Y';
+
         $interval = self::formatInterval(
             Carbon::parse($request->interval_start),
             Carbon::parse($request->interval_end)->addDay(),
@@ -433,6 +435,11 @@ class EconomicNrsController extends Controller
             "PRS_expenditures",
         ];
 
+        $dailyKeys = [
+            "cost_WR_nopayroll",
+            "cost_WR_payroll",
+        ];
+
         $builder = $this
             ->druidClient
             ->query(self::DATA_SOURCE, $granularity)
@@ -443,6 +450,10 @@ class EconomicNrsController extends Controller
             ->select("uwi");
 
         foreach ($sumKeys as $key) {
+            $builder->sum($key);
+        }
+
+        foreach ($dailyKeys as $key) {
             $builder->sum($key);
         }
 
@@ -477,6 +488,12 @@ class EconomicNrsController extends Controller
                 }
 
                 $wellsByDates['uwis'][$uwi][$key]['sum'] += $well[$key];
+            }
+
+            $daysInMonth = Carbon::createFromFormat($dateFormat, $date)->daysInMonth;
+
+            foreach ($dailyKeys as $key) {
+                $wellsByDates['uwis'][$uwi][$key][$date] = $well[$key] / $daysInMonth;
             }
         }
 
