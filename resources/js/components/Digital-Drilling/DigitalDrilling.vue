@@ -1,7 +1,12 @@
 <template>
     <div class="row digital_drilling">
         <div class="col-sm-12 centerBlock">
-            <menuHead @changePage="changePage" @createNewWel="createNewWel" @openNewWell="openNewWell"/>
+            <menuHead
+                    @changePage="changePage"
+                    @createNewWel="createNewWel"
+                    @openNewWell="openNewWell"
+                    :home-open="homeOpen"
+            />
         </div>
         <div class="col-sm-12 mainBlock">
             <div class="mainBlock__body">
@@ -53,6 +58,7 @@
                 leftMenuItems: pages.bd,
                 newWellOpen: false,
                 oldWellOpen: false,
+                homeOpen: true,
                 pages: pages,
                 pageComponent: null,
                 mainPage: {
@@ -81,9 +87,11 @@
                         }
                     }
                     this.leftMenuItems = this.pages.bd
+                    this.homeOpen = true
                 } else if(page=='project'){
                     this.leftMenuItems = this.pages.project
                     this.pageComponent = this.pages.project[0]
+                    this.homeOpen = true
                 }
             },
             changePageComponent(component){
@@ -92,6 +100,9 @@
                     this.mainPage = component
                 }else{
                     this.pageComponent = component
+                }
+                if (component.parent == 'bd'){
+                    this.homeOpen = false
                 }
             },
             toggleLeftMenu(){

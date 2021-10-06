@@ -67,7 +67,27 @@
                         </div>
                     </div>
                     <div class="rigs__content">
-
+                        <table class="table defaultTable">
+                            <tbody>
+                                <tr>
+                                    <th>Наименование компании</th>
+                                    <th>Наименование БУ</th>
+                                    <th>Начальник буровой</th>
+                                    <th>Грузо-подъёмность кН</th>
+                                    <th>Номинальная глубина бурения</th>
+                                    <th>Продолжительность монтажа, сут</th>
+                                    <th>Продолжительность демонтажа, сут</th>
+                                    <th style="width: 100px;">-</th>
+                                    <th>-</th>
+                                </tr>
+                                <tr v-for="i in 12">
+                                    <td v-for="i in 8"></td>
+                                    <td>
+                                        <button class="characteristic" @click="openCharacteristicModal">Тех. характеристики</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -112,25 +132,272 @@
                 </div>
             </div>
         </div>
+        <div class="characteristic__modal" v-if="characteristicModal">
+            <div class="characteristic_content">
+                <div class="characteristic_header">
+                    <span>Технические характеристики ZJ-40</span>
+                    <div class="characteristic_header-close" @click="openCharacteristicModal">
+                        Закрыть
+                    </div>
+                </div>
+                <div class="characteristic_body defaultScroll">
+                    <table class="table defaultTable modalTable">
+                        <tbody>
+                            <tr>
+                                <th>Параметры</th>
+                                <th>Ед.измерения</th>
+                                <th>Значение</th>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: "DrillingRigs"
+        name: "DrillingRigs",
+        data(){
+            return{
+                characteristicModal: false
+            }
+        },
+        methods:{
+            openCharacteristicModal(){
+                if (this.characteristicModal){
+                    this.characteristicModal = false
+                } else{
+                    document.body.overflow = 'hidden'
+                    this.characteristicModal = true
+                }
+            }
+        }
     }
 </script>
 
 <style scoped>
+    .characteristic__modal{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: 20000;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    .characteristic_content{
+        max-width: 600px;
+        margin: 60px auto;
+        height: 80vh;
+        background: #272953;
+        box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.25);
+        border-radius: 10px;
+        padding: 15px;
+    }
+    .characteristic_content .characteristic_body{
+        margin-top: 15px;
+        height: calc(100% - 40px);
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+    .characteristic_header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .characteristic_header span{
+        font-family: Harmonia Sans Pro Cyr;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 19px;
+
+        color: #FFFFFF;
+    }
+    .characteristic_header-close{
+        background: #656A8A;
+        border-radius: 10px;
+        padding:0 15px;
+        font-weight: bold;
+        font-size: 16px;
+        height: 26px;
+        cursor: pointer;
+    }
+
     .ml-10{
         padding: 0 10px 0 18px!important;
     }
     .rigs__content{
         background-color: #272953;
         width: 100%;
-        height: calc(100% - 110px);
+        height: calc(100% - 60px);
         padding: 0 4px 0;
         position: relative;
         overflow: hidden;
+    }
+    .modalTable td{
+        padding: 15px!important;
+    }
+    td{
+        padding: 5px!important;
+    }
+    .characteristic{
+        background: #40467E;
+        border: 0.5px solid #454FA1;
+        box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
+        border-radius: 10px;
+        padding: 5px;
     }
 </style>

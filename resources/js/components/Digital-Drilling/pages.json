@@ -8,7 +8,8 @@
         "name": "main-table",
         "template": "<passport></passport>"
       },
-      "accordion": false
+      "accordion": false,
+      "parent": "bd"
     },
     {
       "name": "digital_drilling.open_hole_logging",
@@ -18,7 +19,8 @@
         "name": "main-table",
         "template": "<gis></gis>"
       },
-      "accordion": false
+      "accordion": false,
+      "parent": "bd"
     },
     {
       "name": "digital_drilling.survey",
@@ -28,7 +30,8 @@
         "name": "main-table",
         "template": "<inclino></inclino>"
       },
-      "accordion": false
+      "accordion": false,
+      "parent": "bd"
     },
     {
       "name": "digital_drilling.well_design_menu",
@@ -39,6 +42,7 @@
         "template": "<structure></structure>"
       },
       "accordion": true,
+      "parent": "bd",
       "child": [
         {
           "name": "digital_drilling.project_data.tabular_data",
@@ -47,7 +51,8 @@
           "component": {
             "name": "main-table",
             "template": "<structure></structure>"
-          }
+          },
+          "parent": "bd"
         },
         {
           "name": "digital_drilling.project_data.visualization",
@@ -56,7 +61,8 @@
           "component": {
             "name": "main-table",
             "template": "<structure-graph></structure-graph>"
-          }
+          },
+          "parent": "bd"
         }
       ]
     },
@@ -69,6 +75,7 @@
         "template": "<technical-task></technical-task>"
       },
       "accordion": true,
+      "parent": "bd",
       "child": [
         {
           "name":  "digital_drilling.project_data.technical_task",
@@ -77,7 +84,8 @@
           "component": {
             "name": "main-table",
             "template": "<technical-task></technical-task>"
-          }
+          },
+          "parent": "bd"
         },
         {
           "name": "digital_drilling.project_data.geology",
@@ -86,7 +94,8 @@
           "component": {
             "name": "main-table",
             "template": "<geology></geology>"
-          }
+          },
+          "parent": "bd"
         },
         {
           "name": "digital_drilling.project_data.well_design",
@@ -95,7 +104,8 @@
           "component": {
             "name": "main-table",
             "template": "<well-design></well-design>"
-          }
+          },
+          "parent": "bd"
         },
         {
           "name": "digital_drilling.project_data.barrel_profile",
@@ -104,7 +114,8 @@
           "component": {
             "name": "main-table",
             "template": "<barrel-profile></barrel-profile>"
-          }
+          },
+          "parent": "bd"
         },
         {
           "name": "digital_drilling.project_data.drilling_fluids",
@@ -113,7 +124,8 @@
           "component": {
             "name": "main-table",
             "template": "<pd-drilling-fluids></pd-drilling-fluids>"
-          }
+          },
+          "parent": "bd"
         },
         {
           "name": "digital_drilling.project_data.well_casing",
@@ -122,7 +134,8 @@
           "component": {
             "name": "main-table",
             "template": "<well-casing></well-casing>"
-          }
+          },
+          "parent": "bd"
         }
       ]
     },
@@ -134,7 +147,8 @@
         "name": "main-table",
         "template": "<complications></complications>"
       },
-      "accordion": false
+      "accordion": false,
+      "parent": "bd"
     },
     {
       "name": "digital_drilling.drilling_rigs",
@@ -144,7 +158,8 @@
         "name": "main-table",
         "template": "<drilling-rigs></drilling-rigs>"
       },
-      "accordion": false
+      "accordion": false,
+      "parent": "bd"
     }
   ],
   "project": [
@@ -156,7 +171,8 @@
         "name": "main-table",
         "template": "<project></project>"
       },
-      "accordion": false
+      "accordion": false,
+      "parent": "project"
     },
     {
       "name": "digital_drilling.design_calculation",
@@ -166,7 +182,8 @@
         "name": "main-table",
         "template": "<structural-analysis></structural-analysis>"
       },
-      "accordion": false
+      "accordion": false,
+      "parent": "project"
     },
     {
       "name": "digital_drilling.drilling_mud",
@@ -177,6 +194,7 @@
         "template": "<drilling-fluids></drilling-fluids>"
       },
       "accordion": true,
+      "parent": "project",
       "child": [
         {
           "name":  "digital_drilling.project_data.geological_data",
@@ -185,7 +203,8 @@
             "name": "main-table",
             "template": "<rasters></rasters>"
           },
-          "checked": null
+          "checked": null,
+          "parent": "project"
         },
         {
           "name": "digital_drilling.project_data.BR_parameters",
@@ -194,7 +213,8 @@
             "name": "main-table",
             "template": "<rasters-params></rasters-params>"
           },
-          "checked": false
+          "checked": false,
+          "parent": "project"
         },
         {
           "name": "digital_drilling.project_data.BR_component",
@@ -203,7 +223,8 @@
             "name": "main-table",
             "template": "<rasters-component></rasters-component>"
           },
-          "checked": false
+          "checked": false,
+          "parent": "project"
         }
       ]
     },
@@ -214,7 +235,8 @@
       "component": {
         "name": "main-table",
         "template": "<well-deepening></well-deepening>"
-      }
+      },
+      "parent": "project"
     },
     {
       "name": "digital_drilling.cementing_jobs",
@@ -223,7 +245,8 @@
       "component": {
         "name": "main-table",
         "template": "<well-fastening></well-fastening>"
-      }
+      },
+      "parent": "project"
     }
   ],
   "online": [

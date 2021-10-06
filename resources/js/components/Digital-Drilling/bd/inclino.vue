@@ -123,13 +123,26 @@
                     chart: {
                         height: 500,
                         type: 'line',
-                        zoom: {
-                            enabled: false
-                        },
                         background: '#2B2E5E',
                         toolbar: {
-                            show: false,
+                            show: true,
                         },
+                        zoom: {
+                            enabled: true,
+                            type: 'x',
+                            autoScaleYaxis: false,
+                            zoomedArea: {
+                                fill: {
+                                    color: '#90CAF9',
+                                    opacity: 0.4
+                                },
+                                stroke: {
+                                    color: '#0D47A1',
+                                    opacity: 0.4,
+                                    width: 1
+                                }
+                            }
+                        }
                     },
                     dataLabels: {
                         enabled: false
@@ -178,7 +191,6 @@
                         },
                     },
                     xaxis: {
-                        // categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
                         labels: {
                             style: {
                                 colors: '#FFFFFF'
@@ -207,13 +219,27 @@
                     chart: {
                         height: 500,
                         type: 'line',
+                        toolbar: {
+                            show: true,
+                        },
                         zoom: {
-                            enabled: false
+                            enabled: true,
+                            type: 'x',
+                            autoScaleYaxis: true,
+                            zoomedArea: {
+                                fill: {
+                                    color: '#90CAF9',
+                                    opacity: 0.4
+                                },
+                                stroke: {
+                                    color: '#0D47A1',
+                                    opacity: 0.4,
+                                    width: 1
+                                }
+                            }
                         },
                         background: '#2B2E5E',
-                        toolbar: {
-                            show: false,
-                        },
+
                     },
                     dataLabels: {
                         enabled: false
@@ -262,7 +288,6 @@
                         },
                     },
                     xaxis: {
-                        // categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
                         labels: {
                             style: {
                                 colors: '#FFFFFF'
@@ -419,8 +444,8 @@
                 let coordinate = {}
                 for (let i=0; i<this.inclino.length; i++) {
                     coordinate ={
-                        x: this.inclino[i].E_W,
-                        y: this.inclino[i].N_S
+                        x: this.inclino[i].N_S,
+                        y: this.inclino[i].E_W
                     }
                     coordinates.push(coordinate)
                 }

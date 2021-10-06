@@ -11,16 +11,8 @@ class BDController extends Controller
     {
         $this->middleware('can:digitalDrilling view main')
             ->only([
-//                'index',
-                'info',
-                'passport',
-                'gis',
-                'structure',
-                'structureGraph',
-                'inclino',
-                'inclinoGraph',
-                'projectData',
-//                'home'
+                'index',
+                'home'
             ]);
     }
 
@@ -32,45 +24,5 @@ class BDController extends Controller
     public function index()
     {
         return view('digital_drilling.digital-drilling');
-    }
-
-    public function info()
-    {
-        return view('digital_drilling.bd.info');
-    }
-
-    public function passport()
-    {
-        return view('digital_drilling.bd.passport');
-    }
-
-    public function gis()
-    {
-        return view('digital_drilling.bd.gis');
-    }
-
-    public function structure()
-    {
-        return view('digital_drilling.bd.structure');
-    }
-
-    public function structureGraph()
-    {
-        return view('digital_drilling.bd.structure-graph');
-    }
-
-    public function inclino()
-    {
-        return view('digital_drilling.bd.inclino');
-    }
-
-    public function inclinoGraph()
-    {
-        return view('digital_drilling.bd.inclino-graph');
-    }
-
-    public function projectData()
-    {
-        return view('digital_drilling.bd.project-data');
     }
 }

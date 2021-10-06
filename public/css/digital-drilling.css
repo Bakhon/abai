@@ -53,25 +53,26 @@
     transform: translate(0, -50%);
 }
 .digital_drilling .controlBlock .block .dropdown button.main-btn.active{
+    background: #2E50E9;
+}
+.digital_drilling .controlBlock .block .dropdown button.main-btn.open{
     padding-left: 52px;
 }
 .digital_drilling .controlBlock .block .dropdown button.main-btn i {
     display: none;
 }
-.digital_drilling .controlBlock .block .dropdown button.main-btn.active i {
+.digital_drilling .controlBlock .block .dropdown button.main-btn.open i {
     display: block;
     position: absolute;
     top: 50%;
     left: 22px;
 
 }
-.digital_drilling .controlBlock .block .dropdown button.main-btn.active i img{
+.digital_drilling .controlBlock .block .dropdown button.main-btn.open i img{
     height: 12px;
     width: 6px;
 }
-.digital_drilling .controlBlock .block .dropdown.active button {
-    background: #2E50E9;
-}
+
 .digital_drilling .controlBlock .block .dropdown .dropdown-menu {
     width: 98%;
     background: #333975;
@@ -748,6 +749,9 @@ input.rangeInput {
     height: 40px;
     width: calc(100% - 44px);
     padding-left: 20px;
+}
+.project-btn.active .btn-name{
+    background: #2E50E9;
 }
 .newWell{
     position: fixed;

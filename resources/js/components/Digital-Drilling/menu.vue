@@ -2,9 +2,9 @@
     <div class="controlBlock d-flex">
 
         <div class="block">
-            <div class="dropdown active">
-                <button type="button" class="btn btn-primary main-btn"
-                        :class="{active: !homeOpen}"
+            <div class="dropdown">
+                <button type="button" class="btn main-btn"
+                        :class="{active: module=='home', open: !homeOpen}"
                         @click="openHome"
                 >
                     <i><img src="/img/digital-drilling/left-arrow.svg" alt=""></i>
@@ -14,7 +14,9 @@
         </div>
         <div class="block">
             <div class="dropdown">
-                <button type="button" class="dropdown-toggle project-btn" data-toggle="dropdown">
+                <button type="button" class="dropdown-toggle project-btn" data-toggle="dropdown"
+                        :class="{active: module=='project'}"
+                >
                     <div class="btn-name">
                         <img src="/img/digital-drilling/menu8.svg" alt="">{{ trans('digital_drilling.designing') }}
                     </div>
@@ -66,11 +68,11 @@
 
     export default {
         name: "menuHead",
+        props: ['homeOpen'],
         data(){
             return{
                 pages: pages,
-                homeOpen: true,
-
+                module: 'home'
             }
         },
         methods:{
@@ -78,8 +80,8 @@
                 this.$emit('changePage', page)
             },
             openHome(){
-                this.homeOpen = !this.homeOpen
                 this.$emit('changePage', 'home')
+                this.module = "home"
             },
             createNewWell(){
                 this.$emit('createNewWel')
@@ -87,6 +89,7 @@
             openNewWell(){
                 // this.$emit('openNewWell')
                 this.$emit('changePage', 'project')
+                this.module = "project"
             },
         },
     }

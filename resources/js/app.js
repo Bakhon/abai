@@ -225,13 +225,10 @@ Vue.component('visual-center-daily-report', require('./components/visualcenter3/
 Vue.component('visual-center-daily-approve', require('./components/visualcenter3/importForm/dailyApprove/index.vue').default);
 Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/index.vue').default);
 
-Vue.component('digital-drilling', require('./components/DigitalDrilling/digital-drilling').default);
-Vue.component('digital-drilling-new', require('./components/Digital-Drilling/DigitalDrilling').default);
-Vue.component('digital-drilling-menu', require('./components/DigitalDrilling/menu').default);
-Vue.component('window-head', require('./components/DigitalDrilling/WindowHead').default);
+Vue.component('digital-drilling', require('./components/Digital-Drilling/DigitalDrilling').default);
 
-Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
-Vue.component('import-daily-raport', require('./components/DigitalDrilling/ImportDailyRaport').default);
+Vue.component('daily-raport', require('./components/Digital-Drilling/DailyRaport').default);
+Vue.component('import-daily-raport', require('./components/Digital-Drilling/ImportDailyRaport').default);
 
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 
