@@ -43,6 +43,13 @@ class GtmDeclineRateController extends Controller
     {
         $validated = $request->validated();
 
+        $org = Org::find($validated['org_id']);
+
+        if ($org) {
+            $validated['org_name'] = $org->name_ru;
+            $validated['org_name_short'] = $org->name_short_ru;
+        }
+
         $validated['date'] = Carbon::create($validated['date'], 1, 1);
 
         GtmDeclineRates::create($validated);

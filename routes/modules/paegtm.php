@@ -24,12 +24,5 @@ Route::group(
                 });
             }
         );
-
-        Route::group(
-            ['prefix' => 'api/paegtm'],
-            function () {
-                Route::get('gtm-decline-rates/{dzo}/year/{year?}', 'Api\Paegtm\EcoRefs\GtmDeclineRatesController@index');
-            }
-        );
     }
 );

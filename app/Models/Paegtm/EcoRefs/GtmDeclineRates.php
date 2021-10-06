@@ -4,17 +4,17 @@ namespace App\Models\Paegtm\EcoRefs;
 
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Org;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\TBDModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class GtmDeclineRates extends Model
+class GtmDeclineRates extends TBDModel
 {
-    protected $table = 'paegtm_gtm_decline_rates';
+    protected $table = 'paegtm.gtm_decline_rates';
 
     protected $fillable = [
         'org_id',
-        'dzo_name',
-        'dzo_name_short',
+        'org_name',
+        'org_name_short',
         'geo_id',
         'oilfield',
         'date',
@@ -51,6 +51,6 @@ class GtmDeclineRates extends Model
      */
     public function geo()
     {
-        return $this->belongsTo(Geo::class, 'org_id');
+        return $this->belongsTo(Geo::class, 'geo_id');
     }
 }
