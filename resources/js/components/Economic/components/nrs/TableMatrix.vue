@@ -35,6 +35,17 @@
           </label>
         </div>
 
+        <div class="form-check mr-2">
+          <input v-model="isVisibleOperatingPrs"
+                 id="visible_operating_profit"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_operating_profit"
+                 class="form-check-label text-blue">
+            {{ trans('economic_reference.v2') }}
+          </label>
+        </div>
+
         <button class="btn btn-primary ml-auto">
           {{ trans('economic_reference.export_excel') }}
         </button>
@@ -55,27 +66,6 @@
           </label>
         </div>
       </div>
-
-      <vue-table-dynamic
-          :params="tablePrsParams"
-          class="matrix-table bg-main1 pt-4 px-4 pb-0">
-        <template :slot="`column-0`" slot-scope="{ props }">
-          <div class="d-flex align-items-center w-100">
-            {{ props.cellData.label }}
-          </div>
-        </template>
-
-        <template :slot="`column-1`" slot-scope="{ props }">
-          <div> {{ props.cellData.label }}</div>
-        </template>
-
-        <template
-            v-for="(date, index) in data.dates"
-            :slot="`column-${index+2}`"
-            slot-scope="{ props }">
-          <div> {{ props.cellData.label }}</div>
-        </template>
-      </vue-table-dynamic>
 
       <vue-table-dynamic
           :params="tableSumParams"
@@ -162,6 +152,7 @@ export default {
     isVisibleWells: false,
     isVisibleProfitable: true,
     isVisibleProfitless: true,
+    isVisibleOperatingPrs: false
   }),
   created() {
     this.initWellKeys()
@@ -171,8 +162,8 @@ export default {
   computed: {
     uwis() {
       return Object.keys(this.data.uwis).filter(uwi => {
-        return this.isVisibleProfitable && this.data.uwis[uwi].Operating_profit.sum > 0
-            || this.isVisibleProfitless && this.data.uwis[uwi].Operating_profit.sum <= 0
+        return this.isVisibleProfitable && this.data.uwis[uwi][this.operatingProfitKey].sum > 0
+            || this.isVisibleProfitless && this.data.uwis[uwi][this.operatingProfitKey].sum <= 0
       })
     },
 
@@ -218,36 +209,12 @@ export default {
       }
     },
 
-    tablePrsParams() {
-      return {
-        data: [...[this.tableHeaders], ...this.tableData.totalPrs],
-        whiteSpace: 'normal',
-        header: 'row',
-        border: true,
-        stripe: true,
-        pagination: false,
-        headerHeight: 80,
-        rowHeight: 50,
-        fixed: 1,
-        columnWidth: this.tableHeaders.map((col, index) => ({
-          column: index,
-          width: index > 0 ? 100 : 180
-        })),
-        highlight: {column: [0, 1]},
-        highlightedColor: '#2E50E9'
-      }
-    },
-
     tableData() {
       let rows = []
 
       let totalSumRows = []
 
       let totalSum = {}
-
-      let totalPrsRows = []
-
-      let totalPrs = {}
 
       this.visibleWellKeys.forEach(key => {
         totalSum[key.prop] = [
@@ -256,20 +223,9 @@ export default {
         ]
       })
 
-      this.prsKeys.forEach(key => {
-        totalPrs[key.prop] = [
-          {value: key.name, label: key.name},
-          {value: 0, label: 0},
-        ]
-      })
-
       this.data.dates.forEach(date => {
         this.visibleWellKeys.forEach(key => {
           totalSum[key.prop].push({value: 0, label: 0})
-        })
-
-        this.prsKeys.forEach(key => {
-          totalPrs[key.prop].push({value: 0, label: 0})
         })
       })
 
@@ -304,10 +260,6 @@ export default {
             })
           })
 
-          this.prsKeys.forEach(key => {
-            totalPrs[key.prop][dateIndex + 2].value += +key.value(well, date)
-          })
-
           tableRows.uwi.push({value: '', label: ''})
         })
 
@@ -338,10 +290,6 @@ export default {
 
           rows.push(tableRows[key.prop])
         })
-
-        this.prsKeys.forEach(key => {
-          totalPrs[key.prop][1].value += key.value(well, 'sum')
-        })
       })
 
       this.visibleWellKeys.forEach(key => {
@@ -357,20 +305,7 @@ export default {
         totalSumRows.push(totalSum[key.prop])
       })
 
-      this.prsKeys.forEach(key => {
-        totalPrs[key.prop][1].label = this.getLabel(totalPrs[key.prop][1].value, key.dimension)
-
-        this.data.dates.forEach((date, dateIndex) => {
-          totalPrs[key.prop][dateIndex + 2].label = this.getLabel(
-              totalPrs[key.prop][dateIndex + 2].value,
-              key.dimension
-          )
-        })
-
-        totalPrsRows.push(totalPrs[key.prop])
-      })
-
-      return {wells: rows, totalSum: totalSumRows, totalPrs: totalPrsRows}
+      return {wells: rows, totalSum: totalSumRows}
     },
 
     tableHeaders() {
@@ -391,48 +326,10 @@ export default {
       return this.wellKeys.filter(key => key.isVisible)
     },
 
-    prsKeys() {
-      return [
-        {
-          prop: 'prs1',
-          name: this.trans('economic_reference.prs_count'),
-          value: (well, date) => well.prs1 && well.prs1[date]
-              ? well.prs1[date]
-              : 0
-        },
-        {
-          prop: 'cost_WR_nopayroll',
-          name: this.trans('economic_reference.cost_prs_without_fot'),
-          dimension: 1000,
-          value: (well, date) => well.cost_WR_nopayroll && well.cost_WR_nopayroll[date]
-              ? well.cost_WR_nopayroll[date]
-              : 0,
-        },
-        {
-          prop: 'cost_prs',
-          name: this.trans('economic_reference.cost_prs'),
-          dimension: 1000,
-          value: (well, date) => well.cost_WR_nopayroll && well.cost_WR_nopayroll[date]
-              ? well.cost_WR_nopayroll[date] + well.cost_WR_payroll[date]
-              : 0,
-        },
-        {
-          prop: 'prs_nopayroll_expenditures',
-          name: this.trans('economic_reference.prs_nopayroll_expenditures'),
-          dimension: 1000,
-          value: (well, date) => well.prs1 && well.prs1[date]
-              ? well.prs1[date] * well.cost_WR_nopayroll[date]
-              : 0,
-        },
-        {
-          prop: 'prs_expenditures',
-          name: this.trans('economic_reference.prs_expenditures'),
-          dimension: 1000,
-          value: (well, date) => well.prs1 && well.prs1[date]
-              ? well.prs1[date] * (well.cost_WR_payroll[date] + well.cost_WR_nopayroll[date])
-              : 0,
-        },
-      ]
+    operatingProfitKey() {
+      return this.isVisibleOperatingPrs
+          ? 'Operating_profit_variable_prs'
+          : 'Operating_profit'
     },
   },
   methods: {
@@ -474,6 +371,23 @@ export default {
         {
           prop: 'liquid',
           name: this.trans('economic_reference.liquid_production'),
+          isVisible: true,
+        },
+        {
+          prop: 'prs1',
+          name: this.trans('economic_reference.prs_count'),
+          isVisible: true,
+        },
+        {
+          prop: 'PRS_nopayroll_expenditures',
+          name: this.trans('economic_reference.prs_nopayroll_expenditures'),
+          dimension: 1000,
+          isVisible: true,
+        },
+        {
+          prop: 'PRS_expenditures',
+          name: this.trans('economic_reference.prs_expenditures'),
+          dimension: 1000,
           isVisible: true,
         },
         {
@@ -528,12 +442,6 @@ export default {
         {
           prop: 'Fixed_expenditures',
           name: this.trans('economic_reference.fixed_expenditures'),
-          dimension: 1000,
-          isVisible: false,
-        },
-        {
-          prop: 'PRS_expenditures',
-          name: this.trans('economic_reference.prs_expenditures'),
           dimension: 1000,
           isVisible: false,
         },
