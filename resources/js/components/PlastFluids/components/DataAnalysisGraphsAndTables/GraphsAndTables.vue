@@ -1,7 +1,14 @@
 <template>
   <div class="data-analysis-graphs-and-tables">
     <template v-if="currentSubsoilField[0] && currentSubsoilField[0].field_id">
-      <div class="graph-holder">
+      <div
+        class="graph-holder"
+        :style="
+          tableState === 'hidden'
+            ? 'height: calc(100% - 38px);'
+            : 'height: calc(100% - 360px);'
+        "
+      >
         <div class="heading-title">
           <div>
             <img src="/img/PlastFluids/graphs.svg" />
@@ -13,6 +20,11 @@
             v-for="(graph, key) in graphData"
             :key="key"
             class="content-child"
+            :style="
+              Object.keys(graphData).length > 2
+                ? 'height: calc(50% - 3px);'
+                : 'height: calc(100% - 6px);'
+            "
           >
             <ScatterGraph
               :series="graph"
@@ -46,41 +58,59 @@ export default {
     DataAnalysisDataTable,
     SmallCatLoader,
   },
-  data() {
-    return {
-      graphType: "ps_bs_ds_ms",
-    };
-  },
   computed: {
     ...mapState("plastFluids", [
       "currentSubsoil",
       "currentSubsoilField",
       "currentSubsoilHorizon",
     ]),
-    ...mapState("plastFluidsLocal", ["tableFields", "tableRows", "loading"]),
+    ...mapState("plastFluidsLocal", [
+      "tableFields",
+      "tableRows",
+      "tableState",
+      "loading",
+      "graphType",
+    ]),
     graphData() {
-      let allGraphData = {
-        ps: { name: "Данные", data: [], type: "scatter" },
-        bs: { name: "Данные", data: [], type: "scatter" },
-        ds: { name: "Данные", data: [], type: "scatter" },
-        ms: { name: "Данные", data: [], type: "scatter" },
-      };
+      const zeroX = ["Ps", "Bs", "Ds", "Ms"];
+      const zeroY = ["Ps", "Rs"];
+      const keys = Object.keys(this.tableRows[0] ?? "");
+      let allGraphData = {};
+      for (let i = 0; i < keys.length; i++) {
+        if (keys[i] === "key" || keys[i] === "table_data") {
+          continue;
+        }
+        allGraphData[keys[i]] = {};
+        allGraphData[keys[i]].name = "Данные";
+        allGraphData[keys[i]].data = [];
+        allGraphData[keys[i]].type = "scatter";
+        allGraphData[keys[i]].config = {
+          minX: zeroX.includes(keys[i]) ? 0 : "auto",
+          maxX: "auto",
+          minY: zeroY.includes(keys[i]) ? 0 : keys[i] === "Bs" ? 1 : "auto",
+          maxY: "auto",
+        };
+      }
+      const fKeys = Object.keys(allGraphData);
       this.tableRows.forEach((row) => {
-        allGraphData.bs.data.push(row.Bs);
-        allGraphData.ms.data.push(row.Ms);
-        allGraphData.ps.data.push(row.Ps);
-        allGraphData.ds.data.push(row.Ds);
+        for (let i = 0; i < fKeys.length; i++) {
+          allGraphData[fKeys[i]].data.push(row[fKeys[i]]);
+        }
       });
       return allGraphData;
     },
     isDataReady() {
-      return !Object.keys(this.graphData).some(
-        (key) => !this.graphData[key].data.length
+      return (
+        Object.keys(this.graphData).length &&
+        !Object.keys(this.graphData).some(
+          (key) => !this.graphData[key].data.length
+        )
       );
     },
   },
   methods: {
     ...mapActions("plastFluidsLocal", ["handleTableGraphData"]),
+    setConfig() {},
     getMaxMin(arrayData) {
       const max = Math.max(...arrayData);
       const min = Math.min(...arrayData);
@@ -91,7 +121,6 @@ export default {
     if (this.currentSubsoilField[0]?.field_id) {
       this.handleTableGraphData({
         field_id: this.currentSubsoilField[0].field_id,
-        graph_type: this.graphType,
       });
     }
   },
@@ -116,7 +145,6 @@ export default {
 .graph-holder {
   display: flex;
   flex-flow: column;
-  flex: 2 1 auto;
 }
 
 .heading-title {
@@ -152,11 +180,14 @@ export default {
   height: calc(100% - 38px);
   border: 6px solid #272953;
   padding: 4px;
+  overflow: hidden;
 }
 
 .content-child {
-  min-height: 180px;
   width: calc(50% - 3px);
+  overflow: auto;
+  padding: 0;
+  min-height: 0;
 }
 
 .content-child:nth-of-type(1),
