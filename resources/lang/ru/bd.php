@@ -30,6 +30,7 @@ return [
     'select_date' => 'Укажите дату',
     'nothing_found' => 'Ничего не найдено',
     'actions' => 'Действия',
+    'documents' => 'Документы',
     'forms' => [
         'fluid_production' => [
             'title' => 'Журнал замеров - Добыча жидкости',
@@ -160,6 +161,7 @@ return [
             'well_previous_category' => 'Категория до выбранной даты',
             'well_current_status' => 'Новое состояние',
             'status' => 'Состояние',
+            'doc' => 'Документы',
             'table' => 'Документы',
             'doc_date' => 'Дата документа',
             'files' => 'Загружаемые файлы',

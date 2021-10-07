@@ -442,7 +442,7 @@ export default {
           this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
           if (data.geo[Object.keys(data.geo).length - 1] != null) {
-            this.wellGeoFields = data.geo[Object.keys(data.geo).length - 1]
+            this.wellGeoFields = data.geo[Object.keys(data.geo).length - 3]
           }
           if (data.geo[0] != null) {
             this.wellGeo = data.geo[0]
@@ -484,7 +484,7 @@ export default {
             }
             if (this.tableData[i].neigbor_2 != null) {
               if(this.tableData[i].neigbor_1 != null) {
-                this.tableData[i].data += ' - '
+                this.tableData[i].data += ' / '
               }
               this.tableData[i].data += this.tableData[i].neigbor_2
             }
@@ -530,7 +530,7 @@ export default {
     },
     getFormatedDate(data) {
       if (data != null && data != '') {
-        return moment(data).format('DD/MM/YYYY')
+        return moment(data).format('DD.MM.YYYY')
       }
     },
     changeColumnsVisible(value) {
@@ -811,7 +811,7 @@ export default {
           'method': 'neighbors',
           'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.liquid : null,
           'neigbor_2': this.well.measLiq.liquid.toFixed(1),
-          'name': 'Дебит жидкости, м3/сут (режим-факт)',
+          'name': 'Дебит жидкости, м3/сут (режим/факт)',
           'data': ''
         },
         {
@@ -819,7 +819,7 @@ export default {
           'method': 'neighbors',
           'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.wcut : null,
           'neigbor_2': this.well.measWaterCut.water_cut,
-          'name': 'Обводненность, % (режим-факт)',
+          'name': 'Обводненность, % (режим/факт)',
           'data': ''
         },
         {
@@ -827,7 +827,7 @@ export default {
           'method': 'neighbors',
           'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.oil : null,
           'neigbor_2': this.well.techModeProdOil != null && this.well.measWaterCut != null ? (this.well.techModeProdOil.liquid * (1 - this.well.measWaterCut.water_cut / 100) * 0.86).toFixed(1) : null,
-          'name': 'Дебит нефти, т/сут (режим-факт)',
+          'name': 'Дебит нефти, т/сут (режим/факт)',
           'data': ''
         },
         {
@@ -932,7 +932,7 @@ export default {
           'description': null,
           'method': 'neighbors',
           'neigbor_1': this.well.gdisCurrentValueBhp.value_double,
-          'neigbor_2': this.well.gdisCurrentValueBhp.meas_date,
+          'neigbor_2': "(" + this.getFormatedDate(this.well.gdisCurrentValueBhp.meas_date) + ")",
           'name': 'Рзаб/(дата замера)',
           'data': ''
         },

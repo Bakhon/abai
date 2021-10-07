@@ -27,11 +27,11 @@ class Gdis extends PlainForm
         }
         if (!$this->isValidDate(
             $this->request->get('well'),
-            $this->request->get('research_date'),
+            $this->request->get('dbeg'),
             'dict.well',
             'drill_start_date'
         )) {
-            $errors['research_date'] = trans('bd.validation.date');
+            $errors['dbeg'] = trans('bd.validation.date');
         }
 
         return $errors;
@@ -44,7 +44,7 @@ class Gdis extends PlainForm
         if (!empty($rows)) {
             $documents = $this->getAttachedDocuments($rows->pluck('id')->toArray());
             $rows = $rows->map(function ($row) use ($documents) {
-                if ($documents->get($row->id)->isNotEmpty()) {
+                if ($documents->get($row->id)) {
                     $row->documents = $documents->get($row->id)->toArray();
                 }
                 return $row;

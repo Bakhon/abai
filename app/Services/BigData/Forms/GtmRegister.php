@@ -33,16 +33,18 @@ class GtmRegister extends PlainForm
 
     protected function submitForm(): array
     {
-        $formFields = $this->request->except('well_status_type', 'own_forces');
+        $formFields = $this->request->except('well_status_type', 'own_forces', 'documents');
 
         $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
         if (!empty($formFields['id'])) {
-            $id = $dbQuery->where('id', $formFields['id'])->update($formFields);
+            $dbQuery->where('id', $formFields['id'])->update($formFields);
+            $id = $formFields['id'];
         } else {
             $id = $dbQuery->insertGetId($formFields);
         }
 
+        $this->insertInnerTable($id);
         $this->updateWellStatus();
 
         DB::commit();
