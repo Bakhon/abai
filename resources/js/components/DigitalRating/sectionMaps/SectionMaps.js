@@ -96,8 +96,7 @@ export default {
         },
 
         async fetchMaps(horizonId) {
-            // await axios.get(this._vm.localeUrl(`digital-rating/search_wells`), {params});
-            const res = await axios.get(this.localeUrl(`/maps/${horizonId}`));
+            const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/maps/${horizonId}`);
             if(!res.error) {
                 return res.data;
             }
