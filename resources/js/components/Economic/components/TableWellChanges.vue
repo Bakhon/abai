@@ -4,8 +4,8 @@
       {{ trans('economic_reference.table_well_changes') }}
     </subtitle>
 
-    <div id="table-well-changes" class="mt-2 overflow-auto customScroll d-flex">
-      <div v-for="(chunk, index) in tableDataChunks"
+    <div v-if="isMounted" id="table-well-changes" class="mt-2 overflow-auto customScroll d-flex">
+      <div v-for="(chunk, index) in chunks"
            :key="index">
         <div :style="`width: ${columnWidth}px`"
              class="text-center border-grey d-flex bg-header">
@@ -29,15 +29,15 @@
 
           <div v-for="price in oilPrices"
                :key="`${uwi}_${price}_profitability_12m`"
-               :style="`background: ${getColor(tableData[uwi].oilPrices[+price])}`"
+               :style="`background: ${getColor(chunkedWells[uwi].oilPrices[+price])}`"
                class="border-grey flex-30px">
           </div>
 
           <div class="border-grey flex-30px position-relative d-flex align-items-center justify-content-center">
-            <input v-model="tableData[uwi].isShutdown"
+            <input v-model="chunkedWells[uwi].isShutdown"
                    type="checkbox"
                    class="form-check-input m-0 flex-30px"
-                   @change="toggleWell(uwi, tableData[uwi])">
+                   @change="toggleWell(uwi, chunkedWells[uwi])">
           </div>
         </div>
       </div>
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import {globalloadingMutations} from '@store/helpers';
+
 import Subtitle from "./Subtitle";
 
 const WELL_KEYS = [
@@ -98,7 +100,22 @@ export default {
       type: Array
     },
   },
+  data: () => ({
+    isMounted: false,
+    chunkIndex: 0
+  }),
+  mounted() {
+    this.SET_LOADING(true)
+
+    this.$nextTick(() => {
+      console.log('tick')
+
+      this.isMounted = true
+    })
+  },
   methods: {
+    ...globalloadingMutations(['SET_LOADING']),
+
     getColor({profitability_12m}) {
       if (profitability_12m === 'profitable') {
         return '#387249'
@@ -151,10 +168,12 @@ export default {
   },
   computed: {
     filteredData() {
-      return this.data.filter(x => +x.dollar_rate === +this.scenario.dollar_rate)
+      return this.isMounted
+          ? this.data.filter(x => +x.dollar_rate === +this.scenario.dollar_rate)
+          : []
     },
 
-    tableData() {
+    wells() {
       let wells = {}
 
       this.filteredData.forEach(well => {
@@ -190,20 +209,28 @@ export default {
       return wells
     },
 
-    tableDataKeys() {
-      let wells = this.tableData
+    sortedWells() {
+      let wells = this.wells
 
       return Object.keys(wells).sort(function (prev, next) {
         return (wells[next].cat1 - wells[prev].cat1)
             || (wells[next].cat2 - wells[prev].cat2)
             || (wells[prev].profitable - wells[next].profitable)
-      })
+      }).slice(this.chunkIndex, this.chunkStep * 5)
     },
 
-    tableDataChunks() {
+    chunkedWells() {
+      let wells = {}
+
+      this.sortedWells.forEach(key => wells[key] = {...this.wells[key]})
+
+      return wells
+    },
+
+    chunks() {
       let result = [];
 
-      let keys = this.tableDataKeys
+      let keys = Object.keys(this.chunkedWells)
 
       let length = keys.length
 
@@ -215,12 +242,12 @@ export default {
     },
 
     chunkStep() {
-      return 20
+      return 21
     },
 
     columnWidth() {
       return 130 + this.oilPrices.length * 30
-    }
+    },
   },
 }
 </script>
