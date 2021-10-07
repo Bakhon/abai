@@ -23,9 +23,11 @@ class WorktimeHelper
             if ($status->dbeg <= $startOfDay && $status->dend >= $endOfDay) {
                 $hours += 24;
             } elseif ($status->dbeg > $startOfDay) {
-                $hours += $status->dbeg->diffInHours($status->dend < $endOfDay ? $status->dend : $endOfDay);
+                $hours += round(
+                    $status->dbeg->diffInMinutes($status->dend < $endOfDay ? $status->dend : $endOfDay) / 60
+                );
             } elseif ($status->dend < $endOfDay) {
-                $hours += $startOfDay->diffInHours($status->dend);
+                $hours += round($startOfDay->diffInMinutes($status->dend) / 60);
             }
         }
         return min($hours, 24);
