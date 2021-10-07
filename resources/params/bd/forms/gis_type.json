@@ -163,25 +163,25 @@
                 "code": "liquid_level",
                 "type": "numeric",
                 "title": "liquid_level",
-                "validation": "gte:0"
+                "validation": "nullable|gte:0"
               },
               {
                 "code": "income_devices",
                 "type": "numeric",
                 "title": "income_devices",
-                "validation": "lte:10000"
+                "validation": "nullable|lte:10000"
               },
               {
                 "code": "injection_pressure",
                 "type": "numeric",
                 "title": "injection_pressure",
-                "validation": "gte:0"
+                "validation": "nullable|gte:0"
               },
               {
                 "code": "intake",
                 "type": "numeric",
                 "title": "intake",
-                "validation": "gte:0"
+                "validation": "nullable|gte:0"
               },
               {
                 "code": "сement_bridge",
@@ -193,67 +193,67 @@
                 "code": "volume_expense",
                 "type": "numeric",
                 "title": "volume_expense",
-                "validation": "gte:0"
+                "validation": "nullable|gte:0"
               },
               {
                 "code": "zp_top",
                 "type": "numeric",
                 "title": "zp_top",
-                "validation": "lte:10000"
+                "validation": "nullable|lte:10000"
               },
               {
                 "code": "zp_bottom",
                 "type": "numeric",
                 "title": "zp_bottom",
-                "validation": "gte:zp_top"
+                "validation": "nullable|gte:zp_top"
               },
               {
                 "code": "in_top",
                 "type": "numeric",
                 "title": "in_top",
-                "validation": "lte:10000"
+                "validation": "nullable|lte:10000"
               },
               {
                 "code": "in_bottom",
                 "type": "numeric",
                 "title": "in_bottom",
-                "validation": "gte:in_top"
+                "validation": "nullable|gte:in_top"
               },
               {
                 "code": "pm_top",
                 "type": "numeric",
                 "title": "pm_top",
-                "validation": "lte:10000"
+                "validation": "nullable|lte:10000"
               },
               {
                 "code": "pm_bottom",
                 "type": "numeric",
                 "title": "pm_bottom",
-                "validation": "gte:pm_top"
+                "validation": "nullable|gte:pm_top"
               },
               {
                 "code": "ip_top",
                 "type": "numeric",
                 "title": "ip_top",
-                "validation": "lte:10000"
+                "validation": "nullable|lte:10000"
               },
               {
                 "code": "ip_bottom",
                 "type": "numeric",
                 "title": "ip_bottom",
-                "validation": "gte:ip_top"
+                "validation": "nullable|gte:ip_top"
               },
               {
                 "code": "coverage",
                 "type": "numeric",
                 "title": "coverage",
-                "validation": "gte:0|lte:100"
+                "validation": "nullable|gte:0|lte:100"
               },
               {
                 "code": "distribution",
                 "type": "numeric",
                 "title": "distribution",
-                "validation": "gte:0|lte:100"
+                "validation": "nullable|gte:0|lte:100"
               }
             ]
           }
