@@ -6,7 +6,7 @@
         :style="
           tableState === 'hidden'
             ? 'height: calc(100% - 38px);'
-            : 'height: calc(100% - 350px);'
+            : 'height: calc(100% - 360px);'
         "
       >
         <div class="heading-title">
