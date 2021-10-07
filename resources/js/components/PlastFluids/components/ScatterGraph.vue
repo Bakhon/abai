@@ -158,9 +158,9 @@ export default {
           min = axis["min" + axisLine];
           largeDiff = max - min > max * 0.2;
           if (type === "min") {
-            sum = largeDiff ? num - num * 0.2 : num - 10;
+            sum = largeDiff ? num - num * 0.2 : num - num * 0.05;
           } else {
-            sum = largeDiff ? num + num * 0.2 : num + 10;
+            sum = largeDiff ? num + num * 0.2 : num + num * 0.05;
           }
           return Number(sum.toFixed(1));
         };
