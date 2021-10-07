@@ -35,6 +35,26 @@
         <div class="rating-compare__wrapper-maps">
           <h5>{{ trans('digital_rating.map') }}</h5>
           <img src="/img/digital-rating/compare-maps.svg" alt="">
+          <div class="d-flex">
+            <div class="rating-compare__chart mr-10px" style="width: 100%; ">
+              <p>{{ trans('digital_rating.oilProduction') }}, {{ trans('digital_rating.thousandTons') }}</p>
+              <apexchart
+                :height="300"
+                type="area"
+                :series="seriesArea"
+                :options="chartOptionsArea"
+              />
+            </div>
+            <div class="rating-compare__chart" style="width: 100%;">
+              <p>{{ trans('digital_rating.wellsCommissioningDrilling') }}</p>
+              <apexchart
+                :height="300"
+                type="bar"
+                :series="series"
+                :options="chartOptions"
+              />
+            </div>
+          </div>
         </div>
         <div class="rating-compare__wrapper-table">
           <table class="table text-center text-white rating-table mb-0">
@@ -59,13 +79,15 @@
           <table class="table text-center text-white rating-table mb-0">
             <thead>
               <tr>
-                <th class="align-middle" rowspan="2">Год</th>
-                <th class="align-middle" colspan="3">Добыча нефти, тыс.т</th>
+                <th class="align-middle" rowspan="2">{{ trans('digital_rating.year') }}</th>
+                <th class="align-middle" colspan="3">
+                  {{ trans('digital_rating.oilProduction') }}, {{ trans('digital_rating.thousandTons') }}
+                </th>
               </tr>
               <tr>
-                <th class="align-middle">Проект</th>
-                <th class="align-middle">Факт</th>
-                <th class="align-middle">Отклонение</th>
+                <th class="align-middle">{{ trans('digital_rating.project') }}</th>
+                <th class="align-middle">{{ trans('digital_rating.fact') }}</th>
+                <th class="align-middle">{{ trans('digital_rating.deviation') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -87,7 +109,7 @@
 
 <style scoped lang="scss">
 .rating-compare {
-  height: calc(100vh - 160px);
+  height: 100%;
   color: #fff;
   margin-top: 3rem;
   background: #272953;
@@ -103,7 +125,7 @@
 
     &-maps {
       display: flex;
-      width: 50%;
+      width: 53%;
       flex-direction: column;
 
       h5 {
@@ -116,6 +138,7 @@
 
       img {
         width: 100%;
+        margin-bottom: 10px;
       }
     }
 
@@ -124,7 +147,7 @@
       width: 25%;
 
       .rating-table {
-        height: calc(100vh - 220px);
+        height: 100%;
         overflow: auto;
       }
 
@@ -144,6 +167,19 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 6px;
+  }
+
+  &__chart {
+    p {
+      background: #323370;
+      border: 1px solid #545580;
+      box-sizing: border-box;
+      padding: 6px;
+      margin: 0;
+    }
+    div {
+      border: 3px solid #545580;
+    }
   }
 }
 </style>

@@ -43,30 +43,6 @@ const histories = [
     }
 ]
 
-const indicatorList = [
-    {
-        uwi: 'UZN_0001',
-        liquid: 32,
-        water: 45,
-        oil: '14,8',
-        level: 550
-    },
-    {
-        number: 'UZN_0002',
-        liquid: 45,
-        water: 60,
-        oil: '15,1',
-        level: 420
-    },
-    {
-        number: 'UZN_0003',
-        liquid: 50,
-        water: 80,
-        oil: '16,5',
-        level: 700
-    }
-]
-
 const secondIndicators = [
     {
         number: 'UZN_1001',
@@ -145,7 +121,7 @@ const maps = [
     }
 ]
 
-const objects = [
+const horizons = [
     {
         id: 13,
         title: '13 горизонт'
@@ -298,24 +274,32 @@ const rowsOil = [
 
 const rowsHorizon = [
     {
-        key: 'Действующий добывающий фонд на 30.07.2021',
-        value: 1009
+        key: 'Пробуренный фонд на 31.12.2012',
+        value: 1002
+    },
+    {
+        key: 'Действующий проектный документ',
+        value: 'Проект разработки 2007 г.'
+    },
+    {
+        key: 'ПТД',
+        value: 'Авторский надзор 2012 г.'
+    },
+    {
+        key: 'Проектные скважины ПР-2007',
+        value: 731
     },
     {
         key: 'Пробуренный фонд до 2007г',
-        value: 1290
+        value: 545
     },
     {
-        key: 'Проектные скважины ПЗ-2007',
-        value: 1239
+        key: 'Пробуренный фонд после 2007г',
+        value: 324
     },
     {
         key: 'Плотность сетки, га/скв',
         value: '18,3'
-    },
-    {
-        key: 'Проектный документ',
-        value: 'Проект разработки 2007 г.'
     },
     {
         key: 'Расстояние между скважинами, м',
@@ -333,7 +317,7 @@ const rowsHorizon = [
         key: 'Совпадение точек после 2007г, %',
         value1: '74,3%',
         value2: '62,2%',
-        value3: 239
+        value3: '49%'
     }
 ]
 
@@ -344,7 +328,7 @@ export {
     legends,
     maps,
     properties,
-    objects,
+    horizons,
     fileActions,
     mapActions,
     rowsOil,
