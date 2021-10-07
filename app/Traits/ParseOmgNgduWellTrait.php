@@ -51,6 +51,11 @@ trait ParseOmgNgduWellTrait
         foreach ($abaiprotZus as $row) {
             $letter = preg_replace('/[^a-zA-Z]/', '', $row->zuid);
             $number = preg_replace('/[^0-9]/', '', $row->zuid);
+
+            if (!$letter) {
+                continue;
+            }
+
             $zuName = 'ЗУ-' . $number . $this->translateLetters[$letter];
 
             $zu = Zu::where('name', $zuName)->first();
