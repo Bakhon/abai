@@ -228,14 +228,6 @@
                                 value: ''
                             },
                             {
-                                name: 'digital_drilling.passport.fact_boggle_beat_date',
-                                value: ''
-                            },
-                            {
-                                name: 'digital_drilling.passport.date_last_workover',
-                                value: ''
-                            },
-                            {
                                 name: 'digital_drilling.passport.date_last_ORS',
                                 value: ''
                             },
@@ -300,13 +292,11 @@
                             this.passportWell.all_info.child[18].value =  this.passport.Радиус
                             this.passportWell.all_info.child[19].value =  this.passport.Состояние
                             this.passportWell.all_info.child[20].value =  this.passport.Экспл
-                            this.passportWell.all_info.child[21].value =  this.passport.Рпл
-                            this.passportWell.all_info.child[22].value =  this.passport.Рзаб
-                            this.passportWell.all_info.child[23].value =  this.passport.Факт_заб
-                            this.passportWell.all_info.child[24].value =  this.passport.КРС
-                            this.passportWell.all_info.child[25].value =  this.passport.ПРС
-                            this.passportWell.all_info.child[26].value =  this.passport.ГИС
-                            this.passportWell.all_info.child[27].value =  this.passport.ГДИС
+                            this.passportWell.all_info.child[21].value =  this.passport.Факт_заб
+                            this.passportWell.all_info.child[22].value =  this.passport.КРС
+                            this.passportWell.all_info.child[23].value =  this.passport.ПРС
+                            this.passportWell.all_info.child[24].value =  this.passport.ГИС
+                            this.passportWell.all_info.child[25].value =  this.passport.ГДИС
                         } else {
                             console.log('No data');
                         }
