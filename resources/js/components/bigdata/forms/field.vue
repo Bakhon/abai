@@ -53,24 +53,42 @@
       >
     </template>
     <template v-else-if="item.type === 'dict' && dict">
-      <template v-if="item.is_editable === false">
-        <span>{{ formatedValue.text }}</span>
+      <template v-if="item.multiple">
+        <template v-if="item.is_editable === false">
+          <span>{{ formatedValue ? formatedValue.map(value => value.text).join(',') : '' }}</span>
+        </template>
+        <template v-else>
+          <div v-for="dictItem in dict">
+            <input
+                :id="`${form.code}_${item.code}_${dictItem.id}`"
+                v-model="dictValue"
+                :value="dictItem.id"
+                type="checkbox"
+            >
+            <label :for="`${form.code}_${item.code}_${dictItem.id}`">{{ dictItem.name }}</label>
+          </div>
+        </template>
       </template>
       <template v-else>
-        <v-select
-            :name="item.code"
-            :options="dict"
-            :value="formatedValue"
-            label="name"
-            @input="updateValue($event.id)"
-        >
-          <template #open-indicator="{ attributes }">
-            <svg fill="none" height="6" viewBox="0 0 12 6" width="12" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1.5 1.00024L5.93356 4.94119C5.97145 4.97487 6.02855 4.97487 6.06644 4.94119L10.5 1.00024"
-                    stroke="white" stroke-linecap="round" stroke-width="1.4"/>
-            </svg>
-          </template>
-        </v-select>
+        <template v-if="item.is_editable === false">
+          <span>{{ formatedValue.text }}</span>
+        </template>
+        <template v-else>
+          <v-select
+              :name="item.code"
+              :options="dict"
+              :value="formatedValue"
+              label="name"
+              @input="updateValue($event.id)"
+          >
+            <template #open-indicator="{ attributes }">
+              <svg fill="none" height="6" viewBox="0 0 12 6" width="12" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.5 1.00024L5.93356 4.94119C5.97145 4.97487 6.02855 4.97487 6.06644 4.94119L10.5 1.00024"
+                      stroke="white" stroke-linecap="round" stroke-width="1.4"/>
+              </svg>
+            </template>
+          </v-select>
+        </template>
       </template>
     </template>
     <template v-else-if="item.type === 'dict_tree'">
@@ -143,7 +161,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import moment from 'moment-timezone'
 import vSelect from "vue-select"
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -179,7 +197,8 @@ export default {
         'date': {year: 'numeric', month: 'numeric', day: 'numeric'},
         'datetime': {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'}
       },
-      dict: null
+      dict: null,
+      dictValue: null
     }
   },
   watch: {
@@ -188,9 +207,20 @@ export default {
     },
     dict(newValue) {
       this.formatedValue = this.getFormatedValue(this.value)
+    },
+    dictValue(newValue) {
+      this.updateValue(newValue)
     }
   },
   mounted() {
+
+    if (this.item.type === 'dict' && this.item.multiple) {
+      this.dictValue = this.value
+      if (!this.dictValue || typeof this.dictValue === 'undefined') {
+        this.dictValue = []
+      }
+    }
+
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
       let dict = this.getDict(this.item.dict)
       if (dict) {
@@ -214,7 +244,7 @@ export default {
     },
     changeDate(date) {
       if (date) {
-        let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')
+        let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:mm:ss Z')
         this.updateValue(formatedDate)
       }
     },

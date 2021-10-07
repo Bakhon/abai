@@ -311,9 +311,15 @@ class receiveNonOperatingAssets extends Command
             'KPOoilDelivery' => 15
         );
         $yesterdayFact = $this->getYesterdayFact($dzoName);
+        $oilFact = $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilProduction']],$yesterdayFact,'oilProduction');
+        $oilDelivery = $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilDelivery']],$yesterdayFact,'oilDelivery');
+        if (Carbon::now()->day === 1) {
+            $oilFact = $row[$columnMapping['KPOoilProduction']];
+            $oilDelivery = $row[$columnMapping['KPOoilDelivery']];
+        }
         return array (
-            'oil_production_fact' => $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilProduction']],$yesterdayFact,'oilProduction'),
-            'oil_delivery_fact' => $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilDelivery']],$yesterdayFact,'oilDelivery'),
+            'oil_production_fact' => $oilFact,
+            'oil_delivery_fact' => $oilDelivery,
             'condensate_production_fact' => $sheet[$rowIndex + 2][$columnMapping['condensateProduction']],
             'condensate_delivery_fact' => $sheet[$rowIndex + 2][$columnMapping['condensateDelivery']],
             'dzo_name' => $dzoName,

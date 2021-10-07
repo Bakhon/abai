@@ -74,7 +74,6 @@ class WellsController extends Controller
             'gdis_current_value_static' => $this->gdisCurrentValueStatic($well),
             'gdis_current_value_rp' => $this->gdisCurrentValueRp($well),
             'gdis_current_value_bhp' => $this->gdisCurrentValueBhp($well),
-            'gdis_complex' => $this->gdisComplex($well),
             'gis' => $this->gis($well),
             'zone' => $this->zone($well),
             'well_react_infl' => $this->wellReact($well),
@@ -85,7 +84,7 @@ class WellsController extends Controller
             'agms' => $this->getTechsByCode($well, 'AGMS'),
         ];
 
-        Cache::put('well_' . $well->id, $wellInfo, 1440);
+        Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
         return $wellInfo;
     }
 
@@ -295,7 +294,7 @@ class WellsController extends Controller
     {
         return $well->techModeProdOil()
             ->orderBy('dbeg', 'desc')
-            ->first(['oil', 'liquid']);
+            ->first(['oil', 'liquid', 'wcut']);
     }
 
     private function measLiq(Well $well)
@@ -661,6 +660,11 @@ class WellsController extends Controller
 
     public function getProductionHistory($wellId)
     {
+
+        if (Cache::has('well_history_' . $wellId)) {
+            return Cache::get('well_history_' . $wellId);
+        }
+
         ini_set('max_execution_time', 600);
 
         $measLiqs = MeasLiq::where('well', $wellId)
@@ -728,6 +732,8 @@ class WellsController extends Controller
               }
            }
         }
+
+        Cache::put('well_history_' . $wellId, $result, now()->addDay());
         return $result;
     }
     public function getActivityByWell(Request $request,$wellId)

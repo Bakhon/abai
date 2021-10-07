@@ -279,7 +279,8 @@ abstract class DailyReports extends TableForm
 
     protected function getOrgWells(Org $org, CarbonImmutable $date)
     {
-        $techIds = $this->getTechIds($org->id);
+        $structureService = app()->make(StructureService::class);
+        $techIds = $structureService->getTechIds($org->id, 'org');
         return DB::connection('tbd')
             ->table('prod.well_tech')
             ->select('well')
@@ -291,33 +292,6 @@ abstract class DailyReports extends TableForm
             ->toArray();
     }
 
-    private function getTechIds(int $parentId)
-    {
-        $structureService = app()->make(StructureService::class);
-        $orgStructure = $structureService->getFlattenTreeWithPermissions();
-        $org = array_filter($orgStructure, function ($item) use ($parentId) {
-            return $item['type'] === 'org' && $item['id'] === $parentId;
-        });
-        $org = reset($org);
-        return $this->getTechWithChildren($orgStructure, $org);
-    }
-
-    private function getTechWithChildren(array $orgStructure, $parent)
-    {
-        $ids = [];
-        if ($parent['type'] === 'tech') {
-            $ids[] = $parent['id'];
-        }
-
-        $children = array_filter($orgStructure, function ($item) use ($parent) {
-            return isset($item['parent_type']) && $item['parent_type'] === $parent['type'] && $item['parent_id'] === $parent['id'];
-        });
-        foreach ($children as $child) {
-            $ids = array_merge($ids, $this->getTechWithChildren($orgStructure, $child));
-        }
-        return $ids;
-    }
-
     protected function getWorkTime(array $wellIds, CarbonImmutable $date): array
     {
         $result = [];
@@ -326,8 +300,8 @@ abstract class DailyReports extends TableForm
             ->table('prod.well_status as s')
             ->select('s.status', 's.dbeg', 's.dend', 's.well')
             ->join('dict.well_status_type', 'dict.well_status_type.id', 's.status')
-            ->where('dbeg', '<=', $date->startOfYear())
-            ->where('dend', '>=', $date)
+            ->where('dend', '>=', $date->startOfYear())
+            ->where('dbeg', '<=', $date->endOfDay())
             ->whereIn('well', $wellIds)
             ->whereIn('dict.well_status_type.code', MeasurementLogForm::WELL_ACTIVE_STATUSES)
             ->get()
