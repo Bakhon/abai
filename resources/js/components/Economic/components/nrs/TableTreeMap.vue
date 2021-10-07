@@ -26,8 +26,20 @@
       {{ trans('economic_reference.loading_treemap') }}...
     </div>
 
+    <div v-else class="form-check mb-3 text-right">
+      <input v-model="isVisibleOperatingPrs"
+             id="visible_operating_profit"
+             type="checkbox"
+             class="form-check-input"
+             @change="updateCharts()">
+      <label for="visible_operating_profit"
+             class="form-check-label text-blue">
+        {{ trans('economic_reference.v2') }}
+      </label>
+    </div>
+
     <div v-for="chart in loading ? [] : charts"
-         :key="chart.title"
+         :key="`${chart.title}_${profitabilityKey}`"
          :id="chart.title">
     </div>
   </div>
@@ -61,6 +73,7 @@ export default {
       field_id: null,
     },
     selectedWells: [],
+    isVisibleOperatingPrs: false
   }),
   computed: {
     ...globalloadingState(['loading']),
@@ -119,6 +132,12 @@ export default {
         },
       ]
     },
+
+    profitabilityKey() {
+      return this.isVisibleOperatingPrs
+          ? 'Operating_profit_variable_prs'
+          : 'Operating_profit'
+    },
   },
   methods: {
     ...globalloadingMutations(['SET_LOADING']),
@@ -147,6 +166,10 @@ export default {
       this.form[key] = null
 
       this.getWells()
+    },
+
+    updateCharts() {
+      this.$nextTick(() => this.plotCharts())
     },
   }
 }
