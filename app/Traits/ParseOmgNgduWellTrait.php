@@ -49,14 +49,12 @@ trait ParseOmgNgduWellTrait
     public function parseOmgNgduWellData($abaiprotZus)
     {
         foreach ($abaiprotZus as $row) {
-            $letter = preg_replace('/[^a-zA-Z]/', '', $row->zuid);
+            $letterIndex = preg_replace('/[^a-zA-Z]/', '', $row->zuid);
             $number = preg_replace('/[^0-9]/', '', $row->zuid);
 
-            if (!$letter) {
-                continue;
-            }
+            $letter = $letterIndex ? $this->translateLetters[$letterIndex] : '';
 
-            $zuName = 'ЗУ-' . $number . $this->translateLetters[$letter];
+            $zuName = 'ЗУ-' . $number . $letter;
 
             $zu = Zu::where('name', $zuName)->first();
 
