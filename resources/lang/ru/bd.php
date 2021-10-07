@@ -30,6 +30,7 @@ return [
     'select_date' => 'Укажите дату',
     'nothing_found' => 'Ничего не найдено',
     'actions' => 'Действия',
+    'documents' => 'Документы',
     'forms' => [
         'fluid_production' => [
             'title' => 'Журнал замеров - Добыча жидкости',

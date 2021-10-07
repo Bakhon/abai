@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 trait WithDocumentsUpload
 {
+    protected $documents;
+
     protected function insertInnerTable(int $id)
     {
         if (!empty($this->tableFields)) {
@@ -139,13 +141,29 @@ trait WithDocumentsUpload
 
     protected function attachDocuments(Collection $rows)
     {
-        $documents = $this->getAttachedDocuments($rows->pluck('id')->toArray());
-        return $rows->map(function ($row) use ($documents) {
-            if ($documents->get($row->id)) {
-                $row->documents = $documents->get($row->id)->toArray();
+        $this->documents = $this->getAttachedDocuments($rows->pluck('id')->toArray());
+        return $rows->map(function ($row) {
+            if ($this->documents->get($row->id)) {
+                $row->documents = $this->documents->get($row->id)->toArray();
             }
             return $row;
         });
     }
 
+    protected function getColumns(): Collection
+    {
+        $columns = parent::getColumns();
+
+        $columns->put(
+            'documents',
+            [
+                'code' => 'documents',
+                'title' => trans('bd.documents'),
+                'document_list' => true,
+                'type' => 'text'
+            ]
+        );
+
+        return $columns;
+    }
 }
