@@ -36,6 +36,17 @@
         </div>
 
         <div class="form-check mr-2">
+          <input v-model="isVisibleChartTotal"
+                 id="visible_total"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_total"
+                 class="form-check-label text-blue">
+            {{ trans('economic_reference.show_charts') }}
+          </label>
+        </div>
+
+        <div class="form-check mr-2">
           <input v-model="isVisibleOperatingPrs"
                  id="visible_operating_profit"
                  type="checkbox"
@@ -66,6 +77,15 @@
           </label>
         </div>
       </div>
+
+      <chart-matrix-total
+          v-if="isVisibleChartTotal"
+          :dates="data.dates"
+          :well-sum="tableData.totalSum"
+          :well-keys="visibleWellKeys"
+          :prs-sum="tableData.prsSum"
+          :prs-keys="prsKeys"
+          class="text-white container-fluid bg-main1 pt-2 px-4"/>
 
       <vue-table-dynamic
           :params="tablePrsParams"
@@ -109,7 +129,7 @@
         </template>
       </vue-table-dynamic>
 
-      <chart-matrix
+      <chart-matrix-well
           v-for="uwi in chartUwis"
           :key="uwi"
           :uwi="uwi"
@@ -155,11 +175,12 @@
 </template>
 
 <script>
-import ChartMatrix from "./ChartMatrix";
+import ChartMatrixWell from "./ChartMatrixWell";
+import ChartMatrixTotal from "./ChartMatrixTotal";
 
 export default {
   name: "TableMatrix",
-  components: {ChartMatrix},
+  components: {ChartMatrixWell, ChartMatrixTotal},
   props: {
     data: {
       required: true,
@@ -173,7 +194,8 @@ export default {
     isVisibleWells: false,
     isVisibleProfitable: true,
     isVisibleProfitless: true,
-    isVisibleOperatingPrs: false
+    isVisibleOperatingPrs: false,
+    isVisibleChartTotal: false
   }),
   created() {
     this.initWellKeys()

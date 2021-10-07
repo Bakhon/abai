@@ -299,4 +299,5 @@ return array (
   'cost_prs' => 'Стоимость ПРС',
   'cost_prs_without_fot' => 'Стоимость ПРС без ФОТ',
   'v2' => 'v2',
+  'show_charts' => 'Показать графики',
 );
