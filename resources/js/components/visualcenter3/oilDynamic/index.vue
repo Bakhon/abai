@@ -6,7 +6,7 @@
             </div>
             <div class="col-4 p-0 ml-3">
                 <select
-                        class="form-select dropdown_list"
+                        class="form-select dropdown_list text-left"
                         @change="handleDzo($event.target.value)"
                 >
                     <option v-for="company in dzoCompanies" :value="company.id">{{company.name}}</option>
@@ -14,7 +14,7 @@
             </div>
             <div class="col-4">
                 <select
-                        class="form-select dropdown_list"
+                        class="form-select dropdown_list text-center"
                         v-model="selectedMonth"
                         @change="handleMonth($event.target.value)"
                 >
@@ -121,19 +121,24 @@ export default {
                     name: this.trans('visualcenter.nkKmgOperating'),
                 },
                 {
+                    id: 7,
+                    ticker: 'ОМГ',
+                    name: this.trans('visualcenter.omg'),
+                },
+                {
+                    id: 8,
+                    ticker: 'ОМГ',
+                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.OMGK'),
+                },
+                {
+                    id: 6,
+                    ticker: 'ММГ',
+                    name: this.trans('visualcenter.mmg'),
+                },
+                {
                     id: 1,
                     ticker: 'ЭМГ',
                     name: this.trans('visualcenter.emg'),
-                },
-                {
-                    id: 2,
-                    ticker: 'КОА',
-                    name: this.trans('visualcenter.koa'),
-                },
-                {
-                    id: 3,
-                    ticker: 'КТМ',
-                    name: this.trans('visualcenter.ktm'),
                 },
                 {
                     id: 4,
@@ -146,19 +151,14 @@ export default {
                     name: this.trans('visualcenter.kgm'),
                 },
                 {
-                    id: 6,
-                    ticker: 'ММГ',
-                    name: this.trans('visualcenter.mmg'),
+                    id: 3,
+                    ticker: 'КТМ',
+                    name: this.trans('visualcenter.ktm'),
                 },
                 {
-                    id: 7,
-                    ticker: 'ОМГ',
-                    name: this.trans('visualcenter.omg'),
-                },
-                {
-                    id: 8,
-                    ticker: 'ОМГ',
-                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.OMGK'),
+                    id: 2,
+                    ticker: 'КОА',
+                    name: this.trans('visualcenter.koa'),
                 },
                 {
                     id: 9,
@@ -166,9 +166,19 @@ export default {
                     name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.YO'),
                 },
                 {
-                    id: 10,
-                    ticker: 'АГ',
-                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.AG'),
+                    id: 16,
+                    ticker: 'ТШО',
+                    name: this.trans('visualcenter.tsho'),
+                },
+                {
+                    id: 15,
+                    ticker: 'НКО',
+                    name: this.trans('visualcenter.nko'),
+                },
+                {
+                    id: 14,
+                    ticker: 'КПО',
+                    name: this.trans('visualcenter.kpo'),
                 },
                 {
                     id: 11,
@@ -186,20 +196,10 @@ export default {
                     name: this.trans('visualcenter.tp'),
                 },
                 {
-                    id: 14,
-                    ticker: 'КПО',
-                    name: this.trans('visualcenter.kpo'),
-                },
-                {
-                    id: 15,
-                    ticker: 'НКО',
-                    name: this.trans('visualcenter.nko'),
-                },
-                {
-                    id: 16,
-                    ticker: 'ТШО',
-                    name: this.trans('visualcenter.tsho'),
-                },
+                    id: 10,
+                    ticker: 'АГ',
+                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.AG'),
+                }
             ],
             monthes: [],
             tableData: [],
@@ -407,7 +407,6 @@ export default {
 .dropdown_list {
     background-color: #333975;
     height: 40px;
-    text-align: center;
     color: #9ea4c9;
     border: none;
     width: 100%;
