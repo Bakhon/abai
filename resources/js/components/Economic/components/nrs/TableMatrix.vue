@@ -69,7 +69,7 @@
 
       <vue-table-dynamic
           :params="tablePrsParams"
-          class="matrix-table bg-main1 pt-4 px-4 pb-0">
+          class="matrix-table bg-main1 pt-4 px-4 pb-2">
         <template :slot="`column-0`" slot-scope="{ props }">
           <div class="d-flex align-items-center w-100">
             {{ props.cellData.label }}
@@ -90,7 +90,7 @@
 
       <vue-table-dynamic
           :params="tableSumParams"
-          class="matrix-table bg-main1 p-4">
+          class="matrix-table bg-main1 pt-2 px-4 pb-4">
         <template :slot="`column-0`" slot-scope="{ props }">
           <div class="d-flex align-items-center w-100">
             {{ props.cellData.label }}
@@ -201,10 +201,7 @@ export default {
         headerHeight: 80,
         rowHeight: 50,
         fixed: 1,
-        columnWidth: this.tableHeaders.map((col, index) => ({
-          column: index,
-          width: index > 0 ? 100 : 180
-        })),
+        columnWidth: this.columnWidth,
         highlight: {column: [0, 1]},
         highlightedColor: '#2E50E9'
       }
@@ -221,10 +218,7 @@ export default {
         headerHeight: 80,
         rowHeight: 50,
         fixed: 1,
-        columnWidth: this.tableHeaders.map((col, index) => ({
-          column: index,
-          width: index > 0 ? 100 : 180
-        })),
+        columnWidth: this.columnWidth,
         highlight: {column: [0, 1]},
         highlightedColor: '#2E50E9'
       }
@@ -241,10 +235,7 @@ export default {
         headerHeight: 80,
         rowHeight: 50,
         fixed: 1,
-        columnWidth: this.tableHeaders.map((col, index) => ({
-          column: index,
-          width: index > 0 ? 100 : 180
-        })),
+        columnWidth: this.columnWidth,
         highlight: {column: [0, 1]},
         highlightedColor: '#2E50E9'
       }
@@ -406,6 +397,18 @@ export default {
     prsKeys() {
       return [
         {
+          prop: 'profitable',
+          name: this.trans('economic_reference.profitable'),
+          isTotal: true,
+          isProfitable: true
+        },
+        {
+          prop: 'profitless',
+          name: this.trans('economic_reference.profitless'),
+          isTotal: true,
+          isProfitless: true
+        },
+        {
           prop: 'prs1',
           name: this.trans('economic_reference.prs_count'),
           isTotal: true
@@ -437,6 +440,15 @@ export default {
         },
       ]
     },
+
+    columnWidth() {
+      return this.tableHeaders.length <= 12
+          ? []
+          : this.tableHeaders.map((col, index) => ({
+            column: index,
+            width: index > 1 ? 120 : 150
+          }))
+    }
   },
   methods: {
     getColor(key, value) {
@@ -468,6 +480,22 @@ export default {
         })
 
         return sum
+      }
+
+      if (key.isProfitable) {
+        if (!well[this.operatingProfitKey].hasOwnProperty(date)) {
+          return 0
+        }
+
+        return +well[this.operatingProfitKey][date] > 0 ? 1 : 0
+      }
+
+      if (key.isProfitless) {
+        if (!well[this.operatingProfitKey].hasOwnProperty(date)) {
+          return 0
+        }
+
+        return +well[this.operatingProfitKey][date] > 0 ? 0 : 1
       }
 
       if (well[key.prop] && well[key.prop][date]) {
