@@ -430,6 +430,7 @@ class EconomicNrsController extends Controller
         $sumKeys = [
             "Operating_profit",
             "Operating_profit_variable_prs",
+            "Operating_profit_variable_prs_nopayrall",
             "Overall_expenditures",
             "NetBack_bf_pr_exp",
             "oil",
