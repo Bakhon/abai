@@ -15,8 +15,8 @@
          aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content bg-dark-blue">
-          <div class="modal-header">
-            <h5 class="modal-title pb-0">
+          <div class="modal-header pb-0">
+            <h5 class="modal-title">
               {{ trans('economic_reference.input_exclude_uwis') }}
             </h5>
 
