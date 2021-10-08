@@ -163,11 +163,21 @@
               :form="form"
               @change="getData"/>
 
-          <button
-              class="btn btn-primary mt-3 py-2 w-100 border-0 bg-export"
-              @click="exportData">
-            {{ trans('economic_reference.export_excel') }}
-          </button>
+          <div class="mt-3 d-flex align-items-center">
+            <button
+                class="btn btn-primary w-100 border-0 bg-export py-2">
+              {{ trans('economic_reference.export_excel') }}
+            </button>
+
+            <a :href="localeUrl('/economic/optimization')"
+               target="_blank"
+               class="ml-2">
+              <button
+                  class="btn btn-primary w-100 border-0 bg-export py-2">
+                {{ trans('economic_reference.optimization') }}
+              </button>
+            </a>
+          </div>
         </div>
       </div>
     </div>
