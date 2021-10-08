@@ -1,39 +1,39 @@
 <template>
   <div>
-    <!-- Button trigger modal -->
     <button
         type="button"
         data-toggle="modal"
         data-target="#excludeUwis"
-        class="btn text-white bg-dark-blue">
+        class="btn text-white bg-dark-blue h-100">
       <i class="fas fa-cogs cursor-pointer"></i>
     </button>
 
-    <!-- Modal -->
     <div class="modal fade"
          id="excludeUwis"
          tabindex="-1"
          role="dialog"
          aria-hidden="true">
       <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content bg-dark-blue">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+            <h5 class="modal-title pb-0">
+              {{ trans('economic_reference.input_exclude_uwis') }}
+            </h5>
+
+            <button type="button"
+                    class="close"
+                    data-dismiss="modal">
+              <i class="fas fa-times cursor-pointer"></i>
             </button>
           </div>
 
           <div class="modal-body">
-            ...
-          </div>
-
-          <div class="modal-footer">
-            <button type="button"
-                    data-dismiss="modal"
-                    class="btn btn-secondary">
-              Close
-            </button>
+            <div class="form-group mb-0">
+              <textarea
+                  v-model="form.exclude_uwis"
+                  class="form-control bg-dark-blue text-white"
+                  rows="5"></textarea>
+            </div>
           </div>
         </div>
       </div>

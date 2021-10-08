@@ -322,7 +322,7 @@ export default {
       interval_end: '2021-06-30T00:00:00.000Z',
       granularity: GRANULARITY_DAY,
       profitability: PROFITABILITY_FULL,
-      exclude_uwis: []
+      exclude_uwis: null
     },
     res: economicRes,
   }),
@@ -378,8 +378,14 @@ export default {
 
       this.res = economicRes
 
+      let params = {...this.form}
+
+      if (params.exclude_uwis) {
+        params.exclude_uwis = params.exclude_uwis.split(/\r?\n/)
+      }
+
       try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-data'), {params: this.form})
+        const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-data'), {params: params})
 
         this.res = data
       } catch (e) {

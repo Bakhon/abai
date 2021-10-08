@@ -106,9 +106,7 @@ class EconomicNrsController extends Controller
             ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
             : null;
 
-        $excludeUwis = $request->exclude_uwis
-            ? array_unique($request->exclude_uwis)
-            : null;
+        $excludeUwis = self::filterUwis($request->exclude_uwis);
 
         $intervalYear = self::calcIntervalYears($request->interval_start, $request->interval_end);
 
@@ -886,5 +884,22 @@ class EconomicNrsController extends Controller
                 unset($data[$profitability][$date]);
             }
         }
+    }
+
+    static function filterUwis(?array $uwis): ?array
+    {
+        if (!$uwis) {
+            return null;
+        }
+
+        $uwis = array_unique($uwis);
+
+        foreach ($uwis as &$uwi) {
+            $uwi = trim($uwi);
+        }
+
+        $uwis = array_filter($uwis);
+
+        return $uwis;
     }
 }
