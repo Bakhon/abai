@@ -14,9 +14,6 @@
 </template>
 
 <script>
-export const GRANULARITY_DAY = 'day'
-export const GRANULARITY_MONTH = 'month'
-
 export default {
   name: "SelectChartType",
   props: {
