@@ -352,12 +352,10 @@ class receiveNonOperatingAssets extends Command
     private function getPKKDelivery($row, $dzoName, $sheet, $rowIndex, $columnIndex,$columnMapping)
     {
         $summary = 0;
-        $summary += $sheet[$rowIndex][$columnMapping['oil_delivery_fact']];
-        $summary += $sheet[$rowIndex + 1][$columnMapping['oil_delivery_fact']];
-        $summary += $sheet[$rowIndex + 2][$columnMapping['oil_delivery_fact']];
-        $summary += $sheet[$rowIndex + 3][$columnMapping['oil_delivery_fact']];
-        $summary += $sheet[$rowIndex + 4][$columnMapping['oil_delivery_fact']];
-        $summary += $sheet[$rowIndex + 5][$columnMapping['oil_delivery_fact']];
+        foreach(range(0, 5) as $i) {
+            $summary += $sheet[$rowIndex = $i][$columnMapping['oil_delivery_fact']];
+        }
+
         return $summary;
     }
 
