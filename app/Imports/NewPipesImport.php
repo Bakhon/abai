@@ -59,10 +59,6 @@ class NewPipesImport implements ToCollection, WithColumnLimit
                     ->where('name', 'LIKE', '%'.$row[self::COLUMNS['well']].'%')
                     ->first();
 
-                if (!$well) {
-                    dd($row);
-                }
-
                 $pipe = OilPipe::firstOrCreate(
                     [
                         'name' => $row[self::COLUMNS['well']],
