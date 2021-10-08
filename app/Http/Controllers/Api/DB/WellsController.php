@@ -11,6 +11,7 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\Well as dictWell;
 use App\Models\BigData\GdisCurrent;
 use App\Models\BigData\GdisCurrentValue;
+use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\WellStatus;
 use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
@@ -25,6 +26,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class WellsController extends Controller
 {
@@ -33,15 +35,15 @@ class WellsController extends Controller
         return $service->getTreeWithPermissions();
     }
 
-    public function wellInfo(well $well)
+    public function wellInfo($well)
     {
-
+        $well = Well::select('id','uwi')->find($well);
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }
 
         $wellInfo = [
-            'wellInfo' => $this->get($well),
+            'wellInfo' => $well, //$this->get($well)
             'status' => $this->status($well),
             'tube_nom' => $this->tubeNom($well),
             'category' => $this->category($well),
@@ -181,25 +183,19 @@ class WellsController extends Controller
 
     private function techs(Well $well)
     {
+        $tech = new Tech();
         $allParents = [];
-        $parent = null;
-        if (isset($well->techs()
-                ->wherePivot('dend', '>', $this->getToday())
-                ->withPivot('dend', 'dbeg', 'tap as tap')
-                ->orderBy('pivot_dbeg', 'desc')
-                ->first()->id)) {
-            $parent = $well->techs()
-                ->wherePivot('dend', '>', $this->getToday())
-                ->withPivot('dend', 'dbeg', 'tap as tap')
-                ->orderBy('pivot_dbeg', 'desc')
-                ->first()->id;
-        }
-        while ($parent != null) {
-            array_push($allParents, Tech::all()->find($parent));
-            if (isset(Tech::all()->where('dend', '>', $this->getToday())->find($parent)->parent)) {
-                $parent = Tech::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
-            } else {
-                return $allParents;
+        $item = $well->getRelationTech($this->getToday());
+        if ($item)
+        {
+            $dict_techs = $tech->parentTree($item->id);
+            foreach($dict_techs as $dict_tech)
+            {
+                $allParents[]['name_ru'] = $dict_tech->name;
+            }
+            if(!empty($allParents))
+            {
+                $allParents = array_reverse($allParents);
             }
         }
         return $allParents;
@@ -222,9 +218,18 @@ class WellsController extends Controller
 
     private function org(Well $well)
     {
+        $org_object = new Org();
         $allParents = [];
-        $parent = null;
-        if (isset($well->orgs()
+        $item = $well->getRelationOrg($this->getToday());
+        if ($item)
+        {
+            $dict_orgs = $org_object->parentTree($item->id);
+            foreach($dict_orgs as $dict_org)
+            {
+                $allParents[]['name_ru'] = $dict_org->name;
+            }
+        }
+       /*if (isset($well->orgs()
                 ->wherePivot('dend', '>', $this->getToday())
                 ->withPivot('dend', 'dbeg')
                 ->orderBy('pivot_dbeg', 'desc')
@@ -242,7 +247,8 @@ class WellsController extends Controller
             } else {
                 return $allParents;
             }
-        }
+        }*/
+
         return $allParents;
     }
 
@@ -278,10 +284,12 @@ class WellsController extends Controller
 
     private function labResearchValue(Well $well)
     {
-        return $well->labResearchValue()
+        $lab_research_value = new LabResearchValue();
+        return $lab_research_value->Rnas($well->id);
+        /*return $well->labResearchValue()
             ->withPivot('research_date as research_date')
             ->orderBy('research_date', 'desc')
-            ->first(['value_double', 'research_date']);
+            ->first(['value_double', 'research_date']);*/
     }
 
     private function techModeInj(Well $well)
