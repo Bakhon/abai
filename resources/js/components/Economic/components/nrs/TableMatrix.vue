@@ -168,7 +168,6 @@ export default {
     isVisibleWells: false,
     isVisibleProfitable: true,
     isVisibleProfitless: true,
-    isVisibleOperatingPrs: false,
     form: {
       operatingProfit: 'Operating_profit'
     }

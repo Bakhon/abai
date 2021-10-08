@@ -70,7 +70,6 @@ export default {
       operatingProfit: 'Operating_profit',
     },
     selectedWells: [],
-    isVisibleOperatingPrs: false
   }),
   computed: {
     ...globalloadingState(['loading']),
