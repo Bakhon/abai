@@ -888,6 +888,12 @@
                               :class="isTroubleCompany(item.name) ? 'troubled-companies' : ''"
                       >
                         {{ getDzoName(item.name,dzoNameMappingWithoutKMG) }}
+                        <span
+                                v-if="additionalCompanies.includes(item.name)"
+                                class="additional-title"
+                        >
+                          &nbsp{{getAdditionalName(item.name)}}
+                        </span>
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span
@@ -1196,25 +1202,13 @@
                       v-if="periodRange > 0"
               >
                 <div
-                        v-if="isConsolidatedCategoryActive() && !mainMenu.oilCondensateDeliveryOilResidue"
+
                         class="oil-condensate-chart-secondary-name"
                 >
-                  {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
+                  {{ selectedChartCategory.name }}, {{ selectedChartCategory.metric}}
                   <span v-if="isFilterTargetPlanActive">/{{trans("visualcenter.Month").toLowerCase()}}</span>
                 </div>
-                <div
-                        v-else-if="mainMenu.oilCondensateDeliveryOilResidue"
-                        class="oil-condensate-chart-secondary-name"
-                >
-                  {{ oilResidueChartName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
-                </div>
-                <div
-                        v-else
-                        class="name-chart-left"
-                >
-                  {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
-                </div>
-                <div class="name-chart-head">{{ chartHeadName }}</div>
+                <div class="name-chart-head">{{ selectedChartCategory.head }}</div>
                 <vc-chart :height="465"> </vc-chart>
               </div>
             </div>
@@ -2945,7 +2939,7 @@
 
   .oil-condensate-chart-secondary-name {
     color: #8489af;
-    margin-top: 15%;
+    margin-top: calc(100% - 500px);
     text-align: center;
     position: absolute;
     writing-mode: tb-rl;

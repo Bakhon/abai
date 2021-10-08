@@ -173,6 +173,9 @@ export default {
         },
 
         isTroubleCompany(dzoName) {
+            if ((this.mainMenu.oilCondensateDeliveryWithoutKMG || this.mainMenu.oilCondensateProductionWithoutKMG) && ['ТП','ПККР'].includes(dzoName)) {
+                return false;
+            }
             return this.troubleCategories.includes(this.selectedCategory) && this.troubleCompanies.includes(dzoName);
         },
         getAdditionalName(dzoName) {
