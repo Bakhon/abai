@@ -170,13 +170,6 @@ class ProductionProgram extends TableForm
             if ($value <= 0) {
                 $errors[$field][] = trans('bd.validation.gt', ['value' => 0]);
             }
-
-            $limits = $this->calculateLimits($date);
-            if (!$this->isValidLimits($value, $limits)) {
-                $errors[$field][] = trans(
-                        'bd.value_outside'
-                    ) . " ({$limits['min']}, {$limits['max']})";
-            }
         }
         return $errors;
     }

@@ -32,16 +32,12 @@ class WellCardChart extends Controller
             $wellPerfs->where('perf_date', '>=', $dateFrom);
             
         }
-        
         $wellWorkover = $wellWorkover->whereIn('repair_type', [1, 3])->orderBy('dbeg', 'asc')->get();
-        $gtms = $gtms->with('gtmType')->orderBy('dbeg', 'asc')->get()->toArray();        
+        $gtms = $gtms->with('gtmType')->orderBy('dbeg', 'asc')->get()->toArray();
         $wellPerfs = $wellPerfs->with('intervals')->get()->toArray();
-
         $events['perforations'] = $this->getIntervals($wellPerfs);
         $events['workovers'] = $this->getWorkovers($wellWorkover);
         $events['gtms'] = $this->getGtms($gtms);
-
-
         return $events;
     }
 

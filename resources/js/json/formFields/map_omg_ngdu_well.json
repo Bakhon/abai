@@ -55,7 +55,15 @@
     "type": "number",
     "step": 0.01,
     "label": "monitoring.omgngdu.fields.gas_factor",
-    "value": null
+    "value": null,
+    "input": "dailyProductionInput"
+  },
+  "daily_gas_production": {
+    "type": "number",
+    "step": 0.01,
+    "label": "monitoring.omgngdu_well.fields.gas_factor",
+    "value": null,
+    "readonly": true
   },
   "sg_oil": {
     "type": "number",

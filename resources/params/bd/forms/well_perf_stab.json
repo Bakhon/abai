@@ -97,9 +97,10 @@
                 "dict": "perf_types",
                 "title": "perf_t",
                 "table": "prod.well_perf_interval",
+                "parent_column": "well_perf",
                 "columns": [
                   {
-                    "code": "horizon",
+                    "code": "geo",
                     "type": "dict_tree",
                     "title": "horizon",
                     "dict": "geos",

@@ -284,14 +284,16 @@ export default {
     changeTab(index) {
       this.activeTab = index
     },
-    callback(e, formItem) {
-      if (typeof formItem.callbacks === 'undefined') return
+    callback: _.debounce(function (e, formItem) {
+      this.$nextTick(() => {
+        if (typeof formItem.callbacks === 'undefined') return
 
-      for (let callback in formItem.callbacks) {
-        if (typeof this[callback] === 'undefined') continue
-        this[callback](formItem.code, formItem.callbacks[callback])
-      }
-    },
+        for (let callback in formItem.callbacks) {
+          if (typeof this[callback] === 'undefined') continue
+          this[callback](formItem.code, formItem.callbacks[callback])
+        }
+      })
+    }, 350),
     fillCalculatedFields() {
       this.SET_LOADING(true)
       axios.post(
@@ -304,6 +306,7 @@ export default {
         for (let key in data) {
           this.formValues[key] = data[key]
         }
+        this.$forceUpdate()
       }).finally(() => {
         this.SET_LOADING(false)
       })

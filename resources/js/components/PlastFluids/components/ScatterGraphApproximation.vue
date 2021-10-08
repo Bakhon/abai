@@ -165,11 +165,15 @@
           <ScatterGraphApproximationLabelInput
             :inputText.sync="abscissaFrom"
             labelTransKey="from"
+            :isAxisInput="true"
+            :initialValue="minX"
           />
           <ScatterGraphApproximationLabelInput
             style="margin-bottom: 10px;"
             :inputText.sync="abscissaTo"
             labelTransKey="to"
+            :isAxisInput="true"
+            :initialValue="maxX"
           />
         </div>
       </div>
@@ -181,11 +185,15 @@
           <ScatterGraphApproximationLabelInput
             :inputText.sync="ordinateFrom"
             labelTransKey="from"
+            :isAxisInput="true"
+            :initialValue="minY"
           />
           <ScatterGraphApproximationLabelInput
             style="margin-bottom: 10px;"
             :inputText.sync="ordinateTo"
             labelTransKey="to"
+            :isAxisInput="true"
+            :initialValue="maxY"
           />
         </div>
       </div>
@@ -212,6 +220,10 @@ export default {
   props: {
     series: Array,
     graphType: String,
+    minX: [String, Number],
+    maxX: [String, Number],
+    minY: [String, Number],
+    maxY: [String, Number],
   },
   components: {
     ScatterGraphApproximationLabelInput,
@@ -221,10 +233,10 @@ export default {
       isOpen: true,
       aheadPredict: "",
       backwardPredict: "",
-      abscissaFrom: "",
-      abscissaTo: "",
-      ordinateFrom: "",
-      ordinateTo: "",
+      abscissaFrom: '',
+      abscissaTo: '',
+      ordinateFrom: '',
+      ordinateTo: '',
       polynomialDegree: 2,
       approximationSelected: "",
       approximations: [

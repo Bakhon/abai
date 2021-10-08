@@ -11,18 +11,17 @@ const plastFluidsLocal = {
     tableFields: [],
     tableRows: [],
     currentTemplate: {},
+    tableState: 'default',
     loading: false,
+    graphType: "ps_bs_ds_ms",
   },
 
   mutations: {
-    SET_REPORT_DUPLICATED_STATUS(state, payload) {
-      state.reportDuplicated = payload;
-    },
     SET_FILE_LOG(state, payload) {
       state.fileLog = payload;
     },
-    SET_CURRENT_TEMPLATE(state, payload) {
-      state.currentTemplate = payload;
+    SET_REPORT_DUPLICATED_STATUS(state, payload) {
+      state.reportDuplicated = payload;
     },
     SET_TABLE_FIELDS(state, payload) {
       state.tableFields = payload;
@@ -30,8 +29,17 @@ const plastFluidsLocal = {
     SET_TABLE_ROWS(state, payload) {
       state.tableRows = payload;
     },
+    SET_CURRENT_TEMPLATE(state, payload) {
+      state.currentTemplate = payload;
+    },
+    SET_TABLE_STATE(state, payload) {
+      state.tableState = payload;
+    },
     SET_LOADING(state, payload) {
       state.loading = payload;
+    },
+    SET_GRAPH_TYPE(state, payload) {
+      state.graphType = payload;
     },
   },
 
@@ -79,7 +87,7 @@ const plastFluidsLocal = {
         commit("SET_LOADING", false);
       }
     },
-    async handleTableGraphData({ commit, rootState }, dataToPost) {
+    async handleTableGraphData({ commit, state }, dataToPost) {
       try {
         commit("SET_LOADING", true);
         const postDataMock = {
@@ -88,7 +96,7 @@ const plastFluidsLocal = {
           vid_fluid: "None",
           data_start: "None",
           data_end: "None",
-          graph_type: "ps_bs_ds_ms",
+          graph_type: state.graphType,
         };
         let merged = { ...postDataMock, ...dataToPost };
         const postData = new FormData();

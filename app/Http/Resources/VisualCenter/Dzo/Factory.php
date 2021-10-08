@@ -26,6 +26,8 @@ class Factory {
     protected $categoryMapping = array (
         'oilCondensateProduction' => 'OilCondensateConsolidated',
         'oilCondensateDelivery' => 'OilCondensateConsolidated',
+        'oilCondensateDeliveryCondensateOnly' => 'OilCondensateConsolidated',
+        'oilCondensateProductionCondensateOnly' => 'OilCondensateConsolidated',
         'oilCondensateProductionWithoutKMG' => 'OilCondensateConsolidatedWithoutKmg',
         'oilCondensateDeliveryWithoutKMG' => 'OilCondensateConsolidatedWithoutKmg',
         'oilCondensateDeliveryOilResidue' => 'OilCondensateConsolidatedOilResidue',

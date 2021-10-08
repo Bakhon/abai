@@ -173,10 +173,31 @@ export default {
         },
 
         isTroubleCompany(dzoName) {
+            if ((this.mainMenu.oilCondensateDeliveryWithoutKMG || this.mainMenu.oilCondensateProductionWithoutKMG) && ['ТП','ПККР'].includes(dzoName)) {
+                return false;
+            }
             return this.troubleCategories.includes(this.selectedCategory) && this.troubleCompanies.includes(dzoName);
         },
         getAdditionalName(dzoName) {
             return this.trans('visualcenter.condensate');
+        },
+        async updateFondsByPreviousDay() {
+            if (this.productionFondDetails.length === 0) {
+                this.productionFondPeriodStart = moment(this.productionFondPeriodStart,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.productionFondPeriodEnd = moment(this.productionFondPeriodStart,'DD.MM.YYYY').clone().endOf('day').format('DD.MM.YYYY');
+                this.productionFondHistoryPeriodStart = moment(this.productionFondHistoryPeriodStart,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.productionFondHistoryPeriodEnd = moment(this.productionFondHistoryPeriodEnd,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
+                this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
+            }
+            if (this.injectionFondDetails.length === 0) {
+                this.injectionFondPeriodStart = moment(this.injectionFondPeriodStart,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.injectionFondPeriodEnd = moment(this.injectionFondPeriodStart,'DD.MM.YYYY').clone().endOf('day').format('DD.MM.YYYY');
+                this.injectionFondHistoryPeriodStart = moment(this.injectionFondHistoryPeriodStart,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.injectionFondHistoryPeriodEnd = moment(this.injectionFondHistoryPeriodEnd,'DD.MM.YYYY').subtract(1, 'days').startOf('day').format('DD.MM.YYYY');
+                this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
+                this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
+            }
         }
     },
     mixins: [
@@ -218,11 +239,16 @@ export default {
         if (moment().date() < 11) {
             this.wellsWorkoverPeriodStartMonth = moment(this.wellsWorkoverPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
             this.wellsWorkoverPeriodEndMonth = moment(this.wellsWorkoverPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+            this.chemistryPeriodStartMonth = moment(this.chemistryPeriodStartMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
+            this.chemistryPeriodEndMonth = moment(this.chemistryPeriodEndMonth,'MMMM YYYY').subtract(1,'months').format('MMMM YYYY');
         }
         this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
         this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
         this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
         this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
+        if (this.productionFondDetails.length === 0 && this.injectionFondDetails.length === 0) {
+            await this.updateFondsByPreviousDay();
+        }
         this.chemistryDetails = await this.getChemistryByMonth();
         this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
         this.drillingDetails = await this.getDrillingByMonth();

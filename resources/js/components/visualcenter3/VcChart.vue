@@ -52,10 +52,11 @@
                     labels: []
                 };
                 let self = this;
-
+                let summaryOpek = 0;
                 _.forEach(chartSummary.dzoCompaniesSummaryForChart, function (item) {
                     formattedChartSummary.labels.push(self.getFormattedDate(item.time));
                     formattedChartSummary.plan.push(item.productionPlanForChart2);
+                    summaryOpek+=item.productionPlanForChart2;
                     formattedChartSummary.fact.push(item.productionFactForChart);
                     formattedChartSummary.planOpec.push(item.productionPlanForChart);
                     formattedChartSummary.monthlyPlan.push(item.monthlyPlan);
@@ -133,8 +134,10 @@
                     data: formattedChartSummary.monthlyPlan,
                     pointRadius: 0,
                 };
-
                 let datasets = [planChartOptions,factChartOptions,planOpecChartOptions];
+                if (isNaN(summaryOpek)) {
+                    datasets = [factChartOptions,planOpecChartOptions];
+                }
                 if (chartSummary.isFilterTargetPlanActive) {
                     datasets = [planChartOptions,factChartOptions,planOpecChartOptions,monthlyPlan];
                 }

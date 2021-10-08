@@ -12,7 +12,7 @@
           {{ trans('bd.select_dzo') }}
         </p>
         <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
-        <div v-else class="table-wrap scrollable">
+        <div v-else :class="{'tables_with-summary': formParams.summary}" class="tables scrollable">
           <div v-for="custom_column in formParams.custom_columns">
             <div :is="custom_column.component_name"
                  :column="custom_column"
@@ -21,6 +21,40 @@
                  :filter="filter">
             </div>
           </div>
+          <template v-if="formParams.summary">
+            <div v-for="table in formParams.summary.tables" class="summary">
+              <p class="title">{{ table.title }}</p>
+              <div class="summary-table">
+                <table class="table">
+                  <thead>
+                  <template v-if="table.data.complicated_header">
+                    <tr v-for="row in table.data.complicated_header">
+                      <th
+                          v-for="column in row"
+                          :colspan="column.colspan"
+                          :rowspan="column.rowspan"
+                      >
+                        {{ column.title }}
+                      </th>
+                    </tr>
+                  </template>
+                  <template v-else>
+                    <tr>
+                      <th v-for="column in table.data.columns">
+                        {{ column.title }}
+                      </th>
+                    </tr>
+                  </template>
+                  </thead>
+                  <tbody>
+                  <tr v-for="row in table.data.rows">
+                    <td v-for="column in table.data.columns"><span v-html="row[column.code]"></span></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </template>
           <table v-if="rows.length" class="table">
             <thead>
             <template v-if="formParams.complicated_header">
@@ -115,9 +149,30 @@
                       :key="`field_${column.code}_${row.id}`"
                       v-model="row[column.code].value"
                       :item="getFieldParams(row, column)"
-                      v-on:change="saveCell(row, column)"
+                      @change="saveCell(row, column)"
                   >
                   </bigdata-form-field>
+                </template>
+                <template v-else-if="getCellType(row, column) === 'file'">
+                  <template v-if="row[column.code].value && row[column.code].value.length > 0">
+                    <span v-html="formatFiles(row[column.code].value)"></span>
+                    <a href="#" @click="deleteFile(row, column)">x</a>
+                  </template>
+                  <template v-else>
+                    <vue-upload-component
+                        v-model="row[column.code].value"
+                        :multiple="false"
+                        :name="`file_${column.code}_${row.id}`"
+                        @input="saveCell(row, column)"
+                    >
+                    </vue-upload-component>
+                    <label
+                        :for="`file_${column.code}_${row.id}`"
+                        class="btn btn-primary"
+                    >
+                      {{ trans('app.upload') }}
+                    </label>
+                  </template>
                 </template>
                 <template v-else-if="['text', 'integer', 'float'].indexOf(getCellType(row, column)) > -1">
                   <div v-if="isCellEdited(row, column)" class="input-wrap">
@@ -185,7 +240,7 @@
     <RowHistoryGraph
         v-if="rowHistoryGraph"
         :params="rowHistoryGraph"
-        v-on:close="rowHistoryGraph = null"
+        @close="rowHistoryGraph = null"
     >
     </RowHistoryGraph>
     <div v-if="isInnerFormOpened" class="bd-popup">
@@ -213,6 +268,7 @@ import RowHistoryGraph from './RowHistoryGraph'
 import BigDataPlainForm from './PlainForm'
 import BigdataFormField from './field'
 import forms from '../../../json/bd/forms.json'
+import VueUploadComponent from 'vue-upload-component'
 
 Vue.use(Datetime);
 
@@ -237,7 +293,8 @@ export default {
     BigDataHistory,
     BigDataPlainForm,
     RowHistoryGraph,
-    BigdataFormField
+    BigdataFormField,
+    VueUploadComponent
   },
   data() {
     return {
@@ -245,7 +302,6 @@ export default {
       activeTab: 0,
       currentPage: 1,
       rows: [],
-      columns: [],
       editableCell: {
         row: null,
         column: null
@@ -321,6 +377,9 @@ export default {
             }
             if (data.complicated_header) {
               this.formParams.complicated_header = data.complicated_header
+            }
+            if (data.summary) {
+              this.formParams.summary = data.summary
             }
             this.recalculateCells()
             if (this.formParams.show_history !== false) {
@@ -402,6 +461,10 @@ export default {
 
       if (!this.formParams.available_actions.includes('update')) return
 
+      if (row[column.code].value === null && row[column.code].old_value !== null) {
+        row[column.code].value = row[column.code].old_value
+      }
+
       this.editableCell.row = row
       this.editableCell.column = column
     },
@@ -431,18 +494,26 @@ export default {
       return true
     },
     async saveCell(row, column) {
+      //todo: переделать отправку по аналогии с submitFile
+      if (this.getCellType(row, column) === 'file' && row[column.code].value) {
+        this.submitFile(row, column)
+        return
+      }
+
       this.checkLimits(row, column).then(result => {
         if (result === true) {
 
           let data = {
             well_id: row.id,
-            date: this.filter.date,
+            ...this.filter
           }
-          data[column.code] = row[column.code].value
 
           if (row[column.code].params) {
             data['params'] = row[column.code].params
           }
+
+          data[column.code] = row[column.code].value
+
           this.SET_LOADING(true)
           this.axios
               .patch(this.localeUrl(`/api/bigdata/forms/${this.params.code}/save/${column.code}`), data)
@@ -470,6 +541,43 @@ export default {
         }
       })
 
+    },
+    async submitFile(row, column) {
+
+      this.SET_LOADING(true)
+      let formData = new FormData()
+
+      formData.append('row', JSON.stringify(row))
+      formData.append('column', JSON.stringify(column))
+      formData.append('filter', JSON.stringify(this.filter))
+
+      let existedFiles = []
+      row[column.code].value.forEach((file, index) => {
+        if (file.exists) {
+          existedFiles.push(file.id)
+          return
+        }
+        formData.append(`uploads[]`, file.file)
+      })
+
+      this.axios
+          .post(this.localeUrl(`/api/bigdata/forms/${this.params.code}/upload/${column.code}`), formData)
+          .then(({data}) => {
+            row[column.code].date = null
+            this.editableCell = {
+              row: null,
+              cell: null
+            }
+            if (this.formParams.update_after_edit !== false) {
+              this.updateTableData()
+            } else {
+              this.SET_LOADING(false)
+            }
+          })
+          .catch(error => {
+            Vue.set(this.errors, column.code, error.response.data.errors)
+            this.SET_LOADING(false)
+          })
     },
     checkLimits(row, column) {
       return new Promise((resolve, reject) => {
@@ -584,6 +692,18 @@ export default {
         this.innerFormWellId = response.data.well_id
         this.innerFormValues = response.data.values
       })
+    },
+    formatFiles(files) {
+      return files.map(file => {
+        return '<a href="' + this.localeUrl(`/attachments/${file.id}`) + `">${file.filename} (${file.size})</a>`
+      }).join('<br>')
+    },
+    deleteFile(row, column) {
+      row[column.code].value = ''
+      this.saveCell(row, column).then(res => {
+        console.log(res)
+        row[column.code].value = []
+      })
     }
   },
 };
@@ -676,11 +796,34 @@ body.fixed {
     margin: 0;
     padding: 0;
 
-    .table-wrap {
+    .tables {
       height: 100%;
       margin: 0 0 10px;
+      overflow-x: auto;
       overflow-y: auto;
       width: 100%;
+
+      &_with-summary {
+        overflow-x: hidden;
+      }
+    }
+
+    .summary {
+      .title {
+        color: #fff;
+        font-size: 16px;
+        margin: 5px 0;
+        text-align: center;
+      }
+
+      &-table {
+        margin-bottom: 20px;
+        overflow-x: auto;
+
+        .table {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 
@@ -704,7 +847,7 @@ body.fixed {
     }
 
     td {
-      height: 52px;
+      height: 40px;
       position: relative;
 
       .icon-history {

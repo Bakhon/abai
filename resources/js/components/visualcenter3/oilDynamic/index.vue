@@ -6,7 +6,7 @@
             </div>
             <div class="col-4 p-0 ml-3">
                 <select
-                        class="form-select dropdown_list"
+                        class="form-select dropdown_list text-left"
                         @change="handleDzo($event.target.value)"
                 >
                     <option v-for="company in dzoCompanies" :value="company.id">{{company.name}}</option>
@@ -14,7 +14,7 @@
             </div>
             <div class="col-4">
                 <select
-                        class="form-select dropdown_list"
+                        class="form-select dropdown_list text-center"
                         v-model="selectedMonth"
                         @change="handleMonth($event.target.value)"
                 >
@@ -101,7 +101,7 @@ Vue.component('daily-chart', require('./dailyChart.vue').default);
 export default {
     data: function () {
         return {
-            dailyChartName: this.trans('visualcenter.oilDynamicDaily'),
+            dailyChartName: this.trans('visualcenter.oilDynamicDaily') + ' (' + this.trans('visualcenter.chemistryMetricTon') + ')',
             yearlyChartName: this.trans('visualcenter.accumulatedOilDynamicYearly') + ' (' + this.trans('visualcenter.dzoThousandTon') + ')',
             selectedMonth: moment().month() + 1,
             selectedDzo: {
@@ -111,34 +111,14 @@ export default {
             },
             dzoCompanies: [
                 {
-                    id: 1,
-                    ticker: 'ЭМГ',
-                    name: this.trans('visualcenter.emg'),
+                    id: 17,
+                    ticker: 'НККМГ',
+                    name: this.trans('visualcenter.nkKmg'),
                 },
                 {
-                    id: 2,
-                    ticker: 'КОА',
-                    name: this.trans('visualcenter.koa'),
-                },
-                {
-                    id: 3,
-                    ticker: 'КТМ',
-                    name: this.trans('visualcenter.ktm'),
-                },
-                {
-                    id: 4,
-                    ticker: 'КБМ',
-                    name: this.trans('visualcenter.kbm'),
-                },
-                {
-                    id: 5,
-                    ticker: 'КГМ',
-                    name: this.trans('visualcenter.kgm'),
-                },
-                {
-                    id: 6,
-                    ticker: 'ММГ',
-                    name: this.trans('visualcenter.mmg'),
+                    id: 18,
+                    ticker: 'НККМГОП',
+                    name: this.trans('visualcenter.nkKmgOperating'),
                 },
                 {
                     id: 7,
@@ -151,14 +131,54 @@ export default {
                     name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.OMGK'),
                 },
                 {
+                    id: 6,
+                    ticker: 'ММГ',
+                    name: this.trans('visualcenter.mmg'),
+                },
+                {
+                    id: 1,
+                    ticker: 'ЭМГ',
+                    name: this.trans('visualcenter.emg'),
+                },
+                {
+                    id: 4,
+                    ticker: 'КБМ',
+                    name: this.trans('visualcenter.kbm'),
+                },
+                {
+                    id: 5,
+                    ticker: 'КГМ',
+                    name: this.trans('visualcenter.kgm'),
+                },
+                {
+                    id: 3,
+                    ticker: 'КТМ',
+                    name: this.trans('visualcenter.ktm'),
+                },
+                {
+                    id: 2,
+                    ticker: 'КОА',
+                    name: this.trans('visualcenter.koa'),
+                },
+                {
                     id: 9,
                     ticker: 'УО',
                     name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.YO'),
                 },
                 {
-                    id: 10,
-                    ticker: 'АГ',
-                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.AG'),
+                    id: 16,
+                    ticker: 'ТШО',
+                    name: this.trans('visualcenter.tsho'),
+                },
+                {
+                    id: 15,
+                    ticker: 'НКО',
+                    name: this.trans('visualcenter.nko'),
+                },
+                {
+                    id: 14,
+                    ticker: 'КПО',
+                    name: this.trans('visualcenter.kpo'),
                 },
                 {
                     id: 11,
@@ -176,31 +196,10 @@ export default {
                     name: this.trans('visualcenter.tp'),
                 },
                 {
-                    id: 14,
-                    ticker: 'КПО',
-                    name: this.trans('visualcenter.kpo'),
-                },
-                {
-                    id: 15,
-                    ticker: 'НКО',
-                    name: this.trans('visualcenter.nko'),
-                },
-                {
-                    id: 16,
-                    ticker: 'ТШО',
-                    name: this.trans('visualcenter.tsho'),
-                },
-                {
-                    id: 17,
-                    ticker: 'НККМГ',
-                    name: this.trans('visualcenter.nkKmg'),
-                },
-                {
-                    id: 18,
-                    ticker: 'НККМГОП',
-                    name: this.trans('visualcenter.nkKmgOperating'),
-                },
-
+                    id: 10,
+                    ticker: 'АГ',
+                    name: this.trans('visualcenter.consolidatedDzoNameMappingWithoutKMG.AG'),
+                }
             ],
             monthes: [],
             tableData: [],
@@ -408,7 +407,6 @@ export default {
 .dropdown_list {
     background-color: #333975;
     height: 40px;
-    text-align: center;
     color: #9ea4c9;
     border: none;
     width: 100%;
@@ -440,7 +438,7 @@ export default {
     margin-top: 30px;
 }
 .growth-indicator-production-data {
-    border-bottom: 16px solid #009846;
+    border-top: 16px solid #009846;
 }
 .fall-indicator-production-data {
     border-top: 16px solid #e31e24;
