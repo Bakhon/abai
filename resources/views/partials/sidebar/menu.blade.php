@@ -63,7 +63,7 @@
 
             @if(auth()->user()->can('economic view main'))
                 <li class="left-menu-li">
-                    <a class="d-flex justify-content-between" href="{{route('economic_nrs')}}">
+                    <a class="d-flex justify-content-between" href="{{route('economic.nrs')}}">
                         <div>
                             <img src="/img/icons/monitor_gray.svg" class="companyLogo">
                             {{ trans('economic_reference.economic_module') }}
@@ -79,13 +79,13 @@
                         <li class="left-menu-li">
                             <ul>
                                 <li class="left-menu-li">
-                                    <a href="{{route('economic_nrs')}}">
+                                    <a href="{{route('economic.nrs')}}">
                                         {{ trans('economic_reference.nrs') }}
                                     </a>
                                 </li>
 
                                 <li class="left-menu-li">
-                                    <a href="{{route('economic_optimization')}}">
+                                    <a href="{{route('economic.optimization')}}">
                                         {{ trans('economic_reference.optimization_of_development') }}
                                     </a>
                                 </li>
