@@ -116,6 +116,11 @@ class Geo extends TBDModel
 
     public function getItems(array $ids)
     {
-        return Geo::whereIn('id',$ids)->get();
+        return Geo::leftJoin('dict.geo_type','dict.geo.geo_type','=','dict.geo_type.id')
+                   ->whereIn('dict.geo.id',$ids)
+                   ->select(DB::raw("(CASE WHEN dict.geo_type.code='FLD' THEN 1 ELSE null END) main"),
+                           'dict.geo.id',
+                           'dict.geo.name_ru')
+                   ->get();
     }
 }

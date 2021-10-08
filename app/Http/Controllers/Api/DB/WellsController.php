@@ -97,8 +97,41 @@ class WellsController extends Controller
 
     private function geo(Well $well)
     {
+        $geo_object = new Geo();
         $allParents = [];
         $parent = null;
+        $item = $well->getGeo($this->getToday());
+        if($item)
+        {
+            $geo_tree = $geo_object->parentTree($item->id);
+            $not_duplicate=[];
+            $count_tree = count($geo_tree)-1;
+            foreach($geo_tree as $key=>$geo_item)
+            {
+                if(!in_array($geo_item->geo,$not_duplicate))
+                {
+                    $parents_id[] = $geo_item->geo;
+                    $not_duplicate[] = $geo_item->geo;
+                }
+                if($key==$count_tree)
+                {
+                    $parents_id[] = $geo_item->parent;
+                }
+            }
+
+            if(isset($parents_id))
+            {
+                $items = $geo_object->getItems($parents_id);
+                foreach($items as $item)
+                {
+                        $key = array_search($item->id, $parents_id);
+                        $allParents[$key] = $item;
+                }
+            }
+
+        }
+        return $allParents;
+        /*
         if (isset($well->geo()->wherePivot('dend', '>', $this->getToday())
                 ->wherePivot('dbeg', '<=', $this->getToday())
                 ->withPivot('dend', 'dbeg')
@@ -121,10 +154,11 @@ class WellsController extends Controller
                     ->where('dbeg', '<=', $this->getToday())
                     ->first()->parent;
             } else {
+                Log::info('LOG_GEOS',$allParents);
                 return $allParents;
             }
         }
-        return $allParents;
+        return $allParents;*/
     }
 
 
