@@ -8,8 +8,9 @@ import WellAtlasModal from "../components/WellAtlasModal";
 import Accordion from "../components/Accordion";
 import SearchFormRefresh from "../../ui-kit/SearchFormRefresh";
 import mainMenu from "../../GTM/mock-data/main_menu.json";
-import { legends, maps, properties, objects, fileActions, mapActions } from '../json/data';
+import { legends, maps, properties, horizons, fileActions, mapActions } from '../json/data';
 import { digitalRatingState, digitalRatingMutations } from '@store/helpers';
+import axios from "axios";
 
 export default {
     name: "SectionMaps",
@@ -24,7 +25,7 @@ export default {
 
     data() {
         return {
-            objects: objects,
+            horizons: horizons,
             maps: maps,
             legends: legends,
             properties: properties,
@@ -94,8 +95,15 @@ export default {
             });
         },
 
+        async fetchMaps(horizonId) {
+            const res = await axios.get(`${process.env.MIX_DIGITAL_RATING_MAPS}/maps/${horizonId}`);
+            if(!res.error) {
+                return res.data;
+            }
+        },
+
         async initSectorOnMap() {
-            const maps = await import(`../json/grid_${this.horizonNumber}.json`).then(module => module.default);
+            const maps = await this.fetchMaps(this.horizonNumber);
             if(maps?.length === 0) return;
             for (let i = 0; i < maps.length; i++) {
                 this.rectangle = L.rectangle(this.getBounds(maps[i]), {
