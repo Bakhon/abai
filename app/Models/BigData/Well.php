@@ -14,6 +14,7 @@ use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Zone;
 use App\Models\TBDModel;
+use Carbon\Carbon;
 
 class Well extends TBDModel
 {
@@ -182,5 +183,23 @@ class Well extends TBDModel
         );
 
         return $query;
+    }
+
+    public function getRelationTech(string $date)
+    {
+       return $this->techs()
+                    ->wherePivot('dend', '>',$date)
+                    ->withPivot('dend', 'dbeg', 'tap as tap')
+                    ->orderBy('pivot_dbeg', 'desc')
+                    ->first();
+    }
+
+    public function getRelationOrg(string $date)
+    {
+        return $this->orgs()
+                    ->wherePivot('dend', '>', $date)
+                    ->withPivot('dend', 'dbeg')
+                    ->orderBy('pivot_dbeg', 'desc')
+                    ->first();
     }
 }
