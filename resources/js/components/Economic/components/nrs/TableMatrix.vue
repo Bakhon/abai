@@ -65,16 +65,24 @@
       <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
         <div v-for="(wellKey, index) in wellKeys"
              :key="wellKey.prop"
-             class="form-check mr-2 mb-2"
-             style="flex: 0 0 20%;">
-          <input v-model="wellKey.isVisible"
-                 :id="wellKey.prop"
-                 type="checkbox"
-                 class="form-check-input">
-          <label :for="wellKey.prop"
-                 class="form-check-label">
-            {{ wellKey.name }}
-          </label>
+             class="d-flex flex-20 mr-2 mb-2 line-height-16px">
+          <div class="d-flex align-items-center form-check mr-2"
+               style="flex: 1 0 150px">
+            <input v-model="wellKey.isVisible"
+                   :id="wellKey.prop"
+                   type="checkbox"
+                   class="form-check-input mt-0">
+            <label :for="wellKey.prop"
+                   class="form-check-label">
+              {{ wellKey.name }}
+            </label>
+          </div>
+
+          <select-chart-type
+              v-if="isVisibleChartTotal"
+              :form="wellKey"
+              class="bg-dark-blue text-white mr-3"
+              style="flex: 0 0 100px"/>
         </div>
       </div>
 
@@ -177,10 +185,11 @@
 <script>
 import ChartMatrixWell from "./ChartMatrixWell";
 import ChartMatrixTotal from "./ChartMatrixTotal";
+import SelectChartType from "../SelectChartType";
 
 export default {
   name: "TableMatrix",
-  components: {ChartMatrixWell, ChartMatrixTotal},
+  components: {ChartMatrixWell, ChartMatrixTotal, SelectChartType},
   props: {
     data: {
       required: true,
@@ -541,23 +550,27 @@ export default {
           prop: 'oil',
           name: this.trans('economic_reference.oil_production'),
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'liquid',
           name: this.trans('economic_reference.liquid_production'),
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'Revenue_export',
           name: this.trans('economic_reference.revenue_export'),
           dimension: 1000,
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'Revenue_local',
           name: this.trans('economic_reference.revenue_local'),
           dimension: 1000,
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'tax_costs',
@@ -565,54 +578,63 @@ export default {
           name: this.trans('economic_reference.tax_costs'),
           dimension: 1000,
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'Trans_expenditures',
           name: this.trans('economic_reference.trans_expenditures'),
           dimension: 1000,
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'NetBack_bf_pr_exp',
           name: `${this.trans('economic_reference.income')} NetBack`,
           dimension: 1000,
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'Variable_expenditures',
           name: this.trans('economic_reference.variable_expenditures'),
           dimension: 1000,
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'Fixed_nopayroll_expenditures',
           name: this.trans('economic_reference.fixed_nopayroll_expenditures'),
           dimension: 1000,
           isVisible: false,
+          chartType: 'line',
         },
         {
           prop: 'Fixed_payroll_expenditures',
           name: this.trans('economic_reference.fot'),
           dimension: 1000,
           isVisible: false,
+          chartType: 'line',
         },
         {
           prop: 'Fixed_expenditures',
           name: this.trans('economic_reference.fixed_expenditures'),
           dimension: 1000,
           isVisible: false,
+          chartType: 'line',
         },
         {
           prop: 'Gaoverheads_expenditures',
           name: this.trans('economic_reference.gaoverheads'),
           dimension: 1000,
           isVisible: false,
+          chartType: 'line',
         },
         {
           prop: 'Overall_expenditures',
           name: this.trans('economic_reference.costs'),
           dimension: 1000,
           isVisible: false,
+          chartType: 'line',
         },
         {
           prop: 'Operating_profit',
@@ -620,6 +642,7 @@ export default {
           dimension: 1000,
           isVisible: false,
           isColorful: true,
+          chartType: 'line',
         },
       ]
     },
@@ -672,5 +695,21 @@ export default {
 
 .text-blue {
   color: #23AFE8;
+}
+
+.bg-dark-blue {
+  background-color: #333975;
+}
+
+.line-height-16px {
+  line-height: 16px;
+}
+
+.flex-20 {
+  flex: 0 0 20%;
+}
+
+.white-space-nowrap {
+  white-space: nowrap;
 }
 </style>
