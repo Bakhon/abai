@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use App\Models\VisCenter\ExcelForm\DzoImportDowntimeReason;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class ProductionFondController extends Controller
 {
@@ -22,16 +23,24 @@ class ProductionFondController extends Controller
     );
     public function getDailyDataByDzo(Request $request)
     {
+        $startPeriod = Carbon::parse($request->startPeriod);
+        $endPeriod = Carbon::parse($request->endPeriod);
+        $name = $request->fondType . '_fond_' . $startPeriod->format('Y_m_d') . '_' . $endPeriod->format('Y_m_d') . '_' . $request->company;
+        if (Cache::has($name)) {
+            return Cache::get($name);
+        }
         $importData = DzoImportData::query()
-             ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
-             ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
+             ->whereDate('date', '>=', $startPeriod)
+             ->whereDate('date', '<=', $endPeriod)
              ->whereNull('is_corrected')
              ->orderBy('date', 'desc')
              ->with('importDowntimeReason')
              ->get()
              ->toArray();
         $result = $this->getMergedWithDowntimeReasons($importData);
-        return $this->getFondsByDzo($result,$request->workFields,$request->idleFields);
+        $fondsByDzo = $this->getFondsByDzo($result,$request->workFields,$request->idleFields);
+        Cache::put($name, $fondsByDzo, 1440);
+        return $fondsByDzo;
     }
 
     private function getMergedWithDowntimeReasons($dzoData)
