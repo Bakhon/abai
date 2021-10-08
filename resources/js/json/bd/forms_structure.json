@@ -104,7 +104,8 @@
           "research_lab_research",
           "well_mark",
           "gdis",
-          "current_g_d_i_s"
+          "current_g_d_i_s",
+          "gis_type"
         ]
       },
       {
@@ -140,7 +141,7 @@
       }
     ],
     "forms": [
-      "gis_type"
+      
     ]
   },
   {
