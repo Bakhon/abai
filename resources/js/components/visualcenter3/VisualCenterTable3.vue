@@ -888,6 +888,12 @@
                               :class="isTroubleCompany(item.name) ? 'troubled-companies' : ''"
                       >
                         {{ getDzoName(item.name,dzoNameMappingWithoutKMG) }}
+                        <span
+                                v-if="additionalCompanies.includes(item.name)"
+                                class="additional-title"
+                        >
+                          &nbsp{{getAdditionalName(item.name)}}
+                        </span>
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span
