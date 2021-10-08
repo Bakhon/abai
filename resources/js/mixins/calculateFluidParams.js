@@ -5,10 +5,11 @@ const calculateFluidParams = {
         calculateFluidParams(calculateGas = false) {
             let daily_fluid_production = this.formFields.daily_fluid_production.value;
             let bsw = this.formFields.bsw.value;
+            let sg_oil = this.formFields.sg_oil.value;
 
             if (daily_fluid_production && bsw) {
                 this.formFields.daily_water_production.value = calcDailyWaterProduction(daily_fluid_production, bsw);
-                this.formFields.daily_oil_production.value = calcDailyOilProduction(daily_fluid_production, bsw);
+                this.formFields.daily_oil_production.value = calcDailyOilProduction(daily_fluid_production, bsw, sg_oil);
             }
 
             if (calculateGas) {
