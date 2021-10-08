@@ -106,6 +106,10 @@ class EconomicNrsController extends Controller
             ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
             : null;
 
+        $excludeUwis = $request->exclude_uwis
+            ? array_unique($request->exclude_uwis)
+            : null;
+
         $intervalYear = self::calcIntervalYears($request->interval_start, $request->interval_end);
 
         /** @var Carbon $intervalMonthsStart */
@@ -244,6 +248,13 @@ class EconomicNrsController extends Controller
             /** @var QueryBuilder $builder */
             foreach ($builders as &$builder) {
                 $builder->where('dpz', '=', $dpz);
+            }
+        }
+
+        if ($excludeUwis) {
+            /** @var QueryBuilder $builder */
+            foreach ($builders as &$builder) {
+                $builder->whereNotIn('uwi', $excludeUwis);
             }
         }
 
