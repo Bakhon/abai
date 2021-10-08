@@ -503,16 +503,6 @@ export default {
     },
 
     getWellValue(well, key, date, isString = false) {
-      if (key.props) {
-        let sum = 0
-
-        key.props.forEach(prop => {
-          sum += well[prop] && well[prop][date] ? +well[prop][date] : 0
-        })
-
-        return sum
-      }
-
       if (key.isProfitable) {
         if (!well[this.operatingProfitKey].hasOwnProperty(date)) {
           return 0
@@ -527,6 +517,20 @@ export default {
         }
 
         return +well[this.operatingProfitKey][date] > 0 ? 0 : 1
+      }
+
+      if (key.prop === 'prs1' && date === 'sum') {
+        return well[this.operatingProfitKey].sum > 0 ? 0 : +well.prs1.sum
+      }
+
+      if (key.props) {
+        let sum = 0
+
+        key.props.forEach(prop => {
+          sum += well[prop] && well[prop][date] ? +well[prop][date] : 0
+        })
+
+        return sum
       }
 
       if (well[key.prop] && well[key.prop][date]) {
