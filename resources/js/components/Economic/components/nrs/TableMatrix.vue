@@ -712,8 +712,4 @@ export default {
 .flex-20 {
   flex: 0 0 20%;
 }
-
-.white-space-nowrap {
-  white-space: nowrap;
-}
 </style>
