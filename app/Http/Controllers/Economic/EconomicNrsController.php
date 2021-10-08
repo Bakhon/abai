@@ -7,10 +7,12 @@ use App\Http\Requests\Economic\EconomicNrsDataRequest;
 use App\Http\Requests\Economic\EconomicNrsWellsRequest;
 use App\Jobs\ExportEconomicDataToExcel;
 use App\Models\BigData\Well;
+use App\Models\EcoRefsCost;
 use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Level23\Druid\DruidClient;
@@ -23,7 +25,7 @@ class EconomicNrsController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_nrs_total_v4';
+    const DATA_SOURCE = 'economic_nrs_total_v5';
 
     const GRANULARITY_DAILY_FORMAT = 'yyyy-MM-dd';
     const GRANULARITY_MONTHLY_FORMAT = 'MM-yyyy';
@@ -53,6 +55,20 @@ class EconomicNrsController extends Controller
     ];
 
     const DOLLAR_RATES_URL = 'https://www.nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut/report';
+
+    const TEMP_ORG_COMPANY_MAP = [
+        3 => 5, // OZEN
+        4 => 8, // KBM
+        5 => 9, // KAZGER
+        6 => 6, // EMBA
+        7 => 7 // MANGISTAU
+    ];
+
+    const TEMP_SC_FA_IDS = [
+        9, // 2020
+        12, // 2021 1 kv
+        13 // 2021 2 kv
+    ];
 
     public function __construct(DruidClient $druidClient, StructureService $structureService)
     {
@@ -106,6 +122,12 @@ class EconomicNrsController extends Controller
 
         $granularity = $request->granularity;
         $granularityFormat = self::granularityFormat($granularity);
+
+        $intervalDates = self::calcIntervalDates(
+            $intervalMonthsStart,
+            $intervalMonthsEnd,
+            $granularity,
+        );
 
         $profitabilityType = $request->profitability;
         list($profitabilities, $profitless) = self::getProfitabilities($profitabilityType);
@@ -239,7 +261,7 @@ class EconomicNrsController extends Controller
                 : $builder->groupBy()->data();
         }
 
-        $dataWithProfitability = ['dt' => []];
+        $dataWithProfitability = ['dt' => $intervalDates];
 
         foreach ($profitabilities as $profitability) {
             $dataWithProfitability[$profitability] = [];
@@ -280,25 +302,17 @@ class EconomicNrsController extends Controller
         foreach ($result[self::BUILDERS['oil_production']] as &$item) {
             $date = $item['dt'];
 
-            $dataWithOilProduction['dt'][$date] = 1;
-
             $dataWithOilProduction[$item[$profitabilityType]][$date] = $item['oil'] / 1000;
 
             $dataWithLiquidProduction[$item[$profitabilityType]][$date] = self::formatProfitability($item);
         }
 
-        $dataWithOilProduction['dt'] = array_keys($dataWithOilProduction['dt']);
-
         $this->fillZeroValues($dataWithOilProduction, $profitabilities);
-
-        $dataWithLiquidProduction['dt'] = $dataWithOilProduction['dt'];
 
         $this->fillZeroValues($dataWithLiquidProduction, $profitabilities);
 
         foreach ($result[self::STATUS_ACTIVE] as &$item) {
             $date = $item['dt'];
-
-            $dataWithProfitability['dt'][$date] = 1;
 
             $dataWithProfitability[$item[$profitabilityType]][$date] = self::calcProfitabilityCount(
                 $item,
@@ -308,14 +322,10 @@ class EconomicNrsController extends Controller
             );
         }
 
-        $dataWithProfitability['dt'] = array_keys($dataWithProfitability['dt']);
-
         $this->fillZeroValues($dataWithProfitability, $profitabilities);
 
         foreach ($result[self::STATUS_PAUSE] as &$item) {
             $date = $item['dt'];
-
-            $dataWithPausedProfitability['dt'][$date] = 1;
 
             $key = $item[$profitabilityType . self::PROFITABILITY_PAUSE];
 
@@ -326,8 +336,6 @@ class EconomicNrsController extends Controller
                 $intervalMonthsEnd,
             );
         }
-
-        $dataWithPausedProfitability['dt'] = array_keys($dataWithPausedProfitability['dt']);
 
         $this->fillZeroValues($dataWithPausedProfitability, $profitabilities);
 
@@ -412,6 +420,8 @@ class EconomicNrsController extends Controller
         $granularity = $request->granularity;
         $granularityFormat = self::granularityFormat($granularity);
 
+        $dateFormat = $granularity === Granularity::DAY ? 'Y-m-d' : 'm-Y';
+
         $interval = self::formatInterval(
             Carbon::parse($request->interval_start),
             Carbon::parse($request->interval_end)->addDay(),
@@ -419,6 +429,7 @@ class EconomicNrsController extends Controller
 
         $sumKeys = [
             "Operating_profit",
+            "Operating_profit_variable_prs",
             "Overall_expenditures",
             "NetBack_bf_pr_exp",
             "oil",
@@ -434,6 +445,7 @@ class EconomicNrsController extends Controller
             "ERT_payments",
             "Trans_expenditures",
             "Gaoverheads_expenditures",
+            "prs1",
         ];
 
         $builder = $this
@@ -465,6 +477,13 @@ class EconomicNrsController extends Controller
 
         $wellsByDates = ['org' => $org, 'dates' => [], 'uwis' => []];
 
+        $dailyValues = EcoRefsCost::query()
+            ->distinct()
+            ->select(['date', 'wr_nopayroll', 'wr_payroll'])
+            ->whereCompanyId(self::TEMP_ORG_COMPANY_MAP[$org->id])
+            ->whereIn('sc_fa', self::TEMP_SC_FA_IDS)
+            ->get();
+
         foreach ($wells as &$well) {
             $uwi = $well['uwi'];
 
@@ -481,6 +500,16 @@ class EconomicNrsController extends Controller
 
                 $wellsByDates['uwis'][$uwi][$key]['sum'] += $well[$key];
             }
+
+            $dailyDate = Carbon::createFromFormat($dateFormat, $date)
+                ->setDay(1)
+                ->format('Y-m-d');
+
+            $dailyValue = $dailyValues->firstWhere('date', $dailyDate);
+
+            $wellsByDates['uwis'][$uwi]['cost_WR_nopayroll'][$date] = $dailyValue->wr_nopayroll ?? 0;
+
+            $wellsByDates['uwis'][$uwi]['cost_WR_payroll'][$date] = $dailyValue->wr_payroll ?? 0;
         }
 
         $wellsByDates['dates'] = array_keys($wellsByDates['dates']);
@@ -670,6 +699,21 @@ class EconomicNrsController extends Controller
         }
 
         return [$start, $end];
+    }
+
+    static function calcIntervalDates(Carbon $start, Carbon $end, string $granularity): array
+    {
+        $period = CarbonPeriod::create($start, "1 $granularity", $end);
+
+        $dateFormat = $granularity === Granularity::DAY ? 'Y-m-d' : 'm-Y';
+
+        $dates = [];
+
+        foreach ($period as $date) {
+            $dates[] = $date->format($dateFormat);
+        }
+
+        return $dates;
     }
 
     static function calcProfitabilityCount(

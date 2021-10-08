@@ -294,4 +294,9 @@ return array (
   'fixed_nopayroll_expenditures' => 'Условно-постоянные затраты без ФОТ',
   'tax_costs' => 'Налоговые затраты',
   'show_wells' => 'Показать скважины',
+  'prs_expenditures' => 'Затраты ПРС',
+  'prs_nopayroll_expenditures' => 'Затраты ПРС без ФОТ',
+  'cost_prs' => 'Стоимость ПРС',
+  'cost_prs_without_fot' => 'Стоимость ПРС без ФОТ',
+  'v2' => 'v2',
 );

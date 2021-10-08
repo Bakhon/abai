@@ -294,7 +294,7 @@ class WellsController extends Controller
     {
         return $well->techModeProdOil()
             ->orderBy('dbeg', 'desc')
-            ->first(['oil', 'liquid']);
+            ->first(['oil', 'liquid', 'wcut']);
     }
 
     private function measLiq(Well $well)
@@ -660,6 +660,11 @@ class WellsController extends Controller
 
     public function getProductionHistory($wellId)
     {
+
+        if (Cache::has('well_history_' . $wellId)) {
+            return Cache::get('well_history_' . $wellId);
+        }
+
         ini_set('max_execution_time', 600);
 
         $measLiqs = MeasLiq::where('well', $wellId)
@@ -727,6 +732,8 @@ class WellsController extends Controller
               }
            }
         }
+
+        Cache::put('well_history_' . $wellId, $result, now()->addDay());
         return $result;
     }
     public function getActivityByWell(Request $request,$wellId)

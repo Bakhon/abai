@@ -1,9 +1,11 @@
 {
   "type": "table",
   "table_type": "wells",
+  "update_after_edit": false,
+  "show_history": false,
   "filter": [
     {
-      "code": "treat_type",
+      "code": "treatment_type",
       "title": "treat_type",
       "type": "dict",
       "dict": "treat_type"
@@ -19,12 +21,14 @@
     {
       "title": "uwi",
       "code": "uwi",
-      "type": "link",
+      "type": "text",
       "is_editable": false
     },
     {
       "title": "volume",
       "code": "volume",
+      "table": "prod.well_treatment",
+      "column": "volume",
       "type": "float",
       "validation": "required|gte:0",
       "is_editable": true
@@ -32,6 +36,8 @@
     {
       "title": "pretreat_pressure",
       "code": "pretreat_pressure",
+      "table": "prod.well_treatment",
+      "column": "pressure_before",
       "type": "float",
       "validation": "gte:0",
       "is_editable": true
@@ -39,6 +45,8 @@
     {
       "title": "posttreat_pressure",
       "code": "posttreat_pressure",
+      "table": "prod.well_treatment",
+      "column": "pressure_after",
       "type": "float",
       "validation": "gte:0",
       "is_editable": true
@@ -46,21 +54,17 @@
     {
       "title": "temperature",
       "code": "temperature",
+      "table": "prod.well_treatment",
+      "column": "temperature",
       "type": "float",
       "validation": "gte:0",
       "is_editable": true
     },
     {
-      "code": "treatment_type",
-      "type": "dict",
-      "dict": "treat_type",
-      "title": "treat_type",
-      "validation": "exists:tbd.dict.treatment_type,id",
-      "is_editable": true
-    },
-    {
       "title": "pretreat_buff_pressure",
       "code": "pretreat_buff_pressure",
+      "table": "prod.well_treatment",
+      "column": "pretreat_buff_pressure",
       "type": "float",
       "validation": "gte:0",
       "is_editable": true
@@ -68,12 +72,16 @@
     {
       "title": "posttreat_buff_pressure",
       "code": "posttreat_buff_pressure",
+      "table": "prod.well_treatment",
+      "column": "posttreat_buff_pressure",
       "type": "float",
       "validation": "gte:0",
       "is_editable": true
     },
     {
       "code": "chemical_reagent_type",
+      "table": "prod.well_treatment",
+      "column": "chemical_reagent_type",
       "type": "dict",
       "dict": "chemical_reagent_types",
       "title": "ch_reagent_type",
@@ -82,6 +90,8 @@
     },
     {
       "code": "reason",
+      "table": "prod.well_treatment",
+      "column": "reason",
       "type": "dict",
       "dict": "reason_type_rtr",
       "title": "reason",
@@ -91,6 +101,8 @@
     {
       "title": "scraper_income",
       "code": "scraper_income",
+      "table": "prod.well_treatment",
+      "column": "scraper_income",
       "type": "float",
       "validation": "required|gte:0",
       "is_editable": true

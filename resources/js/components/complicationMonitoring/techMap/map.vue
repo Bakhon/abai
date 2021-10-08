@@ -866,7 +866,7 @@ export default {
         this.$bvModal.hide('object-modal');
         this.resetForm();
         this.removeTempPipeLayer();
-        this.layerRedraw('path-layer', 'pipe', this.pipes);
+        this.mapRedraw();
         message = this.trans('monitoring.pipe.pipe') + ' ' + this.trans('app.added');
       } else {
         message = result.message;

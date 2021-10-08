@@ -53,7 +53,7 @@
                 {{ item[column.code].text | moment().format('DD.MM.YYYY') }}
               </template>
               <template v-else-if="column.type === 'datetime'">
-                {{ item[column.code].text | moment().format('DD.MM.YYYY HH:MM') }}
+                {{ item[column.code].text | moment().format('DD.MM.YYYY HH:mm') }}
               </template>
               <template v-else>
                 {{ item[column.code].text }}
