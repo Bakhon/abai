@@ -483,10 +483,18 @@ export default {
       }
 
       if (key.isProfitable) {
+        if (!well[this.operatingProfitKey].hasOwnProperty(date)) {
+          return 0
+        }
+
         return +well[this.operatingProfitKey][date] > 0 ? 1 : 0
       }
 
       if (key.isProfitless) {
+        if (!well[this.operatingProfitKey].hasOwnProperty(date)) {
+          return 0
+        }
+
         return +well[this.operatingProfitKey][date] > 0 ? 0 : 1
       }
 
