@@ -18,7 +18,7 @@ export default {
   components: {
     MultiLevelDropdown,
   },
-  inject: ["headingKey"],
+
   data() {
     return {
       hover: "#2E50E9",

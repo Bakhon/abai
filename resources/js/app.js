@@ -180,6 +180,10 @@ Vue.component('well-card', require('./components/bigdata/wellCard/wellCard.vue')
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
 Vue.component('tkrs-main', require('./components/tkrs/tkrsMain.vue').default);
+Vue.component('tkrs-main', require('./components/tkrs/hookWeightSensor.vue').default);
+Vue.component('tkrs-main', require('./components/tkrs/hookWeightSensorAnalyse.vue').default);
+
+
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
 Vue.component('pf-upload-monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);

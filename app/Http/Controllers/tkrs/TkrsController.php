@@ -9,9 +9,17 @@ use App\Http\Controllers\Controller;
 class TkrsController extends Controller
 {
     
-    public function tkrs()
+    public function tkrsMain()
     {
-        return view('tkrs.tkrs');
-    }   
+        return view('tkrsMain.tkrsMain');
+    } 
+    public function hookWeightSensor()
+    {
+        return view('hookWeightSensor.hookWeightSensor');
+    } 
+    public function hookWeightSensorAnalyse()
+    {
+        return view('hookWeightSensorAnalyse.hookWeightSensorAnalyse');
+    }  
 
 }
