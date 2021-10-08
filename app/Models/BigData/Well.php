@@ -202,4 +202,12 @@ class Well extends TBDModel
                     ->orderBy('pivot_dbeg', 'desc')
                     ->first();
     }
+
+    public function getGeo(string $date)
+    {
+       return  $this->geo()->wherePivot('dend', '>', $date)
+            ->wherePivot('dbeg', '<=', $date)
+            ->withPivot('dend', 'dbeg')
+            ->first();
+    }
 }
