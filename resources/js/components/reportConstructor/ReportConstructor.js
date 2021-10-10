@@ -31,7 +31,7 @@ export default {
                 "well_summary": "суммарные данные по скважинам",
                 "object_summary": "суммарные данные по объекту",
             },
-            sheetTypes: ["well", "object", "well_summary", "object_summary"],
+            sheetTypes: ["well_production", "well_pump", "object", "well_summary", "object_summary"],
             activeTab: 0,
             activeButtonId: 1,
             currentStructureType: 'org',
@@ -44,6 +44,11 @@ export default {
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
+            wellSheetTypes: {
+                'well_production': 'Добывающие скважины',
+                'well_pump': 'Нагнетательные скважины'
+            },
+            wellTypeSelected: 'well_production',
             selectedObjects: {'org': {}, 'geo': {}, 'tech': {}},
             startDate: null,
             endDate: null,
@@ -54,7 +59,8 @@ export default {
             storableParameters: [
                 "startDate", "endDate", "selectedObjects",
                 "activeTab", "activeButtonId", "currentStructureType",
-                "currentItemType", "currentOption", "attributesByHeader"
+                "currentItemType", "currentOption", "attributesByHeader",
+                "wellTypeSelected"
             ]
         }
     },
@@ -293,7 +299,10 @@ export default {
                 "fields": fields,
                 "selectedObjects": selectedObjects,
                 "structureType": currentStructureType,
-                "dates": dates
+                "dates": dates,
+                "filters": {
+                    "wellFilter": this.wellTypeSelected
+                }
             }
         },
         async getSelectedObjects() {
@@ -471,9 +480,12 @@ export default {
             this.currentOption = null;
             this.currentItemType = null;
         },
-        onClickOption(structureType) {
+        onSelectStructureType(structureType) {
             this.currentOption = structureType;
             this.currentItemType = structureType.id;
+        },
+        onSelectWellSheetType(sheetType) {
+            this.wellTypeSelected = sheetType
         },
         onYearClick() {
             if (this.currentDatePickerFilter === 'year') {
@@ -625,6 +637,17 @@ export default {
             }
 
             return string
+        },
+        isDisplayParametersOfSheet(sheetType)
+        {
+            if (!(sheetType in this.wellSheetTypes)) {
+                return this.isDisplayParameterBuilder
+            }
+
+            if (!this.isDisplayParameterBuilder) {
+                return false
+            }
+            return this.wellTypeSelected === sheetType
         }
     }
 }
