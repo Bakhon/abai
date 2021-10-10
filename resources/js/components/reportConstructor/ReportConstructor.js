@@ -294,6 +294,7 @@ export default {
             let fields = await this.getSelectedAttributes();
             let dates = await this.getDates();
             let currentStructureType = this.currentStructureType;
+            fields['well'] = fields[this.wellTypeSelected]
 
             return {
                 "fields": fields,

@@ -140,7 +140,7 @@
               <button class="btn btn-secondary dropdown-toggle" type="button" id="wellSelector"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="dropdown-inner-text">
-                  {{ wellSheetTypes['well_production'] }}
+                  {{ wellSheetTypes[wellTypeSelected] }}
                 </div>
                 <div class="icon-pointer"></div>
               </button>
