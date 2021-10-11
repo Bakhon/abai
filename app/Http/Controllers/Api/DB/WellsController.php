@@ -43,7 +43,7 @@ class WellsController extends Controller
         }
 
         $wellInfo = [
-            'wellInfo' => $well, //$this->get($well)
+            'wellInfo' => $well,
             'status' => $this->status($well),
             'tube_nom' => $this->tubeNom($well),
             'category' => $this->category($well),
@@ -101,7 +101,7 @@ class WellsController extends Controller
         $allParents = [];
         $parent = null;
         $item = $well->getGeo($this->getToday());
-        if($item)
+        if(isset($item))
         {
             $geo_tree = $geo_object->parentTree($item->id);
             $not_duplicate=[];
@@ -131,34 +131,6 @@ class WellsController extends Controller
 
         }
         return $allParents;
-        /*
-        if (isset($well->geo()->wherePivot('dend', '>', $this->getToday())
-                ->wherePivot('dbeg', '<=', $this->getToday())
-                ->withPivot('dend', 'dbeg')
-                ->first()->id)) {
-            $parent = $well->geo()
-                ->wherePivot('dend', '>', $this->getToday())
-                ->wherePivot('dbeg', '<=', $this->getToday())
-                ->withPivot('dend', 'dbeg')
-                ->orderBy('pivot_dbeg')
-                ->first()->id;
-        }
-        while ($parent != null) {
-            array_push($allParents, Geo::all()->find($parent));
-            if (isset(Geo::with('firstParent')->find($parent)->firstParent->where('dend', '>', $this->getToday())
-                    ->where('dbeg', '<=', $this->getToday())->first()->parent)) {
-                $parent = Geo::with('firstParent')
-                    ->find($parent)
-                    ->firstParent
-                    ->where('dend', '>', $this->getToday())
-                    ->where('dbeg', '<=', $this->getToday())
-                    ->first()->parent;
-            } else {
-                Log::info('LOG_GEOS',$allParents);
-                return $allParents;
-            }
-        }
-        return $allParents;*/
     }
 
 
@@ -255,7 +227,7 @@ class WellsController extends Controller
         $org_object = new Org();
         $allParents = [];
         $item = $well->getRelationOrg($this->getToday());
-        if ($item)
+        if (isset($item))
         {
             $dict_orgs = $org_object->parentTree($item->id);
             foreach($dict_orgs as $dict_org)
@@ -263,25 +235,6 @@ class WellsController extends Controller
                 $allParents[]['name_ru'] = $dict_org->name;
             }
         }
-       /*if (isset($well->orgs()
-                ->wherePivot('dend', '>', $this->getToday())
-                ->withPivot('dend', 'dbeg')
-                ->orderBy('pivot_dbeg', 'desc')
-                ->first()->id)) {
-            $parent = $well->orgs()
-                ->wherePivot('dend', '>', $this->getToday())
-                ->withPivot('dend', 'dbeg')
-                ->orderBy('pivot_dbeg', 'desc')
-                ->first()->id;
-        }
-        while ($parent != null) {
-            array_push($allParents, Org::all()->find($parent));
-            if (isset(Org::all()->where('dend', '>', $this->getToday())->find($parent)->parent)) {
-                $parent = Org::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
-            } else {
-                return $allParents;
-            }
-        }*/
 
         return $allParents;
     }
@@ -320,10 +273,6 @@ class WellsController extends Controller
     {
         $lab_research_value = new LabResearchValue();
         return $lab_research_value->Rnas($well->id);
-        /*return $well->labResearchValue()
-            ->withPivot('research_date as research_date')
-            ->orderBy('research_date', 'desc')
-            ->first(['value_double', 'research_date']);*/
     }
 
     private function techModeInj(Well $well)
