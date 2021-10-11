@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\DB;
 
 use App\Models\BigData\Dictionaries\Tech;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TechController
@@ -22,7 +21,6 @@ class TechController
                 [
                     'wells' =>
                         function ($query) {
-                            $query->active(Carbon::now());
                             $query->distinct();
                         }
                 ]

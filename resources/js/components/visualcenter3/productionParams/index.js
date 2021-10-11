@@ -183,6 +183,9 @@ export default {
         },
 
         async switchCategory(category,parent) {
+            this.selectedChartCategory.head = this.chartNameMapping[category].head;
+            this.selectedChartCategory.name = this.chartNameMapping[category].name;
+            this.selectedChartCategory.metric = this.chartNameMapping[category].metric;
             let isWithoutKmg = this.doubleFilter.includes(category);
             let isFilterChanged = category === this.selectedCategory;
             let shouldRecalculateSummary = false;

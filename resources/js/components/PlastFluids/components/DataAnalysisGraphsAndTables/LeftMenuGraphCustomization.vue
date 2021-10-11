@@ -2,6 +2,7 @@
   <div class="customization-category">
     <div class="category-header">
       <input
+        :disabled="valueKey === 'temperature' ? true : false"
         type="radio"
         :id="'customization-category-' + categoryName"
         :value="valueKey"
