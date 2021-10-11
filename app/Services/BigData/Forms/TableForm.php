@@ -92,6 +92,20 @@ abstract class TableForm extends BaseForm
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
+    public function uploadSingleField(string $field)
+    {
+        $row = json_decode($this->request->get('row'), true);
+        $column = json_decode($this->request->get('column'), true);
+        $filter = json_decode($this->request->get('filter'), true);
+
+        return $this->uploadFile($row, $column, $filter);
+    }
+
+    protected function uploadFile(array $row, array $column, array $filter)
+    {
+        return null;
+    }
+
     public function getFormInfo(): array
     {
         $params = $this->params();
@@ -376,8 +390,7 @@ abstract class TableForm extends BaseForm
         $wellsQuery = Well::query()
             ->with('techs', 'geo')
             ->select('id', 'uwi')
-            ->orderBy('uwi')
-            ->active(Carbon::parse($filter->date));
+            ->orderBy('uwi');
 
 
         if ($type === 'tech') {

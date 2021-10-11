@@ -42,12 +42,15 @@
               },
               {
                 "code": "research_target",
-                "type": "text",
-                "title": "aim"
+                "type": "dict",
+                "dict": "research_target",
+                "title": "aim",
+                "validation": "required"
               },
               {
                 "code": "conclusion",
-                "type": "text",
+                "type": "dict",
+                "dict": "gdis_conclusion",
                 "title": "conclusion",
                 "validation": "required"
               },
@@ -3338,21 +3341,32 @@
       ]
     },
     {
-      "title": "doc",
+      "title": "table",
       "blocks": [
         [
           {
             "title": "",
             "items": [
               {
-                "code": "",
+                "code": "documents",
                 "type": "table",
                 "form": "well_document_short",
-                "title": "doc",
+                "title": "table",
+                "table": {
+                  "name": "prod.gdis_complex_file",
+                  "file_type": 4,
+                  "local_key": "gdis_complex",
+                  "document_key": "file"
+                },
+                "document_list": true,
                 "columns": [
                   {
-                    "code": "name_ru",
-                    "title": "scan_doc"
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
                   }
                 ]
               }
