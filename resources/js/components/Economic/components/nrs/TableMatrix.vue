@@ -35,6 +35,17 @@
           </label>
         </div>
 
+        <div class="form-check mr-2">
+          <input v-model="isVisibleChartTotal"
+                 id="visible_total"
+                 type="checkbox"
+                 class="form-check-input">
+          <label for="visible_total"
+                 class="form-check-label text-blue">
+            {{ trans('economic_reference.show_charts') }}
+          </label>
+        </div>
+
         <select-operating-profit
             :form="form"
             class="mr-2 bg-dark-blue text-blue"
@@ -48,18 +59,35 @@
       <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
         <div v-for="(wellKey, index) in wellKeys"
              :key="wellKey.prop"
-             class="form-check mr-2 mb-2"
-             style="flex: 0 0 20%;">
-          <input v-model="wellKey.isVisible"
-                 :id="wellKey.prop"
-                 type="checkbox"
-                 class="form-check-input">
-          <label :for="wellKey.prop"
-                 class="form-check-label">
-            {{ wellKey.name }}
-          </label>
+             class="d-flex flex-20 mr-2 mb-2 line-height-16px">
+          <div class="d-flex align-items-center form-check mr-2"
+               style="flex: 1 0 150px">
+            <input v-model="wellKey.isVisible"
+                   :id="wellKey.prop"
+                   type="checkbox"
+                   class="form-check-input mt-0">
+            <label :for="wellKey.prop"
+                   class="form-check-label">
+              {{ wellKey.name }}
+            </label>
+          </div>
+
+          <select-chart-type
+              v-if="isVisibleChartTotal"
+              :form="wellKey"
+              class="bg-dark-blue text-white mr-3"
+              style="flex: 0 0 100px"/>
         </div>
       </div>
+
+      <chart-matrix-total
+          v-if="isVisibleChartTotal"
+          :dates="data.dates"
+          :well-sum="tableData.totalSum"
+          :well-keys="visibleWellKeys"
+          :prs-sum="tableData.prsSum"
+          :prs-keys="prsKeys"
+          class="text-white container-fluid bg-main1 pt-2 px-4"/>
 
       <vue-table-dynamic
           :params="tablePrsParams"
@@ -103,7 +131,7 @@
         </template>
       </vue-table-dynamic>
 
-      <chart-matrix
+      <chart-matrix-well
           v-for="uwi in chartUwis"
           :key="uwi"
           :uwi="uwi"
@@ -149,12 +177,19 @@
 </template>
 
 <script>
-import ChartMatrix from "./ChartMatrix";
+import ChartMatrixWell from "./ChartMatrixWell";
+import ChartMatrixTotal from "./ChartMatrixTotal";
+import SelectChartType from "../SelectChartType";
 import SelectOperatingProfit from "../SelectOperatingProfit";
 
 export default {
   name: "TableMatrix",
-  components: {ChartMatrix, SelectOperatingProfit},
+  components: {
+    ChartMatrixWell,
+    ChartMatrixTotal,
+    SelectChartType,
+    SelectOperatingProfit
+  },
   props: {
     data: {
       required: true,
@@ -168,6 +203,7 @@ export default {
     isVisibleWells: false,
     isVisibleProfitable: true,
     isVisibleProfitless: true,
+    isVisibleChartTotal: false,
     form: {
       operatingProfit: 'Operating_profit'
     }
@@ -434,7 +470,20 @@ export default {
 
     columnWidth() {
       return this.tableHeaders.length <= 12
-          ? []
+          ? this.tableHeaders.map((col, index) => {
+            let width = null
+
+            switch (index) {
+              case 0:
+                width = 180
+                break
+              case 1:
+                width = 150
+                break
+            }
+
+            return {column: index, width: width}
+          })
           : this.tableHeaders.map((col, index) => ({
             column: index,
             width: index > 1 ? 120 : 150
@@ -463,6 +512,32 @@ export default {
     },
 
     getWellValue(well, key, date, isString = false) {
+      if (key.isProfitable) {
+        if (!well[this.form.operatingProfit].hasOwnProperty(date)) {
+          return 0
+        }
+
+        return +well[this.form.operatingProfit][date] > 0 ? 1 : 0
+      }
+
+      if (key.isProfitless) {
+        if (!well[this.form.operatingProfit].hasOwnProperty(date)) {
+          return 0
+        }
+
+        return +well[this.form.operatingProfit][date] > 0 ? 0 : 1
+      }
+
+      if (date === 'sum') {
+        if (this.isVisibleProfitable && !this.isVisibleProfitless && well[this.form.operatingProfit].sum <= 0) {
+          return 0
+        }
+
+        if (this.isVisibleProfitless && !this.isVisibleProfitable && well[this.form.operatingProfit].sum > 0) {
+          return 0
+        }
+      }
+
       if (key.props) {
         let sum = 0
 
@@ -471,22 +546,6 @@ export default {
         })
 
         return sum
-      }
-
-      if (key.isProfitable) {
-        if (!well[this.operatingProfitKey].hasOwnProperty(date)) {
-          return 0
-        }
-
-        return +well[this.operatingProfitKey][date] > 0 ? 1 : 0
-      }
-
-      if (key.isProfitless) {
-        if (!well[this.operatingProfitKey].hasOwnProperty(date)) {
-          return 0
-        }
-
-        return +well[this.operatingProfitKey][date] > 0 ? 0 : 1
       }
 
       if (well[key.prop] && well[key.prop][date]) {
@@ -510,23 +569,27 @@ export default {
           prop: 'oil',
           name: this.trans('economic_reference.oil_production'),
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'liquid',
           name: this.trans('economic_reference.liquid_production'),
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'Revenue_export',
           name: this.trans('economic_reference.revenue_export'),
           dimension: 1000,
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'Revenue_local',
           name: this.trans('economic_reference.revenue_local'),
           dimension: 1000,
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'tax_costs',
@@ -534,54 +597,63 @@ export default {
           name: this.trans('economic_reference.tax_costs'),
           dimension: 1000,
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'Trans_expenditures',
           name: this.trans('economic_reference.trans_expenditures'),
           dimension: 1000,
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'NetBack_bf_pr_exp',
           name: `${this.trans('economic_reference.income')} NetBack`,
           dimension: 1000,
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'Variable_expenditures',
           name: this.trans('economic_reference.variable_expenditures'),
           dimension: 1000,
           isVisible: true,
+          chartType: 'line',
         },
         {
           prop: 'Fixed_nopayroll_expenditures',
           name: this.trans('economic_reference.fixed_nopayroll_expenditures'),
           dimension: 1000,
           isVisible: false,
+          chartType: 'line',
         },
         {
           prop: 'Fixed_payroll_expenditures',
           name: this.trans('economic_reference.fot'),
           dimension: 1000,
           isVisible: false,
+          chartType: 'line',
         },
         {
           prop: 'Fixed_expenditures',
           name: this.trans('economic_reference.fixed_expenditures'),
           dimension: 1000,
           isVisible: false,
+          chartType: 'line',
         },
         {
           prop: 'Gaoverheads_expenditures',
           name: this.trans('economic_reference.gaoverheads'),
           dimension: 1000,
           isVisible: false,
+          chartType: 'line',
         },
         {
           prop: 'Overall_expenditures',
           name: this.trans('economic_reference.costs'),
           dimension: 1000,
           isVisible: false,
+          chartType: 'line',
         },
         {
           prop: 'Operating_profit',
@@ -589,6 +661,7 @@ export default {
           dimension: 1000,
           isVisible: false,
           isColorful: true,
+          chartType: 'line',
         },
       ]
     },
@@ -622,7 +695,7 @@ export default {
   height: 45px !important;
 }
 
-.matrix-table >>> .v-table-fixed .table-cell {
+.matrix-table >>> .table-cell {
   line-height: 13px;
 }
 
@@ -644,6 +717,14 @@ export default {
 }
 
 .bg-dark-blue {
-  background: #272953;
+  background-color: #333975;
+}
+
+.line-height-16px {
+  line-height: 16px;
+}
+
+.flex-20 {
+  flex: 0 0 20%;
 }
 </style>
