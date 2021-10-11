@@ -113,13 +113,13 @@
         <div class="svg-icon-chart-1 z-index-2" @click="showModal('chart1')">
           <img src="./img/maximize-chart.svg" alt="">
         </div>
-        <apexchart type="line" height="200" :options="chartOptions" :series="chartData.series_1"></apexchart>
+        <apexchart type="line" height="200" :options="chartOptions" ref="newWellsDynamicsChart" :series="chartData.series_1"></apexchart>
       </div>
       <div class="col-6 pr-0 pl-2 z-index-1">
         <div class="svg-icon-chart-2 z-index-2" @click="showModal('chart2')">
           <img src="./img/maximize-chart.svg" alt="">
         </div>
-        <apexchart type="line" height="200" :options="chartOptions2" :series="chartData.series_2"></apexchart>
+        <apexchart type="line" height="200" :options="chartOptions2" ref="gtmDynamicsChart" :series="chartData.series_2"></apexchart>
       </div>
       <div>
         <modal class="modal-bign-wrapper" name="chart1" draggable=".modal-bign-header" :width="1050" :height="500"
@@ -130,7 +130,7 @@
                 {{ trans('pgno.zakrit') }}
               </button>
             </div>
-            <apexchart type="line" height="400" width="1000" style="color: black" :options="chartOptions"
+            <apexchart type="line" height="400" width="1000" style="color: black" :options="chartOptions" ref="newWellsDynamicsChartModal"
                        :series="chartData.series_1"></apexchart>
           </div>
         </modal>
@@ -142,7 +142,7 @@
                 {{ trans('pgno.zakrit') }}
               </button>
             </div>
-            <apexchart type="line" height="400" width="1000" style="color: black" chart="chart" :options="chartOptions2"
+            <apexchart type="line" height="400" width="1000" style="color: black" ref="gtmDynamicsChartModal" chart="chart" :options="chartOptions2"
                        :series="chartData.series_2"></apexchart>
           </div>
         </modal>

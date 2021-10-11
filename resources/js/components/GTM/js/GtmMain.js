@@ -226,9 +226,17 @@ export default {
             ).then((response) => {
                 let data = response.data;
                 if (data) {
-                    this.chartData = data
+                    this.chartData = data;
+
+                    this.$refs.newWellsDynamicsChart.updateOptions({ labels: data.months });
+                    this.chartOptions.labels = data.months;
+                    this.$refs.gtmDynamicsChart.updateOptions({ labels: data.months });
+                    this.chartOptions2.labels = data.months;
                 }
             }).finally(() => this.SET_LOADING(false));
+        },
+        modalOpened() {
+            console.log('test');
         },
         getData() {
             this.SET_LOADING(true);

@@ -220,6 +220,7 @@ export default {
                     data.forEach((item) => {
                         this.comparisonIndicators.push([
                             item.gtm_kind,
+                            '-',
                             item.wellsCount,
                             Math.round(item.avgDebitPlan * 100) / 100,
                             Math.round(item.avgDebitFact * 100) / 100,

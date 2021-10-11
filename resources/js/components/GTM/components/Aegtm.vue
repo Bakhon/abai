@@ -31,11 +31,13 @@
                   <thead>
                   <tr>
                     <th class="align-middle" rowspan="2">{{ trans('paegtm.gtmType') }}</th>
-                    <th class="align-middle" rowspan="2">{{ trans('paegtm.countTh') }}</th>
+                    <th colspan="2">{{ trans('paegtm.countTh') }}</th>
                     <th colspan="2">{{ trans('paegtm.avgDebitTh') }}</th>
                     <th colspan="2">{{ trans('paegtm.additionalMiningTh') }}</th>
                   </tr>
                   <tr>
+                    <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                    <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
                     <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
                     <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
                     <th>{{ trans('paegtm.plan').toLowerCase() }}</th>

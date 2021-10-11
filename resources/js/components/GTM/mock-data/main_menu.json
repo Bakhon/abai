@@ -84,6 +84,38 @@
     ]
   },
   {
+    "name": "Планирование программы ГТМ",
+    "icon": "/img/GTM/production_planning.svg",
+    "parentType": "productionPlanningAndMonitoring",
+    "children": [
+      {
+        "name": "Критерии подбора",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_criteria.svg"
+      },
+      {
+        "name": "Прогноз эффективности (методика)",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_forecast.svg"
+      },
+      {
+        "name": "Ранжирование кандидатов",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_raging.svg"
+      },
+      {
+        "name": "Программа бурения",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_programm.svg"
+      },
+      {
+        "name": "Выгрузка отчетности",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_export.svg"
+      }
+    ]
+  },
+  {
     "name": "Цифровой рейтинг новых скважин",
     "icon": "/img/GTM/new_wells_rating.svg",
     "parentType": "digitalRating",
@@ -139,38 +171,5 @@
         "url": "/digital-rating/compare-drilling"
       }
     ]
-  },
-  {
-    "name": "Планирование добычи и мониторинг",
-    "icon": "/img/GTM/production_planning.svg",
-    "parentType": "productionPlanningAndMonitoring",
-    "children": [
-      {
-        "name": "Критерии подбора",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_criteria.svg"
-      },
-      {
-        "name": "Прогноз эффективности (методика)",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_forecast.svg"
-      },
-      {
-        "name": "Ранжирование кандидатов",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_raging.svg"
-      },
-      {
-        "name": "Программа бурения",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_programm.svg"
-      },
-      {
-        "name": "Выгрузка отчетности",
-        "component": null,
-        "icon": "/img/GTM/icon_menu_export.svg"
-      }
-    ]
   }
-
 ]

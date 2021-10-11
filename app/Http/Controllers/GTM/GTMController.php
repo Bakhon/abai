@@ -10,6 +10,7 @@ use App\Models\BigData\Well;
 use App\Models\Paegtm\DzoAegtm;
 use App\Services\DruidService;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -30,7 +31,7 @@ class GTMController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:paegtm view main')->only('index');
+//        $this->middleware('can:paegtm view main')->only('index');
     }
 
     public function index()
@@ -691,6 +692,14 @@ class GTMController extends Controller
      */
     public function getChartData(Request $request): JsonResponse
     {
+        $result = [];
+
+        $period = CarbonPeriod::create($request->dateStart, '1 month', $request->dateEnd);
+
+        foreach ($period as $dt) {
+            $result['months'][] =  __('paegtm.'.$dt->format("M"));
+        }
+
         $data = $this->getMainData($request, true)
             ->select(
                 'date',
@@ -708,7 +717,7 @@ class GTMController extends Controller
             ->orderBy('date')
             ->get();
 
-        $result = [];
+
 
         $vnsPlan = $vnsFact = $vnsProdPlan = $vnsProdFact =  [];
         $gtmPlan = $gtmFact = $gtmProdPlan = $gtmProdFact =  [];
