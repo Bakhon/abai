@@ -14,17 +14,17 @@
               {{ trans('digital_rating.horizon') }}
             </template>
           </btn-dropdown>
-          <btn-dropdown :list="yearList" class="mr-10px">
+          <btn-dropdown :list="getYearList" class="mr-10px">
             <template #title>
               {{ trans('digital_rating.year') }}
             </template>
           </btn-dropdown>
-          <btn-dropdown :list="['Test1', 'Test2']" class="mr-10px">
+          <btn-dropdown :list="coincidences" class="mr-10px">
             <template #title>
               {{ trans('digital_rating.coincidencePlannedWellsWithin') }}
             </template>
           </btn-dropdown>
-          <btn-dropdown :list="['Test1', 'Test2']">
+          <btn-dropdown :list="actualIndicators">
             <template #title>
               {{ trans('digital_rating.comparisonDesignActualIndicators') }}
             </template>
