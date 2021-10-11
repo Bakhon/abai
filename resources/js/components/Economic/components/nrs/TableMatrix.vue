@@ -185,7 +185,9 @@ export default {
     }
   }),
   created() {
-    this.initData()
+    this.setWellKeys()
+
+    this.resetData()
   },
   computed: {
     uwis() {
@@ -440,8 +442,11 @@ export default {
         {
           prop: 'prs1',
           name: this.trans('economic_reference.prs_count'),
-          isTotal: true,
           dimensionTitle: `${this.trans('economic_reference.units')}.`,
+          dimension: 1000,
+          calcValue: function (data, index) {
+            return data.PRS_nopayroll_expenditures[index].value / data.cost_WR_nopayroll[index].value
+          },
         },
         {
           prop: 'cost_WR_nopayroll',
@@ -463,22 +468,20 @@ export default {
           `,
         },
         {
-          prop: 'prs_nopayroll_expenditures',
+          prop: 'PRS_nopayroll_expenditures',
           name: this.trans('economic_reference.prs_nopayroll_expenditures'),
-          calcValue: function (data, index) {
-            return data.prs1[index].value * data.cost_WR_nopayroll[index].value
-          },
+          isTotal: true,
+          dimension: 1000,
           dimensionTitle: `
             ${this.trans('economic_reference.thousand')}
             ${this.trans('economic_reference.tenge')}
           `,
         },
         {
-          prop: 'prs_expenditures',
+          prop: 'PRS_expenditures',
           name: this.trans('economic_reference.prs_expenditures'),
-          calcValue: function (data, index) {
-            return data.prs1[index].value * data.cost_WR_payroll[index].value
-          },
+          isTotal: true,
+          dimension: 1000,
           dimensionTitle: `
             ${this.trans('economic_reference.thousand')}
             ${this.trans('economic_reference.tenge')}
@@ -523,7 +526,7 @@ export default {
         value = +value / dimension
       }
 
-      return (+value.toFixed(1)).toLocaleString()
+      return (+value.toFixed(0)).toLocaleString()
     },
 
     getWellValue(well, key, date, isString = false) {
@@ -598,15 +601,7 @@ export default {
           : this.chartUwis.splice(index, 1);
     },
 
-    initData() {
-      this.initWellKeys()
-
-      this.resetSelectedUwis()
-
-      this.resetCharts()
-    },
-
-    initWellKeys() {
+    setWellKeys() {
       this.wellKeys = [
         {
           prop: 'oil',
@@ -765,6 +760,12 @@ export default {
           `,
         },
       ]
+    },
+
+    resetData() {
+      this.resetSelectedUwis()
+
+      this.resetCharts()
     },
 
     resetSelectedUwis() {
