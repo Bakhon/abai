@@ -28,8 +28,8 @@ import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
 import InputDataOperations from "./dataManagers/inputDataOperations";
 import Archieve from "./dataManagers/archieve";
-;
 import {globalloadingMutations} from '@store/helpers';
+import Plans from "./dataManagers/plans";
 
 const defaultDzoTicker = "ЭМГ";
 
@@ -204,6 +204,8 @@ export default {
         this.setTableFormat();
         await this.updateCurrentData();
         this.addListeners();
+        this.fillPlanColumns();
+        this.fillPlanRows();
         this.SET_LOADING(false);
     },
     methods: {
@@ -477,5 +479,5 @@ export default {
     components: {
         VGrid
     },
-    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve],
+    mixins: [Visual,TodayDzoData,InputDataOperations,Archieve,Plans],
 };

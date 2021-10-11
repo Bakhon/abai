@@ -279,7 +279,8 @@ return array (
     'dateSelect' => 'Выберите дату',
     'executor' => 'ФИО',
     'reason' => 'Причина',
-    'position' => 'Должность'
+    'position' => 'Должность',
+    'planParams' => 'Плановые показатели'
   ),
   'idleWells' => 'Фонд нагнетательных скважин',
   'inIdle' => 'В простое',

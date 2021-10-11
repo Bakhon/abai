@@ -4,7 +4,11 @@ import initialRowsKOA from "../dzoData/initial_rows_koa.json";
 export default {
     data: function () {
         return {
-            isArchiveActive: false,
+            category: {
+                'isArchieveActive': false,
+                'isFactActive': true,
+                'isPlanActive': false
+            },
             period: moment().subtract(1,'days'),
             datePickerOptions: {
                 disabledDate (date) {
@@ -41,17 +45,35 @@ export default {
                 this.status = this.trans("visualcenter.importForm.status.sendedToApprove") + '!';
             }
         },
-       async changeCategory() {
-            this.isArchiveActive = !this.isArchiveActive;
-            if (!this.isArchiveActive) {
-                this.isDataExist = false;
-                this.isDataReady = false;
-                await this.changeDefaultDzo();
-                await this.updateCurrentData();
-                this.addListeners();
-            }
-        },
+       async changeCategory(name) {
+            // if (!this.isArchiveActive) {
+            //     this.isDataExist = false;
+            //     this.isDataReady = false;
+            //     await this.changeDefaultDzo();
+            //     await this.updateCurrentData();
+            //     this.addListeners();
+            // }
+           this.category = _.mapValues(this.category, () => false);
+           this.category[name] = true;
+           this.isDataExist = false;
+           this.isDataReady = false;
+           this.disableHighlightOnCells();
+           if (name === 'isPlanActive') {
+               await this.sleep(100);
+               for (let i=0; i <12; i++) {
+                   this.setClassToElement($('#planGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
+               }
+           } else {
+               await this.changeDefaultDzo();
+               await this.updateCurrentData();
+               this.addListeners();
+               this.setTableFormat();
+           }
+       },
         async switchCompany(e) {
+            let spliced = this.planRows.splice(9,20);
+           // document.querySelector('#planGrid').source = spliced;
+            return;
             this.SET_LOADING(true);
             this.selectedDzo.ticker = e.target.value;
             if (this.selectedDzo.ticker === 'КОА') {
