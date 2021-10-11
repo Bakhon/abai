@@ -26,7 +26,7 @@ const COLORS = [
 ]
 
 export default {
-  name: "ChartMatrix",
+  name: "ChartMatrixWell",
   components: {apexchart: chart},
   props: {
     uwi: {
