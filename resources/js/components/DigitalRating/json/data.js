@@ -319,6 +319,45 @@ const rowsHorizon = [
         value2: '62,2%',
         value3: '49%'
     }
+];
+
+const actualIndicators = [
+    {
+        id: 1,
+        title: 'Добыча нефти, тыс.т'
+    },
+    {
+        id: 2,
+        title: 'Добыча нефти по новым скважинам, тыс.т'
+    },
+    {
+        id: 3,
+        title: 'Добыча жидкости, тыс.т'
+    },
+    {
+        id: 4,
+        title: 'Обводненность, %'
+    },
+    {
+        id: 5,
+        title: 'Дебит нефти, т/сут'
+    },
+    {
+        id: 6,
+        title: 'Дебит нефти по новым скважинам, т/сут'
+    },
+    {
+        id: 7,
+        title: 'Ввод скважин, ед.'
+    },
+    {
+        id: 8,
+        title: 'Ввод добывающих скважин из бурения, ед.'
+    },
+    {
+        id: 9,
+        title: 'Ввод нагнетательных скважин скважин из бурения, ед.'
+    }
 ]
 
 export {
@@ -332,5 +371,6 @@ export {
     fileActions,
     mapActions,
     rowsOil,
-    rowsHorizon
+    rowsHorizon,
+    actualIndicators
 }
