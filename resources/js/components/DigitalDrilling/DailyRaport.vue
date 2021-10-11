@@ -35,7 +35,7 @@
                                 {{trans('digital_drilling.daily_raport.unit_name')}}
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="unitNames"/>-->
+                                <select-input :options="drillingRig" name="name"/>
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_mode')}}
@@ -71,7 +71,7 @@
                                 {{trans('digital_drilling.daily_raport.drilling_contractor')}}
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="drillingContractors"/>-->
+                                <select-input :options="drillingContractors" name="name"/>
                             </td>
                         </tr>
                         <tr>
@@ -509,7 +509,7 @@
                             <td colspan="9">{{trans('digital_drilling.daily_raport.descent_tool_characteristic')}}</td>
                             <td colspan="4" class="w-20">{{trans('digital_drilling.daily_raport.last_column_diameter')}}</td>
                             <td class="w-7">
-                                <!--<select-input :options="diameters"/>-->
+                                <select-input :options="diameters" name="diameter"/>
                             </td>
                         </tr>
                         <tr>
@@ -517,7 +517,7 @@
                                 {{trans('digital_drilling.daily_raport.chisel_type')}}
                             </td>
                             <td colspan="2">
-                                <select-input :options="bitTypes" />
+                                <select-input :options="bitTypes" name="name"/>
                             </td>
                             <td colspan="2">
                                 <select name="" id="">
@@ -571,7 +571,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -583,7 +583,7 @@
                                 {{trans('digital_drilling.daily_raport.diameter_next_column')}}
                             </td>
                             <td>
-                                <!--<select-input :options="diameters"/>-->
+                                <select-input :options="diameters" name="diameter"/>
                             </td>
                         </tr>
                         <tr>
@@ -608,7 +608,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -628,7 +628,7 @@
                                 {{trans('digital_drilling.daily_raport.diameter')}}
                             </td>
                             <td colspan="2">
-                               <!--<select-input :options="bitDiameters"/>-->
+                               <select-input :options="bitDiameters" name="diameter"/>
                             </td>
                             <td colspan="2">
                                 <select name="" id="">
@@ -645,7 +645,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -680,7 +680,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -723,7 +723,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -758,7 +758,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -793,7 +793,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -828,7 +828,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -863,7 +863,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -898,7 +898,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -933,7 +933,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
 
                             <td >
@@ -969,7 +969,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -1045,7 +1045,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -1067,7 +1067,7 @@
                             <td><input type="text"></td>
                             <td><input type="text"></td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
@@ -1085,7 +1085,7 @@
                             <td><input type="text"></td>
                             <td><input type="text"></td>
                             <td colspan="2">
-                                <!--<select-input :options="threadTypes" />-->
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
@@ -1662,7 +1662,7 @@
                         </tr>
                         <tr v-for="i in 6">
                             <td colspan="3" class="w-10">
-                                <!--<select-input :options="drillingMudTypes"/>-->
+                                <select-input :options="drillingMudTypes" name="name"/>
                             </td>
                             <td v-for="i in 19">
                                 <input type="text">
@@ -1991,9 +1991,8 @@
                 bushings:[
                     '120', '130', '140', '150', '160', '170', '180'
                 ],
-                diameters:[114.3, 127,139.7, 146.1, 168.3, 177.8, 193.7, 219.1, 244,
-                           273.1, 298.5, 323.9, 339.7, 351, 377, 406.4, 425.5, 508, 762 ],
-                drillingMudTypes: ['На водной основе', 'На углеводородной основе', 'Аэрированный', 'Эмульсионный'],
+                diameters:[],
+                drillingMudTypes: [],
                 operationCodes:[],
                 chemicalNames:['Бикорбанат натрия', 'Биополимер ксантановый Гламин', 'Калий Хлор', 'Лубрикон ТУ',
                                'ATREN Antifoam (гаспен силикон)', 'Atren Bio (Биоцидол)', 'PAC LV - ХимПАК В',
@@ -2005,7 +2004,7 @@
                                'Бентонит порошкообразный для струтуро образования', 'Лимонная кислота',
                                'Ореховая скорлупа', 'Соль техническая', 'Шелуха рисовая', 'Ингибитор глин, Стабилайт II',
                                'Микрошарик, 500-1000 мкм', 'Микрошарик, 150-600 мкм' ],
-                threadTypes: ['ОТТМ', 'ОТТГ', 'ТБО', 'VAM'],
+                threadTypes: [],
                 pumps: ['F-800D', 'F-1000D', 'F-1300D', 'F-1600D', 'SL3NB-1300D', 'SL3NB-1000D', 'НБ-1000D'],
                 timeSpents: ['Организ. простой', 'Ремонт после 21 часа', 'Осложения по стволу', 'Авария',
                              'Неэффективность работы', 'Ожидание оборудования', 'Ожидание персонала',
@@ -2063,6 +2062,7 @@
                     'digital_drilling.daily_raport.exceed_time_norms',
                 ],
                 drillingRigTypes:[],
+                drillingRig:[],
                 Nozzles: [
                     [7, 0.038, 0.075,  0.113,  0.150,  0.188,  0.225,  0.263,  0.301,  0.338,  0.376],
                     [8, 0.049, 0.098,  0.147,  0.196,  0.245,  0.295,  0.344,  0.393,  0.442,  0.491],
@@ -2090,14 +2090,7 @@
                     'Smith Bits',
                     'Security DBS',
                 ],
-                bitDiameters: [
-                    '95,25', '98,42', '104,77', '114,3', '118,74', '120,65', '123,82', '139,7', '142,87', '149,22',
-                    '152,4', '155,58', '158,75', '165,1', '171,45', '184,15', '190,5', '200,02', '212,72', '215,9',
-                    '222,25', '228,6', '241,3', '245,74', '250,82', '260,35', '266,7', '269,87', '279,4', '295,27',
-                    '304,8', '307,98', '311,15', '317,5', '342,9', '349,25', '368,3', '374,65', '393,7', '406,4',
-                    '412,75', '431,8', '444,5', '457,2', '469,9',  '508', '558,8', '584,2', '596,9', '609,6',
-                    '660,4', '711,2', '736,6', '762', '863,6', '914,4',
-                ],
+                bitDiameters: [],
                 unitNames: ['ZJ-10', 'ZJ-15', 'ZJ-20', 'ZJ-30', 'ZJ-40', 'ZJ-40/2250DBT', 'ZJ-50', 'ZJ-70', 'МБУ ZJ-30',
                             'МБУ ZJ-30/27', 'МБУ-125', 'МБУ-140', 'МБУ-160', 'XJ-120', 'XJ-100', 'XJ-350', 'XJ-450',
                             'XJ-550', 'XJ-750', 'XCMG XZ360E', 'XCMG XR150d', 'IRI IDECO-270', 'АРБ-100', 'VR-500'],
@@ -2106,12 +2099,31 @@
         mounted(){
             this.getOperators()
             this.getRigType()
+            this.getRig()
+            this.getBitDiameters()
+            this.getDrillingMudTypes()
+            this.getThreadTypes()
+            this.getDiameters()
             this.getConstructors()
             this.getDrillingContractors()
             this.getOperationCodes()
             this.getBitTypes()
         },
         methods: {
+            getDiameters(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/casing_diameter/').then((response) => {
+                    let data = response.data;
+                    this.diameters = data
+                });
+
+            },
+            getRig(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/rig/').then((response) => {
+                    let data = response.data;
+                    this.drillingRig = data
+                });
+
+            },
             getRigType(){
                 this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/rig_type/').then((response) => {
                     let data = response.data;
@@ -2123,6 +2135,27 @@
                 this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/chisel/').then((response) => {
                     let data = response.data;
                     this.bitTypes = data
+                });
+
+            },
+            getBitDiameters(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/bit_diameter/').then((response) => {
+                    let data = response.data;
+                    this.bitDiameters = data
+                });
+
+            },
+            getDrillingMudTypes(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/mud_type/').then((response) => {
+                    let data = response.data;
+                    this.drillingMudTypes = data
+                });
+
+            },
+            getThreadTypes(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/screw_type/').then((response) => {
+                    let data = response.data;
+                    this.threadTypes = data
                 });
 
             },

@@ -3,7 +3,12 @@
         <select v-model="selected" v-if="options.length>0">
             <option :value="option.name_ru"
                     v-for="option in options"
+                    v-if="name=='name'"
             >{{option.name_ru}}</option>
+            <option :value="option.diameter"
+                    v-for="option in options"
+                    v-if="name=='diameter'"
+            >{{option.diameter}}</option>
         </select>
         <input type="text" class="input" v-model="selected">
     </div>
@@ -12,7 +17,7 @@
 <script>
     export default {
         name: "SelectInput",
-        props: ['options'],
+        props: ['options', 'name'],
         data(){
             return{
                 selected: '',
