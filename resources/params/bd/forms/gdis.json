@@ -41,16 +41,14 @@
                 "validation": "required"
               },
               {
-                "code": "research_target",
-                "type": "dict",
-                "dict": "research_target",
+                "code": "research_target_text",
+                "type": "text",
                 "title": "aim",
                 "validation": "required"
               },
               {
-                "code": "conclusion",
-                "type": "dict",
-                "dict": "gdis_conclusion",
+                "code": "conclusion_text",
+                "type": "text",
                 "title": "conclusion",
                 "validation": "required"
               },

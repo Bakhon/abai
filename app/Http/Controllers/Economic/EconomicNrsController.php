@@ -25,7 +25,7 @@ class EconomicNrsController extends Controller
     protected $druidClient;
     protected $structureService;
 
-    const DATA_SOURCE = 'economic_nrs_total_v5';
+    const DATA_SOURCE = 'economic_nrs_total_v7';
 
     const GRANULARITY_DAILY_FORMAT = 'yyyy-MM-dd';
     const GRANULARITY_MONTHLY_FORMAT = 'MM-yyyy';
@@ -430,6 +430,7 @@ class EconomicNrsController extends Controller
         $sumKeys = [
             "Operating_profit",
             "Operating_profit_variable_prs",
+            "Operating_profit_variable_prs_nopayrall",
             "Overall_expenditures",
             "NetBack_bf_pr_exp",
             "oil",
