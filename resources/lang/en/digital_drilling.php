@@ -5,7 +5,6 @@ return array (
     'database' => 'Database',
     'general_information' => 'General information',
     'well_data_sheet' => 'Well data sheet',
-    'drilling_rigs' => 'Drilling Rigs',
     'open_hole_logging' => 'Open hole logging',
     'survey' => 'Survey',
     'well_design_menu' => 'Well design',

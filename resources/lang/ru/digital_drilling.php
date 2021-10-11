@@ -5,7 +5,6 @@ return array (
   'database' => 'База данных',
   'general_information' => 'Общая информация',
   'well_data_sheet' => 'Паспорт скважины',
-  'drilling_rigs' => 'Буровые установки',
   'open_hole_logging' => 'ГИС в открытом стволе',
   'survey' => 'Инклинометрия',
   'well_design_menu' => 'Конструкция скважины',
@@ -70,7 +69,6 @@ return array (
       'select_file' => 'Выберите файл',
       'or' => 'или',
       'drag_here' => 'перетащите сюда файл',
-      'selecting_submodule'=> 'Выбор подмодуля',
   ],
   'home' => [
       'operating_oil_pipeline' => 'Действующий нефтепровод',
@@ -122,12 +120,6 @@ return array (
       'date_last_workover' => 'Дата последнего КРС',
       'date_last_ORS' => 'Дата последнего ПРС',
       'date_last_GIS' => 'Дата последнего ГИС',
-      'designation_according_project' => 'Назначение скважины по проекту',
-      'drainage_radius' => 'Радиус дренирования',
-      'date_last_well_GDIS' => 'Дата последнего ГДИС',
-      'contract_date' => 'Дата договора',
-      'contract_amount' => 'Сумма договора',
-      'select_date' => 'Выберите дату:',
   ],
 
   'inclino' => [
@@ -194,7 +186,6 @@ return array (
       'casing' => 'Обсадная колонна',
       'data_input' => 'Ввод данных',
       'visualization' => 'Визуализация',
-      'tabular_data' => 'Табличные данные',
       'selection_OK' => 'Подбор ОК(каталог)',
       'pressure_graph' => 'График совмещенных давлений',
       'geological_data' => 'Геологические данные',
