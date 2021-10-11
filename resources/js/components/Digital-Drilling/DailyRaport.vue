@@ -372,13 +372,17 @@
                             <tbody>
                                 <tr v-for="i in 19">
                                     <td class="w-15">
-                                        <!--<select-input :options="operation1"/>-->
+                                        <select name="" id="">
+                                            <option value="">Test</option>
+                                        </select>
                                     </td>
                                     <td><input type="text"></td>
                                     <td><input type="text"></td>
                                     <td><input type="text"></td>
                                     <td class="w-20">
-                                        <!--<select-input :options="operation2"/>-->
+                                        <select name="" id="">
+                                            <option value="">Test</option>
+                                        </select>
                                     </td>
                                     <td><input type="text"></td>
                                     <td><input type="text"></td>
@@ -554,7 +558,9 @@
                                 {{trans('digital_drilling.daily_raport.IADC_code')}}
                             </td>
                             <td colspan="2">
-                                <!--<select-input :options="[]"/>-->
+                                <select name="" id="">
+                                    <option value="">Test</option>
+                                </select>
                             </td>
                             <td colspan="2">
                                 <select name="" id="">
@@ -591,7 +597,9 @@
                                 {{trans('digital_drilling.daily_raport.manufacturer')}}
                             </td>
                             <td colspan="2">
-                               <!--<select-input :options="manufacturers"/>-->
+                                <select name="" id="">
+                                    <option value="">Test</option>
+                                </select>
                             </td>
                             <td colspan="2">
                                 <select name="" id="">
@@ -981,7 +989,9 @@
                                 {{trans('digital_drilling.daily_raport.bushings_mm')}}
                             </td>
                             <td>
-                                <!--<select-input :options="bushings"/>-->
+                                <select name="" id="">
+                                    <option value="">Test</option>
+                                </select>
                             </td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                             <td>
@@ -1175,7 +1185,9 @@
                             <td colspan="2"><input type="text"></td>
                             <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
                             <td>
-                                <!--<select-input :options="bushings"/>-->
+                                <select name="" id="">
+                                    <option value="">Test</option>
+                                </select>
                             </td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                             <td><input type="text"></td>
@@ -1253,7 +1265,6 @@
                 </table>
                 <table class="pump" v-if="pump[0].active">
                     <tbody>
-                        <!-- N3 -->
                         <tr>
                             <td colspan="3"><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
@@ -1281,7 +1292,9 @@
                             <td colspan="2"><input type="text"></td>
                             <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
                             <td>
-                                <!--<select-input :options="bushings"/>-->
+                                <select name="" id="">
+                                    <option value="">Test</option>
+                                </select>
                             </td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                             <td><input type="text"></td>
@@ -1360,12 +1373,10 @@
                             <td v-for="i in 4"><input type="text"></td>
                             <td colspan="5">Добавить еще <span class="add" @click="addPump">+</span></td>
                         </tr>
-                        <!-- end N3 -->
                     </tbody>
                 </table>
                 <table class="pump" v-if="pump[1].active">
                     <tbody>
-                        <!-- N4 -->
                         <tr>
                             <td colspan="3"><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
@@ -1393,7 +1404,9 @@
                             <td colspan="2"><input type="text"></td>
                             <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
                             <td>
-                                <!--<select-input :options="bushings"/>-->
+                                <select name="" id="">
+                                    <option value="">Test</option>
+                                </select>
                             </td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                             <td><input type="text"></td>
@@ -1463,7 +1476,6 @@
                             <td></td>
                             <td v-for="i in 8"><input type="text"></td>
                         </tr>
-                        <!-- end N4 -->
                     </tbody>
                 </table>
                 <table >
@@ -1741,7 +1753,9 @@
                         </tr>
                         <tr v-for="i in 8">
                             <td>
-                                <!--<select-input :options="chemicalNames"/>-->
+                                <select name="" id="">
+                                    <option value="">Test</option>
+                                </select>
                             </td>
                             <td v-for="i in 5"><input type="text"></td>
                             <td v-for="j in 2" colspan="2"><input type="text"></td>
@@ -1749,14 +1763,18 @@
                         </tr>
                         <tr>
                             <td>
-                                <!--<select-input :options="chemicalNames"/>-->
+                                <select name="" id="">
+                                    <option value="">Test</option>
+                                </select>
 
                             </td>
                             <td v-for="i in 10"><input type="text"></td>
                         </tr>
                         <tr v-for="i in 6">
                             <td>
-                                <!--<select-input :options="chemicalNames"/>-->
+                                <select name="" id="">
+                                    <option value="">Test</option>
+                                </select>
                             </td>
                             <td v-for="i in 5"><input type="text"></td>
                             <td v-for="j in 2" colspan="2"><input type="text"></td>
@@ -1836,7 +1854,9 @@
                         </tr>
                         <tr v-for="i in 10">
                             <td>
-                                <!--<select-input :options="stratigraphy"/>-->
+                                <select name="" id="">
+                                    <option value="">Test</option>
+                                </select>
                             </td>
                             <td v-for="i in 11"><input type="text"></td>
                         </tr>
@@ -2230,9 +2250,6 @@
 </script>
 
 <style scoped>
-    .bit-ware{
-        /*width: 140px;*/
-    }
     .nozzles{
         width: 100%;
         display: flex;

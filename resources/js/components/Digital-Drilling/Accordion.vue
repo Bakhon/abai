@@ -144,10 +144,6 @@ export default {
     margin-right: 13px;
     cursor: pointer;
   }
-  /*.page-accordion__body .list li:hover {*/
-    /*background: #2E50E9;*/
-    /*cursor: pointer;*/
-  /*}*/
 .expand-enter-active, .expand-leave-active {
   -webkit-transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
   transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
