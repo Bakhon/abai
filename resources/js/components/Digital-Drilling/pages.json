@@ -1,0 +1,384 @@
+{
+  "bd": [
+    {
+      "name": "digital_drilling.well_data_sheet",
+      "img": "/img/digital-drilling/menu3.svg",
+      "id": 1,
+      "component": {
+        "name": "main-table",
+        "template": "<passport></passport>"
+      },
+      "accordion": false,
+      "parent": "bd"
+    },
+    {
+      "name": "digital_drilling.open_hole_logging",
+      "img": "/img/digital-drilling/menu4.svg",
+      "id": 2,
+      "component": {
+        "name": "main-table",
+        "template": "<gis></gis>"
+      },
+      "accordion": false,
+      "parent": "bd"
+    },
+    {
+      "name": "digital_drilling.survey",
+      "img": "/img/digital-drilling/menu5.svg",
+      "id": 3,
+      "component": {
+        "name": "main-table",
+        "template": "<inclino></inclino>"
+      },
+      "accordion": false,
+      "parent": "bd"
+    },
+    {
+      "name": "digital_drilling.well_design_menu",
+      "img": "/img/digital-drilling/menu6.svg",
+      "id": 4,
+      "component": {
+        "name": "main-table",
+        "template": "<structure></structure>"
+      },
+      "accordion": true,
+      "parent": "bd",
+      "child": [
+        {
+          "name": "digital_drilling.project_data.tabular_data",
+          "id": 5,
+          "checked": null,
+          "component": {
+            "name": "main-table",
+            "template": "<structure></structure>"
+          },
+          "parent": "bd"
+        },
+        {
+          "name": "digital_drilling.project_data.visualization",
+          "id": 6,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<structure-graph></structure-graph>"
+          },
+          "parent": "bd"
+        }
+      ]
+    },
+    {
+      "name": "digital_drilling.project_fact_data",
+      "img": "/img/digital-drilling/menu7.svg",
+      "id": 7,
+      "component": {
+        "name": "main-table",
+        "template": "<technical-task></technical-task>"
+      },
+      "accordion": true,
+      "parent": "bd",
+      "child": [
+        {
+          "name":  "digital_drilling.project_data.technical_task",
+          "id": 8,
+          "checked": null,
+          "component": {
+            "name": "main-table",
+            "template": "<technical-task></technical-task>"
+          },
+          "parent": "bd"
+        },
+        {
+          "name": "digital_drilling.project_data.geology",
+          "id": 9,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<geology></geology>"
+          },
+          "parent": "bd"
+        },
+        {
+          "name": "digital_drilling.project_data.well_design",
+          "id": 10,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<well-design></well-design>"
+          },
+          "parent": "bd"
+        },
+        {
+          "name": "digital_drilling.project_data.barrel_profile",
+          "id": 11,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<barrel-profile></barrel-profile>"
+          },
+          "parent": "bd"
+        },
+        {
+          "name": "digital_drilling.project_data.drilling_fluids",
+          "id": 12,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<pd-drilling-fluids></pd-drilling-fluids>"
+          },
+          "parent": "bd"
+        },
+        {
+          "name": "digital_drilling.project_data.well_casing",
+          "id": 13,
+          "checked": false,
+          "component": {
+            "name": "main-table",
+            "template": "<well-casing></well-casing>"
+          },
+          "parent": "bd"
+        }
+      ]
+    },
+    {
+      "name": "digital_drilling.drilling_problems",
+      "img": "/img/digital-drilling/menu7.svg",
+      "id": 18,
+      "component": {
+        "name": "main-table",
+        "template": "<complications></complications>"
+      },
+      "accordion": false,
+      "parent": "bd"
+    },
+    {
+      "name": "digital_drilling.drilling_rigs",
+      "img": "/img/digital-drilling/drilling-rig.svg",
+      "id": 27,
+      "component": {
+        "name": "main-table",
+        "template": "<drilling-rigs></drilling-rigs>"
+      },
+      "accordion": false,
+      "parent": "bd"
+    }
+  ],
+  "project": [
+    {
+      "name": "digital_drilling.hole_profile",
+      "img": "/img/digital-drilling/menu12.svg",
+      "id": 19,
+      "component": {
+        "name": "main-table",
+        "template": "<project></project>"
+      },
+      "accordion": false,
+      "parent": "project"
+    },
+    {
+      "name": "digital_drilling.design_calculation",
+      "img": "/img/digital-drilling/menu13.svg",
+      "id": 20,
+      "component": {
+        "name": "main-table",
+        "template": "<structural-analysis></structural-analysis>"
+      },
+      "accordion": false,
+      "parent": "project"
+    },
+    {
+      "name": "digital_drilling.drilling_mud",
+      "img": "/img/digital-drilling/menu14.svg",
+      "id": 21,
+      "component": {
+        "name": "main-table",
+        "template": "<drilling-fluids></drilling-fluids>"
+      },
+      "accordion": true,
+      "parent": "project",
+      "child": [
+        {
+          "name":  "digital_drilling.project_data.geological_data",
+          "id": 24,
+          "component": {
+            "name": "main-table",
+            "template": "<rasters></rasters>"
+          },
+          "checked": null,
+          "parent": "project"
+        },
+        {
+          "name": "digital_drilling.project_data.BR_parameters",
+          "id": 25,
+          "component": {
+            "name": "main-table",
+            "template": "<rasters-params></rasters-params>"
+          },
+          "checked": false,
+          "parent": "project"
+        },
+        {
+          "name": "digital_drilling.project_data.BR_component",
+          "id": 26,
+          "component": {
+            "name": "main-table",
+            "template": "<rasters-component></rasters-component>"
+          },
+          "checked": false,
+          "parent": "project"
+        }
+      ]
+    },
+    {
+      "name": "digital_drilling.borehole_deepening",
+      "img": "/img/digital-drilling/menu15.svg",
+      "id": 22,
+      "component": {
+        "name": "main-table",
+        "template": "<well-deepening></well-deepening>"
+      },
+      "parent": "project"
+    },
+    {
+      "name": "digital_drilling.cementing_jobs",
+      "img": "/img/digital-drilling/menu12.svg",
+      "id": 23,
+      "component": {
+        "name": "main-table",
+        "template": "<well-fastening></well-fastening>"
+      },
+      "parent": "project"
+    }
+  ],
+  "online": [
+    {
+      "name": "digital_drilling.ALARM",
+      "img": "/img/digital-drilling/menu17.svg",
+      "id": 1,
+      "component": {
+        "name": "main-table",
+        "template": "<alarm></alarm>"
+      }
+    },
+    {
+      "name": "digital_drilling.geosteering",
+      "img": "/img/digital-drilling/menu18.svg",
+      "id": 2,
+      "component": {
+        "name": "main-table",
+        "template": "<geo></geo>"
+      }
+    },
+    {
+      "name": "digital_drilling.sectoral_geological_model",
+      "img": "/img/digital-drilling/menu19.svg",
+      "id": 3,
+      "component": {
+        "name": "main-table",
+        "template": "<sector></sector>"
+      }
+    },
+    {
+      "name": "digital_drilling.data_visualization",
+      "img": "/img/digital-drilling/menu16.svg",
+      "id": 4,
+      "component": {
+        "name": "main-table",
+        "template": "<visual></visual>"
+      }
+    },
+    {
+      "name": "digital_drilling.reports",
+      "img": "/img/digital-drilling/menu20.svg",
+      "id": 5,
+      "component": {
+        "name": "main-table",
+        "template": "<report></report>"
+      }
+    }
+  ],
+  "supervising": [
+    {
+      "name": "digital_drilling.daily_drilling_report",
+      "img": "/img/digital-drilling/menu21.svg",
+      "id": 1,
+      "component": {
+        "name": "main-table",
+        "template": "<reports></reports>"
+      }
+    },
+    {
+      "name": "digital_drilling.drilling_operations_time_sheet",
+      "img": "/img/digital-drilling/menu22.svg",
+      "id": 2,
+      "component": {
+        "name": "main-table",
+        "template": "<balance></balance>"
+      }
+    },
+    {
+      "name": "digital_drilling.project_fact_menu",
+      "img": "/img/digital-drilling/menu23.svg",
+      "id": 3,
+      "component": {
+        "name": "main-table",
+        "template": "<fact></fact>"
+      }
+    },
+    {
+      "name": "digital_drilling.NPV_data",
+      "img": "/img/digital-drilling/menu7.svg",
+      "id": 4,
+      "component": {
+        "name": "main-table",
+        "template": "<npv></npv>"
+      }
+    },
+    {
+      "name": "digital_drilling.CBL_data",
+      "img": "/img/digital-drilling/menu5.svg",
+      "id": 5,
+      "component": {
+        "name": "main-table",
+        "template": "<akc></akc>"
+      }
+    }
+  ],
+  "analytics": [
+    {
+      "name": "digital_drilling.drilling_menu",
+      "img": "/img/digital-drilling/menu23.svg",
+      "id": 1,
+      "component": {
+        "name": "main-table",
+        "template": "<analytics-deepening></analytics-deepening>"
+      }
+    },
+    {
+      "name": "digital_drilling.cementing_jobs",
+      "img": "/img/digital-drilling/menu22.svg",
+      "id": 2,
+      "component": {
+        "name": "main-table",
+        "template": "<analytics-fastening></analytics-fastening>"
+      }
+    },
+    {
+      "name": "digital_drilling.CBL_analysis",
+      "img": "/img/digital-drilling/menu5.svg",
+      "id": 4,
+      "component": {
+        "name": "main-table",
+        "template": "<analytics-akc></analytics-akc>"
+      }
+    },
+    {
+      "name": "digital_drilling.time_sheet",
+      "img": "/img/digital-drilling/menu21.svg",
+      "id": 5,
+      "component": {
+        "name": "main-table",
+        "template": "<balance></balance>"
+      }
+    }
+  ]
+}
