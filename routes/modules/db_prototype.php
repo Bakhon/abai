@@ -100,6 +100,9 @@ Route::group(
                 Route::patch('forms/{form}/save/{field}', 'Api\DB\FormsController@saveField')->name(
                     'bigdata.form.save.field'
                 );
+                Route::post('forms/{form}/upload/{field}', 'Api\DB\FormsController@uploadField')->name(
+                    'bigdata.form.upload.field'
+                );
 
                 Route::post('forms/{form}/calc-fields', 'Api\DB\FormsController@calcFields');
                 Route::post('forms/{form}/update-fields', 'Api\DB\FormsController@updateFields');

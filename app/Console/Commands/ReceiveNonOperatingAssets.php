@@ -332,20 +332,31 @@ class receiveNonOperatingAssets extends Command
     {
         $columnMapping = array(
             'oil_production_fact' => 5,
-            'oil_delivery_fact' => 7
+            'oil_delivery_fact' => 9
         );
         $kuzilkiaField = $sheet[$rowIndex + 1][$columnMapping['oil_production_fact']];
         $westTuzkolField = $sheet[$rowIndex + 2][$columnMapping['oil_production_fact']] * 0.5;
         $tuzkolField = $sheet[$rowIndex + 3][$columnMapping['oil_production_fact']] * 0.5;
-        $ketekazganField = $sheet[$rowIndex + 4][$columnMapping['oil_production_fact']] * 0.5;;
+        $ketekazganField = $sheet[$rowIndex + 4][$columnMapping['oil_production_fact']] * 0.5;
         $belkudukField = $sheet[$rowIndex + 5][$columnMapping['oil_production_fact']] * 0.5;
+        $deliverySummary = $this->getPKKDelivery($row, $dzoName, $sheet, $rowIndex, $columnIndex,$columnMapping);
         $dzoSummary = $kuzilkiaField + $westTuzkolField + $tuzkolField + $ketekazganField + $belkudukField;
         return array (
             'oil_production_fact' => $row[$columnMapping['oil_production_fact']] + $dzoSummary,
-            'oil_delivery_fact' => $row[$columnMapping['oil_delivery_fact']],
+            'oil_delivery_fact' => $deliverySummary,
             'dzo_name' => $dzoName,
             'date' => Carbon::yesterday('Asia/Almaty'),
         );
+    }
+
+    private function getPKKDelivery($row, $dzoName, $sheet, $rowIndex, $columnIndex,$columnMapping)
+    {
+        $summary = 0;
+        foreach(range(0, 5) as $i) {
+            $summary += $sheet[$rowIndex = $i][$columnMapping['oil_delivery_fact']];
+        }
+
+        return $summary;
     }
 
     public function getYesterdayFact($dzoName)

@@ -3,9 +3,11 @@
     <div class="scatter-graph-header">
       <p>{{ title }}</p>
       <div class="scatter-graph-toolbar">
-        <button @click.stop="isApproximationOpen = true">
-          {{ trans("plast_fluids.approximation") }}
-        </button>
+        <img
+          @click.stop="isApproximationOpen = true"
+          src="/img/PlastFluids/settings.svg"
+          alt="customize graph"
+        />
         <img
           src="/img/PlastFluids/download.svg"
           @click="saveToPng"
@@ -15,17 +17,23 @@
         <img src="/img/PlastFluids/openModal.svg" width="14" />
       </div>
     </div>
-    <ApexCharts
-      ref="scatterGraph"
-      :options="chartOptions"
-      :series="graphSeries"
-      :type="type"
-      height="100%"
-    ></ApexCharts>
+    <div class="graph-holder">
+      <ApexCharts
+        ref="scatterGraph"
+        :options="chartOptions"
+        :series="graphSeries"
+        :type="type"
+        height="100%"
+      ></ApexCharts>
+    </div>
     <ScatterGraphApproximation
       v-show="isApproximationOpen"
       :series="graphSeries[0].data"
       :graphType="graphType"
+      :minX="minXAxisBorder"
+      :maxX="maxXAxisBorder"
+      :minY="minYAxisBorder"
+      :maxY="maxYAxisBorder"
       @close-approximation="isApproximationOpen = false"
       @get-approximation="getApproximation"
     />
@@ -54,10 +62,10 @@ export default {
       isApproximationOpen: false,
       graphSeries: [],
       approximation: [],
-      minX: "",
-      minY: "",
-      maxX: "",
-      maxY: "",
+      minXAxisBorder: "",
+      minYAxisBorder: "",
+      maxXAxisBorder: "",
+      maxYAxisBorder: "",
       chartOptions: {
         stroke: {
           show: true,
@@ -87,7 +95,7 @@ export default {
           showForSingleSeries: true,
         },
         noData: {
-          text: "Загрузка...",
+          text: "Нет данных",
         },
         grid: {
           show: true,
@@ -111,6 +119,9 @@ export default {
           },
         },
         xaxis: {
+          labels: {
+            formatter: this.labelFormatterX,
+          },
           type: "numeric",
           lines: {
             show: true,
@@ -120,7 +131,7 @@ export default {
         },
         yaxis: {
           labels: {
-            formatter: this.labelFormatter,
+            formatter: this.labelFormatterY,
           },
           lines: {
             show: true,
@@ -135,14 +146,76 @@ export default {
     series: {
       handler(obj) {
         const filtered = obj.data.filter((item) => item.x && item.y);
-        this.minX = this.getMaxMinInObjectArray(filtered, "x")[0];
-        this.minY = this.getMaxMinInObjectArray(filtered, "y")[0];
-        this.maxX = this.getMaxMinInObjectArray(filtered, "x")[1];
-        this.maxY = this.getMaxMinInObjectArray(filtered, "y")[1];
-        Vue.set(this.chartOptions.xaxis, "min", this.minX - this.minX * 0.2);
-        Vue.set(this.chartOptions.yaxis, "min", this.minY - this.minY * 0.2);
-        Vue.set(this.chartOptions.xaxis, "max", this.maxX + this.maxX * 0.2);
-        Vue.set(this.chartOptions.yaxis, "max", this.maxY + this.maxY * 0.2);
+        let axis = {};
+        axis.minX = this.getMaxMinInObjectArray(filtered, "x")[0];
+        axis.maxX = this.getMaxMinInObjectArray(filtered, "x")[1];
+        axis.minY = this.getMaxMinInObjectArray(filtered, "y")[0];
+        axis.maxY = this.getMaxMinInObjectArray(filtered, "y")[1];
+
+        const calculate = (num, axisLine, type) => {
+          let largeDiff, sum, max, min;
+          max = axis["max" + axisLine];
+          min = axis["min" + axisLine];
+          largeDiff = max - min > max * 0.2;
+          if (type === "min") {
+            sum = largeDiff ? num - num * 0.2 : num - num * 0.05;
+          } else {
+            sum = largeDiff ? num + num * 0.2 : num + num * 0.05;
+          }
+          return Number(sum.toFixed(1));
+        };
+
+        const temp = {
+          minX:
+            obj.config.minX === "auto"
+              ? calculate(axis.minX, "X", "min")
+              : obj.config.minX,
+          minY:
+            obj.config.minY === "auto"
+              ? calculate(axis.minY, "Y", "min")
+              : obj.config.minY,
+          maxX:
+            obj.config.maxX === "auto"
+              ? calculate(axis.maxX, "X", "max")
+              : obj.config.maxX,
+          maxY:
+            obj.config.maxY === "auto"
+              ? calculate(axis.maxY, "Y", "max")
+              : obj.config.maxY,
+        };
+
+        this.minXAxisBorder = this.comparePositives(axis.maxX, axis.minX)
+          ? temp.minX
+          : temp.maxX;
+        this.minYAxisBorder = this.comparePositives(axis.maxY, axis.minY)
+          ? temp.minY
+          : temp.maxY;
+        this.maxXAxisBorder = this.comparePositives(axis.maxX, axis.minX)
+          ? temp.maxX
+          : temp.minX;
+        this.maxYAxisBorder = this.comparePositives(axis.maxY, axis.minY)
+          ? temp.maxY
+          : temp.minY;
+
+        this.chartOptions = {
+          ...this.chartOptions,
+          xaxis: {
+            ...this.chartOptions.xaxis,
+            min: this.minXAxisBorder,
+            max: this.maxXAxisBorder,
+          },
+          yaxis: {
+            min: this.minYAxisBorder,
+            max: this.maxYAxisBorder,
+            labels: {
+              formatter: this.labelFormatterY,
+            },
+            lines: {
+              show: true,
+            },
+            tickAmount: 4,
+          },
+        };
         this.graphSeries = [];
         this.graphSeries.push({
           name: obj.name,
@@ -154,8 +227,22 @@ export default {
     },
   },
   methods: {
-    labelFormatter(value) {
-      return value.toFixed(this.maxY + this.maxY * 0.2 < 4 ? 1 : "");
+    comparePositives(max, min) {
+      return Math.abs(max) > Math.abs(min);
+    },
+    labelFormatterY(value) {
+      return value.toFixed(
+        Math.abs(this.maxYAxisBorder) < 4 && Math.abs(this.minYAxisBorder) < 4
+          ? 1
+          : ""
+      );
+    },
+    labelFormatterX(value) {
+      return value.toFixed(
+        Math.abs(this.maxXAxisBorder) < 4 && Math.abs(this.minXAxisBorder)
+          ? 1
+          : ""
+      );
     },
     getMaxMinInObjectArray(obj, property) {
       let max = Number.NEGATIVE_INFINITY;
@@ -188,7 +275,7 @@ export default {
               ? Number(data.graphOptions.ordinateTo)
               : maxY,
             labels: {
-              formatter: this.labelFormatter,
+              formatter: this.labelFormatterY,
             },
             lines: {
               show: true,
@@ -230,8 +317,19 @@ export default {
 
 <style scoped>
 .scatter-graph {
-  height: calc(100% - 30px);
   width: 100%;
+  height: 100%;
+  flex: 1;
+  padding: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.graph-holder {
+  width: 100%;
+  height: calc(100% - 30px);
+  display: block;
+  overflow: hidden;
 }
 
 .approx-button {
@@ -278,9 +376,10 @@ export default {
   width: 16px;
   height: 16px;
   cursor: pointer;
+  margin-right: 12px;
 }
 
-.scatter-graph-toolbar > img:nth-of-type(1) {
-  margin-right: 12px;
+.scatter-graph-toolbar > img:last-of-type {
+  margin-right: 0;
 }
 </style>
