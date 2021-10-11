@@ -528,8 +528,14 @@ export default {
         return +well[this.form.operatingProfit][date] > 0 ? 0 : 1
       }
 
-      if (key.prop === 'prs1' && date === 'sum') {
-        return well[this.form.operatingProfit].sum > 0 ? 0 : +well.prs1.sum
+      if (date === 'sum') {
+        if (this.isVisibleProfitable && !this.isVisibleProfitless && well[this.form.operatingProfit].sum <= 0) {
+          return 0
+        }
+
+        if (this.isVisibleProfitless && !this.isVisibleProfitable && well[this.form.operatingProfit].sum > 0) {
+          return 0
+        }
       }
 
       if (key.props) {
