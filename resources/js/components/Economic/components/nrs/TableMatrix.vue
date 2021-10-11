@@ -810,10 +810,6 @@ export default {
   color: #fff;
 }
 
-.matrix-table >>> .is-header {
-
-}
-
 .text-blue {
   color: #23AFE8;
 }
