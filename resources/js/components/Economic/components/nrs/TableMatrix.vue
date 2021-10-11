@@ -92,42 +92,24 @@
       <vue-table-dynamic
           :params="tablePrsParams"
           class="matrix-table bg-main1 pt-4 px-4 pb-2">
-        <template :slot="`column-0`" slot-scope="{ props }">
+        <template
+            v-for="(header, index) in tableHeaders"
+            :slot="`column-${index}`" slot-scope="{ props }">
           <div class="d-flex align-items-center w-100">
             {{ props.cellData.label }}
           </div>
-        </template>
-
-        <template :slot="`column-1`" slot-scope="{ props }">
-          <div> {{ props.cellData.label }}</div>
-        </template>
-
-        <template
-            v-for="(date, index) in data.dates"
-            :slot="`column-${index+2}`"
-            slot-scope="{ props }">
-          <div> {{ props.cellData.label }}</div>
         </template>
       </vue-table-dynamic>
 
       <vue-table-dynamic
           :params="tableSumParams"
           class="matrix-table bg-main1 pt-2 px-4 pb-4">
-        <template :slot="`column-0`" slot-scope="{ props }">
+        <template
+            v-for="(header, index) in tableHeaders"
+            :slot="`column-${index}`" slot-scope="{ props }">
           <div class="d-flex align-items-center w-100">
             {{ props.cellData.label }}
           </div>
-        </template>
-
-        <template :slot="`column-1`" slot-scope="{ props }">
-          <div> {{ props.cellData.label }}</div>
-        </template>
-
-        <template
-            v-for="(date, index) in data.dates"
-            :slot="`column-${index+2}`"
-            slot-scope="{ props }">
-          <div> {{ props.cellData.label }}</div>
         </template>
       </vue-table-dynamic>
 
@@ -157,17 +139,11 @@
           </div>
         </template>
 
-        <template :slot="`column-1`" slot-scope="{ props }">
-          <div :style="`color: ${props.cellData.color}`">
-            {{ props.cellData.label }}
-          </div>
-        </template>
-
         <template
-            v-for="(date, index) in data.dates"
-            :slot="`column-${index+2}`"
-            slot-scope="{ props }">
-          <div :style="`color: ${props.cellData.color}`">
+            v-for="(header, index) in tableHeaders.slice(1)"
+            :slot="`column-${index+1}`" slot-scope="{ props }">
+          <div :style="`color: ${props.cellData.color}`"
+               class="d-flex align-items-center w-100">
             {{ props.cellData.label }}
           </div>
         </template>
@@ -209,16 +185,22 @@ export default {
     }
   }),
   created() {
-    this.initWellKeys()
-
-    this.initSelectedUwis()
+    this.initData()
   },
   computed: {
     uwis() {
+      if (!this.data) {
+        return []
+      }
+
       return Object.keys(this.data.uwis).filter(uwi => {
         return this.isVisibleProfitable && this.data.uwis[uwi][this.form.operatingProfit].sum > 0
             || this.isVisibleProfitless && this.data.uwis[uwi][this.form.operatingProfit].sum <= 0
       })
+    },
+
+    dates() {
+      return this.data ? this.data.dates : []
     },
 
     tableParams() {
@@ -233,9 +215,9 @@ export default {
         pageSizes: [this.tablePageSize, this.tablePageSize * 2, this.tablePageSize * 4],
         headerHeight: 80,
         rowHeight: 50,
-        fixed: 1,
+        fixed: this.tableTitlesLength - 1,
         columnWidth: this.columnWidth,
-        highlight: {column: [0, 1]},
+        highlight: {column: this.tableTitles.map((title, index) => index)},
         highlightedColor: '#2E50E9'
       }
     },
@@ -250,9 +232,9 @@ export default {
         pagination: false,
         headerHeight: 80,
         rowHeight: 50,
-        fixed: 1,
+        fixed: this.tableTitlesLength - 1,
         columnWidth: this.columnWidth,
-        highlight: {column: [0, 1]},
+        highlight: {column: this.tableTitles.map((title, index) => index)},
         highlightedColor: '#2E50E9'
       }
     },
@@ -267,9 +249,9 @@ export default {
         pagination: false,
         headerHeight: 80,
         rowHeight: 50,
-        fixed: 1,
+        fixed: this.tableTitlesLength - 1,
         columnWidth: this.columnWidth,
-        highlight: {column: [0, 1]},
+        highlight: {column: this.tableTitles.map((title, index) => index)},
         highlightedColor: '#2E50E9'
       }
     },
@@ -285,9 +267,12 @@ export default {
 
       let prsSum = {}
 
+      let dateOffset = this.tableTitlesLength
+
       this.visibleWellKeys.forEach(key => {
         totalSum[key.prop] = [
           {value: key.name, label: key.name},
+          {value: key.dimension, label: key.dimensionTitle},
           {value: 0, label: 0},
         ]
       })
@@ -295,11 +280,12 @@ export default {
       this.prsKeys.forEach(key => {
         prsSum[key.prop] = [
           {value: key.name, label: key.name},
+          {value: key.dimension, label: key.dimensionTitle},
           {value: 0, label: 0},
         ]
       })
 
-      this.data.dates.forEach(date => {
+      this.dates.forEach(date => {
         this.visibleWellKeys.forEach(key => {
           totalSum[key.prop].push({value: 0, label: 0})
         })
@@ -313,7 +299,8 @@ export default {
         let tableRows = {
           uwi: [
             {value: uwi, label: uwi, isCheckbox: true},
-            {value: '', label: ''}
+            {value: '', label: ''},
+            {value: '', label: ''},
           ]
         }
 
@@ -321,11 +308,11 @@ export default {
 
         let well = this.data.uwis[uwi]
 
-        this.data.dates.forEach((date, dateIndex) => {
+        this.dates.forEach((date, dateIndex) => {
           this.visibleWellKeys.forEach(key => {
             let value = this.getWellValue(well, key, date, true)
 
-            totalSum[key.prop][dateIndex + 2].value += +value
+            totalSum[key.prop][dateIndex + dateOffset].value += +value
 
             tableRows[key.prop].push({
               value: value,
@@ -338,11 +325,11 @@ export default {
             let value = this.getWellValue(well, key, date)
 
             if (key.isTotal) {
-              return prsSum[key.prop][dateIndex + 2].value += value
+              return prsSum[key.prop][dateIndex + dateOffset].value += value
             }
 
-            if (!prsSum[key.prop][dateIndex + 2].value) {
-              prsSum[key.prop][dateIndex + 2].value = value
+            if (!prsSum[key.prop][dateIndex + dateOffset].value) {
+              prsSum[key.prop][dateIndex + dateOffset].value = value
             }
           })
 
@@ -354,12 +341,16 @@ export default {
         this.visibleWellKeys.forEach(key => {
           let sum = this.getWellValue(well, key, 'sum')
 
-          totalSum[key.prop][1].value += sum
+          totalSum[key.prop][dateOffset - 1].value += sum
 
           tableRows[key.prop].unshift(
               {
                 value: key.name,
                 label: key.name
+              },
+              {
+                value: key.dimension,
+                label: key.dimensionTitle
               },
               {
                 value: sum,
@@ -375,10 +366,10 @@ export default {
           let sum = this.getWellValue(well, key, 'sum')
 
           if (key.isTotal) {
-            return prsSum[key.prop][1].value += sum
+            return prsSum[key.prop][dateOffset - 1].value += sum
           }
 
-          prsSum[key.prop][1].value = prsSum[key.prop][2].value
+          prsSum[key.prop][dateOffset - 1].value = prsSum[key.prop][dateOffset].value
         })
       })
 
@@ -391,10 +382,10 @@ export default {
           return prsSumRows.push(this.getTotalRow(key, prsSum))
         }
 
-        prsSum[key.prop][1].value = key.calcValue(prsSum, 1)
+        prsSum[key.prop][dateOffset - 1].value = key.calcValue(prsSum, dateOffset - 1)
 
-        this.data.dates.forEach((date, dateIndex) => {
-          prsSum[key.prop][dateIndex + 2].value = key.calcValue(prsSum, dateIndex + 2)
+        this.dates.forEach((date, dateIndex) => {
+          prsSum[key.prop][dateIndex + dateOffset].value = key.calcValue(prsSum, dateIndex + dateOffset)
         })
 
         prsSumRows.push(this.getTotalRow(key, prsSum))
@@ -405,12 +396,21 @@ export default {
 
     tableHeaders() {
       return [
-        ...[
-          '',
-          `${this.trans('economic_reference.total')}, ${this.trans('economic_reference.thousand_tenge')}`
-        ],
-        ...this.data.dates
+        ...this.tableTitles,
+        ...this.dates
       ]
+    },
+
+    tableTitles() {
+      return [
+        '',
+        this.trans('economic_reference.dimension'),
+        this.trans('economic_reference.total'),
+      ]
+    },
+
+    tableTitlesLength() {
+      return this.tableTitles.length
     },
 
     tablePageSize() {
@@ -427,29 +427,40 @@ export default {
           prop: 'profitable',
           name: this.trans('economic_reference.profitable'),
           isTotal: true,
-          isProfitable: true
+          isProfitable: true,
+          dimensionTitle: `${this.trans('economic_reference.units')}.`,
         },
         {
           prop: 'profitless',
           name: this.trans('economic_reference.profitless'),
           isTotal: true,
-          isProfitless: true
+          isProfitless: true,
+          dimensionTitle: `${this.trans('economic_reference.units')}.`,
         },
         {
           prop: 'prs1',
           name: this.trans('economic_reference.prs_count'),
-          isTotal: true
+          isTotal: true,
+          dimensionTitle: `${this.trans('economic_reference.units')}.`,
         },
         {
           prop: 'cost_WR_nopayroll',
           name: this.trans('economic_reference.cost_prs_without_fot'),
-          isDirect: true
+          isDirect: true,
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'cost_WR_payroll',
           props: ['cost_WR_payroll', 'cost_WR_nopayroll'],
           name: this.trans('economic_reference.cost_prs'),
-          isDirect: true
+          isDirect: true,
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'prs_nopayroll_expenditures',
@@ -457,6 +468,10 @@ export default {
           calcValue: function (data, index) {
             return data.prs1[index].value * data.cost_WR_nopayroll[index].value
           },
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'prs_expenditures',
@@ -464,30 +479,30 @@ export default {
           calcValue: function (data, index) {
             return data.prs1[index].value * data.cost_WR_payroll[index].value
           },
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
       ]
     },
 
     columnWidth() {
-      return this.tableHeaders.length <= 12
-          ? this.tableHeaders.map((col, index) => {
-            let width = null
+      return this.tableHeaders.map((col, index) => {
+        let width = this.tableHeaders.length <= 10 ? null : 120
 
-            switch (index) {
-              case 0:
-                width = 180
-                break
-              case 1:
-                width = 150
-                break
-            }
+        switch (index) {
+          case 0:
+            width = 270
+            break
+          case 1:
+          case 2:
+            width = 150
+            break
+        }
 
-            return {column: index, width: width}
-          })
-          : this.tableHeaders.map((col, index) => ({
-            column: index,
-            width: index > 1 ? 120 : 150
-          }))
+        return {column: index, width: width}
+      })
     }
   },
   methods: {
@@ -555,12 +570,40 @@ export default {
       return isString ? '' : 0
     },
 
+    getTotalRow(key, totalSum) {
+      let sumKey = this.tableTitlesLength - 1
+
+      totalSum[key.prop][sumKey].label = this.getLabel(
+          totalSum[key.prop][sumKey].value,
+          key.dimension
+      )
+
+      this.dates.forEach((date, dateIndex) => {
+        let dateKey = dateIndex + this.tableTitlesLength
+
+        totalSum[key.prop][dateKey].label = this.getLabel(
+            totalSum[key.prop][dateKey].value,
+            key.dimension
+        )
+      })
+
+      return totalSum[key.prop]
+    },
+
     toggleUwi(uwi) {
       let index = this.chartUwis.findIndex(well => well === uwi)
 
       index === -1
           ? this.chartUwis.push(uwi)
           : this.chartUwis.splice(index, 1);
+    },
+
+    initData() {
+      this.initWellKeys()
+
+      this.resetSelectedUwis()
+
+      this.resetCharts()
     },
 
     initWellKeys() {
@@ -570,12 +613,22 @@ export default {
           name: this.trans('economic_reference.oil_production'),
           isVisible: true,
           chartType: 'line',
+          dimension: 1000,
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tons')}
+          `,
         },
         {
           prop: 'liquid',
           name: this.trans('economic_reference.liquid_production'),
           isVisible: true,
           chartType: 'line',
+          dimension: 1000,
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.cubic_meter')}
+          `,
         },
         {
           prop: 'Revenue_export',
@@ -583,6 +636,10 @@ export default {
           dimension: 1000,
           isVisible: true,
           chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'Revenue_local',
@@ -590,6 +647,10 @@ export default {
           dimension: 1000,
           isVisible: true,
           chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'tax_costs',
@@ -598,6 +659,10 @@ export default {
           dimension: 1000,
           isVisible: true,
           chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'Trans_expenditures',
@@ -605,6 +670,10 @@ export default {
           dimension: 1000,
           isVisible: true,
           chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'NetBack_bf_pr_exp',
@@ -612,6 +681,10 @@ export default {
           dimension: 1000,
           isVisible: true,
           chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'Variable_expenditures',
@@ -619,6 +692,10 @@ export default {
           dimension: 1000,
           isVisible: true,
           chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'Fixed_nopayroll_expenditures',
@@ -626,6 +703,10 @@ export default {
           dimension: 1000,
           isVisible: false,
           chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'Fixed_payroll_expenditures',
@@ -633,6 +714,10 @@ export default {
           dimension: 1000,
           isVisible: false,
           chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'Fixed_expenditures',
@@ -640,6 +725,10 @@ export default {
           dimension: 1000,
           isVisible: false,
           chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'Gaoverheads_expenditures',
@@ -647,6 +736,10 @@ export default {
           dimension: 1000,
           isVisible: false,
           chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'Overall_expenditures',
@@ -654,6 +747,10 @@ export default {
           dimension: 1000,
           isVisible: false,
           chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
         {
           prop: 'Operating_profit',
@@ -662,26 +759,26 @@ export default {
           isVisible: false,
           isColorful: true,
           chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
         },
       ]
     },
 
-    initSelectedUwis() {
+    resetSelectedUwis() {
       this.uwis.forEach(uwi => this.selectedUwis[uwi] = false)
     },
 
-    getTotalRow(key, totalSum) {
-      totalSum[key.prop][1].label = this.getLabel(totalSum[key.prop][1].value, key.dimension)
-
-      this.data.dates.forEach((date, dateIndex) => {
-        totalSum[key.prop][dateIndex + 2].label = this.getLabel(
-            totalSum[key.prop][dateIndex + 2].value,
-            key.dimension
-        )
-      })
-
-      return totalSum[key.prop]
-    }
+    resetCharts() {
+      this.chartUwis = []
+    },
+  },
+  watch: {
+    data() {
+      this.initData()
+    },
   }
 }
 </script>
@@ -692,7 +789,7 @@ export default {
 }
 
 .matrix-table >>> .v-table-row {
-  height: 45px !important;
+  height: 30px !important;
 }
 
 .matrix-table >>> .table-cell {

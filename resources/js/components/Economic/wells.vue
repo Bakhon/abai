@@ -37,13 +37,13 @@
       </div>
     </div>
 
-    <div v-if="res" class="mx-auto max-width-88vw">
+    <div class="mx-auto max-width-88vw">
       <table-matrix
           v-if="activeTab === 'matrix'"
           :data="res"/>
 
       <table-tree-map
-          v-else-if="activeTab === 'treemap'"
+          v-else-if="res && activeTab === 'treemap'"
           :data="res"
           :property="activeTab"
           is-colorful/>
