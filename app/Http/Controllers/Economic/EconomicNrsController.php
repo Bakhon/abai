@@ -7,6 +7,7 @@ use App\Http\Requests\Economic\EconomicNrsDataRequest;
 use App\Http\Requests\Economic\EconomicNrsWellsRequest;
 use App\Jobs\ExportEconomicDataToExcel;
 use App\Models\BigData\Well;
+use App\Models\EcoRefsCost;
 use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
@@ -54,6 +55,20 @@ class EconomicNrsController extends Controller
     ];
 
     const DOLLAR_RATES_URL = 'https://www.nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut/report';
+
+    const TEMP_ORG_COMPANY_MAP = [
+        3 => 5, // OZEN
+        4 => 8, // KBM
+        5 => 9, // KAZGER
+        6 => 6, // EMBA
+        7 => 7 // MANGISTAU
+    ];
+
+    const TEMP_SC_FA_IDS = [
+        9, // 2020
+        12, // 2021 1 kv
+        13 // 2021 2 kv
+    ];
 
     public function __construct(DruidClient $druidClient, StructureService $structureService)
     {
@@ -415,6 +430,7 @@ class EconomicNrsController extends Controller
         $sumKeys = [
             "Operating_profit",
             "Operating_profit_variable_prs",
+            "Operating_profit_variable_prs_nopayrall",
             "Overall_expenditures",
             "NetBack_bf_pr_exp",
             "oil",
@@ -433,11 +449,6 @@ class EconomicNrsController extends Controller
             "prs1",
         ];
 
-        $dailyKeys = [
-            "cost_WR_nopayroll",
-            "cost_WR_payroll",
-        ];
-
         $builder = $this
             ->druidClient
             ->query(self::DATA_SOURCE, $granularity)
@@ -448,10 +459,6 @@ class EconomicNrsController extends Controller
             ->select("uwi");
 
         foreach ($sumKeys as $key) {
-            $builder->sum($key);
-        }
-
-        foreach ($dailyKeys as $key) {
             $builder->sum($key);
         }
 
@@ -471,6 +478,13 @@ class EconomicNrsController extends Controller
 
         $wellsByDates = ['org' => $org, 'dates' => [], 'uwis' => []];
 
+        $dailyValues = EcoRefsCost::query()
+            ->distinct()
+            ->select(['date', 'wr_nopayroll', 'wr_payroll'])
+            ->whereCompanyId(self::TEMP_ORG_COMPANY_MAP[$org->id])
+            ->whereIn('sc_fa', self::TEMP_SC_FA_IDS)
+            ->get();
+
         foreach ($wells as &$well) {
             $uwi = $well['uwi'];
 
@@ -488,11 +502,15 @@ class EconomicNrsController extends Controller
                 $wellsByDates['uwis'][$uwi][$key]['sum'] += $well[$key];
             }
 
-            $daysInMonth = Carbon::createFromFormat($dateFormat, $date)->daysInMonth;
+            $dailyDate = Carbon::createFromFormat($dateFormat, $date)
+                ->setDay(1)
+                ->format('Y-m-d');
 
-            foreach ($dailyKeys as $key) {
-                $wellsByDates['uwis'][$uwi][$key][$date] = $well[$key] / $daysInMonth;
-            }
+            $dailyValue = $dailyValues->firstWhere('date', $dailyDate);
+
+            $wellsByDates['uwis'][$uwi]['cost_WR_nopayroll'][$date] = $dailyValue->wr_nopayroll ?? 0;
+
+            $wellsByDates['uwis'][$uwi]['cost_WR_payroll'][$date] = $dailyValue->wr_payroll ?? 0;
         }
 
         $wellsByDates['dates'] = array_keys($wellsByDates['dates']);

@@ -138,7 +138,7 @@ class UndergroundEquipmentInstallation extends PlainForm
                     'dend' => Well::DEFAULT_END_DATE,
                     'well' => $data['well'],
                     'equip_type' => $data['equip_type'],
-                    'equip_element' => $data['equip_element'],
+                    'equip_element' => $data['equip_element'] ? $data['equip_element']['id'] : null
                 ]
             );
 
@@ -148,10 +148,13 @@ class UndergroundEquipmentInstallation extends PlainForm
                 'well_equip' => $wellEquipId,
                 'equip_param' => $id,
             ];
+
+            $value = is_array($param['value']) ? $param['value']['id'] : $param['value'];
+
             if ($param['type'] === 'text') {
-                $values['value_string'] = $param['value'];
+                $values['value_string'] = $value;
             } else {
-                $values['value_double'] = $param['value'];
+                $values['value_double'] = $value;
             }
 
             DB::connection('tbd')

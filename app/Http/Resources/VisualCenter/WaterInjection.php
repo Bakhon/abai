@@ -103,11 +103,11 @@ class WaterInjection {
             }
             $updated = $this->getData($dzoName,$dzoFact,$filteredPlan,$periodType,$yearlyPlan,$fields);
             if (count($updated) > 0) {
-                $sorted = $this->getSortedById($updated);
                 $summary = array_merge($summary,$updated);
             }
         }
-        return $summary;
+        $sorted = $this->getSortedById($summary);
+        return $sorted;
     }
 
     private function getData($dzo,$dzoFact,$filteredPlan,$periodType,$yearlyPlan,$categoryFields)
@@ -178,7 +178,7 @@ class WaterInjection {
     private function getSortedById($data)
     {
         $ordered = array();
-        foreach(array_keys($this->companies) as $value) {
+        foreach($this->companies as $value) {
             $key = array_search($value, array_column($data, 'name'));
             if ($data[$key]) {
                 array_push($ordered,$data[$key]);

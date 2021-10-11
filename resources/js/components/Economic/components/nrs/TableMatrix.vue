@@ -46,6 +46,11 @@
           </label>
         </div>
 
+        <select-operating-profit
+            :form="form"
+            class="mr-2 bg-dark-blue text-blue"
+            style="width: 200px"/>
+
         <div class="form-check mr-2">
           <input v-model="isVisibleOperatingPrs"
                  id="visible_operating_profit"
@@ -186,10 +191,11 @@
 import ChartMatrixWell from "./ChartMatrixWell";
 import ChartMatrixTotal from "./ChartMatrixTotal";
 import SelectChartType from "../SelectChartType";
+import SelectOperatingProfit from "../SelectOperatingProfit";
 
 export default {
   name: "TableMatrix",
-  components: {ChartMatrixWell, ChartMatrixTotal, SelectChartType},
+  components: {ChartMatrixWell, ChartMatrixTotal, SelectChartType, SelectOperatingProfit},
   props: {
     data: {
       required: true,
@@ -203,8 +209,10 @@ export default {
     isVisibleWells: false,
     isVisibleProfitable: true,
     isVisibleProfitless: true,
-    isVisibleOperatingPrs: false,
-    isVisibleChartTotal: false
+    isVisibleChartTotal: false,
+    form: {
+      operatingProfit: 'Operating_profit'
+    }
   }),
   created() {
     this.initWellKeys()
@@ -214,8 +222,8 @@ export default {
   computed: {
     uwis() {
       return Object.keys(this.data.uwis).filter(uwi => {
-        return this.isVisibleProfitable && this.data.uwis[uwi][this.operatingProfitKey].sum > 0
-            || this.isVisibleProfitless && this.data.uwis[uwi][this.operatingProfitKey].sum <= 0
+        return this.isVisibleProfitable && this.data.uwis[uwi][this.form.operatingProfit].sum > 0
+            || this.isVisibleProfitless && this.data.uwis[uwi][this.form.operatingProfit].sum <= 0
       })
     },
 
@@ -417,12 +425,6 @@ export default {
 
     visibleWellKeys() {
       return this.wellKeys.filter(key => key.isVisible)
-    },
-
-    operatingProfitKey() {
-      return this.isVisibleOperatingPrs
-          ? 'Operating_profit_variable_prs'
-          : 'Operating_profit'
     },
 
     prsKeys() {
