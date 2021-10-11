@@ -1,11 +1,12 @@
 <template>
   <PageSide>
     <template #top>
-      <dropdown block class="w-100 mb-2" @selected="selectedDropDown($event, 'dzos')" :loading="loadingStates.dzos"
+      <dropdown block class="w-100 mb-2" @selected="dzos($event)" :loading="loadingStates.dzos"
                 button-text="Выбор ДЗО" :options="getDZOSList" />
 
-      <dropdown block class="w-100 mb-2" @selected="selectedDropDown($event, 'field')" :loading="loadingStates.field"
-                button-text="Выбор месторождения" :options="getFiledsList" />
+      <dropdown ref="dropDawnFields" block class="w-100 mb-2" @selected="field($event)"
+                :loading="loadingStates.field"
+                button-text="Выбор месторождения" :options="getFieldsList" />
     </template>
     <ToolBlock class="mb-2 toolBlock__auto-height" title="Скважины">
       <template #header>
@@ -22,13 +23,19 @@
           <Button size="narrow" icon="List" class="mb-2" />
           <Button size="narrow" icon="ListItemDown" class="mb-2" />
           <Button size="narrow" icon="ListItemUp" class="mb-2" />
-          <Button size="narrow" icon="success" color="success" class="mt-4" />
+          <Button @click="applyWells"
+                  :loading="loadingStates.mnemonics"
+                  :disabled="!selectedWells.length||loadingStates.mnemonics"
+                  size="narrow"
+                  icon="success"
+                  color="success"
+                  class="mt-4" />
         </div>
       </template>
       <ToolBlockList
           :loading="loadingStates.wells"
-          @click="selectedHandle"
-          :selected.sync="listSelect"
+          @click="selectWellsHandle"
+          :selected="getSelectedWells"
           :list="getWellsList"
       />
     </ToolBlock>
@@ -108,7 +115,14 @@ import Button from "../components/buttons/Button";
 import AwIcon from "../components/icons/AwIcon";
 
 import PageSide from "../components/pageSide/PageSide";
-import {FETCH_DZOS, FETCH_FIELDS, FETCH_WELLS} from "../../../store/modules/geologyGis.const";
+import {
+  FETCH_DZOS,
+  FETCH_FIELDS,
+  FETCH_WELLS,
+  GET_WELLS_OPTIONS,
+  SET_WELLS,
+  GET_FIELDS_OPTIONS, GET_DZOS_OPTIONS, SET_WELLS_BLOCKS, FETCH_WELLS_MNEMONICS
+} from "../../../store/modules/geologyGis.const";
 
 export default {
   name: "Geology-LSide",
@@ -121,8 +135,9 @@ export default {
         dzos: false,
         field: false,
         wells: false,
+        mnemonics: false
       },
-      listSelect: []
+      selectedWells: []
     }
   },
   components: {
@@ -136,41 +151,62 @@ export default {
     PageSide
   },
   computed: {
-    cListSelect() {
-      return this.listSelect
+    getSelectedWells() {
+      return this.selectedWells.map((item) => {
+        return item.value
+      })
     },
     getDZOSList() {
-      return this.$store.state.geologyGis.DZOS
+      return this.$store.getters[GET_DZOS_OPTIONS];
     },
-    getFiledsList() {
-      return this.$store.state.geologyGis.FILEDS
+    getFieldsList() {
+      return this.$store.getters[GET_FIELDS_OPTIONS];
     },
     getWellsList() {
-      return this.$store.state.geologyGis.WELLS
+      return this.$store.getters[GET_WELLS_OPTIONS];
     }
   },
+
   async mounted() {
     await this.$store.dispatch(FETCH_DZOS);
-
+    await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getSelectedWells);
   },
+
   methods: {
-    async selectedDropDown(e, t) {
-      switch (t) {
-        case "dzos":
-          this.loadingStates.field = true
-          await this.$store.dispatch(FETCH_FIELDS, e);
-          this.loadingStates.field = false
-          break
-        case "field":
-          this.loadingStates.wells = true
-          await this.$store.dispatch(FETCH_WELLS, e);
-          this.loadingStates.wells = false
-        break
-      }
+    async dzos(e) {
+      this.loadingStates.field = true;
+      this.$refs.dropDawnFields.selectedLocal = null;
+      this.$store.commit(SET_WELLS, []);
+      this.selectedWells = [];
+      await this.$store.dispatch(FETCH_FIELDS, e);
+      this.loadingStates.field = false;
     },
-    selectedHandle(item) {
-      this.listSelect = [];
-      this.listSelect.push(item.value);
+
+    async field(e) {
+      this.selectedWells = [];
+      this.loadingStates.wells = true;
+      await this.$store.dispatch(FETCH_WELLS, e);
+      this.loadingStates.wells = false;
+    },
+
+    async applyWells() {
+      let arr = this.selectedWells.sort((a, b) => a.sort < b.sort ? -1 : 1);
+      this.loadingStates.mnemonics = true;
+      await this.$store.dispatch(FETCH_WELLS_MNEMONICS, this.getSelectedWells);
+      this.loadingStates.mnemonics = false;
+      this.$store.commit(SET_WELLS_BLOCKS, arr);
+    },
+
+    selectWellsHandle(item, i) {
+      let index = this.selectedWells.findIndex((a) => a.value === item.value);
+      if (~index) {
+        this.selectedWells.splice(index, 1)
+      } else {
+        this.selectedWells.push({
+          sort: i,
+          value: item.value
+        });
+      }
     }
   }
 }

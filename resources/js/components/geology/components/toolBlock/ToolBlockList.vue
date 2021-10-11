@@ -6,9 +6,14 @@
     <div v-if="description" class="description mb-2">
       <p>{{ description }}</p>
     </div>
-    <button v-for="(item, i) in cList" :key="i" @click="selectHandle(item)" :class="optionsClasses(item.value)">
-      <input class="mr-2" v-if="hasCheckbox" type="checkbox" :value="item.value"
-             :checked="cSelected.includes(item.value)">
+    <button v-for="(item, i) in cList" :key="i" @click="selectHandle(item, i)" :class="optionsClasses(item.value)">
+      <input
+          class="mr-2"
+          v-if="hasCheckbox"
+          type="checkbox"
+          :value="item.value"
+          :checked="cSelected.includes(item.value)"
+      />
       {{ item.label || item.value }}
     </button>
   </div>
@@ -44,9 +49,9 @@ export default {
     }
   },
   methods: {
-    selectHandle(item) {
+    selectHandle(item, index) {
       this.$emit('update:selected', this.cSelected);
-      this.$emit('click', item);
+      this.$emit('click', item, index);
     },
     optionsClasses(value) {
       return {
@@ -103,9 +108,11 @@ export default {
       &:last-child {
         margin-bottom: 0 !important;
       }
-
-      &:hover, &.active {
+      &.active {
         background: var(--a-accent-100)
+      }
+      &:hover{
+        background: var(--a-accent-darken-200)
       }
     }
 

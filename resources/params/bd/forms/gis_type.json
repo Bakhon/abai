@@ -114,10 +114,10 @@
             "title": "",
             "items": [
               {
-                "code": "gis_type",
+                "code": "gis_kind",
                 "type": "dict",
                 "multiple": true,
-                "dict": "gis_kinds",
+                "dict": "gis_kinds_gis_type",
                 "title": "gis_types",
                 "validation": ""
               }
@@ -137,7 +137,7 @@
                 "code": "gis_method",
                 "type": "dict",
                 "multiple": true,
-                "dict": "gis_method_types",
+                "dict": "gis_method_types_gis_type",
                 "title": "gis_methods",
                 "validation": "nullable|exists:tbd.dict.gis_method_type,id"
               }
