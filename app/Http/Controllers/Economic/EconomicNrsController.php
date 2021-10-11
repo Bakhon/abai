@@ -461,7 +461,7 @@ class EconomicNrsController extends Controller
             ->select("uwi");
 
         foreach ($sumKeys as $key) {
-            $builder->sum($key);
+            $builder->doubleSum($key);
         }
 
         if ($org->druid_id) {

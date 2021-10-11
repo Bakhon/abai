@@ -318,7 +318,7 @@ export default {
 
             tableRows[key.prop].push({
               value: value,
-              label: this.getLabel(value, key.dimension),
+              label: this.getLabel(value, key.dimension, key.fractionDigits),
               color: this.getColor(key, value)
             })
           })
@@ -356,7 +356,7 @@ export default {
               },
               {
                 value: sum,
-                label: this.getLabel(sum, key.dimension),
+                label: this.getLabel(sum, key.dimension, key.fractionDigits),
                 color: this.getColor(key, sum)
               }
           )
@@ -517,7 +517,11 @@ export default {
       return value && value > 0 ? '#23E846' : '#E84663'
     },
 
-    getLabel(value, dimension) {
+    getLabel(value, dimension, fractionDigits = 0) {
+      if (fractionDigits) {
+        console.log(value)
+      }
+
       if (!value) {
         return 0
       }
@@ -526,7 +530,7 @@ export default {
         value = +value / dimension
       }
 
-      return (+value.toFixed(0)).toLocaleString()
+      return (+value.toFixed(fractionDigits)).toLocaleString()
     },
 
     getWellValue(well, key, date, isString = false) {
@@ -578,7 +582,8 @@ export default {
 
       totalSum[key.prop][sumKey].label = this.getLabel(
           totalSum[key.prop][sumKey].value,
-          key.dimension
+          key.dimension,
+          key.fractionDigits
       )
 
       this.dates.forEach((date, dateIndex) => {
@@ -586,7 +591,8 @@ export default {
 
         totalSum[key.prop][dateKey].label = this.getLabel(
             totalSum[key.prop][dateKey].value,
-            key.dimension
+            key.dimension,
+            key.fractionDigits
         )
       })
 
@@ -608,22 +614,16 @@ export default {
           name: this.trans('economic_reference.oil_production'),
           isVisible: true,
           chartType: 'line',
-          dimension: 1000,
-          dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.tons')}
-          `,
+          dimensionTitle: this.trans('economic_reference.tons'),
+          fractionDigits: 1,
         },
         {
           prop: 'liquid',
           name: this.trans('economic_reference.liquid_production'),
           isVisible: true,
           chartType: 'line',
-          dimension: 1000,
-          dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.cubic_meter')}
-          `,
+          dimensionTitle: this.trans('economic_reference.cubic_meter'),
+          fractionDigits: 1,
         },
         {
           prop: 'Revenue_export',
@@ -808,6 +808,10 @@ export default {
 .matrix-table >>> .v-table-row {
   background: #272953;
   color: #fff;
+}
+
+.matrix-table >>> .is-header {
+
 }
 
 .text-blue {
