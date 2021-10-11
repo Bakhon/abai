@@ -574,7 +574,7 @@ return array (
         'total_hardness' => 'Общая жесткость, мг/л',
         'concentration' => 'Концентрация',
         'component_composition_drilling_mud' => 'Компонентный состав бурового раствора и расход на приготовление',
-        'name_chemicals' => '>Наименование химреагентов',
+        'name_chemicals' => 'Наименование химреагентов',
         'assigning_material' => 'Назначение материала',
         'unit_measurement' => 'Единица измерения',
         'density_material' => 'Плотность материала, кг/м?',

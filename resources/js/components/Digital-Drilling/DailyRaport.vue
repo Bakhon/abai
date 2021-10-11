@@ -35,9 +35,7 @@
                                 {{trans('digital_drilling.daily_raport.unit_name')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="">
-                                    <option value="">Test</option>
-                                </select>
+                                <select-input :options="drillingRig" name="name"/>
                             </td>
                             <td colspan="2">
                                 {{trans('digital_drilling.daily_raport.drilling_mode')}}
@@ -49,8 +47,8 @@
                                 {{trans('digital_drilling.daily_raport.operator_company')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="">
-                                    <option value="">Test</option>
+                                <select name="" id="" @change="onChangeOrg($event)">
+                                    <option :value="operator.id" v-for="operator in operators">{{operator.name_ru}}</option>
                                 </select>
                             </td>
                         </tr>
@@ -60,7 +58,7 @@
                             </td>
                             <td colspan="2">
                                 <select name="" id="">
-                                    <option value="">Test</option>
+                                    <option value="" v-for="rig in drillingRigTypes">{{rig.name_ru}}</option>
                                 </select>
                             </td>
                             <td colspan="2">
@@ -73,9 +71,7 @@
                                 {{trans('digital_drilling.daily_raport.drilling_contractor')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="">
-                                    <option value="">Test</option>
-                                </select>
+                                <select-input :options="drillingContractors" name="name"/>
                             </td>
                         </tr>
                         <tr>
@@ -84,7 +80,7 @@
                             </td>
                             <td colspan="2">
                                 <select name="" id="">
-                                    <option value="">Test</option>
+                                    <option value="" v-for="well_number in well">{{well_number.name_ru}}</option>
                                 </select>
                             </td>
                             <td colspan="2">
@@ -105,8 +101,8 @@
                                 {{trans('digital_drilling.daily_raport.field')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="">
-                                    <option value="">Test</option>
+                                <select name="" id="" @change="onChangeField($event)">
+                                    <option :value="field.id" v-for="field in fields">{{field.name_ru}}</option>
                                 </select>
                             </td>
                             <td colspan="2">
@@ -251,7 +247,7 @@
                                 <tr>
                                     <td colspan="2" class="w-10">
                                         <select name="" id="">
-                                            <option value="">Test</option>
+                                            <option value="" v-for="constructor in constructors">{{constructor.name_ru}}</option>
                                         </select>
                                     </td>
                                     <td></td>
@@ -262,7 +258,7 @@
                                 <tr>
                                     <td colspan="2" class="w-10">
                                         <select name="" id="">
-                                            <option value="">Test</option>
+                                            <option value="" v-for="constructor in constructors">{{constructor.name_ru}}</option>
                                         </select>
                                     </td>
                                     <td></td>
@@ -273,7 +269,7 @@
                                 <tr>
                                     <td colspan="2" class="w-10">
                                         <select name="" id="">
-                                            <option value="">Test</option>
+                                            <option value="" v-for="constructor in constructors">{{constructor.name_ru}}</option>
                                         </select>
                                     </td>
                                     <td></td>
@@ -284,7 +280,7 @@
                                 <tr>
                                     <td colspan="2" class="w-10">
                                         <select name="" id="">
-                                            <option value="">Test</option>
+                                            <option value="" v-for="constructor in constructors">{{constructor.name_ru}}</option>
                                         </select>
                                     </td>
                                     <td></td>
@@ -295,7 +291,7 @@
                                 <tr>
                                     <td colspan="2" class="w-10">
                                         <select name="" id="">
-                                            <option value="">Test</option>
+                                            <option value="" v-for="constructor in constructors">{{constructor.name_ru}}</option>
                                         </select>
                                     </td>
                                     <td></td>
@@ -374,12 +370,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="expense in Expenses">
-                                    <td class="w-15">{{trans(expense.operation1)}}</td>
+                                <tr v-for="i in 19">
+                                    <td class="w-15">
+                                        <!--<select-input :options="operation1"/>-->
+                                    </td>
                                     <td><input type="text"></td>
                                     <td><input type="text"></td>
                                     <td><input type="text"></td>
-                                    <td class="w-20">{{trans(expense.operation2)}}</td>
+                                    <td class="w-20">
+                                        <!--<select-input :options="operation2"/>-->
+                                    </td>
                                     <td><input type="text"></td>
                                     <td><input type="text"></td>
                                     <td><input type="text"></td>
@@ -435,7 +435,7 @@
                             <td>24:00</td>
                             <td>0:00</td>
                             <td></td>
-                            <td>Код операции</td>
+                            <td>{{trans('digital_drilling.daily_raport.operation_code')}}</td>
                             <td class="w-40">
                                 {{trans('digital_drilling.daily_raport.NOTE')}}
                             </td>
@@ -448,7 +448,7 @@
                             <td ><input type="text"></td>
                             <td >
                                 <select name="" id="">
-                                    <option value="">Test</option>
+                                    <option value=""v-for="code in operationCodes">{{code.name_ru}}</option>
                                 </select>
                             </td>
                             <td ><input type="text"></td>
@@ -459,9 +459,11 @@
                             <td ><input type="text"></td>
                             <td ><input type="text"></td>
                             <td ><input type="text"></td>
-                            <td ><select name="" id="">
-                                <option value="">Test</option>
-                            </select></td>
+                            <td >
+                                <select name="" id="">
+                                    <option value=""v-for="code in operationCodes">{{code.name_ru}}</option>
+                                </select>
+                            </td>
                             <td ><input type="text"></td>
                         </tr>
                         <tr>
@@ -469,7 +471,7 @@
                             <td >24:00</td>
                             <td ><input type="text"></td>
                             <td ><select name="" id="">
-                                <option value="">Test</option>
+                                <option value=""v-for="code in operationCodes">{{code.name_ru}}</option>
                             </select></td>
                             <td ><input type="text"></td>
                             <td class="w-5"></td>
@@ -506,16 +508,16 @@
 
                             <td colspan="9">{{trans('digital_drilling.daily_raport.descent_tool_characteristic')}}</td>
                             <td colspan="4" class="w-20">{{trans('digital_drilling.daily_raport.last_column_diameter')}}</td>
-                            <td class="w-7"><input type="text"></td>
+                            <td class="w-7">
+                                <select-input :options="diameters" name="diameter"/>
+                            </td>
                         </tr>
                         <tr>
                             <td>
                                 {{trans('digital_drilling.daily_raport.chisel_type')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="">
-                                    <option value="">Test</option>
-                                </select>
+                                <select-input :options="bitTypes" name="name"/>
                             </td>
                             <td colspan="2">
                                 <select name="" id="">
@@ -552,9 +554,7 @@
                                 {{trans('digital_drilling.daily_raport.IADC_code')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="">
-                                    <option value="">Test</option>
-                                </select>
+                                <!--<select-input :options="[]"/>-->
                             </td>
                             <td colspan="2">
                                 <select name="" id="">
@@ -571,7 +571,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -583,7 +583,7 @@
                                 {{trans('digital_drilling.daily_raport.diameter_next_column')}}
                             </td>
                             <td>
-                                <input type="text">
+                                <select-input :options="diameters" name="diameter"/>
                             </td>
                         </tr>
                         <tr>
@@ -591,9 +591,7 @@
                                 {{trans('digital_drilling.daily_raport.manufacturer')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="">
-                                    <option value="">Test</option>
-                                </select>
+                               <!--<select-input :options="manufacturers"/>-->
                             </td>
                             <td colspan="2">
                                 <select name="" id="">
@@ -610,7 +608,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -630,9 +628,7 @@
                                 {{trans('digital_drilling.daily_raport.diameter')}}
                             </td>
                             <td colspan="2">
-                                <select name="" id="">
-                                    <option value="">Test</option>
-                                </select>
+                               <select-input :options="bitDiameters" name="diameter"/>
                             </td>
                             <td colspan="2">
                                 <select name="" id="">
@@ -649,7 +645,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -684,7 +680,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -703,8 +699,16 @@
                             <td>
                                 {{trans('digital_drilling.daily_raport.nozzles')}}
                             </td>
-                            <td colspan="2">
-                                <input type="text">
+                            <td colspan="2" class="nozzles-td">
+                                <div class="nozzles">
+                                    <nozzles-table :table="Nozzles" />
+                                    <nozzles-table :table="Nozzles" />
+                                    <nozzles-table :table="Nozzles" />
+                                    <nozzles-table :table="Nozzles" />
+                                    <nozzles-table :table="Nozzles" />
+                                    <nozzles-table :table="Nozzles" />
+                                    <nozzles-table :table="Nozzles" />
+                                </div>
                             </td>
                             <td colspan="2">
                                 <input type="text">
@@ -719,7 +723,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -754,7 +758,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -789,7 +793,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -824,7 +828,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -859,7 +863,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -893,11 +897,8 @@
                             <td>
                                 <input type="text">
                             </td>
-                            <td>
-                                <input type="text">
-                            </td>
-                            <td>
-                                <input type="text">
+                            <td colspan="2">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -931,12 +932,10 @@
                             <td>
                                 <input type="text">
                             </td>
-                            <td>
-                                <input type="text">
+                            <td colspan="2">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
-                            <td>
-                                <input type="text">
-                            </td>
+
                             <td >
                                 <input type="text">
                             </td>
@@ -944,7 +943,11 @@
                                 <input type="text">
                             </td>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №1</td>
-                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2">
+                                <select name="" id="">
+                                    <option value="" v-for="pump in pumps">{{pump}}</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td>
@@ -966,7 +969,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -977,7 +980,9 @@
                             <td>
                                 {{trans('digital_drilling.daily_raport.bushings_mm')}}
                             </td>
-                            <td><input type="text"></td>
+                            <td>
+                                <!--<select-input :options="bushings"/>-->
+                            </td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                             <td>
                                 <input type="text">
@@ -1040,7 +1045,7 @@
                                 <input type="text">
                             </td>
                             <td colspan="2">
-                                <input type="text">
+                                <select-input :options="threadTypes" name="name"/>
                             </td>
                             <td >
                                 <input type="text">
@@ -1061,7 +1066,9 @@
                             <td colspan="2"><input type="text"></td>
                             <td><input type="text"></td>
                             <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2">
+                                <select-input :options="threadTypes" name="name"/>
+                            </td>
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                             <td rowspan="6"><input type="text">{{trans('digital_drilling.daily_raport.pumping_pressure')}}</td>
@@ -1077,7 +1084,9 @@
                             <td colspan="2"><input type="text"></td>
                             <td><input type="text"></td>
                             <td><input type="text"></td>
-                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2">
+                                <select-input :options="threadTypes" name="name"/>
+                            </td>
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                             <td><input type="text"></td>
@@ -1149,7 +1158,11 @@
                             <td colspan="3">
                                 {{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №2
                             </td>
-                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2">
+                                <select name="" id="">
+                                    <option value="" v-for="pump in pumps">{{pump}}</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.operating_hours_vibrating_sieve')}} №2</td>
@@ -1161,7 +1174,9 @@
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                             <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
-                            <td><input type="text"></td>
+                            <td>
+                                <!--<select-input :options="bushings"/>-->
+                            </td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                             <td><input type="text"></td>
                         </tr>
@@ -1249,7 +1264,11 @@
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №3 <span class="add"  @click="deletePump(0)">-</span></td>
-                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2">
+                                <select name="" id="">
+                                    <option value="" v-for="pump in pumps">{{pump}}</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="3"><input type="text"></td>
@@ -1261,7 +1280,9 @@
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                             <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
-                            <td><input type="text"></td>
+                            <td>
+                                <!--<select-input :options="bushings"/>-->
+                            </td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                             <td><input type="text"></td>
                         </tr>
@@ -1355,7 +1376,11 @@
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                             <td colspan="3">{{trans('digital_drilling.daily_raport.pump_2_ty6L3NB_1_300D')}} №4 <span class="add" @click="deletePump(1)">-</span></td>
-                            <td colspan="2"><input type="text"></td>
+                            <td colspan="2">
+                                <select name="" id="">
+                                    <option value="" v-for="pump in pumps">{{pump}}</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="3"><input type="text"></td>
@@ -1367,7 +1392,9 @@
                             <td><input type="text"></td>
                             <td colspan="2"><input type="text"></td>
                             <td>{{trans('digital_drilling.daily_raport.bushings_mm')}}</td>
-                            <td><input type="text"></td>
+                            <td>
+                                <!--<select-input :options="bushings"/>-->
+                            </td>
                             <td colspan="2">{{trans('digital_drilling.daily_raport.liter_stroke')}}</td>
                             <td><input type="text"></td>
                         </tr>
@@ -1545,7 +1572,7 @@
                             <td><input type="text"></td>
                             <td>
                                 <select name="" id="">
-                                    <option value="">Test</option>
+                                    <option value="" v-for="code in operationCodes">{{code.name_ru}}</option>
                                 </select>
                             </td>
                             <td><input type="text"></td>
@@ -1633,11 +1660,9 @@
                             <td>{{trans('digital_drilling.project')}}</td>
                             <td>{{trans('digital_drilling.fact')}}</td>
                         </tr>
-                        <tr v-for="i in 3">
+                        <tr v-for="i in 6">
                             <td colspan="3" class="w-10">
-                                <select name="" id="">
-                                    <option value="">Test</option>
-                                </select>
+                                <select-input :options="drillingMudTypes" name="name"/>
                             </td>
                             <td v-for="i in 19">
                                 <input type="text">
@@ -1715,15 +1740,25 @@
                             <td>{{trans('digital_drilling.daily_raport.remaining_rig')}}</td>
                         </tr>
                         <tr v-for="i in 8">
-                            <td v-for="j in 6"><input type="text"></td>
+                            <td>
+                                <!--<select-input :options="chemicalNames"/>-->
+                            </td>
+                            <td v-for="i in 5"><input type="text"></td>
                             <td v-for="j in 2" colspan="2"><input type="text"></td>
                             <td><input type="text"></td>
                         </tr>
                         <tr>
-                            <td v-for="i in 11"><input type="text"></td>
+                            <td>
+                                <!--<select-input :options="chemicalNames"/>-->
+
+                            </td>
+                            <td v-for="i in 10"><input type="text"></td>
                         </tr>
                         <tr v-for="i in 6">
-                            <td v-for="j in 6"><input type="text"></td>
+                            <td>
+                                <!--<select-input :options="chemicalNames"/>-->
+                            </td>
+                            <td v-for="i in 5"><input type="text"></td>
                             <td v-for="j in 2" colspan="2"><input type="text"></td>
                             <td><input type="text"></td>
                         </tr>
@@ -1800,7 +1835,10 @@
                             <td><input type="text"></td>
                         </tr>
                         <tr v-for="i in 10">
-                            <td v-for="i in 12"><input type="text"></td>
+                            <td>
+                                <!--<select-input :options="stratigraphy"/>-->
+                            </td>
+                            <td v-for="i in 11"><input type="text"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -1926,8 +1964,12 @@
 </template>
 
 <script>
+    import SelectInput from  './components/SelectInput'
+    import NozzlesTable from  './components/NozzlesTable'
+
     export default {
         name: "DailyRaport",
+        components: {SelectInput, NozzlesTable},
         data(){
             return{
                 pump:[
@@ -1940,6 +1982,37 @@
                         active: false
                     },
                 ],
+                well:[],
+                currentOrgId: null,
+                currentGeoId: null,
+                fields: [],
+                operators: [],
+                constructors: [],
+                bushings:[
+                    '120', '130', '140', '150', '160', '170', '180'
+                ],
+                diameters:[],
+                drillingMudTypes: [],
+                operationCodes:[],
+                chemicalNames:['Бикорбанат натрия', 'Биополимер ксантановый Гламин', 'Калий Хлор', 'Лубрикон ТУ',
+                               'ATREN Antifoam (гаспен силикон)', 'Atren Bio (Биоцидол)', 'PAC LV - ХимПАК В',
+                               'PAC HV - ХимПАК Н', 'Aquaflo LV', 'Асфасол', 'Известь Са(ОН)2 тн',
+                               'Ингидол ДТ - 1 противосальниковая', 'Ингидол ГГЛ', 'Ингидол Б',
+                               'FRACSEAL (Кислотнорастворимый)', 'Desco CF', 'Карбонат Кальция (SOLUFLAKE D хлопьевидный)',
+                               'Биксол Фри', 'БИОЦИДОЛ - бактерицид', 'Карбонат Кальция М-5', 'Карбонат Кальция М-50',
+                               'Гаммаксан/Ксантангам/Гламин (биополимер)', 'Полимер акриловый (PHPA) ',
+                               'Бентонит порошкообразный для струтуро образования', 'Лимонная кислота',
+                               'Ореховая скорлупа', 'Соль техническая', 'Шелуха рисовая', 'Ингибитор глин, Стабилайт II',
+                               'Микрошарик, 500-1000 мкм', 'Микрошарик, 150-600 мкм' ],
+                threadTypes: [],
+                pumps: ['F-800D', 'F-1000D', 'F-1300D', 'F-1600D', 'SL3NB-1300D', 'SL3NB-1000D', 'НБ-1000D'],
+                timeSpents: ['Организ. простой', 'Ремонт после 21 часа', 'Осложения по стволу', 'Авария',
+                             'Неэффективность работы', 'Ожидание оборудования', 'Ожидание персонала',
+                             'Ожидание техники', 'Некачествен. цементир.', 'Ожидание указ. Заказчика',
+                             'Подогрев оборудования', 'Ожидание химреагентов', 'Отключение элек.энерг. ', 'Превыш. нормы времени'],
+                stratigraphy: [],
+                drillingContractors: [],
+
                 bitWare: {
                     I: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                     O: [0, 1, 2, 3, 4, 5, 6, 7, 8],
@@ -1953,30 +2026,195 @@
                     R: ["BHA", "CM", "CP", "DMF", "DP", "DSF", "DST", "DTF", "FM", "HP", "HR",
                         "LIH”", "LOG;", "PP”", "PR”", "RIG", "TD”", "TQ", "TW", "WC"],
                 },
-                Expenses: [
-                    {operation1: 'digital_drilling.daily_raport.drilling', operation2: 'digital_drilling.daily_raport.organiz_simple'},
-                    {operation1: 'digital_drilling.daily_raport.build_up', operation2: 'digital_drilling.daily_raport.repair_after_21'},
-                    {operation1: 'digital_drilling.daily_raport.development_trunk', operation2: 'digital_drilling.daily_raport.complications_trunk'},
-                    {operation1: 'digital_drilling.daily_raport.well_flushing', operation2: 'digital_drilling.daily_raport.accident'},
-                    {operation1: 'digital_drilling.daily_raport.CPO', operation2: 'digital_drilling.daily_raport.inefficiency_of_work'},
-                    {operation1: 'digital_drilling.daily_raport.PZR', operation2: 'digital_drilling.daily_raport.waiting_equipment'},
-                    {operation1: 'digital_drilling.daily_raport.BCP', operation2: 'digital_drilling.daily_raport.waiting_staff'},
-                    {operation1: 'digital_drilling.daily_raport.GIS', operation2: 'digital_drilling.daily_raport.waiting_technology'},
-                    {operation1: 'digital_drilling.daily_raport.descent', operation2: 'digital_drilling.daily_raport.low_quality_cement'},
-                    {operation1: 'digital_drilling.daily_raport.cementing', operation2: 'digital_drilling.daily_raport.waiting_decree_customer'},
-                    {operation1: 'digital_drilling.daily_raport.OZS', operation2: 'digital_drilling.daily_raport.heating_equipment'},
-                    {operation1: 'digital_drilling.daily_raport.OU_PVO', operation2: 'digital_drilling.daily_raport.waiting_chemicals'},
-                    {operation1: 'digital_drilling.daily_raport.repair_21', operation2: 'digital_drilling.daily_raport.power_outage'},
-                    {operation1: 'digital_drilling.daily_raport.RBS', operation2: 'digital_drilling.daily_raport.exceed_time_norms'},
-                    {operation1: 'digital_drilling.daily_raport.formation_testing', operation2: ''},
-                    {operation1: 'digital_drilling.daily_raport.installation', operation2: ''},
-                    {operation1: 'digital_drilling.daily_raport.other', operation2: ''},
-                    {operation1: '', operation2: ''},
-                    {operation1: '', operation2: ''},
-                ]
+                operation1: [
+                    'digital_drilling.daily_raport.drilling',
+                    'digital_drilling.daily_raport.build_up',
+                    'digital_drilling.daily_raport.development_trunk',
+                    'digital_drilling.daily_raport.well_flushing',
+                    'digital_drilling.daily_raport.CPO',
+                    'digital_drilling.daily_raport.PZR',
+                    'digital_drilling.daily_raport.BCP',
+                    'digital_drilling.daily_raport.GIS',
+                    'digital_drilling.daily_raport.descent',
+                    'digital_drilling.daily_raport.cementing',
+                    'digital_drilling.daily_raport.OZS',
+                    'digital_drilling.daily_raport.OU_PVO',
+                    'digital_drilling.daily_raport.repair_21',
+                    'digital_drilling.daily_raport.RBS',
+                    'digital_drilling.daily_raport.formation_testing',
+                    'digital_drilling.daily_raport.installation',
+                    'digital_drilling.daily_raport.other',
+                ],
+                operation2: [
+                    'digital_drilling.daily_raport.organiz_simple',
+                    'digital_drilling.daily_raport.repair_after_21',
+                    'digital_drilling.daily_raport.complications_trunk',
+                    'digital_drilling.daily_raport.accident',
+                    'digital_drilling.daily_raport.inefficiency_of_work',
+                    'digital_drilling.daily_raport.waiting_equipment',
+                    'digital_drilling.daily_raport.waiting_staff',
+                    'digital_drilling.daily_raport.waiting_technology',
+                    'digital_drilling.daily_raport.low_quality_cement',
+                    'digital_drilling.daily_raport.waiting_decree_customer',
+                    'digital_drilling.daily_raport.heating_equipment',
+                    'digital_drilling.daily_raport.waiting_chemicals',
+                    'digital_drilling.daily_raport.power_outage',
+                    'digital_drilling.daily_raport.exceed_time_norms',
+                ],
+                drillingRigTypes:[],
+                drillingRig:[],
+                Nozzles: [
+                    [7, 0.038, 0.075,  0.113,  0.150,  0.188,  0.225,  0.263,  0.301,  0.338,  0.376],
+                    [8, 0.049, 0.098,  0.147,  0.196,  0.245,  0.295,  0.344,  0.393,  0.442,  0.491],
+                    [9, 0.062,	0.124,	0.186,	0.249,	0.311,	0.373,	0.435,	0.497,	0.559,	0.621],
+                    [10, 0.077,	0.153,	0.230,	0.307,	0.383,	0.460,	0.537,	0.614,	0.690,	0.767],
+                    [11, 0.093,	0.186,	0.278,	0.371,	0.464,	0.557,	0.650,	0.742,	0.835,	0.928],
+                    [12, 0.110,	0.221,	0.331,	0.442,	0.552,	0.663,	0.773,	0.884,	0.994,	1.104],
+                    [13, 0.130,	0.259,	0.389,	0.518,	0.648,	0.778,	0.907,	1.037,	1.167,	1.296],
+                    [14, 0.150,	0.301,	0.451,	0.601,	0.752,	0.902,	1.052,	1.203,	1.353,	1.503],
+                    [15, 0.173,	0.345,	0.518,	0.690,	0.863,	1.035,	1.208,	1.381,	1.553,	1.726],
+                    [16, 0.196,	0.393,	0.589,	0.785,	0.982,	1.178,	1.374,	1.571,	1.767,	1.963],
+                    [18, 0.249,	0.497,	0.746,	0.994,	1.243,	1.491,	1.740,	1.988,	2.237,	2.485],
+                    [20, 0.307,	0.614,	0.920,	1.227,	1.534,	1.841,	2.148,	2.454,	2.761,	3.068],
+                    [22, 0.371,	0.742,	1.114,	1.485,	1.856,	2.227,	2.599,	2.970,	3.341,	3.712],
+                    [24, 0.442,	0.884,	1.325,	1.767,	2.209,	2.651,	3.093,	3.534,	3.976,	4.418],
+                    [26, 0.518,	1.037,	1.555,	2.074,	2.592,	3.111,	3.629,	4.148,	4.666,	5.185],
+                    [28, 0.601,	1.203,	1.804,	2.405,	3.007,	3.608,	4.209,	4.811,	5.412,	6.013],
+                    [30, 0.690,	1.381,	2.071,	2.761,	3.451,	4.142,	4.832,	5.522,	6.213,	6.903],
+                    [32, 0.785,	1.571,	2.356,	3.142,	3.927,	4.712,	5.498,	6.283,	7.069,	7.854],
+
+                ],
+                bitTypes:[],
+                manufacturers: [
+                    'Smith',
+                    'Smith Bits',
+                    'Security DBS',
+                ],
+                bitDiameters: [],
+                unitNames: ['ZJ-10', 'ZJ-15', 'ZJ-20', 'ZJ-30', 'ZJ-40', 'ZJ-40/2250DBT', 'ZJ-50', 'ZJ-70', 'МБУ ZJ-30',
+                            'МБУ ZJ-30/27', 'МБУ-125', 'МБУ-140', 'МБУ-160', 'XJ-120', 'XJ-100', 'XJ-350', 'XJ-450',
+                            'XJ-550', 'XJ-750', 'XCMG XZ360E', 'XCMG XR150d', 'IRI IDECO-270', 'АРБ-100', 'VR-500'],
             }
         },
+        mounted(){
+            this.getOperators()
+            this.getRigType()
+            this.getRig()
+            this.getBitDiameters()
+            this.getDrillingMudTypes()
+            this.getThreadTypes()
+            this.getDiameters()
+            this.getConstructors()
+            this.getDrillingContractors()
+            this.getOperationCodes()
+            this.getBitTypes()
+        },
         methods: {
+            getDiameters(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/casing_diameter/').then((response) => {
+                    let data = response.data;
+                    this.diameters = data
+                });
+
+            },
+            getRig(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/rig/').then((response) => {
+                    let data = response.data;
+                    this.drillingRig = data
+                });
+
+            },
+            getRigType(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/rig_type/').then((response) => {
+                    let data = response.data;
+                    this.drillingRigTypes = data
+                });
+
+            },
+            getBitTypes(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/chisel/').then((response) => {
+                    let data = response.data;
+                    this.bitTypes = data
+                });
+
+            },
+            getBitDiameters(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/bit_diameter/').then((response) => {
+                    let data = response.data;
+                    this.bitDiameters = data
+                });
+
+            },
+            getDrillingMudTypes(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/mud_type/').then((response) => {
+                    let data = response.data;
+                    this.drillingMudTypes = data
+                });
+
+            },
+            getThreadTypes(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/screw_type/').then((response) => {
+                    let data = response.data;
+                    this.threadTypes = data
+                });
+
+            },
+            getOperationCodes(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/operations_code/').then((response) => {
+                    let data = response.data;
+                    this.operationCodes = data
+                });
+
+            },
+            getConstructors(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/equip_type/').then((response) => {
+                    let data = response.data;
+                    this.constructors = data
+                });
+
+            },
+            getDrillingContractors(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/company/').then((response) => {
+                    let data = response.data;
+                    this.drillingContractors = data
+                });
+
+            },
+            getWellNumber(){
+                this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/search/'+this.currentOrgId+'/'+this.currentGeoId).then((response) => {
+                    let data = response.data;
+                    this.well = data
+                });
+
+            },
+            async getFields(){
+                await  this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/search/'+this.currentOrgId).then((response) => {
+                    let data = response.data;
+                    this.fields = data
+                    this.currentGeoId = this.fields[0].id
+                    this.getWellNumber()
+                });
+
+            },
+            async getOperators(){
+                await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/daily_report/dictionary/org/').then((response) => {
+                    let data = response.data;
+                    this.operators = data
+                    this.currentOrgId = this.operators[0].id
+                    this.getFields()
+                });
+
+            },
+            onChangeOrg(event){
+                let org_id = event.target.value
+                this.currentOrgId = org_id
+                this.getFields()
+            },
+            onChangeField(event){
+                let fieldId = event.target.value
+                this.currentGeoId = fieldId
+                this.getWellNumber()
+            },
             addPump(){
                 if (!this.pump[0].active){
                     this.pump[0].active = true
@@ -1993,7 +2231,13 @@
 
 <style scoped>
     .bit-ware{
-        width: 140px;
+        /*width: 140px;*/
+    }
+    .nozzles{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        height: 40px!important;
     }
     .select__name{
         height: 25px;
@@ -2006,10 +2250,8 @@
         color: #000000;
     }
     .select__name div{
-        text-align: center;
-        width: 15px;
-        max-width: 12%;
-        margin-left: 2px
+        text-align: left;
+        margin-left:4px
     }
     .bit-ware .selects{
         display: flex;
@@ -2020,9 +2262,19 @@
         margin-top: 2px;
     }
     .selects select{
-        width: 15px;
-        max-width: 12%;
         margin-left: 2px;
+    }
+    .select__name div:nth-child(1), .select__name div:nth-child(2),
+    .select__name div:nth-child(4), .select__name div:nth-child(5),
+    .selects select:nth-child(1), .selects select:nth-child(2),
+    .selects select:nth-child(4), .selects select:nth-child(5){
+        width: 35px;
+    }
+    .select__name div:nth-child(3), .select__name div:nth-child(6),
+    .select__name div:nth-child(7), .select__name div:nth-child(8),
+    .selects select:nth-child(3), .selects select:nth-child(6),
+    .selects select:nth-child(7), .selects select:nth-child(8){
+        width: 45px;
     }
 .pump td{
     width: 7.35%!important
