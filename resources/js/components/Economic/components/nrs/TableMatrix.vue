@@ -51,17 +51,6 @@
             class="mr-2 bg-dark-blue text-blue"
             style="width: 200px"/>
 
-        <div class="form-check mr-2">
-          <input v-model="isVisibleOperatingPrs"
-                 id="visible_operating_profit"
-                 type="checkbox"
-                 class="form-check-input">
-          <label for="visible_operating_profit"
-                 class="form-check-label text-blue">
-            {{ trans('economic_reference.v2') }}
-          </label>
-        </div>
-
         <button class="btn btn-primary ml-auto">
           {{ trans('economic_reference.export_excel') }}
         </button>
@@ -195,7 +184,12 @@ import SelectOperatingProfit from "../SelectOperatingProfit";
 
 export default {
   name: "TableMatrix",
-  components: {ChartMatrixWell, ChartMatrixTotal, SelectChartType, SelectOperatingProfit},
+  components: {
+    ChartMatrixWell,
+    ChartMatrixTotal,
+    SelectChartType,
+    SelectOperatingProfit
+  },
   props: {
     data: {
       required: true,
@@ -476,7 +470,20 @@ export default {
 
     columnWidth() {
       return this.tableHeaders.length <= 12
-          ? []
+          ? this.tableHeaders.map((col, index) => {
+            let width = null
+
+            switch (index) {
+              case 0:
+                width = 180
+                break
+              case 1:
+                width = 150
+                break
+            }
+
+            return {column: index, width: width}
+          })
           : this.tableHeaders.map((col, index) => ({
             column: index,
             width: index > 1 ? 120 : 150
@@ -506,23 +513,23 @@ export default {
 
     getWellValue(well, key, date, isString = false) {
       if (key.isProfitable) {
-        if (!well[this.operatingProfitKey].hasOwnProperty(date)) {
+        if (!well[this.form.operatingProfit].hasOwnProperty(date)) {
           return 0
         }
 
-        return +well[this.operatingProfitKey][date] > 0 ? 1 : 0
+        return +well[this.form.operatingProfit][date] > 0 ? 1 : 0
       }
 
       if (key.isProfitless) {
-        if (!well[this.operatingProfitKey].hasOwnProperty(date)) {
+        if (!well[this.form.operatingProfit].hasOwnProperty(date)) {
           return 0
         }
 
-        return +well[this.operatingProfitKey][date] > 0 ? 0 : 1
+        return +well[this.form.operatingProfit][date] > 0 ? 0 : 1
       }
 
       if (key.prop === 'prs1' && date === 'sum') {
-        return well[this.operatingProfitKey].sum > 0 ? 0 : +well.prs1.sum
+        return well[this.form.operatingProfit].sum > 0 ? 0 : +well.prs1.sum
       }
 
       if (key.props) {
@@ -682,7 +689,7 @@ export default {
   height: 45px !important;
 }
 
-.matrix-table >>> .v-table-fixed .table-cell {
+.matrix-table >>> .table-cell {
   line-height: 13px;
 }
 
