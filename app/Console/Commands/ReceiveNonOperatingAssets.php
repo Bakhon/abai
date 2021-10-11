@@ -353,7 +353,7 @@ class receiveNonOperatingAssets extends Command
     {
         $summary = 0;
         foreach(range(0, 5) as $i) {
-            $summary += $sheet[$rowIndex = $i][$columnMapping['oil_delivery_fact']];
+            $summary += floatval($sheet[$rowIndex + $i][$columnMapping['oil_delivery_fact']]);
         }
 
         return $summary;
