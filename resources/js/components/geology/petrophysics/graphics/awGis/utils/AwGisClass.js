@@ -29,11 +29,10 @@ export default class AwGisClass {
         let elements = [];
         let groupElements = this.#__tGroup.getGroupElements(groupName);
 
-        groupElements.forEach((elName)=>{
+        groupElements.forEach((elName) => {
             let elData = this.#__tElements.getElement(elName);
             elements.push(elData)
         })
-
         return elements;
     }
 
@@ -49,18 +48,18 @@ export default class AwGisClass {
         this.#__tElements.editElementOptions(elementName, settings)
     }
 
-    addElementToGroup(groupName, curveName, curve) {
-        let data = {
-            name: curveName,
-            curve
+    addElementToGroup(groupName, curveName, curve = [], elementOptions = {}) {
+        if (!this.#__tElements.hasElement(curveName)) {
+            let data = {
+                name: curveName,
+                curve
+            }
+            this.#__tElements.addElement(curveName, data, elementOptions)
         }
 
-        this.#__tElements.addElement(curveName, data)
         this.#__tGroup.editGroupElement(groupName, [curveName])
     }
-/*    addMultipleToGroup(groupName){
 
-    }*/
     hasElementInGroup(groupName, elementName) {
         return this.#__tGroup.hasElementInGroup(groupName, elementName);
     }
