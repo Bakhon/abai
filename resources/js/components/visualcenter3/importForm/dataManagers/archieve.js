@@ -60,7 +60,7 @@ export default {
            this.disableHighlightOnCells();
            if (name === 'isPlanActive') {
                await this.sleep(100);
-               for (let i=0; i <12; i++) {
+               for (let i=0; i <=12; i++) {
                    this.setClassToElement($('#planGrid').find('div[data-col="'+ i + '"][data-row="0"]'),'cell-title');
                }
            } else {
@@ -71,18 +71,20 @@ export default {
            }
        },
         async switchCompany(e) {
-            let spliced = this.planRows.splice(9,20);
-           // document.querySelector('#planGrid').source = spliced;
-            return;
             this.SET_LOADING(true);
             this.selectedDzo.ticker = e.target.value;
-            if (this.selectedDzo.ticker === 'КОА') {
-                this.addColumnsToGrid();
-            }
             this.selectedDzo.name = this.getDzoName();
-            this.changeDefaultDzo();
-            this.handleSwitchFilter();
-            this.addListeners();
+            if (this.category.isPlanActive) {
+                // let spliced = this.planRows.splice(9,20);
+                // document.querySelector('#planGrid').source = spliced;
+            } else {
+                if (this.selectedDzo.ticker === 'КОА') {
+                    this.addColumnsToGrid();
+                }
+                this.changeDefaultDzo();
+                this.handleSwitchFilter();
+                this.addListeners();
+            }
             this.SET_LOADING(false);
         },
         async handleSwitchFilter() {

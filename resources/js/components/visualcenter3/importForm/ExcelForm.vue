@@ -36,8 +36,27 @@
                     <span class="dzo-name">{{selectedDzo.name}}</span>
                 </div>
             </div>
-
-            <div v-if="category.isFactActive" class="col-2 row mt-3 ml-1">
+            <div v-if="category.isPlanActive" class="col-2 row mt-3 ml-1">
+                <div
+                        class="col-12 status-block status-block_little menu__button rainbow menu__button_disabled"
+                        @click="pasteClipboardContent()"
+                >
+                    {{trans('visualcenter.importForm.pasteData')}}
+                </div>
+                <div
+                        :class="[!isDataExist ? 'menu__button_disabled' : '','col-12 status-block status-block_little menu__button mt-3']"
+                        @click="validatePlan()"
+                >
+                    {{trans('visualcenter.validateButton')}}
+                </div>
+                <div
+                        :class="[!isDataReady ? 'menu__button_disabled' : '','status-block status-block_little menu__button col-12 mt-3']"
+                        @click="savePlan()"
+                >
+                    {{trans('visualcenter.saveButton')}}
+                </div>
+            </div>
+            <div v-else-if="category.isFactActive" class="col-2 row mt-3 ml-1">
                 <div
                         class="col-12 status-block status-block_little menu__button rainbow"
                         @click="pasteClipboardContent()"
@@ -126,7 +145,7 @@
                 </div>
             </div>
 
-            <div class="col-2 row mt-3 ml-1">
+            <div v-if="category.isFactActive || category.isArchieveActive" class="col-2 row mt-3 ml-1">
                 <div class="vert-line"></div>
                 <div
                         id="chemistryButton"
@@ -169,7 +188,7 @@
                     </div>
                 </div>
                 <div
-                        :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1 mt-3']"
+                        :class="[!isChemistryButtonVisible && category.isFactActive ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1 mt-3']"
                         @click="changeWellBlockVisibility()"
                 >
                     {{trans('visualcenter.importForm.wellWorkover')}}
@@ -216,8 +235,8 @@
                         v-else
                         id="planGrid"
                         theme="material"
-                        :source="planRows"
-                        :columns="planColumns"
+                        :source="currentPlan.rows"
+                        :columns="currentPlan.columns"
                         :rowSize="30"
                         @beforeRangeEdit="beforeRangeEdit"
                         @beforeEdit="beforeRangeEdit"

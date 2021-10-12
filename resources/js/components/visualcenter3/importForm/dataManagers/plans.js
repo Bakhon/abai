@@ -58,19 +58,34 @@ export default {
                 },
             },
             planColumns: [],
-            selectedPlanDzo: {
-                ticker: 'ЭМГ',
-                name: 'АО "Эмбамунайгаз"',
-            },
             planRows: _.cloneDeep(planRowEmg),
             planCellsMapping: _.cloneDeep(planCellEmg),
          //   planRowsFormatMapping: _.cloneDeep(planFormatEmg.rowsFormatMapping),
           //  planColumnsFormatMapping: _.cloneDeep(planFormatEmg.columnsFormatMapping),
+            plans: [],
+            currentPlan: {
+                rows: [],
+                cells: _.cloneDeep(planCellEmg),
+                columns: [],
+                year: moment().year()
+            },
         };
     },
     methods: {
+        async getDzoPlans() {
+            let uri = this.localeUrl("/get-plans-by-dzo");
+            let queryOptions = {
+                'dzo': this.selectedDzo.ticker,
+                'year': this.currentPlan.year
+            };
+            const response = await axios.get(uri, {params:queryOptions});
+            if (response.status === 200) {
+                return response.data;
+            }
+            return [];
+        },
         fillPlanColumns() {
-            for (let i=1;i<13;i++) {
+            for (let i=1;i<=13;i++) {
                 let backgroundColor = '';
                 let color = 'black';
                 let size = 200;
@@ -95,11 +110,10 @@ export default {
                         };
                     },
                 };
-                this.planColumns.push(column);
+                this.currentPlan.columns.push(column);
             }
         },
         fillPlanRows() {
-            let rows = [];
             let firstRow = {
                 "column1": "Показатель",
                 "column2": 'Январь',
@@ -113,20 +127,30 @@ export default {
                 "column10": 'Сентябрь',
                 "column11": 'Октябрь',
                 "column12": 'Ноябрь',
-                "column12": 'Декабрь',
+                "column13": 'Декабрь',
             };
-            rows.push(firstRow);
+            this.currentPlan.rows.push(firstRow);
             for (let y in this.planRows) {
                 let row = {
-                    'column1': this.planRows[y]
+                    'column1': y
                 }
-                for (let i=2;i<13;i++) {
+                for (let i=2;i<=13;i++) {
                     row['column'+i] = "5";
                 }
-                rows.push(row);
+                row['fieldName'] = this.planRows[y];
+                this.currentPlan.rows.push(row);
             }
-            this.planRows = rows;
         },
+        handlePlans() {
+            for (let i=1;i<this.currentPlan.rows.length; i++) {
+                let row = this.currentPlan.rows[i];
+                for (let y=2;y<Object.keys(row).length;y++) {
+                    let plan = this.plans.find(month => moment(month.date).month()+1 === y-1);
+                    let daysCount = moment().year(this.currentPlan.year).month(y-1).daysInMonth();
+                    row['column'+y] = Math.round(plan[row['fieldName']] * daysCount);
+                }
+            }
+        }
     },
     computed: {
 

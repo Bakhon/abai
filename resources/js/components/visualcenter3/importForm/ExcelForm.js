@@ -122,7 +122,7 @@ export default {
             ],
             selectedDzo: {
                 ticker: defaultDzoTicker,
-                name: 'ТОО "Казахтуркмунай"',
+                name: 'АО "Эмбамунайгаз"',
                 plans: [],
             },
             status: this.trans("visualcenter.importForm.status.waitForData"),
@@ -182,6 +182,12 @@ export default {
     props: ['userId'],
     async mounted() {
         this.SET_LOADING(true);
+        this.fillPlanColumns();
+        this.fillPlanRows();
+        this.plans = await this.getDzoPlans();
+        console.log('this.plans');
+        console.log(this.plans);
+        this.handlePlans();
         this.dzoUsers = Object.keys(this.dzoMapping).map(k => this.dzoMapping[k].id);
         let currentDayNumber = moment().date();
         if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
@@ -204,8 +210,6 @@ export default {
         this.setTableFormat();
         await this.updateCurrentData();
         this.addListeners();
-        this.fillPlanColumns();
-        this.fillPlanRows();
         this.SET_LOADING(false);
     },
     methods: {

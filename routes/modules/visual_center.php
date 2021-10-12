@@ -96,6 +96,7 @@ Route::group(
 
                 Route::get('/upload-historical-data', 'VisCenter\ExcelForm\HistoricalUploadController@uploadHistoricalData')->name('upload-historical-data');
                 Route::post('/store-historical-data', 'VisCenter\ExcelForm\HistoricalUploadController@storeHistoricalDataByDzo');
+                Route::get('get-plans-by-dzo', 'VisCenter\ExcelForm\ExcelFormPlansController@getPlansByDzo');
 
             }
         );
