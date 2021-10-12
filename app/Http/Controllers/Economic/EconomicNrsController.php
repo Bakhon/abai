@@ -456,6 +456,8 @@ class EconomicNrsController extends Controller
             "Trans_expenditures",
             "Gaoverheads_expenditures",
             "prs1",
+            "PRS_nopayroll_expenditures",
+            "PRS_expenditures",
         ];
 
         $builder = $this
@@ -468,7 +470,7 @@ class EconomicNrsController extends Controller
             ->select("uwi");
 
         foreach ($sumKeys as $key) {
-            $builder->sum($key);
+            $builder->doubleSum($key);
         }
 
         if ($org->druid_id) {

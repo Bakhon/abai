@@ -59,6 +59,10 @@ export default {
     prsKeys: {
       required: true,
       type: Array
+    },
+    dateOffset: {
+      required: true,
+      type: Number
     }
   },
   computed: {
@@ -77,11 +81,15 @@ export default {
 
       this.dates.forEach((date, dateIndex) => {
         this.wellKeys.forEach((key, keyIndex) => {
-          series[keyIndex].data.push(+this.wellSum[keyIndex][dateIndex + 2].value)
+          series[keyIndex].data.push(
+              +this.wellSum[keyIndex][dateIndex + this.dateOffset].value
+          )
         })
 
         this.prsKeys.forEach((key, keyIndex) => {
-          series[wellKeysCount + keyIndex].data.push(+this.prsSum[keyIndex][dateIndex + 2].value)
+          series[wellKeysCount + keyIndex].data.push(
+              +this.prsSum[keyIndex][dateIndex + this.dateOffset].value
+          )
         })
       })
 

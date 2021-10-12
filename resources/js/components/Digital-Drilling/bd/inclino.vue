@@ -355,7 +355,7 @@
             async getInclinoByWell(){
                 try{
                     await this.axios.get(process.env.MIX_DIGITAL_DRILLING_URL + '/digital_drilling/api/inclinometry/'+
-                        this.currentWell[this.currentWell.length-1].id).then((response) => {
+                        this.currentWell.id).then((response) => {
                         let data = response.data;
                         if (data) {
                             this.inclino = data;
