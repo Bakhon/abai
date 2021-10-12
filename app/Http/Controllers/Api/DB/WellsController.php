@@ -285,7 +285,7 @@ class WellsController extends Controller
     {
         return $well->techModeProdOil()
             ->orderBy('dbeg', 'desc')
-            ->first(['oil', 'liquid', 'wcut']);
+            ->first(['oil', 'liquid', 'wcut', 'oil_density']);
     }
 
     private function measLiq(Well $well)
