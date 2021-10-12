@@ -1,8 +1,7 @@
 import mainMenu from "../../GTM/mock-data/main_menu.json";
 import BtnDropdown from "../components/BtnDropdown";
-import {rowsOil,rowsHorizon,horizons} from '../json/data';
+import {rowsOil,rowsHorizon,horizons,actualIndicators} from '../json/data';
 import apexchart from 'vue-apexcharts';
-const ru = require("apexcharts/dist/locales/ru.json");
 
 export default {
   name: 'CompareDrilling',
@@ -17,9 +16,22 @@ export default {
       menu: mainMenu,
       parentType: '',
       horizonList: horizons,
-      yearList: ['2020', '2021'],
+      actualIndicators: actualIndicators,
+      coincidences: [
+        {
+          id: 50,
+          title: '50 м'
+        },
+        {
+          id: 100,
+          title: '100 м'
+        },
+        {
+          id: 150,
+          title: '150 м'
+        }
+      ],
       horizon: 12,
-      ru: ru
     }
   },
 
@@ -78,7 +90,7 @@ export default {
       }
     },
     getYearList() {
-      return [2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020];
+      return ['2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020'];
     },
     series() {
       return [
