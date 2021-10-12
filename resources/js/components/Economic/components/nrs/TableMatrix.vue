@@ -1,6 +1,18 @@
 <template>
   <div>
     <div class="text-white">
+      <vue-table-dynamic
+          :params="tableCostParams"
+          class="matrix-table bg-main1 mb-3 p-4">
+        <template
+            v-for="(header, index) in tableHeaders"
+            :slot="`column-${index}`" slot-scope="{ props }">
+          <div class="d-flex align-items-center w-100">
+            {{ props.cellData.label }}
+          </div>
+        </template>
+      </vue-table-dynamic>
+
       <div class="d-flex align-items-center mb-3 bg-main1 p-4">
         <div class="form-check mr-2">
           <input v-model="isVisibleProfitable"
@@ -89,18 +101,6 @@
           :prs-keys="prsKeys"
           :date-offset="tableTitlesLength"
           class="text-white container-fluid bg-main1 pt-2 px-4"/>
-
-      <vue-table-dynamic
-          :params="tableCostParams"
-          class="matrix-table bg-main1 pt-4 px-4 pb-2">
-        <template
-            v-for="(header, index) in tableHeaders"
-            :slot="`column-${index}`" slot-scope="{ props }">
-          <div class="d-flex align-items-center w-100">
-            {{ props.cellData.label }}
-          </div>
-        </template>
-      </vue-table-dynamic>
 
       <vue-table-dynamic
           :params="tablePrsParams"
