@@ -526,7 +526,126 @@ export default {
     },
 
     costKeys() {
-      let dailyKeys = this.getDailyKeys('trans_exp').map(key => ({
+      let costs = [
+        {
+          prop: 'cost_variable',
+          name: this.trans('economic_reference.cost_variable'),
+          fractionDigits: 2,
+          dimensionTitle: `
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.cubic_meter')}
+          `,
+          isString: true
+        },
+        {
+          prop: 'cost_fix_noWRpayroll',
+          name: this.trans('economic_reference.cost_fix_no_wr_payroll'),
+          fractionDigits: 2,
+          dimension: 1000,
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+          `,
+          isString: true
+        },
+        {
+          prop: 'cost_fix_payroll',
+          name: this.trans('economic_reference.fot'),
+          dimension: 1000,
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+          `,
+          isString: true
+        },
+        {
+          prop: 'cost_fix_nopayroll',
+          name: this.trans('economic_reference.cost_fix_nopayroll'),
+          dimension: 1000,
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+          `,
+          isString: true
+        },
+        {
+          prop: 'cost_fix',
+          name: this.trans('economic_reference.cost_fix'),
+          dimension: 1000,
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+          `,
+          isString: true
+        },
+        {
+          prop: 'cost_Gaoverheads',
+          name: this.trans('economic_reference.cost_gaoverheads'),
+          dimension: 1000,
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+          `,
+          isString: true
+        },
+        {
+          prop: 'cost_WR_nopayroll',
+          name: this.trans('economic_reference.cost_prs_without_fot'),
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.event_short').toLocaleLowerCase()}
+          `,
+          isString: true
+        },
+        {
+          prop: 'cost_WR_payroll',
+          name: this.trans('economic_reference.cost_wr_payroll'),
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.event_short').toLocaleLowerCase()}
+          `,
+          isString: true
+        },
+        {
+          prop: 'cost_WR',
+          name: this.trans('economic_reference.cost_prs'),
+          fractionDigits: 2,
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.event_short').toLocaleLowerCase()}
+          `,
+          isString: true
+        },
+        {
+          prop: 'cost_WO',
+          name: this.trans('economic_reference.cost_krs'),
+          fractionDigits: 2,
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.event_short').toLocaleLowerCase()}
+          `,
+          isString: true
+        },
+      ]
+
+      let prices = this.getDailyKeys('price').map(key => ({
+        prop: key.prop,
+        name: `${this.trans('economic_reference.cost_implementation')} ${key.name}`,
+        fractionDigits: 2,
+        dimensionTitle: key.dimension,
+        isString: true
+      }))
+
+      let transExpenditures = this.getDailyKeys('trans_exp').map(key => ({
         prop: key.prop,
         name: `${this.trans('economic_reference.trans_expenditures')} ${key.name}`,
         fractionDigits: 2,
@@ -534,118 +653,67 @@ export default {
         isString: true
       }))
 
+      let barrelRatios = this.getDailyKeys('Barrel_ratio').map(key => ({
+        prop: key.prop,
+        name: `${this.trans('economic_reference.barrel_ratio')} ${key.name}`,
+        fractionDigits: 2,
+        dimensionTitle: `bbl / ${this.trans('economic_reference.ton_declination')}`,
+        isString: true
+      }))
+
+      let saleShares = this.getDailyKeys('sale_share').map(key => ({
+        prop: key.prop,
+        name: `${this.trans('economic_reference.sale_share')} ${key.name}`,
+        fractionDigits: 2,
+        dimensionTitle: '%',
+        isString: true
+      }))
+
+      let discounts = this.getDailyKeys('discount').map(key => ({
+        prop: key.prop,
+        name: `${this.trans('economic_reference.discount_by_direction')} ${key.name}`,
+        fractionDigits: 2,
+        dimensionTitle: key.dimension,
+        isString: true
+      }))
+
       return [
-        ...[
-          {
-            prop: 'cost_variable',
-            name: this.trans('economic_reference.cost_variable'),
-            fractionDigits: 2,
-            dimensionTitle: `
-            ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.cubic_meter')}
-          `,
-            isString: true
-          },
-          {
-            prop: 'cost_fix_noWRpayroll',
-            name: this.trans('economic_reference.cost_fix_no_wr_payroll'),
-            fractionDigits: 2,
-            dimension: 1000,
-            dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.month').toLocaleLowerCase()}
-          `,
-            isString: true
-          },
-          {
-            prop: 'cost_fix_payroll',
-            name: this.trans('economic_reference.fot'),
-            dimension: 1000,
-            dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.month').toLocaleLowerCase()}
-          `,
-            isString: true
-          },
-          {
-            prop: 'cost_fix_nopayroll',
-            name: this.trans('economic_reference.cost_fix_nopayroll'),
-            dimension: 1000,
-            dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.month').toLocaleLowerCase()}
-          `,
-            isString: true
-          },
-          {
-            prop: 'cost_fix',
-            name: this.trans('economic_reference.cost_fix'),
-            dimension: 1000,
-            dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.month').toLocaleLowerCase()}
-          `,
-            isString: true
-          },
-          {
-            prop: 'cost_Gaoverheads',
-            name: this.trans('economic_reference.cost_gaoverheads'),
-            dimension: 1000,
-            dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.month').toLocaleLowerCase()}
-          `,
-            isString: true
-          },
-          {
-            prop: 'cost_WR_nopayroll',
-            name: this.trans('economic_reference.cost_prs_without_fot'),
-            dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.event_short').toLocaleLowerCase()}
-          `,
-            isString: true
-          },
-          {
-            prop: 'cost_WR_payroll',
-            name: this.trans('economic_reference.cost_wr_payroll'),
-            dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.event_short').toLocaleLowerCase()}
-          `,
-            isString: true
-          },
-          {
-            prop: 'cost_WR',
-            name: this.trans('economic_reference.cost_prs'),
-            fractionDigits: 2,
-            dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.event_short').toLocaleLowerCase()}
-          `,
-            isString: true
-          },
-          {
-            prop: 'cost_WO',
-            name: this.trans('economic_reference.cost_krs'),
-            fractionDigits: 2,
-            dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.tenge')} /
-            ${this.trans('economic_reference.event_short').toLocaleLowerCase()}
-          `,
-            isString: true
-          },
-        ],
-        ...dailyKeys
+        ...costs,
+        ...[{
+          prop: 'costs_divider',
+          name: '',
+          dimensionTitle: '',
+          isString: true
+        }],
+        ...transExpenditures,
+        ...[{
+          prop: 'trans_divider',
+          name: '',
+          dimensionTitle: '',
+          isString: true
+        }],
+        ...prices,
+        ...[{
+          prop: 'price_divider',
+          name: '',
+          dimensionTitle: '',
+          isString: true
+        }],
+        ...barrelRatios,
+        ...[{
+          prop: 'barrel_divider',
+          name: '',
+          dimensionTitle: '',
+          isString: true
+        }],
+        ...saleShares,
+        ...[{
+          prop: 'sale_divider',
+          name: '',
+          dimensionTitle: '',
+          isString: true
+        }],
+        ...discounts
       ]
     },
   },
@@ -730,7 +798,8 @@ export default {
         wellsSum[key.prop][dateKey].label = this.getLabel(
             wellsSum[key.prop][dateKey].value,
             key.dimension,
-            key.fractionDigits
+            key.fractionDigits,
+            key.isString
         )
       })
 
@@ -951,52 +1020,52 @@ export default {
       return [
         {
           prop: `${prefix}_export_AA`,
-          name: 'AA',
+          name: this.trans('economic_reference.aa'),
           dimension: exportDimension,
         },
         {
           prop: `${prefix}_export_KTK`,
-          name: 'KTK',
+          name: this.trans('economic_reference.ktk'),
           dimension: exportDimension,
         },
         {
           prop: `${prefix}_export_Samara`,
-          name: 'Samara',
+          name: this.trans('economic_reference.samara'),
           dimension: exportDimension,
         },
         {
           prop: `${prefix}_export_Aktau`,
-          name: 'Aktau',
+          name: this.trans('economic_reference.aktau'),
           dimension: exportDimension,
         },
         {
           prop: `${prefix}_export_other`,
-          name: 'other',
+          name: this.trans('economic_reference.others').toLocaleLowerCase(),
           dimension: exportDimension,
         },
         {
           prop: `${prefix}_local_ANPZ`,
-          name: 'ANPZ',
+          name: this.trans('economic_reference.anpz'),
           dimension: localDimension,
         },
         {
           prop: `${prefix}_local_PNHZ`,
-          name: 'PNHZ',
+          name: this.trans('economic_reference.pnhz'),
           dimension: localDimension,
         },
         {
           prop: `${prefix}_local_PKOP`,
-          name: 'PKOP',
+          name: this.trans('economic_reference.pkop'),
           dimension: localDimension,
         },
         {
           prop: `${prefix}_local_KBITUM`,
-          name: 'KBITUM',
+          name: this.trans('economic_reference.kbitum'),
           dimension: localDimension,
         },
         {
           prop: `${prefix}_local_other`,
-          name: 'other',
+          name: this.trans('economic_reference.others').toLocaleLowerCase(),
           dimension: localDimension,
         },
       ];

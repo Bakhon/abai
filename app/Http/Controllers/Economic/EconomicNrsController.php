@@ -484,10 +484,11 @@ class EconomicNrsController extends Controller
                 'cost_WR',
                 'cost_WO',
             ],
+            self::getDailyKeys('trans_exp'),
             self::getDailyKeys('price'),
             self::getDailyKeys('Barrel_ratio'),
+            self::getDailyKeys('sale_share'),
             self::getDailyKeys('discount'),
-            self::getDailyKeys('trans_exp'),
         );
 
         $builderDailyParams = $this
