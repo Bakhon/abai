@@ -591,7 +591,29 @@ class DictionaryService
             )
             ->toArray();
 
-        return $this->generateTree((array)$items);
+        $tree = [];
+        $items = $this->generateTree($items);
+        $geoPermissionsIds = $this->getUserGeoPermissionIds();
+        $this->filterTree($items, $tree, $geoPermissionsIds);
+        return $tree;
+    }
+
+    public function getUserGeoPermissionIds() {
+        $orgIds = $this->getUserOrgPermissionIds();
+        $result = [];
+        foreach($orgIds as $id) {
+            $itemElements = DB::connection('tbd')
+                ->table('prod.org_geo as og')
+                ->select('og.geo as geo')
+                ->where('og.org', $id)
+                ->get()
+                ->toArray();
+            $result = array_merge($result, $itemElements);
+        }
+        $result = array_unique(array_map(function ($item) {
+            return (int)$item->geo;
+        }, $result));
+        return $result;
     }
 
     private function getWellTechsDict(): array
@@ -612,7 +634,7 @@ class DictionaryService
         $this->filterTree($items, $tree, $techPermissionsIds);
         return $tree;
     }
-
+    
     public function getUserTechPermissionIds() {
         $orgIds = $this->getUserOrgPermissionIds();
         $result = [];
