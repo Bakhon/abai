@@ -23,15 +23,7 @@ export default {
     methods: {
         async changeDate() {
             this.isDataSended = false;
-            this.SET_LOADING(true);
-            let queryOptions = {
-                'dzoName': this.selectedDzo.ticker,
-                'isCorrected': true,
-                'date': this.period
-            };
-            this.todayData = await this.getDzoTodayData(queryOptions);
-            this.processTodayData();
-            this.SET_LOADING(false);
+            this.handleSwitchFilter();
         },
         async sendToApprove() {
             this.handleValidate();
@@ -67,8 +59,28 @@ export default {
             }
             this.selectedDzo.name = this.getDzoName();
             this.changeDefaultDzo();
-            await this.updateCurrentData();
+            this.handleSwitchFilter();
             this.addListeners();
+            this.SET_LOADING(false);
+        },
+        async handleSwitchFilter() {
+            let self = this;
+            this.SET_LOADING(true);
+            _.forEach(Object.keys(this.todayDataOptions), async function(key) {
+                let uri = self.todayDataOptions[key]['url'] + '?dzoName=' + self.selectedDzo.ticker;
+                let inputData = await self.getCurrentData(uri);
+                if (Object.keys(inputData).length > 0) {
+                    let dataset = self[self.todayDataOptions[key]['name']];
+                    self.processCurrentData(inputData,dataset);
+                }
+            });
+            let queryOptions = {
+                'dzoName': this.selectedDzo.ticker,
+                'isCorrected': true,
+                'date': this.period
+            };
+            this.todayData = await this.getDzoTodayData(queryOptions);
+            this.processTodayData();
             this.SET_LOADING(false);
         }
     },

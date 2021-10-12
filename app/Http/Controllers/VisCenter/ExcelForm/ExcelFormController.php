@@ -57,7 +57,7 @@ class ExcelFormController extends Controller
 
         $dzoName = $request->request->get('dzoName');
         $dzoImportData = DzoImportData::query()
-            ->whereDate('date',$date)
+            ->whereDate('date',Carbon::parse($date))
             ->where('dzo_name',$dzoName)
             ->whereNull('is_corrected')
             ->with('importField')
@@ -171,12 +171,13 @@ class ExcelFormController extends Controller
         $emails = $request->toList;
         $request->request->remove('toList');
         $isApproveRequired = $this->isProductionRecordExist($request->get('dzo_name'),$request->get('date'));
+        $isCorrected = true;
         if (!$isApproveRequired) {
+            $isCorrected = null;
             $request->request->set('is_corrected', null);
         }
         $this->saveDzoSummaryData($request);
-        $dzo_summary_last_record = DzoImportData::latest('id')->where('is_corrected', true)->first();
-
+        $dzo_summary_last_record = DzoImportData::latest('id')->where('is_corrected', $isCorrected)->first();
         $this->saveDzoFieldsSummaryData($dzo_summary_last_record,$request);
 
         $dzo_downtime_reason = new DzoImportDowntimeReason;

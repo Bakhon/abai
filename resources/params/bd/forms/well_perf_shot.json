@@ -101,9 +101,9 @@
                 "columns": [
                   {
                     "code": "geo",
-                    "type": "dict",
+                    "type": "dict_tree",
                     "title": "horizon",
-                    "dict": "geo_type_hrz",
+                    "dict": "geos",
                     "validation": "required|exists:tbd.dict.geo,id"
                   },
                   {

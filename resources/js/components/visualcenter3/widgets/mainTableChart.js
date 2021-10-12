@@ -23,6 +23,113 @@ export default {
             },
             chartOutput: [],
             oilResidueChartName: this.trans('visualcenter.ostatokNefti'),
+            chartNameMapping: {
+                'oilCondensateProduction': {
+                    'head': this.trans('visualcenter.oilCondensateProductionChartName'),
+                    'name': this.trans('visualcenter.oilCondensateProduction'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'oilCondensateProductionWithoutKMG': {
+                    'head': this.trans('visualcenter.oilCondensateProductionChartName'),
+                    'name': this.trans('visualcenter.oilCondensateProduction'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'oilCondensateProductionCondensateOnly': {
+                    'head': this.trans('visualcenter.dynamicCondensateProduction'),
+                    'name': this.trans('visualcenter.getgk'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'oilCondensateDelivery': {
+                    'head': this.trans('visualcenter.oilCondensateDeliveryChartName'),
+                    'name': this.trans('visualcenter.oilCondensateDelivery'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'oilCondensateDeliveryWithoutKMG': {
+                    'head': this.trans('visualcenter.oilCondensateDeliveryChartName'),
+                    'name': this.trans('visualcenter.oilCondensateDelivery'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'oilCondensateDeliveryOilResidue': {
+                    'head': this.trans('visualcenter.stockOfGoodsDynamic'),
+                    'name': this.trans('visualcenter.ostatokNefti'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'oilCondensateDeliveryCondensateOnly': {
+                    'head': this.trans('visualcenter.dynamicCondensateDelivery'),
+                    'name': this.trans('visualcenter.condensateDelivery'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+                },
+                'gasProduction': {
+                    'head': this.trans('visualcenter.dynamicGasProduction'),
+                    'name': this.trans('visualcenter.getgaz'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'naturalGasProduction': {
+                    'head': this.trans('visualcenter.dynamicNaturalGasProduction'),
+                    'name': this.trans('visualcenter.productionNaturalGas'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'associatedGasProduction': {
+                    'head': this.trans('visualcenter.dynamicAssociatedlGasProduction'),
+                    'name': this.trans('visualcenter.productionAssociatedGas'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'associatedGasFlaring': {
+                    'head': this.trans('visualcenter.dynamicAssociatedlGasFlaring'),
+                    'name': this.trans('visualcenter.flaringAssociatedGas'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'naturalGasDelivery': {
+                    'head': this.trans('visualcenter.dynamicNaturalGasDelivery'),
+                    'name': this.trans('visualcenter.prirodGazdlv'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'expensesForOwnNaturalGas': {
+                    'head': this.trans('visualcenter.dynamicNaturalGasExpenses'),
+                    'name': this.trans('visualcenter.naturalGasExpenses'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'associatedGasDelivery': {
+                    'head': this.trans('visualcenter.dynamicAssociatedGasDelivery'),
+                    'name': this.trans('visualcenter.poputGazdlv'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'expensesForOwnAssociatedGas': {
+                    'head': this.trans('visualcenter.dynamicNaturalGasExpenses'),
+                    'name': this.trans('visualcenter.associatedGasExpenses'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'waterInjection': {
+                    'head': this.trans('visualcenter.injectionWaterChartName'),
+                    'name': this.trans('visualcenter.liq'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'seaWaterInjection': {
+                    'head': this.trans('visualcenter.dynamicSeaInjection'),
+                    'name': this.trans('visualcenter.liqOcean'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'wasteWaterInjection': {
+                    'head': this.trans('visualcenter.dynamicWasteInjection'),
+                    'name': this.trans('visualcenter.liqStochnaya'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'artezianWaterInjection': {
+                    'head': this.trans('visualcenter.dynamicArtesianWater'),
+                    'name': this.trans('visualcenter.injectionArtesianWater'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+                'streamWaterInjection': {
+                    'head': this.trans('visualcenter.dynamicStreamInjection'),
+                    'name': this.trans('visualcenter.streamInjection'),
+                    'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.meterCubic'),
+                },
+            },
+            selectedChartCategory: {
+                'head': this.trans('visualcenter.oilCondensateProductionChartName'),
+                'name': this.trans('visualcenter.oilCondensateProduction'),
+                'metric': this.trans('visualcenter.thousand') + ' ' + this.trans('visualcenter.chemistryMetricTon'),
+            }
         };
     },
     methods: {

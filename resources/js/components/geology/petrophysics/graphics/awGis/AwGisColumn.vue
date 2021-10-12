@@ -1,11 +1,13 @@
 <template>
   <div class="column" ref="column" :style="{height: `${heightContainer - columnTopPadding}px`}">
     <div class="column__header d-flex flex-column" :style="{height: `${headerHeight}px`}">
-      <div class="column__header_info">
-        {{ columnName }}
-      </div>
-      <div class="column__header_info">
-        1: 0
+      <div  v-if="Array.isArray(elements)" v-for="el in elements">
+        <div class="column__header_info">
+          {{ el }}
+        </div>
+        <div class="column__header_info">
+          1: 0
+        </div>
       </div>
     </div>
     <canvas ref="depthCanvas" :width="depthColumnWidth" />
@@ -21,7 +23,8 @@ export default {
     columnName: String,
     heightContainer: Number,
     columnTopPadding: Number,
-    offsetY: Number
+    offsetY: Number,
+    elements: Array,
   },
   data() {
     return {

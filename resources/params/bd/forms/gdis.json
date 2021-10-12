@@ -41,12 +41,13 @@
                 "validation": "required"
               },
               {
-                "code": "research_target",
+                "code": "research_target_text",
                 "type": "text",
-                "title": "aim"
+                "title": "aim",
+                "validation": "required"
               },
               {
-                "code": "conclusion",
+                "code": "conclusion_text",
                 "type": "text",
                 "title": "conclusion",
                 "validation": "required"
@@ -3338,21 +3339,32 @@
       ]
     },
     {
-      "title": "doc",
+      "title": "table",
       "blocks": [
         [
           {
             "title": "",
             "items": [
               {
-                "code": "",
+                "code": "documents",
                 "type": "table",
                 "form": "well_document_short",
-                "title": "doc",
+                "title": "table",
+                "table": {
+                  "name": "prod.gdis_complex_file",
+                  "file_type": 4,
+                  "local_key": "gdis_complex",
+                  "document_key": "file"
+                },
+                "document_list": true,
                 "columns": [
                   {
-                    "code": "name_ru",
-                    "title": "scan_doc"
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
                   }
                 ]
               }
