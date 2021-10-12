@@ -55,159 +55,161 @@
               </div>
             </div>
           </template>
-          <table v-if="rows.length" class="table">
-            <thead>
-            <template v-if="formParams.complicated_header">
-              <tr v-for="row in formParams.complicated_header">
-                <th
-                    v-for="column in row"
-                    :colspan="column.colspan"
-                    :rowspan="column.rowspan"
+          <div class="table__wrap">
+            <table v-if="rows.length" class="table">
+              <thead>
+              <template v-if="formParams.complicated_header">
+                <tr v-for="row in formParams.complicated_header">
+                  <th
+                      v-for="column in row"
+                      :colspan="column.colspan"
+                      :rowspan="column.rowspan"
+                  >
+                    {{ column.title }}
+                  </th>
+                </tr>
+              </template>
+              <template v-else>
+                <tr>
+                  <th v-if="formParams.edit"></th>
+                  <th v-for="column in visibleColumns">
+                    {{ column.title }}
+                  </th>
+                </tr>
+              </template>
+              </thead>
+              <tbody>
+              <tr v-for="(row, rowIndex) in rows">
+                <td v-if="formParams.edit">
+                  <a href="#" @click.prevent="editForm(row)">Редактировать</a>
+                </td>
+                <td
+                    v-for="column in visibleColumns"
+                    :class="{'editable': formParams && formParams.available_actions.includes('update') && isEditable(row, column)}"
+                    @dblclick="editCell(row, column)"
                 >
-                  {{ column.title }}
-                </th>
-              </tr>
-            </template>
-            <template v-else>
-              <tr>
-                <th v-if="formParams.edit"></th>
-                <th v-for="column in visibleColumns">
-                  {{ column.title }}
-                </th>
-              </tr>
-            </template>
-            </thead>
-            <tbody>
-            <tr v-for="(row, rowIndex) in rows">
-              <td v-if="formParams.edit">
-                <a href="#" @click.prevent="editForm(row)">Редактировать</a>
-              </td>
-              <td
-                  v-for="column in visibleColumns"
-                  :class="{'editable': formParams && formParams.available_actions.includes('update') && isEditable(row, column)}"
-                  @dblclick="editCell(row, column)"
-              >
-                <template v-if="getCellType(row, column) === 'form'">
-                  <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
-                </template>
-                <template v-else-if="getCellType(row, column) === 'link'">
-                  <a :href="row[column.code].href">{{ row[column.code].name }}</a>
-                </template>
-                <template v-else-if="getCellType(row, column) === 'label'">
-                  <label v-html="row[column.code].name || ''"></label>
-                </template>
-                <template v-else-if="getCellType(row, column) === 'calc'">
-                  <span class="value" v-html="row[column.code] ? row[column.code].value : ''"></span>
-                </template>
-                <template v-else-if="getCellType(row, column) === 'copy'">
-                  <input
-                      v-model="row[column.code].value"
-                      :disabled="row[column.code].value"
-                      type="checkbox"
-                      @change="copyValues(row, column, rowIndex)">
-                </template>
-                <template v-else-if="getCellType(row, column) === 'history_graph'">
-                  <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">
+                  <template v-if="getCellType(row, column) === 'form'">
+                    <a href="#" @click.prevent="openForm(row, column)">редактировать</a>
+                  </template>
+                  <template v-else-if="getCellType(row, column) === 'link'">
+                    <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+                  </template>
+                  <template v-else-if="getCellType(row, column) === 'label'">
+                    <label v-html="row[column.code].name || ''"></label>
+                  </template>
+                  <template v-else-if="getCellType(row, column) === 'calc'">
+                    <span class="value" v-html="row[column.code] ? row[column.code].value : ''"></span>
+                  </template>
+                  <template v-else-if="getCellType(row, column) === 'copy'">
+                    <input
+                        v-model="row[column.code].value"
+                        :disabled="row[column.code].value"
+                        type="checkbox"
+                        @change="copyValues(row, column, rowIndex)">
+                  </template>
+                  <template v-else-if="getCellType(row, column) === 'history_graph'">
+                    <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">
                       <span v-if="row[column.code]" class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                    <span v-if="row[column.code] && row[column.code].date" class="date">
+                      <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
-                  </a>
-                </template>
-                <template v-else-if="getCellType(row, column) === 'history'">
-                  <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
-                </template>
-                <template v-else-if="getCellType(row, column) === 'date'">
-                  <div v-if="isCellEdited(row, column)" class="input-wrap">
-                    <datetime
-                        v-model="row[column.code].value"
-                        :flow="['year', 'month', 'date']"
-                        :phrases="{ok: '', cancel: ''}"
-                        auto
-                        format="dd LLLL yyyy"
-                        input-class="form-control"
-                        type="date"
-                        value-zone="Asia/Almaty"
-                        zone="Asia/Almaty"
-                    >
-                    </datetime>
-                    <button type="button" @click.prevent="saveCell(row, column)">OK</button>
-                    <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                  </div>
-                  <template v-else-if="row[column.code]">
+                    </a>
+                  </template>
+                  <template v-else-if="getCellType(row, column) === 'history'">
+                    <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
+                  </template>
+                  <template v-else-if="getCellType(row, column) === 'date'">
+                    <div v-if="isCellEdited(row, column)" class="input-wrap">
+                      <datetime
+                          v-model="row[column.code].value"
+                          :flow="['year', 'month', 'date']"
+                          :phrases="{ok: '', cancel: ''}"
+                          auto
+                          format="dd LLLL yyyy"
+                          input-class="form-control"
+                          type="date"
+                          value-zone="Asia/Almaty"
+                          zone="Asia/Almaty"
+                      >
+                      </datetime>
+                      <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                      <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                    </div>
+                    <template v-else-if="row[column.code]">
                       <span class="value">
                         {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
                       </span>
+                    </template>
                   </template>
-                </template>
-                <template v-else-if="getCellType(row, column) === 'dict'">
-                  <bigdata-form-field
-                      v-if="row[column.code]"
-                      :id="row.id"
-                      :key="`field_${column.code}_${row.id}`"
-                      v-model="row[column.code].value"
-                      :item="getFieldParams(row, column)"
-                      @change="saveCell(row, column)"
-                  >
-                  </bigdata-form-field>
-                </template>
-                <template v-else-if="getCellType(row, column) === 'file'">
-                  <template v-if="row[column.code].value && row[column.code].value.length > 0">
-                    <span v-html="formatFiles(row[column.code].value)"></span>
-                    <a href="#" @click="deleteFile(row, column)">x</a>
-                  </template>
-                  <template v-else>
-                    <vue-upload-component
+                  <template v-else-if="getCellType(row, column) === 'dict'">
+                    <bigdata-form-field
+                        v-if="row[column.code]"
+                        :id="row.id"
+                        :key="`field_${column.code}_${row.id}`"
                         v-model="row[column.code].value"
-                        :multiple="false"
-                        :name="`file_${column.code}_${row.id}`"
-                        @input="saveCell(row, column)"
+                        :item="getFieldParams(row, column)"
+                        @change="saveCell(row, column)"
                     >
-                    </vue-upload-component>
-                    <label
-                        :for="`file_${column.code}_${row.id}`"
-                        class="btn btn-primary"
-                    >
-                      {{ trans('app.upload') }}
-                    </label>
+                    </bigdata-form-field>
                   </template>
-                </template>
-                <template v-else-if="['text', 'integer', 'float'].indexOf(getCellType(row, column)) > -1">
-                  <div v-if="isCellEdited(row, column)" class="input-wrap">
-                    <input
-                        v-model="row[column.code].value"
-                        class="form-control"
-                        type="text"
-                        @keyup.enter.stop.prevent="saveCell(row, column)">
-                    <button type="button" @click.prevent="saveCell(row, column)">OK</button>
-                    <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                  </div>
-                  <template v-else-if="row[column.code]">
+                  <template v-else-if="getCellType(row, column) === 'file'">
+                    <template v-if="row[column.code].value && row[column.code].value.length > 0">
+                      <span v-html="formatFiles(row[column.code].value)"></span>
+                      <a href="#" @click="deleteFile(row, column)">x</a>
+                    </template>
+                    <template v-else>
+                      <vue-upload-component
+                          v-model="row[column.code].value"
+                          :multiple="false"
+                          :name="`file_${column.code}_${row.id}`"
+                          @input="saveCell(row, column)"
+                      >
+                      </vue-upload-component>
+                      <label
+                          :for="`file_${column.code}_${row.id}`"
+                          class="btn btn-primary"
+                      >
+                        {{ trans('app.upload') }}
+                      </label>
+                    </template>
+                  </template>
+                  <template v-else-if="['text', 'integer', 'float'].indexOf(getCellType(row, column)) > -1">
+                    <div v-if="isCellEdited(row, column)" class="input-wrap">
+                      <input
+                          v-model="row[column.code].value"
+                          class="form-control"
+                          type="text"
+                          @keyup.enter.stop.prevent="saveCell(row, column)">
+                      <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                      <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                    </div>
+                    <template v-else-if="row[column.code]">
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                    <span v-if="row[column.code] && row[column.code].date" class="date">
+                      <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
+                    </template>
                   </template>
-                </template>
-                <template
-                    v-if="formParams.available_actions.includes('view history') && history[row.id] && history[row.id][column.code]">
-                  <a :id="`history_${row.id}_${column.code}`" class="icon-history"></a>
-                  <b-popover :target="`history_${row.id}_${column.code}`" custom-class="history-popover"
-                             placement="top" triggers="hover">
-                    <div v-for="(value, time) in history[row.id][column.code]">
-                      <em>{{ time }}</em><br>
-                      <b>{{ value.value }}</b> ({{ value.user }})
-                    </div>
-                  </b-popover>
-                </template>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+                  <template
+                      v-if="formParams.available_actions.includes('view history') && history[row.id] && history[row.id][column.code]">
+                    <a :id="`history_${row.id}_${column.code}`" class="icon-history"></a>
+                    <b-popover :target="`history_${row.id}_${column.code}`" custom-class="history-popover"
+                               placement="top" triggers="hover">
+                      <div v-for="(value, time) in history[row.id][column.code]">
+                        <em>{{ time }}</em><br>
+                        <b>{{ value.value }}</b> ({{ value.user }})
+                      </div>
+                    </b-popover>
+                  </template>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </template>
     </div>
@@ -824,6 +826,11 @@ body.fixed {
           margin-bottom: 0;
         }
       }
+
+      & + .table__wrap {
+        overflow-x: auto;
+      }
+
     }
   }
 
