@@ -4,29 +4,25 @@ namespace App\Http\Controllers\Api\DB;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BigData\WellSearchResource;
+use App\Models\BigData\BottomHole;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
-use App\Models\BigData\Dictionaries\Well as dictWell;
 use App\Models\BigData\GdisCurrent;
 use App\Models\BigData\GdisCurrentValue;
 use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\WellStatus;
 use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
-use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
 use App\Models\BigData\Gtm;
 use App\Services\BigData\StructureService;
-use App\Services\BigData\MeasLogByMonth;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class WellsController extends Controller
 {
@@ -37,7 +33,7 @@ class WellsController extends Controller
 
     public function wellInfo($well)
     {
-        $well = Well::select('id','uwi')->find($well);
+        $well = Well::select('id','uwi', 'drill_start_date', 'drill_end_date')->find($well);
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }
@@ -82,8 +78,8 @@ class WellsController extends Controller
             'gtm' => $this->gtm($well),
             'rzatr_atm' => $this->gdisCurrentValueRzatr($well, 'FLVL'),
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
-            'gu' => $this->getTechsByCode($well, 'GU'),
-            'agms' => $this->getTechsByCode($well, 'AGMS'),
+            'gu' => $this->getTechsByCode($well, [1, 3]),
+            'agms' => $this->getTechsByCode($well, [2000000000004]),
         ];
 
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
@@ -255,18 +251,12 @@ class WellsController extends Controller
 
     private function actualBottomHole(Well $well)
     {
-        return $well->bottomHole()
-            ->where('bottom_hole_type', '=', '1')
-            ->withPivot('depth')
-            ->first();
+        return BottomHole::where('well', $well->id)->where('bottom_hole_type', 1)->orderBy('depth', 'desc')->first();
     }
 
     private function artificialBottomHole(Well $well)
     {
-        return $well->bottomHole()
-            ->where('bottom_hole_type', '=', '2')
-            ->withPivot('depth')
-            ->first();
+        return BottomHole::where('well', $well->id)->where('bottom_hole_type', 2)->orderBy('depth', 'desc')->first();
     }
 
     private function labResearchValue(Well $well)
@@ -460,14 +450,9 @@ class WellsController extends Controller
         return ['dend' => ''];
     }
 
-    private function getTechsByCode(Well $well, $code)
+    private function getTechsByCode(Well $well, $techTypes)
     {
-        return $well->techs()
-            ->join('dict.tech_type', 'dict.tech_type.id', '=', 'dict.tech.tech_type')
-            ->where('dict.tech_type.code', '=', $code)
-            ->where('dict.tech.dbeg', '<=', $this->getToday())
-            ->where('dict.tech.dend', '>=', $this->getToday())
-            ->first(['dict.tech.name_ru']);
+        return $well->techs()->whereIn('tech_type', $techTypes)->first(['name_ru']);
     }
 
     public function search(StructureService $service, Request $request): array
