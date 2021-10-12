@@ -21,6 +21,7 @@ class ProductionFondController extends Controller
         'КБМ' => array(),
         'ЭМГ' => array(),
     );
+    private $saveTime = 1440;
     public function getDailyDataByDzo(Request $request)
     {
         $startPeriod = Carbon::parse($request->startPeriod);
@@ -39,7 +40,7 @@ class ProductionFondController extends Controller
              ->toArray();
         $result = $this->getMergedWithDowntimeReasons($importData);
         $fondsByDzo = $this->getFondsByDzo($result,$request->workFields,$request->idleFields);
-        Cache::put($name, $fondsByDzo, 1440);
+        Cache::put($name, $fondsByDzo, $this->saveTime);
         return $fondsByDzo;
     }
 

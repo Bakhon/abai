@@ -44,6 +44,9 @@ class VisualCenterController extends Controller
      * @return \Illuminate\Http\JsonResponse
      * @throws \Exception
      */
+
+    private $saveTime = 1440;
+
     public function getDZOcalcs(Request $request)
     {
         $dateStart = $request->get('dateStart');
@@ -97,7 +100,7 @@ class VisualCenterController extends Controller
             ->get()
             ->toArray();
 
-        Cache::put($name, $data, 1440);
+        Cache::put($name, $data, $this->saveTime);
         return response()->json($data);
     }
 
@@ -110,7 +113,7 @@ class VisualCenterController extends Controller
         $oilRates = OilRate::query()
           ->get()
           ->toArray();
-        Cache::put($name, $oilRates, 1440);
+        Cache::put($name, $oilRates, $this->saveTime);
         return response()->json($oilRates);
     }
 
@@ -403,7 +406,7 @@ class VisualCenterController extends Controller
             ->get()
             ->toArray();
 
-        Cache::put($name, $otm, 1440);
+        Cache::put($name, $otm, $this->saveTime);
         return $otm;
     }
 
@@ -421,7 +424,7 @@ class VisualCenterController extends Controller
             ->orderBy('date', 'ASC')
             ->get()
             ->toArray();
-        Cache::put($name, $chemistry, 1440);
+        Cache::put($name, $chemistry, $this->saveTime);
         return $chemistry;
     }
 
