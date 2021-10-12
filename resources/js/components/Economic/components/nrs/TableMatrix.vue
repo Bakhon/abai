@@ -82,11 +82,12 @@
 
       <chart-matrix-total
           v-if="isVisibleChartTotal"
-          :dates="data.dates"
+          :dates="wells.dates"
           :well-sum="tableData.totalSum"
           :well-keys="visibleWellKeys"
           :prs-sum="tableData.prsSum"
           :prs-keys="prsKeys"
+          :date-offset="tableTitlesLength"
           class="text-white container-fluid bg-main1 pt-2 px-4"/>
 
       <vue-table-dynamic
@@ -117,8 +118,8 @@
           v-for="uwi in chartUwis"
           :key="uwi"
           :uwi="uwi"
-          :well="data.uwis[uwi]"
-          :dates="data.dates"
+          :well="wells.uwis[uwi]"
+          :dates="dates"
           class="text-white container-fluid bg-main1 p-4 mt-3"/>
 
       <vue-table-dynamic
@@ -167,7 +168,7 @@ export default {
     SelectOperatingProfit
   },
   props: {
-    data: {
+    wells: {
       required: true,
       type: Object
     },
@@ -191,18 +192,18 @@ export default {
   },
   computed: {
     uwis() {
-      if (!this.data) {
+      if (!this.wells) {
         return []
       }
 
-      return Object.keys(this.data.uwis).filter(uwi => {
-        return this.isVisibleProfitable && this.data.uwis[uwi][this.form.operatingProfit].sum > 0
-            || this.isVisibleProfitless && this.data.uwis[uwi][this.form.operatingProfit].sum <= 0
+      return Object.keys(this.wells.uwis).filter(uwi => {
+        return this.isVisibleProfitable && this.wells.uwis[uwi][this.form.operatingProfit].sum > 0
+            || this.isVisibleProfitless && this.wells.uwis[uwi][this.form.operatingProfit].sum <= 0
       })
     },
 
     dates() {
-      return this.data ? this.data.dates : []
+      return this.wells ? this.wells.dates : []
     },
 
     tableParams() {
@@ -308,7 +309,7 @@ export default {
 
         this.visibleWellKeys.forEach(key => tableRows[key.prop] = [])
 
-        let well = this.data.uwis[uwi]
+        let well = this.wells.uwis[uwi]
 
         this.dates.forEach((date, dateIndex) => {
           this.visibleWellKeys.forEach(key => {
@@ -778,7 +779,7 @@ export default {
   },
   watch: {
     data() {
-      this.initData()
+      this.resetData()
     },
   }
 }
