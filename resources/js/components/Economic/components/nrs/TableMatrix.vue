@@ -82,8 +82,8 @@
 
       <chart-matrix-total
           v-if="isVisibleChartTotal"
-          :dates="wells.dates"
-          :well-sum="tableData.totalSum"
+          :dates="dates"
+          :well-sum="tableData.wellsSum"
           :well-keys="visibleWellKeys"
           :prs-sum="tableData.prsSum"
           :prs-keys="prsKeys"
@@ -91,8 +91,20 @@
           class="text-white container-fluid bg-main1 pt-2 px-4"/>
 
       <vue-table-dynamic
-          :params="tablePrsParams"
+          :params="tableCostParams"
           class="matrix-table bg-main1 pt-4 px-4 pb-2">
+        <template
+            v-for="(header, index) in tableHeaders"
+            :slot="`column-${index}`" slot-scope="{ props }">
+          <div class="d-flex align-items-center w-100">
+            {{ props.cellData.label }}
+          </div>
+        </template>
+      </vue-table-dynamic>
+
+      <vue-table-dynamic
+          :params="tablePrsParams"
+          class="matrix-table bg-main1 pt-2 px-4 pb-2">
         <template
             v-for="(header, index) in tableHeaders"
             :slot="`column-${index}`" slot-scope="{ props }">
@@ -203,7 +215,11 @@ export default {
     },
 
     dates() {
-      return this.wells ? this.wells.dates : []
+      return this.wells ? Object.keys(this.wells.dates) : []
+    },
+
+    datesParams() {
+      return this.wells ? Object.values(this.wells.dates) : []
     },
 
     tableParams() {
@@ -227,7 +243,7 @@ export default {
 
     tableSumParams() {
       return {
-        data: [...[this.tableHeaders], ...this.tableData.totalSum],
+        data: [...[this.tableHeaders], ...this.tableData.wellsSum],
         whiteSpace: 'normal',
         header: 'row',
         border: true,
@@ -259,65 +275,81 @@ export default {
       }
     },
 
+    tableCostParams() {
+      return {
+        data: [...[this.tableHeaders], ...this.tableData.costSum],
+        whiteSpace: 'normal',
+        header: 'row',
+        border: true,
+        stripe: true,
+        pagination: false,
+        headerHeight: 80,
+        rowHeight: 50,
+        fixed: this.tableTitlesLength - 1,
+        columnWidth: this.columnWidth,
+        highlight: {column: this.tableTitles.map((title, index) => index)},
+        highlightedColor: '#2E50E9'
+      }
+    },
+
     tableData() {
-      let rows = []
+      let dateOffset = this.tableTitlesLength
 
-      let totalSumRows = []
+      let wellsRows = []
 
-      let totalSum = {}
+      let wellsSum = this.getSumObject(this.visibleWellKeys)
+
+      let wellsSumRows = []
+
+      let prsSum = this.getSumObject(this.prsKeys)
 
       let prsSumRows = []
 
-      let prsSum = {}
+      let costSum = this.getSumObject(this.costKeys)
 
-      let dateOffset = this.tableTitlesLength
+      let costSumRows = []
 
-      this.visibleWellKeys.forEach(key => {
-        totalSum[key.prop] = [
-          {value: key.name, label: key.name},
-          {value: key.dimension, label: key.dimensionTitle},
-          {value: 0, label: 0},
-        ]
-      })
+      let dateRows = []
 
-      this.prsKeys.forEach(key => {
-        prsSum[key.prop] = [
-          {value: key.name, label: key.name},
-          {value: key.dimension, label: key.dimensionTitle},
-          {value: 0, label: 0},
-        ]
-      })
+      this.dates.forEach((date, dateIndex) => {
+        dateRows.push({value: '', label: ''})
 
-      this.dates.forEach(date => {
         this.visibleWellKeys.forEach(key => {
-          totalSum[key.prop].push({value: 0, label: 0})
+          wellsSum[key.prop].push({value: 0, label: 0})
         })
 
         this.prsKeys.forEach(key => {
           prsSum[key.prop].push({value: 0, label: 0})
         })
+
+        this.costKeys.forEach(key => {
+          costSum[key.prop].push({value: this.datesParams[dateIndex][key.prop], label: 0})
+        })
       })
 
       this.uwis.forEach(uwi => {
-        let tableRows = {
-          uwi: [
+        wellsRows.push([
+          ...[
             {value: uwi, label: uwi, isCheckbox: true},
             {value: '', label: ''},
             {value: '', label: ''},
-          ]
-        }
-
-        this.visibleWellKeys.forEach(key => tableRows[key.prop] = [])
+          ],
+          ...dateRows
+        ])
 
         let well = this.wells.uwis[uwi]
+
+        let wellRows = {}
+
+        this.visibleWellKeys.forEach(key => wellRows[key.prop] = [])
 
         this.dates.forEach((date, dateIndex) => {
           this.visibleWellKeys.forEach(key => {
             let value = this.getWellValue(well, key, date, true)
 
-            totalSum[key.prop][dateIndex + dateOffset].value += +value
+            wellsSum[key.prop][dateIndex + dateOffset].value += +value
 
-            tableRows[key.prop].push({
+            wellRows[key.prop].push({
               value: value,
               label: this.getLabel(value, key.dimension, key.fractionDigits),
               color: this.getColor(key, value)
@@ -325,28 +357,16 @@ export default {
           })
 
           this.prsKeys.forEach(key => {
-            let value = this.getWellValue(well, key, date)
-
-            if (key.isTotal) {
-              return prsSum[key.prop][dateIndex + dateOffset].value += value
-            }
-
-            if (!prsSum[key.prop][dateIndex + dateOffset].value) {
-              prsSum[key.prop][dateIndex + dateOffset].value = value
-            }
+            prsSum[key.prop][dateIndex + dateOffset].value += this.getWellValue(well, key, date)
           })
-
-          tableRows.uwi.push({value: '', label: ''})
         })
-
-        rows.push(tableRows.uwi)
 
         this.visibleWellKeys.forEach(key => {
           let sum = this.getWellValue(well, key, 'sum')
 
-          totalSum[key.prop][dateOffset - 1].value += sum
+          wellsSum[key.prop][dateOffset - 1].value += sum
 
-          tableRows[key.prop].unshift(
+          wellRows[key.prop].unshift(
               {
                 value: key.name,
                 label: key.name
@@ -362,39 +382,52 @@ export default {
               }
           )
 
-          rows.push(tableRows[key.prop])
+          wellsRows.push(wellRows[key.prop])
         })
 
         this.prsKeys.forEach(key => {
-          let sum = this.getWellValue(well, key, 'sum')
+          if (!key.isTotal) return
 
-          if (key.isTotal) {
-            return prsSum[key.prop][dateOffset - 1].value += sum
-          }
-
-          prsSum[key.prop][dateOffset - 1].value = prsSum[key.prop][dateOffset].value
+          prsSum[key.prop][dateOffset - 1].value += this.getWellValue(well, key, 'sum')
         })
       })
 
       this.visibleWellKeys.forEach(key => {
-        totalSumRows.push(this.getTotalRow(key, totalSum))
+        wellsSumRows.push(this.getTotalRow(key, wellsSum))
       })
 
       this.prsKeys.forEach(key => {
-        if (key.isTotal || key.isDirect) {
+        if (key.isTotal) {
           return prsSumRows.push(this.getTotalRow(key, prsSum))
         }
 
-        prsSum[key.prop][dateOffset - 1].value = key.calcValue(prsSum, dateOffset - 1)
+        prsSum[key.prop][dateOffset - 1].value = key.calcValue(
+            prsSum,
+            dateOffset - 1,
+            this.datesParams ? this.datesParams[0] : [],
+        )
 
         this.dates.forEach((date, dateIndex) => {
-          prsSum[key.prop][dateIndex + dateOffset].value = key.calcValue(prsSum, dateIndex + dateOffset)
+          prsSum[key.prop][dateIndex + dateOffset].value = key.calcValue(
+              prsSum,
+              dateIndex + dateOffset,
+              this.datesParams[dateIndex]
+          )
         })
 
         prsSumRows.push(this.getTotalRow(key, prsSum))
       })
 
-      return {wells: rows, totalSum: totalSumRows, prsSum: prsSumRows}
+      this.costKeys.forEach(key => {
+        costSumRows.push(this.getTotalRow(key, costSum))
+      })
+
+      return {
+        wells: wellsRows,
+        wellsSum: wellsSumRows,
+        prsSum: prsSumRows,
+        costSum: costSumRows
+      }
     },
 
     tableHeaders() {
@@ -445,28 +478,11 @@ export default {
           name: this.trans('economic_reference.prs_count'),
           dimensionTitle: `${this.trans('economic_reference.units')}.`,
           dimension: 1000,
-          calcValue: function (data, index) {
-            return data.PRS_nopayroll_expenditures[index].value / data.cost_WR_nopayroll[index].value
+          calcValue: function (data, dateIndex, dateParams) {
+            return dateParams
+                ? data.PRS_nopayroll_expenditures[dateIndex].value / dateParams.cost_WR_nopayroll
+                : 0
           },
-        },
-        {
-          prop: 'cost_WR_nopayroll',
-          name: this.trans('economic_reference.cost_prs_without_fot'),
-          isDirect: true,
-          dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.tenge')}
-          `,
-        },
-        {
-          prop: 'cost_WR_payroll',
-          props: ['cost_WR_payroll', 'cost_WR_nopayroll'],
-          name: this.trans('economic_reference.cost_prs'),
-          isDirect: true,
-          dimensionTitle: `
-            ${this.trans('economic_reference.thousand')}
-            ${this.trans('economic_reference.tenge')}
-          `,
         },
         {
           prop: 'PRS_nopayroll_expenditures',
@@ -497,7 +513,7 @@ export default {
 
         switch (index) {
           case 0:
-            width = 270
+            width = 320
             break
           case 1:
           case 2:
@@ -507,7 +523,131 @@ export default {
 
         return {column: index, width: width}
       })
-    }
+    },
+
+    costKeys() {
+      let dailyKeys = this.getDailyKeys('trans_exp').map(key => ({
+        prop: key.prop,
+        name: `${this.trans('economic_reference.trans_expenditures')} ${key.name}`,
+        fractionDigits: 2,
+        dimensionTitle: key.dimension,
+        isString: true
+      }))
+
+      return [
+        ...[
+          {
+            prop: 'cost_variable',
+            name: this.trans('economic_reference.cost_variable'),
+            fractionDigits: 2,
+            dimensionTitle: `
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.cubic_meter')}
+          `,
+            isString: true
+          },
+          {
+            prop: 'cost_fix_noWRpayroll',
+            name: this.trans('economic_reference.cost_fix_no_wr_payroll'),
+            fractionDigits: 2,
+            dimension: 1000,
+            dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+          `,
+            isString: true
+          },
+          {
+            prop: 'cost_fix_payroll',
+            name: this.trans('economic_reference.fot'),
+            dimension: 1000,
+            dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+          `,
+            isString: true
+          },
+          {
+            prop: 'cost_fix_nopayroll',
+            name: this.trans('economic_reference.cost_fix_nopayroll'),
+            dimension: 1000,
+            dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+          `,
+            isString: true
+          },
+          {
+            prop: 'cost_fix',
+            name: this.trans('economic_reference.cost_fix'),
+            dimension: 1000,
+            dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+          `,
+            isString: true
+          },
+          {
+            prop: 'cost_Gaoverheads',
+            name: this.trans('economic_reference.cost_gaoverheads'),
+            dimension: 1000,
+            dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.month').toLocaleLowerCase()}
+          `,
+            isString: true
+          },
+          {
+            prop: 'cost_WR_nopayroll',
+            name: this.trans('economic_reference.cost_prs_without_fot'),
+            dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.event_short').toLocaleLowerCase()}
+          `,
+            isString: true
+          },
+          {
+            prop: 'cost_WR_payroll',
+            name: this.trans('economic_reference.cost_wr_payroll'),
+            dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.event_short').toLocaleLowerCase()}
+          `,
+            isString: true
+          },
+          {
+            prop: 'cost_WR',
+            name: this.trans('economic_reference.cost_prs'),
+            fractionDigits: 2,
+            dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.event_short').toLocaleLowerCase()}
+          `,
+            isString: true
+          },
+          {
+            prop: 'cost_WO',
+            name: this.trans('economic_reference.cost_krs'),
+            fractionDigits: 2,
+            dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')} /
+            ${this.trans('economic_reference.event_short').toLocaleLowerCase()}
+          `,
+            isString: true
+          },
+        ],
+        ...dailyKeys
+      ]
+    },
   },
   methods: {
     getColor(key, value) {
@@ -518,13 +658,9 @@ export default {
       return value && value > 0 ? '#23E846' : '#E84663'
     },
 
-    getLabel(value, dimension, fractionDigits = 0) {
-      if (fractionDigits) {
-        console.log(value)
-      }
-
+    getLabel(value, dimension, fractionDigits = 0, isString = false) {
       if (!value) {
-        return 0
+        return isString ? '' : 0
       }
 
       if (dimension) {
@@ -578,26 +714,27 @@ export default {
       return isString ? '' : 0
     },
 
-    getTotalRow(key, totalSum) {
+    getTotalRow(key, wellsSum) {
       let sumKey = this.tableTitlesLength - 1
 
-      totalSum[key.prop][sumKey].label = this.getLabel(
-          totalSum[key.prop][sumKey].value,
+      wellsSum[key.prop][sumKey].label = this.getLabel(
+          wellsSum[key.prop][sumKey].value,
           key.dimension,
-          key.fractionDigits
+          key.fractionDigits,
+          key.isString
       )
 
       this.dates.forEach((date, dateIndex) => {
         let dateKey = dateIndex + this.tableTitlesLength
 
-        totalSum[key.prop][dateKey].label = this.getLabel(
-            totalSum[key.prop][dateKey].value,
+        wellsSum[key.prop][dateKey].label = this.getLabel(
+            wellsSum[key.prop][dateKey].value,
             key.dimension,
             key.fractionDigits
         )
       })
 
-      return totalSum[key.prop]
+      return wellsSum[key.prop]
     },
 
     toggleUwi(uwi) {
@@ -649,11 +786,22 @@ export default {
           `,
         },
         {
+          prop: 'Revenue_total',
+          name: this.trans('economic_reference.revenue_total'),
+          dimension: 1000,
+          isVisible: true,
+          chartType: 'line',
+          dimensionTitle: `
+            ${this.trans('economic_reference.thousand')}
+            ${this.trans('economic_reference.tenge')}
+          `,
+        },
+        {
           prop: 'tax_costs',
           props: ['MET_payments', 'ECD_payments', 'ERT_payments'],
           name: this.trans('economic_reference.tax_costs'),
           dimension: 1000,
-          isVisible: true,
+          isVisible: false,
           chartType: 'line',
           dimensionTitle: `
             ${this.trans('economic_reference.thousand')}
@@ -776,6 +924,83 @@ export default {
     resetCharts() {
       this.chartUwis = []
     },
+
+    getSumObject(keys) {
+      let sum = {}
+
+      keys.forEach(key => {
+        sum[key.prop] = [
+          {value: key.name, label: key.name},
+          {value: key.dimension, label: key.dimensionTitle},
+          {value: 0, label: 0},
+        ]
+      })
+
+      return sum
+    },
+
+    getDailyKeys(prefix) {
+      let exportDimension = '$ / bbl'
+
+      let localDimension = `
+             ${this.trans('economic_reference.thousand')}
+             ${this.trans('economic_reference.tenge')} /
+             ${this.trans('economic_reference.ton_declination')}
+            `
+
+      return [
+        {
+          prop: `${prefix}_export_AA`,
+          name: 'AA',
+          dimension: exportDimension,
+        },
+        {
+          prop: `${prefix}_export_KTK`,
+          name: 'KTK',
+          dimension: exportDimension,
+        },
+        {
+          prop: `${prefix}_export_Samara`,
+          name: 'Samara',
+          dimension: exportDimension,
+        },
+        {
+          prop: `${prefix}_export_Aktau`,
+          name: 'Aktau',
+          dimension: exportDimension,
+        },
+        {
+          prop: `${prefix}_export_other`,
+          name: 'other',
+          dimension: exportDimension,
+        },
+        {
+          prop: `${prefix}_local_ANPZ`,
+          name: 'ANPZ',
+          dimension: localDimension,
+        },
+        {
+          prop: `${prefix}_local_PNHZ`,
+          name: 'PNHZ',
+          dimension: localDimension,
+        },
+        {
+          prop: `${prefix}_local_PKOP`,
+          name: 'PKOP',
+          dimension: localDimension,
+        },
+        {
+          prop: `${prefix}_local_KBITUM`,
+          name: 'KBITUM',
+          dimension: localDimension,
+        },
+        {
+          prop: `${prefix}_local_other`,
+          name: 'other',
+          dimension: localDimension,
+        },
+      ];
+    }
   },
   watch: {
     data() {
