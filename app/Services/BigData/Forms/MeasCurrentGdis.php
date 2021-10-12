@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
+
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\GdisCurrent;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
+
 class MeasCurrentGdis extends TableForm
 {
     protected $configurationFileName = 'meas_current_gdis';
@@ -96,174 +96,135 @@ class MeasCurrentGdis extends TableForm
         $date = Carbon::parse($filter->date)->timezone('Asia/Almaty')->toImmutable();
 
         $this->wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
-        
+
         $rows = $this->getRows($date);
-        $columns = $this->getColumns($date);
 
 
         return [
-            'columns' => $columns,
             'rows' => $rows
         ];
     }
 
     private function getMeasurements()
     {
-        $wellId = $this->request->get('id');
-
-        $dates = GdisCurrent::query()
-            ->where('well', $wellId)
-            ->select('meas_date')
-            ->orderBy('meas_date', 'desc')
-            ->distinct()
-            ->limit(10)
-            ->get();
-
-        if ($dates->isEmpty()) {
-            return collect();
-        }
-        $oldestDate = $dates->last()->meas_date;
+        $wellIds = $this->wells->pluck('id')->toArray();
+        $filter = json_decode($this->request->get('filter'));
+        $date = Carbon::parse($filter->date, 'Asia/Almaty');
 
         return GdisCurrent::query()
-            ->where('well', $wellId)
-            ->where('meas_date', '>=', $oldestDate)
+            ->whereIn('well', $wellIds)
+            ->where('meas_date', '>', $date->subYear())
             ->orderBy('meas_date', 'desc')
             ->orderBy('id', 'desc')
             ->with('values', 'values.metricItem')
             ->get()
-            ->groupBy(function ($item) {
-                return $item->meas_date->format('d.m.Y');
-            })
-            ->map(function ($items, $date) {
-                $result = [
-                    'date' => $date
-                ];                
-
-                foreach ($items as $item) {
-                    foreach ($item->values as $value) {
-                        if (in_array($value->metricItem->code, $this->metricCodes)) {
-                            $result['metrics'][$value->metricItem->code] = [
-                                'value' => $value->value_double ?? $value->value_string
-                            ];
-                        }
-                    }
-                }
-
-                return $result;
-            });
+            ->groupBy('well');
     }
 
     private function getRows(CarbonImmutable $date): array
     {
-        $wellIds = $this->wells->pluck('id')->toArray();
         $measurements = $this->getMeasurements();
-        $conclusion = $this->getColumn($wellIds, $date, 'conclusion');
-        $note = $this->getColumn($wellIds, $date, 'note');
-        $device = $this->getDevice($wellIds, $date, 'device');
-        $transcript_dynamogram = $this->getColumn($wellIds, $date, 'transcript_dynamogram');
-        $target = $this->getColumn($wellIds, $date, 'target');
-        $conclusion_text = $this->getColumn($wellIds, $date, 'target');
-        
-        $rows[] = [
-            'conclusion' => $conclusion,
-            'note' =>  $note,
-            'device' => $device,
-            'transcript_dynamogram' => $transcript_dynamogram,
-            'target'=>  $target,
-            'conclusion_text' => $conclusion_text
-        ];
-       
-        return $rows;
-    }
+        $metrics = $this->getMetrics();
+        $columns = $this->getFields();
 
-    public function getColumn($wellId,CarbonImmutable $date, string $item){
-        return GdisCurrent::query()
-            ->where('well', $wellId)
-            ->select($item)
-            // ->orderBy('meas_date', 'desc')
-            ->distinct()            
-            // ->groupBy('well')        
-            ->get();
-    }
+        return $this->wells
+            ->map(
+                function ($well) use ($date, $columns, $measurements, $metrics) {
+                    $wellMeasurements = $measurements->get($well->id);
 
-    public function getDevice($wellId,CarbonImmutable $date, string $item){
-        return GdisCurrent::query()
-            ->where('well', $wellId)
-            ->select('d.name_ru')
-            ->distinct()
-            // ->orderBy('meas_date', 'desc')
-            ->join('dict.device as d', $item , 'd.id')
-            // ->groupBy('well')           
-            ->get();
-    }
+                    $result = [
+                        'id' => $well->id
+                    ];
 
-    public function getGdisMetricRows(Collection $measurements)
-    {
-        $metricNames = Metric::whereIn('code', $this->metricCodes)
-            ->pluck('name_ru', 'code')
-            ->toArray();
+                    foreach ($columns as $column) {
+                        if ($column['code'] === 'uwi') {
+                            $result[$column['code']] = [
+                                'value' => $well->uwi
+                            ];
+                            continue;
+                        }
 
-        $rows = [];
-        foreach ($this->metricCodes as $code) {
-            $row = [
-                'id' => $this->request->get('id'),
-                'code' => $code,
-                'value' => [
-                    'name' => $metricNames[$code]
-                ],
-                'last_measure_date' => ['name' => null],
-                'last_measure_value' => [
-                    'value' => null,
-                    'params' => [
-                        'type' => 'metric',
-                        'code' => $code
-                    ]
-                ],
-            ];
-            foreach ($measurements as $date => $measurement) {
-                if (isset($measurement['metrics'][$code])) {
-                    $row[$date] = $measurement['metrics'][$code];
-                    if (empty($row['last_measure_value']['value'])) {
-                        $row['last_measure_date'] = ['name' => $date];
-                        $row['last_measure_value']['value'] = $row[$date]['value'];
+                        if (!$wellMeasurements) {
+                            $result[$column['code']] = [
+                                'value' => null
+                            ];
+                            continue;
+                        }
+
+                        if (isset($column['table']) && $column['table'] === 'prod.gdis_current_value') {
+                            $result[$column['code']] = [
+                                'params' => [
+                                    'code' => $column['additional_filter']['metric']['fields']['code']
+                                ]
+                            ];
+
+                            foreach ($wellMeasurements as $wellMeasurement) {
+                                $metric = $metrics->firstWhere(
+                                    'code',
+                                    $column['additional_filter']['metric']['fields']['code']
+                                );
+                                $measurementValue = $wellMeasurement->values->where('metric', $metric->id)->first();
+                                if (!empty($measurementValue)) {
+                                    $value = $measurementValue->value_string ?? $measurementValue->value_double;
+
+                                    if ($date->diffInDays($wellMeasurement->meas_date) > 0) {
+                                        $result[$column['code']]['old_value'] = $value;
+                                        $result[$column['code']]['date'] = $wellMeasurement->meas_date;
+                                    } else {
+                                        $result[$column['code']]['value'] = $value;
+                                    }
+                                    continue 2;
+                                }
+                            }
+
+                            $result[$column['code']]['value'] = '';
+                            continue;
+                        }
+
+                        foreach ($wellMeasurements as $wellMeasurement) {
+                            if (!empty($wellMeasurement->{$column['code']})) {
+                                $value = $wellMeasurement->{$column['code']};
+                                if (empty($value)) {
+                                    continue;
+                                }
+
+                                if ($date->diffInDays($wellMeasurement->meas_date) > 0) {
+                                    $result[$column['code']] = [
+                                        'old_value' => $value,
+                                        'date' => $wellMeasurement->meas_date
+                                    ];
+                                } else {
+                                    $result[$column['code']] = [
+                                        'value' => $value,
+                                        'params' => [
+                                            'id' => $wellMeasurement->id
+                                        ]
+                                    ];
+                                }
+                                continue 2;
+                            }
+                        }
+
+                        $result[$column['code']] = [
+                            'value' => ''
+                        ];
                     }
+                    return $result;
                 }
-            }
-            $rows[] = $row;
-        }
-        return $rows;
-    }
-
-    private function getColumns(CarbonImmutable $date): array
-    {
-        $columns = $this->getFields()->toArray();
-
-        $monthDay = $date->startOfMonth();
-        while ($monthDay <= $date) {
-            $columns[] = [
-                'code' => $monthDay->format('d.m.Y'),
-                'type' => 'text',
-                'is_editable' => false,
-                'title' => $monthDay->format('j')
-            ];
-            $monthDay = $monthDay->addDay();
-        }
-
-        return $columns;
+            )
+            ->filter()
+            ->values()
+            ->toArray();
     }
 
     protected function saveSingleFieldInDB(array $params): void
     {
-        $code = $this->request->get('params')['code'];
-        $measurement = GdisCurrent::query()
-            ->where('well', $params['wellId'])
-            ->where('meas_date', $params['date'])
-            ->first();
-
-        try {
-            DB::connection('tbd')->beginTransaction();
-
-            if (empty($measurement)) {
+        $column = $this->getFields()->where('code', $params['field'])->first();
+        if (isset($column['table']) && $column['table'] === 'prod.gdis_current_value') {
+            $measurement = GdisCurrent::where('well', $params['wellId'])
+                ->where('meas_date', $params['date'])
+                ->first();
+            if (!$measurement) {
                 $measurement = GdisCurrent::create(
                     [
                         'well' => $params['wellId'],
@@ -271,43 +232,51 @@ class MeasCurrentGdis extends TableForm
                     ]
                 );
             }
-
-            switch ($this->request->get('params')['type']) {
-                case 'field':
-                    $measurement->update(
-                        [
-                            $code => $params['value']
-                        ]
-                    );
-                    break;
-                case 'metric':
-
-                    $metric = Metric::where('code', $code)->first();
-                    $measurementValue = $measurement->values->where('metric', $metric->id)->first();
-
-                    if (empty($measurementValue)) {
-                        $measurementValue = $measurement->values()->create(
-                            [
-                                'metric' => $metric->id
-                            ]
-                        );
-                    }
-
-                    $measurementValue->update(
-                        [
-                            'value_string' => $params['value']
-                        ]
-                    );
-
-                    break;
-                default:
-                    throw new \Exception('Saving error');
+            $metric = Metric::where('code', $this->request->get('params')['code'])->first();
+            $measurementValue = $measurement->values->where('metric', $metric->id)->first();
+            if (!$measurementValue) {
+                $measurementValue = $measurement->values()->create(
+                    [
+                        'metric' => $metric->id
+                    ]
+                );
             }
-            DB::connection('tbd')->commit();
-        } catch (\Exception $e) {
-            DB::connection('tbd')->rollBack();
-            throw new \Exception('Saving error');
+            $measurementValue->update(
+                [
+                    'value_string' => $params['value']
+                ]
+            );
+        } else {
+            if ($this->request->get('params')) {
+                $measurement = GdisCurrent::find($this->request->get('params')['id']);
+            } else {
+                $measurement = GdisCurrent::create(
+                    [
+                        'well' => $params['wellId'],
+                        'meas_date' => $params['date']
+                    ]
+                );
+            }
+            $measurement->update(
+                [
+                    $params['field'] => $params['value']
+                ]
+            );
         }
+    }
+
+    private function getMetrics()
+    {
+        $metricCodes = $this->getFields()
+            ->filter(function ($field) {
+                return isset($field['table']) && $field['table'] === 'prod.gdis_current_value';
+            })
+            ->map(function ($field) {
+                return $field['additional_filter']['metric']['fields']['code'];
+            })
+            ->toArray();
+
+        return Metric::whereIn('code', $metricCodes)->get();
     }
 
 }

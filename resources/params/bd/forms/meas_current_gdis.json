@@ -1,5 +1,7 @@
 {
   "type": "table",
+  "show_history": false,
+  "update_after_edit": false,
   "columns": [
     {
       "title": "well",
@@ -8,17 +10,11 @@
       "is_editable": false
     },
     {
-      "title": "meas_date",
-      "code": "meas_date",
-      "type": "date",
-      "is_editable": false
-    },
-    {
       "title": "conclusion",
       "code": "conclusion",
       "type": "dict",
       "dict":"gdis_conclusion",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "hdin",
@@ -34,7 +30,7 @@
         }
       },
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "pzab",
@@ -50,7 +46,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "pmax",
@@ -66,7 +62,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "target",
@@ -74,7 +70,7 @@
       "column":"target",
       "table":"prod.gdis_current",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "pri",
@@ -90,7 +86,7 @@
           }
         }
       },
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "Qzh_teor",
@@ -106,7 +102,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "Qzh_din",
@@ -122,7 +118,7 @@
         }
       },
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "bsw",
@@ -138,7 +134,7 @@
         }
       },
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "gas_fact",
@@ -154,7 +150,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "k_napol",
@@ -170,7 +166,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "k_nasos",
@@ -186,7 +182,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "p_priv",
@@ -202,7 +198,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "ppl",
@@ -218,7 +214,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "pbuf",
@@ -234,7 +230,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "pstat",
@@ -250,7 +246,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "pzat",
@@ -266,7 +262,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "ptr",
@@ -282,7 +278,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "hstat",
@@ -298,7 +294,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "tpl",
@@ -314,16 +310,16 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "device",
       "code": "device",
       "column": "device",
-      "table":"prod.gdis_current",
+      "table": "prod.gdis_current",
       "type": "dict",
-      "dict":"dict.device",
-      "is_editable": false
+      "dict": "device",
+      "is_editable": true
     },
     {
       "title": "transcript_dynamogram",
@@ -331,7 +327,7 @@
       "table":"prod.gdis_current",
       "type": "text",
       "column": "transcript_dynamogram",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "glubina",
@@ -347,7 +343,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "kp",
@@ -363,7 +359,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "Hzab",
@@ -379,7 +375,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "dlina_gdm",
@@ -395,7 +391,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "note",
@@ -403,7 +399,7 @@
       "column":"note",
       "table":"prod.gdis_current",
       "type": "text",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "count_gdm",
@@ -419,7 +415,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "depth_manometr",
@@ -435,7 +431,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "Pzatr_Ppl",
@@ -451,7 +447,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "diameterHCH",
@@ -467,7 +463,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "L_m",
@@ -483,7 +479,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "n_min",
@@ -499,7 +495,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "d_shkiv",
@@ -515,7 +511,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "d_dvig",
@@ -531,7 +527,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "count_num",
@@ -547,7 +543,7 @@
       },
       "table":"prod.gdis_current_value",
       "type": "float",
-      "is_editable": false
+      "is_editable": true
     },
     {
       "title": "conclusion_text",
@@ -555,7 +551,7 @@
       "column": "conclusion_text",
       "table":"prod.gdis_current",
       "type": "text",
-      "is_editable": false
+      "is_editable": true
     }
   ]
 }
