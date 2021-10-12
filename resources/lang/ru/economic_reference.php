@@ -302,4 +302,6 @@ return array (
   'show_charts' => 'Показать графики',
   'optimization' => 'Оптимизация',
   'input_exclude_uwis' => 'Вставьте скважины, которые необходимо исключить',
+  'dimension' => 'Размерность',
+  'cubic_meter' => 'м³',
 );
