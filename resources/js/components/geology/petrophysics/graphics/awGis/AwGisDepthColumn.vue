@@ -6,7 +6,7 @@
       :header-height="headerHeight"
       :depth-column-width="depthColumnWidth"
       :offset-y="offsetY"
-      column-name="SSTVD"
+      :elements="['SSTVD']"
   />
 </template>
 <script>
