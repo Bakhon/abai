@@ -826,7 +826,7 @@ export default {
           'description': null,
           'method': 'neighbors',
           'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.oil : null,
-          'neigbor_2': this.well.techModeProdOil != null && this.well.measWaterCut != null ? (this.well.techModeProdOil.liquid * (1 - this.well.measWaterCut.water_cut / 100) * 0.86).toFixed(1) : null,
+          'neigbor_2': this.well.techModeProdOil != null && this.well.measWaterCut != null && this.well.measLiq != null ? (this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : null,
           'name': 'Дебит нефти, т/сут (режим/факт)',
           'data': ''
         },
