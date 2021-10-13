@@ -515,7 +515,6 @@ export default {
       return (value)
     },
     setWellObjectData(key, path, source) {
-      console.log(key, path, source);
       try {
         if (source[path] != null) {
           this.well[key] = source[path]

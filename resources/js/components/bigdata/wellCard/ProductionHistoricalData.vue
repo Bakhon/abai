@@ -31,12 +31,12 @@
                                 <input class="ml-2" type="checkbox" v-model="date.isChecked" @click="handleDateSelect(date,index)">
                             </td>
                             <td>{{date.water.toFixed(2)}}</td>
-                            <td v-if="date.oil !== null && date.oil > 0">{{date.oil.toFixed(2)}}</td>
+                            <td v-if="date.oil !== null && date.oil > 0">{{date.oil.toFixed(1)}}</td>
                             <td v-else>{{date.oil}}</td>
-                            <td>{{date.waterDebit.toFixed(2)}}</td>
+                            <td>{{date.waterDebit.toFixed(1)}}</td>
                             <td>{{date.waterCut.toFixed(0)}}</td>
-                            <td>{{date.oilDebit.toFixed(2)}}</td>
-                            <td>{{(date.hoursWorked*24).toFixed(0)}} дней</td>
+                            <td>{{date.oilDebit.toFixed(1)}}</td>
+                            <td>{{(date.hoursWorked).toFixed(0)}} дн.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -193,7 +193,7 @@ export default {
             summary['water'] = _.sumBy(filtered, 'water');
             summary['oil'] = _.sumBy(filtered, 'oil');
             summary['waterDebit'] = _.sumBy(filtered, 'waterDebit');
-            summary['waterCut'] = _.sumBy(filtered, 'waterCut') / 12;
+            summary['waterCut'] = _.meanBy(filtered, 'waterCut');
             summary['oilDebit'] = _.sumBy(filtered, 'oilDebit');
             summary['hoursWorked'] = _.sumBy(filtered, 'hoursWorked');
             return summary;
