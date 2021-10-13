@@ -51,7 +51,7 @@
             class="mr-2 bg-dark-blue text-blue"
             style="width: 200px"/>
 
-        <button class="btn btn-primary ml-auto">
+        <button class="btn btn-primary ml-auto" @click="exportData()">
           {{ trans('economic_reference.export_excel') }}
         </button>
       </div>
@@ -1201,6 +1201,66 @@ export default {
         highlightedColor: '#2E50E9'
       }
     },
+
+    exportData(worksheetName = 'worksheet', fileName = 'export.xls') {
+      let htmlTable = ''
+
+      this.visibleDailyKeys.forEach(key => {
+        htmlTable += this.generateHtmlTable(this.tableDailyParams(key).data)
+      })
+
+      htmlTable += this.generateHtmlTable(this.tablePrsParams.data)
+
+      htmlTable += this.generateHtmlTable(this.tableSumParams.data)
+
+      if (this.isVisibleWells) {
+        htmlTable += this.generateHtmlTable(this.tableParams.data)
+      }
+
+      htmlTable = `
+          <html xmlns:o="urn:schemas-microsoft-com:office:office"
+                  xmlns:x="urn:schemas-microsoft-com:office:excel"
+                  xmlns="http://www.w3.org/TR/REC-html40">
+              <head><!--[if gte mso 9]><xml><x:ExcelWorkbook>
+                    <x:ExcelWorksheets><x:ExcelWorksheet>
+                    <x:Name>${worksheetName}
+                    </x:Name>
+                    <x:WorksheetOptions><x:DisplayGridlines/>
+                    </x:WorksheetOptions></x:ExcelWorksheet>
+                    </x:ExcelWorksheets>
+                    </x:ExcelWorkbook></xml><![endif]-->
+                <meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
+              </head>
+              <body><table>${htmlTable}</table></body>
+            </html>
+        `
+
+      htmlTable = window.btoa(unescape(encodeURIComponent(htmlTable)))
+
+      let link = document.createElement("a")
+
+      link.download = fileName
+
+      link.href = `data:application/vnd.ms-excel;base64,${htmlTable}`
+
+      link.click()
+    },
+
+    generateHtmlTable(rows) {
+      let htmlTable = ''
+
+      rows.forEach(row => {
+        htmlTable += '<tr>'
+
+        row.forEach(col => {
+          htmlTable += `<td> ${typeof col === 'string' ? col : col.label} </td>`
+        })
+
+        htmlTable += '</tr>'
+      })
+
+      return htmlTable
+    }
   },
   watch: {
     data() {
