@@ -20,7 +20,7 @@ class ManualHydroCalcExport implements WithMultipleSheets
     {
         $sheets = [new ManualHydroCalcExportResultSheet($this->pipes)];
 
-        if ($this->params['date']) {
+        if (isset($this->params['date']) AND $this->params['date']) {
             $sheets[] = new ManualHydroCalcExportLongSheet($this->params, $this->pipes);
         }
 
