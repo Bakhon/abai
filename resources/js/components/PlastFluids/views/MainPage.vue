@@ -82,7 +82,6 @@
 </template>
 
 <script>
-import leafMap from "../components/leafMap";
 import OilMap from "../components/OilMapKz.vue";
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";

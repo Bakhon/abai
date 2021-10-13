@@ -338,7 +338,7 @@ export default {
       this.provinces = await getInitialMapNGP();
 
       await this.getProvinceChilds();
-      this.getFields();
+      await this.getFields();
 
       this.toggleTooltipStyles();
       this.map.on("zoomstart", () => {
