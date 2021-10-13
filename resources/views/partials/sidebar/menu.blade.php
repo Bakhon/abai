@@ -37,7 +37,7 @@
             @if(auth()->user()->can('visualcenter view main'))
                 <li class="left-menu-li">
                     <a href="{{route('visualcenter3')}}">
-                    <img src="/img/icons/visual_center_gray.svg" class="companyLogo">
+                    <img src="/img/icons/visual-center-left-menu-icon.svg" class="companyLogo">
                     {{ trans('visualcenter.visualcenter_module') }}
                     </a>
                 </li>
