@@ -31,7 +31,7 @@ class GTMController extends Controller
 
     public function __construct()
     {
-//        $this->middleware('can:paegtm view main')->only('index');
+        $this->middleware('can:paegtm view main')->only('index');
     }
 
     public function index()
@@ -697,7 +697,7 @@ class GTMController extends Controller
         $period = CarbonPeriod::create($request->dateStart, '1 month', $request->dateEnd);
 
         foreach ($period as $dt) {
-            $result['months'][] =  __('paegtm.'.$dt->format("M"));
+            $result['months'][] =  $dt->format("m.y");
         }
 
         $data = $this->getMainData($request, true)

@@ -235,9 +235,6 @@ export default {
                 }
             }).finally(() => this.SET_LOADING(false));
         },
-        modalOpened() {
-            console.log('test');
-        },
         getData() {
             this.SET_LOADING(true);
             this.getMainIndicatorData();
