@@ -52,7 +52,6 @@ const plastFluids = {
       commit("SET_CURRENT_SUBSOIL_FIELD", value);
       commit("SET_CURRENT_SUBSOIL_HORIZON", []);
       commit("SET_SUBSOIL_HORIZONS", value?.horizons ?? []);
-      console.log('value', value)
       if (value?.field_id) await dispatch("GET_SUBSOIL_FIELD_COUNTERS");
     },
     async GET_SUBSOIL_FIELD_COUNTERS({ state, commit }) {

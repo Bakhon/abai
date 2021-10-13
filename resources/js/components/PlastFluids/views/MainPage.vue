@@ -4,6 +4,7 @@
     <div class="main-content-holder">
       <div class="map-and-page-footer">
         <OilMap />
+        <Footer />
       </div>
       <div class="area-choose-block-and-map-statistics">
         <div class="map-statistics">
@@ -96,6 +97,7 @@ export default {
   name: "PlastFluidsMain",
   components: {
     Header,
+    Footer,
     OilMap,
     SubsoilTreeMain,
     SubsoilTreeChildren,

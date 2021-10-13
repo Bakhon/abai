@@ -21,10 +21,10 @@ export const getSubsoilCounters = async (payload) => {
   }
 };
 
-export const getInitialMapNPG = async () => {
+export const getInitialMapNGP = async () => {
   try {
     const response = await axios.get(
-      `${process.env.MIX_PLAST_FLUIDS_API}/api/home/map/npg`
+      `${process.env.MIX_PLAST_FLUIDS_API}/api/home/map/ngp`
     );
     return response.data;
   } catch (error) {

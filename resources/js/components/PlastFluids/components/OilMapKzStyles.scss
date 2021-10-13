@@ -3,13 +3,19 @@ label {
 }
 
 .main-page-map {
-  height: 100%;
+  height: calc(100% - 45px);
   width: 100%;
   background: #2b2e5e;
   display: flex;
   flex-flow: column;
   justify-content: space-between;
   align-items: center;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+  background: #2b2e5e;
   background-size: 35px 35px;
   background-image: linear-gradient(
       to right,
@@ -17,11 +23,6 @@ label {
       transparent 1px
     ),
     linear-gradient(to bottom, rgba(51, 57, 117, 0.329412) 1px, transparent 1px);
-}
-
-#map {
-  height: 100%;
-  width: 100%;
 }
 
 .map-header {
@@ -112,6 +113,13 @@ label {
   height: 36px;
   align-items: center;
   justify-content: flex-start;
+  background-size: 35px 35px;
+  background-image: linear-gradient(
+      to right,
+      rgba(51, 57, 117, 0.329412) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(51, 57, 117, 0.329412) 1px, transparent 1px);
 }
 
 .satelite-holder > button:nth-of-type(1) {
@@ -140,10 +148,16 @@ label {
   margin-left: 8px;
 }
 
-#map::v-deep .leaflet-tooltip.my-label {
-  background: transparent;
-  border: none;
+#map::v-deep .leaflet-tooltip-left:before, 
+#map::v-deep .leaflet-tooltip-right:before,
+#map::v-deep .leaflet-tooltip-top:before,
+#map::v-deep .leaflet-tooltip-bottom:before {
+  display: none;
+}
+
+#map::v-deep .tooltip {
+  background: none;
   box-shadow: none;
-  font-size: 14px;
-  color: #a1a3bc;
+  color: #fff;
+  border: none;
 }
