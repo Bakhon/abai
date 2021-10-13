@@ -58,8 +58,6 @@ class WellsController extends Controller
             'well_perf_actual' => $this->wellPerfActual($well),
             'techModeProdOil' => $this->techModeProdOil($well),
             'tech_mode_inj' => $this->techModeInj($well),
-            'meas_liq' => $this->measLiq($well),
-            'meas_water_cut' => $this->measWaterCut($well),
             'krs_well_workover' => $this->getKrsPrs($well, 1),
             'prs_well_workover' => $this->getKrsPrs($well, 3),
             'well_treatment' => $this->wellTreatment($well),
