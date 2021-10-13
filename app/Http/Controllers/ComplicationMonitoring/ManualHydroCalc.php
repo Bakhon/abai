@@ -9,7 +9,6 @@ use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\ManualHydroCalcListResource;
 use App\Http\Resources\ManualHydroCalcPrepareListResource;
 use App\Jobs\ExportManualHydroCalc;
-use App\Jobs\ExportOmgCAToExcel;
 use App\Jobs\ManualCalculateHydroDynamics;
 use App\Models\ComplicationMonitoring\ManualHydroCalcResult;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
