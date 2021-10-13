@@ -180,7 +180,7 @@ class WaterInjection {
         $ordered = array();
         foreach($this->companies as $value) {
             $key = array_search($value, array_column($data, 'name'));
-            if ($data[$key]) {
+            if ($key !== false) {
                 array_push($ordered,$data[$key]);
             }
         }

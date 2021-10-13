@@ -784,7 +784,6 @@
                 >
                   <thead>
                   <tr>
-                    <th>№</th>
                     <th>{{ trans("visualcenter.companyName") }}</th>
                     <th v-if="buttonMonthlyTab && !mainMenu.oilCondensateDeliveryOilResidue">
                       {{ trans("visualcenter.dzoMonthlyPlan") }},
@@ -865,18 +864,6 @@
                   </thead>
                   <tbody>
                   <tr v-for="(item, index) in productionData">
-                    <td
-                            v-if="isConsolidatedCategoryActive()"
-                            :class="`${getDzoColumnsClass(index,'difference')}`"
-                    >
-                      {{item.id}}
-                    </td>
-                    <td
-                            v-else
-                            :class="`${getDzoColumnsClass(index,'difference')}`"
-                    >
-                      {{item.id + (index + 1)}}
-                    </td>
                     <td
                             @mouseover="dzoHoverIndex = index"
                             @mouseout="dzoHoverIndex = null"
@@ -1036,7 +1023,6 @@
                     </td>
                   </tr>
                   <tr v-if="isMultipleDzoCompaniesSelected">
-                    <td :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"></td>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
                       <div class="">{{ dzoCompaniesAssets['assetTitle'] }}</div>
                     </td>
@@ -2484,17 +2470,10 @@
     }
     .production-table {
       th {
-        &:first-child {
-          width: 20px;
-        }
-        &:nth-child(2) {
+        &:nth-child(1) {
           width: 390px;
         }
       }
-      td:first-child {
-        width: 20px;
-      }
-
     }
 
     .table4 {
