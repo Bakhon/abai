@@ -2487,7 +2487,7 @@
           &:not(:first-child) {
             min-width: 71px;
           }
-          &:nth-child(2) {
+          &:nth-child(1) {
             white-space: normal;
             min-width: 290px;
             font-weight: bold;
@@ -2553,7 +2553,7 @@
         font-size: 12px;
         background: #353ea1;
         text-align: center;
-        &:nth-child(2) {
+        &:nth-child(1) {
           padding-top: 5px;
           font-size: 15px;
         }
