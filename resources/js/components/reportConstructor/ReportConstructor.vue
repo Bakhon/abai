@@ -1,5 +1,6 @@
 <template>
-  <div class="row">
+
+  <div class="row" v-if="microserviceApiVersion && frontendApiVersion === microserviceApiVersion">
     <div>
       <modal class="modal-bign-wrapper" name="templateSelectorModal" draggable=".modal-bign-header"
              :width="400" :height="'auto'" style="background: transparent;" :adaptive="true">
@@ -369,7 +370,7 @@
                 <div class="table-wrapper col">
                   <ul class="nav nav-tabs report-tab">
                     <template v-for="(sheetType, index) in sheetTypes">
-                      <li class="nav-item" v-if="statistics[sheetType].length > 0">
+                      <li class="nav-item" v-if="isStatisticsForSheetTypeExists(sheetType)">
                           <span class="nav-link report-link" href="#" :class="{ active: activeTab === index }"
                                 @click="activeTab = index">
                             {{ sheetTypesDescription[sheetType] }}
@@ -675,6 +676,17 @@
       </div>
     </div>
     <div class="col-md-3"></div>
+  </div>
+
+  <div class="row" v-else-if="microserviceApiVersion === null">
+    <div class="modal-bign-title">
+      Проблема соединения с сервисом. Обновите страницу
+    </div>
+  </div>
+  <div class="row" v-else>
+    <div class="modal-bign-title">
+      Версия API не соответствует версия фронтенд {{ frontendApiVersion }}, версия сервиса {{ microserviceApiVersion }}
+    </div>
   </div>
 </template>
 

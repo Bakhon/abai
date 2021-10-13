@@ -17,6 +17,8 @@ export default {
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
+            frontendApiVersion: "1.01",
+            microserviceApiVersion: null,
             structureTypes: {
                 org: null,
                 tech: null,
@@ -26,7 +28,8 @@ export default {
             attributesForObject: null,
             attributesByHeader: null,
             sheetTypesDescription: {
-                "well": "скважины",
+                "well_production": "добывающие скважины",
+                "well_pump": "нагнетающие скважины",
                 "object": "объекты",
                 "well_summary": "суммарные данные по скважинам",
                 "object_summary": "суммарные данные по объекту",
@@ -68,6 +71,7 @@ export default {
         this.$nextTick(function () {
             this.SET_LOADING(false);
         });
+        this.setMicroserviceApiVersion()
         for (let structureType in this.structureTypes) {
             this.loadStructureTypes(structureType);
         }
@@ -78,6 +82,26 @@ export default {
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
+        setMicroserviceApiVersion() {
+            this.SET_LOADING(true)
+            this.axios.get(this.baseUrl + "api_version", {
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                if (response.data) {
+                    this.microserviceApiVersion = response.data['version']
+                } else {
+                    console.log("No data");
+                }
+                this.SET_LOADING(false);
+            }).catch((error) => {
+                console.log(error)
+                this.SET_LOADING(false)
+            });
+
+        },
         loadStructureTypes(type) {
             this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_structures_types", {
@@ -190,6 +214,7 @@ export default {
         async loadStatistics() {
             this.SET_LOADING(true)
             this.statistics = null;
+            let wellTypeSelectedAtRequest = this.copyString(this.wellTypeSelected)
 
             try {
                 this.validateStatisticsParams()
@@ -207,7 +232,9 @@ export default {
                     'Content-Type': 'application/json'
                 }
             }).then((response) => {
-                this.statistics = response.data
+                this.statistics = this.postProcessStatistics(response.data, wellTypeSelectedAtRequest);
+                this.setActiveTab(wellTypeSelectedAtRequest)
+
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
@@ -366,6 +393,19 @@ export default {
                 dates.push(null)
             }
             return dates
+        },
+        copyString(originalString) {
+            return (' ' + originalString).slice(1)
+        },
+        postProcessStatistics(statistics, wellTypeSelectedAtRequest)
+        {
+            statistics[wellTypeSelectedAtRequest] = statistics['well']
+            delete statistics['well']
+            return statistics
+        },
+        setActiveTab(wellTypeSelectedAtRequest)
+        {
+            this.activeTab = this.sheetTypes.indexOf(wellTypeSelectedAtRequest)
         },
         getStatisticsColumnNames(attributes) {
             let columns = []
@@ -649,6 +689,10 @@ export default {
                 return false
             }
             return this.wellTypeSelected === sheetType
-        }
+        },
+        isStatisticsForSheetTypeExists(sheetType)
+        {
+            return this.statistics[sheetType] && this.statistics[sheetType].length > 0
+        },
     }
 }
