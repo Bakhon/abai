@@ -12,7 +12,7 @@ class ManualHydroCalcListResource extends CrudListResource
      */
     public function toArray($request)
     {
-        $result = $this->fluid_speed ? $this->calculated() : $this->prepaired();
+        $result = isset($this->fluid_speed) ? $this->calculated() : $this->prepaired();
 
         $result['links'] = $this->omgngdu ? ['edit' => route('omgngdu-well.edit', $this->omgngdu->id)] : [];
 
@@ -54,6 +54,9 @@ class ManualHydroCalcListResource extends CrudListResource
 
     public function prepaired()
     {
+        if (!$this->pipeType) {
+            dd($this);
+        }
         return [
             'id' => $this->id,
             'fields' => [

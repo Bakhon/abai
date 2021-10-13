@@ -8,6 +8,8 @@ use App\Http\Controllers\CrudController;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\ManualHydroCalcListResource;
 use App\Http\Resources\ManualHydroCalcPrepareListResource;
+use App\Jobs\ExportManualHydroCalc;
+use App\Jobs\ExportOmgCAToExcel;
 use App\Jobs\ManualCalculateHydroDynamics;
 use App\Models\ComplicationMonitoring\ManualHydroCalcResult;
 use App\Models\ComplicationMonitoring\ManualOilPipe;
@@ -129,6 +131,10 @@ class ManualHydroCalc extends CrudController
             ],
         ];
 
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route($this->modelName.'.export');
+        }
+
         $params['links']['calc']['link'] = route($this->modelName . '.calculate');
         $params['links']['date'] = true;
         $params['selected_date'] = session('manual_hydro_calc_date');
@@ -229,6 +235,39 @@ class ManualHydroCalc extends CrudController
     public function calculate(IndexTableRequest $request)
     {
         $job = new ManualCalculateHydroDynamics($request->validated());
+        $this->dispatch($job);
+
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
+    }
+
+    public function export(IndexTableRequest $request)
+    {
+        $input = $request->validated();
+        $calculatedPipes = null;
+        $calculatedPipesIds = [];
+
+        if (isset($input['date'])) {
+            $calculatedPipes = $this->getCalculatedData($input['date']);
+
+            if ($calculatedPipes) {
+                foreach ($calculatedPipes as $pipe) {
+                    $calculatedPipesIds[] = $pipe->oil_pipe_id;
+                }
+            }
+        }
+
+        $prepairedData = $this->getPrepairedData($input, $calculatedPipesIds);
+        $pipes = $prepairedData['pipes'];
+
+        if ($calculatedPipes) {
+            $pipes = $calculatedPipes->merge($pipes);
+        }
+
+        $job = new ExportManualHydroCalc($input, $pipes);
         $this->dispatch($job);
 
         return response()->json(
