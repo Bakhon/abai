@@ -81,7 +81,8 @@ export default {
                 }
             },
             companiesWithData: [],
-            exceptionDzo: ['КГМКМГ','ТП','ПККР']
+            exceptionDzo: ['КГМКМГ','ТП','ПККР'],
+            todayDate: moment().subtract(2,'days').format('DD.MM.YYYY')
         }
     },
     methods: {

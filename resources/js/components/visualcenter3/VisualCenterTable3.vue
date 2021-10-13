@@ -60,8 +60,7 @@
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="periodRange === 0"> {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
-                              <span v-else> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
+                              <span> {{ todayDate }}</span>
                             </div>
                           </div>
                         </div>
@@ -119,8 +118,7 @@
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="periodRange === 0"> {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
-                              <span v-else> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
+                              <span> {{ todayDate }}</span>
                             </div>
                           </div>
                         </div>
@@ -177,8 +175,7 @@
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="periodRange === 0"> {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
-                              <span v-else> {{ historicalPeriodStart.format('DD.MM.YYYY') }} - {{ historicalPeriodEnd.format('DD.MM.YYYY') }}</span>
+                              <span> {{ todayDate }}</span>
                             </div>
                           </div>
                         </div>
