@@ -311,7 +311,6 @@ return array (
   'cost_fix_nopayroll' => 'Условно-постоянный показатель без ФОТ',
   'cost_fix' => 'Условно-постоянный показатель',
   'cost_gaoverheads' => 'ОАР показатель',
-  'event_short' => 'Мер',
   'cost_wr_payroll' => 'ФОТ ПРС',
   'cost_krs' => 'Стоимость КРС',
   'ton_declination' => 'тонну',
@@ -328,4 +327,6 @@ return array (
   'barrel_ratio' => 'Коэфф. барр.',
   'sale_share' => 'Доля реализации',
   'discount_by_direction' => 'Скидка по направлению',
+  'ton' => 'Тонна',
+  'well_per_operation' => 'скв. опер.',
 );
