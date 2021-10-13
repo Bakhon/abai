@@ -202,6 +202,7 @@ Route::group(
                 Route::get('/reverse-calc/calculate', 'ComplicationMonitoring\ReverseCalculationController@calculate')->name('reverse_calculation.calculate');
 
                 Route::get('/manual-hydro-calc/list', 'ComplicationMonitoring\ManualHydroCalc@list')->name('manual_hydro_calculation.list');
+                Route::get('/manual-hydro-calc/export', 'ComplicationMonitoring\ManualHydroCalc@export')->name('manual_hydro_calculation.export');
                 Route::get('/manual-hydro-calc', 'ComplicationMonitoring\ManualHydroCalc@index')->name('manual_hydro_calculation.index');
                 Route::get('/manual-hydro-calc/calculate', 'ComplicationMonitoring\ManualHydroCalc@calculate')->name('manual_hydro_calculation.calculate');
                 Route::get('/manual-hydro-calc/test', 'ComplicationMonitoring\ManualHydroCalc@getPrepairedData');
