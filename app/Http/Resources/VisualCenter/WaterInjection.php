@@ -127,7 +127,7 @@ class WaterInjection {
         }
         if ($periodType === 'month') {
             $companySummary['monthlyPlan'] = array_column($filteredPlan,$categoryFields['plan'])[0] * $daysInMonth;
-            $companySummary['plan'] *= Carbon::now()->day - 1;
+           // $companySummary['plan'] *= Carbon::now()->day - 1;
         }
         if ($periodType === 'year') {
             $companySummary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$categoryFields['plan']);

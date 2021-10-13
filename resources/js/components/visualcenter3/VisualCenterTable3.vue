@@ -763,6 +763,7 @@
                                   is-range
                                   class="m-auto"
                                   :max-date="disabledDate"
+                                  :min-date="minimumDate"
                                   @input="switchView('period')"
                           />
                         </div>

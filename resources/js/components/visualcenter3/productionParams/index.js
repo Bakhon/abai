@@ -41,6 +41,7 @@ export default {
                 formatInput: true,
             },
             disabledDate: moment().subtract(1,'days').format(),
+            minimumDate: moment().startOf('year').startOf('day').format(),
             mainMenu: {
                 'oilCondensateProduction': true,
                 'oilCondensateProductionWithoutKMG': false,

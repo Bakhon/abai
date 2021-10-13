@@ -142,7 +142,6 @@ class Dzo {
         }
         if ($periodType === 'year') {
             $summary['yearlyPlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']);
-            //$companySummary = $this->getUpdatedForYearPeriod($companySummary,$filteredPlan,$type,$daysInMonth,$filteredYearlyPlan);
         }
 
         $factory = new Factory();
@@ -246,11 +245,6 @@ class Dzo {
     {
         $summary = $companySummary;
         $summary['monthlyPlan'] = $filteredPlan->sum($this->consolidatedFieldsMapping[$type]['plan']) * $daysInMonth;
-        ///$summary['plan'] *= Carbon::now()->day - 1;
-        //$summary['fact'] *= Carbon::now()->day - 1;
-       // $summary['opek'] *= Carbon::now()->day - 1;
-      //  $summary['condensatePlan'] *= Carbon::now()->day - 1;
-     //   $summary['condensateOpek'] *= Carbon::now()->day - 1;
         return $summary;
     }
 
@@ -258,8 +252,6 @@ class Dzo {
     {
         $summary = $companySummary;
         $summary['yearlyPlan'] = $this->getYearlyPlanBy($filteredYearlyPlan,$this->consolidatedFieldsMapping[$type]['plan']);
-      //  $summary['plan'] = $this->getCurrentPlanForYear($filteredPlan,'plan',$type);
-      //  $summary['opek'] = $this->getCurrentPlanForYear($filteredPlan,'opek',$type);
         $summary['condensatePlan'] = $this->getCurrentPlanForYear($filteredPlan,'condensatePlan',$type);
         $summary['condensateOpek'] = $this->getCurrentPlanForYear($filteredPlan,'condensateOpek',$type);
         return $summary;
