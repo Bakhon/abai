@@ -62,7 +62,19 @@ export default {
           enabled: false
         },
         xaxis: {
-          categories: this.getYearList
+          categories: this.getYearList,
+          labels: {
+            style: {
+              colors: this.getColors(14, '#fff')
+            }
+          }
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: this.getColors(6, '#fff')
+            }
+          }
         },
         toolbar: {
           show: false,
@@ -85,12 +97,29 @@ export default {
           enabled: false
         },
         xaxis: {
-          categories: this.getYearList
+          categories: this.getYearList,
+          labels: {
+            style: {
+              colors: this.getColors(14, '#fff')
+            }
+          }
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: this.getColors(7, '#fff')
+            }
+          }
         },
       }
     },
     getYearList() {
-      return ['2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020'];
+      const years = [];
+      const currentYear = new Date().getFullYear();
+      for (let i = 2007; i < currentYear; i++) {
+        years.push(i);
+      }
+      return years.map(el => el.toString());
     },
     series() {
       return [
@@ -124,5 +153,12 @@ export default {
         window.location.href = this.localeUrl(data.url);
       }
     },
+    getColors(count, color) {
+      let colors = [];
+      for (let i = 0; i < count; i++) {
+        colors.push(color);
+      }
+      return colors;
+    }
   }
 }
