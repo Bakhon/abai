@@ -83,7 +83,7 @@ trait ParseOmgNgduWellTrait
                 $omgngdu->bsw = $row->vlazh;
                 $omgngdu->gas_factor = isset($this->guData[$gu->name]) ? $this->guData[$gu->name]['gas'] : $row->gaz;
                 $omgngdu->temperature_zu = $row->tempn;
-                $omgngdu->sg_oil = isset($this->guData[$gu->name]) ? $this->guData[$gu->name]['sg_oil'] : 0.86;
+                $omgngdu->sg_oil = isset($this->guData[$gu->name]) ? $this->guData[$gu->name]['sg_oil'] : 0.853;
                 $omgngdu->sg_gas = 0.75;
                 $omgngdu->sg_water = 1.03;
                 $omgngdu->save();
