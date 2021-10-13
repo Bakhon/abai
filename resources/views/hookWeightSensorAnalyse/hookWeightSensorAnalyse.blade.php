@@ -5,7 +5,7 @@
         </a>
         <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">
-            <tkrs-main></tkrs-main>
+            <hook-weight-sensor-analyse></hook-weight-sensor-analyse>
 
             </div>
         </div>

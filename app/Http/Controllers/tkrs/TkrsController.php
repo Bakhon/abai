@@ -20,6 +20,14 @@ class TkrsController extends Controller
     public function hookWeightSensorAnalyse()
     {
         return view('hookWeightSensorAnalyse.hookWeightSensorAnalyse');
-    }  
+    }
+    public function gps()
+    {
+        return view('gps.gps');
+    } 
+    public function video()
+    {
+        return view('video.video');
+    } 
 
 }

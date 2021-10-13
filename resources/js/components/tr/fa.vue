@@ -201,6 +201,7 @@
         class="table table-bordered table-dark table-responsive fakrtableborderedtable"
       >
         <tr class="headerColumn">
+          <td rowspan="3" style="background: #12135c"><span>№</span></td>
           <td rowspan="3" style="background: #12135c"><span>{{trans('tr.well')}}</span></td>
           <td rowspan="3" style="background: #12135c; min-width: 120px;">
             <span>{{trans('tr.field')}}</span>
@@ -239,23 +240,22 @@
           </td>
         </tr>
         <tr class="headerColumn">
-          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.q_liquid')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.q_oil')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379; min-width: 45px;"><span>{{trans('tr.q_liquid')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379; min-width: 45px;"><span>{{trans('tr.q_oil')}}</span></td>
           <td v-show= isHide rowspan="2" style="background: #2c3379">
             <span>{{trans('tr.water_cut')}}</span>
           </td>
-          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.p_layer')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.productivity_index')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379; min-width: 45px;"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379; min-width: 45px;"><span>{{trans('tr.p_layer')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379; min-width: 93px;"><span>{{trans('tr.productivity_index')}}</span></td>
           <td v-if= isGenHide v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.work_day')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.q_liquid')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.q_oil')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #1a2370">
-            <span>{{trans('tr.water_cut')}}</span>
+          <td v-show= isHide rowspan="2" style="background: #1a2370; min-width: 45px;"><span>{{trans('tr.q_liquid')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370; min-width: 45px;"><span>{{trans('tr.q_oil')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.water_cut')}}</span>
           </td>
-          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.p_layer')}}</span></td>
-          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.productivity_index')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370; min-width: 45px;"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370; min-width: 45px;"><span>{{trans('tr.p_layer')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370; min-width: 93px;"><span>{{trans('tr.productivity_index')}}</span></td>
           <td v-if= isGenHide v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.work_day')}}</span></td>
           <td rowspan="2" style="background: #12135C"><span>{{trans('tr.d_q_oil')}}</span></td>
           <td rowspan="2" style="background: #12135C">
@@ -277,6 +277,9 @@
         </tr>
         <tr></tr>
         <tr class="subHeaderColumn" style="cursor: pointer">
+          <td   style="background: #12135c" class="sortik">
+            <i class="fa fa-fw fa-sort"></i>
+          </td>
            <td @click="sortBy('rus_wellname')"  style="background: #12135c" class="sortik">
             <i class="fa fa-fw fa-sort"></i>
           </td>
@@ -363,6 +366,7 @@
           </td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row.well">
+          <td style="background: #12135c; min-width: 102px;">{{ row_index + 1 }}</td>
           <td style="background: #12135c; min-width: 102px;">{{ row.rus_wellname }}</td>
           <td style="background: #12135c; min-width: 182px;">{{ row.field }}</td>
           <td style="background: #12135c; min-width: 102px;">{{ row.horizon }}</td>
