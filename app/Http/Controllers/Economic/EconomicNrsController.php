@@ -55,20 +55,6 @@ class EconomicNrsController extends Controller
 
     const DOLLAR_RATES_URL = 'https://www.nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut/report';
 
-    const TEMP_ORG_COMPANY_MAP = [
-        3 => 5, // OZEN
-        4 => 8, // KBM
-        5 => 9, // KAZGER
-        6 => 6, // EMBA
-        7 => 7 // MANGISTAU
-    ];
-
-    const TEMP_SC_FA_IDS = [
-        9, // 2020
-        12, // 2021 1 kv
-        13 // 2021 2 kv
-    ];
-
     public function __construct(DruidClient $druidClient, StructureService $structureService)
     {
         $this->middleware('can:economic view main');
