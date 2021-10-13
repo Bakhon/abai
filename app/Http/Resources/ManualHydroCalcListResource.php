@@ -54,9 +54,6 @@ class ManualHydroCalcListResource extends CrudListResource
 
     public function prepaired()
     {
-        if (!$this->pipeType) {
-            dd($this);
-        }
         return [
             'id' => $this->id,
             'fields' => [
