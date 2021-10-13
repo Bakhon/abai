@@ -69,7 +69,8 @@
     "type": "number",
     "step": 0.01,
     "label": "monitoring.omgngdu_well.fields.sg_oil",
-    "value": 0.86
+    "value": 0.853,
+    "input": "dailyProductionInput"
   },
   "sg_gas": {
     "type": "number",

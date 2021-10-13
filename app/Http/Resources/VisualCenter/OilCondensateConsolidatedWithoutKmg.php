@@ -22,22 +22,29 @@ class OilCondensateConsolidatedWithoutKmg {
             "ТШО" => "2.9.",
             "КПО" => "2.10.",
             "НКО" => "2.11.",
-            "АГ" => "2.12."
+            "ТП" => "2.12.",
+            "ПККР" => "2.13.",
+            "АГ" => "2.13."
         ),
         'delivery' => array (
             "ОМГ" => "2.1.",
             "ОМГК" => "",
             "ММГ" => "2.2.",
             "ЭМГ" => "2.3.",
-            "КГМ" => "2.4.",
-            "КОА" => "2.5.",
-            "ТШО" => "2.6.",
-            "КПО" => "2.7.",
-            "НКО" => "2.8.",
-            "АГ" => "2.9."
+            "КБМ" => "2.4.",
+            "КГМ" => "2.5.",
+            "КТМ" => "2.6.",
+            "КОА" => "2.7.",
+            "УО" => "2.8.",
+            "ТШО" => "2.9.",
+            "КПО" => "2.10.",
+            "НКО" => "2.11.",
+            "ТП" => "2.12.",
+            "ПККР" => "2.13.",
+            "АГ" => "2.13."
         )
     );
-    private $companies = array ('ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','ТШО','КПО','НКО','АГ');
+    private $companies = array ('ОМГ','ММГ','ЭМГ','КБМ','КГМ','КТМ','ТП','КОА','УО','ТШО','КПО','НКО','АГ','ПКК');
 
     public function getDataByConsolidatedCategory($factData,$planData,$periodRange,$type,$yearlyPlan,$periodType,$oneDzoSelected)
     {
@@ -101,6 +108,9 @@ class OilCondensateConsolidatedWithoutKmg {
     private function getUpdatedByTroubledCompanies($dzoName,$dzoFact,$filteredPlan,$type,$periodType,$yearlyPlan)
     {
         $filteredYearlyPlan = $yearlyPlan->where('dzo',$dzoName);
+        if ($dzoName === 'ПКК') {
+            $dzoName = 'ПККР';
+        }
         if (!array_key_exists($dzoName,$this->consolidatedNumberMappingWithoutKmg[$type])) {
             return [];
         }

@@ -40,7 +40,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "water_viscosity",
@@ -57,7 +57,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "volume_coef",
@@ -74,7 +74,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "oil_density",
@@ -91,7 +91,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "water_density",
@@ -99,7 +99,7 @@
       "table": "prod.pvt_data",
       "type": "float",
       "title": "r_water",
-      "validation": "gte:0.9|lte:2",
+      "validation": "gte:0.7|lte:2",
       "depends_on": [
         {
           "field": "research_type",
@@ -108,7 +108,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "gas_pressure",
@@ -125,7 +125,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "gas_factor",
@@ -142,7 +142,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "temp_pl",
@@ -159,7 +159,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "res_pressure",
@@ -176,7 +176,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "res_temp",
@@ -193,7 +193,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "sat_press_oil_gas",
@@ -210,7 +210,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "gas_share_m3t",
@@ -227,7 +227,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "gas_share_m3m3",
@@ -244,7 +244,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "stand_sep_volume_coef",
@@ -261,7 +261,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "shrinkage",
@@ -278,7 +278,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "sol_coef_gas_oil",
@@ -295,7 +295,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "comp_coef_res_oil",
@@ -312,7 +312,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "res_oil_viscosity",
@@ -329,7 +329,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "res_oil_density",
@@ -346,7 +346,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "sep_oil_density20c",
@@ -363,7 +363,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "gas_density20c",
@@ -380,7 +380,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "water_share",
@@ -397,7 +397,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "dehyd_water_share",
@@ -414,7 +414,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "density20c",
@@ -431,7 +431,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "cinem_visc_40c",
@@ -448,7 +448,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "cinem_visc_50c",
@@ -465,7 +465,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "cinem_visc_60c",
@@ -482,7 +482,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "solid_temp",
@@ -499,7 +499,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "molecular_weight",
@@ -516,7 +516,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "sulf_share",
@@ -533,7 +533,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "res_pressure",
@@ -550,7 +550,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "res_temp",
@@ -567,7 +567,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "sat_press_oil_gas",
@@ -584,7 +584,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "gas_share_m3t",
@@ -601,7 +601,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "gas_share_m3m3",
@@ -618,7 +618,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "stand_sep_volume_coef",
@@ -635,7 +635,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "shrinkage",
@@ -652,7 +652,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "sol_coef_gas_oil",
@@ -669,7 +669,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "comp_coef_res_oil",
@@ -686,7 +686,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "res_oil_viscosity",
@@ -703,7 +703,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "res_oil_density",
@@ -720,7 +720,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "sep_oil_density20c",
@@ -737,7 +737,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "gas_density20c",
@@ -754,7 +754,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "water_share",
@@ -771,7 +771,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "dehyd_water_share",
@@ -788,7 +788,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "density20c",
@@ -805,7 +805,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "cinem_visc_40c",
@@ -822,7 +822,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "cinem_visc_50c",
@@ -839,7 +839,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "cinem_visc_60c",
@@ -856,7 +856,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "solid_temp",
@@ -873,7 +873,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "molecular_weight",
@@ -890,7 +890,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "sulf_share",
@@ -907,7 +907,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "water_share",
@@ -924,14 +924,13 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "water_density",
       "column": "water_density",
       "table": "prod.produced_water_analysis",
       "type": "float",
-      "validation": "gte:0.9|lte:2",
       "title": "water_density",
       "depends_on": [
         {
@@ -941,7 +940,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "ca_share",
@@ -958,7 +957,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "cl_share",
@@ -975,7 +974,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "mg_share",
@@ -992,13 +991,13 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "salt_types",
       "column": "salt_types",
       "table": "prod.produced_water_analysis",
-      "type": "float",
+      "type": "text",
       "title": "salt_types",
       "depends_on": [
         {
@@ -1008,13 +1007,13 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "comments",
       "column": "comments",
       "table": "prod.produced_water_analysis",
-      "type": "float",
+      "type": "text",
       "title": "comments",
       "depends_on": [
         {
@@ -1024,7 +1023,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "sea_water_share",
@@ -1041,7 +1040,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "alb_water_share",
@@ -1058,7 +1057,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "res_water_share",
@@ -1075,7 +1074,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "mech_mixtures",
@@ -1092,7 +1091,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "sat_pressure",
@@ -1109,7 +1108,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "comp_coef",
@@ -1126,7 +1125,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "stand_sep_gas_share",
@@ -1143,7 +1142,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "stand_sep_volume_coef",
@@ -1160,7 +1159,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "stand_sep_res_oil_density",
@@ -1177,7 +1176,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "stand_sep_sep_oil_density",
@@ -1194,7 +1193,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "stand_sep_sep_gas_density",
@@ -1211,7 +1210,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "step_sep_gas_factor",
@@ -1228,7 +1227,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "step_sep_volume_coef",
@@ -1245,7 +1244,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "step_sep_sep_oil_density",
@@ -1262,7 +1261,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "res_oil_viscosity",
@@ -1279,7 +1278,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "paraf_sat_temp",
@@ -1296,7 +1295,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "horizone",
@@ -1312,7 +1311,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "depth",
@@ -1329,7 +1328,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "viscosity_20c",
@@ -1346,7 +1345,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "viscosity_50c",
@@ -1363,7 +1362,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "solid_temp",
@@ -1380,7 +1379,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "paraf_sat_temp",
@@ -1397,7 +1396,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "sulf_weight",
@@ -1414,7 +1413,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "sulf_share",
@@ -1431,7 +1430,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "selik_smol_weight",
@@ -1448,7 +1447,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "selik_smol_share",
@@ -1465,7 +1464,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "asphalten_weight",
@@ -1482,7 +1481,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "asphalten_share",
@@ -1499,7 +1498,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "paraf_weight",
@@ -1516,14 +1515,14 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "paraf_share",
       "column": "paraf_share",
       "table": "prod.surf_oil_characteristics",
       "type": "float",
-      "title": "research_type",
+      "title": "paraf_share",
       "validation": "gte:0|lte:100",
       "depends_on": [
         {
@@ -1533,7 +1532,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "fractions_100c",
@@ -1550,7 +1549,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "fractions_150c",
@@ -1567,7 +1566,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "fractions_200c",
@@ -1584,7 +1583,7 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
     },
     {
       "code": "fractions_300c",
@@ -1601,8 +1600,755 @@
           }
         }
       ],
-      "is_editable": false
+      "is_editable": true
+    },
+    {
+      "code": "cond_begin_pressure",
+      "column": "cond_begin_pressure",
+      "table": "prod.res_gas_char",
+      "type": "float",
+      "title": "cond_begin_pressure",
+      "validation": "gte:0|lte:150",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CRG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "density",
+      "column": "density",
+      "table": "prod.res_gas_char",
+      "type": "float",
+      "title": "density",
+      "validation": "gte:0|lte:1",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CRG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "sep_volume_coef",
+      "column": "sep_volume_coef",
+      "table": "prod.res_gas_char",
+      "type": "float",
+      "title": "sep_volume_coef",
+      "validation": "gte:0|lte:500",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CRG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "viscosity",
+      "column": "viscosity",
+      "table": "prod.res_gas_char",
+      "type": "float",
+      "title": "viscosity",
+      "validation": "gte:0|lte:10",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CRG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "stable_cond_share",
+      "column": "stable_cond_share",
+      "table": "prod.res_gas_char",
+      "type": "float",
+      "title": "stable_cond_share",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CRG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "cond_sep_factor",
+      "column": "cond_sep_factor",
+      "table": "prod.res_gas_char",
+      "type": "float",
+      "title": "cond_sep_factor",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CRG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "sulf_hydro_mol",
+      "column": "sulf_hydro_mol",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "sulf_hydro_mol",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "sulf_hydro_share",
+      "column": "sulf_hydro_share",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "sulf_hydro_share",
+      "validation": "gte:0|lte:100",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "co2_mol",
+      "column": "co2_mol",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "co2_mol",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "co2_share",
+      "column": "co2_share",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "co2_share",
+      "validation": "gte:0|lte:100",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "nitro_rare_mol",
+      "column": "nitro_rare_mol",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "nitro_rare_mol",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "nitro_rare_share",
+      "column": "nitro_rare_share",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "nitro_rare_share",
+      "validation": "gte:0|lte:100",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "metan_mol",
+      "column": "metan_mol",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "metan_mol",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "metan_share",
+      "column": "metan_share",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "metan_share",
+      "validation": "gte:0|lte:100",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "etan_mol",
+      "column": "etan_mol",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "etan_mol",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "etan_share",
+      "column": "etan_share",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "etan_share",
+      "validation": "gte:0|lte:100",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "propan_mol",
+      "column": "propan_mol",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "propan_mol",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "propan_share",
+      "column": "propan_share",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "propan_share",
+      "validation": "gte:0|lte:100",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "isobutan_mol",
+      "column": "isobutan_mol",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "isobutan_mol",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "isobutan_share",
+      "column": "isobutan_share",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "isobutan_share",
+      "validation": "gte:0|lte:100",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "h_butan_mol",
+      "column": "h_butan_mol",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "h_butan_mol",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "h_butan_share",
+      "column": "h_butan_share",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "h_butan_share",
+      "validation": "gte:0|lte:100",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "heksan_mol",
+      "column": "heksan_mol",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "heksan_mol",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "heksan_share",
+      "column": "heksan_share",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "heksan_share",
+      "validation": "gte:0|lte:100",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "heptan_mol",
+      "column": "heptan_mol",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "heptan_mol",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "heptan_share",
+      "column": "heptan_share",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "heptan_share",
+      "validation": "gte:0|lte:100",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "resid_mol",
+      "column": "resid_mol",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "resid_mol",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "resid_share",
+      "column": "resid_share",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "resid_share",
+      "validation": "gte:0|lte:100",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "molar_mol",
+      "column": "molar_mol",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "molar_mol",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "molar_share",
+      "column": "molar_share",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "molar_share",
+      "validation": "gte:0|lte:100",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "stand_density",
+      "column": "stand_density",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "stand_density",
+      "validation": "gte:0.0001|lte:0.01",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "stand_density_resid",
+      "column": "stand_density_resid",
+      "table": "prod.petro_gas_char",
+      "type": "float",
+      "title": "stand_density_resid",
+      "validation": "gte:0.0001|lte: 0.01",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPG"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "sat_pressure",
+      "column": "sat_pressure",
+      "table": "prod.res_water_char",
+      "type": "float",
+      "title": "sat_pressure",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPIW"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "sulf_hydro",
+      "column": "sulf_hydro",
+      "table": "prod.res_water_char",
+      "type": "float",
+      "title": "sulf_hydro",
+      "validation": "gte:0",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPIW"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "volume_coef",
+      "column": "volume_coef",
+      "table": "prod.res_water_char",
+      "type": "float",
+      "title": "volume_coef",
+      "validation": "gte:0.98|lte: 1.07",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPIW"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "viscosity",
+      "column": "viscosity",
+      "table": "prod.res_water_char",
+      "type": "float",
+      "title": "viscosity",
+      "validation": "gte:0|lte:100000",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPIW"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "total_mineralization",
+      "column": "total_mineralization",
+      "table": "prod.res_water_char",
+      "type": "float",
+      "title": "total_mineralization",
+      "validation": "gte:0|lte: 1000",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPIW"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "density",
+      "column": "density",
+      "table": "prod.res_water_char",
+      "type": "float",
+      "title": "density",
+      "validation": "gte:0.9|lte:2",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPIW"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "cl_ion",
+      "column": "cl_ion",
+      "table": "prod.res_water_char",
+      "type": "float",
+      "title": "cl_ion",
+      "validation": "gte:0|lte:1000000",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPIW"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "so4_ion",
+      "column": "so4_ion",
+      "table": "prod.res_water_char",
+      "type": "float",
+      "title": "so4_ion",
+      "validation": "gte:0|lte:1000000",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPIW"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "hso3_ion",
+      "column": "hso3_ion",
+      "table": "prod.res_water_char",
+      "type": "float",
+      "title": "hso3_ion",
+      "validation": "gte:0|lte:1000000",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPIW"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "ca_ion",
+      "column": "ca_ion",
+      "table": "prod.res_water_char",
+      "type": "float",
+      "title": "ca_ion",
+      "validation": "gte:0|lte:1000000",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPIW"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "mg_ion",
+      "column": "mg_ion",
+      "table": "prod.res_water_char",
+      "type": "float",
+      "title": "mg_ion",
+      "validation": "gte:0|lte:1000000",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPIW"
+          }
+        }
+      ],
+      "is_editable": true
+    },
+    {
+      "code": "nak_ion",
+      "column": "nak_ion",
+      "table": "prod.res_water_char",
+      "type": "float",
+      "title": "nak_ion",
+      "validation": "gte:0|lte:1000000",
+      "depends_on": [
+        {
+          "field": "research_type",
+          "value": {
+            "code": "CPIW"
+          }
+        }
+      ],
+      "is_editable": true
     }
-  ],
-  "is_editable": false
+  ]
 }

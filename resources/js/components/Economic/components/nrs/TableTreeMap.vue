@@ -26,17 +26,11 @@
       {{ trans('economic_reference.loading_treemap') }}...
     </div>
 
-    <div v-else class="form-check mb-3 text-right">
-      <input v-model="isVisibleOperatingPrs"
-             id="visible_operating_profit"
-             type="checkbox"
-             class="form-check-input"
-             @change="updateCharts()">
-      <label for="visible_operating_profit"
-             class="form-check-label text-blue">
-        {{ trans('economic_reference.v2') }}
-      </label>
-    </div>
+    <select-operating-profit
+        :form="form"
+        class="ml-auto mb-3 bg-dark-blue text-blue"
+        style="width: 200px"
+        @change="updateCharts()"/>
 
     <div v-for="chart in loading ? [] : charts"
          :key="`${chart.title}_${profitabilityKey}`"
@@ -52,11 +46,13 @@ import {treemapMixin} from "../../mixins/treemapMixin";
 import {waterCutMixin} from "../../mixins/wellMixin";
 
 import SelectTechStructure from "../SelectTechStructure";
+import SelectOperatingProfit from "../SelectOperatingProfit";
 
 export default {
   name: "TableTreeMap",
   components: {
-    SelectTechStructure
+    SelectTechStructure,
+    SelectOperatingProfit,
   },
   mixins: [treemapMixin, waterCutMixin],
   props: {
@@ -71,9 +67,9 @@ export default {
       ngdu_id: null,
       cdng_id: null,
       field_id: null,
+      operatingProfit: 'Operating_profit',
     },
     selectedWells: [],
-    isVisibleOperatingPrs: false
   }),
   computed: {
     ...globalloadingState(['loading']),
@@ -134,9 +130,7 @@ export default {
     },
 
     profitabilityKey() {
-      return this.isVisibleOperatingPrs
-          ? 'Operating_profit_variable_prs'
-          : 'Operating_profit'
+      return this.form.operatingProfit
     },
   },
   methods: {
@@ -176,5 +170,11 @@ export default {
 </script>
 
 <style scoped>
+.text-blue {
+  color: #23AFE8;
+}
 
+.bg-dark-blue {
+  background: #272953;
+}
 </style>

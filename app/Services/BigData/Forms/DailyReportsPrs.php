@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\Org;
 use App\Services\BigData\StructureService;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
 
 class DailyReportsPrs extends TableForm
@@ -14,11 +17,28 @@ class DailyReportsPrs extends TableForm
 
     protected function saveSingleFieldInDB(array $params): void
     {
-        $reportId = $params['wellId'];
+        $workoverId = $params['wellId'];
+
+        $report = DB::connection('tbd')
+            ->table('prod.report_org_daily_repair')
+            ->where('workover', $workoverId)
+            ->first();
+
+        if (empty($report)) {
+            DB::connection('tbd')
+                ->table('prod.report_org_daily_repair')
+                ->insert(
+                    [
+                        'workover' => $workoverId,
+                        $params['field'] => $params['value']
+                    ]
+                );
+            return;
+        }
 
         DB::connection('tbd')
             ->table('prod.report_org_daily_repair')
-            ->where('id', $reportId)
+            ->where('id', $report->id)
             ->update(
                 [
                     $params['field'] => $params['value']
@@ -37,30 +57,31 @@ class DailyReportsPrs extends TableForm
             throw new \Exception(trans('bd.select_dzo_ngdu'));
         }
 
-        $structureService = app()->make(StructureService::class);
-        $orgIds = $structureService->getOrgIds((int)$this->request->get('id'));
+        $org = Org::find($this->request->get('id'));
+        $wellIds = $this->getOrgWells($org, Carbon::parse($filter->date, 'Asia/Almaty')->toImmutable());
 
         $rows = DB::connection('tbd')
-            ->table('prod.report_org_daily_repair as rodr')
+            ->table('prod.well_workover as ww')
             ->select(
-                'rodr.id',
-                'org.name_ru as org',
+                'ww.id',
                 'ww.well',
                 'ww.contractor',
                 'ww.repair_work_type',
                 'rodr.machine_type',
                 'rodr.work_done',
-                'wg.geo as geo_id'
+                't.name_ru as tech',
             )
-            ->join('prod.well_workover as ww', 'rodr.workover', 'ww.id')
-            ->join('dict.well_repair_type as wrt', 'ww.repair_type', 'wrt.id')
-            ->join('dict.org as org', 'rodr.org', 'org.id')
-            ->join('prod.well_geo as wg', 'ww.well', 'wg.well')
-            ->whereIn('rodr.org', $orgIds)
-            ->where('rodr.report_date', $filter->date)
+            ->leftJoin('dict.well_repair_type as wrt', 'ww.repair_type', 'wrt.id')
+            ->join('dict.well as w', 'ww.well', 'w.id')
+            ->leftJoin('prod.report_org_daily_repair as rodr', 'ww.id', 'rodr.workover')
+            ->leftJoin('prod.well_tech as wt', 'w.id', 'wt.well')
+            ->leftJoin('dict.tech as t', 'wt.tech', 't.id')
+            ->whereIn('w.id', $wellIds)
+            ->where('ww.dbeg', '<=', $filter->date)
+            ->where('ww.dend', '>', $filter->date)
             ->where('wrt.code', $this->repairType)
-            ->where('wg.dbeg', '<=', $filter->date)
-            ->where('wg.dend', '>=', $filter->date)
+            ->where('wt.dbeg', '<=', $filter->date)
+            ->where('wt.dend', '>', $filter->date)
             ->get()
             ->map(function ($item) {
                 $result = [];
@@ -76,10 +97,6 @@ class DailyReportsPrs extends TableForm
                         'value' => $value
                     ];
                 }
-
-                $result['geo'] = [
-                    'value' => $this->getHorizon($item->geo_id)
-                ];
 
                 return $result;
             });
@@ -102,6 +119,21 @@ class DailyReportsPrs extends TableForm
         }
 
         return $this->getHorizon($geo->parent);
+    }
+
+    protected function getOrgWells(Org $org, CarbonImmutable $date)
+    {
+        $structureService = app()->make(StructureService::class);
+        $techIds = $structureService->getTechIds($org->id, 'org');
+        return DB::connection('tbd')
+            ->table('prod.well_tech')
+            ->select('well')
+            ->whereIn('tech', $techIds)
+            ->where('dbeg', '<=', $date)
+            ->where('dend', '>=', $date)
+            ->get()
+            ->pluck('well')
+            ->toArray();
     }
 
 }
