@@ -131,8 +131,8 @@ class ManualHydroCalc extends CrudController
             ],
         ];
 
-        if(auth()->user()->can('monitoring export '.$this->modelName)) {
-            $params['links']['export'] = route($this->modelName.'.export');
+        if (auth()->user()->can('monitoring export ' . $this->modelName)) {
+            $params['links']['export'] = route($this->modelName . '.export');
         }
 
         $params['links']['calc']['link'] = route($this->modelName . '.calculate');
@@ -145,26 +145,9 @@ class ManualHydroCalc extends CrudController
     public function list(IndexTableRequest $request)
     {
         $input = $request->validated();
-        $calculatedPipes = null;
-        $calculatedPipesIds = [];
-
-        if (isset($input['date'])) {
-            $calculatedPipes = $this->getCalculatedData($input['date']);
-
-            if ($calculatedPipes) {
-                foreach ($calculatedPipes as $pipe) {
-                    $calculatedPipesIds[] = $pipe->oil_pipe_id;
-                }
-            }
-        }
-
-        $prepairedData = $this->getPrepairedData($input, $calculatedPipesIds);
+        $prepairedData = $this->getPreparedAndCalculatedPipes($input);
         $pipes = $prepairedData['pipes'];
         $alerts = $prepairedData['alerts'];
-
-        if ($calculatedPipes) {
-            $pipes = $calculatedPipes->merge($pipes);
-        }
 
         $pipes = $this->paginate($pipes, 25, (int)$input['page']);
         $request->session()->put('from_manual_hydro_calc', true);
@@ -247,25 +230,8 @@ class ManualHydroCalc extends CrudController
     public function export(IndexTableRequest $request)
     {
         $input = $request->validated();
-        $calculatedPipes = null;
-        $calculatedPipesIds = [];
 
-        if (isset($input['date'])) {
-            $calculatedPipes = $this->getCalculatedData($input['date']);
-
-            if ($calculatedPipes) {
-                foreach ($calculatedPipes as $pipe) {
-                    $calculatedPipesIds[] = $pipe->oil_pipe_id;
-                }
-            }
-        }
-
-        $prepairedData = $this->getPrepairedData($input, $calculatedPipesIds);
-        $pipes = $prepairedData['pipes'];
-
-        if ($calculatedPipes) {
-            $pipes = $calculatedPipes->merge($pipes);
-        }
+        $pipes = $this->getPreparedAndCalculatedPipes($input)['pipes'];
 
         $job = new ExportManualHydroCalc($input, $pipes);
         $this->dispatch($job);
@@ -275,6 +241,41 @@ class ManualHydroCalc extends CrudController
                 'id' => $job->getJobStatusId()
             ]
         );
+    }
+
+    public function getPreparedAndCalculatedPipes(array $input): array
+    {
+        $calculatedPipes = null;
+        $calculatedPipesIds = [];
+
+        if (isset($input['date'])) {
+            $calculatedPipes = $this->getCalculatedData($input['date']);
+
+            if ($calculatedPipes) {
+                $calculatedPipesIds = $this->getcalculatedPipeIds($calculatedPipes);
+            }
+        }
+
+        $prepairedData = $this->getPrepairedData($input, $calculatedPipesIds);
+        $pipes = $prepairedData['pipes'];
+        $alerts = $prepairedData['alerts'];
+
+        if ($calculatedPipes) {
+            $pipes = $calculatedPipes->merge($pipes);
+        }
+
+        return ['pipes' => $pipes, 'alerts' => $alerts];
+    }
+
+    public function getcalculatedPipeIds (ManualHydroCalcResult $calculatedPipes): array
+    {
+        $calculatedPipesIds = [];
+
+        foreach ($calculatedPipes as $pipe) {
+            $calculatedPipesIds[] = $pipe->oil_pipe_id;
+        }
+
+        return $calculatedPipesIds;
     }
 
     /**
