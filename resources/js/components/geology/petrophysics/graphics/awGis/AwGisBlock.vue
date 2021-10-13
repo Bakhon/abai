@@ -11,11 +11,11 @@
           :ref="element.replace(/ /, '').trim()"
           v-bind="$attrs"
           :key="key"
-          :column-name="element"
+          :elements="element.split('/')"
       />
     </div>
   </div>
-</template>as
+</template>
 
 <script>
 import AwGisColumn from "./AwGisColumn";
@@ -60,6 +60,12 @@ export default {
   },
   methods: {
     init() {
+      let draw = ()=>{
+        Object.keys(this.$refs).forEach((curveName)=>{
+          console.log(curveName);
+        })
+      }
+      draw();
       for (const columnName of Object.keys(this.$refs)) {
         let column = this.$refs[columnName][0];
         let columnCtx = column.ctx;

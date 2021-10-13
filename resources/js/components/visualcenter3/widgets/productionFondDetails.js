@@ -192,7 +192,7 @@ export default {
             if (this.isProductionFondPeriodSelected) {
                 this.productionFondChartData = this.getProductionFondWidgetChartData(compared);
             } else {
-                this.forDailyProductionChart = await this.getChartData(this.productionFondWorkFields,this.productionFondIdleFields,this.productionFondPeriodStart,this.productionFondPeriodEnd);
+                this.forDailyProductionChart = await this.getChartData(this.productionFondWorkFields,this.productionFondIdleFields,this.productionFondPeriodStart,this.productionFondPeriodEnd,'production',this.productionFondSelectedCompany);
                 this.updateDailyChart(this.forDailyProductionChart,this.productionFondSelectedCompany,'isProductionIdleActive','productionDailyChart');
             }
             this.updateProductionFondWidgetTable(compared);

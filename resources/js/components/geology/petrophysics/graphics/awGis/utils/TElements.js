@@ -34,6 +34,10 @@ export default class TElements {
         return elementsList
     }
 
+    hasElement(elementName) {
+        return this.#__elements.has(elementName)
+    }
+
     addElement(elementName, data = {}, options = {}) {
         this.#mapAction(elementName, 'set', data, options);
     }

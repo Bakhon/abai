@@ -4,27 +4,25 @@ namespace App\Http\Controllers\Api\DB;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BigData\WellSearchResource;
+use App\Models\BigData\BottomHole;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
-use App\Models\BigData\Dictionaries\Well as dictWell;
 use App\Models\BigData\GdisCurrent;
 use App\Models\BigData\GdisCurrentValue;
+use App\Models\BigData\LabResearchValue;
 use App\Models\BigData\WellStatus;
 use App\Models\BigData\MeasLiq;
 use App\Models\BigData\MeasWaterCut;
-use App\Models\BigData\MeasLiqInjection;
 use App\Models\BigData\Well;
 use App\Models\BigData\WellWorkover;
 use App\Models\BigData\Gtm;
 use App\Services\BigData\StructureService;
-use App\Services\BigData\MeasLogByMonth;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class WellsController extends Controller
 {
@@ -33,15 +31,15 @@ class WellsController extends Controller
         return $service->getTreeWithPermissions();
     }
 
-    public function wellInfo(well $well)
+    public function wellInfo($well)
     {
-
+        $well = Well::select('id','uwi', 'drill_start_date', 'drill_end_date')->find($well);
         if (Cache::has('well_' . $well->id)) {
             return Cache::get('well_' . $well->id);
         }
 
         $wellInfo = [
-            'wellInfo' => $this->get($well),
+            'wellInfo' => $well,
             'status' => $this->status($well),
             'tube_nom' => $this->tubeNom($well),
             'category' => $this->category($well),
@@ -80,8 +78,8 @@ class WellsController extends Controller
             'gtm' => $this->gtm($well),
             'rzatr_atm' => $this->gdisCurrentValueRzatr($well, 'FLVL'),
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
-            'gu' => $this->getTechsByCode($well, 'GU'),
-            'agms' => $this->getTechsByCode($well, 'AGMS'),
+            'gu' => $this->getTechsByCode($well, [1, 3]),
+            'agms' => $this->getTechsByCode($well, [2000000000004]),
         ];
 
         Cache::put('well_' . $well->id, $wellInfo, now()->addDay());
@@ -95,32 +93,38 @@ class WellsController extends Controller
 
     private function geo(Well $well)
     {
+        $geo_object = new Geo();
         $allParents = [];
         $parent = null;
-        if (isset($well->geo()->wherePivot('dend', '>', $this->getToday())
-                ->wherePivot('dbeg', '<=', $this->getToday())
-                ->withPivot('dend', 'dbeg')
-                ->first()->id)) {
-            $parent = $well->geo()
-                ->wherePivot('dend', '>', $this->getToday())
-                ->wherePivot('dbeg', '<=', $this->getToday())
-                ->withPivot('dend', 'dbeg')
-                ->orderBy('pivot_dbeg')
-                ->first()->id;
-        }
-        while ($parent != null) {
-            array_push($allParents, Geo::all()->find($parent));
-            if (isset(Geo::with('firstParent')->find($parent)->firstParent->where('dend', '>', $this->getToday())
-                    ->where('dbeg', '<=', $this->getToday())->first()->parent)) {
-                $parent = Geo::with('firstParent')
-                    ->find($parent)
-                    ->firstParent
-                    ->where('dend', '>', $this->getToday())
-                    ->where('dbeg', '<=', $this->getToday())
-                    ->first()->parent;
-            } else {
-                return $allParents;
+        $item = $well->getGeo($this->getToday());
+        if(isset($item))
+        {
+            $geo_tree = $geo_object->parentTree($item->id);
+            $not_duplicate=[];
+            $count_tree = count($geo_tree)-1;
+            foreach($geo_tree as $key=>$geo_item)
+            {
+                if(!in_array($geo_item->geo,$not_duplicate))
+                {
+                    $parents_id[] = $geo_item->geo;
+                    $not_duplicate[] = $geo_item->geo;
+                }
+                if($key==$count_tree)
+                {
+                    $parents_id[] = $geo_item->parent;
+                }
             }
+
+            if(isset($parents_id))
+            {
+                $items = $geo_object->getItems($parents_id);
+                foreach($items as $item)
+                {
+                        $key = array_search($item->id, $parents_id);
+                        $allParents[$key] = $item;
+                }
+            }
+
         }
         return $allParents;
     }
@@ -181,25 +185,19 @@ class WellsController extends Controller
 
     private function techs(Well $well)
     {
+        $tech = new Tech();
         $allParents = [];
-        $parent = null;
-        if (isset($well->techs()
-                ->wherePivot('dend', '>', $this->getToday())
-                ->withPivot('dend', 'dbeg', 'tap as tap')
-                ->orderBy('pivot_dbeg', 'desc')
-                ->first()->id)) {
-            $parent = $well->techs()
-                ->wherePivot('dend', '>', $this->getToday())
-                ->withPivot('dend', 'dbeg', 'tap as tap')
-                ->orderBy('pivot_dbeg', 'desc')
-                ->first()->id;
-        }
-        while ($parent != null) {
-            array_push($allParents, Tech::all()->find($parent));
-            if (isset(Tech::all()->where('dend', '>', $this->getToday())->find($parent)->parent)) {
-                $parent = Tech::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
-            } else {
-                return $allParents;
+        $item = $well->getRelationTech($this->getToday());
+        if ($item)
+        {
+            $dict_techs = $tech->parentTree($item->id);
+            foreach($dict_techs as $dict_tech)
+            {
+                $allParents[]['name_ru'] = $dict_tech->name;
+            }
+            if(!empty($allParents))
+            {
+                $allParents = array_reverse($allParents);
             }
         }
         return $allParents;
@@ -222,27 +220,18 @@ class WellsController extends Controller
 
     private function org(Well $well)
     {
+        $org_object = new Org();
         $allParents = [];
-        $parent = null;
-        if (isset($well->orgs()
-                ->wherePivot('dend', '>', $this->getToday())
-                ->withPivot('dend', 'dbeg')
-                ->orderBy('pivot_dbeg', 'desc')
-                ->first()->id)) {
-            $parent = $well->orgs()
-                ->wherePivot('dend', '>', $this->getToday())
-                ->withPivot('dend', 'dbeg')
-                ->orderBy('pivot_dbeg', 'desc')
-                ->first()->id;
-        }
-        while ($parent != null) {
-            array_push($allParents, Org::all()->find($parent));
-            if (isset(Org::all()->where('dend', '>', $this->getToday())->find($parent)->parent)) {
-                $parent = Org::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
-            } else {
-                return $allParents;
+        $item = $well->getRelationOrg($this->getToday());
+        if (isset($item))
+        {
+            $dict_orgs = $org_object->parentTree($item->id);
+            foreach($dict_orgs as $dict_org)
+            {
+                $allParents[]['name_ru'] = $dict_org->name;
             }
         }
+
         return $allParents;
     }
 
@@ -262,26 +251,18 @@ class WellsController extends Controller
 
     private function actualBottomHole(Well $well)
     {
-        return $well->bottomHole()
-            ->where('bottom_hole_type', '=', '1')
-            ->withPivot('depth')
-            ->first();
+        return BottomHole::where('well', $well->id)->where('bottom_hole_type', 1)->orderBy('depth', 'desc')->first();
     }
 
     private function artificialBottomHole(Well $well)
     {
-        return $well->bottomHole()
-            ->where('bottom_hole_type', '=', '2')
-            ->withPivot('depth')
-            ->first();
+        return BottomHole::where('well', $well->id)->where('bottom_hole_type', 2)->orderBy('depth', 'desc')->first();
     }
 
     private function labResearchValue(Well $well)
     {
-        return $well->labResearchValue()
-            ->withPivot('research_date as research_date')
-            ->orderBy('research_date', 'desc')
-            ->first(['value_double', 'research_date']);
+        $lab_research_value = new LabResearchValue();
+        return $lab_research_value->Rnas($well->id);
     }
 
     private function techModeInj(Well $well)
@@ -294,7 +275,7 @@ class WellsController extends Controller
     {
         return $well->techModeProdOil()
             ->orderBy('dbeg', 'desc')
-            ->first(['oil', 'liquid', 'wcut']);
+            ->first(['oil', 'liquid', 'wcut', 'oil_density']);
     }
 
     private function measLiq(Well $well)
@@ -469,14 +450,9 @@ class WellsController extends Controller
         return ['dend' => ''];
     }
 
-    private function getTechsByCode(Well $well, $code)
+    private function getTechsByCode(Well $well, $techTypes)
     {
-        return $well->techs()
-            ->join('dict.tech_type', 'dict.tech_type.id', '=', 'dict.tech.tech_type')
-            ->where('dict.tech_type.code', '=', $code)
-            ->where('dict.tech.dbeg', '<=', $this->getToday())
-            ->where('dict.tech.dend', '>=', $this->getToday())
-            ->first(['dict.tech.name_ru']);
+        return $well->techs()->whereIn('tech_type', $techTypes)->first(['name_ru']);
     }
 
     public function search(StructureService $service, Request $request): array

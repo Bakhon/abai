@@ -358,8 +358,8 @@ export default {
         'krsWorkover': 'krs_well_workover',
         'prsWellWorkover': 'prs_well_workover',
         'treatmentDate': 'well_treatment',
-        'actualBottomHole': 'actual_bottom_hole.pivot.depth',
-        'artificialBottomHole': 'artificial_bottom_hole.pivot.depth',
+        'actualBottomHole': 'actual_bottom_hole',
+        'artificialBottomHole': 'artificial_bottom_hole',
         'perfActual': 'well_perf_actual',
         'treatmentSko': 'well_treatment_sko',
         'gdisCurrent': 'gdis_current',
@@ -515,6 +515,7 @@ export default {
       return (value)
     },
     setWellObjectData(key, path, source) {
+      console.log(key, path, source);
       try {
         if (source[path] != null) {
           this.well[key] = source[path]
@@ -663,8 +664,8 @@ export default {
         {
           'description': '',
           'method': 'neighbors',
-          'neigbor_1': this.well.wellInfo != null ? this.well.wellInfo.drill_start_date : null,
-          'neigbor_2': this.well.wellInfo != null ? this.well.wellInfo.drill_end_date : null,
+          'neigbor_1': this.well.wellInfo != null ? this.getFormatedDate(this.well.wellInfo.drill_start_date) : null,
+          'neigbor_2': this.well.wellInfo != null ? this.getFormatedDate(this.well.wellInfo.drill_end_date) : null,
           'name': 'Период бурения',
           'data': ''
         },
@@ -747,13 +748,13 @@ export default {
           'data': ''
         },
         {
-          'description': this.actualBottomHole != null ? this.actualBottomHole : null,
+          'description': this.well.actualBottomHole != null ? this.well.actualBottomHole.depth + " / (" + this.getFormatedDate(this.well.actualBottomHole.data) + ")" : null,
           'method': null,
           'name': 'Фактический забой/(дата отбивки)',
           'data': ''
         },
         {
-          'description': this.actualBottomHole != null ? this.actualBottomHole : null,
+          'description': this.well.artificialBottomHole != null ? this.well.artificialBottomHole.depth : null,
           'method': null,
           'name': 'Искусственный забой',
           'data': ''
@@ -826,7 +827,7 @@ export default {
           'description': null,
           'method': 'neighbors',
           'neigbor_1': this.well.techModeProdOil != null ? this.well.techModeProdOil.oil : null,
-          'neigbor_2': this.well.techModeProdOil != null && this.well.measWaterCut != null ? (this.well.techModeProdOil.liquid * (1 - this.well.measWaterCut.water_cut / 100) * 0.86).toFixed(1) : null,
+          'neigbor_2': this.well.techModeProdOil != null && this.well.measWaterCut != null && this.well.measLiq != null ? (this.well.measLiq.liquid * (1 - this.well.measWaterCut.water_cut / 100) * this.well.techModeProdOil.oil_density).toFixed(1) : null,
           'name': 'Дебит нефти, т/сут (режим/факт)',
           'data': ''
         },
