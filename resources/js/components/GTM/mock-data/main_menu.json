@@ -122,11 +122,21 @@
         "name": "Карта секторов",
         "component": {
           "name": "child-component",
-          "template": "<div><digital-rating></digital-rating></div>",
+          "template": "<div><section-maps></section-maps></div>",
           "parentType": "digitalRating"
         },
         "icon": "/img/GTM/sector_icon.svg",
         "url": "/digital-rating"
+      },
+      {
+        "name": "Сравнение фактических точек бурения с ПТД",
+        "component": {
+          "name": "child-component",
+          "template": "<div><compare-drilling></compare-drilling></div>",
+          "parentType": "digitalRating"
+        },
+        "icon": "/img/GTM/sector_icon.svg",
+        "url": "/digital-rating/compare-drilling"
       }
     ]
   },

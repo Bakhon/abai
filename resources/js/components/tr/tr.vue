@@ -1,187 +1,6 @@
 <template>
   <div class="w-100">
-    <div class="col-md-12 row trcolmd12">
-      <div
-        class="col-md-12 row justify-content-between"
-        style="
-          box-sizing: border box;
-          flex-grow: 1;
-          padding-right: 0;
-          margin-right: 0;
-          margin-left: 0;
-          padding-left: 0;
-        "
-      >
-        <a
-          href="fa"
-          class="col but-nav__link but trheadhight"
-          style="min-width: 330px; line-height: 31px"
-          ><i style="margin-right: 10px"
-            ><svg
-              width="24"
-              height="14"
-              viewBox="0 0 24 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
-                fill="white"
-              />
-            </svg> </i
-          >{{trans('tr.fa_tr_deviations')}}</a
-        >
-        <div class="col dropdown" style="padding: 0 13px">
-          <button
-            class="col-md-12 but-nav__link but faheadhight"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <i style="margin-right: 10px">
-              <svg
-                width="18"
-                height="20"
-                viewBox="0 0 18 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M15.6583 19.4286H2.33239C1.281 19.4286 0.42868 18.5843 0.42868 17.5429V4.34285C0.42868 3.3014 1.281 2.45714 2.33239 2.45714H4.23609V0.571426H6.1398V2.45714H11.8509V0.571426H13.7546V2.45714H15.6583C16.7098 2.45714 17.562 3.3014 17.562 4.34285V17.5429C17.562 18.5843 16.7098 19.4286 15.6583 19.4286ZM2.33239 8.11428V17.5429H15.6583V8.11428H2.33239ZM2.33239 4.34285V6.22857H15.6583V4.34285H2.33239ZM8.04351 16.0475L4.51499 12.5523L5.86091 11.2191L8.04351 13.3811L12.1298 9.3334L13.4757 10.6666L8.04351 16.0465V16.0475Z"
-                  fill="white"
-                />
-              </svg>
-            </i>
-            {{trans('tr.choose_month')}}
-          </button>
-          <div v-if="isDateNormal"
-            class="dropdown-menu fadropmenu"
-            style="
-              background: #40467e;
-              height: 125px;
-              flex-direction: column;
-              width: calc(100% - 26px);
-              margin-top: 4px;
-            "
-            aria-labelledby="dropdownMenuButton"
-            data-toggle="dropdown"
-            @click.prevent.stop="() => {}"
-          >
-            <div>
-              <select
-                v-model="month"
-                class="form-controll-from"
-                id="companySelect"
-                @change="onChangeMonth($event)"
-              >
-                <option value="1">{{trans('tr.jan')}}</option>
-                <option value="2">{{trans('tr.feb')}}</option>
-                <option value="3">{{trans('tr.mar')}}</option>
-                <option value="4">{{trans('tr.apr')}}</option>
-                <option value="5">{{trans('tr.may')}}</option>
-                <option value="6">{{trans('tr.jun')}}</option>
-                <option value="7">{{trans('tr.jul')}}</option>
-                <option value="8">{{trans('tr.aug')}}</option>
-                <option value="9">{{trans('tr.sep')}}</option>
-                <option value="10">{{trans('tr.oct')}}</option>
-                <option value="11">{{trans('tr.nov')}}</option>
-                <option value="12">{{trans('tr.dec')}}</option>
-              </select>
-            </div>
-            <div>
-              <select
-                v-model="selectYear"
-                class="form-controll-to"
-                id="companySelect"
-                @change="onChangeYear($event)"
-              >
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
-                <option value="2019">2019</option>
-
-              </select>
-            </div>
-            <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
-              <a href="#" @click.prevent="chooseDate"  class="btn btn-sm button_form" style="width: 80%;"
-                >{{trans('tr.form')}}</a
-              >
-              <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;">
-                <svg 
-                  width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
-                  <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                  <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                  <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                  <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                </svg>
-
-              </a>
-            </div>
-        </div>
-          <div v-if="isDateDynamic"
-            class="dropdown-menu fadropmenu"
-            style="
-              background: #40467e;
-              height: 174px;
-              flex-direction: column;
-              width: calc(100% - 26px);
-              margin-top: 4px;
-            "
-            aria-labelledby="dropdownMenuLink"
-          >
-              
-                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.start_date_enter')}}:</label>
-                <input type="date" class="form-control" style="background: #333975 !important;" v-model="date2" />
-                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.end_date_enter')}}:</label>
-                <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
-                <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
-                  <a href="#" @click.prevent="chooseDynamicDate" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
-                    >{{trans('tr.form')}}</a
-                  >
-                  <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;" >
-                    <svg 
-                      width="32" 
-                      height="28" 
-                      viewBox="0 0 32 28" 
-                      fill="none" 
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
-                      <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                      <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                      <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                      <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                    </svg></a>
-                </div>
-          </div>
-        </div>
-        
-        <div class="big-data-input-container">
-          <search-form-refresh
-            @input="handlerSearch"
-            @start-search="searchWell()"
-            :clear="isSearched"
-          />
-        </div>
-      </div>
-    </div>
-
-    <div>
-    </div>
-    <div class="col-md-12 maintable tablecont">
-      <div class="maintable-level2" style="position: relative">
-        <div class="techbt1 tr-table-header">
-          <div class="tech" style="margin-left: 14px; color: white">
-            <h5>{{trans('tr.tr_to')}} {{ dt }}</h5>          
-          </div>   
-          <a v-show="false" v-if="isEdit"></a>
-            <div class="tr_icons_block">
-              <button v-if="isFilterChecked" v-on:click="dropAllFilters" class="reset_all_filters"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
-<path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
-</svg>{{trans('tr.reset_filters')}}</button>
-              <modal name="add_well" :width="1600" :height="600"  :adaptive="true" style="z-index:9900000; ">
+    <modal name="add_well" :width="1600" :height="600"  :adaptive="true" style="z-index:9900000; ">
                 <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
                   <div>
                         <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
@@ -404,6 +223,188 @@
                   </div>
                 </div>
               </modal>
+    <div class="col-md-12 row trcolmd12">
+      <div
+        class="col-md-12 row justify-content-between"
+        style="
+          box-sizing: border box;
+          flex-grow: 1;
+          padding-right: 0;
+          margin-right: 0;
+          margin-left: 0;
+          padding-left: 0;
+        "
+      >
+        <a
+          href="fa"
+          class="col but-nav__link but trheadhight"
+          style="min-width: 330px; line-height: 31px"
+          ><i style="margin-right: 10px"
+            ><svg
+              width="24"
+              height="14"
+              viewBox="0 0 24 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
+                fill="white"
+              />
+            </svg> </i
+          >{{trans('tr.fa_tr_deviations')}}</a
+        >
+        <div class="col dropdown" style="padding: 0 13px">
+          <button
+            class="col-md-12 but-nav__link but faheadhight"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i style="margin-right: 10px">
+              <svg
+                width="18"
+                height="20"
+                viewBox="0 0 18 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.6583 19.4286H2.33239C1.281 19.4286 0.42868 18.5843 0.42868 17.5429V4.34285C0.42868 3.3014 1.281 2.45714 2.33239 2.45714H4.23609V0.571426H6.1398V2.45714H11.8509V0.571426H13.7546V2.45714H15.6583C16.7098 2.45714 17.562 3.3014 17.562 4.34285V17.5429C17.562 18.5843 16.7098 19.4286 15.6583 19.4286ZM2.33239 8.11428V17.5429H15.6583V8.11428H2.33239ZM2.33239 4.34285V6.22857H15.6583V4.34285H2.33239ZM8.04351 16.0475L4.51499 12.5523L5.86091 11.2191L8.04351 13.3811L12.1298 9.3334L13.4757 10.6666L8.04351 16.0465V16.0475Z"
+                  fill="white"
+                />
+              </svg>
+            </i>
+            {{trans('tr.choose_month')}}
+          </button>
+          <div v-if="isDateNormal"
+            class="dropdown-menu fadropmenu"
+            style="
+              background: #40467e;
+              height: 125px;
+              flex-direction: column;
+              width: calc(100% - 26px);
+              margin-top: 4px;
+            "
+            aria-labelledby="dropdownMenuButton"
+            data-toggle="dropdown"
+            @click.prevent.stop="() => {}"
+          >
+            <div>
+              <select
+                v-model="month"
+                class="form-controll-from"
+                id="companySelect"
+                @change="onChangeMonth($event)"
+              >
+                <option value="1">{{trans('tr.jan')}}</option>
+                <option value="2">{{trans('tr.feb')}}</option>
+                <option value="3">{{trans('tr.mar')}}</option>
+                <option value="4">{{trans('tr.apr')}}</option>
+                <option value="5">{{trans('tr.may')}}</option>
+                <option value="6">{{trans('tr.jun')}}</option>
+                <option value="7">{{trans('tr.jul')}}</option>
+                <option value="8">{{trans('tr.aug')}}</option>
+                <option value="9">{{trans('tr.sep')}}</option>
+                <option value="10">{{trans('tr.oct')}}</option>
+                <option value="11">{{trans('tr.nov')}}</option>
+                <option value="12">{{trans('tr.dec')}}</option>
+              </select>
+            </div>
+            <div>
+              <select
+                v-model="selectYear"
+                class="form-controll-to"
+                id="companySelect"
+                @change="onChangeYear($event)"
+              >
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+
+              </select>
+            </div>
+            <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
+              <a href="#" @click.prevent="chooseDate"  class="btn btn-sm button_form" style="width: 80%;"
+                >{{trans('tr.form')}}</a
+              >
+              <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;">
+                <svg 
+                  width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                  <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+
+              </a>
+            </div>
+        </div>
+          <div v-if="isDateDynamic"
+            class="dropdown-menu fadropmenu"
+            style="
+              background: #40467e;
+              height: 174px;
+              flex-direction: column;
+              width: calc(100% - 26px);
+              margin-top: 4px;
+            "
+            aria-labelledby="dropdownMenuLink"
+          >
+              
+                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.start_date_enter')}}:</label>
+                <input type="date" class="form-control" style="background: #333975 !important;" v-model="date2" />
+                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.end_date_enter')}}:</label>
+                <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
+                <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
+                  <a href="#" @click.prevent="chooseDynamicDate" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
+                    >{{trans('tr.form')}}</a
+                  >
+                  <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;" >
+                    <svg 
+                      width="32" 
+                      height="28" 
+                      viewBox="0 0 32 28" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                      <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg></a>
+                </div>
+          </div>
+        </div>
+        
+        <div class="big-data-input-container">
+          <search-form-refresh
+            @input="handlerSearch"
+            @start-search="searchWell()"
+            :clear="isSearched"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div>
+    </div>
+    <div class="col-md-12 maintable tablecont">
+      <div class="maintable-level2" style="position: relative; z-index:1;">
+        <div class="techbt1 tr-table-header">
+          <div class="tech" style="margin-left: 14px; color: white">
+            <h5>{{trans('tr.tr_to')}} {{ dt }}</h5>          
+          </div>   
+          <a v-show="false" v-if="isEdit"></a>
+            <div class="tr_icons_block">
+              <button v-if="isFilterChecked" v-on:click="dropAllFilters" class="reset_all_filters"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.55586 9.55556L2.44523 2.44444" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+<path d="M9.55477 2.44444L2.44414 9.55556" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+</svg>{{trans('tr.reset_filters')}}</button>
+              
 
               <button
                 v-if="isPermission"

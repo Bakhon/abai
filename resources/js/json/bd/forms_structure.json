@@ -6,8 +6,7 @@
     "type": "dir",
     "isVisible": true,
     "forms": [
-      "well_design",
-      "production_program"
+      "well_design"
     ]
   },
   {
@@ -105,7 +104,8 @@
           "research_lab_research",
           "well_mark",
           "gdis",
-          "current_g_d_i_s"
+          "current_g_d_i_s",
+          "gis_type"
         ]
       },
       {
@@ -141,22 +141,7 @@
       }
     ],
     "forms": [
-      "gis_type"
-    ]
-  },
-  {
-    "code": "daily_reports",
-    "name": "Суточные сводки",
-    "icon_name": "dir.svg",
-    "type": "dir",
-    "isVisible": true,
-    "forms": [
-      "daily_reports_oil_prod",
-      "daily_reports_fluid_prod",
-      "daily_reports_water_prod",
-      "daily_reports_oil_sale",
-      "daily_reports_gas_prod",
-      "daily_reports_water_upload"
+      
     ]
   },
   {

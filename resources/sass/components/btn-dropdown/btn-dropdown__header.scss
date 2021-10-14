@@ -2,8 +2,9 @@
   background: #5D5F7F;
   display: flex;
   align-items: center;
-  padding: 9.4px 12px;
-  width: 220px;
+  padding: 9.4px 9px;
+  min-width: 220px;
   border-radius: 4px;
   cursor: pointer;
+  line-height: 1;
 }

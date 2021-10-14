@@ -17,6 +17,8 @@ export default {
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
+            frontendApiVersion: "1.01",
+            microserviceApiVersion: null,
             structureTypes: {
                 org: null,
                 tech: null,
@@ -26,12 +28,13 @@ export default {
             attributesForObject: null,
             attributesByHeader: null,
             sheetTypesDescription: {
-                "well": "скважины",
+                "well_production": "добывающие скважины",
+                "well_pump": "нагнетающие скважины",
                 "object": "объекты",
                 "well_summary": "суммарные данные по скважинам",
                 "object_summary": "суммарные данные по объекту",
             },
-            sheetTypes: ["well", "object", "well_summary", "object_summary"],
+            sheetTypes: ["well_production", "well_pump", "object", "well_summary", "object_summary"],
             activeTab: 0,
             activeButtonId: 1,
             currentStructureType: 'org',
@@ -44,6 +47,11 @@ export default {
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
+            wellSheetTypes: {
+                'well_production': 'Добывающие скважины',
+                'well_pump': 'Нагнетательные скважины'
+            },
+            wellTypeSelected: 'well_production',
             selectedObjects: {'org': {}, 'geo': {}, 'tech': {}},
             startDate: null,
             endDate: null,
@@ -54,7 +62,8 @@ export default {
             storableParameters: [
                 "startDate", "endDate", "selectedObjects",
                 "activeTab", "activeButtonId", "currentStructureType",
-                "currentItemType", "currentOption", "attributesByHeader"
+                "currentItemType", "currentOption", "attributesByHeader",
+                "wellTypeSelected"
             ]
         }
     },
@@ -62,6 +71,7 @@ export default {
         this.$nextTick(function () {
             this.SET_LOADING(false);
         });
+        this.setMicroserviceApiVersion()
         for (let structureType in this.structureTypes) {
             this.loadStructureTypes(structureType);
         }
@@ -72,6 +82,26 @@ export default {
         ...globalloadingMutations([
             'SET_LOADING'
         ]),
+        setMicroserviceApiVersion() {
+            this.SET_LOADING(true)
+            this.axios.get(this.baseUrl + "api_version", {
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                if (response.data) {
+                    this.microserviceApiVersion = response.data['version']
+                } else {
+                    console.log("No data");
+                }
+                this.SET_LOADING(false);
+            }).catch((error) => {
+                console.log(error)
+                this.SET_LOADING(false)
+            });
+
+        },
         loadStructureTypes(type) {
             this.SET_LOADING(true)
             this.axios.get(this.baseUrl + "get_structures_types", {
@@ -184,6 +214,7 @@ export default {
         async loadStatistics() {
             this.SET_LOADING(true)
             this.statistics = null;
+            let wellTypeSelectedAtRequest = this.copyString(this.wellTypeSelected)
 
             try {
                 this.validateStatisticsParams()
@@ -201,7 +232,9 @@ export default {
                     'Content-Type': 'application/json'
                 }
             }).then((response) => {
-                this.statistics = response.data
+                this.statistics = this.postProcessStatistics(response.data, wellTypeSelectedAtRequest);
+                this.setActiveTab(wellTypeSelectedAtRequest)
+
             }).catch((error) => {
                 console.log(error)
             }).finally(() => {
@@ -288,12 +321,16 @@ export default {
             let fields = await this.getSelectedAttributes();
             let dates = await this.getDates();
             let currentStructureType = this.currentStructureType;
+            fields['well'] = fields[this.wellTypeSelected]
 
             return {
                 "fields": fields,
                 "selectedObjects": selectedObjects,
                 "structureType": currentStructureType,
-                "dates": dates
+                "dates": dates,
+                "filters": {
+                    "wellFilter": this.wellTypeSelected
+                }
             }
         },
         async getSelectedObjects() {
@@ -356,6 +393,19 @@ export default {
                 dates.push(null)
             }
             return dates
+        },
+        copyString(originalString) {
+            return (' ' + originalString).slice(1)
+        },
+        postProcessStatistics(statistics, wellTypeSelectedAtRequest)
+        {
+            statistics[wellTypeSelectedAtRequest] = statistics['well']
+            delete statistics['well']
+            return statistics
+        },
+        setActiveTab(wellTypeSelectedAtRequest)
+        {
+            this.activeTab = this.sheetTypes.indexOf(wellTypeSelectedAtRequest)
         },
         getStatisticsColumnNames(attributes) {
             let columns = []
@@ -471,9 +521,12 @@ export default {
             this.currentOption = null;
             this.currentItemType = null;
         },
-        onClickOption(structureType) {
+        onSelectStructureType(structureType) {
             this.currentOption = structureType;
             this.currentItemType = structureType.id;
+        },
+        onSelectWellSheetType(sheetType) {
+            this.wellTypeSelected = sheetType
         },
         onYearClick() {
             if (this.currentDatePickerFilter === 'year') {
@@ -625,6 +678,21 @@ export default {
             }
 
             return string
-        }
+        },
+        isDisplayParametersOfSheet(sheetType)
+        {
+            if (!(sheetType in this.wellSheetTypes)) {
+                return this.isDisplayParameterBuilder
+            }
+
+            if (!this.isDisplayParameterBuilder) {
+                return false
+            }
+            return this.wellTypeSelected === sheetType
+        },
+        isStatisticsForSheetTypeExists(sheetType)
+        {
+            return this.statistics[sheetType] && this.statistics[sheetType].length > 0
+        },
     }
 }

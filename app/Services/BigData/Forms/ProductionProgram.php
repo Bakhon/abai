@@ -58,13 +58,13 @@ class ProductionProgram extends TableForm
             $currentDate = $startDate;
 
             $row = [
-                'id' => $this->request->get('id'),
+                'id' => $fieldName . '_' . $currentDate->format('d.m.Y'),
                 'name' => [
                     'name' => trans("bd.forms.production_program.$fieldName")
                 ]
             ];
 
-            while (true) {
+            while ($currentDate < $endDate) {
                 $plan = $plans
                     ->where('year', $currentDate->year)
                     ->where('month', $currentDate->month)
@@ -76,13 +76,11 @@ class ProductionProgram extends TableForm
                         'field' => $fieldName,
                         'year' => $currentDate->year,
                         'month' => $currentDate->month,
+                        'org_id' => $this->request->get('id')
                     ]
                 ];
 
                 $currentDate->addMonthNoOverflow();
-                if ($currentDate >= $endDate) {
-                    break;
-                }
             }
 
             $result[] = $row;
@@ -100,14 +98,14 @@ class ProductionProgram extends TableForm
 
         $item = DB::connection('tbd')
             ->table(self::TABLE)
-            ->where('org', $request['well_id'])
+            ->where('org', $request['params']['org_id'])
             ->where('year', $request['params']['year'])
             ->where('month', $request['params']['month'])
             ->first();
 
         if (empty($item)) {
             $data = [
-                'org' => $request['well_id'],
+                'org' => $request['params']['org_id'],
                 'month' => $request['params']['month'],
                 'year' => $request['params']['year'],
                 $request['params']['field'] => $params['value']
@@ -167,24 +165,24 @@ class ProductionProgram extends TableForm
 
         if ($request['params']['field']) {
             $date = Carbon::parse($request['params']['year'] . '-' . $request['params']['month'] . '-01');
-            $limits = $this->calculateLimits($date);
-            if (!$this->isValidLimits($date, $limits)) {
-                $errors[$request['params']['field']][] = trans(
-                        'bd.value_outside'
-                    ) . " ({$limits['min']}, {$limits['max']})";
+            $value = (int)$this->request->get($date->format('d.m.Y'));
+
+            if ($value <= 0) {
+                $errors[$field][] = trans('bd.validation.gt', ['value' => 0]);
             }
         }
-
         return $errors;
     }
 
-    private function isValidLimits(Carbon $date, array $limits): bool
+    private function isValidLimits(int $value, array $limits): bool
     {
         if (empty($limits)) {
             return true;
         }
 
-        $value = $this->request->get($date->format('d.m.Y'));
+        if ($limits['min'] === $limits['max']) {
+            return true;
+        }
 
         return $limits['min'] <= $value && $limits['max'] >= $value;
     }
@@ -196,7 +194,7 @@ class ProductionProgram extends TableForm
         $items = DB::connection('tbd')
             ->table(self::TABLE)
             ->select($request['params']['field'])
-            ->where('org', $this->request->get('well_id'))
+            ->where('org', $request['params']['org_id'])
             ->whereRaw(
                 "TO_DATE(CONCAT(year,'-',month,'-','01'), 'YYYY-MM-DD') < TO_DATE('" . $date->format(
                     'Y-m-d'

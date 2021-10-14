@@ -6,7 +6,7 @@ namespace App\Services\BigData\Forms;
 use App\Traits\BigData\Forms\DateMoreThanValidationTrait;
 use App\Traits\BigData\Forms\DepthValidationTrait;
 
-class WellPerfShot extends PlainForm
+class WellPerfShot extends WellPerf
 {
     protected $configurationFileName = 'well_perf_shot';
     use DepthValidationTrait;
@@ -32,4 +32,5 @@ class WellPerfShot extends PlainForm
         }
         return $errors;
     }
+
 }

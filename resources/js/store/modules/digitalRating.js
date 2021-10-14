@@ -30,7 +30,7 @@ const digitalRating = {
         horizon: state.horizonNumber
       }
       try {
-        const res = await axios.get(this._vm.localeUrl(`digital-rating/search_wells`), {params});
+        const res = await axios.get(this._vm.localeUrl(`digital-rating/get_environment`), {params});
         commit('SET_INDICATORS', res.data);
       } catch(e) {
         throw new Error(e);

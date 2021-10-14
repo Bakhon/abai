@@ -15,7 +15,7 @@
             >
               <datetime
                   v-model="filter[filterItem.code]"
-                  :flow="['year', 'month']"
+                  :flow="filterItem.flow || ['year', 'month', 'date']"
                   :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                   :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
                   auto
@@ -58,17 +58,15 @@
         </template>
       </template>
     </div>
-    <div class="bd-main-block__body">
-      <BigDataTableForm
-          :id="id"
-          :filter="filter"
-          :params="params"
-          :type="type"
-          :key="params.code"
-          @initialized="init"
-      >
-      </BigDataTableForm>
-    </div>
+    <BigDataTableForm
+        :id="id"
+        :key="params.code"
+        :filter="filter"
+        :params="params"
+        :type="type"
+        @initialized="init"
+    >
+    </BigDataTableForm>
   </div>
 </template>
 
@@ -107,11 +105,13 @@ export default {
   },
   data() {
     return {
-      filter: null
+      filter: null,
+      formParams: null
     }
   },
   watch: {
     params() {
+      this.filter = null
       this.init()
     },
     filter: {
@@ -156,8 +156,8 @@ export default {
     init(formParams) {
       if (formParams) {
         this.formParams = formParams
+        this.initFilter()
       }
-      this.initFilter()
     },
   },
 };
@@ -165,155 +165,6 @@ export default {
 <style lang="scss" scoped>
 body.fixed {
   overflow: hidden;
-}
-
-.bd-main-block {
-  &__body {
-    align-items: stretch;
-    background: #363B68;
-    display: flex;
-    justify-content: space-between;
-    height: calc(100vh - 430px);
-    min-height: 500px;
-    padding: 10px;
-
-    &-history {
-      width: 100%;
-    }
-  }
-
-  &__form {
-    background: #272953;
-    overflow-y: auto;
-    width: 100%;
-  }
-
-  .table-page {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-
-    .table-wrap {
-      height: 100%;
-      margin: 0 0 10px;
-      overflow-y: auto;
-      width: 100%;
-    }
-  }
-
-  .table {
-
-    &__message {
-      align-items: center;
-      color: #fff;
-      display: flex;
-      font-size: 16px;
-      height: 100%;
-      justify-content: center;
-      margin: 0;
-      width: 100%;
-    }
-
-    th {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    td {
-      height: 52px;
-      position: relative;
-
-      .icon-history {
-        align-items: center;
-        background: #3366FF url(/img/bd/info.svg) 50% 50% no-repeat;
-        border-radius: 1px;
-        bottom: 6px;
-        display: flex;
-        justify-content: center;
-        left: 1px;
-        height: 14px;
-        position: absolute;
-        width: 14px;
-      }
-
-      span.date {
-        display: block;
-        font-size: 10px;
-        font-style: italic;
-        white-space: nowrap;
-      }
-
-      span.error {
-        color: #ff6464;
-        font-size: 11px;
-      }
-    }
-
-    .editable {
-      span {
-        position: relative;
-
-        &.value {
-          background: #323370;
-          border: 1px solid #272953;
-          box-sizing: border-box;
-          border-radius: 2px;
-          display: inline-block;
-          height: 24px;
-          line-height: 24px;
-          padding: 0 8px;
-          margin: 0 20px 3px 0;
-          min-width: 50px;
-
-          &:after {
-            background: url(/img/bd/edit.svg) no-repeat;
-            content: "";
-            display: inline-block;
-            height: 14px;
-            position: absolute;
-            right: -20px;
-            top: 4px;
-            width: 14px;
-          }
-        }
-      }
-
-      .input-wrap {
-        display: inline-block;
-        position: relative;
-
-        input.form-control {
-          background: #1F2142;
-          border: 0.5px solid #454FA1;
-          border-radius: 4px;
-          color: #fff;
-          font-size: 14px;
-          min-width: 95px;
-          outline: none;
-          padding: 0 34px 0 10px;
-          height: 28px;
-        }
-
-        button {
-          background: #3366FF;
-          border: none;
-          border-radius: 4px;
-          color: #fff;
-          font-size: 10px;
-          font-weight: 600;
-          height: 24px;
-          line-height: 24px;
-          position: absolute;
-          right: 2px;
-          text-align: center;
-          top: 2px;
-          width: 28px;
-        }
-      }
-
-    }
-  }
 }
 
 .history-popover {

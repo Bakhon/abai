@@ -6,13 +6,23 @@
       "order": "desc"
     }
   ],
+  "table_fields": [
+    "gis_date",
+    "gis_type",
+    "matering_from",
+    "matering_to",
+    "process_from",
+    "process_to",
+    "conclusion",
+    "table"
+  ],
   "tabs": [
     {
-      "title": "title",
+      "title": "main",
       "blocks": [
         [
           {
-            "title": "main",
+            "title": "",
             "items": [
               {
                 "code": "gis_date",
@@ -21,23 +31,23 @@
                 "validation": "required"
               },
               {
-                "code": "name_ru",
+                "code": "contractor",
                 "type": "dict",
                 "dict": "companies",
                 "title": "podr",
-                "validation":"required|exists:tbd.dict.company,id"
+                "validation": "nullable|exists:tbd.dict.company,id"
               },
               {
                 "code": "matering_from",
                 "type": "numeric",
                 "title": "intr_ot",
-                "validation": "required"
+                "validation": ""
               },
               {
                 "code": "matering_to",
                 "type": "numeric",
                 "title": "intr_do",
-                "validation": "required"
+                "validation": ""
               },
               {
                 "code": "process_from",
@@ -50,7 +60,12 @@
                 "type": "numeric",
                 "title": "intr_obr_do",
                 "validation": ""
-              },
+              }
+            ]
+          },
+          {
+            "title": "title",
+            "items": [
               {
                 "code": "liquid_vol",
                 "type": "numeric",
@@ -68,7 +83,12 @@
                 "type": "numeric",
                 "title": "water_cut",
                 "validation": ""
-              },
+              }
+            ]
+          },
+          {
+            "title": "param",
+            "items": [
               {
                 "code": "intake",
                 "type": "numeric",
@@ -94,9 +114,10 @@
             "title": "",
             "items": [
               {
-                "code": "name_ru",
+                "code": "gis_kind",
                 "type": "dict",
-                "dict": "gis_kinds",
+                "multiple": true,
+                "dict": "gis_kinds_gis_type",
                 "title": "gis_types",
                 "validation": ""
               }
@@ -113,11 +134,12 @@
             "title": "",
             "items": [
               {
-                "code": "name_ru",
+                "code": "gis_method",
                 "type": "dict",
-                "dict": "gis_method_types",
+                "multiple": true,
+                "dict": "gis_method_types_gis_type",
                 "title": "gis_methods",
-                "validation": "required|exists:tbd.dict.gis_method_type,id"
+                "validation": "nullable|exists:tbd.dict.gis_method_type,id"
               }
             ]
           }
@@ -135,35 +157,35 @@
                 "code": "conclusion",
                 "type": "text",
                 "title": "zakl",
-                "validation": "required"
+                "validation": ""
               },
               {
                 "code": "liquid_level",
                 "type": "numeric",
                 "title": "liquid_level",
-                "validation": ""
+                "validation": "nullable|gte:0"
               },
               {
                 "code": "income_devices",
                 "type": "numeric",
                 "title": "income_devices",
-                "validation": ""
+                "validation": "nullable|lte:10000"
               },
               {
                 "code": "injection_pressure",
                 "type": "numeric",
                 "title": "injection_pressure",
-                "validation": ""
+                "validation": "nullable|gte:0"
               },
               {
                 "code": "intake",
                 "type": "numeric",
                 "title": "intake",
-                "validation": ""
+                "validation": "nullable|gte:0"
               },
               {
                 "code": "сement_bridge",
-                "type": "numeric",
+                "type": "checkbox",
                 "title": "сement_bridge",
                 "validation": ""
               },
@@ -171,67 +193,102 @@
                 "code": "volume_expense",
                 "type": "numeric",
                 "title": "volume_expense",
-                "validation": ""
+                "validation": "nullable|gte:0"
               },
               {
                 "code": "zp_top",
                 "type": "numeric",
                 "title": "zp_top",
-                "validation": ""
+                "validation": "nullable|lte:10000"
               },
               {
                 "code": "zp_bottom",
                 "type": "numeric",
                 "title": "zp_bottom",
-                "validation": ""
+                "validation": "nullable|gte:zp_top"
               },
               {
                 "code": "in_top",
                 "type": "numeric",
                 "title": "in_top",
-                "validation": ""
+                "validation": "nullable|lte:10000"
               },
               {
                 "code": "in_bottom",
                 "type": "numeric",
                 "title": "in_bottom",
-                "validation": ""
+                "validation": "nullable|gte:in_top"
               },
               {
                 "code": "pm_top",
                 "type": "numeric",
                 "title": "pm_top",
-                "validation": ""
+                "validation": "nullable|lte:10000"
               },
               {
                 "code": "pm_bottom",
                 "type": "numeric",
                 "title": "pm_bottom",
-                "validation": ""
+                "validation": "nullable|gte:pm_top"
               },
               {
                 "code": "ip_top",
                 "type": "numeric",
                 "title": "ip_top",
-                "validation": ""
+                "validation": "nullable|lte:10000"
               },
               {
                 "code": "ip_bottom",
                 "type": "numeric",
                 "title": "ip_bottom",
-                "validation": ""
+                "validation": "nullable|gte:ip_top"
               },
               {
                 "code": "coverage",
                 "type": "numeric",
                 "title": "coverage",
-                "validation": ""
+                "validation": "nullable|gte:0|lte:100"
               },
               {
                 "code": "distribution",
                 "type": "numeric",
                 "title": "distribution",
-                "validation": ""
+                "validation": "nullable|gte:0|lte:100"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "table",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "documents",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "table",
+                "table": {
+                  "name": "prod.gis_file",
+                  "file_type": 4,
+                  "local_key": "gis",
+                  "document_key": "document"
+                },
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
               }
             ]
           }

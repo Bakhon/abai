@@ -3,7 +3,7 @@
     <p>
       {{ pipe.name }}</p>
     <p>
-      {{ trans('app.date') }} : {{ getValueOrNoData(pipe[paramKey].date) }}
+      {{ trans('app.date') }} : {{ pipe[paramKey].date }}
     </p>
     <p>
       {{ trans('monitoring.hydro_calculation.fields.length') }} : {{ getValueOrNoData(pipe[paramKey].length) }}
@@ -13,8 +13,8 @@
       {{ getValueOrNoData(pipe[paramKey].qliq) }}
     </p>
     <p>
-      {{ trans('monitoring.gu.fields.bsw') }}, {{ trans('measurements.percent') }} :
-      {{ getValueOrNoData(pipe[paramKey].wc) }}
+      {{ trans('monitoring.gu.fields.bsw') }}:
+      {{ getValueOrNoData(pipe[paramKey].bsw) }} {{ trans('measurements.percent') }}
     </p>
     <p>
       {{ trans('monitoring.omgngdu.fields.gas_factor') }} : {{ getValueOrNoData(pipe[paramKey].gazf) }}</p>
@@ -43,7 +43,7 @@
       {{ trans('monitoring.hydro_calculation.fields.gaz_speed') }} : {{ getValueOrNoData(pipe[paramKey].gaz_speed) }}
     </p>
     <p>
-      {{ trans('monitoring.hydro_calculation.fields.flow_type') }} : {{ getValueOrNoData(pipe[paramKey].flow_type) }}
+      {{ trans('monitoring.hydro_calculation.fields.flow_type') }} : {{ pipe[paramKey].flow_type }}
     </p>
     <p>
       {{ trans('monitoring.hydro_calculation.fields.press_change') }} :

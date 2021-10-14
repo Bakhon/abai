@@ -17,7 +17,8 @@ class MapConstructor extends Controller
     public function importFile(Request $request) {
         $file = $request->file('file');
         $numberOfLevels = (int)$request->get('number_of_levels');
+        $type = $request->get('type');
 
-        return $this->service->getPolygons($file, $numberOfLevels);
+        return $this->service->getPolygons($file, $numberOfLevels, $type);
     }
 }
