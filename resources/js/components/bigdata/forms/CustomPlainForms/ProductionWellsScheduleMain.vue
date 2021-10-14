@@ -452,7 +452,7 @@ export default {
             this.historicalData = this.productionMeasurementSchedule;
             this.SET_LOADING(true);
             for (let i in this.historicalData) {
-                this.historicalData[i].params['activity'] = await this.getActivityByWell(this.historicalData[i].month,this.historicalData[i].year);
+                this.historicalData[i].params['activity'] = [];
             }
             this.historicalData = _.orderBy(this.historicalData, ['date'],['asc']);
             this.SET_LOADING(false);
@@ -476,7 +476,6 @@ export default {
             let summary = [];
             _.forEach(data, (year, key) => {
                 _.forEach(year, (month, monthNumber) => {
-                    console.log(month);
                     let date = moment(month[0].date, 'YYYY-MM-DD');
                     let daysCount = this.getDaysCountInMonth(date.format('YYYY/MMM'));
                     let workHours = _.sumBy(month, 'workHours') / 24;
@@ -631,7 +630,6 @@ export default {
         toggleRowVisibility(id){
             this.isRowsHide = !this.isRowsHide
             var key = _.findKey(this.historicalInfo, function(o) { return o.id == id; });
-            console.log(this.historicalInfo[key]);
 
             for (let i = 5; i < this.historicalInfo[key].params.techMode.length; i++) {
                 this.historicalInfo[key].params.techMode[i].isHide = this.isRowsHide
