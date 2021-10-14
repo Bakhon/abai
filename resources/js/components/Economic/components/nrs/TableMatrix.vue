@@ -430,10 +430,16 @@ export default {
           return prsSum.rows.push(this.getTotalRow(key, prsSum))
         }
 
+        let datesCount = this.datesParams.length
+
+        let sumCostWrNoPayroll = 0
+
+        this.datesParams.forEach(param => sumCostWrNoPayroll += +param.cost_WR_nopayroll)
+
         prsSum[key.prop][dateOffset - 1].value = key.calcValue(
             prsSum,
             dateOffset - 1,
-            this.datesParams ? this.datesParams[0] : [],
+            datesCount ? {cost_WR_nopayroll: sumCostWrNoPayroll / datesCount} : null
         )
 
         this.dates.forEach((date, dateIndex) => {
@@ -586,6 +592,13 @@ export default {
           name: this.trans('economic_reference.profitless'),
           isTotal: true,
           isProfitless: true,
+          dimensionTitle: `${this.trans('economic_reference.units')}.`,
+        },
+        {
+          prop: 'inactive',
+          name: this.trans('economic_reference.inactive_short'),
+          isTotal: true,
+          isInactive: true,
           dimensionTitle: `${this.trans('economic_reference.units')}.`,
         },
         {
@@ -807,6 +820,10 @@ export default {
     },
 
     getWellValue(well, key, date, isString = false) {
+      if (key.isInactive) {
+        return well[this.form.operatingProfit].hasOwnProperty(date) ? 0 : 1
+      }
+
       if (key.isProfitable) {
         if (!well[this.form.operatingProfit].hasOwnProperty(date)) {
           return 0
