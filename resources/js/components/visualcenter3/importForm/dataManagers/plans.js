@@ -53,22 +53,22 @@ export default {
                 "ЭМГ" : {
                     rows: planRowEmg,
                   //  format: planFormatEmg,
-                    cells: planCellEmg,
+                  //  cells: planCellEmg,
                     id: 113,
                 },
             },
             planColumns: [],
             planRows: _.cloneDeep(planRowEmg),
-            planCellsMapping: _.cloneDeep(planCellEmg),
+          //  planCellsMapping: _.cloneDeep(planCellEmg),
          //   planRowsFormatMapping: _.cloneDeep(planFormatEmg.rowsFormatMapping),
           //  planColumnsFormatMapping: _.cloneDeep(planFormatEmg.columnsFormatMapping),
             plans: [],
             currentPlan: {
                 rows: [],
-                cells: _.cloneDeep(planCellEmg),
+                cells: [],
                 columns: [],
                 year: moment().year()
-            },
+            }
         };
     },
     methods: {
@@ -114,7 +114,7 @@ export default {
             }
         },
         fillPlanRows() {
-            let firstRow = {
+            let header = {
                 "column1": "Показатель",
                 "column2": 'Январь',
                 "column3": 'Февраль',
@@ -129,7 +129,7 @@ export default {
                 "column12": 'Ноябрь',
                 "column13": 'Декабрь',
             };
-            this.currentPlan.rows.push(firstRow);
+            this.currentPlan.rows.push(header);
             for (let y in this.planRows) {
                 let row = {
                     'column1': y
@@ -150,6 +150,32 @@ export default {
                     row['column'+y] = Math.round(plan[row['fieldName']] * daysCount);
                 }
             }
+            console.log(this.currentPlan.rows);
+        },
+        validatePlan() {
+
+        },
+        async savePlan() {
+            let systemColumns = ['column1','fieldName'];
+            let output = [];
+            for (let i=1;i<13;i++) {
+                let date = moment().year(this.currentPlan.year).month(i-1).startOf('month').startOf('day');
+                let fields = {
+                    date: date.format(),
+                    dzo: this.selectedDzo.ticker,
+                };
+                for (let y=1;y<this.currentPlan.rows.length;y++) {
+                    let row = this.currentPlan.rows[y];
+                    fields[row['fieldName']] = row['column'+(i+1)] / date.daysInMonth();
+                }
+                output.push(fields);
+            }
+            let uri = this.localeUrl("/store-yearly-plans");
+            let queryOptions = {
+                'dzo': this.selectedDzo.ticker,
+                'plans': output
+            };
+            await axios.post(uri, {params:queryOptions});
         }
     },
     computed: {

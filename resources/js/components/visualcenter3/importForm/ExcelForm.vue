@@ -38,19 +38,19 @@
             </div>
             <div v-if="category.isPlanActive" class="col-2 row mt-3 ml-1">
                 <div
-                        class="col-12 status-block status-block_little menu__button rainbow menu__button_disabled"
+                        class="col-12 status-block status-block_little menu__button rainbow menu__button_disabled opacity-0"
                         @click="pasteClipboardContent()"
                 >
                     {{trans('visualcenter.importForm.pasteData')}}
                 </div>
                 <div
-                        :class="[!isDataExist ? 'menu__button_disabled' : '','col-12 status-block status-block_little menu__button mt-3']"
+                        :class="[!isDataExist ? 'menu__button_disabled' : '','opacity-0 col-12 status-block status-block_little menu__button mt-3']"
                         @click="validatePlan()"
                 >
                     {{trans('visualcenter.validateButton')}}
                 </div>
                 <div
-                        :class="[!isDataReady ? 'menu__button_disabled' : '','status-block status-block_little menu__button col-12 mt-3']"
+                        :class="'status-block status-block_little menu__button col-12 mt-3'"
                         @click="savePlan()"
                 >
                     {{trans('visualcenter.saveButton')}}
@@ -491,6 +491,9 @@
     }
     select.status-block {
         color: black;
+    }
+    .opacity-0 {
+        opacity: 0;
     }
 
 </style>

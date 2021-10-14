@@ -55,12 +55,6 @@ export default {
                     cells: cellsMappingKBM,
                     id: 106
                 },
-                "КГМ" : {
-                    rows: initialRowsKGM,
-                    format: formatMappingKGM,
-                    cells: cellsMappingKGM,
-                    id: 108
-                },
                 "ММГ" : {
                     rows: initialRowsMMG,
                     format: formatMappingMMG,
@@ -102,10 +96,6 @@ export default {
                 {
                     ticker: 'КБМ',
                     name: 'АО "КАРАЖАНБАСМУНАЙ"'
-                },
-                {
-                    ticker: 'КГМ',
-                    name: 'ТОО СП "КАЗГЕРМУНАЙ"'
                 },
                 {
                     ticker: 'ММГ',
@@ -185,8 +175,6 @@ export default {
         this.fillPlanColumns();
         this.fillPlanRows();
         this.plans = await this.getDzoPlans();
-        console.log('this.plans');
-        console.log(this.plans);
         this.handlePlans();
         this.dzoUsers = Object.keys(this.dzoMapping).map(k => this.dzoMapping[k].id);
         let currentDayNumber = moment().date();

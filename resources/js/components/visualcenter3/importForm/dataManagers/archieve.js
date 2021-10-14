@@ -75,6 +75,9 @@ export default {
             this.selectedDzo.ticker = e.target.value;
             this.selectedDzo.name = this.getDzoName();
             if (this.category.isPlanActive) {
+                this.plans = await this.getDzoPlans();
+                this.handlePlans();
+                document.querySelector('#planGrid').refresh('all');
                 // let spliced = this.planRows.splice(9,20);
                 // document.querySelector('#planGrid').source = spliced;
             } else {
