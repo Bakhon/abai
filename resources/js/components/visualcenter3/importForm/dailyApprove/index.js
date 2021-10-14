@@ -18,7 +18,8 @@ export default {
                 'is_approved_by_first_master',
                 'is_approved_by_second_master',
                 'created_at',
-                'updated_at'
+                'updated_at',
+                'user_position'
             ],
             dzoCompanies: {
                 'ЭМГ': 'АО "Эмбамунайгаз"',
@@ -120,6 +121,7 @@ export default {
                     'dzoName': approveItem.dzo_name,
                     'userName': approveItem.user_name,
                     'reason': approveItem.change_reason,
+                    'position': approveItem.user_position,
                     'selected': false,
                     'currentId': approveItem.id,
                     'actualId': actual.id,
