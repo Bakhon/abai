@@ -78,14 +78,14 @@ trait ParseOmgNgduWellTrait
                 ]);
 
                 $omgngdu->daily_fluid_production = $row->debet;
-                $omgngdu->daily_water_production = $row->debet - $row->neft_t * 0.89;
+                $omgngdu->daily_water_production = $row->debet * $row->vlazh / 100;
                 $omgngdu->daily_oil_production = $row->neft_t;
                 $omgngdu->bsw = $row->vlazh;
                 $omgngdu->gas_factor = isset($this->guData[$gu->name]) ? $this->guData[$gu->name]['gas'] : $row->gaz;
                 $omgngdu->temperature_zu = $row->tempn;
-                $omgngdu->sg_oil = isset($this->guData[$gu->name]) ? $this->guData[$gu->name]['sg_oil'] : 0.853;
-                $omgngdu->sg_gas = 0.75;
-                $omgngdu->sg_water = 1.03;
+                $omgngdu->sg_oil = isset($this->guData[$gu->name]) ? $this->guData[$gu->name]['sg_oil'] : 0.85;
+                $omgngdu->sg_gas = 0.79;
+                $omgngdu->sg_water = 1.046;
                 $omgngdu->save();
             }
         }
