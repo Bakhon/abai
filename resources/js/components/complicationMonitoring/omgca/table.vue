@@ -487,7 +487,7 @@ export default {
                 }
               }
 
-              if (this.params.links.calc && !isError) {
+              if (this.params.links.calc && !isError && url != this.params.links.export) {
                 this.loadData();
               }
 
