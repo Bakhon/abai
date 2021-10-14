@@ -51,7 +51,7 @@
             class="mr-2 bg-dark-blue text-blue"
             style="width: 200px"/>
 
-        <button class="btn btn-primary ml-auto" @click="exportData()">
+        <button class="btn btn-primary ml-auto" @click="exportTablesToExcel()">
           {{ trans('economic_reference.export_excel') }}
         </button>
       </div>
@@ -1202,7 +1202,7 @@ export default {
       }
     },
 
-    exportData(worksheetName = 'worksheet', fileName = 'export.xls') {
+    exportTablesToExcel(worksheetName = 'worksheet', fileName = 'export.xls') {
       let htmlTable = ''
 
       this.visibleDailyKeys.forEach(key => {
