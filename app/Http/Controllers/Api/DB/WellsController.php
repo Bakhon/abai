@@ -58,20 +58,10 @@ class WellsController extends Controller
             'well_perf_actual' => $this->wellPerfActual($well),
             'techModeProdOil' => $this->techModeProdOil($well),
             'tech_mode_inj' => $this->techModeInj($well),
-            'meas_liq' => $this->measLiq($well),
-            'meas_water_cut' => $this->measWaterCut($well),
             'krs_well_workover' => $this->getKrsPrs($well, 1),
             'prs_well_workover' => $this->getKrsPrs($well, 3),
             'well_treatment' => $this->wellTreatment($well),
             'well_treatment_sko' => $this->wellTreatmentSko($well),
-            'gdis_current' => $this->gdisCurrent($well),
-            'gdis_conclusion' => $this->gdisConclusion($well),
-            'gdis_current_value' => $this->gdisCurrentValue($well),
-            'gdis_current_value_pmpr' => $this->gdisCurrentValuePmpr($well),
-            'gdis_current_value_flvl' => $this->gdisCurrentValueFlvl($well),
-            'gdis_current_value_static' => $this->gdisCurrentValueStatic($well),
-            'gdis_current_value_rp' => $this->gdisCurrentValueRp($well),
-            'gdis_current_value_bhp' => $this->gdisCurrentValueBhp($well),
             'gis' => $this->gis($well),
             'zone' => $this->zone($well),
             'well_react_infl' => $this->wellReact($well),
@@ -634,84 +624,6 @@ class WellsController extends Controller
         return $result;
     }
 
-    public function getProductionHistory($wellId)
-    {
-
-        if (Cache::has('well_history_' . $wellId)) {
-            return Cache::get('well_history_' . $wellId);
-        }
-
-        ini_set('max_execution_time', 600);
-
-        $measLiqs = MeasLiq::where('well', $wellId)
-            ->orderBy('dbeg', 'asc')
-            ->get();
-        $groupedLiq = $measLiqs->groupBy(function($val) {
-            return Carbon::parse($val->dbeg)->format('Y');
-        });
-        $liqByMonths = array();
-        foreach($groupedLiq as $yearNumber => $value) {
-            $liqByMonths[$yearNumber] = $value->groupBy(function($val) {
-                   return Carbon::parse($val->dbeg)->format('m');
-            });
-        }
-
-        $measWaterCuts = MeasWaterCut::where('well', $wellId)
-            ->orderBy('dbeg', 'asc')
-            ->get();
-        $gdisCurrent = GdisCurrent::where('well', $wellId)
-            ->select(['id'])
-            ->get()
-            ->toArray();
-        $gdisCurrentValueResult = [];
-        $gdisCurrent = array_map(function ($item) {
-            return $item['id'];
-        }, $gdisCurrent);
-
-        $metric = Metric::where('code', 'FLVL')->first();
-        $gdisCurrentValue = GdisCurrentValue::where('metric', $metric->id)
-            ->whereIn('gdis_curr', $gdisCurrent)
-            ->with('gdisCurrent')
-            ->get();
-
-        foreach ($gdisCurrentValue as $gdisCurrentValueItem) {
-            $gdisCurrentValueResult[] = [
-                'value_double' => $gdisCurrentValueItem['value_double'],
-                'meas_date' => $gdisCurrentValueItem->gdisCurrent->meas_date
-            ];
-        }
-
-        $result = array();
-        foreach($liqByMonths as $yearNumber => $monthes) {
-           foreach($monthes as $monthNumber => $month) {
-              $result[$yearNumber][$monthNumber] = array();
-              foreach($month as $dayNumber => $day) {
-                 $date = Carbon::parse($day['dbeg']);
-                 $dateEnd = Carbon::parse($day['dend']);
-                 $liqCut = $measWaterCuts->filter(function ($val) use ($date) {
-                    return Carbon::parse($val->dbeg)->format('d m Y') === $date->format('d m Y');
-                 })->sum('water_cut');
-                 $gdis = array_filter(
-                     $gdisCurrentValueResult,
-                     function ($val) use ($date) {
-                          return Carbon::parse($val['meas_date'])->format('d m Y') === $date->format('d m Y');
-                     },
-                     ARRAY_FILTER_USE_KEY
-                 );
-                 array_push($result[$yearNumber][$monthNumber], array (
-                    'liq' => $day['liquid'],
-                    'date' => $date->format('Y-m-d'),
-                    'liqCut' => $liqCut,
-                    'workHours' => $date->diffInDays($dateEnd) * 24,
-                    'oil' => round(abs($day['liquid'] * (1 - $liqCut / 100) * 0.86))
-                 ));
-              }
-           }
-        }
-
-        Cache::put('well_history_' . $wellId, $result, now()->addDay());
-        return $result;
-    }
     public function getActivityByWell(Request $request,$wellId)
     {
 
