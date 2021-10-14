@@ -979,77 +979,21 @@
                             </td>
                             <td rowspan="2" colspan="2" class="align-middle bit-ware">
                                 <div class="select__name">
-                                    <div>I</div>
-                                    <div>O</div>
-                                    <div>D</div>
-                                    <div>L</div>
-                                    <div>B</div>
-                                    <div>G</div>
-                                    <div>D</div>
-                                    <div>R</div>
+                                    <div v-for="letter in bitWareLetters">{{letter}}</div>
                                 </div>
                                 <div class="selects">
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.I">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.O">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.D">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.L">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.B">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.G">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.D">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.R">{{opt}}</option>
+                                    <select name="" id="" v-for="letter in bitWareLetters">
+                                        <option value="" v-for="opt in bitWare[letter]">{{opt}}</option>
                                     </select>
                                 </div>
                             </td>
                             <td rowspan="2" colspan="2" class="align-middle bit-ware">
                                 <div class="select__name">
-                                    <div>I</div>
-                                    <div>O</div>
-                                    <div>D</div>
-                                    <div>L</div>
-                                    <div>B</div>
-                                    <div>G</div>
-                                    <div>D</div>
-                                    <div>R</div>
+                                    <div v-for="letter in bitWareLetters">{{letter}}</div>
                                 </div>
                                 <div class="selects">
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.I">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.O">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.D">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.L">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.B">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.G">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.D">{{opt}}</option>
-                                    </select>
-                                    <select name="" id="">
-                                        <option value="" v-for="opt in bitWare.R">{{opt}}</option>
+                                    <select name="" id="" v-for="letter in bitWareLetters">
+                                        <option value="" v-for="opt in bitWare[letter]">{{opt}}</option>
                                     </select>
                                 </div>
                             </td>
@@ -1954,7 +1898,7 @@
                     </table>
                 </div>
                 <div class="characteristic_body-save">
-                    <button>Сохранить</button>
+                    <button>{{trans('app.save')}}</button>
                 </div>
             </div>
         </div>
@@ -2026,6 +1970,7 @@
                     R: ["BHA", "CM", "CP", "DMF", "DP", "DSF", "DST", "DTF", "FM", "HP", "HR",
                         "LIH”", "LOG;", "PP”", "PR”", "RIG", "TD”", "TQ", "TW", "WC"],
                 },
+                bitWareLetters: ["I", "O", "D", "L", "B", "G", "D", "R"],
                 operation1: [],
                 operation2: [],
                 drillingRigTypes:[],
