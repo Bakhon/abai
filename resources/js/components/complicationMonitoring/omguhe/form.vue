@@ -379,7 +379,7 @@ export default {
             if (this.qv) {
               this.inputLevel();
             } else {
-              this.showToast(data.message, this.trans('app.error') + 'нет данных по qv', 'danger');
+              this.showToast('Нет данных по qv', this.trans('app.error'), 'danger');
             }
 
           });
