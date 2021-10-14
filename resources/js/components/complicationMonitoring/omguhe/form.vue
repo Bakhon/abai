@@ -369,7 +369,7 @@ export default {
 
             if (data.status == 'success') {
               this.prevData = data.level;
-              this.qv = (data.qv * 1000) / 365;
+              this.qv = data.qv;
             } else {
               this.showToast(data.message, this.trans('app.error'), 'danger');
               this.prevData = null;
@@ -383,7 +383,7 @@ export default {
         this.formFields.level = this.formFields.level > this.prevData ? this.prevData : this.formFields.level;
 
         this.formFields.consumption = this.prevData - this.formFields.level;
-        let currentDosage = (this.formFields.consumption / this.qv) * 946;
+        let currentDosage = (this.formFields.consumption / this.qv) * 954;
 
         this.formFields.current_dosage = currentDosage > 0 ? currentDosage.toFixed(2) : 0;
         this.formFields.daily_inhibitor_flowrate = (this.formFields.current_dosage * this.qv/1000).toFixed(2);
