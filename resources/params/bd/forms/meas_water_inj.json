@@ -7,25 +7,33 @@
       "code": "uwi",
       "type": "text",
       "is_editable": false,
-      "title": "uwi"
+      "title": "uwi",
+      "freezed": true,
+      "width": 80
     },
     {
       "code": "indicator",
       "type": "text",
       "is_editable": false,
-      "title": "indicators"
+      "title": "indicators",
+      "freezed": true,
+      "width": 120
     },
     {
       "code": "tap",
       "type": "text",
       "is_editable": false,
-      "title": "tap"
+      "title": "tap",
+      "freezed": true,
+      "width": 70
     },
     {
       "code": "tech",
       "type": "text",
       "is_editable": false,
-      "title": "tech"
+      "title": "tech",
+      "freezed": true,
+      "width": 70
     }
   ]
 }
