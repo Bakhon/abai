@@ -292,7 +292,7 @@ class OmgUHEController extends CrudController
     }
 
     public function getPrevDayLevel(Request $request){
-        $result = OmgUHE::where('gu_id', $request->gu_id)
+        $previous_omg_uhe = OmgUHE::where('gu_id', $request->gu_id)
                                         ->where('date', '<', $request->date)
                                         ->where('out_of_service_of_dosing', '!=', '1')
                                         ->orderByDesc('date')
@@ -303,23 +303,25 @@ class OmgUHEController extends CrudController
                         ->first();
 
         $qv = OmgNGDU::where('gu_id', $request->gu_id)
-            ->where('date', $request->date)
-            ->first()->daily_water_production;
+            ->where('date', Carbon::parse($request->date)->format('Y-m-d'))
+            ->first();
 
-        $res = [];
-        if ($result && $ddng && $request->gu_id) {
-            $res = [
-                'qv' => $qv
+        $qv = $qv ? $qv->daily_water_production : null;
+
+        $response = [];
+        if ($previous_omg_uhe && $ddng && $request->gu_id) {
+            $response = [
+                'qv' => $ddng->q_v
             ];
 
-            $res['level'] = $result->fill ? $result->fill : $result->level;
-            $res['status'] = config('response.status.success');
+            $response['level'] = $previous_omg_uhe->fill ?? $previous_omg_uhe->level;
+            $response['status'] = config('response.status.success');
         } else {
-            $res['status'] = config('response.status.error');
-            $res['message'] = trans('monitoring.omguhe.no-ddng-data-on-date').' '.Carbon::parse($request->date)->year;
+            $response['status'] = config('response.status.error');
+            $response['message'] = trans('monitoring.omguhe.no-ddng-data-on-date').' '.Carbon::parse($request->date)->year;
         }
 
-        return response()->json($res);
+        return response()->json($response);
     }
 
     protected function getFilteredQuery($filter, $query = null)
