@@ -631,9 +631,8 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="dzoCompaniesAssets['isOperating']"
                                     :checked="dzoCompaniesAssets['isOperating']"
-                                    @click="`${changeAssets('isOperating','type')}`"
+                                    @click="`${changeAssets('isOperating')}`"
                             ></input>
                             {{trans("visualcenter.isOperating")}}
                           </div>
@@ -642,9 +641,8 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="dzoCompaniesAssets['isNonOperating']"
                                     :checked="dzoCompaniesAssets['isNonOperating']"
-                                    @click="`${changeAssets('isNonOperating','type')}`"
+                                    @click="`${changeAssets('isNonOperating')}`"
                             ></input>
                             {{trans("visualcenter.isNonOperating")}}
                             <div class="dzocompanies-dropdown__divider"></div>
@@ -657,9 +655,8 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="dzoRegionsMapping[region].isActive"
                                     :checked="dzoRegionsMapping[region].isActive"
-                                    @click="`${changeAssets('isRegion','region',region)}`"
+                                    @click="changeRegions(region)"
                             ></input>
                             {{dzoRegionsMapping[region].translationName}}
                             <div
@@ -675,7 +672,6 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="isGrouppingFilterActive()"
                                     :checked="company.selected"
                                     @change="`${selectOneDzoCompany(company.ticker)}`"
                             ></input>
