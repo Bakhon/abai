@@ -247,12 +247,12 @@ export default {
           if (+scenario.dollar_rate !== this.dollarRate) {
             this.dollarRate = +scenario.dollar_rate
 
-            return this.setWells()
+            this.setWells()
+          } else {
+            Object.keys(this.wells).forEach(uwi => {
+              this.wells[uwi].isShutdown = scenario.uwi_stop.includes(uwi)
+            })
           }
-
-          Object.keys(this.wells).forEach(uwi => {
-            this.wells[uwi].isShutdown = scenario.uwi_stop.includes(uwi)
-          })
 
           this.SET_LOADING(false)
         })
