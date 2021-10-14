@@ -11,6 +11,7 @@ use App\Http\Requests\OmgUHEUpdateRequest;
 use App\Jobs\ExportOmgUHEToExcel;
 use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\OmgCA;
+use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\OmgUHE;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -301,20 +302,17 @@ class OmgUHEController extends CrudController
                         ->where('date', Carbon::parse($request->date)->year . "-01-01")
                         ->first();
 
+        $qv = OmgNGDU::where('gu_id', $request->gu_id)
+            ->where('date', $request->date)
+            ->first()->daily_water_production;
+
         $res = [];
         if ($result && $ddng && $request->gu_id) {
-            if ($result->fill) {
-                $res = [
-                    'level' => $result->fill,
-                    'qv' => $ddng->q_v
-                ];
-            } else {
-                $res = [
-                    'level' => $result->level,
-                    'qv' => $ddng->q_v
-                ];
-            }
+            $res = [
+                'qv' => $qv
+            ];
 
+            $res['level'] = $result->fill ? $result->fill : $result->level;
             $res['status'] = config('response.status.success');
         } else {
             $res['status'] = config('response.status.error');
