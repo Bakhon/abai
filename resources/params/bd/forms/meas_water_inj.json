@@ -23,17 +23,13 @@
       "code": "tap",
       "type": "text",
       "is_editable": false,
-      "title": "tap",
-      "freezed": true,
-      "width": 70
+      "title": "tap"
     },
     {
       "code": "tech",
       "type": "text",
       "is_editable": false,
-      "title": "tech",
-      "freezed": true,
-      "width": 70
+      "title": "tech"
     }
   ]
 }
