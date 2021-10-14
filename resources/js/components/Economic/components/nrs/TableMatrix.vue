@@ -56,6 +56,8 @@
         </button>
       </div>
 
+      <h4> {{ trans('economic_reference.input_indicators') }} </h4>
+
       <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
         <div v-for="dailyKey in dailyKeys"
              :key="dailyKey.prop"
@@ -72,6 +74,8 @@
           </div>
         </div>
       </div>
+
+      <h4> {{ trans('economic_reference.estimated_data') }} </h4>
 
       <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
         <div v-for="wellKey in wellKeys"
@@ -111,7 +115,7 @@
           :key="key.prop"
           :params="tableDailyParams(key)"
           :class="index ? 'pt-2' : 'pt-4'"
-          class="matrix-table bg-main1 px-4 pb-2">
+          class="matrix-table bg-main1 px-4">
         <template
             v-for="(header, headerIndex) in tableHeaders"
             :slot="`column-${headerIndex}`" slot-scope="{ props }">
@@ -123,7 +127,8 @@
 
       <vue-table-dynamic
           :params="tablePrsParams"
-          class="matrix-table bg-main1 pt-2 px-4 pb-2">
+          :class="visibleDailyKeys.length ? 'py-2' : 'pt-4'"
+          class="matrix-table bg-main1 px-4">
         <template
             v-for="(header, index) in tableTotalHeaders"
             :slot="`column-${index}`" slot-scope="{ props }">
@@ -135,7 +140,7 @@
 
       <vue-table-dynamic
           :params="tableSumParams"
-          class="matrix-table bg-main1 pt-2 px-4 pb-4">
+          class="matrix-table bg-main1 px-4 py-2">
         <template
             v-for="(header, index) in tableTotalHeaders"
             :slot="`column-${index}`" slot-scope="{ props }">
@@ -156,7 +161,7 @@
       <vue-table-dynamic
           v-if="isVisibleWells"
           :params="tableParams"
-          class="matrix-table mt-3 bg-main1 p-4">
+          class="matrix-table mt-3 bg-main1 px-4 pt-4 pb-2">
         <template :slot="`column-0`" slot-scope="{ props }">
           <div class="d-flex align-items-center w-100">
             <div> {{ props.cellData.label }}</div>
@@ -1058,7 +1063,7 @@ export default {
       this.dailyKeys = [
         {
           prop: 'costs',
-          name: this.trans('economic_reference.specific_indicators'),
+          name: this.trans('economic_reference.input_specific_indicators'),
           isVisible: false,
         },
         {
