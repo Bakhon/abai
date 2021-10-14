@@ -1262,7 +1262,7 @@ export default {
         htmlTable += '<tr>'
 
         row.forEach(col => {
-          htmlTable += `<td> ${typeof col === 'string' ? col : col.label} </td>`
+          htmlTable += `<td> ${typeof col === 'object' ? col.label : col} </td>`
         })
 
         htmlTable += '</tr>'
