@@ -47,20 +47,8 @@ export default {
     },
     chartOptions() {
       return {
+        ...this.generalOptions,
         colors: ["#009847", "#F27E31"],
-        fill: {
-          opacity: 1
-        },
-        stroke: {
-          width: [2, 2]
-        },
-        legend: {
-          horizontalAlign: "left",
-          offsetX: 20
-        },
-        dataLabels: {
-          enabled: false
-        },
         xaxis: {
           categories: this.getYearList,
           labels: {
@@ -76,26 +64,12 @@ export default {
             }
           }
         },
-        toolbar: {
-          show: false,
-        }
+        grid: this.getGrid
       }
     },
     chartOptionsArea() {
       return {
-        chart: {
-          height: 350,
-          type: 'area'
-        },
-        fill: {
-          opacity: 1
-        },
-        stroke: {
-          width: [1, 1]
-        },
-        dataLabels: {
-          enabled: false
-        },
+        ...this.generalOptions,
         xaxis: {
           categories: this.getYearList,
           labels: {
@@ -110,6 +84,57 @@ export default {
               colors: this.getColors(7, '#fff')
             }
           }
+        },
+        grid: this.getGrid
+      }
+    },
+    generalOptions() {
+      return {
+        fill: {
+          opacity: 1
+        },
+        stroke: {
+          width: [1, 1]
+        },
+        dataLabels: {
+          enabled: false
+        },
+        legend:{
+          labels: {
+            colors: ['#FFFFFF']
+          },
+        },
+      }
+    },
+    getGrid() {
+      return {
+        show: true,
+        borderColor: '#454D7D',
+        strokeDashArray: 0,
+        position: 'back',
+        xaxis: {
+          lines: {
+            show: true
+          }
+        },
+        yaxis: {
+          lines: {
+            show: true
+          },
+        },
+        row: {
+          colors: ['transparent'],
+          opacity: 0.5
+        },
+        column: {
+          colors: ['transparent'],
+          opacity: 0.5
+        },
+        padding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
         },
       }
     },
@@ -137,10 +162,10 @@ export default {
       return [
         {
           name: 'Факт',
-          data: [231, 140, 328, 251, 142, 109, 100, 123, 209, 259, 399, 249, 123, 234, 350]
+          data: [231, 140, 328, 251, 142, 109, 100, 123, 209, 259, 399, 249, 123, 234]
         }, {
           name: 'Проект',
-          data: [114, 322, 245, 232, 434, 152, 241, 132, 100, 150, 234, 328, 294,245,214]
+          data: [114, 322, 245, 232, 434, 152, 241, 132, 100, 150, 234, 328, 294,245]
         }
       ]
     }
