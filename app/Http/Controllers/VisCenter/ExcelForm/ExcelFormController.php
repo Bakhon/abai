@@ -38,7 +38,7 @@ class ExcelFormController extends Controller
         'mainMaster' => 'a.kutzhanov@kmg.kz',
     );
     private $dzoEmails = array (
-        'ЭМГ' => 'cits2@umg.kmgep.kz',
+        'ЭМГ' => 'cits@emg.kmgep.kz',
         'УО' => 'nachsmeny@urikhtau.kz',
         'КБМ' => 'F_Dispatcher@kbm.kz',
         'КОА' => 'dispatchers22@koa.kz',
