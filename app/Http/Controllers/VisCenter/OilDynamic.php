@@ -86,9 +86,9 @@ class OilDynamic extends Controller
             'fact' => array ('oil_production_fact'),
             'plan' => array ('plan_oil'),
             'multiplier' => array (
-                'ПКК' => 3.03,
-                'КГМ' => 2,
-                'ТП' => 2
+                'ПКК' => [3.03],
+                'КГМ' => [2,3.03],
+                'ТП' => [2,3.03]
             )
         ),
         'ПКК' => array (
@@ -260,6 +260,7 @@ class OilDynamic extends Controller
                $dayRecord = $this->getUpdatedByMultiplier($dayRecord,$dzoParams['multiplier']);
                $dayRecord['name'] = $category;
             }
+
             array_push($compared,$dayRecord);
         }
         if (count($this->dzoName) > 1) {
@@ -281,12 +282,15 @@ class OilDynamic extends Controller
         return $summary;
     }
 
-    private function getUpdatedByMultiplier($dayRecord,$multiplier)
+    private function getUpdatedByMultiplier($dayRecord,$multiplierOptions)
     {
         $multipliedRecord = $dayRecord;
         foreach($this->fields as $field) {
-            $multipliedRecord[$field] /= $multiplier[$multipliedRecord['name']];
+            foreach($multiplierOptions[$multipliedRecord['name']] as $multiplier) {
+                 $multipliedRecord[$field] /= $multiplier;
+            }
         }
+
         return $multipliedRecord;
     }
 
