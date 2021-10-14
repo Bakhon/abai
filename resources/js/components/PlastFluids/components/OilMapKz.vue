@@ -54,15 +54,12 @@ export default {
     return {
       map: null,
       rk: null,
-      currentScreen: 0,
       prevZoomLevel: [],
       zoomLevel: "global",
       prevBounds: [],
       provinces: [],
       provinceChilds: {},
       currentProvinceChild: {},
-      currentMaxZoom: 5,
-      currentCenter: "",
       provinceChildsLayers: {},
       fields: new L.featureGroup(),
       colorPalette: [
