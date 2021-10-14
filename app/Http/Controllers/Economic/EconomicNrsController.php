@@ -7,7 +7,6 @@ use App\Http\Requests\Economic\EconomicNrsDataRequest;
 use App\Http\Requests\Economic\EconomicNrsWellsRequest;
 use App\Jobs\ExportEconomicDataToExcel;
 use App\Models\BigData\Well;
-use App\Models\EcoRefsCost;
 use App\Models\OilRate;
 use App\Models\Refs\Org;
 use App\Services\BigData\StructureService;
@@ -55,20 +54,6 @@ class EconomicNrsController extends Controller
     ];
 
     const DOLLAR_RATES_URL = 'https://www.nationalbank.kz/ru/exchangerates/ezhednevnye-oficialnye-rynochnye-kursy-valyut/report';
-
-    const TEMP_ORG_COMPANY_MAP = [
-        3 => 5, // OZEN
-        4 => 8, // KBM
-        5 => 9, // KAZGER
-        6 => 6, // EMBA
-        7 => 7 // MANGISTAU
-    ];
-
-    const TEMP_SC_FA_IDS = [
-        9, // 2020
-        12, // 2021 1 kv
-        13 // 2021 2 kv
-    ];
 
     public function __construct(DruidClient $druidClient, StructureService $structureService)
     {
@@ -429,14 +414,12 @@ class EconomicNrsController extends Controller
         $granularity = $request->granularity;
         $granularityFormat = self::granularityFormat($granularity);
 
-        $dateFormat = $granularity === Granularity::DAY ? 'Y-m-d' : 'm-Y';
-
         $interval = self::formatInterval(
             Carbon::parse($request->interval_start),
             Carbon::parse($request->interval_end)->addDay(),
         );
 
-        $sumKeys = [
+        $wellsKeys = [
             "Operating_profit",
             "Operating_profit_variable_prs",
             "Operating_profit_variable_prs_nopayrall",
@@ -458,9 +441,10 @@ class EconomicNrsController extends Controller
             "prs1",
             "PRS_nopayroll_expenditures",
             "PRS_expenditures",
+            "Revenue_total",
         ];
 
-        $builder = $this
+        $builderWells = $this
             ->druidClient
             ->query(self::DATA_SOURCE, $granularity)
             ->interval($interval)
@@ -469,32 +453,69 @@ class EconomicNrsController extends Controller
             })
             ->select("uwi");
 
-        foreach ($sumKeys as $key) {
-            $builder->doubleSum($key);
+        foreach ($wellsKeys as $key) {
+            $builderWells->doubleSum($key);
+        }
+
+        $dailyKeys = array_merge(
+            [
+                'cost_variable',
+                'cost_fix_noWRpayroll',
+                'cost_fix_payroll',
+                'cost_fix_nopayroll',
+                'cost_fix',
+                'cost_Gaoverheads',
+                'cost_WR_nopayroll',
+                'cost_WR_payroll',
+                'cost_WR',
+                'cost_WO',
+            ],
+            self::getDailyKeys('trans_exp'),
+            self::getDailyKeys('price'),
+            self::getDailyKeys('Barrel_ratio'),
+            self::getDailyKeys('sale_share'),
+            self::getDailyKeys('discount'),
+        );
+
+        $builderDailyParams = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, $granularity)
+            ->interval($interval)
+            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
+                $extBuilder->timeFormat($granularityFormat);
+            });
+
+        foreach ($dailyKeys as $key) {
+            $builderDailyParams->select($key);
         }
 
         if ($org->druid_id) {
-            $builder->where('org_id2', '=', $org->druid_id);
+            $builderWells->where('org_id2', '=', $org->druid_id);
+
+            $builderDailyParams->where('org_id2', '=', $org->druid_id);
         }
 
         if ($dpz) {
-            $builder->where('dpz', '=', $dpz);
+            $builderWells->where('dpz', '=', $dpz);
+
+            $builderDailyParams->where('dpz', '=', $dpz);
         }
 
         if ($request->well_id) {
-            $builder->where('uwi', '=', $request->well_id);
+            $builderWells->where('uwi', '=', $request->well_id);
+
+            $builderDailyParams->where('uwi', '=', $request->well_id);
         }
 
-        $wells = $builder->groupBy()->data();
+        $wells = $builderWells->groupBy()->data();
 
-        $wellsByDates = ['org' => $org, 'dates' => [], 'uwis' => []];
+        $dailyParams = $builderDailyParams->groupBy()->data();
 
-        $dailyValues = EcoRefsCost::query()
-            ->distinct()
-            ->select(['date', 'wr_nopayroll', 'wr_payroll'])
-            ->whereCompanyId(self::TEMP_ORG_COMPANY_MAP[$org->id])
-            ->whereIn('sc_fa', self::TEMP_SC_FA_IDS)
-            ->get();
+        $wellsByDates = [
+            'org' => $org,
+            'dates' => [],
+            'uwis' => [],
+        ];
 
         foreach ($wells as &$well) {
             $uwi = $well['uwi'];
@@ -503,7 +524,7 @@ class EconomicNrsController extends Controller
 
             $wellsByDates['dates'][$date] = 1;
 
-            foreach ($sumKeys as $key) {
+            foreach ($wellsKeys as $key) {
                 $wellsByDates['uwis'][$uwi][$key][$date] = $well[$key];
 
                 if (!isset($wellsByDates['uwis'][$uwi][$key]['sum'])) {
@@ -512,19 +533,11 @@ class EconomicNrsController extends Controller
 
                 $wellsByDates['uwis'][$uwi][$key]['sum'] += $well[$key];
             }
-
-            $dailyDate = Carbon::createFromFormat($dateFormat, $date)
-                ->setDay(1)
-                ->format('Y-m-d');
-
-            $dailyValue = $dailyValues->firstWhere('date', $dailyDate);
-
-            $wellsByDates['uwis'][$uwi]['cost_WR_nopayroll'][$date] = $dailyValue->wr_nopayroll ?? 0;
-
-            $wellsByDates['uwis'][$uwi]['cost_WR_payroll'][$date] = $dailyValue->wr_payroll ?? 0;
         }
 
-        $wellsByDates['dates'] = array_keys($wellsByDates['dates']);
+        foreach (array_keys($wellsByDates['dates']) as $index => $date) {
+            $wellsByDates['dates'][$date] = $dailyParams[$index];
+        }
 
         return $wellsByDates;
     }
@@ -904,5 +917,21 @@ class EconomicNrsController extends Controller
         $uwis = array_filter($uwis);
 
         return $uwis;
+    }
+
+    static function getDailyKeys(string $prefix): array
+    {
+        return [
+            $prefix . "_export_AA",
+            $prefix . "_export_KTK",
+            $prefix . "_export_Samara",
+            $prefix . "_export_Aktau",
+            $prefix . "_export_other",
+            $prefix . "_local_ANPZ",
+            $prefix . "_local_PNHZ",
+            $prefix . "_local_PKOP",
+            $prefix . "_local_KBITUM",
+            $prefix . "_local_other",
+        ];
     }
 }
