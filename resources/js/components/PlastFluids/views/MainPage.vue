@@ -4,6 +4,7 @@
     <div class="main-content-holder">
       <div class="map-and-page-footer">
         <OilMap />
+        <Footer />
       </div>
       <div class="area-choose-block-and-map-statistics">
         <div class="map-statistics">
@@ -81,7 +82,6 @@
 </template>
 
 <script>
-import leafMap from "../components/leafMap";
 import OilMap from "../components/OilMapKz.vue";
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
@@ -96,6 +96,7 @@ export default {
   name: "PlastFluidsMain",
   components: {
     Header,
+    Footer,
     OilMap,
     SubsoilTreeMain,
     SubsoilTreeChildren,
