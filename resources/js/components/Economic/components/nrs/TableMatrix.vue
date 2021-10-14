@@ -51,10 +51,12 @@
             class="mr-2 bg-dark-blue text-blue"
             style="width: 200px"/>
 
-        <button class="btn btn-primary ml-auto">
+        <button class="btn btn-primary ml-auto" @click="exportTablesToExcel()">
           {{ trans('economic_reference.export_excel') }}
         </button>
       </div>
+
+      <h4> {{ trans('economic_reference.input_indicators') }} </h4>
 
       <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
         <div v-for="dailyKey in dailyKeys"
@@ -72,6 +74,8 @@
           </div>
         </div>
       </div>
+
+      <h4> {{ trans('economic_reference.estimated_data') }} </h4>
 
       <div class="d-flex flex-wrap mb-3 bg-main1 p-4">
         <div v-for="wellKey in wellKeys"
@@ -111,7 +115,7 @@
           :key="key.prop"
           :params="tableDailyParams(key)"
           :class="index ? 'pt-2' : 'pt-4'"
-          class="matrix-table bg-main1 px-4 pb-2">
+          class="matrix-table bg-main1 px-4">
         <template
             v-for="(header, headerIndex) in tableHeaders"
             :slot="`column-${headerIndex}`" slot-scope="{ props }">
@@ -123,7 +127,8 @@
 
       <vue-table-dynamic
           :params="tablePrsParams"
-          class="matrix-table bg-main1 pt-2 px-4 pb-2">
+          :class="visibleDailyKeys.length ? 'py-2' : 'pt-4'"
+          class="matrix-table bg-main1 px-4">
         <template
             v-for="(header, index) in tableTotalHeaders"
             :slot="`column-${index}`" slot-scope="{ props }">
@@ -135,7 +140,7 @@
 
       <vue-table-dynamic
           :params="tableSumParams"
-          class="matrix-table bg-main1 pt-2 px-4 pb-4">
+          class="matrix-table bg-main1 px-4 py-2">
         <template
             v-for="(header, index) in tableTotalHeaders"
             :slot="`column-${index}`" slot-scope="{ props }">
@@ -156,7 +161,7 @@
       <vue-table-dynamic
           v-if="isVisibleWells"
           :params="tableParams"
-          class="matrix-table mt-3 bg-main1 p-4">
+          class="matrix-table mt-3 bg-main1 px-4 pt-4 pb-2">
         <template :slot="`column-0`" slot-scope="{ props }">
           <div class="d-flex align-items-center w-100">
             <div> {{ props.cellData.label }}</div>
@@ -1058,7 +1063,7 @@ export default {
       this.dailyKeys = [
         {
           prop: 'costs',
-          name: this.trans('economic_reference.specific_indicators'),
+          name: this.trans('economic_reference.input_specific_indicators'),
           isVisible: false,
         },
         {
@@ -1201,6 +1206,70 @@ export default {
         highlightedColor: '#2E50E9'
       }
     },
+
+    exportTablesToExcel(worksheetName = 'worksheet', fileName = 'export.xls') {
+      let htmlTable = ''
+
+      this.visibleDailyKeys.forEach(key => {
+        htmlTable += this.generateHtmlTable(this.tableDailyParams(key).data)
+      })
+
+      htmlTable += this.generateHtmlTable(this.tablePrsParams.data)
+
+      htmlTable += this.generateHtmlTable(this.tableSumParams.data)
+
+      if (this.isVisibleWells) {
+        htmlTable += this.generateHtmlTable(this.tableParams.data)
+      }
+
+      htmlTable = `
+          <html xmlns:o="urn:schemas-microsoft-com:office:office"
+                xmlns:x="urn:schemas-microsoft-com:office:excel"
+                xmlns="http://www.w3.org/TR/REC-html40">
+              <head><!--[if gte mso 9]>
+                    <xml>
+                      <x:ExcelWorkbook>
+                        <x:ExcelWorksheets>
+                          <x:ExcelWorksheet>
+                            <x:Name>${worksheetName}</x:Name>
+                            <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+                          </x:ExcelWorksheet>
+                        </x:ExcelWorksheets>
+                      </x:ExcelWorkbook>
+                    </xml>
+                    <![endif]-->
+                <meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
+              </head>
+              <body><table>${htmlTable}</table></body>
+            </html>
+        `
+
+      htmlTable = window.btoa(unescape(encodeURIComponent(htmlTable)))
+
+      let link = document.createElement("a")
+
+      link.download = fileName
+
+      link.href = `data:application/vnd.ms-excel;base64,${htmlTable}`
+
+      link.click()
+    },
+
+    generateHtmlTable(rows) {
+      let htmlTable = ''
+
+      rows.forEach(row => {
+        htmlTable += '<tr>'
+
+        row.forEach(col => {
+          htmlTable += `<td> ${typeof col === 'object' ? col.label : col} </td>`
+        })
+
+        htmlTable += '</tr>'
+      })
+
+      return htmlTable
+    }
   },
   watch: {
     data() {
