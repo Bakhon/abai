@@ -6,6 +6,7 @@ return array (
     'general_information' => 'General information',
     'well_data_sheet' => 'Well data sheet',
     'drilling_rigs' => 'Drilling Rigs',
+    'capital_investments' => 'Капитальные вложения',
     'open_hole_logging' => 'Open hole logging',
     'survey' => 'Survey',
     'well_design_menu' => 'Well design',
@@ -194,7 +195,7 @@ return array (
         'BR_component' => 'Component composition of drilling mud',
         'BHA_selection' => 'BHA selection',
         'drilling_parameters_modes' => 'Drilling mode and parameters',
-
+        'daily_drilling_report' => 'Суточные рапорты по бурению',
         'casing_strings_OK' => 'Casing: Casing data',
         'casing_running_mode' => 'Casing: running mode',
         'casing_pressure_testing' => 'Casing: Casing pressure and stretching test ',
