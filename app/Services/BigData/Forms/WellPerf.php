@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Well;
+use App\Traits\BigData\Forms\WithDocumentsUpload;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 class WellPerf extends PlainForm
 {
     protected $configurationFileName = 'well_perf';
+
+    use WithDocumentsUpload;
 
     public function getFormByRow(array $row): array
     {
@@ -45,6 +48,17 @@ class WellPerf extends PlainForm
                 break;
         }
         return ['form' => $form];
+    }
+
+    protected function getRows(): Collection
+    {
+        $rows = parent::getRows();
+
+        if (!empty($rows)) {
+            $rows = $this->attachDocuments($rows);
+        }
+
+        return $rows;
     }
 
     protected function formatRows(Collection $wellPerforations): Collection
@@ -131,6 +145,11 @@ class WellPerf extends PlainForm
         if (!empty($this->tableFields)) {
             foreach ($this->tableFields as $field) {
                 if (!empty($this->request->get($field['code']))) {
+                    if ($field['code'] === 'documents') {
+                        $this->submitFiles($id, $field);
+                        return;
+                    }
+
                     $this->submittedData['table_fields'][$field['code']] = [];
                     foreach ($this->request->get($field['code']) as $data) {
                         $data[$field['parent_column']] = $id;
