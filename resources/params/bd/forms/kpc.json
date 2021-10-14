@@ -107,7 +107,7 @@
               "code": "brigade",
               "type": "dict",
               "title": "brigade",
-              "validation": "exists:tbd.dict.brigade,id",
+              "validation": "nullable|exists:tbd.dict.brigade,id",
               "dict": "brigades",
               "is_editable": true,
               "depends_on": [
@@ -116,13 +116,12 @@
                   "value": true
                 }
               ]
-              
             },
             {
               "code": "brigadier",
               "type": "dict",
               "title": "brigade_master",
-              "validation": "exists:tbd.dict.brigadier,id",
+              "validation": "nullable|exists:tbd.dict.brigadier,id",
               "dict": "brigadiers",
               "is_editable": true,
               "depends_on": [
@@ -186,7 +185,7 @@
               "code": "work_list",
               "type": "text",
               "title": "done_work_description",
-              "validation": "max:255",
+              "validation": "nullable|max:255",
               "prefix": "",
               "is_editable": true
             },
@@ -201,7 +200,7 @@
               "code": "cnl_new",
               "type": "numeric",
               "title": "new_run_down_nkt",
-              "validation": "numeric|max:255|gte:0",
+              "validation": "nullable|numeric|max:255|gte:0",
               "prefix": "",
               "is_editable": true
             },
@@ -209,7 +208,7 @@
               "code": "cnl_used",
               "type": "numeric",
               "title": "used_run_down_nkt",
-              "validation": "numeric|max:255|gte:0",
+              "validation": "nullable|numeric|max:255|gte:0",
               "prefix": "",
               "is_editable": true
             },
@@ -217,7 +216,7 @@
               "code": "td",
               "type": "numeric",
               "title": "actual_bottomhole_m",
-              "validation": "numeric|max:10000|gte:0",
+              "validation": "nullable|numeric|max:10000|gte:0",
               "prefix": "",
               "is_editable": true
             },
@@ -232,7 +231,7 @@
               "code": "no_btm_reason",
               "type": "dict",
               "title": "no_slaughter_reason",
-              "validation": "exists:tbd.dict.reason,id",
+              "validation": "nullable|exists:tbd.dict.reason,id",
               "dict": "reason_rls",
               "is_editable": true,
               "depends_on": [
@@ -246,7 +245,7 @@
               "code": "hud",
               "type": "text",
               "title": "artificial_slaughter_m",
-              "validation": "numeric|max:10000|gte:0",
+              "validation": "nullable|numeric|max:10000|gte:0",
               "prefix": "",
               "is_editable": true
             },
@@ -254,10 +253,10 @@
               "code": "tech_state",
               "type": "dict",
               "title": "machine_technical_condition",
-              "validation": "exists:tbd.dict.tech_state_casing,id",
+              "validation": "nullable|exists:tbd.dict.tech_state_casing,id",
               "dict": "tech_state_casings",
               "is_editable": true,
-              "depends_on":[
+              "depends_on": [
                 {
                   "field": "no_change_tech_state",
                   "value": false
@@ -274,27 +273,27 @@
             {
               "code": "well_previous_status_type",
               "table": "prod.well_status",
-              "type":"calc",
+              "type": "calc",
               "title": "status_before_selected_date",
-              "validation": "exists:tbd.dict.well_status_type,id",
+              "validation": "nullable|exists:tbd.dict.well_status_type,id",
               "is_editable": false
             },
             {
               "code": "well_previous_category",
               "table": "prod.well_category",
-              "type":"calc",
+              "type": "calc",
               "title": "well_previous_category",
-              "validation": "exists:tbd.dict.well_category_type,id",
+              "validation": "nullable|exists:tbd.dict.well_category_type,id",
               "is_editable": false
             },
             {
               "code": "well_status",
               "type": "dict",
               "title": "condition",
-              "validation": "exists:tbd.dict.well_status_type,id",
+              "validation": "nullable|exists:tbd.dict.well_status_type,id",
               "dict": "well_statuses",
               "is_editable": true,
-              "depends_on":[
+              "depends_on": [
                 {
                   "field": "no_change_state",
                   "value": false
@@ -345,6 +344,41 @@
         }
       ]
     ]
+    },
+    {
+      "title": "conclusion",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "documents",
+                "type": "table",
+                "form": "well_document_short",
+                "title": "table",
+                "table": {
+                  "name": "prod.well_workover_file",
+                  "file_type": 4,
+                  "local_key": "workover",
+                  "document_key": "file"
+                },
+                "document_list": true,
+                "columns": [
+                  {
+                    "code": "doc_date",
+                    "title": "doc_date"
+                  },
+                  {
+                    "code": "filenames",
+                    "title": "files"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
     }
   ]
 }

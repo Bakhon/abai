@@ -29,6 +29,7 @@ use App\Models\BigData\Dictionaries\GeoRockType;
 use App\Models\BigData\Dictionaries\GisKind;
 use App\Models\BigData\Dictionaries\GisMethod;
 use App\Models\BigData\Dictionaries\GisMethodType;
+use App\Models\BigData\Dictionaries\GisType;
 use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\IsoMaterialType;
@@ -57,6 +58,7 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateCasing;
 use App\Models\BigData\Dictionaries\TreatType;
+use App\Models\BigData\Dictionaries\TubeNom;
 use App\Models\BigData\Dictionaries\Well;
 use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\WellCategory;
@@ -68,12 +70,10 @@ use App\Models\BigData\Dictionaries\WorkStatus;
 use App\Models\BigData\Dictionaries\Zone;
 use App\Services\BigData\DictionaryServices\UndergroundEquipElement;
 use App\Services\BigData\DictionaryServices\UndergroundEquipType;
-use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-
 
 class DictionaryService
 {
@@ -100,7 +100,7 @@ class DictionaryService
         ],
         'casings' => [
             'class' => CasingType::class,
-            'name_field' => 'CONCAT(\'Условный диаметр трубы(мм): \', od, \', Толщина стенки с норм. резьбой(мм):\', wt, \', Внутренний диаметр трубы с норм. резьбой (мм)\' , vd, \', Группа прочности: \', sg)'
+            'name_field' => 'CONCAT(\'Наружный диаметр, (мм): \', od, \', Внутренний диаметр, (мм):\', vd, \', Класс прочности / Марка стали:\' , sg, \', Погонный вес, (кг/м): \', wpm, \', Проходной диаметр, (мм): \', td, \', Предел текучести, (т): \', ys, \', Номинальный вес, (кг/м): \', nw, \', Номинальный диаметр, дюйм: \', nd)'
         ],
         'repair_work_types' => [
             'class' => RepairWorkType::class,
@@ -159,7 +159,7 @@ class DictionaryService
             'name_field' => 'name_ru'
         ],
         'tube_nom' => [
-            'class' => TybeNom::class,
+            'class' => TubeNom::class,
             'name_field' => 'model'
         ],
         'blocks' => [
@@ -318,15 +318,12 @@ class DictionaryService
             'class' => WorkStatus::class,
             'name_field' => 'name_ru'
         ]
+
     ];
 
     const TREE_DICTIONARIES = [
         'orgs' => [
             'class' => Org::class,
-            'name_field' => 'name_ru'
-        ],
-        'techs' => [
-            'class' => Tech::class,
             'name_field' => 'name_ru'
         ],
         'expl_type_plan_gdis' => [
@@ -440,11 +437,26 @@ class DictionaryService
                 case 'well_statuses_drill':
                     $dict = $this->getWellStatusesForDrill();
                     break;
+                case 'techs':
+                    $dict = $this->getWellTechsDict();
+                    break;
                 case 'underground_equip_type':
                     $dict = UndergroundEquipType::getDict();
                     break;
                 case 'underground_equip_element':
                     $dict = UndergroundEquipElement::getDict();
+                    break;
+                case 'res_type_dict':
+                    $dict = $this->getResTypeDict();
+                    break;
+                case 'res_method_dict':
+                    $dict = $this->getResMethodDict();
+                    break;
+                case 'gis_method_types_gis_type':
+                    $dict = $this->getGisMethodTypesForGisTypeForm();
+                    break;
+                case 'gis_kinds_gis_type':
+                    $dict = $this->getGisKindsForGisTypeForm();
                     break;
                 default:
                     throw new DictionaryNotFound();
@@ -586,7 +598,111 @@ class DictionaryService
             )
             ->toArray();
 
-        return $this->generateTree((array)$items);
+        $tree = [];
+        $items = $this->generateTree($items);
+        $geoPermissionsIds = $this->getUserGeoPermissionIds();
+        $this->filterTree($items, $tree, $geoPermissionsIds);
+        return $tree;
+    }
+
+    public function getUserGeoPermissionIds() {
+        $orgIds = $this->getUserOrgPermissionIds();
+        $result = [];
+        foreach($orgIds as $id) {
+            $itemElements = DB::connection('tbd')
+                ->table('prod.org_geo as og')
+                ->select('og.geo as geo')
+                ->where('og.org', $id)
+                ->get()
+                ->toArray();
+            $result = array_merge($result, $itemElements);
+        }
+        $result = array_unique(array_map(function ($item) {
+            return (int)$item->geo;
+        }, $result));
+        return $result;
+    }
+
+    private function getWellTechsDict(): array
+    {
+        $dictClass = Tech::class;
+
+        $items = $dictClass::query()
+            ->select('id', "parent as parent")
+            ->selectRaw("name_ru as label")
+            ->orderBy('parent', 'asc')
+            ->orderBy('name_ru', 'asc')
+            ->get()
+            ->toArray();
+        
+        $tree = [];
+        $items = $this->generateTree($items);
+        $techPermissionsIds = $this->getUserTechPermissionIds();
+        $this->filterTree($items, $tree, $techPermissionsIds);
+        return $tree;
+    }
+    
+    public function getUserTechPermissionIds() {
+        $orgIds = $this->getUserOrgPermissionIds();
+        $result = [];
+        foreach($orgIds as $id) {
+            $itemElements = DB::connection('tbd')
+                ->table('prod.org_tech_link as otl')
+                ->select('otl.tech as tech')
+                ->where('otl.org', $id)
+                ->get()
+                ->toArray();
+            $result = array_merge($result, $itemElements);
+        }
+        $result = array_unique(array_map(function ($item) {
+            return (int)$item->tech;
+        }, $result));
+        return $result;
+    }
+
+    public function getUserOrgPermissionIds() {
+        $orgIds = array_filter(auth()->user()->org_structure, function($item) {
+            return substr($item, 0, strpos($item, ":")) == 'org';
+        });
+        $orgIds = array_map(function ($item) {
+            return (int)substr($item, strpos($item, ":") + 1);
+        }, $orgIds);
+        $organizations = [];
+        foreach($orgIds as $id) {
+            $organization = Org::find($id);
+            if(isset($organization)) {
+                $organizations[] = $organization;
+            }
+        }
+
+        $orgIds = $this->getOrgWithChildrens($organizations);
+        return $orgIds;
+    }
+
+    private function getOrgWithChildrens($organizations) {
+        $result = [];
+        foreach($organizations as $organization) {
+            if(!isset($organization->id)) continue;
+            $result[] = $organization->id;
+            $children = $organization->children()->get();
+            
+            $result = array_merge($result, $this->getOrgWithChildrens($children));
+        }
+
+        return $result;
+    }
+
+    public function filterTree($items, &$tree, &$userTreeAccessedItems)
+    {
+        foreach($items as $item) {
+            if(isset($item['id']) && in_array($item['id'], $userTreeAccessedItems)) {
+                $tree[] = $item;
+                continue;
+            }
+            if(!empty($item['children'])) {
+                $this->filterTree($item['children'], $tree, $userTreeAccessedItems);
+            }
+        }
     }
 
     private function getWellTechStateDict(): array
@@ -729,5 +845,64 @@ class DictionaryService
                 return in_array($item['code'], ['WRK', 'DWN']);
             })
         );
+    }
+
+    private function getResTypeDict(){
+        $codes = ['CAO','SCWA','PVTPD','PVTP'];
+        $items = DB::connection('tbd')
+            ->table('dict.lab_research_type as r')
+            ->select('r.id', 'r.name_ru as name', 'r.code')
+            ->whereNotIn('r.code', $codes)
+            ->orderBy('name', 'asc')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+        return $items;
+    }
+
+    private function getResMethodDict(){
+        $codes = ['NONE','PDC','IC'];
+        $items = DB::connection('tbd')
+            ->table('dict.research_method as r')
+            ->select('r.id', 'r.name_ru as name', 'r.code')
+            ->whereNotIn('r.code', $codes)
+            ->orderBy('name', 'asc')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
+        return $items;
+    }
+
+    private function getGisMethodTypesForGisTypeForm()
+    {
+        $dict = $this->get('gis_method_types');
+        return array_filter($dict, function ($item) {
+            return !in_array($item['code'], ['GATR']);
+        });
+    }
+
+    private function getGisKindsForGisTypeForm()
+    {
+        $gisType = GisType::where('code', 'WLS')->first();
+        return DB::connection('tbd')
+            ->table('dict.gis_kind')
+            ->select('id', 'name_ru as name')
+            ->where('gis_type', $gisType->id)
+            ->orderBy('name', 'asc')
+            ->get()
+            ->map(
+                function ($item) {
+                    return (array)$item;
+                }
+            )
+            ->toArray();
     }
 }    

@@ -157,17 +157,31 @@
               hide-label
               @change="getData"/>
 
-          <select-field
-              v-if="form.org_id"
-              :org_id="form.org_id"
-              :form="form"
-              @change="getData"/>
+          <div class="d-flex">
+            <select-field
+                v-if="form.org_id"
+                :org_id="form.org_id"
+                :form="form"
+                @change="getData"/>
 
-          <button
-              class="btn btn-primary mt-3 py-2 w-100 border-0 bg-export"
-              @click="exportData">
-            {{ trans('economic_reference.export_excel') }}
-          </button>
+            <input-exclude-uwis :form="form" class="ml-2"/>
+          </div>
+
+          <div class="mt-3 d-flex align-items-center">
+            <button
+                class="btn btn-primary w-100 border-0 bg-export py-2">
+              {{ trans('economic_reference.export_excel') }}
+            </button>
+
+            <a :href="localeUrl('/economic/optimization')"
+               target="_blank"
+               class="ml-2">
+              <button
+                  class="btn btn-primary w-100 border-0 bg-export py-2">
+                {{ trans('economic_reference.optimization') }}
+              </button>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -191,6 +205,7 @@ import SelectGranularity, {GRANULARITY_DAY} from "./components/SelectGranularity
 import SelectOrganization from "./components/SelectOrganization";
 import SelectField from "./components/SelectField";
 import SelectProfitability, {PROFITABILITY_FULL} from "./components/SelectProfitability";
+import InputExcludeUwis from "./components/nrs/InputExcludeUwis";
 
 const economicRes = {
   lastYear: {
@@ -223,7 +238,7 @@ const economicRes = {
         percent: 0
       },
     },
-    MET_payments: {
+    tax_costs: {
       data: [],
       sum: {
         value: [0, ''],
@@ -297,15 +312,17 @@ export default {
     SelectOrganization,
     SelectField,
     SelectProfitability,
+    InputExcludeUwis,
   },
   data: () => ({
     form: {
       org_id: null,
       field_id: null,
       interval_start: '2020-01-01T00:00:00.000Z',
-      interval_end: '2021-09-01T00:00:00.000Z',
+      interval_end: '2021-06-30T00:00:00.000Z',
       granularity: GRANULARITY_DAY,
       profitability: PROFITABILITY_FULL,
+      exclude_uwis: null
     },
     res: economicRes,
   }),
@@ -341,7 +358,7 @@ export default {
         [
           {
             title: this.trans('economic_reference.met_payments'),
-            sum: this.res.lastMonth.MET_payments.sum,
+            sum: this.res.lastMonth.tax_costs.sum,
             reversePercent: true
           },
           {
@@ -361,8 +378,14 @@ export default {
 
       this.res = economicRes
 
+      let params = {...this.form}
+
+      if (params.exclude_uwis) {
+        params.exclude_uwis = params.exclude_uwis.split(/\r?\n/)
+      }
+
       try {
-        const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-data'), {params: this.form})
+        const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-data'), {params: params})
 
         this.res = data
       } catch (e) {
@@ -434,32 +457,12 @@ export default {
   line-height: 20px;
 }
 
-.line-height-22px {
-  line-height: 22px;
-}
-
-.line-height-26px {
-  line-height: 26px;
-}
-
 .bg-blue-dark {
   background: #2B2E5E;
 }
 
-.bg-light-blue-dark {
-  background: #323370;
-}
-
 .bg-export {
   background: #213181;
-}
-
-.bg-red {
-  background: rgb(171, 19, 14);
-}
-
-.bg-green {
-  background: rgb(19, 176, 98);
 }
 
 .text-blue {

@@ -92,6 +92,20 @@ abstract class TableForm extends BaseForm
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
+    public function uploadSingleField(string $field)
+    {
+        $row = json_decode($this->request->get('row'), true);
+        $column = json_decode($this->request->get('column'), true);
+        $filter = json_decode($this->request->get('filter'), true);
+
+        return $this->uploadFile($row, $column, $filter);
+    }
+
+    protected function uploadFile(array $row, array $column, array $filter)
+    {
+        return null;
+    }
+
     public function getFormInfo(): array
     {
         $params = $this->params();
@@ -188,7 +202,6 @@ abstract class TableForm extends BaseForm
         ];
 
         $dateField = $fieldParams['date_field'] ?? 'dbeg';
-
         if ($this->isCurrentDay($row->{$dateField})) {
             $result['value'] = $value;
         } else {
@@ -286,6 +299,16 @@ abstract class TableForm extends BaseForm
                         ->groupBy('well');
 
                     break;
+                case 'prod.tech_mode_prod_oil':
+                    $result[$table] = DB::connection('tbd')
+                        ->table($table)
+                        ->whereIn('well', $wellIds)
+                        ->whereDate('dbeg', '<=', $date)
+                        ->orderBy('dbeg', 'desc')
+                        ->limit(20)
+                        ->get()
+                        ->groupBy('well');
+                    break;
                 default:
                     $result[$table] = DB::connection('tbd')
                         ->table($table)
@@ -302,7 +325,10 @@ abstract class TableForm extends BaseForm
 
     protected function isCurrentDay(string $date)
     {
-        return Carbon::parse($date)->diffInDays(Carbon::parse($this->request->get('date'))) === 0;
+        $filter = json_decode($this->request->get('filter'));
+        return Carbon::parse($date, 'Asia/Almaty')->diffInDays(
+                Carbon::parse($filter->date ?? null, 'Asia/Almaty')
+            ) === 0;
     }
 
     protected function addLimits(Collection $rows): void
@@ -364,8 +390,7 @@ abstract class TableForm extends BaseForm
         $wellsQuery = Well::query()
             ->with('techs', 'geo')
             ->select('id', 'uwi')
-            ->orderBy('uwi')
-            ->active(Carbon::parse($filter->date));
+            ->orderBy('uwi');
 
 
         if ($type === 'tech') {
@@ -448,11 +473,11 @@ abstract class TableForm extends BaseForm
                     }
                     $entity = $entityQuery->first();
                     if (!empty($entity)) {
-                        $query->where($key, $entity->id);
+                        $query = $query->where($key, $entity->id);
                     }
                     continue;
                 }
-                $query->where($key, $value);
+                $query = $query->where($key, $value);
             }
         }
         return $query;

@@ -207,15 +207,17 @@ export const chartInitMixin = {
                         type: 'area',
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
-                                let sum = value + wells.profitable[index]
+                                if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                                    value += wells.profitable[index]
+                                }
 
                                 PROFITLESS_PROFITABILITIES.forEach(profitless => {
                                     if (wells.hasOwnProperty(profitless)) {
-                                        sum += wells[profitless][index]
+                                        value += (wells[profitless][index] || 0)
                                     }
                                 })
 
-                                return sum
+                                return value
                             })
                             : wells[profitability],
                         tooltipData: pausedWells
@@ -230,20 +232,28 @@ export const chartInitMixin = {
                         type: 'area',
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
-                                let sum = value
-                                    + wells.profitable[index]
-                                    + pausedWells.profitable[index]
+                                if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                                    value += wells.profitable[index]
+                                }
+
+                                if (pausedWells.hasOwnProperty('profitable') && pausedWells.profitable[index]) {
+                                    value += pausedWells.profitable[index]
+                                }
 
                                 PROFITLESS_PROFITABILITIES.forEach(profitless => {
                                     if (wells.hasOwnProperty(profitless)) {
-                                        sum += wells[profitless][index]
+                                        value += (wells[profitless][index] || 0)
                                     }
                                 })
 
-                                return sum
+                                return value
                             })
                             : wells[profitability].map((value, index) => {
-                                return value + wells.profitable[index]
+                                if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                                    value += wells.profitable[index]
+                                }
+
+                                return value
                             }),
                         tooltipData: pausedWells
                             ? pausedWells[profitability]
@@ -256,23 +266,36 @@ export const chartInitMixin = {
                         type: 'area',
                         data: pausedWells
                             ? pausedWells[profitability].map((value, index) => {
-                                let sum = value
-                                    + wells.profitable[index]
-                                    + pausedWells.profitable[index]
-                                    + pausedWells.profitless_cat_2[index]
+                                if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                                    value += wells.profitable[index]
+                                }
+
+                                if (pausedWells.hasOwnProperty('profitable') && pausedWells.profitable[index]) {
+                                    value += pausedWells.profitable[index]
+                                }
+
+                                if (pausedWells.hasOwnProperty('profitless_cat_2') && pausedWells.profitless_cat_2[index]) {
+                                    value += pausedWells.profitless_cat_2[index]
+                                }
 
                                 PROFITLESS_PROFITABILITIES.forEach(profitless => {
                                     if (wells.hasOwnProperty(profitless)) {
-                                        sum += wells[profitless][index]
+                                        value += (wells[profitless][index] || 0)
                                     }
                                 })
 
-                                return sum
+                                return value
                             })
                             : wells[profitability].map((value, index) => {
+                                if (wells.hasOwnProperty('profitable') && wells.profitable[index]) {
+                                    value += wells.profitable[index]
+                                }
+
+                                if (wells.hasOwnProperty('profitless_cat_2') && wells.profitless_cat_2[index]) {
+                                    value += wells.profitless_cat_2[index]
+                                }
+
                                 return value
-                                    + wells.profitable[index]
-                                    + wells.profitless_cat_2[index]
                             }),
                         tooltipData: pausedWells
                             ? pausedWells[profitability]

@@ -19,22 +19,21 @@ class DailyReportsWaterProduction extends DailyReports
         $wells = $this->getOrgWells($org, $date);
 
         $workTime = $this->getWorkTime($wells, $date);
-        $bsw = $this->getBsw($wells, $date);
 
         return DB::connection('tbd')
-            ->table('prod.meas_liq')
-            ->select('dbeg', 'liquid', 'well')
+            ->table('prod.meas_water_prod')
+            ->select('dbeg', 'water_prod_val', 'well')
             ->where('dbeg', '>=', $date->startOfYear())
-            ->where('dbeg', '<=', $date)
+            ->where('dbeg', '<=', $date->endOfDay())
             ->whereIn('well', $wells)
             ->get()
             ->groupBy(function ($item) {
-                return Carbon::parse($item->dbeg)->format('d.m.Y');
+                return Carbon::parse($item->dbeg, 'Asia/Almaty')->format('d.m.Y');
             })
-            ->map(function ($items, $currentDate) use ($workTime, $bsw) {
-                $dateOil = $items
-                    ->map(function ($item) use ($workTime, $bsw) {
-                        $date = Carbon::parse($item->dbeg);
+            ->map(function ($items, $currentDate) use ($workTime) {
+                $dateWater = $items
+                    ->map(function ($item) use ($workTime) {
+                        $date = Carbon::parse($item->dbeg, 'Asia/Almaty');
 
                         if (!isset($workTime[$item->well])) {
                             return 0;
@@ -43,41 +42,16 @@ class DailyReportsWaterProduction extends DailyReports
                             return 0;
                         }
 
-                        $currentBsw = $bsw
-                            ->where('well', $item->well)
-                            ->where('dbeg', '<=', $date)
-                            ->where('dend', '>=', $date)
-                            ->first();
-                        if (empty($currentBsw)) {
-                            return 0;
-                        }
-
-
-                        return $item->liquid * $workTime[$item->well][$date->format(
+                        return $item->water_prod_val * $workTime[$item->well][$date->format(
                                 'd.m.Y'
-                            )] * $currentBsw->water_cut / 100;
+                            )];
                     })->sum();
 
                 return [
-                    'date' => Carbon::parse($currentDate),
-                    'value' => $dateOil
+                    'date' => Carbon::parse($currentDate, 'Asia/Almaty'),
+                    'value' => round($dateWater, 2)
                 ];
             });
-    }
-
-    private function getBsw(array $wells, CarbonImmutable $date): Collection
-    {
-        return DB::connection('tbd')
-            ->table('prod.meas_water_cut as mwc')
-            ->select('mwc.well', 'mwc.water_cut', 'mwc.dbeg', 'mwc.dend')
-            ->join('dict.well_activity as wa', 'mwc.activity', 'wa.id')
-            ->join('dict.value_type as vt', 'mwc.value_type', 'vt.id')
-            ->whereIn('mwc.well', $wells)
-            ->where('mwc.dbeg', '>=', $date->startOfYear())
-            ->where('mwc.dend', '<=', $date)
-            ->where('wa.code', 'PMSR')
-            ->where('vt.code', 'MNT')
-            ->get();
     }
 
 }

@@ -74,12 +74,13 @@
                           <i class="fas fa-caret-down ml-2"></i>
                           <i class="fas fa-vector-square ml-2"></i>
                           <span class="ml-2">Группа</span>
-                          <ul class="text-white list-style-none ml-4">
-                            <li v-for="(layerGroup, index) in layersList">
-                              <input type="checkbox" checked="1" @change="toggleOpacity(layerGroup)">
-                              layer_{{ index }}
-                            </li>
-                          </ul>
+                          <draggable class="ml-3 text-white" v-model="layerGroups" @change="layerGroupsChangeOrder"
+                                     group="layers" @start="drag=true" @end="drag=false" >
+                              <div v-for="(layerGroup, index) in layerGroups" :key="index">
+                                  <input type="checkbox" checked="1" @change="toggleOpacity(layerGroup.getLayers())">
+                                  {{ layerGroup.name }}
+                              </div>
+                          </draggable>
                         </div>
                     </div>
                     <div class="main-map" @contextmenu="openMenu">

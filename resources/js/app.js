@@ -211,14 +211,16 @@ Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_compan
 Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiveFactors/proactiveFactors.vue').default);
 Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
 Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
+Vue.component('company-valuation', require('./components/economy_kenzhe/companyValuation/companyValuation.vue').default);
 
 Vue.component('page-petrophysics', require('./components/geology/petrophysics/PagePetrophysics.vue').default);
 Vue.component('page-core', require('./components/geology/core/PageCore.vue').default);
 Vue.component('page-visualization', require('./components/geology/visualization/PageVisualization.vue').default);
 Vue.component('page-geophysics', require('./components/geology/geophysics/PageGeophysics.vue').default);
 
-Vue.component('digital-rating', require('./components/DigitalRating/index.vue').default);
-Vue.component('digital-rating-report', require('./components/DigitalRating/DigitalRatingReport.vue').default);
+Vue.component('section-maps', require('./components/DigitalRating/sectionMaps').default);
+Vue.component('digital-rating-report', require('./components/DigitalRating/reports').default);
+Vue.component('compare-drilling', require('./components/DigitalRating/drillingCompare').default);
 
 Vue.component('admin-user-settings', require('./components/admin/user/Settings.vue').default);
 Vue.component('visual-center-daily-report', require('./components/visualcenter3/dailyReport/index.vue').default);
@@ -226,12 +228,10 @@ Vue.component('visual-center-daily-approve', require('./components/visualcenter3
 Vue.component('visual-center-kpd-tree', require('./components/visualcenter3/kpd/index.vue').default);
 Vue.component('visual-center-oil-dynamic', require('./components/visualcenter3/oilDynamic/index.vue').default);
 
-Vue.component('digital-drilling', require('./components/DigitalDrilling/digital-drilling').default);
-Vue.component('digital-drilling-menu', require('./components/DigitalDrilling/menu').default);
-Vue.component('window-head', require('./components/DigitalDrilling/WindowHead').default);
+Vue.component('digital-drilling', require('./components/Digital-Drilling/DigitalDrilling').default);
 
-Vue.component('daily-raport', require('./components/DigitalDrilling/DailyRaport').default);
-Vue.component('import-daily-raport', require('./components/DigitalDrilling/ImportDailyRaport').default);
+Vue.component('daily-raport', require('./components/Digital-Drilling/DailyRaport').default);
+Vue.component('import-daily-raport', require('./components/Digital-Drilling/ImportDailyRaport').default);
 
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader').default);
 

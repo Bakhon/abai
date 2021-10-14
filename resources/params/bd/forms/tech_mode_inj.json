@@ -80,42 +80,35 @@
     },
     {
       "title": "avg_liquid_prev_month",
-      "code": "sum(water_inj_val)",
+      "code": "avg(water_inj_val)",
       "column": "sum(water_inj_val)",
-      "table":"prod.meas_water_inj",
-      "type": "calc",
-      "formula": "$water_inj_val$/$worktime$",
+      "table": "prod.meas_water_inj",
+      "type": "text",
       "is_editable": false
     },
     {
       "title": "avg_pressure_month",
-      "table":"prod.meas_water_inj",
-      "column": "avg(pressure_inj)",
       "code": "avg(pressure_inj)",
       "type": "text",
       "is_editable": false
     },
     {
       "title": "avg_temp_prev_month",
-      "table":"prod.meas_water_inj",
-      "column": "avg(agent_temperature)",
       "code": "avg(agent_temperature)",
       "type": "text",
       "is_editable": false
     },
     {
       "title": "water_inj",
-      "table":"prod.meas_water_inj",
-      "code": "water_inj_val",
-      "type": "float",
-      "column":"water_inj_val",
+      "code": "sum(water_inj_val)",
+      "type": "text",
       "is_editable": false
     },
     {
       "title": "volume",
-      "code": "water_inj_volume",
-      "column": "water_inj_volume",
+      "code": "agent_vol",
       "table":"prod.tech_mode_inj",
+      "column": "agent_vol",      
       "type": "float",
       "is_editable": true
     },
@@ -123,15 +116,16 @@
       "title": "agent_type",
       "code": "agent_type",
       "table":"prod.tech_mode_inj",
-      "column":"agent_type",
+      "column": "agent_type",
       "type": "dict",
-      "validation": "required|exists:tbd.dict.inj_agent_type,id",      
+      "dict": "inj_agent_types",
+      "validation": "required|exists:tbd.dict.inj_agent_type,id",
       "is_editable": true
     },
     {
       "title": "agent_temp",
       "table": "prod.tech_mode_inj",
-      "code": "agent_temperature",
+      "code": "agent_temp",
       "type": "float",
       "column": "agent_temp",
       "is_editable": true,
@@ -141,7 +135,7 @@
     {
       "title": "pressure",
       "table": "prod.tech_mode_inj",
-      "code": "pressure_inj",
+      "code": "inj_pressure",
       "type": "float",
       "column": "inj_pressure",
       "is_editable": true,

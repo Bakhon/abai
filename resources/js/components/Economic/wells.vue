@@ -2,14 +2,9 @@
   <div>
     <div class="p-3 bg-main1 mb-3 mx-auto max-width-88vw">
       <div class="d-flex">
-        <select-interval
-            :form="form"
-            class="col"
-            @change="getData"/>
-
         <select-organization
             :form="form"
-            class="col ml-2"
+            class="flex-grow-1"
             hide-label
             @change="getData"/>
 
@@ -17,7 +12,16 @@
             v-if="form.org_id"
             :org_id="form.org_id"
             :form="form"
-            class="col ml-2"
+            class="ml-2 flex-grow-1"
+            @change="getData"/>
+
+        <select-granularity
+            :form="form"
+            class="ml-2 flex-grow-1"/>
+
+        <select-interval
+            :form="form"
+            class="ml-2 flex-grow-1 flex-shrink-0"
             @change="getData"/>
       </div>
 
@@ -33,14 +37,14 @@
       </div>
     </div>
 
-    <div v-if="res" class="mx-auto max-width-88vw">
+    <div class="mx-auto max-width-88vw">
       <table-matrix
           v-if="activeTab === 'matrix'"
-          :data="res"/>
+          :wells="wells"/>
 
       <table-tree-map
-          v-else-if="activeTab === 'treemap'"
-          :data="res"
+          v-else-if="wells && activeTab === 'treemap'"
+          :data="wells"
           :property="activeTab"
           is-colorful/>
     </div>
@@ -54,6 +58,7 @@ import ChartButton from "./components/ChartButton";
 import SelectInterval from "./components/SelectInterval";
 import SelectOrganization from "./components/SelectOrganization";
 import SelectField from "./components/SelectField";
+import SelectGranularity from "./components/SelectGranularity";
 import TableMatrix from "./components/nrs/TableMatrix";
 import TableTreeMap from "./components/nrs/TableTreeMap";
 
@@ -65,6 +70,7 @@ export default {
     SelectInterval,
     SelectOrganization,
     SelectField,
+    SelectGranularity,
     TableMatrix
   },
   data: () => ({
@@ -72,9 +78,10 @@ export default {
       org_id: null,
       field_id: null,
       interval_start: '2021-01-01T00:00:00.000Z',
-      interval_end: '2021-02-01T00:00:00.000Z',
+      interval_end: '2021-06-30T00:00:00.000Z',
+      granularity: 'month'
     },
-    res: null,
+    wells: null,
     activeTab: 'matrix'
   }),
   computed: {
@@ -95,15 +102,13 @@ export default {
 
       this.SET_LOADING(true)
 
-      this.res = null
+      this.wells = null
 
       try {
         const {data} = await this.axios.get(this.localeUrl('/economic/nrs/get-wells'), {params: this.form})
 
-        this.res = data
+        this.wells = data
       } catch (e) {
-        this.res = null
-
         console.log(e)
       }
 

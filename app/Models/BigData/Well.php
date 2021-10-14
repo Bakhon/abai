@@ -183,4 +183,30 @@ class Well extends TBDModel
 
         return $query;
     }
+
+    public function getRelationTech(string $date)
+    {
+       return $this->techs()
+                    ->wherePivot('dend', '>',$date)
+                    ->withPivot('dend', 'dbeg', 'tap as tap')
+                    ->orderBy('pivot_dbeg', 'desc')
+                    ->first();
+    }
+
+    public function getRelationOrg(string $date)
+    {
+        return $this->orgs()
+                    ->wherePivot('dend', '>', $date)
+                    ->withPivot('dend', 'dbeg')
+                    ->orderBy('pivot_dbeg', 'desc')
+                    ->first();
+    }
+
+    public function getGeo(string $date)
+    {
+       return  $this->geo()->wherePivot('dend', '>', $date)
+            ->wherePivot('dbeg', '<=', $date)
+            ->withPivot('dend', 'dbeg')
+            ->first();
+    }
 }

@@ -119,20 +119,6 @@ abstract class DailyReports extends TableForm
         return $startDate;
     }
 
-    protected function getCustomValidationErrors(string $field = null): array
-    {
-        $errors = [];
-
-        if ($this->request->get('fact')) {
-            $limits = $this->calculateLimits();
-            if (!$this->isValidFactLimits($limits)) {
-                $errors['fact'][] = trans('bd.value_outside') . " ({$limits['min']}, {$limits['max']})";
-            }
-        }
-
-        return $errors;
-    }
-
     private function isValidFactLimits(array $limits): bool
     {
         if (empty($limits)) {
@@ -152,7 +138,7 @@ abstract class DailyReports extends TableForm
     private function calculateLimits(): array
     {
         $reports = ReportOrgDailyCits::where('org', $this->request->get('well_id'))
-            ->whereDate('report_date', '<', $this->request->get('date'))
+            ->whereDate('report_date', '<', Carbon::parse($this->request->get('date'), 'Asia/Almaty'))
             ->whereHas(
                 'metric',
                 function ($query) {
@@ -260,26 +246,25 @@ abstract class DailyReports extends TableForm
             return $result;
         }
 
-        $date = Carbon::parse($filter->date)->toImmutable();
+        $currentDate = Carbon::parse($filter->date, 'Asia/Almaty')->toImmutable();
 
-        $measuredFieldValues = $this->getMeasuredFieldValues($org, $date);
-        $now = Carbon::now('Asia/Almaty')->toImmutable();
-        $today = $measuredFieldValues->where('date', $now)->first();
+        $measuredFieldValues = $this->getMeasuredFieldValues($org, $currentDate);
+        $today = $measuredFieldValues->where('date', $currentDate->startOfDay())->first();
         $month = round(
             $measuredFieldValues
-                ->where('date', '>=', $now->startOfMonth())
-                ->where('date', '<=', $now)->sum('value'),
+                ->where('date', '>=', $currentDate->startOfMonth())
+                ->where('date', '<=', $currentDate)->sum('value'),
             2
         );
         $year = round($measuredFieldValues->sum('value'), 2);
 
 
         if ($filter->type === self::GS) {
-            $result['fact'] = ['value' => $today ? $today->value : 0];
+            $result['fact'] = ['value' => $today ? $today['value'] : 0];
             $result['month_fact'] = ['value' => $month];
             $result['year_fact'] = ['value' => $year];
         } else {
-            $result['daily_fact_gs'] = ['value' => $today ? $today->value : 0];
+            $result['daily_fact_gs'] = ['value' => $today ? $today['value'] : 0];
             $result['month_fact_gs'] = ['value' => $month];
             $result['year_fact_gs'] = ['value' => $year];
         }
@@ -294,39 +279,17 @@ abstract class DailyReports extends TableForm
 
     protected function getOrgWells(Org $org, CarbonImmutable $date)
     {
-        $orgIds = $this->getOrgIds($org->id);
+        $structureService = app()->make(StructureService::class);
+        $techIds = $structureService->getTechIds($org->id, 'org');
         return DB::connection('tbd')
-            ->table('prod.well_org')
-            ->select('id')
-            ->whereIn('org', $orgIds)
+            ->table('prod.well_tech')
+            ->select('well')
+            ->whereIn('tech', $techIds)
             ->where('dbeg', '<=', $date)
             ->where('dend', '>=', $date)
             ->get()
-            ->pluck('id')
+            ->pluck('well')
             ->toArray();
-    }
-
-    private function getOrgIds(int $orgId)
-    {
-        $structureService = app()->make(StructureService::class);
-        $orgStructure = $structureService->getFlattenTreeWithPermissions();
-        $org = array_filter($orgStructure, function ($item) use ($orgId) {
-            return $item['type'] === 'org' && $item['id'] === $orgId;
-        });
-        $org = reset($org);
-        return $this->getOrgWithChildren($orgStructure, $org['id']);
-    }
-
-    private function getOrgWithChildren(array $orgStructure, $orgId)
-    {
-        $ids = [$orgId];
-        $children = array_filter($orgStructure, function ($item) use ($orgId) {
-            return $item['type'] === 'org' && $item['parent_id'] === $orgId;
-        });
-        foreach ($children as $child) {
-            $ids = array_merge($ids, $this->getOrgWithChildren($orgStructure, $child['id']));
-        }
-        return $ids;
     }
 
     protected function getWorkTime(array $wellIds, CarbonImmutable $date): array
@@ -337,21 +300,21 @@ abstract class DailyReports extends TableForm
             ->table('prod.well_status as s')
             ->select('s.status', 's.dbeg', 's.dend', 's.well')
             ->join('dict.well_status_type', 'dict.well_status_type.id', 's.status')
-            ->where('dbeg', '<=', $date->startOfYear())
-            ->where('dend', '>=', $date)
+            ->where('dend', '>=', $date->startOfYear())
+            ->where('dbeg', '<=', $date->endOfDay())
             ->whereIn('well', $wellIds)
             ->whereIn('dict.well_status_type.code', MeasurementLogForm::WELL_ACTIVE_STATUSES)
             ->get()
             ->map(
                 function ($item) {
-                    $item->dbeg = Carbon::parse($item->dbeg);
-                    $item->dend = Carbon::parse($item->dend);
+                    $item->dbeg = Carbon::parse($item->dbeg, 'Asia/Almaty');
+                    $item->dend = Carbon::parse($item->dend, 'Asia/Almaty');
                     return $item;
                 }
             );
 
         $currentDate = $date->startOfYear();
-        while ($currentDate < $date) {
+        while ($currentDate <= $date) {
             $startOfDay = $currentDate->startOfDay();
             $endOfDay = $currentDate->endOfDay();
             foreach ($wellIds as $wellId) {

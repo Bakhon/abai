@@ -69,17 +69,4 @@ const setDynamicComponentContent = {
   },
 };
 
-const handleTableChange = {
-  data() {
-    return {
-      tableState: "common",
-    };
-  },
-  methods: {
-    setTableState(value) {
-      this.tableState = value;
-    },
-  },
-};
-
-export { setDynamicComponentContent, handleTableChange };
+export { setDynamicComponentContent };
