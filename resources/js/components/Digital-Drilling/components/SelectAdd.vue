@@ -9,7 +9,7 @@
                     <li v-for="option in options" @click="selectOption(option)" :class="{active: selected==option}">{{option.name_ru}}</li>
                 </ul>
                 <div class="add__item" @click="addItem">
-                    Добавить еще ...
+                    Добавить
                 </div>
             </div>
         </div>
@@ -112,8 +112,10 @@
     }
     .add__item{
         padding: 5px;
-        font-size: 12px;
         cursor: pointer;
+        color: #0ef80e;
+        font-weight: bold;
+        font-size: 14px;
     }
     .add__item:hover{
         background-color: #2e50e9;
