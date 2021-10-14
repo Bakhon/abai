@@ -8,12 +8,14 @@ const waterfloodingManagement = {
         graphicStartDate: new Date(),
         graphicEndDate: new Date(),
         objectDate: new Date('2020-12-31T23:59:59+00:00'),
+        wellList: [],
     },
     getters: {
         chooseObjectDate: (state) => state.chooseObjectDate,
         graphicStartDate: (state) => state.graphicStartDate,
         kin: (state) => state.kin,
         graphicEndDate: (state) => state.graphicEndDate,
+        wellList: (state) => state.wellList,
     },
     mutations:{
         CHANGE_CHOOSE_OBJECT_DATE(state, value) {
@@ -28,6 +30,9 @@ const waterfloodingManagement = {
         SAVE_KIN(state, value) {
             state.kin = value;
         },
+        SAVE_WELL_LIST (state, value) {
+            state.wellList = value;
+        },
     },
     actions: {
         async getKin({dispatch, commit, state}, fieldObject){
@@ -35,6 +40,15 @@ const waterfloodingManagement = {
             axios.get(url)
                 .then((response) =>{
                     commit('SAVE_KIN', response.data)
+                }).catch((error) => {
+                console.log(error)
+            })
+        },
+        async getWellList({dispatch, commit}){
+            let url = 'http://127.0.0.1:8001/api/v1/object_selections/well-list/';
+            axios.get(url)
+                .then((response) =>{
+                    commit('SAVE_WELL_LIST', response.data)
                 }).catch((error) => {
                 console.log(error)
             })
