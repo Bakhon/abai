@@ -369,26 +369,21 @@ export default {
             let data = response.data;
 
             if (data.status == 'success') {
-              this.prevData = data.level;
-              this.qv = data.qv;
+              this.previouslevel = data.level;
+              this.qv = (data.qv * 1000) / 365;
             } else {
               this.showToast(data.message, this.trans('app.error'), 'danger');
-              this.prevData = null;
+              this.previouslevel = this.qv = null;
             }
 
-            if (this.qv) {
-              this.inputLevel();
-            } else {
-              this.showToast('Нет данных по qv', this.trans('app.error'), 'danger');
-            }
-
+            this.inputLevel();
           });
     },
     inputLevel() {
-      if (this.prevData != null) {
-        this.formFields.level = this.formFields.level > this.prevData ? this.prevData : this.formFields.level;
+      if (this.previouslevel != null) {
+        this.formFields.level = this.formFields.level > this.previouslevel ? this.previouslevel : this.formFields.level;
 
-        this.formFields.consumption = this.prevData - this.formFields.level;
+        this.formFields.consumption = this.previouslevel - this.formFields.level;
         let currentDosage = (this.formFields.consumption / this.qv) * 954;
 
         this.formFields.current_dosage = currentDosage > 0 ? currentDosage.toFixed(2) : 0;
@@ -404,7 +399,7 @@ export default {
       this.formFields.fill = this.fill_status ? this.formFields.fill : null;
     },
     onChangeServiceDosing() {
-      this.formFields.level = this.formFields.out_of_service_of_dosing ? this.prevData : 0;
+      this.formFields.level = this.formFields.out_of_service_of_dosing ? this.previouslevel : 0;
       this.inputLevel();
     },
     submitForm() {

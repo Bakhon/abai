@@ -311,10 +311,10 @@ class OmgUHEController extends CrudController
         $res = [];
         if ($result && $ddng && $request->gu_id) {
             $res = [
-                'qv' => $qv
+                'qv' => $ddng->q_v
             ];
 
-            $res['level'] = $result->fill ? $result->fill : $result->level;
+            $res['level'] = $result->fill ?? $result->level;
             $res['status'] = config('response.status.success');
         } else {
             $res['status'] = config('response.status.error');
