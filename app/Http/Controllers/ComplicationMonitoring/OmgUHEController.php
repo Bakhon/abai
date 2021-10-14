@@ -303,8 +303,10 @@ class OmgUHEController extends CrudController
                         ->first();
 
         $qv = OmgNGDU::where('gu_id', $request->gu_id)
-            ->where('date', $request->date)
-            ->first()->daily_water_production;
+            ->where('date', Carbon::parse($request->date)->format('Y-m-d'))
+            ->first();
+
+        $qv = $qv ? $qv->daily_water_production : null;
 
         $res = [];
         if ($result && $ddng && $request->gu_id) {

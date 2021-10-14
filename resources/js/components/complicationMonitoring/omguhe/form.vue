@@ -1,207 +1,208 @@
 <template>
   <div class="row">
     <div class="col-xs-12 col-sm-4 col-md-4">
-        <label>{{ trans('monitoring.field') }}</label>
-        <div class="form-label-group">
-          <select
-              class="form-control"
-              name="field_id"
-              v-model="formFields.field_id"
-          >
-            <option v-for="row in fields" v-bind:value="row.id">
-              {{ row.name }}
-            </option>
-          </select>
-        </div>
-        <label>{{ trans('monitoring.gu.gu') }}</label>
-        <div class="form-label-group">
-          <select
-              class="form-control"
-              name="gu_id"
-              v-model="formFields.gu_id"
-              @change="chooseGu($event)"
-          >
-            <option v-for="row in gus" v-bind:value="row.id">
-              {{ row.name }}
-            </option>
-          </select>
-        </div>
-        <label> {{ trans('app.date_time') }} </label>
-        <div class="form-label-group">
-          <datetime
-              type="datetime"
-              v-model="formFields.date"
-              input-class="form-control date"
-              value-zone="Asia/Almaty"
-              zone="Asia/Almaty"
-              :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }"
-              :phrases="{ok: this.trans('app.choose'), cancel: this.trans('app.cancel')}"
-              :hour-step="1"
-              :minute-step="5"
-              :week-start="1"
-              use24-hour
-              auto
-              @close="pick"
-          >
-          </datetime>
-          <input type="hidden" name="date" v-bind:value="formatDate(formFields.date)">
-        </div>
-        <div class="form-label-group form-check">
-          <input
-              @change="onChangeServiceDosing"
-              type="checkbox"
-              class="form-check-input"
-              name="out_of_service_of_dosing"
-              id="out_of_service_of_dosing"
-              value="1"
-              v-model="formFields.out_of_service_of_dosing"
-          />
-          <label class="form-check-label" for="out_of_service_of_dosing"
-          >{{ trans('monitoring.omguhe.fields.dosator_idle') }}</label
-          >
-        </div>
-        <div class="form-label-group" v-show="formFields.out_of_service_of_dosing">
-          <label>{{ trans('monitoring.omguhe.fields.reason') }}</label>
-          <textarea v-model="formFields.reason" type="text" name="reason" class="form-control" placeholder="">
+      <label>{{ trans('monitoring.field') }}</label>
+      <div class="form-label-group">
+        <select
+            class="form-control"
+            name="field_id"
+            v-model="formFields.field_id"
+        >
+          <option v-for="row in fields" v-bind:value="row.id">
+            {{ row.name }}
+          </option>
+        </select>
+      </div>
+      <label>{{ trans('monitoring.gu.gu') }}</label>
+      <div class="form-label-group">
+        <select
+            class="form-control"
+            name="gu_id"
+            v-model="formFields.gu_id"
+            @change="chooseGu($event)"
+        >
+          <option v-for="row in gus" v-bind:value="row.id">
+            {{ row.name }}
+          </option>
+        </select>
+      </div>
+      <label> {{ trans('app.date_time') }} </label>
+      <div class="form-label-group">
+        <datetime
+            type="datetime"
+            v-model="formFields.date"
+            input-class="form-control date"
+            value-zone="Asia/Almaty"
+            zone="Asia/Almaty"
+            :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }"
+            :phrases="{ok: this.trans('app.choose'), cancel: this.trans('app.cancel')}"
+            :hour-step="1"
+            :minute-step="5"
+            :week-start="1"
+            use24-hour
+            auto
+            @close="pick"
+        >
+        </datetime>
+        <input type="hidden" name="date" v-bind:value="formatDate(formFields.date)">
+      </div>
+      <div class="form-label-group form-check">
+        <input
+            @change="onChangeServiceDosing"
+            type="checkbox"
+            class="form-check-input"
+            name="out_of_service_of_dosing"
+            id="out_of_service_of_dosing"
+            value="1"
+            v-model="formFields.out_of_service_of_dosing"
+        />
+        <label class="form-check-label" for="out_of_service_of_dosing"
+        >{{ trans('monitoring.omguhe.fields.dosator_idle') }}</label
+        >
+      </div>
+      <div class="form-label-group" v-show="formFields.out_of_service_of_dosing">
+        <label>{{ trans('monitoring.omguhe.fields.reason') }}</label>
+        <textarea v-model="formFields.reason" type="text" name="reason" class="form-control" placeholder="">
         </textarea>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-4 col-md-4">
-        <label>{{ trans('monitoring.ngdu') }}</label>
-        <div class="form-label-group">
-          <select
-              class="form-control"
-              name="ngdu_id"
-              v-model="formFields.ngdu_id"
-              @change="chooseNgdu($event)"
-          >
-            <option v-for="row in ngdus" v-bind:value="row.id">
-              {{ row.name }}
-            </option>
-          </select>
-        </div>
-
-        <label>{{ trans('monitoring.level') }} {{ trans('measurements.liter') }}</label>
-        <div class="form-label-group">
-          <input
-              :disabled="(!formFields.gu_id && !formFields.date) || formFields.out_of_service_of_dosing"
-              @input="inputLevel"
-              v-model="formFields.level"
-              type="number"
-              step="0.0001"
-              :min="validationParams.level.min"
-              :max="prevData ? prevData : validationParams.level.max"
-              name="level"
-              class="form-control"
-              placeholder=""
-          />
-        </div>
-
-        <label>{{ trans('monitoring.omguhe.fields.fact_dosage') }}</label>
-        <div class="form-label-group">
-          <input
-              :disabled="true"
-              type="number"
-              step="0.0001"
-              name="current_dosage"
-              class="form-control"
-              v-model="formFields.current_dosage"
-              placeholder=""
-          />
-        </div>
-
-        <label>{{ trans('monitoring.fields.consumption') }} {{ trans('measurements.liter') }}</label>
-        <div class="form-label-group">
-          <input
-              :disabled="true"
-              type="number"
-              step="0.0001"
-              name="consumption"
-              class="form-control"
-              v-model="formFields.consumption"
-              placeholder=""
-          />
-        </div>
-
-        <label>{{ trans('monitoring.omguhe.fields.inhibitor_rate') }}</label>
-        <div class="form-label-group">
-          <input
-              :disabled="true"
-              type="number"
-              step="0.0001"
-              name="daily_inhibitor_flowrate"
-              class="form-control"
-              v-model="formFields.daily_inhibitor_flowrate"
-              placeholder=""
-          />
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-4 col-md-4">
-        <label>{{ trans('monitoring.cdng') }}</label>
-        <div class="form-label-group">
-          <select
-              class="form-control"
-              name="cdng_id"
-              v-model="formFields.cdng_id"
-              @change="chooseCdng($event)"
-          >
-            <option v-for="row in cndgs" v-bind:value="row.id">
-              {{ row.name }}
-            </option>
-          </select>
-        </div>
-        <label>{{ trans('monitoring.well.well') }}</label>
-        <div class="form-label-group">
-          <select class="form-control" name="well_id" v-model="formFields.well_id">
-            <option v-for="row in wells" v-bind:value="row.id">
-              {{ row.name }}
-            </option>
-          </select>
-        </div>
-        <label>{{ trans('monitoring.omguhe.fields.inhibitor') }}</label>
-        <div class="form-label-group">
-          <select
-              class="form-control"
-              name="inhibitor_id"
-              v-model="formFields.inhibitor_id"
-          >
-            <option v-for="row in inhibitors" v-bind:value="row.id">
-              {{ row.name }}
-            </option>
-          </select>
-        </div>
-        <div class="form-label-group form-check">
-          <input
-              type="checkbox"
-              class="form-check-input"
-              name="fill_status"
-              id="fill_status"
-              v-model="formFields.fill_status"
-              @change="onChangeFillStatus()"
-          />
-          <label class="form-check-label" for="fill_status">{{ trans('monitoring.omguhe.fields.fill') }} {{ trans('measurements.liter') }}</label>
-        </div>
-        <div class="form-label-group" v-show="formFields.fill_status">
-          <input
-              type="number"
-              step="0.0001"
-              :min="validationParams.fill.min"
-              :max="validationParams.fill.max"
-              name="fill"
-              v-model="formFields.fill"
-              class="form-control"
-              id="fill"
-              placeholder=""
-          />
-          <label class="form-check-label" for="fill">{{ trans('monitoring.omguhe.fields.fill') }}</label>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <button type="submit" :disabled="!formFields.date" @click.prevent="submitForm" class="btn btn-success">
-          {{ trans('app.save') }}
-        </button>
       </div>
     </div>
+    <div class="col-xs-12 col-sm-4 col-md-4">
+      <label>{{ trans('monitoring.ngdu') }}</label>
+      <div class="form-label-group">
+        <select
+            class="form-control"
+            name="ngdu_id"
+            v-model="formFields.ngdu_id"
+            @change="chooseNgdu($event)"
+        >
+          <option v-for="row in ngdus" v-bind:value="row.id">
+            {{ row.name }}
+          </option>
+        </select>
+      </div>
+
+      <label>{{ trans('monitoring.level') }} {{ trans('measurements.liter') }}</label>
+      <div class="form-label-group">
+        <input
+            :disabled="(!formFields.gu_id && !formFields.date) || formFields.out_of_service_of_dosing"
+            @input="inputLevel"
+            v-model="formFields.level"
+            type="number"
+            step="0.0001"
+            :min="validationParams.level.min"
+            :max="prevData ? prevData : validationParams.level.max"
+            name="level"
+            class="form-control"
+            placeholder=""
+        />
+      </div>
+
+      <label>{{ trans('monitoring.omguhe.fields.fact_dosage') }}</label>
+      <div class="form-label-group">
+        <input
+            :disabled="true"
+            type="number"
+            step="0.0001"
+            name="current_dosage"
+            class="form-control"
+            v-model="formFields.current_dosage"
+            placeholder=""
+        />
+      </div>
+
+      <label>{{ trans('monitoring.fields.consumption') }} {{ trans('measurements.liter') }}</label>
+      <div class="form-label-group">
+        <input
+
+            type="number"
+            step="0.0001"
+            name="consumption"
+            class="form-control"
+            v-model="formFields.consumption"
+            placeholder=""
+        />
+      </div>
+
+      <label>{{ trans('monitoring.omguhe.fields.inhibitor_rate') }}</label>
+      <div class="form-label-group">
+        <input
+            :disabled="true"
+            type="number"
+            step="0.0001"
+            name="daily_inhibitor_flowrate"
+            class="form-control"
+            v-model="formFields.daily_inhibitor_flowrate"
+            placeholder=""
+        />
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-4">
+      <label>{{ trans('monitoring.cdng') }}</label>
+      <div class="form-label-group">
+        <select
+            class="form-control"
+            name="cdng_id"
+            v-model="formFields.cdng_id"
+            @change="chooseCdng($event)"
+        >
+          <option v-for="row in cndgs" v-bind:value="row.id">
+            {{ row.name }}
+          </option>
+        </select>
+      </div>
+      <label>{{ trans('monitoring.well.well') }}</label>
+      <div class="form-label-group">
+        <select class="form-control" name="well_id" v-model="formFields.well_id">
+          <option v-for="row in wells" v-bind:value="row.id">
+            {{ row.name }}
+          </option>
+        </select>
+      </div>
+      <label>{{ trans('monitoring.omguhe.fields.inhibitor') }}</label>
+      <div class="form-label-group">
+        <select
+            class="form-control"
+            name="inhibitor_id"
+            v-model="formFields.inhibitor_id"
+        >
+          <option v-for="row in inhibitors" v-bind:value="row.id">
+            {{ row.name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-label-group form-check">
+        <input
+            type="checkbox"
+            class="form-check-input"
+            name="fill_status"
+            id="fill_status"
+            v-model="formFields.fill_status"
+            @change="onChangeFillStatus()"
+        />
+        <label class="form-check-label" for="fill_status">{{ trans('monitoring.omguhe.fields.fill') }}
+          {{ trans('measurements.liter') }}</label>
+      </div>
+      <div class="form-label-group" v-show="formFields.fill_status">
+        <input
+            type="number"
+            step="0.0001"
+            :min="validationParams.fill.min"
+            :max="validationParams.fill.max"
+            name="fill"
+            v-model="formFields.fill"
+            class="form-control"
+            id="fill"
+            placeholder=""
+        />
+        <label class="form-check-label" for="fill">{{ trans('monitoring.omguhe.fields.fill') }}</label>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+      <button type="submit" :disabled="!formFields.date" @click.prevent="submitForm" class="btn btn-success">
+        {{ trans('app.save') }}
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -375,7 +376,12 @@ export default {
               this.prevData = null;
             }
 
-            this.inputLevel();
+            if (this.qv) {
+              this.inputLevel();
+            } else {
+              this.showToast(data.message, this.trans('app.error') + 'нет данных по qv', 'danger');
+            }
+
           });
     },
     inputLevel() {
@@ -386,7 +392,7 @@ export default {
         let currentDosage = (this.formFields.consumption / this.qv) * 954;
 
         this.formFields.current_dosage = currentDosage > 0 ? currentDosage.toFixed(2) : 0;
-        this.formFields.daily_inhibitor_flowrate = (this.formFields.current_dosage * this.qv/1000).toFixed(2);
+        this.formFields.daily_inhibitor_flowrate = (this.formFields.current_dosage * this.qv / 1000).toFixed(2);
       } else {
         this.formFields.consumption = this.formFields.current_dosage = 0;
       }
@@ -394,14 +400,14 @@ export default {
     formatDate(date) {
       return moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')
     },
-    onChangeFillStatus () {
+    onChangeFillStatus() {
       this.formFields.fill = this.fill_status ? this.formFields.fill : null;
     },
-    onChangeServiceDosing (){
+    onChangeServiceDosing() {
       this.formFields.level = this.formFields.out_of_service_of_dosing ? this.prevData : 0;
       this.inputLevel();
     },
-    submitForm () {
+    submitForm() {
       this.formFields.out_of_service_of_dosing = this.formFields.out_of_service_of_dosing ? 1 : 0;
 
       this.axios
@@ -414,10 +420,10 @@ export default {
     }
   },
   computed: {
-    requestUrl () {
+    requestUrl() {
       return this.isEditing ? this.localeUrl("/omguhe/" + this.omguhe.id) : this.localeUrl("/omguhe");
     },
-    requestMethod () {
+    requestMethod() {
       return this.isEditing ? "put" : "post";
     }
   },
